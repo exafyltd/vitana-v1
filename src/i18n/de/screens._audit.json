@@ -2434,10 +2434,8 @@
       "phase": "llm"
     },
     "screens.common.careTeam": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Pflegeteam is too narrow, referring specifically to a nursing team. Care Team implies a broader group of healthcare providers.",
-      "suggested": "Betreuungsteam",
       "phase": "llm"
     },
     "screens.common.yourHealthcareProvidersSpecialists": {
@@ -2721,10 +2719,8 @@
       "phase": "llm"
     },
     "screens.common.allCaughtUp": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Meaning slightly off; 'erledigt' implies tasks completed, not being up-to-date with information/content.",
-      "suggested": "Du bist auf dem neuesten Stand!",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.noNewRecommendationsRightNowCheck": {
@@ -3370,8 +3366,8 @@
     "screens.common.chargeParticipantsJoin": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing; 'berechnen' needs an object (a fee) when used for 'charge'.",
-      "suggested": "Teilnehmern eine Gebühr berechnen",
+      "issue": "Awkward phrasing; 'berechnen' is ambiguous for 'charge a fee'.",
+      "suggested": "Teilnahmegebühren erheben",
       "phase": "llm"
     },
     "screens.common.paymentSetupRequired": {
@@ -3462,8 +3458,8 @@
     "screens.common.meetupImage": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Treffpunkt' means 'meeting point' (location), not the 'meetup' event itself.",
-      "suggested": "Treffenbild",
+      "issue": "'Treffpunkt' implies a physical location, but 'Meetup' often refers to the event itself.",
+      "suggested": "Treffen-Bild",
       "phase": "llm"
     },
     "screens.common.selectedImage": {
@@ -3782,10 +3778,8 @@
       "phase": "llm"
     },
     "screens.common.tenantOnly": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Misleading translation of 'Tenant' in a software/business context; 'Mieter' implies property rental.",
-      "suggested": "Nur Mandant",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.defaultCommissionRate": {
@@ -3914,10 +3908,8 @@
       "phase": "llm"
     },
     "screens.common.resultsTime": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward and not idiomatic; 'Ergebniszeit' is too literal and unclear.",
-      "suggested": "Dauer bis Ergebnisse:",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.total": {
@@ -4236,10 +4228,8 @@
       "phase": "llm"
     },
     "screens.common.overallPrivacyHealth": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward compound noun. 'Privatsphäre-Gesundheit' is not idiomatic.",
-      "suggested": "Gesundheit deiner Privatsphäre",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.publicProfileVisibility": {
@@ -4488,9 +4478,8 @@
       "phase": "llm"
     },
     "screens.common.key": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.5,
-      "issue": "Ambiguous meaning of 'Key' without context (e.g., physical key, legend, cryptographic key, crucial element).",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.newRoutine": {
@@ -4580,29 +4569,29 @@
     },
     "screens.common.muteWellness7Days": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, 'stumm' is an adjective here, not a verb. 'Mute' as an action requires 'stummschalten'.",
+      "confidence": 1,
+      "issue": "Awkward phrasing; missing verb for 'mute'.",
       "suggested": "Wellness stummschalten (7 Tage)",
       "phase": "llm"
     },
     "screens.common.snoozeNudges1Day": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, 'schlummern' is an intransitive verb. 'Snooze' as an action for notifications is better translated with 'pausieren'.",
+      "confidence": 1,
+      "issue": "Awkward phrasing; 'schlummern' is not the idiomatic verb for 'snooze' in this context.",
       "suggested": "Erinnerungen pausieren (1 Tag)",
       "phase": "llm"
     },
     "screens.common.muteBiomarkers3Days": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, 'stumm' is an adjective here, not a verb. 'Mute' as an action requires 'stummschalten'.",
+      "confidence": 1,
+      "issue": "Awkward phrasing; missing verb for 'mute'.",
       "suggested": "Biomarker stummschalten (3 Tage)",
       "phase": "llm"
     },
     "screens.common.snoozeCommunity2Hours": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, 'schlummern' is an intransitive verb. 'Snooze' as an action for notifications is better translated with 'pausieren'.",
+      "confidence": 1,
+      "issue": "Awkward phrasing; 'schlummern' is not the idiomatic verb for 'snooze' in this context.",
       "suggested": "Community pausieren (2 Stunden)",
       "phase": "llm"
     },
@@ -4717,10 +4706,8 @@
       "phase": "llm"
     },
     "screens.common.operations": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Operationen\" typically refers to medical or military operations. In a UI context, \"Operations\" usually means actions or functions.",
-      "suggested": "Aktionen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.today": {
@@ -4749,10 +4736,9 @@
       "phase": "llm"
     },
     "screens.common.educational": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "\"Bildung\" is the noun \"education\". As a category label for content, \"Bildungsinhalte\" (educational content) or \"Lerninhalte\" (learning content) would be more precise and fitting.",
-      "suggested": "Bildungsinhalte",
+      "verdict": "OK",
+      "confidence": 0.9,
+      "issue": "Acceptable as a category label, but 'Bildungsinhalte' or 'Lehrreich' might be more precise depending on context.",
       "phase": "llm"
     },
     "screens.common.timeframe": {
@@ -5186,10 +5172,8 @@
       "phase": "llm"
     },
     "screens.common.controlYourDataSharingPreferencesManage": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing 'preferences' and 'consent' in the German translation, making it less precise.",
-      "suggested": "Kontrolliere deine Datenfreigabe-Präferenzen und verwalte Zustimmungsberechtigungen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.grantNewAccess": {
@@ -5269,9 +5253,9 @@
     },
     "screens.common.snoozeAll": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'stumm schalten' means 'mute/silence', which does not accurately convey 'snooze' (postpone/defer) in the context of actions.",
-      "suggested": "Alle zurückstellen",
+      "confidence": 1,
+      "issue": "Inconsistent with 'snooze' meaning; 'stummschalten' means 'mute', not 'snooze'.",
+      "suggested": "Alle pausieren",
       "phase": "llm"
     },
     "screens.common.learning": {
@@ -5805,10 +5789,8 @@
       "phase": "llm"
     },
     "screens.common.yourHealthDataRewardsDigitalAssets": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Slightly awkward compound noun 'Gesundheitsdaten-Belohnungen'. More idiomatic phrasing is preferred.",
-      "suggested": "Deine Belohnungen für Gesundheitsdaten und digitalen Assets",
       "phase": "llm"
     },
     "screens.common.rewards": {
@@ -6252,10 +6234,8 @@
       "phase": "llm"
     },
     "screens.common.forceReregister": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Slightly awkward and wordy for a UI label; a more concise and idiomatic phrasing is preferred.",
-      "suggested": "Neu registrieren erzwingen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.automaticallySyncHealthDataFromConnected": {
@@ -6294,9 +6274,8 @@
       "phase": "llm"
     },
     "screens.common.lastLength": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "The gender of 'Last' ('Letzte') depends on the noun represented by the placeholder {length}. 'Letzte' assumes a feminine noun, which is a common default, but could be 'Letzter' (masculine) or 'Letztes' (neuter) depending on context.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.value0AmountVtna": {
@@ -7046,9 +7025,9 @@
     },
     "screens.admin.allDataEncryptedAtRestTransit": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'in Übertragung' is a bit literal and less idiomatic than 'im Transit' or 'während der Übertragung' in a tech context.",
-      "suggested": "Alle Daten ruhend und im Transit verschlüsselt",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing for 'in transit'.",
+      "suggested": "Alle Daten ruhend und während der Übertragung verschlüsselt",
       "phase": "llm"
     },
     "screens.admin.securityEventMonitor": {
@@ -7939,8 +7918,8 @@
     "screens.admin.voiceActivityDetection": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect translation for 'Activity'. 'Aktivierung' means activation, not activity.",
-      "suggested": "Sprachaktivitätserkennung",
+      "issue": "Mistranslation: 'Aktivierung' (activation) instead of 'Aktivität' (activity).",
+      "suggested": "Sprachaktivitäts-Erkennung",
       "phase": "llm"
     },
     "screens.admin.automaticallyDetectWhenUserStopsSpeaking": {
@@ -8244,10 +8223,8 @@
       "phase": "llm"
     },
     "screens.admin.sessionTimeout": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Sitzung abgelaufen' sounds like a status message (session expired) rather than a setting or feature name for 'Session Timeout'.",
-      "suggested": "Sitzungs-Timeout",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.autologoutAfter30MinutesInactivity": {
@@ -8771,10 +8748,9 @@
       "phase": "llm"
     },
     "screens.admin.playground": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "Literal translation 'Spielplatz' is too childish for a tech/app context. 'Spielwiese' or 'Experimentierbereich' are more common for a 'sandbox' or 'experimental area'.",
-      "suggested": "Spielwiese",
+      "issue": "While 'Spielplatz' is literal, 'Testumgebung' or 'Experimentierfeld' might be more common in a tech context, but 'Spielplatz' is acceptable for a friendly app.",
       "phase": "llm"
     },
     "screens.admin.loadingRoutingConfig": {
@@ -8814,23 +8790,23 @@
     },
     "screens.admin.loadingSpeeches": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Sprachen' means 'languages'. In the context of an assistant, 'speeches' likely refers to the assistant's utterances or speech output, not human languages.",
-      "suggested": "Sprachausgaben werden geladen...",
+      "confidence": 1,
+      "issue": "Mistranslation of 'speeches' (spoken content) as 'Sprachen' (languages).",
+      "suggested": "Sprachinhalte werden geladen...",
       "phase": "llm"
     },
     "screens.admin.noSpeechesConfigured": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Sprachen' means 'languages'. In the context of an assistant, 'speeches' likely refers to the assistant's utterances or speech output, not human languages.",
-      "suggested": "Keine Sprachausgaben konfiguriert.",
+      "confidence": 1,
+      "issue": "Mistranslation of 'speeches' (spoken content) as 'Sprachen' (languages).",
+      "suggested": "Keine Sprachinhalte konfiguriert.",
       "phase": "llm"
     },
     "screens.admin.assistantSpeeches": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Sprachen' means 'languages'. In the context of an assistant, 'speeches' likely refers to the assistant's utterances or speech output, not human languages.",
-      "suggested": "Assistenten-Sprachausgaben",
+      "confidence": 1,
+      "issue": "Mistranslation of 'speeches' (spoken content) as 'Sprachen' (languages).",
+      "suggested": "Assistenten-Sprachinhalte",
       "phase": "llm"
     },
     "screens.admin.noToolsConfigured": {
@@ -9411,7 +9387,7 @@
     "screens.admin.staticStatusDisplay": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "English is a noun phrase, German is a verb phrase. Should be a noun.",
+      "issue": "Grammatical error; noun phrase translated as an imperative verb phrase.",
       "suggested": "Statische Statusanzeige",
       "phase": "llm"
     },
@@ -9438,7 +9414,7 @@
     "screens.admin.loadingSpecialist": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Awkward phrasing for a loading indicator; 'Lade Spezialist' is an imperative, not a continuous action.",
+      "issue": "Grammatically incorrect phrasing for 'Loading X...'.",
       "suggested": "Spezialist wird geladen…",
       "phase": "llm"
     },
@@ -9528,10 +9504,8 @@
       "phase": "llm"
     },
     "screens.admin.processThisTicket": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing; 'verarbeiten' is less common for 'processing a ticket' than 'bearbeiten'.",
-      "suggested": "Dieses Ticket bearbeiten",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.takesPriorityOverUserSReport": {
@@ -9696,17 +9670,15 @@
       "phase": "llm"
     },
     "screens.admin.memoryItemsByCategory": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Erinnerungselemente' is less common/natural for data items than 'Speicherelemente' and inconsistent with other entries (e.g., #10, #14).",
-      "suggested": "Speicherelemente nach Kategorie",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.noMemoryItemsYet": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Erinnerungselemente' is less common/natural for data items than 'Speicherelemente' and inconsistent with other entries (e.g., #10, #14).",
-      "suggested": "Noch keine Speicherelemente",
+      "issue": "Awkward phrasing; 'Erinnerungselemente' is too literal and clunky. 'Erinnerungen' is more natural.",
+      "suggested": "Noch keine Erinnerungen",
       "phase": "llm"
     },
     "screens.admin.factLifecycle": {
@@ -9721,8 +9693,8 @@
     },
     "screens.admin.activeRate": {
       "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "'Aktive Rate' is a direct translation, but might be slightly awkward depending on the exact context. 'Aktivitätsrate' or 'Rate der Aktiven' could be alternatives.",
+      "confidence": 0.6,
+      "issue": "Ambiguous without context. 'Aktive Rate' is a literal translation but might not be idiomatic depending on what 'Rate' refers to (e.g., heart rate, data rate).",
       "phase": "llm"
     },
     "screens.admin.embeddings": {
@@ -9836,10 +9808,8 @@
       "phase": "llm"
     },
     "screens.admin.editing": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Should be capitalized as a UI label/action.",
-      "suggested": "Bearbeiten",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.editPlatformDocument": {
@@ -9998,10 +9968,8 @@
       "phase": "llm"
     },
     "screens.admin.totalLikes": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for a UI label; 'Gefällt mir insgesamt' is grammatically correct but not idiomatic as a noun phrase for 'Total Likes'.",
-      "suggested": "Gesamt-Likes",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.totalPlays": {
@@ -10336,10 +10304,8 @@
       "phase": "llm"
     },
     "screens.admin.anonymousSafeCanRecommendedUnauthenticatedSessions": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The word 'nicht' (not) was incorrectly added, reversing the meaning of the English phrase 'can be recommended'.",
-      "suggested": "Anonym sicher (kann unauthentifizierten Sitzungen empfohlen werden)",
       "phase": "llm"
     },
     "screens.admin.triggerPhrasesLocalizedCopy": {
@@ -10443,10 +10409,8 @@
       "phase": "llm"
     },
     "screens.admin.dndActive": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward phrasing for a status label. 'Bitte nicht stören' is a command, not a status noun.",
-      "suggested": "Nicht stören aktiv",
       "phase": "llm"
     },
     "screens.admin.text30dayReadRate": {
@@ -10655,10 +10619,8 @@
       "phase": "llm"
     },
     "screens.admin.checkBrowserConsoleForDetails": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The German translation is a noun phrase, not an imperative. It doesn't convey the 'check' action directly in a friendly, du-form way.",
-      "suggested": "Schau in die Browser-Konsole für Details.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.noSettingsDataAvailableTenantId": {
@@ -11817,10 +11779,8 @@
       "phase": "llm"
     },
     "screens.admin.override": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "English 'Override' is likely a noun/concept here, but 'Überschreiben' is the verb form. For consistency with entries 0 and 1, keeping 'Override' as a loanword or using the German noun 'Überschreibung' would be better.",
-      "suggested": "Override",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.user": {
@@ -11894,10 +11854,8 @@
       "phase": "llm"
     },
     "screens.admin.autorefreshesEvery30SecondsAdditionalServices": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The first part 'Aktualisiert automatisch...' is grammatically correct but a bit terse. 'Wird automatisch aktualisiert' is more common and clearer for a passive system action in UI.",
-      "suggested": "Wird automatisch alle 30 Sekunden aktualisiert. Weitere Dienste erscheinen, sobald sie registriert sind.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.backOverview": {
@@ -12026,10 +11984,8 @@
       "phase": "llm"
     },
     "screens.admin.organizer": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Not gender-neutral; 'Organisator' is masculine.",
-      "suggested": "Veranstalter",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.location": {
@@ -12073,10 +12029,8 @@
       "phase": "llm"
     },
     "screens.admin.reporter": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Not gender-neutral; 'Melder' is masculine.",
-      "suggested": "Meldende Person",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.submitted": {
@@ -12130,9 +12084,8 @@
       "phase": "llm"
     },
     "screens.admin.kind": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Ambiguous English term 'Kind'. 'Art' is plausible for 'type/sort' in a technical context, but without more context, it's hard to be certain.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.activateBlockedReviseSpecRegenerate": {
@@ -12191,10 +12144,8 @@
       "phase": "llm"
     },
     "screens.admin.appliesAllNonoptedoutTenants": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Mieter' (renter/tenant) is less precise than 'Mandanten' (client/tenant in a software context) for consistency with technical domain.",
-      "suggested": "Gilt für alle nicht widersprochenen Mandanten.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.reindex": {
@@ -12205,8 +12156,8 @@
     "screens.admin.optOutThisBaselineDocFor": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Mieter' (renter/tenant) is less precise than 'Mandanten' (client/tenant in a software context) for consistency with technical domain.",
-      "suggested": "Für meinen Mandanten von diesem Basisdokument abmelden",
+      "issue": "'Abmelden' usually means 'unsubscribe' or 'log out'. 'Opt out' in this context (document) is better translated with 'widersprechen' or 'ablehnen'.",
+      "suggested": "Für meinen Mieter diesem Basisdokument widersprechen",
       "phase": "llm"
     },
     "screens.admin.thisDocumentSharedAcross": {
@@ -12282,7 +12233,7 @@
     "screens.admin.uploader": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "While 'Hochlader' is technically correct, 'Uploader' is more commonly used as a loanword in German tech/app contexts and sounds less clunky, fitting the friendly register better.",
+      "issue": "'Hochlader' is a literal translation but sounds clunky and less natural than the common English loanword 'Uploader' in tech contexts.",
       "suggested": "Uploader",
       "phase": "llm"
     },
@@ -12347,9 +12298,8 @@
       "phase": "llm"
     },
     "screens.admin.utterance": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "'Äußerung' is a correct translation but can sound quite formal or technical. Depending on the specific context in a 'friendly' wellness app, a softer or more descriptive term might be preferred, but without more context, it's hard to be certain.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.english": {
@@ -12388,10 +12338,8 @@
       "phase": "llm"
     },
     "screens.admin.whenVisit": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Besuchszeit' typically refers to 'visiting hours' or 'time of visit' as a noun. 'When to visit' implies a question or an instruction. 'Wann besuchen?' is more direct and idiomatic for a UI element.",
-      "suggested": "Wann besuchen?",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.deactivate": {
@@ -12410,10 +12358,8 @@
       "phase": "llm"
     },
     "screens.admin.noUsersHaveConfiguredPreferencesYet": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Slightly stiff phrasing and 'konfiguriert' is a bit technical for 'preferences' in a friendly app context.",
-      "suggested": "Noch keine Benutzer haben Präferenzen eingerichtet.",
       "phase": "llm"
     },
     "screens.admin.text30dayDeliverySummary": {
@@ -12442,10 +12388,8 @@
       "phase": "llm"
     },
     "screens.admin.creatorProfileDataWillAppearHere": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Compound noun 'Ersteller-Profil-Daten' should be written as one word without a hyphen.",
-      "suggested": "Erstellerprofildaten erscheinen hier, sobald sich Ersteller über Stripe Connect registrieren.",
       "phase": "llm"
     },
     "screens.admin.granted": {
@@ -12664,10 +12608,8 @@
       "phase": "llm"
     },
     "screens.admin.enterParametersUrlFormatKeyValue": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Infinitive used for instruction; imperative 'Gib' would be more consistent with du-form imperatives used elsewhere.",
-      "suggested": "Gib Parameter im URL-Format ein (key=value&key2=value2)",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.lastUsedValue0": {
@@ -12728,9 +12670,9 @@
     },
     "screens.admin.analyzing": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect tense/form. 'Analysiere' is imperative (Analyze!), not a continuous action (Analyzing...).",
-      "suggested": "Wird analysiert...",
+      "confidence": 0.9,
+      "issue": "'Analysiere...' is first-person singular ('I analyze'). For a status message, 'Analyse läuft...' (analysis running) or 'Wird analysiert...' (being analyzed) is more appropriate.",
+      "suggested": "Analyse läuft...",
       "phase": "llm"
     },
     "screens.admin.linkedAutomationRuleLinked_rule_id": {
@@ -12995,10 +12937,8 @@
       "phase": "llm"
     },
     "screens.admin.currentTiersVeryPoor099Poor": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "'Verbessernd' is awkward as a standalone tier name; 'Sich verbessernd' or 'Verbesserung' would be more natural.",
-      "suggested": "Aktuelle Stufen: Sehr schlecht (0-99), Schlecht (100-299), Mittelmäßig (300-499), Sich verbessernd (500-699), Gut (700-849), Ausgezeichnet (850-999)",
       "phase": "llm"
     },
     "screens.admin.telemedicineSessionManagementCurrentlyUnderDevelop": {
@@ -13083,9 +13023,9 @@
     },
     "screens.admin.averageAnalysisCompletesValue0SValue1": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The German 'abgeschlossen in' is a bit clipped and sounds like a past participle. 'Completes in' implies an ongoing average or a statement of fact, which is better conveyed with a more complete sentence structure.",
-      "suggested": "Die durchschnittliche Analyse ist in {value0}s abgeschlossen.",
+      "confidence": 0.9,
+      "issue": "Grammatically awkward. 'abgeschlossen in' requires 'ist' (e.g., 'ist abgeschlossen in'). 'Dauert' (takes) is more natural for duration.",
+      "suggested": "Durchschnittliche Analyse dauert {value0}s.\n                        {value1}",
       "phase": "llm"
     },
     "screens.admin.lastAnalysisDiscoveredLengthPatterns": {
@@ -13249,10 +13189,8 @@
       "phase": "llm"
     },
     "screens.admin.thisPageShowsPlaceholderServiceStatuses": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The possessive 's' in 'each service's{value0}' is not translated correctly, leading to an inaccurate meaning. Assuming {value0} is a noun like 'endpoint', the structure should reflect 'the {value0} of each service'.",
-      "suggested": "Diese Seite zeigt Platzhalter-Servicestati. Echtzeit-Health-Checks erfordern serverseitiges Proxying durch das Gateway, um den {value0} jedes Dienstes zu curlen",
       "phase": "llm"
     },
     "screens.admin.endpointAllServicesRunCloudRun": {
@@ -13286,10 +13224,8 @@
       "phase": "llm"
     },
     "screens.admin.receptionist": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The preceding sentence implies the receptionist is female ('her'), but 'Rezeptionist' is the masculine form. 'Rezeptionistin' is the correct feminine form.",
-      "suggested": "Rezeptionistin",
       "phase": "llm"
     },
     "screens.admin.handlesValue0": {
@@ -13369,8 +13305,8 @@
     },
     "screens.admin.waitingForExecutorTickClaimRun": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "First-person singular 'warte auf' is not idiomatic for a system status message; should be impersonal or passive.",
+      "confidence": 0.9,
+      "issue": "'warte' is first-person singular ('I wait'). For a system status message, an impersonal or passive construction like 'Warten auf...' (Waiting for...) is more common and appropriate.",
       "suggested": "— Warten auf den Executor-Tick, um den Lauf zu beanspruchen (≤30s).",
       "phase": "llm"
     },
@@ -13585,17 +13521,13 @@
       "phase": "llm"
     },
     "screens.admin.lengthResultValue1ForActivequery": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The placeholder {value1} is likely intended for English pluralization ('s' or empty). Appending it to 'Ergebnis' in German will result in incorrect plural forms (e.g., 'Ergebniss' instead of 'Ergebnisse'). German requires different plural forms or separate strings for singular/plural.",
-      "suggested": "{length} Ergebnisse für „{activeQuery}“",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.lengthTopicValue1AcrossLength2Document": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incorrect pluralization for 'Thema' and 'Dokument'. If {value1} and {value3} are English plural suffixes, they will lead to incorrect German plural forms (e.g., 'Themas' instead of 'Themen', 'Dokuments' instead of 'Dokumente'). German requires different plural forms or separate strings for singular/plural.",
-      "suggested": "{length} Themen in {length2} Dokumenten",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.noRunsYetHandCatalogScraping": {
@@ -13784,24 +13716,18 @@
       "phase": "llm"
     },
     "screens.admin.thisWillDeactivateCategoryUsersWill": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Too formal and slightly clunky phrasing for a friendly app. 'Benutzer' should be 'Nutzer' or 'User'.",
-      "suggested": "Dies deaktiviert die Kategorie. Nutzer werden sie nicht mehr in ihren Benachrichtigungseinstellungen sehen. Bestehende Nutzereinstellungen für diese Kategorie bleiben erhalten.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.composeNew": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatically incomplete. 'Neue' needs a noun or should be neuter 'Neues' if referring to general content, or a more common UI phrase.",
-      "suggested": "Neu erstellen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.value0UserSHavePushNotifications": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Too formal for the requested tone. 'Benutzer' should be 'Nutzer' or 'User'.",
-      "suggested": "{value0}Nutzer haben Push-Benachrichtigungen global deaktiviert.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.pending_invitationsPendingInvitationValue1": {
@@ -13845,16 +13771,14 @@
       "phase": "llm"
     },
     "screens.admin.breakdownUserRolesAcrossPlatformTotalusers": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Too formal for the requested tone. 'Benutzerrollen' and 'Benutzer insgesamt' should be 'Nutzerrollen' and 'Nutzer insgesamt'.",
-      "suggested": "Aufschlüsselung der Nutzerrollen auf der Plattform ({totalUsers}Nutzer insgesamt).",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.rollbackAvailable": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Rücknahme' is not the most idiomatic term for 'rollback' in a software context. 'Rollback' as a loanword or 'Rückgängigmachung' is more common.",
+      "confidence": 0.9,
+      "issue": "\"Rücknahme\" is not the most accurate translation for \"rollback\" in a technical context; it implies returning an item.",
       "suggested": "Rollback verfügbar",
       "phase": "llm"
     },
@@ -14220,9 +14144,9 @@
     },
     "screens.assistant.highMediumOnly": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Awkward word order and missing implied noun/declension. 'Nur' should precede the adjectives, and 'Priorität' is implied.",
-      "suggested": "Nur hohe und mittlere Priorität",
+      "confidence": 0.9,
+      "issue": "Word order for \"nur\" is awkward. It should typically precede the modified elements.",
+      "suggested": "Nur Hoch & Mittel",
       "phase": "llm"
     },
     "screens.assistant.highPriorityOnly": {
@@ -14511,10 +14435,8 @@
       "phase": "llm"
     },
     "screens.assistant.languageSettingControlsWhatLanguageText": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The nuance of 'for convenience' is missing, making the statement less user-centric.",
-      "suggested": "Die Einstellung \"Sprache\" steuert, in welcher Sprache Text generiert wird. Die Einstellung \"Stimme\" steuert, welche Text-to-Speech-Stimme ihn vorliest. Sie werden der Einfachheit halber automatisch synchronisiert.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.audio.volume": {
@@ -14713,10 +14635,8 @@
       "phase": "llm"
     },
     "screens.auth.ifYouDonTSeeIt": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward imperative and slightly formal verb. 'Schau nach' is friendlier and more common.",
-      "suggested": "Wenn du sie nicht siehst, schau in deinem Spam-Ordner nach.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.auth.backMaxina": {
@@ -14750,10 +14670,8 @@
       "phase": "llm"
     },
     "screens.auth.ifYouArenTSentBack": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Aufholen' is not the most natural verb for an app syncing or updating its state. 'Aktualisiert sich' is more precise.",
-      "suggested": "Wenn du nicht automatisch zurückgeleitet wirst, tippe unten – oder wechsle einfach zur Vitana-App, sie aktualisiert sich innerhalb weniger Sekunden.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.auth.updating": {
@@ -14967,10 +14885,8 @@
       "phase": "llm"
     },
     "screens.business.noTicketedEventsYet": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'Ticketed-Events'; direct adjective loanword is less idiomatic.",
-      "suggested": "Noch keine Events mit Tickets",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.business.startSellingEventTickets": {
@@ -15029,10 +14945,8 @@
       "phase": "llm"
     },
     "screens.business.ownProductsRankAboveVettedPartners": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly clunky phrasing; could be more idiomatic.",
-      "suggested": "Eigene Produkte rangieren vor geprüften Partnern, diese wiederum vor Affiliate-Netzwerken.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.business.yourCatalogEmpty": {
@@ -15358,9 +15272,9 @@
     },
     "screens.business.operations": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Operationen' sounds medical or military; 'Vorgänge' is more appropriate for business operations.",
-      "suggested": "Vorgänge",
+      "confidence": 0.8,
+      "issue": "\"Operationen\" is ambiguous and usually refers to medical or military operations. In a business/app context, \"Abläufe\" or \"Vorgänge\" are more appropriate.",
+      "suggested": "Abläufe",
       "phase": "llm"
     },
     "screens.business.revenue": {
@@ -15444,10 +15358,8 @@
       "phase": "llm"
     },
     "screens.business.channelsAutopilotListensForReferralOpportunities": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'auf Trockentest gesetzt' is a very literal and somewhat clunky translation for 'set to dry-run'. 'auf Testlauf gesetzt' is more idiomatic.",
-      "suggested": "Kanäle, die Autopilot auf Empfehlungsmöglichkeiten überwacht. Jeder Kanal kann pausiert, auf Testlauf gesetzt oder entfernt werden.",
       "phase": "llm"
     },
     "screens.business.platform": {
@@ -15589,8 +15501,8 @@
     },
     "screens.business.autopilotHasLengthReferralDraftValue1": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.5,
-      "issue": "The singular noun 'Empfehlungsentwurf' is used, which is incorrect for plural counts. Also, the phrasing for singular (e.g., '1 Empfehlungsentwurf') is grammatically awkward without an article ('einen'). Assuming {value1} is empty.",
+      "confidence": 0.7,
+      "issue": "Pluralization of \"Empfehlungsentwurf\" is not handled correctly with the `{value1}` placeholder. The current structure `Empfehlungsentwurf{value1}` results in grammatically incorrect forms for plural (e.g., \"Empfehlungsentwurfs\" if {value1} is 's'). A different string structure or pluralization mechanism is needed for German.",
       "suggested": "Autopilot hat {length} Empfehlungsentwürfe für dich",
       "phase": "llm"
     },
@@ -15645,10 +15557,8 @@
       "phase": "llm"
     },
     "screens.calendar.todaySEvents": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Ereignisse' is a bit formal/broad for calendar events; 'Termine' is more common and fitting.",
-      "suggested": "Heutige Termine",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.calendar.pendingReminders": {
@@ -16047,10 +15957,8 @@
       "phase": "llm"
     },
     "screens.coaches.expertHelpers": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Slightly awkward/literal, not most natural for friendly app.",
-      "suggested": "Experten",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.coaches.vettedProfessionalsTailoredYourGoals": {
@@ -16374,10 +16282,8 @@
       "phase": "llm"
     },
     "screens.community.alltime": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, not idiomatic for 'all-time' as a descriptor. 'Gesamte Zeit' sounds like 'the entire duration'.",
-      "suggested": "Alle Zeiten",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.community.scope": {
@@ -16826,10 +16732,8 @@
       "phase": "llm"
     },
     "screens.community.pastSessionsWillAppearHereOnce": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Phrasing 'Räume enden' is a bit awkward; 'Live-Räume beendet sind' is more natural for sessions/events.",
-      "suggested": "Vergangene Sitzungen erscheinen hier, sobald die Live-Räume beendet sind.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.community.deleteLiveRoom": {
@@ -17053,10 +16957,8 @@
       "phase": "llm"
     },
     "screens.community.analyzing": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect verb form for an ongoing process; 'Analysiere' is imperative (Analyze!), not a status (Analyzing...).",
-      "suggested": "Analysiert…",
       "phase": "llm"
     },
     "screens.community.smartfilled": {
@@ -17221,8 +17123,8 @@
     },
     "screens.community.hydration": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Too general; 'Flüssigkeitszufuhr' is more precise for the wellness context of hydration.",
+      "confidence": 1,
+      "issue": "Translation is too general; 'Flüssigkeit' means 'liquid' not 'hydration'.",
       "suggested": "Flüssigkeitszufuhr",
       "phase": "llm"
     },
@@ -17450,7 +17352,7 @@
     "screens.community.growYourWellnessBusinessManageClients": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Grammatically incorrect verb usage. 'Wachsen' is intransitive here. 'Wachse dein Geschäft' is not idiomatic for 'grow your business'.",
+      "issue": "Awkward phrasing for 'Grow your business'.",
       "suggested": "Baue dein Wellness-Geschäft aus und verwalte Kunden mühelos",
       "phase": "llm"
     },
@@ -17501,8 +17403,8 @@
     },
     "screens.community.kind": {
       "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "Ambiguous English source. 'Kind' could mean 'type/category' (Art) or 'friendly' (Freundlich, adjective). Assuming it's an adjective or a characteristic label, 'Freundlich' is correct. If it's a noun for 'type', it's incorrect.",
+      "confidence": 0.5,
+      "issue": "Ambiguous English 'Kind' (type vs. friendly). Assuming 'friendly' for now, but context is needed.",
       "phase": "llm"
     },
     "screens.community.whatSYourMind": {
@@ -17666,10 +17568,8 @@
       "phase": "llm"
     },
     "screens.community.activeuploadsActiveUploadValue1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Pluralization/adjective inflection is likely incorrect for plural counts. The English source string is also problematic for i18n.",
-      "suggested": "{activeUploads} aktive Uploads{value1}",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.community.publishing": {
@@ -17713,17 +17613,13 @@
       "phase": "llm"
     },
     "screens.community.capturing": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The German 'Erfasse...' is an imperative (command), not a status message. 'Wird erfasst...' or 'Erfassen...' would be more appropriate.",
-      "suggested": "Wird erfasst...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.community.saving": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The German 'Speichere...' is an imperative (command), not a status message. 'Wird gespeichert...' or 'Speichern...' would be more appropriate.",
-      "suggested": "Wird gespeichert...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.community.joinRoom": {
@@ -17974,8 +17870,8 @@
     "screens.contacts.searchForVitanaUsersAddManually": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Inconsistent grammatical form (imperative + infinitive). For UI labels, infinitive is often preferred for conciseness.",
-      "suggested": "Nach VITANA-Benutzern suchen oder manuell hinzufügen",
+      "issue": "Inconsistent verb form; should be imperative.",
+      "suggested": "Suche nach VITANA-Benutzern oder füge manuell hinzu",
       "phase": "llm"
     },
     "screens.contacts.cancel": {
@@ -18031,15 +17927,13 @@
     "screens.contacts.securelyMatchingYourContacts": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "'Überprüfung' (verification/checking) is less precise than 'Abgleich' (matching/comparison) for 'matching'.",
+      "issue": "Translation of 'matching' is inaccurate.",
       "suggested": "Sicherer Abgleich deiner Kontakte",
       "phase": "llm"
     },
     "screens.contacts.addContactsEasilyFindMessageThem": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'schreiben' can be ambiguous for 'message them'; 'Nachrichten senden' is more precise.",
-      "suggested": "Füge Kontakte hinzu, um sie auf VITANA einfach zu finden und ihnen Nachrichten zu senden",
       "phase": "llm"
     },
     "screens.contacts.addYourFirstContact": {
@@ -18058,10 +17952,8 @@
       "phase": "llm"
     },
     "screens.contacts.smsTextMessage": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly redundant; 'SMS-Nachricht' is more common.",
-      "suggested": "SMS-Nachricht",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.contacts.emailInvitation": {
@@ -18200,10 +18092,8 @@
       "phase": "llm"
     },
     "screens.contacts.lengthContactValue1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Pluralization is not handled correctly for German. The placeholder {value1} implies an English-style plural suffix, which doesn't apply to German. 'Kontakt' is singular, 'Kontakte' is plural.",
-      "suggested": "{length} Kontakte",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.contacts.writeYourInviteMessage": {
@@ -18367,10 +18257,8 @@
       "phase": "llm"
     },
     "screens.creator.roomPricePrice": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Zimmerpreis implies a physical room, not a virtual 'Live Room'.",
-      "suggested": "Raumpreis: ${price}",
       "phase": "llm"
     },
     "screens.creator.youCreator": {
@@ -18621,7 +18509,7 @@
     "screens.crossover.dayStreak": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Awkward phrasing; 'Tage Serie' is not idiomatic. Should be a compound noun or a phrase.",
+      "issue": "Not idiomatic; 'Tage Serie' is a literal translation.",
       "suggested": "Tages-Serie",
       "phase": "llm"
     },
@@ -18756,10 +18644,9 @@
       "phase": "llm"
     },
     "screens.crossover.confidenceConfidence": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "\"Vertrauen\" implies trust in a person/entity; \"Konfidenz\" or \"Sicherheit\" is more appropriate for a statistical/metric confidence level.",
-      "suggested": "Konfidenz: {confidence}%",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Ambiguous meaning of 'Confidence' (user's feeling vs. statistical metric). 'Vertrauen' is good for feeling, 'Konfidenz' for metric.",
       "phase": "llm"
     },
     "screens.crossover.priorityPriority": {
@@ -18803,17 +18690,13 @@
       "phase": "llm"
     },
     "screens.crossover.newinvitesNewInviteValue1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Pluralization issue: 'Einladung' is singular. If {newInvites} is greater than 1, it should be 'Einladungen'.",
-      "suggested": "{newInvites} neue Einladungen{value1}",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.crossover.lengthReportValue1ReadyShare": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Pluralization issue: 'Bericht' is singular. If {length} is greater than 1, it should be 'Berichte'.",
-      "suggested": "{length} Berichte{value1} bereit zum Teilen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.debug.presenceDebug": {
@@ -18963,9 +18846,9 @@
     },
     "screens.dev.commandHub": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, not idiomatic. 'Befehlshub' sounds very literal and unnatural. 'Kommando-Hub' or 'Kommandozentrale' would be more common.",
-      "suggested": "Kommando-Hub",
+      "confidence": 1,
+      "issue": "Awkward and unidiomatic translation for 'Command Hub'.",
+      "suggested": "Kommandozentrale",
       "phase": "llm"
     },
     "screens.dev.searchMembersGroups": {
@@ -19319,10 +19202,8 @@
       "phase": "llm"
     },
     "screens.dev.scheduleTime": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for a label; sounds like an action rather than a descriptive label for an input field.",
-      "suggested": "Geplante Zeit",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.dev.notesOptional": {
@@ -19413,15 +19294,15 @@
     "screens.dev.successOnly": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Grammatically incomplete; 'erfolgreiche' is an adjective needing a noun or nominalization.",
-      "suggested": "Nur Erfolgreiche",
+      "issue": "Incomplete phrase; 'erfolgreiche' is an adjective without a noun.",
+      "suggested": "Nur erfolgreiche Ergebnisse",
       "phase": "llm"
     },
     "screens.dev.failedOnly": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Grammatically incomplete; 'fehlgeschlagene' is an adjective needing a noun or nominalization.",
-      "suggested": "Nur Fehlgeschlagene",
+      "issue": "Incomplete phrase; 'fehlgeschlagene' is an adjective without a noun.",
+      "suggested": "Nur fehlgeschlagene Ergebnisse",
       "phase": "llm"
     },
     "screens.dev.includeRawLogs": {
@@ -19450,10 +19331,8 @@
       "phase": "llm"
     },
     "screens.dev.fileUpload": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Translated as a verb phrase ('upload file') instead of a noun phrase ('file upload').",
-      "suggested": "Dateiupload",
       "phase": "llm"
     },
     "screens.dev.clickUploadDragDrop": {
@@ -19882,10 +19761,8 @@
       "phase": "llm"
     },
     "screens.dev.user": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Benutzer\" is a bit formal/technical for a friendly app.",
-      "suggested": "Nutzer",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.dev.duration": {
@@ -19954,10 +19831,8 @@
       "phase": "llm"
     },
     "screens.dev.tryReconnectingLiveStream": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The nuance of 'Try' is lost; German is a direct command. A softer suggestion is more appropriate for a friendly app.",
-      "suggested": "Verbindung zum Live-Stream erneut versuchen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.dev.runSmoke": {
@@ -20048,7 +19923,7 @@
     "screens.dev.forceCloseAll": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect word order; grammatically awkward.",
+      "issue": "Incorrect word order for the verb phrase.",
       "suggested": "Alle schließen erzwingen",
       "phase": "llm"
     },
@@ -20333,10 +20208,9 @@
       "phase": "llm"
     },
     "screens.dev.readyExecuteLengthDevActionValue1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Pluralization of 'Aktion' is incorrect if {value1} is 's'. 'Entwicklungsaktions' is grammatically wrong; it should be 'Entwicklungsaktionen'. The current translation is only correct if {value1} is empty (singular).",
-      "suggested": "Bereit zur Ausführung von {length} Entwicklungsaktionen, vorbereitet von deinem KI-Assistenten.",
+      "verdict": "OK",
+      "confidence": 0.9,
+      "issue": "Assumes '{value1}' correctly handles pluralization for 'Aktion'.",
       "phase": "llm"
     },
     "screens.dev.value0MoreActions": {
@@ -20445,10 +20319,9 @@
       "phase": "llm"
     },
     "screens.dev.activecountConnectionValue1Detected": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "Pluralization of 'Verbindung' is incorrect if {value1} is 's'. 'Verbindungs' is grammatically wrong; it should be 'Verbindungen'. Also, the auxiliary verb for 'detected' ('erkannt') is missing. The current translation is only correct if {value1} is empty (singular).",
-      "suggested": "{activeCount} Verbindungen erkannt",
+      "issue": "Assumes '{value1}' correctly handles pluralization for 'Verbindung'.",
       "phase": "llm"
     },
     "screens.dev.value0AutoscrollClickVtidFocus": {
@@ -20687,10 +20560,8 @@
       "phase": "llm"
     },
     "screens.discover.quickBookActions": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Ambiguous; 'Buchaktionen' can mean 'book actions' (for a physical book) or 'booking actions'. Given the app context and entry 16, 'booking actions' is more likely.",
-      "suggested": "Schnelle Buchungsaktionen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.discover.orderActions": {
@@ -20834,10 +20705,8 @@
       "phase": "llm"
     },
     "screens.discover.travelAvailable": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is grammatically correct but a bit vague for a UI filter. 'Reise möglich' sounds passive. 'Reisebereit' (ready to travel) or 'Reiseoptionen' (travel options) would be clearer for providers who offer services involving travel.",
-      "suggested": "Reisebereit",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.discover.anyPrice": {
@@ -21706,10 +21575,8 @@
       "phase": "llm"
     },
     "screens.discover.bookmarkedValue0": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Ambiguous if {value0} is an item name, or incorrect word order if {value0} is a count. Assuming {value0} is a count.",
-      "suggested": "🔖 {value0} Lesezeichen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.discover.exploreName": {
@@ -21813,10 +21680,8 @@
       "phase": "llm"
     },
     "screens.discovery.checkBackTomorrowFor10New": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Inconsistent translation of 'Matches' (used 'Matches' in entry 15, 'Übereinstimmungen' here). 'neue frische' is also slightly redundant.",
-      "suggested": "Schau morgen wieder vorbei für 10 neue Matches ✨",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.events.searchByNameEmail": {
@@ -22120,16 +21985,14 @@
       "phase": "llm"
     },
     "screens.health.sustainedPracticePast90DayArc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "\"90-Tage-Bogen\" is a very literal translation and sounds a bit unnatural. \"90-Tage-Marke\" is more idiomatic for a milestone.",
-      "suggested": "Anhaltende Praxis – du hast die 90-Tage-Marke überschritten.",
       "phase": "llm"
     },
     "screens.health.sustainingEliteKeepAllPillars": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "\"Elite gehalten\" sounds like a past action, not an ongoing state or instruction to maintain a status.",
+      "confidence": 0.8,
+      "issue": "'Sustaining' implies ongoing action, 'gehalten' is past/passive.",
       "suggested": "Elite beibehalten. Halte alle fünf Säulen stabil.",
       "phase": "llm"
     },
@@ -22159,10 +22022,8 @@
       "phase": "llm"
     },
     "screens.health.text90dayJourneyWaves": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The compound 'Reisewellen' is not idiomatic for 'journey waves' in the sense of phases or cycles within a journey. It sounds like waves of people traveling.",
-      "suggested": "90-Tage-Reisephasen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.health.healthProfile": {
@@ -22786,10 +22647,8 @@
       "phase": "llm"
     },
     "screens.health.fivePillarsHowEachOneClimbs": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Literal translation 'aufsteigt' is a bit clunky for metaphorical 'climbs' in this context. 'Sich entwickelt' or 'sich verbessert' is more natural for progress.",
-      "suggested": "Fünf Säulen – wie jede sich entwickelt",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.health.howYourIndexMoves": {
@@ -22804,8 +22663,8 @@
     },
     "screens.health.completions": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Abschlüsse' is ambiguous; it usually means 'degrees' or 'conclusions'. 'Erledigungen' is more appropriate for completed tasks/items in an app.",
+      "confidence": 0.8,
+      "issue": "'Abschlüsse' is ambiguous/less natural for 'completions' in this context.",
       "suggested": "Erledigungen",
       "phase": "llm"
     },
@@ -22956,8 +22815,8 @@
     },
     "screens.health.priorityAction": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Prioritätsaktion\" is grammatically correct but sounds a bit clunky and less natural than the adjectival form for a friendly app.",
+      "confidence": 0.8,
+      "issue": "'Prioritätsaktion' is grammatically correct but sounds unnatural.",
       "suggested": "Prioritäre Aktion",
       "phase": "llm"
     },
@@ -23077,10 +22936,9 @@
       "phase": "llm"
     },
     "screens.health.atThisPaceYouLandAround": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Awkward phrasing; 'landest du um' is a literal translation and not idiomatic for 'land around' in this context.",
-      "suggested": "Bei diesem Tempo erreichst du ungefähr",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.5,
+      "issue": "'um' alone might be insufficient or incorrect depending on what follows 'around'.",
       "phase": "llm"
     },
     "screens.health.pillar": {
@@ -23205,9 +23063,9 @@
     },
     "screens.health.smartHydrationGuidanceTailoredYourLifestyle": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "''Hydrationshilfe'' is a bit clunky; ''Anleitung'' is more natural for ''guidance''.",
-      "suggested": "Intelligente Hydrations-Anleitung, abgestimmt auf deinen Lebensstil, deine Aktivität und Umgebung",
+      "confidence": 0.8,
+      "issue": "'Hydrationshilfe' is a bit clunky; 'Trinkempfehlungen' is more natural.",
+      "suggested": "Intelligente Trinkempfehlungen, abgestimmt auf deinen Lebensstil, deine Aktivität und Umgebung",
       "phase": "llm"
     },
     "screens.health.trackingYourWeeklyConsistency": {
@@ -23246,10 +23104,8 @@
       "phase": "llm"
     },
     "screens.health.trackingYourAverageMentalBalanceFocus": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "''Fokus-Konsistenz'' is awkward; a compound noun like ''Fokusbeständigkeit'' is more natural.",
-      "suggested": "Dein durchschnittliches mentales Gleichgewicht und deine Fokusbeständigkeit werden erfasst...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.health.recalibrationAdjustsYourMentalGoalsBased": {
@@ -23279,8 +23135,8 @@
     },
     "screens.health.previous": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "''Vorherige'' without a noun is awkward for a generic navigation button; ''Zurück'' is more common.",
+      "confidence": 0.8,
+      "issue": "'Vorherige' is an incomplete adjective; needs a noun or a more complete form.",
       "suggested": "Zurück",
       "phase": "llm"
     },
@@ -23296,9 +23152,9 @@
     },
     "screens.health.aioptimizedMealGuidanceTailoredYourPreferences": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "''Mahlzeitenhilfe'' is a bit clunky; ''Anleitung'' is more natural for ''guidance''.",
-      "suggested": "KI-optimierte Mahlzeiten-Anleitung, abgestimmt auf deine Vorlieben, deinen Gesundheitswert und deine Aktivitätsziele",
+      "confidence": 0.8,
+      "issue": "'Mahlzeitenhilfe' is a bit clunky; 'Mahlzeitenempfehlungen' is more natural.",
+      "suggested": "KI-optimierte Mahlzeitenempfehlungen, abgestimmt auf deine Vorlieben, deinen Gesundheitswert und deine Aktivitätsziele",
       "phase": "llm"
     },
     "screens.health.all": {
@@ -23367,10 +23223,8 @@
       "phase": "llm"
     },
     "screens.health.shop": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Einkaufen' is a verb (to shop) or gerund (shopping), not a noun for a store/shop. 'Shop' as a loanword is common and appropriate for UI.",
-      "suggested": "Shop",
       "phase": "llm"
     },
     "screens.health.excellent": {
@@ -23450,8 +23304,8 @@
     },
     "screens.health.upcomingSchedule": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Terminplan' is too specific, implying appointments. 'Zeitplan' is more general for 'schedule'.",
+      "confidence": 0.8,
+      "issue": "'Nächster Terminplan' implies 'the very next schedule' rather than a general 'upcoming schedule'.",
       "suggested": "📅 Bevorstehender Zeitplan",
       "phase": "llm"
     },
@@ -23666,16 +23520,14 @@
       "phase": "llm"
     },
     "screens.health.logActivityLiftName": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'heben' (to lift physically) is too literal. 'steigern' (to increase/boost) or 'verbessern' (to improve) is more appropriate for abstract concepts like scores or mood in a wellness context.",
-      "suggested": "Aktivität protokollieren, um {name} zu steigern",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.health.nextAvailableNextavailable": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatically incomplete. 'Nächste verfügbar' is missing an implied noun or incorrect gender/capitalization. 'Nächstes verfügbar' (neuter) or 'Nächste Verfügbarkeit' (next availability) would be more correct.",
+      "confidence": 0.8,
+      "issue": "'Nächste' is an incomplete adjective; needs a noun or a more complete form.",
       "suggested": "Nächstes verfügbar: {nextAvailable}",
       "phase": "llm"
     },
@@ -23811,9 +23663,9 @@
     },
     "screens.health.yourVitanaIndexTrajectoryWillAppear": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Basisstart' is an awkward compound noun for 'Start baseline'. 'Basislinie starten' or 'Starte Basislinie' would be more natural for an action/button label.",
-      "suggested": "Deine Vitana Index-Entwicklung erscheint hier, sobald die Basisumfrage abgeschlossen ist. Öffne Vitana Index > Basislinie starten, um zu beginnen.",
+      "confidence": 0.8,
+      "issue": "'Basisstart' is a noun compound, but 'Start baseline' is an imperative.",
+      "suggested": "Deine Vitana Index-Entwicklung erscheint hier, sobald die Basisumfrage abgeschlossen ist. Öffne Vitana Index > Baseline starten, um zu beginnen.",
       "phase": "llm"
     },
     "screens.health.byDayJourney_total_daysValue1": {
@@ -23837,10 +23689,8 @@
       "phase": "llm"
     },
     "screens.health.length5RanToday": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The English 'ran' is ambiguous. Given the context of 'pillar agents run' in entry 5, it's likely referring to tasks/processes being executed, not physical running. 'Gelaufen' implies physical running.",
-      "suggested": "{length}/5 heute ausgeführt",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.health.noAgentOutputTodayYetFive": {
@@ -24144,10 +23994,8 @@
       "phase": "llm"
     },
     "screens.home.noUpcomingEvents": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Termine\" is too specific (appointments); \"Ereignisse\" is more general and consistent with \"journey event\" used elsewhere.",
-      "suggested": "Keine anstehenden Ereignisse",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.home.dismissWelcomeBanner": {
@@ -24686,10 +24534,8 @@
       "phase": "llm"
     },
     "screens.intents.mutualReveal": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Translation is too formal/stiff for a friendly app.",
-      "suggested": "Gegenseitige Freigabe",
       "phase": "llm"
     },
     "screens.intents.mutualInterestOpenMessageThreadStart": {
@@ -24873,10 +24719,8 @@
       "phase": "llm"
     },
     "screens.intents.post": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect word for 'post' (noun). 'Posten' is a verb or refers to a position/item.",
-      "suggested": "Beitrag",
       "phase": "llm"
     },
     "screens.layout.contentRequiresConsent": {
@@ -26026,8 +25870,8 @@
     },
     "screens.memory.clickBelowUploadPhotoMemory": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Missing 'memory' aspect in translation; 'Foto' is too generic.",
+      "confidence": 0.9,
+      "issue": "Missing nuance; 'memory' is not conveyed by 'Foto'.",
       "suggested": "Klicke unten, um eine Foto-Erinnerung hochzuladen",
       "phase": "llm"
     },
@@ -26507,10 +26351,8 @@
       "phase": "llm"
     },
     "screens.messages.totalArchived": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Slightly awkward phrasing for a count label; 'Gesamt archiviert' is more like 'Overall archived' (adverbial) rather than a clear noun phrase for a total count.",
-      "suggested": "Gesamt archiviert:",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.messages.text42Conversations": {
@@ -26544,17 +26386,13 @@
       "phase": "llm"
     },
     "screens.messages.autoarchiveAfter30Days": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for a setting description; sounds like a noun phrase rather than an action or setting.",
-      "suggested": "Automatisches Archivieren nach 30 Tagen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.messages.keepImportantChats": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Not an imperative; should be in du-form.",
-      "suggested": "Behalte wichtige Chats",
       "phase": "llm"
     },
     "screens.messages.recentlyArchivedConversationsWillAppearHere": {
@@ -26688,10 +26526,8 @@
       "phase": "llm"
     },
     "screens.messages.enter": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect part of speech; 'Eingabe' is a noun (input), but 'Enter' as a UI action requires a verb.",
-      "suggested": "Eingeben",
       "phase": "llm"
     },
     "screens.messages.press": {
@@ -27000,10 +26836,8 @@
       "phase": "llm"
     },
     "screens.messages.totalresponsesResponseValue1Received": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical inaccuracy: 'Antwort' is singular, but '{totalResponses}' implies a plural count is possible. Should be plural 'Antworten'.",
-      "suggested": "{totalResponses} Antworten erhalten",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.messages.downloadFile": {
@@ -27024,8 +26858,8 @@
     "screens.messages.messageComposer": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "'Nachrichtenverfasser' means 'message author' (a person), not a UI component or action. 'Nachricht verfassen' is more appropriate for a UI label.",
-      "suggested": "Nachricht verfassen",
+      "issue": "'Nachrichtenverfasser' literally means 'message author' (a person). For a UI component, 'Nachrichten-Editor' or 'Nachrichtenfeld' is more appropriate.",
+      "suggested": "Nachrichten-Editor",
       "phase": "llm"
     },
     "screens.messages.recordVoiceMessage": {
@@ -27034,10 +26868,8 @@
       "phase": "llm"
     },
     "screens.messages.replyingSendername": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Antworte auf' is an imperative ('Reply to!'), but 'Replying to' is typically a status indicator. 'Antwort an' or 'Antwortest auf' would be more fitting for a status.",
-      "suggested": "Antwort an {senderName}",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.messages.participantcountMembers": {
@@ -27056,10 +26888,8 @@
       "phase": "llm"
     },
     "screens.messages.chooseConversationFromLeftStartMessaging": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'mit dem Schreiben zu beginnen' is awkward and unidiomatic in this context; it sounds like starting to write a book. 'Nachrichten zu senden' or 'zu chatten' is more natural for messaging.",
-      "suggested": "Wähle links eine Unterhaltung aus, um Nachrichten zu senden.",
       "phase": "llm"
     },
     "screens.mobile.searching": {
@@ -27099,8 +26929,8 @@
     },
     "screens.mobile.alerts": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Info' is too general for 'Alerts'. 'Alerts' typically implies notifications, warnings, or important messages. 'Benachrichtigungen' is a more common and accurate translation in app contexts.",
+      "confidence": 1,
+      "issue": "'Info' is too generic for 'Alerts'. 'Benachrichtigungen' (notifications) is a more common and accurate translation for general alerts in an app context.",
       "suggested": "Benachrichtigungen",
       "phase": "llm"
     },
@@ -27245,10 +27075,8 @@
       "phase": "llm"
     },
     "screens.onboarding.namePart28CharactersLowercase": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Typo: 'Namesteil' should be 'Namensteil'.",
-      "suggested": "Namensteil: 2–8 Zeichen · Kleinbuchstaben und Ziffern · muss mit einem Buchstaben beginnen.\n                Endgültige ID wird",
       "phase": "llm"
     },
     "screens.onboarding.yourVitanaIdMemberValue0": {
@@ -27382,17 +27210,13 @@
       "phase": "llm"
     },
     "screens.payment.theyReceive": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Ambiguous 'Sie' (could be formal 'you' or plural 'they'), potentially inconsistent register with 'du' form for the user when referring to a single recipient.",
-      "suggested": "Empfänger erhält",
       "phase": "llm"
     },
     "screens.payment.theyReceive2": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Ambiguous 'Sie' (could be formal 'you' or plural 'they'), potentially inconsistent register with 'du' form for the user when referring to a single recipient.",
-      "suggested": "Empfänger erhält",
       "phase": "llm"
     },
     "screens.payment.whatThisPaymentFor": {
@@ -27521,10 +27345,8 @@
       "phase": "llm"
     },
     "screens.payment.sending": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward phrasing for a label. 'Sendet:' implies an active subject, while 'Senden:' is a more appropriate noun form for a UI label.",
-      "suggested": "Senden:",
       "phase": "llm"
     },
     "screens.payment.fee": {
@@ -27613,10 +27435,8 @@
       "phase": "llm"
     },
     "screens.payment.searchingUsers": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly verbose and 'Benutzer' is less common than 'Nutzer' in modern, friendly apps. 'Suche Nutzer...' is more concise and idiomatic for a UI status.",
-      "suggested": "Suche Nutzer...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.payment.change": {
@@ -27760,10 +27580,9 @@
       "phase": "llm"
     },
     "screens.payment.rateValue0": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Kurs\" is too specific and not a general translation for \"Rate\" in a wellness app context. \"Rate\" as a loanword is more common for generic rates.",
-      "suggested": "Rate: {value0}",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.7,
+      "issue": "The meaning of 'Rate' is ambiguous without context. It could mean 'Bewertung' (rating), 'Frequenz' (frequency/rate), or 'Kurs' (exchange rate). 'Kurs' is unlikely in a wellness app.",
       "phase": "llm"
     },
     "screens.payment.conversationspecificPaymentActionWith": {
@@ -28662,10 +28481,8 @@
       "phase": "llm"
     },
     "screens.profile.prefersSimpleFlowsOverComplexSettings": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Impersonal and slightly stiff phrasing for a friendly, du-form app. A more direct, bullet-point style is common and friendlier.",
-      "suggested": "Einfache Abläufe statt komplexer Einstellungen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.profile.spendLessTimeBookingOrganizing": {
@@ -28795,9 +28612,9 @@
     },
     "screens.profile.copyYourLinkedinBioForAipowered": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Lebenslauf' (CV/resume) is too broad for 'bio' (short biography/summary). 'Biografie' is more accurate.",
-      "suggested": "Kopiere deine LinkedIn-Biografie für KI-gestütztes Parsen von Fähigkeiten, Erfahrung und Überschrift",
+      "confidence": 1,
+      "issue": "'LinkedIn bio' is better translated as 'LinkedIn-Profil' or 'LinkedIn-Kurzprofil', not 'LinkedIn-Lebenslauf' (CV).",
+      "suggested": "Kopiere dein LinkedIn-Profil für KI-gestütztes Parsen von Fähigkeiten, Erfahrung und Überschrift",
       "phase": "llm"
     },
     "screens.profile.myLevelPerStyle": {
@@ -29037,8 +28854,8 @@
     },
     "screens.profile.peopleLikeYouAlsoConnectedWith": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'kennengelernt' implies meeting in person, not necessarily a digital connection in a social app context.",
+      "confidence": 1,
+      "issue": "'Kennengelernt' means 'met' or 'got to know'. In a social networking context, 'connected with' is better translated as 'sich vernetzen mit' (to network with).",
       "suggested": "Leute wie du haben sich auch mit Sarah vernetzt",
       "phase": "llm"
     },
@@ -29413,10 +29230,9 @@
       "phase": "llm"
     },
     "screens.profile.nextName": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gender mismatch. 'Nächste' is feminine. For a general 'Next item/step', 'Nächstes' (neuter) is more appropriate and neutral.",
-      "suggested": "Nächstes: {name}",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.7,
+      "issue": "The gender of 'Nächste' (feminine) depends on the implied noun for '{name}'. Without context, it could be 'Nächster' (masculine) or 'Nächstes' (neuter).",
       "phase": "llm"
     },
     "screens.profile.viewsViews": {
@@ -29437,7 +29253,7 @@
     "screens.profile.tenantValue0": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "'Mieter' refers to a property renter. In a software/app context, 'Tenant' (e.g., in multi-tenancy) is usually translated as 'Mandant'.",
+      "issue": "'Mieter' refers to a property renter. In a software/cloud context, 'Tenant' is typically translated as 'Mandant'.",
       "suggested": "Mandant: {value0}...",
       "phase": "llm"
     },
@@ -29943,8 +29759,8 @@
     },
     "screens.reminders.recent": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "\"Kürzlich\" is an adverb, not ideal as a standalone label/heading. \"Aktuell\" or \"Neueste\" would be more appropriate for a category or filter.",
+      "confidence": 0.9,
+      "issue": "Adverb 'kürzlich' (recently) is used instead of an adjective/noun for 'Recent' (e.g., 'Aktuell' for current/recent or 'Neueste' for latest).",
       "suggested": "Aktuell",
       "phase": "llm"
     },
@@ -30249,9 +30065,8 @@
       "phase": "llm"
     },
     "screens.reseller.ticketquantityTicketValue1Value2": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.4,
-      "issue": "Ambiguous placeholder {value1}. If it's for pluralization (e.g., 's'), the German 'Ticket{value1}' is grammatically incorrect. If it's other data, the English source string is awkward.",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.settings.googleConnectionLiveCheck": {
@@ -30635,10 +30450,8 @@
       "phase": "llm"
     },
     "screens.settings.advancedAiInsightsUnlimitedStoragePriority": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "'Prioritäts-Support' is a bit clunky; 'priorisierter Support' is more natural.",
-      "suggested": "Erweiterte KI-Einblicke, unbegrenzter Speicher, priorisierter Support",
       "phase": "llm"
     },
     "screens.settings.monthlyCost": {
@@ -30702,10 +30515,8 @@
       "phase": "llm"
     },
     "screens.settings.expires1226": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Likely misinterpretation of '12/26' (MM/YY for expiry) as a specific day (DD.MM.).",
-      "suggested": "Läuft ab 12/26",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.settings.premiumSubscription": {
@@ -30764,10 +30575,8 @@
       "phase": "llm"
     },
     "screens.settings.log8GlassesWater": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'protokollieren' is a bit formal for a friendly wellness app. 'erfassen' or 'eintragen' are more common.",
-      "suggested": "8 Gläser Wasser erfassen",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.settings.text50Pts": {
@@ -30858,8 +30667,8 @@
     "screens.settings.goalCrusher": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Zerstörer' has a negative connotation, implying destruction rather than achievement. 'Crusher' in this context means someone who successfully achieves goals.",
-      "suggested": "Ziel-Bezwinger",
+      "issue": "'Ziel-Zerstörer' (goal destroyer) has a negative connotation, implying destroying goals rather than achieving them. 'Goal Crusher' implies success.",
+      "suggested": "Ziel-Erreicher",
       "phase": "llm"
     },
     "screens.settings.text10GoalsCompleted": {
@@ -30960,8 +30769,8 @@
     "screens.settings.totalSyncedApps": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing, 'synchrone Apps' means 'synchronous apps' not 'synced apps'.",
-      "suggested": "Insgesamt synchronisierte Apps",
+      "issue": "'Synchrone Apps' (simultaneous apps) uses the wrong adjective form; 'synchronisierte Apps' (synchronized apps) is correct. Phrasing is also awkward.",
+      "suggested": "Gesamt synchronisierte Apps",
       "phase": "llm"
     },
     "screens.settings.text5Connected": {
@@ -30992,7 +30801,7 @@
     "screens.settings.dataSynced": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing, 'synchrone Daten' means 'synchronous data' not 'data synced'.",
+      "issue": "'Synchrone Daten' (simultaneous data) uses the wrong adjective form; 'synchronisierte Daten' (synchronized data) is correct.",
       "suggested": "Synchronisierte Daten:",
       "phase": "llm"
     },
@@ -31072,9 +30881,8 @@
       "phase": "llm"
     },
     "screens.settings.productsAboveYourPerproductCeilingHidden": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "The English term 'Band' is ambiguous without further context (e.g., price band, category band, UI element). The German translation is literal but inherits the ambiguity.",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.settings.maxPerProductEur": {
@@ -31178,10 +30986,8 @@
       "phase": "llm"
     },
     "screens.settings.englishUs": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The German translation 'Deutsch (Deutschland)' does not match the English source 'English (US)'. It should be translated to 'Englisch (USA)'.",
-      "suggested": "Englisch (USA)",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.settings.pacificStandard": {
@@ -31240,10 +31046,8 @@
       "phase": "llm"
     },
     "screens.settings.usd": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Currency changed from USD to EUR, which is a content change, not a translation.",
-      "suggested": "USD ($)",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.settings.numberFormat": {
@@ -31617,10 +31421,8 @@
       "phase": "llm"
     },
     "screens.settings.viewAllDataSharingActivities": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "Slightly clunky compound noun. 'Datenfreigaben' is more concise and natural for 'data sharing activities' in this context.",
-      "suggested": "Alle Datenfreigaben anzeigen",
       "phase": "llm"
     },
     "screens.settings.requestDataExport": {
@@ -31729,10 +31531,8 @@
       "phase": "llm"
     },
     "screens.settings.profileVisibilityControls": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "English is a noun phrase, German is a verb phrase. A noun phrase is more appropriate for a UI label.",
-      "suggested": "Einstellungen zur Profilsichtbarkeit",
       "phase": "llm"
     },
     "screens.settings.visibleSettings": {
@@ -31991,10 +31791,8 @@
       "phase": "llm"
     },
     "screens.settings.getHelpFromOtherUsersShare": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "The German is grammatically correct but sounds passive and less direct than the English imperative. It also uses 'eigene' instead of 'deine' for consistency with du-form.",
-      "suggested": "Hole dir Hilfe von anderen Nutzern und teile deine Erfahrungen",
       "phase": "llm"
     },
     "screens.settings.joinGroup": {
@@ -32098,10 +31896,8 @@
       "phase": "llm"
     },
     "screens.settings.contactSupportOptions": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The English phrase 'Contact Support Options' is slightly awkward, implying one contacts the options themselves. The German translates this awkwardness directly. A more natural German heading would be 'Kontakt zum Support' or 'Support kontaktieren'.",
-      "suggested": "Kontakt zum Support",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.settings.responseTime": {
@@ -32640,17 +32436,13 @@
       "phase": "llm"
     },
     "screens.settings.apply5CreditYourNextBilling": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "Using 'anwenden' for 'apply credit' is grammatically correct but less idiomatic than 'einlösen' or 'nutzen' in this context. 'Einlösen' is more common for redeeming credits.",
-      "suggested": "5 $ Guthaben für deinen nächsten Abrechnungszeitraum einlösen. Maximal 2 Guthaben pro Monat.",
       "phase": "llm"
     },
     "screens.settings.apply10CreditYourNextBilling": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "Using 'anwenden' for 'apply credit' is grammatically correct but less idiomatic than 'einlösen' or 'nutzen' in this context. 'Einlösen' is more common for redeeming credits.",
-      "suggested": "10 $ Guthaben für deinen nächsten Abrechnungszeitraum einlösen. Maximal 1 Guthaben pro Monat.",
       "phase": "llm"
     },
     "screens.settings.achievements": {
@@ -32814,10 +32606,8 @@
       "phase": "llm"
     },
     "screens.settings.saveDietary": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "English source is incomplete, German translation is too vague. Likely refers to 'dietary restrictions' or 'dietary preferences'.",
-      "suggested": "Ernährungseinschränkungen speichern",
       "phase": "llm"
     },
     "screens.settings.saveMedications": {
@@ -32851,10 +32641,8 @@
       "phase": "llm"
     },
     "screens.settings.saveAccessibility": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "English source is incomplete, German translation is too vague. Likely refers to 'accessibility settings'.",
-      "suggested": "Barrierefreiheitseinstellungen speichern",
       "phase": "llm"
     },
     "screens.settings.allergies": {
@@ -33088,10 +32876,8 @@
       "phase": "llm"
     },
     "screens.settings.voice": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect term for 'voice' (sound). 'Sprache' means 'language', 'Stimme' means 'voice'.",
-      "suggested": "Stimme",
       "phase": "llm"
     },
     "screens.settings.privacy": {
@@ -33160,10 +32946,8 @@
       "phase": "llm"
     },
     "screens.settings.connectingLabel": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Verbinde' is an imperative (command). For a status message ('Connecting...'), a passive construction is more appropriate.",
-      "suggested": "{label} wird verbunden…",
       "phase": "llm"
     },
     "screens.settings.labelConnected": {
@@ -33217,10 +33001,8 @@
       "phase": "llm"
     },
     "screens.settings.postContentReadAnalytics": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Inconsistent grammatical form. 'Beitragsinhalt' is a noun, while 'Analysen lesen' is a verb phrase. 'Post content' is likely intended as a verb phrase.",
-      "suggested": "Inhalte posten, Analysen lesen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.connectYourNameAccountShareContent": {
@@ -33309,10 +33091,8 @@
       "phase": "llm"
     },
     "screens.settings.eGLiquidformLargelabel": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "'large-label' is ambiguous in English. 'große Verpackung' means 'large packaging', which is an interpretation. If it refers to the label itself, 'großes Etikett' would be more direct. If it refers to readability, 'gut lesbares Etikett' would be better.",
-      "suggested": "großes Etikett",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.safetycriticalFieldsAllergiesMedicationsPregnancyR": {
@@ -33411,10 +33191,8 @@
       "phase": "llm"
     },
     "screens.sharing.channelPerformance": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Hyphenated compound noun is less common; 'Kanalleistung' or 'Kanalperformance' is more idiomatic.",
-      "suggested": "Kanalleistung",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.distributionByChannel": {
@@ -33828,16 +33606,14 @@
       "phase": "llm"
     },
     "screens.sharing.packageCover": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing; 'Paketcover' is not idiomatic for an image representing a package. 'Titelbild' or 'Paketbild' is more natural.",
-      "suggested": "Paketbild",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.eG5sessionWellnessBundle": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatically incorrect plural form in compound noun. '5-Sitzungen' should be '5-Sitzungs-' when used as a modifier.",
+      "confidence": 1,
+      "issue": "Grammatically awkward compound. '5-Sitzungen' should be '5-Sitzungs-' when used as part of a compound adjective.",
       "suggested": "z.B. 5-Sitzungs-Wellness-Bundle",
       "phase": "llm"
     },
@@ -33972,10 +33748,8 @@
       "phase": "llm"
     },
     "screens.sharing.whatDataShare": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, too literal. 'geteilt werden sollen' is clunky for a UI heading/label.",
-      "suggested": "Welche Daten teilen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.last7DaysPerformance": {
@@ -34014,10 +33788,8 @@
       "phase": "llm"
     },
     "screens.sharing.fromPhoneNumber": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Too literal and incomplete. Should specify 'sender' or 'originating' phone number.",
-      "suggested": "Absender-Telefonnummer",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.phoneNumberId": {
@@ -34227,9 +33999,9 @@
     },
     "screens.sharing.addCustomMessageYourShare": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'zu deinem Teilen' is grammatically correct but sounds awkward and less idiomatic in this context. 'Teilen' as a noun for the act of sharing is less common in this specific construction.",
-      "suggested": "Füge eine benutzerdefinierte Nachricht zu deinem Beitrag hinzu...",
+      "confidence": 1,
+      "issue": "'zu deinem Teilen' is unidiomatic and awkward. 'Freigabe' is a more natural noun for 'share' in this context.",
+      "suggested": "Füge eine benutzerdefinierte Nachricht zu deiner Freigabe hinzu...",
       "phase": "llm"
     },
     "screens.sharing.performanceAnalytics": {
@@ -34433,10 +34205,8 @@
       "phase": "llm"
     },
     "screens.sharing.launchDayHeroAnnouncementEmailBlast": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Heldenankündigung' is too literal and sounds awkward; 'hero' in this context refers to a main/prominent announcement.",
-      "suggested": "Starttag: Hauptankündigung + E-Mail-Blast",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.week2SocialProofTestimonialsMicrofaq": {
@@ -34996,9 +34766,9 @@
     },
     "screens.sharing.text6SignatureSignoffs": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'signifikant' (significant) does not accurately convey 'signature' (distinctive/characteristic) in this context. 'Abschiede' is also less precise than 'Abschiedsformeln' for 'sign-offs'.",
-      "suggested": "6 charakteristische Abschiedsformeln",
+      "confidence": 1,
+      "issue": "'signifikante' is a mistranslation of 'signature' (meaning distinctive/characteristic).",
+      "suggested": "6 charakteristische Abschiede",
       "phase": "llm"
     },
     "screens.sharing.usage": {
@@ -35047,10 +34817,8 @@
       "phase": "llm"
     },
     "screens.sharing.searchAutomationRulesTemplates": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward phrasing; 'suchen' at the end makes it sound like an imperative command rather than a list item or title.",
-      "suggested": "Such-Automatisierungsregeln, Vorlagen...",
       "phase": "llm"
     },
     "screens.sharing.activityLogs": {
@@ -35809,10 +35577,8 @@
       "phase": "llm"
     },
     "screens.sharing.eGDrSmithAtMayo": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Brand name/personal name changed; must remain literal.",
-      "suggested": "z.B. Dr. Smith in der Mayo Clinic",
       "phase": "llm"
     },
     "screens.sharing.describeSpecificUseCase": {
@@ -36081,10 +35847,8 @@
       "phase": "llm"
     },
     "screens.sharing.helpsAutopilotOptimizeYourPostingStrategy": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incorrect dative case for 'Autopilot'.",
-      "suggested": "Hilft dem Autopilot, deine Posting-Strategie zu optimieren",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.clickUploadCampaignCoverImage": {
@@ -36819,8 +36583,8 @@
     },
     "screens.sharing.value0MoreChannelValue1": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Pluralization not handled; 'weiterer Kanal' is singular, but 'more' implies plural. The current translation is only correct if {value0} is 1.",
+      "confidence": 1,
+      "issue": "Pluralization issue. If {value0} can be greater than 1, 'Kanal' should be plural 'Kanäle'.",
       "suggested": "+{value0} weitere Kanäle\n                          {value1}",
       "phase": "llm"
     },
@@ -37010,10 +36774,8 @@
       "phase": "llm"
     },
     "screens.sharing.addUpMaxcontactsContactsManually": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing space between placeholder and noun, and noun 'Kontakte' should be capitalized.",
-      "suggested": "Füge bis zu {maxContacts} Kontakte manuell hinzu",
       "phase": "llm"
     },
     "screens.sharing.contactValue0": {
@@ -37027,10 +36789,8 @@
       "phase": "llm"
     },
     "screens.sharing.lengthMaxcontactsContactsAddedValue2": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing space between placeholder and noun.",
-      "suggested": "{length}/ {maxContacts} Kontakte hinzugefügt\n        {value2}",
       "phase": "llm"
     },
     "screens.sharing.defaultPermissionModelForNewAccess": {
@@ -37074,10 +36834,8 @@
       "phase": "llm"
     },
     "screens.sharing.lengthSelected": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing space between placeholder and participle.",
-      "suggested": "{length} ausgewählt",
       "phase": "llm"
     },
     "screens.sharing.connectNewAccounts": {
@@ -37101,17 +36859,13 @@
       "phase": "llm"
     },
     "screens.sharing.granteddateExpirydate": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing space between placeholder and 'bis'.",
-      "suggested": "{grantedDate} bis {expiryDate}",
       "phase": "llm"
     },
     "screens.sharing.requesteddateExpirydate": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing space between placeholder and 'bis'.",
-      "suggested": "{requestedDate} bis {expiryDate}",
       "phase": "llm"
     },
     "screens.sharing.requestedRequesteddate": {
@@ -37215,10 +36969,8 @@
       "phase": "llm"
     },
     "screens.sharing.copypasteCustomizeForYourNeeds": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing 'paste' part of 'copy-paste' instruction.",
-      "suggested": "Kopieren und Einfügen oder anpassen für deine Bedürfnisse",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.createCustomDataPackageBySelecting": {
@@ -37562,10 +37314,8 @@
       "phase": "llm"
     },
     "screens.ui.updating": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Ambiguous phrasing for an ongoing process; 'Aktualisiere...' sounds like an imperative or 'I update'.",
-      "suggested": "Wird aktualisiert...",
       "phase": "llm"
     },
     "screens.ui.selectMode": {
@@ -37759,10 +37509,8 @@
       "phase": "llm"
     },
     "screens.vertex.aiCanSeeYourCameraFeed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "More precise term for 'camera feed' is 'Kamerabild'. 'Kamera' usually refers to the device itself.",
-      "suggested": "KI kann dein Kamerabild mit 1 Bild pro Sekunde sehen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.vertex.aiListeningYourVoice": {
@@ -37776,10 +37524,8 @@
       "phase": "llm"
     },
     "screens.vertex.connecting": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Verbinde...' is an imperative. For a continuous status, 'Verbinden...' or 'Verbindung wird hergestellt...' is more natural.",
-      "suggested": "Verbinden...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.vertex.error": {
@@ -37954,9 +37700,9 @@
     },
     "screens.wallet.firstKnow": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender-specific phrasing ('die Erste') where a gender-neutral option is more appropriate for a general app.",
-      "suggested": "Erfahre es zuerst!",
+      "confidence": 1,
+      "issue": "Gender-specific translation ('die Erste') where a gender-neutral or inclusive form is likely intended for a general audience.",
+      "suggested": "Sei als Erster/Erste dabei!",
       "phase": "llm"
     },
     "screens.wallet.vtnaEcosystemStatus": {
@@ -38022,14 +37768,14 @@
     "screens.wallet.vtnEarned": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Brand name 'VTN' was changed to 'VTNA' in the translation, violating the rule that brand names must remain unchanged.",
+      "issue": "Brand name 'VTN' was incorrectly changed to 'VTNA'. Brand names must remain unchanged.",
       "suggested": "VTN verdient",
       "phase": "llm"
     },
     "screens.wallet.latestCompleteBloodPanel": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical agreement for 'Latest'. 'Neuestes' (neuter singular) is more appropriate when implicitly referring to 'das Blutbild' (the blood panel, neuter).",
+      "confidence": 1,
+      "issue": "Gender agreement. 'Neueste' (feminine) does not match 'Blutbild' (neuter). It should be 'Neuestes'.",
       "suggested": "Neuestes: Vollständiges Blutbild",
       "phase": "llm"
     },
@@ -38069,10 +37815,8 @@
       "phase": "llm"
     },
     "screens.wallet.text2435Value": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Currency symbol changed from $ to €; inconsistent with other entries and not a direct translation of the symbol.",
-      "suggested": "≈ 24,35 $ Wert",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.wallet.healthTracking": {
@@ -38601,10 +38345,8 @@
       "phase": "llm"
     },
     "screens.wallet.amountAddUsd": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatically correct but slightly formal and clunky for a friendly UI. A more direct noun phrase is preferred.",
-      "suggested": "Betrag zum Hinzufügen (USD)",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.wallet.choosePaymentMethod": {
@@ -38893,10 +38635,8 @@
       "phase": "llm"
     },
     "screens.wallet.amountSend": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward phrasing, slightly formal for a friendly app. 'Zu sendender Betrag' is grammatically correct but less natural.",
-      "suggested": "Betrag zum Senden:",
       "phase": "llm"
     },
     "screens.wallet.transferFees": {
@@ -38920,10 +38660,8 @@
       "phase": "llm"
     },
     "screens.wallet.smartActions": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Meaning slightly off. 'Smart' implies intelligence or cleverness, not just speed. 'Schnelle Aktionen' means 'Quick Actions'.",
-      "suggested": "⚡ Smarte Aktionen",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.wallet.searchTransactionsRewardsBenefits": {
@@ -39267,9 +39005,10 @@
       "phase": "llm"
     },
     "screens.wallet.text": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.3,
-      "issue": "Ambiguous without context. 'Zu' is a direct translation of 'to' as a preposition, but 'to' can have many meanings in English UI (e.g., 'to' as part of an infinitive, 'to' indicating destination). Without knowing the exact usage, it's hard to confirm.",
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect preposition for 'To' (recipient). 'Zu' is generally for direction, 'An' for recipient.",
+      "suggested": "An",
       "phase": "llm"
     },
     "screens.wallet.referrals": {
@@ -39653,10 +39392,8 @@
       "phase": "llm"
     },
     "screens.wallet.nextBestActions": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "Awkward phrasing, not idiomatic. 'Nächste beste Aktionen' is a very literal translation.",
-      "suggested": "Die besten nächsten Schritte",
       "phase": "llm"
     },
     "screens.wallet.trackEarn": {
@@ -40300,17 +40037,13 @@
       "phase": "llm"
     },
     "screens.wallet.feeFee": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Placeholder mismatch: currency symbol missing in German",
-      "suggested": "${fee} Gebühr",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.wallet.withdrawValue0": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Placeholder mismatch: currency symbol missing in German",
-      "suggested": "${value0} abheben",
       "phase": "llm"
     },
     "screens.wallet.availableBalanceFromcurrency": {
@@ -40346,7 +40079,7 @@
     "screens.wallet.lengthTransactionValue1": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0.6,
-      "issue": "Pluralization of 'Transaktion' is not handled. The current translation is only correct for singular. The English source string's structure is ambiguous regarding pluralization, making a single corrected German string difficult without conditional logic.",
+      "issue": "The English source string '{length}transaction{value1}' is ambiguous regarding pluralization and structure. The German 'Transaktion' is singular, which might be incorrect if {length} is greater than 1 and pluralization is not handled externally.",
       "phase": "llm"
     },
     "screens.ai.rescheduledMeeting": {
@@ -40375,11 +40108,10 @@
       "phase": "llm"
     },
     "screens.ai.behindDailyWaterIntakeGoal": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, too literal. 'Hinter dem täglichen Wasserziel zurück' is grammatically correct but less idiomatic for a phrase.",
-      "suggested": "Tägliches Wasserziel nicht erreicht",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.ai.aiIntelligence": {
       "verdict": "OK",
@@ -40787,11 +40519,10 @@
       "phase": "llm"
     },
     "screens.businesshub.growYourWellnessBusinessManageClients": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'grow your business'. 'Wachse mit deinem Geschäft' is less direct than 'Baue dein Geschäft aus' or 'Lass dein Geschäft wachsen'.",
-      "suggested": "Baue dein Wellness-Geschäft aus und verwalte Kunden mühelos",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.businesshub.business": {
       "verdict": "OK",
@@ -40829,25 +40560,22 @@
       "phase": "llm"
     },
     "screens.businesslistings.listingsAvailableForProAccounts": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Inconsistent terminology for 'listings'. 'Angebote' is used elsewhere for 'My listings'.",
-      "suggested": "Angebote sind für Pro-Konten verfügbar.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.businesslistings.noListingsYetClick": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Inconsistent terminology for 'listings'. 'Angebote' is used elsewhere for 'My listings'.",
-      "suggested": "Noch keine Angebote. Klicke",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.businesslistings.addOneOpenOrbJustSay": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement for 'one' is incorrect. If 'listing' is translated as 'Angebot' (neuter), it should be 'eins'.",
-      "suggested": "um eins hinzuzufügen – oder öffne ORB und sag einfach",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.businessopportunities.myListings": {
       "verdict": "OK",
@@ -40875,11 +40603,10 @@
       "phase": "llm"
     },
     "screens.businessopportunities.noLeadsYetWeLlNotify": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Inconsistent terminology for 'listing' and incorrect gender agreement. If 'listing' is 'Angebot' (neuter), it should be 'ein'.",
-      "suggested": "Noch keine Leads. Wir benachrichtigen dich, wenn passende Nachfrage eintrifft. Stelle sicher, dass du mindestens ein commercial_sell-Angebot unter",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.checkoutsuccess.whatSNext": {
       "verdict": "OK",
@@ -40952,11 +40679,10 @@
       "phase": "llm"
     },
     "screens.creatoronboarded.checkingYourPaymentStatus": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Imperative used instead of passive/continuous action for a status message.",
-      "suggested": "Dein Zahlungsstatus wird überprüft...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.creatoronboarded.youKeep90": {
       "verdict": "OK",
@@ -41009,11 +40735,10 @@
       "phase": "llm"
     },
     "screens.creatoronboarded.earn90EveryPaidLiveRoom": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Missing preposition 'mit' for 'with only'.",
-      "suggested": "Verdiene 90 % jedes verkauften Live-Room-Tickets, mit nur 10 % Plattformgebühr",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.creatoronboarded.startCreatingPaidRoomsImmediately": {
       "verdict": "OK",
@@ -41051,11 +40776,10 @@
       "phase": "llm"
     },
     "screens.creatoronboarded.value0PaymentSetupComplete": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Translation is too concise and less formal than 'Complete'. 'eingerichtet' means 'set up', not 'complete'.",
-      "suggested": "{value0} Zahlungseinrichtung abgeschlossen!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.creatoronboarded.youReAllSetStartEarning": {
       "verdict": "OK",
@@ -41298,11 +41022,10 @@
       "phase": "llm"
     },
     "screens.index.sustainableEcofriendlyWellness": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Adjective agreement with 'Wellness' is awkward. 'Wellness' is often treated as feminine in German when standing alone, or adjectives would agree with an implied feminine noun.",
-      "suggested": "Nachhaltige & umweltfreundliche Wellness",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.index.systemAdministrationPortal": {
       "verdict": "OK",
@@ -41562,11 +41285,10 @@
       "phase": "llm"
     },
     "screens.mobilesettings.allowPersonalDataSentThirdpartyAi": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Phrasing is grammatically correct but a bit formal and clunky for a friendly app. A more direct imperative or infinitive construction is more natural.",
-      "suggested": "Erlaube das Senden persönlicher Daten an Drittanbieter-KI-Dienste",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.mobilesettings.data": {
       "verdict": "OK",
@@ -41674,11 +41396,10 @@
       "phase": "llm"
     },
     "screens.mobilesettings.voiceAiLanguage": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The translation is repetitive and clunky ('Sprache für Sprache'). A more natural and concise phrasing is preferred.",
-      "suggested": "Sprache für Sprach- und KI-Funktionen",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.mobilesettings.usedForVoiceRecognitionAiResponses": {
       "verdict": "OK",
@@ -41986,11 +41707,10 @@
       "phase": "llm"
     },
     "screens.notauthorized.youDonTHavePermissionAccess": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly less precise/idiomatic phrasing for 'restricted to'.",
-      "suggested": "Dieser Bereich ist nur für autorisiertes Personal zugänglich.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.notauthorized.error403Forbidden": {
       "verdict": "OK",
@@ -42023,11 +41743,10 @@
       "phase": "llm"
     },
     "screens.packagepurchasesuccess.confirmingYourPurchase": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The German translation uses an imperative ('Confirm your purchase!') instead of conveying an ongoing process ('Confirming your purchase...').",
-      "suggested": "Kauf wird bestätigt...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.packagepurchasesuccess.verificationFailed": {
       "verdict": "OK",
@@ -42055,11 +41774,10 @@
       "phase": "llm"
     },
     "screens.packagepurchasesuccess.confirmingPurchaseVitana": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The German translation uses an infinitive ('Confirm purchase') which doesn't accurately reflect the ongoing nature of 'Confirming Purchase'.",
-      "suggested": "Kauf wird bestätigt | VITANA",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.packagepurchasesuccess.purchaseSuccessfulVitana": {
       "verdict": "OK",
@@ -42107,11 +41825,10 @@
       "phase": "llm"
     },
     "screens.privacysettings.serverEnforcesTheseTiersEveryCrossuser": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The term 'cross-user' was mistranslated as 'cross-departmental' ('abteilungsübergreifend') instead of 'user-specific' or 'across users'.",
-      "suggested": "Der Server erzwingt diese Stufen bei jedem benutzerübergreifenden Abruf – dein Schalter ist bindend, nicht beratend.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.privacysettings.back": {
       "verdict": "OK",
@@ -42189,11 +41906,10 @@
       "phase": "llm"
     },
     "screens.publiceventlanding.eventNotFound": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Ereignis\" is a bit formal; \"Event\" is more common and fitting for a friendly app.",
-      "suggested": "Event nicht gefunden",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.publiceventlanding.goHome": {
       "verdict": "OK",
@@ -42222,9 +41938,9 @@
     },
     "screens.publiceventlanding.attending": {
       "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "Ambiguous context for 'Attending'. If it's a button, 'Teilnehmen' is fine. If it's a label for attendees, it should be 'Teilnehmer'.",
-      "phase": "llm"
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.publiceventlanding.discoverMoreEventsLongevityCommunities": {
       "verdict": "OK",
@@ -42312,11 +42028,10 @@
       "phase": "llm"
     },
     "screens.redeemvoucher.thisRedemptionLinkMissingVoucherCode": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly awkward phrasing for 'check your email for the correct link'. 'auf den richtigen Link' is less idiomatic than 'nach dem richtigen Link'.",
-      "suggested": "Diesem Einlösungslink fehlt der Gutscheincode. Bitte überprüfe deine E-Mail nach dem richtigen Link.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.redeemvoucher.goMaxina": {
       "verdict": "OK",
@@ -42409,11 +42124,10 @@
       "phase": "llm"
     },
     "screens.search.content": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Content' as a category label usually implies multiple items. 'Inhalte' (plural) is more common and natural than 'Inhalt' (singular).",
-      "suggested": "🎬 Inhalte",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.search.health": {
       "verdict": "OK",
@@ -42517,11 +42231,10 @@
       "phase": "llm"
     },
     "screens.ticketpurchasesuccess.confirmingYourPurchase": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Imperative used for an ongoing action. 'Confirming...' implies a passive or ongoing process, not a command.",
-      "suggested": "Dein Kauf wird bestätigt...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.ticketpurchasesuccess.somethingWentWrong": {
       "verdict": "OK",
@@ -42609,11 +42322,10 @@
       "phase": "llm"
     },
     "screens.legal.deletingYourAccount": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Imperative used for an ongoing action. 'Deleting...' implies a passive or ongoing process, not a command.",
-      "suggested": "Dein Konto wird gelöscht...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.legal.pleaseDoNotCloseThisPage": {
       "verdict": "OK",
@@ -42826,11 +42538,10 @@
       "phase": "llm"
     },
     "screens.legal.powerInappAiAssistantRelatedAi": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The term 'disclosure dialog' is more accurately translated as 'Einwilligungsdialog' (consent dialog) or 'Offenlegungsdialog' (disclosure dialog) rather than 'Hinweis' (note/information), especially in the context of explicit consent.",
-      "suggested": "Zur Unterstützung des KI-Assistenten in der App und zugehöriger KI-Funktionen können bestimmte personenbezogene Daten – einschließlich Sprachaufnahmen und Transkripte, eingegebene Aufforderungen und Chatnachrichten, Tagebucheinträge, Memory-Garden-Einträge, Wellness-Ziele, Profilkontext (wie dein Name und Präferenzen) sowie Social-Media-Profil-URLs und Biografie-Text (bei Verwendung von Import-/Anreicherungsfunktionen) – über das Lovable AI Gateway an Google (Gemini-KI-Modelle und Google Cloud KI-Dienste) übermittelt werden. Diese Daten werden verwendet, um personalisierte KI-Antworten, Sprachsynthese, proaktive Begrüßungen, Gesundheitscoaching und Profilanreicherungsvorschläge zu generieren. Diese Daten werden nur gesendet, nachdem du deine ausdrückliche Zustimmung über einen In-App-Einwilligungsdialog gegeben hast, der vor der ersten Nutzung einer KI-Funktion erscheint. Die Übermittlung erfolgt über verschlüsselte Verbindungen und wird nicht dauerhaft vom KI-Anbieter gespeichert. Du kannst diese Zustimmung jederzeit in den Einstellungen > Datenschutz widerrufen. Google ist vertraglich verpflichtet, Schutzmaßnahmen zu bieten, die denen in dieser Datenschutzrichtlinie entsprechen oder diese übertreffen.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.legal.affiliatesSubsidiaries": {
       "verdict": "OK",
@@ -42973,11 +42684,10 @@
       "phase": "llm"
     },
     "screens.legal.weMaySuspendTerminateAccountsFor": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Repetitive phrasing ('Verstoß... oder Verstoß gegen') makes it clunky.",
-      "suggested": "Wir können Konten bei Verstößen, Betrug oder Missachtung der Community-Richtlinien sperren oder kündigen.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.legal.autorenew": {
       "verdict": "OK",
@@ -43265,18 +42975,16 @@
       "phase": "llm"
     },
     "screens.legal.text9YourRightsUnderGdprIf": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "9. Deine Rechte gemäß DSGVO (wenn du in der EU bist)",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.legal.ifYouLocatedEuropeanUnionYou": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Wenn du dich in der Europäischen Union befindest, hast du gemäß DSGVO die folgenden Rechte (vorbehaltlich bestimmter Ausnahmen):",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.legal.text10ChildrenSPrivacy": {
       "verdict": "OK",
@@ -43299,11 +43007,10 @@
       "phase": "llm"
     },
     "screens.legal.weWillDoOurBestAddress": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Wir werden unser Bestes tun, um alle Probleme, die du bezüglich unserer Handhabung deiner personenbezogenen Daten ansprichst, zu behandeln und zu lösen.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
     },
     "screens.legal.alKhatemTower15thFloorAdgm": {
       "verdict": "OK",
@@ -43766,10 +43473,8 @@
       "phase": "llm"
     },
     "screens.patient.improving": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is a static noun, not an active state/trend.",
-      "suggested": "↗ Im Aufwärtstrend",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.patient.healthTimeline": {
@@ -44300,7 +44005,7 @@
     "screens.professional.sarahJohnson": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Specific name should not be translated or localized.",
+      "issue": "Personal name translated unnecessarily.",
       "suggested": "Sarah Johnson",
       "phase": "llm"
     },
@@ -44312,7 +44017,7 @@
     "screens.professional.mikeWilson": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Specific name should not be translated or localized.",
+      "issue": "Personal name translated unnecessarily.",
       "suggested": "Mike Wilson",
       "phase": "llm"
     },
@@ -44678,8 +44383,8 @@
     },
     "screens.staff.managePatientCheckinsWaitingList": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Patienteneinchecken' is awkward; 'Patienten-Check-ins' is more common and natural.",
+      "confidence": 0.9,
+      "issue": "'Patienteneinchecken' is awkward and not idiomatic for 'patient check-ins'.",
       "suggested": "Verwalte Patienten-Check-ins und Warteliste",
       "phase": "llm"
     },
@@ -44739,10 +44444,9 @@
       "phase": "llm"
     },
     "screens.introexperience.space": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Wrong meaning. 'Leertaste' refers to a keyboard spacebar. 'Space' in an app context likely means an area or feature.",
-      "suggested": "Bereich",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Ambiguous English source term; 'Space' can have multiple meanings depending on context (e.g., spacebar, available room, storage space). 'Leertaste' specifically means 'spacebar'.",
       "phase": "llm"
     },
     "screens.introexperience.press": {
@@ -44774,7 +44478,1995 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "screens.discover.wsCategory_biohacking_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.discover.wsFeatured_meditation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.discover.providerBadge_premium": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.health.pillar_hydration_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.settings.notificationsSettingsSection_chat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.settings.notificationsSettingsSection_community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.settings.settingsSubnav_support": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.ai.eduCategory_fitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.assistant.voiceProviderHint_googleSpeech": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.assistant.voiceProviderHint_geminiChirp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.assistant.voiceProviderHint_noVoicesAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.assistant.voiceProviderHint_browserVoices": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.auth.sendResetLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_commercialBuy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_commercialSell": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_activitySeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_activity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_partnerSeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_socialSeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_mutualAid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_learningSeek": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "\"Möchte lernen\" is 3rd person singular and not in the requested du-form. It's also awkward as a label/status.",
+      "suggested": "Lerninteressiert",
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_mentorSeek": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "\"Biete an zu unterrichten\" is 1st person singular and not in the requested du-form. It's awkward as a label/status.",
+      "suggested": "Unterricht anbieten",
+      "phase": "llm"
+    },
+    "screens.community.openAsksFilter_all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksDance_everything": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksDance_only": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksTime_justNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksTime_minutes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksTime_hours": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksTime_days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksSummary_loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksSummary_empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksSummary_count": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksEmpty_dance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksEmpty_filter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.loadMore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.marketplaceView_open": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.marketplaceView_mine": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.marketplaceEmpty_body": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Awkward gender-inclusive phrasing and 'Community-Würdige' is unidiomatic and incomplete.",
+      "suggested": "Poste als Erster/Erste. Alles, was für die Community von Wert ist – Vorräte, Dienstleistungen, gebrauchte Ausrüstung.",
+      "phase": "llm"
+    },
+    "screens.discover.marketplaceEmpty_cta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_longevity_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_longevity_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_fitness_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_fitness_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_mental_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_mental_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_recovery_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_recovery_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_nutrition_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_nutrition_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_sleep_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_sleep_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_biohacking_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_hospitality_name": {
+      "verdict": "OK",
+      "confidence": 0.8,
+      "issue": "Translation is an interpretation rather than a literal translation of 'Hospitality', but appropriate for app context.",
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_hospitality_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_healthAssessments": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_ivTherapy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_hormoneOptimization": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_biomarkerAnalysis": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_functionalFitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_mobilityTraining": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_strengthBuilding": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_flexibilityPrograms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_stressManagement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_cognitiveTraining": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_therapySessions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_massageTherapy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_coldPlunge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_infraredSauna": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_redLightTherapy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_mealPlanning": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_nutritionalCounseling": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_supplementPlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_dietaryAnalysis": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_sleepStudies": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_sleepCoaching": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_circadianRhythm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_sleepEnvironment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_wearableTech": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_performanceTesting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_optimizationPlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_trackingSystems": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_wellnessRetreats": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_spaExperiences": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_destinationWellness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_immersivePrograms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerTitle_longevitySpecialist": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerTitle_functionalFitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerTitle_holisticWellnessCenter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerTitle_biohackingOptimization": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerTitle_holisticHealthCoaching": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerTitle_sleepExpert": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerSpecialty_longevity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerSpecialty_recoveryTherapy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerSpecialty_sleepMedicine": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_topRated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_verified": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_trending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_certified": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_nearYou": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_new": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_innovative": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_popular": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_holistic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_expert": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerExperience": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAvailable_today2pm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAvailable_today4pm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAvailable_tomorrow9am": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAvailable_friday10am": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAvailable_monday1pm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAvailable_nextWeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAbout_sarah": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAbout_marcus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAbout_luna": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAbout_peak": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAbout_maya": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAbout_michael": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_hydration_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_nutrition_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_nutrition_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_exercise_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_exercise_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_sleep_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_sleep_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_mental_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_mental_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.vitanaIndexPillar_food": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.vitanaIndexPillar_water": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.vitanaIndexPillar_recovery": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.vitanaIndexPillar_exercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.vitanaIndexPillar_mental": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.conditionsSubtitle_riskTools": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.conditionsTitle_preventivePlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.conditionsSubtitle_preventivePlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.riskAssessments": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_annualPhysical_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_annualPhysical_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_cancerScreening_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_cancerScreening_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_cardio_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_cardio_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_metabolic_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_metabolic_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_specialist_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_specialist_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_telemedicine_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_telemedicine_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_labTests_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_labTests_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_prescription_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_prescription_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_nutritionCoaching_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_nutritionCoaching_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_fitnessTraining_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_fitnessTraining_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_mentalCoach_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_mentalCoach_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_wellnessChallenge_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_wellnessChallenge_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_wellnessChallenge_suggestion": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_claimsProcessing_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_claimsProcessing_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_coverageVerification_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_coverageVerification_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_preAuth_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_preAuth_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_paymentPlans_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_paymentPlans_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_appointments_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_appointments_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_appointments_count": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "More natural as an adjective form in this context.",
+      "suggested": "3 anstehende",
+      "phase": "llm"
+    },
+    "screens.health.svc_serviceHistory_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_serviceHistory_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_serviceHistory_count": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_myProviders_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_myProviders_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_myProviders_count": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_healthRecords_title": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.health.svc_healthRecords_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_nutrition_metrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_nutrition_insight1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_nutrition_insight2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_nutrition_footer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_exercise_metrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_exercise_insight1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_exercise_insight2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_exercise_footer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_hydration_metrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_hydration_insight1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_hydration_insight2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_hydration_footer": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation is too terse and could be ambiguous; 'Ziel' (goal) is missing.",
+      "suggested": "Ø 2,3 L Aufnahme · Ziel an 4 Tagen erreicht",
+      "phase": "llm"
+    },
+    "screens.health.planSummary_sleep_metrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_sleep_insight1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_sleep_insight2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_sleep_footer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_mental_metrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_mental_insight1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_mental_insight2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_mental_footer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_supplement_metrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_supplement_insight1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_supplement_insight2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_supplement_footer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_default_metrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.priorityOfTheDay": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.forYouRightNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.thereFallbackName": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.5,
+      "issue": "'Du' means 'You', not 'there'. Context for 'there' is missing.",
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_hydration_msg": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_hydration_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_exercise_msg": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_exercise_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_nutrition_msg": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_nutrition_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_sleep_msg": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_sleep_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_social_msg": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; 'starte Kontakte' is not idiomatic. 'Kontakte knüpfen' is more natural for socializing.",
+      "suggested": "triff Menschen und knüpfe wieder Kontakte",
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_social_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_learning_msg": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Missing nuance; 'zum Lernen' loses the 'something new' aspect.",
+      "suggested": "such dir neue Inspiration, um Neues zu lernen",
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_learning_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_planning_msg": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing and loses 'new'. 'Plan' as an imperative verb is too direct; 'einen Plan erstellen' is more natural.",
+      "suggested": "Erstell einen neuen Plan, was du in den nächsten 6 Monaten erreichen willst",
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_planning_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_healthPlan_msg": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_healthPlan_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_dance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_learningSeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_mentorSeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_commercialBuy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_commercialSell": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_activitySeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_socialSeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_mutualAid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationCategory_morningMotivation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationCategory_goalSupport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationCategory_healthCheckins": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationCategory_celebrations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_morning1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_morning2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_morning3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_goal1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_goal2": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The English phrase is an encouragement/imperative, not a statement of belief from the app itself. The German 'Ich glaube' changes the tone.",
+      "suggested": "Glaube an deine Reise und feiere deinen Fortschritt! 🌈",
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_goal3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_checkin1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_checkin2": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The German 'Schaue bei dir vorbei' (I'm dropping by) is too literal and personal for an app's voice. 'Ein Check-in' is more appropriate.",
+      "suggested": "Ein Check-in auf deiner Wellness-Reise – du machst das großartig! 🌸",
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_checkin3": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Similar to entry 0, the English is an encouragement, not a statement of hope from the app. 'Ich hoffe' changes the tone.",
+      "suggested": "Nimm dir heute Zeit für dich selbst. Du verdienst es! 🌿",
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_celebrate1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_celebrate2": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The English is an encouraging statement from the app. 'Ich bin so stolz' implies a single entity. 'Wir sind so stolz' (we are so proud) is more common for a brand voice.",
+      "suggested": "Wir sind so stolz auf deine Hingabe zu deinen Gesundheitszielen! 👏",
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_celebrate3": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The phrasing 'mach weiter so, du machst das fantastisch' is slightly redundant. 'Mach weiter so!' is sufficient.",
+      "suggested": "Dein Fortschritt ist inspirierend — mach weiter so! 🌟",
+      "phase": "llm"
+    },
+    "screens.reminders.subtitleDefault": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.reminders.showingFilteredView": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.configureYourNotificationPreferences": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.settings.notificationsSettingsSection_calendar": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_overview": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_privacy": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_notifications": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_preferences": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_connectedApps": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_billing": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_limitations": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_socialAccounts": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_connectedAppsAndIntegrations": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_priorityActions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.button_viewAllTasks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_autopilotStatus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.button_viewAutopilotLog": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_aiInsights": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_weeklyTrends": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_correlations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_aiForecasts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_recentAiActions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.button_viewFullLog": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_seeDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_seeProgress": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_viewDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_logProgress": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_openCalendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_moreInspiration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_readFullStory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_viewBreakdown": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_learnMore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_smartSchedule": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_progressTracking": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_mentalHealth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_inspiration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.otherStreaks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.keepItUp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.companionSugg_breathing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.companionSugg_water": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.companionSugg_posture": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.companionSugg_workout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachAction_logSymptoms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachAction_updateMood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachAction_scheduleCheckin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachAction_reviewGoals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_waterIntake": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_trackHydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_mealPlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_logFood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_workoutPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_trackActivity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_improveSleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_logSleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_moodTracking": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_stressTips": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightContent_energyPeak": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightContent_hydrationWeekly": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Compound word 'Wochenend-Erinnerungssystem' is longer than 22 characters and can be split.",
+      "suggested": "Ein Wochenend-Erinnerungs-System könnte die Konsistenz unterstützen.",
+      "phase": "llm"
+    },
+    "screens.ai.insightContent_sleepMood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightContent_fitnessGoal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightDesc_detectedImprovement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightDesc_weeklyImprovement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightDesc_bestImprovementDriver": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightDesc_growingConnection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightDesc_expandingNetwork": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightDesc_aiDiscoveredPattern": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightTitle_newFollowers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightTitle_newGroups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_optimize": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_connect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_exploreGroups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_completeTask": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_watchNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_applyInsight": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.recoDesc_eta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.recoDesc_contentDuration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.recoTitle_sleepPattern": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.recoDesc_sleepPattern": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.recoTitle_nutritionTiming": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.recoDesc_nutritionTiming": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.offerTitle_wellnessAssessment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.offerDesc_wellnessAssessment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.labName_healthPanel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.labDesc_healthPanel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.biomarker_cholesterol": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.biomarker_glucose": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.biomarker_vitamins": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.sampleType_blood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.storyTitle_thisWeeksJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.storyDesc_thisWeeksJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.storyTitle_patternDiscovery": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.storyDesc_patternDiscovery": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_explorePattern": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduArticle_vitanaIndex_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduArticle_nutritionScience_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduArticle_sleepRecovery_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduArticle_exercisePhysiology_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduArticle_mentalHealth_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduArticle_preventiveCare_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduCategory_healthMetrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduCategory_sleepHealth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduCategory_psychology": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduCategory_prevention": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduReadTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_tryNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_nutrition_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_nutrition_subtitle": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_nutrition_goal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_nutrition_nextAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_hydration_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_hydration_subtitle": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_hydration_goal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_hydration_nextAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_exercise_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_exercise_subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_exercise_goal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_exercise_nextAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_sleep_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_sleep_subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_sleep_goal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_sleep_nextAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_mental_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_mental_goal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_mental_nextAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.unit_servings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.unit_glasses": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.unit_minutes": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
+    },
+    "screens.ai.unit_hours": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
+    },
+    "screens.ai.unit_moments": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 4234",
+      "phase": "llm-error"
+    },
+    "screens.legal.improveApp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.improveAppDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.communicateWithYou": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.communicateWithYouDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.personalizeUserExperience": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.personalizeUserExperienceDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.provideAiFeatures": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.provideAiFeaturesDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.complyLegalObligations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.complyLegalObligationsDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.legalRetentionObligations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.securityFraudPreventionReasons": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.legalClaimsDefense": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.retentionAnonymizeDelete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:30:59.541Z"
+  "generatedAt": "2026-05-25T08:19:55.635Z"
 }

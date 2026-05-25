@@ -1,10 +1,8 @@
 {
   "verdicts": {
     "groupFeed.placeholder": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Not an action prompt; 'Mitteilung' is a bit formal for a placeholder.",
-      "suggested": "Teile etwas mit der Gruppe...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "groupFeed.post": {
@@ -58,5 +56,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:12:04.228Z"
+  "generatedAt": "2026-05-25T08:05:13.798Z"
 }

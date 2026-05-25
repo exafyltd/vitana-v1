@@ -1,10 +1,8 @@
 {
   "verdicts": {
     "permissionsActions.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward hyphenation in compound noun.",
-      "suggested": "Datenschutz- & Berechtigungsaktionen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "permissionsActions.items.privacySettings.title": {
@@ -13,10 +11,8 @@
       "phase": "llm"
     },
     "permissionsActions.items.privacySettings.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Compound noun 'Freigabe-Einstellungen' should be one word.",
-      "suggested": "Datenschutz- und Freigabeeinstellungen konfigurieren",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "permissionsActions.items.manageAccess.title": {
@@ -25,10 +21,8 @@
       "phase": "llm"
     },
     "permissionsActions.items.manageAccess.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Compound noun 'Gesundheits-Erinnerungen' should be one word.",
-      "suggested": "Steuern, wer deine Gesundheitserinnerungen sehen darf",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "permissionsActions.items.securitySettings.title": {
@@ -92,5 +86,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:18:00.997Z"
+  "generatedAt": "2026-05-25T08:06:52.936Z"
 }
