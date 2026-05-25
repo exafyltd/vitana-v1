@@ -7,6 +7,7 @@ import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 import { useSoundscape } from '@/context/SoundscapeContext';
 
 import { LanguageToggleButton } from '@/components/ui/language-toggle-button';
+import OrbDiscoveryHint from '@/components/vitanaland/OrbDiscoveryHint';
 import { useTranslation } from '@/hooks/useTranslation';
 // `t` from i18n-toast would shadow the local `const { t } = useTranslation()` below;
 // using `lookup` (the same singleton, different name) avoids the conflict.
@@ -335,7 +336,7 @@ export default function IntroExperience() {
         </p>
       </div>
 
-
+      <OrbDiscoveryHint />
     </div>
   );
 }
