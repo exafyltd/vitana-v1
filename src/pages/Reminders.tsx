@@ -9,18 +9,35 @@
  * ?fire=<id>, open the Calendar popup directly on the Reminders tab so the
  * push-tap experience matches the in-app calendar. The global
  * ReminderInterruptOverlay reads ?fire= itself and renders the Mark-done /
- * Snooze / Dismiss card on top (z-9999). We render the popup locally rather
- * than dispatching the global `calendar:open` event because that event's
- * listener lives in the desktop sidebar only — on mobile (MobileAppShell) it
- * isn't mounted, so the dispatch was a no-op. Plain navigation to /reminders
- * (ORB "show my reminders") just shows this page.
+ * Snooze / Dismiss card on top.
+ *
+ * The Calendar popup is wrapped in a local error boundary: it's a heavy
+ * component and has crashed on some accounts' data. If it throws during
+ * render we degrade to just this page (+ the global action card) instead of
+ * letting the crash bubble to GlobalErrorBoundary and black-screen the whole
+ * app on a push tap.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { Component, ReactNode, useEffect, useState } from "react";
 import RemindersPanel from "@/components/reminders/RemindersPanel";
 import { EnhancedCalendarPopup } from "@/components/calendar/EnhancedCalendarPopup";
 import { Bell } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+
+/** Renders nothing if its child throws — keeps a calendar crash from taking
+ *  down the whole /reminders route (esp. on a cold push-tap load). */
+class CalendarPopupBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch(error: unknown) {
+    console.error("[reminders] calendar popup crashed; degrading to list", error);
+  }
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
 
 const Reminders: React.FC = () => {
   // Open the calendar on the Reminders tab when we arrived from a push.
@@ -49,11 +66,13 @@ const Reminders: React.FC = () => {
       </div>
       <RemindersPanel />
 
-      <EnhancedCalendarPopup
-        open={calendarOpen}
-        onOpenChange={setCalendarOpen}
-        initialMobileTab="reminders"
-      />
+      <CalendarPopupBoundary>
+        <EnhancedCalendarPopup
+          open={calendarOpen}
+          onOpenChange={setCalendarOpen}
+          initialMobileTab="reminders"
+        />
+      </CalendarPopupBoundary>
     </div>
   );
 };
