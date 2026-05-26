@@ -8544,7 +8544,10 @@
       "deadlineFieldLabel": "Zieldatum",
       "targetValueLabel": "Zielwert (optional)",
       "targetUnitLabel": "Einheit (optional)",
-      "goalDialogSave": "Ziel speichern"
+      "goalDialogSave": "Ziel speichern",
+      "journeyLoadErrorTitle": "Reise konnte nicht geladen werden",
+      "journeyLoadErrorBody": "Wir konnten deine Reise gerade nicht laden. Versuche es bitte erneut.",
+      "retry": "Erneut versuchen"
     },
     "businesshub": {
       "noServicesYet": "Noch keine Dienste",

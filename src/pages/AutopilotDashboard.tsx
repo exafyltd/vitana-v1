@@ -132,7 +132,7 @@ export default function AutopilotDashboard() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
 
-  const { data: journeyData, isLoading: journeyLoading } = useMyJourney();
+  const { data: journeyData, isLoading: journeyLoading, isError: journeyError, refetch: refetchJourney } = useMyJourney();
   const goal = journeyData?.life_compass ?? null;
 
   const { data: recData, isLoading: recLoading, refetch } = useQuery({
@@ -170,7 +170,13 @@ export default function AutopilotDashboard() {
 
   const content = (
     <div className="space-y-4">
-      <GoalNorthStar goal={goal} loading={journeyLoading} onSetGoal={handleSetGoal} />
+      <GoalNorthStar
+        goal={goal}
+        loading={journeyLoading}
+        error={journeyError}
+        onSetGoal={handleSetGoal}
+        onRetry={() => refetchJourney()}
+      />
 
       <MotivationalLine />
 

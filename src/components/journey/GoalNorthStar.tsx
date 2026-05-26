@@ -65,12 +65,38 @@ function ProgressRing({ pct, children }: { pct: number; children: ReactNode }) {
 export function GoalNorthStar({
   goal,
   loading,
+  error,
   onSetGoal,
+  onRetry,
 }: {
   goal: MyJourneyGoal | null;
   loading: boolean;
+  error?: boolean;
   onSetGoal: () => void;
+  onRetry?: () => void;
 }) {
+  // Couldn't load the journey — show a retry, not a misleading "no goal" state.
+  if (!loading && error && !goal) {
+    return (
+      <Card className="rounded-3xl border ring-1 ring-border/60 shadow-sm bg-card/80">
+        <CardContent className="p-8 flex flex-col items-center text-center gap-3">
+          <div className="w-16 h-16 rounded-full bg-muted/40 flex items-center justify-center">
+            <Compass className="w-8 h-8 text-muted-foreground" />
+          </div>
+          <h2 className="text-lg font-semibold">{t("screens.autopilotdashboard.journeyLoadErrorTitle")}</h2>
+          <p className="text-sm text-muted-foreground max-w-xs">
+            {t("screens.autopilotdashboard.journeyLoadErrorBody")}
+          </p>
+          {onRetry && (
+            <Button variant="outline" onClick={onRetry} className="mt-1">
+              {t("screens.autopilotdashboard.retry")}
+            </Button>
+          )}
+        </CardContent>
+      </Card>
+    );
+  }
+
   // No goal at all → invite the user to set their Life Compass goal.
   if (!loading && !goal) {
     return (
