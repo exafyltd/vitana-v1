@@ -6,17 +6,13 @@
       "phase": "identical"
     },
     "inbox.subtitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'Vi' form instead of informal 'du' form).",
-      "suggested": "Ostani povezan/a sa svojom zajednicom!",
       "phase": "llm"
     },
     "inbox.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'Vi' form instead of informal 'du' form).",
-      "suggested": "Tvoji razgovori, ažuriranja i obaveštenja",
       "phase": "llm"
     },
     "inbox.desktopTitle": {
@@ -25,10 +21,8 @@
       "phase": "llm"
     },
     "inbox.desktopDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'Vi' form instead of informal 'du' form).",
-      "suggested": "Poveži se sa svojom zajednicom i mrežom",
       "phase": "llm"
     },
     "inbox.tabs.all": {
@@ -132,10 +126,8 @@
       "phase": "llm"
     },
     "inbox.newConversation.titleGroup": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Grammatical agreement (adjective gender). 'Grupni' (masculine) should be 'grupno' (neuter) to match 'ćaskanje' (neuter).",
-      "suggested": "Kreiraj grupno ćaskanje",
       "phase": "llm"
     },
     "inbox.newConversation.groupName": {
@@ -249,10 +241,8 @@
       "phase": "llm"
     },
     "inbox.createGroup.groupNameRequiredDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'Vi' form and possessive instead of informal 'du' form).",
-      "suggested": "Molimo unesi ime za tvoju grupu.",
       "phase": "llm"
     },
     "inbox.createGroup.addMembersRequired": {
@@ -261,10 +251,8 @@
       "phase": "llm"
     },
     "inbox.createGroup.addMembersRequiredDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'Vi' form instead of informal 'du' form).",
-      "suggested": "Molimo dodaj bar jednog člana u grupu.",
       "phase": "llm"
     },
     "inbox.createGroup.groupExists": {
@@ -293,10 +281,8 @@
       "phase": "llm"
     },
     "inbox.createGroup.failedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'Vi' form instead of informal 'du' form).",
-      "suggested": "Molimo pokušaj ponovo.",
       "phase": "llm"
     },
     "inbox.toast.success": {
@@ -340,10 +326,8 @@
       "phase": "llm"
     },
     "inbox.toast.pleaseLogin": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'Vi' form and verb conjugation instead of informal 'du' form).",
-      "suggested": "Molimo prijavi se da započneš razgovore.",
       "phase": "llm"
     },
     "inbox.toast.groupRecipientsRequired": {
@@ -352,10 +336,8 @@
       "phase": "llm"
     },
     "inbox.toast.singleRecipientRequired": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'Vi' form instead of informal 'du' form).",
-      "suggested": "Izaberi tačno jednog primaoca za direktnu poruku",
       "phase": "llm"
     },
     "inbox.toast.groupCreated": {
@@ -384,10 +366,8 @@
       "phase": "llm"
     },
     "inbox.noGroupsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'Vi' form pronoun and verb conjugation instead of informal 'du' form).",
-      "suggested": "Grupe ti pomažu da sarađuješ sa više ljudi odjednom.",
       "phase": "llm"
     },
     "inbox.createFirstGroup": {
@@ -426,10 +406,8 @@
       "phase": "llm"
     },
     "inbox.emptyState.title": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward phrasing/incorrect term for 'inbox'. 'Prijemno sanduče' is the standard term.",
-      "suggested": "Tvoje prijemno sanduče je za sada tiho.",
       "phase": "llm"
     },
     "inbox.emptyState.globalDescription": {
@@ -451,7 +429,61 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "inbox.group.loading": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "inbox.group.cantOpen": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "inbox.group.backToInbox": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "inbox.group.back": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "inbox.group.memberOne": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "inbox.group.memberOther": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "inbox.group.officialBadge": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "inbox.group.empty": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "inbox.group.composerPlaceholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
     }
   },
-  "generatedAt": "2026-05-20T07:04:20.095Z"
+  "generatedAt": "2026-05-26T07:01:56.531Z"
 }
