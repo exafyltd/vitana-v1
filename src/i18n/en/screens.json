@@ -8544,7 +8544,10 @@
       "deadlineFieldLabel": "Target date",
       "targetValueLabel": "Target (optional)",
       "targetUnitLabel": "Unit (optional)",
-      "goalDialogSave": "Save goal"
+      "goalDialogSave": "Save goal",
+      "journeyLoadErrorTitle": "Couldn't load your journey",
+      "journeyLoadErrorBody": "We couldn't load your journey just now. Please try again.",
+      "retry": "Try again"
     },
     "businesshub": {
       "noServicesYet": "No Services Yet",
