@@ -180,6 +180,8 @@ export default function AutopilotDashboard() {
 
   const content = (
     <div className="space-y-4">
+      <MotivationalLine />
+
       <GoalNorthStar
         goal={goal}
         loading={journeyLoading}
@@ -188,8 +190,6 @@ export default function AutopilotDashboard() {
         onRetry={() => refetchJourney()}
         onOpenPlan={() => setPlanSheetOpen(true)}
       />
-
-      <MotivationalLine />
 
       <TodaysGoalCard actions={todayActions} loading={recLoading} onOpenAutopilot={handleOpenAutopilot} />
 

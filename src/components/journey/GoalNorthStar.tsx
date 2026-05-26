@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Compass, Target, CalendarClock } from "lucide-react";
+import { Compass, CalendarClock } from "lucide-react";
 import { t } from "@/lib/i18n-toast";
 import { fmtDate } from "@/lib/locale-format";
 import type { MyJourneyGoal } from "@/hooks/useMyJourney";
@@ -127,11 +127,6 @@ export function GoalNorthStar({
   return (
     <Card className="rounded-3xl border ring-1 ring-border/60 shadow-sm bg-card/80">
       <CardContent className="p-6 flex flex-col items-center text-center gap-4">
-        <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-muted-foreground">
-          <Target className="w-3.5 h-3.5" />
-          {t("screens.autopilotdashboard.northStarLabel")}
-        </div>
-
         {hasDeadline ? (
           <button
             type="button"
