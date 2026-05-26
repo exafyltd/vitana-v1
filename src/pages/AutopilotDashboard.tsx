@@ -29,6 +29,8 @@ import { useMyJourney } from "@/hooks/useMyJourney";
 import { GoalNorthStar } from "@/components/journey/GoalNorthStar";
 import { TodaysGoalCard, type TodayAction } from "@/components/journey/TodaysGoalCard";
 import { GoalSetupDialog } from "@/components/journey/GoalSetupDialog";
+import { GoalPlanSheet } from "@/components/journey/GoalPlanSheet";
+import { useGenerateGoalPlan } from "@/hooks/useGoalPlan";
 import { t } from "@/lib/i18n-toast";
 
 interface Recommendation {
@@ -131,6 +133,8 @@ export default function AutopilotDashboard() {
   const { pendingCount } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
+  const [planSheetOpen, setPlanSheetOpen] = useState(false);
+  const generatePlan = useGenerateGoalPlan();
 
   const { data: journeyData, isLoading: journeyLoading, isError: journeyError, refetch: refetchJourney } = useMyJourney();
   const goal = journeyData?.life_compass ?? null;
@@ -168,6 +172,12 @@ export default function AutopilotDashboard() {
     }
   };
 
+  // After a deadline is saved, Vitana builds the plan and we open the day-by-day sheet.
+  const handleGoalSaved = () => {
+    generatePlan.mutate();
+    setPlanSheetOpen(true);
+  };
+
   const content = (
     <div className="space-y-4">
       <GoalNorthStar
@@ -176,6 +186,7 @@ export default function AutopilotDashboard() {
         error={journeyError}
         onSetGoal={handleSetGoal}
         onRetry={() => refetchJourney()}
+        onOpenPlan={() => setPlanSheetOpen(true)}
       />
 
       <MotivationalLine />
@@ -251,7 +262,8 @@ export default function AutopilotDashboard() {
           <div className="flex-1 overflow-y-auto px-4 pt-3">{content}</div>
         </div>
         <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
-        <GoalSetupDialog open={goalDialogOpen} onOpenChange={setGoalDialogOpen} />
+        <GoalSetupDialog open={goalDialogOpen} onOpenChange={setGoalDialogOpen} onSaved={handleGoalSaved} />
+        <GoalPlanSheet open={planSheetOpen} onOpenChange={setPlanSheetOpen} />
       </AppLayout>
     );
   }
@@ -268,7 +280,8 @@ export default function AutopilotDashboard() {
         </div>
       </div>
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
-      <GoalSetupDialog open={goalDialogOpen} onOpenChange={setGoalDialogOpen} />
+      <GoalSetupDialog open={goalDialogOpen} onOpenChange={setGoalDialogOpen} onSaved={handleGoalSaved} />
+        <GoalPlanSheet open={planSheetOpen} onOpenChange={setPlanSheetOpen} />
     </AppLayout>
   );
 }
