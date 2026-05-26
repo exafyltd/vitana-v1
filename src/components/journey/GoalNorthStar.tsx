@@ -121,6 +121,7 @@ export function GoalNorthStar({
 
   const hasDeadline = !!goal?.has_deadline;
   const daysLeft = goal?.days_to_deadline ?? 0;
+  const goalDay = goal?.goal_day ?? 0;
   const pct = goal?.goal_progress_pct ?? 0;
 
   return (
@@ -139,15 +140,13 @@ export function GoalNorthStar({
             className="rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-transform hover:scale-[1.02]"
           >
             <ProgressRing pct={pct}>
-              <span className="text-5xl font-bold leading-none tracking-tight">{daysLeft}</span>
-              <span className="text-xs uppercase tracking-wide text-muted-foreground mt-1">
-                {t("screens.autopilotdashboard.daysLeftLabel")}
+              <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                {t("screens.autopilotdashboard.dayLabel")}
               </span>
-              {goal?.goal_day != null && (
-                <span className="text-[11px] text-muted-foreground mt-2">
-                  {t("screens.autopilotdashboard.dayOfGoal", { day: goal.goal_day })}
-                </span>
-              )}
+              <span className="text-5xl font-bold leading-none tracking-tight">{goalDay}</span>
+              <span className="text-[11px] text-muted-foreground mt-2">
+                {t("screens.autopilotdashboard.daysLeftCount", { days: daysLeft })}
+              </span>
             </ProgressRing>
           </button>
         ) : (
