@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -82,6 +83,25 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
       : generate.data && generate.data.ok === false
         ? generate.data.error ?? "generation_failed"
         : null;
+
+  // Auto-build the plan when the drawer opens and there's no real plan yet,
+  // so opening the circle is enough — no need to find the regenerate button.
+  // Guarded to fire at most once per open, and not after a failure (so the
+  // user sees the error instead of a silent retry loop).
+  const autoTriedRef = useRef(false);
+  const stepless =
+    !plan || (plan.milestones.length === 0 && plan.checkpoints.length === 0 && plan.habits.length === 0);
+  useEffect(() => {
+    if (!open) {
+      autoTriedRef.current = false;
+      return;
+    }
+    if (isLoading || generate.isPending || genError) return;
+    if (stepless && !autoTriedRef.current) {
+      autoTriedRef.current = true;
+      generate.mutate();
+    }
+  }, [open, isLoading, stepless, genError, generate]);
 
   const dated = plan
     ? [...plan.milestones, ...plan.checkpoints].sort((a, b) =>
