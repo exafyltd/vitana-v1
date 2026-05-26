@@ -8557,7 +8557,9 @@
       "planEveryDay": "Every day",
       "planByDay": "Your path, day by day",
       "planToday": "Today",
-      "tapForPlan": "Tap the circle for your day-by-day plan"
+      "tapForPlan": "Tap the circle for your day-by-day plan",
+      "dayLabel": "Day",
+      "daysLeftCount": "{days} days left to your goal"
     },
     "businesshub": {
       "noServicesYet": "No Services Yet",
