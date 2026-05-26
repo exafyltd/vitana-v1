@@ -127,6 +127,7 @@ export function GoalNorthStar({
   return (
     <Card className="rounded-3xl border ring-1 ring-border/60 shadow-sm bg-card/80">
       <CardContent className="p-5 flex flex-col items-center text-center gap-3">
+
         {hasDeadline ? (
           <button
             type="button"
