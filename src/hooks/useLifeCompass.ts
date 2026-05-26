@@ -98,20 +98,24 @@ export function useLifeCompass() {
           .eq("id", compass.id);
       }
 
-      // Create new compass
+      // Create new compass. Only attach goal-target columns when actually
+      // provided, so plain goal-setting (no deadline) keeps working even
+      // before the life_compass target_date migration is applied.
+      const payload: Record<string, unknown> = {
+        user_id: user.id,
+        primary_goal: goal.primary_goal,
+        category: goal.category,
+        is_active: true,
+        version: compass ? compass.version + 1 : 1,
+      };
+      if (goal.target_date != null) payload.target_date = goal.target_date;
+      if (goal.target_value != null) payload.target_value = goal.target_value;
+      if (goal.target_unit != null) payload.target_unit = goal.target_unit;
+      if (goal.starting_value != null) payload.starting_value = goal.starting_value;
+
       const { data, error } = await supabase
         .from("life_compass")
-        .insert({
-          user_id: user.id,
-          primary_goal: goal.primary_goal,
-          category: goal.category,
-          target_date: goal.target_date ?? null,
-          target_value: goal.target_value ?? null,
-          target_unit: goal.target_unit ?? null,
-          starting_value: goal.starting_value ?? null,
-          is_active: true,
-          version: compass ? compass.version + 1 : 1,
-        })
+        .insert(payload)
         .select()
         .single();
 
