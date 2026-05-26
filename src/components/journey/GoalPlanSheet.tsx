@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { Loader2, CheckCircle2, Circle, Flag, Repeat, Sparkles, Trophy } from "lucide-react";
 import { fmtDate } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
+import { GoalProgressRing } from "@/components/journey/GoalProgressRing";
 import {
   useGoalPlan,
   useGenerateGoalPlan,
@@ -109,6 +110,10 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
       )
     : [];
 
+  // 1-based day (never Day 0) + time-based progress for the shared ring.
+  const planDay = plan ? Math.min(plan.day + 1, plan.total_days) : 0;
+  const planPct = plan ? Math.min(100, Math.round((plan.day / Math.max(1, plan.total_days)) * 100)) : 0;
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="overflow-y-auto">
@@ -150,21 +155,14 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
             </div>
           ) : (
             <>
-              {/* Section 1: Where you are now */}
+              {/* Section 1: Where you are now — same progress ring as My Journey */}
               <section className="space-y-4">
                 <div className="flex items-center justify-center">
-                  <div className="w-32 h-32 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-lg">
-                    <div className="text-center">
-                      <div className="text-4xl font-bold text-green-600">{plan.days_left}</div>
-                      <div className="text-[11px] text-muted-foreground">
-                        {t("screens.autopilotdashboard.daysLeftLabel")}
-                      </div>
-                    </div>
-                  </div>
+                  <GoalProgressRing pct={planPct} day={planDay} daysLeft={plan.days_left} />
                 </div>
                 <div className="flex items-center justify-center">
                   <Badge variant="secondary" className="text-sm">
-                    {t("screens.autopilotdashboard.planDayOfTotal", { day: plan.day, total: plan.total_days })}
+                    {t("screens.autopilotdashboard.planDayOfTotal", { day: planDay, total: plan.total_days })}
                   </Badge>
                 </div>
                 {plan.plan_summary && (
