@@ -158,13 +158,18 @@ export function GoalNorthStar({
           </div>
         )}
 
+        {hasDeadline && (
+          <p className="text-xs font-medium text-emerald-600">
+            {t("screens.autopilotdashboard.pctThroughJourney", { pct })}
+          </p>
+        )}
+
         {goal && (
           <h2 className="text-lg font-semibold leading-snug max-w-sm">{goal.active_goal_text}</h2>
         )}
 
         {hasDeadline && goal?.target_date ? (
-          <p className="text-xs text-muted-foreground flex items-center gap-1.5">
-            <CalendarClock className="w-3.5 h-3.5" />
+          <p className="text-xs text-muted-foreground">
             {t("screens.autopilotdashboard.goalDateOn", {
               date: fmtDate(new Date(goal.target_date), { day: "numeric", month: "long", year: "numeric" }),
             })}

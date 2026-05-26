@@ -8514,7 +8514,7 @@
       "northStarTagline": "Where you are — and how far to your goal",
       "daysLeftLabel": "days left",
       "dayOfGoal": "Day {day}",
-      "goalDateOn": "Goal date: {date}",
+      "goalDateOn": "📅 Goal date: {date}",
       "setGoalTitle": "Set your goal",
       "setGoalSubtitle": "Tell Vitana what you want to achieve — and by when. Your journey starts here.",
       "setGoalCta": "Set your goal",
@@ -8559,7 +8559,8 @@
       "planToday": "Today",
       "tapForPlan": "Tap the circle for your day-by-day plan",
       "dayLabel": "Day",
-      "daysLeftCount": "{days} days left to your goal"
+      "daysLeftCount": "{days} days left to your goal",
+      "pctThroughJourney": "{pct}% through your journey"
     },
     "businesshub": {
       "noServicesYet": "No Services Yet",
