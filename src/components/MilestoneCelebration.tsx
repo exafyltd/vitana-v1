@@ -34,6 +34,7 @@ const milestoneMap: Record<string, MilestoneMapEntry> = {
   first_health_check:  { icon: "💚", reward: 25,  rewardKind: "vtn" },
   first_referral:      { icon: "🎯", reward: 0,   rewardKind: "none" },
   onboarding_complete: { icon: "🎉", reward: 50,  rewardKind: "vtn" },
+  daily_goal:          { icon: "🎉", reward: 0,   rewardKind: "none" },
 
   // Vitana Index Phase 2 — streaks, tier-up, pillar thresholds
   streak_3:   { icon: "🔥", reward: 0, rewardKind: "none" },

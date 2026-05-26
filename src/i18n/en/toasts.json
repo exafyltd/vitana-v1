@@ -1335,6 +1335,10 @@
     },
     "index": {
       "vitanaDevGatewayUrlNotConfigured": "Vitana Dev Gateway URL not configured"
+    },
+    "dailyGoal": {
+      "title": "Congratulations! Today's goal achieved 🎉",
+      "body": "Just keep going."
     }
   }
 }
