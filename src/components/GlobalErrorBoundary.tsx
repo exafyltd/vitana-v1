@@ -93,6 +93,17 @@ export class GlobalErrorBoundary extends Component<Props, State> {
               ? "A new version was deployed. Reload to get the latest."
               : "An unexpected error occurred. Try reloading the page."}
           </p>
+          {/* Surface the actual error so a mobile user can screenshot it for
+              support/diagnosis without needing a desktop console. Expressions
+              only (no raw JSX text) to satisfy the i18n lint. */}
+          {!this.state.isChunkError && this.state.error ? (
+            <pre className="mt-1 max-h-48 overflow-auto whitespace-pre-wrap break-words rounded bg-muted/50 p-2 text-left text-[10px] leading-snug text-muted-foreground">
+              {String(this.state.error.message || this.state.error)}
+              {this.state.error.stack
+                ? "\n\n" + this.state.error.stack.split("\n").slice(0, 6).join("\n")
+                : ""}
+            </pre>
+          ) : null}
           <div className="flex flex-col gap-2">
             <button
               onClick={this.handleReload}
