@@ -19,6 +19,7 @@
  */
 
 import React, { Component, ReactNode, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import RemindersPanel from "@/components/reminders/RemindersPanel";
 import { EnhancedCalendarPopup } from "@/components/calendar/EnhancedCalendarPopup";
 import { Bell } from "lucide-react";
@@ -40,10 +41,13 @@ class CalendarPopupBoundary extends Component<{ children: ReactNode }, { failed:
 }
 
 const Reminders: React.FC = () => {
-  // Open the calendar on the Reminders tab when we arrived from a push.
-  const [calendarOpen, setCalendarOpen] = useState(
-    () => new URLSearchParams(window.location.search).has('fire'),
-  );
+  const navigate = useNavigate();
+  // We only auto-open the calendar when arriving from a push (?fire=). The bare
+  // /reminders route has no app shell/nav, so it's a dead end if the user
+  // lands here from a push and closes the calendar. Track that we came via
+  // deep-link so closing the calendar returns them to the MAXINA home screen.
+  const cameFromPush = new URLSearchParams(window.location.search).has('fire');
+  const [calendarOpen, setCalendarOpen] = useState(() => cameFromPush);
 
   useEffect(() => {
     const prev = document.title;
@@ -52,6 +56,16 @@ const Reminders: React.FC = () => {
       document.title = prev;
     };
   }, []);
+
+  const handleCalendarOpenChange = (open: boolean) => {
+    setCalendarOpen(open);
+    // Closing the push-opened calendar: send the user to the default home
+    // screen (with the full app shell) instead of stranding them on the
+    // shell-less /reminders page.
+    if (!open && cameFromPush) {
+      navigate('/home', { replace: true });
+    }
+  };
 
   return (
     <div className="container max-w-2xl mx-auto p-4 space-y-6">
@@ -69,7 +83,7 @@ const Reminders: React.FC = () => {
       <CalendarPopupBoundary>
         <EnhancedCalendarPopup
           open={calendarOpen}
-          onOpenChange={setCalendarOpen}
+          onOpenChange={handleCalendarOpenChange}
           initialMobileTab="reminders"
         />
       </CalendarPopupBoundary>
