@@ -33,6 +33,7 @@ export interface GoalPlanView {
 interface GoalPlanResponse {
   ok: boolean;
   plan: GoalPlanView | null;
+  error?: string;
 }
 
 /** Read the user's active Vitana-prescribed goal plan (null until generated). */

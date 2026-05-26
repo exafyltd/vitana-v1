@@ -8560,7 +8560,8 @@
       "tapForPlan": "Tippe auf den Kreis für deinen Tag-für-Tag-Plan",
       "dayLabel": "Tag",
       "daysLeftCount": "noch {days} Tage bis zum Ziel",
-      "pctThroughJourney": "{pct}% deiner Reise geschafft"
+      "pctThroughJourney": "{pct}% deiner Reise geschafft",
+      "planError": "Plan konnte nicht erstellt werden ({error}). Tippe erneut."
     },
     "businesshub": {
       "noServicesYet": "Noch keine Dienste",
