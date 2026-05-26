@@ -7,8 +7,8 @@ import { t } from "@/lib/i18n-toast";
 import { fmtDate } from "@/lib/locale-format";
 import type { MyJourneyGoal } from "@/hooks/useMyJourney";
 
-const RING_SIZE = 220;
-const STROKE = 14;
+const RING_SIZE = 164;
+const STROKE = 12;
 const RADIUS = (RING_SIZE - STROKE) / 2;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
@@ -49,7 +49,7 @@ function ProgressRing({ pct, children }: { pct: number; children: ReactNode }) {
           transition={{ duration: reduce ? 0 : 1.1, ease: "easeOut" }}
         />
       </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
         {children}
       </div>
     </div>
@@ -126,7 +126,7 @@ export function GoalNorthStar({
 
   return (
     <Card className="rounded-3xl border ring-1 ring-border/60 shadow-sm bg-card/80">
-      <CardContent className="p-6 flex flex-col items-center text-center gap-4">
+      <CardContent className="p-5 flex flex-col items-center text-center gap-3">
         {hasDeadline ? (
           <button
             type="button"
@@ -138,7 +138,7 @@ export function GoalNorthStar({
               <span className="text-xs uppercase tracking-wide text-muted-foreground">
                 {t("screens.autopilotdashboard.dayLabel")}
               </span>
-              <span className="text-5xl font-bold leading-none tracking-tight">{goalDay}</span>
+              <span className="text-4xl font-bold leading-none tracking-tight">{goalDay}</span>
               <span className="text-[11px] text-muted-foreground mt-2">
                 {t("screens.autopilotdashboard.daysLeftCount", { days: daysLeft })}
               </span>
