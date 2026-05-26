@@ -4,7 +4,9 @@ import { Compass, CalendarClock } from "lucide-react";
 import { t } from "@/lib/i18n-toast";
 import { fmtDate } from "@/lib/locale-format";
 import type { MyJourneyGoal } from "@/hooks/useMyJourney";
+import { useGoalPlan } from "@/hooks/useGoalPlan";
 import { GoalProgressRing } from "@/components/journey/GoalProgressRing";
+import { buildPhases } from "@/lib/goalPhases";
 
 const RING_SIZE = 164;
 
@@ -29,6 +31,9 @@ export function GoalNorthStar({
   onRetry?: () => void;
   onOpenPlan?: () => void;
 }) {
+  // Plan milestones power the phase-colored ring (hook must run before any early return).
+  const { data: planData } = useGoalPlan();
+
   // Couldn't load the journey — show a retry, not a misleading "no goal" state.
   if (!loading && error && !goal) {
     return (
@@ -78,6 +83,18 @@ export function GoalNorthStar({
   const goalDay = Math.min((goal?.goal_day ?? 0) + 1, total ?? (goal?.goal_day ?? 0) + 1);
   const pct = goal?.goal_progress_pct ?? 0;
 
+  // Color the ring by phase using the active plan's milestones (each milestone
+  // bounds a phase). Falls back to the single gradient when no plan/milestones.
+  const phases =
+    total != null
+      ? buildPhases(
+          (planData?.plan?.milestones ?? [])
+            .map((m) => m.day_offset ?? 0)
+            .filter((d) => d > 0),
+          total,
+        )
+      : [];
+
   return (
     <Card className="rounded-3xl border ring-1 ring-border/60 shadow-sm bg-card/80">
       <CardContent className="p-5 flex flex-col items-center text-center gap-3">
@@ -89,7 +106,15 @@ export function GoalNorthStar({
             aria-label={t("screens.autopilotdashboard.openPlan")}
             className="rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-transform hover:scale-[1.02]"
           >
-            <GoalProgressRing pct={pct} day={goalDay} daysLeft={daysLeft} size={RING_SIZE} />
+            <GoalProgressRing
+              pct={pct}
+              day={goalDay}
+              daysLeft={daysLeft}
+              size={RING_SIZE}
+              phases={phases}
+              currentDay={goal?.goal_day ?? 0}
+              totalDays={total ?? undefined}
+            />
           </button>
         ) : (
           // Goal exists but no deadline → encourage adding a target date.

@@ -7,6 +7,7 @@ import { Loader2, CheckCircle2, Circle, Flag, Repeat, Sparkles, Trophy } from "l
 import { fmtDate } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { GoalProgressRing } from "@/components/journey/GoalProgressRing";
+import { buildPhases } from "@/lib/goalPhases";
 import {
   useGoalPlan,
   useGenerateGoalPlan,
@@ -113,6 +114,9 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
   // 1-based day (never Day 0) + time-based progress for the shared ring.
   const planDay = plan ? Math.min(plan.day + 1, plan.total_days) : 0;
   const planPct = plan ? Math.min(100, Math.round((plan.day / Math.max(1, plan.total_days)) * 100)) : 0;
+  const planPhases = plan
+    ? buildPhases(plan.milestones.map((m) => m.day_offset ?? 0).filter((d) => d > 0), plan.total_days)
+    : [];
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -158,7 +162,14 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
               {/* Section 1: Where you are now — same progress ring as My Journey */}
               <section className="space-y-4">
                 <div className="flex items-center justify-center">
-                  <GoalProgressRing pct={planPct} day={planDay} daysLeft={plan.days_left} />
+                  <GoalProgressRing
+                    pct={planPct}
+                    day={planDay}
+                    daysLeft={plan.days_left}
+                    phases={planPhases}
+                    currentDay={plan.day}
+                    totalDays={plan.total_days}
+                  />
                 </div>
                 <div className="flex items-center justify-center">
                   <Badge variant="secondary" className="text-sm">
