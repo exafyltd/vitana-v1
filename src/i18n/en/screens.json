@@ -8560,7 +8560,8 @@
       "tapForPlan": "Tap the circle for your day-by-day plan",
       "dayLabel": "Day",
       "daysLeftCount": "{days} days left to your goal",
-      "pctThroughJourney": "{pct}% through your journey"
+      "pctThroughJourney": "{pct}% through your journey",
+      "planError": "Couldn't build your plan ({error}). Tap to try again."
     },
     "businesshub": {
       "noServicesYet": "No Services Yet",

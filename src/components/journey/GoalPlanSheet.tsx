@@ -76,6 +76,13 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
   const todayIso = new Date().toISOString().slice(0, 10);
   const onToggle = (s: GoalPlanStep) => complete.mutate({ stepId: s.id, done: s.status !== "done" });
 
+  const genError =
+    generate.isError
+      ? (generate.error as Error)?.message ?? "error"
+      : generate.data && generate.data.ok === false
+        ? generate.data.error ?? "generation_failed"
+        : null;
+
   const dated = plan
     ? [...plan.milestones, ...plan.checkpoints].sort((a, b) =>
         (a.scheduled_date ?? "").localeCompare(b.scheduled_date ?? ""),
@@ -105,6 +112,11 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
               <p className="text-sm text-muted-foreground max-w-xs">
                 {t("screens.autopilotdashboard.planSheetEmpty")}
               </p>
+              {genError && !generate.isPending && (
+                <p className="text-xs text-red-500 max-w-xs">
+                  {t("screens.autopilotdashboard.planError", { error: genError })}
+                </p>
+              )}
               <Button onClick={() => generate.mutate()} disabled={generate.isPending}>
                 {generate.isPending ? (
                   <>
