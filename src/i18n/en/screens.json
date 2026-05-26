@@ -8547,7 +8547,17 @@
       "goalDialogSave": "Save goal",
       "journeyLoadErrorTitle": "Couldn't load your journey",
       "journeyLoadErrorBody": "We couldn't load your journey just now. Please try again.",
-      "retry": "Try again"
+      "retry": "Try again",
+      "planSheetTitle": "Your plan",
+      "planSheetEmpty": "Vitana will build you a day-by-day plan to reach your goal.",
+      "planGenerate": "Build my plan",
+      "planBuilding": "Vitana is building your plan …",
+      "planRegenerate": "Rebuild plan",
+      "planDayOfTotal": "Day {day} of {total}",
+      "planEveryDay": "Every day",
+      "planByDay": "Your path, day by day",
+      "planToday": "Today",
+      "tapForPlan": "Tap the circle for your day-by-day plan"
     },
     "businesshub": {
       "noServicesYet": "No Services Yet",

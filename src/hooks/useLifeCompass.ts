@@ -163,6 +163,7 @@ export function useLifeCompass() {
     subgoals: subgoals || [],
     isLoading,
     updateCompass: updateCompassMutation.mutate,
+    updateCompassAsync: updateCompassMutation.mutateAsync,
     addSubgoal: addSubgoalMutation.mutate,
     isUpdating: updateCompassMutation.isPending,
   };

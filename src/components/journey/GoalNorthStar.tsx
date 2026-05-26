@@ -68,12 +68,14 @@ export function GoalNorthStar({
   error,
   onSetGoal,
   onRetry,
+  onOpenPlan,
 }: {
   goal: MyJourneyGoal | null;
   loading: boolean;
   error?: boolean;
   onSetGoal: () => void;
   onRetry?: () => void;
+  onOpenPlan?: () => void;
 }) {
   // Couldn't load the journey — show a retry, not a misleading "no goal" state.
   if (!loading && error && !goal) {
@@ -130,17 +132,24 @@ export function GoalNorthStar({
         </div>
 
         {hasDeadline ? (
-          <ProgressRing pct={pct}>
-            <span className="text-5xl font-bold leading-none tracking-tight">{daysLeft}</span>
-            <span className="text-xs uppercase tracking-wide text-muted-foreground mt-1">
-              {t("screens.autopilotdashboard.daysLeftLabel")}
-            </span>
-            {goal?.goal_day != null && (
-              <span className="text-[11px] text-muted-foreground mt-2">
-                {t("screens.autopilotdashboard.dayOfGoal", { day: goal.goal_day })}
+          <button
+            type="button"
+            onClick={onOpenPlan}
+            aria-label={t("screens.autopilotdashboard.openPlan")}
+            className="rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-transform hover:scale-[1.02]"
+          >
+            <ProgressRing pct={pct}>
+              <span className="text-5xl font-bold leading-none tracking-tight">{daysLeft}</span>
+              <span className="text-xs uppercase tracking-wide text-muted-foreground mt-1">
+                {t("screens.autopilotdashboard.daysLeftLabel")}
               </span>
-            )}
-          </ProgressRing>
+              {goal?.goal_day != null && (
+                <span className="text-[11px] text-muted-foreground mt-2">
+                  {t("screens.autopilotdashboard.dayOfGoal", { day: goal.goal_day })}
+                </span>
+              )}
+            </ProgressRing>
+          </button>
         ) : (
           // Goal exists but no deadline → encourage adding a target date.
           <div
@@ -166,6 +175,12 @@ export function GoalNorthStar({
             })}
           </p>
         ) : null}
+
+        {hasDeadline && (
+          <button type="button" onClick={onOpenPlan} className="text-xs text-primary font-medium hover:underline">
+            {t("screens.autopilotdashboard.tapForPlan")}
+          </button>
+        )}
 
         <Button variant="outline" size="sm" onClick={onSetGoal} className="mt-1">
           {hasDeadline

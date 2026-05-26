@@ -8547,7 +8547,17 @@
       "goalDialogSave": "Ziel speichern",
       "journeyLoadErrorTitle": "Reise konnte nicht geladen werden",
       "journeyLoadErrorBody": "Wir konnten deine Reise gerade nicht laden. Versuche es bitte erneut.",
-      "retry": "Erneut versuchen"
+      "retry": "Erneut versuchen",
+      "planSheetTitle": "Dein Plan",
+      "planSheetEmpty": "Vitana erstellt dir einen Tag-für-Tag-Plan, um dein Ziel zu erreichen.",
+      "planGenerate": "Meinen Plan erstellen",
+      "planBuilding": "Vitana erstellt deinen Plan …",
+      "planRegenerate": "Plan neu erstellen",
+      "planDayOfTotal": "Tag {day} von {total}",
+      "planEveryDay": "Jeden Tag",
+      "planByDay": "Dein Weg, Tag für Tag",
+      "planToday": "Heute",
+      "tapForPlan": "Tippe auf den Kreis für deinen Tag-für-Tag-Plan"
     },
     "businesshub": {
       "noServicesYet": "Noch keine Dienste",

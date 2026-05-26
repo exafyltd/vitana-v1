@@ -29,11 +29,13 @@ function todayIso(): string {
 export function GoalSetupDialog({
   open,
   onOpenChange,
+  onSaved,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onSaved?: () => void;
 }) {
-  const { compass, updateCompass, isUpdating } = useLifeCompass();
+  const { compass, updateCompassAsync, isUpdating } = useLifeCompass();
 
   const [goalText, setGoalText] = useState("");
   const [targetDate, setTargetDate] = useState("");
@@ -51,17 +53,22 @@ export function GoalSetupDialog({
 
   const canSave = goalText.trim().length > 0 && targetDate.length > 0 && !isUpdating;
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!canSave) return;
     const parsedValue = targetValue.trim() === "" ? null : Number(targetValue);
-    updateCompass({
-      primary_goal: goalText.trim(),
-      category: compass?.category ?? "general",
-      target_date: targetDate,
-      target_value: Number.isFinite(parsedValue as number) ? (parsedValue as number) : null,
-      target_unit: targetUnit.trim() === "" ? null : targetUnit.trim(),
-    });
-    onOpenChange(false);
+    try {
+      await updateCompassAsync({
+        primary_goal: goalText.trim(),
+        category: compass?.category ?? "general",
+        target_date: targetDate,
+        target_value: Number.isFinite(parsedValue as number) ? (parsedValue as number) : null,
+        target_unit: targetUnit.trim() === "" ? null : targetUnit.trim(),
+      });
+      onOpenChange(false);
+      onSaved?.();
+    } catch {
+      // useLifeCompass surfaces the error toast; keep the dialog open to retry.
+    }
   };
 
   return (
