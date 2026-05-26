@@ -19,7 +19,8 @@ export type CelebrateKind =
   | "tier-up"
   | "pillar-threshold"
   | "streak"
-  | "at-risk";
+  | "at-risk"
+  | "daily-goal";
 
 export type StreakLevel = 3 | 7 | 14 | 30;
 
@@ -398,6 +399,38 @@ function fireStreak(input: CelebrateInput): { throttled: boolean } {
   return { throttled: false };
 }
 
+/**
+ * "Congratulations! Today's goal achieved" — fires once per local calendar day
+ * when the user completes all of today's planned actions on My Journey. Routes
+ * through the milestone modal (via dispatchMilestone) with confetti + sound,
+ * reusing the shared throttle / reduced-motion rules.
+ */
+function fireDailyGoal(input: CelebrateInput): { throttled: boolean } {
+  const { source } = input;
+  const scope = "daily_goal";
+  if (dayKeyFired(scope)) {
+    emitAnalytics({ kind: "daily-goal", source, throttled: true });
+    return { throttled: true };
+  }
+  markDayKeyFired(scope);
+
+  dispatchMilestone({
+    milestone: "daily_goal",
+    title: lookup("toasts.dailyGoal.title"),
+    body: lookup("toasts.dailyGoal.body"),
+  });
+
+  const now = Date.now();
+  if (!prefersReducedMotion() && now - lastConfettiAt > CONFETTI_THROTTLE_MS) {
+    lastConfettiAt = now;
+    celebrateSuccess({ type: "reward_earned" });
+    if (soundEnabled()) playSound("/audio/lift.mp3", 0.08);
+  }
+
+  emitAnalytics({ kind: "daily-goal", source: source ?? "my-journey", throttled: false });
+  return { throttled: false };
+}
+
 function fireAtRisk(input: CelebrateInput): { throttled: boolean } {
   const { source } = input;
   const scope = "at_risk";
@@ -456,6 +489,9 @@ export function celebrate(input: CelebrateInput): { fired: boolean; throttled: b
       break;
     case "at-risk":
       result = fireAtRisk(input);
+      break;
+    case "daily-goal":
+      result = fireDailyGoal(input);
       break;
     default:
       result = { throttled: true };
