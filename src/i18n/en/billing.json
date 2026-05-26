@@ -129,11 +129,18 @@
       "bannerBody": "3 months Premium free with code {code}.",
       "spotsRemaining": "{remaining} of {max} spots remaining"
     },
+    "launchGrant": {
+      "title": "🎁 Welcome — Premium on us",
+      "body": "You've received 12 months of Vitana Premium as a thank-you for being here from the start. Active until {endsAt}.",
+      "noAction": "No action needed. Enjoy.",
+      "dismissAria": "Dismiss banner"
+    },
     "state": {
       "freeStatus": "You're on Vitana Free",
       "freeBody": "Try Premium free for 14 days.",
       "premiumActive": "Vitana Premium",
       "renewsAt": "Renews on {date}",
+      "autoGrantUntil": "Auto-granted at launch · until {date}",
       "cancelAtPeriodEnd": "Will cancel at end of period",
       "pastDue": "Payment failed",
       "pastDueBody": "Update your payment method to keep Premium.",

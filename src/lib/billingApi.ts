@@ -182,7 +182,20 @@ export interface BillingMe {
     cash_balance: number;
     balance_total: number;
   };
-  usage: Record<string, { used: number; quota: number; reset_at: string | null; unit: string; behavior: string }>;
+  usage: Record<string, {
+    used: number;
+    quota: number;
+    reset_at: string | null;
+    unit: string;
+    behavior: string;
+    windows?: Array<{
+      name: 'window_5h' | 'weekly' | 'monthly';
+      used: number;
+      limit: number;
+      reset_at: string | null;
+    }>;
+    binding_window?: 'window_5h' | 'weekly' | 'monthly';
+  }>;
   earnings: { year_in_cents: number };
   stripe: { has_customer: boolean; has_paid_subscription: boolean };
 }

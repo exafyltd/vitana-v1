@@ -31,6 +31,7 @@ import { RedeemCodeCard } from '@/components/subscription/RedeemCodeCard';
 import { YourEarningsWidget } from '@/components/subscription/YourEarningsWidget';
 import { WhySubscribeFAQ } from '@/components/subscription/WhySubscribeFAQ';
 import { FoundingBanner } from '@/components/subscription/FoundingBanner';
+import { LaunchGrantBanner } from '@/components/subscription/LaunchGrantBanner';
 
 function SubscriptionsLoading() {
   return (
@@ -83,6 +84,9 @@ function Subscriptions() {
             <>
               {/* Privacy + trust promises (anchor at top) */}
               <PrivacyFirstPromises />
+
+              {/* Launch auto-grant welcome (one-time, for users granted 12mo Premium at launch) */}
+              <LaunchGrantBanner data={data} />
 
               {/* Founding Member launch banner — auto-hides once campaign exhausted or user is paid */}
               <FoundingBanner />

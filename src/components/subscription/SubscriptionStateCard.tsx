@@ -89,6 +89,7 @@ export function SubscriptionStateCard({ data }: SubscriptionStateCardProps) {
   }
 
   // Active or trialing paid plan
+  const isAutoGrant = plan.source === 'launch_auto_grant_2026';
   return (
     <Card className="border-primary/30 bg-gradient-to-br from-primary/5 to-transparent">
       <CardHeader>
@@ -108,7 +109,9 @@ export function SubscriptionStateCard({ data }: SubscriptionStateCardProps) {
         )}
         {!isTrialing && plan.current_period_end && (
           <p className="text-sm text-muted-foreground">
-            {plan.cancel_at_period_end
+            {isAutoGrant
+              ? t('billing.state.autoGrantUntil', { date: fmtDate(new Date(plan.current_period_end)) })
+              : plan.cancel_at_period_end
               ? t('billing.state.cancelAtPeriodEnd')
               : t('billing.state.renewsAt', { date: fmtDate(new Date(plan.current_period_end)) })}
           </p>
