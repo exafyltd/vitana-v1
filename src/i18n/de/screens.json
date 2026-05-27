@@ -8561,6 +8561,9 @@
       "dayLabel": "Tag",
       "daysLeftCount": "noch {days} Tage bis zum Ziel",
       "pctThroughJourney": "{pct}% deiner Reise geschafft",
+      "trendOnTrack": "Auf Kurs",
+      "trendStagnating": "Stagniert",
+      "trendBehind": "Im Rückstand",
       "planError": "Plan konnte nicht erstellt werden ({error}). Tippe erneut."
     },
     "businesshub": {
