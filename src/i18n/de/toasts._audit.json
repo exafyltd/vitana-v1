@@ -31,10 +31,8 @@
       "phase": "llm"
     },
     "toasts.success.savedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du')",
-      "suggested": "Deine Änderungen wurden gespeichert.",
       "phase": "llm"
     },
     "toasts.success.created": {
@@ -63,10 +61,8 @@
       "phase": "llm"
     },
     "toasts.success.copiedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'deine')",
-      "suggested": "Der Inhalt wurde in deine Zwischenablage kopiert.",
       "phase": "llm"
     },
     "toasts.success.sent": {
@@ -75,10 +71,8 @@
       "phase": "llm"
     },
     "toasts.success.sentDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'Deine')",
-      "suggested": "Deine Nachricht wurde gesendet.",
       "phase": "llm"
     },
     "toasts.success.uploaded": {
@@ -87,10 +81,8 @@
       "phase": "llm"
     },
     "toasts.success.uploadedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'Deine')",
-      "suggested": "Deine Datei wurde hochgeladen.",
       "phase": "llm"
     },
     "toasts.success.profileUpdated": {
@@ -99,10 +91,8 @@
       "phase": "llm"
     },
     "toasts.success.profileUpdatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'Deine')",
-      "suggested": "Deine Profiländerungen wurden gespeichert.",
       "phase": "llm"
     },
     "toasts.success.settingsSaved": {
@@ -111,10 +101,8 @@
       "phase": "llm"
     },
     "toasts.success.settingsSavedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'Deine')",
-      "suggested": "Deine Einstellungen wurden aktualisiert.",
       "phase": "llm"
     },
     "toasts.success.loggedIn": {
@@ -143,10 +131,8 @@
       "phase": "llm"
     },
     "toasts.success.subscribedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'Du')",
-      "suggested": "Du erhältst jetzt Updates.",
       "phase": "llm"
     },
     "toasts.success.unsubscribed": {
@@ -155,10 +141,8 @@
       "phase": "llm"
     },
     "toasts.success.unsubscribedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'Du')",
-      "suggested": "Du erhältst keine Updates mehr.",
       "phase": "llm"
     },
     "toasts.success.added": {
@@ -197,10 +181,8 @@
       "phase": "llm"
     },
     "toasts.success.importedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Deine Daten wurden importiert.",
       "phase": "llm"
     },
     "toasts.success.exported": {
@@ -209,10 +191,8 @@
       "phase": "llm"
     },
     "toasts.success.exportedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Deine Daten wurden exportiert.",
       "phase": "llm"
     },
     "toasts.success.connected": {
@@ -241,10 +221,8 @@
       "phase": "llm"
     },
     "toasts.success.planGeneratedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Dein personalisierter Plan wurde erstellt.",
       "phase": "llm"
     },
     "toasts.success.bulkEnabled": {
@@ -253,10 +231,8 @@
       "phase": "llm"
     },
     "toasts.success.bulkEnabledDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Wähle Elemente aus deiner Zeitachse für Massenaktionen aus.",
       "phase": "llm"
     },
     "toasts.error.generic": {
@@ -265,10 +241,8 @@
       "phase": "llm"
     },
     "toasts.error.genericDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Bitte versuche es erneut.",
       "phase": "llm"
     },
     "toasts.error.network": {
@@ -277,10 +251,8 @@
       "phase": "llm"
     },
     "toasts.error.networkDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Bitte überprüfe deine Internetverbindung.",
       "phase": "llm"
     },
     "toasts.error.notAuthenticated": {
@@ -289,10 +261,8 @@
       "phase": "llm"
     },
     "toasts.error.notAuthenticatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Bitte melde dich an, um fortzufahren.",
       "phase": "llm"
     },
     "toasts.error.notAuthorized": {
@@ -301,10 +271,8 @@
       "phase": "llm"
     },
     "toasts.error.notAuthorizedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Du hast keine Berechtigung für diese Aktion.",
       "phase": "llm"
     },
     "toasts.error.saveFailed": {
@@ -313,10 +281,8 @@
       "phase": "llm"
     },
     "toasts.error.saveFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Deine Änderungen konnten nicht gespeichert werden.",
       "phase": "llm"
     },
     "toasts.error.loadFailed": {
@@ -355,10 +321,8 @@
       "phase": "llm"
     },
     "toasts.error.sendFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Deine Nachricht konnte nicht gesendet werden.",
       "phase": "llm"
     },
     "toasts.error.connectionFailed": {
@@ -377,10 +341,8 @@
       "phase": "llm"
     },
     "toasts.error.validationFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Bitte überprüfe deine Eingaben.",
       "phase": "llm"
     },
     "toasts.error.sessionExpired": {
@@ -389,10 +351,8 @@
       "phase": "llm"
     },
     "toasts.error.sessionExpiredDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Bitte melde dich erneut an.",
       "phase": "llm"
     },
     "toasts.error.serverError": {
@@ -401,10 +361,8 @@
       "phase": "llm"
     },
     "toasts.error.serverErrorDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Bitte versuche es später erneut.",
       "phase": "llm"
     },
     "toasts.error.notFound": {
@@ -443,10 +401,8 @@
       "phase": "llm"
     },
     "toasts.info.processingDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Bitte warte einen Moment.",
       "phase": "llm"
     },
     "toasts.info.updating": {
@@ -485,10 +441,8 @@
       "phase": "llm"
     },
     "toasts.warning.unsavedChangesDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Du hast ungespeicherte Änderungen. Möchtest du fortfahren?",
       "phase": "llm"
     },
     "toasts.warning.limitReached": {
@@ -497,10 +451,8 @@
       "phase": "llm"
     },
     "toasts.warning.limitReachedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Du hast das Maximum erreicht.",
       "phase": "llm"
     },
     "toasts.warning.slowConnection": {
@@ -509,10 +461,8 @@
       "phase": "llm"
     },
     "toasts.warning.slowConnectionDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Deine Internetverbindung scheint langsam zu sein.",
       "phase": "llm"
     },
     "toasts.common.couldNotCompleteTask": {
@@ -801,10 +751,8 @@
       "phase": "llm"
     },
     "toasts.common.calling": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Ambiguous/misleading. 'Wird angerufen' implies the user is being called, not that the user is making a call.",
-      "suggested": "Ruft an...",
       "phase": "llm"
     },
     "toasts.common.callFailed": {
@@ -848,10 +796,8 @@
       "phase": "llm"
     },
     "toasts.common.redemptionOptionsOpeningSoon": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing; 'öffnen bald' sounds too literal for 'options'. More natural to say they are 'available soon'.",
-      "suggested": "Einlöseoptionen sind bald verfügbar",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.common.exportData": {
@@ -985,17 +931,13 @@
       "phase": "llm"
     },
     "toasts.admin.invalidRequestBody": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Anfragekörper' is too literal and less common than 'Anfragetext' or 'Anfrage-Body' in technical contexts.",
-      "suggested": "Ungültiger Anfragetext",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.admin.bodyMustValidJson": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Der Körper' is too literal and sounds like a human body; 'Der Text' or 'Der Body' is more appropriate for a technical context.",
-      "suggested": "Der Text muss gültiges JSON sein",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.admin.requestFailed": {
@@ -1354,10 +1296,8 @@
       "phase": "llm"
     },
     "toasts.admin.automationPrefilledFromDiscoveredPattern": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing dative ending for 'entdeckt'.",
-      "suggested": "Automatisierung aus entdeckt**em** Muster vorausgefüllt",
       "phase": "llm"
     },
     "toasts.admin.failedLoadPatternData": {
@@ -1443,8 +1383,8 @@
     "toasts.admin.approveAllFailed": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Awkward phrasing; sounds like a command failed rather than the action of approving.",
-      "suggested": "Genehmigung aller fehlgeschlagen",
+      "issue": "Awkward phrasing; sounds like a noun phrase rather than a status message.",
+      "suggested": "Alle Genehmigungen fehlgeschlagen",
       "phase": "llm"
     },
     "toasts.admin.toggleFailed": {
@@ -1485,8 +1425,8 @@
     "toasts.admin.generateSpecFailed": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Awkward phrasing; sounds like a command failed rather than the action of generating.",
-      "suggested": "Generierung der Spezifikation fehlgeschlagen",
+      "issue": "Awkward phrasing; sounds like a noun phrase rather than a status message.",
+      "suggested": "Spezifikation konnte nicht generiert werden",
       "phase": "llm"
     },
     "toasts.admin.activateFailed": {
@@ -1595,9 +1535,8 @@
       "phase": "llm"
     },
     "toasts.admin.acceptLinkCopiedClipboard": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "The English 'Accept link' is somewhat ambiguous without context. 'Einladungslink' (invitation link) is a plausible interpretation, but other 'accept' contexts might exist.",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "toasts.admin.invitationRevoked": {
@@ -1806,10 +1745,8 @@
       "phase": "llm"
     },
     "toasts.community.previewNewThumbnailBelow": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "English is an imperative, German is a noun phrase. Needs to be an imperative in du-form.",
-      "suggested": "Schau dir die Vorschau des neuen Miniaturbilds unten an.",
       "phase": "llm"
     },
     "toasts.community.captureFailed": {
@@ -2254,10 +2191,8 @@
       "phase": "llm"
     },
     "toasts.dev.restoringSession": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for a progress indicator; sounds like a command to the user rather than a system action.",
-      "suggested": "Sitzung wird wiederhergestellt...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.dev.allSessionsCleared": {
@@ -2781,10 +2716,8 @@
       "phase": "llm"
     },
     "toasts.intents.ifTheyReInterestedTooWe": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "German 'euch' is plural informal 'you', but the app typically addresses a single user. 'Dich' (singular informal 'you') would be more appropriate.",
-      "suggested": "Wenn sie auch interessiert sind, verbinden wir dich.",
       "phase": "llm"
     },
     "toasts.intents.couldNotRecordInterest": {
@@ -2823,17 +2756,13 @@
       "phase": "llm"
     },
     "toasts.intents.passedForNow": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Meaning of 'passed' is likely misinterpreted; 'bestanden' implies passing a test. More likely means 'skipped'.",
-      "suggested": "Vorerst übersprungen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.intents.couldNotPass": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Meaning of 'pass' is likely misinterpreted; 'bestehen' implies passing a test. More likely means 'skip'.",
-      "suggested": "Konnte nicht überspringen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.intents.uploadFailed": {
@@ -2984,8 +2913,8 @@
     "toasts.memory.emptyMemory": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Awkward phrasing for an app feature; implies the concept of memory is empty, not a specific entry.",
-      "suggested": "Erinnerung leer",
+      "issue": "Grammatically abrupt; 'Erinnerung' (singular) is less natural than plural or a full sentence.",
+      "suggested": "Erinnerungen leer",
       "phase": "llm"
     },
     "toasts.memory.pleaseAddSomeContentYourMemory": {
@@ -3184,10 +3113,8 @@
       "phase": "llm"
     },
     "toasts.memory.pleaseRecordEnterSomeContentBefore": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The German 'Inhalt' is a bit bare for 'some content'; 'etwas Inhalt' is more natural.",
-      "suggested": "Bitte nimm etwas auf oder gib etwas Inhalt ein, bevor du speicherst.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.memory.entrySaved": {
@@ -3246,10 +3173,8 @@
       "phase": "llm"
     },
     "toasts.messages.pleaseWait": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Bitte warten' is impersonal (infinitive); 'Bitte warte' is consistent with the du-form register.",
-      "suggested": "Bitte warte",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.messages.stillSyncingThisMessageTryAgain": {
@@ -4113,10 +4038,8 @@
       "phase": "llm"
     },
     "toasts.settings.failedSwitchOrganizationPleaseTryAgain": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward phrasing; 'Organisation wechseln fehlgeschlagen' is not idiomatic. Better to use a passive construction or a more natural noun phrase.",
-      "suggested": "Organisation konnte nicht gewechselt werden. Bitte versuche es erneut.",
       "phase": "llm"
     },
     "toasts.sharing.channelNotConnected": {
@@ -4705,10 +4628,8 @@
       "phase": "llm"
     },
     "toasts.wallet.failedProcessSpendingPleaseTryAgain": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Ausgabe' for 'spending' is a bit stiff; could be more personal/natural.",
-      "suggested": "Deine Ausgabe konnte nicht verarbeitet werden. Bitte versuche es erneut.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.wallet.pleaseEnterValidStakingAmount": {
@@ -4777,10 +4698,8 @@
       "phase": "llm"
     },
     "toasts.wallet.exchangeSendComplete": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Sendung' is ambiguous; 'Senden' or 'Versand' would be more precise for the action of sending in this context.",
-      "suggested": "✅ Austausch & Senden abgeschlossen!",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.error": {
@@ -5064,17 +4983,13 @@
       "phase": "llm"
     },
     "toasts.hooks.failedAddCart": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, noun phrase is less natural than verb phrase for UI action failure.",
-      "suggested": "Zum Warenkorb hinzufügen fehlgeschlagen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.failedUpdateQuantity": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly formal noun phrase. A verb-based construction is more common and friendly.",
-      "suggested": "Menge konnte nicht aktualisiert werden",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.removedFromCart": {
@@ -5083,10 +4998,8 @@
       "phase": "llm"
     },
     "toasts.hooks.failedRemoveFromCart": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, noun phrase is less natural than verb phrase for UI action failure.",
-      "suggested": "Aus dem Warenkorb entfernen fehlgeschlagen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.cartCleared": {
@@ -5095,10 +5008,8 @@
       "phase": "llm"
     },
     "toasts.hooks.failedClearCart": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, noun phrase is less natural than verb phrase for UI action failure.",
-      "suggested": "Warenkorb leeren fehlgeschlagen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.pleaseSignCheckout": {
@@ -5112,10 +5023,8 @@
       "phase": "llm"
     },
     "toasts.hooks.failedStartCheckout": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "While correct, 'Kassenvorgang' is a bit formal. 'Checkout' is commonly used as a loanword in German UI, or a more direct verb phrase.",
-      "suggested": "Checkout konnte nicht gestartet werden",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.channelConnectedSuccessfully": {
@@ -5369,10 +5278,8 @@
       "phase": "llm"
     },
     "toasts.hooks.failedFollowUser": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing dative article 'dem' for 'Benutzer', making the passive construction grammatically incomplete and potentially ambiguous.",
-      "suggested": "Dem Benutzer konnte nicht gefolgt werden",
       "phase": "llm"
     },
     "toasts.hooks.success": {
@@ -5836,10 +5743,8 @@
       "phase": "llm"
     },
     "toasts.hooks.shareLinkHasCopiedClipboard": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Teilen-Link' is awkward; 'Freigabelink' is more idiomatic.",
-      "suggested": "Freigabelink wurde in die Zwischenablage kopiert",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.failedCopy": {
@@ -5878,10 +5783,8 @@
       "phase": "llm"
     },
     "toasts.hooks.pleaseTryAnotherSharingMethod": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Teilen-Methode' is awkward; 'Freigabemethode' is more idiomatic.",
-      "suggested": "Bitte versuche eine andere Freigabemethode",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.failedRequestPayout": {
@@ -5897,8 +5800,8 @@
     "toasts.hooks.failedCreditPayoutWallet": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Mismatch: English 'payout' translated as 'Provision' (commission).",
-      "suggested": "Gutschrift der Auszahlung an Wallet fehlgeschlagen",
+      "issue": "Awkward phrasing and missing article for 'Wallet'.",
+      "suggested": "Gutschrift an das Wallet fehlgeschlagen",
       "phase": "llm"
     },
     "toasts.hooks.failedTransferWallet": {
@@ -5989,8 +5892,8 @@
     "toasts.hooks.failedUpdateSupplement": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Grammatically correct but clunky phrasing for UI; noun form is more common.",
-      "suggested": "Aktualisierung der Ergänzung fehlgeschlagen",
+      "issue": "Awkward phrasing; sounds like a noun phrase rather than a status message.",
+      "suggested": "Ergänzung konnte nicht aktualisiert werden",
       "phase": "llm"
     },
     "toasts.hooks.supplementDeletedSuccessfully": {
@@ -6001,8 +5904,8 @@
     "toasts.hooks.failedDeleteSupplement": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Grammatically correct but clunky phrasing for UI; noun form is more common.",
-      "suggested": "Löschung der Ergänzung fehlgeschlagen",
+      "issue": "Awkward phrasing; sounds like a noun phrase rather than a status message.",
+      "suggested": "Ergänzung konnte nicht gelöscht werden",
       "phase": "llm"
     },
     "toasts.hooks.screenSharingStarted": {
@@ -6146,10 +6049,8 @@
       "phase": "llm"
     },
     "toasts.intentmatchdetail.intentClosed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing; 'Absicht' is too literal for 'Intent' in a technical context. 'Intent beendet' or 'Vorgang beendet' would be more idiomatic.",
-      "suggested": "Intent beendet",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.intentmatchdetail.couldNotClose": {
@@ -6188,10 +6089,8 @@
       "phase": "llm"
     },
     "toasts.myintents.couldNotLoadIntents": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing; 'Absichten' is too literal for 'Intents' in a technical context. Keeping 'Intents' as a loanword or using 'Vorgänge' would be more appropriate.",
-      "suggested": "Intents konnten nicht geladen werden",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.packagepurchasesuccess.paymentConfirmed": {
@@ -6210,10 +6109,8 @@
       "phase": "llm"
     },
     "toasts.home.removedFromMemory": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Gedächtnis' refers to human memory. In a tech context, 'Memory' should be translated as 'Speicher' or similar.",
-      "suggested": "Aus dem Speicher entfernt",
       "phase": "llm"
     },
     "toasts.home.activityHasRemovedFromYourKnowledge": {
@@ -6222,10 +6119,8 @@
       "phase": "llm"
     },
     "toasts.home.savedMemory": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Gedächtnis' refers to human memory. In a tech context, 'Memory' should be translated as 'Speicher' or similar.",
-      "suggested": "Im Speicher gespeichert",
       "phase": "llm"
     },
     "toasts.home.activityHasSavedYourKnowledgeBase": {
@@ -6257,7 +6152,37 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "toasts.reminders.failedToCreate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.failedToDelete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.failedToMarkDone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.remindersDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dailyGoal.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dailyGoal.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:42:31.096Z"
+  "generatedAt": "2026-05-27T08:07:54.130Z"
 }
