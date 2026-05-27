@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, CheckCircle2, Circle, Flag, Repeat, Sparkles, Trophy } from "lucide-react";
+import { Loader2, CheckCircle2, Circle, Flag, Repeat, Sparkles, Trophy, ChevronDown } from "lucide-react";
 import { fmtDate } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { GoalProgressRing } from "@/components/journey/GoalProgressRing";
@@ -67,18 +67,40 @@ function StepRow({
   );
 }
 
-// Recurring weekly rhythm — informational (no checkbox), since the per-week
-// instances live on the calendar; this just shows the cadence once.
-function CadenceRow({ step }: { step: GoalPlanStep }) {
+// Recurring weekly rhythm — shown once per unique title (no checkbox; the
+// per-week instances live on the calendar). Tap to expand its upcoming dates.
+function CadenceRow({ step, dates }: { step: GoalPlanStep; dates: string[] }) {
+  const [open, setOpen] = useState(false);
+  const hasDates = dates.length > 0;
   return (
-    <div className="w-full flex items-start gap-3 rounded-xl border border-border/60 p-3 text-left">
-      <Flag className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-      <div className="min-w-0 flex-1">
-        <span className="text-sm font-medium">{step.title}</span>
-        {step.description && (
-          <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{step.description}</p>
+    <div className="w-full rounded-xl border border-border/60 overflow-hidden">
+      <button
+        type="button"
+        onClick={() => hasDates && setOpen((o) => !o)}
+        className={`w-full flex items-start gap-3 p-3 text-left ${hasDates ? "hover:bg-muted/30 transition-colors" : ""}`}
+      >
+        <Flag className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+        <div className="min-w-0 flex-1">
+          <span className="text-sm font-medium">{step.title}</span>
+          {step.description && (
+            <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{step.description}</p>
+          )}
+        </div>
+        {hasDates && (
+          <ChevronDown
+            className={`w-4 h-4 text-muted-foreground shrink-0 mt-0.5 transition-transform ${open ? "rotate-180" : ""}`}
+          />
         )}
-      </div>
+      </button>
+      {open && hasDates && (
+        <div className="px-3 pb-3 pl-10 flex flex-wrap gap-1.5">
+          {dates.map((d) => (
+            <span key={d} className="text-[11px] text-muted-foreground bg-muted/40 rounded-full px-2 py-0.5">
+              {fmtDate(new Date(d), { day: "numeric", month: "short" })}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -139,16 +161,24 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
     : [];
 
   // Weekly checkpoints recur with the same few titles every week — collapse to
-  // one row per unique title so the path isn't flooded with ~60 duplicates.
+  // one row per unique title (with its dates kept for on-tap expand) so the
+  // path isn't flooded with ~60 duplicates.
   const weeklyCadence = (() => {
-    if (!plan) return [] as typeof plan.checkpoints;
-    const seen = new Set<string>();
-    const out: typeof plan.checkpoints = [];
+    if (!plan) return [] as Array<{ rep: GoalPlanStep; dates: string[] }>;
+    const map = new Map<string, { rep: GoalPlanStep; dates: string[] }>();
     for (const c of plan.checkpoints) {
       const key = c.title.trim().toLowerCase();
-      if (seen.has(key)) continue;
-      seen.add(key);
-      out.push(c);
+      let g = map.get(key);
+      if (!g) {
+        g = { rep: c, dates: [] };
+        map.set(key, g);
+      }
+      if (c.scheduled_date) g.dates.push(c.scheduled_date);
+    }
+    const out = [...map.values()];
+    for (const g of out) {
+      const upcoming = g.dates.filter((d) => d >= todayIso).sort();
+      g.dates = upcoming.length ? upcoming : [...g.dates].sort();
     }
     return out;
   })();
@@ -344,8 +374,8 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
                     <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                       {t("screens.autopilotdashboard.planEveryWeek")}
                     </h3>
-                    {weeklyCadence.map((c) => (
-                      <CadenceRow key={c.id} step={c} />
+                    {weeklyCadence.map((g) => (
+                      <CadenceRow key={g.rep.id} step={g.rep} dates={g.dates} />
                     ))}
                   </section>
                 </>
