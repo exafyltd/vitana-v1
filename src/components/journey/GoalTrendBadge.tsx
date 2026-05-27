@@ -23,7 +23,7 @@ export function GoalTrendBadge({ trend, className = "" }: { trend: GoalTrend; cl
       : t("screens.autopilotdashboard.trendBehind");
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${tint} ${className}`}
+      className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1 text-xs font-semibold ${tint} ${className}`}
     >
       <Icon className="w-3.5 h-3.5" />
       {label}

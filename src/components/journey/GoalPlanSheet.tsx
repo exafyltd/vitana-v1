@@ -174,8 +174,8 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
                     totalDays={plan.total_days}
                   />
                 </div>
-                <div className="flex items-center justify-center gap-2">
-                  <Badge variant="secondary" className="text-sm">
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                  <Badge variant="secondary" className="shrink-0 whitespace-nowrap text-sm">
                     {t("screens.autopilotdashboard.planDayOfTotal", { day: planDay, total: plan.total_days })}
                   </Badge>
                   {trend && <GoalTrendBadge trend={trend} />}
