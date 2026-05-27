@@ -7,7 +7,9 @@ import { Loader2, CheckCircle2, Circle, Flag, Repeat, Sparkles, Trophy } from "l
 import { fmtDate } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { GoalProgressRing } from "@/components/journey/GoalProgressRing";
+import { GoalTrendBadge } from "@/components/journey/GoalTrendBadge";
 import { buildPhases } from "@/lib/goalPhases";
+import { computeGoalTrend } from "@/lib/goalTrend";
 import {
   useGoalPlan,
   useGenerateGoalPlan,
@@ -117,6 +119,7 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
   const planPhases = plan
     ? buildPhases(plan.milestones.map((m) => m.day_offset ?? 0).filter((d) => d > 0), plan.total_days)
     : [];
+  const trend = computeGoalTrend(plan, todayIso);
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -171,10 +174,11 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
                     totalDays={plan.total_days}
                   />
                 </div>
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center gap-2">
                   <Badge variant="secondary" className="text-sm">
                     {t("screens.autopilotdashboard.planDayOfTotal", { day: planDay, total: plan.total_days })}
                   </Badge>
+                  {trend && <GoalTrendBadge trend={trend} />}
                 </div>
                 {plan.plan_summary && (
                   <p className="text-sm text-center text-muted-foreground leading-snug">{plan.plan_summary}</p>

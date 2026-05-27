@@ -6,7 +6,9 @@ import { fmtDate } from "@/lib/locale-format";
 import type { MyJourneyGoal } from "@/hooks/useMyJourney";
 import { useGoalPlan } from "@/hooks/useGoalPlan";
 import { GoalProgressRing } from "@/components/journey/GoalProgressRing";
+import { GoalTrendBadge } from "@/components/journey/GoalTrendBadge";
 import { buildPhases } from "@/lib/goalPhases";
+import { computeGoalTrend } from "@/lib/goalTrend";
 
 const RING_SIZE = 164;
 
@@ -95,6 +97,9 @@ export function GoalNorthStar({
         )
       : [];
 
+  // Schedule-adherence trend (↑ on track / → stagnating / ↓ falling behind).
+  const trend = computeGoalTrend(planData?.plan ?? null, new Date().toISOString().slice(0, 10));
+
   return (
     <Card className="rounded-3xl border ring-1 ring-border/60 shadow-sm bg-card/80">
       <CardContent className="p-5 flex flex-col items-center text-center gap-3">
@@ -129,11 +134,7 @@ export function GoalNorthStar({
           </div>
         )}
 
-        {hasDeadline && (
-          <p className="text-xs font-medium text-emerald-600">
-            {t("screens.autopilotdashboard.pctThroughJourney", { pct })}
-          </p>
-        )}
+        {hasDeadline && trend && <GoalTrendBadge trend={trend} />}
 
         {goal && (
           <h2 className="text-lg font-semibold leading-snug max-w-sm">{goal.active_goal_text}</h2>

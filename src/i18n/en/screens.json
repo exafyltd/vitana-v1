@@ -8561,6 +8561,9 @@
       "dayLabel": "Day",
       "daysLeftCount": "{days} days left to your goal",
       "pctThroughJourney": "{pct}% through your journey",
+      "trendOnTrack": "On track",
+      "trendStagnating": "Stagnating",
+      "trendBehind": "Falling behind",
       "planError": "Couldn't build your plan ({error}). Tap to try again."
     },
     "businesshub": {
