@@ -8569,7 +8569,12 @@
       "planClarifyIntro": "Beantworte das kurz, dann baue ich dir einen Plan, der wirklich passt.",
       "planClarifyPlaceholder": "Deine Antwort …",
       "planEveryWeek": "Jede Woche",
-      "planMilestones": "Meilensteine"
+      "planMilestones": "Meilensteine",
+      "planNextUp": "Als Nächstes",
+      "planNextMilestone": "Nächster Meilenstein",
+      "planDailyProgress": "Heute · {done} von {total} Tagesschritten",
+      "planInDays": "in {days} Tagen",
+      "planTomorrow": "morgen"
     },
     "businesshub": {
       "noServicesYet": "Noch keine Dienste",

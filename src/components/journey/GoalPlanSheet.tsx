@@ -161,6 +161,22 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
     : [];
   const trend = computeGoalTrend(plan, todayIso);
 
+  // "What's next" focus: today's daily-step progress + the next milestone.
+  const habitsTotal = plan ? plan.habits.length : 0;
+  const habitsDone = plan ? plan.habits.filter((h) => h.status === "done").length : 0;
+  const nextMilestone = milestones.find((m) => m.status !== "done") ?? null;
+  const nextMsDays = nextMilestone?.scheduled_date
+    ? Math.round((Date.parse(nextMilestone.scheduled_date) - Date.parse(todayIso)) / 86_400_000)
+    : null;
+  const nextCountdown =
+    nextMsDays == null
+      ? null
+      : nextMsDays <= 0
+      ? t("screens.autopilotdashboard.planToday")
+      : nextMsDays === 1
+      ? t("screens.autopilotdashboard.planTomorrow")
+      : t("screens.autopilotdashboard.planInDays", { days: nextMsDays });
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="overflow-y-auto">
@@ -261,6 +277,50 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
                 )}
               </section>
 
+              {/* What's next — the single focal "do this now" card */}
+              {(habitsTotal > 0 || nextMilestone) && (
+                <>
+                  <Separator />
+                  <section className="space-y-3">
+                    <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                      {t("screens.autopilotdashboard.planNextUp")}
+                    </h3>
+                    <div className="rounded-xl border border-indigo-400/40 bg-gradient-to-r from-blue-500/5 via-indigo-500/5 to-purple-500/5 p-3 space-y-3">
+                      {habitsTotal > 0 && (
+                        <div className="space-y-1.5">
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="font-medium">
+                              {t("screens.autopilotdashboard.planDailyProgress", { done: habitsDone, total: habitsTotal })}
+                            </span>
+                            {habitsDone >= habitsTotal && (
+                              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                            )}
+                          </div>
+                          <div className="h-1.5 rounded-full bg-muted/40 overflow-hidden">
+                            <div
+                              className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-indigo-500 transition-all"
+                              style={{ width: `${Math.round((habitsDone / Math.max(1, habitsTotal)) * 100)}%` }}
+                            />
+                          </div>
+                        </div>
+                      )}
+                      {nextMilestone && (
+                        <div className="flex items-start gap-2">
+                          <Trophy className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                          <div className="min-w-0">
+                            <p className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                              {t("screens.autopilotdashboard.planNextMilestone")}
+                              {nextCountdown ? ` · ${nextCountdown}` : ""}
+                            </p>
+                            <p className="text-sm font-medium leading-snug">{nextMilestone.title}</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </section>
+                </>
+              )}
+
               {/* Section 2: Daily habits */}
               {plan.habits.length > 0 && (
                 <>
@@ -299,17 +359,27 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
                     <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                       {t("screens.autopilotdashboard.planMilestones")}
                     </h3>
-                    {milestones.map((s) => (
-                      <div key={s.id} className="space-y-1">
-                        {s.scheduled_date && (
-                          <p className="text-[11px] text-muted-foreground pl-1">
-                            {fmtDate(new Date(s.scheduled_date), { day: "numeric", month: "short" })}
-                            {s.scheduled_date === todayIso ? ` · ${t("screens.autopilotdashboard.planToday")}` : ""}
-                          </p>
-                        )}
-                        <StepRow step={s} onToggle={onToggle} highlight={s.scheduled_date === todayIso} />
-                      </div>
-                    ))}
+                    {milestones.map((s) => {
+                      const isNext = nextMilestone?.id === s.id;
+                      return (
+                        <div key={s.id} className="space-y-1">
+                          <div className="flex items-center gap-2 pl-1">
+                            {s.scheduled_date && (
+                              <p className="text-[11px] text-muted-foreground">
+                                {fmtDate(new Date(s.scheduled_date), { day: "numeric", month: "short" })}
+                                {s.scheduled_date === todayIso ? ` · ${t("screens.autopilotdashboard.planToday")}` : ""}
+                              </p>
+                            )}
+                            {isNext && (
+                              <span className="text-[10px] font-semibold uppercase tracking-wide text-indigo-600 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-2 py-0.5">
+                                {t("screens.autopilotdashboard.planNextUp")}
+                              </span>
+                            )}
+                          </div>
+                          <StepRow step={s} onToggle={onToggle} highlight={isNext || s.scheduled_date === todayIso} />
+                        </div>
+                      );
+                    })}
                   </section>
                 </>
               )}
