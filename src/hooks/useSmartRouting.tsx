@@ -118,7 +118,7 @@ export function useSmartRouting() {
                     break;
                 }
               } else {
-                navigate("/home");
+                navigate("/autopilot");
               }
               break;
           }
@@ -159,8 +159,8 @@ export function useSmartRouting() {
                   break;
               }
             } else {
-              // Fallback to home if no tenant info available
-              navigate("/home");
+              // Fallback to My Journey if no tenant info available
+              navigate("/autopilot");
             }
             break;
         }
@@ -200,7 +200,7 @@ export function useRoleBasedRedirect() {
               return "/maxina";
           }
         }
-        return "/home";
+        return "/autopilot";
     }
   };
 
