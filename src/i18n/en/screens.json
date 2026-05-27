@@ -8564,7 +8564,10 @@
       "trendOnTrack": "On track",
       "trendStagnating": "Stagnating",
       "trendBehind": "Falling behind",
-      "planError": "Couldn't build your plan ({error}). Tap to try again."
+      "planError": "Couldn't build your plan ({error}). Tap to try again.",
+      "planClarifyTitle": "A couple of quick questions",
+      "planClarifyIntro": "Answer these and I'll build you a plan that truly fits.",
+      "planClarifyPlaceholder": "Your answer…"
     },
     "businesshub": {
       "noServicesYet": "No Services Yet",

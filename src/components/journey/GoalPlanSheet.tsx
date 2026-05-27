@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Textarea } from "@/components/ui/textarea";
 import { Loader2, CheckCircle2, Circle, Flag, Repeat, Sparkles, Trophy } from "lucide-react";
 import { fmtDate } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
@@ -88,6 +89,14 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
         ? generate.data.error ?? "generation_failed"
         : null;
 
+  // Vitana asked clarifying questions for a broad goal — collect answers before
+  // building the plan. Questions are LLM-generated (localized server-side).
+  const questions = generate.data?.needs_clarification ? generate.data.questions ?? [] : [];
+  const clarifyMode = !plan && questions.length > 0;
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const submitAnswers = () =>
+    generate.mutate({ answers: questions.map((q) => ({ question: q, answer: answers[q] ?? "" })) });
+
   // Auto-build the plan when the drawer opens and there's no real plan yet,
   // so opening the circle is enough — no need to find the regenerate button.
   // Guarded to fire at most once per open, and not after a failure (so the
@@ -98,14 +107,15 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
   useEffect(() => {
     if (!open) {
       autoTriedRef.current = false;
+      setAnswers({});
       return;
     }
-    if (isLoading || generate.isPending || genError) return;
+    if (isLoading || generate.isPending || genError || clarifyMode) return;
     if (stepless && !autoTriedRef.current) {
       autoTriedRef.current = true;
       generate.mutate();
     }
-  }, [open, isLoading, stepless, genError, generate]);
+  }, [open, isLoading, stepless, genError, clarifyMode, generate]);
 
   const dated = plan
     ? [...plan.milestones, ...plan.checkpoints].sort((a, b) =>
@@ -135,6 +145,42 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
           {isLoading ? (
             <div className="flex justify-center py-12">
               <Loader2 className="w-7 h-7 animate-spin text-muted-foreground" />
+            </div>
+          ) : clarifyMode ? (
+            <div className="space-y-5">
+              <div className="flex flex-col items-center text-center gap-2">
+                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow">
+                  <Sparkles className="w-6 h-6 text-emerald-600" />
+                </div>
+                <h3 className="text-base font-semibold">{t("screens.autopilotdashboard.planClarifyTitle")}</h3>
+                <p className="text-sm text-muted-foreground max-w-xs">
+                  {t("screens.autopilotdashboard.planClarifyIntro")}
+                </p>
+              </div>
+              <div className="space-y-4">
+                {questions.map((q, i) => (
+                  <div key={i} className="space-y-1.5">
+                    <label className="text-sm font-medium leading-snug block">{q}</label>
+                    <Textarea
+                      rows={2}
+                      value={answers[q] ?? ""}
+                      onChange={(e) => setAnswers((prev) => ({ ...prev, [q]: e.target.value }))}
+                      placeholder={t("screens.autopilotdashboard.planClarifyPlaceholder")}
+                      className="resize-none"
+                    />
+                  </div>
+                ))}
+              </div>
+              <Button className="w-full" onClick={submitAnswers} disabled={generate.isPending}>
+                {generate.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    {t("screens.autopilotdashboard.planBuilding")}
+                  </>
+                ) : (
+                  t("screens.autopilotdashboard.planGenerate")
+                )}
+              </Button>
             </div>
           ) : !plan ? (
             <div className="flex flex-col items-center text-center gap-3 py-10">
