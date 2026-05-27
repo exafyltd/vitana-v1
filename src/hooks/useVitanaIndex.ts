@@ -78,6 +78,9 @@ function deriveTrend(history: Array<{ date: string; score: number }>): "up" | "d
   return "stable";
 }
 
+const INDEX_SELECT_COLUMNS =
+  "date, score_total, score_nutrition, score_hydration, score_exercise, score_sleep, score_mental, confidence, model_version, feature_inputs";
+
 async function fetchVitanaIndex(userId: string | undefined): Promise<VitanaIndexState | null> {
   if (!userId) return null;
 
@@ -85,17 +88,33 @@ async function fetchVitanaIndex(userId: string | undefined): Promise<VitanaIndex
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
   const fromDate = sevenDaysAgo.toISOString().slice(0, 10);
 
+  // 1) Trailing 7 days — gives the history the trend math needs.
   const { data, error } = await (supabase as any)
     .from("vitana_index_scores")
-    .select(
-      "date, score_total, score_nutrition, score_hydration, score_exercise, score_sleep, score_mental, confidence, model_version, feature_inputs"
-    )
+    .select(INDEX_SELECT_COLUMNS)
+    .eq("user_id", userId)
     .gte("date", fromDate)
     .order("date", { ascending: true });
 
   if (error) throw error;
 
-  const rows = (data ?? []) as VitanaIndexScoreRow[];
+  let rows = (data ?? []) as VitanaIndexScoreRow[];
+
+  // 2) Fallback: latest-ever score. The Index only recomputes on activity, so
+  //    a user who paused for a week has no row in the trailing window — show
+  //    their last known score instead of a misleading zero. Mirrors the
+  //    gateway profiler's fetchVitanaIndex fallback (user-context-profiler.ts).
+  if (rows.length === 0) {
+    const { data: latest, error: latestError } = await (supabase as any)
+      .from("vitana_index_scores")
+      .select(INDEX_SELECT_COLUMNS)
+      .eq("user_id", userId)
+      .order("date", { ascending: false })
+      .limit(1);
+    if (latestError) throw latestError;
+    rows = (latest ?? []) as VitanaIndexScoreRow[];
+  }
+
   if (rows.length === 0) return null;
 
   const today = rows[rows.length - 1];
