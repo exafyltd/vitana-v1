@@ -177,9 +177,9 @@
     },
     "subNav.diary": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Redundant and clunky phrasing. 'Dnevni dnevnik' literally means 'Daily daily'.",
-      "suggested": "Dnevnik",
+      "confidence": 0.9,
+      "issue": "Missing 'Daily' modifier from the translation.",
+      "suggested": "Dnevni dnevnik",
       "phase": "llm"
     },
     "subNav.recall": {
@@ -213,5 +213,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:29:40.901Z"
+  "generatedAt": "2026-05-27T08:06:56.933Z"
 }

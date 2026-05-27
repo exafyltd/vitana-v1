@@ -61,10 +61,8 @@
       "phase": "llm"
     },
     "confirm.disconnect": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Passive construction; should be more active and direct, implying the user performs the action.",
-      "suggested": "Stvarno želiš da prekineš vezu?",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "confirm.disconnectDesc": {
@@ -83,5 +81,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:05.256Z"
+  "generatedAt": "2026-05-27T07:47:37.060Z"
 }
