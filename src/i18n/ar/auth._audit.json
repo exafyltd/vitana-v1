@@ -1,0 +1,27 @@
+{
+  "verdicts": {
+    "auth.notAuthorized": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "auth.noPermission": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "auth.contactAdmin": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The term 'المدير' (manager/director) is less precise than 'المسؤول' (administrator) for 'administrator' in a technical context.",
+      "suggested": "يرجى الاتصال بالمسؤول للحصول على الوصول",
+      "phase": "llm"
+    },
+    "auth.backHome": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-27T07:46:54.492Z"
+}
