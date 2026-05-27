@@ -178,57 +178,75 @@ export default function AutopilotDashboard() {
     setPlanSheetOpen(true);
   };
 
+  const motivational = <MotivationalLine />;
+
+  const northStar = (
+    <GoalNorthStar
+      goal={goal}
+      loading={journeyLoading}
+      error={journeyError}
+      onSetGoal={handleSetGoal}
+      onRetry={() => refetchJourney()}
+      onOpenPlan={() => setPlanSheetOpen(true)}
+    />
+  );
+
+  const todaysGoal = (
+    <TodaysGoalCard actions={todayActions} loading={recLoading} onOpenAutopilot={handleOpenAutopilot} />
+  );
+
+  // Your plan — entry point to the full set of Autopilot steps
+  const yourPlanCard = (
+    <Card className="rounded-2xl border ring-1 ring-border/60 shadow-sm">
+      <CardContent className="p-4 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2 min-w-0">
+          <Zap className="w-4 h-4 text-primary shrink-0" />
+          <div className="min-w-0">
+            <p className="text-sm font-semibold">{t("screens.autopilotdashboard.yourPlan")}</p>
+            <p className="text-xs text-muted-foreground truncate">
+              {pendingCount > 0
+                ? t("screens.autopilotdashboard.planStepsWaiting", { count: pendingCount })
+                : t("screens.autopilotdashboard.planAllClear")}
+            </p>
+          </div>
+        </div>
+        <Button variant="outline" size="sm" onClick={handleOpenAutopilot} className="shrink-0">
+          {t("screens.autopilotdashboard.openPlan")}
+          <ChevronRight className="w-4 h-4 ml-0.5" />
+        </Button>
+      </CardContent>
+    </Card>
+  );
+
+  // How you're doing — Vitana Index as secondary proof
+  const howYoureDoing = (
+    <div className="space-y-2">
+      <p className="text-xs uppercase tracking-wide text-muted-foreground">
+        {t("screens.autopilotdashboard.howYoureDoing")}
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+        <IndexNowCard />
+        <VitanaIndexTrajectoryCard />
+      </div>
+    </div>
+  );
+
+  const keepCheckingIn = (
+    <div className="text-center text-sm text-muted-foreground pb-4">
+      <Sparkles className="w-4 h-4 inline-block mr-1 align-text-top" />
+      {t("screens.autopilotdashboard.keepCheckingIn")}
+    </div>
+  );
+
+  // Mobile: one vertical column.
   const content = (
     <div className="space-y-4">
-      <MotivationalLine />
-
-      <GoalNorthStar
-        goal={goal}
-        loading={journeyLoading}
-        error={journeyError}
-        onSetGoal={handleSetGoal}
-        onRetry={() => refetchJourney()}
-        onOpenPlan={() => setPlanSheetOpen(true)}
-      />
-
-      <TodaysGoalCard actions={todayActions} loading={recLoading} onOpenAutopilot={handleOpenAutopilot} />
-
-      {/* Your plan — entry point to the full set of Autopilot steps */}
-      <Card className="rounded-2xl border ring-1 ring-border/60 shadow-sm">
-        <CardContent className="p-4 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2 min-w-0">
-            <Zap className="w-4 h-4 text-primary shrink-0" />
-            <div className="min-w-0">
-              <p className="text-sm font-semibold">{t("screens.autopilotdashboard.yourPlan")}</p>
-              <p className="text-xs text-muted-foreground truncate">
-                {pendingCount > 0
-                  ? t("screens.autopilotdashboard.planStepsWaiting", { count: pendingCount })
-                  : t("screens.autopilotdashboard.planAllClear")}
-              </p>
-            </div>
-          </div>
-          <Button variant="outline" size="sm" onClick={handleOpenAutopilot} className="shrink-0">
-            {t("screens.autopilotdashboard.openPlan")}
-            <ChevronRight className="w-4 h-4 ml-0.5" />
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* How you're doing — Vitana Index as secondary proof */}
-      <div className="space-y-2">
-        <p className="text-xs uppercase tracking-wide text-muted-foreground">
-          {t("screens.autopilotdashboard.howYoureDoing")}
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <IndexNowCard />
-          <VitanaIndexTrajectoryCard />
-        </div>
-      </div>
-
-      <div className="text-center text-sm text-muted-foreground pb-4">
-        <Sparkles className="w-4 h-4 inline-block mr-1 align-text-top" />
-        {t("screens.autopilotdashboard.keepCheckingIn")}
-      </div>
+      {motivational}
+      {northStar}
+      {todaysGoal}
+      {yourPlanCard}
+      {howYoureDoing}
+      {keepCheckingIn}
     </div>
   );
 
@@ -273,15 +291,26 @@ export default function AutopilotDashboard() {
     <AppLayout>
       <SEO title={t("screens.autopilotdashboard.myJourney")} description="Your goal, your journey" canonical={window.location.href} />
       <div className="p-6 min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <StandardHeader title={t("screens.autopilotdashboard.myJourney")} description={t("screens.autopilotdashboard.northStarTagline")} emoji="🧭" />
           <div className="mb-4">{utilityBar}</div>
-          {content}
+          {motivational}
+          <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-4">
+              {northStar}
+              {todaysGoal}
+            </div>
+            <div className="space-y-4">
+              {yourPlanCard}
+              {howYoureDoing}
+            </div>
+          </div>
+          {keepCheckingIn}
         </div>
       </div>
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
       <GoalSetupDialog open={goalDialogOpen} onOpenChange={setGoalDialogOpen} onSaved={handleGoalSaved} />
-        <GoalPlanSheet open={planSheetOpen} onOpenChange={setPlanSheetOpen} />
+      <GoalPlanSheet open={planSheetOpen} onOpenChange={setPlanSheetOpen} />
     </AppLayout>
   );
 }
