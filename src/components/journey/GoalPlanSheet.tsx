@@ -67,6 +67,22 @@ function StepRow({
   );
 }
 
+// Recurring weekly rhythm — informational (no checkbox), since the per-week
+// instances live on the calendar; this just shows the cadence once.
+function CadenceRow({ step }: { step: GoalPlanStep }) {
+  return (
+    <div className="w-full flex items-start gap-3 rounded-xl border border-border/60 p-3 text-left">
+      <Flag className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+      <div className="min-w-0 flex-1">
+        <span className="text-sm font-medium">{step.title}</span>
+        {step.description && (
+          <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{step.description}</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /**
  * Right-side drawer (matching the Vitana Index sheet) showing the Vitana-
  * prescribed day-by-day plan: where you are now, recurring daily habits, and
@@ -117,11 +133,25 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
     }
   }, [open, isLoading, stepless, genError, clarifyMode, generate]);
 
-  const dated = plan
-    ? [...plan.milestones, ...plan.checkpoints].sort((a, b) =>
-        (a.scheduled_date ?? "").localeCompare(b.scheduled_date ?? ""),
-      )
+  // Milestones are the concrete dated waypoints (the prompt yields ~5-8).
+  const milestones = plan
+    ? [...plan.milestones].sort((a, b) => (a.scheduled_date ?? "").localeCompare(b.scheduled_date ?? ""))
     : [];
+
+  // Weekly checkpoints recur with the same few titles every week — collapse to
+  // one row per unique title so the path isn't flooded with ~60 duplicates.
+  const weeklyCadence = (() => {
+    if (!plan) return [] as typeof plan.checkpoints;
+    const seen = new Set<string>();
+    const out: typeof plan.checkpoints = [];
+    for (const c of plan.checkpoints) {
+      const key = c.title.trim().toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push(c);
+    }
+    return out;
+  })();
 
   // 1-based day (never Day 0) + time-based progress for the shared ring.
   const planDay = plan ? Math.min(plan.day + 1, plan.total_days) : 0;
@@ -246,15 +276,30 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
                 </>
               )}
 
-              {/* Section 3: Day-by-day path */}
-              {dated.length > 0 && (
+              {/* Section 3: Weekly rhythm — recurring checkpoints, shown once */}
+              {weeklyCadence.length > 0 && (
                 <>
                   <Separator />
                   <section className="space-y-3">
                     <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                      {t("screens.autopilotdashboard.planByDay")}
+                      {t("screens.autopilotdashboard.planEveryWeek")}
                     </h3>
-                    {dated.map((s) => (
+                    {weeklyCadence.map((c) => (
+                      <CadenceRow key={c.id} step={c} />
+                    ))}
+                  </section>
+                </>
+              )}
+
+              {/* Section 4: Milestones — the concrete dated waypoints */}
+              {milestones.length > 0 && (
+                <>
+                  <Separator />
+                  <section className="space-y-3">
+                    <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                      {t("screens.autopilotdashboard.planMilestones")}
+                    </h3>
+                    {milestones.map((s) => (
                       <div key={s.id} className="space-y-1">
                         {s.scheduled_date && (
                           <p className="text-[11px] text-muted-foreground pl-1">
