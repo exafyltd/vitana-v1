@@ -13,6 +13,7 @@ const MAXINA_LANDING_ROUTES = new Set<string>([
   "/home",
   "/comm/events-meetups",
   "/comm/events",
+  "/autopilot",
 ]);
 
 function isMaxinaLandingRoute(pathname: string): boolean {
