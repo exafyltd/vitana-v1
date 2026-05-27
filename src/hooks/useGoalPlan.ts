@@ -30,10 +30,17 @@ export interface GoalPlanView {
   habits: GoalPlanStep[];
 }
 
+export interface ClarificationAnswer {
+  question: string;
+  answer: string;
+}
+
 interface GoalPlanResponse {
   ok: boolean;
   plan: GoalPlanView | null;
   error?: string;
+  needs_clarification?: boolean;
+  questions?: string[];
 }
 
 /** Read the user's active Vitana-prescribed goal plan (null until generated). */
@@ -55,8 +62,11 @@ export function useGoalPlan() {
 export function useGenerateGoalPlan() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async () => {
-      const res = await communityFetch("/api/v1/goal-plan/generate", { method: "POST" });
+    mutationFn: async (vars?: { answers?: ClarificationAnswer[] }) => {
+      const res = await communityFetch("/api/v1/goal-plan/generate", {
+        method: "POST",
+        body: JSON.stringify({ answers: vars?.answers ?? [] }),
+      });
       if (!res.ok) throw new Error("Failed to generate plan");
       return res.json() as Promise<GoalPlanResponse & { plan_id?: string }>;
     },
