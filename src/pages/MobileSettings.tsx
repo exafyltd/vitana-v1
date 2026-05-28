@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { 
   Bell, BellOff, Shield, SlidersHorizontal, LifeBuoy, 
   Trash2, ChevronRight, Moon, Eye, Users, Lock, Brain,
@@ -34,16 +34,41 @@ import { useTheme } from "next-themes";
 import { toast } from "sonner";
 import { t } from '@/lib/i18n-toast';
 
+const VALID_SECTIONS = new Set([
+  'notifications',
+  'privacy', 'privacy.visibility', 'privacy.data', 'privacy.security',
+  'preferences', 'preferences.appearance', 'preferences.language',
+  'billing', 'billing.plan', 'billing.payment', 'billing.invoices', 'billing.creator',
+  'support', 'support.contact', 'support.knowledge',
+]);
+
 export default function MobileSettings() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { translate } = useTranslation();
   const { pendingCount } = useAutopilot();
   const { prefs, loading: prefsLoading, updatePref } = useNotificationPreferences();
   const { categories, loading: catLoading, toggleCategory } = useNotificationCategoryPreferences();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeSection, setActiveSection] = useState('notifications');
+  const [activeSection, setActiveSection] = useState(() => {
+    const m = searchParams.get('mode');
+    return m && VALID_SECTIONS.has(m) ? m : 'notifications';
+  });
+
+  // Honor later ?mode= changes (e.g. when navigating back to /settings?mode=billing
+  // from the Subscriptions storefront). Strip the param once consumed so it
+  // doesn't lock the user out of using the chip picker.
+  useEffect(() => {
+    const m = searchParams.get('mode');
+    if (m && VALID_SECTIONS.has(m)) {
+      setActiveSection(m);
+      const next = new URLSearchParams(searchParams);
+      next.delete('mode');
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
   const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent, revokeConsent } = useAIConsent();
   const { selectedLanguage, setSelectedLanguage, languageOptions } = useLanguage();
   const { theme, setTheme } = useTheme();

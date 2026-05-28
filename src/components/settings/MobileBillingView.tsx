@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -61,8 +62,11 @@ function RowLink({
 
 export function MobileBillingView({ section, onNavigateChild }: MobileBillingViewProps) {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const { data, isLoading, isError, error } = useBilling();
   const portal = useOpenPortal();
+  // Storefront lives at /profile/subscriptions on mobile, /wallet/subscriptions on desktop.
+  const plansHref = isMobile ? '/profile/subscriptions' : '/wallet/subscriptions';
 
   async function handleOpenPortal() {
     try {
@@ -129,7 +133,7 @@ export function MobileBillingView({ section, onNavigateChild }: MobileBillingVie
             <Button
               variant="outline"
               className="w-full justify-between"
-              onClick={() => navigate('/wallet/subscriptions')}
+              onClick={() => navigate(plansHref)}
             >
               <span className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
@@ -189,7 +193,7 @@ export function MobileBillingView({ section, onNavigateChild }: MobileBillingVie
             <Button
               variant="outline"
               className="w-full justify-between"
-              onClick={() => navigate('/wallet/subscriptions')}
+              onClick={() => navigate(plansHref)}
             >
               <span className="flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
