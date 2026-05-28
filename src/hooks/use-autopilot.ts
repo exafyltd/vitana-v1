@@ -78,6 +78,7 @@ async function getAuthHeaders(): Promise<Record<string, string>> {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
     "X-User-ID": userId,
+    "X-Vitana-Active-Role": "community",
   };
 }
 
@@ -210,23 +211,35 @@ export function useAutopilot() {
 
   // Complete — flushes backend state from "activated" to "completed". Routed
   // through the same gateway + role convention as activate so a deployment that
-  // accepts one always accepts the other.
+  // accepts one always accepts the other. If the dedicated /complete endpoint
+  // returns 404 (some gateway revisions never shipped it), fall back to
+  // /reject so the stuck recommendation at least leaves the user's list.
   const completeRecommendation = useCallback(async (id: string): Promise<{
     ok: boolean;
     reward?: number;
   } | null> => {
+    const headers = await getAuthHeaders();
+    const url = `${GATEWAY_URL}/autopilot/recommendations/${id}/complete?role=community`;
     try {
-      const headers = await getAuthHeaders();
-      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/complete?role=community`, {
-        method: "POST",
-        headers,
-      });
-      if (!res.ok) throw new Error(`Complete failed: ${res.status}`);
-      const json = await res.json();
-      if (json.ok) return json;
+      const res = await fetch(url, { method: "POST", headers });
+      if (res.ok) {
+        const json = await res.json().catch(() => ({ ok: true }));
+        return json.ok === false ? null : json;
+      }
+      const body = await res.text().catch(() => "");
+      console.error(`[Autopilot] complete ${res.status} for ${id}`, body.slice(0, 300));
+      // Backend missing the dedicated complete route — clear the row via
+      // reject so the user isn't stuck staring at it forever.
+      if (res.status === 404 || res.status === 405) {
+        const fallback = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/reject?role=community`, {
+          method: "POST",
+          headers,
+        });
+        if (fallback.ok) return { ok: true };
+      }
       return null;
     } catch (e) {
-      console.error("[Autopilot] complete error:", e);
+      console.error("[Autopilot] complete network error:", e);
       return null;
     }
   }, []);
