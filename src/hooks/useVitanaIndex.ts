@@ -88,22 +88,45 @@ async function fetchVitanaIndex(userId: string | undefined): Promise<VitanaIndex
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
   const fromDate = sevenDaysAgo.toISOString().slice(0, 10);
 
+  const queryTrailingWindow = async (): Promise<VitanaIndexScoreRow[]> => {
+    const { data, error } = await (supabase as any)
+      .from("vitana_index_scores")
+      .select(INDEX_SELECT_COLUMNS)
+      .eq("user_id", userId)
+      .gte("date", fromDate)
+      .order("date", { ascending: true });
+    if (error) throw error;
+    return (data ?? []) as VitanaIndexScoreRow[];
+  };
+
   // 1) Trailing 7 days — gives the history the trend math needs.
-  const { data, error } = await (supabase as any)
-    .from("vitana_index_scores")
-    .select(INDEX_SELECT_COLUMNS)
-    .eq("user_id", userId)
-    .gte("date", fromDate)
-    .order("date", { ascending: true });
+  let rows = await queryTrailingWindow();
 
-  if (error) throw error;
+  // 2) Self-heal: the Index only recomputes on activity, and the daily
+  //    recompute pipeline does not (yet) include an Index stage, so an
+  //    inactive day leaves the trailing window empty and the UI shows a
+  //    hard zero. Trigger a fresh per-user compute (the RPC is user-scoped
+  //    via auth.uid() and idempotent — upserts on (tenant_id, user_id, date))
+  //    and re-query, so opening the app on a new day always lands on a real
+  //    score for the current day.
+  if (rows.length === 0) {
+    const todayIso = new Date().toISOString().slice(0, 10);
+    try {
+      await (supabase as any).rpc("health_compute_vitana_index", {
+        p_date: todayIso,
+        p_model_version: "v3-5pillar",
+      });
+      rows = await queryTrailingWindow();
+    } catch {
+      /* best-effort — fall through to the latest-ever fallback below */
+    }
+  }
 
-  let rows = (data ?? []) as VitanaIndexScoreRow[];
-
-  // 2) Fallback: latest-ever score. The Index only recomputes on activity, so
-  //    a user who paused for a week has no row in the trailing window — show
-  //    their last known score instead of a misleading zero. Mirrors the
-  //    gateway profiler's fetchVitanaIndex fallback (user-context-profiler.ts).
+  // 3) Fallback: latest-ever score. If the compute RPC was unavailable
+  //    (permissions, network) or the user has been inactive for longer
+  //    than the trailing window, surface the last known score instead of
+  //    a misleading zero. Mirrors the gateway profiler's fetchVitanaIndex
+  //    (user-context-profiler.ts).
   if (rows.length === 0) {
     const { data: latest, error: latestError } = await (supabase as any)
       .from("vitana_index_scores")
