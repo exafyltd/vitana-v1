@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 325
-- **Distinct i18n keys consumed:** 5389
+- **Distinct i18n keys consumed:** 5284
 - **Namespaces in use:** 41
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -2653,11 +2653,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/settings/Billing.tsx
 
-**Status:** ✅ clean — keys consumed: 96, namespaces: 1
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 96, total in shard: 9309
+- `screens` — used: 2, total in shard: 9309
 
 ### src/pages/settings/ConnectedApps.tsx
 
@@ -2842,17 +2842,13 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/wallet/Subscriptions.tsx
 
-**Status:** ✅ clean — keys consumed: 11, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 11, total in shard: 9309
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ## Namespace usage across all pages
 
 | Namespace | Pages using it |
 |---|---|
-| `screens` | 273 |
+| `screens` | 272 |
 | `toasts` | 60 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
