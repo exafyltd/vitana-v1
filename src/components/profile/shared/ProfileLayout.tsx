@@ -27,6 +27,7 @@ import { shouldShowField } from "@/lib/profileScope";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileIdCardSwitcher } from "../mobile/MobileIdCardSwitcher";
 import { MobileProfileStats } from "../mobile/MobileProfileStats";
+import { MobileSubscriptionSummary } from "../mobile/MobileSubscriptionSummary";
 import { MobileProfileTabs, MobileProfileTab } from "../mobile/MobileProfileTabs";
 import { MobileAutopilotBanner } from "../mobile/MobileAutopilotBanner";
 import { MobileShowcaseHeader } from "../mobile/MobileShowcaseHeader";
@@ -207,6 +208,9 @@ export function ProfileLayout({
           followLoading={followLoading}
         />
         
+        {/* Subscription summary — owner-only, deep-links to the mobile storefront */}
+        {isOwner && <MobileSubscriptionSummary />}
+
         {/* Compact Stats Strip */}
         <MobileProfileStats
           userId={profileUserId}

@@ -142,6 +142,7 @@ const Community = lazy(() => import("./pages/Community"));
 const AI = lazy(() => import("./pages/AI"));
 const Messages = lazy(() => import("./pages/Messages"));
 const MobileSettings = lazy(() => import("./pages/MobileSettings"));
+const MobileSubscriptions = lazy(() => import("./pages/MobileSubscriptions"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Search = lazy(() => import("./pages/Search"));
 const Cart = lazy(() => import("./pages/Cart"));
@@ -539,6 +540,12 @@ const AppHooksInitializer = () => {
 function SettingsRouter() {
   const isMobile = useIsMobile();
   return isMobile ? <MobileSettings /> : <Navigate to="/settings/notifications" replace />;
+}
+
+// Mobile-only storefront for plans; desktop users get the existing /wallet/subscriptions page.
+function ProfileSubscriptionsRouter() {
+  const isMobile = useIsMobile();
+  return isMobile ? <MobileSubscriptions /> : <Navigate to="/wallet/subscriptions" replace />;
 }
 
 // Redirect helper that preserves the original query string (used by OAuth
@@ -1126,6 +1133,11 @@ const App = () => {
           } />
           
           <Route path="/profile" element={<Navigate to="/me/profile" replace />} />
+          <Route path="/profile/subscriptions" element={
+            <AuthGuard>
+              <ProfileSubscriptionsRouter />
+            </AuthGuard>
+          } />
           <Route path="/profile/:id" element={<LegacyProfileRedirect />} />
           <Route path="/me/profile" element={
             <AuthGuard>
