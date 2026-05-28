@@ -69,7 +69,7 @@ export function GoalProgressRing({
     <div className="relative" style={{ width: size, height: size }}>
       <svg width={size} height={size}>
         {/* track */}
-        <circle cx={cx} cy={cy} r={radius} fill="none" stroke="currentColor" strokeWidth={stroke} className="text-muted/20" />
+        <circle cx={cx} cy={cy} r={radius} fill="none" stroke="currentColor" strokeWidth={stroke} className="text-slate-400/30" />
 
         {hasPhases ? (
           <>
@@ -79,13 +79,13 @@ export function GoalProgressRing({
               const eF = Math.max(sF, p.end / t - (i < phases!.length - 1 ? GAP : 0));
               const nodes: Array<JSX.Element | null> = [];
               if (curFrac > sF) nodes.push(arc(sF, Math.min(eF, curFrac), p.color, 1, `e${i}`));
-              if (curFrac < eF) nodes.push(arc(Math.max(sF, curFrac), eF, p.color, 0.32, `u${i}`));
+              if (curFrac < eF) nodes.push(arc(Math.max(sF, curFrac), eF, p.color, 0.65, `u${i}`));
               return nodes;
             })}
             {/* today marker */}
             {(() => {
               const [mx, my] = pt(curFrac);
-              return <circle cx={mx} cy={my} r={stroke / 2 + 1.5} fill="#ffffff" stroke="#94a3b8" strokeWidth={2} />;
+              return <circle cx={mx} cy={my} r={stroke / 2 + 1.5} fill="#ffffff" stroke="#475569" strokeWidth={2.5} />;
             })()}
           </>
         ) : (
