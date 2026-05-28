@@ -3,16 +3,13 @@ import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthProvider";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { communityFetch } from "@/lib/community-gateway";
 import {
   Sparkles,
-  Zap,
   TrendingUp,
   TrendingDown,
-  ChevronRight,
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
@@ -33,6 +30,7 @@ import { GoalSetupDialog } from "@/components/journey/GoalSetupDialog";
 import { GoalPlanSheet } from "@/components/journey/GoalPlanSheet";
 import { MatchesPreview } from "@/components/journey/MatchesPreview";
 import { EventsPreview } from "@/components/journey/EventsPreview";
+import { AutopilotCard } from "@/components/journey/AutopilotCard";
 import { useGenerateGoalPlan } from "@/hooks/useGoalPlan";
 import { t } from "@/lib/i18n-toast";
 
@@ -140,7 +138,7 @@ function IndexNowCard() {
 export default function AutopilotDashboard() {
   const { user } = useAuth();
   const isMobile = useIsMobile();
-  const { pendingCount } = useAutopilot();
+  const { pendingCount, pendingActions } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
   const [planSheetOpen, setPlanSheetOpen] = useState(false);
@@ -208,27 +206,13 @@ export default function AutopilotDashboard() {
   const matchesPreview = <MatchesPreview />;
   const eventsPreview = <EventsPreview />;
 
-  // Your plan — entry point to the full set of Autopilot steps
+  // Autopilot preview — top 3 pending actions; tap opens the full popup
   const yourPlanCard = (
-    <Card className="rounded-2xl border ring-1 ring-border/60 shadow-sm">
-      <CardContent className="p-4 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2 min-w-0">
-          <Zap className="w-4 h-4 text-primary shrink-0" />
-          <div className="min-w-0">
-            <p className="text-sm font-semibold">{t("screens.autopilotdashboard.yourPlan")}</p>
-            <p className="text-xs text-muted-foreground truncate">
-              {pendingCount > 0
-                ? t("screens.autopilotdashboard.planStepsWaiting", { count: pendingCount })
-                : t("screens.autopilotdashboard.planAllClear")}
-            </p>
-          </div>
-        </div>
-        <Button variant="outline" size="sm" onClick={handleOpenAutopilot} className="shrink-0">
-          {t("screens.autopilotdashboard.openPlan")}
-          <ChevronRight className="w-4 h-4 ml-0.5" />
-        </Button>
-      </CardContent>
-    </Card>
+    <AutopilotCard
+      pendingCount={pendingCount}
+      previewActions={pendingActions.slice(0, 3)}
+      onOpen={handleOpenAutopilot}
+    />
   );
 
   // How you're doing — Vitana Index as secondary proof
