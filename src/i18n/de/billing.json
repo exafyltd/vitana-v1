@@ -1,0 +1,232 @@
+{
+  "billing": {
+    "promises": {
+      "anchorHeading": "Privat by Design.",
+      "subheading": "Vier Versprechen, auf jedem Plan — kostenlos oder bezahlt.",
+      "owned": {
+        "title": "Dir gehört, was du teilst.",
+        "body": "Erinnerungen, Profil, Empfehlungen — alles sichtbar, exportierbar, jederzeit löschbar."
+      },
+      "noSell": {
+        "title": "Wir verkaufen deine Daten nie.",
+        "body": "Nicht an Werbenetzwerke, nicht an Datenbroker, nicht an Partner. Im Code durchgesetzt."
+      },
+      "earn": {
+        "title": "Deine Empfehlungen können für dich verdienen.",
+        "body": "Wenn deine Empfehlung in Sell and Earn zu einem Kauf führt oder wenn du einen bezahlten Live-Raum hostest, gehört dir das Einkommen — transparent ausgewiesen."
+      },
+      "control": {
+        "title": "Du entscheidest, was Sell and Earn für dich tut.",
+        "body": "Drei Schalter unter Verbinden geben dir volle Kontrolle."
+      }
+    },
+    "plans": {
+      "needMoreTitle": "Mehr Live-Zeit oder Hosting?",
+      "needMoreBody": "Premium passt für die meisten Mitglieder. Wenn du Community-Räume hostest oder täglich Sprache nutzt, schau dir unsere größeren Pläne an.",
+      "showAll": "Alle Pläne anzeigen",
+      "hideAll": "Größere Pläne ausblenden",
+      "headlineSection": "Premium starten",
+      "expandedSection": "Für Hosts und Communities",
+      "currentPlan": "Aktueller Plan",
+      "selectPlan": "Auswählen",
+      "perMonth": "/Monat",
+      "perYear": "/Jahr",
+      "saveAnnual": "Jährlich sparen",
+      "trial14": "14 Tage kostenlos testen, jederzeit kündbar.",
+      "free": {
+        "name": "Free",
+        "tagline": "Zum Ausprobieren · kein Risiko, kein Verfallsdatum",
+        "price": "Kostenlos"
+      },
+      "premium": {
+        "name": "Premium",
+        "tagline": "Tägliche Nutzung — mehr Live-Zeit, mehr Hosting, mehr Speicher"
+      },
+      "premium_5x": {
+        "name": "Host",
+        "tagline": "Power-User · Familien · regelmäßige Hosts",
+        "ribbon": "5× Premium"
+      },
+      "premium_20x": {
+        "name": "Community",
+        "tagline": "Coaches · Praktiker · Community-Leads",
+        "ribbon": "20× Premium"
+      }
+    },
+    "features": {
+      "voiceLive": "Live-Gespräche mit ORB",
+      "voiceLiveUnit": "Min./Monat",
+      "voiceStandard": "Standard-Sprachgespräche",
+      "voiceStandardUnit": "Faire Nutzung",
+      "liveRooms": "Live-Raum hosten",
+      "liveRoomsUnit": "Std./Monat",
+      "matchPosts": "Find-a-Match Posts",
+      "matchPostsUnit": "/Monat",
+      "matchReveals": "Find-a-Match Enthüllungen",
+      "matchRevealsUnit": "/Woche",
+      "labAnalyses": "Lab-Analyse",
+      "labAnalysesUnit": "/Monat",
+      "photoUploads": "Foto-Uploads",
+      "photoUploadsUnit": "/Monat",
+      "storage": "Sicherer Speicher",
+      "storageUnit": "GB",
+      "aiDigest": "KI-Zusammenfassungen",
+      "aiDigestWeekly": "Wöchentlich",
+      "aiDigestDaily": "Täglich",
+      "aiDigestOnDemand": "Täglich + auf Abruf",
+      "sellAndEarnCatalog": "Sell and Earn Katalog",
+      "sellAndEarnCatalogUnit": "Einträge",
+      "priorityPractitioner": "Vorrangiger Zugang zu Praktikern",
+      "yes": "Ja",
+      "no": "–",
+      "fairUse": "Faire Nutzung",
+      "used": "{used} / {limit} {unit}",
+      "resetIn": "Zurücksetzung in {duration}",
+      "comparisonTitle": "Was in jedem Plan enthalten ist"
+    },
+    "creditPacks": {
+      "title": "Extra-Minuten hinzufügen",
+      "subtitle": "Einmalig aufladen, nutzen wenn du sie brauchst",
+      "starter": "10 Stunden Standard-Sprache ODER 100 Live-Minuten",
+      "boost": "Am beliebtesten — 7 Stunden Live-Sprache",
+      "power": "Heavy Use — 40 Stunden Live-Sprache",
+      "credits": "{credits} Credits",
+      "creditsWithBonus": "{credits} Credits +{bonus} Bonus",
+      "buy": "Kaufen",
+      "yourBalance": "Dein Guthaben: {amount} Credits",
+      "starterShort": "Starter",
+      "boostShort": "Boost",
+      "powerShort": "Power"
+    },
+    "redeemCard": {
+      "title": "Hast du einen Code?",
+      "placeholder": "VITANA-XXXX-XXXX",
+      "button": "Einlösen",
+      "redeeming": "Wird eingelöst …",
+      "successTitle": "Premium aktiviert",
+      "successBody": "Premium ist bis {date} aktiv. Viel Freude.",
+      "founding": "🏆 Willkommen, Founding Member — du bist #{position} von {max}. Premium ist 90 Tage lang frei.",
+      "error": {
+        "invalid": "Code nicht gefunden",
+        "expired": "Code abgelaufen",
+        "maxUsed": "Code wurde schon zu oft verwendet",
+        "alreadyRedeemed": "Du hast diesen Code schon eingelöst",
+        "stripeActive": "Du hast bereits Premium — heb dir den Code für später auf",
+        "budgetExhausted": "Aktion gerade pausiert — bitte versuche es später erneut",
+        "generic": "Code konnte nicht eingelöst werden"
+      }
+    },
+    "earnings": {
+      "title": "Deine Einkünfte (dieses Jahr)",
+      "youPaid": "Du hast Vitana gezahlt",
+      "youEarned": "Vitana hat dich verdienen lassen (Sell and Earn)",
+      "net": "Netto",
+      "withdraw": "Auszahlen",
+      "empty": "Noch keine Einkünfte"
+    },
+    "founding": {
+      "bannerTitle": "🏆 Sei eine der ersten {max}",
+      "bannerBody": "3 Monate Premium kostenlos mit Code {code}.",
+      "spotsRemaining": "{remaining} von {max} Plätzen verfügbar"
+    },
+    "launchGrant": {
+      "title": "🎁 Willkommen — Premium auf uns",
+      "body": "Du hast 12 Monate Vitana Premium geschenkt bekommen — als Dankeschön, dass du von Anfang an dabei bist. Aktiv bis {endsAt}.",
+      "noAction": "Du musst nichts tun. Viel Freude.",
+      "dismissAria": "Banner schließen"
+    },
+    "state": {
+      "freeStatus": "Du nutzt Vitana Free",
+      "freeBody": "Probier Premium 14 Tage kostenlos.",
+      "premiumActive": "Vitana Premium",
+      "renewsAt": "Verlängert sich am {date}",
+      "autoGrantUntil": "Geschenkt bis {date} · zum Start auf uns",
+      "cancelAtPeriodEnd": "Wird zum Ende der Laufzeit gekündigt",
+      "pastDue": "Zahlung fehlgeschlagen",
+      "pastDueBody": "Aktualisiere deine Zahlungsmethode, um Premium zu behalten.",
+      "manage": "Verwalten",
+      "viewPlans": "Premium ansehen",
+      "upgrade": "Upgrade",
+      "trialEndsAt": "Testphase endet am {date}",
+      "trialingBadge": "Im Test",
+      "activeBadge": "Aktiv"
+    },
+    "subscriptionsPage": {
+      "title": "Abonnements",
+      "subtitle": "Verwalte dein Vitana-Premium und Credits",
+      "tabs": {
+        "yourPlan": "Dein Plan",
+        "billing": "Abrechnung"
+      }
+    },
+    "faq": {
+      "title": "Warum Premium?",
+      "q1": "Was bekomme ich mit Premium?",
+      "a1": "Mehr Live-Sprachzeit, mehr Hosting in Live-Räumen, mehr Speicher und schnellere persönliche Zusammenfassungen.",
+      "q2": "Was ist der Unterschied zu Credits?",
+      "a2": "Credits sind für gelegentliche Nutzung. Premium gibt dir laufend mehr — für tägliche Nutzung gedacht.",
+      "q3": "Kann ich jederzeit kündigen?",
+      "a3": "Ja, ohne Frist. Du behältst Premium bis zum Ende der laufenden Periode.",
+      "q4": "Verkauft ihr meine Daten?",
+      "a4": "Nie. Wir verkaufen deine Daten nie an Werbenetzwerke, Datenbroker oder Partner."
+    },
+    "checkoutErrors": {
+      "stripeNotConfigured": "Die Zahlungsabwicklung ist noch nicht konfiguriert. Bitte versuche es später erneut.",
+      "alreadySubscribed": "Du hast bereits ein aktives Abo. Verwalte es im Abrechnungsportal.",
+      "noStripeCustomer": "Abonniere zuerst, bevor du das Portal nutzt.",
+      "checkoutFailed": "Zahlungsvorgang fehlgeschlagen",
+      "portalFailed": "Abrechnungsportal konnte nicht geöffnet werden"
+    }
+  },
+  "paywall": {
+    "title": "Premium freischalten",
+    "softExtension": "Ich habe deine Free-Zeit für heute verlängert.",
+    "creditsUsed": "Credit verwendet — viel Spaß",
+    "voice_live_minutes": {
+      "title": "Live-Sprachzeit verbraucht",
+      "body": "Deine inkludierte Live-Sprachzeit ist aufgebraucht. ORB läuft im Standard-Modus weiter. Füge Live-Minuten hinzu oder upgrade jederzeit.",
+      "stayInStandard": "Im Standard-Modus weitermachen",
+      "addMinutes": "Live-Minuten hinzufügen"
+    },
+    "live_room_minutes": {
+      "title": "Hosting-Zeit aufgebraucht",
+      "body": "Dieser Raum hat noch 5 Minuten inkludierte Hosting-Zeit. Füge Hosting-Zeit hinzu oder upgrade, um weiterzumachen.",
+      "wrapUp": "Abschließen",
+      "addTime": "Hosting-Zeit hinzufügen"
+    },
+    "match_posts": {
+      "title": "Alle Free-Posts genutzt",
+      "body": "Du hast deine kostenlosen Posts diesen Monat aufgebraucht. Mit Premium postest du mehr."
+    },
+    "match_reveals": {
+      "title": "Match enthüllen",
+      "body": "Du hast deine Free-Enthüllungen aufgebraucht. Nutze {credits} Credits oder upgrade auf Premium."
+    },
+    "lab_analyses": {
+      "title": "Lab-Analysen aufgebraucht",
+      "body": "Du hast deine Lab-Analysen diesen Monat aufgebraucht."
+    },
+    "photo_uploads": {
+      "title": "Foto-Uploads aufgebraucht",
+      "body": "Du hast deine Foto-Uploads diesen Monat aufgebraucht."
+    },
+    "memory_garden": {
+      "title": "Erinnerungsgarten voll",
+      "body": "Mit Premium speicherst du mehr."
+    },
+    "autopilot": {
+      "title": "Mehr Autopilot-Empfehlungen",
+      "body": "Premium hebt die Anzahl deiner aktiven Empfehlungen an."
+    },
+    "default": {
+      "title": "Premium freischalten",
+      "body": "Du hast deine kostenlose Nutzung für diesen Zeitraum aufgebraucht."
+    },
+    "ctaUpgrade": "Premium freischalten",
+    "ctaCredits": "Mit {credits} Credits freischalten",
+    "ctaLater": "Vielleicht später",
+    "remainingCounter": "{remaining} / {limit}",
+    "resetsIn": "Zurücksetzung {date}",
+    "creditsInsufficient": "Nicht genug Credits. Erst nachladen."
+  }
+}
