@@ -209,37 +209,43 @@ export function useAutopilot() {
     }
   }, []);
 
-  // Complete — flushes backend state from "activated" to "completed". Routed
-  // through the same gateway + role convention as activate so a deployment that
-  // accepts one always accepts the other. If the dedicated /complete endpoint
-  // returns 404 (some gateway revisions never shipped it), fall back to
-  // /reject so the stuck recommendation at least leaves the user's list.
+  // Complete — try the dedicated complete route first, then fall back to
+  // reject for any non-2xx so the user always sees the row leave the list.
+  // We can't tell from this side whether the gateway revision ships /complete
+  // at all, and an "executing"-forever row is a much worse UX than losing
+  // a possible reward.
   const completeRecommendation = useCallback(async (id: string): Promise<{
     ok: boolean;
     reward?: number;
+    via?: "complete" | "reject";
+    status?: number;
   } | null> => {
     const headers = await getAuthHeaders();
-    const url = `${GATEWAY_URL}/autopilot/recommendations/${id}/complete?role=community`;
+    const completeUrl = `${GATEWAY_URL}/autopilot/recommendations/${id}/complete?role=community`;
+    let completeStatus: number | undefined;
     try {
-      const res = await fetch(url, { method: "POST", headers });
+      const res = await fetch(completeUrl, { method: "POST", headers });
+      completeStatus = res.status;
       if (res.ok) {
         const json = await res.json().catch(() => ({ ok: true }));
-        return json.ok === false ? null : json;
+        if (json.ok !== false) return { ...json, via: "complete", status: res.status };
       }
       const body = await res.text().catch(() => "");
-      console.error(`[Autopilot] complete ${res.status} for ${id}`, body.slice(0, 300));
-      // Backend missing the dedicated complete route — clear the row via
-      // reject so the user isn't stuck staring at it forever.
-      if (res.status === 404 || res.status === 405) {
-        const fallback = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/reject?role=community`, {
-          method: "POST",
-          headers,
-        });
-        if (fallback.ok) return { ok: true };
-      }
+      console.warn(`[Autopilot] complete ${res.status} for ${id} — falling back to reject`, body.slice(0, 300));
+    } catch (e) {
+      console.warn("[Autopilot] complete network error — falling back to reject", e);
+    }
+    try {
+      const rejectRes = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/reject?role=community`, {
+        method: "POST",
+        headers,
+      });
+      if (rejectRes.ok) return { ok: true, via: "reject", status: completeStatus };
+      const body = await rejectRes.text().catch(() => "");
+      console.error(`[Autopilot] reject ${rejectRes.status} for ${id}`, body.slice(0, 300));
       return null;
     } catch (e) {
-      console.error("[Autopilot] complete network error:", e);
+      console.error("[Autopilot] reject network error:", e);
       return null;
     }
   }, []);
