@@ -8495,6 +8495,7 @@
     "autopilotdashboard": {
       "text999": "of 999",
       "yourIndex": "Your Index",
+      "openIndexDrawerAria": "Open Vitana Index details",
       "yourCompass": "Your compass",
       "setYourLifeCompass": "Set your Life Compass",
       "byHorizon": "By horizon",

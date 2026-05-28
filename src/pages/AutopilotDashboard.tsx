@@ -23,6 +23,7 @@ import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { VitanaIndexTrajectoryCard } from "@/components/health/VitanaIndexTrajectoryCard";
 import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
 import { LIFE_COMPASS_OPEN_EVENT } from "@/context/LifeCompassPopupContext";
+import { VITANA_INDEX_OPEN_EVENT } from "@/components/health/VitanaIndexSheet";
 import { trend7d } from "@/lib/vitana-projection";
 import { bucketFromWaveId, type HorizonBucket } from "@/lib/horizonBuckets";
 import { useMyJourney } from "@/hooks/useMyJourney";
@@ -103,15 +104,22 @@ function IndexNowCard() {
     return { icon: TrendingUp, text: t("screens.autopilotdashboard.trendSteadyThisWeek"), cls: "text-muted-foreground" };
   })();
 
+  const openIndexDrawer = () => window.dispatchEvent(new CustomEvent(VITANA_INDEX_OPEN_EVENT));
+
   return (
     <Card className="rounded-2xl border ring-1 ring-border/60 shadow-sm">
       <CardContent className="p-4 flex items-center gap-4">
-        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-sm shrink-0">
+        <button
+          type="button"
+          onClick={openIndexDrawer}
+          aria-label={t("screens.autopilotdashboard.openIndexDrawerAria")}
+          className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400/30 to-blue-500/30 flex items-center justify-center shadow-sm shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-transform hover:scale-[1.04]"
+        >
           <div className="text-center">
             <div className="text-2xl font-bold text-green-600">{total === null ? "…" : total}</div>
             <div className="text-[10px] text-muted-foreground">{t("screens.autopilotdashboard.text999")}</div>
           </div>
-        </div>
+        </button>
         <div className="space-y-1 min-w-0">
           <p className="text-xs uppercase tracking-wide text-muted-foreground">{t("screens.autopilotdashboard.yourIndex")}</p>
           {tier && <p className="text-base font-semibold">{t(tier.labelKey)}</p>}
