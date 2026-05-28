@@ -135,6 +135,21 @@
       "noAction": "No action needed. Enjoy.",
       "dismissAria": "Dismiss banner"
     },
+    "mobileBilling": {
+      "rootIntro": "Manage your plan, payment method, and creator payouts.",
+      "navPlan": "Current Plan",
+      "navPayment": "Payment Method",
+      "navInvoices": "Invoices & Receipts",
+      "navCreator": "Creator Payouts",
+      "changePlan": "Change plan",
+      "openStripe": "Open Stripe portal",
+      "paymentTitle": "Payment Method",
+      "paymentBody": "Your saved card and billing details are managed by Stripe.",
+      "paymentNoneTitle": "No payment method on file",
+      "paymentNoneBody": "Add a card when you start a Premium plan.",
+      "invoicesTitle": "Invoices & Receipts",
+      "invoicesBody": "All invoices and receipts are available in the Stripe billing portal."
+    },
     "state": {
       "freeStatus": "You're on Vitana Free",
       "freeBody": "Try Premium free for 14 days.",

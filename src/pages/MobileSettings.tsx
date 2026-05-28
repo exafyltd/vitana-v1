@@ -13,6 +13,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
+import { MobileBillingView, type MobileBillingSection } from "@/components/settings/MobileBillingView";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -70,9 +71,20 @@ export default function MobileSettings() {
         { value: 'preferences.language', label: 'Language & Region', icon: '🌐' },
       ]
     },
-    { 
-      value: 'support', 
-      label: 'Support', 
+    {
+      value: 'billing',
+      label: 'Billing',
+      icon: '💳',
+      children: [
+        { value: 'billing.plan', label: 'Current Plan', icon: '⭐' },
+        { value: 'billing.payment', label: 'Payment Method', icon: '💳' },
+        { value: 'billing.invoices', label: 'Invoices & Receipts', icon: '🧾' },
+        { value: 'billing.creator', label: 'Creator Payouts', icon: '💸' },
+      ]
+    },
+    {
+      value: 'support',
+      label: 'Support',
       icon: '🆘',
       children: [
         { value: 'support.contact', label: 'Contact Support', icon: '💬' },
@@ -534,6 +546,18 @@ export default function MobileSettings() {
               </CardContent>
             </Card>
           </>
+        );
+
+      case 'billing':
+      case 'billing.plan':
+      case 'billing.payment':
+      case 'billing.invoices':
+      case 'billing.creator':
+        return (
+          <MobileBillingView
+            section={activeSection as MobileBillingSection}
+            onNavigateChild={setActiveSection}
+          />
         );
 
       default:

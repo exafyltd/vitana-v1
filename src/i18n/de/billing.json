@@ -135,6 +135,21 @@
       "noAction": "Du musst nichts tun. Viel Freude.",
       "dismissAria": "Banner schließen"
     },
+    "mobileBilling": {
+      "rootIntro": "Verwalte deinen Plan, deine Zahlungsmethode und Auszahlungen.",
+      "navPlan": "Aktueller Plan",
+      "navPayment": "Zahlungsmethode",
+      "navInvoices": "Rechnungen & Belege",
+      "navCreator": "Creator-Auszahlungen",
+      "changePlan": "Plan ändern",
+      "openStripe": "Im Stripe-Portal öffnen",
+      "paymentTitle": "Zahlungsmethode",
+      "paymentBody": "Deine gespeicherte Karte und Rechnungsdaten werden von Stripe verwaltet.",
+      "paymentNoneTitle": "Keine Zahlungsmethode hinterlegt",
+      "paymentNoneBody": "Füge eine Karte hinzu, wenn du Premium startest.",
+      "invoicesTitle": "Rechnungen & Belege",
+      "invoicesBody": "Alle Rechnungen und Belege findest du im Stripe-Abrechnungsportal."
+    },
     "state": {
       "freeStatus": "Du nutzt Vitana Free",
       "freeBody": "Probier Premium 14 Tage kostenlos.",
