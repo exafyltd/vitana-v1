@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Zap, ChevronRight } from "lucide-react";
+import { Plane, ChevronRight } from "lucide-react";
 import type { AutopilotAction } from "@/types/autopilot";
 import { t } from "@/lib/i18n-toast";
 
@@ -37,7 +37,7 @@ export function AutopilotCard({
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 min-w-0">
               <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-sm shrink-0">
-                <Zap className="w-3.5 h-3.5 text-white" />
+                <Plane className="w-3.5 h-3.5 text-white -rotate-12" />
               </div>
               <div className="min-w-0">
                 <p className="text-sm font-bold text-indigo-900 dark:text-indigo-100">
