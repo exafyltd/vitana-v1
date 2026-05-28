@@ -3,21 +3,31 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>My Journey — mockup</title>
+<title>My Journey — mockup v2 (cheerful)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --primary: #0f172a;
     --muted-fg: #64748b;
     --border: rgba(15, 23, 42, 0.08);
     --card-bg: #ffffff;
-    --goal-from: #34d399;   /* emerald */
-    --goal-to:   #6366f1;   /* indigo */
-    --warm-from: #fde68a;
-    --warm-to:   #fbcfe8;
     --success:   #10b981;
+
+    /* Health-screen palette */
+    --grad-ring-from: #4ade80;     /* green-400 */
+    --grad-ring-to:   #3b82f6;     /* blue-500 */
+    --grad-match-from: #ec4899;    /* pink-500 */
+    --grad-match-to:   #d946ef;    /* fuchsia-500 */
+    --grad-event-from: #f59e0b;    /* amber-500 */
+    --grad-event-to:   #ef4444;    /* red-500 */
+    --grad-motiv-from: #ecfdf5;
+    --grad-motiv-via:  #f0fdf4;
+    --grad-motiv-to:   #ecfccb;
+    --grad-page-from:  #faf5ff;
+    --grad-page-via:   #eff6ff;
+    --grad-page-to:    #fdf2f8;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -30,15 +40,10 @@
   }
   .display { font-family: 'Cormorant', Georgia, serif; }
 
-  /* Two phone frames side-by-side on desktop, stacked on mobile */
   .stage {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 32px;
-    justify-content: center;
-    align-items: flex-start;
-    max-width: 1100px;
-    margin: 0 auto;
+    display: flex; flex-wrap: wrap; gap: 32px;
+    justify-content: center; align-items: flex-start;
+    max-width: 1100px; margin: 0 auto;
   }
   .frame-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
   .frame-label {
@@ -46,30 +51,27 @@
     color: var(--muted-fg); font-weight: 600;
   }
   .phone {
-    width: 390px;
-    height: 844px;
-    border-radius: 44px;
-    background: #000;
+    width: 390px; height: 900px;
+    border-radius: 44px; background: #000;
     padding: 12px;
     box-shadow: 0 30px 60px rgba(15, 23, 42, 0.18), 0 8px 16px rgba(15, 23, 42, 0.08);
     overflow: hidden;
   }
   .screen {
-    width: 100%;
-    height: 100%;
-    border-radius: 32px;
-    overflow-y: auto;
-    background: linear-gradient(180deg, #faf5ff 0%, #eff6ff 50%, #fdf2f8 100%);
+    width: 100%; height: 100%;
+    border-radius: 32px; overflow-y: auto;
+    background:
+      radial-gradient(120% 60% at 0% 0%, #fde7ff 0%, transparent 55%),
+      radial-gradient(120% 60% at 100% 0%, #d8f1ff 0%, transparent 55%),
+      radial-gradient(120% 60% at 50% 100%, #ffe2ec 0%, transparent 55%),
+      linear-gradient(180deg, var(--grad-page-from) 0%, var(--grad-page-via) 50%, var(--grad-page-to) 100%);
   }
   .screen::-webkit-scrollbar { width: 0; }
 
-  /* Status bar */
   .status-bar {
     display: flex; justify-content: space-between; align-items: center;
     padding: 14px 24px 6px; font-size: 13px; font-weight: 600;
-    color: var(--primary);
   }
-  .status-bar .dots { letter-spacing: 2px; }
 
   /* App header */
   .app-header {
@@ -80,132 +82,172 @@
     font-family: 'Cormorant', Georgia, serif;
     font-size: 28px; font-weight: 500; letter-spacing: -0.01em;
   }
+  .greet {
+    padding: 0 20px 6px;
+    font-size: 13px; color: var(--muted-fg);
+  }
+  .greet b { color: var(--primary); font-weight: 600; }
   .icon-btn {
     width: 36px; height: 36px; border-radius: 50%;
-    background: rgba(255,255,255,0.6); border: 1px solid var(--border);
+    background: rgba(255,255,255,0.7); border: 1px solid var(--border);
     display: inline-flex; align-items: center; justify-content: center;
-    font-size: 16px; color: var(--primary);
+    font-size: 16px;
   }
 
-  /* Hero card */
+  /* ===== North Star hero — cheerful, Health-style ===== */
   .hero {
-    margin: 12px 16px 0;
-    padding: 24px 20px 28px;
-    border-radius: 24px;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+    margin: 10px 16px 0;
+    padding: 22px 20px 24px;
+    border-radius: 28px;
+    background:
+      radial-gradient(120% 80% at 0% 0%, rgba(74,222,128,0.18) 0%, transparent 55%),
+      radial-gradient(120% 80% at 100% 0%, rgba(59,130,246,0.18) 0%, transparent 55%),
+      radial-gradient(120% 80% at 50% 100%, rgba(236,72,153,0.16) 0%, transparent 55%),
+      #ffffff;
+    border: 1px solid rgba(255,255,255,0.7);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.12), 0 2px 8px rgba(15, 23, 42, 0.04);
     text-align: center;
+    position: relative; overflow: hidden;
   }
-  .hero-ring { position: relative; width: 220px; height: 220px; margin: 0 auto; }
+  .hero::after {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(40% 40% at 50% 0%, rgba(255,255,255,0.6), transparent);
+    pointer-events: none;
+  }
+
+  .hero-ring { position: relative; width: 220px; height: 220px; margin: 4px auto 0; }
   .hero-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-  .hero-ring .ring-bg { fill: none; stroke: #eef2ff; stroke-width: 12; }
-  .hero-ring .ring-fg { fill: none; stroke: url(#goalGradient); stroke-width: 12; stroke-linecap: round; }
+  .hero-ring .ring-bg { fill: none; stroke: #eef2ff; stroke-width: 14; }
+  .hero-ring .ring-fg { fill: none; stroke: url(#goalGradient); stroke-width: 14; stroke-linecap: round; filter: drop-shadow(0 4px 8px rgba(74,222,128,0.25)); }
   .ring-center {
     position: absolute; inset: 0;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 2px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
   }
   .days-big {
     font-family: 'Cormorant', Georgia, serif;
-    font-size: 72px; font-weight: 500; line-height: 1; letter-spacing: -0.02em;
+    font-size: 76px; font-weight: 600; line-height: 1; letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #16a34a 0%, #2563eb 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .days-label { font-size: 13px; color: var(--muted-fg); font-weight: 500; }
-  .day-counter { font-size: 11px; color: var(--muted-fg); margin-top: 6px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .day-counter {
+    display: inline-flex; align-items: center; gap: 4px;
+    margin-top: 8px; padding: 4px 10px;
+    border-radius: 999px; background: rgba(99,102,241,0.08);
+    font-size: 11px; color: #4f46e5; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  }
 
   .goal-text {
     margin-top: 18px;
     font-family: 'Cormorant', Georgia, serif;
-    font-size: 22px; font-weight: 500; line-height: 1.25;
+    font-size: 24px; font-weight: 500; line-height: 1.2;
   }
   .goal-deadline {
-    margin-top: 6px;
-    font-size: 13px; color: var(--muted-fg);
+    margin-top: 4px; font-size: 13px; color: var(--muted-fg);
+  }
+  .goal-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 12px; padding: 6px 12px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(74,222,128,0.16), rgba(59,130,246,0.16));
+    color: #1e40af; font-size: 12px; font-weight: 600;
+    border: 1px solid rgba(59,130,246,0.16);
   }
 
-  /* Hero — no-deadline fallback variant */
+  /* Hero — no-deadline */
   .hero.empty .empty-ring {
-    width: 220px; height: 220px; margin: 0 auto;
+    width: 220px; height: 220px; margin: 6px auto 0;
     border-radius: 50%;
-    border: 2px dashed #cbd5e1;
-    display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, var(--warm-from) 0%, var(--warm-to) 100%);
-    background-clip: padding-box;
+    background:
+      conic-gradient(from 180deg, #fde68a, #fbcfe8, #c4b5fd, #fde68a);
+    padding: 8px;
   }
   .empty-ring-inner {
-    width: 168px; height: 168px; border-radius: 50%;
-    background: rgba(255,255,255,0.78);
+    width: 100%; height: 100%; border-radius: 50%;
+    background: rgba(255,255,255,0.9);
     display: flex; align-items: center; justify-content: center;
-    font-size: 56px;
+    font-size: 64px;
   }
   .hero.empty .empty-title {
     margin-top: 18px;
     font-family: 'Cormorant', Georgia, serif;
-    font-size: 22px; font-weight: 500;
+    font-size: 24px; font-weight: 500;
   }
   .hero.empty .empty-sub {
-    margin-top: 6px; font-size: 13px; color: var(--muted-fg); line-height: 1.4;
+    margin-top: 6px; font-size: 13px; color: var(--muted-fg); line-height: 1.45;
   }
   .cta-btn {
-    margin-top: 16px;
+    margin-top: 14px;
     display: inline-flex; align-items: center; gap: 6px;
-    padding: 12px 22px; border-radius: 999px;
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    padding: 13px 24px; border-radius: 999px;
+    background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #6366f1 100%);
     color: white; font-size: 14px; font-weight: 600; border: none;
-    box-shadow: 0 6px 14px rgba(99, 102, 241, 0.32);
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.35);
   }
 
-  /* Motivational line */
+  /* ===== Motivational ===== */
   .motivational {
     margin: 16px 16px 0;
     padding: 14px 18px;
     border-radius: 18px;
-    background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 50%, #ecfccb 100%);
-    border: 1px solid rgba(16, 185, 129, 0.16);
+    background: linear-gradient(135deg, var(--grad-motiv-from) 0%, var(--grad-motiv-via) 50%, var(--grad-motiv-to) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.18);
     display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08);
   }
   .motivational .spark { font-size: 18px; }
-  .motivational p {
-    margin: 0; font-size: 14px; line-height: 1.4; color: #065f46; font-weight: 500;
-  }
+  .motivational p { margin: 0; font-size: 14px; line-height: 1.4; color: #065f46; font-weight: 500; }
 
-  /* Today's goal card */
-  .section-title {
+  /* Section header */
+  .section-head {
     margin: 22px 20px 8px;
-    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+  .section-head h2 {
+    margin: 0; font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--muted-fg);
   }
+  .section-head .see-all { font-size: 12px; color: #6366f1; font-weight: 600; text-decoration: none; }
+
+  /* ===== Today's goal card ===== */
   .today-card {
     margin: 0 16px;
     padding: 18px 18px 16px;
-    border-radius: 20px;
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    border-radius: 22px;
+    background: linear-gradient(135deg, #ffffff 0%, #fefce8 100%);
+    border: 1px solid rgba(250, 204, 21, 0.22);
+    box-shadow: 0 4px 14px rgba(250, 204, 21, 0.10);
   }
   .today-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
   .today-head h3 {
-    margin: 0; font-size: 16px; font-weight: 600;
+    margin: 0; font-size: 16px; font-weight: 700;
+    display: flex; align-items: center; gap: 8px;
   }
-  .today-head .count { font-size: 13px; color: var(--muted-fg); font-variant-numeric: tabular-nums; }
+  .today-head h3 .emoji { font-size: 18px; }
+  .today-head .count {
+    font-size: 12px; color: #b45309; font-weight: 700;
+    background: rgba(245, 158, 11, 0.14); padding: 3px 10px; border-radius: 999px;
+  }
   .progress-track {
-    height: 6px; border-radius: 999px; background: #eef2ff; overflow: hidden;
+    height: 8px; border-radius: 999px; background: #fef3c7; overflow: hidden;
     margin-bottom: 14px;
   }
   .progress-fill {
     height: 100%; border-radius: 999px;
-    background: linear-gradient(90deg, var(--goal-from), var(--goal-to));
+    background: linear-gradient(90deg, #f59e0b, #f97316, #ec4899);
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
   }
   .action-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
   .action { display: flex; align-items: center; gap: 12px; font-size: 14px; }
   .check {
-    width: 22px; height: 22px; border-radius: 50%;
+    width: 24px; height: 24px; border-radius: 50%;
     border: 1.5px solid #cbd5e1; background: white;
     display: inline-flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
+    flex-shrink: 0; font-weight: 700; color: white; font-size: 13px;
   }
   .action.done .check {
-    background: var(--success); border-color: var(--success); color: white; font-size: 13px;
+    background: linear-gradient(135deg, var(--grad-ring-from), var(--grad-ring-to));
+    border-color: transparent;
   }
   .action.done .label { color: var(--muted-fg); text-decoration: line-through; }
   .label { line-height: 1.3; }
@@ -220,64 +262,141 @@
     font-family: ui-monospace, SFMono-Regular, monospace;
   }
 
-  /* Path strip */
+  /* ===== My Matches ===== */
+  .matches-card {
+    margin: 0 16px;
+    padding: 16px 16px 14px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #fdf2f8 0%, #fae8ff 100%);
+    border: 1px solid rgba(236, 72, 153, 0.18);
+    box-shadow: 0 4px 14px rgba(236, 72, 153, 0.10);
+  }
+  .matches-card .card-head {
+    display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;
+  }
+  .matches-card .card-head h3 {
+    margin: 0; font-size: 15px; font-weight: 700;
+    display: flex; align-items: center; gap: 8px; color: #831843;
+  }
+  .matches-card .card-head .sub { font-size: 11px; color: #a21caf; font-weight: 600; }
+  .match-row { display: flex; flex-direction: column; gap: 10px; }
+  .match {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(236, 72, 153, 0.12);
+  }
+  .avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--grad-match-from), var(--grad-match-to));
+    color: white; font-weight: 700; font-size: 16px;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 2px white, 0 4px 8px rgba(236, 72, 153, 0.25);
+  }
+  .match-text { flex: 1; min-width: 0; }
+  .match-name { font-size: 14px; font-weight: 600; line-height: 1.2; }
+  .match-reason { font-size: 12px; color: var(--muted-fg); margin-top: 2px; line-height: 1.3; }
+  .score-badge {
+    flex-shrink: 0; padding: 4px 10px; border-radius: 999px;
+    background: linear-gradient(135deg, var(--grad-match-from), var(--grad-match-to));
+    color: white; font-size: 11px; font-weight: 700;
+    box-shadow: 0 4px 8px rgba(236, 72, 153, 0.3);
+  }
+
+  /* ===== Upcoming events ===== */
+  .events-card {
+    margin: 0 16px;
+    display: flex; gap: 12px;
+    padding: 0;
+  }
+  .event {
+    flex: 1;
+    border-radius: 20px;
+    overflow: hidden;
+    background: white;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.12);
+    display: flex; flex-direction: column;
+  }
+  .event-hero {
+    height: 88px;
+    position: relative;
+    background: linear-gradient(135deg, #fb923c 0%, #f43f5e 60%, #a855f7 100%);
+    display: flex; align-items: flex-end; padding: 8px;
+  }
+  .event-hero.alt { background: linear-gradient(135deg, #34d399 0%, #3b82f6 50%, #8b5cf6 100%); }
+  .event-date-chip {
+    background: rgba(255,255,255,0.95); color: var(--primary);
+    padding: 4px 8px; border-radius: 8px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.02em;
+    text-align: center; line-height: 1.1;
+  }
+  .event-date-chip .day { font-size: 16px; font-family: 'Cormorant', Georgia, serif; }
+  .event-body { padding: 10px 12px 12px; }
+  .event-title { font-size: 13px; font-weight: 700; line-height: 1.3; }
+  .event-meta { font-size: 11px; color: var(--muted-fg); margin-top: 4px; }
+  .event-meta .dot { margin: 0 4px; }
+
+  /* ===== Path strip ===== */
   .path-strip {
     margin: 0 16px;
-    padding: 16px 18px;
+    padding: 14px 16px;
     border-radius: 18px;
-    background: rgba(255,255,255,0.55);
+    background: rgba(255,255,255,0.6);
     border: 1px solid var(--border);
   }
   .path-head {
-    display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;
+    display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px;
   }
-  .path-head h4 { margin: 0; font-size: 14px; font-weight: 600; }
-  .path-head .endpoint { font-size: 12px; color: var(--muted-fg); }
-  .phases { display: flex; align-items: center; gap: 6px; }
-  .phase { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; }
+  .path-head h4 { margin: 0; font-size: 13px; font-weight: 700; }
+  .path-head .endpoint { font-size: 11px; color: var(--muted-fg); font-weight: 600; }
+  .phases { display: flex; align-items: center; gap: 4px; }
+  .phase { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; }
   .phase-dot {
-    width: 14px; height: 14px; border-radius: 50%;
+    width: 12px; height: 12px; border-radius: 50%;
     background: white; border: 2px solid #cbd5e1;
   }
-  .phase.done .phase-dot { background: var(--success); border-color: var(--success); }
+  .phase.done .phase-dot {
+    background: linear-gradient(135deg, var(--grad-ring-from), var(--grad-ring-to));
+    border-color: transparent;
+  }
   .phase.now .phase-dot {
-    background: white; border-color: #6366f1; border-width: 3px;
-    box-shadow: 0 0 0 4px rgba(99,102,241,0.15);
+    background: white; border-color: #ec4899; border-width: 3px;
+    box-shadow: 0 0 0 4px rgba(236,72,153,0.2);
   }
   .phase-label { font-size: 10px; color: var(--muted-fg); text-align: center; line-height: 1.2; }
-  .phase.now .phase-label { color: var(--primary); font-weight: 600; }
-  .phase-link { flex: 0 0 18px; height: 2px; background: #e2e8f0; }
-  .phase-link.done { background: var(--success); }
+  .phase.now .phase-label { color: var(--primary); font-weight: 700; }
+  .phase-link { flex: 0 0 14px; height: 2px; background: #e2e8f0; }
+  .phase-link.done { background: linear-gradient(90deg, var(--grad-ring-from), var(--grad-ring-to)); }
 
-  /* Secondary index card */
+  /* ===== Secondary index ===== */
   .index-card {
-    margin: 0 16px 24px;
+    margin: 0 16px 20px;
     padding: 14px 16px;
     border-radius: 16px;
-    background: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.55);
     border: 1px solid var(--border);
     display: flex; align-items: center; justify-content: space-between;
   }
   .index-left { display: flex; flex-direction: column; gap: 2px; }
-  .index-label { font-size: 11px; color: var(--muted-fg); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
-  .index-value { font-family: 'Cormorant', Georgia, serif; font-size: 26px; font-weight: 500; }
-  .index-trend { font-size: 12px; color: var(--success); font-weight: 600; }
+  .index-label { font-size: 11px; color: var(--muted-fg); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+  .index-value {
+    font-family: 'Cormorant', Georgia, serif; font-size: 26px; font-weight: 600;
+    background: linear-gradient(135deg, #10b981, #3b82f6);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .index-trend { font-size: 12px; color: var(--success); font-weight: 700; }
   .mini-spark { width: 64px; height: 28px; }
 
-  .footer-spacer { height: 12px; }
+  .footer-spacer { height: 16px; }
 
-  /* Annotations under each frame */
-  .notes {
-    width: 390px;
-    font-size: 12px; line-height: 1.5; color: var(--muted-fg);
-  }
+  .notes { width: 390px; font-size: 12px; line-height: 1.5; color: var(--muted-fg); }
   .notes b { color: var(--primary); }
+  .notes code { background: rgba(99,102,241,0.08); padding: 1px 4px; border-radius: 4px; }
 
-  /* Page header */
-  .page-head {
-    max-width: 1100px; margin: 0 auto 28px;
-    text-align: center;
-  }
+  .page-head { max-width: 1100px; margin: 0 auto 28px; text-align: center; }
   .page-head h1 {
     font-family: 'Cormorant', Georgia, serif;
     font-size: 32px; font-weight: 500; margin: 0 0 6px;
@@ -288,23 +407,20 @@
 <body>
 
 <div class="page-head">
-  <h1>My Journey — mockup</h1>
-  <p>Goal-centric North Star · two states side-by-side · ~390px mobile viewport</p>
+  <h1>My Journey — mockup v2</h1>
+  <p>Health-style cheer · North Star + Today + Matches + Events · 390px mobile</p>
 </div>
 
 <div class="stage">
 
   <!-- ============================================================ -->
-  <!-- STATE A — Happy path: goal with deadline                     -->
+  <!-- STATE A — Happy path                                         -->
   <!-- ============================================================ -->
   <div class="frame-wrap">
     <div class="frame-label">A · Goal with deadline</div>
     <div class="phone"><div class="screen">
 
-      <div class="status-bar">
-        <span>9:41</span>
-        <span class="dots">● ● ●</span>
-      </div>
+      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;">● ● ●</span></div>
 
       <div class="app-header">
         <div class="app-title">My Journey</div>
@@ -313,66 +429,53 @@
           <span class="icon-btn">📅</span>
         </div>
       </div>
+      <div class="greet">Guten Morgen, <b>Dragana</b> ☀️</div>
 
-      <!-- North Star hero -->
+      <!-- Hero -->
       <div class="hero">
         <div class="hero-ring">
           <svg viewBox="0 0 240 240">
             <defs>
               <linearGradient id="goalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%"   stop-color="#34d399" />
-                <stop offset="100%" stop-color="#6366f1" />
+                <stop offset="0%"   stop-color="#4ade80" />
+                <stop offset="60%"  stop-color="#3b82f6" />
+                <stop offset="100%" stop-color="#ec4899" />
               </linearGradient>
             </defs>
-            <!-- bg ring -->
-            <circle class="ring-bg" cx="120" cy="120" r="108" />
-            <!-- fg ring: circumference = 2*pi*108 ≈ 678.58; 38% filled → dashoffset = 678.58 * 0.62 ≈ 420.7 -->
-            <circle class="ring-fg" cx="120" cy="120" r="108"
-              stroke-dasharray="678.58"
-              stroke-dashoffset="420.7" />
+            <circle class="ring-bg" cx="120" cy="120" r="106" />
+            <!-- circumference 2*pi*106 ≈ 666.02; 38% filled → offset 666.02*0.62 ≈ 412.93 -->
+            <circle class="ring-fg" cx="120" cy="120" r="106"
+              stroke-dasharray="666.02" stroke-dashoffset="412.93" />
           </svg>
           <div class="ring-center">
-            <!-- DE: big days-left number is the motivating value -->
             <div class="days-big">56</div>
             <div class="days-label">Tage noch</div>
-            <div class="day-counter">Tag 34 von 90</div>
+            <div class="day-counter">⚡ Tag 34 von 90</div>
           </div>
         </div>
-
-        <!-- goal statement (composed from active_goal_text + target_value + target_unit) -->
         <div class="goal-text display">Ich nehme 10&nbsp;kg ab</div>
         <div class="goal-deadline">bis 23. Juli 2026</div>
+        <div class="goal-pill">🎯 Du bist auf einem guten Weg — 38% geschafft</div>
       </div>
 
-      <!-- Motivational sentence -->
+      <!-- Motivational -->
       <div class="motivational">
         <span class="spark">✨</span>
-        <p>Jeder Schritt zählt — du bist auf einem guten Weg.</p>
+        <p>Jeder Schritt heute bringt dich näher an dein zukünftiges Ich.</p>
       </div>
 
-      <!-- Today's goal card -->
-      <div class="section-title">Heutiges Ziel</div>
+      <!-- Today's goal -->
+      <div class="section-head"><h2>Heute</h2></div>
       <div class="today-card">
         <div class="today-head">
-          <h3>Was heute zählt</h3>
-          <span class="count">2 von 3 erledigt</span>
+          <h3><span class="emoji">🌟</span>Heutiges Ziel</h3>
+          <span class="count">2 / 3</span>
         </div>
-        <div class="progress-track">
-          <div class="progress-fill" style="width: 66.6%"></div>
-        </div>
+        <div class="progress-track"><div class="progress-fill" style="width:66.6%"></div></div>
         <ul class="action-list">
-          <li class="action done">
-            <span class="check">✓</span>
-            <span class="label">20 Minuten Spaziergang</span>
-          </li>
-          <li class="action done">
-            <span class="check">✓</span>
-            <span class="label">8 Gläser Wasser eingetragen</span>
-          </li>
-          <li class="action">
-            <span class="check"></span>
-            <span class="label">15 Minuten Meditation</span>
-          </li>
+          <li class="action done"><span class="check">✓</span><span class="label">20 Minuten Spaziergang</span></li>
+          <li class="action done"><span class="check">✓</span><span class="label">8 Gläser Wasser eingetragen</span></li>
+          <li class="action"><span class="check"></span><span class="label">15 Minuten Meditation</span></li>
         </ul>
       </div>
       <div class="celebrate-note">
@@ -381,12 +484,76 @@
         "Herzlichen Glückwunsch! Heutiges Ziel erreicht — Mach einfach weiter."
       </div>
 
-      <!-- Path strip toward deadline -->
-      <div class="section-title">Dein Weg</div>
+      <!-- Matches -->
+      <div class="section-head">
+        <h2>Menschen, die zu dir passen</h2>
+        <a class="see-all" href="#">Alle ansehen →</a>
+      </div>
+      <div class="matches-card">
+        <div class="card-head">
+          <h3>💞 Deine Matches diese Woche</h3>
+          <span class="sub">3 neue</span>
+        </div>
+        <div class="match-row">
+          <div class="match">
+            <div class="avatar">LM</div>
+            <div class="match-text">
+              <div class="match-name">Lena M.</div>
+              <div class="match-reason">Auch dabei, 8&nbsp;kg in 3 Monaten abzunehmen</div>
+            </div>
+            <div class="score-badge">94%</div>
+          </div>
+          <div class="match">
+            <div class="avatar" style="background:linear-gradient(135deg,#f97316,#ec4899);">SK</div>
+            <div class="match-text">
+              <div class="match-name">Sophie K.</div>
+              <div class="match-reason">Morgenroutine &amp; Achtsamkeit passen super</div>
+            </div>
+            <div class="score-badge">89%</div>
+          </div>
+          <div class="match">
+            <div class="avatar" style="background:linear-gradient(135deg,#8b5cf6,#ec4899);">JT</div>
+            <div class="match-text">
+              <div class="match-name">Jonas T.</div>
+              <div class="match-reason">Läuft auch dreimal pro Woche</div>
+            </div>
+            <div class="score-badge">87%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Events -->
+      <div class="section-head">
+        <h2>Worauf du dich freuen kannst</h2>
+        <a class="see-all" href="#">Alle Events →</a>
+      </div>
+      <div class="events-card">
+        <div class="event">
+          <div class="event-hero">
+            <div class="event-date-chip">SA<br><span class="day">31</span><br>Mai</div>
+          </div>
+          <div class="event-body">
+            <div class="event-title">Sunrise Yoga im Englischen Garten</div>
+            <div class="event-meta">07:00<span class="dot">·</span>32 dabei</div>
+          </div>
+        </div>
+        <div class="event">
+          <div class="event-hero alt">
+            <div class="event-date-chip">DI<br><span class="day">03</span><br>Jun</div>
+          </div>
+          <div class="event-body">
+            <div class="event-title">Wellness Talk: Schlaf &amp; Energie</div>
+            <div class="event-meta">19:30<span class="dot">·</span>online</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Path -->
+      <div class="section-head"><h2>Dein Weg</h2></div>
       <div class="path-strip">
         <div class="path-head">
           <h4>Phasen bis zum Ziel</h4>
-          <span class="endpoint">23. Jul</span>
+          <span class="endpoint">→ 23. Jul</span>
         </div>
         <div class="phases">
           <div class="phase done"><span class="phase-dot"></span><span class="phase-label">Start</span></div>
@@ -401,15 +568,21 @@
         </div>
       </div>
 
-      <!-- Demoted Vitana Index -->
-      <div class="section-title">Wie es dir geht</div>
+      <!-- Vitana Index demoted -->
+      <div class="section-head"><h2>Wie es dir geht</h2></div>
       <div class="index-card">
         <div class="index-left">
           <span class="index-label">Vitana Index</span>
           <span class="index-value">72 <span class="index-trend">↑ 4</span></span>
         </div>
         <svg class="mini-spark" viewBox="0 0 64 28" preserveAspectRatio="none">
-          <polyline fill="none" stroke="#10b981" stroke-width="2"
+          <defs>
+            <linearGradient id="sparkA" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#10b981" />
+              <stop offset="100%" stop-color="#3b82f6" />
+            </linearGradient>
+          </defs>
+          <polyline fill="none" stroke="url(#sparkA)" stroke-width="2.5" stroke-linecap="round"
             points="0,22 10,18 20,20 30,14 40,12 50,10 64,6" />
         </svg>
       </div>
@@ -419,25 +592,21 @@
     </div></div>
 
     <div class="notes">
-      <b>Hero</b> = SVG ring filled by <code>goal_progress_pct</code> (time elapsed → deadline).
-      Center shows the big <code>days_to_deadline</code> — the motivating number.
-      <br><br>
-      <b>Today's goal</b> sources from existing autopilot <code>today</code> bucket (no new backend).
-      Celebration reuses <code>celebrate()</code> with new <code>daily-goal</code> kind, per-day deduped.
+      <b>Hero</b> ring fills by <code>goal_progress_pct</code>; center shows big <code>days_to_deadline</code>.
+      <br><b>Matches</b> pulls 3 from <code>generate-recommendations</code> (type: people).
+      <br><b>Events</b> pulls 2 from <code>useCommunityEvents</code> (today + upcoming, joined).
+      <br>Both new sources need to be added to <code>/api/v1/my-journey</code> response (Part 1 expansion).
     </div>
   </div>
 
   <!-- ============================================================ -->
-  <!-- STATE B — Fallback: no deadline / no goal                    -->
+  <!-- STATE B — Fallback                                           -->
   <!-- ============================================================ -->
   <div class="frame-wrap">
     <div class="frame-label">B · No deadline / no goal</div>
     <div class="phone"><div class="screen">
 
-      <div class="status-bar">
-        <span>9:41</span>
-        <span class="dots">● ● ●</span>
-      </div>
+      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;">● ● ●</span></div>
 
       <div class="app-header">
         <div class="app-title">My Journey</div>
@@ -446,38 +615,91 @@
           <span class="icon-btn">📅</span>
         </div>
       </div>
+      <div class="greet">Schön, dass du da bist 👋</div>
 
-      <!-- Hero — empty / CTA -->
       <div class="hero empty">
-        <div class="empty-ring">
-          <div class="empty-ring-inner">🎯</div>
-        </div>
+        <div class="empty-ring"><div class="empty-ring-inner">🎯</div></div>
         <div class="empty-title display">Setze dein Ziel mit Vitana</div>
-        <div class="empty-sub">Damit wir gemeinsam einen Plan bauen<br>und du jeden Tag sehen kannst, wie weit du bist.</div>
+        <div class="empty-sub">Damit wir gemeinsam einen Plan bauen<br>und du jeden Tag fühlst, wie du näher kommst.</div>
         <button class="cta-btn">Jetzt Ziel festlegen →</button>
       </div>
 
-      <!-- Motivational sentence still renders -->
       <div class="motivational">
         <span class="spark">✨</span>
-        <p>Ein Ziel macht aus jedem Tag einen Schritt.</p>
+        <p>Ein Ziel macht aus jedem Tag einen kleinen Sieg.</p>
       </div>
 
-      <!-- Today's goal — empty-but-encouraging variant -->
-      <div class="section-title">Heutiges Ziel</div>
+      <!-- Today's encouragement variant -->
+      <div class="section-head"><h2>Heute</h2></div>
       <div class="today-card">
         <div class="today-head">
-          <h3>Heute leicht anfangen</h3>
-          <span class="count">0 von 0</span>
+          <h3><span class="emoji">🌱</span>Klein anfangen</h3>
+          <span class="count">0 / 0</span>
         </div>
         <p style="margin:6px 0 0; font-size:13px; color:var(--muted-fg); line-height:1.45;">
-          Sobald du ein Ziel hast, schlägt Vitana dir hier die ersten kleinen
-          Schritte für heute vor.
+          Sobald du dein Ziel gesetzt hast, schlägt Vitana dir hier
+          die ersten kleinen Schritte für heute vor.
         </p>
       </div>
 
-      <!-- Path strip — placeholder when no goal -->
-      <div class="section-title">Dein Weg</div>
+      <!-- Matches still render — they cheer the user up -->
+      <div class="section-head">
+        <h2>Menschen, die zu dir passen</h2>
+        <a class="see-all" href="#">Alle ansehen →</a>
+      </div>
+      <div class="matches-card">
+        <div class="card-head">
+          <h3>💞 Schon 3 Matches für dich</h3>
+          <span class="sub">neu</span>
+        </div>
+        <div class="match-row">
+          <div class="match">
+            <div class="avatar">LM</div>
+            <div class="match-text">
+              <div class="match-name">Lena M.</div>
+              <div class="match-reason">Ähnliche Werte: Bewegung &amp; Achtsamkeit</div>
+            </div>
+            <div class="score-badge">94%</div>
+          </div>
+          <div class="match">
+            <div class="avatar" style="background:linear-gradient(135deg,#f97316,#ec4899);">SK</div>
+            <div class="match-text">
+              <div class="match-name">Sophie K.</div>
+              <div class="match-reason">Auch neu bei Vitana — wollt ihr starten?</div>
+            </div>
+            <div class="score-badge">89%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Events still render -->
+      <div class="section-head">
+        <h2>Worauf du dich freuen kannst</h2>
+        <a class="see-all" href="#">Alle Events →</a>
+      </div>
+      <div class="events-card">
+        <div class="event">
+          <div class="event-hero">
+            <div class="event-date-chip">SA<br><span class="day">31</span><br>Mai</div>
+          </div>
+          <div class="event-body">
+            <div class="event-title">Sunrise Yoga im Englischen Garten</div>
+            <div class="event-meta">07:00<span class="dot">·</span>32 dabei</div>
+          </div>
+        </div>
+        <div class="event">
+          <div class="event-hero alt">
+            <div class="event-date-chip">DI<br><span class="day">03</span><br>Jun</div>
+          </div>
+          <div class="event-body">
+            <div class="event-title">Wellness Talk: Schlaf &amp; Energie</div>
+            <div class="event-meta">19:30<span class="dot">·</span>online</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Path placeholder -->
+      <div class="section-head"><h2>Dein Weg</h2></div>
       <div class="path-strip">
         <div class="path-head">
           <h4>Phasen bis zum Ziel</h4>
@@ -496,15 +718,14 @@
         </div>
       </div>
 
-      <!-- Vitana Index still shows -->
-      <div class="section-title">Wie es dir geht</div>
+      <div class="section-head"><h2>Wie es dir geht</h2></div>
       <div class="index-card">
         <div class="index-left">
           <span class="index-label">Vitana Index</span>
           <span class="index-value">68 <span class="index-trend" style="color:var(--muted-fg);">→ 0</span></span>
         </div>
         <svg class="mini-spark" viewBox="0 0 64 28" preserveAspectRatio="none">
-          <polyline fill="none" stroke="#94a3b8" stroke-width="2"
+          <polyline fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"
             points="0,16 10,18 20,14 30,16 40,14 50,16 64,14" />
         </svg>
       </div>
@@ -514,9 +735,9 @@
     </div></div>
 
     <div class="notes">
-      <b>No-deadline / no-goal fallback.</b> The ring is replaced by a warm
-      CTA that opens Life Compass (<code>LIFE_COMPASS_OPEN_EVENT</code>) — never an empty/broken ring.
-      Motivational line + Vitana Index still render so the screen isn't bare.
+      <b>No-goal fallback</b> still surfaces <b>Matches</b> and <b>Events</b> —
+      they're the cheer-up content that makes the user want to come back even
+      before a goal is set. CTA stays the focal point.
     </div>
   </div>
 
