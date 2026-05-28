@@ -36,10 +36,8 @@
       "phase": "llm"
     },
     "calendar.bookedActivities": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register for 'Your' (used formal 'Vaše' instead of informal 'Tvoje' for a single user).",
-      "suggested": "Tvoje rezervisane aktivnosti u VITANA",
       "phase": "llm"
     },
     "calendar.addEvent": {
@@ -78,10 +76,8 @@
       "phase": "llm"
     },
     "calendar.tryQuickAdd": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Brzi dodaj' is an awkward and literal translation for a feature name, sounding like an imperative verb phrase rather than a noun.",
-      "suggested": "Probaj Brzo dodavanje ili pusti Autopilot da isplanira tvoj dan",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "calendar.clickSlotHint": {
@@ -330,10 +326,8 @@
       "phase": "llm"
     },
     "calendar.autopilot.reminderLaterToday": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward word order for 'later today'. 'Danas kasnije' is less natural than 'kasnije danas'.",
-      "suggested": "Podsetnik postavljen za kasnije danas",
       "phase": "llm"
     },
     "calendar.autopilot.reminderTomorrow": {
@@ -582,5 +576,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:55.885Z"
+  "generatedAt": "2026-05-28T07:07:34.107Z"
 }
