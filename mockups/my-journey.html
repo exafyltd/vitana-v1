@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My Journey — mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0f172a;
+    --muted-fg: #64748b;
+    --border: rgba(15, 23, 42, 0.08);
+    --card-bg: #ffffff;
+    --goal-from: #34d399;   /* emerald */
+    --goal-to:   #6366f1;   /* indigo */
+    --warm-from: #fde68a;
+    --warm-to:   #fbcfe8;
+    --success:   #10b981;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--primary);
+    background: #f5f3ff;
+    padding: 32px 16px 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .display { font-family: 'Cormorant', Georgia, serif; }
+
+  /* Two phone frames side-by-side on desktop, stacked on mobile */
+  .stage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .frame-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .frame-label {
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted-fg); font-weight: 600;
+  }
+  .phone {
+    width: 390px;
+    height: 844px;
+    border-radius: 44px;
+    background: #000;
+    padding: 12px;
+    box-shadow: 0 30px 60px rgba(15, 23, 42, 0.18), 0 8px 16px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+  }
+  .screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 32px;
+    overflow-y: auto;
+    background: linear-gradient(180deg, #faf5ff 0%, #eff6ff 50%, #fdf2f8 100%);
+  }
+  .screen::-webkit-scrollbar { width: 0; }
+
+  /* Status bar */
+  .status-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 24px 6px; font-size: 13px; font-weight: 600;
+    color: var(--primary);
+  }
+  .status-bar .dots { letter-spacing: 2px; }
+
+  /* App header */
+  .app-header {
+    padding: 8px 20px 4px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .app-title {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 28px; font-weight: 500; letter-spacing: -0.01em;
+  }
+  .icon-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.6); border: 1px solid var(--border);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 16px; color: var(--primary);
+  }
+
+  /* Hero card */
+  .hero {
+    margin: 12px 16px 0;
+    padding: 24px 20px 28px;
+    border-radius: 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+    text-align: center;
+  }
+  .hero-ring { position: relative; width: 220px; height: 220px; margin: 0 auto; }
+  .hero-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .hero-ring .ring-bg { fill: none; stroke: #eef2ff; stroke-width: 12; }
+  .hero-ring .ring-fg { fill: none; stroke: url(#goalGradient); stroke-width: 12; stroke-linecap: round; }
+  .ring-center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px;
+  }
+  .days-big {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 72px; font-weight: 500; line-height: 1; letter-spacing: -0.02em;
+  }
+  .days-label { font-size: 13px; color: var(--muted-fg); font-weight: 500; }
+  .day-counter { font-size: 11px; color: var(--muted-fg); margin-top: 6px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .goal-text {
+    margin-top: 18px;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 22px; font-weight: 500; line-height: 1.25;
+  }
+  .goal-deadline {
+    margin-top: 6px;
+    font-size: 13px; color: var(--muted-fg);
+  }
+
+  /* Hero — no-deadline fallback variant */
+  .hero.empty .empty-ring {
+    width: 220px; height: 220px; margin: 0 auto;
+    border-radius: 50%;
+    border: 2px dashed #cbd5e1;
+    display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--warm-from) 0%, var(--warm-to) 100%);
+    background-clip: padding-box;
+  }
+  .empty-ring-inner {
+    width: 168px; height: 168px; border-radius: 50%;
+    background: rgba(255,255,255,0.78);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 56px;
+  }
+  .hero.empty .empty-title {
+    margin-top: 18px;
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 22px; font-weight: 500;
+  }
+  .hero.empty .empty-sub {
+    margin-top: 6px; font-size: 13px; color: var(--muted-fg); line-height: 1.4;
+  }
+  .cta-btn {
+    margin-top: 16px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 12px 22px; border-radius: 999px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white; font-size: 14px; font-weight: 600; border: none;
+    box-shadow: 0 6px 14px rgba(99, 102, 241, 0.32);
+  }
+
+  /* Motivational line */
+  .motivational {
+    margin: 16px 16px 0;
+    padding: 14px 18px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 50%, #ecfccb 100%);
+    border: 1px solid rgba(16, 185, 129, 0.16);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .motivational .spark { font-size: 18px; }
+  .motivational p {
+    margin: 0; font-size: 14px; line-height: 1.4; color: #065f46; font-weight: 500;
+  }
+
+  /* Today's goal card */
+  .section-title {
+    margin: 22px 20px 8px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted-fg);
+  }
+  .today-card {
+    margin: 0 16px;
+    padding: 18px 18px 16px;
+    border-radius: 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  }
+  .today-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+  .today-head h3 {
+    margin: 0; font-size: 16px; font-weight: 600;
+  }
+  .today-head .count { font-size: 13px; color: var(--muted-fg); font-variant-numeric: tabular-nums; }
+  .progress-track {
+    height: 6px; border-radius: 999px; background: #eef2ff; overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .progress-fill {
+    height: 100%; border-radius: 999px;
+    background: linear-gradient(90deg, var(--goal-from), var(--goal-to));
+  }
+  .action-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .action { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+  .check {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1.5px solid #cbd5e1; background: white;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .action.done .check {
+    background: var(--success); border-color: var(--success); color: white; font-size: 13px;
+  }
+  .action.done .label { color: var(--muted-fg); text-decoration: line-through; }
+  .label { line-height: 1.3; }
+
+  .celebrate-note {
+    margin: 12px 16px 0;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(16, 185, 129, 0.08);
+    border-left: 3px solid var(--success);
+    font-size: 11px; line-height: 1.5; color: #065f46;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+  }
+
+  /* Path strip */
+  .path-strip {
+    margin: 0 16px;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.55);
+    border: 1px solid var(--border);
+  }
+  .path-head {
+    display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;
+  }
+  .path-head h4 { margin: 0; font-size: 14px; font-weight: 600; }
+  .path-head .endpoint { font-size: 12px; color: var(--muted-fg); }
+  .phases { display: flex; align-items: center; gap: 6px; }
+  .phase { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; }
+  .phase-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: white; border: 2px solid #cbd5e1;
+  }
+  .phase.done .phase-dot { background: var(--success); border-color: var(--success); }
+  .phase.now .phase-dot {
+    background: white; border-color: #6366f1; border-width: 3px;
+    box-shadow: 0 0 0 4px rgba(99,102,241,0.15);
+  }
+  .phase-label { font-size: 10px; color: var(--muted-fg); text-align: center; line-height: 1.2; }
+  .phase.now .phase-label { color: var(--primary); font-weight: 600; }
+  .phase-link { flex: 0 0 18px; height: 2px; background: #e2e8f0; }
+  .phase-link.done { background: var(--success); }
+
+  /* Secondary index card */
+  .index-card {
+    margin: 0 16px 24px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .index-left { display: flex; flex-direction: column; gap: 2px; }
+  .index-label { font-size: 11px; color: var(--muted-fg); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+  .index-value { font-family: 'Cormorant', Georgia, serif; font-size: 26px; font-weight: 500; }
+  .index-trend { font-size: 12px; color: var(--success); font-weight: 600; }
+  .mini-spark { width: 64px; height: 28px; }
+
+  .footer-spacer { height: 12px; }
+
+  /* Annotations under each frame */
+  .notes {
+    width: 390px;
+    font-size: 12px; line-height: 1.5; color: var(--muted-fg);
+  }
+  .notes b { color: var(--primary); }
+
+  /* Page header */
+  .page-head {
+    max-width: 1100px; margin: 0 auto 28px;
+    text-align: center;
+  }
+  .page-head h1 {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 32px; font-weight: 500; margin: 0 0 6px;
+  }
+  .page-head p { margin: 0; color: var(--muted-fg); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>My Journey — mockup</h1>
+  <p>Goal-centric North Star · two states side-by-side · ~390px mobile viewport</p>
+</div>
+
+<div class="stage">
+
+  <!-- ============================================================ -->
+  <!-- STATE A — Happy path: goal with deadline                     -->
+  <!-- ============================================================ -->
+  <div class="frame-wrap">
+    <div class="frame-label">A · Goal with deadline</div>
+    <div class="phone"><div class="screen">
+
+      <div class="status-bar">
+        <span>9:41</span>
+        <span class="dots">● ● ●</span>
+      </div>
+
+      <div class="app-header">
+        <div class="app-title">My Journey</div>
+        <div style="display:flex; gap:8px;">
+          <span class="icon-btn">🔍</span>
+          <span class="icon-btn">📅</span>
+        </div>
+      </div>
+
+      <!-- North Star hero -->
+      <div class="hero">
+        <div class="hero-ring">
+          <svg viewBox="0 0 240 240">
+            <defs>
+              <linearGradient id="goalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%"   stop-color="#34d399" />
+                <stop offset="100%" stop-color="#6366f1" />
+              </linearGradient>
+            </defs>
+            <!-- bg ring -->
+            <circle class="ring-bg" cx="120" cy="120" r="108" />
+            <!-- fg ring: circumference = 2*pi*108 ≈ 678.58; 38% filled → dashoffset = 678.58 * 0.62 ≈ 420.7 -->
+            <circle class="ring-fg" cx="120" cy="120" r="108"
+              stroke-dasharray="678.58"
+              stroke-dashoffset="420.7" />
+          </svg>
+          <div class="ring-center">
+            <!-- DE: big days-left number is the motivating value -->
+            <div class="days-big">56</div>
+            <div class="days-label">Tage noch</div>
+            <div class="day-counter">Tag 34 von 90</div>
+          </div>
+        </div>
+
+        <!-- goal statement (composed from active_goal_text + target_value + target_unit) -->
+        <div class="goal-text display">Ich nehme 10&nbsp;kg ab</div>
+        <div class="goal-deadline">bis 23. Juli 2026</div>
+      </div>
+
+      <!-- Motivational sentence -->
+      <div class="motivational">
+        <span class="spark">✨</span>
+        <p>Jeder Schritt zählt — du bist auf einem guten Weg.</p>
+      </div>
+
+      <!-- Today's goal card -->
+      <div class="section-title">Heutiges Ziel</div>
+      <div class="today-card">
+        <div class="today-head">
+          <h3>Was heute zählt</h3>
+          <span class="count">2 von 3 erledigt</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width: 66.6%"></div>
+        </div>
+        <ul class="action-list">
+          <li class="action done">
+            <span class="check">✓</span>
+            <span class="label">20 Minuten Spaziergang</span>
+          </li>
+          <li class="action done">
+            <span class="check">✓</span>
+            <span class="label">8 Gläser Wasser eingetragen</span>
+          </li>
+          <li class="action">
+            <span class="check"></span>
+            <span class="label">15 Minuten Meditation</span>
+          </li>
+        </ul>
+      </div>
+      <div class="celebrate-note">
+        // When last action flips → done:<br>
+        celebrate({ kind: 'daily-goal' }) → 🎉 modal<br>
+        "Herzlichen Glückwunsch! Heutiges Ziel erreicht — Mach einfach weiter."
+      </div>
+
+      <!-- Path strip toward deadline -->
+      <div class="section-title">Dein Weg</div>
+      <div class="path-strip">
+        <div class="path-head">
+          <h4>Phasen bis zum Ziel</h4>
+          <span class="endpoint">23. Jul</span>
+        </div>
+        <div class="phases">
+          <div class="phase done"><span class="phase-dot"></span><span class="phase-label">Start</span></div>
+          <div class="phase-link done"></div>
+          <div class="phase done"><span class="phase-dot"></span><span class="phase-label">Aufbau</span></div>
+          <div class="phase-link done"></div>
+          <div class="phase now"><span class="phase-dot"></span><span class="phase-label">Rhythmus</span></div>
+          <div class="phase-link"></div>
+          <div class="phase"><span class="phase-dot"></span><span class="phase-label">Festigen</span></div>
+          <div class="phase-link"></div>
+          <div class="phase"><span class="phase-dot"></span><span class="phase-label">Ziel</span></div>
+        </div>
+      </div>
+
+      <!-- Demoted Vitana Index -->
+      <div class="section-title">Wie es dir geht</div>
+      <div class="index-card">
+        <div class="index-left">
+          <span class="index-label">Vitana Index</span>
+          <span class="index-value">72 <span class="index-trend">↑ 4</span></span>
+        </div>
+        <svg class="mini-spark" viewBox="0 0 64 28" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#10b981" stroke-width="2"
+            points="0,22 10,18 20,20 30,14 40,12 50,10 64,6" />
+        </svg>
+      </div>
+
+      <div class="footer-spacer"></div>
+
+    </div></div>
+
+    <div class="notes">
+      <b>Hero</b> = SVG ring filled by <code>goal_progress_pct</code> (time elapsed → deadline).
+      Center shows the big <code>days_to_deadline</code> — the motivating number.
+      <br><br>
+      <b>Today's goal</b> sources from existing autopilot <code>today</code> bucket (no new backend).
+      Celebration reuses <code>celebrate()</code> with new <code>daily-goal</code> kind, per-day deduped.
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STATE B — Fallback: no deadline / no goal                    -->
+  <!-- ============================================================ -->
+  <div class="frame-wrap">
+    <div class="frame-label">B · No deadline / no goal</div>
+    <div class="phone"><div class="screen">
+
+      <div class="status-bar">
+        <span>9:41</span>
+        <span class="dots">● ● ●</span>
+      </div>
+
+      <div class="app-header">
+        <div class="app-title">My Journey</div>
+        <div style="display:flex; gap:8px;">
+          <span class="icon-btn">🔍</span>
+          <span class="icon-btn">📅</span>
+        </div>
+      </div>
+
+      <!-- Hero — empty / CTA -->
+      <div class="hero empty">
+        <div class="empty-ring">
+          <div class="empty-ring-inner">🎯</div>
+        </div>
+        <div class="empty-title display">Setze dein Ziel mit Vitana</div>
+        <div class="empty-sub">Damit wir gemeinsam einen Plan bauen<br>und du jeden Tag sehen kannst, wie weit du bist.</div>
+        <button class="cta-btn">Jetzt Ziel festlegen →</button>
+      </div>
+
+      <!-- Motivational sentence still renders -->
+      <div class="motivational">
+        <span class="spark">✨</span>
+        <p>Ein Ziel macht aus jedem Tag einen Schritt.</p>
+      </div>
+
+      <!-- Today's goal — empty-but-encouraging variant -->
+      <div class="section-title">Heutiges Ziel</div>
+      <div class="today-card">
+        <div class="today-head">
+          <h3>Heute leicht anfangen</h3>
+          <span class="count">0 von 0</span>
+        </div>
+        <p style="margin:6px 0 0; font-size:13px; color:var(--muted-fg); line-height:1.45;">
+          Sobald du ein Ziel hast, schlägt Vitana dir hier die ersten kleinen
+          Schritte für heute vor.
+        </p>
+      </div>
+
+      <!-- Path strip — placeholder when no goal -->
+      <div class="section-title">Dein Weg</div>
+      <div class="path-strip">
+        <div class="path-head">
+          <h4>Phasen bis zum Ziel</h4>
+          <span class="endpoint">—</span>
+        </div>
+        <div class="phases">
+          <div class="phase"><span class="phase-dot"></span><span class="phase-label">Start</span></div>
+          <div class="phase-link"></div>
+          <div class="phase"><span class="phase-dot"></span><span class="phase-label">Aufbau</span></div>
+          <div class="phase-link"></div>
+          <div class="phase"><span class="phase-dot"></span><span class="phase-label">Rhythmus</span></div>
+          <div class="phase-link"></div>
+          <div class="phase"><span class="phase-dot"></span><span class="phase-label">Festigen</span></div>
+          <div class="phase-link"></div>
+          <div class="phase"><span class="phase-dot"></span><span class="phase-label">Ziel</span></div>
+        </div>
+      </div>
+
+      <!-- Vitana Index still shows -->
+      <div class="section-title">Wie es dir geht</div>
+      <div class="index-card">
+        <div class="index-left">
+          <span class="index-label">Vitana Index</span>
+          <span class="index-value">68 <span class="index-trend" style="color:var(--muted-fg);">→ 0</span></span>
+        </div>
+        <svg class="mini-spark" viewBox="0 0 64 28" preserveAspectRatio="none">
+          <polyline fill="none" stroke="#94a3b8" stroke-width="2"
+            points="0,16 10,18 20,14 30,16 40,14 50,16 64,14" />
+        </svg>
+      </div>
+
+      <div class="footer-spacer"></div>
+
+    </div></div>
+
+    <div class="notes">
+      <b>No-deadline / no-goal fallback.</b> The ring is replaced by a warm
+      CTA that opens Life Compass (<code>LIFE_COMPASS_OPEN_EVENT</code>) — never an empty/broken ring.
+      Motivational line + Vitana Index still render so the screen isn't bare.
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
