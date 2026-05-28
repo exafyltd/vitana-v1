@@ -30,7 +30,6 @@ import {
   CircleDot,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { communityFetch } from "@/lib/community-gateway";
 import { toast } from "sonner";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -87,16 +86,17 @@ function sumVectorTotal(vector: ContributionVector | null | undefined): number {
 export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const navigate = useNavigate();
   const { translate } = useTranslation();
-  const { 
+  const {
     allVisibleActions,
     pendingActions,
-    selectedActions, 
-    executeActions, 
-    toggleActionSelection, 
+    selectedActions,
+    executeActions,
+    toggleActionSelection,
     isExecuting,
     loading,
     error,
     fetchRecommendations,
+    completeRecommendation,
   } = useAutopilot();
   
   const isMobile = useIsMobile();
@@ -199,6 +199,14 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             window.dispatchEvent(new CustomEvent("calendar:open"));
             return;
           }
+          if (openTarget === "invite" || openTarget === "referral") {
+            window.dispatchEvent(new CustomEvent("referral:open"));
+            return;
+          }
+          if (openTarget === "index" || openTarget === "vitana_index") {
+            window.dispatchEvent(new CustomEvent("vitana:open-index"));
+            return;
+          }
         } catch {
           // target wasn't URL-parsable — fall through to normal navigate
         }
@@ -231,10 +239,9 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const handleCompleteTask = async (actionId: string) => {
     setCompletingId(actionId);
     try {
-      const res = await communityFetch(`/api/v1/autopilot/recommendations/${actionId}/complete`, { method: 'POST' });
-      if (res.ok) {
-        const { reward } = await res.json();
-        if (reward) toast.success(`+${reward} VTN earned!`);
+      const json = await completeRecommendation(actionId);
+      if (json?.ok) {
+        if (json.reward) toast.success(`+${json.reward} VTN earned!`);
         fetchRecommendations();
       } else {
         notifyError('toasts.common.couldNotCompleteTask');
