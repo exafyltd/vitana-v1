@@ -30,6 +30,8 @@ import { GoalNorthStar } from "@/components/journey/GoalNorthStar";
 import { TodaysGoalCard, type TodayAction } from "@/components/journey/TodaysGoalCard";
 import { GoalSetupDialog } from "@/components/journey/GoalSetupDialog";
 import { GoalPlanSheet } from "@/components/journey/GoalPlanSheet";
+import { MatchesPreview } from "@/components/journey/MatchesPreview";
+import { EventsPreview } from "@/components/journey/EventsPreview";
 import { useGenerateGoalPlan } from "@/hooks/useGoalPlan";
 import { t } from "@/lib/i18n-toast";
 
@@ -195,6 +197,9 @@ export default function AutopilotDashboard() {
     <TodaysGoalCard actions={todayActions} loading={recLoading} onOpenAutopilot={handleOpenAutopilot} />
   );
 
+  const matchesPreview = <MatchesPreview />;
+  const eventsPreview = <EventsPreview />;
+
   // Your plan — entry point to the full set of Autopilot steps
   const yourPlanCard = (
     <Card className="rounded-2xl border ring-1 ring-border/60 shadow-sm">
@@ -238,12 +243,16 @@ export default function AutopilotDashboard() {
     </div>
   );
 
-  // Mobile: one vertical column.
+  // Mobile: one vertical column. Matches + events sit between the daily
+  // commitment and the broader plan — they're the "look forward to" content
+  // that keeps the screen feeling cheerful, even before today's actions are done.
   const content = (
     <div className="space-y-4">
       {motivational}
       {northStar}
       {todaysGoal}
+      {matchesPreview}
+      {eventsPreview}
       {yourPlanCard}
       {howYoureDoing}
       {keepCheckingIn}
@@ -299,6 +308,8 @@ export default function AutopilotDashboard() {
             <div className="lg:col-span-2 space-y-4">
               {northStar}
               {todaysGoal}
+              {matchesPreview}
+              {eventsPreview}
             </div>
             <div className="space-y-4">
               {yourPlanCard}

@@ -38,27 +38,27 @@ export function TodaysGoalCard({
   const pct = total > 0 ? Math.round((done / total) * 100) : 0;
 
   return (
-    <Card className="rounded-2xl border ring-1 ring-border/60 shadow-sm">
+    <Card className="rounded-2xl border border-amber-200/60 shadow-sm bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 dark:from-amber-950/20 dark:via-orange-950/20 dark:to-rose-950/20">
       <CardContent className="p-4 space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Flag className="w-4 h-4 text-primary" />
+            <Flag className="w-4 h-4 text-orange-500" />
             <p className="text-sm font-semibold">{t("screens.autopilotdashboard.todaysGoal")}</p>
           </div>
           {total > 0 && (
-            <span className="text-xs text-muted-foreground">
+            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-200/60 text-amber-900 dark:bg-amber-900/40 dark:text-amber-100">
               {t("screens.autopilotdashboard.todayDoneOfTotal", { done, total })}
             </span>
           )}
         </div>
 
         {loading ? (
-          <div className="h-2 rounded-full bg-muted/40 animate-pulse" />
+          <div className="h-2 rounded-full bg-amber-100/60 animate-pulse" />
         ) : total === 0 ? (
           <p className="text-sm text-muted-foreground">{EMPTY_COPY.myJourneyOnePillar}</p>
         ) : (
           <>
-            <Progress value={pct} className="h-2" />
+            <Progress value={pct} className="h-2 bg-amber-100/70 dark:bg-amber-950/40" />
             {allDone ? (
               <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
                 {t("screens.autopilotdashboard.todayAllDone")}
