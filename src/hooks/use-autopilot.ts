@@ -210,10 +210,12 @@ export function useAutopilot() {
   }, []);
 
   // Complete — try the dedicated complete route first, then fall back to
-  // reject for any non-2xx so the user always sees the row leave the list.
-  // We can't tell from this side whether the gateway revision ships /complete
-  // at all, and an "executing"-forever row is a much worse UX than losing
-  // a possible reward.
+  // reject for any non-2xx so the row always leaves the user's list. We
+  // can't tell from this side whether the gateway revision ships /complete
+  // at all, and an "executing"-forever row is much worse UX than losing a
+  // possible reward. The /reject fallback intentionally drops ?role=
+  // community because the proven-working dismissRecommendation path below
+  // doesn't pass it.
   const completeRecommendation = useCallback(async (id: string): Promise<{
     ok: boolean;
     reward?: number;
@@ -236,7 +238,7 @@ export function useAutopilot() {
       console.warn("[Autopilot] complete network error — falling back to reject", e);
     }
     try {
-      const rejectRes = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/reject?role=community`, {
+      const rejectRes = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/reject`, {
         method: "POST",
         headers,
       });

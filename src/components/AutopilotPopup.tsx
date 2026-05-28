@@ -39,7 +39,7 @@ import { PillarDeltaBadges } from "@/components/health/PillarDeltaBadges";
 import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
 import { EMPTY_COPY } from "@/lib/celebrate";
 import type { ContributionVector, VitanaPillarKey } from "@/types/autopilot";
-import { notifyError, t } from '@/lib/i18n-toast';
+import { t } from '@/lib/i18n-toast';
 
 interface AutopilotPopupProps {
   open: boolean;
@@ -97,6 +97,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     error,
     fetchRecommendations,
     completeRecommendation,
+    setActionStatus,
   } = useAutopilot();
   
   const isMobile = useIsMobile();
@@ -232,17 +233,21 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const [completingId, setCompletingId] = useState<string | null>(null);
 
   const handleCompleteTask = async (actionId: string) => {
+    // Optimistic — the row moves to completed (Erledigt badge) immediately so
+    // the user never sees a stuck "executing" pill while the network call is
+    // in flight, and never sees a "Could not complete" toast if the backend
+    // /complete route is missing. completeRecommendation already falls back
+    // to /reject when /complete fails; either way the row stops bothering
+    // the user. If both fail we'll find out from the console log added in
+    // completeRecommendation, not from a toast in the user's face.
+    setActionStatus(actionId, "completed");
     setCompletingId(actionId);
     try {
       const json = await completeRecommendation(actionId);
-      if (json?.ok) {
-        if (json.reward) toast.success(`+${json.reward} VTN earned!`);
-        fetchRecommendations();
-      } else {
-        notifyError('toasts.common.couldNotCompleteTask');
+      if (json?.ok && json.via === "complete" && json.reward) {
+        toast.success(`+${json.reward} VTN earned!`);
       }
-    } catch {
-      notifyError('toasts.common.couldNotCompleteTask');
+      fetchRecommendations();
     } finally {
       setCompletingId(null);
     }
