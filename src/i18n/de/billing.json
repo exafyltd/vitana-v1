@@ -148,7 +148,8 @@
       "paymentNoneTitle": "Keine Zahlungsmethode hinterlegt",
       "paymentNoneBody": "Füge eine Karte hinzu, wenn du Premium startest.",
       "invoicesTitle": "Rechnungen & Belege",
-      "invoicesBody": "Alle Rechnungen und Belege findest du im Stripe-Abrechnungsportal."
+      "invoicesBody": "Alle Rechnungen und Belege findest du im Stripe-Abrechnungsportal.",
+      "summaryRenewsOn": "Dein Plan verlängert sich am {date}"
     },
     "state": {
       "freeStatus": "Du nutzt Vitana Free",

@@ -47,7 +47,7 @@ export function MobileSubscriptionSummary({ className }: { className?: string })
     title = t("billing.state.premiumActive");
     subtitle = plan.cancel_at_period_end
       ? t("billing.state.cancelAtPeriodEnd")
-      : t("billing.state.renewsAt", { date: fmtDate(new Date(plan.current_period_end)) });
+      : t("billing.mobileBilling.summaryRenewsOn", { date: fmtDate(new Date(plan.current_period_end)) });
   }
 
   const toneStyles: Record<typeof tone, string> = {
