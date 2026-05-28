@@ -62,7 +62,7 @@ export function EventsPreview({ limit = 2 }: { limit?: number }) {
           </h3>
           <button
             type="button"
-            onClick={() => navigate("/community/events")}
+            onClick={() => navigate("/comm/events-meetups?tab=hot")}
             className="text-xs font-semibold text-orange-700 dark:text-orange-300 hover:underline flex items-center gap-0.5"
           >
             {t("screens.autopilotdashboard.eventsSeeAll")}
@@ -80,7 +80,7 @@ export function EventsPreview({ limit = 2 }: { limit?: number }) {
               <button
                 key={e.id}
                 type="button"
-                onClick={() => navigate(`/community/events?event=${e.id}`)}
+                onClick={() => navigate(`/comm/events-meetups?tab=hot&event=${e.id}`)}
                 className="text-left rounded-xl overflow-hidden bg-white/70 dark:bg-white/5 border border-amber-200/40 hover:shadow-md transition-shadow"
               >
                 <div className={`h-20 relative ${e.image_url ? "" : GRADIENTS[i % GRADIENTS.length]}`}>
