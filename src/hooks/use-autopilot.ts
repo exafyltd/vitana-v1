@@ -208,6 +208,29 @@ export function useAutopilot() {
     }
   }, []);
 
+  // Complete — flushes backend state from "activated" to "completed". Routed
+  // through the same gateway + role convention as activate so a deployment that
+  // accepts one always accepts the other.
+  const completeRecommendation = useCallback(async (id: string): Promise<{
+    ok: boolean;
+    reward?: number;
+  } | null> => {
+    try {
+      const headers = await getAuthHeaders();
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/complete?role=community`, {
+        method: "POST",
+        headers,
+      });
+      if (!res.ok) throw new Error(`Complete failed: ${res.status}`);
+      const json = await res.json();
+      if (json.ok) return json;
+      return null;
+    } catch (e) {
+      console.error("[Autopilot] complete error:", e);
+      return null;
+    }
+  }, []);
+
   // Dismiss
   const dismissRecommendation = useCallback(async (id: string): Promise<boolean> => {
     try {
@@ -281,6 +304,14 @@ export function useAutopilot() {
       const response = await activateRecommendation(id);
       const success = !!response;
       if (success) {
+        // "notify" actions have nothing the user needs to do beyond reading the
+        // completion message — flush them straight to completed on the backend
+        // so they don't come back as "executing" on the next popup open. For
+        // "navigate" actions we let the destination page (or the per-item
+        // Complete button) own the final transition.
+        if (response.action_type === "notify") {
+          await completeRecommendation(id);
+        }
         setActionStatus(id, "completed");
         results.push({
           actionId: id,
@@ -327,6 +358,7 @@ export function useAutopilot() {
     error,
     fetchRecommendations,
     activateRecommendation,
+    completeRecommendation,
     dismissRecommendation,
     fetchCount,
     // VTID-01946 Phase H.4 — live badge + pulse

@@ -27,7 +27,7 @@ export function useAutopilotComplete() {
       firedRefs.add(sourceRef);
 
       try {
-        const res = await communityFetch("/api/v1/autopilot/recommendations");
+        const res = await communityFetch("/api/v1/autopilot/recommendations?role=community");
         if (!res.ok) return;
         const { recommendations } = await res.json();
         const rec = recommendations?.find(
@@ -36,7 +36,7 @@ export function useAutopilotComplete() {
         if (!rec) return;
 
         const completeRes = await communityFetch(
-          `/api/v1/autopilot/recommendations/${rec.id}/complete`,
+          `/api/v1/autopilot/recommendations/${rec.id}/complete?role=community`,
           { method: "POST" }
         );
         if (!completeRes.ok) return;
