@@ -4,8 +4,9 @@ export interface RingPhase {
   color: string;
 }
 
-// Soft pastel palette — each phase (milestone-to-milestone) gets the next hue.
-const PASTEL_PALETTE = ["#a7f3d0", "#99f6e4", "#bae6fd", "#c7d2fe", "#ddd6fe", "#fbcfe8"];
+// Mid-saturation palette — readable against the warm-gradient hero card while
+// still feeling soft (the upcoming portion is drawn at lower opacity).
+const PASTEL_PALETTE = ["#10b981", "#06b6d4", "#3b82f6", "#6366f1", "#8b5cf6", "#ec4899"];
 
 /**
  * Build phase segments from milestone day-offsets — each milestone bounds a
