@@ -61,16 +61,19 @@ export function GoalNorthStar({
   // No goal at all → invite the user to set their Life Compass goal.
   if (!loading && !goal) {
     return (
-      <Card className="rounded-3xl border ring-1 ring-border/60 shadow-sm bg-card/80">
+      <Card className="rounded-3xl border border-amber-200/60 shadow-sm bg-gradient-to-br from-amber-50 via-rose-50 to-fuchsia-50 dark:from-amber-950/20 dark:via-rose-950/20 dark:to-fuchsia-950/20">
         <CardContent className="p-8 flex flex-col items-center text-center gap-3">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400/30 to-indigo-500/30 flex items-center justify-center">
-            <Compass className="w-8 h-8 text-primary" />
+          <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400/40 via-rose-400/40 to-fuchsia-500/40 flex items-center justify-center shadow-sm">
+            <Compass className="w-8 h-8 text-rose-600 dark:text-rose-300" />
           </div>
           <h2 className="text-lg font-semibold">{t("screens.autopilotdashboard.setGoalTitle")}</h2>
           <p className="text-sm text-muted-foreground max-w-xs">
             {t("screens.autopilotdashboard.setGoalSubtitle")}
           </p>
-          <Button onClick={onSetGoal} className="mt-1">
+          <Button
+            onClick={onSetGoal}
+            className="mt-1 bg-gradient-to-r from-pink-500 via-fuchsia-500 to-violet-500 text-white border-0 hover:opacity-90"
+          >
             {t("screens.autopilotdashboard.setGoalCta")}
           </Button>
         </CardContent>
@@ -101,8 +104,12 @@ export function GoalNorthStar({
   const trend = computeGoalTrend(planData?.plan ?? null, new Date().toISOString().slice(0, 10));
 
   return (
-    <Card className="rounded-3xl border ring-1 ring-border/60 shadow-sm bg-card/80">
-      <CardContent className="p-5 flex flex-col items-center text-center gap-3">
+    <Card className="rounded-3xl border border-emerald-200/50 shadow-sm bg-gradient-to-br from-emerald-50 via-sky-50 to-pink-50 dark:from-emerald-950/20 dark:via-sky-950/20 dark:to-pink-950/20 relative overflow-hidden">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full bg-gradient-to-br from-emerald-300/30 via-sky-300/20 to-fuchsia-300/30 blur-3xl"
+      />
+      <CardContent className="p-5 flex flex-col items-center text-center gap-3 relative">
 
         {hasDeadline ? (
           <button
