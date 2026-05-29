@@ -58,8 +58,8 @@
     "drawerNav.diary": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Redundant and awkward phrasing. 'Dnevnik' already implies 'daily'.",
-      "suggested": "Dnevnik",
+      "issue": "The 'Daily' modifier is not translated. While 'Dnevnik' often implies daily, the explicit 'Daily' in English suggests it should be conveyed for accuracy.",
+      "suggested": "Dnevni zapis",
       "phase": "llm"
     },
     "drawerNav.connectors": {
@@ -83,5 +83,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:59.359Z"
+  "generatedAt": "2026-05-29T07:08:36.093Z"
 }
