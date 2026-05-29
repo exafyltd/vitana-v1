@@ -93,7 +93,23 @@
     background: linear-gradient(180deg, #fef3f2 0%, #f5f3ff 100%);
   }
 
-  /* The illustrated scene — painted with CSS gradients + SVG overlays */
+  /* Real painted backdrop */
+  .bg-art {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+  }
+  /* Soft overlay to keep text legible against any art */
+  .art-overlay {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(120% 60% at 50% 0%, rgba(255,255,255,0.18), transparent 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.0) 30%, rgba(196,181,253,0.18) 75%, rgba(244,114,182,0.22) 100%);
+    pointer-events: none;
+  }
+
+  /* CSS-painted scene retained as fallback only (unused when bg-art renders) */
   .scene {
     position: absolute; inset: 0;
     background:
@@ -494,21 +510,13 @@
 
       <!-- THE DREAM CARD -->
       <div class="dream-card">
-        <!-- illustrated scene -->
-        <div class="scene">
-          <div class="balloon b1"></div>
-          <div class="balloon b2"></div>
-          <div class="birds">∽ ∼ ∽</div>
-          <div class="sun"></div>
-          <div class="water"></div>
-          <div class="boat"></div>
-          <div class="boat-small"></div>
-          <div class="mountains-back"></div>
-          <div class="mountains"></div>
-          <div class="village"></div>
-          <div class="flowers-right"></div>
-          <div class="flowers-left"></div>
-        </div>
+        <!-- production backdrop = a real painted illustration. This sample
+             uses a Cappadocia sunrise + hot air balloons photo because it
+             matches the reference's vibe (pastel sky, dreamy distance,
+             balloons). In production we'd commission ~5 painted variants
+             — coast / mountain / garden / city / forest — one per pillar. -->
+        <img class="bg-art" src="https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?w=900&q=80&auto=format" alt="" />
+        <div class="art-overlay"></div>
 
         <!-- content overlay -->
         <div class="dream-content">
