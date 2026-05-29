@@ -8886,7 +8886,20 @@
       "subject": "Betreff",
       "category": "Kategorie",
       "description": "Beschreibung",
-      "current": "Aktuell"
+      "current": "Aktuell",
+      "modeNotifications": "Benachrichtigungen",
+      "modePrivacy": "Datenschutz",
+      "modePrivacyVisibility": "Profil-Sichtbarkeit",
+      "modePrivacyData": "Datenfreigabe",
+      "modePrivacySecurity": "Sicherheit",
+      "modePreferences": "Einstellungen",
+      "modePreferencesAppearance": "Erscheinungsbild",
+      "modePreferencesLanguage": "Sprache & Region",
+      "modeBilling": "Abrechnung",
+      "modeBillingPlan": "Aktueller Tarif",
+      "modeBillingPayment": "Zahlungsmethode",
+      "modeBillingInvoices": "Rechnungen & Belege",
+      "modeBillingCreator": "Creator-Auszahlungen"
     },
     "myintents": {
       "myIntents": "Meine Absichten",

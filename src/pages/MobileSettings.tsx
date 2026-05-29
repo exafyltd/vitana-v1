@@ -72,35 +72,35 @@ export default function MobileSettings() {
   useEffect(() => setThemeMounted(true), []);
 
   const settingsModes: ModeOption[] = [
-    { value: 'notifications', label: 'Notifications', icon: '🔔' },
-    { 
-      value: 'privacy', 
-      label: 'Privacy', 
+    { value: 'notifications', label: t('screens.mobilesettings.modeNotifications'), icon: '🔔' },
+    {
+      value: 'privacy',
+      label: t('screens.mobilesettings.modePrivacy'),
       icon: '🛡️',
       children: [
-        { value: 'privacy.visibility', label: 'Profile Visibility', icon: '👁️' },
-        { value: 'privacy.data', label: 'Data Sharing', icon: '📊' },
-        { value: 'privacy.security', label: 'Security', icon: '🔒' },
+        { value: 'privacy.visibility', label: t('screens.mobilesettings.modePrivacyVisibility'), icon: '👁️' },
+        { value: 'privacy.data', label: t('screens.mobilesettings.modePrivacyData'), icon: '📊' },
+        { value: 'privacy.security', label: t('screens.mobilesettings.modePrivacySecurity'), icon: '🔒' },
       ]
     },
-    { 
-      value: 'preferences', 
-      label: 'Preferences', 
+    {
+      value: 'preferences',
+      label: t('screens.mobilesettings.modePreferences'),
       icon: '🎛️',
       children: [
-        { value: 'preferences.appearance', label: 'Appearance', icon: '🎨' },
-        { value: 'preferences.language', label: 'Language & Region', icon: '🌐' },
+        { value: 'preferences.appearance', label: t('screens.mobilesettings.modePreferencesAppearance'), icon: '🎨' },
+        { value: 'preferences.language', label: t('screens.mobilesettings.modePreferencesLanguage'), icon: '🌐' },
       ]
     },
     {
       value: 'billing',
-      label: 'Billing',
+      label: t('screens.mobilesettings.modeBilling'),
       icon: '💳',
       children: [
-        { value: 'billing.plan', label: 'Current Plan', icon: '⭐' },
-        { value: 'billing.payment', label: 'Payment Method', icon: '💳' },
-        { value: 'billing.invoices', label: 'Invoices & Receipts', icon: '🧾' },
-        { value: 'billing.creator', label: 'Creator Payouts', icon: '💸' },
+        { value: 'billing.plan', label: t('screens.mobilesettings.modeBillingPlan'), icon: '⭐' },
+        { value: 'billing.payment', label: t('screens.mobilesettings.modeBillingPayment'), icon: '💳' },
+        { value: 'billing.invoices', label: t('screens.mobilesettings.modeBillingInvoices'), icon: '🧾' },
+        { value: 'billing.creator', label: t('screens.mobilesettings.modeBillingCreator'), icon: '💸' },
       ]
     },
   ];
