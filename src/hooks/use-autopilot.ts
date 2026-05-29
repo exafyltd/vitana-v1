@@ -100,14 +100,53 @@ export function useAutopilot() {
     lastUpdate: new Date(),
   });
 
-  // Keep state.actions in sync with recommendations
+  // Client-side "user said they did this" set. The gateway revision in
+  // prod doesn't persist /complete (and /reject also returns non-2xx for
+  // activated rows), so without this the user taps Complete, the row
+  // turns green, then the next fetchRecommendations brings it back as
+  // executing. Persisted per-user in localStorage so the dismissal
+  // survives popup reopens and page reloads until the backend catches
+  // up.
+  const DISMISSED_KEY = user ? `vitana.autopilot.dismissed_ids:${user.id}` : "";
+  const [dismissedIds, setDismissedIds] = useState<Set<string>>(() => {
+    if (!DISMISSED_KEY) return new Set();
+    try {
+      const raw = localStorage.getItem(DISMISSED_KEY);
+      if (!raw) return new Set();
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) ? new Set(arr.filter((x): x is string => typeof x === "string")) : new Set();
+    } catch {
+      return new Set();
+    }
+  });
+
+  const markDismissedLocally = useCallback((id: string) => {
+    setDismissedIds((prev) => {
+      if (prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.add(id);
+      if (DISMISSED_KEY) {
+        try {
+          localStorage.setItem(DISMISSED_KEY, JSON.stringify(Array.from(next)));
+        } catch {
+          // localStorage unavailable — set still updates in memory
+        }
+      }
+      return next;
+    });
+  }, [DISMISSED_KEY]);
+
+  // Keep state.actions in sync with recommendations, dropping anything the
+  // user has already cleared client-side.
   useEffect(() => {
     setState((prev) => ({
       ...prev,
-      actions: recommendations.map((r, i) => recToAction(r, i)),
+      actions: recommendations
+        .filter((r) => !dismissedIds.has(r.id))
+        .map((r, i) => recToAction(r, i)),
       lastUpdate: new Date(),
     }));
-  }, [recommendations]);
+  }, [recommendations, dismissedIds]);
 
   // VTID-01946 Phase H.4 — badge count + pulse delta tracking
   const [liveCount, setLiveCount] = useState<number>(0);
@@ -381,6 +420,7 @@ export function useAutopilot() {
     activateRecommendation,
     completeRecommendation,
     dismissRecommendation,
+    markDismissedLocally,
     fetchCount,
     // VTID-01946 Phase H.4 — live badge + pulse
     liveCount,
