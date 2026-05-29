@@ -8,6 +8,7 @@ import SEO from "@/components/SEO";
 import { Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
+import { unlockIOSAudioPlayback } from "@/lib/iosAudioUnlock";
 import { useSupabaseOAuthSignIn, type SupportedOAuthProvider } from "@/hooks/useSupabaseOAuthSignIn";
 import { friendlyOAuthError } from "@/lib/oauthErrors";
 import { toast } from "sonner";
@@ -74,6 +75,12 @@ const AuthPage = ({ mode }: { mode: "login" | "register" }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // VTID-03185 follow-up: iOS Safari + WKWebView require a user gesture
+    // to unlock AudioContext. The OAuth click handler (useSupabaseOAuthSignIn)
+    // already calls this; email/password login did not, so the ORB greeting
+    // was silently failing on iOS after this login path. Must fire SYNC,
+    // before any await, so the gesture is still live.
+    unlockIOSAudioPlayback();
     const formData = new FormData(e.target as HTMLFormElement);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;

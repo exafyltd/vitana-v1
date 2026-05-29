@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
+import { unlockIOSAudioPlayback } from "@/lib/iosAudioUnlock";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -45,6 +46,9 @@ export default function DevLogin() {
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    // VTID-03185 follow-up: unlock iOS AudioContext inside the live submit
+    // gesture so the ORB greeting plays on iOS after email/password sign-in.
+    unlockIOSAudioPlayback();
     setLoading(true);
 
     try {
