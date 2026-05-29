@@ -39,6 +39,9 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { MapPin, Users, Heart, Plus } from 'lucide-react';
 import { useAuth } from '@/context/AuthProvider';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useAutopilot } from '@/hooks/use-autopilot';
+import { AutopilotPopup } from '@/components/AutopilotPopup';
+import { VitanaIndexChip, AutopilotChip } from '@/components/mobile/MobileActionChips';
 import { IntentCard } from '@/components/intents/IntentCard';
 import { FindPartnerMatchCard } from '@/components/intents/FindPartnerMatchCard';
 import { IntentComposer } from '@/components/intents/IntentComposer';
@@ -110,6 +113,8 @@ export default function FindPartner() {
   const [view, setView] = useState<View>(initialView);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [composerOpen, setComposerOpen] = useState(false);
+  const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const { pendingCount } = useAutopilot();
 
   // Keep ?view= in URL synced.
   useEffect(() => {
@@ -220,7 +225,16 @@ export default function FindPartner() {
           description="Dance and fitness partners — matched by AI, ranked by fit."
         />
 
-        <UtilityActionButton className="min-w-0" compact={isMobile}>
+        <UtilityActionButton
+          className="min-w-0"
+          compact={isMobile}
+          afterGiftVoucherChildren={isMobile ? (
+            <>
+              <VitanaIndexChip />
+              <AutopilotChip pendingCount={pendingCount} onClick={() => setAutopilotOpen(true)} />
+            </>
+          ) : undefined}
+        >
           <div className="flex items-center gap-2 min-w-max">
             <ExpandableSearchButton
               placeholder={t('screens.community.searchPostsMatches')}
@@ -449,6 +463,9 @@ export default function FindPartner() {
         onOpenChange={setComposerOpen}
         onPosted={() => { setComposerOpen(false); refresh(); }}
       />
+
+      {/* Autopilot popup wired to the AutopilotChip in the utility bar */}
+      <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
     </>
   );
 }
