@@ -46,12 +46,12 @@ interface AutopilotPopupProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const PILLAR_LABEL: Record<VitanaPillarKey, string> = {
-  nutrition: "Nutrition",
-  hydration: "Hydration",
-  exercise: "Exercise",
-  sleep: "Sleep",
-  mental: "Mental",
+const PILLAR_LABEL_KEY: Record<VitanaPillarKey, string> = {
+  nutrition: 'screens.common.nutrition',
+  hydration: 'screens.common.hydration',
+  exercise: 'screens.common.exercise',
+  sleep: 'screens.common.sleep',
+  mental: 'screens.common.mental',
 };
 
 const PILLAR_EMOJI: Record<VitanaPillarKey, string> = {
@@ -361,7 +361,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             {t('screens.common.erledigt2')}
           </h3>
           <p className="text-sm text-muted-foreground mt-0.5">
-            {bannerMessage || "Alle ausgewählten Aufgaben wurden erfolgreich abgeschlossen."}
+            {bannerMessage || t('screens.autopilotpopup.allSelectedTasksCompleted')}
           </p>
         </div>
       </div>
@@ -419,7 +419,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                 ) : null}
               </>
             ) : (
-              "Index loading…"
+              t('screens.autopilotpopup.indexLoading')
             )}
           </span>
           {selectedLift > 0 ? (
@@ -442,7 +442,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                       className={`text-xs font-semibold uppercase tracking-wide flex items-center gap-2 mb-2 ${groupIdx === 0 ? "" : "mt-3"} text-pill-${pillar}-accent`}
                     >
                       <span aria-hidden="true">{PILLAR_EMOJI[pillar]}</span>
-                      {PILLAR_LABEL[pillar]}
+                      {t(PILLAR_LABEL_KEY[pillar])}
                     </div>
                   )}
                   {showGroupHeaders && isUnassigned && (
@@ -520,10 +520,10 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
           </ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
             {loading
-              ? "Checking for new suggestions…"
+              ? t('screens.autopilotpopup.checkingForNewSuggestions')
               : pendingActions.length > 0
-                ? `${selectedActions.length} Vorschläge ausgewählt`
-                : "Your autopilot recommendations"
+                ? t('screens.autopilotpopup.selectedSuggestionsCount', { count: selectedActions.length })
+                : t('screens.autopilotpopup.yourAutopilotRecommendations')
             }
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>
