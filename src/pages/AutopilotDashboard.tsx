@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { useState, useMemo } from "react";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
+import { ExpandableSearchButton, type SearchDropdownItem } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useAutopilot } from "@/hooks/use-autopilot";
@@ -142,6 +143,7 @@ export default function AutopilotDashboard() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
   const [planSheetOpen, setPlanSheetOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const generatePlan = useGenerateGoalPlan();
 
   const { data: journeyData, isLoading: journeyLoading, isError: journeyError, refetch: refetchJourney } = useMyJourney();
@@ -167,6 +169,21 @@ export default function AutopilotDashboard() {
         .map((r) => ({ id: r.id, title: r.title, status: r.status })),
     [recData],
   );
+
+  // Search across the journey's recommendations; matches surface in the
+  // utility-bar search dropdown and tapping one opens the Autopilot popup.
+  const searchResults = useMemo<SearchDropdownItem[]>(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return [];
+    return (recData?.recommendations ?? [])
+      .filter(
+        (r) =>
+          r.title.toLowerCase().includes(q) ||
+          r.summary.toLowerCase().includes(q),
+      )
+      .slice(0, 8)
+      .map((r) => ({ id: r.id, title: r.title, subtitle: r.summary }));
+  }, [recData, searchQuery]);
 
   const handleOpenAutopilot = () => setAutopilotOpen(true);
 
@@ -263,6 +280,15 @@ export default function AutopilotDashboard() {
       }
     >
       <div className="flex items-center gap-2 min-w-max">
+        <ExpandableSearchButton
+          placeholder={t("screens.autopilotdashboard.searchTasks")}
+          onSearch={setSearchQuery}
+          dropdownItems={searchResults}
+          onItemClick={() => {
+            setSearchQuery("");
+            setAutopilotOpen(true);
+          }}
+        />
         <UniversalCalendarButton />
       </div>
     </UtilityActionButton>

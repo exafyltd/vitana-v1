@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 326
-- **Distinct i18n keys consumed:** 5281
+- **Distinct i18n keys consumed:** 5282
 - **Namespaces in use:** 41
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -38,11 +38,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/AutopilotDashboard.tsx
 
-**Status:** ✅ clean — keys consumed: 10, namespaces: 1
+**Status:** ✅ clean — keys consumed: 11, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 10, total in shard: 9329
+- `screens` — used: 11, total in shard: 9329
 
 ### src/pages/BusinessHub.tsx
 
