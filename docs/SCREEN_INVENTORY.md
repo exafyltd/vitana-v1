@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 327
-- **Distinct i18n keys consumed:** 5305
+- **Distinct i18n keys consumed:** 5306
 - **Namespaces in use:** 41
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -259,11 +259,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/MobileSupport.tsx
 
-**Status:** ✅ clean — keys consumed: 39, namespaces: 1
+**Status:** ✅ clean — keys consumed: 40, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 39, total in shard: 9343, **MISSING:** screens.mobileSupport.errorNotSupported, screens.mobileSupport.errorMicPermission, screens.mobileSupport.errorEmpty, screens.mobileSupport.errorSend, screens.mobileSupport.sentTitle…
+- `screens` — used: 40, total in shard: 9343, **MISSING:** screens.mobilesupport.errorNotSupported, screens.mobilesupport.errorMicPermission, screens.mobilesupport.errorEmpty, screens.mobilesupport.errorSend, screens.mobilesupport.title…
 
 ### src/pages/MyIntents.tsx
 
