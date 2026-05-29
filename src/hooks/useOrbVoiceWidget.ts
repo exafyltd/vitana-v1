@@ -182,6 +182,26 @@ export function useOrbVoiceWidget() {
           case 'presence':
             dispatch('presence-debug:open');
             return;
+          // Settings navigator: Vitana can jump to a specific Settings section
+          // (e.g. `?open=settings_section&section=privacy.security`) and toggle
+          // notification preferences for the user without forcing a route
+          // change. Listeners live in src/pages/MobileSettings.tsx. The
+          // settings route must already be active; otherwise we also navigate
+          // to /settings so the listener mounts.
+          case 'settings_section':
+            if (!window.location.pathname.startsWith('/settings')) {
+              navigateRef.current('/settings');
+            }
+            // Defer the dispatch one tick so the Settings page can mount its
+            // listener before the event fires.
+            setTimeout(() => dispatch('vitana:settings-navigate'), 50);
+            return;
+          case 'settings_toggle':
+            if (!window.location.pathname.startsWith('/settings')) {
+              navigateRef.current('/settings');
+            }
+            setTimeout(() => dispatch('vitana:settings-toggle'), 50);
+            return;
           // Unknown overlay marker: log and fall through to a regular
           // navigation so the URL is at least visible to the user.
           default:

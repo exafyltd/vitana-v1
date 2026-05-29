@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 327
-- **Distinct i18n keys consumed:** 5303
+- **Distinct i18n keys consumed:** 5305
 - **Namespaces in use:** 41
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -246,12 +246,12 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/MobileSettings.tsx
 
-**Status:** ✅ clean — keys consumed: 61, namespaces: 2
+**Status:** ✅ clean — keys consumed: 63, namespaces: 2
 
 **i18n namespaces:**
 
 - `screens` — used: 54, total in shard: 9343
-- `settings` — used: 7, total in shard: 29, **MISSING:** settings.updateFailed, settings.chat, settings.calendar, settings.community, settings.search
+- `settings` — used: 9, total in shard: 31, **MISSING:** settings.updateFailed, settings.chat, settings.calendar, settings.community, settings.search
 
 ### src/pages/MobileSubscriptions.tsx
 

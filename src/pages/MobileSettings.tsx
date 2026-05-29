@@ -6,7 +6,7 @@ import {
   Palette, Globe, Monitor, Sun
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { MobileAppShell } from "@/components/mobile/MobileAppShell";
+import AppLayout from "@/components/AppLayout";
 import { useTranslation } from "@/hooks/useTranslation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
@@ -110,6 +110,51 @@ export default function MobileSettings() {
       navigate("/settings", { replace: true });
     }
   }, [isMobile, navigate]);
+
+  // Vitana-driven navigation: the Orb (voice or text) can ask the Settings page
+  // to jump to a specific section without a full route change.
+  useEffect(() => {
+    const handleNavigate = (e: Event) => {
+      const detail = (e as CustomEvent).detail || {};
+      const section = String(detail.section || '');
+      if (VALID_SECTIONS.has(section)) {
+        setActiveSection(section);
+        const label = settingsModes.find((m) => m.value === section.split('.')[0])?.label || section;
+        toast.success(
+          translate('settings.vitanaOpenedSection', 'Vitana opened {section}').replace('{section}', label),
+        );
+      }
+    };
+    window.addEventListener('vitana:settings-navigate', handleNavigate);
+    return () => window.removeEventListener('vitana:settings-navigate', handleNavigate);
+    // settingsModes is a stable literal redefined every render; intentionally
+    // listing only translate so the listener picks up locale changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [translate]);
+
+  // Vitana can toggle notification preferences on the user's behalf. The Orb
+  // dispatches `vitana:settings-toggle` with `{ field, value }` (top-level
+  // notification toggles) or `{ categoryId, enabled }` (per-category).
+  useEffect(() => {
+    const handler = async (e: Event) => {
+      const detail = (e as CustomEvent).detail || {};
+      try {
+        if (detail.field && typeof detail.value === 'boolean') {
+          await updatePref(detail.field, detail.value);
+          toast.success(translate('settings.vitanaUpdated', 'Vitana updated your setting'));
+          setActiveSection('notifications');
+        } else if (detail.categoryId && typeof detail.enabled === 'boolean') {
+          await toggleCategory(detail.categoryId, detail.enabled);
+          toast.success(translate('settings.vitanaUpdated', 'Vitana updated your setting'));
+          setActiveSection('notifications');
+        }
+      } catch {
+        toast.error(translate('settings.updateFailed', 'Failed to update preference'));
+      }
+    };
+    window.addEventListener('vitana:settings-toggle', handler);
+    return () => window.removeEventListener('vitana:settings-toggle', handler);
+  }, [updatePref, toggleCategory, translate]);
 
   if (!isMobile) return null;
 
@@ -484,8 +529,8 @@ export default function MobileSettings() {
   };
 
   return (
-    <MobileAppShell>
-      <div className="px-4 pt-4 pb-0 h-[100dvh] overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
+    <AppLayout>
+      <div className="px-4 pt-4 pb-0 h-full overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
         <StandardHeader
           title={translate('settings.title', 'Settings')}
           description={translate('settings.description', 'Manage your preferences and account')}
@@ -540,6 +585,6 @@ export default function MobileSettings() {
 
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
       <AIDataConsentDialog open={consentDialogOpen} onOpenChange={setConsentDialogOpen} onConsent={grantConsent} />
-    </MobileAppShell>
+    </AppLayout>
   );
 }
