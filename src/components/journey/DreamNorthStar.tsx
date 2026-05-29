@@ -8,9 +8,14 @@ import type { MyJourneyGoal } from "@/hooks/useMyJourney";
 
 // Production asset slot. Drop the curated AI-painted illustration here:
 //   public/illustrations/journey-coast.webp
-// Until it's in place the soft pastel-sunrise gradient behind the image
-// shows through, so the screen never breaks.
+// The Unsplash URL is an interim painted-style stand-in (Cappadocia
+// sunrise + hot-air balloons — closest free image to the dream-board
+// reference) that renders until the curated artwork lands. When the
+// curated asset is present at the local path the browser draws it on
+// top of this and you never see the stand-in.
 const HERO_BG = "/illustrations/journey-coast.webp";
+const HERO_BG_STAND_IN =
+  "https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?w=900&q=80&auto=format";
 
 const RING_SIZE = 220;
 const RING_STROKE = 14;
@@ -124,10 +129,11 @@ export function DreamNorthStar({
         backgroundImage: `
           linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(196,181,253,0.18) 60%, rgba(244,114,182,0.22) 100%),
           url(${HERO_BG}),
+          url(${HERO_BG_STAND_IN}),
           linear-gradient(180deg, #fde2ec 0%, #fbcfe8 22%, #fed7aa 42%, #fef3c7 60%, #bfdbfe 80%, #93c5fd 100%)
         `,
-        backgroundSize: "cover, cover, cover",
-        backgroundPosition: "center, center 40%, center",
+        backgroundSize: "cover, cover, cover, cover",
+        backgroundPosition: "center, center 40%, center 40%, center",
         backgroundRepeat: "no-repeat",
       }}
     >

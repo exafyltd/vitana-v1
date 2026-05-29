@@ -5,11 +5,13 @@ import { Wind, Moon, Sparkles } from "lucide-react";
 // Production asset slots — drop curated painted illustrations here:
 //   public/illustrations/future-self-stronger.webp
 //   public/illustrations/future-self-calmer.webp
-// CSS gradient backgrounds underneath so the tiles stay beautiful
-// until the artwork lands.
+// `standIn` URLs are interim Unsplash stand-ins that render until the
+// curated artwork lands. The CSS `fallback` gradient sits behind both
+// so the tiles stay beautiful even when offline.
 interface Tile {
   id: string;
   bg: string;
+  standIn: string;
   fallback: string;
   labelKey: string;
   icon: LucideIcon;
@@ -19,6 +21,8 @@ const TILES: Tile[] = [
   {
     id: "stronger",
     bg: "/illustrations/future-self-stronger.webp",
+    standIn:
+      "https://images.unsplash.com/photo-1486218119243-13883505764c?w=600&q=80&auto=format",
     fallback:
       "linear-gradient(135deg, #fed7aa 0%, #f9a8d4 45%, #c4b5fd 100%)",
     labelKey: "screens.autopilotdashboard.futureSelfStronger",
@@ -27,6 +31,8 @@ const TILES: Tile[] = [
   {
     id: "calmer",
     bg: "/illustrations/future-self-calmer.webp",
+    standIn:
+      "https://images.unsplash.com/photo-1532978879514-6cf36f0b3ba6?w=600&q=80&auto=format",
     fallback:
       "linear-gradient(135deg, #c4b5fd 0%, #93c5fd 45%, #67e8f9 100%)",
     labelKey: "screens.autopilotdashboard.futureSelfCalmer",
@@ -62,9 +68,9 @@ export function FutureSelfTiles() {
             key={tile.id}
             className="relative aspect-[1/1.1] rounded-[20px] overflow-hidden border border-border/60 shadow-md"
             style={{
-              backgroundImage: `url(${tile.bg}), ${tile.fallback}`,
-              backgroundSize: "cover, cover",
-              backgroundPosition: "center, center",
+              backgroundImage: `url(${tile.bg}), url(${tile.standIn}), ${tile.fallback}`,
+              backgroundSize: "cover, cover, cover",
+              backgroundPosition: "center, center, center",
             }}
           >
             <div
