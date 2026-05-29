@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { getUserLocale, buildLocalizedSystemPrompt } from '../_shared/llm-locale.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -40,8 +41,15 @@ serve(async (req) => {
       .eq('user_id', user.id)
       .single();
     
+    // Resolve user's preferred language so the plan is generated in their
+    // language (German by default — the community is German-first).
+    const userLocale = await getUserLocale(supabase, user.id);
+
     // Build AI prompt based on plan type
-    const systemPrompt = `You are an expert health coach specializing in ${planType} planning. Generate a personalized, evidence-based plan that is safe, effective, and tailored to the user's specific needs and conditions.`;
+    const systemPrompt = buildLocalizedSystemPrompt(
+      `You are an expert health coach specializing in ${planType} planning. Generate a personalized, evidence-based plan that is safe, effective, and tailored to the user's specific needs and conditions.`,
+      userLocale,
+    );
     
     const userPrompt = `Generate a ${planType} plan for a user with the following profile:
 - Age Range: ${profile?.age_range || 'adult'}

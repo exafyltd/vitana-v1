@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.4";
+import { getUserLocale, buildLocalizedSystemPrompt } from '../_shared/llm-locale.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -64,17 +65,23 @@ serve(async (req) => {
     if (!GEMINI_API_KEY) throw new Error('GOOGLE_GEMINI_API_KEY not configured');
 
     const { generateContent, extractFunctionCall } = await import("../_shared/gemini-client.ts");
+    // Inject user-language directive so any free-text reasons are in
+    // the user's preferred language (German by default).
+    const userLocale = await getUserLocale(supabase, user.id);
     const aiResponse = await generateContent(
       GEMINI_API_KEY,
       [
         {
           role: 'system',
-          content: `You are VITANA's recommendation AI. Score community content (events, groups) based on user's interests, goals, and context.
+          content: buildLocalizedSystemPrompt(
+            `You are VITANA's recommendation AI. Score community content (events, groups) based on user's interests, goals, and context.
 
 Return a JSON array of matches with scores and reasons. Format:
 [{"id": "uuid", "type": "event", "score": 0.85, "reasons": ["matches interest: yoga", "near your location"]}, ...]
 
-Score range: 0.0 to 1.0. Only include items with score >= 0.3.`
+Score range: 0.0 to 1.0. Only include items with score >= 0.3.`,
+            userLocale,
+          ),
         },
         {
           role: 'user',
