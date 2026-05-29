@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Mic, Square, Send, CheckCircle2, Mail, MessageCircle, Phone, BookOpen, Paperclip, X } from "lucide-react";
+import { Mic, Square, Send, CheckCircle2, Mail, MessageCircle, Phone, BookOpen, Paperclip, X, Users } from "lucide-react";
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
@@ -13,17 +13,23 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalStorageItem } from "@/lib/localStorage";
 import { notifyError, t } from "@/lib/i18n-toast";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { cn } from "@/lib/utils";
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || "https://gateway-q74ibpv6ia-uc.a.run.app";
 
 const CATEGORY_KEYS = ["account", "billing", "technical", "feature", "privacy", "other"] as const;
 type CategoryKey = (typeof CATEGORY_KEYS)[number];
+
+type TabKey = "contact" | "faqs" | "community";
+
+const FAQ_KEYS = ["CreateAccount", "ResetPassword", "UpdateProfile", "PaymentMethods", "DataSecure", "DeleteAccount"] as const;
 
 function MobileSupport() {
   const navigate = useNavigate();
@@ -33,6 +39,8 @@ function MobileSupport() {
 
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState<TabKey>("contact");
+
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [interimText, setInterimText] = useState("");
@@ -103,7 +111,7 @@ function MobileSupport() {
 
   const startRecording = () => {
     if (!ClientSTT.isSupported()) {
-      notifyError("screens.mobilesupport.errorNotSupported");
+      notifyError("mobilesupport.errorNotSupported");
       return;
     }
 
@@ -136,7 +144,7 @@ function MobileSupport() {
       onError: (error) => {
         if (error === "no-speech" || error === "aborted" || error === "audio-capture") return;
         if (error === "not-allowed" || error === "service-not-allowed") {
-          notifyError("screens.mobilesupport.errorMicPermission");
+          notifyError("mobilesupport.errorMicPermission");
         }
         stopRecording();
       },
@@ -211,7 +219,7 @@ function MobileSupport() {
   const handleSubmit = async () => {
     const message = transcript.trim();
     if (!message) {
-      notifyError("screens.mobilesupport.errorEmpty");
+      notifyError("mobilesupport.errorEmpty");
       return;
     }
 
@@ -257,7 +265,7 @@ function MobileSupport() {
       setShowSuccess(true);
     } catch (error) {
       console.error("[MobileSupport] Send error:", error);
-      notifyError("screens.mobilesupport.errorSend");
+      notifyError("mobilesupport.errorSend");
     } finally {
       setIsSending(false);
     }
@@ -267,12 +275,18 @@ function MobileSupport() {
     window.location.href = "mailto:support@exafy.io";
   };
 
+  const TABS: { key: TabKey; labelKey: string }[] = [
+    { key: "contact", labelKey: "mobilesupport.tabContact" },
+    { key: "faqs", labelKey: "mobilesupport.tabFaqs" },
+    { key: "community", labelKey: "mobilesupport.tabCommunity" },
+  ];
+
   return (
     <MobileAppShell>
       <div className="px-4 pt-4 pb-0 h-[100dvh] overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
         <StandardHeader
-          title={t("screens.mobilesupport.title")}
-          description={t("screens.mobilesupport.description")}
+          title={t("mobilesupport.title")}
+          description={t("mobilesupport.description")}
           emoji="🆘"
         />
 
@@ -288,218 +302,265 @@ function MobileSupport() {
         >
           <div className="flex items-center gap-2 min-w-max">
             <ExpandableSearchButton
-              placeholder={t("screens.mobilesupport.searchPlaceholder")}
+              placeholder={t("mobilesupport.searchPlaceholder")}
               onSearch={setSearchQuery}
             />
+            {TABS.map((tab) => {
+              const active = activeTab === tab.key;
+              return (
+                <button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => setActiveTab(tab.key)}
+                  className={cn(
+                    "h-9 px-3 rounded-full text-sm font-medium shrink-0 transition-colors",
+                    active
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted/60 text-foreground hover:bg-muted"
+                  )}
+                >
+                  {t(tab.labelKey)}
+                </button>
+              );
+            })}
           </div>
         </UtilityActionButton>
 
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto pb-24 space-y-3 px-0">
-          {showSuccess ? (
-            <Card className="rounded-2xl border-border/50 shadow-sm">
-              <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
-                <div className="p-4 rounded-full bg-green-100 dark:bg-green-950/30">
-                  <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-400" />
-                </div>
-                <h3 className="text-lg font-semibold">{t("screens.mobilesupport.sentTitle")}</h3>
-                <p className="text-sm text-muted-foreground max-w-xs">
-                  {t("screens.mobilesupport.sentBody")}
-                </p>
-                <Button variant="outline" onClick={() => setShowSuccess(false)} className="mt-2">
-                  {t("screens.mobilesupport.sendAnother")}
-                </Button>
-              </CardContent>
-            </Card>
-          ) : (
-            <>
-              {/* Hero: big mic button */}
+          {activeTab === "contact" && (
+            showSuccess ? (
               <Card className="rounded-2xl border-border/50 shadow-sm">
-                <CardContent className="p-5 flex flex-col items-center text-center space-y-3">
-                  <p className="text-sm text-muted-foreground max-w-xs">
-                    {t("screens.mobilesupport.hint")}
-                  </p>
-
-                  <div className="flex items-center justify-center py-2">
-                    {!isRecording ? (
-                      <button
-                        onClick={startRecording}
-                        aria-label={t("screens.mobilesupport.recordButtonStart")}
-                        className="h-24 w-24 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground flex items-center justify-center shadow-lg active:scale-95 transition-transform"
-                      >
-                        <Mic className="h-10 w-10" />
-                      </button>
-                    ) : (
-                      <div className="flex flex-col items-center gap-3">
-                        <button
-                          onClick={stopRecording}
-                          aria-label={t("screens.mobilesupport.recordButtonStop")}
-                          className="h-24 w-24 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center shadow-lg animate-pulse"
-                        >
-                          <Square className="h-10 w-10" />
-                        </button>
-                        <Badge variant="destructive">{t("screens.mobilesupport.recording")}</Badge>
-                        <div className="text-xl font-mono font-bold text-destructive">
-                          {formatDuration(recordingDuration)}
-                        </div>
-                      </div>
-                    )}
+                <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
+                  <div className="p-4 rounded-full bg-green-100 dark:bg-green-950/30">
+                    <CheckCircle2 className="h-10 w-10 text-green-600 dark:text-green-400" />
                   </div>
-
-                  <p className="text-xs text-muted-foreground">
-                    {isRecording ? t("screens.mobilesupport.listening") : t("screens.mobilesupport.tapToSpeak")}
+                  <h3 className="text-lg font-semibold">{t("mobilesupport.sentTitle")}</h3>
+                  <p className="text-sm text-muted-foreground max-w-xs">
+                    {t("mobilesupport.sentBody")}
                   </p>
-
-                  {isRecording && (
-                    <div className="flex items-end gap-1 h-10">
-                      {Array.from({ length: 10 }).map((_, i) => (
-                        <div
-                          key={i}
-                          className="bg-primary rounded-full w-1.5 animate-pulse"
-                          style={{ height: `${Math.random() * 32 + 8}px`, animationDelay: `${i * 80}ms` }}
-                        />
-                      ))}
-                    </div>
-                  )}
+                  <Button variant="outline" onClick={() => setShowSuccess(false)} className="mt-2">
+                    {t("mobilesupport.sendAnother")}
+                  </Button>
                 </CardContent>
               </Card>
-
-              {/* Transcript */}
-              {(isRecording || transcript) && (
+            ) : (
+              <>
+                {/* Voice hero */}
                 <Card className="rounded-2xl border-border/50 shadow-sm">
-                  <CardContent className="p-4 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-semibold">
-                        {t("screens.mobilesupport.transcriptTitle")}
-                      </span>
-                      {!isRecording && recordingDuration > 0 && (
-                        <Badge variant="outline">{formatDuration(recordingDuration)}</Badge>
+                  <CardContent className="p-5 flex flex-col items-center text-center space-y-3">
+                    <p className="text-sm text-muted-foreground max-w-xs">
+                      {t("mobilesupport.hint")}
+                    </p>
+
+                    <div className="flex items-center justify-center py-2">
+                      {!isRecording ? (
+                        <button
+                          onClick={startRecording}
+                          aria-label={t("mobilesupport.recordButtonStart")}
+                          className="h-24 w-24 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground flex items-center justify-center shadow-lg active:scale-95 transition-transform"
+                        >
+                          <Mic className="h-10 w-10" />
+                        </button>
+                      ) : (
+                        <div className="flex flex-col items-center gap-3">
+                          <button
+                            onClick={stopRecording}
+                            aria-label={t("mobilesupport.recordButtonStop")}
+                            className="h-24 w-24 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center shadow-lg animate-pulse"
+                          >
+                            <Square className="h-10 w-10" />
+                          </button>
+                          <Badge variant="destructive">{t("mobilesupport.recording")}</Badge>
+                          <div className="text-xl font-mono font-bold text-destructive">
+                            {formatDuration(recordingDuration)}
+                          </div>
+                        </div>
                       )}
                     </div>
-                    <Textarea
-                      value={transcript + (interimText ? ` ${interimText}` : "")}
-                      onChange={(e) => !isRecording && setTranscript(e.target.value)}
-                      placeholder={t("screens.mobilesupport.transcriptPlaceholder")}
-                      className="min-h-24 text-sm"
-                      disabled={isRecording}
-                    />
+
                     <p className="text-xs text-muted-foreground">
-                      {t("screens.mobilesupport.speakNaturally")}
+                      {isRecording ? t("mobilesupport.listening") : t("mobilesupport.tapToSpeak")}
                     </p>
-                  </CardContent>
-                </Card>
-              )}
 
-              {/* Category + attachments + submit */}
-              {transcript && !isRecording && (
-                <Card className="rounded-2xl border-border/50 shadow-sm">
-                  <CardContent className="p-4 space-y-3">
-                    <div className="space-y-1.5">
-                      <label className="text-xs font-medium text-muted-foreground">
-                        {t("screens.mobilesupport.categoryLabel")}
-                      </label>
-                      <Select value={category} onValueChange={(v) => setCategory(v as CategoryKey)}>
-                        <SelectTrigger className="h-10">
-                          <SelectValue placeholder={t("screens.mobilesupport.categoryPlaceholder")} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="account">{t("screens.mobilesupport.categoryAccount")}</SelectItem>
-                          <SelectItem value="billing">{t("screens.mobilesupport.categoryBilling")}</SelectItem>
-                          <SelectItem value="technical">{t("screens.mobilesupport.categoryTechnical")}</SelectItem>
-                          <SelectItem value="feature">{t("screens.mobilesupport.categoryFeature")}</SelectItem>
-                          <SelectItem value="privacy">{t("screens.mobilesupport.categoryPrivacy")}</SelectItem>
-                          <SelectItem value="other">{t("screens.mobilesupport.categoryOther")}</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      className="hidden"
-                      onChange={(e) => handleFileSelect(e.target.files)}
-                    />
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="gap-2"
-                      onClick={() => fileInputRef.current?.click()}
-                    >
-                      <Paperclip className="h-4 w-4" />
-                      {t("screens.mobilesupport.attachLabel")}
-                    </Button>
-
-                    {previewUrls.length > 0 && (
-                      <div className="flex gap-2 flex-wrap">
-                        {previewUrls.map((url, i) => (
-                          <div key={i} className="relative w-14 h-14 rounded-lg overflow-hidden border">
-                            <img src={url} alt="" className="w-full h-full object-cover" />
-                            <button
-                              onClick={() => removeAttachment(i)}
-                              className="absolute top-0 right-0 p-0.5 bg-destructive text-destructive-foreground rounded-bl-lg"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
-                          </div>
+                    {isRecording && (
+                      <div className="flex items-end gap-1 h-10">
+                        {Array.from({ length: 10 }).map((_, i) => (
+                          <div
+                            key={i}
+                            className="bg-primary rounded-full w-1.5 animate-pulse"
+                            style={{ height: `${Math.random() * 32 + 8}px`, animationDelay: `${i * 80}ms` }}
+                          />
                         ))}
                       </div>
                     )}
-
-                    <Button onClick={handleSubmit} disabled={isSending} size="lg" className="w-full gap-2">
-                      <Send className="h-4 w-4" />
-                      {isSending ? t("screens.mobilesupport.submitting") : t("screens.mobilesupport.submitButton")}
-                    </Button>
-                    <p className="text-xs text-muted-foreground text-center">
-                      {t("screens.mobilesupport.responseTime")}
-                    </p>
                   </CardContent>
                 </Card>
-              )}
 
-              {/* Quick contact */}
+                {/* Transcript */}
+                {(isRecording || transcript) && (
+                  <Card className="rounded-2xl border-border/50 shadow-sm">
+                    <CardContent className="p-4 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-semibold">
+                          {t("mobilesupport.transcriptTitle")}
+                        </span>
+                        {!isRecording && recordingDuration > 0 && (
+                          <Badge variant="outline">{formatDuration(recordingDuration)}</Badge>
+                        )}
+                      </div>
+                      <Textarea
+                        value={transcript + (interimText ? ` ${interimText}` : "")}
+                        onChange={(e) => !isRecording && setTranscript(e.target.value)}
+                        placeholder={t("mobilesupport.transcriptPlaceholder")}
+                        className="min-h-24 text-sm"
+                        disabled={isRecording}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        {t("mobilesupport.speakNaturally")}
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Category + attachments + submit */}
+                {transcript && !isRecording && (
+                  <Card className="rounded-2xl border-border/50 shadow-sm">
+                    <CardContent className="p-4 space-y-3">
+                      <div className="space-y-1.5">
+                        <label className="text-xs font-medium text-muted-foreground">
+                          {t("mobilesupport.categoryLabel")}
+                        </label>
+                        <Select value={category} onValueChange={(v) => setCategory(v as CategoryKey)}>
+                          <SelectTrigger className="h-10">
+                            <SelectValue placeholder={t("mobilesupport.categoryPlaceholder")} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="account">{t("mobilesupport.categoryAccount")}</SelectItem>
+                            <SelectItem value="billing">{t("mobilesupport.categoryBilling")}</SelectItem>
+                            <SelectItem value="technical">{t("mobilesupport.categoryTechnical")}</SelectItem>
+                            <SelectItem value="feature">{t("mobilesupport.categoryFeature")}</SelectItem>
+                            <SelectItem value="privacy">{t("mobilesupport.categoryPrivacy")}</SelectItem>
+                            <SelectItem value="other">{t("mobilesupport.categoryOther")}</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="hidden"
+                        onChange={(e) => handleFileSelect(e.target.files)}
+                      />
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="gap-2"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <Paperclip className="h-4 w-4" />
+                        {t("mobilesupport.attachLabel")}
+                      </Button>
+
+                      {previewUrls.length > 0 && (
+                        <div className="flex gap-2 flex-wrap">
+                          {previewUrls.map((url, i) => (
+                            <div key={i} className="relative w-14 h-14 rounded-lg overflow-hidden border">
+                              <img src={url} alt="" className="w-full h-full object-cover" />
+                              <button
+                                onClick={() => removeAttachment(i)}
+                                className="absolute top-0 right-0 p-0.5 bg-destructive text-destructive-foreground rounded-bl-lg"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      <Button onClick={handleSubmit} disabled={isSending} size="lg" className="w-full gap-2">
+                        <Send className="h-4 w-4" />
+                        {isSending ? t("mobilesupport.submitting") : t("mobilesupport.submitButton")}
+                      </Button>
+                      <p className="text-xs text-muted-foreground text-center">
+                        {t("mobilesupport.responseTime")}
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {/* Quick contact */}
+                <Card className="rounded-2xl border-border/50 shadow-sm">
+                  <CardContent className="p-4 space-y-3">
+                    <h3 className="text-sm font-semibold">
+                      {t("mobilesupport.quickContactTitle")}
+                    </h3>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                        onClick={handleEmailClick}
+                        className="p-3 rounded-xl border border-border/50 hover:bg-muted/50 flex flex-col items-center gap-1 text-center min-w-0"
+                      >
+                        <Mail className="w-5 h-5 text-primary shrink-0" />
+                        <span className="font-medium text-[11px] leading-tight">
+                          {t("mobilesupport.quickContactEmail")}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground leading-tight">
+                          {t("mobilesupport.quickContactEmailSub")}
+                        </span>
+                      </button>
+                      <div className="p-3 rounded-xl border border-border/50 flex flex-col items-center gap-1 text-center opacity-60 min-w-0">
+                        <MessageCircle className="w-5 h-5 text-primary shrink-0" />
+                        <span className="font-medium text-[11px] leading-tight">
+                          {t("mobilesupport.quickContactChat")}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground leading-tight">
+                          {t("mobilesupport.quickContactChatSub")}
+                        </span>
+                      </div>
+                      <div className="p-3 rounded-xl border border-border/50 flex flex-col items-center gap-1 text-center opacity-60 min-w-0">
+                        <Phone className="w-5 h-5 text-primary shrink-0" />
+                        <span className="font-medium text-[11px] leading-tight">
+                          {t("mobilesupport.quickContactCall")}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground leading-tight">
+                          {t("mobilesupport.quickContactCallSub")}
+                        </span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </>
+            )
+          )}
+
+          {activeTab === "faqs" && (
+            <>
               <Card className="rounded-2xl border-border/50 shadow-sm">
                 <CardContent className="p-4 space-y-3">
-                  <h3 className="text-sm font-semibold">
-                    {t("screens.mobilesupport.quickContactTitle")}
-                  </h3>
-                  <div className="grid grid-cols-3 gap-2">
-                    <button
-                      onClick={handleEmailClick}
-                      className="p-3 rounded-xl border border-border/50 hover:bg-muted/50 flex flex-col items-center gap-1 text-center min-w-0"
-                    >
-                      <Mail className="w-5 h-5 text-primary shrink-0" />
-                      <span className="font-medium text-[11px] leading-tight truncate w-full">
-                        {t("screens.mobilesupport.quickContactEmail")}
-                      </span>
-                      <span className="text-[10px] text-muted-foreground leading-tight truncate w-full">
-                        {t("screens.mobilesupport.quickContactEmailSub")}
-                      </span>
-                    </button>
-                    <div className="p-3 rounded-xl border border-border/50 flex flex-col items-center gap-1 text-center opacity-60 min-w-0">
-                      <MessageCircle className="w-5 h-5 text-primary shrink-0" />
-                      <span className="font-medium text-[11px] leading-tight truncate w-full">
-                        {t("screens.mobilesupport.quickContactChat")}
-                      </span>
-                      <span className="text-[10px] text-muted-foreground leading-tight truncate w-full">
-                        {t("screens.mobilesupport.quickContactChatSub")}
-                      </span>
-                    </div>
-                    <div className="p-3 rounded-xl border border-border/50 flex flex-col items-center gap-1 text-center opacity-60 min-w-0">
-                      <Phone className="w-5 h-5 text-primary shrink-0" />
-                      <span className="font-medium text-[11px] leading-tight truncate w-full">
-                        {t("screens.mobilesupport.quickContactCall")}
-                      </span>
-                      <span className="text-[10px] text-muted-foreground leading-tight truncate w-full">
-                        {t("screens.mobilesupport.quickContactCallSub")}
-                      </span>
+                  <div className="flex items-center gap-2">
+                    <BookOpen className="w-4.5 h-4.5 text-primary" />
+                    <div>
+                      <h3 className="text-sm font-semibold">{t("mobilesupport.faqsTitle")}</h3>
+                      <p className="text-xs text-muted-foreground">{t("mobilesupport.faqsSubtitle")}</p>
                     </div>
                   </div>
+                  <Accordion type="single" collapsible className="w-full">
+                    {FAQ_KEYS.map((k) => (
+                      <AccordionItem key={k} value={k}>
+                        <AccordionTrigger className="text-sm text-left">
+                          {t(`mobilesupport.faq${k}Q`)}
+                        </AccordionTrigger>
+                        <AccordionContent className="text-sm text-muted-foreground">
+                          {t(`mobilesupport.faq${k}A`)}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
                 </CardContent>
               </Card>
 
-              {/* Help Center */}
               <button
                 onClick={() => navigate("/maxina_support")}
                 className="w-full flex items-center gap-3 rounded-2xl px-4 py-3 bg-muted/40 border border-border/50 hover:bg-muted/60 transition-colors text-left"
@@ -509,13 +570,59 @@ function MobileSupport() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <span className="text-sm font-medium block">
-                    {t("screens.mobilesupport.helpCenterTitle")}
+                    {t("mobilesupport.faqsOpenHelpCenter")}
                   </span>
-                  <p className="text-xs text-muted-foreground truncate">
-                    {t("screens.mobilesupport.helpCenterSub")}
-                  </p>
                 </div>
               </button>
+            </>
+          )}
+
+          {activeTab === "community" && (
+            <>
+              <Card className="rounded-2xl border-border/50 shadow-sm">
+                <CardContent className="p-4 space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Users className="w-4.5 h-4.5 text-primary" />
+                    <div>
+                      <h3 className="text-sm font-semibold">{t("mobilesupport.communityTitle")}</h3>
+                      <p className="text-xs text-muted-foreground">{t("mobilesupport.communitySubtitle")}</p>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl border border-border/50 p-3 space-y-2">
+                    <h4 className="text-sm font-medium">{t("mobilesupport.communityGroupTitle")}</h4>
+                    <p className="text-xs text-muted-foreground">{t("mobilesupport.communityGroupBody")}</p>
+                    <Button size="sm" className="w-full" onClick={() => navigate("/comm/groups")}>
+                      {t("mobilesupport.communityGroupCta")}
+                    </Button>
+                  </div>
+
+                  <div className="rounded-xl border border-border/50 p-3 space-y-2">
+                    <h4 className="text-sm font-medium">{t("mobilesupport.communityForumTitle")}</h4>
+                    <p className="text-xs text-muted-foreground">{t("mobilesupport.communityForumBody")}</p>
+                    <Button size="sm" variant="outline" className="w-full" onClick={() => navigate("/comm/groups")}>
+                      {t("mobilesupport.communityForumCta")}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="rounded-2xl border-border/50 shadow-sm">
+                <CardContent className="p-4 space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">{t("mobilesupport.communityStatsActive")}</span>
+                    <span className="font-semibold">2,847</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">{t("mobilesupport.communityStatsAnswered")}</span>
+                    <span className="font-semibold">1,234</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">{t("mobilesupport.communityStatsResponse")}</span>
+                    <span className="font-semibold">{t("mobilesupport.communityStatsResponseValue")}</span>
+                  </div>
+                </CardContent>
+              </Card>
             </>
           )}
         </div>
