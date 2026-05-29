@@ -5,6 +5,7 @@ import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
+import { MobileModePill, type ModeOption } from "@/components/ui/MobileModePill";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -20,7 +21,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalStorageItem } from "@/lib/localStorage";
 import { notifyError, t } from "@/lib/i18n-toast";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
-import { cn } from "@/lib/utils";
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || "https://gateway-q74ibpv6ia-uc.a.run.app";
 
@@ -275,10 +275,10 @@ function MobileSupport() {
     window.location.href = "mailto:support@exafy.io";
   };
 
-  const TABS: { key: TabKey; labelKey: string }[] = [
-    { key: "contact", labelKey: "mobilesupport.tabContact" },
-    { key: "faqs", labelKey: "mobilesupport.tabFaqs" },
-    { key: "community", labelKey: "mobilesupport.tabCommunity" },
+  const SUPPORT_MODES: ModeOption[] = [
+    { value: "contact", label: t("mobilesupport.tabContact"), icon: "💬" },
+    { value: "faqs", label: t("mobilesupport.tabFaqs"), icon: "❓" },
+    { value: "community", label: t("mobilesupport.tabCommunity"), icon: "👥" },
   ];
 
   return (
@@ -305,24 +305,11 @@ function MobileSupport() {
               placeholder={t("mobilesupport.searchPlaceholder")}
               onSearch={setSearchQuery}
             />
-            {TABS.map((tab) => {
-              const active = activeTab === tab.key;
-              return (
-                <button
-                  key={tab.key}
-                  type="button"
-                  onClick={() => setActiveTab(tab.key)}
-                  className={cn(
-                    "h-9 px-3 rounded-full text-sm font-medium shrink-0 transition-colors",
-                    active
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted/60 text-foreground hover:bg-muted"
-                  )}
-                >
-                  {t(tab.labelKey)}
-                </button>
-              );
-            })}
+            <MobileModePill
+              modes={SUPPORT_MODES}
+              activeMode={activeTab}
+              onModeChange={(v) => setActiveTab(v as TabKey)}
+            />
           </div>
         </UtilityActionButton>
 
