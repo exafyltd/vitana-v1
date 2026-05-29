@@ -15,6 +15,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
 import { MobileBillingView, type MobileBillingSection } from "@/components/settings/MobileBillingView";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNotificationPreferences } from "@/hooks/useNotifications";
@@ -619,6 +620,7 @@ export default function MobileSettings() {
               activeMode={activeSection}
               onModeChange={setActiveSection}
             />
+            <UniversalCalendarButton />
           </div>
         </UtilityActionButton>
 
