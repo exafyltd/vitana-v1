@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Users, Eye, EyeOff, MailCheck } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { unlockIOSAudioPlayback } from "@/lib/iosAudioUnlock";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { useSupabaseOAuthSignIn } from "@/hooks/useSupabaseOAuthSignIn";
 import { friendlyOAuthError } from "@/lib/oauthErrors";
@@ -288,6 +289,11 @@ const MaxinaPortal = () => {
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    // VTID-03185 follow-up: unlock iOS AudioContext inside the live submit
+    // gesture so the ORB greeting plays on iOS after email/password sign-in
+    // (OAuth path already did this via useSupabaseOAuthSignIn). Must fire
+    // SYNC, before any await, so the gesture is still live.
+    unlockIOSAudioPlayback();
     setLoading(true);
     setError("");
 
