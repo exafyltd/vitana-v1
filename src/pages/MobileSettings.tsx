@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { 
-  Bell, BellOff, Shield, SlidersHorizontal, LifeBuoy, 
+import {
+  Bell, BellOff, Shield,
   Trash2, ChevronRight, Moon, Eye, Users, Lock, Brain,
-  Palette, Globe, Type, Monitor, Sun, MessageCircle, Phone, Mail, 
-  Book, Send, Search, HelpCircle, Settings as SettingsIcon
+  Palette, Globe, Monitor, Sun
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import AppLayout from "@/components/AppLayout";
@@ -24,8 +23,6 @@ import PushDiagnostics from "@/components/PushDiagnostics";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAIConsent } from "@/hooks/useAIConsent";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
@@ -39,7 +36,6 @@ const VALID_SECTIONS = new Set([
   'privacy', 'privacy.visibility', 'privacy.data', 'privacy.security',
   'preferences', 'preferences.appearance', 'preferences.language',
   'billing', 'billing.plan', 'billing.payment', 'billing.invoices', 'billing.creator',
-  'support', 'support.contact', 'support.knowledge',
 ]);
 
 export default function MobileSettings() {
@@ -105,15 +101,6 @@ export default function MobileSettings() {
         { value: 'billing.payment', label: 'Payment Method', icon: '💳' },
         { value: 'billing.invoices', label: 'Invoices & Receipts', icon: '🧾' },
         { value: 'billing.creator', label: 'Creator Payouts', icon: '💸' },
-      ]
-    },
-    {
-      value: 'support',
-      label: 'Support',
-      icon: '🆘',
-      children: [
-        { value: 'support.contact', label: 'Contact Support', icon: '💬' },
-        { value: 'support.knowledge', label: 'Knowledge Base', icon: '📚' },
       ]
     },
   ];
@@ -522,100 +509,6 @@ export default function MobileSettings() {
               </div>
             </CardContent>
           </Card>
-        );
-
-      case 'support.contact':
-        return (
-          <>
-            <Card className="rounded-2xl border-border/50 shadow-sm">
-              <CardContent className="p-5 space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <MessageCircle className="w-4.5 h-4.5 text-primary" />
-                  <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.contactSupport')}</h3>
-                </div>
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { icon: MessageCircle, label: "Live Chat", sub: "Instant help" },
-                    { icon: Mail, label: "Email", sub: "24h response" },
-                    { icon: Phone, label: "Call Back", sub: "Schedule" },
-                  ].map((item, i) => (
-                    <Button key={i} className="h-auto p-3 flex flex-col items-center gap-1.5" variant="outline">
-                      <item.icon className="w-5 h-5 text-primary" />
-                      <span className="font-medium text-xs">{item.label}</span>
-                      <span className="text-[10px] text-muted-foreground">{item.sub}</span>
-                    </Button>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="rounded-2xl border-border/50 shadow-sm">
-              <CardContent className="p-5 space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Send className="w-4.5 h-4.5 text-primary" />
-                  <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.submitTicket')}</h3>
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-1.5 block">{t('screens.mobilesettings.subject')}</label>
-                  <Input placeholder={t('screens.mobilesettings.brieflyDescribeYourIssue')} />
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-1.5 block">{t('screens.mobilesettings.category')}</label>
-                  <Select><SelectTrigger><SelectValue placeholder={t('screens.mobilesettings.selectCategory')} /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="account">{t('screens.mobilesettings.accountIssues')}</SelectItem>
-                      <SelectItem value="billing">{t('screens.mobilesettings.billingPayments')}</SelectItem>
-                      <SelectItem value="technical">{t('screens.mobilesettings.technicalProblems')}</SelectItem>
-                      <SelectItem value="feature">{t('screens.mobilesettings.featureRequests')}</SelectItem>
-                      <SelectItem value="privacy">{t('screens.mobilesettings.privacySecurity')}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-1.5 block">{t('screens.mobilesettings.description')}</label>
-                  <Textarea placeholder={t('screens.mobilesettings.pleaseProvideAsMuchDetailAs')} className="min-h-20" />
-                </div>
-                <Button className="w-full"><Send className="w-4 h-4 mr-2" />{t('screens.mobilesettings.submitTicket2')}</Button>
-              </CardContent>
-            </Card>
-          </>
-        );
-
-      case 'support.knowledge':
-        return (
-          <>
-            <Card className="rounded-2xl border-border/50 shadow-sm">
-              <CardContent className="p-5 space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Search className="w-4.5 h-4.5 text-primary" />
-                  <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.knowledgeBase')}</h3>
-                </div>
-                <div className="relative">
-                  <Search className="w-4 h-4 absolute left-3 top-3 text-muted-foreground" />
-                  <Input placeholder={t('screens.mobilesettings.searchHelpArticles')} className="pl-10" />
-                </div>
-                <p className="text-xs text-muted-foreground">{t('screens.mobilesettings.popularGettingStartedSyncIssuesPrivacy')}</p>
-              </CardContent>
-            </Card>
-            <Card className="rounded-2xl border-border/50 shadow-sm">
-              <CardContent className="p-5 space-y-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <Book className="w-4.5 h-4.5 text-primary" />
-                  <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.popularArticles')}</h3>
-                </div>
-                {[
-                  { title: "Getting Started with Vitana", desc: "Learn the basics of setting up your wellness journey" },
-                  { title: "Connecting Wearable Devices", desc: "Step-by-step guide to sync your fitness trackers" },
-                  { title: "Understanding Your VITANA Index", desc: "How your wellness score is calculated" },
-                  { title: "Privacy and Data Security", desc: "Learn how we protect your personal information" },
-                ].map((a, i) => (
-                  <div key={i} className="p-3 border border-border/50 rounded-xl hover:bg-muted/50 cursor-pointer">
-                    <h4 className="text-sm font-medium">{a.title}</h4>
-                    <p className="text-xs text-muted-foreground mt-0.5">{a.desc}</p>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </>
         );
 
       case 'billing':

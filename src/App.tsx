@@ -229,6 +229,7 @@ const Limitations = lazy(() => import("./pages/settings/Limitations"));
 const ConnectedApps = lazy(() => import("./pages/settings/ConnectedApps"));
 const Billing = lazy(() => import("./pages/settings/Billing"));
 const Support = lazy(() => import("./pages/settings/Support"));
+const MobileSupport = lazy(() => import("./pages/MobileSupport"));
 const TenantRole = lazy(() => import("./pages/settings/TenantRole"));
 
 // Wallet sub-pages
@@ -540,6 +541,11 @@ const AppHooksInitializer = () => {
 function SettingsRouter() {
   const isMobile = useIsMobile();
   return isMobile ? <MobileSettings /> : <Navigate to="/settings/notifications" replace />;
+}
+
+function SupportRouter() {
+  const isMobile = useIsMobile();
+  return isMobile ? <MobileSupport /> : <Support />;
 }
 
 // Mobile-only storefront for plans; desktop users get the existing /wallet/subscriptions page.
@@ -1104,7 +1110,7 @@ const App = () => {
           } />
           <Route path="/support" element={
             <AuthGuard>
-              <Support />
+              <SupportRouter />
             </AuthGuard>
           } />
           <Route path="/settings/connected-apps" element={<RedirectPreservingSearch to="/connectors" />} />

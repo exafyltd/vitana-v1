@@ -799,7 +799,14 @@
       "actionIdValue0": "Aktions-ID: {value0}",
       "view": "Ansehen",
       "organizedByOrganizedby": "Organisiert von {organizedBy}",
-      "viewFullProfile": "Vollständiges Profil anzeigen"
+      "viewFullProfile": "Vollständiges Profil anzeigen",
+      "hydration": "Hydration",
+      "exercise": "Bewegung",
+      "sleep": "Schlaf",
+      "mental": "Mental",
+      "next3": "Nächste 3 Tage",
+      "month": "30 Tage",
+      "future": "Später"
     },
     "admin": {
       "usingDefaults": "Standardwerte verwenden",
@@ -4395,7 +4402,7 @@
       "howCanIHelpWithYour": "Wie kann ich dir heute bei deiner Gesundheit helfen?",
       "askAboutYourHealthSymptomsGoals": "Frage nach deiner Gesundheit, Symptomen oder Zielen...",
       "nextStep": "Nächster Schritt",
-      "dayN": "Tag {day}",
+      "dayN": "Tag {n}",
       "day90Plus": "Tag 90+",
       "ofYourFirst90Days": "Von deinen ersten 90 Tagen.",
       "sustainedPracticePast90DayArc": "Anhaltende Praxis – du bist über den 90-Tage-Bogen hinaus.",
@@ -4757,9 +4764,7 @@
       "statAverage": "Schnitt",
       "stat7d": "7 Tage",
       "todayDot": "Heute ·",
-      "today": "Heute",
       "todayWithDay": "Heute (T{day})",
-      "dayN": "Tag {n}",
       "goalLineLabel": "Ziel {goal}",
       "lastNDays": "Verlauf der letzten {days} Tage",
       "whatDrivesIndex": "Was treibt deinen Index?",
@@ -6527,7 +6532,7 @@
       "notConnected": "Nicht verbunden",
       "socialAccounts": "Soziale Konten",
       "contactSupport": "💬 Support kontaktieren",
-      "knowledgeBase": "📚 Wissensdatenbank",
+      "knowledgeBase": "📚 FAQs",
       "communityHelp": "👥 Community-Hilfe",
       "liveChat": "Live-Chat",
       "instantHelp": "Soforthilfe",
@@ -8604,7 +8609,9 @@
       "planNextMilestone": "Nächster Meilenstein",
       "planDailyProgress": "Heute · {done} von {total} Tagesschritten",
       "planInDays": "in {days} Tagen",
-      "planTomorrow": "morgen"
+      "planTomorrow": "morgen",
+      "seoDescription": "Deine personalisierte Autopilot-Reise",
+      "headerDescription": "Der Weg, den dein Index geht"
     },
     "businesshub": {
       "noServicesYet": "Noch keine Dienste",
@@ -9512,6 +9519,13 @@
     },
     "rewards": {
       "earnValue0Pts": "{value0} Punkte verdienen"
+    },
+    "autopilotpopup": {
+      "indexLoading": "Index wird geladen…",
+      "checkingForNewSuggestions": "Suche nach neuen Vorschlägen…",
+      "yourAutopilotRecommendations": "Deine Autopilot-Empfehlungen",
+      "selectedSuggestionsCount": "{count} Vorschläge ausgewählt",
+      "allSelectedTasksCompleted": "Alle ausgewählten Aufgaben wurden erfolgreich abgeschlossen."
     }
   }
 }

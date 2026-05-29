@@ -799,7 +799,14 @@
       "actionIdValue0": "Action ID: {value0}",
       "view": "View",
       "organizedByOrganizedby": "Organized by {organizedBy}",
-      "viewFullProfile": "View Full Profile"
+      "viewFullProfile": "View Full Profile",
+      "hydration": "Hydration",
+      "exercise": "Exercise",
+      "sleep": "Sleep",
+      "mental": "Mental",
+      "next3": "Next 3 days",
+      "month": "30 days",
+      "future": "Future"
     },
     "admin": {
       "usingDefaults": "Using defaults",
@@ -4395,7 +4402,7 @@
       "howCanIHelpWithYour": "How can I help with your health today?",
       "askAboutYourHealthSymptomsGoals": "Ask about your health, symptoms, or goals...",
       "nextStep": "Next step",
-      "dayN": "Day {day}",
+      "dayN": "Day {n}",
       "day90Plus": "Day 90+",
       "ofYourFirst90Days": "Of your first 90 days.",
       "sustainedPracticePast90DayArc": "Sustained practice — you're past the 90-day arc.",
@@ -4757,9 +4764,7 @@
       "statAverage": "Average",
       "stat7d": "7 days",
       "todayDot": "Today ·",
-      "today": "Today",
       "todayWithDay": "Today (D{day})",
-      "dayN": "Day {n}",
       "goalLineLabel": "Goal {goal}",
       "lastNDays": "Last {days} days",
       "whatDrivesIndex": "What drives your Index?",
@@ -6527,7 +6532,7 @@
       "notConnected": "Not connected",
       "socialAccounts": "Social Accounts",
       "contactSupport": "💬 Contact Support",
-      "knowledgeBase": "📚 Knowledge Base",
+      "knowledgeBase": "📚 FAQs",
       "communityHelp": "👥 Community Help",
       "liveChat": "Live Chat",
       "instantHelp": "Instant help",
@@ -8604,7 +8609,9 @@
       "planNextMilestone": "Next milestone",
       "planDailyProgress": "Today · {done} of {total} daily steps",
       "planInDays": "in {days} days",
-      "planTomorrow": "tomorrow"
+      "planTomorrow": "tomorrow",
+      "seoDescription": "Your personalized autopilot journey",
+      "headerDescription": "The path your Index walks"
     },
     "businesshub": {
       "noServicesYet": "No Services Yet",
@@ -9512,6 +9519,13 @@
     },
     "rewards": {
       "earnValue0Pts": "Earn {value0}pts"
+    },
+    "autopilotpopup": {
+      "indexLoading": "Index loading…",
+      "checkingForNewSuggestions": "Checking for new suggestions…",
+      "yourAutopilotRecommendations": "Your autopilot recommendations",
+      "selectedSuggestionsCount": "{count} suggestions selected",
+      "allSelectedTasksCompleted": "All selected tasks completed successfully."
     }
   }
 }
