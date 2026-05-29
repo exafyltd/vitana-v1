@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { MobileAppShell } from "@/components/mobile/MobileAppShell";
+import AppLayout from "@/components/AppLayout";
+import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,7 +22,7 @@ import { LaunchGrantBanner } from "@/components/subscription/LaunchGrantBanner";
 
 function Loading() {
   return (
-    <div className="space-y-4 px-4">
+    <div className="space-y-4">
       <Skeleton className="h-32 w-full rounded-2xl" />
       <Skeleton className="h-48 w-full rounded-2xl" />
       <Skeleton className="h-64 w-full rounded-2xl" />
@@ -38,28 +39,30 @@ export default function MobileSubscriptions() {
     data?.plan.status === "past_due" || data?.plan.status === "unpaid";
 
   return (
-    <MobileAppShell>
-      <div className="h-[100dvh] overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
-        {/* Header strip with back button */}
-        <div className="flex items-center gap-2 px-2 pt-3">
-          <button
-            onClick={() => navigate(-1)}
-            aria-label={t("common.back")}
-            className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-muted/60 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <div className="flex-1 min-w-0">
+    <AppLayout>
+      <SEO
+        title={t("billing.subscriptionsPage.title")}
+        description={t("billing.subscriptionsPage.subtitle")}
+      />
+
+      <div className="bg-gradient-to-br from-purple-50/40 via-blue-50/30 to-pink-50/30 min-h-screen">
+        <div className="max-w-3xl mx-auto p-4 space-y-4">
+          {/* Header with back button */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate(-1)}
+              aria-label={t("common.back")}
+              className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-muted/60 transition-colors shrink-0"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
             <StandardHeader
               title={t("billing.subscriptionsPage.title")}
               description={t("billing.subscriptionsPage.subtitle")}
               emoji="✨"
             />
           </div>
-        </div>
 
-        {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto px-4 pb-28 space-y-4">
           {isLoading && <Loading />}
 
           {isError && (
@@ -87,28 +90,25 @@ export default function MobileSubscriptions() {
               <YourEarningsWidget data={data} />
               <PrivacyFirstPromises />
               <WhySubscribeFAQ />
+
+              {/* Bottom CTA — only for users with an existing subscription.
+                  Free users have the plans grid in the page body. */}
+              {!isFree && (
+                <div className="pt-2">
+                  <Button
+                    variant={isPastDue ? "destructive" : "outline"}
+                    className="w-full h-12 rounded-xl"
+                    onClick={() => navigate("/settings?mode=billing")}
+                  >
+                    <SettingsIcon className="w-4 h-4 mr-2" />
+                    {t("billing.state.manage")}
+                  </Button>
+                </div>
+              )}
             </>
           )}
         </div>
-
-        {/* Sticky bottom CTA — only for users with an existing subscription.
-            Free users have the plans grid in the page body. */}
-        {data && !isFree && (
-          <div
-            className="absolute bottom-0 left-0 right-0 px-4 pt-2 bg-gradient-to-t from-background via-background to-transparent"
-            style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 12px)" }}
-          >
-            <Button
-              variant={isPastDue ? "destructive" : "outline"}
-              className="w-full h-12 rounded-xl"
-              onClick={() => navigate("/settings?mode=billing")}
-            >
-              <SettingsIcon className="w-4 h-4 mr-2" />
-              {t("billing.state.manage")}
-            </Button>
-          </div>
-        )}
       </div>
-    </MobileAppShell>
+    </AppLayout>
   );
 }
