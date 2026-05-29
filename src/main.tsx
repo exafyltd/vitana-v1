@@ -6,6 +6,13 @@ import './index.css'
 // reached the page after tapping a chat notification.
 import { bootstrapNotifDiag } from './lib/notifDiag'
 bootstrapNotifDiag()
+// VTID-03177 (PROFILE): RUM beacon — captures LCP/TTFB/FCP/CLS per screen
+// and POSTs to gateway /api/v1/rum/beacon. Gateway translates each into a
+// `screen.latency.measured` OASIS event. Receiver returns 204 when
+// FEATURE_LATENCY_TELEMETRY_ENV is off so this costs nothing in prod
+// until the experiment flips it on staging-only.
+import { initRum } from './lib/rum'
+initRum()
 import { TenantProvider } from './hooks/useTenant'
 import { AuthProvider } from './context/AuthProvider'
 import { ProfileProvider } from './context/ProfileProvider'
