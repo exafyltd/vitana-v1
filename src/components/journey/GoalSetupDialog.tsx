@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogClose,
   DialogHeader,
   DialogTitle,
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -74,7 +76,20 @@ export function GoalSetupDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
-        <DialogHeader>
+        {/* Standard unframed X close, top-right. Wrapped in a span so it isn't
+            a direct <button> child of DialogContent — that's what the framework's
+            [&>button]:sr-only selector hides. */}
+        <span className="absolute right-3 top-3 z-10">
+          <DialogClose
+            aria-label={t("screens.common.close")}
+            style={{ boxShadow: "none" }}
+            className="rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none"
+          >
+            <X className="h-4 w-4" />
+          </DialogClose>
+        </span>
+
+        <DialogHeader className="pr-8">
           <DialogTitle>{t("screens.autopilotdashboard.goalDialogTitle")}</DialogTitle>
           <DialogDescription>{t("screens.autopilotdashboard.goalDialogSubtitle")}</DialogDescription>
         </DialogHeader>
