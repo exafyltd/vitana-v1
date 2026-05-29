@@ -4,7 +4,7 @@
     "description": "Dein Lebenskompass leitet alle KI-Empfehlungen und Entscheidungen. Wähle ein Hauptziel, das dir gerade am wichtigsten ist. Die KI priorisiert Vorschläge, die zu dieser Richtung passen.",
     "currentCompass": "Aktueller Kompass",
     "alignment": "Ausrichtung: {value}%",
-    "confidence": "Vertrauen: {value}%",
+    "confidence": "Konfidenz: {value}%",
     "suggestedGoals": "Vorgeschlagene Ziele",
     "customGoal": "Eigenes Ziel",
     "customGoalPlaceholder": "Beschreibe dein Hauptziel in deinen eigenen Worten...",
@@ -29,7 +29,7 @@
         "description": "Bedeutungsvolle romantische Beziehungen aufbauen"
       },
       "health": {
-        "title": "Gesundheit transformieren",
+        "title": "Gesundheit verbessern",
         "description": "Optimales körperliches und geistiges Wohlbefinden erreichen"
       },
       "career": {

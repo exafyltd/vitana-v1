@@ -1,13 +1,13 @@
 {
   "editProfile": {
-    "unsavedChanges": "Sie haben ungespeicherte Änderungen. Sind Sie sicher, dass Sie verlassen möchten?",
+    "unsavedChanges": "Du hast ungespeicherte Änderungen. Bist du sicher, dass du gehen möchtest?",
     "notAuthenticated": "Nicht angemeldet",
-    "notAuthenticatedDesc": "Bitte melden Sie sich an, um Ihr Profil zu speichern.",
+    "notAuthenticatedDesc": "Bitte melde dich an, um dein Profil zu speichern.",
     "profileUpdated": "Profil erfolgreich aktualisiert!",
-    "profileUpdatedDesc": "Ihre Änderungen sind jetzt live. Ihr VITANA-Profil sieht großartig aus.",
+    "profileUpdatedDesc": "Deine Änderungen sind jetzt live. Dein VITANA-Profil sieht großartig aus.",
     "error": "Fehler",
     "refreshFailed": "Profildaten konnten nicht aktualisiert werden.",
-    "showcaseHint": "Wählen Sie Posts und Inhalte aus, die oben in Ihrem Profil angezeigt werden sollen",
+    "showcaseHint": "Wähle Posts und Inhalte aus, die oben in deinem Profil hervorgehoben werden sollen.",
     "showcaseTitle": "Highlights",
     "manage": "Verwalten",
     "about": "Über mich",

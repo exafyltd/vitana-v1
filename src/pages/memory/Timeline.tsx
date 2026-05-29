@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import { Plus, Loader2, Calendar as CalendarIcon, RefreshCw, MessageSquare, Activity, Trash2, Sparkles, Brain, Mic } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -23,6 +22,7 @@ import { toast } from "sonner";
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 // Category configuration
 const CATEGORIES = [
   { filter: "chat", emoji: "💬", label: "Chat" },

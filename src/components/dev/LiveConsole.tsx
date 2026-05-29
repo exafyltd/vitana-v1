@@ -19,6 +19,7 @@ import { RefreshCw, Activity } from "lucide-react";
 import { SSEConnectionMonitor } from "./SSEConnectionMonitor";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 const BASE_EVENTS = (import.meta.env.VITE_EVENTS_BASE_URL || "/api/v1").trim();
 
 export default function LiveConsole() {
@@ -511,7 +512,7 @@ export default function LiveConsole() {
                   </span>
                 )}
                 <span className="text-xs text-muted-foreground ml-auto">
-                  {new Date(ev.ts).toLocaleString()}
+                  {fmtDateTime(new Date(ev.ts))}
                 </span>
               </div>
               <div className="text-sm">

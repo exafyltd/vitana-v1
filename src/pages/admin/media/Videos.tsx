@@ -12,11 +12,11 @@ import { Eye, ThumbsUp, CheckCircle, XCircle, Flag, Trash2, Star, Search } from 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useState } from "react";
-import { format } from "date-fns";
 import { useSearchParams } from "react-router-dom";
 import { useToast } from '@/hooks/use-toast';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 export default function Videos() {
   const [searchParams] = useSearchParams();
   const { toast } = useToast();
@@ -194,7 +194,7 @@ export default function Videos() {
                         {video.status}
                       </Badge>
                     </TableCell>
-                    <TableCell>{format(new Date(video.created_at), 'MMM d, yyyy')}</TableCell>
+                    <TableCell>{formatDate(new Date(video.created_at), 'MMM d, yyyy')}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex items-center justify-end gap-2">
                         {video.status !== 'approved' && (

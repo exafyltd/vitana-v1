@@ -1,0 +1,21 @@
+{
+  "calendarPopup": {
+    "title": "Kalendar",
+    "nextEvents": "Sledećih {count} događaja",
+    "conflicts": "{count} konflikata",
+    "upcomingSchedule": "Tvoj predstojeći raspored i događaji",
+    "addNewEvent": "Dodaj novi događaj",
+    "noUpcomingEvents": "Nema predstojećih događaja",
+    "createFirstEvent": "Napravi svoj prvi događaj",
+    "aiSuggestions": "AI predlozi",
+    "findBetterSlot": "Pronađi bolji termin",
+    "prepareBrief": "Pripremi kratak pregled",
+    "shareAvailability": "Podeli dostupnost",
+    "syncExternal": "Spoljna sinhronizacija",
+    "addEvent": "Dodaj događaj",
+    "quickAdd": "Brzo dodavanje",
+    "eventFormComingSoon": "Forma za kreiranje događaja uskoro",
+    "externalSync": "Spoljna sinhronizacija",
+    "connectingCalendars": "Povezivanje sa spoljnim kalendarima..."
+  }
+}

@@ -15,6 +15,7 @@ import { calculateExchange, formatCurrency } from "@/lib/exchangeRates";
 import { CURRENCY_CONFIGS, getCurrencyIcon } from "@/lib/currencies";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface WalletIntegratedExchangeAndSendProps {
   isOpen: boolean;
   onClose: () => void;
@@ -152,7 +153,7 @@ export default function WalletIntegratedExchangeAndSend({
                   {balances.map((balance) => (
                     <span key={balance.currency_type} className="flex items-center gap-1">
                       {getCurrencyIcon(balance.currency_type)}
-                      {balance.balance.toLocaleString()}
+                      {fmtNumber(balance.balance)}
                     </span>
                   ))}
                 </div>

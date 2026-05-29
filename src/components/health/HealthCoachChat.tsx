@@ -53,18 +53,18 @@ function HealthCoachChatBase({
   };
 
   const quickActions = [
-    "Log my symptoms",
-    "Update my mood",
-    "Schedule check-in",
-    "Review my goals"
+    t('screens.ai.coachAction_logSymptoms'),
+    t('screens.ai.coachAction_updateMood'),
+    t('screens.ai.coachAction_scheduleCheckin'),
+    t('screens.ai.coachAction_reviewGoals'),
   ];
 
   const contextSuggestions = {
-    hydration: ["How much water should I drink?", "Track my hydration"],
-    nutrition: ["Suggest meal plans", "Log my food"],
-    exercise: ["Create workout plan", "Track my activity"],
-    sleep: ["Improve sleep quality", "Log sleep patterns"],
-    mental: ["Mood tracking", "Stress management tips"]
+    hydration: [t('screens.ai.coachCtx_waterIntake'), t('screens.ai.coachCtx_trackHydration')],
+    nutrition: [t('screens.ai.coachCtx_mealPlans'), t('screens.ai.coachCtx_logFood')],
+    exercise: [t('screens.ai.coachCtx_workoutPlan'), t('screens.ai.coachCtx_trackActivity')],
+    sleep:    [t('screens.ai.coachCtx_improveSleep'), t('screens.ai.coachCtx_logSleep')],
+    mental:   [t('screens.ai.coachCtx_moodTracking'), t('screens.ai.coachCtx_stressTips')]
   };
 
   const consentDialog = (

@@ -19,6 +19,7 @@ import {
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDateTime, fmtNumber } from '@/lib/locale-format';
 interface PaymentMessageHandlerProps {
   message: any;
   onUpdateMessage?: (messageId: string, updates: any) => void;
@@ -95,9 +96,9 @@ export function PaymentMessageHandler({
 
   const formatCurrency = (amount: number, currency: string) => {
     switch (currency?.toUpperCase()) {
-      case 'USD': return `$${amount.toLocaleString()}`;
-      case 'CREDITS': return `${amount.toLocaleString()} Credits`;
-      case 'VTNA': return `${amount.toLocaleString()} VTNA`;
+      case 'USD': return `$${fmtNumber(amount)}`;
+      case 'CREDITS': return `${fmtNumber(amount)} Credits`;
+      case 'VTNA': return `${fmtNumber(amount)} VTNA`;
       default: return `${amount} ${currency}`;
     }
   };
@@ -377,7 +378,7 @@ export function PaymentMessageHandler({
   const renderPaymentRequest = () => {
   const { amount, currency, description, status = 'pending' } = paymentData;
     const balanceVal = walletGetBalance((currency || '').toUpperCase() as 'USD' | 'VTNA' | 'CREDITS');
-    const currentBalanceDisplay = balanceVal === null ? '—' : balanceVal.toLocaleString();
+    const currentBalanceDisplay = balanceVal === null ? '—' : fmtDateTime(balanceVal);
     const canPay = canAfford(amount, currency);
     const effectiveStatus = isDeclined ? 'declined' : isCompleted ? 'completed' : status;
 

@@ -15,6 +15,11 @@ export interface LifeCompass {
   version: number;
   created_at: string;
   updated_at: string;
+  // Goal-centric North Star fields (nullable until set on My Journey).
+  target_date: string | null;
+  target_value: number | null;
+  target_unit: string | null;
+  starting_value: number | null;
 }
 
 export interface LifeCompassSubgoal {
@@ -74,7 +79,14 @@ export function useLifeCompass() {
 
   // Create or update life compass
   const updateCompassMutation = useMutation({
-    mutationFn: async (goal: { primary_goal: string; category: string }) => {
+    mutationFn: async (goal: {
+      primary_goal: string;
+      category: string;
+      target_date?: string | null;
+      target_value?: number | null;
+      target_unit?: string | null;
+      starting_value?: number | null;
+    }) => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
@@ -86,16 +98,24 @@ export function useLifeCompass() {
           .eq("id", compass.id);
       }
 
-      // Create new compass
+      // Create new compass. Only attach goal-target columns when actually
+      // provided, so plain goal-setting (no deadline) keeps working even
+      // before the life_compass target_date migration is applied.
+      const payload: Record<string, unknown> = {
+        user_id: user.id,
+        primary_goal: goal.primary_goal,
+        category: goal.category,
+        is_active: true,
+        version: compass ? compass.version + 1 : 1,
+      };
+      if (goal.target_date != null) payload.target_date = goal.target_date;
+      if (goal.target_value != null) payload.target_value = goal.target_value;
+      if (goal.target_unit != null) payload.target_unit = goal.target_unit;
+      if (goal.starting_value != null) payload.starting_value = goal.starting_value;
+
       const { data, error } = await supabase
         .from("life_compass")
-        .insert({
-          user_id: user.id,
-          primary_goal: goal.primary_goal,
-          category: goal.category,
-          is_active: true,
-          version: compass ? compass.version + 1 : 1,
-        })
+        .insert(payload)
         .select()
         .single();
 
@@ -104,6 +124,7 @@ export function useLifeCompass() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["life-compass"] });
+      queryClient.invalidateQueries({ queryKey: ["my-journey"] });
       notify('toasts.hooks.lifeCompassUpdated', 'toasts.hooks.yourAiGuidanceHasUpdatedAlign');
     },
     onError: (error: Error) => {
@@ -142,6 +163,7 @@ export function useLifeCompass() {
     subgoals: subgoals || [],
     isLoading,
     updateCompass: updateCompassMutation.mutate,
+    updateCompassAsync: updateCompassMutation.mutateAsync,
     addSubgoal: addSubgoalMutation.mutate,
     isUpdating: updateCompassMutation.isPending,
   };

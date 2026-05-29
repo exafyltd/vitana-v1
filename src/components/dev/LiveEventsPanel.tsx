@@ -4,9 +4,9 @@ import { useDevEvents } from "@/hooks/dev/useDevEvents";
 import { SoftWarningBanner } from "./SoftWarningBanner";
 import { Loader2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { formatDistanceToNow } from "date-fns";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface LiveEventsPanelProps {
   tenant?: string;
   status?: 'all' | 'green' | 'blue' | 'yellow' | 'red';

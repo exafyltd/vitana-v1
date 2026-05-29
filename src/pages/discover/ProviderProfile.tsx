@@ -19,6 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useWallet } from "@/hooks/useWallet";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 export default function ProviderProfile() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -215,7 +216,7 @@ export default function ProviderProfile() {
                   </div>
                   <div className="flex items-center gap-1 text-muted-foreground">
                     <Users className="h-4 w-4" />
-                    <span>{t('screens.discover.value0Bookings', { value0: provider.bookings.toLocaleString() })}</span>
+                    <span>{t('screens.discover.value0Bookings', { value0: fmtDateTime(provider.bookings) })}</span>
                   </div>
                 </div>
                 

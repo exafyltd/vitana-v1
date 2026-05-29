@@ -27,6 +27,7 @@ import {
 import { useMembers, useRolesSummary } from "@/hooks/useAdminMembers";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 const ROLE_VARIANT: Record<string, "active" | "warning" | "error" | "inactive" | "info"> = {
   admin: "error",
   staff: "warning",
@@ -153,7 +154,7 @@ export default function MembersDirectory() {
                       </AdminStatusBadge>
                     </TableCell>
                     <TableCell className="text-right text-xs text-muted-foreground">
-                      {new Date(m.created_at).toLocaleDateString()}
+                      {fmtDate(new Date(m.created_at))}
                     </TableCell>
                   </TableRow>
                 ))}

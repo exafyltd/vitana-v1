@@ -6,10 +6,10 @@ import { Plus, Pencil, Trash2, Calendar } from "lucide-react";
 import { Milestone } from "@/hooks/useProfileMilestones";
 import { MilestoneEditor } from "./MilestoneEditor";
 import { useTranslation } from "@/hooks/useTranslation";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface MilestoneTimelineProps {
   milestones: Milestone[];
   isOwner: boolean;
@@ -101,7 +101,7 @@ export function MilestoneTimeline({
                       {milestone.milestone_date && (
                         <div className="flex items-center gap-1.5 mt-2 text-xs text-muted-foreground">
                           <Calendar className="h-3 w-3" />
-                          {format(new Date(milestone.milestone_date), 'MMM d, yyyy')}
+                          {formatDate(new Date(milestone.milestone_date), 'MMM d, yyyy')}
                         </div>
                       )}
                     </div>

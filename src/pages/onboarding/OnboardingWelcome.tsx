@@ -11,8 +11,8 @@ import { t } from '@/lib/i18n-toast';
 type Phase = 'speech' | 'form';
 
 function getDefaultTarget(): string {
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  return isMobile ? '/comm/events-meetups?tab=hot' : '/home';
+  // My Journey (the goal North Star) is the default landing screen after login.
+  return '/autopilot';
 }
 
 export default function OnboardingWelcome() {

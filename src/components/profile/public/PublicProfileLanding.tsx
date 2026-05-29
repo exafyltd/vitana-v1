@@ -25,10 +25,10 @@ import {
   Globe,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface PublicProfileLandingProps {
   profile: UserProfile;
   milestones: Milestone[];
@@ -172,7 +172,7 @@ export function PublicProfileLanding({ profile, milestones, galleryPhotos }: Pub
                   {m.milestone_date && (
                     <p className="text-xs text-muted-foreground/70 mt-1 flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
-                      {format(new Date(m.milestone_date), 'MMM yyyy')}
+                      {formatDate(new Date(m.milestone_date), 'MMM yyyy')}
                     </p>
                   )}
                 </div>

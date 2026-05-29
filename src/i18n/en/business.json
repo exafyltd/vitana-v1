@@ -107,6 +107,20 @@
       "badgeActive": "Active",
       "alreadyReseller": "You're already a reseller! Check the Sell & Earn tab.",
       "cancel": "Cancel"
+    },
+    "missionOpportunities": {
+      "title": "Mission Opportunities",
+      "subtitle": "Autopilot-recommended paths that advance the longevity economy",
+      "loading": "Loading opportunities…",
+      "error": "Could not load opportunities",
+      "empty": "No economy-aligned recommendations yet. Check back later.",
+      "viewAll": "View all recommendations",
+      "axisBadge": {
+        "find_match": "Find a Match",
+        "marketplace": "Marketplace",
+        "income_generation": "Income generation",
+        "business_formation": "Business formation"
+      }
     }
   }
 }

@@ -1,0 +1,155 @@
+{
+  "verdicts": {
+    "portals.maxina.roles.professional": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "portals.maxina.roles.admin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "portals.maxina.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.welcomeBack": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation is gender-specific (masculine) while a gender-neutral option is preferred for general UI messages to ensure inclusivity.",
+      "suggested": "¡Qué bueno verte de nuevo en Maxina!",
+      "phase": "llm"
+    },
+    "portals.maxina.continueJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.joinMaxina": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.joinCommunity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.createAccount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.signingIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.creatingAccount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.joiningAs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.yourFullName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.forgotPassword": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.partOfVitana": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.allPortals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.emailConfirmed": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation is gender-specific (masculine) while a gender-neutral option is preferred for general UI messages to ensure inclusivity.",
+      "suggested": "¡Correo confirmado! ¡Te damos la bienvenida a Maxina!",
+      "phase": "llm"
+    },
+    "portals.maxina.checkEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.roles.community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.roles.patient": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.alkalma.joinAlkalma": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.alkalma.welcomeBack": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation is gender-specific (masculine) while a gender-neutral option is preferred for general UI messages to ensure inclusivity.",
+      "suggested": "¡Qué bueno verte de nuevo en AlKalma!",
+      "phase": "llm"
+    },
+    "portals.alkalma.continueJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.earthlinks.joinEarthlinks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.earthlinks.welcomeBack": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation is gender-specific (masculine) while a gender-neutral option is preferred for general UI messages to ensure inclusivity.",
+      "suggested": "¡Qué bueno verte de nuevo en Earthlinks!",
+      "phase": "llm"
+    },
+    "portals.earthlinks.continueJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.community.joinCommunity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.community.welcomeBack": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation is gender-specific (masculine) while a gender-neutral option is preferred for general UI messages to ensure inclusivity.",
+      "suggested": "¡Qué bueno verte de nuevo!",
+      "phase": "llm"
+    },
+    "portals.community.continueJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:02:58.687Z"
+}

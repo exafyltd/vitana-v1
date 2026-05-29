@@ -56,12 +56,22 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [selectedLanguage, setLocalLanguage] = useState<string>(() => {
     const initial = getInitialLanguage();
     setI18nLocale(initial); // sync the i18n-toast singleton at boot
+    // Set <html lang> at boot so browser hyphenation rules (CSS hyphens: auto)
+    // pick the right syllable dictionary for the user's language. Without this
+    // German compound words like "Datenschutz-Einstellungen" don't break on
+    // mobile viewports because the browser uses English hyphenation rules.
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = initial.split('-')[0] || 'de';
+    }
     return initial;
   });
 
-  // Keep i18n-toast singleton in sync with React state.
+  // Keep i18n-toast singleton + <html lang> in sync with React state.
   useEffect(() => {
     setI18nLocale(selectedLanguage);
+    if (typeof document !== 'undefined') {
+      document.documentElement.lang = selectedLanguage.split('-')[0] || 'de';
+    }
   }, [selectedLanguage]);
 
   // Tracks a pending language change until server confirms it

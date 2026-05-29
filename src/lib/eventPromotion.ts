@@ -1,5 +1,4 @@
-import { format } from "date-fns";
-
+import { formatDate } from '@/lib/locale-format';
 export interface EventPromotionData {
   eventId: string;
   eventName: string;
@@ -47,7 +46,7 @@ export function generateEventLink(
  * Generate email template for event promotion
  */
 export function generateEmailTemplate(event: any): { subject: string; body: string } {
-  const eventDate = format(new Date(event.start_time), "MMMM d, yyyy 'at' h:mm a");
+  const eventDate = formatDate(new Date(event.start_time), "MMMM d, yyyy 'at' h:mm a");
   const location = event.location || (event.virtual_link ? "Virtual Event" : "Location TBA");
   
   return {
@@ -80,7 +79,7 @@ ${event.creator_display_name || "The Event Team"}`.trim(),
  * Generate SMS template for event promotion
  */
 export function generateSmsTemplate(event: any): { body: string } {
-  const eventDate = format(new Date(event.start_time), "MMM d, h:mm a");
+  const eventDate = formatDate(new Date(event.start_time), "MMM d, h:mm a");
   const location = event.location || "Virtual";
   
   const body = `🎉 ${event.title}
@@ -95,7 +94,7 @@ RSVP: {event_link}`;
  * Generate WhatsApp template for event promotion
  */
 export function generateWhatsAppTemplate(event: any): { body: string } {
-  const eventDate = format(new Date(event.start_time), "MMMM d, yyyy 'at' h:mm a");
+  const eventDate = formatDate(new Date(event.start_time), "MMMM d, yyyy 'at' h:mm a");
   const location = event.location || (event.virtual_link ? "Virtual Event" : "Location TBA");
   
   const body = `🌟 *${event.title}*

@@ -1,0 +1,216 @@
+{
+  "verdicts": {
+    "historyManagement.beta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "historyManagement.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.viewAnalyze": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.organizeManage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.privacyData": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.exportHistory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.exportHistoryDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The nuance of 'data' is lost; 'aktivnosti' means 'activities', not 'activity data'.",
+      "suggested": "Preuzmi podatke o svojim aktivnostima (CSV/JSON)",
+      "phase": "llm"
+    },
+    "historyManagement.viewStatistics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.viewStatisticsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.advancedSearch": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.advancedSearchDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "'date range' is translated as 'date' ('datumu'), losing the 'range' aspect.",
+      "suggested": "Filtriraj po rasponu datuma, kategoriji, ključnim rečima",
+      "phase": "llm"
+    },
+    "historyManagement.bulkActions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.bulkActionsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.archiveSettings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.archiveSettingsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.manageCategories": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.manageCategoriesDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.privacyControls": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.privacyControlsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.clearOldHistory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.clearOldHistoryDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.deleteAllHistory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.deleteAllHistoryDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The nuance of 'data' is lost; 'aktivnosti' means 'activities', not 'activity data'.",
+      "suggested": "Trajno ukloni sve sačuvane podatke o aktivnostima",
+      "phase": "llm"
+    },
+    "historyManagement.exporting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.clearing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.deleting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.exportComplete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.exportCompleteDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.exportFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.exportFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.historyCleared": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.historyClearedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.clearFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.clearFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.allHistoryDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.allHistoryDeletedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.deleteFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.deleteFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.confirmClearOld": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.confirmDeleteAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "historyManagement.danger": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:04:03.934Z"
+}

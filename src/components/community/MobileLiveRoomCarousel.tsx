@@ -7,9 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Bell, Pencil, Trash2 } from 'lucide-react';
 import SocialShareButton from '@/components/sharing/SocialShareButton';
 import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu-kebab';
-import { format } from 'date-fns';
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface MobileLiveRoomCarouselProps {
   rooms: LiveRoom[];
   onCardClick: (roomId: string) => void;
@@ -118,7 +118,7 @@ export function MobileLiveRoomCarousel({
     const timestamp = room.isLive
       ? 'LIVE'
       : room.scheduledTime
-        ? format(new Date(room.scheduledTime), 'HH:mm')
+        ? formatDate(new Date(room.scheduledTime), 'HH:mm')
         : undefined;
 
     const actionButton = room.isLive ? (

@@ -13,6 +13,15 @@
     "tryAdjustingFilters": "Try adjusting your filters or search query",
     "noData": "No data available",
     "noMessages": "No messages",
-    "noNotifications": "No notifications"
+    "noNotifications": "No notifications",
+    "indexSheetNextDays": "No active Autopilot suggestions. When something lands here, completing it will move your Index.",
+    "indexSheetHorizon": "Need a few more days of data to project your 30-day arc.",
+    "myJourneyPath": "Your path is just beginning. When Autopilot has suggestions, they'll appear here as a path you can walk.",
+    "myJourneyOnePillar": "Pick one small thing — watch your Index move.",
+    "autopilotPopupZero": "Select actions to see Index lift.",
+    "healthEmpty": "Log your first entry to start your Index.",
+    "noActionsMatchedYet": "No actions matched yet — Autopilot is shaping suggestions.",
+    "actionsPendingOne": "{count} action pending",
+    "actionsPendingOther": "{count} actions pending"
   }
 }

@@ -2,9 +2,9 @@ import { Play, Clock, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
-import { formatDistanceToNow } from 'date-fns';
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface PodcastEpisode {
   id: string;
   title: string;

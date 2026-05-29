@@ -12,6 +12,7 @@ import { Send, Loader2 } from 'lucide-react';
 import { CURRENCY_CONFIGS, getCurrencyIcon } from '@/lib/currencies';
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime, fmtNumber } from '@/lib/locale-format';
 interface WalletIntegratedSendFundsProps {
   isOpen: boolean;
   onClose: () => void;
@@ -70,7 +71,7 @@ export default function WalletIntegratedSendFunds({
       if (result && result.id) {
         // Send a confirmation message to the chat (fire-and-forget)
         onSendMessage(
-          `✅ Payment completed: ${numericAmount.toLocaleString()} ${currency}${desc ? ` - ${desc}` : ''}`,
+          `✅ Payment completed: ${fmtNumber(numericAmount)} ${currency}${desc ? ` - ${desc}` : ''}`,
           'payment_confirmation',
           {
             amount: numericAmount,
@@ -149,7 +150,7 @@ export default function WalletIntegratedSendFunds({
               <div className="flex items-center gap-1">
                 {getCurrencyIcon(currency)}
                 <span className={`font-medium ${!canAfford && amount ? 'text-destructive' : ''}`}>
-                  {userBalance.toLocaleString()} {currency}
+                  {fmtNumber(userBalance)} {currency}
                 </span>
               </div>
             </div>
@@ -174,7 +175,7 @@ export default function WalletIntegratedSendFunds({
                 <span>{t('screens.payment.sending')}</span>
                 <div className="flex items-center gap-1 font-medium">
                   {getCurrencyIcon(currency)}
-                  {parseFloat(amount).toLocaleString()} {currency}
+                  {fmtDateTime(parseFloat(amount))} {currency}
                 </div>
               </div>
               <div className="flex items-center justify-between text-sm">
@@ -186,7 +187,7 @@ export default function WalletIntegratedSendFunds({
                   <span>{t('screens.payment.total')}</span>
                   <div className="flex items-center gap-1">
                     {getCurrencyIcon(currency)}
-                    {parseFloat(amount).toLocaleString()} {currency}
+                    {fmtDateTime(parseFloat(amount))} {currency}
                   </div>
                 </div>
               </div>

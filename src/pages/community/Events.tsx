@@ -19,6 +19,7 @@ import { Plus, Apple, Dumbbell, Droplets, Moon, Brain } from 'lucide-react';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate, fmtTime } from '@/lib/locale-format';
 // Mock data for events with unique IDs
 const todayEvents = [
   {
@@ -232,8 +233,8 @@ const upcomingEvents = [
 
 const formatEventTime = (dateString: string) => {
   const date = new Date(dateString);
-  const time = date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
-  const day = date.toLocaleDateString('en-GB', { weekday: 'short', month: 'short', day: 'numeric' });
+  const time = fmtTime(date, { hour: '2-digit', minute: '2-digit', hour12: false });
+  const day = fmtDate(date, { weekday: 'short', month: 'short', day: 'numeric' });
   return `${day} · ${time}`;
 };
 

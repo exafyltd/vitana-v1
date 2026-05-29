@@ -1,7 +1,7 @@
 {
   "businessHub": {
     "title": "Business Hub",
-    "description": "Bauen Sie Ihr Wellness-Geschäft aus",
+    "description": "Baue dein Wellness-Geschäft aus",
     "tabs": {
       "snapshot": "Übersicht",
       "services": "Dienste",
@@ -10,14 +10,14 @@
     },
     "recentActivity": "Letzte Aktivitäten",
     "clients": "Kunden",
-    "analytics": "Analytik",
+    "analytics": "Analysen",
     "searchBusiness": "Business durchsuchen...",
     "noServices": "Noch keine Dienste",
-    "noServicesDesc": "Erstellen Sie Ihren ersten Dienst, um Kunden zu gewinnen.",
+    "noServicesDesc": "Erstelle deinen ersten Dienst, um Kunden zu gewinnen.",
     "createService": "Dienst erstellen",
     "noClients": "Noch keine Kunden",
-    "noClientsDesc": "Ihre Kunden werden hier erscheinen.",
+    "noClientsDesc": "Deine Kunden werden hier erscheinen.",
     "noSales": "Noch keine Verkäufe",
-    "noSalesDesc": "Ihre Verkaufshistorie wird hier erscheinen."
+    "noSalesDesc": "Deine Verkaufshistorie wird hier erscheinen."
   }
 }

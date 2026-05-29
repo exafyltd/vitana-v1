@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { fetchCommunityEventsQueryFn } from "@/hooks/useCommunityEvents";
 import { useTranslation } from "@/hooks/useTranslation";
 import { ResendConfirmationButton } from "@/components/auth/ResendConfirmationButton";
+import OrbDiscoveryHint from "@/components/vitanaland/OrbDiscoveryHint";
 import { t } from '@/lib/i18n-toast';
 
 const MaxinaPortal = () => {
@@ -820,6 +821,8 @@ const MaxinaPortal = () => {
 
 
       </div>
+
+      <OrbDiscoveryHint />
     </div>
   );
 };

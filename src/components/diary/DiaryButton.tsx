@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { lookup, notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtTime } from '@/lib/locale-format';
 type Status = "idle" | "recording" | "stopping";
 
 export default function DiaryButton() {
@@ -189,7 +190,7 @@ export default function DiaryButton() {
     // Show main toast with first action  
     toast({
       title: message,
-      description: new Date().toLocaleTimeString(),
+      description: fmtTime(new Date()),
       action: actions[0] ? (
         <button onClick={actions[0].onClick} className="inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
           {actions[0].label}

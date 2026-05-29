@@ -1,0 +1,94 @@
+{
+  "health": {
+    "title": "Salud",
+    "description": "Tu panel de salud personal",
+    "overview": "Resumen",
+    "overviewDesc": "Tu panel de salud completo y resumen de bienestar",
+    "servicesHub": "Centro de Servicios",
+    "servicesHubDesc": "Reserva médicos, coaching, programas y exámenes",
+    "biomarkers": "Biomarcadores",
+    "biomarkersDesc": "Ve tus últimos resultados de pruebas y biomarcadores",
+    "healthTracker": "Mi Seguimiento de Salud",
+    "healthTrackerDesc": "Registra tu nutrición, sueño y ejercicio diarios",
+    "education": "Educación y Ciencia",
+    "educationDesc": "Aprende sobre temas de salud y accede a recursos de bienestar",
+    "priorityFocus": "Enfoque Prioritario",
+    "priorityFocusExplanation": "Esta área tiene el mayor impacto en tu salud a largo plazo.",
+    "autopilotGuidance": "Guía Automática",
+    "autopilotSuggests": "Sugerencias Automáticas",
+    "takeAction": "Tomar Acción",
+    "uploadBloodTest": "Subir Análisis de Sangre",
+    "orderBloodTest": "Pedir Análisis de Sangre",
+    "viewPlans": "Ver Planes",
+    "vitanaIndex": "Índice Vitana",
+    "healthSnapshot": "Tu Resumen de Salud",
+    "topPercentile": "Top {percent}%",
+    "trend": {
+      "improving": "Mejorando",
+      "declining": "Disminuyendo",
+      "stable": "Estable"
+    },
+    "suggestions": {
+      "uploadBloodTestResults": "Subir resultados de análisis de sangre",
+      "startFitnessChallenge": "Iniciar Desafío de Fitness de 30 Días"
+    },
+    "pillars": {
+      "sleep": "Sueño",
+      "exercise": "Ejercicio",
+      "nutrition": "Nutrición",
+      "hydration": "Hidratación",
+      "mental": "Mental"
+    },
+    "emptyStates": {
+      "noSleepPlan": "Aún no hay plan de sueño",
+      "noSleepPlanDesc": "Genera tu plan de sueño personalizado con objetivos optimizados por IA ajustados a tu ritmo circadiano, necesidades de recuperación y rendimiento diario.",
+      "noExercisePlan": "Aún no hay plan de ejercicio",
+      "noExercisePlanDesc": "Genera tu plan de entrenamiento personalizado con ejercicios optimizados por IA adaptados a tu nivel de condición física, metas y necesidades de recuperación.",
+      "noNutritionPlan": "Aún no hay plan de nutrición",
+      "noNutritionPlanDesc": "Genera tu plan de comidas personalizado con recetas deliciosas y equilibradas adaptadas a tus metas y preferencias dietéticas.",
+      "noHydrationPlan": "Aún no hay plan de hidratación",
+      "noHydrationPlanDesc": "Genera tu plan de hidratación personalizado con objetivos diarios optimizados por IA adaptados a tu nivel de actividad, entorno y necesidades de recuperación.",
+      "noMentalPlan": "Aún no hay plan mental",
+      "noMentalPlanDesc": "Genera tu plan de bienestar mental personalizado para rastrear estrés, enfoque y equilibrio emocional con guía de IA.",
+      "generatePlan": "Generar plan",
+      "generating": "Generando..."
+    },
+    "noSupplements": "Aún no hay suplementos",
+    "noSupplementsDesc": "Registra tus vitaminas, minerales y suplementos diarios. Añade tu primer suplemento para empezar.",
+    "noReports": "Aún no hay informes de salud",
+    "noReportsDesc": "Sube tus análisis de sangre, resultados de laboratorio e informes médicos para desbloquear información personalizada de salud.",
+    "medical": "Médico",
+    "supplements": "Suplementos",
+    "uploadDescription": "Análisis de sangre, imágenes, resultados de laboratorio",
+    "unknownProvider": "Proveedor desconocido",
+    "addSupplement": "Añadir Suplemento",
+    "uploadFirstReport": "Subir Primer Informe",
+    "missionAlignment": {
+      "title": "Alineación de la misión",
+      "subtitle": "Cómo tus recomendaciones avanzan los cinco pilares y la economía de la longevidad",
+      "loading": "Cargando datos de la misión...",
+      "error": "No se pudieron cargar los datos de la misión",
+      "noRecs": "Aún no tienes recomendaciones en tu cola.",
+      "summaryServed": "{pct}% de tus recomendaciones avanzan la misión",
+      "summaryServedCount": "{served} de {total} recomendaciones alineadas",
+      "pillarHeading": "Pilares atendidos",
+      "economyHeading": "Economía de la longevidad",
+      "noPillar": "No alineado con pilares",
+      "noEconomy": "No alineado con economía",
+      "pillars": {
+        "nutrition": "Nutrición",
+        "hydration": "Hidratación",
+        "exercise": "Ejercicio",
+        "sleep": "Sueño",
+        "mental": "Salud Mental"
+      },
+      "economyAxes": {
+        "find_match": "Encontrar un match",
+        "marketplace": "Marketplace",
+        "income_generation": "Generación de ingresos",
+        "business_formation": "Formación de negocios"
+      },
+      "contractLink": "Ver el contrato del Objetivo Final"
+    }
+  }
+}

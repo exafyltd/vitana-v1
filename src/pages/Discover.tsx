@@ -125,7 +125,7 @@ function DiscoverInner() {
     reason: p.match_reasons?.[0]?.text ?? p.rank_reasons?.[0] ?? "",
     provider: p.brand ?? "Vitana Shop",
     image: p.images?.[0] ?? "/lovable-uploads/tae-min-avatar.jpg",
-    badge: (p.match_score ?? p.rank_score ?? 0) > 0.8 ? "Perfect Match" : (p.match_score ?? p.rank_score ?? 0) > 0.5 ? "Great Match" : "Good Match",
+    badge: (p.match_score ?? p.rank_score ?? 0) > 0.8 ? t('discover.matchPerfect') : (p.match_score ?? p.rank_score ?? 0) > 0.5 ? t('discover.matchGreat') : t('discover.matchGood'),
     // Keep the real product data for the new card component
     _product: p,
   }));

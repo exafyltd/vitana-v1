@@ -45,11 +45,11 @@ function MotivationCardBase({
       icon={Heart}
       category="mental"
       title={t('screens.crossover.dailyMotivation')}
-      subtitle="Inspirational content to fuel your wellness journey"
+      subtitle={t('screens.ai.subtitle_inspiration')}
       content={content}
-      buttonText="Try Now"
+      buttonText={t('screens.ai.actionLabel_tryNow')}
       onButtonClick={handleTryNow}
-      secondaryButtonText="More Inspiration"
+      secondaryButtonText={t('screens.ai.actionLabel_moreInspiration')}
       onSecondaryButtonClick={() => navigate('/community/media-hub')}
       className={className}
     />

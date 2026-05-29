@@ -21,6 +21,7 @@ import { adminNavigatorNavigation } from "@/config/navigation";
 import { useNavCatalogList } from "@/hooks/useAdminNavigator";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 // For v1 we fetch the catalog list + one detail call per entry for audit.
 // This keeps the backend API surface small (no separate /audit/list endpoint)
 // and is fine for ~40 entries. If the catalog grows, we'll add a dedicated
@@ -102,7 +103,7 @@ export default function NavigatorHistory() {
                   <div className="flex items-center gap-3 text-xs text-muted-foreground">
                     <Badge variant="outline">{r.action}</Badge>
                     <span>{t('screens.admin.byActor', { actor: r.actor })}</span>
-                    <span>{new Date(r.at).toLocaleString()}</span>
+                    <span>{fmtDateTime(new Date(r.at))}</span>
                   </div>
                 </div>
               ))}

@@ -1,0 +1,10 @@
+{
+  "qrShare": {
+    "title": "QR kod",
+    "scanToView": "Skeniraj da vidiš profil",
+    "shareProfile": "Podeli profil",
+    "copyLink": "Kopiraj link",
+    "download": "Preuzmi",
+    "linkCopied": "Link kopiran!"
+  }
+}

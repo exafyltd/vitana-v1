@@ -2,9 +2,9 @@ import { Play, Pause, Volume2, VolumeX, Download } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { formatDistanceToNow } from 'date-fns';
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface StreamRecordingPlayerProps {
   recording: {
     id: string;

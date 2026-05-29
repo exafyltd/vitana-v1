@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 const SOURCE_VARIANT: Record<string, "default" | "secondary" | "outline"> = {
   orb_text: "default",
   orb_voice: "default",
@@ -47,7 +48,7 @@ const itemColumns = [
     key: "created_at",
     label: "Created",
     sortable: true,
-    render: (val: string) => val ? new Date(val).toLocaleDateString() : "-",
+    render: (val: string) => val ? fmtDate(new Date(val)) : "-",
   },
 ];
 
@@ -82,7 +83,7 @@ const factColumns = [
     key: "extracted_at",
     label: "Extracted",
     sortable: true,
-    render: (val: string) => val ? new Date(val).toLocaleDateString() : "-",
+    render: (val: string) => val ? fmtDate(new Date(val)) : "-",
   },
 ];
 

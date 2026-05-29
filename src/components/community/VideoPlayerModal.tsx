@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { useTrackMediaEvent } from "@/hooks/useShorts";
 import { getShareUrl } from "@/lib/shareUrl";
 import { useEffect, useRef, useState, useCallback } from "react";
-import { Trash2, Play, Pause, Volume2, VolumeX, Share2, Eye, ChevronLeft, ChevronRight, X, Loader2, RotateCcw } from "lucide-react";
+import { Trash2, Play, Pause, Volume2, VolumeX, Share2, MessageCircle, Eye, ChevronLeft, ChevronRight, X, Loader2, RotateCcw } from "lucide-react";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { ShortCommentsSheet } from "./ShortCommentsSheet";
 
 type VideoState = 'loading' | 'ready' | 'playing' | 'paused' | 'autoplay-blocked' | 'stalled' | 'error';
 
@@ -17,6 +18,7 @@ interface VideoPlayerModalProps {
     title: string;
     src_url: string;
     thumbnail_url?: string;
+    commentsCount?: number;
   } | null;
   onDelete?: () => void;
   onNext?: () => void;
@@ -52,6 +54,7 @@ export const VideoPlayerModal = ({
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isCoarsePointer, setIsCoarsePointer] = useState(false);
   const [videoState, setVideoState] = useState<VideoState>('loading');
+  const [showComments, setShowComments] = useState(false);
 
   const clearStallTimer = useCallback(() => {
     if (stallTimerRef.current) {
@@ -81,6 +84,7 @@ export const VideoPlayerModal = ({
       setShowArrowsMobile(false);
       hasInteracted.current = false;
       setVideoState('loading');
+      setShowComments(false);
       handleVideoPlay();
     }
   }, [isOpen, video]);
@@ -548,6 +552,21 @@ export const VideoPlayerModal = ({
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
+                      setShowComments(true);
+                    }}
+                    aria-label={t('mediaHub.comments.title')}
+                    className="relative w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
+                  >
+                    <MessageCircle className="w-5 h-5 text-white" />
+                    {!!video.commentsCount && (
+                      <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-semibold flex items-center justify-center">
+                        {video.commentsCount}
+                      </span>
+                    )}
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
                       handleShare();
                     }}
                     className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
@@ -590,6 +609,13 @@ export const VideoPlayerModal = ({
           </div>
           </div>
         </div>
+
+        <ShortCommentsSheet
+          open={showComments}
+          onOpenChange={setShowComments}
+          videoId={video.id}
+          videoTitle={video.title}
+        />
       </DialogContent>
     </Dialog>
   );

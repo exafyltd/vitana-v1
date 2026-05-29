@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 export default function Analytics() {
   const { data: stats } = useQuery({
     queryKey: ['media-analytics'],
@@ -71,7 +72,7 @@ export default function Analytics() {
               <Eye className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats?.totalViews.toLocaleString() || 0}</div>
+              <div className="text-2xl font-bold">{stats?fmtDateTime(.totalViews) || 0}</div>
             </CardContent>
           </Card>
 
@@ -81,7 +82,7 @@ export default function Analytics() {
               <ThumbsUp className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats?.totalLikes.toLocaleString() || 0}</div>
+              <div className="text-2xl font-bold">{stats?fmtDateTime(.totalLikes) || 0}</div>
             </CardContent>
           </Card>
 
@@ -91,7 +92,7 @@ export default function Analytics() {
               <Play className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats?.totalPlays.toLocaleString() || 0}</div>
+              <div className="text-2xl font-bold">{stats?fmtDateTime(.totalPlays) || 0}</div>
             </CardContent>
           </Card>
         </div>

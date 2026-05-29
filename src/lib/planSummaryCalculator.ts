@@ -1,3 +1,5 @@
+import { fmtDate } from '@/lib/locale-format';
+import { t } from '@/lib/i18n-toast';
 export interface PlanSummary {
   metricsLine: string;
   insightLine1: string;
@@ -20,49 +22,49 @@ export function calculatePlanSummary(plan: any): PlanSummary {
   
   switch (planType) {
     case "nutrition":
-      metricsLine = "5 meals/day · Avg 2100 kcal · Balanced macros";
-      insightLine1 = "🧩 Autopilot optimized breakfast protein for muscle recovery";
-      insightLine2 = "Protein: 96g (↑8%) · Fiber: 32g";
-      footerLine = "Last updated 2h ago · AI Synced ✅";
+      metricsLine = t('screens.health.planSummary_nutrition_metrics');
+      insightLine1 = t('screens.health.planSummary_nutrition_insight1');
+      insightLine2 = t('screens.health.planSummary_nutrition_insight2');
+      footerLine = t('screens.health.planSummary_nutrition_footer');
       break;
-      
+
     case "exercise":
-      metricsLine = "4 sessions/week · Strength & Mobility";
-      insightLine1 = "💪 Recovery load adjusted for better shoulder stability";
-      insightLine2 = "Last Workout: Yesterday · Recovery +7%";
-      footerLine = "Next session: Tomorrow · Week 2 of 4";
+      metricsLine = t('screens.health.planSummary_exercise_metrics');
+      insightLine1 = t('screens.health.planSummary_exercise_insight1');
+      insightLine2 = t('screens.health.planSummary_exercise_insight2');
+      footerLine = t('screens.health.planSummary_exercise_footer');
       break;
-      
+
     case "hydration":
-      metricsLine = "8 glasses/day · 72% consistency";
-      insightLine1 = "💧 +300ml added due to temperature & exercise";
-      insightLine2 = "2.3L avg intake · Goal met 4 days in a row";
-      footerLine = "2.3L avg intake · Goal met 4 days";
+      metricsLine = t('screens.health.planSummary_hydration_metrics');
+      insightLine1 = t('screens.health.planSummary_hydration_insight1');
+      insightLine2 = t('screens.health.planSummary_hydration_insight2');
+      footerLine = t('screens.health.planSummary_hydration_footer');
       break;
-      
+
     case "sleep":
-      metricsLine = "7.5h avg · Sleep score 86/100";
-      insightLine1 = "💤 Bedtime shifted +15min for deeper sleep";
-      insightLine2 = "Deep Sleep ↑6% · REM Stable · Consistency ↑12%";
-      footerLine = "Consistency ↑12% · REM Stable";
+      metricsLine = t('screens.health.planSummary_sleep_metrics');
+      insightLine1 = t('screens.health.planSummary_sleep_insight1');
+      insightLine2 = t('screens.health.planSummary_sleep_insight2');
+      footerLine = t('screens.health.planSummary_sleep_footer');
       break;
-      
+
     case "mental":
-      metricsLine = "10min reflection · 9-day streak";
-      insightLine1 = "🌿 Stress ↓8% · Focus +12% · Mood Improving";
-      insightLine2 = "Mind coach: 'Keep steady reflection rhythm'";
-      footerLine = "AI Synced 4h ago";
+      metricsLine = t('screens.health.planSummary_mental_metrics');
+      insightLine1 = t('screens.health.planSummary_mental_insight1');
+      insightLine2 = t('screens.health.planSummary_mental_insight2');
+      footerLine = t('screens.health.planSummary_mental_footer');
       break;
-      
+
     case "supplement":
-      metricsLine = "3 supplements · 98% adherence";
-      insightLine1 = "⚗️ Magnesium AM dose improved hydration";
-      insightLine2 = "AI tracking dosage timing sync";
-      footerLine = "Fully Synced · Tracking active";
+      metricsLine = t('screens.health.planSummary_supplement_metrics');
+      insightLine1 = t('screens.health.planSummary_supplement_insight1');
+      insightLine2 = t('screens.health.planSummary_supplement_insight2');
+      footerLine = t('screens.health.planSummary_supplement_footer');
       break;
-      
+
     default:
-      metricsLine = "No data available";
+      metricsLine = t('screens.health.planSummary_default_metrics');
       insightLine1 = "";
       insightLine2 = "";
       footerLine = "";
@@ -99,5 +101,5 @@ function getRelativeTime(date: Date): string {
   if (diffHours < 1) return "Just now";
   if (diffHours < 24) return `${diffHours}h ago`;
   if (diffDays < 7) return `${diffDays}d ago`;
-  return date.toLocaleDateString();
+  return fmtDate(date);
 }

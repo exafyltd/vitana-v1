@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
+import { fmtDate } from '@/lib/locale-format';
 export interface VoucherLookupData {
   voucher: {
     id: string;
@@ -108,7 +109,7 @@ async function fetchVoucherByCode(code: string): Promise<VoucherLookupData> {
           amount_cents: order.amount_cents,
           currency: order.currency,
           tierName: TIER_NAMES[voucher.tier] || voucher.tier,
-          purchaseDate: new Date(order.created_at).toLocaleDateString("en-GB", {
+          purchaseDate: fmtDate(new Date(order.created_at), {
             day: "numeric",
             month: "long",
             year: "numeric",

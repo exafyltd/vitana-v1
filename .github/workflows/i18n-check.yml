@@ -36,6 +36,12 @@ jobs:
       - name: Catalog audit (DE↔EN parity, _pending_review check)
         run: node scripts/i18n-audit.mjs --report-only
 
+      - name: Long-word guard (DE compound-word overflow)
+        # Fails the build if any DE catalog value contains a word >= 22
+        # chars. Auto-fix via the i18n-long-words workflow (Gemini-driven
+        # hyphenation at natural compound boundaries) or hand-edit the shard.
+        run: node scripts/i18n-long-words.mjs --locale=de --check-only --max-word-length=22
+
       - name: ESLint i18n rule (no-raw-jsx-text, warn-level in Wave 1)
         run: npm run lint -- --quiet || echo "lint warnings noted; not blocking in Wave 1"
 

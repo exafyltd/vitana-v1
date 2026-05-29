@@ -23,6 +23,7 @@ import {
 } from "@/hooks/useMarketplace";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 function RewardBadge({ reward_preview }: { reward_preview: MarketplaceProduct["reward_preview"] }) {
   if (!reward_preview?.points_estimate) return null;
   return (
@@ -170,7 +171,7 @@ export function MarketplaceProductCard({
             <span className="text-xs font-medium">{p.rating.toFixed(1)}</span>
             {p.review_count !== null && p.review_count > 0 && (
               <span className="text-xs text-muted-foreground">
-                ({p.review_count.toLocaleString()})
+                ({fmtNumber(p.review_count)})
               </span>
             )}
           </div>

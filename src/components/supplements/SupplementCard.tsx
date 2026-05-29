@@ -4,9 +4,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Pencil, Trash2 } from 'lucide-react';
 import { UserSupplement } from '@/hooks/useUserSupplements';
-import { format } from 'date-fns';
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface SupplementCardProps {
   supplement: UserSupplement;
   onEdit: (supplement: UserSupplement) => void;
@@ -45,7 +45,7 @@ export function SupplementCard({ supplement, onEdit, onDelete }: SupplementCardP
                 <div className="col-span-2">
                   <span className="text-muted-foreground">{t('screens.supplements.started')} </span>
                   <span className="font-medium">
-                    {format(new Date(supplement.start_date), 'MMM dd, yyyy')}
+                    {formatDate(new Date(supplement.start_date), 'MMM dd, yyyy')}
                   </span>
                 </div>
               )}

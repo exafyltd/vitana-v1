@@ -1,0 +1,20 @@
+{
+  "verdicts": {
+    "audio.listening": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "audio.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "audio.connectionError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:00:36.314Z"
+}

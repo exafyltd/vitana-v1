@@ -34,9 +34,10 @@ import { ManualShareActions } from "./ManualShareActions";
 import type { AudienceData } from "@/types/audience";
 import { AudienceSelector } from "./AudienceSelector";
 import { cn } from "@/lib/utils";
-import { format, addDays } from "date-fns";
+import { addDays } from 'date-fns';
 import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface CampaignDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -293,7 +294,7 @@ export function CampaignDialog({ open, onOpenChange, editingCampaign, prefillDat
     
     if (!t) return "Custom schedule";
     
-    return `Posting ${t.frequency} on ${channelCount} channel${channelCount !== 1 ? 's' : ''}${customStartDate ? ` starting ${format(customStartDate, "MMM d")}` : ''}`;
+    return `Posting ${t.frequency} on ${channelCount} channel${channelCount !== 1 ? 's' : ''}${customStartDate ? ` starting ${formatDate(customStartDate, "MMM d")}` : ''}`;
   };
 
   // Helper function: Handle channel connection

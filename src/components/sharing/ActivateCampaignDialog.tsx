@@ -15,10 +15,11 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Loader2, Rocket, Calendar as CalendarIcon, CheckCircle, Clock } from "lucide-react";
-import { format, addDays, setHours, setMinutes } from "date-fns";
+import { addDays, setHours, setMinutes } from 'date-fns';
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface ActivateCampaignDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -157,7 +158,7 @@ export function ActivateCampaignDialog({
                         )}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {scheduledDate ? format(scheduledDate, "PPP") : "Pick a date"}
+                        {scheduledDate ? formatDate(scheduledDate, "PPP") : "Pick a date"}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
@@ -179,7 +180,7 @@ export function ActivateCampaignDialog({
                   />
                 </div>
                 {scheduledDate && (
-                  <p className="text-xs text-muted-foreground">{t('screens.sharing.campaignWillActivateValue0AtScheduledtime', { value0: format(scheduledDate, "MMMM d, yyyy"), scheduledTime })}</p>
+                  <p className="text-xs text-muted-foreground">{t('screens.sharing.campaignWillActivateValue0AtScheduledtime', { value0: formatDate(scheduledDate, "MMMM d, yyyy"), scheduledTime })}</p>
                 )}
               </div>
             )}

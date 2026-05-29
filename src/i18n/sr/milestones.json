@@ -1,0 +1,17 @@
+{
+  "milestones": {
+    "title": "Životne prekretnice",
+    "add": "Dodaj prekretnicu",
+    "edit": "Izmeni prekretnicu",
+    "empty": "Još uvek nema prekretnica",
+    "addFirst": "Dodaj svoju prvu prekretnicu",
+    "date": "Datum",
+    "description": "Šta se desilo?",
+    "titleLabel": "Naslov",
+    "titlePlaceholder": "npr. Diplomirao/la na fakultetu",
+    "descPlaceholder": "Opiši ovaj trenutak...",
+    "icon": "Ikona",
+    "publicLabel": "Vidljivo svima",
+    "private": "Privatno"
+  }
+}

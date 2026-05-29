@@ -1,0 +1,60 @@
+{
+  "verdicts": {
+    "tableHeaders.status": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tableHeaders.name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tableHeaders.groupName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tableHeaders.category": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tableHeaders.members": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tableHeaders.privacy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tableHeaders.actions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tableHeaders.role": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tableHeaders.email": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tableHeaders.date": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tableHeaders.amount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T08:32:56.727Z"
+}

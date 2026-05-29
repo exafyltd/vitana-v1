@@ -3,11 +3,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Edit2, Trash2, Brain, Mic, Image as ImageIcon, FileText, Clock, Star, MessageCircle, Check, X } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useMemoryReinforce } from "@/hooks/useMemoryReinforce";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface MemoryCardProps {
   id: string;
   content: string;

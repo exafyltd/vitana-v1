@@ -1,0 +1,12 @@
+{
+  "publicProfile": {
+    "viewFull": "Ver perfil completo",
+    "sendMessage": "Mensaje",
+    "follow": "Seguir",
+    "milestones": "Hitos de vida",
+    "posts": "Publicaciones",
+    "followers": "Seguidores",
+    "following": "Siguiendo",
+    "groups": "Grupos"
+  }
+}

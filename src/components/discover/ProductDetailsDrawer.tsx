@@ -34,6 +34,7 @@ import { UniversalShareButton } from "@/components/sharing/UniversalShareButton"
 import { getShareUrl } from "@/lib/shareUrl";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 export function ProductDetailsDrawer() {
   const { selectedProduct, clearSelection } = useProductSelection();
   const isMobile = useIsMobile();
@@ -112,7 +113,7 @@ function DrawerBody() {
               <span className="flex items-center gap-1">
                 <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
                 <span className="font-medium text-foreground">{p.rating.toFixed(1)}</span>
-                {p.review_count ? <span>({p.review_count.toLocaleString()})</span> : null}
+                {p.review_count ? <span>({fmtNumber(p.review_count)})</span> : null}
               </span>
             )}
             {p.origin_country && (

@@ -28,7 +28,7 @@
     "billing": "Abrechnung",
     "professionalProfile": "Berufsprofil",
     "education": "Bildung",
-    "patientQueue": "Patientenwarteschlange",
+    "patientQueue": "Patienten-Warteschlange",
     "dailyTasks": "Tägliche Aufgaben",
     "reports": "Berichte",
     "communications": "Kommunikation",
@@ -41,8 +41,10 @@
     "liveStream": "Live & Stream",
     "tenantManagement": "Mandantenverwaltung",
     "systemAdmin": "Systemadministration",
-    "clinicalOps": "Klinische Ops",
-    "monitoring": "Überwachung",
-    "logout": "Abmelden"
+    "clinicalOps": "Klinische Operationen",
+    "monitoring": "Monitoring",
+    "logout": "Abmelden",
+    "connectors": "Connectors",
+    "support": "Hilfe"
   }
 }

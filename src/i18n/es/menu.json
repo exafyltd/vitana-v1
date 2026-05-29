@@ -1,0 +1,13 @@
+{
+  "menu": {
+    "home": "Inicio",
+    "profile": "Perfil",
+    "settings": "Ajustes",
+    "logout": "Cerrar sesión",
+    "help": "Ayuda",
+    "about": "Acerca de",
+    "contact": "Contacto",
+    "privacy": "Privacidad",
+    "terms": "Términos del servicio"
+  }
+}

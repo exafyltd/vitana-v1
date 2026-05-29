@@ -843,7 +843,11 @@
       "invalidTime": "Invalid time",
       "reminderCreated": "Reminder created",
       "reminderDeleted": "Reminder deleted",
-      "markedDone": "Marked done"
+      "markedDone": "Marked done",
+      "failedToCreate": "Failed to create reminder",
+      "failedToDelete": "Failed to delete reminder",
+      "failedToMarkDone": "Failed to mark done",
+      "remindersDeleted": "{count} reminders deleted"
     },
     "reseller": {
       "activatingYourResellerProfile": "Activating your reseller profile...",
@@ -1331,6 +1335,10 @@
     },
     "index": {
       "vitanaDevGatewayUrlNotConfigured": "Vitana Dev Gateway URL not configured"
+    },
+    "dailyGoal": {
+      "title": "Congratulations! Today's goal achieved 🎉",
+      "body": "Just keep going."
     }
   }
 }

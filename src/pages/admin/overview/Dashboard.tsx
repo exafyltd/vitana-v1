@@ -21,6 +21,7 @@ import { getDisplayAvatarUrl } from "@/lib/autoAvatar";
 import { useOverviewSummary, useAtRiskMembers, useOverviewAlerts } from "@/hooks/useAdminOverview";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate, fmtTime } from '@/lib/locale-format';
 function DeltaIndicator({ pct }: { pct: number }) {
   if (pct > 0) return <span className="inline-flex items-center text-xs text-green-600"><TrendingUp className="h-3 w-3 mr-0.5" />+{pct}%</span>;
   if (pct < 0) return <span className="inline-flex items-center text-xs text-red-600"><TrendingDown className="h-3 w-3 mr-0.5" />{pct}%</span>;
@@ -194,7 +195,7 @@ export default function OverviewDashboard() {
                             <div className="truncate font-medium">{m.display_name || m.email}</div>
                           </div>
                           <span className="text-xs text-muted-foreground whitespace-nowrap">
-                            {new Date(m.last_seen).toLocaleDateString()}
+                            {fmtDate(new Date(m.last_seen))}
                           </span>
                         </div>
                       ))}
@@ -222,7 +223,7 @@ export default function OverviewDashboard() {
                           <span className="ml-2 text-muted-foreground">{alert.topic}</span>
                         </div>
                         <span className="text-xs text-muted-foreground">
-                          {new Date(alert.created_at).toLocaleTimeString()}
+                          {fmtTime(new Date(alert.created_at))}
                         </span>
                       </div>
                     ))}

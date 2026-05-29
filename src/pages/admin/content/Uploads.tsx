@@ -12,6 +12,7 @@ import { useContentItems, useContentStats, useModerateContent } from "@/hooks/us
 import { toast } from "sonner";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 const statusVariant = (s: string) =>
   s === "approved" ? "active" : s === "rejected" ? "error" : "warning";
 
@@ -117,7 +118,7 @@ export default function Uploads() {
                       </AdminStatusBadge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
-                      {new Date(item.created_at).toLocaleDateString()}
+                      {fmtDate(new Date(item.created_at))}
                     </TableCell>
                     <TableCell className="text-right space-x-1">
                       <Button size="sm" variant="outline" onClick={() => handleAction(item.id, "approve")}>{t('screens.admin.approve')}</Button>

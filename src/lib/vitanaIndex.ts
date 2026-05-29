@@ -1,7 +1,13 @@
 export interface VitanaIndexTier {
   min: number;
   max: number;
+  /**
+   * Canonical English label. Used as a stable key for color maps and
+   * back-compat. UI surfaces should render `labelKey` via the i18n catalog.
+   */
   label: string;
+  /** i18n key for the user-facing tier label (e.g. "vitanaIndex.tiers.starting"). */
+  labelKey: string;
   color: string;
   description: string;
   /** Short user-facing framing shown on the Index Detail Screen tier badge. */
@@ -25,6 +31,7 @@ export const VITANA_INDEX_TIERS: VitanaIndexTier[] = [
     min: 0,
     max: 99,
     label: "Starting",
+    labelKey: "vitanaIndex.tiers.starting",
     color: "#FECACA", // pastel red
     description: "You've begun. Five pillars, 90 days — let's go.",
     framing: "Just starting",
@@ -33,6 +40,7 @@ export const VITANA_INDEX_TIERS: VitanaIndexTier[] = [
     min: 100,
     max: 299,
     label: "Early",
+    labelKey: "vitanaIndex.tiers.early",
     color: "#FDE68A", // amber
     description: "Baseline established. Every completion counts now.",
     framing: "Baseline established",
@@ -41,6 +49,7 @@ export const VITANA_INDEX_TIERS: VitanaIndexTier[] = [
     min: 300,
     max: 499,
     label: "Building",
+    labelKey: "vitanaIndex.tiers.building",
     color: "#FEF08A", // yellow
     description: "Habits are forming. Keep the balance across all five.",
     framing: "Habits forming",
@@ -49,6 +58,7 @@ export const VITANA_INDEX_TIERS: VitanaIndexTier[] = [
     min: 500,
     max: 599,
     label: "Strong",
+    labelKey: "vitanaIndex.tiers.strong",
     color: "#D9F99D", // lime
     description: "This is where most people land after a real 90-day push.",
     framing: "90-day milestone",
@@ -57,6 +67,7 @@ export const VITANA_INDEX_TIERS: VitanaIndexTier[] = [
     min: 600,
     max: 799,
     label: "Really good",
+    labelKey: "vitanaIndex.tiers.reallyGood",
     color: "#BBF7D0", // light green
     description: "Your practice is working. This is the 'thriving' zone.",
     framing: "Thriving",
@@ -65,6 +76,7 @@ export const VITANA_INDEX_TIERS: VitanaIndexTier[] = [
     min: 800,
     max: 999,
     label: "Elite",
+    labelKey: "vitanaIndex.tiers.elite",
     color: "#BAE6FD", // sky blue
     description: "Sustained excellence across all five pillars. Rare and earned.",
     framing: "Elite",

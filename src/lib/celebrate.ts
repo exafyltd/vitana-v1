@@ -19,7 +19,8 @@ export type CelebrateKind =
   | "tier-up"
   | "pillar-threshold"
   | "streak"
-  | "at-risk";
+  | "at-risk"
+  | "daily-goal";
 
 export type StreakLevel = 3 | 7 | 14 | 30;
 
@@ -398,6 +399,38 @@ function fireStreak(input: CelebrateInput): { throttled: boolean } {
   return { throttled: false };
 }
 
+/**
+ * "Congratulations! Today's goal achieved" — fires once per local calendar day
+ * when the user completes all of today's planned actions on My Journey. Routes
+ * through the milestone modal (via dispatchMilestone) with confetti + sound,
+ * reusing the shared throttle / reduced-motion rules.
+ */
+function fireDailyGoal(input: CelebrateInput): { throttled: boolean } {
+  const { source } = input;
+  const scope = "daily_goal";
+  if (dayKeyFired(scope)) {
+    emitAnalytics({ kind: "daily-goal", source, throttled: true });
+    return { throttled: true };
+  }
+  markDayKeyFired(scope);
+
+  dispatchMilestone({
+    milestone: "daily_goal",
+    title: lookup("toasts.dailyGoal.title"),
+    body: lookup("toasts.dailyGoal.body"),
+  });
+
+  const now = Date.now();
+  if (!prefersReducedMotion() && now - lastConfettiAt > CONFETTI_THROTTLE_MS) {
+    lastConfettiAt = now;
+    celebrateSuccess({ type: "reward_earned" });
+    if (soundEnabled()) playSound("/audio/lift.mp3", 0.08);
+  }
+
+  emitAnalytics({ kind: "daily-goal", source: source ?? "my-journey", throttled: false });
+  return { throttled: false };
+}
+
 function fireAtRisk(input: CelebrateInput): { throttled: boolean } {
   const { source } = input;
   const scope = "at_risk";
@@ -457,6 +490,9 @@ export function celebrate(input: CelebrateInput): { fired: boolean; throttled: b
     case "at-risk":
       result = fireAtRisk(input);
       break;
+    case "daily-goal":
+      result = fireDailyGoal(input);
+      break;
     default:
       result = { throttled: true };
   }
@@ -465,16 +501,14 @@ export function celebrate(input: CelebrateInput): { fired: boolean; throttled: b
 
 /**
  * Encouraging copy for empty states across surfaces (Health, My Journey,
- * Autopilot popup, Index Sheet). Single source of truth so voice stays
- * consistent.
+ * Autopilot popup, Index Sheet). Strings come from the i18n catalog so the
+ * voice stays consistent across locales — keys live in `empty.*`.
  */
 export const EMPTY_COPY = {
-  indexSheetNextDays:
-    "No active Autopilot suggestions. When something lands here, completing it will move your Index.",
-  indexSheetHorizon: "Need a few more days of data to project your 30-day arc.",
-  myJourneyPath:
-    "Your path is just beginning. When Autopilot has suggestions, they'll appear here as a path you can walk.",
-  myJourneyOnePillar: "Pick one small thing — watch your Index move.",
-  autopilotPopupZero: "Select actions to see Index lift.",
-  healthEmpty: "Log your first entry to start your Index.",
+  get indexSheetNextDays() { return lookup('empty.indexSheetNextDays'); },
+  get indexSheetHorizon() { return lookup('empty.indexSheetHorizon'); },
+  get myJourneyPath() { return lookup('empty.myJourneyPath'); },
+  get myJourneyOnePillar() { return lookup('empty.myJourneyOnePillar'); },
+  get autopilotPopupZero() { return lookup('empty.autopilotPopupZero'); },
+  get healthEmpty() { return lookup('empty.healthEmpty'); },
 } as const;

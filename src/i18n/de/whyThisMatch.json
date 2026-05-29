@@ -3,7 +3,7 @@
     "title": "Warum dieses Mitglied?",
     "interpretedAs": "Vitana hat verstanden:",
     "consideredSignals": "Berücksichtigte Signale:",
-    "showSomeoneElse": "Jemand anderes",
+    "showSomeoneElse": "Zeig mir jemand anderen",
     "dismiss": "Schließen",
     "ethicsNote": "Vitana bewertet Mitglieder nicht nach Aussehen oder Vermögen — aber hier ist jemand, dessen Reise gerade jetzt strahlt.",
     "loadingRecipe": "Lade die Suchdetails…",
@@ -11,8 +11,8 @@
     "tierLabel": {
       "1": "Genaue Übereinstimmung",
       "2": "Vitana Index",
-      "3": "Beste Annäherung",
-      "4": "Fairness-Filter"
+      "3": "Beste Übereinstimmung",
+      "4": "Fairness-Umleitung"
     }
   }
 }

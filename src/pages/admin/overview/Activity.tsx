@@ -14,6 +14,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useOverviewActivity } from "@/hooks/useAdminOverview";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtTime } from '@/lib/locale-format';
 export default function OverviewActivity() {
   const activityQuery = useOverviewActivity(100);
   const events = activityQuery.data || [];
@@ -55,7 +56,7 @@ export default function OverviewActivity() {
                 {events.map((e) => (
                   <TableRow key={e.id}>
                     <TableCell className="text-xs text-muted-foreground font-mono whitespace-nowrap">
-                      {new Date(e.created_at).toLocaleTimeString()}
+                      {fmtTime(new Date(e.created_at))}
                     </TableCell>
                     <TableCell className="text-sm">{e.topic}</TableCell>
                     <TableCell className="text-xs font-mono text-muted-foreground">{e.vtid || "—"}</TableCell>

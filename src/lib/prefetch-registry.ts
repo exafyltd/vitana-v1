@@ -6,14 +6,16 @@ import { QueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { EMPTY_SHORTS_PARAMS } from '@/hooks/useShorts';
 import { fetchCommunityEventsQueryFn } from '@/hooks/useCommunityEvents';
+import { getFindPartnerMatches, getIntentBoard } from '@/lib/intentApi';
+import { buildGlobalThreadsQueryFn } from '@/hooks/useGlobalMessages';
 
 /**
  * Map of adjacent pillars to prefetch when on a given route
  * Routes must match actual app routes (/comm not /community)
  */
 export const ADJACENT_PILLARS: Record<string, string[]> = {
-  '/home': ['/comm', '/discover', '/health', '/business', '/wallet', '/inbox'],
-  '/comm': ['/home', '/discover', '/inbox'],
+  '/home': ['/comm', '/discover', '/health', '/business', '/wallet', '/inbox', '/comm/find-partner'],
+  '/comm': ['/home', '/discover', '/inbox', '/comm/find-partner'],
   '/discover': ['/home', '/comm', '/calendar'],
   '/health': ['/home', '/calendar'],
   '/business': ['/home', '/wallet'],
@@ -125,10 +127,51 @@ export async function prefetchForPath(
     });
   }
 
-  // Inbox prefetch intentionally removed: prefetchInboxThreads used a thinner
-  // fetch path than useGlobalMessages (no fetchDirectFromChatMessages fallback),
-  // so on gateway cold-start it cached a [Vitana-bot-only] result that the hook
-  // then read as "fresh" and refused to refetch, leaving the inbox empty until
-  // a manual page refresh. The hook handles fetching on mount; chatPersistCache
-  // provides instant paint on subsequent visits.
+  // Find a Match — prefetch matches + board in parallel so the screen paints
+  // from cache when the user navigates here from /home or /comm. Reuses the
+  // exact same query functions FindPartner.tsx itself binds to (single source
+  // of truth via intentApi). The query keys MUST match what FindPartner uses,
+  // otherwise the screen will refetch and the prefetch is wasted.
+  if (path === '/comm/find-partner') {
+    const partnerStale = 5 * 60 * 1000;
+    await Promise.all([
+      queryClient.prefetchQuery({
+        queryKey: ['find-partner-matches', userId],
+        queryFn: () => getFindPartnerMatches(),
+        staleTime: partnerStale,
+      }),
+      queryClient.prefetchQuery({
+        queryKey: ['intent-board', 'find_a_partner'],
+        queryFn: () =>
+          getIntentBoard({
+            surface: 'find_a_partner',
+            categories: ['dance.*', 'fitness.*'],
+            limit: 50,
+          }),
+        staleTime: partnerStale,
+      }),
+    ]);
+  }
+
+  // Inbox prefetch — restored after Phase 2 extraction of buildGlobalThreadsQueryFn.
+  //
+  // The historical regression (prefetchInboxThreads in src/lib/prefetchInboxThreads.ts)
+  // used a hand-rolled, thinner fetch path that lacked the fetchDirectFromChatMessages
+  // direct-DM fallback. On gateway cold-start it cached a [Vitana-bot-only] result that
+  // the hook then read as "fresh" and refused to refetch, leaving the inbox empty until
+  // manual refresh.
+  //
+  // The fix is structural: we call the SAME factory (buildGlobalThreadsQueryFn) the hook
+  // itself uses, so prefetch and live fetch can never drift. The queryKey shape must
+  // also match exactly (['global-threads', userId]) so the hook reads our prefetched
+  // result on mount instead of refetching.
+  if (path === '/inbox' && userId) {
+    await queryClient.prefetchQuery({
+      queryKey: ['global-threads', userId],
+      queryFn: ({ queryKey: qk }) => buildGlobalThreadsQueryFn(userId, queryClient, qk),
+      // 10min matches the hook's per-query staleTime; the hook treats the
+      // prefetched data as fresh until then, paint-instant from cache.
+      staleTime: 10 * 60 * 1000,
+    });
+  }
 }

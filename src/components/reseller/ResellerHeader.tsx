@@ -8,11 +8,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { CalendarDays, Ticket, DollarSign, TrendingUp, Copy, Check } from "lucide-react";
 import { useResellerEventStats, useResellerEvents } from "@/hooks/useResellerEvents";
 import { useResellerProfile } from "@/hooks/useResellerProfile";
-import { format } from "date-fns";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "@/hooks/useTranslation";
 
+import { formatDate } from '@/lib/locale-format';
 export function ResellerHeader() {
   const { data: profile } = useResellerProfile();
   const { data: events = [] } = useResellerEvents();
@@ -66,7 +66,7 @@ export function ResellerHeader() {
               </p>
               {stats.nextEventDate && (
                 <p className="text-xs text-muted-foreground mt-1">
-                  {translate('business.reseller.next')}: {format(new Date(stats.nextEventDate), "MMM d, yyyy")}
+                  {translate('business.reseller.next')}: {formatDate(new Date(stats.nextEventDate), "MMM d, yyyy")}
                 </p>
               )}
             </div>

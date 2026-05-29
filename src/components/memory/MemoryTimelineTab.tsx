@@ -1,4 +1,3 @@
-import { formatDistanceToNow } from "date-fns";
 import { FileText, Brain, Calendar, Tag, Maximize2, Sparkles, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +14,7 @@ import { PhotoPeekPanel } from "@/components/diary/PhotoPeekPanel";
 import { PhotoLightbox } from "@/components/diary/PhotoLightbox";
 import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 export function MemoryTimelineTab() {
   const { knowledgeItems, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useKnowledgeBase("all");
   const [photoViewState, setPhotoViewState] = useState<{

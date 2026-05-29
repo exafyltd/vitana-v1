@@ -30,6 +30,7 @@ import { useWallet } from "@/hooks/useWallet";
 import { useAuth } from "@/context/AuthProvider";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate, fmtNumber } from '@/lib/locale-format';
 const balanceData = {
   credits: {
     balance: 2450,
@@ -138,7 +139,7 @@ function Balance() {
                 <WalletBalanceCard
                   type="credits"
                   title={t('screens.wallet.creditsBalance')}
-                  balance={getBalance('CREDITS') !== null ? `${getBalance('CREDITS')!.toLocaleString()} credits` : "Loading..."}
+                  balance={getBalance('CREDITS') !== null ? `${fmtNumber(getBalance('CREDITS')!)} credits` : "Loading..."}
                   subBalance="Available: 100%"
                   change="+12.1%"
                   changeType="increase"
@@ -174,7 +175,7 @@ function Balance() {
                     description={`${transaction.from_currency || ''} ${transaction.to_currency ? `→ ${transaction.to_currency}` : ''}`}
                     amount={`${transaction.amount > 0 ? '+' : ''}${transaction.amount}`}
                     status={transaction.status as any}
-                    timestamp={new Date(transaction.created_at).toLocaleDateString()}
+                    timestamp={fmtDate(new Date(transaction.created_at))}
                     transaction={transaction}
                     currentUserId={user?.id}
                     onClick={() => console.log('Transaction clicked:', transaction.id)}
@@ -193,7 +194,7 @@ function Balance() {
                 <WalletBalanceCard
                   type="tokens"
                   title={t('screens.wallet.vtnaBalance')}
-                  balance={getBalance('VTNA') !== null ? `${getBalance('VTNA')!.toLocaleString()} VTNA` : "Loading..."}
+                  balance={getBalance('VTNA') !== null ? `${fmtNumber(getBalance('VTNA')!)} VTNA` : "Loading..."}
                   subBalance="Staked: 25%"
                   change="+5.7%"
                   changeType="increase"
@@ -229,7 +230,7 @@ function Balance() {
                     description={`${transaction.from_currency || ''} ${transaction.to_currency ? `→ ${transaction.to_currency}` : ''}`}
                     amount={`${transaction.amount > 0 ? '+' : ''}${transaction.amount}`}
                     status={transaction.status as any}
-                    timestamp={new Date(transaction.created_at).toLocaleDateString()}
+                    timestamp={fmtDate(new Date(transaction.created_at))}
                     transaction={transaction}
                     currentUserId={user?.id}
                     onClick={() => console.log('Token transaction clicked:', transaction.id)}
@@ -248,7 +249,7 @@ function Balance() {
                 <WalletBalanceCard
                   type="cash"
                   title={t('screens.wallet.usdBalance')}
-                  balance={getBalance('USD') !== null ? `$${getBalance('USD')!.toLocaleString()}` : "Loading..."}
+                  balance={getBalance('USD') !== null ? `$${fmtNumber(getBalance('USD')!)}` : "Loading..."}
                   subBalance="Available: 100%"
                   change="+2.3%"
                   changeType="increase"
@@ -284,7 +285,7 @@ function Balance() {
                     description={`${transaction.from_currency || ''} ${transaction.to_currency ? `→ ${transaction.to_currency}` : ''}`}
                     amount={`${transaction.amount > 0 ? '+' : ''}$${Math.abs(transaction.amount)}`}
                     status={transaction.status as any}
-                    timestamp={new Date(transaction.created_at).toLocaleDateString()}
+                    timestamp={fmtDate(new Date(transaction.created_at))}
                     transaction={transaction}
                     currentUserId={user?.id}
                     onClick={() => console.log('USD transaction clicked:', transaction.id)}

@@ -1,0 +1,13 @@
+{
+  "menu": {
+    "home": "Početna",
+    "profile": "Profil",
+    "settings": "Podešavanja",
+    "logout": "Odjavi se",
+    "help": "Pomoć",
+    "about": "O nama",
+    "contact": "Kontakt",
+    "privacy": "Privatnost",
+    "terms": "Uslovi korišćenja"
+  }
+}

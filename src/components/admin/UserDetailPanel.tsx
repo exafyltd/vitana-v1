@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate, fmtDateTime } from '@/lib/locale-format';
 interface UserDetail {
   user_id: string;
   email: string;
@@ -50,7 +51,7 @@ function getInitials(name?: string, email?: string): string {
 function formatDate(dateStr?: string): string {
   if (!dateStr) return "N/A";
   try {
-    return new Date(dateStr).toLocaleDateString("en-US", {
+    return fmtDate(new Date(dateStr), {
       year: "numeric",
       month: "short",
       day: "numeric",
@@ -63,7 +64,7 @@ function formatDate(dateStr?: string): string {
 function formatDateTime(dateStr?: string): string {
   if (!dateStr) return "Never";
   try {
-    return new Date(dateStr).toLocaleString("en-US", {
+    return fmtDateTime(new Date(dateStr), {
       year: "numeric",
       month: "short",
       day: "numeric",

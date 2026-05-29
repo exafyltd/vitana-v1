@@ -12,6 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useAuditActions } from "@/hooks/useAdminAudit";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 const ACTION_TYPES = ["All", "create", "update", "delete", "invite", "grant", "revoke"] as const;
 
 export default function AuditActions() {
@@ -74,7 +75,7 @@ export default function AuditActions() {
                 {actions.map((a) => (
                   <TableRow key={a.id}>
                     <TableCell className="text-xs text-muted-foreground font-mono whitespace-nowrap">
-                      {new Date(a.created_at).toLocaleString()}
+                      {fmtDateTime(new Date(a.created_at))}
                     </TableCell>
                     <TableCell className="text-xs font-mono text-muted-foreground">
                       {a.actor_user_id.slice(0, 8)}...

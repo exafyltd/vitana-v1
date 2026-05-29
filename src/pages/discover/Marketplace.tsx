@@ -35,9 +35,9 @@ import { t } from '@/lib/i18n-toast';
 
 type View = "open" | "mine";
 
-const VIEW_OPTIONS: { value: View; icon: string; label: string }[] = [
-  { value: "open",  icon: "🛒", label: "Open marketplace" },
-  { value: "mine",  icon: "📝", label: "My listings" },
+const VIEW_OPTIONS: { value: View; icon: string; labelKey: string }[] = [
+  { value: "open",  icon: "🛒", labelKey: "screens.discover.marketplaceView_open" },
+  { value: "mine",  icon: "📝", labelKey: "screens.discover.marketplaceView_mine" },
 ];
 
 const COMMERCIAL_KINDS: IntentKind[] = ["commercial_buy", "commercial_sell"];
@@ -97,7 +97,7 @@ export default function Marketplace() {
   useEffect(() => { void refresh(); }, [refresh]);
 
   const active = viewMeta(view);
-  const filterLabel = `${active.icon} ${active.label}`;
+  const filterLabel = `${active.icon} ${t(active.labelKey)}`;
 
   return (
     <>
@@ -134,7 +134,7 @@ export default function Marketplace() {
             <SplitBarList>
               {VIEW_OPTIONS.map((o) => (
                 <SplitBarTrigger key={o.value} value={o.value}>
-                  {o.icon} {o.label}
+                  {o.icon} {t(o.labelKey)}
                 </SplitBarTrigger>
               ))}
             </SplitBarList>
@@ -156,8 +156,8 @@ export default function Marketplace() {
             openItems.length === 0 ? (
               <EmptyState
                 title={t('screens.discover.marketplaceQuiet')}
-                body="Be the first to post. Anything community-worth — supplies, services, used gear."
-                cta={{ label: "Post a listing", onClick: () => setComposerOpen(true) }}
+                body={t('screens.discover.marketplaceEmpty_body')}
+                cta={{ label: t('screens.discover.marketplaceEmpty_cta'), onClick: () => setComposerOpen(true) }}
               />
             ) : (
               <div className="space-y-3">
@@ -200,7 +200,7 @@ export default function Marketplace() {
                 }`}
               >
                 <span className="text-xl">{o.icon}</span>
-                <span className="font-medium">{o.label}</span>
+                <span className="font-medium">{t(o.labelKey)}</span>
               </button>
             ))}
           </div>

@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { formatDistanceToNow } from "date-fns";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface MiniFooterStatusProps {
   backendStatus: "ONLINE" | "OFFLINE" | "PARTIAL";
   streamStatus: "SSE Live" | "Polling" | "Disconnected";

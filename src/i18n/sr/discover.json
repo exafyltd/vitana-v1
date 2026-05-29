@@ -1,0 +1,74 @@
+{
+  "discover": {
+    "title": "Otkrij svoj Longevity Marketplace",
+    "mobileTitle": "Otkrij",
+    "mobileDescription": "Istraži iskustva, ljude i wellness",
+    "description": "Pronađi lekare, wellness usluge i zajednice savršeno usklađene sa tvojim putem zdravog starenja.",
+    "searchPlaceholder": "Šta tražiš? (npr. časovi joge, lekar za dugovečnost, sastanci)",
+    "doctorsCoaches": "Lekari i treneri",
+    "doctorsCoachesDesc": "Pronađi specijaliste za dugovečnost, zdravstvene trenere i medicinske stručnjake",
+    "wellnessServices": "Wellness usluge",
+    "wellnessServicesDesc": "Otkrij jogu, masažu, ples, terapiju i usluge oporavka",
+    "communityGroups": "Zajednice",
+    "communityGroupsDesc": "Pridruži se sastancima, grupama i poveži se sa istomišljenicima",
+    "explore": "Istraži",
+    "aiPicksForYou": "AI preporuke za tebe",
+    "recommendedForYou": "Preporučeno za tebe",
+    "moreToExplore": "Još za istraživanje",
+    "seeAll": "Prikaži sve",
+    "suggestedForYou": "Predloženo za tebe",
+    "browseCategories": "Pregledaj kategorije",
+    "all": "Sve",
+    "shareAndEarn": "Podeli i zaradi",
+    "shareAndEarnDesc": "Preporuči proizvode, zaradi proviziju",
+    "start": "Započni",
+    "view": "Pogledaj",
+    "matchPerfect": "Savršeno podudaranje",
+    "matchGreat": "Odlično podudaranje",
+    "matchGood": "Dobro podudaranje",
+    "noResults": "Nema rezultata",
+    "noResultsDesc": "Probaj druge pojmove za pretragu ili pregledaj kategorije.",
+    "categories": {
+      "sleep": "Spavanje",
+      "nutrition": "Ishrana",
+      "movement": "Kretanje",
+      "mind": "Um",
+      "supplements": "Suplementi",
+      "experts": "Stručnjaci"
+    },
+    "quickActions": {
+      "title": "Brze radnje",
+      "viewCart": "Pregledaj korpu",
+      "bookAppointment": "Zakaži termin",
+      "quickCheckout": "Brza naplata",
+      "trackOrders": "Prati porudžbine",
+      "reorderPrevious": "Ponovi prethodno",
+      "managePayment": "Upravljanje plaćanjem",
+      "findServicesNearMe": "Pronađi usluge u blizini",
+      "viewSavedItems": "Pregledaj sačuvane stavke"
+    },
+    "aiPicks": {
+      "title": "AI odabiri za tebe",
+      "description": "Personalizovane preporuke na osnovu tvog Vitana indeksa, biomarkera i zdravstvenih ciljeva",
+      "backToDiscover": "Nazad na Otkrij",
+      "loading": "Učitavanje AI preporuka...",
+      "unavailable": "AI odabiri nedostupni",
+      "unavailableDesc": "Trenutno nismo mogli da učitamo tvoje personalizovane preporuke",
+      "recommendationsFound": "Pronađeno {count} preporuka",
+      "noRecommendations": "Nema pronađenih preporuka",
+      "noRecommendationsDesc": "Probaj da izabereš drugi filter da vidiš više preporuka",
+      "viewAllPicks": "Pogledaj sve odabire"
+    },
+    "filters": {
+      "all": "Sve",
+      "services": "Usluge",
+      "supplements": "Suplementi",
+      "experts": "Stručnjaci",
+      "deals": "Ponude"
+    },
+    "toast": {
+      "actionSelected": "Akcija izabrana",
+      "comingSoon": "{action} funkcija uskoro stiže!"
+    }
+  }
+}

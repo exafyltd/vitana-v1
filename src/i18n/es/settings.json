@@ -1,0 +1,39 @@
+{
+  "settings": {
+    "title": "Configuración",
+    "description": "Gestiona la configuración de tu cuenta, privacidad y preferencias",
+    "searchPlaceholder": "Buscar configuración, controles de privacidad, integraciones...",
+    "quickSetup": "Configuración rápida",
+    "tabs": {
+      "overview": "Resumen",
+      "notifications": "Notificaciones",
+      "quickActions": "Acciones rápidas"
+    },
+    "categories": {
+      "privacy": "Privacidad",
+      "privacyDesc": "Controla quién ve tu perfil y actividades",
+      "notifications": "Notificaciones",
+      "notificationsDesc": "Gestiona tus preferencias de notificaciones",
+      "preferences": "Preferencias",
+      "preferencesDesc": "Opciones de idioma, tema y pantalla",
+      "connectedApps": "Apps conectadas",
+      "connectedAppsDesc": "Gestiona integraciones y permisos",
+      "tenantRole": "Cuenta y Rol",
+      "tenantRoleDesc": "Cambia entre roles y cuentas",
+      "billing": "Facturación",
+      "billingDesc": "Información de suscripción y pago",
+      "support": "Soporte",
+      "supportDesc": "Ayuda, preguntas frecuentes y opciones de contacto"
+    },
+    "status": {
+      "privacyStatus": "Estado de privacidad",
+      "subscription": "Suscripción",
+      "protected": "Protegido",
+      "premium": "Premium",
+      "notificationsActive": "Notificaciones activas",
+      "connectedAppsCount": "Apps conectadas",
+      "types": "tipos",
+      "apps": "apps"
+    }
+  }
+}

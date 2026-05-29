@@ -42,7 +42,7 @@ export function VitanaScoreTooltip({ score, children }: VitanaScoreTooltipProps)
                 <span className="text-sm text-muted-foreground">{t('screens.health.overallScore')}</span>
                 <span className="text-2xl font-bold text-foreground">{score} / 999</span>
               </div>
-              <div className="text-xs text-muted-foreground">{t('screens.health.tier')} <span className="font-semibold" style={{ color: tier.color }}>{tier.label}</span>{t('screens.health.top68')}
+              <div className="text-xs text-muted-foreground">{t('screens.health.tier')} <span className="font-semibold" style={{ color: tier.color }}>{t(tier.labelKey)}</span>{t('screens.health.top68')}
               </div>
             </div>
             

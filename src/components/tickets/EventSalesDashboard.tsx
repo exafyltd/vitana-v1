@@ -15,9 +15,9 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { supabase } from "@/integrations/supabase/client";
-import { format } from "date-fns";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface TicketSale {
   id: string;
   buyer_name: string;
@@ -107,7 +107,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
       `$${sale.total_amount.toFixed(2)}`,
       sale.status,
       sale.checked_in_at ? "Yes" : "No",
-      format(new Date(sale.created_at), "yyyy-MM-dd HH:mm")
+      formatDate(new Date(sale.created_at), "yyyy-MM-dd HH:mm")
     ]);
 
     const csvContent = [headers, ...rows].map(row => row.join(",")).join("\n");
@@ -267,7 +267,7 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
                       <span>•</span>
                       <span>x{sale.quantity}</span>
                       <span>•</span>
-                      <span>{format(new Date(sale.created_at), "MMM d, h:mm a")}</span>
+                      <span>{formatDate(new Date(sale.created_at), "MMM d, h:mm a")}</span>
                     </div>
                   </div>
                   <div className="text-right ml-4">

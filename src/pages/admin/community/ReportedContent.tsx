@@ -16,6 +16,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface ContentReport {
   id: string;
   reporter_user_id: string;
@@ -181,7 +182,7 @@ const ReportedContent = () => {
                               <p className="text-sm truncate max-w-xs">{report.description || 'No description'}</p>
                             </TableCell>
                             <TableCell className="text-sm text-muted-foreground">
-                              {new Date(report.created_at).toLocaleDateString()}
+                              {fmtDate(new Date(report.created_at))}
                             </TableCell>
                             <TableCell>{getStatusBadge(report.status)}</TableCell>
                             <TableCell>

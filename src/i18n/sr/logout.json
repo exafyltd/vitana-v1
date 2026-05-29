@@ -1,0 +1,7 @@
+{
+  "logout": {
+    "signingOut": "Odjavljujem se...",
+    "signedOut": "Uspešno odjavljen/a",
+    "redirecting": "Preusmeravam..."
+  }
+}

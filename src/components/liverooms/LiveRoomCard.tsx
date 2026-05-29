@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Users, Clock, Bell, Share2, MapPin, Pencil, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { format, formatDistanceToNow, differenceInMinutes } from "date-fns";
+import { differenceInMinutes } from 'date-fns';
 import { useState } from "react";
 import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu-kebab";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
 export interface LiveRoom {
   id: string;
   title: string;
@@ -160,7 +161,7 @@ export function LiveRoomCard({
                 className="gap-1.5 px-2.5 py-1 bg-background/95 backdrop-blur-sm shadow-lg"
               >
                 <Clock className="w-3 h-3" />
-                {format(new Date(room.scheduledTime!), "HH:mm")}
+                {formatDate(new Date(room.scheduledTime!), "HH:mm")}
               </Badge>
             ) : null}
             {room.isPremium && (

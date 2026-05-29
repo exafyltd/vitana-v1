@@ -1,6 +1,18 @@
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+// BOOTSTRAP-NOTIF-MESSENGER-DIAG: fire a beacon before React mounts so we
+// can see (in gateway logs) whether the Android Appilix WebView even
+// reached the page after tapping a chat notification.
+import { bootstrapNotifDiag } from './lib/notifDiag'
+bootstrapNotifDiag()
+// VTID-03177 (PROFILE): RUM beacon — captures LCP/TTFB/FCP/CLS per screen
+// and POSTs to gateway /api/v1/rum/beacon. Gateway translates each into a
+// `screen.latency.measured` OASIS event. Receiver returns 204 when
+// FEATURE_LATENCY_TELEMETRY_ENV is off so this costs nothing in prod
+// until the experiment flips it on staging-only.
+import { initRum } from './lib/rum'
+initRum()
 import { TenantProvider } from './hooks/useTenant'
 import { AuthProvider } from './context/AuthProvider'
 import { ProfileProvider } from './context/ProfileProvider'
@@ -103,6 +115,12 @@ if (process.env.NODE_ENV === 'development') {
 
 import { VitanaIndexProvider } from './components/health/VitanaIndexProvider'
 import { I18nLeakDetector } from './i18n/leak-detector'
+import { preloadHotChunks } from './lib/preloadHotChunks'
+
+// Kick off background download of Messages / FindPartner / GroupChat chunks
+// during the first idle window so they're warm when the user navigates there.
+// Skipped on save-data / 2G connections.
+preloadHotChunks();
 
 createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>

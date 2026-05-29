@@ -12,10 +12,10 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Package, Calendar as CalendarIcon, Users, Shield, FileText } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { notify, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface CreatePackagePopupProps {
   isOpen: boolean;
   onClose: () => void;
@@ -204,7 +204,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {dateFrom ? format(dateFrom, "PPP") : "Select start date"}
+                          {dateFrom ? formatDate(dateFrom, "PPP") : "Select start date"}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
@@ -230,7 +230,7 @@ export function CreatePackagePopup({ isOpen, onClose }: CreatePackagePopupProps)
                           )}
                         >
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {dateTo ? format(dateTo, "PPP") : "Select end date"}
+                          {dateTo ? formatDate(dateTo, "PPP") : "Select end date"}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">

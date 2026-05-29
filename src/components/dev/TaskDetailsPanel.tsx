@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Clock, AlertCircle, CheckCircle2, ExternalLink } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 interface Task {
   id: string;
   title: string;
@@ -55,7 +56,7 @@ export function TaskDetailsPanel({ task }: TaskDetailsPanelProps) {
   };
 
   const formatTime = (timestamp: string) => {
-    return new Date(timestamp).toLocaleString(undefined, {
+    return fmtDateTime(new Date(timestamp), {
       dateStyle: "medium",
       timeStyle: "short",
     });

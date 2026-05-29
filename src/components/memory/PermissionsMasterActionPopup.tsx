@@ -55,7 +55,7 @@ export function PermissionsMasterActionPopup({ open, onOpenChange }: Permissions
       key: "apiKeysAccess",
       icon: Key,
       onClick: () => {
-        navigate('/settings/connected-apps');
+        navigate('/connectors');
         onOpenChange(false);
       },
       color: "bg-muted/20 text-muted-foreground hover:bg-muted/30"

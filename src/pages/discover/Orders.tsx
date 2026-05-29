@@ -22,7 +22,7 @@ import { useMyTickets, TicketPurchase } from "@/hooks/useEventTickets";
 import { useMyVouchers } from "@/hooks/useVouchers";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { EventTicket } from "@/components/tickets/EventTicket";
-import { format, isPast } from "date-fns";
+import { isPast } from 'date-fns';
 import { cn } from "@/lib/utils";
 import { StandardHorizontalCard, StandardHorizontalCardProps } from "@/components/ui/standard-horizontal-card";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -30,6 +30,7 @@ import { MobileOrdersView, UnifiedMobileOrder } from "@/components/orders/Mobile
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 // Unified order type that handles products, services, and tickets
 interface UnifiedOrder {
   id: string;
@@ -237,7 +238,7 @@ export default function Orders() {
       price: `$${ticket.total_amount}`,
       status,
       type: 'ticket',
-      orderDate: format(new Date(ticket.created_at), 'MMM d, yyyy'),
+      orderDate: formatDate(new Date(ticket.created_at), 'MMM d, yyyy'),
       rawDate: new Date(ticket.created_at),
       eventDate,
       eventLocation: ticket.event?.location || 'Location TBD',
@@ -260,7 +261,7 @@ export default function Orders() {
       price: `$${order.total_amount}`,
       status: order.status,
       type: 'product',
-      orderDate: format(new Date(order.created_at), 'MMM d, yyyy'),
+      orderDate: formatDate(new Date(order.created_at), 'MMM d, yyyy'),
       rawDate: new Date(order.created_at),
     };
   };
@@ -281,7 +282,7 @@ export default function Orders() {
       price: `€${(order.amount_cents / 100).toFixed(2)}`,
       status: order.status,
       type: 'voucher',
-      orderDate: format(new Date(order.created_at), 'MMM d, yyyy'),
+      orderDate: formatDate(new Date(order.created_at), 'MMM d, yyyy'),
       rawDate: new Date(order.created_at),
     };
   };
@@ -404,7 +405,7 @@ export default function Orders() {
                           order.type === 'product' ? 'Product' : 'Service';
     
     const dateInfo = order.type === 'ticket' && order.eventDate
-      ? format(order.eventDate, 'MMM d, yyyy • h:mm a')
+      ? formatDate(order.eventDate, 'MMM d, yyyy • h:mm a')
       : order.orderDate;
     
     const orderId = order.type === 'ticket' 

@@ -12,6 +12,7 @@ import { Clock, Trash2 } from "lucide-react";
 import { useSessionRestore } from "@/hooks/dev/useSessionRestore";
 import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
+import { fmtDate, fmtTime } from '@/lib/locale-format';
 interface RestoreSessionModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -85,13 +86,13 @@ export function RestoreSessionModal({ open, onOpenChange }: RestoreSessionModalP
                     <div className="flex-1 space-y-2">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-medium text-muted-foreground">
-                          {new Date(session.timestamp).toLocaleDateString('en-US', {
+                          {fmtDate(new Date(session.timestamp), {
                             month: 'short',
                             day: 'numeric',
                             year: 'numeric',
                           })}
                           {' – '}
-                          {new Date(session.timestamp).toLocaleTimeString('en-US', {
+                          {fmtTime(new Date(session.timestamp), {
                             hour: '2-digit',
                             minute: '2-digit',
                           })}

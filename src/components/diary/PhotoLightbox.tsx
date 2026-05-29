@@ -11,10 +11,10 @@ import {
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import { useState, useEffect, useRef } from "react";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface PhotoLightboxProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
