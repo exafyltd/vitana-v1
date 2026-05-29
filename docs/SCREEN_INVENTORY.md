@@ -6,8 +6,8 @@
 ## Summary
 
 - **Pages scanned:** 327
-- **Distinct i18n keys consumed:** 5306
-- **Namespaces in use:** 41
+- **Distinct i18n keys consumed:** 5270
+- **Namespaces in use:** 42
 - **Hardcoded string suspects (regex heuristic):** 66
 
 Pages with hardcoded suspects need migration into the catalog. The authoritative PR-time check is the ESLint rule `i18n/no-raw-jsx-text`.
@@ -259,11 +259,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/MobileSupport.tsx
 
-**Status:** ✅ clean — keys consumed: 40, namespaces: 1
+**Status:** ✅ clean — keys consumed: 4, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 40, total in shard: 9349, **MISSING:** screens.mobilesupport.errorNotSupported, screens.mobilesupport.errorMicPermission, screens.mobilesupport.errorEmpty, screens.mobilesupport.errorSend, screens.mobilesupport.title…
+- `mobilesupport` — **MISSING SHARD** in src/i18n/de/
 
 ### src/pages/MyIntents.tsx
 
@@ -2860,7 +2860,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 | Namespace | Pages using it |
 |---|---|
-| `screens` | 273 |
+| `screens` | 272 |
 | `toasts` | 60 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
@@ -2875,6 +2875,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 | `health` | 1 |
 | `diary` | 1 |
 | `settings` | 1 |
+| `mobilesupport` | 1 |
 | `newsCard` | 1 |
 | `wallet` | 1 |
 | `common` | 1 |
