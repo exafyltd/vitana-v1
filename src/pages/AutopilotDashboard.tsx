@@ -26,6 +26,8 @@ import { trend7d } from "@/lib/vitana-projection";
 import { bucketFromWaveId, type HorizonBucket } from "@/lib/horizonBuckets";
 import { useMyJourney } from "@/hooks/useMyJourney";
 import { GoalNorthStar } from "@/components/journey/GoalNorthStar";
+import { DreamNorthStar } from "@/components/journey/DreamNorthStar";
+import { FutureSelfTiles } from "@/components/journey/FutureSelfTiles";
 import { TodaysGoalCard, type TodayAction } from "@/components/journey/TodaysGoalCard";
 import { GoalSetupDialog } from "@/components/journey/GoalSetupDialog";
 import { GoalPlanSheet } from "@/components/journey/GoalPlanSheet";
@@ -205,6 +207,19 @@ export default function AutopilotDashboard() {
 
   const motivational = <MotivationalLine />;
 
+  // Mobile leads with the painted "dream-board" hero (vision-board feel,
+  // emotional first anchor). Desktop keeps the structured GoalNorthStar
+  // until we redesign the wide layout — mobile-first per the brief.
+  const dreamHero = (
+    <DreamNorthStar
+      goal={goal}
+      loading={journeyLoading}
+      error={journeyError}
+      onSetGoal={handleSetGoal}
+      onRetry={() => refetchJourney()}
+      onOpenPlan={() => setPlanSheetOpen(true)}
+    />
+  );
   const northStar = (
     <GoalNorthStar
       goal={goal}
@@ -215,6 +230,7 @@ export default function AutopilotDashboard() {
       onOpenPlan={() => setPlanSheetOpen(true)}
     />
   );
+  const futureSelf = <FutureSelfTiles />;
 
   const todaysGoal = (
     <TodaysGoalCard actions={todayActions} loading={recLoading} onOpenAutopilot={handleOpenAutopilot} />
@@ -252,13 +268,14 @@ export default function AutopilotDashboard() {
     </div>
   );
 
-  // Mobile: one vertical column. Matches + events sit between the daily
-  // commitment and the broader plan — they're the "look forward to" content
-  // that keeps the screen feeling cheerful, even before today's actions are done.
+  // Mobile: dream-board hero leads, motivational line is folded INTO the
+  // hero's bottom tagline strip so the screen isn't redundant. Future-self
+  // tiles sit right under the hero — they extend the "imagining tomorrow"
+  // beat before the screen drops into utility (Today / Matches / etc).
   const content = (
     <div className="space-y-4">
-      {motivational}
-      {northStar}
+      {dreamHero}
+      {futureSelf}
       {todaysGoal}
       {matchesPreview}
       {eventsPreview}
