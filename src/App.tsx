@@ -9,6 +9,7 @@ import PresenceDebugPanel from "@/components/debug/PresenceDebugPanel";
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
+import { PaywallProvider } from "@/components/paywall/PaywallProvider"; // VTID-03107
 import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
 import { DevErrorBoundary } from "@/components/dev/DevErrorBoundary";
 import { GlobalErrorBoundary } from "@/components/GlobalErrorBoundary";
@@ -141,6 +142,7 @@ const Community = lazy(() => import("./pages/Community"));
 const AI = lazy(() => import("./pages/AI"));
 const Messages = lazy(() => import("./pages/Messages"));
 const MobileSettings = lazy(() => import("./pages/MobileSettings"));
+const MobileSubscriptions = lazy(() => import("./pages/MobileSubscriptions"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Search = lazy(() => import("./pages/Search"));
 const Cart = lazy(() => import("./pages/Cart"));
@@ -540,6 +542,12 @@ function SettingsRouter() {
   return isMobile ? <MobileSettings /> : <Navigate to="/settings/notifications" replace />;
 }
 
+// Mobile-only storefront for plans; desktop users get the existing /wallet/subscriptions page.
+function ProfileSubscriptionsRouter() {
+  const isMobile = useIsMobile();
+  return isMobile ? <MobileSubscriptions /> : <Navigate to="/wallet/subscriptions" replace />;
+}
+
 // Redirect helper that preserves the original query string (used by OAuth
 // callbacks like /settings/connected-apps?connected=google → /connectors?connected=google).
 function RedirectPreservingSearch({ to }: { to: string }) {
@@ -593,6 +601,10 @@ const App = () => {
                             Renders only when profile.vitanaIdLocked === false
                             — auto-hides after the user confirms their pick. */}
                         <VitanaIdOnboardingCard />
+                  {/* VTID-03107: PaywallProvider listens for `vitana:paywall-shown` window events
+                      from billingApi.ts on HTTP 402 and renders a single global PaywallModal.
+                      Lives inside <BrowserRouter> so the modal's useNavigate works. */}
+                  <PaywallProvider>
                   <GlobalErrorBoundary>
                   <Suspense fallback={<RouteFallback />}>
                   <Routes>
@@ -1121,6 +1133,11 @@ const App = () => {
           } />
           
           <Route path="/profile" element={<Navigate to="/me/profile" replace />} />
+          <Route path="/profile/subscriptions" element={
+            <AuthGuard>
+              <ProfileSubscriptionsRouter />
+            </AuthGuard>
+          } />
           <Route path="/profile/:id" element={<LegacyProfileRedirect />} />
           <Route path="/me/profile" element={
             <AuthGuard>
@@ -1800,6 +1817,7 @@ const App = () => {
         </Routes>
                   </Suspense>
                   </GlobalErrorBoundary>
+                  </PaywallProvider>{/* VTID-03107 */}
                   </GreetingProviderWrapper>
                   </LifeCompassPopupProvider>
                 </VitanalandNavigationProvider>

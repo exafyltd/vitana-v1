@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vitana Index trajectory — mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0f172a;
+    --muted-fg: #64748b;
+    --border: rgba(15, 23, 42, 0.08);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--primary);
+    background: #f5f3ff;
+    padding: 32px 16px 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .display { font-family: 'Cormorant', Georgia, serif; }
+
+  .stage {
+    display: flex; flex-wrap: wrap; gap: 32px;
+    justify-content: center; align-items: flex-start;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .frame-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .frame-label {
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted-fg); font-weight: 600;
+  }
+  .phone {
+    width: 390px; height: 760px;
+    border-radius: 44px; background: #000;
+    padding: 12px;
+    box-shadow: 0 30px 60px rgba(15, 23, 42, 0.18), 0 8px 16px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+  }
+  .screen {
+    width: 100%; height: 100%;
+    border-radius: 32px; overflow-y: auto;
+    background:
+      radial-gradient(120% 60% at 0% 0%, #fde7ff 0%, transparent 55%),
+      radial-gradient(120% 60% at 100% 0%, #d8f1ff 0%, transparent 55%),
+      radial-gradient(120% 60% at 50% 100%, #ffe2ec 0%, transparent 55%),
+      linear-gradient(180deg, #faf5ff 0%, #eff6ff 50%, #fdf2f8 100%);
+  }
+  .screen::-webkit-scrollbar { width: 0; }
+
+  .status-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 24px 6px; font-size: 13px; font-weight: 600;
+  }
+  .section-title {
+    margin: 16px 20px 8px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted-fg);
+  }
+
+  .card {
+    margin: 0 16px 16px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    overflow: hidden;
+  }
+  .card-head {
+    padding: 14px 16px 8px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .card-head .title {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 14px; font-weight: 700;
+  }
+  .card-head .title .ic {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: linear-gradient(135deg, #a78bfa, #ec4899);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: white; font-size: 11px;
+  }
+  .today-pill {
+    display: inline-flex; flex-direction: column; align-items: flex-end;
+    line-height: 1;
+  }
+  .today-pill .v {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 26px; font-weight: 600;
+    background: linear-gradient(135deg, #10b981, #3b82f6);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .today-pill .lbl {
+    font-size: 10px; color: var(--muted-fg); font-weight: 600;
+    margin-top: 2px;
+  }
+
+  /* Range chips */
+  .ranges {
+    padding: 4px 16px 12px;
+    display: flex; gap: 6px;
+  }
+  .range {
+    padding: 5px 12px; border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+    color: var(--muted-fg);
+    border: 1px solid var(--border);
+    background: white;
+  }
+  .range.active {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white; border-color: transparent;
+    box-shadow: 0 2px 6px rgba(99,102,241,0.3);
+  }
+
+  /* Summary stats row */
+  .stats {
+    padding: 0 16px 8px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+  }
+  .stat {
+    background: rgba(255,255,255,0.7);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 6px 4px;
+    text-align: center;
+  }
+  .stat .v { font-size: 14px; font-weight: 700; line-height: 1.1; }
+  .stat .l { font-size: 9px; color: var(--muted-fg); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; }
+  .stat .v.up { color: #10b981; }
+  .stat .v.down { color: #ef4444; }
+  .stat .v.best { color: #10b981; }
+  .stat .v.worst { color: #f59e0b; }
+
+  /* Chart area */
+  .chart-wrap { padding: 4px 12px 6px; position: relative; }
+  .chart-wrap svg { width: 100%; height: auto; display: block; }
+  .axis-y {
+    position: absolute;
+    left: 0; top: 8px; bottom: 26px;
+    width: 28px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    font-size: 9px; color: var(--muted-fg); font-weight: 600;
+    text-align: right;
+    padding-right: 4px;
+  }
+  .axis-x {
+    padding: 0 16px 6px;
+    display: flex; justify-content: space-between;
+    font-size: 10px; color: var(--muted-fg); font-weight: 600;
+  }
+
+  /* Insight + CTA */
+  .insight {
+    margin: 0 16px 0;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ecfdf5, #eff6ff);
+    border: 1px solid rgba(16,185,129,0.18);
+    font-size: 12px; line-height: 1.45; color: #065f46;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .insight b { color: #047857; }
+  .cta-row {
+    padding: 12px 16px 16px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .cta {
+    font-size: 12px; font-weight: 700;
+    color: #6366f1;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+
+  /* Compare strip (state B) */
+  .compare-strip {
+    margin: 0 16px 16px;
+    padding: 14px 16px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.65);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .delta-card { flex: 1; }
+  .delta-card .lbl { font-size: 10px; color: var(--muted-fg); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+  .delta-card .v { font-family: 'Cormorant', Georgia, serif; font-size: 22px; font-weight: 600; line-height: 1.1; }
+  .delta-card .v.up { color: #10b981; }
+  .delta-card .v.down { color: #ef4444; }
+  .vs { font-size: 10px; color: var(--muted-fg); text-align: center; line-height: 1.2; }
+
+  .notes { width: 390px; font-size: 12px; line-height: 1.5; color: var(--muted-fg); }
+  .notes b { color: var(--primary); }
+  .notes code { background: rgba(99,102,241,0.08); padding: 1px 4px; border-radius: 4px; }
+
+  .page-head { max-width: 1100px; margin: 0 auto 28px; text-align: center; }
+  .page-head h1 {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 32px; font-weight: 500; margin: 0 0 6px;
+  }
+  .page-head p { margin: 0; color: var(--muted-fg); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>Vitana Index Trajectory — mockup</h1>
+  <p>Real ups &amp; downs · range chips · best/worst markers · goal line · 30T default view</p>
+</div>
+
+<div class="stage">
+
+  <!-- ============================================================ -->
+  <!-- STATE A — 30 days view (default)                              -->
+  <!-- ============================================================ -->
+  <div class="frame-wrap">
+    <div class="frame-label">A · 30 Tage Verlauf</div>
+    <div class="phone"><div class="screen">
+      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;">● ● ●</span></div>
+
+      <div class="section-title">Wie es dir geht</div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="title">
+            <span class="ic">📈</span>
+            Vitana Index Verlauf
+          </div>
+          <div class="today-pill">
+            <span class="v">137</span>
+            <span class="lbl">Heute · Aufbau</span>
+          </div>
+        </div>
+
+        <div class="ranges">
+          <div class="range">7T</div>
+          <div class="range active">30T</div>
+          <div class="range">90T</div>
+          <div class="range">Alles</div>
+        </div>
+
+        <!-- Quick stats: best / worst / average / trend -->
+        <div class="stats">
+          <div class="stat"><div class="v best">168</div><div class="l">Bester</div></div>
+          <div class="stat"><div class="v worst">98</div><div class="l">Tiefster</div></div>
+          <div class="stat"><div class="v">128</div><div class="l">Schnitt</div></div>
+          <div class="stat"><div class="v up">↑ +14</div><div class="l">7-Tage</div></div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-wrap">
+          <div class="axis-y">
+            <span>600</span>
+            <span>400</span>
+            <span>200</span>
+            <span>0</span>
+          </div>
+          <svg viewBox="0 0 360 200" preserveAspectRatio="none" style="margin-left:28px; width:calc(100% - 28px); height:200px;">
+            <defs>
+              <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%"  stop-color="#10b981" />
+                <stop offset="50%" stop-color="#6366f1" />
+                <stop offset="100%" stop-color="#ec4899" />
+              </linearGradient>
+              <linearGradient id="fillGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%"  stop-color="#6366f1" stop-opacity="0.35" />
+                <stop offset="100%" stop-color="#6366f1" stop-opacity="0.02" />
+              </linearGradient>
+            </defs>
+
+            <!-- Tier bands (Beginner/Early/Rising/Strong/Peak) -->
+            <!-- 0..150 Beginner    => y 200..150 -->
+            <!-- 150..300 Early     => y 150..100 -->
+            <!-- 300..500 Rising    => y 100..33 -->
+            <!-- 500..700 Strong    => y 33..0  (clip at top) -->
+            <rect x="0" y="150" width="360" height="50" fill="#dbeafe" opacity="0.55" />
+            <rect x="0" y="100" width="360" height="50" fill="#fef3c7" opacity="0.55" />
+            <rect x="0" y="33"  width="360" height="67" fill="#d1fae5" opacity="0.55" />
+            <rect x="0" y="0"   width="360" height="33" fill="#a7f3d0" opacity="0.55" />
+
+            <!-- Tier labels on the right edge -->
+            <g font-size="8" font-weight="700" fill="#1e3a8a" opacity="0.7">
+              <text x="356" y="178" text-anchor="end">Beginner</text>
+            </g>
+            <g font-size="8" font-weight="700" fill="#92400e" opacity="0.7">
+              <text x="356" y="128" text-anchor="end">Aufbau</text>
+            </g>
+            <g font-size="8" font-weight="700" fill="#065f46" opacity="0.75">
+              <text x="356" y="76" text-anchor="end">Stark</text>
+            </g>
+            <g font-size="8" font-weight="700" fill="#047857" opacity="0.85">
+              <text x="356" y="22" text-anchor="end">Spitze</text>
+            </g>
+
+            <!-- Goal line at score 500 → y = 33 -->
+            <line x1="0" y1="33" x2="360" y2="33" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.6"/>
+            <text x="4" y="29" font-size="8" font-weight="700" fill="#047857">Ziel 500</text>
+
+            <!-- Filled area under the curve -->
+            <path d="
+              M 0,158
+              C 8,150 14,138 22,134
+              C 30,130 38,142 46,138
+              C 54,134 60,118 70,114
+              C 80,110 88,128 96,122
+              C 104,116 112,98 120,92
+              C 128,86 136,108 144,102
+              C 152,96 160,82 168,88
+              C 176,94 184,118 192,112
+              C 200,106 208,86 216,80
+              C 224,74 232,98 240,92
+              C 248,86 256,68 264,74
+              C 272,80 280,98 288,92
+              C 296,86 304,72 312,80
+              C 320,88 328,98 336,92
+              C 344,86 352,78 360,84
+              L 360,200 L 0,200 Z
+            " fill="url(#fillGrad)" />
+
+            <!-- Main line -->
+            <path d="
+              M 0,158
+              C 8,150 14,138 22,134
+              C 30,130 38,142 46,138
+              C 54,134 60,118 70,114
+              C 80,110 88,128 96,122
+              C 104,116 112,98 120,92
+              C 128,86 136,108 144,102
+              C 152,96 160,82 168,88
+              C 176,94 184,118 192,112
+              C 200,106 208,86 216,80
+              C 224,74 232,98 240,92
+              C 248,86 256,68 264,74
+              C 272,80 280,98 288,92
+              C 296,86 304,72 312,80
+              C 320,88 328,98 336,92
+              C 344,86 352,78 360,84
+            " fill="none" stroke="url(#lineGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+
+            <!-- Worst day marker (around x=120, score 98 → y=152) -->
+            <g>
+              <circle cx="46" cy="138" r="4" fill="#fbbf24" stroke="white" stroke-width="2" />
+              <g transform="translate(50,128)">
+                <rect x="0" y="-8" rx="3" ry="3" width="36" height="12" fill="#fef3c7" />
+                <text x="18" y="1" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Tief 98</text>
+              </g>
+            </g>
+
+            <!-- Best day marker (around x=264, score 168 → y=68) -->
+            <g>
+              <circle cx="264" cy="74" r="4" fill="#10b981" stroke="white" stroke-width="2" />
+              <g transform="translate(214,58)">
+                <rect x="0" y="-8" rx="3" ry="3" width="50" height="12" fill="#d1fae5" />
+                <text x="25" y="1" text-anchor="middle" font-size="8" font-weight="700" fill="#065f46">Bester 168</text>
+              </g>
+            </g>
+
+            <!-- Today marker — bigger dot with halo at end -->
+            <circle cx="360" cy="84" r="9" fill="#6366f1" opacity="0.18" />
+            <circle cx="360" cy="84" r="5" fill="#6366f1" stroke="white" stroke-width="2.5" />
+            <g transform="translate(304,68)">
+              <rect x="0" y="-8" rx="3" ry="3" width="46" height="12" fill="#e0e7ff" />
+              <text x="23" y="1" text-anchor="middle" font-size="8" font-weight="700" fill="#3730a3">Heute 137</text>
+            </g>
+          </svg>
+
+          <div class="axis-x" style="padding-left:28px;">
+            <span>30. Apr</span>
+            <span>10. Mai</span>
+            <span>20. Mai</span>
+            <span>Heute</span>
+          </div>
+        </div>
+
+        <!-- Insight -->
+        <div class="insight">
+          <span>✨</span>
+          <p style="margin:0;"><b>Aufwärts!</b> +14 Punkte in den letzten 7 Tagen. Bei dem Tempo erreichst du in ~5 Wochen die Stufe <b>Stark</b>.</p>
+        </div>
+
+        <div class="cta-row">
+          <span style="font-size:11px; color:var(--muted-fg);">Verlauf seit 30 Tagen</span>
+          <span class="cta">Was treibt deinen Index? →</span>
+        </div>
+      </div>
+
+      <!-- Highlight strip — could be its own section or attached below -->
+      <div class="section-title">Säulen, die heute am stärksten ziehen</div>
+      <div class="compare-strip" style="background: linear-gradient(135deg, #ecfdf5, #f0fdf4);">
+        <div class="delta-card">
+          <div class="lbl">Bewegung</div>
+          <div class="v up">↑ +12</div>
+        </div>
+        <div class="vs">vs. <br>Vorwoche</div>
+        <div class="delta-card" style="text-align:right;">
+          <div class="lbl">Schlaf</div>
+          <div class="v down">↓ −6</div>
+        </div>
+      </div>
+
+    </div></div>
+
+    <div class="notes">
+      <b>What changes vs. today:</b><br>
+      • Range chips (<code>7T / 30T / 90T / Alles</code>) — user can zoom.<br>
+      • Real line connecting daily <code>history</code> points (you already have this hook). Gradient fill under.<br>
+      • Tier bands as <b>background</b> only — the line itself shows the ups and downs.<br>
+      • <b>Best / worst / today markers</b> with inline pills so you don't have to read axes.<br>
+      • Quick-stats row above the chart: <code>Bester · Tiefster · Schnitt · 7T-Trend</code>.<br>
+      • Insight below restates the trend in plain language.<br>
+      • Optional bottom strip: which pillar moved most this week.
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STATE B — 90 days view with projection                        -->
+  <!-- ============================================================ -->
+  <div class="frame-wrap">
+    <div class="frame-label">B · 90 Tage + Projektion</div>
+    <div class="phone"><div class="screen">
+      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;">● ● ●</span></div>
+
+      <div class="section-title">Wie es dir geht</div>
+
+      <div class="card">
+        <div class="card-head">
+          <div class="title">
+            <span class="ic">📈</span>
+            Vitana Index Verlauf
+          </div>
+          <div class="today-pill">
+            <span class="v">137</span>
+            <span class="lbl">Heute · Aufbau</span>
+          </div>
+        </div>
+
+        <div class="ranges">
+          <div class="range">7T</div>
+          <div class="range">30T</div>
+          <div class="range active">90T</div>
+          <div class="range">Alles</div>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><div class="v best">175</div><div class="l">Bester</div></div>
+          <div class="stat"><div class="v worst">76</div><div class="l">Tiefster</div></div>
+          <div class="stat"><div class="v">122</div><div class="l">Schnitt</div></div>
+          <div class="stat"><div class="v up">↑ +46</div><div class="l">90 Tage</div></div>
+        </div>
+
+        <div class="chart-wrap">
+          <div class="axis-y">
+            <span>600</span>
+            <span>400</span>
+            <span>200</span>
+            <span>0</span>
+          </div>
+          <svg viewBox="0 0 360 200" preserveAspectRatio="none" style="margin-left:28px; width:calc(100% - 28px); height:200px;">
+            <defs>
+              <linearGradient id="lineGrad2" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%"  stop-color="#10b981" />
+                <stop offset="50%" stop-color="#6366f1" />
+                <stop offset="100%" stop-color="#ec4899" />
+              </linearGradient>
+              <linearGradient id="fillGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%"  stop-color="#6366f1" stop-opacity="0.35" />
+                <stop offset="100%" stop-color="#6366f1" stop-opacity="0.02" />
+              </linearGradient>
+            </defs>
+
+            <rect x="0" y="150" width="360" height="50" fill="#dbeafe" opacity="0.55" />
+            <rect x="0" y="100" width="360" height="50" fill="#fef3c7" opacity="0.55" />
+            <rect x="0" y="33"  width="360" height="67" fill="#d1fae5" opacity="0.55" />
+            <rect x="0" y="0"   width="360" height="33" fill="#a7f3d0" opacity="0.55" />
+
+            <g font-size="8" font-weight="700" fill="#1e3a8a" opacity="0.7">
+              <text x="356" y="178" text-anchor="end">Beginner</text>
+            </g>
+            <g font-size="8" font-weight="700" fill="#92400e" opacity="0.7">
+              <text x="356" y="128" text-anchor="end">Aufbau</text>
+            </g>
+            <g font-size="8" font-weight="700" fill="#065f46" opacity="0.75">
+              <text x="356" y="76" text-anchor="end">Stark</text>
+            </g>
+
+            <line x1="0" y1="33" x2="360" y2="33" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.6"/>
+            <text x="4" y="29" font-size="8" font-weight="700" fill="#047857">Ziel 500</text>
+
+            <!-- Solid (history) path — last 60 days -->
+            <path d="
+              M 0,176
+              C 10,172 18,168 28,172
+              C 38,176 46,166 56,160
+              C 66,154 74,164 84,158
+              C 94,152 102,142 112,148
+              C 122,154 130,138 140,134
+              C 150,130 158,140 168,130
+              C 178,120 186,126 196,118
+              C 206,110 214,120 224,108
+              C 234,96 242,102 252,96
+            " fill="none" stroke="url(#lineGrad2)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+
+            <!-- Filled area under solid -->
+            <path d="
+              M 0,176
+              C 10,172 18,168 28,172
+              C 38,176 46,166 56,160
+              C 66,154 74,164 84,158
+              C 94,152 102,142 112,148
+              C 122,154 130,138 140,134
+              C 150,130 158,140 168,130
+              C 178,120 186,126 196,118
+              C 206,110 214,120 224,108
+              C 234,96 242,102 252,96
+              L 252,200 L 0,200 Z
+            " fill="url(#fillGrad2)" />
+
+            <!-- Today marker at the end of solid -->
+            <circle cx="252" cy="96" r="9" fill="#6366f1" opacity="0.18" />
+            <circle cx="252" cy="96" r="5" fill="#6366f1" stroke="white" stroke-width="2.5" />
+            <g transform="translate(196,80)">
+              <rect x="0" y="-8" rx="3" ry="3" width="46" height="12" fill="#e0e7ff" />
+              <text x="23" y="1" text-anchor="middle" font-size="8" font-weight="700" fill="#3730a3">Heute 137</text>
+            </g>
+
+            <!-- Dashed projection from today to Day 90 -->
+            <path d="
+              M 252,96
+              C 270,86 290,72 310,58
+              C 330,44 345,38 360,32
+            " fill="none" stroke="#a78bfa" stroke-width="2" stroke-dasharray="4 3" stroke-linecap="round" />
+
+            <!-- Projected end marker -->
+            <circle cx="360" cy="32" r="4" fill="white" stroke="#a78bfa" stroke-width="2" />
+            <g transform="translate(298,18)">
+              <rect x="0" y="-8" rx="3" ry="3" width="54" height="12" fill="#ede9fe" />
+              <text x="27" y="1" text-anchor="middle" font-size="8" font-weight="700" fill="#5b21b6">Ziel 500+</text>
+            </g>
+          </svg>
+
+          <div class="axis-x" style="padding-left:28px;">
+            <span>Tag 0</span>
+            <span>Tag 30</span>
+            <span>Heute (60)</span>
+            <span>Tag 90</span>
+          </div>
+        </div>
+
+        <div class="insight">
+          <span>✨</span>
+          <p style="margin:0;">Bei diesem Tempo landest du um Tag 90 bei <b>~500</b> — <b>Stark</b>. Balance über alle fünf Säulen bringt dich am schnellsten dorthin.</p>
+        </div>
+
+        <div class="cta-row">
+          <span style="font-size:11px; color:var(--muted-fg);">90 Tage Reise · Projektion gepunktet</span>
+          <span class="cta">Was treibt deinen Index? →</span>
+        </div>
+      </div>
+
+    </div></div>
+
+    <div class="notes">
+      <b>90-Tage Sicht</b> — solide Linie = bisheriger Verlauf, <b>gepunktet</b> = Projektion bis zum Zieltag (vorhandene Logik in <code>VitanaIndexTrajectoryCard</code>).
+      Heute-Marker sitzt am Übergang. Die Tier-Bänder bleiben gleich — nur die Linie zeigt jetzt deine echten Auf-und-Abs.
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

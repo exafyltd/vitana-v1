@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { MobileIdentityCard } from "./MobileIdentityCard";
 import { MobileIdCardBack } from "./MobileIdCardBack";
 import { MobileAccountCard } from "./MobileAccountCard";
+import { MobileSubscriptionSummary } from "./MobileSubscriptionSummary";
 import { ProfileIdSegmentedControl } from "../shared/ProfileIdSegmentedControl";
 import { UserProfile } from "@/types/profile";
 
@@ -108,6 +109,12 @@ export function MobileIdCardSwitcher({
                 editMode={editMode}
                 onEdit={onEditAccount}
               />
+              {/* Subscription storefront entry — only on the owner's own Account view */}
+              {isOwner && (
+                <div className="mt-3">
+                  <MobileSubscriptionSummary />
+                </div>
+              )}
             </motion.div>
           )}
         </AnimatePresence>

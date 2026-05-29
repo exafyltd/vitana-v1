@@ -53,6 +53,42 @@ export function useRoleRouteEnforcement() {
   }, [user, authLoading, roleLoading, currentRole, location.pathname, navigate]);
 }
 
+// One-shot initial-landing redirect for the MAXINA community app. The native
+// (Appilix) shell can open the WebView directly on /home (News) — a route the
+// `/`-only smart routing never evaluates — so a fresh app launch would sit on
+// News instead of My Journey. On the first fully-resolved authenticated route
+// of a browser/app session, if that route is the News feed, send the user to
+// My Journey once. Deliberate navigation to News later in the session is left
+// untouched (the flag is already set).
+const INITIAL_LANDING_FLAG = "mj_initial_landing_redirected";
+
+export function useInitialLandingRedirect() {
+  const { user, loading: authLoading } = useAuth();
+  const { tenant } = useTenant();
+  const { currentRole, isLoading: roleLoading } = useRole();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (authLoading || roleLoading || !user) return;
+    if (typeof window === "undefined") return;
+    if (sessionStorage.getItem(INITIAL_LANDING_FLAG)) return;
+
+    const slug = tenant?.slug;
+    if (!slug) return; // wait for the tenant to resolve before deciding
+
+    // First fully-resolved authenticated route of the session — record it so
+    // this only ever fires once, then act only on a News-feed cold start.
+    sessionStorage.setItem(INITIAL_LANDING_FLAG, "1");
+
+    if (slug !== "maxina") return;
+    if (currentRole && currentRole !== "community") return;
+    if (location.pathname === "/home") {
+      navigate("/autopilot", { replace: true });
+    }
+  }, [authLoading, roleLoading, user, tenant?.slug, currentRole, location.pathname, navigate]);
+}
+
 export function useSmartRouting() {
   const { user, loading: authLoading } = useAuth();
   const { isExafyAdmin, activeTenantId, tenant } = useTenant();
@@ -118,7 +154,7 @@ export function useSmartRouting() {
                     break;
                 }
               } else {
-                navigate("/home");
+                navigate("/autopilot");
               }
               break;
           }
@@ -159,8 +195,8 @@ export function useSmartRouting() {
                   break;
               }
             } else {
-              // Fallback to home if no tenant info available
-              navigate("/home");
+              // Fallback to My Journey if no tenant info available
+              navigate("/autopilot");
             }
             break;
         }
@@ -200,7 +236,7 @@ export function useRoleBasedRedirect() {
               return "/maxina";
           }
         }
-        return "/home";
+        return "/autopilot";
     }
   };
 
