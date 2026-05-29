@@ -13,6 +13,7 @@ import {
   BookOpen,
   Plug,
   Mail,
+  LifeBuoy,
   Settings2,
   LogOut,
   type LucideIcon,
@@ -45,6 +46,7 @@ export const drawerNavIconTones: Record<string, DrawerIconTone> = {
   diary:      { base: 'hsl(240 26% 58%)', active: 'hsl(240 32% 48%)' },
   connectors: { base: 'hsl(195 38% 50%)', active: 'hsl(195 44% 40%)' },
   inbox:      { base: 'hsl(210 46% 56%)', active: 'hsl(210 52% 46%)' },
+  support:    { base: 'hsl(0 60% 56%)',   active: 'hsl(0 65% 46%)'   },
   settings:   { base: 'hsl(220 10% 52%)', active: 'hsl(220 12% 42%)' },
 };
 
@@ -63,6 +65,7 @@ export const drawerNavItems: DrawerNavItem[] = [
   { id: 'diary',      route: '/daily-diary',             icon: BookOpen,    translationKey: 'drawerNav.diary' },
   { id: 'connectors', route: '/connectors',              icon: Plug,        translationKey: 'drawerNav.connectors' },
   { id: 'inbox',      route: '/inbox',                   icon: Mail,        translationKey: 'drawerNav.inbox' },
+  { id: 'support',    route: '/support',                 icon: LifeBuoy,    translationKey: 'drawerNav.support' },
   { id: 'settings',        route: '/settings',                icon: Settings2,   translationKey: 'drawerNav.settings' },
   { id: 'logout',          route: '__logout__',               icon: LogOut,      translationKey: 'drawerNav.logout' },
 ];

@@ -5,8 +5,8 @@
 
 ## Summary
 
-- **Pages scanned:** 326
-- **Distinct i18n keys consumed:** 5282
+- **Pages scanned:** 327
+- **Distinct i18n keys consumed:** 5303
 - **Namespaces in use:** 41
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -246,16 +246,24 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/MobileSettings.tsx
 
-**Status:** ✅ clean — keys consumed: 79, namespaces: 2
+**Status:** ✅ clean — keys consumed: 61, namespaces: 2
 
 **i18n namespaces:**
 
-- `screens` — used: 72, total in shard: 9329
+- `screens` — used: 54, total in shard: 9329
 - `settings` — used: 7, total in shard: 29, **MISSING:** settings.updateFailed, settings.chat, settings.calendar, settings.community, settings.search
 
 ### src/pages/MobileSubscriptions.tsx
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
+
+### src/pages/MobileSupport.tsx
+
+**Status:** ✅ clean — keys consumed: 39, namespaces: 1
+
+**i18n namespaces:**
+
+- `screens` — used: 39, total in shard: 9329, **MISSING:** screens.mobileSupport.errorNotSupported, screens.mobileSupport.errorMicPermission, screens.mobileSupport.errorEmpty, screens.mobileSupport.errorSend, screens.mobileSupport.sentTitle…
 
 ### src/pages/MyIntents.tsx
 
@@ -2852,7 +2860,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 | Namespace | Pages using it |
 |---|---|
-| `screens` | 272 |
+| `screens` | 273 |
 | `toasts` | 60 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
