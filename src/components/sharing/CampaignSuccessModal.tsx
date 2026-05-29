@@ -3,12 +3,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Info, LayoutGrid, Plus, Sparkles, Share2 } from "lucide-react";
-import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { ShareCampaignModal } from "./ShareCampaignModal";
 import { useState } from "react";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface CampaignSuccessModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -80,7 +80,7 @@ export function CampaignSuccessModal({
               <div>
                 <p className="text-xs text-muted-foreground">{t('screens.sharing.firstScheduledPost')}</p>
                 <p className="text-sm font-medium">
-                  {format(campaign.firstPostDate, "PPP 'at' p")}
+                  {formatDate(campaign.firstPostDate, "PPP 'at' p")}
                 </p>
               </div>
             </CardContent>

@@ -2,16 +2,16 @@
   "business": {
     "earning": {
       "readyToEarn": "Bereit, mit VITANA zu verdienen?",
-      "choosePathGuide": "Wählen Sie einen Weg und wir führen Sie zu Ihrem ersten Einkommensstrom.",
+      "choosePathGuide": "Wähle einen Weg und wir führen dich zu deinem ersten Einkommensstrom.",
       "startEarning": "Jetzt verdienen",
-      "howToEarn": "Wie möchten Sie verdienen?",
-      "pickOne": "Wählen Sie eine Option — Sie können die anderen später erkunden.",
+      "howToEarn": "Wie möchtest du verdienen?",
+      "pickOne": "Wähle eine Option — du kannst die anderen später erkunden.",
       "createEvent": "Event erstellen",
-      "createEventDesc": "Veranstalten Sie Ihr eigenes Event und verkaufen Sie Tickets.",
+      "createEventDesc": "Veranstalte dein eigenes Event und verkaufe Tickets.",
       "addToInventory": "Events zum Inventar hinzufügen",
       "addToInventoryDesc": "Kuratierte Events weiterverkaufen und Provision verdienen.",
       "createService": "Service erstellen",
-      "createServiceDesc": "Bieten Sie buchbare Sitzungen an.",
+      "createServiceDesc": "Biete buchbare Sitzungen an.",
       "createPromotion": "Promotion erstellen",
       "createPromotionDesc": "Sichtbarkeit erhöhen und in sozialen Medien teilen.",
       "hostAndSell": "Veranstalten & Tickets verkaufen",
@@ -23,11 +23,11 @@
       "all": "Alle",
       "directSales": "Direktverkäufe",
       "reseller": "Wiederverkäufer",
-      "noEarningsYet": "Noch keine Einnahmen",
-      "startSellingToSee": "Beginnen Sie mit dem Verkauf, um Ihre Transaktionen hier zu sehen",
+      "noEarningsYet": "Noch keine Verdiensthistorie",
+      "startSellingToSee": "Beginne mit dem Verkauf, um deine Transaktionen hier zu sehen.",
       "ticketsSold": "Tickets verkauft",
       "grossAmount": "Bruttobetrag",
-      "youEarned": "Sie haben verdient",
+      "youEarned": "Du hast verdient",
       "paidToWallet": "An Wallet gezahlt",
       "pendingPayout": "Ausstehende Auszahlung",
       "transactionId": "Transaktions-ID",
@@ -35,10 +35,10 @@
       "last7Days": "Letzte 7 Tage",
       "last30Days": "Letzte 30 Tage",
       "last90Days": "Letzte 90 Tage",
-      "allTime": "Gesamte Zeit",
+      "allTime": "Gesamtzeit",
       "details": "Details",
       "earningsActivity": "Einnahmen-Aktivität",
-      "noEarningsStartSelling": "Noch keine Einnahmen. Beginnen Sie mit dem Verkauf, um hier Aktivitäten zu sehen."
+      "noEarningsStartSelling": "Noch keine Einnahmen. Beginne mit dem Verkauf, um hier Aktivitäten zu sehen."
     },
     "kpi": {
       "totalEarnings": "Gesamteinnahmen",
@@ -53,14 +53,14 @@
       "thisWeek": "Diese Woche",
       "topPerformer": "Top-Performer",
       "noDataYet": "Noch keine Daten",
-      "createServiceToStart": "Erstellen Sie einen Service, um loszulegen.",
+      "createServiceToStart": "Erstelle einen Service, um loszulegen.",
       "bookings": "Buchungen",
       "myEventSales": "Meine Event-Verkäufe",
       "viewMyEvents": "Meine Events anzeigen",
       "totalGrossSales": "Gesamte Bruttoverkäufe",
       "resellerCommissions": "Wiederverkäufer-Provisionen",
-      "goToSellEarn": "Zu Verkaufen & Verdienen",
-      "totalEarned": "Gesamt verdient",
+      "goToSellEarn": "Verkaufen & Verdienen",
+      "totalEarned": "Insgesamt verdient",
       "earningsBySource": "Einnahmen nach Quelle"
     },
     "reseller": {
@@ -69,13 +69,13 @@
       "resellerCode": "Wiederverkäufer-Code",
       "codeCopied": "Wiederverkäufer-Code kopiert!",
       "noSalesYet": "Noch keine Verkäufe",
-      "shareLinkToStart": "Teilen Sie einen Link, um zu verdienen.",
+      "shareLinkToStart": "Teile einen Link, um zu verdienen.",
       "tickets": "Tickets",
       "shareResellerLink": "Wiederverkäufer-Link teilen",
       "createPromotion": "Promotion erstellen",
-      "shareLinkOrPromotion": "Teilen Sie Ihre Wiederverkäufer-Links oder erstellen Sie eine Promotion, um Provisionen zu verdienen.",
+      "shareLinkOrPromotion": "Teile deine Wiederverkäufer-Links oder erstelle eine Promotion, um Provisionen zu verdienen.",
       "selectEventToShare": "Event zum Teilen auswählen",
-      "pickEventForLink": "Wählen Sie ein Event, um Ihren Wiederverkäufer-Link zu generieren",
+      "pickEventForLink": "Wähle ein Event, um deinen Wiederverkäufer-Link zu generieren.",
       "noEventsToSell": "Keine Events zum Verkauf verfügbar",
       "commission": "Provision",
       "commissionEarned": "Verdiente Provision",
@@ -88,10 +88,10 @@
     },
     "transfer": {
       "title": "An Wallet übertragen",
-      "description": "Übertragen Sie Ihre ausstehenden Wiederverkäufer-Provisionen auf Ihr VITANA Wallet.",
+      "description": "Übertrage deine ausstehenden Wiederverkäufer-Provisionen auf dein VITANA Wallet.",
       "pending": "Ausstehend",
       "wallet": "Wallet",
-      "instantCredit": "Dies wird Ihre Einnahmen sofort auf Ihr Wallet-Guthaben gutschreiben.",
+      "instantCredit": "Dies wird deine Einnahmen sofort auf dein Wallet-Guthaben gutschreiben.",
       "transferring": "Wird übertragen...",
       "transfer": "Übertragen"
     },
@@ -105,8 +105,22 @@
       "sellTicketsDesc": "Events bewerben und Provisionen verdienen",
       "badgeNew": "Neu",
       "badgeActive": "Aktiv",
-      "alreadyReseller": "Sie sind bereits Wiederverkäufer! Schauen Sie im Tab \"Verkaufen & Verdienen\" nach.",
+      "alreadyReseller": "Du bist bereits Wiederverkäufer! Schau im Tab \"Verkaufen & Verdienen\" nach.",
       "cancel": "Abbrechen"
+    },
+    "missionOpportunities": {
+      "title": "Mission-Chancen",
+      "subtitle": "Vom Autopilot vorgeschlagene Wege, die die Langlebigkeits-Wirtschaft voranbringen",
+      "loading": "Chancen werden geladen…",
+      "error": "Chancen konnten nicht geladen werden",
+      "empty": "Noch keine wirtschaftsbezogenen Empfehlungen. Schau später wieder vorbei.",
+      "viewAll": "Alle Empfehlungen anzeigen",
+      "axisBadge": {
+        "find_match": "Find a Match",
+        "marketplace": "Marktplatz",
+        "income_generation": "Einkommen",
+        "business_formation": "Geschäftsgründung"
+      }
     }
   }
 }

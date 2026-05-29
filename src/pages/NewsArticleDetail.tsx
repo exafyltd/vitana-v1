@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { formatDistanceToNow } from "date-fns";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -9,6 +8,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
 import type { NewsArticle } from "@/hooks/useNewsFeed";
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 export default function NewsArticleDetail() {
   const { id } = useParams();
   const navigate = useNavigate();

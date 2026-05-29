@@ -1,0 +1,50 @@
+{
+  "connectedApps": {
+    "title": "Apps conectadas",
+    "description": "Gestiona tus dispositivos y servicios conectados",
+    "searchPlaceholder": "Buscar apps...",
+    "addApp": "Agregar app",
+    "connected": "conectado",
+    "syncing": "sincronizando",
+    "sections": {
+      "social": "Social y compartir",
+      "fitness": "Fitness y wearables",
+      "health": "Salud y laboratorios",
+      "other": "Otro"
+    },
+    "status": {
+      "connected": "Conectado",
+      "notConnected": "No conectado",
+      "comingSoon": "Próximamente",
+      "soon": "Pronto"
+    },
+    "actions": {
+      "connect": "Conectar",
+      "disconnect": "Desconectar",
+      "configure": "Configurar sincronización",
+      "manage": "Gestionar"
+    },
+    "lastSync": "Última sincronización",
+    "dataSync": "Sincronización de datos",
+    "comingSoonMessage": "Integración de {appName} próximamente",
+    "popup": {
+      "title": "Conectar apps y servicios",
+      "searchPlaceholder": "Buscar apps y servicios...",
+      "categories": {
+        "all": "Todas las apps",
+        "health": "Salud y fitness",
+        "social": "Social"
+      },
+      "availableApps": "Apps disponibles",
+      "verified": "Verificado",
+      "connected": "Conectado",
+      "settings": "Ajustes",
+      "disconnect": "Desconectar",
+      "connect": "Conectar",
+      "done": "Listo",
+      "noResults": "No se encontraron apps",
+      "connectionSuccess": "Conexión exitosa",
+      "connectionPlaceholder": "Conexión de {appName} próximamente"
+    }
+  }
+}

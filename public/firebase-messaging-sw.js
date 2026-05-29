@@ -83,10 +83,12 @@ self.addEventListener('push', (event) => {
   recentTags.add(tag);
   setTimeout(() => recentTags.delete(tag), 5000);
 
-  // Build click URL — use null for intermediate fallbacks so final '/' is the true default
+  // Build click URL — use null for intermediate fallbacks so final '/' is the true default.
+  // Path-based form (/inbox/t/<id>) — query-string form silently fails in Appilix's
+  // Android in-app browser when launched from a notification tap.
   const url = data.url || data.click_action || notif.click_action
-    || (data.thread_id ? `/inbox?thread=${data.thread_id}` : null)
-    || (data.threadId ? `/inbox?thread=${data.threadId}` : null)
+    || (data.thread_id ? `/inbox/t/${data.thread_id}` : null)
+    || (data.threadId ? `/inbox/t/${data.threadId}` : null)
     || '/';
 
   // Stop Firebase SDK from also processing this push

@@ -25,12 +25,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { differenceInDays, differenceInHours, format, addDays, subDays } from 'date-fns';
+import { differenceInDays, differenceInHours, addDays, subDays } from 'date-fns';
 import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
 import { useToast } from '@/hooks/use-toast';
 import { useWallet } from "@/hooks/useWallet";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 export default function DoctorsCoaches() {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -130,100 +131,76 @@ export default function DoctorsCoaches() {
 
   const providers = [
     {
-      id: 1,
-      name: "Dr. Sarah Chen",
-      title: "Longevity Medicine Specialist",
-      specialty: "Longevity Medicine",
-      rating: 4.9,
-      reviews: 156,
-      location: "New York, NY",
+      id: 1, name: "Dr. Sarah Chen",
+      title: t('screens.discover.providerTitle_longevitySpecialist'),
+      specialty: t('screens.discover.providerSpecialty_longevity'),
+      rating: 4.9, reviews: 156, location: "New York, NY",
       image: "/lovable-uploads/sarah-miller-avatar.jpg",
-      badges: ["Top Rated", "Verified"],
-      experience: "15 years",
-      nextAvailable: "Today 2PM",
-      bookings: 1234,
-      priceRange: "$150 - $400",
-      about: "Board-certified physician specializing in preventive and regenerative medicine for healthy aging."
+      badges: [t('screens.discover.providerBadge_topRated'), t('screens.discover.providerBadge_verified')],
+      experience: t('screens.discover.providerExperience', { years: '15' }),
+      nextAvailable: t('screens.discover.providerAvailable_today2pm'),
+      bookings: 1234, priceRange: "$150 - $400",
+      about: t('screens.discover.providerAbout_sarah'),
     },
     {
-      id: 2,
-      name: "Marcus Rodriguez",
-      title: "Functional Fitness Coach",
-      specialty: "Fitness & Movement",
-      rating: 4.8,
-      reviews: 89,
-      location: "Los Angeles, CA",
+      id: 2, name: "Marcus Rodriguez",
+      title: t('screens.discover.providerTitle_functionalFitness'),
+      specialty: t('screens.discover.wsCategory_fitness_name'),
+      rating: 4.8, reviews: 89, location: "Los Angeles, CA",
       image: "/lovable-uploads/mike-thompson-avatar.jpg",
-      badges: ["Trending", "Certified"],
-      experience: "8 years",
-      nextAvailable: "Tomorrow 9AM",
-      bookings: 567,
-      priceRange: "$75 - $120",
-      about: "Former professional athlete turned longevity fitness specialist focusing on functional movement."
+      badges: [t('screens.discover.providerBadge_trending'), t('screens.discover.providerBadge_certified')],
+      experience: t('screens.discover.providerExperience', { years: '8' }),
+      nextAvailable: t('screens.discover.providerAvailable_tomorrow9am'),
+      bookings: 567, priceRange: "$75 - $120",
+      about: t('screens.discover.providerAbout_marcus'),
     },
     {
-      id: 3,
-      name: "Luna Wellness Spa",
-      title: "Holistic Wellness Center",
-      specialty: "Recovery Therapy",
-      rating: 4.9,
-      reviews: 234,
-      location: "Miami, FL",
+      id: 3, name: "Luna Wellness Spa",
+      title: t('screens.discover.providerTitle_holisticWellnessCenter'),
+      specialty: t('screens.discover.providerSpecialty_recoveryTherapy'),
+      rating: 4.9, reviews: 234, location: "Miami, FL",
       image: "/lovable-uploads/design-team-avatar.jpg",
-      badges: ["Near You", "Premium"],
-      experience: "12 years",
-      nextAvailable: "Today 4PM",
-      bookings: 2156,
-      priceRange: "$90 - $300",
-      about: "Full-service wellness center offering massage, recovery treatments, and rejuvenation therapies."
+      badges: [t('screens.discover.providerBadge_nearYou'), t('screens.discover.providerBadge_premium')],
+      experience: t('screens.discover.providerExperience', { years: '12' }),
+      nextAvailable: t('screens.discover.providerAvailable_today4pm'),
+      bookings: 2156, priceRange: "$90 - $300",
+      about: t('screens.discover.providerAbout_luna'),
     },
     {
-      id: 4,
-      name: "Peak Performance Lab",
-      title: "Biohacking & Optimization",
-      specialty: "Biohacking",
-      rating: 4.7,
-      reviews: 67,
-      location: "Austin, TX",
+      id: 4, name: "Peak Performance Lab",
+      title: t('screens.discover.providerTitle_biohackingOptimization'),
+      specialty: t('screens.discover.wsCategory_biohacking_name'),
+      rating: 4.7, reviews: 67, location: "Austin, TX",
       image: "/lovable-uploads/james-davis-avatar.jpg",
-      badges: ["New", "Innovative"],
-      experience: "5 years",
-      nextAvailable: "Friday 10AM",
-      bookings: 234,
-      priceRange: "$200 - $500",
-      about: "Cutting-edge facility specializing in human optimization through advanced biohacking protocols."
+      badges: [t('screens.discover.providerBadge_new'), t('screens.discover.providerBadge_innovative')],
+      experience: t('screens.discover.providerExperience', { years: '5' }),
+      nextAvailable: t('screens.discover.providerAvailable_friday10am'),
+      bookings: 234, priceRange: "$200 - $500",
+      about: t('screens.discover.providerAbout_peak'),
     },
     {
-      id: 5,
-      name: "Maya Wellness Collective",
-      title: "Holistic Health Coaching",
-      specialty: "Mental Wellness",
-      rating: 4.9,
-      reviews: 123,
-      location: "Seattle, WA",
+      id: 5, name: "Maya Wellness Collective",
+      title: t('screens.discover.providerTitle_holisticHealthCoaching'),
+      specialty: t('screens.discover.wsCategory_mental_name'),
+      rating: 4.9, reviews: 123, location: "Seattle, WA",
       image: "/lovable-uploads/emma-wilson-avatar.jpg",
-      badges: ["Popular", "Holistic"],
-      experience: "10 years",
-      nextAvailable: "Monday 1PM",
-      bookings: 890,
-      priceRange: "$85 - $180",
-      about: "Integrative approach to wellness combining coaching, nutrition, and mindfulness practices."
+      badges: [t('screens.discover.providerBadge_popular'), t('screens.discover.providerBadge_holistic')],
+      experience: t('screens.discover.providerExperience', { years: '10' }),
+      nextAvailable: t('screens.discover.providerAvailable_monday1pm'),
+      bookings: 890, priceRange: "$85 - $180",
+      about: t('screens.discover.providerAbout_maya'),
     },
     {
-      id: 6,
-      name: "Dr. Michael Roberts",
-      title: "Sleep Optimization Expert",
-      specialty: "Sleep Medicine",
-      rating: 4.8,
-      reviews: 178,
-      location: "Chicago, IL",
+      id: 6, name: "Dr. Michael Roberts",
+      title: t('screens.discover.providerTitle_sleepExpert'),
+      specialty: t('screens.discover.providerSpecialty_sleepMedicine'),
+      rating: 4.8, reviews: 178, location: "Chicago, IL",
       image: "/lovable-uploads/dr-roberts-avatar.jpg",
-      badges: ["Expert", "Verified"],
-      experience: "20 years",
-      nextAvailable: "Next week",
-      bookings: 1567,
-      priceRange: "$180 - $350",
-      about: "Board-certified sleep specialist helping clients optimize sleep for longevity and performance."
+      badges: [t('screens.discover.providerBadge_expert'), t('screens.discover.providerBadge_verified')],
+      experience: t('screens.discover.providerExperience', { years: '20' }),
+      nextAvailable: t('screens.discover.providerAvailable_nextWeek'),
+      bookings: 1567, priceRange: "$180 - $350",
+      about: t('screens.discover.providerAbout_michael'),
     }
   ];
 
@@ -646,7 +623,7 @@ export default function DoctorsCoaches() {
 
                         let countdownBadge;
                         if (daysUntil > 7) {
-                          countdownBadge = <Badge variant="outline">{format(appointmentDate, 'MMM dd, yyyy')}</Badge>;
+                          countdownBadge = <Badge variant="outline">{formatDate(appointmentDate, 'MMM dd, yyyy')}</Badge>;
                         } else if (daysUntil > 0) {
                           countdownBadge = <Badge className="bg-blue-500">{t('screens.discover.daysuntilDaysAway', { daysUntil })}</Badge>;
                         } else if (hoursUntil > 0) {
@@ -677,11 +654,11 @@ export default function DoctorsCoaches() {
                               <div className="space-y-2 mb-4">
                                 <div className="flex items-center gap-2 text-sm">
                                   <Calendar className="h-4 w-4" />
-                                  <span>{format(appointmentDate, 'EEEE, MMMM dd, yyyy')}</span>
+                                  <span>{formatDate(appointmentDate, 'EEEE, MMMM dd, yyyy')}</span>
                                 </div>
                                 <div className="flex items-center gap-2 text-sm">
                                   <Clock className="h-4 w-4" />
-                                  <span>{t('screens.discover.value0Duration_minutesMin', { value0: format(appointmentDate, 'HH:mm'), duration_minutes: appointment.duration_minutes })}</span>
+                                  <span>{t('screens.discover.value0Duration_minutesMin', { value0: formatDate(appointmentDate, 'HH:mm'), duration_minutes: appointment.duration_minutes })}</span>
                                 </div>
                                 {appointment.location && (
                                   <div className="flex items-center gap-2 text-sm">

@@ -1,10 +1,10 @@
 {
   "milestones": {
-    "title": "Magic Moments",
+    "title": "Besondere Momente",
     "add": "Moment hinzufügen",
     "edit": "Moment bearbeiten",
-    "empty": "Noch keine Magic Moments",
-    "addFirst": "Ersten Magic Moment hinzufügen",
+    "empty": "Noch keine Momente",
+    "addFirst": "Deinen ersten Moment hinzufügen",
     "date": "Datum",
     "description": "Was ist passiert?",
     "titleLabel": "Titel",

@@ -38,6 +38,7 @@ const args = Object.fromEntries(
 
 const PROVIDER = args.provider || 'gemini';
 const DRY = !!args['dry-run'];
+const INIT = !!args.init;
 const SHARD_FILTER = args.shard || null; // single shard name (without .json)
 const TARGET_LOCALE = args.locale || 'de';
 const SRC_LOCALE = args.source || 'en';
@@ -61,8 +62,68 @@ const TARGET_LANG_NAME = (
 const TARGET_DIR = join(I18N_DIR, TARGET_LOCALE);
 const SRC_DIR = join(I18N_DIR, SRC_LOCALE);
 
-if (!existsSync(TARGET_DIR) || !existsSync(SRC_DIR)) {
-  console.error(`[translate] missing locale dir: ${TARGET_DIR} or ${SRC_DIR}`);
+if (!existsSync(SRC_DIR)) {
+  console.error(`[translate] missing source locale dir: ${SRC_DIR}`);
+  process.exit(2);
+}
+
+// --- bootstrap: --init creates the target locale dir by mirroring the
+// source (en) shards. Every leaf string is left as the source value
+// (placeholder) and flagged via _pending_review per shard, so a subsequent
+// translate run picks it up. Idempotent: re-runs preserve any keys already
+// in the target shard.
+if (INIT) {
+  const { mkdirSync } = await import('node:fs');
+  if (!existsSync(TARGET_DIR)) {
+    mkdirSync(TARGET_DIR, { recursive: true });
+    console.log(`[translate] --init: created ${TARGET_DIR}`);
+  }
+  const srcShards = readdirSync(SRC_DIR).filter((f) => f.endsWith('.json'));
+  let created = 0;
+  let merged = 0;
+  let flagged = 0;
+  for (const name of srcShards) {
+    const srcPath = join(SRC_DIR, name);
+    const tgtPath = join(TARGET_DIR, name);
+    const srcCat = JSON.parse(readFileSync(srcPath, 'utf8'));
+    const tgtCat = existsSync(tgtPath) ? JSON.parse(readFileSync(tgtPath, 'utf8')) : {};
+    // For every leaf in src, ensure tgt has a placeholder + _pending_review flag.
+    function walk(srcNode, tgtNode, parentPending) {
+      if (!srcNode || typeof srcNode !== 'object') return;
+      if (!parentPending) {
+        if (!tgtNode._pending_review || typeof tgtNode._pending_review !== 'object') {
+          tgtNode._pending_review = {};
+        }
+        parentPending = tgtNode._pending_review;
+      }
+      for (const [k, v] of Object.entries(srcNode)) {
+        if (k.startsWith('_')) continue;
+        if (v && typeof v === 'object' && !Array.isArray(v)) {
+          if (!tgtNode[k] || typeof tgtNode[k] !== 'object') tgtNode[k] = {};
+          walk(v, tgtNode[k], null);
+        } else if (typeof v === 'string') {
+          if (tgtNode[k] === undefined) {
+            tgtNode[k] = v; // placeholder = source value
+          }
+          // Only flag if not already a real translation (i.e. tgt still
+          // equals source, meaning it hasn't been translated yet).
+          if (tgtNode[k] === v && !parentPending[k]) {
+            parentPending[k] = true;
+            flagged++;
+          }
+        }
+      }
+    }
+    walk(srcCat, tgtCat, null);
+    if (existsSync(tgtPath)) merged++; else created++;
+    writeFileSync(tgtPath, JSON.stringify(tgtCat, null, 2) + '\n', 'utf8');
+  }
+  console.log(`[translate] --init: ${created} shard(s) created, ${merged} merged, ${flagged} key(s) flagged _pending_review`);
+  // Fall through to normal translate flow (which will drain the just-flagged keys).
+}
+
+if (!existsSync(TARGET_DIR)) {
+  console.error(`[translate] missing locale dir: ${TARGET_DIR} — pass --init to bootstrap from ${SRC_LOCALE}/`);
   process.exit(2);
 }
 
@@ -207,6 +268,7 @@ Rules:
 - Keep emojis intact.
 - For brand names (Vitana, MAXINA, Lovable, Exafy), do not translate.
 - Match length and tone to short UI labels — these are toast notifications, button labels, error messages.
+- **Compound-word rule**: never produce a single word longer than 22 characters. For ${TARGET_LANG_NAME} compounds that would exceed that, insert a hyphen at the natural compound boundary. Example (German): "Benachrichtigungseinstellungen" → "Benachrichtigungs-Einstellungen". Example (German): "Datenschutzerklärung" → "Datenschutz-Erklärung". Prefer hyphenated splits over paraphrasing.
 - Do not add any text outside the JSON object.
 
 Strings:

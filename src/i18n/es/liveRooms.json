@@ -1,0 +1,134 @@
+{
+  "liveRooms": {
+    "title": "Salas en Vivo",
+    "description": "Únete a discusiones de audio y video en vivo",
+    "tabs": {
+      "live": "En Vivo Ahora",
+      "scheduled": "Programado",
+      "all": "Todas las Salas",
+      "past": "Pasado"
+    },
+    "goLive": "Ir en Vivo",
+    "joinRoom": "Unirse a la Sala",
+    "noRooms": "No hay salas en vivo en este momento",
+    "beFirst": "Sé el primero en ir en vivo",
+    "demoRoom": "Sala de Demostración",
+    "demoRoomDesc": "Esta es una sala de ejemplo. ¡Crea la tuya para ir en vivo!",
+    "search": {
+      "placeholder": "Buscar salas, temas o anfitriones...",
+      "category": "Categoría",
+      "allCategories": "Todas las Categorías"
+    },
+    "room": {
+      "join": "Unirse a la Sala",
+      "participants": "Participantes",
+      "duration": "Duración",
+      "host": "Anfitrión",
+      "premium": "Premium",
+      "live": "EN VIVO"
+    },
+    "viewer": {
+      "leave": "Salir",
+      "mute": "Silenciar",
+      "video": "Video",
+      "raiseHand": "Levantar la Mano",
+      "chat": "Chat",
+      "reactions": "Reacciones"
+    },
+    "goLivePopup": {
+      "titleCreate": "Ir en Vivo",
+      "titleEdit": "Editar Transmisión en Vivo",
+      "streamTitleLabel": "Título de la Transmisión",
+      "streamTitlePlaceholder": "En vivo con {name}",
+      "descriptionLabel": "Descripción / Bio (Opcional)",
+      "descriptionPlaceholder": "Cuéntale a tu audiencia de qué trata esta transmisión...",
+      "charactersCount": "{count}/500 caracteres",
+      "streamTypeLabel": "Tipo de Transmisión",
+      "streamTypeAudio": "Audio",
+      "streamTypeVideo": "Video",
+      "coverLabel": "Imagen de Portada / Miniatura",
+      "coverAlt": "Portada de la transmisión",
+      "coverUploadCta": "Haz clic para subir una imagen personalizada",
+      "coverUploadHint": "PNG, JPG hasta 2MB",
+      "aiAutoGenerateLabel": "Autogenerar con IA",
+      "aiAutoGenerateHint": "Generar imagen si no se subió ninguna",
+      "generatingAiImage": "Generando imagen con IA…",
+      "tagsLabel": "Etiquetas / Categoría (Selecciona 1-3)",
+      "tagsSelected": "{count}/3 seleccionados",
+      "tags": {
+        "wellness": "Bienestar",
+        "nutrition": "Nutrición",
+        "fitness": "Fitness",
+        "mentalHealth": "Salud mental",
+        "longevity": "Longevidad",
+        "meditation": "Meditación",
+        "sleep": "Sueño",
+        "motivation": "Motivación",
+        "education": "Educación",
+        "lifestyle": "Estilo de vida"
+      },
+      "advancedTitle": "Opciones avanzadas",
+      "cohostLabel": "Invitación de coanfitrión/invitado",
+      "cohostPlaceholder": "Buscar y agregar coanfitrión",
+      "accessLevelLabel": "Nivel de acceso",
+      "access": {
+        "public": {
+          "label": "Público",
+          "desc": "Cualquiera puede unirse"
+        },
+        "followers": {
+          "label": "Solo seguidores",
+          "desc": "Solo tus seguidores"
+        },
+        "group": {
+          "label": "Grupo/VIP",
+          "desc": "Solo miembros invitados"
+        }
+      },
+      "scheduleLabel": "Programar para después",
+      "goLiveNow": "Ir en vivo ahora",
+      "selectTime": "Seleccionar hora",
+      "clearSchedule": "Borrar programación (Ir en vivo ahora)",
+      "scheduledAt": "{date} a las {time}",
+      "dateNeedsTime": "{date} – seleccionar hora",
+      "time": "Hora",
+      "engagementLabel": "Chat y participación",
+      "enableChatTitle": "Activar chat",
+      "enableChatDesc": "Permitir que los espectadores chateen",
+      "enablePollsTitle": "Activar encuestas",
+      "enablePollsDesc": "Crear encuestas en vivo durante la transmisión",
+      "recordReplayTitle": "Grabar para repetición",
+      "recordReplayDesc": "Guardar transmisión para ver después",
+      "cancel": "Cancelar",
+      "starting": "Comenzando…",
+      "updating": "Actualizando…",
+      "updateStream": "Actualizar transmisión",
+      "scheduleSession": "Programar sesión en vivo",
+      "goLiveNowAction": "Ir en vivo ahora",
+      "errors": {
+        "selectStreamTypeTitle": "Selecciona tipo de transmisión",
+        "selectStreamTypeDesc": "Selecciona Audio o Video",
+        "notLoggedInTitle": "Error",
+        "notLoggedInDesc": "Debes iniciar sesión para transmitir en vivo",
+        "invalidFileTypeTitle": "Tipo de archivo no válido",
+        "invalidFileTypeDesc": "Selecciona un archivo de imagen (JPEG, PNG, WebP)",
+        "fileTooLargeTitle": "Archivo demasiado grande",
+        "fileTooLargeDesc": "La imagen debe ser menor de 2MB",
+        "imageUploadFailedTitle": "Error al subir la imagen",
+        "imageUploadFailedDesc": "Mantendremos la imagen actual.",
+        "genericTitle": "Error",
+        "genericDesc": "Error al crear la transmisión. Intenta de nuevo."
+      },
+      "success": {
+        "streamUpdatedTitle": "¡Transmisión actualizada! ✨",
+        "streamUpdatedDesc": "Tu transmisión se ha actualizado correctamente",
+        "streamScheduledTitle": "¡Transmisión programada! 📅",
+        "streamScheduledDesc": "Tu transmisión está programada para el {date} a las {time}",
+        "youAreLiveTitle": "¡Estás en vivo! 🎙️",
+        "youAreLiveDesc": "Uniéndote a la sala de transmisión…",
+        "aiImageHintTitle": "Generación de imagen con IA",
+        "aiImageHintDesc": "La imagen se generará cuando comience la transmisión."
+      }
+    }
+  }
+}

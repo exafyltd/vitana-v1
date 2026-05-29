@@ -1,0 +1,31 @@
+{
+  "socialImport": {
+    "dialogTitle": "Uvezi {platform} profil",
+    "dialogDescription": "Poveži svoj {platform} profil da obogatiš svoj Vitana identitet AI uvidima.",
+    "profileUrl": "URL {platform} profila",
+    "bioLabel": "Bio / O meni sekcija",
+    "bioOptional": "(Opciono)",
+    "cancel": "Otkaži",
+    "importProfile": "Uvezi profil",
+    "importing": "Uvozim...",
+    "urlRequired": "URL je obavezan",
+    "urlRequiredDesc": "Molimo unesite URL tvog {platform} profila",
+    "importSuccess": "Uvoz uspešan",
+    "importSuccessDesc": "Tvoj {platform} profil je uvezen i obogaćen AI uvidima.",
+    "importFailed": "Uvoz neuspešan",
+    "connect": "Poveži:",
+    "socialPresence": "Društveno prisustvo",
+    "verifiedConnections": "Verifikovane veze kroz tvoj digitalni život",
+    "tapToVisit": "Dodirni da posetiš profil",
+    "noAccountsConnected": "Nema povezanih društvenih naloga",
+    "connectAccounts": "Poveži naloge",
+    "platformHelp": {
+      "linkedin": "Koristićemo AI da izvučemo tvoj naslov, sažetak i profesionalne veštine.",
+      "instagram": "Analiziraćemo tvoj bio da razumemo tvoja interesovanja i životne teme.",
+      "tiktok": "Izvlačimo teme sadržaja i kreativnu ličnost iz tvog bio-a.",
+      "youtube": "Identifikovaćemo tvoje kategorije sadržaja i oblasti stručnosti iz tvog opisa.",
+      "facebook": "Izvlačimo tvoja interesovanja i učešće u zajednici iz tvog bio-a.",
+      "x": "Analiziraćemo tvoj bio da razumemo teme koje te zanimaju i stil komunikacije."
+    }
+  }
+}

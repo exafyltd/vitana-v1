@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { format, isPast } from "date-fns";
+import { isPast } from 'date-fns';
 import { Ticket, Calendar, MapPin, ChevronRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,6 +9,7 @@ import { EventTicket } from "@/components/tickets/EventTicket";
 import { useMyTickets, TicketPurchase } from "@/hooks/useEventTickets";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 export default function MyTickets() {
   const navigate = useNavigate();
   const { tickets, loading } = useMyTickets();
@@ -171,7 +172,7 @@ function TicketCard({ ticket, onClick, isPast }: TicketCardProps) {
             <Calendar className="h-3.5 w-3.5" />
             <span>
               {event?.start_time
-                ? format(new Date(event.start_time), "EEE, MMM d • h:mm a")
+                ? formatDate(new Date(event.start_time), "EEE, MMM d • h:mm a")
                 : "Date TBA"}
             </span>
           </div>

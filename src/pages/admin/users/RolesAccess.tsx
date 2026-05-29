@@ -24,6 +24,7 @@ import AdminHeader from "@/components/admin/AdminHeader";
 import { adminUsersNavigation } from "@/config/navigation";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 // Placeholder dev-access users (would come from /api/v1/dev-access/users in production)
 const DEV_ACCESS_USERS = [
   { email: "admin@vitana.io", granted_at: "2026-01-15", status: "active" },
@@ -98,7 +99,7 @@ export default function RolesAccess() {
                             {user.email}
                           </TableCell>
                           <TableCell className="text-muted-foreground text-sm">
-                            {new Date(user.granted_at).toLocaleDateString("en-US", {
+                            {fmtDate(new Date(user.granted_at), {
                               year: "numeric",
                               month: "short",
                               day: "numeric",

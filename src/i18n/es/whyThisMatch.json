@@ -1,0 +1,18 @@
+{
+  "whyThisMatch": {
+    "title": "¿Por qué este miembro?",
+    "interpretedAs": "Vitana entendió:",
+    "consideredSignals": "Señales consideradas:",
+    "showSomeoneElse": "Muéstrame a otra persona",
+    "dismiss": "Descartar",
+    "ethicsNote": "Vitana no clasifica a los miembros por apariencia o riqueza, pero aquí hay alguien cuyo viaje brilla ahora.",
+    "loadingRecipe": "Cargando detalles de búsqueda…",
+    "recipeUnavailable": "Esos detalles de búsqueda ya no están disponibles.",
+    "tierLabel": {
+      "1": "Coincidencia exacta",
+      "2": "Índice Vitana",
+      "3": "Coincidencia más cercana",
+      "4": "Reenrutamiento por equidad"
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "verdicts": {
+    "drawerNav.news": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "drawerNav.events": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "drawerNav.live": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "drawerNav.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "drawerNav.business": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "drawerNav.wallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "drawerNav.connectors": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "drawerNav.journey": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.findPartner": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.discover": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.orders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.diary": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "drawerNav.inbox": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.settings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.logout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:09:54.995Z"
+}

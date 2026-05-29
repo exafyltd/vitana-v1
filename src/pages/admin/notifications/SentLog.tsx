@@ -17,6 +17,7 @@ import { adminNotificationsNavigation } from "@/config/navigation";
 import { useSentNotifications } from "@/hooks/useAdminNotifications";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 const TYPE_FILTER_OPTIONS = [
   { value: "all", label: "All Types" },
   { value: "welcome_to_vitana", label: "Welcome" },
@@ -94,7 +95,7 @@ const columns = [
       const d = new Date(val);
       return (
         <span className="text-xs text-muted-foreground whitespace-nowrap">
-          {d.toLocaleDateString()} {d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+          {fmtDate(d)} {d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
         </span>
       );
     },

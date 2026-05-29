@@ -9,6 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { TestTube, Heart, Activity, Brain, Droplets, Package, Share2, Shield, Clock, Users, CheckCircle } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface BiomarkerCategory {
   id: string;
   name: string;
@@ -347,7 +348,7 @@ export default function ConsentPackagePopup({ open, onOpenChange }: ConsentPacka
             </div>
             <div className="flex justify-between">
               <span className="font-medium">{t('screens.common.expires')}</span>
-              <span>{new Date(Date.now() + shareSettings.expiryDays * 24 * 60 * 60 * 1000).toLocaleDateString()}</span>
+              <span>{fmtDate(new Date(Date.now() + shareSettings.expiryDays * 24 * 60 * 60 * 1000))}</span>
             </div>
           </div>
         </CardContent>

@@ -5,6 +5,7 @@ import { TrendingUp, Heart, MessageCircle, Eye, ChevronLeft, ChevronRight } from
 import { useState } from "react";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 interface ContentItem {
   id: string;
   type: 'post' | 'media';
@@ -129,7 +130,7 @@ export function FeaturedContentCarousel({ content, className }: FeaturedContentC
                 {currentItem.engagement.views && (
                   <div className="flex items-center gap-1">
                     <Eye className="h-3.5 w-3.5" />
-                    <span>{currentItem.engagement.views.toLocaleString()}</span>
+                    <span>{fmtDateTime(currentItem.engagement.views)}</span>
                   </div>
                 )}
                 {currentItem.engagement.likes && (

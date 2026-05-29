@@ -4,9 +4,9 @@ import { useDevVTID } from "@/hooks/dev/useDevVTID";
 import { SoftWarningBanner } from "./SoftWarningBanner";
 import { Loader2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { formatDistanceToNow } from "date-fns";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 export function VTIDSnapshotPanel() {
   const { vtids, error, available, isLoading, refetch } = useDevVTID();
 

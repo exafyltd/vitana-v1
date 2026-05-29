@@ -3,7 +3,6 @@ import { useResellerSales, ResellerEventSale } from "@/hooks/useResellerSales";
 import { useResellerPayouts } from "@/hooks/useResellerPayouts";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { format, formatDistanceToNow } from "date-fns";
 import { Loader2, Ticket, DollarSign, Award, Wallet, ChevronRight, Share2, Megaphone, Calendar, Clock, Eye, Settings2, ArrowDownToLine, CheckCircle2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
@@ -26,6 +25,7 @@ import { ResponsivePopover, ResponsivePopoverContent, ResponsivePopoverTrigger }
 import { TransferToWalletDialog } from "./TransferToWalletDialog";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
 type TimeRange = "all" | "30d" | "7d";
 
 export function ResellerSalesTab() {
@@ -206,7 +206,7 @@ export function ResellerSalesTab() {
                     <div className="flex-1 min-w-0">
                       <p className="font-medium truncate">{event.title}</p>
                       <p className="text-xs text-muted-foreground">
-                        {event.start_time && format(new Date(event.start_time), "MMM d, yyyy")}
+                        {event.start_time && formatDate(new Date(event.start_time), "MMM d, yyyy")}
                         {event.default_reseller_commission_rate && ` · ${event.default_reseller_commission_rate}% commission`}
                       </p>
                     </div>
@@ -523,7 +523,7 @@ export function ResellerSalesTab() {
                   <div className="flex-1 min-w-0">
                     <p className="font-medium truncate">{event.title}</p>
                     <p className="text-xs text-muted-foreground">
-                      {event.start_time && format(new Date(event.start_time), "MMM d, yyyy")}
+                      {event.start_time && formatDate(new Date(event.start_time), "MMM d, yyyy")}
                       {event.default_reseller_commission_rate && ` · ${event.default_reseller_commission_rate}% commission`}
                     </p>
                   </div>

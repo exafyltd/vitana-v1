@@ -21,7 +21,6 @@ import {
   DollarSign,
   Sparkles
 } from "lucide-react";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
@@ -29,6 +28,7 @@ import BookingPaymentFlow from "@/components/payment/BookingPaymentFlow";
 import { useWallet } from "@/hooks/useWallet";
 import { notify, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface CreateServicePopupProps {
   isOpen: boolean;
   onClose: () => void;
@@ -350,7 +350,7 @@ export default function CreateServicePopup({ isOpen, onClose }: CreateServicePop
                         )}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {formData.date ? format(formData.date, "PPP") : "Pick a date"}
+                        {formData.date ? formatDate(formData.date, "PPP") : "Pick a date"}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">

@@ -18,6 +18,7 @@ import {
 import { useAutopilotRuns } from "@/hooks/useAdminAutopilot";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 const STATUS_VARIANT: Record<string, "active" | "warning" | "error" | "inactive" | "info"> = {
   running: "info",
   completed: "active",
@@ -128,7 +129,7 @@ export default function AutopilotRuns() {
                       {run.activated_vtid || "—"}
                     </TableCell>
                     <TableCell className="text-right text-xs text-muted-foreground">
-                      {new Date(run.started_at).toLocaleString()}
+                      {fmtDateTime(new Date(run.started_at))}
                     </TableCell>
                   </TableRow>
                 ))}

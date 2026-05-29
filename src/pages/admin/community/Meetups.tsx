@@ -27,6 +27,7 @@ import { toast } from "sonner";
 import { useCommunityMeetups, useDeleteEvent } from "@/hooks/useAdminCommunity";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 export default function Meetups() {
   const { data: meetups = [], isLoading, isError, error } = useCommunityMeetups();
   const deleteMutation = useDeleteEvent();
@@ -134,7 +135,7 @@ export default function Meetups() {
                   <TableCell>
                     <div className="flex items-center gap-1 text-sm">
                       <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span>{new Date(m.start_time).toLocaleDateString()}</span>
+                      <span>{fmtDate(new Date(m.start_time))}</span>
                     </div>
                     <div className="text-xs text-muted-foreground">
                       {new Date(m.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

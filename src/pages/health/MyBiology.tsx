@@ -36,7 +36,6 @@ import {
   MoreHorizontal
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { format } from 'date-fns';
 import { healthNavigation } from '@/config/navigation';
 import { useUserSupplements, UserSupplement } from '@/hooks/useUserSupplements';
 import { useHealthLogger } from '@/hooks/useHealthLogger';
@@ -55,6 +54,7 @@ import {
 } from '@/components/ui/select';
 import { notifyError, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 // Report type display config
 const REPORT_TYPE_CONFIG: Record<string, { label: string; icon: React.ReactNode; badgeClass: string }> = {
   blood_panel: { label: 'Blood Panel', icon: <Droplets className="w-4 h-4" />, badgeClass: 'bg-red-500/10 text-red-600 border-red-500/20' },
@@ -168,8 +168,8 @@ export default function MyBiology() {
           { label: statusConfig.label, variant: statusConfig.variant },
         ],
         timestamp: report.report_date 
-          ? format(new Date(report.report_date), 'MMM dd, yyyy')
-          : format(new Date(report.created_at), 'MMM dd, yyyy'),
+          ? formatDate(new Date(report.report_date), 'MMM dd, yyyy')
+          : formatDate(new Date(report.created_at), 'MMM dd, yyyy'),
         onClick: () => {
           if (report.file_path) {
             handleViewReport(report.file_path);

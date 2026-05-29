@@ -11,7 +11,6 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { CalendarIcon, Upload as UploadIcon, ChevronDown, ChevronUp, Mic, Video, Users, Clock, X, Loader2 } from "lucide-react";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -19,6 +18,7 @@ import { useI18nNotify } from "@/hooks/useI18nNotify";
 import { applyReplacements } from "@/lib/i18n-helpers";
 import { useMyRoom, useCreateSession } from "@/hooks/useMyRoom";
 
+import { formatDate } from '@/lib/locale-format';
 interface GoLivePopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -141,7 +141,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   const [autoGenerateImage, setAutoGenerateImage] = useState(false);
   const [isGeneratingImage, setIsGeneratingImage] = useState(false);
 
-  const isScheduled = !!scheduleDate && !!scheduleTime && new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}`) > new Date();
+  const isScheduled = !!scheduleDate && !!scheduleTime && new Date(`${formatDate(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}`) > new Date();
 
   const generateTimeOptions = () => {
     const times: string[] = [];
@@ -269,7 +269,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       
       // Create session on permanent room via gateway (CLEAN - Gateway API only)
       const scheduledIso = (scheduleDate && scheduleTime)
-        ? new Date(`${format(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}:00`).toISOString()
+        ? new Date(`${formatDate(scheduleDate, 'yyyy-MM-dd')}T${scheduleTime}:00`).toISOString()
         : undefined;
 
       const sessionRequest = {
@@ -367,7 +367,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       
       // Show appropriate toast & navigate
       if (isScheduled) {
-        const dateStr = format(scheduleDate!, "PPP");
+        const dateStr = formatDate(scheduleDate!, "PPP");
         notify.success(
           'liveRooms.goLivePopup.success.streamScheduledTitle', 
           'liveRooms.goLivePopup.success.streamScheduledDesc',
@@ -649,9 +649,9 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                       >
                         <Clock className="mr-2 h-4 w-4" />
                         {scheduleDate && scheduleTime 
-                          ? applyReplacements(t('scheduledAt', '{date} at {time}'), { date: format(scheduleDate, "PPP"), time: scheduleTime })
+                          ? applyReplacements(t('scheduledAt', '{date} at {time}'), { date: formatDate(scheduleDate, "PPP"), time: scheduleTime })
                           : scheduleDate 
-                            ? applyReplacements(t('dateNeedsTime', '{date} – select time'), { date: format(scheduleDate, "PPP") })
+                            ? applyReplacements(t('dateNeedsTime', '{date} – select time'), { date: formatDate(scheduleDate, "PPP") })
                             : t('goLiveNow', 'Go Live Now')
                         }
                       </Button>

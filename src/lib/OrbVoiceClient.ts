@@ -13,6 +13,8 @@
 import { CrossPlatformAudioRecorder, IS_IOS_SAFARI } from './ios-audio-polyfill';
 import { getOrCreateUnlockedAudioContext } from './iosAudioUnlock';
 import { pinIOSLoudspeakerRoute, kickIOSLoudspeakerRoute, releaseIOSLoudspeakerRoute } from './iosAudioRoutePin';
+// VTID-02919 (B0d.4-frontend): ORB wake reliability timeline.
+import { postWakeTimelineEvent, takePendingWakeClickedAt } from './wakeTimelineClient';
 
 export type OrbVoiceClientCallbacks = {
   onTranscript?: (text: string) => void;
@@ -50,9 +52,24 @@ export class OrbVoiceClient {
   private eventSource: EventSource | null = null;
   private audioContext: AudioContext | null = null;
   private nextStartTime: number = 0;
+  private activePlaybackSources: Set<AudioBufferSourceNode> = new Set();
   private recorder: CrossPlatformAudioRecorder | null = null;
   private volumeAnimationFrame: number | null = null;
   private turnCompleteTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  // VTID-02919 (B0d.4-frontend): first-audio-out emits exactly once per
+  // session. The wake-clicked timestamp is captured in module state by
+  // captureWakeClickedAt() inside the user-gesture handler and replayed
+  // here via takePendingWakeClickedAt() after session-start returns.
+  private firstAudioEmitted: boolean = false;
+  // meta.wake_brief from /live/session/start. Stored for downstream
+  // consumers (e.g. a future slice that speaks the backend-provided line).
+  private wakeBrief: {
+    decision_id: string;
+    selected_kind: string;
+    user_facing_line: string;
+    suppression_reason: string | null;
+  } | null = null;
 
   // Silence detection for auto end-turn
   private silenceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -127,6 +144,15 @@ export class OrbVoiceClient {
   private config: OrbVoiceClientConfig;
   private callbacks: OrbVoiceClientCallbacks;
 
+  /**
+   * VTID-02919 (B0d.4-frontend): expose the wake-brief decision the
+   * gateway returned at session-start. Future slices consume this to
+   * speak the backend-owned greeting line; B0d.4 only stores it.
+   */
+  public getWakeBrief() {
+    return this.wakeBrief;
+  }
+
   constructor(
     config: OrbVoiceClientConfig,
     callbacks: OrbVoiceClientCallbacks = {}
@@ -193,7 +219,54 @@ export class OrbVoiceClient {
       if (!data.ok) throw new Error(data.error || 'Failed to start session');
 
       this.sessionId = data.session_id;
-      
+
+      // VTID-02919 (B0d.4-frontend): capture the wake-brief decision the
+      // gateway returned. Stored for downstream consumers; B0d.4 does not
+      // yet speak it (measure-before-optimize discipline).
+      if (data.meta && data.meta.wake_brief && typeof data.meta.wake_brief === 'object') {
+        this.wakeBrief = data.meta.wake_brief;
+      }
+
+      // VTID-03107: voice quota snapshot from session start. If the gateway
+      // started the session in `standard` tier (quota exhausted with degrade
+      // behavior), fire the same window event OrbDegradeBanner / OrbTierBadge
+      // listen for. They already know how to render the once-per-day banner
+      // and persist the tier flag.
+      try {
+        const vq = (data.meta as Record<string, unknown> | undefined)?.voice_quota as
+          | { tier?: string; reason?: string; paywall_action?: string; deferred_for_vulnerability?: boolean }
+          | undefined;
+        if (vq && vq.tier === 'standard' && !vq.deferred_for_vulnerability) {
+          window.dispatchEvent(
+            new CustomEvent('vitana:orb-tier-downgraded', {
+              detail: {
+                new_tier: 'standard',
+                reason: vq.reason || (vq.paywall_action === 'degrade' ? 'daily_quota' : 'plan_exhausted'),
+                feature: 'voice_live_minutes',
+              },
+            })
+          );
+          console.log('[VTID-03107] Session started in Standard tier — dispatched tier-downgrade event');
+        }
+      } catch (err) {
+        console.warn('[VTID-03107] Failed to evaluate voice_quota meta:', err);
+      }
+
+      // VTID-02919: flush the pending wake_clicked event captured at
+      // the user-gesture moment. The POST happens after session-start
+      // returns (which is when we have a sessionId), but the `at`
+      // timestamp is the original tap moment — time_to_first_audio_ms
+      // stays accurate.
+      const pendingAt = takePendingWakeClickedAt();
+      if (pendingAt && this.sessionId) {
+        postWakeTimelineEvent({
+          gatewayUrl: this.GATEWAY_URL,
+          sessionId: this.sessionId,
+          name: 'wake_clicked',
+          at: pendingAt,
+        });
+      }
+
       // Initialize diagnostics
       this.diagnostics = {
         sessionId: this.sessionId!,
@@ -405,6 +478,25 @@ export class OrbVoiceClient {
               }
             } catch (err) {
               console.warn('[VTID-01954] Failed to dispatch identity redirect:', err);
+            }
+            break;
+          case 'orb.tier.downgraded':
+            // VTID-03107: Backend hit the user's Live AI voice quota mid-session
+            // and is now routing subsequent turns through the standard fallback
+            // path (Cartesia TTS + Gemini Flash). Surface a single banner to
+            // the user — DO NOT confuse this with a connection error.
+            // This is a dedicated SSE event, NEVER a flag inside a tool-response
+            // payload (Gemini reads `degraded:true` as failure).
+            try {
+              const detail = {
+                new_tier: typeof msg.new_tier === 'string' ? msg.new_tier : 'standard',
+                reason: typeof msg.reason === 'string' ? msg.reason : 'daily_quota',
+                feature: typeof msg.feature === 'string' ? msg.feature : 'voice_live_minutes',
+              };
+              window.dispatchEvent(new CustomEvent('vitana:orb-tier-downgraded', { detail }));
+              console.log('[VTID-03107] Voice tier downgraded:', detail);
+            } catch (err) {
+              console.warn('[VTID-03107] Failed to dispatch tier-downgrade event:', err);
             }
             break;
           default:
@@ -695,17 +787,8 @@ export class OrbVoiceClient {
       const source = this.audioContext.createBufferSource();
       source.buffer = buffer;
       source.connect(this.audioContext.destination);
-
-      // Schedule to start exactly when previous ends
-      const now = this.audioContext.currentTime;
-      if (this.nextStartTime < now) {
-        this.nextStartTime = now;
-      }
-      source.start(this.nextStartTime);
-      this.nextStartTime += buffer.duration;
-
-      this.callbacks.onSpeakingChange?.(true);
       source.onended = () => {
+        this.activePlaybackSources.delete(source);
         if (this.audioContext && this.audioContext.currentTime >= this.nextStartTime - 0.05) {
           this.callbacks.onSpeakingChange?.(false);
           this.clearSpeakingResetGuard();
@@ -713,6 +796,30 @@ export class OrbVoiceClient {
           this.scheduleTurnCompleteFallback();
         }
       };
+
+      // Schedule to start exactly when previous ends
+      const now = this.audioContext.currentTime;
+      if (this.nextStartTime < now) {
+        this.nextStartTime = now;
+      }
+      source.start(this.nextStartTime);
+      this.activePlaybackSources.add(source);
+      this.nextStartTime += buffer.duration;
+
+      // VTID-02919 (B0d.4-frontend): first audio frame of this session
+      // reached the speakers. Emit exactly once per session — the
+      // aggregator uses this together with wake_clicked to compute
+      // time_to_first_audio_ms.
+      if (!this.firstAudioEmitted && this.sessionId) {
+        this.firstAudioEmitted = true;
+        postWakeTimelineEvent({
+          gatewayUrl: this.GATEWAY_URL,
+          sessionId: this.sessionId,
+          name: 'first_audio_output',
+        });
+      }
+
+      this.callbacks.onSpeakingChange?.(true);
 
       // Watchdog: if onended never fires (iOS edge case where the BufferSource
       // is queued against a context that suspends mid-playback or rejects
@@ -1133,13 +1240,52 @@ export class OrbVoiceClient {
     });
   }
 
+  private closeEventSource(): void {
+    if (!this.eventSource) return;
+
+    const source = this.eventSource;
+    this.eventSource = null;
+
+    try { source.onopen = null; } catch { /* noop */ }
+    try { source.onmessage = null; } catch { /* noop */ }
+    try { source.onerror = null; } catch { /* noop */ }
+    try { source.close(); } catch { /* noop */ }
+  }
+
+  private stopActivePlayback(): void {
+    if (this.activePlaybackSources.size === 0) return;
+
+    for (const source of Array.from(this.activePlaybackSources)) {
+      try { source.onended = null; } catch { /* noop */ }
+      try { source.stop(); } catch { /* already stopped or not started */ }
+      try { source.disconnect(); } catch { /* noop */ }
+    }
+
+    this.activePlaybackSources.clear();
+  }
+
+  private notifyGatewayStop(sessionId: string): void {
+    void fetch(`${this.GATEWAY_URL}/api/v1/orb/live/session/stop`, {
+      method: 'POST',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify({ session_id: sessionId }),
+      keepalive: true,
+    }).catch((e) => {
+      console.warn('[OrbVoiceClient] Error stopping session', e);
+    });
+  }
+
   async stop(): Promise<void> {
     console.log('[OrbVoiceClient] Stopping...');
     
     // Log final diagnostics
     this.logDiagnostics('session_stop');
 
+    const stoppedSessionId = this.sessionId;
+    this.sessionId = null;
     this._isListening = false;
+    this.closeEventSource();
+    this.stopActivePlayback();
 
     // Reset reconnect bookkeeping and stop the stream watchdog.
     this.stopStreamWatchdog();
@@ -1185,23 +1331,11 @@ export class OrbVoiceClient {
       this.recorder = null;
     }
 
-    // Stop session with auth
-    if (this.sessionId) {
-      try {
-        await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/session/stop`, {
-          method: 'POST',
-          headers: this.getAuthHeaders(),
-          body: JSON.stringify({ session_id: this.sessionId })
-        });
-      } catch (e) {
-        console.warn('[OrbVoiceClient] Error stopping session', e);
-      }
-    }
-
-    // Close SSE
-    if (this.eventSource) {
-      this.eventSource.close();
-      this.eventSource = null;
+    // Tell the gateway to tear down its side, but do not block local
+    // shutdown on network latency. The X button means the browser stops
+    // listening and speaking immediately.
+    if (stoppedSessionId) {
+      this.notifyGatewayStop(stoppedSessionId);
     }
 
     // Drop our reference to the shared output AudioContext but DO NOT close
@@ -1215,7 +1349,6 @@ export class OrbVoiceClient {
     }
 
     // Reset audio state
-    this.sessionId = null;
     this.nextStartTime = 0;
     this.diagnostics = null;
 

@@ -1,6 +1,8 @@
 import { supabase } from "@/integrations/supabase/client";
 
-export const COMMUNITY_GATEWAY = "https://gateway-86804897789.us-central1.run.app";
+export const COMMUNITY_GATEWAY = (
+  import.meta.env.VITE_GATEWAY_BASE || "https://gateway-q74ibpv6ia-uc.a.run.app"
+).replace(/\/+$/, "");
 
 export async function communityFetch(path: string, options?: RequestInit): Promise<Response> {
   const { data: { session } } = await supabase.auth.getSession();

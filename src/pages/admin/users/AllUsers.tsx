@@ -22,6 +22,7 @@ import { useAdminUsers } from "@/hooks/useAdminUsers";
 import { useSendInvitation, useRepairProvisioning } from "@/hooks/useSignupFunnel";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 const ROLE_OPTIONS = [
   { value: "all", label: "All Roles" },
   { value: "community", label: "Community" },
@@ -55,7 +56,7 @@ function getInitials(name?: string | null, email?: string): string {
 function formatDate(dateStr?: string | null): string {
   if (!dateStr) return "N/A";
   try {
-    return new Date(dateStr).toLocaleDateString("en-US", {
+    return fmtDate(new Date(dateStr), {
       year: "numeric",
       month: "short",
       day: "numeric",

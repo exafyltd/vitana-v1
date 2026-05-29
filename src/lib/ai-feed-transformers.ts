@@ -12,6 +12,7 @@ import hydrationTrackingImg from '@/assets/ai-feed/hydration-tracking.jpg';
 import eveningWinddownImg from '@/assets/ai-feed/evening-winddown.jpg';
 import { notify } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface ActivityItem {
   id: string;
   type: 'action' | 'routine' | 'suggestion';
@@ -148,7 +149,7 @@ export function transformActivityToVisualCard(activity: ActivityItem): StandardH
       { icon: createElement(Award, { className: 'w-3 h-3' }), text: `${secondaryInfo.streak} day streak` },
       { icon: createElement(TrendingUp, { className: 'w-3 h-3' }), text: `+${secondaryInfo.credits} pts earned` },
     ],
-    timestamp: new Date(activity.timestamp).toLocaleDateString(undefined, {
+    timestamp: fmtDate(new Date(activity.timestamp), {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',

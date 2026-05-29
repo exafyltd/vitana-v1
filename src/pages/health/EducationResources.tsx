@@ -55,12 +55,12 @@ export default function EducationResources() {
             <SplitBarContent value="articles" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {[
-                  { title: "Understanding Your Vitana Index", category: "Health Metrics", readTime: "5 min", rating: 4.8 },
-                  { title: "Nutrition Science Explained", category: "Nutrition", readTime: "8 min", rating: 4.9 },
-                  { title: "Sleep Quality & Recovery", category: "Sleep Health", readTime: "6 min", rating: 4.7 },
-                  { title: "Exercise Physiology Basics", category: "Fitness", readTime: "10 min", rating: 4.6 },
-                  { title: "Mental Health & Wellness", category: "Psychology", readTime: "7 min", rating: 4.8 },
-                  { title: "Preventive Care Guidelines", category: "Prevention", readTime: "12 min", rating: 4.9 }
+                  { title: t('screens.health.eduArticle_vitanaIndex_title'), category: t('screens.health.eduCategory_healthMetrics'), readTime: t('screens.health.eduReadTime', { mins: '5' }), rating: 4.8 },
+                  { title: t('screens.health.eduArticle_nutritionScience_title'), category: t('screens.health.pillar_nutrition_title'), readTime: t('screens.health.eduReadTime', { mins: '8' }), rating: 4.9 },
+                  { title: t('screens.health.eduArticle_sleepRecovery_title'), category: t('screens.health.eduCategory_sleepHealth'), readTime: t('screens.health.eduReadTime', { mins: '6' }), rating: 4.7 },
+                  { title: t('screens.health.eduArticle_exercisePhysiology_title'), category: t('screens.health.eduCategory_fitness'), readTime: t('screens.health.eduReadTime', { mins: '10' }), rating: 4.6 },
+                  { title: t('screens.health.eduArticle_mentalHealth_title'), category: t('screens.health.eduCategory_psychology'), readTime: t('screens.health.eduReadTime', { mins: '7' }), rating: 4.8 },
+                  { title: t('screens.health.eduArticle_preventiveCare_title'), category: t('screens.health.eduCategory_prevention'), readTime: t('screens.health.eduReadTime', { mins: '12' }), rating: 4.9 }
                 ].map((article, index) => (
                   <Card key={index} className="cursor-pointer hover:shadow-lg transition-all duration-200 bg-white/80 backdrop-blur-sm border-white/20">
                     <CardHeader>

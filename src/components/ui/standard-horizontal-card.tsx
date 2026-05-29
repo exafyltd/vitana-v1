@@ -8,6 +8,7 @@ import { horizontalCardAnalytics } from '@/lib/horizontal-cards-analytics';
 import { useRTL } from '@/components/RTLProvider';
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate, fmtTime } from '@/lib/locale-format';
 export interface StandardHorizontalCardProps {
   id: string;
   screenId: string;
@@ -211,8 +212,8 @@ export const StandardHorizontalCard = React.forwardRef<HTMLDivElement, StandardH
       if (typeof timestamp === 'string') return timestamp;
       
       // Format with date and 24-hour time
-      const dateStr = timestamp.toLocaleDateString();
-      const timeStr = timestamp.toLocaleTimeString('en-US', { 
+      const dateStr = fmtDate(timestamp);
+      const timeStr = fmtTime(timestamp, { 
         hour: '2-digit', 
         minute: '2-digit',
         hour12: false 

@@ -5,7 +5,13 @@
  */
 import { supabase } from '@/integrations/supabase/client';
 import { requestFCMToken, onForegroundMessage } from './firebase';
-import { isAppilix, getNativeFcmToken, showNativeNotification, registerAppilixIdentity } from '@/lib/appilix';
+import {
+  isAppilix,
+  getNativeFcmToken,
+  requestNativeFcmTokenFromBridge,
+  showNativeNotification,
+  registerAppilixIdentity,
+} from '@/lib/appilix';
 
 export interface PushNotificationPayload {
   title: string;
@@ -70,10 +76,26 @@ class PushNotificationManager {
       this.attachAppilixTokenListener();
 
       if (isAppilix()) {
-        console.log('[Push] Appilix detected — checking native token once, then proceeding to web FCM');
-        const nativeToken = getNativeFcmToken();
+        // 1. Check if Appilix already injected the token (URL param or
+        //    pre-mount custom event).
+        let nativeToken = getNativeFcmToken();
+
+        // 2. If not, actively request it via Appilix's JS bridge (per
+        //    Appilix support: appilix.postMessage({type:"firebase_token"})
+        //    + appilix.onmessage callback). This is the documented path for
+        //    bypassing the user_identity targeting layer — once we have the
+        //    native FCM token we can deliver via Firebase Admin SDK directly.
+        if (!nativeToken) {
+          console.log('[Push] Appilix detected — requesting native FCM token via JS bridge');
+          nativeToken = await requestNativeFcmTokenFromBridge();
+          if (nativeToken) {
+            console.log('[Push] ✅ Native Appilix FCM token received via bridge');
+          }
+        } else {
+          console.log('[Push] ✅ Native Appilix FCM token already present');
+        }
+
         if (nativeToken) {
-          console.log('[Push] ✅ Native Appilix FCM token found, using it');
           token = nativeToken;
         }
         // Register device metadata in background (non-blocking)
@@ -314,6 +336,21 @@ class PushNotificationManager {
           if (user?.id) {
             registerAppilixIdentity(user.id);
           }
+
+          // If we still don't have a native FCM token, retry the bridge.
+          // Some Appilix wrapper builds don't respond to the firebase_token
+          // request on the very first attempt after install — a later retry
+          // (e.g. after the native Firebase SDK has finished initializing)
+          // typically succeeds.
+          if (!this.fcmToken) {
+            const nativeToken = await requestNativeFcmTokenFromBridge();
+            if (nativeToken) {
+              console.log('[Push] ✅ Native Appilix FCM token captured on retry');
+              this.fcmToken = nativeToken;
+              await this.registerTokenWithBackend(nativeToken);
+              return;
+            }
+          }
         }
 
         const newToken = await requestFCMToken(this.registration || undefined);
@@ -451,6 +488,6 @@ export async function notifyNewMessage(
     title,
     body,
     tag: `message-${threadId}`,
-    data: { threadId, type: 'new_message', url: `/inbox?thread=${threadId}` },
+    data: { threadId, type: 'new_message', url: `/inbox/t/${threadId}` },
   });
 }

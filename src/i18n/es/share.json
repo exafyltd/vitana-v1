@@ -1,0 +1,12 @@
+{
+  "share": {
+    "shareProfile": "Compartir perfil",
+    "linkCopied": "¡Enlace copiado!",
+    "copyProfileLink": "Copiar enlace del perfil",
+    "showQRCode": "Mostrar código QR",
+    "downloadQR": "Descargar código QR",
+    "shareToSocial": "Compartir en redes",
+    "alsoShareTo": "Compartir también en",
+    "viewPublicProfile": "Ver perfil público"
+  }
+}

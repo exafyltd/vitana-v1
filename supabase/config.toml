@@ -177,6 +177,9 @@ verify_jwt = true
 [functions.send-welcome-discount]
 verify_jwt = false
 
+[functions.send-test-user-confirmation]
+verify_jwt = false
+
 [functions.api-event-by-slug]
 verify_jwt = false
 

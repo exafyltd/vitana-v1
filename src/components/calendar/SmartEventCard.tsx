@@ -1,5 +1,4 @@
 import React from "react";
-import { format } from "date-fns";
 import { Clock, MapPin, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +6,9 @@ import { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils";
 import { isAllDayEvent, getSmartBadge, getEventAction, EventActionType } from "./calendarSmartUtils";
+import { EventPillarDot } from "./EventPillarDot";
 
+import { formatDate } from '@/lib/locale-format';
 interface SmartEventCardProps {
   event: CalendarEvent;
   onEventClick: (event: CalendarEvent) => void;
@@ -31,10 +32,10 @@ export function SmartEventCard({ event, onEventClick, onAction, showDate = false
     const start = new Date(event.start_time);
     const end = event.end_time ? new Date(event.end_time) : null;
     const timeStr = end
-      ? `${format(start, 'HH:mm')}–${format(end, 'HH:mm')}`
-      : format(start, 'HH:mm');
+      ? `${formatDate(start, 'HH:mm')}–${formatDate(end, 'HH:mm')}`
+      : formatDate(start, 'HH:mm');
     if (showDate) {
-      return `${format(start, 'EEE, MMM d')} ${timeStr}`;
+      return `${formatDate(start, 'EEE, MMM d')} ${timeStr}`;
     }
     return timeStr;
   };
@@ -52,7 +53,10 @@ export function SmartEventCard({ event, onEventClick, onAction, showDate = false
           {allDay ? null : <Clock className="w-3 h-3 text-muted-foreground shrink-0" />}
           <span className="text-xs text-muted-foreground">{formatTime()}</span>
         </div>
-        <h4 className="text-sm font-medium truncate">{event.title}</h4>
+        <h4 className="text-sm font-medium truncate flex items-center gap-1.5">
+          <EventPillarDot event={event} />
+          <span className="truncate">{event.title}</span>
+        </h4>
         {event.location && (
           <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
             <MapPin className="w-3 h-3 shrink-0" />

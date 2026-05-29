@@ -345,11 +345,11 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
           <p className="text-xs text-muted-foreground">
             {currentCloudVoices.length > 0
               ? preferences.stt_language === 'sr-RS'
-                ? 'Google Speech API provides high-quality speech synthesis'
-                : 'Gemini Chirp 3 HD voices deliver premium, natural-sounding speech with emotional resonance'
+                ? t('screens.assistant.voiceProviderHint_googleSpeech')
+                : t('screens.assistant.voiceProviderHint_geminiChirp')
               : filteredVoices.length === 0
-              ? `No voices available for ${baseLang(preferences.stt_language).toUpperCase()}. Install a voice in your OS/browser settings.`
-              : 'Using browser-based voices'
+              ? t('screens.assistant.voiceProviderHint_noVoicesAvailable', { lang: baseLang(preferences.stt_language).toUpperCase() })
+              : t('screens.assistant.voiceProviderHint_browserVoices')
             }
           </p>
         </div>

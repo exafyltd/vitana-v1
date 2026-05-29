@@ -1,25 +1,31 @@
 import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
-import { t } from '@/lib/i18n-toast';
+import { LegalLocaleToggle } from "@/components/LegalLocaleToggle";
+import { useScopedT, type LegalLang } from "@/lib/use-scoped-t";
 
 const PrivacyPolicy = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const urlLang = searchParams.get("lang");
+  const lang: LegalLang | null =
+    urlLang === "de" || urlLang === "en" ? urlLang : null;
+  const t = useScopedT(lang);
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO 
+      <SEO
         title={t('screens.legal.privacyPolicyMaxinaMobileApplication')}
         description="Privacy Policy for the Maxina Mobile Application by Exafy LTD. Learn how we collect, use, and protect your personal data."
         canonical="https://vitanaland.com/privacy"
       />
-      
+
       {/* Header */}
       <header className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
         <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             size="icon"
             onClick={() => navigate(-1)}
             aria-label={t('screens.legal.goBack')}
@@ -27,6 +33,9 @@ const PrivacyPolicy = () => {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-lg font-semibold">{t('screens.legal.privacyPolicy')}</h1>
+          <div className="ml-auto">
+            <LegalLocaleToggle />
+          </div>
         </div>
       </header>
 
@@ -38,7 +47,7 @@ const PrivacyPolicy = () => {
             {t('screens.legal.privacyPolicyForMaxinaMobileApplication')}
           </h1>
           <p className="text-muted-foreground mb-8">
-            <strong>{t('screens.legal.effectiveDate')}</strong>{t('screens.legal.text6thApril2026')}
+            <strong>{t('screens.legal.effectiveDate')}</strong>{' '}{t('screens.legal.text6thApril2026')}
           </p>
 
           <p className="text-foreground/90 leading-relaxed">{t('screens.legal.thankYouForChoosingUseMaxina')}
@@ -115,6 +124,11 @@ const PrivacyPolicy = () => {
           </p>
           <ul className="list-disc pl-6 space-y-2 text-foreground/90">
             <li><strong>{t('screens.legal.provideMaintainService')}</strong> {t('screens.legal.weUseYourDataEnableCore')}</li>
+            <li><strong>{t('screens.legal.improveApp')}</strong> {t('screens.legal.improveAppDescription')}</li>
+            <li><strong>{t('screens.legal.communicateWithYou')}</strong> {t('screens.legal.communicateWithYouDescription')}</li>
+            <li><strong>{t('screens.legal.personalizeUserExperience')}</strong> {t('screens.legal.personalizeUserExperienceDescription')}</li>
+            <li><strong>{t('screens.legal.provideAiFeatures')}</strong> {t('screens.legal.provideAiFeaturesDescription')}</li>
+            <li><strong>{t('screens.legal.complyLegalObligations')}</strong> {t('screens.legal.complyLegalObligationsDescription')}</li>
           </ul>
 
           {/* Section 5 */}
@@ -147,7 +161,13 @@ const PrivacyPolicy = () => {
           </p>
           <ul className="list-disc pl-6 space-y-2 text-foreground/90">
             <li>{t('screens.legal.durationYourRelationshipWithUsE')}</li>
+            <li>{t('screens.legal.legalRetentionObligations')}</li>
+            <li>{t('screens.legal.securityFraudPreventionReasons')}</li>
+            <li>{t('screens.legal.legalClaimsDefense')}</li>
           </ul>
+          <p className="text-foreground/90 leading-relaxed mt-4">
+            {t('screens.legal.retentionAnonymizeDelete')}
+          </p>
 
           {/* Section 8 */}
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
@@ -215,7 +235,7 @@ const PrivacyPolicy = () => {
           {/* Footer */}
           <div className="mt-12 pt-8 border-t border-border">
             <p className="text-sm text-muted-foreground">
-              <strong>{t('screens.legal.lastUpdated')}</strong>{t('screens.legal.text6thApril2026')}
+              <strong>{t('screens.legal.lastUpdated')}</strong>{' '}{t('screens.legal.text6thApril2026')}
             </p>
             <p className="text-sm text-muted-foreground mt-4">{t('screens.legal.byUsingMaxinaMobileApplicationYou')}
             </p>

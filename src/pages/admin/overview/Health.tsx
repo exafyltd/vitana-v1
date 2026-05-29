@@ -10,6 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useOverviewSummary } from "@/hooks/useAdminOverview";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 const HEALTH_CHECKS = [
   { key: "members", label: "Members", description: "User provisioning and tenant membership" },
   { key: "assistant", label: "Assistant", description: "AI personality config and voice sessions" },
@@ -57,7 +58,7 @@ export default function OverviewHealth() {
         {kpi && (
           <Card>
             <CardContent className="p-4">
-              <div className="text-xs text-muted-foreground">{t('screens.admin.lastCheckedValue0Value1', { value0: summaryQuery.data?.generated_at ? new Date(summaryQuery.data.generated_at).toLocaleString() : "—", value1: summaryQuery.data?.cached && " (cached)" })}</div>
+              <div className="text-xs text-muted-foreground">{t('screens.admin.lastCheckedValue0Value1', { value0: summaryQuery.data?.generated_at ? fmtDateTime(new Date(summaryQuery.data.generated_at)) : "—", value1: summaryQuery.data?.cached && " (cached)" })}</div>
             </CardContent>
           </Card>
         )}

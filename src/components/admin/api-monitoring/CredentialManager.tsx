@@ -19,6 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface Credential {
   id: string;
   name: string;
@@ -244,7 +245,7 @@ export default function CredentialManager({ integrationId, onCredentialAdded }: 
                       </Badge>
                     </div>
                     {cred.last_used && (
-                      <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.lastUsedValue0', { value0: new Date(cred.last_used).toLocaleDateString() })}</p>
+                      <p className="text-xs text-muted-foreground mt-1">{t('screens.admin.lastUsedValue0', { value0: fmtDate(new Date(cred.last_used)) })}</p>
                     )}
                   </div>
                 </div>

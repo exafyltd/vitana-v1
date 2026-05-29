@@ -1,0 +1,108 @@
+{
+  "inbox": {
+    "title": "Bandeja de entrada",
+    "subtitle": "¡Mantente conectado con tu comunidad!",
+    "description": "Tus conversaciones, actualizaciones y notificaciones",
+    "desktopTitle": "Mensajes",
+    "desktopDescription": "Conéctate con tu comunidad y red",
+    "tabs": {
+      "all": "Todo",
+      "groups": "Grupos",
+      "direct": "Directo",
+      "contacts": "Contactos",
+      "notifications": "Notificaciones",
+      "archived": "Archivado"
+    },
+    "contextTabs": {
+      "community": "Comunidad",
+      "network": "Red"
+    },
+    "actions": {
+      "new": "Nuevo",
+      "newMessage": "Nuevo mensaje",
+      "createGroup": "Crear grupo"
+    },
+    "composer": {
+      "placeholder": "Escribe tu mensaje...",
+      "send": "Enviar",
+      "attachments": "Archivos adjuntos",
+      "recipients": "Para:",
+      "add": "Agregar"
+    },
+    "states": {
+      "empty": "Aún no hay mensajes",
+      "loading": "Cargando mensajes...",
+      "error": "Error al cargar mensajes"
+    },
+    "newConversation": {
+      "title": "Iniciar nueva conversación",
+      "titleGroup": "Crear chat grupal",
+      "groupName": "Nombre del grupo",
+      "groupNamePlaceholder": "Ingresa el nombre del grupo...",
+      "members": "Miembros",
+      "recipient": "Destinatario",
+      "addMore": "Agregar más personas",
+      "searchPeople": "Buscar personas",
+      "searchPlaceholder": "Ingresa nombre o correo para buscar...",
+      "searchMinChars": "Escribe al menos 2 caracteres para buscar",
+      "searchResults": "Resultados de búsqueda",
+      "noResults": "No se encontraron usuarios. Prueba con otro término.",
+      "add": "Agregar",
+      "added": "Agregado",
+      "cancel": "Cancelar",
+      "startChat": "Iniciar chat",
+      "createGroup": "Crear grupo",
+      "creating": "Creando..."
+    },
+    "createGroup": {
+      "title": "Crear grupo",
+      "avatarSoon": "La carga de avatar estará disponible pronto.",
+      "groupName": "Nombre del grupo",
+      "addMembers": "Agregar miembros",
+      "searchPlaceholder": "Buscar usuarios...",
+      "groupNameRequired": "Nombre del grupo requerido",
+      "groupNameRequiredDesc": "Por favor, ingresa un nombre para tu grupo.",
+      "addMembersRequired": "Agregar miembros",
+      "addMembersRequiredDesc": "Por favor, agrega al menos un miembro al grupo.",
+      "groupExists": "El grupo ya existe",
+      "groupExistsDesc": "Se creó un grupo con estos miembros recientemente.",
+      "created": "Grupo creado",
+      "createdDesc": "\"{name}\" se ha creado correctamente.",
+      "failed": "Error al crear el grupo",
+      "failedDesc": "Por favor, inténtalo de nuevo."
+    },
+    "toast": {
+      "success": "Éxito",
+      "error": "Error",
+      "conversationStarted": "¡Conversación iniciada!",
+      "authRequired": "Autenticación requerida",
+      "noTenantContext": "No se pudo cargar tu información.",
+      "searchFailed": "Error en la búsqueda",
+      "accessDenied": "Acceso denegado",
+      "communityOnly": "Solo los usuarios de la comunidad pueden crear conversaciones globales",
+      "pleaseLogin": "Inicia sesión para iniciar conversaciones",
+      "groupRecipientsRequired": "Se requieren nombre del grupo y destinatarios",
+      "singleRecipientRequired": "Selecciona exactamente un destinatario para mensaje directo",
+      "groupCreated": "¡Grupo \"{name}\" creado correctamente!",
+      "groupFailed": "Error al crear el grupo"
+    },
+    "createGroupAction": "Crear nuevo grupo",
+    "newConversationAction": "Nueva conversación",
+    "noGroups": "Aún no hay grupos",
+    "noGroupsDesc": "Los grupos te ayudan a colaborar con varias personas a la vez.",
+    "createFirstGroup": "Crear primer grupo",
+    "loading": "Cargando mensajes...",
+    "searchConversations": "Buscar conversaciones...",
+    "searchPlaceholder": "Buscar...",
+    "noMessages": "Aún no hay mensajes",
+    "noMessagesDesc": "Inicia una conversación para empezar.",
+    "startConversation": "Iniciar conversación",
+    "emptyState": {
+      "title": "Tu bandeja de entrada está tranquila por ahora",
+      "globalDescription": "Inicia una conversación o únete a una comunidad para conectar con otros.",
+      "tenantDescription": "Conéctate con colegas y miembros del equipo en tu red profesional.",
+      "startConversation": "Iniciar una conversación",
+      "discoverPeople": "Descubrir personas"
+    }
+  }
+}

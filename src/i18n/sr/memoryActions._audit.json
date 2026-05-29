@@ -1,0 +1,74 @@
+{
+  "verdicts": {
+    "memoryActions.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Too literal and slightly formal. 'Radnje' can sound like 'procedures'.",
+      "suggested": "Akcije za pamćenje",
+      "phase": "llm"
+    },
+    "memoryActions.items.recordVoiceDiary.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.recordVoiceDiary.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.addMemoryNote.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Literal translation, awkward phrasing. 'Beleška pamćenja' is less natural than 'beleška o pamćenju'.",
+      "suggested": "Dodaj belešku o pamćenju",
+      "phase": "llm"
+    },
+    "memoryActions.items.addMemoryNote.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.viewTimeline.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.viewTimeline.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.searchMemories.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.searchMemories.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.photoMemory.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.photoMemory.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.aiMemoryAnalysis.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.aiMemoryAnalysis.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:04:53.261Z"
+}

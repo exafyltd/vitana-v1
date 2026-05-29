@@ -26,6 +26,7 @@ import { settingsNavigation } from "@/config/navigation";
 import { ShieldCheck, AlertTriangle, Utensils, Pill, Baby, Wallet, Accessibility, Loader2 } from "lucide-react";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDate, fmtDateTime, fmtNumber } from '@/lib/locale-format';
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
 interface Limitations {
@@ -263,8 +264,8 @@ export default function Limitations() {
               <div>
                 <div className="text-sm text-muted-foreground">{t('screens.settings.currentlyFilteredFromYourFeed')}</div>
                 <div className="text-2xl font-semibold">
-                  {hiddenTotal.toLocaleString()}{" "}
-                  <span className="text-sm font-normal text-muted-foreground">{t('screens.settings.value0ActiveProducts', { value0: totalProducts.toLocaleString() })}
+                  {fmtNumber(hiddenTotal)}{" "}
+                  <span className="text-sm font-normal text-muted-foreground">{t('screens.settings.value0ActiveProducts', { value0: fmtDateTime(totalProducts) })}
                   </span>
                 </div>
               </div>
@@ -280,7 +281,7 @@ export default function Limitations() {
                 {t('screens.settings.allergies')}
                 <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.neverOverridable')}</span>
               </CardTitle>
-              <CardDescription>{t('screens.settings.weWillNeverRecommendProductsContaining', { value0: " ", value1: lastVerified.allergies ? new Date(lastVerified.allergies).toLocaleDateString() : "never" })}
+              <CardDescription>{t('screens.settings.weWillNeverRecommendProductsContaining', { value0: " ", value1: lastVerified.allergies ? fmtDate(new Date(lastVerified.allergies)) : "never" })}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -327,7 +328,7 @@ export default function Limitations() {
                 {t('screens.settings.currentMedications')}
                 <span className="text-xs font-normal text-muted-foreground">{t('screens.settings.interactionChecksApply')}</span>
               </CardTitle>
-              <CardDescription>{t('screens.settings.weUseThisAvoidRecommendingSupplements', { value0: " ", value1: lastVerified.current_medications ? new Date(lastVerified.current_medications).toLocaleDateString() : "never" })}
+              <CardDescription>{t('screens.settings.weUseThisAvoidRecommendingSupplements', { value0: " ", value1: lastVerified.current_medications ? fmtDate(new Date(lastVerified.current_medications)) : "never" })}
               </CardDescription>
             </CardHeader>
             <CardContent>

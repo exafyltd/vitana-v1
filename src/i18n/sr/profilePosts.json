@@ -1,0 +1,13 @@
+{
+  "profilePosts": {
+    "createPost": "Kreiraj objavu",
+    "placeholder": "Šta ti je na umu?",
+    "post": "Objavi",
+    "posted": "Objavljeno!",
+    "deleted": "Objava obrisana",
+    "emptyTitle": "Još nema objava",
+    "emptyDescription": "Podeli svoju prvu objavu sa zajednicom",
+    "deleteConfirm": "Obriši ovu objavu?",
+    "error": "Nešto je pošlo po zlu"
+  }
+}

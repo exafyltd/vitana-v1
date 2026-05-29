@@ -6,9 +6,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { TenantDetector } from "@/components/TenantDetector";
 import PresenceDebugPanel from "@/components/debug/PresenceDebugPanel";
 
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
+import { PaywallProvider } from "@/components/paywall/PaywallProvider"; // VTID-03107
 import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
 import { DevErrorBoundary } from "@/components/dev/DevErrorBoundary";
 import { GlobalErrorBoundary } from "@/components/GlobalErrorBoundary";
@@ -140,8 +141,8 @@ const Health = lazy(() => import("./pages/Health"));
 const Community = lazy(() => import("./pages/Community"));
 const AI = lazy(() => import("./pages/AI"));
 const Messages = lazy(() => import("./pages/Messages"));
-const Settings = lazy(() => import("./pages/Settings"));
 const MobileSettings = lazy(() => import("./pages/MobileSettings"));
+const MobileSubscriptions = lazy(() => import("./pages/MobileSubscriptions"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Search = lazy(() => import("./pages/Search"));
 const Cart = lazy(() => import("./pages/Cart"));
@@ -164,6 +165,7 @@ const BusinessOpportunities = lazy(() => import("./pages/BusinessOpportunities")
 const BusinessListings = lazy(() => import("./pages/BusinessListings"));
 const PublicEventLanding = lazy(() => import("./pages/PublicEventLanding"));
 const PublicCampaignLanding = lazy(() => import("./pages/PublicCampaignLanding"));
+const Apply = lazy(() => import("./pages/Apply"));
 const AutopilotDashboard = lazy(() => import("./pages/AutopilotDashboard"));
 const InviteFriends = lazy(() => import("./pages/InviteFriends"));
 const MobileDailyDiary = lazy(() => import("./pages/MobileDailyDiary"));
@@ -217,6 +219,7 @@ const Companion = lazy(() => import("./pages/ai/Companion"));
 // Messages sub-pages
 const Archived = lazy(() => import("./pages/messages/Archived"));
 const Inspiration = lazy(() => import("./pages/messages/Inspiration"));
+const GroupChat = lazy(() => import("./pages/messages/GroupChat"));
 
 // Settings sub-pages
 const Privacy = lazy(() => import("./pages/settings/Privacy"));
@@ -227,7 +230,6 @@ const ConnectedApps = lazy(() => import("./pages/settings/ConnectedApps"));
 const Billing = lazy(() => import("./pages/settings/Billing"));
 const Support = lazy(() => import("./pages/settings/Support"));
 const TenantRole = lazy(() => import("./pages/settings/TenantRole"));
-const SocialConnect = lazy(() => import("./pages/settings/SocialConnect"));
 
 // Wallet sub-pages
 const Balance = lazy(() => import("./pages/wallet/Balance"));
@@ -537,7 +539,20 @@ const AppHooksInitializer = () => {
 // Mobile/Desktop settings router
 function SettingsRouter() {
   const isMobile = useIsMobile();
-  return isMobile ? <MobileSettings /> : <Settings />;
+  return isMobile ? <MobileSettings /> : <Navigate to="/settings/notifications" replace />;
+}
+
+// Mobile-only storefront for plans; desktop users get the existing /wallet/subscriptions page.
+function ProfileSubscriptionsRouter() {
+  const isMobile = useIsMobile();
+  return isMobile ? <MobileSubscriptions /> : <Navigate to="/wallet/subscriptions" replace />;
+}
+
+// Redirect helper that preserves the original query string (used by OAuth
+// callbacks like /settings/connected-apps?connected=google → /connectors?connected=google).
+function RedirectPreservingSearch({ to }: { to: string }) {
+  const { search } = useLocation();
+  return <Navigate to={`${to}${search}`} replace />;
 }
 
 const App = () => {
@@ -586,6 +601,10 @@ const App = () => {
                             Renders only when profile.vitanaIdLocked === false
                             — auto-hides after the user confirms their pick. */}
                         <VitanaIdOnboardingCard />
+                  {/* VTID-03107: PaywallProvider listens for `vitana:paywall-shown` window events
+                      from billingApi.ts on HTTP 402 and renders a single global PaywallModal.
+                      Lives inside <BrowserRouter> so the modal's useNavigate works. */}
+                  <PaywallProvider>
                   <GlobalErrorBoundary>
                   <Suspense fallback={<RouteFallback />}>
                   <Routes>
@@ -626,6 +645,7 @@ const App = () => {
           <Route path="/e/:slug" element={<PublicEventLanding />} />
           <Route path="/pub/events/:id" element={<PublicEventLanding />} />
           <Route path="/pub/campaigns/:id" element={<PublicCampaignLanding />} />
+          <Route path="/apply" element={<Apply />} />
           
           {/* Portal Routes */}
           <Route path="/exafy-admin" element={<ExafyAdminPortal />} />
@@ -1013,6 +1033,32 @@ const App = () => {
               <Messages />
             </AuthGuard>
           } />
+          {/* BOOTSTRAP-NOTIF-MESSENGER-DIAG (follow-up):
+              Path-based chat deep-links. Query-string URLs like
+              /inbox?recipient=<uuid>&context=global fail to launch in
+              Appilix's Android in-app browser (silent failure pre-network,
+              no [NotifDiag] beacon ever fires), so the gateway now sends
+              /inbox/u/<userId> instead. /u/ and /t/ prefixes avoid
+              collisions with existing static subroutes (archived,
+              inspiration, reminder). Messages.tsx accepts both forms. */}
+          <Route path="/inbox/u/:recipientId" element={
+            <AuthGuard>
+              <Messages />
+            </AuthGuard>
+          } />
+          <Route path="/inbox/t/:threadId" element={
+            <AuthGuard>
+              <Messages />
+            </AuthGuard>
+          } />
+          {/* VTID-03089: group chat — deep-link from push notifications
+              (gateway notification url is /inbox/g/<groupId>). Standalone
+              page; main /inbox list integration is a separate follow-up. */}
+          <Route path="/inbox/g/:groupId" element={
+            <AuthGuard>
+              <GroupChat />
+            </AuthGuard>
+          } />
           <Route path="/inbox/archived" element={
             <AuthGuard>
               <Archived />
@@ -1051,11 +1097,19 @@ const App = () => {
               <Limitations />
             </AuthGuard>
           } />
-          <Route path="/settings/connected-apps" element={
+          <Route path="/connectors" element={
             <AuthGuard>
               <ConnectedApps />
             </AuthGuard>
           } />
+          <Route path="/support" element={
+            <AuthGuard>
+              <Support />
+            </AuthGuard>
+          } />
+          <Route path="/settings/connected-apps" element={<RedirectPreservingSearch to="/connectors" />} />
+          <Route path="/settings/social" element={<RedirectPreservingSearch to="/connectors" />} />
+          <Route path="/settings/support" element={<Navigate to="/support" replace />} />
           <Route path="/settings/tenant-role" element={
             <AuthGuard>
               <ProtectedRoute requiredRole="community">
@@ -1066,16 +1120,6 @@ const App = () => {
           <Route path="/settings/billing" element={
             <AuthGuard>
               <Billing />
-            </AuthGuard>
-          } />
-          <Route path="/settings/support" element={
-            <AuthGuard>
-              <Support />
-            </AuthGuard>
-          } />
-          <Route path="/settings/social" element={
-            <AuthGuard>
-              <SocialConnect />
             </AuthGuard>
           } />
           <Route path="/settings/autopilot" element={<Navigate to="/assistant?tab=autopilot" replace />} />
@@ -1089,6 +1133,11 @@ const App = () => {
           } />
           
           <Route path="/profile" element={<Navigate to="/me/profile" replace />} />
+          <Route path="/profile/subscriptions" element={
+            <AuthGuard>
+              <ProfileSubscriptionsRouter />
+            </AuthGuard>
+          } />
           <Route path="/profile/:id" element={<LegacyProfileRedirect />} />
           <Route path="/me/profile" element={
             <AuthGuard>
@@ -1768,6 +1817,7 @@ const App = () => {
         </Routes>
                   </Suspense>
                   </GlobalErrorBoundary>
+                  </PaywallProvider>{/* VTID-03107 */}
                   </GreetingProviderWrapper>
                   </LifeCompassPopupProvider>
                 </VitanalandNavigationProvider>

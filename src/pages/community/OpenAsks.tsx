@@ -31,40 +31,40 @@ type AskRow = {
   created_at: string;
 };
 
-const KIND_LABEL: Record<string, string> = {
-  commercial_buy: "Buying",
-  commercial_sell: "Selling",
-  activity_seek: "Activity partner",
-  partner_seek: "Life partner",
-  social_seek: "Social",
-  mutual_aid: "Mutual aid",
-  learning_seek: "Wants to learn",
-  mentor_seek: "Offering to teach",
+const KIND_LABEL_KEY: Record<string, string> = {
+  commercial_buy: 'screens.community.openAsksKind_commercialBuy',
+  commercial_sell: 'screens.community.openAsksKind_commercialSell',
+  activity_seek: 'screens.community.openAsksKind_activitySeek',
+  partner_seek: 'screens.community.openAsksKind_partnerSeek',
+  social_seek: 'screens.community.openAsksKind_socialSeek',
+  mutual_aid: 'screens.community.openAsksKind_mutualAid',
+  learning_seek: 'screens.community.openAsksKind_learningSeek',
+  mentor_seek: 'screens.community.openAsksKind_mentorSeek',
 };
 
 const KIND_FILTERS = [
-  { key: null as string | null, label: "All" },
-  { key: "learning_seek", label: "Wants to learn" },
-  { key: "mentor_seek", label: "Offering to teach" },
-  { key: "activity_seek", label: "Activity" },
-  { key: "commercial_buy", label: "Buying" },
-  { key: "commercial_sell", label: "Selling" },
-  { key: "social_seek", label: "Social" },
-  { key: "mutual_aid", label: "Mutual aid" },
+  { key: null as string | null, labelKey: 'screens.community.openAsksFilter_all' },
+  { key: 'learning_seek', labelKey: 'screens.community.openAsksKind_learningSeek' },
+  { key: 'mentor_seek', labelKey: 'screens.community.openAsksKind_mentorSeek' },
+  { key: 'activity_seek', labelKey: 'screens.community.openAsksKind_activity' },
+  { key: 'commercial_buy', labelKey: 'screens.community.openAsksKind_commercialBuy' },
+  { key: 'commercial_sell', labelKey: 'screens.community.openAsksKind_commercialSell' },
+  { key: 'social_seek', labelKey: 'screens.community.openAsksKind_socialSeek' },
+  { key: 'mutual_aid', labelKey: 'screens.community.openAsksKind_mutualAid' },
 ];
 
 const DANCE_FILTERS = [
-  { prefix: null as string | null, label: "Everything" },
-  { prefix: "dance.", label: "💃 Dance only" },
+  { prefix: null as string | null, labelKey: 'screens.community.openAsksDance_everything' },
+  { prefix: 'dance.', labelKey: 'screens.community.openAsksDance_only' },
 ];
 
 function formatRelative(iso: string): string {
-  const t = new Date(iso).getTime();
-  const diff = Math.max(0, Date.now() - t) / 1000;
-  if (diff < 60) return "just now";
-  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
-  return `${Math.floor(diff / 86400)}d ago`;
+  const ts = new Date(iso).getTime();
+  const diff = Math.max(0, Date.now() - ts) / 1000;
+  if (diff < 60) return t('screens.community.openAsksTime_justNow');
+  if (diff < 3600) return t('screens.community.openAsksTime_minutes', { n: String(Math.floor(diff / 60)) });
+  if (diff < 86400) return t('screens.community.openAsksTime_hours', { n: String(Math.floor(diff / 3600)) });
+  return t('screens.community.openAsksTime_days', { n: String(Math.floor(diff / 86400)) });
 }
 
 export default function OpenAsks() {
@@ -118,9 +118,9 @@ export default function OpenAsks() {
   }, [kindFilter, danceOnly]);
 
   const summary = useMemo(() => {
-    if (loading && asks.length === 0) return "Loading open asks…";
-    if (asks.length === 0) return "No open asks yet — yours could be the first.";
-    return `${asks.length} open ask${asks.length === 1 ? "" : "s"} — be the first to respond.`;
+    if (loading && asks.length === 0) return t('screens.community.openAsksSummary_loading');
+    if (asks.length === 0) return t('screens.community.openAsksSummary_empty');
+    return t('screens.community.openAsksSummary_count', { n: String(asks.length) });
   }, [asks.length, loading]);
 
   return (
@@ -144,7 +144,7 @@ export default function OpenAsks() {
                 kindFilter === f.key ? "border-primary bg-primary/10 text-primary" : "border-border hover:bg-muted"
               }`}
             >
-              {f.label}
+              {t(f.labelKey)}
             </button>
           ))}
         </div>
@@ -162,7 +162,7 @@ export default function OpenAsks() {
                   : "border-border hover:bg-muted"
               }`}
             >
-              {f.label}
+              {t(f.labelKey)}
             </button>
           ))}
         </div>
@@ -170,7 +170,7 @@ export default function OpenAsks() {
 
       {asks.length === 0 && !loading && (
         <div className="text-center py-12 text-muted-foreground">
-          {danceOnly ? "No open dance asks yet — post yours and you're the first!" : "No open asks match this filter."}
+          {danceOnly ? t('screens.community.openAsksEmpty_dance') : t('screens.community.openAsksEmpty_filter')}
         </div>
       )}
 
@@ -184,7 +184,7 @@ export default function OpenAsks() {
           >
             <div className="flex items-start justify-between gap-2 mb-2">
               <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-muted">
-                {KIND_LABEL[a.intent_kind] ?? a.intent_kind}
+                {KIND_LABEL_KEY[a.intent_kind] ? t(KIND_LABEL_KEY[a.intent_kind]) : a.intent_kind}
               </span>
               <span className="text-xs text-muted-foreground">{formatRelative(a.created_at)}</span>
             </div>
@@ -211,7 +211,7 @@ export default function OpenAsks() {
       {hasMore && (
         <div className="flex justify-center pt-4">
           <Button variant="outline" disabled={loading} onClick={() => fetchPage(false)}>
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Load more"}
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : t('screens.community.loadMore')}
           </Button>
         </div>
       )}

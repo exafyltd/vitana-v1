@@ -1,0 +1,17 @@
+{
+  "gallery": {
+    "title": "Galería de fotos",
+    "upload": "Subir foto",
+    "caption": "Pie de foto",
+    "captionPlaceholder": "Añade un pie de foto...",
+    "empty": "Aún no hay fotos",
+    "uploadFirst": "Añade tu primera foto",
+    "photo": "Foto",
+    "dropzone": "Arrastra y suelta o haz clic para seleccionar",
+    "publicLabel": "Visible para todos",
+    "videos": "Galería de videos",
+    "uploadVideo": "Subir video",
+    "noVideos": "Aún no hay videos",
+    "addFirstVideo": "Añade tu primer video"
+  }
+}

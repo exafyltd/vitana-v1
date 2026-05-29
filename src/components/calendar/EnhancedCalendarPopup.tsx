@@ -1,23 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { de as deLocale } from "date-fns/locale/de";
-import { 
-  format, 
-  startOfWeek, 
-  endOfWeek, 
-  eachDayOfInterval, 
-  isSameDay, 
-  isToday,
-  startOfMonth,
-  endOfMonth,
-  eachWeekOfInterval,
-  addMinutes,
-  isSameMonth,
-  isWithinInterval,
-  getHours,
-  getMinutes,
-  setHours
-} from "date-fns";
+import { startOfWeek, endOfWeek, eachDayOfInterval, isSameDay, isToday, startOfMonth, endOfMonth, eachWeekOfInterval, addMinutes, isSameMonth, isWithinInterval, getHours, getMinutes, setHours } from 'date-fns';
 import {
   Dialog,
   DialogContent,
@@ -63,6 +47,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import type { VitanaPillarKey } from "@/types/autopilot";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 const PILLAR_LABEL: Record<VitanaPillarKey, string> = {
   nutrition: "Nutrition",
   hydration: "Hydration",
@@ -114,6 +99,8 @@ interface EnhancedCalendarPopupProps {
   onOpenChange: (open: boolean) => void;
   initialDate?: Date | null;
   initialView?: 'today' | 'week' | 'month';
+  /** Mobile-only: tab to show when opening (e.g. 'reminders' from a push deep-link). */
+  initialMobileTab?: 'agenda' | 'month' | 'reminders';
   /** When provided, reuses the parent's hook data instead of creating a duplicate subscription */
   calendarHook?: ReturnType<typeof import('@/hooks/useCalendarEvents').useCalendarEvents>;
 }
@@ -160,6 +147,7 @@ export function EnhancedCalendarPopup({
   onOpenChange,
   initialDate,
   initialView = 'today',
+  initialMobileTab,
   calendarHook,
 }: EnhancedCalendarPopupProps) {
   const { toast } = useToast();
@@ -338,7 +326,7 @@ export function EnhancedCalendarPopup({
   const formatEventTime = (startTime: string, endTime?: string | null) => {
     const start = new Date(startTime);
     const end = endTime ? new Date(endTime) : addMinutes(start, 60);
-    return `${format(start, 'HH:mm')}–${format(end, 'HH:mm')}`;
+    return `${formatDate(start, 'HH:mm')}–${formatDate(end, 'HH:mm')}`;
   };
 
   const getTimeSinceSync = () => {
@@ -403,6 +391,7 @@ export function EnhancedCalendarPopup({
         open={open}
         onOpenChange={onOpenChange}
         calendarHook={{ events, loading, addEvent, fetchEvents }}
+        initialTab={initialMobileTab}
       />
     );
   }
@@ -680,7 +669,7 @@ export function EnhancedCalendarPopup({
                 <div className="flex items-center justify-between mb-4">
                   <div>
                     <h3 className="text-sm font-semibold">
-                      {format(weekStart, 'MMM d')}–{format(weekEnd, 'MMM d, yyyy')}
+                      {formatDate(weekStart, 'MMM d')}–{formatDate(weekEnd, 'MMM d, yyyy')}
                     </h3>
                     <p className="text-xs text-muted-foreground mt-0.5">
                       {translate('calendar.clickSlotHint', 'Click any slot to create an event • Drag to reschedule')}
@@ -704,18 +693,18 @@ export function EnhancedCalendarPopup({
                   {weekDays.map((day) => {
                     const isTodayDate = isToday(day);
                     return (
-                      <div key={format(day, 'yyyy-MM-dd')} className="text-center">
+                      <div key={formatDate(day, 'yyyy-MM-dd')} className="text-center">
                         <p className={cn(
                           "text-xs font-medium mb-0.5",
                           isTodayDate && "text-primary"
                         )}>
-                          {format(day, 'EEE')}
+                          {formatDate(day, 'EEE')}
                         </p>
                         <p className={cn(
                           "text-xl font-bold",
                           isTodayDate && "text-primary"
                         )}>
-                          {format(day, 'd')}
+                          {formatDate(day, 'd')}
                         </p>
                       </div>
                     );
@@ -744,7 +733,7 @@ export function EnhancedCalendarPopup({
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-semibold">
-                      {format(currentMonth, 'MMMM yyyy')}
+                      {formatDate(currentMonth, 'MMMM yyyy')}
                     </h3>
                     <div className="flex gap-2">
                       <Button variant="outline" size="sm" onClick={() => handleNavigateMonth('prev')}>
@@ -805,7 +794,7 @@ export function EnhancedCalendarPopup({
                 {/* Selected Day Agenda */}
                 <div className="w-80 border-l pl-6">
                   <h4 className="text-sm font-semibold mb-3">
-                    {format(selectedMonthDay, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}
+                    {formatDate(selectedMonthDay, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}
                   </h4>
 
                   <ScrollArea className="h-[calc(80vh-320px)]">
@@ -878,7 +867,7 @@ export function EnhancedCalendarPopup({
           {/* Sticky Footer */}
           <div className="sticky bottom-0 z-10 bg-background border-t px-6 py-3 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <p className="text-xs text-muted-foreground" title={`${translate('calendar.lastSynced', 'Last synced')} ${format(lastSyncTime, 'PPpp')}`}>
+              <p className="text-xs text-muted-foreground" title={`${translate('calendar.lastSynced', 'Last synced')} ${formatDate(lastSyncTime, 'PPpp')}`}>
                 {translate('calendar.lastSynced', 'Last synced')} {getTimeSinceSync()}
               </p>
             </div>

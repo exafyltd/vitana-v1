@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { formatDistanceToNow, startOfDay, parseISO, isToday, isYesterday, isThisWeek, format } from "date-fns";
+import { startOfDay, parseISO, isToday, isYesterday, isThisWeek } from 'date-fns';
 import { Mic, Image as ImageIcon, Type, Tag, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/responsive-confirm-dialog";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
 interface DiaryEntryListProps {
   entryType?: "voice" | "photo" | "text";
 }

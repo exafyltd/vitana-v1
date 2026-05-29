@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { 
   Bell, BellOff, Shield, SlidersHorizontal, LifeBuoy, 
   Trash2, ChevronRight, Moon, Eye, Users, Lock, Brain,
@@ -13,6 +13,7 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
+import { MobileBillingView, type MobileBillingSection } from "@/components/settings/MobileBillingView";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
@@ -33,16 +34,41 @@ import { useTheme } from "next-themes";
 import { toast } from "sonner";
 import { t } from '@/lib/i18n-toast';
 
+const VALID_SECTIONS = new Set([
+  'notifications',
+  'privacy', 'privacy.visibility', 'privacy.data', 'privacy.security',
+  'preferences', 'preferences.appearance', 'preferences.language',
+  'billing', 'billing.plan', 'billing.payment', 'billing.invoices', 'billing.creator',
+  'support', 'support.contact', 'support.knowledge',
+]);
+
 export default function MobileSettings() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { translate } = useTranslation();
   const { pendingCount } = useAutopilot();
   const { prefs, loading: prefsLoading, updatePref } = useNotificationPreferences();
   const { categories, loading: catLoading, toggleCategory } = useNotificationCategoryPreferences();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeSection, setActiveSection] = useState('notifications');
+  const [activeSection, setActiveSection] = useState(() => {
+    const m = searchParams.get('mode');
+    return m && VALID_SECTIONS.has(m) ? m : 'notifications';
+  });
+
+  // Honor later ?mode= changes (e.g. when navigating back to /settings?mode=billing
+  // from the Subscriptions storefront). Strip the param once consumed so it
+  // doesn't lock the user out of using the chip picker.
+  useEffect(() => {
+    const m = searchParams.get('mode');
+    if (m && VALID_SECTIONS.has(m)) {
+      setActiveSection(m);
+      const next = new URLSearchParams(searchParams);
+      next.delete('mode');
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
   const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent, revokeConsent } = useAIConsent();
   const { selectedLanguage, setSelectedLanguage, languageOptions } = useLanguage();
   const { theme, setTheme } = useTheme();
@@ -70,9 +96,20 @@ export default function MobileSettings() {
         { value: 'preferences.language', label: 'Language & Region', icon: '🌐' },
       ]
     },
-    { 
-      value: 'support', 
-      label: 'Support', 
+    {
+      value: 'billing',
+      label: 'Billing',
+      icon: '💳',
+      children: [
+        { value: 'billing.plan', label: 'Current Plan', icon: '⭐' },
+        { value: 'billing.payment', label: 'Payment Method', icon: '💳' },
+        { value: 'billing.invoices', label: 'Invoices & Receipts', icon: '🧾' },
+        { value: 'billing.creator', label: 'Creator Payouts', icon: '💸' },
+      ]
+    },
+    {
+      value: 'support',
+      label: 'Support',
       icon: '🆘',
       children: [
         { value: 'support.contact', label: 'Contact Support', icon: '💬' },
@@ -534,6 +571,18 @@ export default function MobileSettings() {
               </CardContent>
             </Card>
           </>
+        );
+
+      case 'billing':
+      case 'billing.plan':
+      case 'billing.payment':
+      case 'billing.invoices':
+      case 'billing.creator':
+        return (
+          <MobileBillingView
+            section={activeSection as MobileBillingSection}
+            onNavigateChild={setActiveSection}
+          />
         );
 
       default:

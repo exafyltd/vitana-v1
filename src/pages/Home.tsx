@@ -12,7 +12,6 @@
  */
 
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
-import { formatDistanceToNow } from "date-fns";
 import { RefreshCw, Loader2 } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
@@ -44,6 +43,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 type FilterTab = "all" | "longevity" | "community";
 
 const FILTER_MODES = [

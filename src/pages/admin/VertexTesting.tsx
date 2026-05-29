@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtTime } from '@/lib/locale-format';
 interface LogEntry {
   timestamp: string;
   level: 'info' | 'warn' | 'error';
@@ -63,7 +64,7 @@ export default function VertexTesting() {
   });
 
   const addLog = useCallback((level: LogEntry['level'], message: string) => {
-    const timestamp = new Date().toLocaleTimeString();
+    const timestamp = fmtTime(new Date());
     setLogs(prev => [...prev, { timestamp, level, message }]);
   }, []);
 
@@ -135,11 +136,11 @@ export default function VertexTesting() {
       if (existing) {
         return prev.map(r => 
           r.step === step 
-            ? { ...r, status, message, timestamp: new Date().toLocaleTimeString() }
+            ? { ...r, status, message, timestamp: fmtTime(new Date()) }
             : r
         );
       }
-      return [...prev, { step, status, message, timestamp: new Date().toLocaleTimeString() }];
+      return [...prev, { step, status, message, timestamp: fmtTime(new Date()) }];
     });
   };
 

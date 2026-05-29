@@ -7,7 +7,7 @@
 
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { format, subDays, isAfter } from "date-fns";
+import { subDays, isAfter } from 'date-fns';
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface EarningsHistoryLedgerProps {
   transactions: EarningsTransaction[];
   isLoading?: boolean;
@@ -158,7 +159,7 @@ export function EarningsHistoryLedger({
 
   const transformToCardProps = (tx: EarningsTransaction): StandardHorizontalCardProps => {
     const typeLabel = tx.type === "reseller_commission" ? translate('business.history.reseller') : translate('business.history.directSales');
-    const dateInfo = format(new Date(tx.timestamp), "MMM d, yyyy • h:mm a");
+    const dateInfo = formatDate(new Date(tx.timestamp), "MMM d, yyyy • h:mm a");
     const txId = tx.id.slice(0, 8);
     
     const description = `${typeLabel} • ${dateInfo} • #${txId}`;

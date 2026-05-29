@@ -547,9 +547,9 @@ export const SCREEN_MAPPINGS: ScreenIdMapping[] = [
   { screenId: SCREEN_SETT_002, route: "/settings/preferences", category: "settings", pattern: "sub-page-header" },
   { screenId: SCREEN_SETT_003, route: "/settings/privacy", category: "settings", pattern: "sub-page-header" },
   { screenId: SCREEN_SETT_004, route: "/settings/notifications", category: "settings", pattern: "sub-page-header" },
-  { screenId: SCREEN_SETT_005, route: "/settings/connected-apps", category: "settings", pattern: "sub-page-header" },
+  { screenId: SCREEN_SETT_005, route: "/connectors", category: "settings", pattern: "sub-page-header" },
   { screenId: SCREEN_SETT_006, route: "/settings/billing", category: "settings", pattern: "sub-page-header" },
-  { screenId: SCREEN_SETT_007, route: "/settings/support", category: "settings", pattern: "sub-page-header" },
+  { screenId: SCREEN_SETT_007, route: "/support", category: "settings", pattern: "sub-page-header" },
   { screenId: SCREEN_SETT_008, route: "/settings/tenant", category: "settings", pattern: "sub-page-header" },
 
   { screenId: SCREEN_AUTH_001, route: "/", category: "public", pattern: "landing" },

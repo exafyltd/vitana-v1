@@ -8,6 +8,7 @@ import { parseCalendarNL } from "@/lib/parseCalendarNL";
 import { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 interface NaturalLanguageInputProps {
   onEventCreate: (event: Partial<CalendarEvent>) => void;
   onCancel?: () => void;
@@ -86,7 +87,7 @@ export function NaturalLanguageInput({ onEventCreate, onCancel }: NaturalLanguag
             {parsedEvent.start_time && (
               <div>
                 <span className="text-muted-foreground">{t('screens.calendar.when')} </span>
-                <span>{new Date(parsedEvent.start_time).toLocaleString()}</span>
+                <span>{fmtDateTime(new Date(parsedEvent.start_time))}</span>
               </div>
             )}
 

@@ -78,6 +78,7 @@ async function getAuthHeaders(): Promise<Record<string, string>> {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
     "X-User-ID": userId,
+    "X-Vitana-Active-Role": "community",
   };
 }
 
@@ -208,6 +209,47 @@ export function useAutopilot() {
     }
   }, []);
 
+  // Complete — try the dedicated complete route first, then fall back to
+  // reject for any non-2xx so the user always sees the row leave the list.
+  // We can't tell from this side whether the gateway revision ships /complete
+  // at all, and an "executing"-forever row is a much worse UX than losing
+  // a possible reward.
+  const completeRecommendation = useCallback(async (id: string): Promise<{
+    ok: boolean;
+    reward?: number;
+    via?: "complete" | "reject";
+    status?: number;
+  } | null> => {
+    const headers = await getAuthHeaders();
+    const completeUrl = `${GATEWAY_URL}/autopilot/recommendations/${id}/complete?role=community`;
+    let completeStatus: number | undefined;
+    try {
+      const res = await fetch(completeUrl, { method: "POST", headers });
+      completeStatus = res.status;
+      if (res.ok) {
+        const json = await res.json().catch(() => ({ ok: true }));
+        if (json.ok !== false) return { ...json, via: "complete", status: res.status };
+      }
+      const body = await res.text().catch(() => "");
+      console.warn(`[Autopilot] complete ${res.status} for ${id} — falling back to reject`, body.slice(0, 300));
+    } catch (e) {
+      console.warn("[Autopilot] complete network error — falling back to reject", e);
+    }
+    try {
+      const rejectRes = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/reject?role=community`, {
+        method: "POST",
+        headers,
+      });
+      if (rejectRes.ok) return { ok: true, via: "reject", status: completeStatus };
+      const body = await rejectRes.text().catch(() => "");
+      console.error(`[Autopilot] reject ${rejectRes.status} for ${id}`, body.slice(0, 300));
+      return null;
+    } catch (e) {
+      console.error("[Autopilot] reject network error:", e);
+      return null;
+    }
+  }, []);
+
   // Dismiss
   const dismissRecommendation = useCallback(async (id: string): Promise<boolean> => {
     try {
@@ -281,6 +323,14 @@ export function useAutopilot() {
       const response = await activateRecommendation(id);
       const success = !!response;
       if (success) {
+        // "notify" actions have nothing the user needs to do beyond reading the
+        // completion message — flush them straight to completed on the backend
+        // so they don't come back as "executing" on the next popup open. For
+        // "navigate" actions we let the destination page (or the per-item
+        // Complete button) own the final transition.
+        if (response.action_type === "notify") {
+          await completeRecommendation(id);
+        }
         setActionStatus(id, "completed");
         results.push({
           actionId: id,
@@ -327,6 +377,7 @@ export function useAutopilot() {
     error,
     fetchRecommendations,
     activateRecommendation,
+    completeRecommendation,
     dismissRecommendation,
     fetchCount,
     // VTID-01946 Phase H.4 — live badge + pulse

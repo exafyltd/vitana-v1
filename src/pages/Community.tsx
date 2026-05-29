@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { supabase } from "@/integrations/supabase/client";
@@ -49,6 +48,7 @@ import {
 } from '@/lib/rankingsCardTransformers';
 import { notifyError, notifyInfo, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 // Mock fallback data for Today Highlights
 const todayHighlights = [
   {
@@ -1138,7 +1138,7 @@ export default withScreenId(function Community() {
     },
     location: event.location || "Virtual",
     attendees: event.participant_count,
-    timestamp: format(new Date(event.start_time), 'HH:mm'),
+    timestamp: formatDate(new Date(event.start_time), 'HH:mm'),
     rewardPoints: 8,
     rewardDescription: "Join event for wellness credits"
   }));
@@ -1160,7 +1160,7 @@ export default withScreenId(function Community() {
     },
     location: event.location || "Virtual",
     attendees: event.participant_count,
-    timestamp: format(new Date(event.start_time), 'EEE HH:mm'),
+    timestamp: formatDate(new Date(event.start_time), 'EEE HH:mm'),
     rewardPoints: 10,
     rewardDescription: "Join event for wellness credits"
   }));
@@ -1203,7 +1203,7 @@ export default withScreenId(function Community() {
         category: "ai-spotlight" as const,
         pillar: "Mental",
         author: { name: "AI Recommendation", avatar: "/lovable-uploads/design-team-avatar.jpg" },
-        timestamp: format(new Date(rec.global_community_events.start_time), "MMM d, h:mm a"),
+        timestamp: formatDate(new Date(rec.global_community_events.start_time), "MMM d, h:mm a"),
         location: rec.global_community_events.location || "Virtual",
         attendees: rec.global_community_events.participant_count || 0,
         start_time: rec.global_community_events.start_time,

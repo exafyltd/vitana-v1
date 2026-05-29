@@ -1,0 +1,11 @@
+{
+  "loading": {
+    "default": "Cargando...",
+    "groups": "Cargando grupos...",
+    "messages": "Cargando mensajes...",
+    "uploading": "Subiendo...",
+    "uploadingProgress": "Subiendo... {progress}%",
+    "processing": "Procesando...",
+    "saving": "Guardando..."
+  }
+}

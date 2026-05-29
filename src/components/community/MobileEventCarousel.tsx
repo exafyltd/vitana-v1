@@ -5,10 +5,11 @@ import { CalendarIcon } from 'lucide-react';
 import { EventKebabMenu } from '@/components/events/EventKebabMenu';
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate, fmtTime } from '@/lib/locale-format';
 const formatEventTime = (dateString: string) => {
   const date = new Date(dateString);
-  const time = date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
-  const day = date.toLocaleDateString('en-GB', { weekday: 'short', month: 'short', day: 'numeric' });
+  const time = fmtTime(date, { hour: '2-digit', minute: '2-digit', hour12: false });
+  const day = fmtDate(date, { weekday: 'short', month: 'short', day: 'numeric' });
   return `${day} · ${time}`;
 };
 

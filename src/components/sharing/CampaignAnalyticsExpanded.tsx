@@ -19,13 +19,13 @@ import {
 } from "lucide-react";
 import { XIcon } from "@/components/icons/XIcon";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
 import type { Campaign } from "@/hooks/useCampaigns";
 import type { LucideIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useCampaignAnalytics } from "@/hooks/useCampaignAnalytics";
 import { notifySuccess, t } from '@/lib/i18n-toast';
 
+import { fmtDateTime, formatDate } from '@/lib/locale-format';
 interface CampaignAnalyticsExpandedProps {
   campaign: Campaign;
   stats: {
@@ -89,7 +89,7 @@ function generateCSV(campaign: Campaign, analytics: typeof MOCK_ANALYTICS): stri
   rows.push(['Campaign Analytics Report']);
   rows.push(['Campaign Name', campaign.name]);
   rows.push(['Date Range', campaign.start_date && campaign.end_date 
-    ? `${format(new Date(campaign.start_date), "MMM d, yyyy")} - ${format(new Date(campaign.end_date), "MMM d, yyyy")}`
+    ? `${formatDate(new Date(campaign.start_date), "MMM d, yyyy")} - ${formatDate(new Date(campaign.end_date), "MMM d, yyyy")}`
     : 'N/A'
   ]);
   rows.push(['Status', campaign.status]);
@@ -98,8 +98,8 @@ function generateCSV(campaign: Campaign, analytics: typeof MOCK_ANALYTICS): stri
   // Summary Metrics
   rows.push(['Performance Summary']);
   rows.push(['Metric', 'Value']);
-  rows.push(['Total Reach', analytics.reach.toLocaleString()]);
-  rows.push(['Engagement', analytics.engagement.toLocaleString()]);
+  rows.push(['Total Reach', fmtDateTime(analytics.reach)]);
+  rows.push(['Engagement', fmtDateTime(analytics.engagement)]);
   rows.push(['Click Rate (CTR)', `${analytics.ctr}%`]);
   rows.push(['Conversions', analytics.conversions.toString()]);
   rows.push([]);
@@ -170,7 +170,7 @@ export function CampaignAnalyticsExpanded({
 
   const handleExportReport = () => {
     const csvContent = generateCSV(campaign, displayData);
-    const filename = `campaign-analytics-${campaign.name.toLowerCase().replace(/\s+/g, '-')}-${format(new Date(), 'yyyy-MM-dd')}.csv`;
+    const filename = `campaign-analytics-${campaign.name.toLowerCase().replace(/\s+/g, '-')}-${formatDate(new Date(), 'yyyy-MM-dd')}.csv`;
     downloadCSV(csvContent, filename);
     notifySuccess('toasts.sharing.analyticsReportDownloadedSuccessfully');
   };
@@ -204,7 +204,7 @@ export function CampaignAnalyticsExpanded({
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <Calendar className="w-4 h-4" />
                 <span>
-                  {format(new Date(campaign.start_date), "MMM d")} - {format(new Date(campaign.end_date), "MMM d, yyyy")}
+                  {formatDate(new Date(campaign.start_date), "MMM d")} - {formatDate(new Date(campaign.end_date), "MMM d, yyyy")}
                 </span>
               </div>
             )}
@@ -233,7 +233,7 @@ export function CampaignAnalyticsExpanded({
                 <div>
                   <p className="text-xs text-gray-600 mb-1">{t('screens.sharing.delivered')}</p>
                   <p className="text-2xl font-bold text-teal-700">
-                    {displayData.reach.toLocaleString()}
+                    {fmtDateTime(displayData.reach)}
                   </p>
                   {hasRealData && (
                     <p className="text-xs text-gray-500 mt-0.5">{t('screens.sharing.value0Rate', { value0: realAnalytics.deliveryRate.toFixed(1) })}
@@ -252,7 +252,7 @@ export function CampaignAnalyticsExpanded({
                 <div>
                   <p className="text-xs text-gray-600 mb-1">{t('screens.sharing.opened')}</p>
                   <p className="text-2xl font-bold text-blue-700">
-                    {displayData.engagement.toLocaleString()}
+                    {fmtDateTime(displayData.engagement)}
                   </p>
                   {hasRealData && (
                     <p className="text-xs text-gray-500 mt-0.5">{t('screens.sharing.value0Rate', { value0: realAnalytics.openRate.toFixed(1) })}
@@ -334,7 +334,7 @@ export function CampaignAnalyticsExpanded({
                               {channel.name}
                             </span>
                             <span className="text-sm font-bold text-gray-700">
-                              {channel.reach.toLocaleString()}
+                              {fmtDateTime(channel.reach)}
                             </span>
                           </div>
                           
@@ -350,7 +350,7 @@ export function CampaignAnalyticsExpanded({
                           </div>
                           
                           <div className="flex items-center gap-4 mt-1">
-                            <span className="text-xs text-gray-500">{t('screens.sharing.value0Opened', { value0: channel.engagement.toLocaleString() })}
+                            <span className="text-xs text-gray-500">{t('screens.sharing.value0Opened', { value0: fmtDateTime(channel.engagement) })}
                             </span>
                           </div>
                         </div>
@@ -385,7 +385,7 @@ export function CampaignAnalyticsExpanded({
                           "opacity-0 group-hover:opacity-100 transition-opacity",
                           "bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap"
                         )}>
-                          {data.reach.toLocaleString()}
+                          {fmtDateTime(data.reach)}
                         </div>
                         
                         {/* Bar */}

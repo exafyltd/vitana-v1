@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { horizontalCardAnalytics } from '@/lib/horizontal-cards-analytics';
 import { useRTL } from '@/components/RTLProvider';
 
+import { fmtDate, fmtTime } from '@/lib/locale-format';
 export interface VisualHorizontalCardProps {
   id: string;
   screenId: string;
@@ -145,12 +146,12 @@ export const VisualHorizontalCard = React.forwardRef<HTMLDivElement, VisualHoriz
       if (typeof timestamp === 'string') return timestamp;
       
       // Format with full date and time
-      const dateStr = timestamp.toLocaleDateString('en-US', {
+      const dateStr = fmtDate(timestamp, {
         year: 'numeric',
         month: 'short',
         day: 'numeric'
       });
-      const timeStr = timestamp.toLocaleTimeString('en-US', {
+      const timeStr = fmtTime(timestamp, {
         hour: 'numeric',
         minute: '2-digit',
         hour12: true

@@ -8,6 +8,7 @@ import { adminAuditNavigation } from "@/config/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtTime } from '@/lib/locale-format';
 const SERVICES = [
   { name: "Gateway", url: "https://gateway-86804897789.us-central1.run.app/alive" },
 ];
@@ -106,7 +107,7 @@ export default function AuditApiMonitor() {
                     {svc.data?.timestamp && (
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">{t('screens.admin.timestamp')}</span>
-                        <span className="text-xs">{new Date(svc.data.timestamp).toLocaleTimeString()}</span>
+                        <span className="text-xs">{fmtTime(new Date(svc.data.timestamp))}</span>
                       </div>
                     )}
                     {svc.error && (

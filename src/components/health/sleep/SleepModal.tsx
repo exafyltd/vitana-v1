@@ -23,6 +23,7 @@ import {
 import { cn } from "@/lib/utils";
 import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface SleepModalProps {
   data: DailySleepData | null;
   open: boolean;
@@ -108,7 +109,7 @@ export function SleepModal({ data, open, onOpenChange }: SleepModalProps) {
             <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-1">{t('screens.health.daySleep', { day: data.day })}
             </h2>
             <p className="text-sm text-slate-600 dark:text-slate-400">
-              {new Date(data.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+              {fmtDate(new Date(data.date), { weekday: 'long', month: 'long', day: 'numeric' })}
             </p>
           </div>
         </div>

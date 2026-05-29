@@ -1,0 +1,29 @@
+{
+  "onboarding": {
+    "welcome": "¡Te damos la bienvenida a VITANA!",
+    "subtitle": "Tu plataforma de longevidad personalizada",
+    "connectApps": "Conecta tus apps",
+    "connectAppsDesc": "Vincula tus apps de salud y bienestar para obtener mejores perspectivas",
+    "setGoals": "Establece tus metas",
+    "setGoalsDesc": "Define tus objetivos de salud y longevidad",
+    "joinCommunity": "Únete a la comunidad",
+    "joinCommunityDesc": "Conéctate con personas afines en viajes similares",
+    "getStarted": "Comenzar",
+    "skip": "Saltar por ahora",
+    "skipIntro": "Saltar introducción",
+    "nameForm": {
+      "title": "Vamos a conocerte",
+      "subtitle": "Así te verán los demás en la comunidad",
+      "displayNameLabel": "¿Cómo debería llamarte?",
+      "displayNamePlaceholder": "Tu nombre",
+      "handleLabel": "Elige tu nombre de usuario de Vitanaland",
+      "handlePlaceholder": "tu_nombre_de_usuario",
+      "handleTaken": "Este nombre de usuario ya está en uso",
+      "handleInvalid": "Solo se permiten letras, números y guiones bajos",
+      "handleAvailable": "¡Nombre de usuario disponible!",
+      "handleMinLength": "Al menos 3 caracteres",
+      "saving": "Configurando...",
+      "submit": "¡Empecemos!"
+    }
+  }
+}

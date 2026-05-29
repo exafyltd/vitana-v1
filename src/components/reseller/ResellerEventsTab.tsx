@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import { useResellerEvents, ResellerEvent } from "@/hooks/useResellerEvents";
 import { useResellerProfile } from "@/hooks/useResellerProfile";
 import { useActivateReseller } from "@/hooks/useActivateReseller";
-import { format } from "date-fns";
 import { Loader2, Ticket, DollarSign, Share2 } from "lucide-react";
 import { StandardHorizontalCard } from "@/components/ui/standard-horizontal-card";
 import { OrganizerEventSalesSheet } from "@/components/business/OrganizerEventSalesSheet";
@@ -25,6 +24,7 @@ import { SellEventModal } from "./SellEventModal";
 import { OrganizerEvent } from "@/hooks/useOrganizerEvents";
 import { notifyInfo } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface ResellerEventsTabProps {
   searchQuery: string;
 }
@@ -123,7 +123,7 @@ export function ResellerEventsTab({ searchQuery }: ResellerEventsTabProps) {
               )
             }
             title={event.title}
-            description={`${format(new Date(event.start_time), "MMM d, yyyy")}${event.location ? ` • ${event.location}` : ""}`}
+            description={`${formatDate(new Date(event.start_time), "MMM d, yyyy")}${event.location ? ` • ${event.location}` : ""}`}
             badges={[
               { 
                 label: `${event.tickets_sold} sold`, 

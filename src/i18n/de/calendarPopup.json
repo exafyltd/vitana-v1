@@ -3,10 +3,10 @@
     "title": "Kalender",
     "nextEvents": "Nächste {count} Termine",
     "conflicts": "{count} Konflikte",
-    "upcomingSchedule": "Ihr anstehender Zeitplan und Termine",
+    "upcomingSchedule": "Dein anstehender Zeitplan und Termine",
     "addNewEvent": "Neuen Termin hinzufügen",
     "noUpcomingEvents": "Keine anstehenden Termine",
-    "createFirstEvent": "Ersten Termin erstellen",
+    "createFirstEvent": "Deinen ersten Termin erstellen",
     "aiSuggestions": "KI-Vorschläge",
     "findBetterSlot": "Besseren Termin finden",
     "prepareBrief": "Briefing vorbereiten",
@@ -16,6 +16,6 @@
     "quickAdd": "Schnell hinzufügen",
     "eventFormComingSoon": "Event-Erstellungsformular bald verfügbar",
     "externalSync": "Externe Synchronisierung",
-    "connectingCalendars": "Verbinde mit externen Kalendern..."
+    "connectingCalendars": "Verbinden mit externen Kalendern..."
   }
 }

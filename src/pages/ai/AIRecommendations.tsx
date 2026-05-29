@@ -54,37 +54,37 @@ export default function AIRecommendations() {
   const healthRecommendations = recommendations.healthTodos.map((item, index) => ({
     id: `health-${index}`,
     title: item.title,
-    description: `ETA: ${item.etaMins} minutes`,
+    description: t('screens.ai.recoDesc_eta', { mins: String(item.etaMins) }),
     priority: item.priority as "low" | "medium" | "high",
     category: "health",
-    action: "Complete Task"
+    action: t('screens.ai.actionLabel_completeTask')
   }));
 
   const lifestyleSuggestions = recommendations.content.slice(0, 3).map((item, index) => ({
     id: `lifestyle-${index}`,
     title: item.title,
-    description: `${item.type} content - ${item.duration}`,
+    description: t('screens.ai.recoDesc_contentDuration', { type: item.type, duration: item.duration }),
     priority: "medium" as const,
     category: "lifestyle",
-    action: "Watch Now"
+    action: t('screens.ai.actionLabel_watchNow')
   }));
 
   const personalizationInsights = [
     {
       id: "insight-1",
-      title: "Sleep Pattern Optimization",
-      description: "Your optimal bedtime is 10:30 PM based on energy patterns",
+      title: t('screens.ai.recoTitle_sleepPattern'),
+      description: t('screens.ai.recoDesc_sleepPattern'),
       priority: "high" as const,
       category: "insight",
-      action: "Apply Insight"
+      action: t('screens.ai.actionLabel_applyInsight')
     },
     {
       id: "insight-2",
-      title: "Nutrition Timing",
-      description: "Post-workout nutrition window analysis shows 20% improvement potential",
+      title: t('screens.ai.recoTitle_nutritionTiming'),
+      description: t('screens.ai.recoDesc_nutritionTiming'),
       priority: "medium" as const,
-      category: "insight", 
-      action: "Learn More"
+      category: "insight",
+      action: t('screens.ai.actionLabel_learnMore')
     }
   ];
 
@@ -156,10 +156,10 @@ export default function AIRecommendations() {
                 title={t('screens.ai.wellnessServices')}
                 offers={[{
                   id: "wellness-001",
-                  title: "Comprehensive Wellness Assessment", 
+                  title: t('screens.ai.offerTitle_wellnessAssessment'),
                   provider: "VITANA Partners",
                   price: 199,
-                  description: "Personalized nutrition and fitness plan",
+                  description: t('screens.ai.offerDesc_wellnessAssessment'),
                   category: "wellness",
                   type: "service" as const
                 }]}
@@ -175,13 +175,17 @@ export default function AIRecommendations() {
               <LabTestCard
                 labTest={{
                   id: "lab-001",
-                  name: "Comprehensive Health Panel",
-                  description: "Complete biomarker analysis",
+                  name: t('screens.ai.labName_healthPanel'),
+                  description: t('screens.ai.labDesc_healthPanel'),
                   category: "blood_markers",
-                  biomarkers: ["Cholesterol", "Glucose", "Vitamins"],
+                  biomarkers: [
+                    t('screens.ai.biomarker_cholesterol'),
+                    t('screens.ai.biomarker_glucose'),
+                    t('screens.ai.biomarker_vitamins'),
+                  ],
                   price: 89,
                   turnaround_days: 2,
-                  sample_type: "Blood",
+                  sample_type: t('screens.ai.sampleType_blood'),
                   provider_name: "LabCorp"
                 }}
                 onOrder={() => handleLabTest("C-014")}

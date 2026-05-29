@@ -9,6 +9,7 @@ import { PersonalizedSubscriptionRecommendationCard } from "./PersonalizedSubscr
 import { SubscriptionROIAnalyticsCard } from "./SubscriptionROIAnalyticsCard";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface TimingIntelligence {
   id: string;
   service: string;
@@ -238,7 +239,7 @@ export function SmartRecommendationsSplitScreen({ className }: SmartRecommendati
                 <div className="flex items-start justify-between mb-2">
                   <div>
                     <h5 className="text-sm font-medium">{trend.service}</h5>
-                    <p className="text-xs text-muted-foreground">{t('screens.wallet.value0UsersCategory', { value0: trend.userCount.toLocaleString(), category: trend.category })}</p>
+                    <p className="text-xs text-muted-foreground">{t('screens.wallet.value0UsersCategory', { value0: fmtNumber(trend.userCount), category: trend.category })}</p>
                   </div>
                   <Badge variant="outline" className={`text-xs ${getTrendColor(trend.popularityTrend)}`}>
                     {getTrendIcon(trend.popularityTrend)} {trend.popularityTrend}

@@ -24,11 +24,11 @@ import {
   ExternalLink
 } from "lucide-react";
 import { useToast } from '@/hooks/use-toast';
-import { formatDistanceToNow } from "date-fns";
 import { useRealtimeAPIMonitoring } from "@/hooks/useRealtimeAPIMonitoring";
 import { RecentActivityFeed } from "@/components/admin/api-monitoring/RecentActivityFeed";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtDateTime, formatDistanceToNow } from '@/lib/locale-format';
 export default function APIMonitoring() {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("overview");
@@ -389,7 +389,7 @@ export default function APIMonitoring() {
                             </div>
                             <div className="text-sm text-muted-foreground space-y-1">
                               <p>{t('screens.admin.testTypeValue0', { value0: log.test_type || 'automated' })}</p>
-                              <p>{t('screens.admin.timeValue0', { value0: log.timestamp && new Date(log.timestamp).toLocaleString() })}</p>
+                              <p>{t('screens.admin.timeValue0', { value0: log.timestamp && fmtDateTime(new Date(log.timestamp)) })}</p>
                               {log.error_log && (
                                 <p className="text-red-500 mt-2">{t('screens.admin.errorError_log', { error_log: log.error_log })}</p>
                               )}

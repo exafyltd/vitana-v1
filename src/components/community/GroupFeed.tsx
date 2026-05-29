@@ -8,9 +8,9 @@ import { useGroupPosts } from "@/hooks/useGroupPosts";
 import { useAuth } from "@/context/AuthProvider";
 import { useTranslation } from "@/hooks/useTranslation";
 import { toast } from "@/hooks/use-toast";
-import { formatDistanceToNow } from "date-fns";
 import { Textarea } from "@/components/ui/textarea";
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface GroupFeedProps {
   groupId: string;
   isMember: boolean;

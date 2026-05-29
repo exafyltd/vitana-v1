@@ -9,21 +9,12 @@ import { Smartphone, Moon, MessageSquare, CalendarDays, Users, Loader2 } from "l
 import { useNotificationPreferences } from "@/hooks/useNotifications";
 import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/useNotificationCategoryPreferences";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
-
-const settingsSubItems = [
-  { id: "overview", name: "Overview", path: "/settings" },
-  { id: "privacy", name: "Privacy", path: "/settings/privacy" },
-  { id: "notifications", name: "Notifications", path: "/settings/notifications" },
-  { id: "preferences", name: "Preferences", path: "/settings/preferences" },
-  { id: "connected-apps", name: "Connected Apps", path: "/settings/connected-apps" },
-  { id: "billing", name: "Billing", path: "/settings/billing" },
-  { id: "support", name: "Support", path: "/settings/support" },
-];
+import { settingsNavigation } from "@/config/navigation";
 
 const TYPE_CONFIG = {
-  chat: { label: "Chat", icon: MessageSquare },
-  calendar: { label: "Calendar", icon: CalendarDays },
-  community: { label: "Community", icon: Users },
+  chat: { labelKey: "screens.settings.notificationsSettingsSection_chat", icon: MessageSquare },
+  calendar: { labelKey: "screens.settings.notificationsSettingsSection_calendar", icon: CalendarDays },
+  community: { labelKey: "screens.settings.notificationsSettingsSection_community", icon: Users },
 } as const;
 
 export default function SettingsNotifications() {
@@ -62,10 +53,12 @@ export default function SettingsNotifications() {
   if (loading) {
     return (
       <AppLayout>
-        <SEO title={t('screens.settings.notificationsSettings')} description="Configure your notification preferences" canonical={window.location.href} />
-        <SubNavigation items={settingsSubItems} />
-        <div className="p-6 max-w-4xl mx-auto flex items-center justify-center min-h-[400px]">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <SEO title={t('screens.settings.notificationsSettings')} description={t('screens.settings.configureYourNotificationPreferences')} canonical={window.location.href} />
+        <SubNavigation items={settingsNavigation} />
+        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+          <div className="max-w-7xl mx-auto flex items-center justify-center min-h-[400px]">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
         </div>
       </AppLayout>
     );
@@ -73,12 +66,13 @@ export default function SettingsNotifications() {
 
   return (
     <AppLayout>
-      <SEO title={t('screens.settings.notificationsSettings')} description="Configure your notification preferences" canonical={window.location.href} />
-      <SubNavigation items={settingsSubItems} />
-      <div className="p-6 max-w-4xl mx-auto space-y-6">
+      <SEO title={t('screens.settings.notificationsSettings')} description={t('screens.settings.configureYourNotificationPreferences')} canonical={window.location.href} />
+      <SubNavigation items={settingsNavigation} />
+      <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+        <div className="max-w-7xl mx-auto space-y-6">
         <StandardHeader
           title={t('screens.settings.customizeYourAlerts')}
-          description="Configure your notification preferences"
+          description={t('screens.settings.configureYourNotificationPreferences')}
           emoji="🔕"
         />
 
@@ -117,7 +111,7 @@ export default function SettingsNotifications() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Icon className="w-5 h-5" />
-                  {config.label}
+                  {t(config.labelKey)}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -203,6 +197,7 @@ export default function SettingsNotifications() {
             </div>
           </CardContent>
         </Card>
+        </div>
       </div>
     </AppLayout>
   );

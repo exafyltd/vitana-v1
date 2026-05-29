@@ -17,6 +17,7 @@ import { isIAPRestricted } from '@/lib/appilix';
 import { getExchangeRate } from '@/lib/exchangeRates';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface BuyTokensPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -114,11 +115,11 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
           <div className="grid grid-cols-2 gap-3">
             <div className="p-3 bg-gradient-to-r from-purple-50 to-violet-50 rounded-lg border border-purple-100">
               <div className="text-xs text-muted-foreground">{t('screens.wallet.currentVtna')}</div>
-              <div className="font-semibold text-purple-700">{currentTokens.toLocaleString()}</div>
+              <div className="font-semibold text-purple-700">{fmtNumber(currentTokens)}</div>
             </div>
             <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
               <div className="text-xs text-muted-foreground">{t('screens.wallet.usdBalance')}</div>
-              <div className="font-semibold text-green-700">${usdBalance.toLocaleString()}</div>
+              <div className="font-semibold text-green-700">${fmtNumber(usdBalance)}</div>
             </div>
           </div>
 
@@ -140,7 +141,7 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
                     <Coins className="h-4 w-4 text-purple-600" />
                   )}
               <div className="text-left">
-                <div className="font-medium">{t('screens.wallet.value0Vtna', { value0: pkg.tokens.toLocaleString() })}
+                <div className="font-medium">{t('screens.wallet.value0Vtna', { value0: fmtNumber(pkg.tokens) })}
                   {pkg.bonus > 0 && (
                     <span className="text-green-600 ml-1">{t('screens.wallet.bonusBonus', { bonus: pkg.bonus })}</span>
                   )}

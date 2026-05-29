@@ -7,6 +7,7 @@ import { CheckCircle, X, Clock, Users, TrendingUp, Send } from "lucide-react";
 import { Loader2 } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface EventResponseDashboardProps {
   eventId: string;
   className?: string;
@@ -230,7 +231,7 @@ export function EventResponseDashboard({ eventId, className }: EventResponseDash
                       <p className="font-medium">{attendee.display_name || "Unknown"}</p>
                       <p className="text-sm text-muted-foreground">
                         {attendee.responded_at
-                          ? `Responded ${new Date(attendee.responded_at).toLocaleDateString()}`
+                          ? `Responded ${fmtDate(new Date(attendee.responded_at))}`
                           : "Not responded yet"}
                       </p>
                     </div>

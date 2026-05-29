@@ -1,0 +1,39 @@
+{
+  "settings": {
+    "title": "Podešavanja",
+    "description": "Upravljaj podešavanjima naloga, privatnošću i preferencijama",
+    "searchPlaceholder": "Pretraži podešavanja, kontrole privatnosti, integracije...",
+    "quickSetup": "Brzo podešavanje",
+    "tabs": {
+      "overview": "Pregled",
+      "notifications": "Obaveštenja",
+      "quickActions": "Brze akcije"
+    },
+    "categories": {
+      "privacy": "Privatnost",
+      "privacyDesc": "Kontroliši ko vidi tvoj profil i aktivnosti",
+      "notifications": "Obaveštenja",
+      "notificationsDesc": "Upravljaj podešavanjima obaveštenja",
+      "preferences": "Preferencije",
+      "preferencesDesc": "Jezik, tema i opcije prikaza",
+      "connectedApps": "Povezane aplikacije",
+      "connectedAppsDesc": "Upravljaj integracijama i dozvolama",
+      "tenantRole": "Zakupac i uloga",
+      "tenantRoleDesc": "Prebacuj se između uloga i zakupaca",
+      "billing": "Naplata",
+      "billingDesc": "Informacije o pretplati i plaćanju",
+      "support": "Podrška",
+      "supportDesc": "Pomoć, česta pitanja i opcije kontakta"
+    },
+    "status": {
+      "privacyStatus": "Status privatnosti",
+      "subscription": "Pretplata",
+      "protected": "Zaštićeno",
+      "premium": "Premium",
+      "notificationsActive": "Obaveštenja aktivna",
+      "connectedAppsCount": "Povezane aplikacije",
+      "types": "tipovi",
+      "apps": "aplikacije"
+    }
+  }
+}

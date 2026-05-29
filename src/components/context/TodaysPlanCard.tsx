@@ -1,8 +1,8 @@
-import { format } from "date-fns";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { usePersonalizedContent } from "@/hooks/usePersonalizedContent";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface TodaysPlanCardProps {
   schedule?: string;
   className?: string;

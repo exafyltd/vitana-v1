@@ -32,7 +32,6 @@ import {
   Share2,
   Rocket,
 } from "lucide-react";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -48,6 +47,7 @@ import { ActivateCampaignDialog } from "./ActivateCampaignDialog";
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface CampaignCardProps {
   campaign: Campaign;
   stats: {
@@ -518,10 +518,10 @@ export function CampaignCard({
           <Calendar className="w-3.5 h-3.5 shrink-0" />
           <span className="truncate">
             {campaign.start_date &&
-              format(new Date(campaign.start_date), "MMM d, yyyy")}
+              formatDate(new Date(campaign.start_date), "MMM d, yyyy")}
             {campaign.start_date && campaign.end_date && " → "}
             {campaign.end_date &&
-              format(new Date(campaign.end_date), "MMM d, yyyy")}
+              formatDate(new Date(campaign.end_date), "MMM d, yyyy")}
           </span>
         </div>
       )}

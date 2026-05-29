@@ -1,25 +1,23 @@
 import { ArrowLeft } from "lucide-react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import SEO from "@/components/SEO";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { t } from '@/lib/i18n-toast';
+import { LegalLocaleToggle } from "@/components/LegalLocaleToggle";
+import { useScopedT, type LegalLang } from "@/lib/use-scoped-t";
 
 const TermsOfUse = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const urlLang = searchParams.get("lang");
+  const lang: LegalLang | null =
+    urlLang === "de" || urlLang === "en" ? urlLang : null;
+  const t = useScopedT(lang);
 
   return (
     <div className="min-h-screen bg-background">
       <SEO
         title={t('screens.legal.termsUseMaxina')}
-        description="Terms of Use for the Maxina App & Website by Exafy LTD. Read our terms covering subscriptions, events, community guidelines, and more."
+        description="Terms of Use for the Maxina App & Website by Exafy LTD. Covers accounts, events, the Discover Shop, community guidelines and more."
         canonical="https://vitanaland.com/terms"
       />
 
@@ -35,6 +33,9 @@ const TermsOfUse = () => {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-lg font-semibold">{t('screens.legal.termsUse')}</h1>
+          <div className="ml-auto">
+            <LegalLocaleToggle />
+          </div>
         </div>
       </header>
 
@@ -46,7 +47,7 @@ const TermsOfUse = () => {
             {t('screens.legal.maxinaAppAmpWebsiteTermsUse')}
           </h1>
           <p className="text-muted-foreground mb-8">
-            <strong>{t('screens.legal.effectiveDate')}</strong>{t('screens.legal.text17May2025ReplacesAllPrior')}
+            <strong>{t('screens.legal.effectiveDate')}</strong>{' '}{t('screens.legal.text6thApril2026')}
           </p>
 
           {/* Section 1 */}
@@ -76,75 +77,7 @@ const TermsOfUse = () => {
             <li>{t('screens.legal.weMaySuspendTerminateAccountsFor')}</li>
           </ul>
 
-          {/* Section 3 */}
-          <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
-            {t('screens.legal.text3SubscriptionsAmpBilling')}
-          </h2>
-
-          <div className="overflow-x-auto my-6">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>{t('screens.legal.plan')}</TableHead>
-                  <TableHead>{t('screens.legal.price')}</TableHead>
-                  <TableHead>{t('screens.legal.cycle')}</TableHead>
-                  <TableHead>{t('screens.legal.trial')}</TableHead>
-                  <TableHead>{t('screens.legal.autorenew')}</TableHead>
-                  <TableHead>{t('screens.legal.gracePeriod')}</TableHead>
-                  <TableHead>{t('screens.legal.refundWindow')}</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell className="font-medium">{t('screens.legal.premium')}</TableCell>
-                  <TableCell>€9.90</TableCell>
-                  <TableCell>{t('screens.legal.monthly')}</TableCell>
-                  <TableCell>{t('screens.legal.text7Days')}</TableCell>
-                  <TableCell>{t('screens.legal.every30Days')}</TableCell>
-                  <TableCell>{t('screens.legal.text5Days')}</TableCell>
-                  <TableCell>{t('screens.legal.text14Days')}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">{t('screens.legal.premium')}</TableCell>
-                  <TableCell>€99</TableCell>
-                  <TableCell>{t('screens.legal.annual')}</TableCell>
-                  <TableCell>{t('screens.legal.text7Days')}</TableCell>
-                  <TableCell>{t('screens.legal.every12Months')}</TableCell>
-                  <TableCell>{t('screens.legal.text5Days')}</TableCell>
-                  <TableCell>{t('screens.legal.text14Days')}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">{t('screens.legal.vip')}</TableCell>
-                  <TableCell>€299</TableCell>
-                  <TableCell>{t('screens.legal.monthly')}</TableCell>
-                  <TableCell>{t('screens.legal.text7Days')}</TableCell>
-                  <TableCell>{t('screens.legal.every30Days')}</TableCell>
-                  <TableCell>{t('screens.legal.text5Days')}</TableCell>
-                  <TableCell>{t('screens.legal.text14Days')}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">{t('screens.legal.vip')}</TableCell>
-                  <TableCell>€2,990</TableCell>
-                  <TableCell>{t('screens.legal.annual')}</TableCell>
-                  <TableCell>{t('screens.legal.text7Days')}</TableCell>
-                  <TableCell>{t('screens.legal.every12Months')}</TableCell>
-                  <TableCell>{t('screens.legal.text5Days')}</TableCell>
-                  <TableCell>{t('screens.legal.text14Days')}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
-
-          <p className="text-sm text-muted-foreground mb-6">{t('screens.legal.refundRequestsMustSubmittedViaValue0', { value0: " " })}<a href="mailto:support@exafy.io" className="text-primary hover:underline">{t('screens.legal.supportExafyIo')}</a>{t('screens.legal.value0Within14CalendarDaysPurchase', { value0: " " })}
-          </p>
-
-          <ul className="list-disc pl-6 space-y-2 text-foreground/90">
-            <li>{t('screens.legal.inappPurchasesOnlyPaymentsProcessedBy')}</li>
-            <li>{t('screens.legal.manageCancelAutorenewalAtAnyTime')}</li>
-            <li>{t('screens.legal.pricesIncludeVatWhereApplicableWe')}</li>
-          </ul>
-
-          {/* Section 4 */}
+          {/* Section 3 (Maxina Experience Events — §3 Subscriptions & Billing removed, this version of the app has no subscription) */}
           <h2 className="text-xl md:text-2xl font-semibold text-foreground mt-10 mb-4">
             {t('screens.legal.text4MaxinaExperienceEvents')}
           </h2>

@@ -176,15 +176,13 @@ const MessageInput: React.FC<MessageInputProps> = ({
         contentData = {
           attachments: attachments
         };
-        
-        // Include text with attachments if provided
-        if (text) {
-          messageContent = text;
-        } else {
-          messageContent = attachments.length === 1 
-            ? `Shared ${attachments[0].filename}` 
-            : `Shared ${attachments.length} files`;
-        }
+
+        // If the user didn't type anything, leave the body empty — the
+        // attachment IS the message. The gateway accepts empty content when
+        // message_type='attachment' and at least one attachment is provided,
+        // and MessageBubble renders the media without a redundant "Shared X"
+        // caption.
+        messageContent = text;
       }
 
       await onSendMessage(messageContent, messageType, contentData, undefined, replyingTo?.id);
@@ -283,8 +281,22 @@ const MessageInput: React.FC<MessageInputProps> = ({
         );
 
         console.log('[Attachment] Upload success', { url: attachmentResult.url, path: attachmentResult.path, type: attachmentResult.type, size: attachmentResult.size });
-        const previewableImages = new Set(['image/jpeg','image/png','image/gif','image/webp','image/svg+xml']);
-        const isPreviewImage = previewableImages.has(attachmentResult.type);
+        // Detect images for inline preview. Mime check covers desktops and
+        // most Android pickers; the extension fallback handles cases where
+        // the OS file picker delivers an empty mime (Samsung's SAF on
+        // screenshots, some iOS variants) so a `.png` screenshot still
+        // renders as an image instead of a "download" file chip.
+        const previewableImageMimes = new Set([
+          'image/jpeg', 'image/jpg', 'image/png', 'image/gif',
+          'image/webp', 'image/svg+xml', 'image/heic', 'image/heif',
+          'image/bmp', 'image/tiff', 'image/avif',
+        ]);
+        const previewableExts = /\.(jpe?g|png|gif|webp|svg|heic|heif|bmp|tiff?|avif)$/i;
+        const mime = (attachmentResult.type || '').toLowerCase();
+        const isPreviewImage =
+          previewableImageMimes.has(mime)
+          || mime.startsWith('image/')
+          || previewableExts.test(attachmentResult.name || '');
         const attachmentData: AttachmentData = {
           type: isPreviewImage ? 'image' : 'file',
           url: attachmentResult.url,
@@ -526,19 +538,36 @@ const MessageInput: React.FC<MessageInputProps> = ({
             className="h-8 w-8 shrink-0"
           />
 
-          {/* Attachment menu */}
-          <AttachmentMenu
-            onFileAttach={() => fileInputRef.current?.click()}
-            onSendMessage={async (content, messageType, contentData) => {
-              await onSendMessage(content, messageType, contentData);
-            }}
-            onCalendarInvite={sendCalendarInvite}
-            recipient={effectiveRecipient}
-            recipientIdHint={effectiveRecipientId || recipientId}
-            threadId={threadId}
-            disabled={disabled || isUploading}
-            conversationType={conversationType}
-          />
+          {/* Attachment trigger. For group chats (chat_groups, VTID-03089)
+              skip the DM-only Send Funds / Request Payment / Calendar drawer
+              and open the native file picker directly — same behavior as
+              the rest of the mobile app's chat composers. */}
+          {conversationType === 'group' ? (
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              disabled={disabled || isUploading}
+              onClick={() => fileInputRef.current?.click()}
+              className="w-8 h-8 p-0 rounded-full hover:bg-muted shrink-0"
+              aria-label={t('screens.messages.attach')}
+            >
+              <Paperclip className="w-4 h-4" />
+            </Button>
+          ) : (
+            <AttachmentMenu
+              onFileAttach={() => fileInputRef.current?.click()}
+              onSendMessage={async (content, messageType, contentData) => {
+                await onSendMessage(content, messageType, contentData);
+              }}
+              onCalendarInvite={sendCalendarInvite}
+              recipient={effectiveRecipient}
+              recipientIdHint={effectiveRecipientId || recipientId}
+              threadId={threadId}
+              disabled={disabled || isUploading}
+              conversationType={conversationType}
+            />
+          )}
 
           {/* Hidden file input */}
           <input

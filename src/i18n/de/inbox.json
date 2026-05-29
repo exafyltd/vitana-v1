@@ -1,10 +1,10 @@
 {
   "inbox": {
     "title": "Postfach",
-    "subtitle": "Bleiben Sie mit Ihrer Community verbunden!",
-    "description": "Ihre Unterhaltungen, Updates und Benachrichtigungen",
+    "subtitle": "Bleib mit deiner Community verbunden!",
+    "description": "Deine Unterhaltungen, Updates und Benachrichtigungen",
     "desktopTitle": "Nachrichten",
-    "desktopDescription": "Verbinden Sie sich mit Ihrer Community und Ihrem Netzwerk",
+    "desktopDescription": "Verbinde dich mit deiner Community und deinem Netzwerk",
     "tabs": {
       "all": "Alle",
       "groups": "Gruppen",
@@ -46,7 +46,7 @@
       "searchPlaceholder": "Name oder E-Mail eingeben...",
       "searchMinChars": "Mindestens 2 Zeichen zum Suchen eingeben",
       "searchResults": "Suchergebnisse",
-      "noResults": "Keine Nutzer gefunden. Versuchen Sie einen anderen Suchbegriff.",
+      "noResults": "Keine Nutzer gefunden. Versuch einen anderen Suchbegriff.",
       "add": "Hinzufügen",
       "added": "Hinzugefügt",
       "cancel": "Abbrechen",
@@ -61,15 +61,15 @@
       "addMembers": "Mitglieder hinzufügen",
       "searchPlaceholder": "Nutzer suchen...",
       "groupNameRequired": "Gruppenname erforderlich",
-      "groupNameRequiredDesc": "Bitte geben Sie einen Namen für Ihre Gruppe ein.",
+      "groupNameRequiredDesc": "Bitte gib einen Namen für deine Gruppe ein.",
       "addMembersRequired": "Mitglieder hinzufügen",
-      "addMembersRequiredDesc": "Bitte fügen Sie mindestens ein Mitglied hinzu.",
+      "addMembersRequiredDesc": "Bitte füge mindestens ein Mitglied hinzu.",
       "groupExists": "Gruppe existiert bereits",
       "groupExistsDesc": "Eine Gruppe mit diesen Mitgliedern wurde kürzlich erstellt.",
       "created": "Gruppe erstellt",
       "createdDesc": "\"{name}\" wurde erfolgreich erstellt.",
       "failed": "Gruppe konnte nicht erstellt werden",
-      "failedDesc": "Bitte versuchen Sie es erneut."
+      "failedDesc": "Bitte versuch es erneut."
     },
     "toast": {
       "success": "Erfolg",
@@ -80,29 +80,40 @@
       "searchFailed": "Suche fehlgeschlagen",
       "accessDenied": "Zugriff verweigert",
       "communityOnly": "Nur Community-Nutzer können globale Unterhaltungen erstellen",
-      "pleaseLogin": "Bitte melden Sie sich an",
+      "pleaseLogin": "Bitte melde dich an, um Unterhaltungen zu starten.",
       "groupRecipientsRequired": "Gruppenname und Empfänger erforderlich",
-      "singleRecipientRequired": "Wählen Sie einen Empfänger für Direktnachrichten",
+      "singleRecipientRequired": "Wähle genau einen Empfänger für Direktnachrichten.",
       "groupCreated": "Gruppe \"{name}\" wurde erfolgreich erstellt!",
       "groupFailed": "Gruppe konnte nicht erstellt werden"
     },
     "createGroupAction": "Neue Gruppe erstellen",
     "newConversationAction": "Neue Unterhaltung",
     "noGroups": "Noch keine Gruppen",
-    "noGroupsDesc": "Gruppen helfen Ihnen, mit mehreren Personen gleichzeitig zusammenzuarbeiten.",
+    "noGroupsDesc": "Gruppen helfen dir, mit mehreren Personen gleichzeitig zusammenzuarbeiten.",
     "createFirstGroup": "Erste Gruppe erstellen",
     "loading": "Nachrichten werden geladen...",
     "searchConversations": "Unterhaltungen durchsuchen...",
     "searchPlaceholder": "Suchen...",
     "noMessages": "Noch keine Nachrichten",
-    "noMessagesDesc": "Starten Sie eine Unterhaltung, um loszulegen.",
+    "noMessagesDesc": "Starte eine Unterhaltung, um loszulegen.",
     "startConversation": "Unterhaltung starten",
     "emptyState": {
-      "title": "Ihr Postfach ist noch leer",
-      "globalDescription": "Starten Sie eine Unterhaltung oder treten Sie einer Community bei, um sich mit anderen zu verbinden.",
-      "tenantDescription": "Verbinden Sie sich mit Kollegen und Teammitgliedern in Ihrem professionellen Netzwerk.",
+      "title": "Dein Postfach ist noch leer.",
+      "globalDescription": "Starte eine Unterhaltung oder tritt einer Community bei, um dich mit anderen zu verbinden.",
+      "tenantDescription": "Verbinde dich mit Kollegen und Teammitgliedern in deinem professionellen Netzwerk.",
       "startConversation": "Unterhaltung starten",
       "discoverPeople": "Personen entdecken"
+    },
+    "group": {
+      "loading": "Gruppe wird geladen…",
+      "cantOpen": "Gruppe konnte nicht geöffnet werden",
+      "backToInbox": "Zurück zum Postfach",
+      "back": "Zurück",
+      "memberOne": "Mitglied",
+      "memberOther": "Mitglieder",
+      "officialBadge": "offizielle Gruppe",
+      "empty": "Noch keine Nachrichten.",
+      "composerPlaceholder": "Nachricht…"
     }
   }
 }

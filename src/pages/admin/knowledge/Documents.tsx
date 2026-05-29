@@ -55,6 +55,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { notifySuccess, t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 type Selected = { scope: KbScope; id: string; title: string } | null;
 
 interface ScopeConfig {
@@ -489,7 +490,7 @@ function SystemDocViewer({ id }: { id: string }) {
           </span>
         </div>
       ) : (
-        <p className="text-xs text-muted-foreground">{t('screens.admin.value0WordsUpdatedValue1', { value0: doc.word_count ?? 0, value1: new Date(doc.updated_at).toLocaleString() })}</p>
+        <p className="text-xs text-muted-foreground">{t('screens.admin.value0WordsUpdatedValue1', { value0: doc.word_count ?? 0, value1: fmtDateTime(new Date(doc.updated_at)) })}</p>
       )}
 
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
@@ -720,7 +721,7 @@ function KbDocViewer({
               className="text-destructive"
             >{t('screens.admin.delete')}
             </Button>
-            <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.updatedValue02', { value0: new Date(doc.updated_at).toLocaleString() })}</span>
+            <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.updatedValue02', { value0: fmtDateTime(new Date(doc.updated_at)) })}</span>
           </>
         ) : (
           <>
@@ -732,7 +733,7 @@ function KbDocViewer({
               />
               {t('screens.admin.optOutThisBaselineDocFor')}
             </label>
-            <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.updatedValue02', { value0: new Date(doc.updated_at).toLocaleString() })}</span>
+            <span className="text-xs text-muted-foreground ml-auto">{t('screens.admin.updatedValue02', { value0: fmtDateTime(new Date(doc.updated_at)) })}</span>
           </>
         )}
       </div>

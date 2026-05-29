@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 const columns = [
   {
     key: "user_id",
@@ -43,7 +44,7 @@ const columns = [
     key: "created_at",
     label: "Joined",
     sortable: true,
-    render: (val: string) => val ? new Date(val).toLocaleDateString() : "-",
+    render: (val: string) => val ? fmtDate(new Date(val)) : "-",
   },
 ];
 

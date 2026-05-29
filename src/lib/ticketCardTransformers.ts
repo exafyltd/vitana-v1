@@ -1,9 +1,10 @@
 import { TicketPurchase } from '@/hooks/useEventTickets';
 import { VisualHorizontalCardProps } from '@/components/ui/visual-horizontal-card';
-import { format, isPast } from 'date-fns';
+import { isPast } from 'date-fns';
 import { Calendar, Ticket } from 'lucide-react';
 import React from 'react';
 
+import { formatDate } from '@/lib/locale-format';
 export function transformTicketToVisualCard(
   ticket: TicketPurchase,
   onViewTicket: (ticket: TicketPurchase) => void
@@ -26,7 +27,7 @@ export function transformTicketToVisualCard(
       {
         icon: React.createElement(Calendar, { className: "h-3 w-3" }),
         text: ticket.event?.start_time 
-          ? format(new Date(ticket.event.start_time), 'EEE, MMM d • h:mm a')
+          ? formatDate(new Date(ticket.event.start_time), 'EEE, MMM d • h:mm a')
           : 'Date TBD'
       },
       {

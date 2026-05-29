@@ -23,10 +23,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
 import { ConversationErrorBoundary } from "@/components/messages/ConversationErrorBoundary";
 import { useHybridMessages } from "@/hooks/useHybridMessages";
+// VTID-03089: chat_groups appear in the unified /inbox list when in the
+// global community context. Selecting one routes to /inbox/g/<id>.
+import { useChatGroupsAsThreads, isChatGroupThreadId, chatGroupIdFromThreadId } from "@/hooks/useChatGroupsAsThreads";
 import { useUnreadSync } from "@/hooks/useUnreadSync";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ClickableAvatar } from "@/components/ui/clickable-avatar";
@@ -54,6 +57,7 @@ import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileAction
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 export default function Messages() {
   const { user } = useAuth();
   const { translate } = useTranslation();
@@ -68,12 +72,22 @@ export default function Messages() {
   // on full refresh the role loads async and the switch was accidentally
   // skipped via roleLoadedRef — making it look like refresh "fixed" it.
   const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
-  const { threads, isLoading, isFetching, context, ...hybridMessages } = useHybridMessages(messageContext);
+  const { threads: apiThreads, isLoading, isFetching, context, ...hybridMessages } = useHybridMessages(messageContext);
   const isGlobalContext = context === 'global';
+
+  // VTID-03089: merge chat_groups (new system) into the inbox list when in
+  // the community/global context. Selecting one is intercepted below and
+  // routed to /inbox/g/<id> instead of inline thread load.
+  const { threads: chatGroupThreads } = useChatGroupsAsThreads(isGlobalContext);
+  const threads = useMemo(() => {
+    if (!isGlobalContext) return apiThreads;
+    return [...chatGroupThreads, ...apiThreads];
+  }, [apiThreads, chatGroupThreads, isGlobalContext]);
 
   const userSelectedContextRef = React.useRef(false);
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
+
   const [showNewConversation, setShowNewConversation] = useState(false);
   const [showCreateGroup, setShowCreateGroup] = useState(false);
   const [densityMode, setDensityMode] = useState<'comfortable' | 'compact'>('comfortable');
@@ -88,13 +102,19 @@ export default function Messages() {
     { value: 'tenant', label: translate('inbox.contextTabs.network', 'Network'), icon: '🏢' },
   ];
 
-  // Parse query params to auto-select thread from notifications
+  // Parse query params + path segments to auto-select thread from notifications.
+  // Path-based forms (/inbox/u/:recipientId, /inbox/t/:threadId) were added as
+  // a follow-up to BOOTSTRAP-NOTIF-MESSENGER-DIAG because Appilix's Android
+  // in-app browser silently fails on URLs with query strings. The query-param
+  // form is kept for backward compatibility with legacy notifications and
+  // bookmarks.
   const [searchParams, setSearchParams] = useSearchParams();
-  const urlThreadId = searchParams.get('thread');
-  const urlRecipientId = searchParams.get('recipient');
+  const pathParams = useParams<{ recipientId?: string; threadId?: string }>();
+  const urlThreadId = pathParams.threadId || searchParams.get('thread');
+  const urlRecipientId = pathParams.recipientId || searchParams.get('recipient');
   const urlContext = searchParams.get('context') as 'global' | 'tenant' | null;
 
-  // Legacy ?thread= param (thread UUID — used by old notifications)
+  // ?thread= param OR /inbox/t/:threadId path (thread UUID)
   useEffect(() => {
     if (urlThreadId) {
       console.log('[Messages] Opening thread from URL:', { urlThreadId, urlContext });
@@ -105,16 +125,24 @@ export default function Messages() {
         setMessageContext(urlContext);
       }
 
-      const newParams = new URLSearchParams(searchParams);
-      newParams.delete('thread');
-      newParams.delete('context');
-      setSearchParams(newParams, { replace: true });
+      // Strip the deep-link from the URL so refreshes don't keep re-applying it.
+      // For path-based deep-links we also navigate back to bare /inbox.
+      if (pathParams.threadId) {
+        navigate('/inbox', { replace: true });
+      } else {
+        const newParams = new URLSearchParams(searchParams);
+        newParams.delete('thread');
+        newParams.delete('context');
+        setSearchParams(newParams, { replace: true });
+      }
     }
-  }, [urlThreadId, urlContext, setSearchParams]);
+  // pathParams.threadId is a primitive; including it triggers the strip exactly once.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlThreadId, urlContext]);
 
-  // BOOTSTRAP-NOTIF-DEEP-LINK: ?recipient=<user_id> from notification deep-links.
-  // Store the recipient, set context, clear URL params immediately.
-  // Thread resolution happens in the next effect once conversations load.
+  // BOOTSTRAP-NOTIF-DEEP-LINK: ?recipient= OR /inbox/u/:recipientId — user_id
+  // from a chat notification. Store the recipient, set context, clear URL,
+  // then resolve to a real thread once conversations load.
   const [pendingRecipient, setPendingRecipient] = useState<string | null>(null);
 
   useEffect(() => {
@@ -126,12 +154,17 @@ export default function Messages() {
         setMessageContext(urlContext);
       }
 
-      const newParams = new URLSearchParams(searchParams);
-      newParams.delete('recipient');
-      newParams.delete('context');
-      setSearchParams(newParams, { replace: true });
+      if (pathParams.recipientId) {
+        navigate('/inbox', { replace: true });
+      } else {
+        const newParams = new URLSearchParams(searchParams);
+        newParams.delete('recipient');
+        newParams.delete('context');
+        setSearchParams(newParams, { replace: true });
+      }
     }
-  }, [urlRecipientId, urlContext, setSearchParams]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlRecipientId, urlContext]);
 
   // Once threads load, resolve pendingRecipient → real thread UUID
   useEffect(() => {
@@ -167,8 +200,12 @@ export default function Messages() {
   // Only auto-select on desktop - on mobile, users should see the list first and tap to open
   useEffect(() => {
     if (displayThreads.length > 0 && !selectedThreadId && !isMobile) {
-      // Get the most recent conversation from the sorted and deduplicated list
+      // VTID-03089: chat_group threads have their own /inbox/g/<id> page,
+      // so they must not be picked up by the inline auto-selector — that
+      // would re-trigger the standalone-route navigation and trap the user
+      // in a "Loading group…" loop.
       const sortedThreads = [...displayThreads]
+        .filter(t => !isChatGroupThreadId(t.id))
         .sort((a, b) => {
           const ap = pinnedThreads.has(a.id) ? 1 : 0;
           const bp = pinnedThreads.has(b.id) ? 1 : 0;
@@ -229,6 +266,23 @@ export default function Messages() {
     }));
   }, []);
 
+  // VTID-03089: chat_group threads open at their standalone /inbox/g/<id>
+  // view instead of inline ConversationView. This must be branched at click
+  // time — a post-hoc selectedThreadId interceptor created a back-button
+  // loop with the desktop auto-select effect (FIRST 100 → auto-selected →
+  // re-navigated → "Loading group…" loop).
+  const handleThreadOpen = useCallback((thread: { id: string; unread_count?: number }) => {
+    if (isChatGroupThreadId(thread.id)) {
+      navigate(`/inbox/g/${chatGroupIdFromThreadId(thread.id)}`);
+      return;
+    }
+    setSelectedThreadId(thread.id);
+    setSelectedRecipientId(null);
+    if ((thread.unread_count || 0) > 0) {
+      handleConversationOpened(thread.id);
+    }
+  }, [navigate, handleConversationOpened]);
+
   // Search dropdown items for inbox search
   const searchDropdownItems = React.useMemo(() => {
     if (!inboxSearchQuery.trim()) return [];
@@ -252,13 +306,9 @@ export default function Messages() {
   }, [displayThreads, inboxSearchQuery, user?.id]);
 
   const handleSearchItemClick = useCallback((threadId: string) => {
-    setSelectedThreadId(threadId);
-    setSelectedRecipientId(null);
     const thread = displayThreads.find(t => t.id === threadId);
-    if (thread && thread.unread_count > 0) {
-      handleConversationOpened(threadId);
-    }
-  }, [displayThreads, handleConversationOpened]);
+    handleThreadOpen({ id: threadId, unread_count: thread?.unread_count });
+  }, [displayThreads, handleThreadOpen]);
 
   // Move the just-sent conversation to the top instantly via React Query cache
   const handleMessageSent = useCallback((threadId: string, newMessage: any, ctx: 'global' | 'tenant') => {
@@ -454,11 +504,7 @@ export default function Messages() {
                       } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
                       onClick={() => {
                         console.log('🎯 Messages.tsx: Thread clicked', { threadId: thread.id, unreadCount: thread.unread_count });
-                        setSelectedThreadId(thread.id);
-                        setSelectedRecipientId(null);
-                        if (thread.unread_count > 0) {
-                          handleConversationOpened(thread.id);
-                        }
+                        handleThreadOpen(thread);
                       }}
                     >
                       <div className="flex items-start space-x-3">
@@ -511,7 +557,7 @@ export default function Messages() {
                               <span className={`text-muted-foreground whitespace-nowrap ${
                                 densityMode === 'compact' ? 'text-xs' : 'text-xs'
                               }`}>
-                                {thread.updated_at && new Date(thread.updated_at).toLocaleDateString('en-US', {
+                                {thread.updated_at && fmtDate(new Date(thread.updated_at), {
                                   month: 'short',
                                   day: 'numeric'
                                 })}
@@ -593,13 +639,7 @@ export default function Messages() {
                           ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
                           : 'hover:shadow-sm'
                       } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
-                      onClick={() => {
-                        setSelectedThreadId(thread.id);
-                        setSelectedRecipientId(null);
-                        if (thread.unread_count > 0) {
-                          handleConversationOpened(thread.id);
-                        }
-                      }}
+                      onClick={() => handleThreadOpen(thread)}
                     >
                       <div className="flex items-start space-x-3">
                         <GroupAvatarStack 
@@ -644,7 +684,7 @@ export default function Messages() {
                             
                             <div className="flex flex-col items-end gap-1 pl-1.5 ml-2 flex-shrink-0">
                               <span className="text-xs text-muted-foreground whitespace-nowrap">
-                                {thread.updated_at && new Date(thread.updated_at).toLocaleDateString('en-US', {
+                                {thread.updated_at && fmtDate(new Date(thread.updated_at), {
                                   month: 'short',
                                   day: 'numeric'
                                 })}
@@ -715,18 +755,19 @@ export default function Messages() {
                           ? 'bg-domain-messages-tint border-l-4 border-l-domain-messages-accent shadow-md' 
                           : 'hover:shadow-sm'
                       } ${isPinned ? 'ring-1 ring-domain-messages-accent/30' : ''}`}
-                      onClick={() => {
-                        setSelectedThreadId(thread.id);
-                        setSelectedRecipientId(null);
-                        if (thread.unread_count > 0) {
-                          handleConversationOpened(thread.id);
-                        }
-                      }}
+                      onClick={() => handleThreadOpen(thread)}
                     >
                       <div className="flex items-start space-x-3">
                         <div className="relative">
                           <Avatar className={densityMode === 'compact' ? 'w-8 h-8' : 'w-10 h-10'}>
-                            <AvatarImage src={getConversationDisplayAvatar(thread, user?.id)} />
+                            {/* loading=lazy + decoding=async: defers HTTP fetch + image decode
+                                for off-viewport threads in long inboxes; native browser support,
+                                no behavior change for visible avatars (~125% viewport threshold). */}
+                            <AvatarImage
+                              src={getConversationDisplayAvatar(thread, user?.id)}
+                              loading="lazy"
+                              decoding="async"
+                            />
                             <AvatarFallback>
                               {getConversationDisplayTitle(thread, user?.id)?.[0]?.toUpperCase() || '?'}
                             </AvatarFallback>
@@ -758,7 +799,7 @@ export default function Messages() {
                             
                             <div className="flex flex-col items-end gap-1 pl-1.5 ml-2 flex-shrink-0">
                               <span className="text-xs text-muted-foreground whitespace-nowrap">
-                                {thread.updated_at && new Date(thread.updated_at).toLocaleDateString('en-US', {
+                                {thread.updated_at && fmtDate(new Date(thread.updated_at), {
                                   month: 'short',
                                   day: 'numeric'
                                 })}
@@ -967,13 +1008,7 @@ export default function Messages() {
             isGroup={thread.type === 'group'}
             participantUserId={getOtherParticipant(thread, user?.id)?.user_id}
             context={messageContext}
-            onClick={() => {
-              setSelectedThreadId(thread.id);
-              setSelectedRecipientId(null);
-              if ((thread.unread_count || 0) > 0) {
-                handleConversationOpened(thread.id);
-              }
-            }}
+            onClick={() => handleThreadOpen(thread)}
           />
         ))}
       </div>

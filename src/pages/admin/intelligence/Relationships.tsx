@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 const NODE_TYPE_VARIANT: Record<string, "default" | "secondary" | "outline" | "destructive"> = {
   person: "default",
   group: "secondary",
@@ -42,7 +43,7 @@ const nodeColumns = [
     key: "created_at",
     label: "Created",
     sortable: true,
-    render: (val: string) => val ? new Date(val).toLocaleDateString() : "-",
+    render: (val: string) => val ? fmtDate(new Date(val)) : "-",
   },
 ];
 

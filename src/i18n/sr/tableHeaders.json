@@ -1,0 +1,15 @@
+{
+  "tableHeaders": {
+    "groupName": "Naziv grupe",
+    "category": "Kategorija",
+    "members": "Članovi",
+    "privacy": "Privatnost",
+    "status": "Status",
+    "actions": "Akcije",
+    "name": "Ime",
+    "role": "Uloga",
+    "email": "Email",
+    "date": "Datum",
+    "amount": "Iznos"
+  }
+}

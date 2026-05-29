@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowDownLeft, ArrowUpRight, RefreshCw, Gift, ChevronRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { format } from "date-fns";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtNumber, formatDate } from '@/lib/locale-format';
 interface Transaction {
   id: string;
   transaction_type: string;
@@ -89,7 +89,7 @@ export function MobileWalletTransactionList({
 
   const formatAmount = (tx: Transaction) => {
     const prefix = tx.amount > 0 ? '+' : '';
-    return `${prefix}${tx.amount.toLocaleString()}`;
+    return `${prefix}${fmtNumber(tx.amount)}`;
   };
 
   const getStatusColor = (status: string) => {
@@ -174,7 +174,7 @@ export function MobileWalletTransactionList({
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">{formatTransactionTitle(tx)}</p>
                 <p className="text-xs text-muted-foreground">
-                  {format(new Date(tx.created_at), 'MMM d, h:mm a')}
+                  {formatDate(new Date(tx.created_at), 'MMM d, h:mm a')}
                   {tx.status !== 'completed' && (
                     <span className={`ml-2 ${getStatusColor(tx.status)}`}>
                       • {tx.status}

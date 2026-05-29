@@ -235,7 +235,7 @@ export default function Members() {
             disabled={loading}
             onClick={() => fetchPage(false)}
           >
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Load more"}
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : t('screens.community.loadMore')}
           </Button>
         </div>
       )}

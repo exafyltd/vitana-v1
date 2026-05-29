@@ -9,6 +9,7 @@ import sunriseRoutineImg from "@/assets/ai-feed/sunrise-routine.jpg";
 import hydrationTrackingImg from "@/assets/ai-feed/hydration-tracking.jpg";
 import eveningWinddownImg from "@/assets/ai-feed/evening-winddown.jpg";
 
+import { fmtDate, fmtTime } from '@/lib/locale-format';
 interface VisualActivityFeedProps {
   activities: Array<{
     id: string;
@@ -218,13 +219,13 @@ export function VisualActivityFeed({ activities }: VisualActivityFeedProps) {
                     
                     <div className="text-center">
                       <div className="text-xs text-muted-foreground mb-1">
-                        {new Date(activity.timestamp).toLocaleDateString(undefined, { 
+                        {fmtDate(new Date(activity.timestamp), { 
                           month: 'short', 
                           day: 'numeric' 
                         })}
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {new Date(activity.timestamp).toLocaleTimeString(undefined, { 
+                        {fmtTime(new Date(activity.timestamp), { 
                           hour: '2-digit', 
                           minute: '2-digit',
                           hour12: false

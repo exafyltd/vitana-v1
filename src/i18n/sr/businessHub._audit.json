@@ -1,0 +1,98 @@
+{
+  "verdicts": {
+    "businessHub.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'du').",
+      "suggested": "Razvijaj svoj wellness biznis",
+      "phase": "llm"
+    },
+    "businessHub.tabs.snapshot": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.tabs.services": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.tabs.sales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.tabs.insights": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.recentActivity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.clients": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.analytics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.searchBusiness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.noServices": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.noServicesDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'du').",
+      "suggested": "Kreiraj prvu uslugu da bi počeo da privlačiš klijente.",
+      "phase": "llm"
+    },
+    "businessHub.createService": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.noClients": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.noClientsDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'du').",
+      "suggested": "Tvoji klijenti će se pojaviti ovde.",
+      "phase": "llm"
+    },
+    "businessHub.noSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "businessHub.noSalesDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal 'vi' instead of informal 'du').",
+      "suggested": "Tvoja istorija prodaja će se pojaviti ovde.",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:01:43.475Z"
+}

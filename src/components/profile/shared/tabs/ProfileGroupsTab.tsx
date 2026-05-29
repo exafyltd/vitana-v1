@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useNavigate } from "react-router-dom";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface ProfileGroupsTabProps {
   profile: UserProfile;
   scope: Scope;
@@ -108,7 +109,7 @@ export function ProfileGroupsTab({ profile }: ProfileGroupsTabProps) {
                       {group.name}
                     </h3>
                     <p className="text-sm text-white/90 flex items-center gap-1">
-                      <Users className="w-4 h-4" />{t('screens.profile.value0Members', { value0: group.member_count.toLocaleString() })}
+                      <Users className="w-4 h-4" />{t('screens.profile.value0Members', { value0: fmtNumber(group.member_count) })}
                     </p>
                   </div>
                   

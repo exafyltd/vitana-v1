@@ -1,0 +1,10 @@
+{
+  "qrShare": {
+    "title": "Código QR",
+    "scanToView": "Escanea para ver el perfil",
+    "shareProfile": "Compartir perfil",
+    "copyLink": "Copiar enlace",
+    "download": "Descargar",
+    "linkCopied": "¡Enlace copiado!"
+  }
+}

@@ -264,6 +264,7 @@ Rules:
 - Placeholders like {name} or {count} must remain literal.
 - Use du-form (informal "du", not "Sie") for German.
 - Tech loanwords (Community, Fitness, Premium, Live, etc.) staying in English is fine in German.
+- **Compound-word rule**: flag as EDIT_SUGGESTED any ${TARGET_LANG_NAME} translation containing a single word longer than 22 characters that could be split. Suggest the hyphenated form. Example: "Benachrichtigungseinstellungen" → "Benachrichtigungs-Einstellungen". Words like "Datenschutz" or "Geburtstagsfeier" (short compounds) are fine.
 - Output ONLY the JSON object — no preamble, no commentary.
 
 Entries:

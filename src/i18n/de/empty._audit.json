@@ -1,0 +1,126 @@
+{
+  "verdicts": {
+    "empty.noAppsFound": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Formal register ('Ihrer') instead of informal ('deiner').",
+      "suggested": "Keine Apps gefunden, die deiner Suche entsprechen.",
+      "phase": "llm"
+    },
+    "empty.noEventsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noContactsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noContactsFoundMatching": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noGroupsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noResultsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noReportsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noUsersFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noTransactionsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noEventsYet": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Formal register ('Erstellen Sie') instead of informal ('Erstelle').",
+      "suggested": "Noch keine Veranstaltungen. Erstelle zuerst eine Veranstaltung.",
+      "phase": "llm"
+    },
+    "empty.tryAdjustingFilters": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Formal register ('Versuchen Sie', 'Ihre') instead of informal ('Versuche', 'deine').",
+      "suggested": "Versuche, deine Filter oder Suchanfrage anzupassen.",
+      "phase": "llm"
+    },
+    "empty.noData": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noMessages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noNotifications": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.indexSheetNextDays": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.indexSheetHorizon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.myJourneyPath": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.myJourneyOnePillar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.autopilotPopupZero": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.healthEmpty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.noActionsMatchedYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.actionsPendingOne": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "empty.actionsPendingOther": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:10:19.509Z"
+}

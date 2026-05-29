@@ -13,6 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useOverviewAlerts } from "@/hooks/useAdminOverview";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 export default function OverviewAlerts() {
   const alertsQuery = useOverviewAlerts();
   const alerts = alertsQuery.data || [];
@@ -59,7 +60,7 @@ export default function OverviewAlerts() {
                   <TableRow key={a.id}>
                     <TableCell><AlertTriangle className="h-4 w-4 text-destructive" /></TableCell>
                     <TableCell className="text-xs font-mono whitespace-nowrap">
-                      {new Date(a.created_at).toLocaleString()}
+                      {fmtDateTime(new Date(a.created_at))}
                     </TableCell>
                     <TableCell className="text-sm">{a.topic}</TableCell>
                     <TableCell>

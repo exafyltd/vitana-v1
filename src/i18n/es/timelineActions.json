@@ -1,0 +1,39 @@
+{
+  "timelineActions": {
+    "title": "Acciones de la línea de tiempo",
+    "items": {
+      "logHealthEvent": {
+        "title": "Registrar evento de salud",
+        "description": "Registra hitos importantes de salud"
+      },
+      "markAchievement": {
+        "title": "Marcar logro",
+        "description": "Celebra metas de bienestar alcanzadas"
+      },
+      "recordLifeMoment": {
+        "title": "Registrar momento de vida",
+        "description": "Captura experiencias significativas"
+      },
+      "addPhotoMemory": {
+        "title": "Agregar recuerdo con foto",
+        "description": "Línea de tiempo visual con fotos de salud"
+      },
+      "voiceTimelineEntry": {
+        "title": "Entrada de voz en la línea de tiempo",
+        "description": "Actualizaciones rápidas de salud por audio"
+      },
+      "trackProgress": {
+        "title": "Seguir progreso",
+        "description": "Registra métricas y tendencias de bienestar"
+      },
+      "activityCheckIn": {
+        "title": "Registro de actividad",
+        "description": "Registra entrenamientos y actividades"
+      },
+      "setTimelineGoal": {
+        "title": "Establecer meta en la línea de tiempo",
+        "description": "Crea objetivos de salud futuros"
+      }
+    }
+  }
+}
