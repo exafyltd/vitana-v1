@@ -21,10 +21,8 @@
       "phase": "llm"
     },
     "vitanaIndex.subtitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The preposition 'über' is a bit literal and less idiomatic here. 'In' or 'über ... hinweg' would be more natural.",
-      "suggested": "Allgemeine Wellness-Balance in allen Gesundheitssäulen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "vitanaIndex.veryPoor": {
@@ -43,10 +41,8 @@
       "phase": "llm"
     },
     "vitanaIndex.improving": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Verbessernd' is a participle and not idiomatic as a standalone status. It means 'improving (something)'.",
-      "suggested": "Verbessert sich",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "vitanaIndex.good": {
@@ -85,23 +81,19 @@
       "phase": "llm"
     },
     "vitanaIndex.tiers.starting": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Anfang' is a noun ('beginning'). As a status or level, it's not idiomatic.",
-      "suggested": "Anfänger",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.5,
+      "issue": "English 'Starting' is ambiguous; 'Anfänger' (noun, person) may not accurately convey the intended meaning if 'Starting' refers to a phase or action rather than a person's skill level.",
       "phase": "llm"
     },
     "vitanaIndex.tiers.early": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "'Früh' (early) is a bit abrupt as a standalone level/status. While understandable, it could be more specific (e.g., 'Frühphase').",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "vitanaIndex.tiers.building": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Aufbau' is a noun ('build-up', 'construction'). As a status, it's not idiomatic.",
-      "suggested": "Im Aufbau",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "vitanaIndex.tiers.strong": {
@@ -115,5 +107,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:42:57.872Z"
+  "generatedAt": "2026-05-29T07:26:36.244Z"
 }

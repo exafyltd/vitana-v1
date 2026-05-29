@@ -6,10 +6,8 @@
       "phase": "llm"
     },
     "profilePosts.placeholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Wrong pronoun, changes meaning from 'What's on your mind?' to 'What's on my mind?'.",
-      "suggested": "Was bewegt dich gerade?",
       "phase": "llm"
     },
     "profilePosts.post": {
@@ -48,5 +46,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:19:20.298Z"
+  "generatedAt": "2026-05-29T07:13:54.933Z"
 }

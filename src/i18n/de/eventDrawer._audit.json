@@ -66,17 +66,13 @@
       "phase": "llm"
     },
     "eventDrawer.accessible": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Barrierefrei is too specific (accessibility for disabilities); Zugänglich is more general for 'easy to access/available' in a UI context.",
-      "suggested": "Zugänglich",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "eventDrawer.followersGoing": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Personen, denen du folgst, nehmen teil",
       "phase": "llm"
     },
     "eventDrawer.followBack": {
@@ -220,17 +216,13 @@
       "phase": "llm"
     },
     "eventDrawer.signInToMessage": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Bitte melde dich an, um dem Gastgeber zu schreiben",
       "phase": "llm"
     },
     "eventDrawer.cannotMessageHost": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly different nuance; 'nicht erreichbar' implies unavailability, not inability to message.",
-      "suggested": "Gastgeber kann nicht angeschrieben werden",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "eventDrawer.hostNotAvailable": {
@@ -244,10 +236,8 @@
       "phase": "llm"
     },
     "eventDrawer.youAreHost": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Du bist der Gastgeber dieses Events",
       "phase": "llm"
     },
     "eventDrawer.messageSent": {
@@ -256,10 +246,8 @@
       "phase": "llm"
     },
     "eventDrawer.messageSentDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'deine').",
-      "suggested": "Deine Nachricht wurde an {name} gesendet",
       "phase": "llm"
     },
     "eventDrawer.leftMeetup": {
@@ -273,10 +261,8 @@
       "phase": "llm"
     },
     "eventDrawer.removedFromEvent": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Du wurdest von diesem Event entfernt.",
       "phase": "llm"
     },
     "eventDrawer.error": {
@@ -285,10 +271,8 @@
       "phase": "llm"
     },
     "eventDrawer.leaveError": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Event konnte nicht verlassen werden. Bitte versuche es erneut.",
       "phase": "llm"
     },
     "eventDrawer.addToCalendar": {
@@ -312,5 +296,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:11:14.066Z"
+  "generatedAt": "2026-05-29T07:11:25.653Z"
 }

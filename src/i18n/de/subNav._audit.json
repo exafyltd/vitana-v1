@@ -176,10 +176,8 @@
       "phase": "llm"
     },
     "subNav.timeline": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Zeitachse\" is technically correct but sounds formal/technical for a friendly wellness app UI. \"Verlauf\" or \"Timeline\" (as a loanword) would be more common and friendly.",
-      "suggested": "Verlauf",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "subNav.diary": {
@@ -198,10 +196,8 @@
       "phase": "llm"
     },
     "subNav.preferences": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Präferenzen\" is understood but sounds formal/academic. \"Einstellungen\" is the standard and more common term for app settings in German UI, fitting a friendly register better.",
-      "suggested": "Einstellungen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "subNav.privacy": {
@@ -210,12 +206,10 @@
       "phase": "llm"
     },
     "subNav.connectedApps": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The translation is incomplete; \" & Integrations\" is missing.",
-      "suggested": "Verbundene Apps & Integrationen",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:32:28.209Z"
+  "generatedAt": "2026-05-29T07:25:15.740Z"
 }
