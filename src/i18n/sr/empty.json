@@ -1,0 +1,27 @@
+{
+  "empty": {
+    "noAppsFound": "Nema pronađenih aplikacija koje odgovaraju tvojoj pretrazi.",
+    "noEventsFound": "Nema događaja",
+    "noContactsFound": "Nema kontakata",
+    "noContactsFoundMatching": "Nema kontakata koji odgovaraju \"{query}\"",
+    "noGroupsFound": "Nema grupa",
+    "noResultsFound": "Nema rezultata",
+    "noReportsFound": "Nema izveštaja",
+    "noUsersFound": "Nema korisnika",
+    "noTransactionsFound": "Nema transakcija",
+    "noEventsYet": "Još uvek nema događaja. Prvo kreiraj događaj.",
+    "tryAdjustingFilters": "Pokušaj da prilagodiš filtere ili upit za pretragu.",
+    "noData": "Nema dostupnih podataka",
+    "noMessages": "Nema poruka",
+    "noNotifications": "Nema obaveštenja",
+    "indexSheetNextDays": "Nema aktivnih Autopilot predloga. Kada se nešto pojavi ovde, dovršavanje toga će pomeriti tvoj Indeks.",
+    "indexSheetHorizon": "Potrebno je još nekoliko dana podataka da bi se projektovao tvoj 30-dnevni luk.",
+    "myJourneyPath": "Tvoj put tek počinje. Kada Autopilot bude imao predloge, pojaviće se ovde kao put kojim možeš hodati.",
+    "myJourneyOnePillar": "Izaberi jednu malu stvar — gledaj kako se tvoj Indeks pomera.",
+    "autopilotPopupZero": "Izaberi akcije da vidiš podizanje Indeksa.",
+    "healthEmpty": "Zabeleži svoj prvi unos da bi pokrenuo Indeks.",
+    "noActionsMatchedYet": "Još uvek nema podudarnih akcija — Autopilot oblikuje predloge.",
+    "actionsPendingOne": "{count} akcija na čekanju",
+    "actionsPendingOther": "{count} akcija na čekanju"
+  }
+}

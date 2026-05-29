@@ -6,7 +6,6 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { 
   Upload, FileText, CalendarIcon, Loader2, CheckCircle,
@@ -15,6 +14,7 @@ import {
 } from "lucide-react";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 const REPORT_CATEGORIES = [
   { value: 'blood_panel', label: 'Blood Panel', icon: Droplets, color: 'bg-red-500/10 text-red-600 border-red-500/20' },
   { value: 'genomics', label: 'Genomics', icon: Dna, color: 'bg-purple-500/10 text-purple-600 border-purple-500/20' },
@@ -108,7 +108,7 @@ export function HealthReportUploadSheet({
         .insert({
           tenant_id: tenantId,
           user_id: user.id,
-          report_date: format(testDate, 'yyyy-MM-dd'),
+          report_date: formatDate(testDate, 'yyyy-MM-dd'),
           source: 'upload',
           // New columns added by migration - cast to bypass generated types until refresh
           ...(({
@@ -233,7 +233,7 @@ export function HealthReportUploadSheet({
               <PopoverTrigger asChild>
                 <Button variant="outline" className="w-full justify-start text-left font-normal">
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  {format(testDate, "PPP")}
+                  {formatDate(testDate, "PPP")}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">

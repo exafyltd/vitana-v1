@@ -54,10 +54,10 @@ export default function Companion() {
   const companionData = {
     vitanaIndex: 742,
     suggestions: [
-      "Take a 5-minute breathing break",
-      "Drink a glass of water",
-      "Check your posture",
-      "Plan tomorrow's workout"
+      t('screens.ai.companionSugg_breathing'),
+      t('screens.ai.companionSugg_water'),
+      t('screens.ai.companionSugg_posture'),
+      t('screens.ai.companionSugg_workout'),
     ]
   };
 
@@ -181,8 +181,8 @@ export default function Companion() {
                 icon={Zap}
                 category="autopilot"
                 title={t('screens.ai.autopilotActivityLog')}
-                subtitle="Recent AI actions on your behalf"
-                buttonText="View Full Log"
+                subtitle={t('screens.ai.subtitle_recentAiActions')}
+                buttonText={t('screens.ai.button_viewFullLog')}
                 onButtonClick={() => handleAutopilotClick('view-all')}
                 content={
                   <div className="space-y-2 max-h-48 overflow-y-auto">
@@ -228,19 +228,19 @@ export default function Companion() {
               <SmartSuggestions
                 suggestions={[
                   {
-                    title: "This Week's Journey",
-                    description: "You've made remarkable progress in hydration and sleep quality. Your dedication to the morning meditation routine has created a positive cascade effect across all wellness pillars.",
+                    title: t('screens.ai.storyTitle_thisWeeksJourney'),
+                    description: t('screens.ai.storyDesc_thisWeeksJourney'),
                     type: "insight" as const,
                     priority: "high" as const,
-                    action: "Read Full Story",
+                    action: t('screens.ai.actionLabel_readFullStory'),
                     onAction: () => handleMemoryClick('weekly_story')
                   },
                   {
-                    title: "Pattern Discovery",
-                    description: "AI noticed that your evening walks correlate with 18% better sleep quality. This insight emerged from analyzing 3 weeks of your wellness data.",
+                    title: t('screens.ai.storyTitle_patternDiscovery'),
+                    description: t('screens.ai.storyDesc_patternDiscovery'),
                     type: "insight" as const,
                     priority: "medium" as const,
-                    action: "Explore Pattern",
+                    action: t('screens.ai.actionLabel_explorePattern'),
                     onAction: () => handleMemoryClick('sleep_pattern')
                   }
                 ]}

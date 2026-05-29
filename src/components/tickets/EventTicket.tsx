@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import { format } from "date-fns";
 import { Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import html2canvas from "html2canvas";
 import { TicketShareSheet } from "./TicketShareSheet";
 import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 // Tenant Types
 export type TicketTenant = "vitana" | "maxina" | "alkalma" | "earthlinks";
 
@@ -140,7 +140,7 @@ export function EventTicket({
   const barcodeHeights = [3, 5, 2, 6, 4, 2, 5, 3, 6, 2, 4, 5, 3, 2, 6, 4];
   
   // Generate tenant-formatted serial
-  const serialNumber = `VTN-${config.tenantCode}-${format(eventDate, "yyyyMMdd")}-${String(sequence).padStart(5, "0")}`;
+  const serialNumber = `VTN-${config.tenantCode}-${formatDate(eventDate, "yyyyMMdd")}-${String(sequence).padStart(5, "0")}`;
 
   return (
     <div className="space-y-4">
@@ -338,7 +338,7 @@ export function EventTicket({
                 {t('screens.tickets.date')}
               </div>
               <p className="text-white font-semibold text-sm drop-shadow-sm">
-                {format(eventDate, "EEE, MMM d, yyyy")}
+                {formatDate(eventDate, "EEE, MMM d, yyyy")}
               </p>
             </div>
             
@@ -348,7 +348,7 @@ export function EventTicket({
                 {t('screens.tickets.time')}
               </div>
               <p className="text-white font-semibold text-sm drop-shadow-sm">
-                {format(eventDate, "h:mm a")}
+                {formatDate(eventDate, "h:mm a")}
               </p>
             </div>
           </div>
@@ -468,7 +468,7 @@ export function EventTicket({
         ticketRef={ticketRef}
         eventTitle={eventTitle}
         ticketNumber={ticketNumber}
-        eventDate={format(eventDate, "EEE, MMM d, yyyy 'at' h:mm a")}
+        eventDate={formatDate(eventDate, "EEE, MMM d, yyyy 'at' h:mm a")}
         eventLocation={eventLocation}
         eventImageUrl={eventImageUrl}
         ticketType={ticketType}

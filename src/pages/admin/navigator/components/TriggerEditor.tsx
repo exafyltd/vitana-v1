@@ -39,6 +39,7 @@ import {
 } from "@/hooks/useAdminNavigator";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 const CATEGORIES = [
   "public", "auth", "community", "business", "wallet", "health",
   "discover", "home", "memory", "ai", "inbox", "settings",
@@ -412,7 +413,7 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
       {entry && (
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           <Badge variant="outline">{entry.id.slice(0, 8)}</Badge>
-          <span>{t('screens.admin.updatedValue0Value1', { value0: " ", value1: entry.updated_at ? new Date(entry.updated_at).toLocaleString() : "—" })}</span>
+          <span>{t('screens.admin.updatedValue0Value1', { value0: " ", value1: entry.updated_at ? fmtDateTime(new Date(entry.updated_at)) : "—" })}</span>
           {entry.tenant_id ? (
             <Badge variant="secondary">{t('screens.admin.tenantValue0', { value0: entry.tenant_id.slice(0, 8) })}</Badge>
           ) : (

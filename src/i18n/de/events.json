@@ -6,22 +6,22 @@
     "tabs": {
       "today": "Heute",
       "upcoming": "Kommende",
-      "following": "Folgende",
+      "following": "Gefolgt",
       "recommended": "Empfohlen"
     },
     "noEvents": "Keine Veranstaltungen geplant",
     "checkBack": "Schau bald wieder für kommende Community-Events!",
     "emptyStates": {
       "noEventsToday": "Heute keine Events",
-      "noEventsTodayDesc": "Heute sind keine Events geplant. Schauen Sie sich kommende Events an oder erstellen Sie Ihr eigenes!",
+      "noEventsTodayDesc": "Heute sind keine Events geplant. Schau dir kommende Events an oder erstelle dein eigenes!",
       "createEvent": "Event erstellen",
       "viewUpcoming": "Kommende Events ansehen",
-      "followingTitle": "Beiträge von Personen, denen Sie folgen",
-      "followingDesc": "Inhalte von Personen und Gruppen, denen Sie folgen, erscheinen hier",
+      "followingTitle": "Beiträge von Personen, denen du folgst",
+      "followingDesc": "Inhalte von Personen und Gruppen, denen du folgst, erscheinen hier",
       "findPeople": "Personen zum Folgen finden",
       "noPostsFromFollowing": "Noch keine Beiträge",
-      "noPostsFromFollowingDesc": "Personen, denen Sie folgen, haben noch keine Events oder Meetups erstellt.",
-      "youFollow": "Sie folgen",
+      "noPostsFromFollowingDesc": "Personen, denen du folgst, haben noch keine Events oder Meetups erstellt.",
+      "youFollow": "Du folgst",
       "loadingFollowing": "Beiträge werden geladen…"
     }
   }

@@ -1,8 +1,7 @@
 import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Badge } from "@/components/ui/badge";
 import PresenceIndicator from "@/components/messages/PresenceIndicator";
-import { formatDistanceToNow } from "date-fns";
-
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface MobileConversationCardProps {
   id: string;
   name: string;

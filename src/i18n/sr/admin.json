@@ -1,0 +1,25 @@
+{
+  "admin": {
+    "media": {
+      "updateSuccess": "Status uspešno ažuriran",
+      "updateFailed": "Neuspešno ažuriranje statusa",
+      "deleteSuccess": "Uspešno obrisano",
+      "deleteFailed": "Neuspešno brisanje",
+      "podcastStatus": "Podcast {status}",
+      "podcastDeleted": "Podcast obrisan",
+      "musicDeleted": "Muzika obrisana",
+      "videoDeleted": "Video obrisan",
+      "searchPodcasts": "Pretraži podkaste...",
+      "searchMusic": "Pretraži muziku...",
+      "searchVideos": "Pretraži video...",
+      "filterByStatus": "Filtriraj po statusu",
+      "allStatus": "Svi statusi",
+      "pending": "Na čekanju",
+      "approved": "Odobreno",
+      "rejected": "Odbijeno",
+      "flagged": "Obeleženo",
+      "podcastManagement": "Upravljanje podkastima",
+      "podcastManagementDesc": "Pregledaj i moderiraj podkast upload-e"
+    }
+  }
+}

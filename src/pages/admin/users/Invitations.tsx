@@ -18,6 +18,7 @@ import { adminUsersNavigation } from "@/config/navigation";
 import { useSignupInvitations } from "@/hooks/useSignupFunnel";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 const STATUS_OPTIONS = [
   { value: "all", label: "All Statuses" },
   { value: "sent", label: "Sent" },
@@ -38,7 +39,7 @@ const STATUS_VARIANT_MAP: Record<string, "default" | "secondary" | "success" | "
 function formatDate(dateStr?: string | null): string {
   if (!dateStr) return "--";
   try {
-    return new Date(dateStr).toLocaleDateString("en-US", {
+    return fmtDate(new Date(dateStr), {
       year: "numeric",
       month: "short",
       day: "numeric",

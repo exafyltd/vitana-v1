@@ -1,6 +1,5 @@
 import { ImageWithFallback } from "./ImageWithFallback";
-import { format } from "date-fns";
-
+import { formatDate } from '@/lib/locale-format';
 interface DiaryEntry {
   id: string;
   text: string;
@@ -36,7 +35,7 @@ export function PhotoGalleryGrid({ entries, onEntryClick }: PhotoGalleryGridProp
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40 opacity-0 group-hover:opacity-100 transition-opacity" />
             
             <div className="absolute top-2 left-2 bg-black/70 backdrop-blur-sm text-white text-xs px-2 py-1 rounded">
-              {format(new Date(entry.created_at), "MMM d")}
+              {formatDate(new Date(entry.created_at), "MMM d")}
             </div>
             
             {hasMultiplePhotos && (

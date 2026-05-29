@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { getVitanaIndexTier, type VitanaIndexTier } from "@/lib/vitanaIndex";
+import { lookup } from "@/lib/i18n-toast";
 
 /**
  * The five canonical Vitana pillars. These are the only pillars the Vitana
@@ -77,6 +78,9 @@ function deriveTrend(history: Array<{ date: string; score: number }>): "up" | "d
   return "stable";
 }
 
+const INDEX_SELECT_COLUMNS =
+  "date, score_total, score_nutrition, score_hydration, score_exercise, score_sleep, score_mental, confidence, model_version, feature_inputs";
+
 async function fetchVitanaIndex(userId: string | undefined): Promise<VitanaIndexState | null> {
   if (!userId) return null;
 
@@ -84,17 +88,56 @@ async function fetchVitanaIndex(userId: string | undefined): Promise<VitanaIndex
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
   const fromDate = sevenDaysAgo.toISOString().slice(0, 10);
 
-  const { data, error } = await (supabase as any)
-    .from("vitana_index_scores")
-    .select(
-      "date, score_total, score_nutrition, score_hydration, score_exercise, score_sleep, score_mental, confidence, model_version, feature_inputs"
-    )
-    .gte("date", fromDate)
-    .order("date", { ascending: true });
+  const queryTrailingWindow = async (): Promise<VitanaIndexScoreRow[]> => {
+    const { data, error } = await (supabase as any)
+      .from("vitana_index_scores")
+      .select(INDEX_SELECT_COLUMNS)
+      .eq("user_id", userId)
+      .gte("date", fromDate)
+      .order("date", { ascending: true });
+    if (error) throw error;
+    return (data ?? []) as VitanaIndexScoreRow[];
+  };
 
-  if (error) throw error;
+  // 1) Trailing 7 days — gives the history the trend math needs.
+  let rows = await queryTrailingWindow();
 
-  const rows = (data ?? []) as VitanaIndexScoreRow[];
+  // 2) Self-heal: the Index only recomputes on activity, and the daily
+  //    recompute pipeline does not (yet) include an Index stage, so an
+  //    inactive day leaves the trailing window empty and the UI shows a
+  //    hard zero. Trigger a fresh per-user compute (the RPC is user-scoped
+  //    via auth.uid() and idempotent — upserts on (tenant_id, user_id, date))
+  //    and re-query, so opening the app on a new day always lands on a real
+  //    score for the current day.
+  if (rows.length === 0) {
+    const todayIso = new Date().toISOString().slice(0, 10);
+    try {
+      await (supabase as any).rpc("health_compute_vitana_index", {
+        p_date: todayIso,
+        p_model_version: "v3-5pillar",
+      });
+      rows = await queryTrailingWindow();
+    } catch {
+      /* best-effort — fall through to the latest-ever fallback below */
+    }
+  }
+
+  // 3) Fallback: latest-ever score. If the compute RPC was unavailable
+  //    (permissions, network) or the user has been inactive for longer
+  //    than the trailing window, surface the last known score instead of
+  //    a misleading zero. Mirrors the gateway profiler's fetchVitanaIndex
+  //    (user-context-profiler.ts).
+  if (rows.length === 0) {
+    const { data: latest, error: latestError } = await (supabase as any)
+      .from("vitana_index_scores")
+      .select(INDEX_SELECT_COLUMNS)
+      .eq("user_id", userId)
+      .order("date", { ascending: false })
+      .limit(1);
+    if (latestError) throw latestError;
+    rows = (latest ?? []) as VitanaIndexScoreRow[];
+  }
+
   if (rows.length === 0) return null;
 
   const today = rows[rows.length - 1];
@@ -175,14 +218,7 @@ export function useVitanaIndex(): UseVitanaIndexResult {
 }
 
 export function pillarLabel(key: VitanaPillarKey): string {
-  const labels: Record<VitanaPillarKey, string> = {
-    nutrition: "Nutrition",
-    hydration: "Hydration",
-    exercise:  "Exercise",
-    sleep:     "Sleep",
-    mental:    "Mental",
-  };
-  return labels[key];
+  return lookup(`vitanaIndex.${key}`);
 }
 
 export function pillarKeys(): VitanaPillarKey[] {

@@ -13,7 +13,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +32,7 @@ import {
 import { OrganizerEvent } from "@/hooks/useOrganizerEvents";
 import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface ClientInfo {
   name?: string;
   company?: string;
@@ -109,9 +109,9 @@ export function OperationsPanel({ event }: OperationsPanelProps) {
       a.event_ticket_types?.name || "General",
       a.quantity,
       a.status,
-      a.checked_in_at ? format(new Date(a.checked_in_at), "MMM d, yyyy h:mm a") : "No",
+      a.checked_in_at ? formatDate(new Date(a.checked_in_at), "MMM d, yyyy h:mm a") : "No",
       a.ticket_number,
-      format(new Date(a.created_at), "MMM d, yyyy")
+      formatDate(new Date(a.created_at), "MMM d, yyyy")
     ]);
 
     const csvContent = [

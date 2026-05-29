@@ -3,9 +3,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock } from "lucide-react";
-import { format } from "date-fns";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface VisitHistoryCardProps {
   visit: {
     id: string;
@@ -42,7 +42,7 @@ export function VisitHistoryCard({ visit }: VisitHistoryCardProps) {
         <div className="space-y-2 mb-3">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Calendar className="h-4 w-4" />
-            <span>{format(new Date(visit.start_time), 'MMM dd, yyyy')}</span>
+            <span>{formatDate(new Date(visit.start_time), 'MMM dd, yyyy')}</span>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Clock className="h-4 w-4" />

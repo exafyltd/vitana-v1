@@ -1,0 +1,17 @@
+{
+  "profile": {
+    "defaultBio": "Entusiasta del bienestar apasionado por la salud integral y la construcción de comunidad. 🌱",
+    "autopilot": {
+      "polishBio": "Pule tu biografía, arquetipo y destacados",
+      "editHighlights": "Editar Destacados",
+      "saveHighlights": "Guardar Destacados",
+      "highlightsDesc": "Elige tus mejores publicaciones y medios para destacar en la parte superior de tu perfil. El contenido destacado aparece en una sección de destacados y atrae más seguidores.",
+      "try": "Probar"
+    },
+    "identity": {
+      "vitanaIndex": "Índice Vitana",
+      "basedOnActivity": "Basado en actividad, compromiso con la salud y contribución",
+      "viewLongevityId": "Ver mi ID de Longevidad"
+    }
+  }
+}

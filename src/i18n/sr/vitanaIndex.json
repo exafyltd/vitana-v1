@@ -1,0 +1,27 @@
+{
+  "vitanaIndex": {
+    "title": "Vitana Health Index",
+    "subtitle": "Ukupni balans zdravlja kroz sve stubove zdravlja",
+    "veryPoor": "Veoma loše",
+    "poor": "Loše",
+    "fair": "Osrednje",
+    "improving": "Poboljšava se",
+    "good": "Dobro",
+    "excellent": "Odlično",
+    "sleep": "Spavanje",
+    "exercise": "Vežbanje",
+    "nutrition": "Ishrana",
+    "hydration": "Hidratacija",
+    "mental": "Mentalno",
+    "viewFullReport": "Pogledaj ceo izveštaj",
+    "trackToday": "Prati danas",
+    "tiers": {
+      "starting": "Početak",
+      "early": "Rano",
+      "building": "Izgradnja",
+      "strong": "Snažno",
+      "reallyGood": "Zaista dobro",
+      "elite": "Elitno"
+    }
+  }
+}

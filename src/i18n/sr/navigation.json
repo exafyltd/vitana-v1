@@ -1,0 +1,23 @@
+{
+  "navigation": {
+    "navigatingTo": "Vodi te na",
+    "hydrationTracker": "Praćenje hidratacije",
+    "sleepTracker": "Praćenje sna",
+    "nutritionTracker": "Praćenje ishrane",
+    "workoutTracker": "Praćenje vežbanja",
+    "biomarkers": "Biomarkeri",
+    "calendar": "Kalendar",
+    "community": "Zajednica",
+    "groups": "Grupe",
+    "messages": "Poruke",
+    "discover": "Otkrij",
+    "supplements": "Suplementi",
+    "wallet": "Novčanik",
+    "profile": "Profil",
+    "settings": "Podešavanja",
+    "diary": "Dnevnik",
+    "home": "Početna",
+    "myJourney": "Moj put",
+    "news": "Vesti o dugovečnosti"
+  }
+}

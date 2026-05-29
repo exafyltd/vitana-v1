@@ -8,10 +8,10 @@ import { useEventTicketTypes, usePurchaseTicket, TicketType, UtmParams } from "@
 import { useDiscountCode } from "@/hooks/useDiscountCode";
 import DiscountCodeInput from "@/components/tickets/DiscountCodeInput";
 import { supabase } from "@/integrations/supabase/client";
-import { format } from "date-fns";
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 const CURRENCY_SYMBOLS: Record<string, string> = {
   USD: '$', EUR: '€', GBP: '£', JPY: '¥',
 };
@@ -366,7 +366,7 @@ function TicketTypeCard({ ticketType, quantity, onQuantityChange, discountPercen
 
           {saleNotStarted && ticketType.sale_start_date && (
             <p className="text-xs text-muted-foreground">
-              {translate('discount.salesStart', 'Sales start {date}').replace('{date}', format(new Date(ticketType.sale_start_date), "MMM d, h:mm a"))}
+              {translate('discount.salesStart', 'Sales start {date}').replace('{date}', formatDate(new Date(ticketType.sale_start_date), "MMM d, h:mm a"))}
             </p>
           )}
 

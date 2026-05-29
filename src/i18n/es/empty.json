@@ -1,0 +1,27 @@
+{
+  "empty": {
+    "noAppsFound": "No se encontraron apps que coincidan con tu búsqueda.",
+    "noEventsFound": "No se encontraron eventos",
+    "noContactsFound": "No se encontraron contactos",
+    "noContactsFoundMatching": "No se encontraron contactos que coincidan con \"{query}\"",
+    "noGroupsFound": "No se encontraron grupos",
+    "noResultsFound": "No se encontraron resultados",
+    "noReportsFound": "No se encontraron informes",
+    "noUsersFound": "No se encontraron usuarios",
+    "noTransactionsFound": "No se encontraron transacciones",
+    "noEventsYet": "Aún no hay eventos. Crea un evento primero.",
+    "tryAdjustingFilters": "Intenta ajustar tus filtros o consulta de búsqueda",
+    "noData": "No hay datos disponibles",
+    "noMessages": "No hay mensajes",
+    "noNotifications": "No hay notificaciones",
+    "indexSheetNextDays": "No hay sugerencias activas de Autopilot. Cuando algo llegue aquí, completarlo moverá tu Índice.",
+    "indexSheetHorizon": "Necesito unos días más de datos para proyectar tu arco de 30 días.",
+    "myJourneyPath": "Tu camino apenas comienza. Cuando Autopilot tenga sugerencias, aparecerán aquí como un camino que puedes recorrer.",
+    "myJourneyOnePillar": "Elige una pequeña cosa — mira cómo se mueve tu Índice.",
+    "autopilotPopupZero": "Selecciona acciones para ver el aumento del Índice.",
+    "healthEmpty": "Registra tu primera entrada para iniciar tu Índice.",
+    "noActionsMatchedYet": "Aún no hay acciones coincidentes — Autopilot está dando forma a las sugerencias.",
+    "actionsPendingOne": "{count} acción pendiente",
+    "actionsPendingOther": "{count} acciones pendientes"
+  }
+}

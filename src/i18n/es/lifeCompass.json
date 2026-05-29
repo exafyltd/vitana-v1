@@ -1,0 +1,53 @@
+{
+  "lifeCompass": {
+    "title": "Brújula de Vida",
+    "description": "Tu Brújula de Vida guía todas las recomendaciones y decisiones de la IA. Elige un objetivo principal que sea más importante para ti ahora mismo. La IA priorizará sugerencias que se alineen con esta dirección.",
+    "currentCompass": "Brújula Actual",
+    "alignment": "Alineación: {value}%",
+    "confidence": "Confianza: {value}%",
+    "suggestedGoals": "Objetivos Sugeridos",
+    "customGoal": "Objetivo Personalizado",
+    "customGoalPlaceholder": "Describe tu objetivo principal en tus propias palabras...",
+    "setCustomGoal": "Establecer Objetivo Personalizado",
+    "closeAria": "Cerrar",
+    "categoryLabels": {
+      "wealth": "riqueza",
+      "relationship": "relación",
+      "health": "salud",
+      "career": "carrera",
+      "learning": "aprendizaje",
+      "spiritual": "espiritual",
+      "longevity": "longevidad"
+    },
+    "goals": {
+      "wealth": {
+        "title": "Construir Libertad Financiera",
+        "description": "Alcanza independencia financiera y riqueza"
+      },
+      "relationship": {
+        "title": "Encontrar Pareja de Vida",
+        "description": "Construye relaciones románticas significativas"
+      },
+      "health": {
+        "title": "Transformar la Salud",
+        "description": "Alcanza un bienestar físico y mental óptimo"
+      },
+      "career": {
+        "title": "Avanzar en la Carrera",
+        "description": "Construye una carrera exitosa y satisfactoria"
+      },
+      "learning": {
+        "title": "Dominar Nuevas Habilidades",
+        "description": "Aprende y crece a través del conocimiento"
+      },
+      "spiritual": {
+        "title": "Vida Espiritual",
+        "description": "Profundiza propósito, presencia y paz interior"
+      },
+      "longevity": {
+        "title": "Mejorar calidad de vida y extender la esperanza de vida",
+        "description": "Enfócate en una vida sana y activa, energía y longevidad — la misión de Vitanaland"
+      }
+    }
+  }
+}

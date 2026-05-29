@@ -58,9 +58,9 @@ function SmartCalendarCardBase({
       icon={Calendar}
       category="calendar"
       title={t('screens.crossover.smartCalendar')}
-      subtitle="AI-optimized schedule with health and wellness integration"
+      subtitle={t('screens.ai.subtitle_smartSchedule')}
       content={content}
-      buttonText="Open Calendar"
+      buttonText={t('screens.ai.actionLabel_openCalendar')}
       onButtonClick={() => navigate('/calendar')}
       className={className}
     />

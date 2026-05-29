@@ -10,11 +10,11 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { CalendarIcon, Upload as UploadIcon, X, Plus } from "lucide-react";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useMediaUpload } from "@/hooks/useMediaUpload";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface MediaUploadPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -288,7 +288,7 @@ export function MediaUploadPopup({ open, onOpenChange }: MediaUploadPopupProps) 
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
-                      {releaseDate ? format(releaseDate, "PPP") : "Pick a date"}
+                      {releaseDate ? formatDate(releaseDate, "PPP") : "Pick a date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">

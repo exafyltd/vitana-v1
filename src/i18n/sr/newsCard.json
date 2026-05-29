@@ -1,0 +1,39 @@
+{
+  "newsCard": {
+    "menu": {
+      "share": "Podeli",
+      "save": "Sačuvaj",
+      "saved": "Sačuvano",
+      "summarize": "Sumiraj sa Vitana",
+      "copyLink": "Kopiraj link",
+      "openInBrowser": "Otvori u pregledaču",
+      "hide": "Sakrij ovaj članak",
+      "showLess": "Prikaži manje ovakvih",
+      "muteSource": "Utišaj ovaj izvor",
+      "linkCopied": "Link kopiran",
+      "savedToast": "Sačuvano za kasnije",
+      "unsavedToast": "Uklonjeno iz sačuvanih",
+      "summarizeToast": "Na redu za Vitana",
+      "hiddenToast": "Članak sakriven",
+      "showLessToast": "Prikazivaćemo manje ovakvih",
+      "mutedToast": "Izvor utišan",
+      "undo": "Poništi",
+      "unmute": "Uključi zvuk"
+    },
+    "detail": {
+      "back": "Nazad",
+      "continueReading": "Nastavi čitanje na",
+      "openInBrowser": "Otvori u pregledaču",
+      "couldNotLoad": "Ovaj članak se ne može prikazati u okviru",
+      "readOn": "Čitaj na"
+    },
+    "pillars": {
+      "all": "Sve",
+      "nutrition": "Ishrana",
+      "hydration": "Hidratacija",
+      "sleep": "San",
+      "exercise": "Vežbanje",
+      "mental": "Mentalno"
+    }
+  }
+}

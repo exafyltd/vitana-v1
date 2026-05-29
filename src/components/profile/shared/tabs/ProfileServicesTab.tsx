@@ -6,6 +6,7 @@ import { UserProfile, ServiceOffering } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 interface ProfileServicesTabProps {
   profile: UserProfile;
   scope: Scope;
@@ -79,7 +80,7 @@ export function ProfileServicesTab({ profile, scope, editMode, onEditServices, o
                   <div className="flex flex-wrap gap-2">
                     {offering.nextTimes.slice(0, 3).map((time, index) => (
                       <Badge key={index} variant="outline" className="text-xs">
-                        {new Date(time).toLocaleDateString('en-US', {
+                        {fmtDate(new Date(time), {
                           month: 'short',
                           day: 'numeric',
                           hour: 'numeric',

@@ -16,57 +16,57 @@ const planConfigs = {
   nutrition: {
     icon: Apple,
     category: "nutrition" as HealthCategoryColor,
-    title: "Daily Nutrition",
-    subtitle: "Track meals and nutrient intake for optimal health",
-    goal: "5 servings fruits & vegetables",
+    titleKey: "screens.ai.lifestylePlan_nutrition_title",
+    subtitleKey: "screens.ai.lifestylePlan_nutrition_subtitle",
+    goalKey: "screens.ai.lifestylePlan_nutrition_goal",
     progress: 3,
     total: 5,
-    unit: "servings",
-    nextAction: "Log lunch meal"
+    unitKey: "screens.ai.unit_servings",
+    nextActionKey: "screens.ai.lifestylePlan_nutrition_nextAction"
   },
   hydration: {
     icon: Droplets,
     category: "hydration" as HealthCategoryColor,
-    title: "Hydration Goals",
-    subtitle: "Maintain optimal water intake throughout the day",
-    goal: "8 glasses of water daily",
+    titleKey: "screens.ai.lifestylePlan_hydration_title",
+    subtitleKey: "screens.ai.lifestylePlan_hydration_subtitle",
+    goalKey: "screens.ai.lifestylePlan_hydration_goal",
     progress: 6,
     total: 8,
-    unit: "glasses",
-    nextAction: "Drink 16oz water"
+    unitKey: "screens.ai.unit_glasses",
+    nextActionKey: "screens.ai.lifestylePlan_hydration_nextAction"
   },
   exercise: {
     icon: Dumbbell,
     category: "exercise" as HealthCategoryColor,
-    title: "Exercise Plan",
-    subtitle: "Stay active with daily movement and workouts",
-    goal: "30 minutes active time",
+    titleKey: "screens.ai.lifestylePlan_exercise_title",
+    subtitleKey: "screens.ai.lifestylePlan_exercise_subtitle",
+    goalKey: "screens.ai.lifestylePlan_exercise_goal",
     progress: 15,
     total: 30,
-    unit: "minutes",
-    nextAction: "15min walk"
+    unitKey: "screens.ai.unit_minutes",
+    nextActionKey: "screens.ai.lifestylePlan_exercise_nextAction"
   },
   sleep: {
     icon: Moon,
     category: "sleep" as HealthCategoryColor,
-    title: "Sleep Quality",
-    subtitle: "Optimize rest and recovery patterns",
-    goal: "8 hours quality sleep",
+    titleKey: "screens.ai.lifestylePlan_sleep_title",
+    subtitleKey: "screens.ai.lifestylePlan_sleep_subtitle",
+    goalKey: "screens.ai.lifestylePlan_sleep_goal",
     progress: 7.5,
     total: 8,
-    unit: "hours",
-    nextAction: "Set bedtime reminder"
+    unitKey: "screens.ai.unit_hours",
+    nextActionKey: "screens.ai.lifestylePlan_sleep_nextAction"
   },
   mental: {
     icon: Brain,
     category: "mental" as HealthCategoryColor,
-    title: "Mental Wellness",
-    subtitle: "Nurture mental health and emotional balance",
-    goal: "3 mindful moments daily",
+    titleKey: "screens.ai.lifestylePlan_mental_title",
+    subtitleKey: "screens.ai.subtitle_mentalHealth",
+    goalKey: "screens.ai.lifestylePlan_mental_goal",
     progress: 2,
     total: 3,
-    unit: "moments",
-    nextAction: "5min meditation"
+    unitKey: "screens.ai.unit_moments",
+    nextActionKey: "screens.ai.lifestylePlan_mental_nextAction"
   }
 };
 
@@ -87,7 +87,7 @@ export function LifestylePlanCard({ type, className }: LifestylePlanCardProps) {
             "font-medium",
             isOnTrack ? "text-health-success" : "text-health-warning"
           )}>
-            {config.progress}/{config.total} {config.unit}
+            {config.progress}/{config.total} {t(config.unitKey)}
           </span>
         </div>
         <div className="w-full bg-muted/30 rounded-full h-2">
@@ -104,7 +104,7 @@ export function LifestylePlanCard({ type, className }: LifestylePlanCardProps) {
       {/* Next Action */}
       <div className="text-xs">
         <span className="text-muted-foreground">{t('screens.crossover.next')} </span>
-        <span className="font-medium text-foreground">{config.nextAction}</span>
+        <span className="font-medium text-foreground">{t(config.nextActionKey)}</span>
       </div>
     </div>
   );
@@ -129,12 +129,12 @@ export function LifestylePlanCard({ type, className }: LifestylePlanCardProps) {
     <CrossoverCard
       icon={config.icon}
       category={config.category}
-      title={config.title}
-      subtitle={config.subtitle}
+      title={t(config.titleKey)}
+      subtitle={t(config.subtitleKey)}
       content={content}
-      buttonText="Log Progress"
+      buttonText={t('screens.ai.actionLabel_logProgress')}
       onButtonClick={handleQuickLog}
-      secondaryButtonText="View Details"
+      secondaryButtonText={t('screens.ai.actionLabel_viewDetails')}
       onSecondaryButtonClick={navigateToTracker}
       size="md"
       className={className}

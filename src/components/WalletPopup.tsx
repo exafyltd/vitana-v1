@@ -40,6 +40,7 @@ import { ExchangeRateDisplay } from "@/components/wallet/ExchangeRateDisplay";
 import { QuickExchangeWidget } from "@/components/wallet/QuickExchangeWidget";
 import { notify, t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface Transaction {
   id: string;
   type: 'earned' | 'redeemed' | 'bonus';
@@ -143,7 +144,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
               <Wallet className="w-4 h-4 text-green-500" />
             </div>
             <span>{t('screens.common.digitalWallet')}</span>
-            <Badge variant="outline" className="ml-auto text-green-600 border-green-200">{t('screens.common.value0Vtna', { value0: loading ? '...' : currentBalance.toLocaleString() })}
+            <Badge variant="outline" className="ml-auto text-green-600 border-green-200">{t('screens.common.value0Vtna', { value0: loading ? '...' : fmtNumber(currentBalance) })}
             </Badge>
           </DialogTitle>
           <DialogDescription>
@@ -161,7 +162,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
               <Card>
                 <CardContent className="p-3 text-center">
                   <div className="text-lg font-bold text-green-600">
-                    {loading ? '...' : currentBalance.toLocaleString()}
+                    {loading ? '...' : fmtNumber(currentBalance)}
                   </div>
                   <div className="text-xs text-muted-foreground">{t('screens.common.vtnaBalance')}</div>
                   <div className="flex items-center justify-center gap-1 mt-1">

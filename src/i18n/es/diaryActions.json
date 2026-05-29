@@ -1,0 +1,39 @@
+{
+  "diaryActions": {
+    "title": "Acciones de entrada del diario",
+    "items": {
+      "recordVoiceEntry": {
+        "title": "Grabar entrada de voz",
+        "description": "Captura pensamientos y reflexiones con grabación de voz"
+      },
+      "addPhotoEntry": {
+        "title": "Agregar entrada con foto",
+        "description": "Sube imágenes para documentar tu viaje de bienestar"
+      },
+      "writeTextEntry": {
+        "title": "Escribir entrada de texto",
+        "description": "Crea reflexiones y notas escritas detalladas"
+      },
+      "quickNote": {
+        "title": "Nota rápida",
+        "description": "Anota pensamientos u observaciones breves"
+      },
+      "videoDiary": {
+        "title": "Video diario",
+        "description": "Graba reflexiones en video y actualizaciones de progreso"
+      },
+      "scheduleEntry": {
+        "title": "Programar entrada",
+        "description": "Planifica futuras entradas del diario y recordatorios"
+      },
+      "tagMemories": {
+        "title": "Etiquetar recuerdos",
+        "description": "Organiza entradas existentes con etiquetas y categorías"
+      },
+      "importFiles": {
+        "title": "Importar archivos",
+        "description": "Sube documentos, imágenes u otros archivos de bienestar"
+      }
+    }
+  }
+}

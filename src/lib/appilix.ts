@@ -10,6 +10,13 @@ declare global {
   interface Window {
     appilix?: {
       postMessage: (message: string) => void;
+      /**
+       * Native -> Web reply channel. Set this once to receive responses to
+       * `appilix.postMessage(...)` requests (e.g. `firebase_token`).
+       * The callback should null itself out after handling so it doesn't
+       * intercept unrelated messages.
+       */
+      onmessage?: ((event: { data: string }) => void) | null;
     };
     /** Native FCM token injected by Appilix before page load */
     appilix_fcm_token?: string;
@@ -225,4 +232,147 @@ export function getNativeFcmToken(): string | null {
     }
   } catch {}
   return null;
+}
+
+/**
+ * Actively ask Appilix's native shell for the device's FCM token.
+ *
+ * Per Appilix support the iOS/Android wrapper exposes a JS bridge:
+ *
+ *   appilix.postMessage(JSON.stringify({ type: "firebase_token" }))
+ *   appilix.onmessage = (event) => JSON.parse(event.data).token
+ *
+ * In practice the response delivery channel differs between wrapper
+ * versions and platforms. The Android wrapper has been observed to reply
+ * via `appilix.onmessage`. iOS may use `window.postMessage`, a custom
+ * document event, set `window.appilix_fcm_token` directly, or call a
+ * global callback we register. We listen on ALL of those simultaneously
+ * and resolve on whichever fires first.
+ *
+ * Resolves with the token, or null if no channel responds within
+ * timeoutMs.
+ */
+export async function requestNativeFcmTokenFromBridge(timeoutMs = 8000): Promise<string | null> {
+  if (typeof window === 'undefined') return null;
+  if (!isAppilix()) return null;
+
+  const existing = getNativeFcmToken();
+  if (existing) return existing;
+
+  console.log('[Appilix] Requesting native FCM token via bridge…');
+
+  return new Promise<string | null>((resolve) => {
+    let settled = false;
+    const cleanups: Array<() => void> = [];
+
+    const cleanup = () => {
+      for (const fn of cleanups) {
+        try { fn(); } catch {}
+      }
+    };
+
+    const finish = (value: string | null, source: string) => {
+      if (settled) return;
+      settled = true;
+      console.log(`[Appilix] FCM token bridge settled via ${source} (token=${value ? 'present' : 'null'})`);
+      cleanup();
+      resolve(value);
+    };
+
+    const extractToken = (raw: unknown): string | null => {
+      if (raw == null) return null;
+      if (typeof raw === 'string') {
+        try {
+          const parsed = JSON.parse(raw);
+          return parsed?.token || parsed?.firebase_token || parsed?.fcm_token || null;
+        } catch {
+          return /^[\w:_-]{20,}$/.test(raw) ? raw : null;
+        }
+      }
+      if (typeof raw === 'object') {
+        const o = raw as Record<string, any>;
+        return o.token || o.firebase_token || o.fcm_token || o.data?.token || null;
+      }
+      return null;
+    };
+
+    const captureToken = (token: string | null, source: string) => {
+      if (!token || typeof token !== 'string') return;
+      window.appilix_fcm_token = token;
+      try {
+        document.dispatchEvent(new CustomEvent('appilix:fcm_token', { detail: token }));
+      } catch {}
+      finish(token, source);
+    };
+
+    // Channel 1: window.appilix.onmessage (Appilix's documented bridge).
+    if (window.appilix) {
+      const previous = window.appilix.onmessage;
+      window.appilix.onmessage = (event: { data: string }) => {
+        const token = extractToken(event?.data);
+        if (token) captureToken(token, 'appilix.onmessage');
+      };
+      cleanups.push(() => {
+        if (window.appilix) window.appilix.onmessage = previous ?? null;
+      });
+    }
+
+    // Channel 2: standard window.postMessage events (some WKWebView builds
+    // deliver native replies as MessageEvents).
+    const onWindowMessage = (event: MessageEvent) => {
+      const token = extractToken(event?.data);
+      if (token) captureToken(token, 'window.message');
+    };
+    window.addEventListener('message', onWindowMessage);
+    cleanups.push(() => window.removeEventListener('message', onWindowMessage));
+
+    // Channel 3: document custom events under any of the plausible names.
+    const eventNames = ['appilix:firebase_token', 'appilix:fcm_token', 'firebase:token'];
+    const onCustomEvent = (evt: Event) => {
+      const detail = (evt as CustomEvent).detail;
+      const token = typeof detail === 'string' ? detail : extractToken(detail);
+      if (token) captureToken(token, `event:${evt.type}`);
+    };
+    for (const name of eventNames) {
+      document.addEventListener(name, onCustomEvent);
+      cleanups.push(() => document.removeEventListener(name, onCustomEvent));
+    }
+
+    // Channel 4: a global callback the native side may invoke directly.
+    const previousGlobalCallback = (window as any).appilixOnFirebaseToken;
+    (window as any).appilixOnFirebaseToken = (token: unknown) => {
+      const t = typeof token === 'string' ? token : extractToken(token);
+      if (t) captureToken(t, 'window.appilixOnFirebaseToken');
+    };
+    cleanups.push(() => {
+      (window as any).appilixOnFirebaseToken = previousGlobalCallback;
+    });
+
+    // Channel 5: poll window.appilix_fcm_token in case the native side sets
+    // it asynchronously without firing any event.
+    const poll = window.setInterval(() => {
+      const t = window.appilix_fcm_token;
+      if (t) captureToken(t, 'window.appilix_fcm_token (poll)');
+    }, 250);
+    cleanups.push(() => window.clearInterval(poll));
+
+    // Fire the request through both the appilix.postMessage channel and the
+    // WKWebView messageHandlers channel (some wrapper builds use one, some
+    // the other).
+    try {
+      window.appilix?.postMessage(JSON.stringify({ type: 'firebase_token' }));
+    } catch (err) {
+      console.warn('[Appilix] postMessage(firebase_token) failed:', err);
+    }
+    try {
+      const handlers = (window as any).webkit?.messageHandlers;
+      if (handlers?.appilix?.postMessage) {
+        handlers.appilix.postMessage(JSON.stringify({ type: 'firebase_token' }));
+      }
+    } catch {
+      // Best effort — ignore
+    }
+
+    window.setTimeout(() => finish(null, 'timeout'), timeoutMs);
+  });
 }

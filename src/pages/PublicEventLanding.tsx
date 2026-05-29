@@ -4,7 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Calendar, MapPin, Users, Clock, CalendarDays, Sparkles, Ticket, Eye, UserPlus } from "lucide-react";
-import { format } from "date-fns";
 import SEO from "@/components/SEO";
 import { useAuth } from "@/context/AuthProvider";
 import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
@@ -12,6 +11,7 @@ import { getLocalizedPublicLandingCta, formatTicketPrice } from "@/lib/eventsCta
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface PublicEventData {
   id: string;
   title: string;
@@ -252,8 +252,8 @@ export default function PublicEventLanding() {
   // Use clean canonical URL for SEO and sharing
   const canonicalPath = event.slug ? `/e/${event.slug}` : `/pub/events/${event.id}`;
   const publicEventUrl = `${window.location.origin}${canonicalPath}`;
-  const eventDate = event.start_time ? format(new Date(event.start_time), "EEEE, MMMM d, yyyy") : "";
-  const eventTime = event.start_time ? format(new Date(event.start_time), "h:mm a") : "";
+  const eventDate = event.start_time ? formatDate(new Date(event.start_time), "EEEE, MMMM d, yyyy") : "";
+  const eventTime = event.start_time ? formatDate(new Date(event.start_time), "h:mm a") : "";
   const shortDescription = event.description?.slice(0, 160) || `Join us for ${event.title}`;
 
   return (

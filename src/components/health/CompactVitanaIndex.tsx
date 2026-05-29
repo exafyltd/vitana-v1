@@ -48,7 +48,7 @@ export default function CompactVitanaIndex({ score, trend = "up", pillars }: Com
         {/* Status & Trend */}
         <div className="text-center space-y-2">
           <Badge variant="secondary" className="text-sm">
-            {tier.label}
+            {t(tier.labelKey)}
           </Badge>
           <div className="flex items-center justify-center gap-2 text-sm">
             {trend === "up" && (

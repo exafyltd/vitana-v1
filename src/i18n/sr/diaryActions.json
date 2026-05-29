@@ -1,0 +1,39 @@
+{
+  "diaryActions": {
+    "title": "Radnje unosa u dnevnik",
+    "items": {
+      "recordVoiceEntry": {
+        "title": "Snimi glasovni unos",
+        "description": "Zabeleži misli i razmišljanja glasovnim snimkom"
+      },
+      "addPhotoEntry": {
+        "title": "Dodaj fotografiju",
+        "description": "Otpremi slike kako bi dokumentovao/la svoje wellness putovanje"
+      },
+      "writeTextEntry": {
+        "title": "Napiši tekstualni unos",
+        "description": "Kreiraj detaljne pisane refleksije i beleške"
+      },
+      "quickNote": {
+        "title": "Brza beleška",
+        "description": "Zapiši kratke misli ili zapažanja"
+      },
+      "videoDiary": {
+        "title": "Video dnevnik",
+        "description": "Snimi video refleksije i napredak"
+      },
+      "scheduleEntry": {
+        "title": "Zakaži unos",
+        "description": "Planiraj buduće unose u dnevnik i podsetnike"
+      },
+      "tagMemories": {
+        "title": "Obeleži uspomene",
+        "description": "Organizuj postojeće unose pomoću oznaka i kategorija"
+      },
+      "importFiles": {
+        "title": "Uvezi datoteke",
+        "description": "Otpremi dokumente, slike ili druge wellness datoteke"
+      }
+    }
+  }
+}

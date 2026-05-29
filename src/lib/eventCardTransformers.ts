@@ -1,7 +1,6 @@
 import { UnifiedEventCard } from "@/types/community";
 import { NewsCardProps } from "@/components/crossover/NewsCard";
-import { format } from "date-fns";
-
+import { formatDate } from '@/lib/locale-format';
 // Wellness-themed images from Unsplash
 const WELLNESS_IMAGES = [
   'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=600&fit=crop', // Yoga
@@ -66,7 +65,7 @@ export const eventCardToNewsCardProps = (
   onClick?: () => void
 ): NewsCardProps => {
   const eventDate = new Date(event.datetime);
-  const timestamp = format(eventDate, 'EEE, MMM d · HH:mm');
+  const timestamp = formatDate(eventDate, 'EEE, MMM d · HH:mm');
   
   return {
     title: event.title,

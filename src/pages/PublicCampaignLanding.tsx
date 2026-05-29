@@ -4,7 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Calendar, CalendarDays, Target, TrendingUp, Users, Sparkles, Ticket, Eye, UserPlus } from "lucide-react";
-import { format } from "date-fns";
 import SEO from "@/components/SEO";
 import { useAuth } from "@/context/AuthProvider";
 import { EventTicketSelector } from "@/components/tickets/EventTicketSelector";
@@ -12,6 +11,7 @@ import { getLocalizedPublicLandingCta, formatTicketPrice } from "@/lib/eventsCta
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface PublicCampaignData {
   id: string;
   name: string;
@@ -258,8 +258,8 @@ export default function PublicCampaignLanding() {
   }
 
   const publicCampaignUrl = `${window.location.origin}/pub/campaigns/${campaign.id}${searchParams.toString() ? '?' + searchParams.toString() : ''}`;
-  const startDate = campaign.start_date ? format(new Date(campaign.start_date), "MMMM d, yyyy") : "";
-  const endDate = campaign.end_date ? format(new Date(campaign.end_date), "MMMM d, yyyy") : "";
+  const startDate = campaign.start_date ? formatDate(new Date(campaign.start_date), "MMMM d, yyyy") : "";
+  const endDate = campaign.end_date ? formatDate(new Date(campaign.end_date), "MMMM d, yyyy") : "";
   const shortDescription = campaign.description?.slice(0, 160) || `Check out ${campaign.name} on VITANA`;
   
   // Robust fallback chain matching event card pattern

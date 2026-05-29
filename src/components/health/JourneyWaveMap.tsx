@@ -56,7 +56,7 @@ export function JourneyWaveMap({ dayNumber }: JourneyWaveMapProps) {
               <Tooltip key={w.id}>
                 <TooltipTrigger asChild>
                   <span className={className} role="listitem">
-                    {w.name}{" "}
+                    {t(w.nameKey)}{" "}
                     <span className="opacity-70">{t('screens.health.dayStart_dayEnd_day', { start_day: w.timeline.start_day, end_day: w.timeline.end_day })}</span>
                   </span>
                 </TooltipTrigger>

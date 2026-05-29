@@ -22,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { useMemoryMetadata } from "@/hooks/useMemoryMetadata";
 import { notifySuccess, t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 const CATEGORY_SUBCATEGORIES: Record<string, string[]> = {
   "personal-identity": ["Name", "Languages", "Personality", "Strengths", "Life Vision", "Values", "Goals", "Decision Style", "Roles"],
   "health-wellness": ["Vitana Index", "Biomarkers", "Nutrition", "Sleep", "Exercise", "Hydration", "Stress", "Mental Health", "Doctors", "Supplements", "Preventive Goals"],
@@ -203,7 +204,7 @@ export function MemoryCategoryGrid() {
               progress={progress?.progress || 0}
               memoryCount={memoryCount}
               insight={progress?.lastUpdated 
-                ? `Last updated ${new Date(progress.lastUpdated).toLocaleDateString()}`
+                ? `Last updated ${fmtDate(new Date(progress.lastUpdated))}`
                 : category.defaultInsight
               }
               gradient={category.gradient}

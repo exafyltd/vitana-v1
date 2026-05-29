@@ -2,7 +2,7 @@
   "glassMode": {
     "shareWithAI": "Auswahl mit KI teilen?",
     "screenSharingComingSoon": "🖥️ Bildschirmfreigabe bald verfügbar",
-    "screenSharingDesc": "Teilen Sie Ihren Bildschirm mit VITANA für kontextuelle Unterstützung.",
+    "screenSharingDesc": "Teile deinen Bildschirm mit VITANA für kontextuelle Unterstützung.",
     "screenSharingStopped": "Bildschirmfreigabe beendet",
     "glassModeDisabled": "Glass-Modus deaktiviert",
     "cameraModeComingSoon": "📹 Kamera-Modus bald verfügbar",
@@ -12,7 +12,7 @@
     "autopilotActivated": "Autopilot aktiviert",
     "runningAutopilot": "Autopilot-Modus läuft",
     "textInputReady": "Texteingabe bereit",
-    "typeMessage": "Sie können jetzt Ihre Nachricht eingeben",
+    "typeMessage": "Du kannst jetzt deine Nachricht eingeben.",
     "actionFailed": "Aktion fehlgeschlagen",
     "couldNotExecute": "Konnte {action} nicht ausführen"
   }

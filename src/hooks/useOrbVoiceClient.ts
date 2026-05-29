@@ -7,6 +7,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { buildOrbContext } from '@/lib/buildOrbContext';
 import { playInstantGreeting, preloadInstantGreeting } from '@/lib/instantGreeting';
+// VTID-02919 (B0d.4-frontend): capture the wake-click timestamp inside
+// the user-gesture call stack so the wake-timeline can compute
+// time_to_first_audio_ms accurately.
+import { captureWakeClickedAt } from '@/lib/wakeTimelineClient';
 import { getOrCreateUnlockedAudioContext } from '@/lib/iosAudioUnlock';
 import { lookup } from '@/lib/i18n-toast';
 
@@ -114,6 +118,14 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
       // only reliable way for iOS Safari / WKWebView. OrbVoiceClient picks
       // up the same shared instance so PCM playback uses an unlocked context.
       getOrCreateUnlockedAudioContext();
+
+      // VTID-02919 (B0d.4-frontend): capture the wake-click timestamp
+      // SYNCHRONOUSLY inside the user-gesture handler. OrbVoiceClient
+      // will POST `wake_clicked` to the gateway after session-start
+      // returns, using THIS timestamp as the `at` field. Accurate
+      // time_to_first_audio_ms depends on capturing this before any
+      // await downstream.
+      captureWakeClickedAt();
 
       // BOOTSTRAP-ORB-INSTANT: Fire the instant greeting SYNCHRONOUSLY inside the
       // user-gesture call stack, before any await. The real Gemini greeting still

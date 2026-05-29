@@ -8,9 +8,10 @@ import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
 import { useNavigate } from "react-router-dom";
 import { NewsCard } from "@/components/crossover/NewsCard";
-import { format, formatDistanceToNow, addDays } from "date-fns";
+import { addDays } from 'date-fns';
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
 // TODO: Remove mock data once real events are populated
 const MOCK_EVENTS: CommunityEvent[] = [
   {
@@ -215,7 +216,7 @@ export function ProfileEventsTab({ profile, scope, editMode, isOwnProfile }: Pro
       return formatDistanceToNow(date, { addSuffix: true });
     } else {
       // Past event - show date
-      return format(date, 'MMM dd, yyyy');
+      return formatDate(date, 'MMM dd, yyyy');
     }
   };
 

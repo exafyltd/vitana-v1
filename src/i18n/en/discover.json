@@ -23,6 +23,9 @@
     "shareAndEarnDesc": "Recommend products, earn commissions",
     "start": "Start",
     "view": "View",
+    "matchPerfect": "Perfect Match",
+    "matchGreat": "Great Match",
+    "matchGood": "Good Match",
     "noResults": "No results found",
     "noResultsDesc": "Try different search terms or browse categories.",
     "categories": {

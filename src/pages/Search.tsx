@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search as SearchIcon, Users, MessageSquare, Video, Heart, Clock, Play, BookOpen } from "lucide-react";
 import { useCommunityMembers } from "@/hooks/useCommunityMembers";
 import { t } from '@/lib/i18n-toast';
+import { fmtNumber } from '@/lib/locale-format';
 
 interface SearchResult {
   id: string;
@@ -227,7 +228,7 @@ export default function Search() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Users className="h-4 w-4" />
-                      <span>{t('screens.search.value0Members', { value0: result.members?.toLocaleString() })}</span>
+                      <span>{t('screens.search.value0Members', { value0: fmtNumber(result.members) })}</span>
                     </div>
                     <Button size="sm" variant="outline">{t('screens.search.joinGroup')}</Button>
                   </div>

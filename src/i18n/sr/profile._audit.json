@@ -1,0 +1,58 @@
+{
+  "verdicts": {
+    "profile.defaultBio": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing ('strastven u') and potential gender mismatch for 'strastven'. More natural phrasing for 'passionate about' is needed.",
+      "suggested": "Entuzijasta za wellness, sa strašću prema holističkom zdravlju i izgradnji zajednice. 🌱",
+      "phase": "llm"
+    },
+    "profile.autopilot.polishBio": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profile.autopilot.editHighlights": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Grammatically incomplete; 'istaknute' is an adjective and requires a noun (e.g., 'sadržaje' for 'content').",
+      "suggested": "Uredi istaknute sadržaje",
+      "phase": "llm"
+    },
+    "profile.autopilot.saveHighlights": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Grammatically incomplete; 'istaknute' is an adjective and requires a noun (e.g., 'sadržaje' for 'content').",
+      "suggested": "Sačuvaj istaknute sadržaje",
+      "phase": "llm"
+    },
+    "profile.autopilot.highlightsDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register mismatch ('Izaberite' is formal plural, should be informal singular 'Izaberi'). Also, 'sekciji istaknutih' is grammatically incomplete, missing a noun.",
+      "suggested": "Izaberi svoje najbolje objave i medije da se istaknu na vrhu profila. Istaknuti sadržaj se pojavljuje u sekciji istaknutih sadržaja i privlači više pratilaca.",
+      "phase": "llm"
+    },
+    "profile.autopilot.try": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profile.identity.vitanaIndex": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profile.identity.basedOnActivity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profile.identity.viewLongevityId": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:06:00.980Z"
+}

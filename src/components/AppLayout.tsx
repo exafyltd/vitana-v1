@@ -26,7 +26,7 @@ import { VitanaIndexLiftWatcher } from "@/components/health/VitanaIndexLiftWatch
 import { InviteSheet } from "@/components/InviteSheet";
 import { getLocalStorageItem, setLocalStorageItem } from "@/lib/localStorage";
 import { getRoleNavigation } from "@/config/role-navigation";
-import { useRoleRouteEnforcement } from "@/hooks/useSmartRouting";
+import { useRoleRouteEnforcement, useInitialLandingRedirect } from "@/hooks/useSmartRouting";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import PendingCalendarEventProcessor from "@/components/calendar/PendingCalendarEventProcessor";
@@ -422,6 +422,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
   // Enforce role-route alignment (admin on community routes → redirect, etc.)
   useRoleRouteEnforcement();
+
+  // Land the native app on My Journey when it cold-starts on the News feed.
+  useInitialLandingRedirect();
 
   // Background loading system
   useBackgroundPrefetch();

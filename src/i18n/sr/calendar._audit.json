@@ -1,0 +1,586 @@
+{
+  "verdicts": {
+    "calendar.agenda": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "calendar.bookingStatus.rsvp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "calendar.autopilot.badge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "calendar.group.min": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "calendar.journey.estimatedTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "calendar.smartCalendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.myCalendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.bookedActivities": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register for 'Your' (used formal 'Vaše' instead of informal 'Tvoje' for a single user).",
+      "suggested": "Tvoje rezervisane aktivnosti u VITANA",
+      "phase": "llm"
+    },
+    "calendar.addEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.synced": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.syncing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.today": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.week": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.month": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.nothingScheduled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.tryQuickAdd": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'Brzi dodaj' is an awkward and literal translation for a feature name, sounding like an imperative verb phrase rather than a noun.",
+      "suggested": "Probaj Brzo dodavanje ili pusti Autopilot da isplanira tvoj dan",
+      "phase": "llm"
+    },
+    "calendar.clickSlotHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.noEventsOnDate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.lastSynced": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.justNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.now": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.untitledEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.newEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.close": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.noBookingsToday": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.noBookingsYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.nextUpcoming": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.exploreActivities": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.browseActivities": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.bookedEvents.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.bookedEvents.todayLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.bookedEvents.nextUp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.bookedEvents.noEventsToday": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.filters.personal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.filters.community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.filters.work": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.filters.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.filters.workout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.categories.community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.categories.fitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.categories.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.categories.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.categories.professional": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.categories.personal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.categories.training": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.bookingStatus.booked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.bookingStatus.ticket": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.bookingStatus.reserved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.timeGroups.today": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.timeGroups.tomorrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.timeGroups.thisWeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.timeGroups.later": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.suggestions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.accept": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.snooze": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.dismiss": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.undo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.laterToday": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.tomorrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.conflictsWith": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.suggestionAccepted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.calendarUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.suggestionUndone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.changesReverted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.suggestionSnoozed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.reminderLaterToday": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Awkward word order for 'later today'. 'Danas kasnije' is less natural than 'kasnije danas'.",
+      "suggested": "Podsetnik postavljen za kasnije danas",
+      "phase": "llm"
+    },
+    "calendar.autopilot.reminderTomorrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.recommendFocus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.autopilot.focusBlockDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.eventCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.eventCreatedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.eventDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.eventDeletedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.syncingTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.syncingDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.syncedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.syncedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.joiningEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.openingVideoCall": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.messageAttendees": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.featureComingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.inviteFollowers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.rescheduleEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.toasts.shareToGroup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.error.failedToCreate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.allDay": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.milestoneToday": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.focus.todaysFocus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.focus.lightDay": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.focus.moreSteps": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.badge.guidedStep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.badge.milestone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.badge.wellness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.action.start": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.action.continue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.action.join": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.action.details": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.action.viewPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.action.open": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.action.done": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.group.stepsRemaining": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.journey.dayOf": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.journey.yourJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.journey.nextMilestone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.journey.showFullAgenda": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.journey.moreEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.journey.onboardingPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.journey.startPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.journey.tasksCompleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.journey.waveNames.wave-1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.journey.waveNames.wave-2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.journey.waveNames.wave-3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.journey.waveNames.wave-4": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.journey.waveNames.wave-5": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendar.journey.waveNames.wave-6": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:01:55.885Z"
+}

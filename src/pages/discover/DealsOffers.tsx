@@ -25,6 +25,7 @@ import { DiscoverShopActionPopup } from "@/components/discover/DiscoverShopActio
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDateTime } from '@/lib/locale-format';
 export default function DealsOffers() {
   return (
     <ProductSelectionProvider>
@@ -476,7 +477,7 @@ function DealsOffersInner() {
                           ))}
                         </div>
                         <span className="text-muted-foreground">
-                          {deal.rating} ({deal.reviews.toLocaleString()})
+                          {deal.rating} ({fmtDateTime(deal.reviews)})
                         </span>
                       </div>
 
@@ -585,7 +586,7 @@ function DealsOffersInner() {
                           ))}
                         </div>
                         <span className="text-muted-foreground">
-                          {service.rating} ({service.reviews.toLocaleString()})
+                          {service.rating} ({fmtDateTime(service.reviews)})
                         </span>
                       </div>
 
@@ -784,7 +785,7 @@ function DealsOffersInner() {
                           ))}
                         </div>
                         <span className="text-muted-foreground">
-                          {product.rating} ({product.reviews.toLocaleString()})
+                          {product.rating} ({fmtDateTime(product.reviews)})
                         </span>
                       </div>
 

@@ -27,3 +27,4 @@ dist-ssr
 scripts/.codemod-*.manifest.json
 
 supabase/.temp/
+.git-worktrees/

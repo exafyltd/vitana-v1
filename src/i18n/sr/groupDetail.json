@@ -1,0 +1,16 @@
+{
+  "groupDetail": {
+    "members": "Članovi",
+    "public": "Javna",
+    "private": "Privatna",
+    "leaveGroup": "Napusti grupu",
+    "leaving": "Napuštanje...",
+    "joinGroup": "Pridruži se grupi",
+    "joining": "Pridruživanje...",
+    "back": "Nazad",
+    "notFound": "Grupa nije pronađena",
+    "notFoundDesc": "Ova grupa je možda uklonjena ili ne postoji.",
+    "browseGroups": "Pregledaj grupe",
+    "support": "Podrška"
+  }
+}

@@ -64,7 +64,9 @@ jobs:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          ARGS="--provider=${{ inputs.provider }} --locale=${{ inputs.locale }} --batch=${{ inputs.batch }}"
+          # --init bootstraps a new locale dir from en/ if missing; idempotent
+          # for existing locales (only flags untranslated leaves).
+          ARGS="--init --provider=${{ inputs.provider }} --locale=${{ inputs.locale }} --batch=${{ inputs.batch }}"
           if [ -n "${{ inputs.shard }}" ]; then
             ARGS="$ARGS --shard=${{ inputs.shard }}"
           fi
@@ -73,18 +75,26 @@ jobs:
 
       - name: Commit and push
         run: |
-          if git diff --quiet src/i18n/; then
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # `git diff --quiet` doesn't see new untracked files (a fresh locale dir from --init).
+          # Stage everything first, then check the cached diff against HEAD.
+          git add src/i18n/
+          if git diff --cached --quiet; then
             echo "No translation changes."
             exit 0
           fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/i18n/
-          git commit -m "chore(i18n): drain _pending_review via ${{ inputs.provider }} (${{ inputs.locale }})
-
-Auto-translation run.
-Provider: ${{ inputs.provider }}
-Locale: ${{ inputs.locale }}
-Triggered by: ${{ github.actor }}
-"
-          git push origin HEAD:${{ github.ref_name }}
+          git commit -m "chore(i18n): drain _pending_review via ${{ inputs.provider }} for ${{ inputs.locale }} (actor=${{ github.actor }})"
+          # Concurrent runs (e.g. two locales translated in parallel) can race
+          # the push; rebase against the latest ref before retrying.
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin ${{ github.ref_name }} || true
+            if git push origin HEAD:${{ github.ref_name }}; then
+              echo "push succeeded on attempt $i"
+              exit 0
+            fi
+            echo "push attempt $i failed — backing off"
+            sleep $((5 * i))
+          done
+          echo "push failed after 5 attempts"
+          exit 1

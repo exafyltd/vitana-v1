@@ -14,11 +14,11 @@ import { usePostInteractions, PostComment } from "@/hooks/usePostInteractions";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useAuth } from "@/context/AuthProvider";
 import { I18nEmptyState } from "@/components/ui/i18n-empty-state";
-import { formatDistanceToNow } from "date-fns";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface ProfilePostsTabProps {
   profile: UserProfile;
   scope: Scope;

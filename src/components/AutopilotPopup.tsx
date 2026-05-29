@@ -30,7 +30,6 @@ import {
   CircleDot,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { communityFetch } from "@/lib/community-gateway";
 import { toast } from "sonner";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -87,16 +86,17 @@ function sumVectorTotal(vector: ContributionVector | null | undefined): number {
 export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const navigate = useNavigate();
   const { translate } = useTranslation();
-  const { 
+  const {
     allVisibleActions,
     pendingActions,
-    selectedActions, 
-    executeActions, 
-    toggleActionSelection, 
+    selectedActions,
+    executeActions,
+    toggleActionSelection,
     isExecuting,
     loading,
     error,
     fetchRecommendations,
+    completeRecommendation,
   } = useAutopilot();
   
   const isMobile = useIsMobile();
@@ -176,27 +176,30 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     if (selectedActions.length === 0) return;
 
     const actionIds = selectedActions.map(a => a.id);
-    
+
     try {
       const results = await executeActions(actionIds);
-      
+
       // Check for navigate action — use the first navigate result
       const navigateResult = results.find(r => r.success && r.action_type === "navigate" && r.target);
       if (navigateResult) {
         onOpenChange(false);
-        // G3d: set_goal (and any future goal-opening action) uses
-        // target=/?open=life_compass or /?open=goals. Dispatch the
-        // overlay event instead of navigating so the user stays on
-        // their current screen and the Life Compass modal opens on top.
+        // Overlay targets (life_compass, calendar, invite, index) don't change
+        // routes — opening the overlay IS the action being taken, so flush
+        // the recommendation to completed instead of leaving it stuck at
+        // activated waiting for a source_ref handler that doesn't exist.
         try {
           const parsed = new URL(navigateResult.target!, window.location.origin);
           const openTarget = parsed.searchParams.get("open");
-          if (openTarget === "life_compass" || openTarget === "goals") {
-            window.dispatchEvent(new CustomEvent("vitana:open-life-compass"));
-            return;
-          }
-          if (openTarget === "calendar") {
-            window.dispatchEvent(new CustomEvent("calendar:open"));
+          const overlayEvent =
+            openTarget === "life_compass" || openTarget === "goals" ? "vitana:open-life-compass" :
+            openTarget === "calendar" ? "calendar:open" :
+            openTarget === "invite" || openTarget === "referral" ? "referral:open" :
+            openTarget === "index" || openTarget === "vitana_index" ? "vitana:open-index" :
+            null;
+          if (overlayEvent) {
+            window.dispatchEvent(new CustomEvent(overlayEvent));
+            completeRecommendation(navigateResult.actionId).catch(() => {});
             return;
           }
         } catch {
@@ -231,10 +234,9 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const handleCompleteTask = async (actionId: string) => {
     setCompletingId(actionId);
     try {
-      const res = await communityFetch(`/api/v1/autopilot/recommendations/${actionId}/complete`, { method: 'POST' });
-      if (res.ok) {
-        const { reward } = await res.json();
-        if (reward) toast.success(`+${reward} VTN earned!`);
+      const json = await completeRecommendation(actionId);
+      if (json?.ok) {
+        if (json.reward) toast.success(`+${json.reward} VTN earned!`);
         fetchRecommendations();
       } else {
         notifyError('toasts.common.couldNotCompleteTask');

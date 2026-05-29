@@ -39,6 +39,7 @@ import {
 } from "@/hooks/useAdminMembers";
 import { notifyError, notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
+import { fmtDate } from '@/lib/locale-format';
 const AVAILABLE_ROLES = ["community", "patient", "professional", "staff", "admin"];
 
 export default function MembersInvitations() {
@@ -228,10 +229,10 @@ export default function MembersInvitations() {
                         <AdminStatusBadge variant={st.variant}>{st.label}</AdminStatusBadge>
                       </TableCell>
                       <TableCell className="text-xs text-muted-foreground">
-                        {new Date(inv.created_at).toLocaleDateString()}
+                        {fmtDate(new Date(inv.created_at))}
                       </TableCell>
                       <TableCell className="text-xs text-muted-foreground">
-                        {new Date(inv.expires_at).toLocaleDateString()}
+                        {fmtDate(new Date(inv.expires_at))}
                       </TableCell>
                       <TableCell>
                         {isPending && (

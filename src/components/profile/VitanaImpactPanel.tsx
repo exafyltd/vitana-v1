@@ -107,7 +107,7 @@ export function VitanaImpactPanel({
                   className="mt-2 text-[10px] px-2 py-0.5 border-[hsl(var(--sys-vitana-accent))]/30 bg-[hsl(var(--sys-vitana-accent))]/10 text-[hsl(var(--sys-vitana-accent))]"
                   style={{ backgroundColor: tier.color + '20' }}
                 >
-                  {tier.label}
+                  {t(tier.labelKey)}
                 </Badge>
               </div>
             </div>

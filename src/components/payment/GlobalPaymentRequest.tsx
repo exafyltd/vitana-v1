@@ -13,6 +13,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Search, DollarSign, Users } from 'lucide-react';
 import { notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface GlobalPaymentRequestProps {
   isOpen: boolean;
   onClose: () => void;
@@ -113,7 +114,7 @@ export default function GlobalPaymentRequest({
       const requestId = crypto.randomUUID();
       
       // Send payment request message
-      const messageContent = `💳 Payment Request\n\n**Amount:** ${numericAmount.toLocaleString()} ${currency}\n**From:** You\n**Description:** ${description || 'Payment request'}\n\nThe recipient can approve or decline this request from their wallet.`;
+      const messageContent = `💳 Payment Request\n\n**Amount:** ${fmtNumber(numericAmount)} ${currency}\n**From:** You\n**Description:** ${description || 'Payment request'}\n\nThe recipient can approve or decline this request from their wallet.`;
       
       await onSendMessage(messageContent, 'payment_request', {
         type: 'payment_request',

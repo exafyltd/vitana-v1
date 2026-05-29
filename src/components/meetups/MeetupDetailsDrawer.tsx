@@ -88,13 +88,14 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { cn, getAbsoluteImageUrl } from "@/lib/utils";
-import { format, formatDistanceToNow, differenceInHours } from "date-fns";
+import { differenceInHours } from 'date-fns';
 import { de as deLocale } from "date-fns/locale";
 import { useCalendarEvents } from "@/hooks/useCalendarEvents";
 import SEO from "@/components/SEO";
 import { EventKebabMenu } from "@/components/events/EventKebabMenu";
 import { lookup, notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
 // Sanitize URL for security - only allow trusted sources
 function sanitizeUrl(url?: string): string | null {
   if (!url) return null;
@@ -773,7 +774,7 @@ export function MeetupDetailsDrawer({
 
   // Generate SEO data for rich link previews
   const eventUrl = `${window.location.origin}/comm/events-meetups?event=${event.id}`;
-  const eventDescription = event.description?.slice(0, 200) || `Join ${event.title} on ${format(startDate, 'MMMM d, yyyy')}`;
+  const eventDescription = event.description?.slice(0, 200) || `Join ${event.title} on ${formatDate(startDate, 'MMMM d, yyyy')}`;
   const eventImage = getAbsoluteImageUrl(event.image_url);
 
   const handleInlineSend = async () => {
@@ -1130,9 +1131,9 @@ export function MeetupDetailsDrawer({
                 <div className="flex items-start gap-3">
                   <Calendar className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-[15px]">{format(startDate, 'EEEE, MMMM d, yyyy', { locale: isGerman ? deLocale : undefined })}</p>
+                    <p className="font-medium text-[15px]">{formatDate(startDate, 'EEEE, MMMM d, yyyy', { locale: isGerman ? deLocale : undefined })}</p>
                     <p className="text-[14px] text-muted-foreground">
-                      {format(startDate, 'HH:mm')} {endDate && `- ${format(endDate, 'HH:mm')}`}
+                      {formatDate(startDate, 'HH:mm')} {endDate && `- ${formatDate(endDate, 'HH:mm')}`}
                       {!showLocalTime && ' UTC'}
                     </p>
                     {showCountdown && (

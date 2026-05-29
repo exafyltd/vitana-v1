@@ -21,6 +21,7 @@ import { Search, Send, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface GlobalSendFundsProps {
   isOpen: boolean;
   onClose: () => void;
@@ -121,7 +122,7 @@ export default function GlobalSendFunds({
       
       if (result) {
         // Send confirmation message
-        const messageContent = `💸 Funds sent successfully!\n\n**Amount:** ${numericAmount.toLocaleString()} ${currency}\n**To:** ${selectedRecipient.display_name}\n**Transaction ID:** ${result.transactionId}`;
+        const messageContent = `💸 Funds sent successfully!\n\n**Amount:** ${fmtNumber(numericAmount)} ${currency}\n**To:** ${selectedRecipient.display_name}\n**Transaction ID:** ${result.transactionId}`;
         
         await onSendMessage(messageContent, 'system', {
           type: 'payment_sent',
@@ -249,7 +250,7 @@ export default function GlobalSendFunds({
                   <SelectItem value="CREDITS">{t('screens.payment.credits')}</SelectItem>
                 </SelectContent>
               </Select>
-              <p className="text-xs text-muted-foreground mt-1">{t('screens.payment.availableValue0Currency', { value0: currentBalance.toLocaleString(), currency })}</p>
+              <p className="text-xs text-muted-foreground mt-1">{t('screens.payment.availableValue0Currency', { value0: fmtNumber(currentBalance), currency })}</p>
             </div>
 
             {/* Amount Input */}

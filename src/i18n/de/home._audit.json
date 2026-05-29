@@ -1,0 +1,47 @@
+{
+  "verdicts": {
+    "home.inspiration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "home.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.welcomeBack": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.todaysSchedule": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.mediaContent": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect register (formal 'Sie' instead of informal 'du')",
+      "suggested": "Medien für dich",
+      "phase": "llm"
+    },
+    "home.eventsAndMeetups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.communityNews": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.dailyMatches": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-05-20T07:13:18.456Z"
+}

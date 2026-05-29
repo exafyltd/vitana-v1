@@ -202,7 +202,17 @@ export const useVitanaOrbTools = (options: UseVitanaOrbToolsOptions = {}) => {
             community_feed: '/comm/feed',
           };
           let path = TARGET_TO_PATH[target] || null;
-          if (target === 'intent_match_detail' && matchId) path = `/intents/match/${matchId}`;
+          // VTID-02864: /intents/match/:id treats :id as the user's OWN intent_id
+          // (calls getIntent → /api/v1/intents/:intent_id). Prefer intent_id; fall
+          // back to match_id for legacy callers — IntentMatchDetail.load() resolves
+          // either form. Without this, the voice tool description's "send match_id
+          // for INTENTS.MATCH_DETAIL" hint produced a 404 + "Could not load match
+          // detail" toast right after Vitana said "I found a match, do you want
+          // to see it?"
+          if (target === 'intent_match_detail') {
+            const id = intentId || matchId;
+            if (id) path = `/intents/match/${id}`;
+          }
           if (target === 'intent_post_public' && intentId) path = `/p/${intentId}`;
           // E3 — profile-first match presentation
           if (target === 'profile_with_match' && vitanaIdArg) {

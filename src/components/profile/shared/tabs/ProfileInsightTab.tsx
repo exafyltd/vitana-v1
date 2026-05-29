@@ -22,7 +22,6 @@ import {
 } from "lucide-react";
 import { UserProfile } from "@/types/profile";
 import { Scope } from "@/lib/profileScope";
-import { format } from "date-fns";
 import { ProfileBadgesGrid } from "@/components/profile/insight/ProfileBadgesGrid";
 import { ProfileInterestTags } from "@/components/profile/insight/ProfileInterestTags";
 import { ProfileTimeline } from "@/components/profile/insight/ProfileTimeline";
@@ -33,6 +32,7 @@ import { ViewModeIntelligence } from "@/components/profile/engagement/ViewModeIn
 import { AutopilotSuggestions } from "@/components/profile/AutopilotSuggestions";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface ProfileInsightTabProps {
   profile: UserProfile;
   scope: Scope;

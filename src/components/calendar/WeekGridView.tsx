@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { format, addMinutes, startOfDay, differenceInMinutes, isSameDay, isToday } from "date-fns";
+import { addMinutes, startOfDay, differenceInMinutes, isSameDay, isToday } from 'date-fns';
 import { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +8,7 @@ import { Clock, Edit, MessageCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface WeekGridViewProps {
   weekDays: Date[];
   events: CalendarEvent[];
@@ -186,7 +187,7 @@ export function WeekGridView({
                   lineHeight: `${PIXELS_PER_HOUR}px`,
                 }}
               >
-                {format(new Date().setHours(hour, 0, 0, 0), 'HH:mm')}
+                {formatDate(new Date().setHours(hour, 0, 0, 0), 'HH:mm')}
               </div>
             ))}
           </div>
@@ -254,7 +255,7 @@ export function WeekGridView({
 
                 return (
                   <div
-                    key={format(day, 'yyyy-MM-dd')}
+                    key={formatDate(day, 'yyyy-MM-dd')}
                     className={cn(
                       "relative border-r border-border/20",
                       isTodayDate && "bg-primary/5"
@@ -308,11 +309,11 @@ export function WeekGridView({
                               "font-semibold truncate",
                               isVeryNarrow ? "text-[10px] mb-0" : "text-xs mb-0.5"
                             )}>
-                              {isVeryNarrow ? format(new Date(event.start_time), 'h:mm') : event.title}
+                              {isVeryNarrow ? formatDate(new Date(event.start_time), 'h:mm') : event.title}
                             </p>
                             {!isVeryNarrow && (
                               <p className="text-[10px] text-muted-foreground">
-                                {format(new Date(event.start_time), 'HH:mm')}
+                                {formatDate(new Date(event.start_time), 'HH:mm')}
                               </p>
                             )}
                             

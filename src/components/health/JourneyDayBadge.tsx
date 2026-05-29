@@ -31,10 +31,10 @@ export function JourneyDayBadge() {
   const totalProgress = stage?.totalProgress ?? Math.min(100, Math.round((dayNumber / JOURNEY_TOTAL_DAYS) * 100));
   const tierFraming = index?.tier?.framing ?? null;
 
-  const dayLabel = inArc ? `Day ${dayNumber}` : "Day 90+";
+  const dayLabel = inArc ? t('screens.health.dayN', { day: dayNumber }) : t('screens.health.day90Plus');
   const subLabel = inArc
-    ? tierFraming ?? "Of your first 90 days."
-    : "Sustained practice — you're past the 90-day arc.";
+    ? tierFraming ?? t('screens.health.ofYourFirst90Days')
+    : t('screens.health.sustainedPracticePast90DayArc');
 
   return (
     <div className="mb-4 flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
@@ -62,7 +62,7 @@ export function JourneyDayBadge() {
           variant="outline"
           className="shrink-0 bg-primary/10 text-primary border-primary/20 text-xs"
           title={stage.wave.description}
-        >{t('screens.health.nameDayStart_dayEnd_day', { name: stage.wave.name, start_day: stage.wave.timeline.start_day, end_day: stage.wave.timeline.end_day })}</Badge>
+        >{t('screens.health.nameDayStart_dayEnd_day', { name: t(stage.wave.nameKey), start_day: stage.wave.timeline.start_day, end_day: stage.wave.timeline.end_day })}</Badge>
       )}
 
       <span className="text-sm text-muted-foreground md:hidden">{subLabel}</span>

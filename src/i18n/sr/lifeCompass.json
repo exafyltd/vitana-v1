@@ -1,0 +1,53 @@
+{
+  "lifeCompass": {
+    "title": "Životni kompas",
+    "description": "Tvoj životni kompas vodi sve AI preporuke i odluke. Izaberi primarni cilj koji ti je trenutno najvažniji. AI će dati prioritet predlozima koji su usklađeni sa ovim pravcem.",
+    "currentCompass": "Trenutni kompas",
+    "alignment": "Usklađenost: {value}%",
+    "confidence": "Poverenje: {value}%",
+    "suggestedGoals": "Predloženi ciljevi",
+    "customGoal": "Prilagođeni cilj",
+    "customGoalPlaceholder": "Opiši svoj primarni cilj svojim rečima...",
+    "setCustomGoal": "Postavi prilagođeni cilj",
+    "closeAria": "Zatvori",
+    "categoryLabels": {
+      "wealth": "bogatstvo",
+      "relationship": "veza",
+      "health": "zdravlje",
+      "career": "karijera",
+      "learning": "učenje",
+      "spiritual": "duhovnost",
+      "longevity": "dugovečnost"
+    },
+    "goals": {
+      "wealth": {
+        "title": "Izgradi finansijsku slobodu",
+        "description": "Postigni finansijsku nezavisnost i bogatstvo"
+      },
+      "relationship": {
+        "title": "Pronađi životnog partnera",
+        "description": "Izgradi smislene romantične veze"
+      },
+      "health": {
+        "title": "Transformiši zdravlje",
+        "description": "Postigni optimalno fizičko i mentalno blagostanje"
+      },
+      "career": {
+        "title": "Unapredi karijeru",
+        "description": "Izgradi ispunjenu i uspešnu karijeru"
+      },
+      "learning": {
+        "title": "Savladaj nove veštine",
+        "description": "Uči i rasti kroz znanje"
+      },
+      "spiritual": {
+        "title": "Duhovni život",
+        "description": "Produbi svrhu, prisutnost i unutrašnji mir"
+      },
+      "longevity": {
+        "title": "Poboljšaj kvalitet života i produži životni vek",
+        "description": "Fokus na zdravstveni vek, energiju i dugovečnost — misija Vitanalanda"
+      }
+    }
+  }
+}

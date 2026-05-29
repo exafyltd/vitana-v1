@@ -177,15 +177,15 @@ export function JourneyCheckpoints({
 
   let tierGuidance = "";
   if (next === null) {
-    tierGuidance = "Sustaining Elite. Keep all five pillars steady.";
+    tierGuidance = t('screens.health.sustainingEliteKeepAllPillars');
   } else if (gap !== null && projDelta !== null && gap <= projDelta) {
     tierGuidance = weakest
-      ? `On track to reach ${next.label} (${next.min}+) — keep lifting ${pillarLabel(weakest)}.`
-      : `On track to reach ${next.label} (${next.min}+).`;
+      ? t('screens.health.onTrackReachTierKeepLifting', { tier: t(next.labelKey), min: next.min, pillar: pillarLabel(weakest) })
+      : t('screens.health.onTrackReachTier', { tier: t(next.labelKey), min: next.min });
   } else if (weakest && pillars) {
-    tierGuidance = `Reach ${next.label} (${next.min}+) by lifting ${pillarLabel(weakest)} most — currently ${pillars[weakest]}/200.`;
+    tierGuidance = t('screens.health.reachTierByLiftingPillar', { tier: t(next.labelKey), min: next.min, pillar: pillarLabel(weakest), current: pillars[weakest] });
   } else {
-    tierGuidance = `Reach ${next.label} (${next.min}+) by keeping a steady pace.`;
+    tierGuidance = t('screens.health.reachTierBySteadyPace', { tier: t(next.labelKey), min: next.min });
   }
 
   // ── Today's "Start" button ───────────────────────────────────────────

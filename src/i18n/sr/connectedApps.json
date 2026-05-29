@@ -1,0 +1,50 @@
+{
+  "connectedApps": {
+    "title": "Povezane aplikacije",
+    "description": "Upravljaj svojim povezanim uređajima i uslugama",
+    "searchPlaceholder": "Pretraži aplikacije...",
+    "addApp": "Dodaj aplikaciju",
+    "connected": "povezano",
+    "syncing": "sinhronizacija",
+    "sections": {
+      "social": "Društvene mreže i deljenje",
+      "fitness": "Fitnes i nosivi uređaji",
+      "health": "Zdravlje i laboratorije",
+      "other": "Ostalo"
+    },
+    "status": {
+      "connected": "Povezano",
+      "notConnected": "Nije povezano",
+      "comingSoon": "Uskoro",
+      "soon": "Uskoro"
+    },
+    "actions": {
+      "connect": "Poveži",
+      "disconnect": "Prekini vezu",
+      "configure": "Podesi sinhronizaciju",
+      "manage": "Upravljaj"
+    },
+    "lastSync": "Poslednja sinhronizacija",
+    "dataSync": "Sinhronizacija podataka",
+    "comingSoonMessage": "Integracija {appName} uskoro stiže",
+    "popup": {
+      "title": "Poveži aplikacije i usluge",
+      "searchPlaceholder": "Pretraži aplikacije i usluge...",
+      "categories": {
+        "all": "Sve aplikacije",
+        "health": "Zdravlje i fitnes",
+        "social": "Društvene mreže"
+      },
+      "availableApps": "Dostupne aplikacije",
+      "verified": "Potvrđeno",
+      "connected": "Povezano",
+      "settings": "Podešavanja",
+      "disconnect": "Prekini vezu",
+      "connect": "Poveži",
+      "done": "Gotovo",
+      "noResults": "Nema pronađenih aplikacija",
+      "connectionSuccess": "Veza uspešno uspostavljena",
+      "connectionPlaceholder": "Veza sa {appName} uskoro stiže"
+    }
+  }
+}

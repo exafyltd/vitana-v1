@@ -15,14 +15,22 @@ import {
 } from "@/hooks/useVitanaIndex";
 import VitanaPillarAgentsPanel from "@/components/health/VitanaPillarAgentsPanel";
 import VitanaLogDataDialog from "@/components/health/VitanaLogDataDialog";
+import MissionAlignmentCard from "@/components/health/MissionAlignmentCard";
 import { t } from '@/lib/i18n-toast';
 
+const PILLAR_DESCRIPTION_KEYS: Record<VitanaPillarKey, string> = {
+  nutrition: 'screens.health.vitanaIndexPillar_food',
+  hydration: 'screens.health.vitanaIndexPillar_water',
+  exercise:  'screens.health.vitanaIndexPillar_exercise',
+  sleep:     'screens.health.vitanaIndexPillar_recovery',
+  mental:    'screens.health.vitanaIndexPillar_mental',
+};
 const PILLAR_DESCRIPTIONS: Record<VitanaPillarKey, string> = {
-  nutrition: "What and how you eat — meals, macro balance, biomarkers",
-  hydration: "Water and fluids through the day, adjusted for activity and climate",
-  exercise:  "Movement, workouts, heart-rate zones, recovery",
-  sleep:     "Duration, regularity, stages, HRV — where the body rebuilds",
-  mental:    "Stress, mood, mindfulness, cognitive load",
+  nutrition: t(PILLAR_DESCRIPTION_KEYS.nutrition),
+  hydration: t(PILLAR_DESCRIPTION_KEYS.hydration),
+  exercise:  t(PILLAR_DESCRIPTION_KEYS.exercise),
+  sleep:     t(PILLAR_DESCRIPTION_KEYS.sleep),
+  mental:    t(PILLAR_DESCRIPTION_KEYS.mental),
 };
 
 const SUBSCORE_MAX: VitanaPillarSubscores = {
@@ -185,7 +193,7 @@ export default function VitanaIndexDetail() {
               {index && (
                 <>
                   <div className="flex flex-wrap items-center gap-2">
-                    <Badge variant={tierBadgeVariant(index.tier.label)}>{index.tier.label}</Badge>
+                    <Badge variant={tierBadgeVariant(index.tier.label)}>{t(index.tier.labelKey)}</Badge>
                     <Badge variant="outline" className="gap-1">
                       <Scale className="w-3 h-3" />
                       {balanceChipLabel(index.balanceFactor)}
@@ -248,6 +256,11 @@ export default function VitanaIndexDetail() {
 
           {/* Active agents — the 5 pillar agents' health + today's output */}
           <VitanaPillarAgentsPanel />
+
+          {/* Mission Alignment — Phase 6 of Ultimate Goal hardening.
+              Shows how the user's autopilot queue serves the 5 pillars +
+              longevity economy axis. Contract: docs/GOVERNANCE/ULTIMATE-GOAL.md */}
+          <MissionAlignmentCard />
 
           {/* Pillar breakdown — stacked segments */}
           <Card>

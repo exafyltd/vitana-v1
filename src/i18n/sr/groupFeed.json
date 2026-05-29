@@ -1,0 +1,15 @@
+{
+  "groupFeed": {
+    "placeholder": "Podeli nešto sa grupom...",
+    "post": "Objavi",
+    "noMessages": "Još uvek nema poruka",
+    "beFirst": "Budi prvi koji će objaviti u ovoj grupi!",
+    "joinToPost": "Pridruži se grupi da bi počeo da objavljuješ.",
+    "messageSent": "Poruka poslata",
+    "deleteConfirm": "Obriši ovu poruku?",
+    "messageDeleted": "Poruka obrisana",
+    "error": "Greška",
+    "errorSend": "Slanje poruke nije uspelo",
+    "errorDelete": "Brisanje poruke nije uspelo"
+  }
+}

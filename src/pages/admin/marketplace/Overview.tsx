@@ -21,6 +21,7 @@ import { ShoppingBag, Store, Activity, AlertTriangle, Zap, RefreshCw, Loader2 } 
 import { Link } from "react-router-dom";
 import { notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
 
 interface OverviewStats {
@@ -205,7 +206,7 @@ function StatCard({
           <div>
             <div className="text-xs text-muted-foreground uppercase tracking-wide">{label}</div>
             <div className="text-2xl font-semibold mt-1">
-              {typeof value === "number" ? value.toLocaleString() : value}
+              {typeof value === "number" ? fmtNumber(value) : value}
             </div>
           </div>
           <Icon className={`w-6 h-6 ${tone === "warn" && typeof value === "number" && value > 0 ? "text-amber-600" : "text-muted-foreground"}`} />

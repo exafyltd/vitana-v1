@@ -25,6 +25,7 @@ import {
   VolumeX
 } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import { fmtTime } from '@/lib/locale-format';
 // Remove react-i18next import - not available
 
 interface LiveRoomViewerProps {
@@ -147,7 +148,7 @@ export default function LiveRoomViewer({ roomId, onLeave }: LiveRoomViewerProps)
   };
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
+    return fmtTime(date, { hour: '2-digit', minute: '2-digit', hour12: false });
   };
 
   return (

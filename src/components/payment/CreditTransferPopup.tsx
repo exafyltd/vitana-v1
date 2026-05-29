@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface CreditTransferPopupProps {
   isOpen: boolean;
   onClose: () => void;
@@ -109,7 +110,7 @@ export default function CreditTransferPopup({
                   <Coins className="w-5 h-5 text-orange-500" />
                   <span className="font-medium">{t('screens.payment.yourBalance')}</span>
                 </div>
-                <span className="text-lg font-bold text-orange-600">{t('screens.payment.value0Credits', { value0: currentBalance.toLocaleString() })}
+                <span className="text-lg font-bold text-orange-600">{t('screens.payment.value0Credits', { value0: fmtNumber(currentBalance) })}
                 </span>
               </div>
             </CardContent>
@@ -167,7 +168,7 @@ export default function CreditTransferPopup({
             </div>
             {transferAmount > 0 && (
               <div className="flex items-center justify-between mt-1 text-xs">
-                <span className="text-muted-foreground">{t('screens.payment.remainingValue0Credits', { value0: remainingBalance.toLocaleString() })}
+                <span className="text-muted-foreground">{t('screens.payment.remainingValue0Credits', { value0: fmtNumber(remainingBalance) })}
                 </span>
                 {!canTransfer && transferAmount > currentBalance && (
                   <span className="text-red-500 flex items-center gap-1">

@@ -439,23 +439,25 @@ export function resolveNotificationRoute(type: string, data?: Record<string, any
   // 1. Honour explicit URL from push payload
   if (data?.url) {
     const url = data.url as string;
-    // Normalize legacy /messages/* paths to /inbox
+    // Normalize legacy /messages/* paths to /inbox.
+    // Path-based form (/inbox/t/<id>) — query-string form silently fails in
+    // Appilix's Android in-app browser when launched from a notification tap.
     if (url.startsWith('/messages/') || url.startsWith('/messages?')) {
       const id = url.replace('/messages/', '').split('?')[0];
-      if (id) return `/inbox?thread=${id}&context=global`;
+      if (id) return `/inbox/t/${id}`;
       return '/inbox';
     }
     return url;
   }
 
-  // 2. Special handling for chat messages → deep-link into inbox
-  //    Group chats: use thread_id (UUID); Direct DMs: use sender_id (peer)
+  // 2. Special handling for chat messages → path-based deep-link into inbox.
+  //    Group chats: use thread_id (UUID); direct DMs: use sender_id (peer user_id).
   if (type === 'new_chat_message') {
     if (data?.thread_id) {
-      return `/inbox?thread=${data.thread_id}&context=global`;
+      return `/inbox/t/${data.thread_id}`;
     }
     if (data?.sender_id) {
-      return `/inbox?thread=${data.sender_id}&context=global`;
+      return `/inbox/u/${data.sender_id}`;
     }
   }
 

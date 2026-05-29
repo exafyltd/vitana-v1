@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { format, parseISO } from "date-fns";
+import { parseISO } from 'date-fns';
 import { CalendarIcon } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { AvatarUploadField } from "@/components/profile/editor/AvatarUploadField";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface AccountEditDrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -332,7 +333,7 @@ function DateOfBirthPicker({
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {parsed ? format(parsed, "PPP") : "Select birth date"}
+          {parsed ? formatDate(parsed, "PPP") : "Select birth date"}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
@@ -341,7 +342,7 @@ function DateOfBirthPicker({
           selected={parsed}
           onSelect={(d) => {
             if (d) {
-              onChange(format(d, "yyyy-MM-dd"));
+              onChange(formatDate(d, "yyyy-MM-dd"));
               setOpen(false);
             }
           }}

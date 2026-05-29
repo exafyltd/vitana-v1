@@ -28,6 +28,7 @@ import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { DiscoverShopActionPopup } from "@/components/discover/DiscoverShopActionPopup";
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from "@/components/ui/split-bar";
 import { t } from '@/lib/i18n-toast';
+import { fmtNumber } from '@/lib/locale-format';
 
 interface Supplement {
   id: string;
@@ -495,7 +496,7 @@ function SupplementsInner() {
                               />
                             ))}
                             <span className="text-sm text-muted-foreground ml-1">
-                              {supplement.rating} ({supplement.review_count?.toLocaleString()})
+                              {supplement.rating} ({fmtNumber(supplement.review_count)})
                             </span>
                           </div>
                           

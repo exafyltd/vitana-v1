@@ -11,7 +11,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { Loader2, ArrowLeft, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from '@/hooks/use-toast';
-import { getIntent, getIntentMatches, closeIntent, type UserIntent, type IntentMatch } from "@/lib/intentApi";
+import { getIntent, getIntentMatches, getIncomingMatches, getOutgoingMatches, closeIntent, type UserIntent, type IntentMatch } from "@/lib/intentApi";
 import { IntentCard } from "@/components/intents/IntentCard";
 import { IntentMatchCard } from "@/components/intents/IntentMatchCard";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
@@ -28,13 +28,47 @@ export default function IntentMatchDetail() {
     if (!id) return;
     setLoading(true);
     try {
-      const [intentData, matchesData] = await Promise.all([
-        getIntent(id),
-        getIntentMatches(id, 10),
-      ]);
+      let resolvedIntentId = id;
+      let intentData: UserIntent | null = null;
+      try {
+        intentData = await getIntent(resolvedIntentId);
+      } catch {
+        // VTID-02864: if :id wasn't an intent_id, it might be a match_id —
+        // some voice navigation paths historically passed match_id (per the
+        // INTENTS.MATCH_DETAIL voice-tool description). Resolve it via
+        // incoming/outgoing matches and redirect to the user's owning intent.
+        const [incoming, outgoing] = await Promise.all([
+          getIncomingMatches(200).catch(() => []),
+          getOutgoingMatches(200).catch(() => []),
+        ]);
+        const matchRow =
+          incoming.find((m) => m.match_id === id) ??
+          outgoing.find((m) => m.match_id === id);
+        if (matchRow) {
+          // Try whichever side resolves to an intent we can fetch.
+          const candidates = [matchRow.intent_a_id, matchRow.intent_b_id].filter(
+            (x): x is string => typeof x === 'string' && x.length > 0,
+          );
+          for (const candidate of candidates) {
+            try {
+              intentData = await getIntent(candidate);
+              resolvedIntentId = candidate;
+              navigate(`/intents/match/${candidate}`, { replace: true });
+              break;
+            } catch {
+              /* try the other side */
+            }
+          }
+        }
+        if (!intentData) {
+          notifyError('toasts.intentmatchdetail.couldNotLoadMatchDetail');
+          return;
+        }
+      }
+      const matchesData = await getIntentMatches(resolvedIntentId, 10);
       setIntent(intentData);
       setMatches(matchesData);
-    } catch (err: any) {
+    } catch {
       notifyError('toasts.intentmatchdetail.couldNotLoadMatchDetail');
     } finally {
       setLoading(false);

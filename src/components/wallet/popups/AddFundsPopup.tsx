@@ -16,6 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
+import { fmtNumber } from '@/lib/locale-format';
 interface AddFundsPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -74,7 +75,7 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
           <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">{t('screens.wallet.currentUsdBalance')}</span>
-              <span className="font-semibold text-green-700">${currentBalance.toLocaleString()}</span>
+              <span className="font-semibold text-green-700">${fmtNumber(currentBalance)}</span>
             </div>
           </div>
 

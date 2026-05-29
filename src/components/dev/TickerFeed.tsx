@@ -3,11 +3,11 @@ import { Badge } from "@/components/ui/badge";
 import { useDevEvents } from "@/hooks/dev/useDevEvents";
 import { SoftWarningBanner } from "./SoftWarningBanner";
 import { Loader2 } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import { useActiveVTID } from "@/context/ActiveVTIDContext";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface TickerFeedProps {
   onVTIDClick?: () => void;
   isFocused?: boolean;

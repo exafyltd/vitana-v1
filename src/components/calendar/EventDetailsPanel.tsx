@@ -1,5 +1,4 @@
 import React from "react";
-import { format } from "date-fns";
 import { de as deLocale } from "date-fns/locale/de";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Clock, MapPin, Users, Video, MessageSquare, UserPlus, Edit, Trash2, X, Share2, Zap, Bell, Tag, Paperclip, Calendar as CalendarIcon } from "lucide-react";
@@ -12,6 +11,7 @@ import { CalendarEvent } from "@/hooks/useCalendarEvents";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface EventDetailsPanelProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -68,7 +68,7 @@ export function EventDetailsPanel({
   const formatEventTime = (startTime: string, endTime?: string | null) => {
     const start = new Date(startTime);
     const end = endTime ? new Date(endTime) : new Date(start.getTime() + 60 * 60 * 1000);
-    return `${format(start, 'HH:mm')} - ${format(end, 'HH:mm')}`;
+    return `${formatDate(start, 'HH:mm')} - ${formatDate(end, 'HH:mm')}`;
   };
 
   return (
@@ -118,7 +118,7 @@ export function EventDetailsPanel({
               <Clock className="h-5 w-5 text-muted-foreground mt-0.5 shrink-0" />
               <div className="flex-1 space-y-1">
                 <p className="text-sm font-semibold">
-                  {format(new Date(event.start_time), 'EEEE, MMMM d, yyyy', { locale: dateLocale })}
+                  {formatDate(new Date(event.start_time), 'EEEE, MMMM d, yyyy', { locale: dateLocale })}
                 </p>
                 <p className="text-sm text-muted-foreground">
                   {formatEventTime(event.start_time, event.end_time)}

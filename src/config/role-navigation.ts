@@ -7,7 +7,7 @@ import {
   Stethoscope, TestTube, Target, BookOpen, Bell,
   ClipboardList, UserCheck, BarChart3, Clock,
   MessageSquare, Search, Zap, Flag, Video, Sparkles, Radio, Briefcase,
-  Newspaper
+  Newspaper, Plug, LifeBuoy
 } from "lucide-react";
 
 interface NavigationItem {
@@ -26,11 +26,13 @@ export const communityNavigation: NavigationItem[] = [
   { title: "Business Hub", path: "/business", icon: Briefcase, i18nKey: "sidebar.businessHub" },
   { title: "Inbox", path: "/inbox", icon: MessageSquare, i18nKey: "sidebar.inbox" },
   { title: "Health", path: "/health", icon: Heart, i18nKey: "sidebar.health" },
+  { title: "Connectors", path: "/connectors", icon: Plug, i18nKey: "sidebar.connectors" },
   { title: "AI Assistant", path: "/assistant", icon: Sparkles, i18nKey: "sidebar.aiAssistant" },
   { title: "Wallet", path: "/wallet", icon: Wallet, i18nKey: "sidebar.wallet" },
   { title: "Sharing", path: "/sharing", icon: Share2, i18nKey: "sidebar.sharing" },
   { title: "Memory", path: "/memory", icon: Database, i18nKey: "sidebar.memory" },
   { title: "Settings", path: "/settings", icon: Settings, i18nKey: "sidebar.settings" },
+  { title: "Support", path: "/support", icon: LifeBuoy, i18nKey: "sidebar.support" },
 ];
 
 // Patient Role Navigation - Health management focused

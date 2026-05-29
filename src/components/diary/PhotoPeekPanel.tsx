@@ -11,10 +11,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Download, Maximize2, Share2, X, MoreHorizontal, ChevronLeft, ChevronRight, Heart, Copy, Edit, Trash2, Flag } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
 import { useState, useEffect } from "react";
 import { notifyInfo, notifySuccess, t } from '@/lib/i18n-toast';
 
+import { formatDistanceToNow } from '@/lib/locale-format';
 interface PhotoPeekPanelProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;

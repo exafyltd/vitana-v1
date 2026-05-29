@@ -1,0 +1,30 @@
+{
+  "services": {
+    "title": "Centro de Servicios",
+    "subtitle": "Accede a servicios integrales de salud y bienestar",
+    "categories": {
+      "preventive": "Exámenes Preventivos",
+      "labTests": "Pruebas de Laboratorio",
+      "coaching": "Coaching y Entrenamiento Personal",
+      "groupPrograms": "Programas Grupales y Desafíos"
+    },
+    "actions": {
+      "book": "Reservar",
+      "addToPlan": "Agregar al Plan",
+      "askAI": "Preguntar a la IA",
+      "joinRoom": "Unirse a la Sala",
+      "setReminder": "Configurar Recordatorio"
+    },
+    "details": {
+      "duration": "Duración",
+      "price": "Precio",
+      "location": "Ubicación",
+      "nextAvailable": "Próximo disponible",
+      "whatsIncluded": "Qué Incluye",
+      "healthBenefits": "Beneficios para la Salud",
+      "availableProviders": "Proveedores Disponibles",
+      "requirements": "Requisitos y Preparación",
+      "tags": "Etiquetas"
+    }
+  }
+}

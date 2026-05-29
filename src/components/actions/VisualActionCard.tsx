@@ -14,6 +14,7 @@ import hydrationBottleImage from "@/assets/actions/hydration-water-bottle.jpg";
 import wellnessYogaImage from "@/assets/actions/wellness-yoga-nature.jpg";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtTime } from '@/lib/locale-format';
 interface VisualActionCardProps {
   action: AutopilotAction;
   onExecute: (actionId: string) => void;
@@ -239,7 +240,7 @@ export function VisualActionCard({
               {t('screens.actions.edit')}
             </Button>
             <div className="text-[10px] text-muted-foreground/60 font-mono flex items-center">
-              {new Date(action.timestamp).toLocaleTimeString('en-GB', { 
+              {fmtTime(new Date(action.timestamp), { 
                 hour: '2-digit', 
                 minute: '2-digit',
                 hour12: false

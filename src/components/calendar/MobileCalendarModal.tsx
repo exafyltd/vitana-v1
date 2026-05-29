@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
-import { format, isSameDay, addDays, endOfWeek, isAfter, isBefore, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, startOfWeek, getDay } from "date-fns";
+import { isSameDay, addDays, endOfWeek, isAfter, isBefore, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, startOfWeek, getDay } from 'date-fns';
 import { de as deLocale } from "date-fns/locale/de";
-import { Calendar, Plus, ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar, Plus, ChevronLeft, ChevronRight, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   ResponsiveDialog,
@@ -20,7 +20,9 @@ import { AutopilotTaskGroup } from "./AutopilotTaskGroup";
 import { JourneyProgressStrip } from "./JourneyProgressStrip";
 import { OnboardingPlanCard } from "./OnboardingPlanCard";
 import { useJourneyProgress, bundleOnboardingPlan } from "@/hooks/useJourneyProgress";
+import RemindersPanel from "@/components/reminders/RemindersPanel";
 
+import { formatDate } from '@/lib/locale-format';
 interface CalendarHookData {
   events: CalendarEvent[];
   loading: boolean;
@@ -33,20 +35,28 @@ interface MobileCalendarModalProps {
   onOpenChange: (open: boolean) => void;
   /** When provided, reuses the parent's hook data instead of creating a duplicate subscription */
   calendarHook?: CalendarHookData;
+  /** Tab to show when the modal opens (e.g. 'reminders' from a reminder push deep-link). */
+  initialTab?: 'agenda' | 'month' | 'reminders';
 }
 
-export function MobileCalendarModal({ open, onOpenChange, calendarHook }: MobileCalendarModalProps) {
+export function MobileCalendarModal({ open, onOpenChange, calendarHook, initialTab }: MobileCalendarModalProps) {
   const { translate, isGerman } = useTranslation();
   const { toast } = useToast();
   const navigate = useNavigate();
   const ownHook = useCalendarEvents();
   const { events, loading, addEvent, fetchEvents } = calendarHook ?? ownHook;
 
-  const [activeTab, setActiveTab] = useState<'agenda' | 'month'>('agenda');
+  const [activeTab, setActiveTab] = useState<'agenda' | 'month' | 'reminders'>(initialTab ?? 'agenda');
   const [showQuickAdd, setShowQuickAdd] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDay, setSelectedDay] = useState<Date | null>(null);
   const [showFullAgenda, setShowFullAgenda] = useState(false);
+
+  // When the modal (re)opens with a requested tab, honour it — covers the
+  // case where the component stays mounted between opens.
+  React.useEffect(() => {
+    if (open && initialTab) setActiveTab(initialTab);
+  }, [open, initialTab]);
 
   const journeyProgress = useJourneyProgress(events);
 
@@ -98,7 +108,7 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
     bookedEvents.forEach(event => {
       const date = new Date(event.start_time);
       if (isSameMonth(date, currentMonth)) {
-        days.add(format(date, 'yyyy-MM-dd'));
+        days.add(formatDate(date, 'yyyy-MM-dd'));
       }
     });
     return days;
@@ -239,41 +249,52 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
             </div>
 
             <div className={showQuickAdd ? 'hidden' : ''}>
-            {/* Date + Today's Focus */}
-            <div className="mb-2">
-              <p className="text-sm font-semibold">{format(todayDate, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}</p>
-              <p className="text-xs text-muted-foreground mb-3">{translate('calendar.timeGroups.today', 'Today')}</p>
-            </div>
+            {/* Date + Today's Focus — event views only */}
+            {activeTab !== 'reminders' && (
+              <>
+                <div className="mb-2">
+                  <p className="text-sm font-semibold">{formatDate(todayDate, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}</p>
+                  <p className="text-xs text-muted-foreground mb-3">{translate('calendar.timeGroups.today', 'Today')}</p>
+                </div>
 
-            <TodayFocusStrip
-              todayEvents={groupedEvents.today}
-              onEventClick={handleEventClick}
-            />
+                <TodayFocusStrip
+                  todayEvents={groupedEvents.today}
+                  onEventClick={handleEventClick}
+                />
 
-            {/* Journey Progress */}
-            {journeyProgress && (
-              <JourneyProgressStrip
-                progress={journeyProgress}
-                milestoneEvents={milestoneEvents}
-              />
+                {/* Journey Progress */}
+                {journeyProgress && (
+                  <JourneyProgressStrip
+                    progress={journeyProgress}
+                    milestoneEvents={milestoneEvents}
+                  />
+                )}
+              </>
             )}
 
-            {/* Agenda / Month toggle */}
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                {activeTab === 'agenda'
-                  ? translate('calendar.agenda', 'Agenda')
-                  : translate('calendar.month', 'Month')}
-              </h3>
-              <Button
-                variant={activeTab === 'month' ? 'default' : 'ghost'}
-                size="sm"
-                className="h-7 w-7 p-0"
-                onClick={() => setActiveTab(activeTab === 'month' ? 'agenda' : 'month')}
-                aria-label={translate('calendar.month', 'Month')}
-              >
-                <Calendar className="w-4 h-4" />
-              </Button>
+            {/* Agenda / Month / Reminders segmented control */}
+            <div className="mb-4 grid grid-cols-3 gap-1 rounded-xl bg-muted/60 p-1">
+              {([
+                { key: 'agenda', icon: <Calendar className="w-3.5 h-3.5" />, label: translate('calendar.agenda', 'Agenda') },
+                { key: 'month', icon: <Calendar className="w-3.5 h-3.5" />, label: translate('calendar.month', 'Month') },
+                { key: 'reminders', icon: <Bell className="w-3.5 h-3.5" />, label: translate('calendar.reminders', 'Reminders') },
+              ] as const).map(({ key, icon, label }) => (
+                <button
+                  key={key}
+                  type="button"
+                  onClick={() => setActiveTab(key)}
+                  className={cn(
+                    "flex items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-medium transition-colors",
+                    activeTab === key
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                  aria-pressed={activeTab === key}
+                >
+                  {icon}
+                  {label}
+                </button>
+              ))}
             </div>
 
             {/* Agenda View */}
@@ -319,7 +340,7 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
                   <Button variant="ghost" size="icon" onClick={() => setCurrentMonth(d => new Date(d.getFullYear(), d.getMonth() - 1, 1))}>
                     <ChevronLeft className="w-5 h-5" />
                   </Button>
-                  <h3 className="text-sm font-semibold">{format(currentMonth, 'MMMM yyyy')}</h3>
+                  <h3 className="text-sm font-semibold">{formatDate(currentMonth, 'MMMM yyyy')}</h3>
                   <Button variant="ghost" size="icon" onClick={() => setCurrentMonth(d => new Date(d.getFullYear(), d.getMonth() + 1, 1))}>
                     <ChevronRight className="w-5 h-5" />
                   </Button>
@@ -336,7 +357,7 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
                   ))}
 
                   {monthDays.map(day => {
-                    const dateKey = format(day, 'yyyy-MM-dd');
+                    const dateKey = formatDate(day, 'yyyy-MM-dd');
                     const hasEvents = daysWithEvents.has(dateKey);
                     const isSelected = selectedDay && isSameDay(day, selectedDay);
                     const isToday = isSameDay(day, new Date());
@@ -352,7 +373,7 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
                           !isSelected && !isToday && "hover:bg-muted"
                         )}
                       >
-                        {format(day, 'd')}
+                        {formatDate(day, 'd')}
                         {hasEvents && !isSelected && (
                           <div className="absolute bottom-1 w-1.5 h-1.5 rounded-full bg-util-calendar-accent" />
                         )}
@@ -366,7 +387,7 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
                   <div className="border-t pt-4">
                     <div className="flex items-center justify-between mb-2">
                       <p className="text-xs font-semibold text-muted-foreground uppercase">
-                        {format(selectedDay, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}
+                        {formatDate(selectedDay, 'EEEE, MMM d', { locale: isGerman ? deLocale : undefined })}
                       </p>
                       <Button
                         size="sm"
@@ -398,11 +419,16 @@ export function MobileCalendarModal({ open, onOpenChange, calendarHook }: Mobile
                 )}
               </>
             )}
+
+            {/* Reminders View */}
+            {activeTab === 'reminders' && (
+              <RemindersPanel embedded />
+            )}
             </div>
           </div>
 
-          {/* FAB - Add Event */}
-          {!showQuickAdd && (
+          {/* FAB - Add Event (event views only; Reminders has its own Add) */}
+          {!showQuickAdd && activeTab !== 'reminders' && (
             <button
               onClick={() => setShowQuickAdd(true)}
               className="absolute bottom-4 right-4 z-10 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center active:scale-95 transition-all"

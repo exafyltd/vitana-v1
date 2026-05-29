@@ -1,0 +1,108 @@
+{
+  "inbox": {
+    "title": "Inbox",
+    "subtitle": "Ostani povezan/a sa svojom zajednicom!",
+    "description": "Tvoji razgovori, ažuriranja i obaveštenja",
+    "desktopTitle": "Poruke",
+    "desktopDescription": "Poveži se sa svojom zajednicom i mrežom",
+    "tabs": {
+      "all": "Sve",
+      "groups": "Grupe",
+      "direct": "Direktno",
+      "contacts": "Kontakti",
+      "notifications": "Obaveštenja",
+      "archived": "Arhivirano"
+    },
+    "contextTabs": {
+      "community": "Zajednica",
+      "network": "Mreža"
+    },
+    "actions": {
+      "new": "Novo",
+      "newMessage": "Nova poruka",
+      "createGroup": "Kreiraj grupu"
+    },
+    "composer": {
+      "placeholder": "Unesi svoju poruku...",
+      "send": "Pošalji",
+      "attachments": "Prilozi",
+      "recipients": "Za:",
+      "add": "Dodaj"
+    },
+    "states": {
+      "empty": "Još nema poruka",
+      "loading": "Učitavanje poruka...",
+      "error": "Neuspešno učitavanje poruka"
+    },
+    "newConversation": {
+      "title": "Započni novi razgovor",
+      "titleGroup": "Kreiraj grupno ćaskanje",
+      "groupName": "Ime grupe",
+      "groupNamePlaceholder": "Unesi ime grupe...",
+      "members": "Članovi",
+      "recipient": "Primalac",
+      "addMore": "Dodaj još ljudi",
+      "searchPeople": "Pretraži ljude",
+      "searchPlaceholder": "Unesi ime ili email za pretragu...",
+      "searchMinChars": "Ukucaj najmanje 2 karaktera za pretragu",
+      "searchResults": "Rezultati pretrage",
+      "noResults": "Nema pronađenih korisnika. Probaj drugi pojam.",
+      "add": "Dodaj",
+      "added": "Dodato",
+      "cancel": "Otkaži",
+      "startChat": "Započni čet",
+      "createGroup": "Napravi grupu",
+      "creating": "Pravljenje..."
+    },
+    "createGroup": {
+      "title": "Napravi grupu",
+      "avatarSoon": "Otpremanje avatara će uskoro biti dostupno.",
+      "groupName": "Ime grupe",
+      "addMembers": "Dodaj članove",
+      "searchPlaceholder": "Pretraži korisnike...",
+      "groupNameRequired": "Ime grupe je obavezno",
+      "groupNameRequiredDesc": "Molimo unesi ime za tvoju grupu.",
+      "addMembersRequired": "Dodaj članove",
+      "addMembersRequiredDesc": "Molimo dodaj bar jednog člana u grupu.",
+      "groupExists": "Grupa već postoji",
+      "groupExistsDesc": "Grupa sa ovim članovima je nedavno napravljena.",
+      "created": "Grupa napravljena",
+      "createdDesc": "\"{name}\" je uspešno napravljena.",
+      "failed": "Neuspešno pravljenje grupe",
+      "failedDesc": "Molimo pokušaj ponovo."
+    },
+    "toast": {
+      "success": "Uspeh",
+      "error": "Greška",
+      "conversationStarted": "Razgovor započet!",
+      "authRequired": "Potrebna autentifikacija",
+      "noTenantContext": "Nema dostupnog konteksta tenanta",
+      "searchFailed": "Pretraga neuspešna",
+      "accessDenied": "Pristup odbijen",
+      "communityOnly": "Samo korisnici zajednice mogu kreirati globalne razgovore",
+      "pleaseLogin": "Molimo prijavi se da započneš razgovore.",
+      "groupRecipientsRequired": "Ime grupe i primaoci su obavezni",
+      "singleRecipientRequired": "Izaberi tačno jednog primaoca za direktnu poruku",
+      "groupCreated": "Grupa \"{name}\" uspešno napravljena!",
+      "groupFailed": "Neuspešno kreiranje grupe"
+    },
+    "createGroupAction": "Kreiraj novu grupu",
+    "newConversationAction": "Novi razgovor",
+    "noGroups": "Još nema grupa",
+    "noGroupsDesc": "Grupe ti pomažu da sarađuješ sa više ljudi odjednom.",
+    "createFirstGroup": "Kreiraj prvu grupu",
+    "loading": "Učitavanje poruka...",
+    "searchConversations": "Pretraži razgovore...",
+    "searchPlaceholder": "Pretraži...",
+    "noMessages": "Još nema poruka",
+    "noMessagesDesc": "Započni razgovor da bi krenuo/la.",
+    "startConversation": "Započni razgovor",
+    "emptyState": {
+      "title": "Tvoje prijemno sanduče je za sada tiho.",
+      "globalDescription": "Započni razgovor ili se pridruži zajednici da bi se povezao/la sa drugima.",
+      "tenantDescription": "Poveži se sa kolegama i članovima tima u svojoj profesionalnoj mreži.",
+      "startConversation": "Započni razgovor",
+      "discoverPeople": "Otkrij ljude"
+    }
+  }
+}

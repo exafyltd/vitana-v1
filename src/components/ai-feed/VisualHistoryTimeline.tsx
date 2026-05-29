@@ -8,6 +8,7 @@ import { CheckCircle, RotateCcw, Star, TrendingUp, Calendar, Award, Zap, Downloa
 import { useState, useMemo, useEffect } from "react";
 import { t } from '@/lib/i18n-toast';
 
+import { fmtDate, fmtTime } from '@/lib/locale-format';
 interface TimelineEvent {
   id: string;
   type: "completion" | "milestone" | "streak" | "first-time";
@@ -387,11 +388,11 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
     yesterday.setDate(yesterday.getDate() - 1);
     
     if (date.toDateString() === today.toDateString()) {
-      return `${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} (Today)`;
+      return `${fmtDate(date, { month: 'short', day: 'numeric' })} (Today)`;
     } else if (date.toDateString() === yesterday.toDateString()) {
-      return `${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} (Yesterday)`;
+      return `${fmtDate(date, { month: 'short', day: 'numeric' })} (Yesterday)`;
     } else {
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      return fmtDate(date, { month: 'short', day: 'numeric' });
     }
   };
 
@@ -545,7 +546,7 @@ export function VisualHistoryTimeline({ events = defaultEvents }: VisualHistoryT
                           <div className="flex items-center gap-2">
                             <div className="text-xs text-muted-foreground flex items-center">
                               <Calendar className="w-3 h-3 mr-1" />
-                              {event.timestamp.toLocaleTimeString('en-US', { 
+                              {fmtTime(event.timestamp, { 
                                 hour: 'numeric', 
                                 minute: '2-digit' 
                               })}

@@ -1,5 +1,5 @@
-import { isToday, isYesterday, isThisWeek, format } from "date-fns";
-
+import { isToday, isYesterday, isThisWeek } from 'date-fns';
+import { formatDate } from '@/lib/locale-format';
 interface DateGroupHeaderProps {
   date: Date;
 }
@@ -9,7 +9,7 @@ export function DateGroupHeader({ date }: DateGroupHeaderProps) {
     if (isToday(date)) return "Today";
     if (isYesterday(date)) return "Yesterday";
     if (isThisWeek(date, { weekStartsOn: 0 })) return "This Week";
-    return format(date, "MMMM d, yyyy");
+    return formatDate(date, "MMMM d, yyyy");
   };
 
   return (

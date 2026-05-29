@@ -1,0 +1,28 @@
+{
+  "events": {
+    "title": "Eventos y Encuentros",
+    "description": "Descubre reuniones locales de bienestar",
+    "searchPlaceholder": "Busca eventos y encuentros...",
+    "tabs": {
+      "today": "Hoy",
+      "upcoming": "Próximos",
+      "following": "Siguiendo",
+      "recommended": "Recomendados"
+    },
+    "noEvents": "No hay eventos programados",
+    "checkBack": "¡Vuelve pronto para ver los próximos eventos comunitarios!",
+    "emptyStates": {
+      "noEventsToday": "No hay eventos hoy",
+      "noEventsTodayDesc": "No hay eventos programados para hoy. ¡Revisa los próximos o crea el tuyo!",
+      "createEvent": "Crear Evento",
+      "viewUpcoming": "Ver Próximos Eventos",
+      "followingTitle": "Publicaciones de Personas que Sigues",
+      "followingDesc": "El contenido de personas y grupos que sigues aparecerá aquí",
+      "findPeople": "Encuentra Personas para Seguir",
+      "noPostsFromFollowing": "Aún no hay publicaciones",
+      "noPostsFromFollowingDesc": "Las personas que sigues aún no han creado eventos o encuentros.",
+      "youFollow": "Sigues a",
+      "loadingFollowing": "Cargando publicaciones..."
+    }
+  }
+}

@@ -14,10 +14,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Calendar as CalendarIcon, X } from "lucide-react";
 import { useState } from "react";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 
+import { formatDate } from '@/lib/locale-format';
 interface AdvancedSearchDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -103,7 +103,7 @@ export function AdvancedSearchDialog({ open, onOpenChange }: AdvancedSearchDialo
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
-                      {dateFrom ? format(dateFrom, "PPP") : "Pick a date"}
+                      {dateFrom ? formatDate(dateFrom, "PPP") : "Pick a date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
@@ -130,7 +130,7 @@ export function AdvancedSearchDialog({ open, onOpenChange }: AdvancedSearchDialo
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
-                      {dateTo ? format(dateTo, "PPP") : "Pick a date"}
+                      {dateTo ? formatDate(dateTo, "PPP") : "Pick a date"}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
