@@ -17,6 +17,7 @@ import { MobileBillingView, type MobileBillingSection } from "@/components/setti
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { SettingsGuideOrb } from "@/components/settings/SettingsGuideOrb";
 import { useNotificationPreferences } from "@/hooks/useNotifications";
 import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/useNotificationCategoryPreferences";
 import { Switch } from "@/components/ui/switch";
@@ -123,6 +124,51 @@ export default function MobileSettings() {
       navigate("/settings", { replace: true });
     }
   }, [isMobile, navigate]);
+
+  // Vitana-driven navigation: the Orb (voice or text) can ask the Settings page
+  // to jump to a specific section without a full route change.
+  useEffect(() => {
+    const handleNavigate = (e: Event) => {
+      const detail = (e as CustomEvent).detail || {};
+      const section = String(detail.section || '');
+      if (VALID_SECTIONS.has(section)) {
+        setActiveSection(section);
+        const label = settingsModes.find((m) => m.value === section.split('.')[0])?.label || section;
+        toast.success(
+          translate('settings.vitanaOpenedSection', 'Vitana opened {section}').replace('{section}', label),
+        );
+      }
+    };
+    window.addEventListener('vitana:settings-navigate', handleNavigate);
+    return () => window.removeEventListener('vitana:settings-navigate', handleNavigate);
+    // settingsModes is a stable literal redefined every render; intentionally
+    // listing only translate so the listener picks up locale changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [translate]);
+
+  // Vitana can toggle notification preferences on the user's behalf. The Orb
+  // dispatches `vitana:settings-toggle` with `{ field, value }` (top-level
+  // notification toggles) or `{ categoryId, enabled }` (per-category).
+  useEffect(() => {
+    const handler = async (e: Event) => {
+      const detail = (e as CustomEvent).detail || {};
+      try {
+        if (detail.field && typeof detail.value === 'boolean') {
+          await updatePref(detail.field, detail.value);
+          toast.success(translate('settings.vitanaUpdated', 'Vitana updated your setting'));
+          setActiveSection('notifications');
+        } else if (detail.categoryId && typeof detail.enabled === 'boolean') {
+          await toggleCategory(detail.categoryId, detail.enabled);
+          toast.success(translate('settings.vitanaUpdated', 'Vitana updated your setting'));
+          setActiveSection('notifications');
+        }
+      } catch {
+        toast.error(translate('settings.updateFailed', 'Failed to update preference'));
+      }
+    };
+    window.addEventListener('vitana:settings-toggle', handler);
+    return () => window.removeEventListener('vitana:settings-toggle', handler);
+  }, [updatePref, toggleCategory, translate]);
 
   if (!isMobile) return null;
 
@@ -624,6 +670,10 @@ export default function MobileSettings() {
 
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto pb-24 space-y-3 px-0">
+          <SettingsGuideOrb
+            activeSection={activeSection}
+            onJumpToSection={setActiveSection}
+          />
           {renderContent()}
 
           {/* Delete Account — always visible at bottom */}
