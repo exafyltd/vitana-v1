@@ -7,7 +7,7 @@ import {
   Book, Send, Search, HelpCircle, Settings as SettingsIcon
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { MobileAppShell } from "@/components/mobile/MobileAppShell";
+import AppLayout from "@/components/AppLayout";
 import { useTranslation } from "@/hooks/useTranslation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
@@ -17,7 +17,6 @@ import { MobileBillingView, type MobileBillingSection } from "@/components/setti
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
-import { SettingsGuideOrb } from "@/components/settings/SettingsGuideOrb";
 import { useNotificationPreferences } from "@/hooks/useNotifications";
 import { useNotificationCategoryPreferences, CategoryPreference } from "@/hooks/useNotificationCategoryPreferences";
 import { Switch } from "@/components/ui/switch";
@@ -637,8 +636,8 @@ export default function MobileSettings() {
   };
 
   return (
-    <MobileAppShell>
-      <div className="px-4 pt-4 pb-0 h-[100dvh] overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
+    <AppLayout>
+      <div className="px-4 pt-4 pb-0 h-full overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
         <StandardHeader
           title={translate('settings.title', 'Settings')}
           description={translate('settings.description', 'Manage your preferences and account')}
@@ -670,10 +669,6 @@ export default function MobileSettings() {
 
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto pb-24 space-y-3 px-0">
-          <SettingsGuideOrb
-            activeSection={activeSection}
-            onJumpToSection={setActiveSection}
-          />
           {renderContent()}
 
           {/* Delete Account — always visible at bottom */}
@@ -697,6 +692,6 @@ export default function MobileSettings() {
 
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
       <AIDataConsentDialog open={consentDialogOpen} onOpenChange={setConsentDialogOpen} onConsent={grantConsent} />
-    </MobileAppShell>
+    </AppLayout>
   );
 }
