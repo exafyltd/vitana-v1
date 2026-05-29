@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { MobileIdentityCard } from "./MobileIdentityCard";
@@ -9,6 +10,7 @@ import { ProfileIdSegmentedControl } from "../shared/ProfileIdSegmentedControl";
 import { UserProfile } from "@/types/profile";
 
 type CardSide = "front" | "back" | "account";
+const VALID_SIDES: ReadonlySet<CardSide> = new Set(["front", "back", "account"]);
 
 interface MobileIdCardSwitcherProps {
   profile: UserProfile;
@@ -47,7 +49,24 @@ export function MobileIdCardSwitcher({
   followLoading = false,
   className
 }: MobileIdCardSwitcherProps) {
-  const [activeSide, setActiveSide] = useState<CardSide>("front");
+  // Persist the active segment in the URL (?card=front|back|account) so
+  // navigating away (e.g. into /profile/subscriptions) and back returns the
+  // user to the segment they were on, instead of resetting to Identity.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const param = searchParams.get("card");
+  const activeSide: CardSide = param && VALID_SIDES.has(param as CardSide)
+    ? (param as CardSide)
+    : "front";
+
+  const handleSegmentChange = useCallback(
+    (next: CardSide) => {
+      const params = new URLSearchParams(searchParams);
+      if (next === "front") params.delete("card");
+      else params.set("card", next);
+      setSearchParams(params, { replace: true });
+    },
+    [searchParams, setSearchParams],
+  );
 
   const slotAnim = (direction: 1 | -1) => ({
     initial: { opacity: 0, x: 20 * direction },
@@ -63,7 +82,7 @@ export function MobileIdCardSwitcher({
       <ProfileIdSegmentedControl<CardSide>
         segments={SEGMENTS}
         value={activeSide}
-        onChange={setActiveSide}
+        onChange={handleSegmentChange}
         size="sm"
         className="px-4 pt-5 pb-5"
       />
