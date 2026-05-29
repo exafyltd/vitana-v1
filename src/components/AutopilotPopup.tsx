@@ -98,6 +98,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     fetchRecommendations,
     completeRecommendation,
     setActionStatus,
+    markDismissedLocally,
   } = useAutopilot();
   
   const isMobile = useIsMobile();
@@ -233,13 +234,13 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const [completingId, setCompletingId] = useState<string | null>(null);
 
   const handleCompleteTask = async (actionId: string) => {
-    // Optimistic — the row moves to completed (Erledigt badge) immediately so
-    // the user never sees a stuck "executing" pill while the network call is
-    // in flight, and never sees a "Could not complete" toast if the backend
-    // /complete route is missing. completeRecommendation already falls back
-    // to /reject when /complete fails; either way the row stops bothering
-    // the user. If both fail we'll find out from the console log added in
-    // completeRecommendation, not from a toast in the user's face.
+    // The gateway revision in prod doesn't persist /complete for activated
+    // rows (PRs #564→#570 all confirmed this). The user-facing contract is:
+    // they tapped Complete, so the row stays gone — even across popup
+    // reopens and refetches. markDismissedLocally puts the id in a
+    // per-user localStorage set that the state.actions builder filters
+    // out, so the row never resurfaces no matter what the backend says.
+    markDismissedLocally(actionId);
     setActionStatus(actionId, "completed");
     setCompletingId(actionId);
     try {
