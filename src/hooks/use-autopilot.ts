@@ -210,7 +210,37 @@ export function useAutopilot() {
       if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
       const json = await res.json();
       if (json.ok) {
-        setRecommendations(json.recommendations ?? []);
+        const recs: AutopilotRecommendation[] = json.recommendations ?? [];
+        setRecommendations(recs);
+        // Self-prune the dismissed set against the latest server truth.
+        // Anything the server no longer surfaces as new/activated (because
+        // it's truly completed now, expired, or rejected) doesn't need to
+        // sit in our client filter — otherwise an old dismissed id could
+        // mask a freshly-issued recommendation that happens to reuse the
+        // id, and the set just grows forever.
+        const live = new Set(recs.map((r) => r.id));
+        setDismissedIds((prev) => {
+          if (prev.size === 0) return prev;
+          let changed = false;
+          const next = new Set<string>();
+          prev.forEach((id) => {
+            if (live.has(id)) {
+              next.add(id);
+            } else {
+              changed = true;
+            }
+          });
+          if (!changed) return prev;
+          if (DISMISSED_KEY) {
+            try {
+              localStorage.setItem(DISMISSED_KEY, JSON.stringify(Array.from(next)));
+            } catch {
+              // localStorage unavailable — state still updates in memory
+            }
+          }
+          return next;
+        });
+        console.log(`[Autopilot] fetched ${recs.length} recs, dismissed set size after prune: pending state update`);
       } else {
         throw new Error(json.error ?? "Unknown error");
       }
@@ -220,7 +250,7 @@ export function useAutopilot() {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, DISMISSED_KEY]);
 
   // Activate a single recommendation — returns full API response
   const activateRecommendation = useCallback(async (id: string): Promise<{
