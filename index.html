@@ -41,9 +41,16 @@
     <link rel="dns-prefetch" href="https://gateway.vitanaland.com">
 
     <!-- ORB Voice Widget -->
-    <!-- VTID-02034b: cache-buster bump pulls the cross-instance 404 carve-out
-         that stops the "internet issues" loop on conversation start. -->
-    <script src="https://gateway.vitanaland.com/command-hub/orb-widget.js?v=20260525-orb-soundscape-duck" defer></script>
+    <!-- VTID-03185: cache-buster bump pulls the audio queue closure fix —
+         see vitana-platform PR #2393. The bug left _s.scheduledSources
+         with stale entries after multi-chunk TTS, gating the mic and
+         leaving the widget stuck in "Vitana speaking..." state. The
+         widget lives in the gateway repo (services/gateway/src/frontend/
+         command-hub/orb-widget.js) and is loaded cross-origin from
+         gateway.vitanaland.com; this v1-side bust ensures mobile
+         browsers refetch the fixed widget instead of serving the
+         cached pre-fix version. -->
+    <script src="https://gateway.vitanaland.com/command-hub/orb-widget.js?v=20260529-VTID-03185-audio-queue-closure" defer></script>
   </head>
 
   <body>
