@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 327
-- **Distinct i18n keys consumed:** 5284
+- **Distinct i18n keys consumed:** 5282
 - **Namespaces in use:** 42
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -1706,14 +1706,14 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/community/LiveRooms.tsx
 
-**Status:** ✅ clean — keys consumed: 35, namespaces: 4
+**Status:** ✅ clean — keys consumed: 33, namespaces: 4
 
 **i18n namespaces:**
 
 - `actionBar` — used: 1, total in shard: 5
-- `liveRooms` — used: 9, total in shard: 106
+- `liveRooms` — used: 9, total in shard: 110
 - `screens` — used: 14, total in shard: 9362
-- `toasts` — used: 11, total in shard: 1234
+- `toasts` — used: 9, total in shard: 1234
 
 ### src/pages/community/Matchmaking.tsx
 

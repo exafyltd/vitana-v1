@@ -27,6 +27,7 @@ import { GoLivePopup } from "@/components/GoLivePopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { LiveRoomCard } from "@/components/liverooms/LiveRoomCard";
 import { LiveRoomDrawer } from "@/components/liverooms/LiveRoomDrawer";
+import { EditSessionDialog } from "@/components/liverooms/EditSessionDialog";
 import type { LiveRoom } from "@/components/liverooms/LiveRoomCard";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -62,6 +63,7 @@ export default function LiveRooms() {
   const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState('all');
   const [deleteConfirmRoomId, setDeleteConfirmRoomId] = useState<string | null>(null);
+  const [editRoomId, setEditRoomId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   
   // Fetch live streams data
@@ -268,8 +270,7 @@ export default function LiveRooms() {
   };
 
   const handleEditRoom = async () => {
-    // Edit mode removed in session-based architecture
-    notify('toasts.community.notYetSupported', 'toasts.community.editingSessionsWillAvailableSoon');
+    if (selectedRoomId) setEditRoomId(selectedRoomId);
   };
 
   const handleDeleteRoom = async (roomId?: string) => {
@@ -292,7 +293,7 @@ export default function LiveRooms() {
 
   const handleCardEdit = async (e: React.MouseEvent, roomId: string) => {
     e.stopPropagation();
-    notify('toasts.community.notYetSupported', 'toasts.community.editingSessionsWillAvailableSoon');
+    setEditRoomId(roomId);
   };
 
   const handleCardDelete = (e: React.MouseEvent, roomId: string) => {
@@ -870,6 +871,13 @@ export default function LiveRooms() {
           onDelete={() => setDeleteConfirmRoomId(selectedRoomId)}
         />
       )}
+
+      {/* Edit Session Dialog */}
+      <EditSessionDialog
+        open={!!editRoomId}
+        onOpenChange={(open) => !open && setEditRoomId(null)}
+        room={allRooms.find((r) => r.id === editRoomId) ?? null}
+      />
 
       {/* Delete Confirmation Dialog */}
       <ResponsiveConfirmDialog open={!!deleteConfirmRoomId} onOpenChange={(open) => !open && setDeleteConfirmRoomId(null)}>
