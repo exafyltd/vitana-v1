@@ -60,7 +60,7 @@ export default function LiveRooms() {
   const [showPreview, setShowPreview] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
   const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
-  const [activeTab, setActiveTab] = useState('live');
+  const [activeTab, setActiveTab] = useState('all');
   const [deleteConfirmRoomId, setDeleteConfirmRoomId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   
@@ -151,6 +151,18 @@ export default function LiveRooms() {
       room.category?.toLowerCase().includes(query)
     );
   }, [scheduledRooms, searchQuery]);
+
+  // "All" mode — show live + scheduled together so users always see rooms.
+  // Sorted purely by time: the soonest/most-recent scheduledTime first, with
+  // undated rooms (live now) kept at the front.
+  const filteredAllRooms = useMemo(() => {
+    const combined = [...filteredLiveRooms, ...filteredScheduledRooms];
+    const timeOf = (room: LiveRoom) => {
+      const ts = room.scheduledTime ? new Date(room.scheduledTime).getTime() : NaN;
+      return Number.isNaN(ts) ? 0 : ts;
+    };
+    return combined.sort((a, b) => timeOf(a) - timeOf(b));
+  }, [filteredLiveRooms, filteredScheduledRooms]);
 
 
   // Handle deep linking
@@ -591,6 +603,7 @@ export default function LiveRooms() {
             {isMobile && (
               <MobileModePill
                 modes={[
+                  { value: "all", label: translate('liveRooms.tabs.all', 'All Rooms'), icon: "✨", badge: filteredAllRooms.length || undefined },
                   { value: "live", label: translate('liveRooms.tabs.live', 'Live Now'), icon: "📡", badge: filteredLiveRooms.length || undefined },
                   { value: "scheduled", label: translate('liveRooms.tabs.scheduled', 'Scheduled'), icon: "📅", badge: filteredScheduledRooms.length || undefined },
                   { value: "past", label: translate('liveRooms.tabs.past', 'Past'), icon: "📋" },
@@ -619,6 +632,14 @@ export default function LiveRooms() {
         <SplitBar value={activeTab} onValueChange={setActiveTab} className={isMobile ? "mt-1" : "mt-6"}>
           {!isMobile && (
             <SplitBarList>
+              <SplitBarTrigger value="all">
+                ✨ {translate('liveRooms.tabs.all', 'All Rooms')}
+                {filteredAllRooms.length > 0 && (
+                  <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
+                    {filteredAllRooms.length}
+                  </Badge>
+                )}
+              </SplitBarTrigger>
               <SplitBarTrigger value="live">
                 📡 {translate('liveRooms.tabs.live', 'Live Now')}
                 {filteredLiveRooms.length > 0 && (
@@ -646,6 +667,58 @@ export default function LiveRooms() {
               </SplitBarTrigger>
             </SplitBarList>
           )}
+
+          <SplitBarContent value="all" className={isMobile ? "mt-0" : "mt-6"}>
+            {isLoadingLive || isLoadingScheduled ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">{t('screens.community.loadingLiveRooms')}</p>
+              </div>
+            ) : filteredAllRooms.length > 0 ? (
+              isMobile ? (
+                <MobileLiveRoomCarousel
+                  rooms={filteredAllRooms}
+                  onCardClick={handleCardClick}
+                  onJoinRoom={handleJoinRoom}
+                  onNotifyClick={handleNotifyClick}
+                  notifyingRooms={notifyingRooms}
+                  currentUserId={user?.id}
+                  onEdit={handleCardEdit}
+                  onDelete={handleCardDelete}
+                />
+              ) : (
+                <>
+                  {chunkRooms(filteredAllRooms).map((chunk, chunkIndex) => (
+                    <div key={`all-chunk-${chunkIndex}`}>
+                      {renderMosaicGrid(chunk)}
+                      {chunkIndex < chunkRooms(filteredAllRooms).length - 1 && (
+                        <div className="mb-8 mt-2">
+                          <MotivationalBanner variant="encouragement" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {filteredAllRooms.length > 0 && (
+                    <div className="mb-8 mt-2">
+                      <MotivationalBanner variant="partnership" />
+                    </div>
+                  )}
+                </>
+              )
+            ) : (
+              <div className="text-center py-6">
+                <p className="text-muted-foreground">{translate('liveRooms.noRooms', 'No live rooms at the moment')}</p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-4"
+                  onClick={() => setIsGoLiveOpen(true)}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  {translate('liveRooms.beFirst', 'Be the first to go live')}
+                </Button>
+              </div>
+            )}
+          </SplitBarContent>
 
           <SplitBarContent value="live" className={isMobile ? "mt-0" : "mt-6"}>
             {isLoadingLive ? (
