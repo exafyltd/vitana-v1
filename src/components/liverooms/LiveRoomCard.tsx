@@ -3,7 +3,7 @@ import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, Clock, Bell, Share2, MapPin, Pencil, Trash2 } from "lucide-react";
+import { Users, Clock, Bell, Share2, MapPin, Pencil, Trash2, CalendarDays } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { differenceInMinutes } from 'date-fns';
 import { useState } from "react";
@@ -23,6 +23,8 @@ export interface LiveRoom {
   isLive: boolean;
   scheduledTime?: string;
   participants: number;
+  /** How many people tapped "Notify me" — drives the "X going" counter on scheduled cards. */
+  interestedCount?: number;
   maxParticipants?: number;
   tags: string[];
   type: 'audio' | 'video';
@@ -104,7 +106,7 @@ export function LiveRoomCard({
       )}
       data-room-id={room.id}
       role="button"
-      aria-label={`${room.title} - ${room.isLive ? "Live now" : "Scheduled"}`}
+      aria-label={`${room.title} - ${room.isLive ? t('screens.liverooms.live') : t('screens.liverooms.scheduled')}`}
     >
       {/* Hero Image or Gradient Background - Full bleed media container */}
       <div className="relative h-full">
@@ -149,27 +151,43 @@ export function LiveRoomCard({
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
 
           {/* Top-left badges */}
-          <div className="absolute top-3 left-3 flex items-center gap-2 z-10">
+          <div className="absolute top-3 left-3 right-12 flex flex-wrap items-center gap-1.5 z-10">
             {room.isLive ? (
               <Badge className="bg-red-500 text-white border-0 gap-1.5 px-2.5 py-1 shadow-lg">
                 <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
                 {t('screens.liverooms.live')}
               </Badge>
             ) : isScheduled ? (
-              <Badge
-                variant="secondary"
-                className="gap-1.5 px-2.5 py-1 bg-background/95 backdrop-blur-sm shadow-lg"
-              >
-                <Clock className="w-3 h-3" />
-                {formatDate(new Date(room.scheduledTime!), "HH:mm")}
-              </Badge>
+              <>
+                {/* Date chip — e.g. "So., 31. Mai" / "Sun, 31. May" */}
+                <Badge
+                  variant="secondary"
+                  className="gap-1.5 px-2.5 py-1 bg-background/95 backdrop-blur-sm shadow-lg"
+                >
+                  <CalendarDays className="w-3 h-3" />
+                  {formatDate(new Date(room.scheduledTime!), "EEE, d. MMM")}
+                </Badge>
+                {/* Time chip — e.g. "20:00 Uhr" / "20:00" */}
+                <Badge
+                  variant="secondary"
+                  className="gap-1.5 px-2.5 py-1 bg-background/95 backdrop-blur-sm shadow-lg"
+                >
+                  <Clock className="w-3 h-3" />
+                  {t('screens.liverooms.timeChip', { time: formatDate(new Date(room.scheduledTime!), "HH:mm") })}
+                </Badge>
+              </>
             ) : null}
-            {room.isPremium && (
+            {/* Price chip — FREE vs Premium */}
+            {room.isPremium ? (
               <Badge
                 variant="outline"
                 className="bg-yellow-500/20 border-yellow-500/50 text-yellow-100 backdrop-blur-sm shadow-lg"
               >
                 {t('screens.liverooms.premium')}
+              </Badge>
+            ) : (
+              <Badge className="bg-emerald-500 text-white border-0 px-2.5 py-1 shadow-lg">
+                {t('screens.liverooms.free')}
               </Badge>
             )}
           </div>
@@ -180,6 +198,11 @@ export function LiveRoomCard({
               <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">
                 <Users className="w-3 h-3" />
                 <span>{room.participants}</span>
+              </div>
+            ) : isScheduled && (room.interestedCount ?? 0) > 0 ? (
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">
+                <Users className="w-3 h-3" />
+                <span>{t('screens.liverooms.willJoinCount', { count: room.interestedCount ?? 0 })}</span>
               </div>
             ) : showCountdown ? (
               <div className="px-2.5 py-1 rounded-lg bg-background/95 backdrop-blur-sm text-xs font-medium shadow-lg">{t('screens.liverooms.startsValue0', { value0: formatDistanceToNow(new Date(room.scheduledTime!)) })}</div>
@@ -303,9 +326,9 @@ export function LiveRoomCard({
                       e.stopPropagation();
                       onJoinClick?.(e);
                     }}
-                    aria-label={isCreator ? "Manage your live room" : "Join live room"}
+                    aria-label={isCreator ? t('screens.liverooms.manageAria') : t('screens.liverooms.joinAria')}
                   >
-                    {isCreator ? "Manage" : "Join"}
+                    {isCreator ? t('screens.liverooms.manage') : t('screens.liverooms.join')}
                   </Button>
                 </>
               ) : isScheduled ? (
@@ -336,10 +359,10 @@ export function LiveRoomCard({
                       e.stopPropagation();
                       onNotifyClick?.(e);
                     }}
-                    aria-label={isNotifying ? "Turn off notifications" : "Get notified when room starts"}
+                    aria-label={isNotifying ? t('screens.liverooms.notifyAriaOn') : t('screens.liverooms.notifyAriaOff')}
                   >
                     <Bell className={cn("w-[18px] h-[18px]", isNotifying && "fill-current")} />
-                    {isNotifying ? "Notifying" : "Notify me"}
+                    {isNotifying ? t('screens.liverooms.notifying') : t('screens.liverooms.notifyMe')}
                   </Button>
                 </>
               ) : null}

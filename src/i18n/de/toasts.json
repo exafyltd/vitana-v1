@@ -609,7 +609,13 @@
       "share": "Teilen",
       "calendarExport": "Kalender-Export",
       "icsFileWillDownloaded": "ICS-Datei wird heruntergeladen",
-      "openingCalendar": "Kalender wird geöffnet"
+      "openingCalendar": "Kalender wird geöffnet",
+      "notifyOnTitle": "Erinnerung aktiviert",
+      "notifyOnDesc": "Wir erinnern dich, bevor es losgeht",
+      "notifyOffTitle": "Erinnerung deaktiviert",
+      "notifyOffDesc": "Du wirst nicht mehr erinnert",
+      "notifyError": "Erinnerung fehlgeschlagen",
+      "reminderActionText": "Live „{title}\" startet gleich"
     },
     "meetups": {
       "signRequired": "Anmeldung erforderlich",

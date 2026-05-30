@@ -129,6 +129,12 @@
         "aiImageHintTitle": "KI-Bildgenerierung",
         "aiImageHintDesc": "Bild wird erstellt, wenn der Stream startet."
       }
+    },
+    "editSession": {
+      "title": "Session bearbeiten",
+      "saving": "Wird gespeichert …",
+      "changeCover": "Titelbild ändern",
+      "noChanges": "Keine Änderungen zum Speichern"
     }
   }
 }

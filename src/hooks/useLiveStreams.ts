@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { liveRoomService } from '@/services/liveRoomService';
 
 export interface LiveStream {
   id: string;
@@ -140,16 +141,28 @@ export function useStartStream() {
   
   return useMutation({
     mutationFn: async (streamId: string) => {
+      // Prefer the gateway: POST /live/rooms/:id/start flips the stream to live AND
+      // fans out "now live" notifications to everyone who tapped Notify
+      // (live_stream_subscribers). Fall back to a direct status update if the stream
+      // isn't backed by a gateway live_room or the gateway is unreachable — going
+      // live must never be blocked (the fallback simply skips the broadcast).
+      try {
+        await liveRoomService.startRoom(streamId);
+      } catch (gatewayErr) {
+        console.warn('[useStartStream] gateway start failed, falling back to direct update:', gatewayErr);
+        const { error } = await supabase
+          .from('community_live_streams')
+          .update({ status: 'live', started_at: new Date().toISOString() })
+          .eq('id', streamId);
+        if (error) throw error;
+      }
+
       const { data, error } = await supabase
         .from('community_live_streams')
-        .update({ 
-          status: 'live',
-          started_at: new Date().toISOString()
-        })
-        .eq('id', streamId)
         .select()
+        .eq('id', streamId)
         .single();
-      
+
       if (error) throw error;
       return data as LiveStream;
     },

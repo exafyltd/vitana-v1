@@ -5088,7 +5088,21 @@
       "streamOptions": "Stream options",
       "nextRoom": "Next room",
       "value0More": "+{value0}more",
-      "thisWillPermanentlyDeleteTitleThis": "This will permanently delete \"{title}\". This action cannot be undone."
+      "thisWillPermanentlyDeleteTitleThis": "This will permanently delete \"{title}\". This action cannot be undone.",
+      "scheduled": "Scheduled",
+      "notifyMe": "Notify me",
+      "notifying": "Notifying",
+      "manage": "Manage",
+      "join": "Join",
+      "free": "Free",
+      "willJoinCount": "{count} going",
+      "timeChip": "{time}",
+      "you": "You",
+      "anonymousHost": "Anonymous Host",
+      "notifyAriaOn": "Turn off notifications",
+      "notifyAriaOff": "Get notified when the room starts",
+      "manageAria": "Manage your live room",
+      "joinAria": "Join live room"
     },
     "meetups": {
       "detailsProgram": "Details & Program",
