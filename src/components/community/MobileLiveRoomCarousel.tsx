@@ -161,6 +161,7 @@ export function MobileLiveRoomCarousel({
       // Scheduled cards count people who tapped Notify ("going"); live cards show viewers.
       attendees: room.isLive ? room.participants : (room.interestedCount ?? 0),
       timestamp,
+      timestampCentered: true,
       price: room.isPremium ? (room.isPremium as any) : ('free' as const),
       onClick: () => onCardClick(room.id),
       actionButton,
