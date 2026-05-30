@@ -57,6 +57,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   const [accessLevel, setAccessLevel] = useState<AccessLevelId>("public");
   const [scheduleDate, setScheduleDate] = useState<Date>();
   const [scheduleTime, setScheduleTime] = useState("");
+  const [scheduleOpen, setScheduleOpen] = useState(false);
   const [enableChat, setEnableChat] = useState(true);
   const [enablePolls, setEnablePolls] = useState(false);
   const [enableRecording, setEnableRecording] = useState(true);
@@ -638,7 +639,10 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                 {/* Schedule for Later */}
                 <div>
                   <Label>{t('scheduleLabel', 'Schedule for Later')}</Label>
-                  <Popover>
+                  {/* Date picker — popover contains ONLY the calendar so it can never
+                      push the time picker off-screen on mobile. Picking a date closes
+                      the popover, revealing the time selector inline below. */}
+                  <Popover open={scheduleOpen} onOpenChange={setScheduleOpen}>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
@@ -648,56 +652,77 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                         )}
                       >
                         <Clock className="mr-2 h-4 w-4" />
-                        {scheduleDate && scheduleTime 
+                        {scheduleDate && scheduleTime
                           ? applyReplacements(t('scheduledAt', '{date} at {time}'), { date: formatDate(scheduleDate, "PPP"), time: scheduleTime })
-                          : scheduleDate 
+                          : scheduleDate
                             ? applyReplacements(t('dateNeedsTime', '{date} – select time'), { date: formatDate(scheduleDate, "PPP") })
                             : t('goLiveNow', 'Go Live Now')
                         }
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto max-h-[60vh] overflow-y-auto p-0" align="start">
                       <Calendar
                         mode="single"
                         selected={scheduleDate}
-                        onSelect={setScheduleDate}
-                        disabled={(date) => date < new Date()}
+                        onSelect={(date) => {
+                          setScheduleDate(date);
+                          // Default to the next clean 15-min slot the first time a date is set
+                          if (date && !scheduleTime) {
+                            const now = new Date();
+                            const mins = Math.ceil((now.getMinutes() + 1) / 15) * 15;
+                            const next = new Date(now);
+                            next.setMinutes(mins, 0, 0);
+                            setScheduleTime(
+                              `${next.getHours().toString().padStart(2, '0')}:${next.getMinutes().toString().padStart(2, '0')}`
+                            );
+                          }
+                          // Close so the inline time selector below is reachable on mobile
+                          if (date) setScheduleOpen(false);
+                        }}
+                        disabled={(date) => {
+                          const today = new Date();
+                          today.setHours(0, 0, 0, 0);
+                          return date < today;
+                        }}
                         initialFocus
                         className="p-3 pointer-events-auto"
                       />
-                      
-                      {scheduleDate && (
-                        <div className="p-3 border-t space-y-2">
-                          <Label htmlFor="schedule-time">{t('time', 'Time')}</Label>
-                          <Select 
-                            value={scheduleTime || ""} 
-                            onValueChange={setScheduleTime}
-                          >
-                            <SelectTrigger id="schedule-time">
-                              <SelectValue placeholder={t('selectTime', 'Select time')} />
-                            </SelectTrigger>
-                            <SelectContent className="max-h-[200px]">
-                              {generateTimeOptions().map((time) => (
-                                <SelectItem key={time} value={time}>{time}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              setScheduleDate(undefined);
-                              setScheduleTime("");
-                            }}
-                            className="w-full"
-                          >
-                            {t('clearSchedule', 'Clear Schedule (Go Live Now)')}
-                          </Button>
-                        </div>
-                      )}
                     </PopoverContent>
                   </Popover>
+
+                  {/* Time selector — rendered INLINE (outside the popover) so it is
+                      always visible and scrollable within the dialog on mobile. */}
+                  {scheduleDate && (
+                    <div className="mt-3 space-y-2 rounded-md border p-3">
+                      <Label htmlFor="schedule-time">{t('time', 'Time')}</Label>
+                      <Select
+                        value={scheduleTime || ""}
+                        onValueChange={setScheduleTime}
+                      >
+                        <SelectTrigger id="schedule-time">
+                          <SelectValue placeholder={t('selectTime', 'Select time')} />
+                        </SelectTrigger>
+                        <SelectContent className="max-h-[240px]">
+                          {generateTimeOptions().map((time) => (
+                            <SelectItem key={time} value={time}>{time}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setScheduleDate(undefined);
+                          setScheduleTime("");
+                          setScheduleOpen(false);
+                        }}
+                        className="w-full"
+                      >
+                        {t('clearSchedule', 'Clear Schedule (Go Live Now)')}
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Chat & Engagement */}
