@@ -122,6 +122,15 @@ will flag it. After bulk translation, always run the audit workflow:
 Apply the auto-confidence suggestions via:
 `node scripts/apply-audit-suggestions.mjs --locale=<code>` (≥0.80 by default).
 
+### Active locales & RTL
+
+Shipped locale shards live under `src/i18n/<code>/`: **de** (source of
+truth), **en**, **es**, **sr**, and **ar** (Arabic). Arabic is
+**right-to-left** — any new layout/component must work in RTL, not just
+LTR. Don't hardcode `left`/`right`; prefer logical properties
+(`ms-*`/`me-*`, `start`/`end`, `text-start`) and rely on `dir`-aware
+styling. Verify new screens in both directions before reporting done.
+
 ### AI-generated content — must respect user locale
 
 **This is the rule that catches new features shipping in English.** Every
