@@ -19,6 +19,7 @@ import { applyReplacements } from "@/lib/i18n-helpers";
 import { useMyRoom, useCreateSession } from "@/hooks/useMyRoom";
 
 import { formatDate } from '@/lib/locale-format';
+import { resizeImageFile } from '@/lib/resizeImage';
 interface GoLivePopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -156,22 +157,27 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
     return times;
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        notify.error('liveRooms.goLivePopup.errors.invalidFileTypeTitle', 'liveRooms.goLivePopup.errors.invalidFileTypeDesc');
-        return;
-      }
-      // Validate file size (2MB max)
-      if (file.size > 2 * 1024 * 1024) {
-        notify.error('liveRooms.goLivePopup.errors.fileTooLargeTitle', 'liveRooms.goLivePopup.errors.fileTooLargeDesc');
-        return;
-      }
-      setSelectedImage(file);
-      setImagePreviewUrl(URL.createObjectURL(file));
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      notify.error('liveRooms.goLivePopup.errors.invalidFileTypeTitle', 'liveRooms.goLivePopup.errors.invalidFileTypeDesc');
+      return;
     }
+
+    // Accept any image: auto-resize/compress (max 1920px edge, ~85% JPEG,
+    // target < 2MB) instead of rejecting large files outright.
+    let processed = file;
+    try {
+      processed = await resizeImageFile(file, { maxEdge: 1920, quality: 0.85 });
+    } catch (e) {
+      console.warn('[GoLivePopup] Image resize failed, using original:', e);
+    }
+
+    setSelectedImage(processed);
+    setImagePreviewUrl(URL.createObjectURL(processed));
   };
 
   const handleRemoveImage = () => {
@@ -509,7 +515,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/jpeg,image/png,image/webp"
+                accept="image/*"
                 onChange={handleImageUpload}
                 className="hidden"
               />
