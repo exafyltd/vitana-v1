@@ -115,11 +115,11 @@ export function MobileLiveRoomCarousel({
   const transformRoomToCard = (room: LiveRoom) => {
     const isCreator = room.host.id === currentUserId;
     const imageUrl = room.imageUrl || generateRoomImage(room.title);
-    const timestamp = room.isLive
-      ? 'LIVE'
-      : room.scheduledTime
-        ? formatDate(new Date(room.scheduledTime), 'HH:mm')
-        : undefined;
+    // Scheduled cards show the full date + time (e.g. "So 31. Mai • 20:00") so the
+    // day is visible, not just the clock time. Live cards rely on the LIVE pill.
+    const timestamp = !room.isLive && room.scheduledTime
+      ? formatDate(new Date(room.scheduledTime), "EEE d. MMM • HH:mm")
+      : undefined;
 
     const actionButton = room.isLive ? (
       <Button
@@ -130,7 +130,7 @@ export function MobileLiveRoomCarousel({
           onJoinRoom(room.id);
         }}
       >
-        {isCreator ? 'Manage' : 'Join'}
+        {isCreator ? t('screens.liverooms.manage') : t('screens.liverooms.join')}
       </Button>
     ) : room.scheduledTime ? (
       <Button
@@ -146,7 +146,7 @@ export function MobileLiveRoomCarousel({
         }}
       >
         <Bell className={cn('w-4 h-4', notifyingRooms.has(room.id) && 'fill-current')} />
-        {notifyingRooms.has(room.id) ? 'Notifying' : 'Notify me'}
+        {notifyingRooms.has(room.id) ? t('screens.liverooms.notifying') : t('screens.liverooms.notifyMe')}
       </Button>
     ) : undefined;
 
@@ -155,10 +155,11 @@ export function MobileLiveRoomCarousel({
       description: room.description,
       imageUrl,
       category: 'community' as const,
-      pillar: room.isLive ? 'LIVE' : 'SCHEDULED',
+      pillar: room.isLive ? t('screens.liverooms.live') : undefined,
       author: { name: room.host.name, avatar: room.host.avatar },
-      location: room.location || 'Virtual',
-      attendees: room.participants,
+      location: room.location ? t('screens.liverooms.virtual') : undefined,
+      // Scheduled cards count people who tapped Notify ("going"); live cards show viewers.
+      attendees: room.isLive ? room.participants : (room.interestedCount ?? 0),
       timestamp,
       price: room.isPremium ? (room.isPremium as any) : ('free' as const),
       onClick: () => onCardClick(room.id),
