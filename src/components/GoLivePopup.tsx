@@ -227,9 +227,10 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
           effectiveRoomId = newRoom.id;
           setFallbackRoomId(effectiveRoomId);
           console.log('[GoLivePopup] Permanent room created via Gateway:', effectiveRoomId);
-        } catch (createError: any) {
+        } catch (createError: unknown) {
+          const createMsg = createError instanceof Error ? createError.message : String(createError);
           console.error('[GoLivePopup] Failed to create permanent room via Gateway:', createError);
-          notify.error('toasts.common.error', `Failed to create permanent room: ${createError.message}`);
+          notify.error('toasts.common.error', `Failed to create permanent room: ${createMsg}`);
           setIsLoading(false);
           return;
         }
@@ -295,9 +296,10 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       let sessionResult;
       try {
         sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
-      } catch (firstError: any) {
+      } catch (firstError: unknown) {
+        const firstMsg = firstError instanceof Error ? firstError.message : String(firstError);
         // If room is stuck in non-idle state, cancel existing session and retry
-        if (firstError.message?.includes('409') || firstError.message?.includes('ROOM_NOT_IDLE') || firstError.message?.includes('conflict')) {
+        if (firstMsg.includes('409') || firstMsg.includes('ROOM_NOT_IDLE') || firstMsg.includes('conflict')) {
           console.log('[GoLivePopup] Room not idle (409) - canceling stuck session and retrying...');
           try {
             // Step 1: Try gateway cancel
@@ -332,7 +334,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
           await new Promise(r => setTimeout(r, 1500));
           try {
             sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
-          } catch (retryError: any) {
+          } catch (retryError: unknown) {
             console.error('[GoLivePopup] Retry after force-reset failed:', retryError);
             notify.error('toasts.common.error', `Room stuck. Please try again in a few seconds.`);
             throw firstError;
