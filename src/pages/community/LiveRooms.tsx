@@ -37,6 +37,13 @@ import { toast } from "@/hooks/use-toast";
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { useScheduledStreams, useLiveStreams, useStartStream, useCancelStream, useDeleteStream, useUpdateStream } from "@/hooks/useLiveStreams";
 import type { LiveStream } from "@/hooks/useLiveStreams";
+import {
+  useMyStreamSubscriptions,
+  useStreamSubscriberCounts,
+  useSubscribeToStream,
+  useUnsubscribeFromStream,
+} from "@/hooks/useStreamSubscription";
+import { useCreateReminder } from "@/hooks/useReminders";
 
 import { useAuth } from "@/context/AuthProvider";
 import { useProfilesByIds } from "@/hooks/useProfiles";
@@ -60,7 +67,6 @@ export default function LiveRooms() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
-  const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState('all');
   const [deleteConfirmRoomId, setDeleteConfirmRoomId] = useState<string | null>(null);
   const [editRoomId, setEditRoomId] = useState<string | null>(null);
@@ -73,6 +79,15 @@ export default function LiveRooms() {
   const { mutateAsync: cancelStream } = useCancelStream();
   const { mutateAsync: deleteStream } = useDeleteStream();
   const { mutateAsync: updateStream } = useUpdateStream();
+
+  // "Notify me" — real, persistent subscriptions (replaces the old local-state fake).
+  const scheduledStreamIds = useMemo(() => scheduledStreams.map((s) => s.id), [scheduledStreams]);
+  const { data: subscriberCounts = {} } = useStreamSubscriberCounts(scheduledStreamIds);
+  const { data: myStreamSubs } = useMyStreamSubscriptions();
+  const notifyingRooms = myStreamSubs ?? new Set<string>();
+  const { mutateAsync: subscribeStream } = useSubscribeToStream();
+  const { mutateAsync: unsubscribeStream } = useUnsubscribeFromStream();
+  const { mutateAsync: createReminder } = useCreateReminder();
   
   // Fetch profiles for all creators
   const creatorIds = useMemo(() => {
@@ -108,12 +123,13 @@ export default function LiveRooms() {
       description: stream.description || undefined,
       host: {
         id: stream.created_by,
-        name: profile?.display_name || (isYou ? 'You' : 'Anonymous Host'),
+        name: profile?.display_name || (isYou ? t('screens.liverooms.you') : t('screens.liverooms.anonymousHost')),
         avatar: profile?.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${stream.created_by}`,
       },
       isLive: stream.status === 'live',
       scheduledTime: stream.scheduled_for || undefined,
       participants: stream.viewer_count,
+      interestedCount: subscriberCounts[stream.id] ?? 0,
       maxParticipants: 100,
       tags: stream.tags,
       type: stream.stream_type as "audio" | "video",
@@ -251,22 +267,36 @@ export default function LiveRooms() {
     });
   };
 
-  const handleNotifyClick = (roomId: string) => {
-    setNotifyingRooms((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(roomId)) {
-        newSet.delete(roomId);
+  const handleNotifyClick = async (roomId: string) => {
+    if (!user) {
+      notifyError('toasts.community.signRequired', 'toasts.community.pleaseSignJoinLiveRooms');
+      return;
+    }
+    const wasOn = notifyingRooms.has(roomId);
+    try {
+      if (wasOn) {
+        await unsubscribeStream(roomId);
+        notify('toasts.liverooms.notifyOffTitle', 'toasts.liverooms.notifyOffDesc');
       } else {
-        newSet.add(roomId);
+        await subscribeStream(roomId);
+        // Best-effort personal reminder ~10 min before start (voice/calendar nudge).
+        const room = scheduledRooms.find((r) => r.id === roomId);
+        if (room?.scheduledTime) {
+          const remindMs = new Date(room.scheduledTime).getTime() - 10 * 60 * 1000;
+          if (remindMs > Date.now()) {
+            createReminder({
+              action_text: lookup('toasts.liverooms.reminderActionText', { title: room.title }),
+              scheduled_for_iso: new Date(remindMs).toISOString(),
+              description: room.title,
+            }).catch((e) => console.warn('[notify] reminder create failed:', e));
+          }
+        }
+        notify('toasts.liverooms.notifyOnTitle', 'toasts.liverooms.notifyOnDesc');
       }
-      return newSet;
-    });
-    toast({
-      title: notifyingRooms.has(roomId) ? "Notifications off" : "You'll be notified!",
-      description: notifyingRooms.has(roomId)
-        ? "You won't receive notifications for this room"
-        : "We'll notify you when the room goes live",
-    });
+    } catch (e) {
+      console.error('[notify] toggle failed:', e);
+      notifyError('toasts.liverooms.notifyError');
+    }
   };
 
   const handleEditRoom = async () => {
@@ -338,11 +368,11 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[0].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      rowRooms[0].isLive && handleJoinRoom(rowRooms[0].id);
+                      if (rowRooms[0].isLive) handleJoinRoom(rowRooms[0].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
-                      !rowRooms[0].isLive && handleNotifyClick(rowRooms[0].id);
+                      if (!rowRooms[0].isLive) handleNotifyClick(rowRooms[0].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[0].id)}
                     isCreator={rowRooms[0].host.id === user?.id}
@@ -371,11 +401,11 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[1].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      rowRooms[1].isLive && handleJoinRoom(rowRooms[1].id);
+                      if (rowRooms[1].isLive) handleJoinRoom(rowRooms[1].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
-                      !rowRooms[1].isLive && handleNotifyClick(rowRooms[1].id);
+                      if (!rowRooms[1].isLive) handleNotifyClick(rowRooms[1].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[1].id)}
                     isCreator={rowRooms[1].host.id === user?.id}
@@ -404,11 +434,11 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[2].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      rowRooms[2].isLive && handleJoinRoom(rowRooms[2].id);
+                      if (rowRooms[2].isLive) handleJoinRoom(rowRooms[2].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
-                      !rowRooms[2].isLive && handleNotifyClick(rowRooms[2].id);
+                      if (!rowRooms[2].isLive) handleNotifyClick(rowRooms[2].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[2].id)}
                     isCreator={rowRooms[2].host.id === user?.id}
@@ -441,11 +471,11 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[0].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      rowRooms[0].isLive && handleJoinRoom(rowRooms[0].id);
+                      if (rowRooms[0].isLive) handleJoinRoom(rowRooms[0].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
-                      !rowRooms[0].isLive && handleNotifyClick(rowRooms[0].id);
+                      if (!rowRooms[0].isLive) handleNotifyClick(rowRooms[0].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[0].id)}
                     isCreator={rowRooms[0].host.id === user?.id}
@@ -474,11 +504,11 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[1].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      rowRooms[1].isLive && handleJoinRoom(rowRooms[1].id);
+                      if (rowRooms[1].isLive) handleJoinRoom(rowRooms[1].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
-                      !rowRooms[1].isLive && handleNotifyClick(rowRooms[1].id);
+                      if (!rowRooms[1].isLive) handleNotifyClick(rowRooms[1].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[1].id)}
                     isCreator={rowRooms[1].host.id === user?.id}
@@ -508,11 +538,11 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[2].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      rowRooms[2].isLive && handleJoinRoom(rowRooms[2].id);
+                      if (rowRooms[2].isLive) handleJoinRoom(rowRooms[2].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
-                      !rowRooms[2].isLive && handleNotifyClick(rowRooms[2].id);
+                      if (!rowRooms[2].isLive) handleNotifyClick(rowRooms[2].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[2].id)}
                     isCreator={rowRooms[2].host.id === user?.id}

@@ -5088,7 +5088,21 @@
       "streamOptions": "Stream-Optionen",
       "nextRoom": "Nächster Raum",
       "value0More": "+{value0} mehr",
-      "thisWillPermanentlyDeleteTitleThis": "Dies wird \"{title}\" endgültig löschen. Diese Aktion kann nicht rückgängig gemacht werden."
+      "thisWillPermanentlyDeleteTitleThis": "Dies wird \"{title}\" endgültig löschen. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "scheduled": "Geplant",
+      "notifyMe": "Erinnern",
+      "notifying": "Erinnert",
+      "manage": "Verwalten",
+      "join": "Beitreten",
+      "free": "Gratis",
+      "willJoinCount": "{count} dabei",
+      "timeChip": "{time} Uhr",
+      "you": "Du",
+      "anonymousHost": "Anonymer Gastgeber",
+      "notifyAriaOn": "Erinnerung ausschalten",
+      "notifyAriaOff": "Erinnern, wenn der Raum startet",
+      "manageAria": "Deinen Live-Raum verwalten",
+      "joinAria": "Live-Raum beitreten"
     },
     "meetups": {
       "detailsProgram": "Details & Programm",

@@ -609,7 +609,13 @@
       "share": "Share",
       "calendarExport": "Calendar export",
       "icsFileWillDownloaded": "ICS file will be downloaded",
-      "openingCalendar": "Opening calendar"
+      "openingCalendar": "Opening calendar",
+      "notifyOnTitle": "Reminder set",
+      "notifyOnDesc": "We'll remind you before it starts",
+      "notifyOffTitle": "Reminder removed",
+      "notifyOffDesc": "You won't be reminded anymore",
+      "notifyError": "Could not update reminder",
+      "reminderActionText": "Live \"{title}\" starts soon"
     },
     "meetups": {
       "signRequired": "Sign in required",
