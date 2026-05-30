@@ -411,19 +411,32 @@ const AppHooksInitializer = () => {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [user?.id]);
 
-  // BOOTSTRAP-NOTIF-CATEGORIES: Deep-link handler for push notifications.
-  // Two complementary strategies so the user ALWAYS lands in the conversation
-  // when they tap a chat push notification:
-  //   A) Realtime subscription — fires the instant the backend inserts a new
-  //      notification row (catches notifications that arrive while the app is
-  //      open or foregrounded).
-  //   B) Visibility/focus/pageshow polling — fires when the app foregrounds
-  //      from background (catches notifications that arrived while the app
-  //      was hidden or the phone was locked).
+  // BOOTSTRAP-NOTIF-CATEGORIES: Deep-link handler for chat push notifications.
+  //
+  // Appilix native push already deep-links into the app on tap via
+  // `open_link_url` (see gateway notification-service). This handler only
+  // covers the case where the app was already RUNNING in the background and a
+  // tap foregrounds the WebView without re-navigating it.
+  //
+  // CRITICAL: we navigate ONLY as the result of a genuine background →
+  // foreground transition (a tap). A notification that arrives while the app
+  // is open and visible must NEVER force-navigate the user — doing so threw
+  // people out of the media hub / events / live rooms (and back to chat) on
+  // every single incoming message in an active group. That is why the old
+  // realtime-INSERT subscription is gone, and why the lookup is bounded to the
+  // window in which the app was actually backgrounded.
   useEffect(() => {
     if (!user?.id) return;
     const processedIds = new Set<string>();
     let retryTimers: Array<ReturnType<typeof setTimeout>> = [];
+    // `wasHidden` is set only by visibilitychange→hidden, so focus/pageshow
+    // noise while the app is already in the foreground can't trigger a nav.
+    let wasHidden = false;
+    // A cold start (app launched from a tap while killed) has no prior hidden
+    // moment, so seed the window to the last minute — a cold start is almost
+    // always a notification tap.
+    let lastHiddenAt = Date.now() - 60_000;
+    let foregroundAt = Date.now();
 
     const clearRetries = () => {
       for (const t of retryTimers) clearTimeout(t);
@@ -436,7 +449,6 @@ const AppHooksInitializer = () => {
       if (!targetUrl || typeof targetUrl !== 'string') return false;
       const currentPath = window.location.pathname + window.location.search;
       if (currentPath === targetUrl) return false;
-      if (currentPath.startsWith('/inbox')) return false;
 
       processedIds.add(row.id);
       console.log('[DeepLink] Navigating to chat notification:', targetUrl, 'from', currentPath);
@@ -447,7 +459,13 @@ const AppHooksInitializer = () => {
     const checkPendingNotification = async () => {
       if (document.hidden) return;
       try {
-        const since = new Date(Date.now() - 5 * 60_000).toISOString();
+        // Only consider notifications that arrived while the app was
+        // backgrounded — i.e. the one the user most likely tapped. The upper
+        // bound (foregroundAt + grace) guarantees a message that arrives
+        // *after* we foreground can never be picked up, so a retry firing a
+        // few seconds later can't yank an actively-browsing user into chat.
+        const since = new Date(lastHiddenAt).toISOString();
+        const until = new Date(foregroundAt + 5_000).toISOString();
         const { data: rows, error } = await (supabase as any)
           .from('user_notifications')
           .select('id, type, data, created_at')
@@ -455,6 +473,7 @@ const AppHooksInitializer = () => {
           .is('read_at', null)
           .eq('type', 'new_chat_message')
           .gt('created_at', since)
+          .lte('created_at', until)
           .order('created_at', { ascending: false })
           .limit(1);
         if (error) {
@@ -471,49 +490,41 @@ const AppHooksInitializer = () => {
       if (document.hidden) return;
       clearRetries();
       checkPendingNotification();
-      // Retry to handle races where the INSERT hasn't propagated yet.
-      retryTimers.push(setTimeout(checkPendingNotification, 1500));
-      retryTimers.push(setTimeout(checkPendingNotification, 4000));
-      retryTimers.push(setTimeout(checkPendingNotification, 8000));
-      retryTimers.push(setTimeout(checkPendingNotification, 15_000));
+      // Two short retries cover the race where the row hasn't propagated to the
+      // read replica yet. Both stay inside the 5s grace window above.
+      retryTimers.push(setTimeout(checkPendingNotification, 1200));
+      retryTimers.push(setTimeout(checkPendingNotification, 3500));
     };
 
-    // Strategy A: Realtime subscription — immediate trigger on INSERT
-    const channel = (supabase as any)
-      .channel(`deeplink_chat_${user.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'user_notifications',
-          filter: `user_id=eq.${user.id}`,
-        },
-        (payload: any) => {
-          const row = payload?.new;
-          if (!row || row.type !== 'new_chat_message') return;
-          console.log('[DeepLink] Realtime INSERT received for chat notification');
-          // Small delay to let the app settle if it just foregrounded.
-          setTimeout(() => tryNavigateToNotification(row), 250);
-        }
-      )
-      .subscribe();
+    const onForeground = () => {
+      // Ignore focus/visibility events unless we were genuinely backgrounded.
+      if (!wasHidden) return;
+      wasHidden = false;
+      foregroundAt = Date.now();
+      triggerCheck();
+    };
 
-    // Strategy B: foreground/focus/pageshow polling
-    document.addEventListener('visibilitychange', triggerCheck);
-    window.addEventListener('focus', triggerCheck);
-    window.addEventListener('pageshow', triggerCheck);
-    // Also run on mount (cold-start from notification tap when app was killed)
+    const handleVisibility = () => {
+      if (document.hidden) {
+        wasHidden = true;
+        lastHiddenAt = Date.now();
+        clearRetries();
+      } else {
+        onForeground();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('focus', onForeground);
+    window.addEventListener('pageshow', onForeground);
+    // Cold start: app launched from a notification tap while it was killed.
     triggerCheck();
 
     return () => {
       clearRetries();
-      document.removeEventListener('visibilitychange', triggerCheck);
-      window.removeEventListener('focus', triggerCheck);
-      window.removeEventListener('pageshow', triggerCheck);
-      try {
-        (supabase as any).removeChannel(channel);
-      } catch {}
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('focus', onForeground);
+      window.removeEventListener('pageshow', onForeground);
     };
   }, [user?.id, navigate]);
 
