@@ -78,5 +78,16 @@ jobs:
               method='POST',
           )
           r = urllib.request.urlopen(req)
-          print('Verify:', r.read().decode())
+          body = r.read().decode()
+          print('Verify:', body)
+          # Assert the apply actually took effect — otherwise a silent no-op
+          # would leave the job green while "Notify me" keeps failing.
+          rows = json.loads(body or '[]')
+          row = rows[0] if rows else {}
+          if not (row.get('table_exists') and row.get('rpc_exists')):
+              raise SystemExit(
+                  f"::error::Migration did not take effect "
+                  f"(table_exists={row.get('table_exists')}, rpc_exists={row.get('rpc_exists')})"
+              )
+          print('Verify OK: table + RPC present.')
           PY
