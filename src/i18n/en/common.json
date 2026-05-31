@@ -1,5 +1,6 @@
 {
   "common": {
+    "follow": "Follow",
     "search": "Search",
     "save": "Save",
     "cancel": "Cancel",

@@ -38,7 +38,6 @@ import {
   Bell,
   Calendar,
   Link2,
-  UserPlus,
   Globe,
   Download,
   CheckCircle2,
@@ -63,6 +62,7 @@ import {
   useUnsubscribeFromStream,
 } from "@/hooks/useStreamSubscription";
 import { useCreateReminder } from "@/hooks/useReminders";
+import { FollowButton } from "@/components/social/FollowButton";
 
 import { formatDistanceToNow, fmtDate, fmtTime } from '@/lib/locale-format';
 interface LiveRoomDrawerProps {
@@ -95,7 +95,6 @@ export function LiveRoomDrawer({
   onDelete,
 }: LiveRoomDrawerProps) {
   const [isSaved, setIsSaved] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
   const [showLocalTime, setShowLocalTime] = useState(true);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
@@ -224,17 +223,6 @@ export function LiveRoomDrawer({
     }
   };
 
-  const handleFollow = () => {
-    // isFollowing still holds the pre-toggle value, so a truthy value means
-    // we're unfollowing.
-    notify(
-      isFollowing ? 'toasts.liverooms.unfollowedTitle' : 'toasts.liverooms.followedTitle',
-      isFollowing ? 'toasts.liverooms.unfollowedDesc' : 'toasts.liverooms.followedDesc',
-      { name: room.host.name },
-    );
-    setIsFollowing(!isFollowing);
-  };
-
   // Swipe handlers
   const minSwipeDistance = 50;
 
@@ -352,13 +340,10 @@ export function LiveRoomDrawer({
             {/* Host Bar */}
             {!isCreator ? (
               <div className="flex items-center gap-2 mt-3 min-w-0">
-                <button
-                  onClick={handleFollow}
+                <div
                   className={cn(
-                    "group flex items-center gap-2 h-11 px-2 rounded-full min-w-0",
-                    "bg-background/95 backdrop-blur-sm shadow-lg",
-                    "hover:bg-background/100 hover:scale-[1.02] active:scale-[0.98]",
-                    "transition-all duration-200"
+                    "flex items-center gap-2 h-11 px-2 rounded-full min-w-0",
+                    "bg-background/95 backdrop-blur-sm shadow-lg"
                   )}
                 >
                   <Avatar className="h-7 w-7 ring-1 ring-white/50 flex-shrink-0">
@@ -372,18 +357,13 @@ export function LiveRoomDrawer({
                       {t('screens.liverooms.host')}
                     </span>
                   </div>
-                </button>
+                </div>
 
-                <Button
-                  onClick={handleFollow}
-                  variant={isFollowing ? "secondary" : "outline"}
+                {/* Shows only when you don't already follow the host. */}
+                <FollowButton
+                  targetUserId={room.host.id}
                   className="h-11 rounded-full px-4 bg-background/95 backdrop-blur-sm shadow-lg flex-shrink-0"
-                >
-                  <UserPlus className="h-4 w-4 mr-1.5" />
-                  {isFollowing
-                    ? t('screens.liverooms.following')
-                    : t('screens.liverooms.follow')}
-                </Button>
+                />
               </div>
             ) : (
               <div className="flex items-center gap-2 mt-3 min-w-0">

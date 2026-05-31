@@ -282,6 +282,13 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
 
       const isLoading = eventId ? (eventParticipation?.loading || eventParticipation?.checking) : (category === "people" ? isFollowLoading : false);
 
+      // Product rule: never show a follow/unfollow CTA for someone you already
+      // follow — opening a card must not risk an accidental unfollow. Matches
+      // the shared <FollowButton> behaviour used on the detail screens.
+      if (category === "people" && isFollowing) {
+        return null;
+      }
+
       return (
         <Button
           size="sm"
