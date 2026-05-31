@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n-toast";
 import { useAuth } from "@/context/AuthProvider";
 import { useFollow } from "@/hooks/useFollow";
+import { isValidUUID } from "@/lib/resolveProfileUserId";
 
 interface FollowButtonProps {
   /** The user to (potentially) follow — e.g. an event host, room creator, match. */
@@ -43,7 +44,10 @@ export function FollowButton({
   const isSelf = !!targetUserId && targetUserId === user?.id;
 
   // Hide whenever following is impossible, unresolved, or already true.
-  if (!targetUserId || isSelf || statusLoading || isFollowing) return null;
+  // `useFollow` normalizes a non-UUID target (demo id / handle) to undefined,
+  // so a truthy-but-invalid id must not render a clickable CTA — gate on a real
+  // UUID, matching the hook's own validation.
+  if (!isValidUUID(targetUserId ?? undefined) || isSelf || statusLoading || isFollowing) return null;
 
   return (
     <Button
