@@ -3054,6 +3054,8 @@
       "streamReplay": "Stream-Wiederholung",
       "loading": "Lädt...",
       "settingUpVideoRoom": "Videoraum wird eingerichtet...",
+      "videoRoomUnavailable": "Videoraum konnte nicht geladen werden",
+      "videoRoomUnavailableHint": "Der Stream ist gerade nicht erreichbar. Versuche es erneut.",
       "roomEnded": "Raum beendet",
       "demo": "(Demo)",
       "loadingLiveRooms": "Live-Räume werden geladen...",

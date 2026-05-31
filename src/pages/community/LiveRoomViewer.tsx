@@ -119,10 +119,48 @@ export default function LiveRoomViewer() {
 
   // Daily.co room URL: navigation state first (from GoLivePopup), DB metadata as fallback
   const dailyRoomUrlFromDb = (dbRoom?.metadata as Record<string, unknown>)?.daily_room_url as string | null ?? null;
-  const dailyRoomUrl = navDailyRoomUrl 
+  // On-demand provisioned URL — when none of the known sources have a Daily room
+  // yet, we mint/fetch one from the gateway (idempotent) so a viewer can still
+  // join instead of hitting a bare "Videofehler".
+  const [provisionedDailyUrl, setProvisionedDailyUrl] = useState<string | null>(null);
+  const [isProvisioningDaily, setIsProvisioningDaily] = useState(false);
+  const [provisionFailed, setProvisionFailed] = useState(false);
+  const dailyRoomUrl = navDailyRoomUrl
     || ((roomState?.room?.metadata as Record<string, unknown>)?.daily_room_url as string | null)
     || dailyRoomUrlFromDb
+    || provisionedDailyUrl
     || null;
+
+  // If we're in the room and still have no Daily URL, provision one on demand.
+  // `createDailyRoom` is idempotent on the gateway (returns the existing room
+  // when one already exists), so this is safe for both host and viewers.
+  useEffect(() => {
+    if (!isInRoom || !roomId) return;
+    if (dailyRoomUrl || isProvisioningDaily) return;
+    let cancelled = false;
+    setIsProvisioningDaily(true);
+    setProvisionFailed(false);
+    liveRoomService
+      .createDailyRoom(roomId)
+      .then((res) => {
+        if (cancelled) return;
+        if (res?.daily_room_url) {
+          setProvisionedDailyUrl(res.daily_room_url);
+        } else {
+          setProvisionFailed(true);
+        }
+      })
+      .catch((err) => {
+        console.error('[LiveRoomViewer] Daily provision failed:', err);
+        if (!cancelled) setProvisionFailed(true);
+      })
+      .finally(() => {
+        if (!cancelled) setIsProvisioningDaily(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isInRoom, roomId, dailyRoomUrl, isProvisioningDaily]);
 
   useEffect(() => {
     console.log('[LiveRoomViewer] dailyRoomUrl debug:', {
@@ -310,6 +348,25 @@ export default function LiveRoomViewer() {
                         notifyError('toasts.community.videoError');
                       }}
                     />
+                  ) : provisionFailed ? (
+                    <div className="flex-1 flex items-center justify-center p-6">
+                      <div className="text-center max-w-sm">
+                        <h3 className="text-lg font-semibold mb-1">
+                          {t('screens.community.videoRoomUnavailable')}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-4">
+                          {t('screens.community.videoRoomUnavailableHint')}
+                        </p>
+                        <Button
+                          onClick={() => {
+                            setProvisionFailed(false);
+                            setProvisionedDailyUrl(null);
+                          }}
+                        >
+                          {t('screens.community.retry')}
+                        </Button>
+                      </div>
+                    </div>
                   ) : (
                     <div className="flex-1 flex items-center justify-center">
                       <div className="text-center text-muted-foreground">
