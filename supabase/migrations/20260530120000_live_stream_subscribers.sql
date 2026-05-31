@@ -23,15 +23,18 @@ ALTER TABLE public.live_stream_subscribers ENABLE ROW LEVEL SECURITY;
 
 -- A user only ever sees and manages their OWN subscriptions. Aggregate public
 -- counts are served by the SECURITY DEFINER function below, so we never expose
--- the identity of who subscribed.
+-- the identity of who subscribed. (DROP IF EXISTS keeps this re-runnable.)
+DROP POLICY IF EXISTS "Users can view their own stream subscriptions" ON public.live_stream_subscribers;
 CREATE POLICY "Users can view their own stream subscriptions"
   ON public.live_stream_subscribers FOR SELECT
   USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can subscribe themselves" ON public.live_stream_subscribers;
 CREATE POLICY "Users can subscribe themselves"
   ON public.live_stream_subscribers FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can unsubscribe themselves" ON public.live_stream_subscribers;
 CREATE POLICY "Users can unsubscribe themselves"
   ON public.live_stream_subscribers FOR DELETE
   USING (auth.uid() = user_id);
