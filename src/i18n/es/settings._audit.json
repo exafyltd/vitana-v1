@@ -86,17 +86,13 @@
       "phase": "llm"
     },
     "settings.categories.tenantRole": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The term 'inquilino' (tenant, as in renter) is inaccurate for a software context. 'Tenant' in software usually refers to an account, organization, or client instance.",
-      "suggested": "Cuenta y Rol",
+      "verdict": "OK",
+      "confidence": 0.8,
       "phase": "llm"
     },
     "settings.categories.tenantRoleDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "The term 'inquilinos' (tenants, as in renters) is inaccurate for a software context and should align with the corrected term for 'Tenant'.",
-      "suggested": "Cambia entre roles y cuentas",
       "phase": "llm"
     },
     "settings.categories.billing": {
@@ -148,7 +144,19 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "settings.vitanaOpenedSection": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "settings.vitanaUpdated": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
     }
   },
-  "generatedAt": "2026-05-20T07:08:26.397Z"
+  "generatedAt": "2026-05-31T07:12:10.960Z"
 }
