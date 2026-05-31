@@ -146,6 +146,8 @@ const MobileSubscriptions = lazy(() => import("./pages/MobileSubscriptions"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Search = lazy(() => import("./pages/Search"));
 const Cart = lazy(() => import("./pages/Cart"));
+// VTID-03236: parallel Universal Cart page (universal_* tables via gateway).
+const UniversalCart = lazy(() => import("./pages/UniversalCart"));
 const CheckoutSuccess = lazy(() => import("./pages/CheckoutSuccess"));
 const TicketPurchaseSuccess = lazy(() => import("./pages/TicketPurchaseSuccess"));
 const PackagePurchaseSuccess = lazy(() => import("./pages/PackagePurchaseSuccess"));
@@ -816,6 +818,12 @@ const App = () => {
           <Route path="/cart" element={
             <AuthGuard>
               <Cart />
+            </AuthGuard>
+          } />
+          {/* VTID-03236: parallel Universal Cart route (gateway-backed). */}
+          <Route path="/universal-cart" element={
+            <AuthGuard>
+              <UniversalCart />
             </AuthGuard>
           } />
           <Route path="/checkout/success" element={

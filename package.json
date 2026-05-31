@@ -17,7 +17,8 @@
     "i18n:audit:llm": "node scripts/i18n-audit-llm.mjs",
     "i18n:verify": "node scripts/verify-i18n-end-to-end.mjs",
     "nav:draft": "node scripts/nav-draft.mjs",
-    "test:orb-stop": "node scripts/orb-voice-client-stop-regression.mjs"
+    "test:orb-stop": "node scripts/orb-voice-client-stop-regression.mjs",
+    "test:universal-cart": "node scripts/universal-cart-client-regression.mjs"
   },
   "dependencies": {
     "@axe-core/react": "^4.10.2",

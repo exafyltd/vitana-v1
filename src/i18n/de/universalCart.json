@@ -1,0 +1,30 @@
+{
+  "universalCart": {
+    "page": {
+      "title": "Mein Stack",
+      "subtitle": "Vorgemerkte Empfehlungen, Pakete und Produkte aus Discover.",
+      "emptyTitle": "Dein Stack ist noch leer",
+      "emptyBody": "Tippe in Discover auf „Stack“, um etwas vorzumerken. Dein normaler Einkaufswagen bleibt davon unberührt.",
+      "loading": "Lade Stack …",
+      "roleBlockedTitle": "Stack steht dir hier nicht zur Verfügung",
+      "roleBlockedBody": "Der Stack ist ein Community-Feature. Wechsle in die Community-Rolle, um ihn zu nutzen.",
+      "errorTitle": "Wir konnten deinen Stack gerade nicht laden",
+      "errorBody": "Bitte versuche es in einem Moment noch einmal.",
+      "removeAction": "Entfernen",
+      "quantityLabel": "Menge",
+      "completeAction": "Erledigt markieren",
+      "alreadyCompleted": "Bereits erledigt",
+      "linkToDiscover": "Weiter in Discover stöbern"
+    },
+    "addButton": {
+      "label": "Stack",
+      "added": "Im Stack",
+      "addAria": "Zum Stack hinzufügen",
+      "addedAria": "Bereits im Stack",
+      "signRequired": "Bitte melde dich an, um etwas zum Stack hinzuzufügen.",
+      "roleBlocked": "Stack ist nur in der Community-Rolle verfügbar.",
+      "failed": "Hinzufügen zum Stack fehlgeschlagen",
+      "success": "Zum Stack hinzugefügt"
+    }
+  }
+}

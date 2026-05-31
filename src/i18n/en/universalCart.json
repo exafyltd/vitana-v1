@@ -1,0 +1,30 @@
+{
+  "universalCart": {
+    "page": {
+      "title": "My Stack",
+      "subtitle": "Items, packages, and recommendations you've staged from Discover.",
+      "emptyTitle": "Your Stack is empty",
+      "emptyBody": "Tap “Stack” on any Discover item to stage it here. Your regular cart is unaffected.",
+      "loading": "Loading your Stack…",
+      "roleBlockedTitle": "Stack isn't available for this role",
+      "roleBlockedBody": "Stack is a community feature. Switch to your community role to use it.",
+      "errorTitle": "We couldn't load your Stack",
+      "errorBody": "Please try again in a moment.",
+      "removeAction": "Remove",
+      "quantityLabel": "Quantity",
+      "completeAction": "Mark completed",
+      "alreadyCompleted": "Already completed",
+      "linkToDiscover": "Browse Discover"
+    },
+    "addButton": {
+      "label": "Stack",
+      "added": "In Stack",
+      "addAria": "Add to Stack",
+      "addedAria": "Already in Stack",
+      "signRequired": "Sign in to add to your Stack.",
+      "roleBlocked": "Stack is only available in your community role.",
+      "failed": "Couldn't add to Stack",
+      "success": "Added to Stack"
+    }
+  }
+}
