@@ -307,24 +307,24 @@ export function LiveRoomDrawer({
 
             {/* Host Bar */}
             {!isCreator ? (
-              <div className="flex items-center gap-2 mt-3">
+              <div className="flex items-center gap-2 mt-3 min-w-0">
                 <button
                   onClick={handleFollow}
                   className={cn(
-                    "group flex items-center gap-2 h-11 px-2 rounded-full",
+                    "group flex items-center gap-2 h-11 px-2 rounded-full min-w-0",
                     "bg-background/95 backdrop-blur-sm shadow-lg",
                     "hover:bg-background/100 hover:scale-[1.02] active:scale-[0.98]",
                     "transition-all duration-200"
                   )}
                 >
-                  <Avatar className="h-7 w-7 ring-1 ring-white/50">
+                  <Avatar className="h-7 w-7 ring-1 ring-white/50 flex-shrink-0">
                     <AvatarImage src={room.host.avatar} />
                     <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
                   </Avatar>
-                  <div className="flex items-center gap-1.5 pr-2">
-                    <span className="text-sm font-semibold">{room.host.name}</span>
+                  <div className="flex items-center gap-1.5 pr-2 min-w-0">
+                    <span className="text-sm font-semibold truncate">{room.host.name}</span>
                     <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                    <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-muted/80 text-muted-foreground font-medium">
+                    <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-muted/80 text-muted-foreground font-medium flex-shrink-0">
                       {t('screens.liverooms.host')}
                     </span>
                   </div>
@@ -333,21 +333,21 @@ export function LiveRoomDrawer({
                 <Button
                   onClick={handleFollow}
                   variant={isFollowing ? "secondary" : "outline"}
-                  className="h-11 rounded-full px-4 bg-background/95 backdrop-blur-sm shadow-lg"
+                  className="h-11 rounded-full px-4 bg-background/95 backdrop-blur-sm shadow-lg flex-shrink-0"
                 >
                   <UserPlus className="h-4 w-4 mr-1.5" />
                   {isFollowing ? "Following" : "Follow"}
                 </Button>
               </div>
             ) : (
-              <div className="flex items-center gap-2 mt-3">
-                <div className="flex items-center gap-2 h-11 px-3 rounded-full bg-background/95 backdrop-blur-sm shadow-lg">
-                  <Avatar className="h-7 w-7 ring-1 ring-white/50">
+              <div className="flex items-center gap-2 mt-3 min-w-0">
+                <div className="flex items-center gap-2 h-11 px-3 rounded-full bg-background/95 backdrop-blur-sm shadow-lg min-w-0">
+                  <Avatar className="h-7 w-7 ring-1 ring-white/50 flex-shrink-0">
                     <AvatarImage src={room.host.avatar} />
                     <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
                   </Avatar>
-                  <span className="text-sm font-semibold">{room.host.name}</span>
-                  <Badge variant="secondary" className="text-xs">{t('screens.liverooms.yourRoom')}</Badge>
+                  <span className="text-sm font-semibold truncate">{room.host.name}</span>
+                  <Badge variant="secondary" className="text-xs flex-shrink-0">{t('screens.liverooms.yourRoom')}</Badge>
                 </div>
               </div>
             )}
@@ -451,22 +451,22 @@ export function LiveRoomDrawer({
         {room.isLive ? (
           isCreator ? (
             <div className="flex items-center gap-2">
-              <Button size="lg" variant="destructive" className="flex-1" onClick={handleJoin}>
+              <Button size="lg" variant="destructive" className="flex-1 min-w-0" onClick={handleJoin}>
                 {t('screens.liverooms.endRoom')}
               </Button>
-              <Button size="lg" variant="outline" onClick={() => handleShare()}>
+              <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => handleShare()}>
                 <Share2 className="w-4 h-4" />
               </Button>
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <Button size="lg" className="flex-1" onClick={handleJoin}>
+              <Button size="lg" className="flex-1 min-w-0" onClick={handleJoin}>
                 {t('screens.liverooms.joinRoom')}
               </Button>
-              <Button size="lg" variant="outline" onClick={() => handleShare()}>
+              <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => handleShare()}>
                 <Share2 className="w-4 h-4" />
               </Button>
-              <Button size="lg" variant="outline" onClick={handleSave}>
+              <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={handleSave}>
                 <Bookmark className={cn("w-4 h-4", isSaved && "fill-current")} />
               </Button>
             </div>
@@ -474,26 +474,26 @@ export function LiveRoomDrawer({
         ) : isScheduled ? (
           isCreator ? (
             <div className="flex items-center gap-2">
-              <Button size="lg" className="flex-1" onClick={handleJoin}>
+              <Button size="lg" className="flex-1 min-w-0" onClick={handleJoin}>
                 {t('screens.liverooms.goLiveNow')}
               </Button>
-              <Button size="lg" variant="outline" onClick={onEdit}>
+              <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={onEdit}>
                 <Pencil className="w-4 h-4" />
               </Button>
-              <Button size="lg" variant="outline" onClick={() => setShowDeleteDialog(true)}>
+              <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => setShowDeleteDialog(true)}>
                 <Trash2 className="w-4 h-4" />
               </Button>
             </div>
           ) : (
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Button size="lg" variant="outline" className="flex-1" onClick={handleNotifyMe}>
-                  <Bell className={cn("w-4 h-4 mr-2", isNotifying && "fill-current")} />
-                  {isNotifying ? "Notifying" : "Notify me"}
+                <Button size="lg" variant="outline" className="flex-1 min-w-0" onClick={handleNotifyMe}>
+                  <Bell className={cn("w-4 h-4 mr-2 shrink-0", isNotifying && "fill-current")} />
+                  <span className="truncate">{isNotifying ? "Notifying" : "Notify me"}</span>
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button size="lg" variant="outline">
+                    <Button size="lg" variant="outline" className="shrink-0 w-11 px-0">
                       <Calendar className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -513,7 +513,7 @@ export function LiveRoomDrawer({
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                <Button size="lg" variant="outline" onClick={() => handleShare()}>
+                <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => handleShare()}>
                   <Share2 className="w-4 h-4" />
                 </Button>
               </div>
