@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
@@ -125,6 +125,11 @@ export default function LiveRoomViewer() {
   const [provisionedDailyUrl, setProvisionedDailyUrl] = useState<string | null>(null);
   const [isProvisioningDaily, setIsProvisioningDaily] = useState(false);
   const [provisionFailed, setProvisionFailed] = useState(false);
+  // Bumped by the Retry button to re-fire provisioning when nothing else changed.
+  const [retryNonce, setRetryNonce] = useState(0);
+  // In-flight guard kept in a ref (NOT effect deps) so starting a request never
+  // re-runs the effect and cancels its own in-flight POST.
+  const provisioningRef = useRef(false);
   const dailyRoomUrl = navDailyRoomUrl
     || ((roomState?.room?.metadata as Record<string, unknown>)?.daily_room_url as string | null)
     || dailyRoomUrlFromDb
@@ -136,14 +141,13 @@ export default function LiveRoomViewer() {
   // when one already exists), so this is safe for both host and viewers.
   useEffect(() => {
     if (!isInRoom || !roomId) return;
-    if (dailyRoomUrl || isProvisioningDaily) return;
-    let cancelled = false;
+    if (dailyRoomUrl || provisioningRef.current) return;
+    provisioningRef.current = true;
     setIsProvisioningDaily(true);
     setProvisionFailed(false);
     liveRoomService
       .createDailyRoom(roomId)
       .then((res) => {
-        if (cancelled) return;
         if (res?.daily_room_url) {
           setProvisionedDailyUrl(res.daily_room_url);
         } else {
@@ -152,15 +156,14 @@ export default function LiveRoomViewer() {
       })
       .catch((err) => {
         console.error('[LiveRoomViewer] Daily provision failed:', err);
-        if (!cancelled) setProvisionFailed(true);
+        setProvisionFailed(true);
       })
       .finally(() => {
-        if (!cancelled) setIsProvisioningDaily(false);
+        provisioningRef.current = false;
+        setIsProvisioningDaily(false);
       });
-    return () => {
-      cancelled = true;
-    };
-  }, [isInRoom, roomId, dailyRoomUrl, isProvisioningDaily]);
+    // retryNonce is a dependency so the Retry button can re-trigger this.
+  }, [isInRoom, roomId, dailyRoomUrl, retryNonce]);
 
   useEffect(() => {
     console.log('[LiveRoomViewer] dailyRoomUrl debug:', {
@@ -361,6 +364,9 @@ export default function LiveRoomViewer() {
                           onClick={() => {
                             setProvisionFailed(false);
                             setProvisionedDailyUrl(null);
+                            // Bump the nonce so the provisioning effect re-runs
+                            // even though isInRoom/roomId/dailyRoomUrl are unchanged.
+                            setRetryNonce((n) => n + 1);
                           }}
                         >
                           {t('screens.community.retry')}
