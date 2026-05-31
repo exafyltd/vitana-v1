@@ -54,7 +54,15 @@ import {
 import { cn } from "@/lib/utils";
 import { differenceInMinutes } from 'date-fns';
 import type { LiveRoom } from "./LiveRoomCard";
-import { notify, t } from '@/lib/i18n-toast';
+import { lookup, notify, notifyError, t } from '@/lib/i18n-toast';
+import { useAuth } from "@/context/AuthProvider";
+import {
+  useMyStreamSubscriptions,
+  useStreamSubscriberCounts,
+  useSubscribeToStream,
+  useUnsubscribeFromStream,
+} from "@/hooks/useStreamSubscription";
+import { useCreateReminder } from "@/hooks/useReminders";
 
 import { formatDistanceToNow, fmtDate, fmtTime } from '@/lib/locale-format';
 interface LiveRoomDrawerProps {
@@ -86,13 +94,26 @@ export function LiveRoomDrawer({
   onEdit,
   onDelete,
 }: LiveRoomDrawerProps) {
-  const [isNotifying, setIsNotifying] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [showLocalTime, setShowLocalTime] = useState(true);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  // Real "Notify me" wiring — persists to live_stream_subscribers, same as the
+  // card on the Live Rooms page (this used to be a throwaway local toggle that
+  // never hit the backend). `subscriberCount` powers the "Zuhörende" count for
+  // scheduled rooms, where the live viewer_count is always 0. Reads fail soft
+  // to empty, so an un-migrated DB never breaks the screen.
+  const { user } = useAuth();
+  const { data: mySubs } = useMyStreamSubscriptions();
+  const { data: subCounts } = useStreamSubscriberCounts(room?.id ? [room.id] : []);
+  const subscribeStream = useSubscribeToStream();
+  const unsubscribeStream = useUnsubscribeFromStream();
+  const { mutateAsync: createReminder } = useCreateReminder();
+  const isNotifying = !!(room && mySubs?.has(room.id));
+  const subscriberCount = room ? (subCounts?.[room.id] ?? 0) : 0;
 
   // Keyboard navigation
   useEffect(() => {
@@ -120,14 +141,37 @@ export function LiveRoomDrawer({
   const minutesUntil = room.scheduledTime ? differenceInMinutes(new Date(room.scheduledTime), new Date()) : 0;
   const showCountdown = isScheduled && minutesUntil > 0 && minutesUntil < 120;
 
-  const handleNotifyMe = () => {
-    // isNotifying still holds the pre-toggle value here, so a truthy value
-    // means we're turning the reminder OFF.
-    notify(
-      isNotifying ? 'toasts.liverooms.notifyOffTitle' : 'toasts.liverooms.notifyOnTitle',
-      isNotifying ? 'toasts.liverooms.notifyOffDesc' : 'toasts.liverooms.notifyOnDesc',
-    );
-    setIsNotifying(!isNotifying);
+  const handleNotifyMe = async () => {
+    if (!room) return;
+    if (!user) {
+      notifyError('toasts.community.signRequired', 'toasts.community.pleaseSignJoinLiveRooms');
+      return;
+    }
+    try {
+      if (isNotifying) {
+        await unsubscribeStream.mutateAsync(room.id);
+        notify('toasts.liverooms.notifyOffTitle', 'toasts.liverooms.notifyOffDesc');
+      } else {
+        await subscribeStream.mutateAsync(room.id);
+        // Best-effort personal reminder ~10 min before start, mirroring the card
+        // flow in LiveRooms.tsx so drawer subscribers actually get nudged (not
+        // just counted). Failure here must not fail the subscribe.
+        if (room.scheduledTime) {
+          const remindMs = new Date(room.scheduledTime).getTime() - 10 * 60 * 1000;
+          if (remindMs > Date.now()) {
+            createReminder({
+              action_text: lookup('toasts.liverooms.reminderActionText', { title: room.title }),
+              scheduled_for_iso: new Date(remindMs).toISOString(),
+              description: room.title,
+            }).catch((e) => console.warn('[notify] reminder create failed:', e));
+          }
+        }
+        notify('toasts.liverooms.notifyOnTitle', 'toasts.liverooms.notifyOnDesc');
+      }
+    } catch (e) {
+      console.error('[notify] drawer toggle failed:', e);
+      notifyError('toasts.liverooms.notifyError');
+    }
   };
 
   const handleSave = () => {
@@ -375,18 +419,34 @@ export function LiveRoomDrawer({
               <Users className="h-5 w-5 text-muted-foreground" />
               <span className="font-semibold">{t('screens.liverooms.peopleListening')}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="flex -space-x-2">
-                {Array.from({ length: Math.min(room.participants, 5) }).map((_, i) => (
-                  <Avatar key={i} className="h-6 w-6 ring-2 ring-background">
-                    <AvatarFallback className="text-xs">U{i + 1}</AvatarFallback>
-                  </Avatar>
-                ))}
-              </div>
-              {room.participants > 5 && (
-                <span className="text-sm text-muted-foreground">{t('screens.liverooms.value0More', { value0: room.participants - 5 })}</span>
-              )}
-            </div>
+            {(() => {
+              // Scheduled rooms have no live viewers yet — show how many people
+              // tapped "Notify me" (subscriberCount). Live rooms show the real
+              // viewer_count. Either way we always render a number, so the
+              // section is never blank.
+              const audienceCount = isScheduled ? subscriberCount : room.participants;
+              if (audienceCount <= 0) {
+                return (
+                  <p className="text-sm text-muted-foreground">
+                    {t('screens.liverooms.willJoinCount', { count: 0 })}
+                  </p>
+                );
+              }
+              return (
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    {Array.from({ length: Math.min(audienceCount, 5) }).map((_, i) => (
+                      <Avatar key={i} className="h-6 w-6 ring-2 ring-background">
+                        <AvatarFallback className="text-xs">U{i + 1}</AvatarFallback>
+                      </Avatar>
+                    ))}
+                  </div>
+                  <span className="text-sm text-muted-foreground">
+                    {t('screens.liverooms.willJoinCount', { count: audienceCount })}
+                  </span>
+                </div>
+              );
+            })()}
           </div>
 
           {/* When */}

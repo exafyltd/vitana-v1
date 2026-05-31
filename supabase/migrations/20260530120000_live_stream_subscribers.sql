@@ -1,5 +1,11 @@
 -- Live stream "Notify me" subscribers.
 --
+-- Re-apply trigger 2026-05-31: re-runs the apply-live-subscribers-migration
+-- workflow so the table/RPC are guaranteed present in prod (Notify-me was still
+-- erroring with "Erinnerung fehlgeschlagen", i.e. the write was failing). This
+-- file is idempotent (CREATE ... IF NOT EXISTS / DROP POLICY IF EXISTS), so a
+-- re-run is safe.
+--
 -- Records who tapped "Notify me" on a scheduled session. Powers two things the
 -- old UI faked with throwaway local state:
 --   1. a *persistent* Notify toggle (survives refresh / device change), and
