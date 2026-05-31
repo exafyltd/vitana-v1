@@ -5102,7 +5102,10 @@
       "notifyAriaOn": "Turn off notifications",
       "notifyAriaOff": "Get notified when the room starts",
       "manageAria": "Manage your live room",
-      "joinAria": "Join live room"
+      "joinAria": "Join live room",
+      "whenToday": "Today {time}",
+      "whenTomorrow": "Tomorrow {time}",
+      "whenDated": "{date} {time}"
     },
     "meetups": {
       "detailsProgram": "Details & Program",

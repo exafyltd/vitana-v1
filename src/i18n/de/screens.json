@@ -5102,7 +5102,10 @@
       "notifyAriaOn": "Erinnerung ausschalten",
       "notifyAriaOff": "Erinnern, wenn der Raum startet",
       "manageAria": "Deinen Live-Raum verwalten",
-      "joinAria": "Live-Raum beitreten"
+      "joinAria": "Live-Raum beitreten",
+      "whenToday": "Heute {time}",
+      "whenTomorrow": "Morgen {time}",
+      "whenDated": "{date} {time}"
     },
     "meetups": {
       "detailsProgram": "Details & Programm",

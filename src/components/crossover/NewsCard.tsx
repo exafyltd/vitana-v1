@@ -33,9 +33,9 @@ interface NewsCardProps {
   location?: string;
   attendees?: number;
   timestamp?: string;
-  /** When true, render the timestamp as a larger pastel pill centered in the top bar
-   *  (used by the Live Rooms card) instead of the default small chip beside the badges. */
-  timestampCentered?: boolean;
+  /** Optional prominent relative date/time rendered at the BOTTOM of the card
+   *  (Live Rooms), e.g. "Today 20.00h". Replaces the top timestamp chip there. */
+  whenLabel?: string;
   price?: number | "free";
   currency?: string;
   className?: string;
@@ -77,7 +77,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     location,
     attendees,
     timestamp,
-    timestampCentered,
+    whenLabel,
     price,
     currency,
     className,
@@ -381,7 +381,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
           {/* Content Overlay */}
           <CardContent className="absolute inset-0 p-6 h-full flex flex-col text-white">
             {/* Top Section - Badges on left, Edit on right */}
-            <div className="relative flex items-start w-full">
+            <div className="flex items-start w-full">
               {/* Left side - Category + Price + Timestamp (wraps naturally) */}
               <div className="flex flex-wrap gap-2 items-center flex-1 min-w-0">
                 {/* Pillar badge with gradient accents */}
@@ -414,23 +414,14 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                   </div>
                 )}
 
-                {/* Timestamp — default inline chip */}
-                {timestamp && !timestampCentered && (
+                {/* Timestamp */}
+                {timestamp && (
                   <div className="flex items-center gap-1.5 text-xs text-white/90 bg-black/40 rounded-md px-2 py-1 backdrop-blur-sm">
                     <Calendar className="w-3 h-3 flex-shrink-0" />
                     <span className="font-medium max-w-[140px] truncate">{timestamp}</span>
                   </div>
                 )}
               </div>
-
-              {/* Timestamp — centered pastel pill variant (Live Rooms), sits between the
-                  left badge and the top-right utility, regardless of their widths. */}
-              {timestamp && timestampCentered && (
-                <div className="absolute left-1/2 top-0 -translate-x-1/2 flex items-center gap-1.5 text-sm font-semibold text-violet-900 bg-gradient-to-r from-violet-100/95 to-pink-100/95 rounded-full px-3.5 py-1.5 backdrop-blur-sm border border-white/60 shadow-md whitespace-nowrap max-w-[56%]">
-                  <Calendar className="w-4 h-4 flex-shrink-0 text-violet-500" />
-                  <span className="truncate">{timestamp}</span>
-                </div>
-              )}
 
               {/* Right side - Edit button pinned top-right */}
               {utilityTopRight && (
@@ -452,6 +443,13 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                 <p className="text-sm text-white/90 line-clamp-2 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]">
                   {description}
                 </p>
+              )}
+
+              {/* Prominent relative date/time (Live Rooms) — e.g. "Today 20.00h" */}
+              {whenLabel && (
+                <div className="text-2xl font-bold text-white leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
+                  {whenLabel}
+                </div>
               )}
 
               {/* Meta Information */}
