@@ -251,9 +251,11 @@ export function DreamNorthStar({
 
           {hasDeadline && <TodayDot pct={pct} ringSize={ringSize} stroke={stroke} />}
 
-          {/* Inner white circle */}
+          {/* Inner white circle — the big day number is anchored to the exact
+              centre of the circle; the "TAG" label and the days-left caption are
+              positioned above and below it so the number always reads centred. */}
           <div
-            className="absolute rounded-full bg-white/92 flex flex-col items-center justify-center text-center px-4"
+            className="absolute rounded-full bg-white/92"
             style={{
               inset: stroke + 4,
               backdropFilter: "blur(8px)",
@@ -261,19 +263,25 @@ export function DreamNorthStar({
             }}
           >
             <div
-              className="font-semibold"
-              style={{ color: "#6d28d9", fontSize: 13, letterSpacing: "0.32em" }}
+              className="absolute left-0 right-0 text-center font-semibold"
+              style={{ top: "19%", color: "#6d28d9", fontSize: 13, letterSpacing: "0.32em" }}
             >
               {t("screens.autopilotdashboard.dayLabel").toUpperCase()}
             </div>
             <div
-              className="font-bold leading-none my-0.5"
-              style={{ color: "#7c3aed", fontSize: numberFont }}
+              className="absolute left-1/2 top-1/2 font-bold leading-none"
+              style={{
+                transform: "translate(-50%, -50%)",
+                color: "#7c3aed",
+                fontSize: numberFont,
+              }}
             >
               {goal ? goalDay : "—"}
             </div>
-            <HeartDivider width={22} className="mt-1" />
-            <div className="text-xs text-muted-foreground mt-1.5 leading-tight">
+            <div
+              className="absolute left-0 right-0 px-5 text-center text-xs text-muted-foreground leading-tight"
+              style={{ bottom: "15%" }}
+            >
               {hasDeadline
                 ? t("screens.autopilotdashboard.daysToGoalShort", { count: daysLeft })
                 : !goal
