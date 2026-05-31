@@ -22,6 +22,23 @@ const COUNTS_KEY = ["stream-subscriptions", "counts"];
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const sb = supabase as any; // new table/rpc not yet in generated Database types
 
+/**
+ * True when an error means the `live_stream_subscribers` relation isn't there
+ * yet (migration not applied in this environment). PostgREST reports a missing
+ * table as `PGRST205` ("Could not find the table … in the schema cache"); a
+ * Postgres-level undefined_table is `42P01`. The reads already fail soft on
+ * this; the writes must too, otherwise tapping "Notify me" in a not-yet-migrated
+ * environment throws and shows a misleading "Could not update reminder" toast.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function isMissingRelation(error: any): boolean {
+  if (!error) return false;
+  const code = error.code as string | undefined;
+  if (code === "PGRST205" || code === "42P01") return true;
+  const msg = String(error.message ?? "");
+  return /schema cache|find the table|does not exist/i.test(msg);
+}
+
 /** Set of stream ids the current user has tapped "Notify me" on. */
 export function useMyStreamSubscriptions() {
   const { user } = useAuth();
@@ -76,7 +93,14 @@ export function useSubscribeToStream() {
         .from("live_stream_subscribers")
         .insert({ stream_id: streamId, user_id: user!.id });
       // 23505 = unique violation → already subscribed; treat as success (idempotent)
-      if (error && error.code !== "23505") throw error;
+      if (!error || error.code === "23505") return;
+      // Table not migrated yet → fail soft (matches the read hooks) so the
+      // caller can still set the personal reminder instead of erroring out.
+      if (isMissingRelation(error)) {
+        console.warn("[streamSubs] subscribe skipped (table missing):", error.message);
+        return;
+      }
+      throw error;
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: MINE_KEY });
@@ -95,7 +119,13 @@ export function useUnsubscribeFromStream() {
         .delete()
         .eq("stream_id", streamId)
         .eq("user_id", user!.id);
-      if (error) throw error;
+      if (!error) return;
+      // Table not migrated yet → nothing to remove; fail soft like the reads.
+      if (isMissingRelation(error)) {
+        console.warn("[streamSubs] unsubscribe skipped (table missing):", error.message);
+        return;
+      }
+      throw error;
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: MINE_KEY });
