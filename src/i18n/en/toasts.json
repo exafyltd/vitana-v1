@@ -615,7 +615,15 @@
       "notifyOffTitle": "Reminder removed",
       "notifyOffDesc": "You won't be reminded anymore",
       "notifyError": "Could not update reminder",
-      "reminderActionText": "Live \"{title}\" starts soon"
+      "reminderActionText": "Live \"{title}\" starts soon",
+      "savedTitle": "Saved!",
+      "savedDesc": "Room saved for later",
+      "unsavedTitle": "Removed from saved",
+      "unsavedDesc": "Room removed from your saved list",
+      "followedTitle": "Following!",
+      "followedDesc": "You're now following {name}",
+      "unfollowedTitle": "Unfollowed",
+      "unfollowedDesc": "You unfollowed {name}"
     },
     "meetups": {
       "signRequired": "Sign in required",

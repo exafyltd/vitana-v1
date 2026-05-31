@@ -615,7 +615,15 @@
       "notifyOffTitle": "Erinnerung deaktiviert",
       "notifyOffDesc": "Du wirst nicht mehr erinnert",
       "notifyError": "Erinnerung fehlgeschlagen",
-      "reminderActionText": "Live „{title}\" startet gleich"
+      "reminderActionText": "Live „{title}\" startet gleich",
+      "savedTitle": "Gespeichert",
+      "savedDesc": "Raum für später gespeichert",
+      "unsavedTitle": "Entfernt",
+      "unsavedDesc": "Raum aus deiner Liste entfernt",
+      "followedTitle": "Du folgst jetzt",
+      "followedDesc": "Du folgst {name}",
+      "unfollowedTitle": "Nicht mehr gefolgt",
+      "unfollowedDesc": "Du folgst {name} nicht mehr"
     },
     "meetups": {
       "signRequired": "Anmeldung erforderlich",

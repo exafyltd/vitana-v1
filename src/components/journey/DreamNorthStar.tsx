@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plane, Compass, Sparkles, CalendarClock } from "lucide-react";
@@ -16,8 +17,14 @@ import type { MyJourneyGoal } from "@/hooks/useMyJourney";
 // public/illustrations/README.md for the recommended prompt + style.
 const HERO_BG = "/illustrations/journey-coast.webp";
 
-const RING_SIZE = 220;
-const RING_STROKE = 14;
+// The ring is sized relative to the card's measured width so it never
+// dwarfs a small phone. RING_MAX keeps the original look on roomy widths;
+// RING_MIN stops it collapsing on very narrow devices. Stroke and the big
+// day-number scale off whatever ring size we land on.
+const RING_MAX = 220;
+const RING_MIN = 150;
+const STROKE_RATIO = 14 / RING_MAX; // ≈ original 14px stroke at 220px ring
+const NUMBER_RATIO = 88 / RING_MAX; // ≈ original 88px number at 220px ring
 
 const SERIF: React.CSSProperties = { fontFamily: "Cormorant, Georgia, serif" };
 
@@ -34,11 +41,15 @@ function HeartDivider({
   );
 }
 
-function TodayDot({ pct }: { pct: number }) {
-  const r = (RING_SIZE - RING_STROKE) / 2;
+function TodayDot({
+  pct,
+  ringSize,
+  stroke,
+}: { pct: number; ringSize: number; stroke: number }) {
+  const r = (ringSize - stroke) / 2;
   const angleRad = (Math.min(100, Math.max(0, pct)) / 100) * 2 * Math.PI - Math.PI / 2;
-  const cx = RING_SIZE / 2 + r * Math.cos(angleRad);
-  const cy = RING_SIZE / 2 + r * Math.sin(angleRad);
+  const cx = ringSize / 2 + r * Math.cos(angleRad);
+  const cy = ringSize / 2 + r * Math.sin(angleRad);
   return (
     <div
       className="absolute pointer-events-none"
@@ -83,6 +94,32 @@ export function DreamNorthStar({
 }) {
   const reduce = useReducedMotion();
 
+  // Responsive sizing — measure the card and derive the ring + a minimum
+  // (rather than fixed) height. Using minHeight instead of a rigid
+  // aspectRatio lets the card GROW to fit its content on narrow phones, so
+  // the goal pill + tagline are never clipped by `overflow-hidden`.
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [ringSize, setRingSize] = useState(RING_MAX);
+  const [minHeight, setMinHeight] = useState<number | undefined>(undefined);
+
+  useLayoutEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const update = () => {
+      const w = el.clientWidth;
+      if (!w) return;
+      // Leave breathing room around the ring; cap to the original size.
+      const ring = Math.max(RING_MIN, Math.min(RING_MAX, Math.round((w - 40) * 0.62)));
+      setRingSize(ring);
+      // Keep the tall, portrait painted feel as a floor — but only a floor.
+      setMinHeight(Math.round(w * 1.25));
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   // Error: don't pretend "no goal", offer a retry.
   if (!loading && error && !goal) {
     return (
@@ -113,16 +150,18 @@ export function DreamNorthStar({
   const goalDay = Math.min((goal?.goal_day ?? 0) + 1, total ?? (goal?.goal_day ?? 0) + 1);
   const pct = goal?.goal_progress_pct ?? 0;
 
-  const radius = (RING_SIZE - RING_STROKE) / 2;
+  const stroke = Math.round(ringSize * STROKE_RATIO);
+  const numberFont = Math.round(ringSize * NUMBER_RATIO);
+  const radius = (ringSize - stroke) / 2;
   const circumference = 2 * Math.PI * radius;
   const clamped = Math.min(100, Math.max(0, pct));
   const offset = circumference - (clamped / 100) * circumference;
 
   return (
     <Card
+      ref={cardRef}
       className="rounded-[28px] border border-violet-200/50 shadow-2xl overflow-hidden relative"
       style={{
-        aspectRatio: "3 / 4",
         // Painted illustration on top, soft pastel-sunrise fallback gradient
         // underneath so the card never looks broken if the asset isn't shipped.
         backgroundImage: `
@@ -135,7 +174,10 @@ export function DreamNorthStar({
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="relative z-10 flex flex-col h-full px-5 pt-7 pb-3">
+      <div
+        className="relative z-10 flex flex-col px-5 pt-7 pb-3"
+        style={{ minHeight }}
+      >
         {/* Header */}
         <div
           className="text-center font-semibold"
@@ -153,12 +195,12 @@ export function DreamNorthStar({
         {/* Ring */}
         <div
           className="relative mx-auto mt-5"
-          style={{ width: RING_SIZE, height: RING_SIZE }}
+          style={{ width: ringSize, height: ringSize }}
         >
           <svg
-            viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`}
-            width={RING_SIZE}
-            height={RING_SIZE}
+            viewBox={`0 0 ${ringSize} ${ringSize}`}
+            width={ringSize}
+            height={ringSize}
             className="-rotate-90"
             style={{ filter: "drop-shadow(0 12px 24px rgba(196,181,253,0.4))" }}
             aria-hidden
@@ -172,21 +214,21 @@ export function DreamNorthStar({
             </defs>
             {/* track */}
             <circle
-              cx={RING_SIZE / 2}
-              cy={RING_SIZE / 2}
+              cx={ringSize / 2}
+              cy={ringSize / 2}
               r={radius}
               fill="none"
               stroke="#ede9fe"
-              strokeWidth={RING_STROKE}
+              strokeWidth={stroke}
             />
             {hasDeadline && (
               <motion.circle
-                cx={RING_SIZE / 2}
-                cy={RING_SIZE / 2}
+                cx={ringSize / 2}
+                cy={ringSize / 2}
                 r={radius}
                 fill="none"
                 stroke="url(#dreamRingGrad)"
-                strokeWidth={RING_STROKE}
+                strokeWidth={stroke}
                 strokeLinecap="round"
                 strokeDasharray={circumference}
                 initial={{ strokeDashoffset: reduce ? offset : circumference }}
@@ -207,13 +249,13 @@ export function DreamNorthStar({
             <Plane className="w-5 h-5 -rotate-12" />
           </button>
 
-          {hasDeadline && <TodayDot pct={pct} />}
+          {hasDeadline && <TodayDot pct={pct} ringSize={ringSize} stroke={stroke} />}
 
           {/* Inner white circle */}
           <div
             className="absolute rounded-full bg-white/92 flex flex-col items-center justify-center text-center px-4"
             style={{
-              inset: 18,
+              inset: stroke + 4,
               backdropFilter: "blur(8px)",
               boxShadow: "0 0 0 1px rgba(255,255,255,0.5) inset",
             }}
@@ -226,7 +268,7 @@ export function DreamNorthStar({
             </div>
             <div
               className="font-bold leading-none my-0.5"
-              style={{ color: "#7c3aed", fontSize: 88 }}
+              style={{ color: "#7c3aed", fontSize: numberFont }}
             >
               {goal ? goalDay : "—"}
             </div>
