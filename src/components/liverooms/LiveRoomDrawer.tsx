@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { toast } from "@/hooks/use-toast";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -57,7 +56,7 @@ import { differenceInMinutes } from 'date-fns';
 import type { LiveRoom } from "./LiveRoomCard";
 import { notify, t } from '@/lib/i18n-toast';
 
-import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
+import { formatDistanceToNow, fmtDate, fmtTime } from '@/lib/locale-format';
 interface LiveRoomDrawerProps {
   room: LiveRoom | null;
   open: boolean;
@@ -122,21 +121,21 @@ export function LiveRoomDrawer({
   const showCountdown = isScheduled && minutesUntil > 0 && minutesUntil < 120;
 
   const handleNotifyMe = () => {
+    // isNotifying still holds the pre-toggle value here, so a truthy value
+    // means we're turning the reminder OFF.
+    notify(
+      isNotifying ? 'toasts.liverooms.notifyOffTitle' : 'toasts.liverooms.notifyOnTitle',
+      isNotifying ? 'toasts.liverooms.notifyOffDesc' : 'toasts.liverooms.notifyOnDesc',
+    );
     setIsNotifying(!isNotifying);
-    toast({
-      title: isNotifying ? "Notifications off" : "You'll be notified!",
-      description: isNotifying
-        ? "You won't receive notifications for this room"
-        : "We'll notify you when the room goes live",
-    });
   };
 
   const handleSave = () => {
+    notify(
+      isSaved ? 'toasts.liverooms.unsavedTitle' : 'toasts.liverooms.savedTitle',
+      isSaved ? 'toasts.liverooms.unsavedDesc' : 'toasts.liverooms.savedDesc',
+    );
     setIsSaved(!isSaved);
-    toast({
-      title: isSaved ? "Removed from saved" : "Saved!",
-      description: isSaved ? "Room removed from your saved list" : "Room saved for later",
-    });
   };
 
   const handleShare = (platform?: string) => {
@@ -182,13 +181,14 @@ export function LiveRoomDrawer({
   };
 
   const handleFollow = () => {
+    // isFollowing still holds the pre-toggle value, so a truthy value means
+    // we're unfollowing.
+    notify(
+      isFollowing ? 'toasts.liverooms.unfollowedTitle' : 'toasts.liverooms.followedTitle',
+      isFollowing ? 'toasts.liverooms.unfollowedDesc' : 'toasts.liverooms.followedDesc',
+      { name: room.host.name },
+    );
     setIsFollowing(!isFollowing);
-    toast({
-      title: isFollowing ? "Unfollowed" : "Following!",
-      description: isFollowing
-        ? `You unfollowed ${room.host.name}`
-        : `You're now following ${room.host.name}`,
-    });
   };
 
   // Swipe handlers
@@ -336,7 +336,9 @@ export function LiveRoomDrawer({
                   className="h-11 rounded-full px-4 bg-background/95 backdrop-blur-sm shadow-lg flex-shrink-0"
                 >
                   <UserPlus className="h-4 w-4 mr-1.5" />
-                  {isFollowing ? "Following" : "Follow"}
+                  {isFollowing
+                    ? t('screens.liverooms.following')
+                    : t('screens.liverooms.follow')}
                 </Button>
               </div>
             ) : (
@@ -402,7 +404,9 @@ export function LiveRoomDrawer({
                     onClick={() => setShowLocalTime(!showLocalTime)}
                     className="text-xs"
                   >
-                    {showLocalTime ? "Show UTC" : "Show Local"}
+                    {showLocalTime
+                      ? t('screens.liverooms.showUtc')
+                      : t('screens.liverooms.showLocal')}
                   </Button>
                 )}
               </div>
@@ -414,9 +418,28 @@ export function LiveRoomDrawer({
               ) : isScheduled ? (
                 <div>
                   <p className="text-sm">
-                    {showLocalTime
-                      ? formatDate(new Date(room.scheduledTime!), "EEEE, MMMM d 'at' HH:mm")
-                      : formatDate(new Date(room.scheduledTime!), "EEEE, MMMM d 'at' HH:mm 'UTC'")}
+                    {(() => {
+                      const sched = new Date(room.scheduledTime!);
+                      // Local time uses the device timezone; the UTC toggle
+                      // formats the same instant in UTC. The connector word
+                      // ("um" / "at") and UTC suffix come from the catalog so
+                      // the whole phrase localizes — no hardcoded literals.
+                      const timeZone = showLocalTime ? undefined : 'UTC';
+                      const date = fmtDate(sched, {
+                        weekday: 'long',
+                        day: 'numeric',
+                        month: 'long',
+                        timeZone,
+                      });
+                      const time = fmtTime(sched, {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        timeZone,
+                      });
+                      return showLocalTime
+                        ? t('screens.liverooms.scheduledAt', { date, time })
+                        : t('screens.liverooms.scheduledAtUtc', { date, time });
+                    })()}
                   </p>
                   {showCountdown && (
                     <p className="text-sm text-muted-foreground mt-1">{t('screens.liverooms.startsValue0', { value0: formatDistanceToNow(new Date(room.scheduledTime!)) })}</p>
@@ -489,7 +512,11 @@ export function LiveRoomDrawer({
               <div className="flex items-center gap-2">
                 <Button size="lg" variant="outline" className="flex-1 min-w-0" onClick={handleNotifyMe}>
                   <Bell className={cn("w-4 h-4 mr-2 shrink-0", isNotifying && "fill-current")} />
-                  <span className="truncate">{isNotifying ? "Notifying" : "Notify me"}</span>
+                  <span className="truncate">
+                    {isNotifying
+                      ? t('screens.liverooms.notifying')
+                      : t('screens.liverooms.notifyMe')}
+                  </span>
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
