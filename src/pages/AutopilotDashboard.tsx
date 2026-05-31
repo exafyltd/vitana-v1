@@ -230,7 +230,7 @@ export default function AutopilotDashboard() {
       onOpenPlan={() => setPlanSheetOpen(true)}
     />
   );
-  const futureSelf = <FutureSelfTiles />;
+  const futureSelf = <FutureSelfTiles goal={goal} />;
 
   const todaysGoal = (
     <TodaysGoalCard actions={todayActions} loading={recLoading} onOpenAutopilot={handleOpenAutopilot} />
