@@ -142,18 +142,28 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
   const autoTriedRef = useRef(false);
   const stepless =
     !plan || (plan.milestones.length === 0 && plan.checkpoints.length === 0 && plan.habits.length === 0);
+  // Pull the stable pieces out of the mutation result. React Query returns a
+  // NEW `generate` object on every render, so depending on `generate` itself
+  // made this effect run every render — and in the closed-sheet branch below
+  // `setAnswers({})` produced a fresh object each time, forcing another render:
+  // an infinite render→effect→setState loop that throws "Maximum update depth
+  // exceeded". `mutate` is referentially stable and `isPending` is a boolean,
+  // so depending on those instead keeps the effect from self-triggering.
+  const { mutate: generateMutate, isPending: generatePending } = generate;
   useEffect(() => {
     if (!open) {
       autoTriedRef.current = false;
-      setAnswers({});
+      // Idempotent reset — return the SAME reference when already empty so we
+      // don't schedule a pointless re-render (which is what fed the loop).
+      setAnswers((prev) => (Object.keys(prev).length === 0 ? prev : {}));
       return;
     }
-    if (isLoading || generate.isPending || genError || clarifyMode) return;
+    if (isLoading || generatePending || genError || clarifyMode) return;
     if (stepless && !autoTriedRef.current) {
       autoTriedRef.current = true;
-      generate.mutate();
+      generateMutate();
     }
-  }, [open, isLoading, stepless, genError, clarifyMode, generate]);
+  }, [open, isLoading, stepless, genError, clarifyMode, generatePending, generateMutate]);
 
   // Milestones are the concrete dated waypoints (the prompt yields ~5-8).
   const milestones = plan
