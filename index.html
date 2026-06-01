@@ -41,16 +41,15 @@
     <link rel="dns-prefetch" href="https://gateway.vitanaland.com">
 
     <!-- ORB Voice Widget -->
-    <!-- VTID-03185: cache-buster bump pulls the audio queue closure fix —
-         see vitana-platform PR #2393. The bug left _s.scheduledSources
-         with stale entries after multi-chunk TTS, gating the mic and
-         leaving the widget stuck in "Vitana speaking..." state. The
-         widget lives in the gateway repo (services/gateway/src/frontend/
-         command-hub/orb-widget.js) and is loaded cross-origin from
-         gateway.vitanaland.com; this v1-side bust ensures mobile
-         browsers refetch the fixed widget instead of serving the
-         cached pre-fix version. -->
-    <script src="https://gateway.vitanaland.com/command-hub/orb-widget.js?v=20260529-VTID-03185-audio-queue-closure" defer></script>
+    <!-- DEV-COMHU-0503b: cache-buster bump pulls the "persist continuity on
+         disconnect" fix — the widget now POSTs /orb/session/continuity the
+         moment a disconnect is detected (not only on graceful close), so a
+         page/WebView reload during an outage rehydrates the conversation
+         instead of greeting first-time and losing the thread. The widget lives
+         in the gateway repo (services/gateway/src/frontend/command-hub/
+         orb-widget.js) and is loaded cross-origin from gateway.vitanaland.com;
+         this v1-side bust ensures mobile browsers refetch the fixed widget. -->
+    <script src="https://gateway.vitanaland.com/command-hub/orb-widget.js?v=20260601-DEV-COMHU-0503b-persist-continuity" defer></script>
   </head>
 
   <body>
