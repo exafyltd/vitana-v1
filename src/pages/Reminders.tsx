@@ -11,9 +11,10 @@
  * ReminderInterruptOverlay reads ?fire= itself and renders the Mark-done /
  * Snooze / Dismiss card on top (z-9999). We render the popup locally rather
  * than dispatching the global `calendar:open` event because that event's
- * listener lives in the desktop sidebar only — on mobile (MobileAppShell) it
- * isn't mounted, so the dispatch was a no-op. Plain navigation to /reminders
- * (ORB "show my reminders") just shows this page.
+ * listener lives in the desktop sidebar only. BOOTSTRAP-MOBILE-NAV-CONTAINMENT
+ * now also mounts that listener in MobileAppShell, and on mobile this page
+ * auto-opens the Calendar popup on the Reminders tab so a mobile user never
+ * gets stranded on the bare desktop full-list page.
  */
 
 import React, { useEffect, useState } from "react";
@@ -21,11 +22,15 @@ import RemindersPanel from "@/components/reminders/RemindersPanel";
 import { EnhancedCalendarPopup } from "@/components/calendar/EnhancedCalendarPopup";
 import { Bell } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Reminders: React.FC = () => {
-  // Open the calendar on the Reminders tab when we arrived from a push.
+  const isMobile = useIsMobile();
+  // Open the Calendar popup on the Reminders tab when we arrived from a push,
+  // OR whenever a mobile user lands here — the bare full-list page is a desktop
+  // surface, so mobile gets the popup instead (matches the ORB mobile_route).
   const [calendarOpen, setCalendarOpen] = useState(
-    () => new URLSearchParams(window.location.search).has('fire'),
+    () => isMobile || new URLSearchParams(window.location.search).has('fire'),
   );
 
   useEffect(() => {
