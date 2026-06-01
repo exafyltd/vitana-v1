@@ -200,7 +200,7 @@ export function PhotoDiaryUploader({ onUploadComplete }: PhotoDiaryUploaderProps
               className="flex-1"
             >
               <Upload className="w-4 h-4 mr-2" />
-              {isUploading ? "Uploading..." : "Save Entry"}
+              {isUploading ? t('screens.diary.uploading') : t('screens.diary.saveEntry')}
             </Button>
             <Button
               onClick={() => fileInputRef.current?.click()}
