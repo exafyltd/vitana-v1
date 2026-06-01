@@ -1,5 +1,6 @@
 import { Component, ErrorInfo, ReactNode } from "react";
 import { t } from '@/lib/i18n-toast';
+import { reportReactError } from '@/lib/notifDiag';
 
 interface Props {
   children: ReactNode;
@@ -46,6 +47,21 @@ export class GlobalErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error("[GlobalErrorBoundary]", error);
     console.error("[ErrorInfo]", errorInfo);
+
+    // Report the crash to the gateway BEFORE the auto-reload below. React
+    // boundaries swallow render-phase errors before they reach window.onerror,
+    // so without this the crash leaves no server-side trace — and the worst
+    // offenders (e.g. the voice overlay auto-opening on mobile) only reproduce
+    // on real devices. The component stack names the exact failing component.
+    // Uses sendBeacon under the hood, so it survives the reload() that follows.
+    try {
+      reportReactError(error, errorInfo?.componentStack, {
+        is_chunk_error: isChunkLoadError(error),
+        pathname: typeof window !== "undefined" ? window.location.pathname : "",
+      });
+    } catch {
+      /* diagnostics must never mask the original error */
+    }
 
     // Auto-reload once for ANY crash. Stale chunks after a deploy can cause
     // both recognizable chunk-load errors AND runtime TypeError/ReferenceError
