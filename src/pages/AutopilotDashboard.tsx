@@ -11,7 +11,7 @@ import {
   TrendingUp,
   TrendingDown,
 } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton, type SearchDropdownItem } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
@@ -35,6 +35,7 @@ import { MatchesPreview } from "@/components/journey/MatchesPreview";
 import { EventsPreview } from "@/components/journey/EventsPreview";
 import { AutopilotCard } from "@/components/journey/AutopilotCard";
 import { useGenerateGoalPlan } from "@/hooks/useGoalPlan";
+import { useAIConsent } from "@/hooks/useAIConsent";
 import { t } from "@/lib/i18n-toast";
 
 interface Recommendation {
@@ -141,7 +142,8 @@ function IndexNowCard() {
 export default function AutopilotDashboard() {
   const { user } = useAuth();
   const isMobile = useIsMobile();
-  const { pendingCount, pendingActions } = useAutopilot();
+  const { allVisibleActions, fetchRecommendations } = useAutopilot();
+  const { hasConsent } = useAIConsent();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
   const [planSheetOpen, setPlanSheetOpen] = useState(false);
@@ -186,6 +188,20 @@ export default function AutopilotDashboard() {
       .slice(0, 8)
       .map((r) => ({ id: r.id, title: r.title, subtitle: r.summary }));
   }, [recData, searchQuery]);
+
+  // Populate the Autopilot preview card. useAutopilot() keeps instance-local
+  // state, so the dashboard's copy stays empty (card shows "all caught up")
+  // unless we fetch here too — the popup has its own instance that fetches on
+  // open. Gate on consent to mirror the popup's fetch condition so the card
+  // and popup agree on whether there's anything to show.
+  useEffect(() => {
+    if (user && hasConsent) fetchRecommendations();
+  }, [user, hasConsent, fetchRecommendations]);
+
+  // Match the popup's content exactly: it renders allVisibleActions (pending +
+  // executing + completed) and shows its "all caught up" empty state off that
+  // same set. Driving the card from the same array keeps the two in sync.
+  const autopilotCount = allVisibleActions.length;
 
   const handleOpenAutopilot = () => setAutopilotOpen(true);
 
@@ -242,8 +258,8 @@ export default function AutopilotDashboard() {
   // Autopilot preview — top 3 pending actions; tap opens the full popup
   const yourPlanCard = (
     <AutopilotCard
-      pendingCount={pendingCount}
-      previewActions={pendingActions.slice(0, 3)}
+      pendingCount={autopilotCount}
+      previewActions={allVisibleActions.slice(0, 3)}
       onOpen={handleOpenAutopilot}
     />
   );
@@ -292,7 +308,7 @@ export default function AutopilotDashboard() {
       afterGiftVoucherChildren={
         <>
           <VitanaIndexChip />
-          <AutopilotChip pendingCount={pendingCount} onClick={handleOpenAutopilot} />
+          <AutopilotChip pendingCount={autopilotCount} onClick={handleOpenAutopilot} />
         </>
       }
     >
