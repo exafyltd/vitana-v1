@@ -169,6 +169,7 @@ const PublicEventLanding = lazy(() => import("./pages/PublicEventLanding"));
 const PublicCampaignLanding = lazy(() => import("./pages/PublicCampaignLanding"));
 const Apply = lazy(() => import("./pages/Apply"));
 const AutopilotDashboard = lazy(() => import("./pages/AutopilotDashboard"));
+const MatchesPage = lazy(() => import("./pages/MatchesPage"));
 const InviteFriends = lazy(() => import("./pages/InviteFriends"));
 const MobileDailyDiary = lazy(() => import("./pages/MobileDailyDiary"));
 const Supplements = lazy(() => import("./pages/discover/Supplements"));
@@ -1175,6 +1176,12 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/u/:identifier" element={<PublicProfilePage />} />
+          {/* Full "People who match you" list — See-all target for MatchesPreview */}
+          <Route path="/me/matches" element={
+            <AuthGuard>
+              <MatchesPage />
+            </AuthGuard>
+          } />
           {/* E5 — Privacy & Visibility settings */}
           <Route path="/profile/me/privacy" element={
             <AuthGuard>

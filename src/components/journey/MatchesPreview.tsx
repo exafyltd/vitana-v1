@@ -34,7 +34,7 @@ export function MatchesPreview({ limit = 3 }: { limit?: number }) {
           </h3>
           <button
             type="button"
-            onClick={() => navigate("/comm/find-partner?view=matches")}
+            onClick={() => navigate("/me/matches")}
             className="text-xs font-semibold text-fuchsia-700 dark:text-fuchsia-300 hover:underline flex items-center gap-0.5"
           >
             {t("screens.autopilotdashboard.matchesSeeAll")}
