@@ -61,10 +61,8 @@
       "phase": "llm"
     },
     "permissionsActions.items.auditLogs.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Rastro de auditoría' is less common than 'registro de auditoría' for 'audit trail' in a technical context.",
-      "suggested": "Revisa el historial de acceso y el registro de auditoría de seguridad",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "permissionsActions.items.permissionSettings.title": {
@@ -88,5 +86,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:46.112Z"
+  "generatedAt": "2026-06-01T09:00:12.372Z"
 }
