@@ -5030,7 +5030,13 @@
       "uploadCoverNow": "Foto hochladen",
       "setUniversalCover": "Universelles Cover wählen",
       "continueWithAi": "Mit KI fortfahren",
-      "post": "Posten"
+      "post": "Posten",
+      "kindOptionCommercialBuy": "Ich kaufe / beauftrage",
+      "kindOptionCommercialSell": "Ich verkaufe / biete an",
+      "kindOptionActivitySeek": "Aktivitäts-Partner",
+      "kindOptionSocialSeek": "Kaffee-Chat / Mentoring",
+      "kindOptionMutualAid": "Verleihen / Ausleihen / Verschenken",
+      "kindOptionPartnerSeek": "Lebenspartner"
     },
     "layout": {
       "contentRequiresConsent": "Inhalt erfordert Zustimmung",

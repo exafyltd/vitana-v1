@@ -5030,7 +5030,13 @@
       "uploadCoverNow": "Upload photo",
       "setUniversalCover": "Set universal cover",
       "continueWithAi": "Continue with AI",
-      "post": "Post"
+      "post": "Post",
+      "kindOptionCommercialBuy": "I'm buying / hiring",
+      "kindOptionCommercialSell": "I'm selling / offering",
+      "kindOptionActivitySeek": "Activity partner",
+      "kindOptionSocialSeek": "Coffee chat / mentorship",
+      "kindOptionMutualAid": "Lend / borrow / give",
+      "kindOptionPartnerSeek": "Life partner"
     },
     "layout": {
       "contentRequiresConsent": "Content Requires Consent",
