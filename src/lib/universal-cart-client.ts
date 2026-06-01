@@ -45,7 +45,10 @@ export type UniversalCartSourceSurface =
   | "mobile"
   | "voice"
   | "autopilot"
-  | "community";
+  | "community"
+  // Vitanaland video-shop feed (TikTok-style). Additive — the gateway extends
+  // universal_cart_items_source_surface_check to accept this value.
+  | "video_shop";
 export type UniversalCartItemStatus = "active" | "removed" | "completed" | "expired";
 export type UniversalCartStatus = "active" | "archived";
 export type UniversalCartEventType =
@@ -126,6 +129,11 @@ export interface AddItemInput {
   unit_price_cents_snapshot?: number;
   currency_snapshot?: string;
   autopilot_rec_id?: string;
+  // Video-shop sale attribution (additive, nullable on the gateway). Set when
+  // an add originates from the shop feed so checkout can snapshot the source
+  // video + creator onto product_orders for affiliate payout.
+  source_video_id?: string;
+  source_creator_id?: string;
   metadata?: Record<string, unknown>;
 }
 
@@ -235,7 +243,12 @@ export async function universalCartFetch<T>(
       throw new UniversalCartRoleError((asObj?.role as string | null) ?? null);
     }
     const code = (asObj && typeof asObj.error === "string") ? asObj.error : `http_${res.status}`;
-    throw new UniversalCartApiError(res.status, code, asObj?.detail, text);
+    // Prefer an explicit `detail` field (e.g. invalid_request → detail[]), but
+    // fall back to the whole error body so structured codes that put fields at
+    // the top level (e.g. INSUFFICIENT_BALANCE → balance_minor/required_minor)
+    // remain accessible to call sites via `err.detail`.
+    const detail = asObj && "detail" in asObj ? asObj.detail : asObj;
+    throw new UniversalCartApiError(res.status, code, detail, text);
   }
   return parsed as T;
 }
@@ -310,6 +323,104 @@ export function getEvents(limit?: number, opts: FetchOpts = {}) {
   return universalCartFetch<{ ok: true; events: UniversalCartEvent[] }>(
     `/api/v1/universal-cart/events${q}`,
     { ...opts, method: "GET" }
+  );
+}
+
+// =============================================================================
+// Checkout (marketplace money loop) — POST /api/v1/universal-cart/checkout
+// =============================================================================
+
+export type CheckoutCurrency = "EUR" | "USD";
+
+export interface CheckoutInput {
+  /** Optional client-supplied UUID for idempotent retries. */
+  idempotency_key?: string;
+  /** Optional source/session correlation id. */
+  session_id?: string;
+}
+
+/**
+ * The wallet-debit leg of a checkout. Present (non-null) only when the cart
+ * contained wallet-payable (supplement) items. Money is integer MINOR units.
+ */
+export interface CheckoutWalletOrder {
+  currency: CheckoutCurrency;
+  amount_minor: number;
+  balance_minor: number;
+  /** True when an idempotency_key replayed an already-completed order. */
+  duplicate: boolean;
+  order_ids: string[];
+}
+
+/** A partner/affiliate item that must be completed at the merchant's site. */
+export interface CheckoutAffiliateRedirect {
+  item_id: string;
+  product_id: string;
+  affiliate_url: string;
+  order_id: string | null;
+}
+
+export interface CheckoutResponse {
+  ok: true;
+  checkout_id: string;
+  wallet_order: CheckoutWalletOrder | null;
+  affiliate_redirects: CheckoutAffiliateRedirect[];
+  completed_item_ids: string[];
+}
+
+/**
+ * Known structured checkout error codes returned in the `{ ok:false, error }`
+ * body. Surfaced via `UniversalCartApiError.code` so call sites can map each to
+ * a translated message. Open enum — unknown codes fall through to a generic
+ * message.
+ */
+export type CheckoutErrorCode =
+  | "invalid_request"
+  | "CART_EMPTY"
+  | "PRODUCT_UNAVAILABLE"
+  | "PRICE_UNAVAILABLE"
+  | "MIXED_CURRENCY"
+  | "UNSUPPORTED_WALLET_CURRENCY"
+  | "WALLET_ACCOUNT_MISSING"
+  | "WALLET_ACCOUNT_INACTIVE"
+  | "INSUFFICIENT_BALANCE"
+  | "TENANT_REQUIRED"
+  | "WALLET_DEBIT_FAILED"
+  | "CART_READ_FAILED"
+  | "ORDER_WRITE_FAILED"
+  | "WALLET_READ_FAILED"
+  | "GATEWAY_MISCONFIGURED";
+
+/** Shape of the 402 INSUFFICIENT_BALANCE detail (lives on the error body). */
+export interface InsufficientBalanceDetail {
+  error: "INSUFFICIENT_BALANCE";
+  balance_minor: number;
+  required_minor: number;
+  currency: CheckoutCurrency;
+}
+
+/** Type guard: did checkout fail because the wallet balance was too low? */
+export function isInsufficientBalanceError(
+  err: unknown,
+): err is UniversalCartApiError & { detail: InsufficientBalanceDetail } {
+  return (
+    err instanceof UniversalCartApiError &&
+    err.code === "INSUFFICIENT_BALANCE" &&
+    !!err.detail &&
+    typeof err.detail === "object"
+  );
+}
+
+/**
+ * POST /api/v1/universal-cart/checkout. Debits the gateway wallet for
+ * wallet-payable items and returns affiliate redirect links for partner items.
+ * Throws `UniversalCartApiError` (with `.code` = a `CheckoutErrorCode`) on
+ * failure, or `UniversalCartRoleError` for a non-community session.
+ */
+export function checkout(input: CheckoutInput = {}, opts: FetchOpts = {}) {
+  return universalCartFetch<CheckoutResponse>(
+    "/api/v1/universal-cart/checkout",
+    { ...opts, method: "POST", body: input }
   );
 }
 
