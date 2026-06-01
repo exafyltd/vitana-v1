@@ -2,13 +2,22 @@ import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Package, ArrowRight } from "lucide-react";
+import {
+  CheckCircle,
+  Package,
+  ArrowRight,
+  Loader2,
+  XCircle,
+  Wallet,
+} from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from '@/hooks/use-toast';
 import { notify, t } from '@/lib/i18n-toast';
+import { useDeposit } from "@/hooks/useWalletGateway";
+import { formatMoneyMinor } from "@/lib/format-money";
 
 export default function CheckoutSuccess() {
   const navigate = useNavigate();
@@ -16,6 +25,13 @@ export default function CheckoutSuccess() {
   const { clearCart } = useCart();
   const { toast } = useToast();
   const sessionId = searchParams.get('session_id');
+  // Gateway commerce-wallet rail: a Stripe deposit return carries ?deposit_id,
+  // a completed universal-cart checkout carries ?checkout_id.
+  const depositId = searchParams.get('deposit_id');
+
+  const { deposit, isLoading: depositLoading, isTerminal: depositTerminal } =
+    useDeposit(depositId, { pollUntilTerminal: true });
+  const depositSucceeded = deposit?.status === "succeeded";
 
   useEffect(() => {
     // Clear cart after successful checkout
@@ -24,6 +40,84 @@ export default function CheckoutSuccess() {
       notify('toasts.checkoutsuccess.orderConfirmed', 'toasts.checkoutsuccess.yourPaymentSuccessfulCheckYourEmail');
     }
   }, [sessionId]);
+
+  // ----- Gateway deposit return (Stripe top-up) ----------------------------
+  if (depositId) {
+    return (
+      <AppLayout>
+        <SEO
+          title={t('screens.checkoutsuccess.orderConfirmedVitana')}
+          description="Wallet deposit"
+          canonical={window.location.href}
+        />
+        <div className="p-6 bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50 min-h-screen">
+          <div className="max-w-3xl mx-auto space-y-6 pt-12">
+            <Card className="bg-white/80 backdrop-blur-sm text-center">
+              <CardContent className="p-12">
+                {!depositTerminal ? (
+                  <>
+                    <div className="mb-6">
+                      <Loader2 className="h-20 w-20 mx-auto text-purple-500 animate-spin" />
+                    </div>
+                    <StandardHeader
+                      title={t('marketplaceCheckout.deposit.checkingTitle')}
+                      description={t('marketplaceCheckout.deposit.checkingBody')}
+                      emoji="⏳"
+                    />
+                    {depositLoading && (
+                      <p className="mt-6 text-sm text-muted-foreground">
+                        {t('marketplaceCheckout.deposit.checkingBody')}
+                      </p>
+                    )}
+                  </>
+                ) : depositSucceeded ? (
+                  <>
+                    <div className="mb-6">
+                      <Wallet className="h-20 w-20 mx-auto text-green-500" />
+                    </div>
+                    <StandardHeader
+                      title={t('marketplaceCheckout.deposit.succeededTitle')}
+                      description={t('marketplaceCheckout.deposit.succeededBody')}
+                      emoji="✅"
+                    />
+                    {deposit && (
+                      <p className="my-6 text-sm text-muted-foreground">
+                        {t('marketplaceCheckout.deposit.amountLabel')}
+                        {": "}
+                        <span className="font-medium tabular-nums">
+                          {formatMoneyMinor(deposit.amount_minor, deposit.currency)}
+                        </span>
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <div className="mb-6">
+                      <XCircle className="h-20 w-20 mx-auto text-red-500" />
+                    </div>
+                    <StandardHeader
+                      title={t('marketplaceCheckout.deposit.failedTitle')}
+                      description={t('marketplaceCheckout.deposit.failedBody')}
+                      emoji="⚠️"
+                    />
+                  </>
+                )}
+
+                {depositTerminal && (
+                  <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+                    <Button size="lg" onClick={() => navigate('/universal-cart')}>
+                      {t('marketplaceCheckout.deposit.backToCart')}
+                      <ArrowRight className="h-4 w-4 ml-2" />
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>

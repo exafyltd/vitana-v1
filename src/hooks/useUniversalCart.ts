@@ -26,6 +26,8 @@ import {
 } from "@tanstack/react-query";
 import {
   AddItemInput,
+  CheckoutInput,
+  CheckoutResponse,
   PatchItemInput,
   UniversalCart,
   UniversalCartApiError,
@@ -33,6 +35,7 @@ import {
   UniversalCartItem,
   UniversalCartRoleError,
   addItem as apiAddItem,
+  checkout as apiCheckout,
   completeItem as apiCompleteItem,
   createOrFetchCart as apiCreateOrFetchCart,
   getCart as apiGetCart,
@@ -63,10 +66,12 @@ export interface UseUniversalCartReturn {
   removeItem: (itemId: string, removalReason?: string) => Promise<ReturnType<typeof apiRemoveItem>>;
   completeItem: (itemId: string) => Promise<ReturnType<typeof apiCompleteItem>>;
   ensureCart: (sourceContext?: string) => Promise<ReturnType<typeof apiCreateOrFetchCart>>;
+  checkout: (input?: CheckoutInput) => Promise<CheckoutResponse>;
   isAdding: boolean;
   isPatching: boolean;
   isRemoving: boolean;
   isCompleting: boolean;
+  isCheckingOut: boolean;
 }
 
 function detectRoleBlock(err: unknown): { role: string | null } | null {
@@ -112,6 +117,10 @@ export function useUniversalCart(opts?: { enabled?: boolean }): UseUniversalCart
     mutationFn: (itemId: string) => apiCompleteItem(itemId),
     onSuccess: () => invalidateCart(),
   });
+  const checkoutMutation = useMutation({
+    mutationFn: (input: CheckoutInput) => apiCheckout(input),
+    onSuccess: () => invalidateCart(),
+  });
 
   return {
     cart: cartQuery.data?.cart ?? null,
@@ -126,10 +135,12 @@ export function useUniversalCart(opts?: { enabled?: boolean }): UseUniversalCart
       removeMutation.mutateAsync({ itemId, removalReason }),
     completeItem: (itemId) => completeMutation.mutateAsync(itemId),
     ensureCart: (sourceContext) => apiCreateOrFetchCart(sourceContext),
+    checkout: (input) => checkoutMutation.mutateAsync(input ?? {}),
     isAdding: addMutation.isPending,
     isPatching: patchMutation.isPending,
     isRemoving: removeMutation.isPending,
     isCompleting: completeMutation.isPending,
+    isCheckingOut: checkoutMutation.isPending,
   };
 }
 
