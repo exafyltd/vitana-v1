@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plane, Compass, Sparkles, CalendarClock } from "lucide-react";
@@ -6,6 +6,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { t } from "@/lib/i18n-toast";
 import { fmtDate } from "@/lib/locale-format";
 import type { MyJourneyGoal } from "@/hooks/useMyJourney";
+import { useGoalPlan } from "@/hooks/useGoalPlan";
+import { buildPhases } from "@/lib/goalPhases";
 
 // The painted-illustration slot was wired through here, but the team
 // landed on the pure pastel gradient as the default — calmer, lighter,
@@ -93,6 +95,25 @@ export function DreamNorthStar({
 }) {
   const reduce = useReducedMotion();
 
+  // Plan milestones drive the phase-colored ring — each milestone bounds a
+  // phase, elapsed segments render at full opacity, upcoming at 0.55. When
+  // no plan exists yet the ring falls back to the single pink→violet→amber
+  // gradient stroke.
+  const { data: planData } = useGoalPlan();
+
+  // Phase segments — computed up front so the hook ordering stays stable
+  // across the error / no-goal / happy-path branches below.
+  const phaseTotalDays = goal?.goal_total_days ?? null;
+  const phases = useMemo(() => {
+    if (!phaseTotalDays || phaseTotalDays <= 0) return [];
+    return buildPhases(
+      (planData?.plan?.milestones ?? [])
+        .map((m) => m.day_offset ?? 0)
+        .filter((d) => d > 0),
+      phaseTotalDays,
+    );
+  }, [planData, phaseTotalDays]);
+
   // Responsive sizing — measure the card and derive the ring + a minimum
   // (rather than fixed) height. Using minHeight instead of a rigid
   // aspectRatio lets the card GROW to fit its content on narrow phones, so
@@ -152,9 +173,48 @@ export function DreamNorthStar({
   const stroke = Math.round(ringSize * STROKE_RATIO);
   const numberFont = Math.round(ringSize * NUMBER_RATIO);
   const radius = (ringSize - stroke) / 2;
+  const cx = ringSize / 2;
+  const cy = ringSize / 2;
   const circumference = 2 * Math.PI * radius;
   const clamped = Math.min(100, Math.max(0, pct));
   const offset = circumference - (clamped / 100) * circumference;
+
+  const hasPhases = phases.length > 1 && total !== null && total > 0;
+  const curFrac =
+    hasPhases && goal?.goal_day != null && total
+      ? Math.max(0, Math.min(1, goal.goal_day / total))
+      : clamped / 100;
+
+  // Perimeter point at a fraction (0 = top, going clockwise) — matches the
+  // shared GoalProgressRing convention so phase math is identical.
+  const ptAt = (frac: number): [number, number] => {
+    const a = frac * 2 * Math.PI;
+    return [cx + radius * Math.sin(a), cy - radius * Math.cos(a)];
+  };
+  const phaseArc = (
+    fA: number,
+    fB: number,
+    color: string,
+    opacity: number,
+    key: string,
+  ) => {
+    if (fB - fA <= 0.002) return null;
+    const [x1, y1] = ptAt(fA);
+    const [x2, y2] = ptAt(fB);
+    const large = fB - fA > 0.5 ? 1 : 0;
+    return (
+      <path
+        key={key}
+        d={`M ${x1.toFixed(2)} ${y1.toFixed(2)} A ${radius} ${radius} 0 ${large} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`}
+        fill="none"
+        stroke={color}
+        strokeWidth={stroke}
+        strokeLinecap="butt"
+        opacity={opacity}
+      />
+    );
+  };
+  const PHASE_GAP = 0.008;
 
   return (
     <Card
@@ -204,7 +264,6 @@ export function DreamNorthStar({
             viewBox={`0 0 ${ringSize} ${ringSize}`}
             width={ringSize}
             height={ringSize}
-            className="-rotate-90"
             style={{ filter: "drop-shadow(0 12px 24px rgba(196,181,253,0.4))" }}
             aria-hidden
           >
@@ -217,28 +276,50 @@ export function DreamNorthStar({
             </defs>
             {/* track */}
             <circle
-              cx={ringSize / 2}
-              cy={ringSize / 2}
+              cx={cx}
+              cy={cy}
               r={radius}
               fill="none"
               stroke="#ede9fe"
               strokeWidth={stroke}
             />
-            {hasDeadline && (
-              <motion.circle
-                cx={ringSize / 2}
-                cy={ringSize / 2}
-                r={radius}
-                fill="none"
-                stroke="url(#dreamRingGrad)"
-                strokeWidth={stroke}
-                strokeLinecap="round"
-                strokeDasharray={circumference}
-                initial={{ strokeDashoffset: reduce ? offset : circumference }}
-                animate={{ strokeDashoffset: offset }}
-                transition={{ duration: reduce ? 0 : 1.4, ease: "easeOut" }}
-              />
-            )}
+            {hasPhases ? (
+              phases.flatMap((p, i) => {
+                const t = total as number;
+                const sF = Math.min(1, p.start / t + (i > 0 ? PHASE_GAP : 0));
+                const eF = Math.max(
+                  sF,
+                  p.end / t - (i < phases.length - 1 ? PHASE_GAP : 0),
+                );
+                const nodes: Array<JSX.Element | null> = [];
+                if (curFrac > sF)
+                  nodes.push(phaseArc(sF, Math.min(eF, curFrac), p.color, 1, `e${i}`));
+                if (curFrac < eF)
+                  nodes.push(
+                    phaseArc(Math.max(sF, curFrac), eF, p.color, 0.55, `u${i}`),
+                  );
+                return nodes;
+              })
+            ) : hasDeadline ? (
+              // Single gradient fallback when there's no plan yet — keep the
+              // existing animated dashoffset look. Rotated so the fill starts
+              // from the top of the ring and proceeds clockwise.
+              <g transform={`rotate(-90 ${cx} ${cy})`}>
+                <motion.circle
+                  cx={cx}
+                  cy={cy}
+                  r={radius}
+                  fill="none"
+                  stroke="url(#dreamRingGrad)"
+                  strokeWidth={stroke}
+                  strokeLinecap="round"
+                  strokeDasharray={circumference}
+                  initial={{ strokeDashoffset: reduce ? offset : circumference }}
+                  animate={{ strokeDashoffset: offset }}
+                  transition={{ duration: reduce ? 0 : 1.4, ease: "easeOut" }}
+                />
+              </g>
+            ) : null}
           </svg>
 
           {/* Plane badge */}
@@ -252,7 +333,9 @@ export function DreamNorthStar({
             <Plane className="w-5 h-5 -rotate-12" />
           </button>
 
-          {hasDeadline && <TodayDot pct={pct} ringSize={ringSize} stroke={stroke} />}
+          {hasDeadline && (
+            <TodayDot pct={curFrac * 100} ringSize={ringSize} stroke={stroke} />
+          )}
 
           {/* Inner white circle — the big day number is anchored to the exact
               centre of the circle; the "TAG" label and the days-left caption are
