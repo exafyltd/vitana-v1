@@ -25,6 +25,29 @@ gradient behind it shows through.
 
 ### Hero (`journey-coast.webp`)
 
+The first prompt below produced a beautiful but **busy** result — heavy
+flowers, ornate village, lots of detail competing with the ring + goal
+pill that sit on top. The second prompt is the **cleaner v2** — calmer,
+more breathing space, Scandinavian / Studio-Ghibli quiet vibe.
+
+#### v2 — calmer, recommended
+
+```
+A serene, minimalist painted illustration in soft watercolor style.
+Vertical 3:4 composition. Lots of negative space, very few elements,
+quiet and meditative. Pale lavender and soft blush sky at dawn,
+calm pastel turquoise sea on the lower half, a single soft horizon
+line of distant pale mountains. Two small pastel hot-air balloons
+drifting high in the upper sky. NO village, NO foreground flowers,
+NO clouds packed with detail, NO boats. Soft brushstrokes, lots of
+sky. Scandinavian children's-book illustration or Studio Ghibli
+quiet morning atmosphere. Calm, relaxing, almost empty. Pastel
+palette only — no warm orange sunset, no saturated tropical colors.
+--ar 3:4 --style raw --v 6
+```
+
+#### v1 — original, busy (kept for reference)
+
 ```
 A dreamy painted illustration in a soft gouache watercolor style.
 Vertical 3:4 composition. Pastel sunrise over a Mediterranean coast,
