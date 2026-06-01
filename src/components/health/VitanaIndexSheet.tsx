@@ -194,8 +194,8 @@ export function VitanaIndexSheet() {
   }, []);
 
   const total = index?.total ?? null;
-  const tierLabel = index?.tier?.label ?? null;
-  const tierFraming = index?.tier?.framing ?? null;
+  const tierLabel = index?.tier ? t(index.tier.labelKey) : null;
+  const tierFraming = index?.tier ? t(index.tier.framingKey) : null;
   const balanceFactor = index?.balanceFactor ?? null;
   const pillars = index?.pillars ?? null;
   const sevenDayDelta = index?.history ? pillarSevenDayDelta(index.history) : null;

@@ -107,9 +107,9 @@ export default withScreenId(function Health() {
   const [mobileTab, setMobileTab] = useState<'overview' | 'medical' | 'supplements'>('overview');
 
   const healthModes: ModeOption[] = [
-    { value: 'overview', label: translate('health.tabs.overview', 'Overview'), icon: '🏠' },
-    { value: 'medical', label: translate('health.tabs.medical', 'Medical'), icon: '🏥' },
-    { value: 'supplements', label: translate('health.tabs.supplements', 'Supplements'), icon: '💊' },
+    { value: 'overview', label: translate('health.overview', 'Overview'), icon: '🏠' },
+    { value: 'medical', label: translate('health.medical', 'Medical'), icon: '🏥' },
+    { value: 'supplements', label: translate('health.supplements', 'Supplements'), icon: '💊' },
   ];
   
   const latestActions = getLatestActions(2);
