@@ -5,9 +5,9 @@
 
 ## Summary
 
-- **Pages scanned:** 328
-- **Distinct i18n keys consumed:** 5296
-- **Namespaces in use:** 44
+- **Pages scanned:** 329
+- **Distinct i18n keys consumed:** 5300
+- **Namespaces in use:** 45
 - **Hardcoded string suspects (regex heuristic):** 66
 
 Pages with hardcoded suspects need migration into the catalog. The authoritative PR-time check is the ESLint rule `i18n/no-raw-jsx-text`.
@@ -398,6 +398,14 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 5, total in shard: 9394
+
+### src/pages/ShopFeed.tsx
+
+**Status:** ✅ clean — keys consumed: 4, namespaces: 1
+
+**i18n namespaces:**
+
+- `videoShop` — used: 4, total in shard: 33
 
 ### src/pages/TicketDemo.tsx
 
@@ -2886,6 +2894,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 | `settings` | 1 |
 | `mobilesupport` | 1 |
 | `newsCard` | 1 |
+| `videoShop` | 1 |
 | `universalCart` | 1 |
 | `marketplaceCheckout` | 1 |
 | `wallet` | 1 |

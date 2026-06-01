@@ -1,0 +1,41 @@
+{
+  "videoShop": {
+    "feed": {
+      "loading": "Loading Video Shop …",
+      "loadingMore": "Loading more videos …",
+      "end": "You've reached the end.",
+      "emptyTitle": "No videos yet",
+      "emptyBody": "There are no shop videos right now. Check back later or browse Discover.",
+      "browseDiscover": "Browse Discover",
+      "errorTitle": "We couldn't load the Video Shop",
+      "errorBody": "Please try again in a moment.",
+      "retry": "Try again",
+      "roleBlockedTitle": "The Video Shop isn't available to you here",
+      "roleBlockedBody": "The Video Shop is a community feature. Switch to the community role to use it.",
+      "mute": "Mute",
+      "unmute": "Unmute",
+      "share": "Share",
+      "linkCopied": "Link copied"
+    },
+    "drawer": {
+      "loading": "Loading product …",
+      "productFallback": "Product",
+      "addToCart": "Add to cart",
+      "adding": "Adding …",
+      "addedTitle": "Added",
+      "addedBody": "The product is now in your cart.",
+      "addFailed": "Couldn't add to cart",
+      "goToCart": "Go to cart",
+      "moreDetails": "More details",
+      "notifyMe": "Notify me",
+      "outOfStock": "Out of stock",
+      "retry": "Try again",
+      "errorTitle": "Couldn't load the product",
+      "errorBody": "Please try again in a moment.",
+      "unavailableTitle": "No longer available",
+      "unavailableBody": "This product is no longer available.",
+      "roleBlockedTitle": "Buying isn't available here",
+      "roleBlockedBody": "Buying is a community feature. Switch to the community role to continue."
+    }
+  }
+}

@@ -148,6 +148,8 @@ const Search = lazy(() => import("./pages/Search"));
 const Cart = lazy(() => import("./pages/Cart"));
 // VTID-03236: parallel Universal Cart page (universal_* tables via gateway).
 const UniversalCart = lazy(() => import("./pages/UniversalCart"));
+// Vitanaland Video Commerce: TikTok-style video-shop feed + single-product drawer.
+const ShopFeed = lazy(() => import("./pages/ShopFeed"));
 const CheckoutSuccess = lazy(() => import("./pages/CheckoutSuccess"));
 const TicketPurchaseSuccess = lazy(() => import("./pages/TicketPurchaseSuccess"));
 const PackagePurchaseSuccess = lazy(() => import("./pages/PackagePurchaseSuccess"));
@@ -824,6 +826,12 @@ const App = () => {
           <Route path="/universal-cart" element={
             <AuthGuard>
               <UniversalCart />
+            </AuthGuard>
+          } />
+          {/* Vitanaland Video Commerce: TikTok-style video-shop feed. */}
+          <Route path="/shop" element={
+            <AuthGuard>
+              <ShopFeed />
             </AuthGuard>
           } />
           <Route path="/checkout/success" element={

@@ -45,7 +45,10 @@ export type UniversalCartSourceSurface =
   | "mobile"
   | "voice"
   | "autopilot"
-  | "community";
+  | "community"
+  // Vitanaland video-shop feed (TikTok-style). Additive — the gateway extends
+  // universal_cart_items_source_surface_check to accept this value.
+  | "video_shop";
 export type UniversalCartItemStatus = "active" | "removed" | "completed" | "expired";
 export type UniversalCartStatus = "active" | "archived";
 export type UniversalCartEventType =
@@ -126,6 +129,11 @@ export interface AddItemInput {
   unit_price_cents_snapshot?: number;
   currency_snapshot?: string;
   autopilot_rec_id?: string;
+  // Video-shop sale attribution (additive, nullable on the gateway). Set when
+  // an add originates from the shop feed so checkout can snapshot the source
+  // video + creator onto product_orders for affiliate payout.
+  source_video_id?: string;
+  source_creator_id?: string;
   metadata?: Record<string, unknown>;
 }
 
