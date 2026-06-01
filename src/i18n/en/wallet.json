@@ -2,7 +2,7 @@
   "wallet": {
     "title": "Wallet",
     "description": "Your balance, credits, and rewards",
-    "usdBalance": "USD Balance",
+    "usdBalance": "EUR / USD Balance",
     "creditsBalance": "Credits Balance",
     "vtnaTokens": "VTNA Tokens",
     "available": "Available",

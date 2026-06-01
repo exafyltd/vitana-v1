@@ -2,7 +2,7 @@
   "wallet": {
     "title": "Novčanik",
     "description": "Tvoj balans, krediti i nagrade",
-    "usdBalance": "USD balans",
+    "usdBalance": "EUR / USD balans",
     "creditsBalance": "Kreditni balans",
     "vtnaTokens": "VTNA tokeni",
     "available": "Dostupno",
