@@ -271,12 +271,10 @@
       "phase": "llm"
     },
     "buttons.generating": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect person/tense. 'Generišem' means 'I am generating,' but the English 'Generating...' implies an impersonal, ongoing process.",
-      "suggested": "Generisanje...",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:47.273Z"
+  "generatedAt": "2026-06-01T08:59:43.761Z"
 }
