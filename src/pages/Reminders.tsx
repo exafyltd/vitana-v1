@@ -53,6 +53,16 @@ const Reminders: React.FC = () => {
     };
   }, []);
 
+  // If the viewport crosses the mobile breakpoint mid-mount (resize, rotation,
+  // split-screen) isOverlayMode flips true and we switch to the popup-only
+  // branch — but calendarOpen would still be stuck at whatever it was for the
+  // desktop panel. Sync it so the user never lands on a blank overlay route.
+  useEffect(() => {
+    if (isOverlayMode) {
+      setCalendarOpen(true);
+    }
+  }, [isOverlayMode]);
+
   const handleCalendarOpenChange = (next: boolean) => {
     setCalendarOpen(next);
     if (!next && isOverlayMode) {
