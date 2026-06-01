@@ -6,38 +6,30 @@
       "phase": "identical"
     },
     "discover.title": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form), slightly awkward phrasing.",
-      "suggested": "Entdecke deinen Marktplatz für Langlebigkeit",
       "phase": "llm"
     },
     "discover.mobileTitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect grammatical form (infinitive instead of imperative).",
-      "suggested": "Entdecke",
       "phase": "llm"
     },
     "discover.mobileDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect grammatical form (infinitive instead of imperative).",
-      "suggested": "Erkunde Erlebnisse, Menschen und Wellness",
       "phase": "llm"
     },
     "discover.description": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form), 'Altersreise' is awkward.",
-      "suggested": "Finde Ärzte, Wellness-Services und Community-Gruppen, die perfekt zu deiner Reise zu einem gesunden Altern passen.",
+      "issue": "Phrasing for 'healthy aging journey' is a bit clunky; 'Reise' can be stiff for 'journey' in this context.",
+      "suggested": "Finde Ärzte, Wellness-Services und Community-Gruppen, die perfekt zu deinem Weg zu einem gesunden Altern passen.",
       "phase": "llm"
     },
     "discover.searchPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Wonach suchst du? (z.B. Yoga-Kurse, Langlebigkeitsarzt, Meetups)",
       "phase": "llm"
     },
     "discover.doctorsCoaches": {
@@ -46,10 +38,8 @@
       "phase": "llm"
     },
     "discover.doctorsCoachesDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Finde Langlebigkeitsspezialisten, Gesundheitscoaches und medizinische Experten",
       "phase": "llm"
     },
     "discover.wellnessServices": {
@@ -58,10 +48,8 @@
       "phase": "llm"
     },
     "discover.wellnessServicesDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Entdecke Yoga, Massage, Tanz, Therapie und Erholungsservices",
       "phase": "llm"
     },
     "discover.communityGroups": {
@@ -70,31 +58,23 @@
       "phase": "llm"
     },
     "discover.communityGroupsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Tritt Meetups und Gruppen bei und vernetze dich mit Gleichgesinnten",
       "phase": "llm"
     },
     "discover.explore": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect grammatical form (infinitive instead of imperative).",
-      "suggested": "Erkunde",
       "phase": "llm"
     },
     "discover.aiPicksForYou": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "KI-Empfehlungen für dich",
       "phase": "llm"
     },
     "discover.recommendedForYou": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Für dich empfohlen",
       "phase": "llm"
     },
     "discover.moreToExplore": {
@@ -108,10 +88,8 @@
       "phase": "llm"
     },
     "discover.suggestedForYou": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Für dich empfohlen",
       "phase": "llm"
     },
     "discover.browseCategories": {
@@ -165,10 +143,8 @@
       "phase": "llm"
     },
     "discover.noResultsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Versuche andere Suchbegriffe oder durchsuche die Kategorien.",
       "phase": "llm"
     },
     "discover.categories.sleep": {
@@ -247,24 +223,20 @@
       "phase": "llm"
     },
     "discover.aiPicks.title": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "KI-Empfehlungen für dich",
       "phase": "llm"
     },
     "discover.aiPicks.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihrem' instead of informal 'deinem'.",
-      "suggested": "Personalisierte Empfehlungen basierend auf deinem Vitana Index, Biomarkern und Gesundheitszielen",
       "phase": "llm"
     },
     "discover.aiPicks.backToDiscover": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Entdecken' is a verb here, making the phrase awkward. Should be a noun.",
-      "suggested": "Zurück zur Entdeckung",
+      "confidence": 1,
+      "issue": "'Entdeckung' is the noun 'discovery'; 'Discover' as a UI element usually refers to the action or a section name.",
+      "suggested": "Zurück zum Entdecken",
       "phase": "llm"
     },
     "discover.aiPicks.loading": {
@@ -278,10 +250,8 @@
       "phase": "llm"
     },
     "discover.aiPicks.unavailableDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihre' instead of informal 'deine'. Omits 'right now'.",
-      "suggested": "Wir konnten deine personalisierten Empfehlungen im Moment nicht laden",
       "phase": "llm"
     },
     "discover.aiPicks.recommendationsFound": {
@@ -295,10 +265,8 @@
       "phase": "llm"
     },
     "discover.aiPicks.noRecommendationsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Wählen Sie' instead of informal 'Wähle'.",
-      "suggested": "Wähle einen anderen Filter, um mehr Empfehlungen zu sehen",
       "phase": "llm"
     },
     "discover.aiPicks.viewAllPicks": {
@@ -337,5 +305,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:09:49.163Z"
+  "generatedAt": "2026-06-01T09:03:39.288Z"
 }
