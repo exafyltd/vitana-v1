@@ -7,15 +7,14 @@ import { t } from "@/lib/i18n-toast";
 import { fmtDate } from "@/lib/locale-format";
 import type { MyJourneyGoal } from "@/hooks/useMyJourney";
 
-// Production asset slot — drop the curated AI-painted illustration here:
-//   public/illustrations/journey-coast.webp
-//
-// Until it's in place, the soft pastel-sunrise CSS gradient behind it
-// shows through. We tried an Unsplash photo stand-in but the available
-// IDs returned dark/cold scenes — Unsplash is photos, and the
-// fairy-tale painted feel needs a generated illustration. See
-// public/illustrations/README.md for the recommended prompt + style.
-const HERO_BG = "/illustrations/journey-coast.webp";
+// The painted-illustration slot was wired through here, but the team
+// landed on the pure pastel gradient as the default — calmer, lighter,
+// less visually busy than any painted scene we tried. The asset path
+// is kept in `public/illustrations/journey-coast.webp` (and the slot
+// stays reserved) so a future pillar-aware illustration set can be
+// re-enabled by adding `url(${HERO_BG})` back into the backgroundImage
+// stack below. Until then, gradient only.
+// const HERO_BG = "/illustrations/journey-coast.webp";
 
 // The ring is sized relative to the card's measured width so it never
 // dwarfs a small phone. RING_MAX keeps the original look on roomy widths;
@@ -162,15 +161,19 @@ export function DreamNorthStar({
       ref={cardRef}
       className="rounded-[28px] border border-violet-200/50 shadow-2xl overflow-hidden relative"
       style={{
-        // Painted illustration on top, soft pastel-sunrise fallback gradient
-        // underneath so the card never looks broken if the asset isn't shipped.
+        // Pure pastel-sunrise gradient. The painted-illustration layer was
+        // intentionally removed — the gradient reads calmer and lighter
+        // than any painted scene we tried. To re-enable a future
+        // pillar-aware illustration, uncomment the HERO_BG const at the
+        // top of this file and add `url(${HERO_BG}),` between the two
+        // gradients below, restoring the matching backgroundSize /
+        // backgroundPosition entries.
         backgroundImage: `
           linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(196,181,253,0.18) 60%, rgba(244,114,182,0.22) 100%),
-          url(${HERO_BG}),
           linear-gradient(180deg, #fde2ec 0%, #fbcfe8 22%, #fed7aa 42%, #fef3c7 60%, #bfdbfe 80%, #93c5fd 100%)
         `,
-        backgroundSize: "cover, cover, cover",
-        backgroundPosition: "center, center 40%, center",
+        backgroundSize: "cover, cover",
+        backgroundPosition: "center, center",
         backgroundRepeat: "no-repeat",
       }}
     >
