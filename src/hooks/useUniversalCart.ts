@@ -56,6 +56,16 @@ export const universalCartQueryKeys = {
 export interface UseUniversalCartReturn {
   cart: UniversalCart | null;
   items: UniversalCartItem[];
+  /**
+   * Phase 0 — one-cart selectors so the page and the global badges share a
+   * single source of truth.
+   *   cartItems  = active items NOT flagged metadata.saved (the buyable cart)
+   *   savedItems = active items flagged metadata.saved (the "Saved"/"Gemerkt" tab)
+   *   cartCount  = sum of cartItems quantities (0 when roleBlocked — never throws)
+   */
+  cartItems: UniversalCartItem[];
+  savedItems: UniversalCartItem[];
+  cartCount: number;
   isLoading: boolean;
   error: unknown;
   /** Non-null when the gateway returned 403 cart_unavailable_for_role. */
@@ -97,6 +107,16 @@ export function useUniversalCart(opts?: { enabled?: boolean }): UseUniversalCart
 
   const roleBlocked = detectRoleBlock(cartQuery.error);
 
+  // Phase 0 — derived one-cart selectors. A roleBlocked session has no items,
+  // so these naturally collapse to empty arrays / 0 without throwing.
+  const items = cartQuery.data?.items ?? [];
+  const activeItems = items.filter((it) => it.status === "active");
+  const cartItems = activeItems.filter((it) => !it.metadata?.saved);
+  const savedItems = activeItems.filter((it) => !!it.metadata?.saved);
+  const cartCount = roleBlocked
+    ? 0
+    : cartItems.reduce((sum, it) => sum + (it.quantity ?? 0), 0);
+
   const invalidateCart = () => qc.invalidateQueries({ queryKey: universalCartQueryKeys.cart() });
 
   const addMutation = useMutation({
@@ -124,7 +144,10 @@ export function useUniversalCart(opts?: { enabled?: boolean }): UseUniversalCart
 
   return {
     cart: cartQuery.data?.cart ?? null,
-    items: cartQuery.data?.items ?? [],
+    items,
+    cartItems,
+    savedItems,
+    cartCount,
     isLoading: cartQuery.isLoading,
     error: cartQuery.error,
     roleBlocked,

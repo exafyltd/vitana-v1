@@ -438,7 +438,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `marketplaceCheckout` — used: 5, total in shard: 49
-- `universalCart` — used: 1, total in shard: 22
+- `universalCart` — used: 1, total in shard: 29
 
 ### src/pages/Wallet.tsx
 

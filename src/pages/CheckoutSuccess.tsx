@@ -13,7 +13,7 @@ import {
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
-import { useCart } from "@/hooks/useCart";
+import { useUniversalCart } from "@/hooks/useUniversalCart";
 import { useToast } from '@/hooks/use-toast';
 import { notify, t } from '@/lib/i18n-toast';
 import { useDeposit } from "@/hooks/useWalletGateway";
@@ -22,24 +22,33 @@ import { formatMoneyMinor } from "@/lib/format-money";
 export default function CheckoutSuccess() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { clearCart } = useCart();
+  // Phase 0: the gateway marks cart items completed server-side on checkout, so
+  // we only refresh the one canonical cart here (no legacy clearCart).
+  const { refresh } = useUniversalCart();
   const { toast } = useToast();
   const sessionId = searchParams.get('session_id');
   // Gateway commerce-wallet rail: a Stripe deposit return carries ?deposit_id,
   // a completed universal-cart checkout carries ?checkout_id.
   const depositId = searchParams.get('deposit_id');
+  const checkoutId = searchParams.get('checkout_id');
 
   const { deposit, isLoading: depositLoading, isTerminal: depositTerminal } =
     useDeposit(depositId, { pollUntilTerminal: true });
   const depositSucceeded = deposit?.status === "succeeded";
 
   useEffect(() => {
-    // Clear cart after successful checkout
+    // A completed universal-cart checkout: the gateway already marked the items
+    // completed server-side, so just refresh the cached cart to reflect that.
+    if (checkoutId) {
+      refresh();
+    }
+    // Legacy ?session_id branch (dead on the Phase 0 buy path) — kept for any
+    // stray inbound link.
     if (sessionId) {
-      clearCart();
       notify('toasts.checkoutsuccess.orderConfirmed', 'toasts.checkoutsuccess.yourPaymentSuccessfulCheckYourEmail');
     }
-  }, [sessionId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionId, checkoutId]);
 
   // ----- Gateway deposit return (Stripe top-up) ----------------------------
   if (depositId) {

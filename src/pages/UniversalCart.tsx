@@ -1,12 +1,16 @@
 /**
- * VTID-03236 — Universal Cart page (/universal-cart).
+ * Phase 0 — Universal Cart page (/universal-cart), the single canonical cart.
  *
- * Read-only-by-default view of the caller's active Universal Cart. Lets the
- * user adjust quantity, soft-remove items, and (optionally) mark items
- * completed. Distinct from the legacy `/cart` page — only reads/writes the
- * gateway-backed universal_carts / universal_cart_items / universal_cart_events
- * surface. The legacy Discover cart, Stripe checkout, and CJ Dropshipping
- * flows remain entirely untouched.
+ * Two tabs over ONE gateway-backed cart (universal_carts / universal_cart_items
+ * / universal_cart_events):
+ *   - "Warenkorb" (Cart): buyable list + wallet balance + the existing checkout
+ *     flow (gateway bridge — unchanged).
+ *   - "Gemerkt" (Saved): items flagged metadata.saved, moved in/out via the
+ *     existing PATCH item metadata (no gateway change).
+ *
+ * Line rows hydrate title/image from the products feed via useMarketplaceProduct
+ * (the item.product_id IS the products.id UUID), falling back to the snapshot
+ * price + a "Produkt ansehen" link while hydration is loading/missing.
  *
  * Empty / role-blocked / error states all rendered explicitly per the
  * vitana-v1 hard rule (no raw user-visible strings).
@@ -16,6 +20,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Bookmark,
   ExternalLink,
@@ -32,10 +37,11 @@ import {
   isInsufficientBalanceError,
 } from "@/lib/universal-cart-client";
 import { useUniversalCart } from "@/hooks/useUniversalCart";
+import { useMarketplaceProduct } from "@/hooks/useMarketplace";
 import { GatewayWalletBalanceCard } from "@/components/wallet/GatewayWalletBalanceCard";
 import { AddMoneyDialog } from "@/components/wallet/AddMoneyDialog";
 import { WalletCurrency } from "@/lib/wallet-gateway-client";
-import { toMajorUnits } from "@/lib/format-money";
+import { toMajorUnits, formatMoneyMinor, GatewayCurrency } from "@/lib/format-money";
 import { notify, notifyError, t } from "@/lib/i18n-toast";
 
 /** Known checkout error codes that have a dedicated translated message. */
@@ -107,21 +113,84 @@ function QuantityStepper({
   );
 }
 
+/**
+ * Line header: hydrates the product title/image from the products feed. While
+ * hydration is loading or the product is missing, it falls back to the snapshot
+ * (a price line + a "Produkt ansehen" link to the product page).
+ */
+function CartLineHeader({ item }: { item: UniversalCartItem }) {
+  const { data, isLoading } = useMarketplaceProduct(item.product_id);
+  const product = data?.product;
+
+  const snapshotPrice =
+    item.unit_price_cents_snapshot != null
+      ? formatMoneyMinor(
+          item.unit_price_cents_snapshot,
+          (item.currency_snapshot?.toUpperCase() as GatewayCurrency) || "EUR",
+        )
+      : null;
+
+  const image = product?.images?.[0] ?? item.metadata?.item_image_url;
+  const title =
+    product?.title ??
+    (typeof item.metadata?.source_label === "string"
+      ? (item.metadata.source_label as string)
+      : null);
+
+  return (
+    <div className="flex items-start gap-3">
+      {typeof image === "string" && image ? (
+        <img
+          src={image}
+          alt=""
+          className="h-12 w-12 flex-shrink-0 rounded-md object-cover bg-muted"
+          loading="lazy"
+        />
+      ) : null}
+      <div className="min-w-0 text-sm">
+        {title ? (
+          <div className="font-medium break-words">{title}</div>
+        ) : isLoading ? (
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            <span>{t("universalCart.page.loading")}</span>
+          </div>
+        ) : (
+          <div className="font-medium break-words">
+            {snapshotPrice ?? item.product_id}
+          </div>
+        )}
+        {snapshotPrice && (
+          <div className="text-xs text-muted-foreground tabular-nums">
+            {snapshotPrice}
+          </div>
+        )}
+        <Link
+          to={`/discover/product/${item.product_id}`}
+          className="text-xs text-primary hover:underline inline-flex items-center gap-0.5 mt-0.5"
+        >
+          {t("universalCart.item.viewProduct")}
+          <ExternalLink className="h-3 w-3" />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export default function UniversalCartPage() {
   const navigate = useNavigate();
   const {
     cart,
-    items,
+    cartItems,
+    savedItems,
     isLoading,
     error,
     roleBlocked,
     patchItem,
     removeItem,
-    completeItem,
     checkout,
     isPatching,
     isRemoving,
-    isCompleting,
     isCheckingOut,
   } = useUniversalCart();
 
@@ -137,7 +206,7 @@ export default function UniversalCartPage() {
     return (
       <main className="container mx-auto max-w-2xl px-4 py-10">
         <h1 className="text-2xl font-semibold flex items-center gap-2">
-          <Bookmark className="h-6 w-6" />
+          <ShoppingBag className="h-6 w-6" />
           {t("universalCart.page.title")}
         </h1>
         <Card className="mt-6">
@@ -158,7 +227,7 @@ export default function UniversalCartPage() {
     return (
       <main className="container mx-auto max-w-2xl px-4 py-10">
         <h1 className="text-2xl font-semibold flex items-center gap-2">
-          <Bookmark className="h-6 w-6" />
+          <ShoppingBag className="h-6 w-6" />
           {t("universalCart.page.title")}
         </h1>
         <div className="mt-10 flex items-center gap-2 text-muted-foreground">
@@ -173,7 +242,7 @@ export default function UniversalCartPage() {
     return (
       <main className="container mx-auto max-w-2xl px-4 py-10">
         <h1 className="text-2xl font-semibold flex items-center gap-2">
-          <Bookmark className="h-6 w-6" />
+          <ShoppingBag className="h-6 w-6" />
           {t("universalCart.page.title")}
         </h1>
         <Card className="mt-6">
@@ -190,8 +259,8 @@ export default function UniversalCartPage() {
     );
   }
 
-  const activeItems = items.filter((it) => it.status === "active");
-  const isEmpty = !cart || activeItems.length === 0;
+  const isCartEmpty = !cart || cartItems.length === 0;
+  const isSavedEmpty = savedItems.length === 0;
 
   const onQuantity = async (item: UniversalCartItem, next: number) => {
     if (next === item.quantity) return;
@@ -200,7 +269,7 @@ export default function UniversalCartPage() {
     } catch (err) {
       const code = err instanceof UniversalCartApiError ? err.code : undefined;
       notifyError("universalCart.addButton.failed");
-      if (code) console.warn("[VTID-03236] patch failed:", code);
+      if (code) console.warn("[Phase 0] patch failed:", code);
     }
   };
 
@@ -210,17 +279,18 @@ export default function UniversalCartPage() {
     } catch (err) {
       const code = err instanceof UniversalCartApiError ? err.code : undefined;
       notifyError("universalCart.addButton.failed");
-      if (code) console.warn("[VTID-03236] remove failed:", code);
+      if (code) console.warn("[Phase 0] remove failed:", code);
     }
   };
 
-  const onComplete = async (item: UniversalCartItem) => {
+  // Saved <-> Cart toggle uses the existing PATCH item metadata (no gateway change).
+  const onSetSaved = async (item: UniversalCartItem, saved: boolean) => {
     try {
-      await completeItem(item.id);
+      await patchItem(item.id, { metadata: { ...item.metadata, saved } });
     } catch (err) {
       const code = err instanceof UniversalCartApiError ? err.code : undefined;
       notifyError("universalCart.addButton.failed");
-      if (code) console.warn("[VTID-03236] complete failed:", code);
+      if (code) console.warn("[Phase 0] save toggle failed:", code);
     }
   };
 
@@ -266,7 +336,7 @@ export default function UniversalCartPage() {
       }
       const code = err instanceof UniversalCartApiError ? err.code : undefined;
       notifyError(checkoutErrorKey(code));
-      if (code) console.warn("[VTID-03236] checkout failed:", code);
+      if (code) console.warn("[Phase 0] checkout failed:", code);
     }
   };
 
@@ -274,7 +344,7 @@ export default function UniversalCartPage() {
     <main className="container mx-auto max-w-2xl px-4 py-10">
       <header className="mb-6">
         <h1 className="text-2xl font-semibold flex items-center gap-2">
-          <Bookmark className="h-6 w-6" />
+          <ShoppingBag className="h-6 w-6" />
           {t("universalCart.page.title")}
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
@@ -282,118 +352,171 @@ export default function UniversalCartPage() {
         </p>
       </header>
 
-      {isEmpty ? (
-        <Card>
-          <CardContent className="py-10 text-center space-y-3">
-            <h2 className="text-lg font-medium">
-              {t("universalCart.page.emptyTitle")}
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              {t("universalCart.page.emptyBody")}
-            </p>
-            <Button asChild variant="outline" className="mt-2">
-              <Link to="/discover">{t("universalCart.page.linkToDiscover")}</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="space-y-3">
-          <GatewayWalletBalanceCard />
+      <Tabs defaultValue="cart" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="cart">{t("universalCart.tabs.cart")}</TabsTrigger>
+          <TabsTrigger value="saved">{t("universalCart.tabs.saved")}</TabsTrigger>
+        </TabsList>
 
-          {activeItems.map((item) => (
-            <Card key={item.id}>
-              <CardHeader className="pb-2">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="text-sm">
-                    <div className="font-medium break-words">
-                      {item.product_id}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      {item.item_type}
-                      {item.source_surface ? ` · ${item.source_surface}` : ""}
-                    </div>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => onRemove(item)}
-                    disabled={isRemoving}
-                    aria-label={t("universalCart.page.removeAction")}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent className="flex items-center justify-between gap-3 pt-0">
-                <QuantityStepper
-                  item={item}
-                  onChange={(next) => onQuantity(item, next)}
-                  disabled={isPatching}
-                />
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onComplete(item)}
-                  disabled={isCompleting}
-                >
-                  {t("universalCart.page.completeAction")}
+        {/* ---- Cart tab: buyable list + wallet + checkout ---- */}
+        <TabsContent value="cart" className="mt-4">
+          {isCartEmpty ? (
+            <Card>
+              <CardContent className="py-10 text-center space-y-3">
+                <h2 className="text-lg font-medium">
+                  {t("universalCart.page.emptyTitle")}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  {t("universalCart.page.emptyBody")}
+                </p>
+                <Button asChild variant="outline" className="mt-2">
+                  <Link to="/discover">{t("universalCart.page.linkToDiscover")}</Link>
                 </Button>
               </CardContent>
             </Card>
-          ))}
+          ) : (
+            <div className="space-y-3">
+              <GatewayWalletBalanceCard />
 
-          {affiliateRedirects.length > 0 && (
+              {cartItems.map((item) => (
+                <Card key={item.id}>
+                  <CardHeader className="pb-2">
+                    <div className="flex items-start justify-between gap-3">
+                      <CartLineHeader item={item} />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => onRemove(item)}
+                        disabled={isRemoving}
+                        aria-label={t("universalCart.page.removeAction")}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="flex items-center justify-between gap-3 pt-0">
+                    <QuantityStepper
+                      item={item}
+                      onChange={(next) => onQuantity(item, next)}
+                      disabled={isPatching}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onSetSaved(item, true)}
+                      disabled={isPatching}
+                    >
+                      <Bookmark className="mr-2 h-4 w-4" />
+                      {t("universalCart.saved.saveForLater")}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+
+              {affiliateRedirects.length > 0 && (
+                <Card>
+                  <CardHeader className="pb-2">
+                    <h2 className="text-sm font-medium">
+                      {t("marketplaceCheckout.checkout.affiliateTitle")}
+                    </h2>
+                    <p className="text-xs text-muted-foreground">
+                      {t("marketplaceCheckout.checkout.affiliateBody")}
+                    </p>
+                  </CardHeader>
+                  <CardContent className="space-y-2 pt-0">
+                    {affiliateRedirects.map((r) => (
+                      <Button
+                        key={r.item_id}
+                        asChild
+                        variant="outline"
+                        size="sm"
+                        className="w-full justify-start"
+                      >
+                        <a href={r.affiliate_url} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-2 h-4 w-4" />
+                          {t("marketplaceCheckout.checkout.affiliateLink")}
+                        </a>
+                      </Button>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+
+              <Button
+                type="button"
+                className="w-full"
+                size="lg"
+                onClick={onCheckout}
+                disabled={isCartEmpty || isCheckingOut}
+              >
+                {isCheckingOut ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("marketplaceCheckout.checkout.processing")}
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag className="mr-2 h-4 w-4" />
+                    {t("marketplaceCheckout.checkout.button")}
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
+        </TabsContent>
+
+        {/* ---- Saved tab: items flagged metadata.saved ---- */}
+        <TabsContent value="saved" className="mt-4">
+          {isSavedEmpty ? (
             <Card>
-              <CardHeader className="pb-2">
-                <h2 className="text-sm font-medium">
-                  {t("marketplaceCheckout.checkout.affiliateTitle")}
+              <CardContent className="py-10 text-center space-y-3">
+                <h2 className="text-lg font-medium">
+                  {t("universalCart.saved.emptyTitle")}
                 </h2>
-                <p className="text-xs text-muted-foreground">
-                  {t("marketplaceCheckout.checkout.affiliateBody")}
+                <p className="text-sm text-muted-foreground">
+                  {t("universalCart.saved.emptyBody")}
                 </p>
-              </CardHeader>
-              <CardContent className="space-y-2 pt-0">
-                {affiliateRedirects.map((r) => (
-                  <Button
-                    key={r.item_id}
-                    asChild
-                    variant="outline"
-                    size="sm"
-                    className="w-full justify-start"
-                  >
-                    <a href={r.affiliate_url} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      {t("marketplaceCheckout.checkout.affiliateLink")}
-                    </a>
-                  </Button>
-                ))}
               </CardContent>
             </Card>
+          ) : (
+            <div className="space-y-3">
+              {savedItems.map((item) => (
+                <Card key={item.id}>
+                  <CardHeader className="pb-2">
+                    <div className="flex items-start justify-between gap-3">
+                      <CartLineHeader item={item} />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => onRemove(item)}
+                        disabled={isRemoving}
+                        aria-label={t("universalCart.page.removeAction")}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="flex items-center justify-end gap-3 pt-0">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onSetSaved(item, false)}
+                      disabled={isPatching}
+                    >
+                      <ShoppingBag className="mr-2 h-4 w-4" />
+                      {t("universalCart.saved.moveToCart")}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           )}
-
-          <Button
-            type="button"
-            className="w-full"
-            size="lg"
-            onClick={onCheckout}
-            disabled={isEmpty || isCheckingOut}
-          >
-            {isCheckingOut ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t("marketplaceCheckout.checkout.processing")}
-              </>
-            ) : (
-              <>
-                <ShoppingBag className="mr-2 h-4 w-4" />
-                {t("marketplaceCheckout.checkout.button")}
-              </>
-            )}
-          </Button>
-        </div>
-      )}
+        </TabsContent>
+      </Tabs>
 
       <AddMoneyDialog
         open={addMoneyOpen}
