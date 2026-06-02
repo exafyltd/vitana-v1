@@ -183,7 +183,7 @@ export function applyFindMatchFilters(
 
     // Age / distance — only ever narrow rows that actually carry the data.
     if (ageActive) {
-      const age = numField(m, 'partner_age');
+      const age = typeof m.partner_age === 'number' ? m.partner_age : null;
       if (age !== null && (age < filters.ageMin || age > filters.ageMax)) return false;
     }
     if (distanceActive) {
