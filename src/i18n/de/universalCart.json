@@ -29,6 +29,23 @@
     "item": {
       "viewProduct": "Produkt ansehen"
     },
+    "agent": {
+      "promptLabel": "Wonach suchst du?",
+      "promptPlaceholder": "Beschreibe, wofür du einkaufst – z. B. „mehr Energie am Morgen“",
+      "proposeCta": "Vitana fragen",
+      "proposing": "Vitana sucht passende Produkte …",
+      "sectionTitle": "Vitana schlägt vor",
+      "sectionSubtitle": "Vorschläge liegen in deinem Warenkorb. Prüfe sie, behalte oder entferne – kaufen tust du erst mit „Prüfen & Bezahlen“.",
+      "rationaleLabel": "Warum Vitana das vorschlägt",
+      "safetyTitle": "Sicherheitshinweis – bitte lesen",
+      "confidenceLabel": "Vertrauen: {value}",
+      "keep": "Behalten",
+      "remove": "Entfernen",
+      "unavailable": "Vitana ist gerade nicht verfügbar. Bitte versuche es in einem Moment noch einmal.",
+      "roleBlocked": "Vitana-Vorschläge sind nur in der Community-Rolle verfügbar.",
+      "empty": "Noch keine Vorschläge. Sag Vitana oben, wonach du suchst.",
+      "reviewNote": "Bitte Hinweise prüfen: Einige Vorschläge haben Sicherheitshinweise. Sieh sie dir an, bevor du fortfährst."
+    },
     "addButton": {
       "label": "In den Warenkorb",
       "added": "Im Warenkorb",

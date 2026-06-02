@@ -21,12 +21,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
+  AlertTriangle,
   Bookmark,
   ExternalLink,
   Loader2,
   Minus,
   Plus,
+  Sparkles,
   ShoppingBag,
   Trash2,
 } from "lucide-react";
@@ -37,7 +42,9 @@ import {
   isInsufficientBalanceError,
 } from "@/lib/universal-cart-client";
 import { useUniversalCart } from "@/hooks/useUniversalCart";
+import { useShoppingAgent } from "@/hooks/useShoppingAgent";
 import { useMarketplaceProduct } from "@/hooks/useMarketplace";
+import { AgentProposalCard } from "@/components/universal-cart/AgentProposalCard";
 import { GatewayWalletBalanceCard } from "@/components/wallet/GatewayWalletBalanceCard";
 import { AddMoneyDialog } from "@/components/wallet/AddMoneyDialog";
 import { WalletCurrency } from "@/lib/wallet-gateway-client";
@@ -194,12 +201,20 @@ export default function UniversalCartPage() {
     isCheckingOut,
   } = useUniversalCart();
 
+  const {
+    propose,
+    isProposing,
+    roleBlocked: agentRoleBlocked,
+    llmUnavailable,
+  } = useShoppingAgent();
+
   const [addMoneyOpen, setAddMoneyOpen] = useState(false);
   const [addMoneyCurrency, setAddMoneyCurrency] = useState<WalletCurrency>("EUR");
   const [addMoneyAmount, setAddMoneyAmount] = useState<number | undefined>(undefined);
   const [affiliateRedirects, setAffiliateRedirects] = useState<
     CheckoutAffiliateRedirect[]
   >([]);
+  const [prompt, setPrompt] = useState("");
 
   // -- Role-blocked: explicit community-only empty state ---------------------
   if (roleBlocked) {
@@ -259,8 +274,30 @@ export default function UniversalCartPage() {
     );
   }
 
+  // One cart, two slices: agent-proposed lines (metadata.origin === 'agent')
+  // render in the "Vitana schlägt vor" section ABOVE the buyable list; every
+  // other active line renders as before. Both come from the SAME refetched
+  // cartItems (single source of truth) — never from the propose response.
+  const agentItems = cartItems.filter((i) => i.metadata?.origin === "agent");
+  const buyableItems = cartItems.filter((i) => i.metadata?.origin !== "agent");
+  const hasAgentSafetyFlags = agentItems.some((i) => {
+    const flags = i.metadata?.safety_flags;
+    return Array.isArray(flags) && flags.length > 0;
+  });
+
   const isCartEmpty = !cart || cartItems.length === 0;
   const isSavedEmpty = savedItems.length === 0;
+
+  const onPropose = async () => {
+    const trimmed = prompt.trim();
+    if (!trimmed || isProposing) return;
+    try {
+      await propose({ prompt: trimmed });
+      setPrompt("");
+    } catch {
+      // roleBlocked / llmUnavailable / generic surface via the hook state below.
+    }
+  };
 
   const onQuantity = async (item: UniversalCartItem, next: number) => {
     if (next === item.quantity) return;
@@ -358,8 +395,94 @@ export default function UniversalCartPage() {
           <TabsTrigger value="saved">{t("universalCart.tabs.saved")}</TabsTrigger>
         </TabsList>
 
-        {/* ---- Cart tab: buyable list + wallet + checkout ---- */}
-        <TabsContent value="cart" className="mt-4">
+        {/* ---- Cart tab: agent suggestions + buyable list + wallet + checkout ---- */}
+        <TabsContent value="cart" className="mt-4 space-y-4">
+          {/* Prompt box — "Wonach suchst du?" → gateway proposes INTO this cart. */}
+          <Card>
+            <CardContent className="space-y-3 pt-6">
+              <Label htmlFor="agent-prompt" className="flex items-center gap-1.5 text-sm font-medium">
+                <Sparkles className="h-4 w-4" />
+                {t("universalCart.agent.promptLabel")}
+              </Label>
+              <Textarea
+                id="agent-prompt"
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder={t("universalCart.agent.promptPlaceholder")}
+                rows={2}
+                disabled={isProposing}
+              />
+              <Button
+                type="button"
+                className="w-full"
+                onClick={onPropose}
+                disabled={isProposing || prompt.trim().length === 0}
+              >
+                {isProposing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("universalCart.agent.proposing")}
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    {t("universalCart.agent.proposeCta")}
+                  </>
+                )}
+              </Button>
+
+              {agentRoleBlocked && (
+                <Alert variant="destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    {t("universalCart.agent.roleBlocked")}
+                  </AlertDescription>
+                </Alert>
+              )}
+              {llmUnavailable && (
+                <Alert variant="destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    {t("universalCart.agent.unavailable")}
+                  </AlertDescription>
+                </Alert>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Vitana schlägt vor — agent-proposed lines, ABOVE the buyable list. */}
+          {agentItems.length > 0 && (
+            <div className="space-y-3">
+              <div>
+                <h2 className="flex items-center gap-1.5 text-lg font-medium">
+                  <Sparkles className="h-5 w-5" />
+                  {t("universalCart.agent.sectionTitle")}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  {t("universalCart.agent.sectionSubtitle")}
+                </p>
+              </div>
+
+              {hasAgentSafetyFlags && (
+                <Alert variant="destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    {t("universalCart.agent.reviewNote")}
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              {agentItems.map((item) => (
+                <AgentProposalCard
+                  key={item.id}
+                  item={item}
+                  onRemove={onRemove}
+                  isRemoving={isRemoving}
+                />
+              ))}
+            </div>
+          )}
+
           {isCartEmpty ? (
             <Card>
               <CardContent className="py-10 text-center space-y-3">
@@ -378,7 +501,7 @@ export default function UniversalCartPage() {
             <div className="space-y-3">
               <GatewayWalletBalanceCard />
 
-              {cartItems.map((item) => (
+              {buyableItems.map((item) => (
                 <Card key={item.id}>
                   <CardHeader className="pb-2">
                     <div className="flex items-start justify-between gap-3">
