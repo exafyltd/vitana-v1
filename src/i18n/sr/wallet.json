@@ -22,6 +22,7 @@
       "pending": "Isplate na čekanju"
     },
     "noActivity": "Još uvek nema aktivnosti",
-    "noActivityDesc": "Tvoje transakcije će se pojaviti ovde."
+    "noActivityDesc": "Tvoje transakcije će se pojaviti ovde.",
+    "displayCurrency": "Valuta prikaza"
   }
 }

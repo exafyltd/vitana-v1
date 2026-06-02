@@ -22,6 +22,7 @@
       "pending": "Pending Payouts"
     },
     "noActivity": "No activity yet",
-    "noActivityDesc": "Your transactions will appear here."
+    "noActivityDesc": "Your transactions will appear here.",
+    "displayCurrency": "Display currency"
   }
 }

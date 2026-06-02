@@ -47,6 +47,9 @@ import { MobileWalletQuickActions } from "@/components/wallet/mobile/MobileWalle
 import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
 import { t } from '@/lib/i18n-toast';
+import { useDisplayCurrency } from "@/hooks/useDisplayCurrency";
+import { CurrencyToggle } from "@/components/wallet/CurrencyToggle";
+import { convertFromUsd, getCurrencySymbol } from "@/lib/exchangeRates";
 
 import { fmtDate, fmtNumber } from '@/lib/locale-format';
 // Mock data has been removed - quickActionsData is defined later in the file
@@ -124,7 +127,17 @@ export default function Wallet() {
   ];
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const { balances, transactions, loading, error, getBalance, isLoaded } = useWallet();
+  const { displayCurrency, setDisplayCurrency } = useDisplayCurrency();
   const { user } = useAuth();
+
+  // Cash balances are stored in USD; render them in the user's chosen display
+  // currency (USD ↔ EUR), converting via the fixed display rate for EUR.
+  const formatCashBalance = (): string => {
+    const usd = getBalance('USD');
+    if (usd === null) return translate('common.loading');
+    const amount = convertFromUsd(usd, displayCurrency);
+    return `${getCurrencySymbol(displayCurrency)}${fmtNumber(amount, { maximumFractionDigits: 2 })}`;
+  };
   const { requestPopup, clearPopup } = usePopupCoordination();
   const { logActivity } = useActivityLogger();
   const { pendingCount } = useAutopilot();
@@ -375,12 +388,18 @@ export default function Wallet() {
                     <MobileWalletBalanceCard
                       type="cash"
                       title={translate('wallet.usdBalance')}
-                      balance={getBalance('USD') !== null ? `$${fmtNumber(getBalance('USD')!)}` : "Loading..."}
+                      balance={formatCashBalance()}
                       subBalance="Available: 100%"
                       change="+2.3%"
                       changeType="increase"
                       isLoading={!isLoaded}
                       onPress={() => handleWalletAction('add-funds')}
+                      accessory={
+                        <CurrencyToggle
+                          value={displayCurrency}
+                          onChange={setDisplayCurrency}
+                        />
+                      }
                     />
 
                     <MobileWalletBalanceCard
@@ -545,7 +564,7 @@ export default function Wallet() {
                   <WalletBalanceCard
                     type="cash"
                     title={t('screens.wallet.usdBalance')}
-                    balance={getBalance('USD') !== null ? `$${fmtNumber(getBalance('USD')!)}` : "Loading..."}
+                    balance={formatCashBalance()}
                     subBalance="Available: 100%"
                     change="+2.3%"
                     changeType="increase"
@@ -553,6 +572,12 @@ export default function Wallet() {
                     description="US Dollar balance for instant purchases, withdrawals and secure transactions"
                     className="h-full"
                     isLoading={!isLoaded}
+                    headerAccessory={
+                      <CurrencyToggle
+                        value={displayCurrency}
+                        onChange={setDisplayCurrency}
+                      />
+                    }
                     primaryAction={isIAPRestricted() ? undefined : {
                       label: "Add Funds",
                       onClick: () => handleWalletAction('add-funds'),

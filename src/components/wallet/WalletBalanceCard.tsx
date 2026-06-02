@@ -29,6 +29,7 @@ interface WalletBalanceCardProps {
   primaryAction?: ActionConfig;
   secondaryActions?: ActionConfig[];
   isLoading?: boolean;
+  headerAccessory?: React.ReactNode;
 }
 
 export function WalletBalanceCard({
@@ -45,7 +46,8 @@ export function WalletBalanceCard({
   onClick,
   primaryAction,
   secondaryActions,
-  isLoading = false
+  isLoading = false,
+  headerAccessory
 }: WalletBalanceCardProps) {
   
   const getIcon = () => {
@@ -131,11 +133,14 @@ export function WalletBalanceCard({
               </div>
               <h3 className="font-semibold text-lg">{title}</h3>
             </div>
-            {status && (
-              <Badge variant="secondary" className="bg-background/50">
-                {status}
-              </Badge>
-            )}
+            <div className="flex items-center gap-2">
+              {headerAccessory}
+              {status && (
+                <Badge variant="secondary" className="bg-background/50">
+                  {status}
+                </Badge>
+              )}
+            </div>
           </div>
 
           {/* Balance Display */}

@@ -107,6 +107,8 @@ export const formatCurrency = (amount: number, currency: string): string => {
   switch (currency.toUpperCase()) {
     case 'USD':
       return `$${amount.toFixed(2)}`;
+    case 'EUR':
+      return `€${amount.toFixed(2)}`;
     case 'VTNA':
       return `${amount.toFixed(0)} VTNA`; // Vitana Tokens
     case 'CREDITS':
@@ -119,8 +121,22 @@ export const formatCurrency = (amount: number, currency: string): string => {
 export const getCurrencySymbol = (currency: string): string => {
   switch (currency.toUpperCase()) {
     case 'USD': return '$';
+    case 'EUR': return '€';
     case 'VTNA': return 'VTNA'; // Vitana Tokens
     case 'CREDITS': return 'Credits';
     default: return currency;
   }
 };
+
+// Cash display currencies the wallet can toggle between. Balances are stored
+// in USD; EUR is a presentation-only conversion using the fixed rate below.
+export type DisplayCurrency = 'USD' | 'EUR';
+
+// Fixed EUR per 1 USD used for the wallet's display toggle. This is a static
+// display rate (not a live market quote) — update here when it should change,
+// or swap for a real FX feed later.
+export const EUR_PER_USD = 0.92;
+
+// Convert a USD-denominated amount into the chosen display currency.
+export const convertFromUsd = (usdAmount: number, to: DisplayCurrency): number =>
+  to === 'EUR' ? usdAmount * EUR_PER_USD : usdAmount;

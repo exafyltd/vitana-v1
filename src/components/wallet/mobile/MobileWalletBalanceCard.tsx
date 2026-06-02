@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Coins, DollarSign, CreditCard, ChevronRight } from "lucide-react";
@@ -13,6 +14,7 @@ interface MobileWalletBalanceCardProps {
   isLoading?: boolean;
   onPress?: () => void;
   className?: string;
+  accessory?: ReactNode;
 }
 
 export function MobileWalletBalanceCard({
@@ -24,7 +26,8 @@ export function MobileWalletBalanceCard({
   changeType = 'neutral',
   isLoading = false,
   onPress,
-  className = ""
+  className = "",
+  accessory
 }: MobileWalletBalanceCardProps) {
   const getIcon = () => {
     switch (type) {
@@ -90,7 +93,10 @@ export function MobileWalletBalanceCard({
           
           {/* Content */}
           <div className="flex-1 min-w-0">
-            <p className="text-sm text-muted-foreground truncate">{title}</p>
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-sm text-muted-foreground truncate">{title}</p>
+              {accessory}
+            </div>
             <p className="text-lg font-semibold truncate">{balance}</p>
             {(subBalance || change) && (
               <div className="flex items-center gap-2 mt-0.5">

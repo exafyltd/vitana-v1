@@ -22,6 +22,7 @@
       "pending": "Ausstehende Auszahlungen"
     },
     "noActivity": "Noch keine Aktivitäten",
-    "noActivityDesc": "Deine Transaktionen werden hier erscheinen."
+    "noActivityDesc": "Deine Transaktionen werden hier erscheinen.",
+    "displayCurrency": "Anzeigewährung"
   }
 }

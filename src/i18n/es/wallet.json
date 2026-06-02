@@ -22,6 +22,7 @@
       "pending": "Pagos Pendientes"
     },
     "noActivity": "Sin actividad aún",
-    "noActivityDesc": "Tus transacciones aparecerán aquí."
+    "noActivityDesc": "Tus transacciones aparecerán aquí.",
+    "displayCurrency": "Moneda de visualización"
   }
 }
