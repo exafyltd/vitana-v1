@@ -11,7 +11,7 @@ import {
   TrendingUp,
   TrendingDown,
 } from "lucide-react";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton, type SearchDropdownItem } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
@@ -209,6 +209,18 @@ export default function AutopilotDashboard() {
   // executing + completed) and shows its "all caught up" empty state off that
   // same set. Driving the card from the same array keeps the two in sync.
   const autopilotCount = allVisibleActions.length;
+
+  // The card and popup hold separate useAutopilot() instances, so changes made
+  // inside the popup (completing items, on-demand regeneration) don't reach the
+  // card automatically. Refetch this instance when the popup closes so the card
+  // shows the freshly generated next set without waiting for the 5-min poll.
+  const prevAutopilotOpenRef = useRef(false);
+  useEffect(() => {
+    if (prevAutopilotOpenRef.current && !autopilotOpen && user && hasConsent) {
+      fetchRecommendations();
+    }
+    prevAutopilotOpenRef.current = autopilotOpen;
+  }, [autopilotOpen, user, hasConsent, fetchRecommendations]);
 
   const handleOpenAutopilot = () => setAutopilotOpen(true);
 
