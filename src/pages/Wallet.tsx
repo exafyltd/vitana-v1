@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { Plus, CreditCard, Coins, ArrowUpRight, Eye, DollarSign, Shield, Send, ArrowUpDown, X, Sparkles, Plane } from "lucide-react";
+import { Plus, CreditCard, Coins, ArrowUpRight, Eye, DollarSign, Euro, Shield, Send, ArrowUpDown, X, Sparkles, Plane } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
@@ -396,6 +396,7 @@ export default function Wallet() {
                       changeType="increase"
                       isLoading={!isLoaded}
                       onPress={() => handleWalletAction('add-funds')}
+                      icon={displayCurrency === 'EUR' ? Euro : DollarSign}
                       accessory={
                         <CurrencyToggle
                           value={displayCurrency}
@@ -574,6 +575,7 @@ export default function Wallet() {
                     description="US Dollar balance for instant purchases, withdrawals and secure transactions"
                     className="h-full"
                     isLoading={!isLoaded}
+                    icon={displayCurrency === 'EUR' ? Euro : DollarSign}
                     headerAccessory={
                       <CurrencyToggle
                         value={displayCurrency}

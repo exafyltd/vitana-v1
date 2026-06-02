@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ComponentType, ReactNode } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Coins, DollarSign, CreditCard, ChevronRight } from "lucide-react";
@@ -15,6 +15,8 @@ interface MobileWalletBalanceCardProps {
   onPress?: () => void;
   className?: string;
   accessory?: ReactNode;
+  /** Overrides the glyph for the `cash` card (e.g. Euro vs DollarSign). */
+  icon?: ComponentType<{ className?: string }>;
 }
 
 export function MobileWalletBalanceCard({
@@ -27,14 +29,17 @@ export function MobileWalletBalanceCard({
   isLoading = false,
   onPress,
   className = "",
-  accessory
+  accessory,
+  icon
 }: MobileWalletBalanceCardProps) {
   const getIcon = () => {
     switch (type) {
       case 'tokens':
         return <Coins className="h-5 w-5 text-amber-500" />;
-      case 'cash':
-        return <DollarSign className="h-5 w-5 text-emerald-500" />;
+      case 'cash': {
+        const CashIcon = icon ?? DollarSign;
+        return <CashIcon className="h-5 w-5 text-emerald-500" />;
+      }
       case 'credits':
         return <CreditCard className="h-5 w-5 text-purple-500" />;
     }
