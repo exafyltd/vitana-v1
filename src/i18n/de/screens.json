@@ -3300,7 +3300,20 @@
       "filters": "Filter",
       "searchMembers": "Mitglieder suchen",
       "sellEarn": "🎫 Verkaufen & Verdienen",
-      "value0Value1DidItWork": "{value0}{value1}Hat es funktioniert?"
+      "value0Value1DidItWork": "{value0}{value1}Hat es funktioniert?",
+      "viewMatches": "Meine Matches",
+      "viewBoard": "Community-Pinnwand",
+      "viewPosts": "Meine Beiträge",
+      "viewMembers": "Mitglieder",
+      "matchesEmptyBody": "Poste einen Wunsch, um zu starten. Die KI sortiert Leute aus Tanz und Fitness – deine Matches erscheinen hier.",
+      "postNewWish": "Neuen Wunsch posten",
+      "boardEmptyBody": "Sei der Erste, der einen Tanz- oder Fitness-Wunsch postet – andere sehen ihn hier.",
+      "postYours": "Deinen posten",
+      "postsEmptyBody": "Poste deinen Tanz- oder Fitness-Wunsch – Vitana matcht dich mit passenden Leuten.",
+      "membersEmptyBody": "Die Community wächst – sieh alle im eigenen Mitgliederverzeichnis.",
+      "openMembers": "Mitglieder öffnen",
+      "findMatchDescription": "Tanz- und Fitness-Partner – per KI gematcht, nach Passung sortiert.",
+      "membersEmptyInvite": "Sei der Erste – lade eine:n Freund:in ein, Vitana beizutreten."
     },
     "contacts": {
       "addContact": "Kontakt hinzufügen",
@@ -3921,7 +3934,22 @@
       "addMore": "Mehr hinzufügen",
       "previousImage": "Vorheriges Bild",
       "nextImage": "Nächstes Bild",
-      "lengthCharacters": "{length} Zeichen"
+      "lengthCharacters": "{length} Zeichen",
+      "tagLabel_diary": "Tagebuch",
+      "tagLabel_photo": "Foto",
+      "tagLabel_voice": "Sprache",
+      "tagLabel_text": "Text",
+      "badgeVoiceRecording": "Sprachaufnahme",
+      "badgePhoto": "Foto",
+      "badgeTextEntry": "Text-Eintrag",
+      "badgeEntry": "Eintrag",
+      "saveEntry": "Eintrag speichern",
+      "saving": "Speichern…",
+      "uploading": "Wird hochgeladen…",
+      "deleting": "Wird gelöscht…",
+      "delete": "Löschen",
+      "voiceTranscriptCaptured": "Sprachtranskript erfasst. Bearbeite und speichere deinen Eintrag.",
+      "writeYourThoughts": "Schreib deine Gedanken…"
     },
     "discover": {
       "marketplaceView_open": "Offener Marktplatz",
@@ -5344,7 +5372,13 @@
       "accessPermissionsAuditedRegularlyYouCan": "Zugriffs-Berechtigungen werden regelmäßig geprüft. Du kannst den Zugriff jederzeit über deine Sicherheits-Einstellungen widerrufen.",
       "readonlyChronologicalRecordYourSystemUsage": "Ein schreibgeschützter chronologischer Verlauf deiner Systemnutzung. Diese Daten werden NICHT von der KI für Kontext verwendet.",
       "browseYourActivityOrganizedBySystem": "Durchstöbere deine Aktivitäten, geordnet nach Systembereichen. Erweitere einen Bereich, um Details anzuzeigen.",
-      "noLabelActivityYet": "Noch keine {label}Aktivität"
+      "noLabelActivityYet": "Noch keine {label}Aktivität",
+      "memorySubnav_overview": "Übersicht",
+      "memorySubnav_timeline": "Zeitstrahl",
+      "memorySubnav_diary": "Tägliches Tagebuch",
+      "memorySubnav_recall": "Erinnern & Suchen",
+      "memorySubnav_permissions": "Berechtigungen",
+      "wellnessDiaryMultimediaDescription": "Halte deine Wellness-Reise mit Multimedia-Einträgen fest und sieh sie dir an."
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Morgenmotivation",
