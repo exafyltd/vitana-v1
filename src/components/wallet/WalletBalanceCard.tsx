@@ -30,6 +30,8 @@ interface WalletBalanceCardProps {
   secondaryActions?: ActionConfig[];
   isLoading?: boolean;
   headerAccessory?: React.ReactNode;
+  /** Overrides the glyph for the `cash` card (e.g. Euro vs DollarSign). */
+  icon?: React.ComponentType<{ className?: string }>;
 }
 
 export function WalletBalanceCard({
@@ -47,13 +49,14 @@ export function WalletBalanceCard({
   primaryAction,
   secondaryActions,
   isLoading = false,
-  headerAccessory
+  headerAccessory,
+  icon
 }: WalletBalanceCardProps) {
-  
+
   const getIcon = () => {
     switch (type) {
       case "cash":
-        return DollarSign;
+        return icon ?? DollarSign;
       case "credits":
         return CreditCard;
       case "tokens":
