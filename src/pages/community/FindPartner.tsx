@@ -36,7 +36,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getDisplayAvatarUrl } from '@/lib/autoAvatar';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { MapPin, Users, Heart, Plus, SlidersHorizontal } from 'lucide-react';
+import { MapPin, Users, Heart, Plus } from 'lucide-react';
 import { useAuth } from '@/context/AuthProvider';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { IntentCard } from '@/components/intents/IntentCard';
@@ -325,25 +325,11 @@ export default function FindPartner() {
               // utility row, so the chip would be redundant.
               filterLabel={isMobile ? filterLabel : undefined}
               onFilterClick={isMobile ? () => setPickerOpen(true) : undefined}
+              // Filter sheet lives inside the expanded search (matches view
+              // only) instead of as a standalone utility-bar icon.
+              onFilterToggle={view === 'matches' ? () => setFilterOpen(true) : undefined}
+              filterActiveCount={activeFilterCount}
             />
-            {view === 'matches' && (
-              <Button
-                type="button"
-                onClick={() => setFilterOpen(true)}
-                variant="ghost"
-                size="sm"
-                aria-label={t('screens.community.filters')}
-                className="relative h-9 px-3 rounded-full border border-border bg-background hover:bg-muted gap-1.5 shrink-0"
-              >
-                <SlidersHorizontal className="h-4 w-4" />
-                {!isMobile && <span className="text-sm">{t('screens.community.filters')}</span>}
-                {activeFilterCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-primary-foreground text-[11px] font-semibold flex items-center justify-center">
-                    {activeFilterCount}
-                  </span>
-                )}
-              </Button>
-            )}
             <Button
               onClick={() => setComposerOpen(true)}
               variant="ghost"
