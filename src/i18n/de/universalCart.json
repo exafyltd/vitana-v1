@@ -14,7 +14,8 @@
       "quantityLabel": "Menge",
       "completeAction": "Erledigt markieren",
       "alreadyCompleted": "Bereits erledigt",
-      "linkToDiscover": "Weiter in Discover stöbern"
+      "linkToDiscover": "Weiter in Discover stöbern",
+      "close": "Schließen"
     },
     "tabs": {
       "cart": "Warenkorb",
@@ -51,7 +52,8 @@
       "reorderSectionSubtitle": "Schon einmal gekaufte Produkte liegen in deinem Warenkorb. Prüfe sie, behalte oder entferne – kaufen tust du erst mit „Prüfen & Bezahlen“.",
       "reordering": "Vitana legt deine Produkte zurück …",
       "overCapAdvisory": "Mit diesen Produkten überschreitest du dein Monatsbudget.",
-      "nearCapAdvisory": "Mit diesen Produkten näherst du dich deinem Monatsbudget."
+      "nearCapAdvisory": "Mit diesen Produkten näherst du dich deinem Monatsbudget.",
+      "error": "Da ist etwas schiefgelaufen. Bitte versuche es noch einmal."
     },
     "budget": {
       "title": "Budget diesen Monat",
