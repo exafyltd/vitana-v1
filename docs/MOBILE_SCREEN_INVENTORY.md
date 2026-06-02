@@ -97,7 +97,7 @@ destinations plus their responsive sub-routes.
 |---|---|---|
 | `REMINDERS.OVERVIEW` | `/reminders` | `mobile_route` → Calendar popup, Reminders tab (`?open=calendar&tab=reminders`). `/reminders` also auto-opens the popup if reached directly. |
 | `INBOX.REMINDERS` | `/inbox/reminder` | same as above |
-| `MEMORY.DIARY` | `/memory/diary` | `mobile_route` → `/daily-diary` (`MobileDailyDiary`). `/memory/diary` renders the desktop Memory hub (tabbed Overview/Timeline/Daily-Diary/Recall); the dedicated mobile diary capture lives at `/daily-diary` (`viewport_only: 'mobile'`). |
+| `MEMORY.DIARY` | `/memory/diary` | `mobile_route` → `/daily-diary` (`MobileDailyDiary`). Also enforced at the **frontend route level** (`DiaryRouter` in `App.tsx`): on mobile `/memory/diary` redirects to `/daily-diary` regardless of entry path (ORB, the Memory section sub-nav "Daily Diary" tab, or a deep link), since `/memory/diary` otherwise renders the desktop Memory hub "Daily Diary" tab. The dedicated mobile diary lives at `/daily-diary` (`viewport_only: 'mobile'`). |
 
 ## Desktop-only — never redirected to on mobile
 
