@@ -29,6 +29,23 @@
     "item": {
       "viewProduct": "View product"
     },
+    "agent": {
+      "promptLabel": "What are you shopping for?",
+      "promptPlaceholder": "Describe what you're shopping for — e.g. \"more energy in the morning\"",
+      "proposeCta": "Ask Vitana",
+      "proposing": "Vitana is finding matching products…",
+      "sectionTitle": "Vitana suggests",
+      "sectionSubtitle": "Suggestions sit in your cart. Review them, keep or remove — you only buy with \"Approve & Pay\".",
+      "rationaleLabel": "Why Vitana suggests this",
+      "safetyTitle": "Safety note — please read",
+      "confidenceLabel": "Confidence: {value}",
+      "keep": "Keep",
+      "remove": "Remove",
+      "unavailable": "Vitana is temporarily unavailable. Please try again in a moment.",
+      "roleBlocked": "Vitana suggestions are only available in your community role.",
+      "empty": "No suggestions yet. Tell Vitana above what you're shopping for.",
+      "reviewNote": "Please review the notes: some suggestions have safety notes. Check them before you continue."
+    },
     "addButton": {
       "label": "Add to cart",
       "added": "In cart",
