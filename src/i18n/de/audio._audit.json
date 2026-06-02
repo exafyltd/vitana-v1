@@ -11,12 +11,10 @@
       "phase": "llm"
     },
     "audio.connectionError": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The imperative is not explicitly du-form; a more direct du-form imperative would be more consistent with the requested register.",
-      "suggested": "Verbindungsproblem. Bitte versuch es erneut.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:13.085Z"
+  "generatedAt": "2026-06-02T08:12:22.472Z"
 }

@@ -16,10 +16,8 @@
       "phase": "llm"
     },
     "publicProfile.milestones": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Meaning changed; 'Magic Moments' does not convey 'Milestones'.",
-      "suggested": "Lebensmeilensteine",
       "phase": "llm"
     },
     "publicProfile.posts": {
@@ -34,9 +32,9 @@
     },
     "publicProfile.following": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for a label; 'Ich folge' means 'I follow' rather than 'people I am following'.",
-      "suggested": "Folge ich",
+      "confidence": 1,
+      "issue": "Incorrect grammatical form for a UI label. 'Folge ich' means 'I follow' (a statement), not 'Following' (as a category or state).",
+      "suggested": "Gefolgt",
       "phase": "llm"
     },
     "publicProfile.groups": {
@@ -45,5 +43,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:19:46.560Z"
+  "generatedAt": "2026-06-02T08:20:58.695Z"
 }
