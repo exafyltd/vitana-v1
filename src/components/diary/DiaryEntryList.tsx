@@ -153,13 +153,13 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
   const getBadgeLabelForSource = (source?: string) => {
     switch (source) {
       case "voice":
-        return "Voice Recording";
+        return t('screens.diary.voiceRecording');
       case "photo":
-        return "Photo";
+        return t('screens.diary.photo');
       case "text":
-        return "Text Entry";
+        return t('screens.diary.textEntry');
       default:
-        return "Entry";
+        return t('screens.diary.entry');
     }
   };
 
@@ -325,7 +325,7 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
               disabled={isDeleting}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {isDeleting ? "Deleting..." : "Delete"}
+              {isDeleting ? t('screens.diary.deleting') : t('screens.diary.delete')}
             </ResponsiveConfirmDialogAction>
           </ResponsiveConfirmDialogFooter>
         </ResponsiveConfirmDialogContent>

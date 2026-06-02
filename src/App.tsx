@@ -148,6 +148,8 @@ const Search = lazy(() => import("./pages/Search"));
 const Cart = lazy(() => import("./pages/Cart"));
 // VTID-03236: parallel Universal Cart page (universal_* tables via gateway).
 const UniversalCart = lazy(() => import("./pages/UniversalCart"));
+// Vitanaland Video Commerce: TikTok-style video-shop feed + single-product drawer.
+const ShopFeed = lazy(() => import("./pages/ShopFeed"));
 const CheckoutSuccess = lazy(() => import("./pages/CheckoutSuccess"));
 const TicketPurchaseSuccess = lazy(() => import("./pages/TicketPurchaseSuccess"));
 const PackagePurchaseSuccess = lazy(() => import("./pages/PackagePurchaseSuccess"));
@@ -169,6 +171,7 @@ const PublicEventLanding = lazy(() => import("./pages/PublicEventLanding"));
 const PublicCampaignLanding = lazy(() => import("./pages/PublicCampaignLanding"));
 const Apply = lazy(() => import("./pages/Apply"));
 const AutopilotDashboard = lazy(() => import("./pages/AutopilotDashboard"));
+const MatchesPage = lazy(() => import("./pages/MatchesPage"));
 const InviteFriends = lazy(() => import("./pages/InviteFriends"));
 const MobileDailyDiary = lazy(() => import("./pages/MobileDailyDiary"));
 const Supplements = lazy(() => import("./pages/discover/Supplements"));
@@ -561,6 +564,16 @@ function SupportRouter() {
   return isMobile ? <MobileSupport /> : <Support />;
 }
 
+// BOOTSTRAP-MOBILE-NAV-CONTAINMENT: /memory/diary renders the desktop Memory hub
+// "Daily Diary" tab (Diary.tsx — the "Wellness Diary" tabbed view). On mobile the
+// dedicated diary surface is MobileDailyDiary at /daily-diary, so redirect there
+// regardless of how the user arrived (ORB, the Memory section sub-nav tab, or a
+// deep link). Desktop keeps the full Memory hub.
+function DiaryRouter() {
+  const isMobile = useIsMobile();
+  return isMobile ? <Navigate to="/daily-diary" replace /> : <Diary />;
+}
+
 // Mobile-only storefront for plans; desktop users get the existing /wallet/subscriptions page.
 function ProfileSubscriptionsRouter() {
   const isMobile = useIsMobile();
@@ -824,6 +837,12 @@ const App = () => {
           <Route path="/universal-cart" element={
             <AuthGuard>
               <UniversalCart />
+            </AuthGuard>
+          } />
+          {/* Vitanaland Video Commerce: TikTok-style video-shop feed. */}
+          <Route path="/shop" element={
+            <AuthGuard>
+              <ShopFeed />
             </AuthGuard>
           } />
           <Route path="/checkout/success" element={
@@ -1175,6 +1194,12 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/u/:identifier" element={<PublicProfilePage />} />
+          {/* Full "People who match you" list — See-all target for MatchesPreview */}
+          <Route path="/me/matches" element={
+            <AuthGuard>
+              <MatchesPage />
+            </AuthGuard>
+          } />
           {/* E5 — Privacy & Visibility settings */}
           <Route path="/profile/me/privacy" element={
             <AuthGuard>
@@ -1286,7 +1311,7 @@ const App = () => {
           } />
           <Route path="/memory/diary" element={
             <AuthGuard>
-              <Diary />
+              <DiaryRouter />
             </AuthGuard>
           } />
           <Route path="/memory/recall" element={

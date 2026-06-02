@@ -194,8 +194,8 @@ export function VitanaIndexSheet() {
   }, []);
 
   const total = index?.total ?? null;
-  const tierLabel = index?.tier?.label ?? null;
-  const tierFraming = index?.tier?.framing ?? null;
+  const tierLabel = index?.tier ? t(index.tier.labelKey) : null;
+  const tierFraming = index?.tier ? t(index.tier.framingKey) : null;
   const balanceFactor = index?.balanceFactor ?? null;
   const pillars = index?.pillars ?? null;
   const sevenDayDelta = index?.history ? pillarSevenDayDelta(index.history) : null;
@@ -294,6 +294,11 @@ export function VitanaIndexSheet() {
   );
 
   const handleCompassClick = () => {
+    // Close this drawer as we open the Life Compass popup. Both are modal
+    // overlays at the same z-index, so leaving the Index sheet open would
+    // render the Life Compass popup behind it — making the link look broken
+    // and dropping the user back on the underlying screen when they tap X.
+    setOpen(false);
     window.dispatchEvent(new CustomEvent(LIFE_COMPASS_OPEN_EVENT));
   };
 

@@ -60,11 +60,11 @@ const MEMBERS_TAB_THRESHOLD = 1000;
 
 type View = 'matches' | 'board' | 'posts' | 'members';
 
-const VIEW_OPTIONS: { value: View; icon: string; label: string }[] = [
-  { value: 'matches', icon: '💃', label: 'My Matches' },
-  { value: 'board',   icon: '📣',   label: 'Community Board' },
-  { value: 'posts',   icon: '📝',   label: 'My Posts' },
-  { value: 'members', icon: '👥',   label: 'Members' },
+const VIEW_OPTIONS: { value: View; icon: string; labelKey: string }[] = [
+  { value: 'matches', icon: '💃', labelKey: 'screens.community.viewMatches' },
+  { value: 'board',   icon: '📣',   labelKey: 'screens.community.viewBoard' },
+  { value: 'posts',   icon: '📝',   labelKey: 'screens.community.viewPosts' },
+  { value: 'members', icon: '👥',   labelKey: 'screens.community.viewMembers' },
 ];
 
 function viewMeta(v: View) {
@@ -200,7 +200,7 @@ export default function FindPartner() {
 
   // Active sub-view metadata for the pill label + sheet header.
   const active = viewMeta(view);
-  const filterLabel = `${active.icon} ${active.label}`;
+  const filterLabel = `${active.icon} ${t(active.labelKey)}`;
 
   const visibleViewOptions = useMemo(
     () => VIEW_OPTIONS.filter((o) => o.value !== 'members' || showMembersTab),
@@ -217,7 +217,7 @@ export default function FindPartner() {
           <div className="max-w-7xl mx-auto">
         <StandardHeader
           title={t('screens.community.findMatch')}
-          description="Dance and fitness partners — matched by AI, ranked by fit."
+          description={t('screens.community.findMatchDescription')}
         />
 
         <UtilityActionButton className="min-w-0" compact={isMobile}>
@@ -248,7 +248,7 @@ export default function FindPartner() {
             <SplitBarList>
               {visibleViewOptions.map((o) => (
                 <SplitBarTrigger key={o.value} value={o.value}>
-                  {o.icon} {o.label}
+                  {o.icon} {t(o.labelKey)}
                 </SplitBarTrigger>
               ))}
             </SplitBarList>
@@ -270,8 +270,8 @@ export default function FindPartner() {
               <EmptyState
                 icon={<Heart className="h-10 w-10 text-muted-foreground mb-3" />}
                 title={t('screens.community.noMatchesYet')}
-                body="Post a wish to start. The AI ranks people across dance and fitness — your matches show up here."
-                cta={{ label: 'Post a new wish', onClick: () => setComposerOpen(true) }}
+                body={t('screens.community.matchesEmptyBody')}
+                cta={{ label: t('screens.community.postNewWish'), onClick: () => setComposerOpen(true) }}
               />
             ) : isMobile ? (
               // Bottom padding leaves ~ a card height of clear space so the
@@ -311,8 +311,8 @@ export default function FindPartner() {
             boardIntents.length === 0 ? (
               <EmptyState
                 title={t('screens.community.boardQuietRightNow')}
-                body="Be the first to post a dance or fitness wish — others will see it here."
-                cta={{ label: 'Post yours', onClick: () => setComposerOpen(true) }}
+                body={t('screens.community.boardEmptyBody')}
+                cta={{ label: t('screens.community.postYours'), onClick: () => setComposerOpen(true) }}
               />
             ) : isMobile ? (
               <div className="space-y-3 max-w-md mx-auto">
@@ -336,8 +336,8 @@ export default function FindPartner() {
             myPosts.length === 0 ? (
               <EmptyState
                 title={t('screens.community.youHavenTPostedYet')}
-                body="Post your dance or fitness wish — Vitana will match you with people who fit."
-                cta={{ label: 'New wish', onClick: () => setComposerOpen(true) }}
+                body={t('screens.community.postsEmptyBody')}
+                cta={{ label: t('screens.community.newWish'), onClick: () => setComposerOpen(true) }}
               />
             ) : isMobile ? (
               <div className="space-y-3 max-w-md mx-auto">
@@ -362,13 +362,13 @@ export default function FindPartner() {
             !showMembersTab ? (
               <EmptyState
                 title={t('screens.community.browseFullMembersList')}
-                body="The community is growing — see everyone in the dedicated members directory."
-                cta={{ label: 'Open Members', onClick: () => navigate('/comm/members') }}
+                body={t('screens.community.membersEmptyBody')}
+                cta={{ label: t('screens.community.openMembers'), onClick: () => navigate('/comm/members') }}
               />
             ) : members.length === 0 ? (
               <EmptyState
                 title={t('screens.community.noMembersYet')}
-                body="Be the first — invite a friend to join Vitana."
+                body={t('screens.community.membersEmptyInvite')}
               />
             ) : (
               <div className="space-y-2">
@@ -436,7 +436,7 @@ export default function FindPartner() {
                 }`}
               >
                 <span className="text-xl">{o.icon}</span>
-                <span className="font-medium">{o.label}</span>
+                <span className="font-medium">{t(o.labelKey)}</span>
               </button>
             ))}
           </div>

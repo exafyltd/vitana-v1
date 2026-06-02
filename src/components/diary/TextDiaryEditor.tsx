@@ -93,7 +93,7 @@ export function TextDiaryEditor({ onSaveComplete }: TextDiaryEditorProps) {
         size="lg"
       >
         <Save className="w-4 h-4 mr-2" />
-        {isSaving ? "Saving..." : "Save Entry"}
+        {isSaving ? t('screens.diary.saving') : t('screens.diary.saveEntry')}
       </Button>
     </div>
   );

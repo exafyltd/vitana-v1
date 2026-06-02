@@ -3300,7 +3300,20 @@
       "filters": "Filters",
       "searchMembers": "Search members",
       "sellEarn": "🎫 Sell & Earn",
-      "value0Value1DidItWork": "{value0}{value1}Did it work?"
+      "value0Value1DidItWork": "{value0}{value1}Did it work?",
+      "viewMatches": "My Matches",
+      "viewBoard": "Community Board",
+      "viewPosts": "My Posts",
+      "viewMembers": "Members",
+      "matchesEmptyBody": "Post a wish to start. The AI ranks people across dance and fitness — your matches show up here.",
+      "postNewWish": "Post a new wish",
+      "boardEmptyBody": "Be the first to post a dance or fitness wish — others will see it here.",
+      "postYours": "Post yours",
+      "postsEmptyBody": "Post your dance or fitness wish — Vitana will match you with people who fit.",
+      "membersEmptyBody": "The community is growing — see everyone in the dedicated members directory.",
+      "openMembers": "Open Members",
+      "findMatchDescription": "Dance and fitness partners — matched by AI, ranked by fit.",
+      "membersEmptyInvite": "Be the first — invite a friend to join Vitana."
     },
     "contacts": {
       "addContact": "Add Contact",
@@ -3896,6 +3909,18 @@
       "imageUnavailable": "Image unavailable",
       "addCaptionOptional": "Add a caption (optional)...",
       "photoEntry": "Photo entry",
+      "saveEntry": "Save Entry",
+      "saving": "Saving...",
+      "uploading": "Uploading...",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "thisWeek": "This Week",
+      "textEntry": "Text Entry",
+      "voiceRecording": "Voice Recording",
+      "photo": "Photo",
+      "entry": "Entry",
+      "delete": "Delete",
+      "deleting": "Deleting...",
       "timelineDiaryEntry": "Timeline / Diary entry",
       "photoPreview": "Photo Preview",
       "typeYourTodaySEntry": "Type your today's entry...",
@@ -3921,7 +3946,13 @@
       "addMore": "Add More",
       "previousImage": "Previous image",
       "nextImage": "Next image",
-      "lengthCharacters": "{length}characters"
+      "lengthCharacters": "{length}characters",
+      "tagLabel_diary": "diary",
+      "tagLabel_photo": "photo",
+      "tagLabel_voice": "voice",
+      "tagLabel_text": "text",
+      "voiceTranscriptCaptured": "Voice transcript captured. Edit and save your entry.",
+      "writeYourThoughts": "Write your thoughts..."
     },
     "discover": {
       "marketplaceView_open": "Open marketplace",
@@ -5030,7 +5061,13 @@
       "uploadCoverNow": "Upload photo",
       "setUniversalCover": "Set universal cover",
       "continueWithAi": "Continue with AI",
-      "post": "Post"
+      "post": "Post",
+      "kindOptionCommercialBuy": "I'm buying / hiring",
+      "kindOptionCommercialSell": "I'm selling / offering",
+      "kindOptionActivitySeek": "Activity partner",
+      "kindOptionSocialSeek": "Coffee chat / mentorship",
+      "kindOptionMutualAid": "Lend / borrow / give",
+      "kindOptionPartnerSeek": "Life partner"
     },
     "layout": {
       "contentRequiresConsent": "Content Requires Consent",
@@ -5338,7 +5375,13 @@
       "accessPermissionsAuditedRegularlyYouCan": "Access permissions are audited regularly. You can revoke access at any time through your security settings.",
       "readonlyChronologicalRecordYourSystemUsage": "A read-only chronological record of your system usage. This data is NOT used by AI for context.",
       "browseYourActivityOrganizedBySystem": "Browse your activity organized by system area. Expand any section to view details.",
-      "noLabelActivityYet": "No {label}activity yet"
+      "noLabelActivityYet": "No {label}activity yet",
+      "memorySubnav_overview": "Overview",
+      "memorySubnav_timeline": "Timeline",
+      "memorySubnav_diary": "Daily Diary",
+      "memorySubnav_recall": "Recall & Search",
+      "memorySubnav_permissions": "Permissions",
+      "wellnessDiaryMultimediaDescription": "Record and review your wellness journey through multimedia entries."
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Morning Motivation",
@@ -8591,6 +8634,7 @@
       "matchesSeeAll": "See all",
       "matchesEmpty": "We're finding people who match you.",
       "matchReasonDefault": "Suggested for you",
+      "matchesPageDescription": "Community members who fit your goals and interests.",
       "eventsTitle": "What you can look forward to",
       "eventsSeeAll": "All events",
       "eventsOnline": "online",
