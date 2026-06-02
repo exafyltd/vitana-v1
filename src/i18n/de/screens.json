@@ -9651,7 +9651,11 @@
       "checkingForNewSuggestions": "Suche nach neuen Vorschlägen…",
       "yourAutopilotRecommendations": "Deine Autopilot-Empfehlungen",
       "selectedSuggestionsCount": "{count} Vorschläge ausgewählt",
-      "allSelectedTasksCompleted": "Alle ausgewählten Aufgaben wurden erfolgreich abgeschlossen."
+      "allSelectedTasksCompleted": "Alle ausgewählten Aufgaben wurden erfolgreich abgeschlossen.",
+      "preparingNextSteps": "Wir bereiten deine nächsten Schritte vor…",
+      "allCaughtUpForToday": "Für heute ist alles erledigt",
+      "nothingNewRightNow": "Aktuell gibt es nichts Neues für dich.",
+      "checkForNew": "Nach Neuem suchen"
     }
   }
 }
