@@ -448,7 +448,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `common` — used: 2, total in shard: 36
 - `screens` — used: 14, total in shard: 9439
-- `wallet` — used: 17, total in shard: 19
+- `wallet` — used: 17, total in shard: 20
 
 ## admin/
 
