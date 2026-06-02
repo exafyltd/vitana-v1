@@ -153,13 +153,13 @@ export function DiaryEntryList({ entryType }: DiaryEntryListProps) {
   const getBadgeLabelForSource = (source?: string) => {
     switch (source) {
       case "voice":
-        return t('screens.diary.badgeVoiceRecording');
+        return t('screens.diary.voiceRecording');
       case "photo":
-        return t('screens.diary.badgePhoto');
+        return t('screens.diary.photo');
       case "text":
-        return t('screens.diary.badgeTextEntry');
+        return t('screens.diary.textEntry');
       default:
-        return t('screens.diary.badgeEntry');
+        return t('screens.diary.entry');
     }
   };
 
