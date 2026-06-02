@@ -8724,7 +8724,25 @@
       "planInDays": "in {days} days",
       "planTomorrow": "tomorrow",
       "seoDescription": "Your personalized autopilot journey",
-      "headerDescription": "The path your Index walks"
+      "headerDescription": "The path your Index walks",
+      "nextStepsTitle": "Next steps",
+      "nextStepBadge": "Next step",
+      "foundationStepLabels": {
+        "life_compass": "Life Compass",
+        "weakest_habit": "Weakest habit",
+        "reminder": "Reminder",
+        "understand_economy": "Longevity Economy",
+        "profile": "Profile",
+        "diary": "Diary",
+        "vitana_index": "Vitana Index",
+        "economic_aspiration": "Economic aspiration",
+        "calendar": "Calendar",
+        "autopilot": "Autopilot",
+        "connect": "Connect",
+        "events": "Events",
+        "marketplace": "Marketplace",
+        "business_live_media": "Business / Live / Media"
+      }
     },
     "businesshub": {
       "noServicesYet": "No Services Yet",

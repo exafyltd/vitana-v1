@@ -1,28 +1,36 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { CheckCircle2, Circle, Loader2, Zap } from "lucide-react";
+import { CheckCircle2, Circle } from "lucide-react";
+import { t } from "@/lib/i18n-toast";
 import type {
   FoundationStepStatus,
   FoundationStepView,
 } from "@/hooks/useJourneyFoundation";
 
 /**
- * VTID-03255 — "Mein Weg": the foundation path. Deliberately NOT called a
- * checklist. Shows the ordered steps with live status, the current move
- * highlighted. Health (🌿) and economy (💠) strands are tagged so the user
- * sees both axes of the longevity journey from day one.
+ * VTID-03255 — "Nächste Schritte": the onboarding next-steps overview. Shows the
+ * ordered steps that set up the account and teach VitanaLand + the Maxina
+ * community. Two states only: a green check for what is done, an empty circle
+ * for what is still open — the current open step is highlighted as the next
+ * step. No strand emojis, no per-state colours other than the green check, so
+ * the user reads "done vs. open" at a glance.
+ *
+ * Step labels are localized here (keyed by step.key) so the German UI never
+ * shows the gateway's English titles, and the labels are kept short — no
+ * descriptive suffixes like "Understand the…" or "— your autonomous…".
  */
 
+/** Short, localized label for a step, falling back to the gateway title. */
+function stepLabel(key: string, fallback: string): string {
+  const label = t(`screens.autopilotdashboard.foundationStepLabels.${key}`);
+  // lookup returns the key path itself when a translation is missing.
+  return label.includes("foundationStepLabels") ? fallback : label;
+}
+
 function StepIcon({ status }: { status: FoundationStepStatus }) {
-  switch (status) {
-    case "done":
-      return <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0" />;
-    case "active":
-      return <Zap className="w-4 h-4 text-purple-600 shrink-0" />;
-    case "checking":
-      return <Loader2 className="w-4 h-4 text-blue-600 animate-spin shrink-0" />;
-    default:
-      return <Circle className="w-4 h-4 text-muted-foreground/50 shrink-0" />;
+  if (status === "done") {
+    return <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0" />;
   }
+  return <Circle className="w-4 h-4 text-muted-foreground/50 shrink-0" />;
 }
 
 export function FoundationPath({
@@ -39,16 +47,16 @@ export function FoundationPath({
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-2">
           <p className="text-xs uppercase tracking-wide text-muted-foreground font-semibold">
-            Mein Weg
+            {t("screens.autopilotdashboard.nextStepsTitle")}
           </p>
           <span className="text-[11px] text-muted-foreground">
-            {steps.filter((s) => s.status === "done" || s.status === "active").length}/{steps.length}
+            {steps.filter((s) => s.status === "done").length}/{steps.length}
           </span>
         </div>
         <ul className="space-y-1.5">
           {steps.map((step) => {
             const isCurrent = step.key === currentKey;
-            const muted = step.status === "open" || step.status === "not_found";
+            const muted = step.status !== "done";
             return (
               <li
                 key={step.key}
@@ -62,14 +70,11 @@ export function FoundationPath({
                     muted && !isCurrent ? "text-muted-foreground" : "text-foreground"
                   }`}
                 >
-                  {step.title}
-                </span>
-                <span className="text-[11px] shrink-0">
-                  {step.strand === "economy" ? "💠" : "🌿"}
+                  {stepLabel(step.key, step.title)}
                 </span>
                 {isCurrent && (
                   <span className="text-[10px] text-purple-700 font-medium shrink-0">
-                    Nächster Schritt
+                    {t("screens.autopilotdashboard.nextStepBadge")}
                   </span>
                 )}
               </li>

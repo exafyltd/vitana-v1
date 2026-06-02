@@ -8724,7 +8724,25 @@
       "planInDays": "in {days} Tagen",
       "planTomorrow": "morgen",
       "seoDescription": "Deine personalisierte Autopilot-Reise",
-      "headerDescription": "Der Weg, den dein Index geht"
+      "headerDescription": "Der Weg, den dein Index geht",
+      "nextStepsTitle": "Nächste Schritte",
+      "nextStepBadge": "Nächster Schritt",
+      "foundationStepLabels": {
+        "life_compass": "Lebenskompass",
+        "weakest_habit": "Schwächste Gewohnheit",
+        "reminder": "Erinnerung",
+        "understand_economy": "Longevity Economy",
+        "profile": "Profil",
+        "diary": "Tagebuch",
+        "vitana_index": "Vitana Index",
+        "economic_aspiration": "Wirtschaftliches Ziel",
+        "calendar": "Kalender",
+        "autopilot": "Autopilot",
+        "connect": "Vernetzen",
+        "events": "Events",
+        "marketplace": "Marktplatz",
+        "business_live_media": "Business / Live / Media"
+      }
     },
     "businesshub": {
       "noServicesYet": "Noch keine Dienste",
