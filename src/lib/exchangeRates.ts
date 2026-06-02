@@ -129,14 +129,18 @@ export const getCurrencySymbol = (currency: string): string => {
 };
 
 // Cash display currencies the wallet can toggle between. Balances are stored
-// in USD; EUR is a presentation-only conversion using the fixed rate below.
+// in USD; EUR is a presentation-only conversion using the live FX rate (see
+// useEurUsdRate), falling back to EUR_PER_USD when no live rate is available.
 export type DisplayCurrency = 'USD' | 'EUR';
 
-// Fixed EUR per 1 USD used for the wallet's display toggle. This is a static
-// display rate (not a live market quote) — update here when it should change,
-// or swap for a real FX feed later.
+// Fallback EUR per 1 USD, used only when the live FX rate hasn't loaded yet or
+// the FX request fails. Keep roughly in line with recent market rates.
 export const EUR_PER_USD = 0.92;
 
-// Convert a USD-denominated amount into the chosen display currency.
-export const convertFromUsd = (usdAmount: number, to: DisplayCurrency): number =>
-  to === 'EUR' ? usdAmount * EUR_PER_USD : usdAmount;
+// Convert a USD-denominated amount into the chosen display currency, using the
+// supplied EUR/USD rate (defaults to the static fallback above).
+export const convertFromUsd = (
+  usdAmount: number,
+  to: DisplayCurrency,
+  eurPerUsd: number = EUR_PER_USD,
+): number => (to === 'EUR' ? usdAmount * eurPerUsd : usdAmount);

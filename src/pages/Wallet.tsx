@@ -48,6 +48,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
 import { t } from '@/lib/i18n-toast';
 import { useDisplayCurrency } from "@/hooks/useDisplayCurrency";
+import { useEurUsdRate } from "@/hooks/useEurUsdRate";
 import { CurrencyToggle } from "@/components/wallet/CurrencyToggle";
 import { convertFromUsd, getCurrencySymbol } from "@/lib/exchangeRates";
 
@@ -128,14 +129,15 @@ export default function Wallet() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const { balances, transactions, loading, error, getBalance, isLoaded } = useWallet();
   const { displayCurrency, setDisplayCurrency } = useDisplayCurrency();
+  const { eurPerUsd } = useEurUsdRate();
   const { user } = useAuth();
 
   // Cash balances are stored in USD; render them in the user's chosen display
-  // currency (USD ↔ EUR), converting via the fixed display rate for EUR.
+  // currency (USD ↔ EUR), converting EUR via the live EUR/USD market rate.
   const formatCashBalance = (): string => {
     const usd = getBalance('USD');
     if (usd === null) return translate('common.loading');
-    const amount = convertFromUsd(usd, displayCurrency);
+    const amount = convertFromUsd(usd, displayCurrency, eurPerUsd);
     return `${getCurrencySymbol(displayCurrency)}${fmtNumber(amount, { maximumFractionDigits: 2 })}`;
   };
   const { requestPopup, clearPopup } = usePopupCoordination();
