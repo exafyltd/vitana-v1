@@ -25,6 +25,7 @@ import {
   Check,
   ExternalLink,
   Loader2,
+  RotateCcw,
   Sparkles,
   Trash2,
 } from "lucide-react";
@@ -46,10 +47,16 @@ export function AgentProposalCard({
   item,
   onRemove,
   isRemoving,
+  variant = "agent",
 }: {
   item: UniversalCartItem;
   onRemove: (item: UniversalCartItem) => void | Promise<void>;
   isRemoving?: boolean;
+  /**
+   * Phase 2 — `reorder` renders a "Schon einmal gekauft" badge instead of the
+   * "Vitana schlägt vor" treatment. Same rationale + safety + Keep/Remove.
+   */
+  variant?: "agent" | "reorder";
 }) {
   const { data, isLoading } = useMarketplaceProduct(item.product_id);
   const product = data?.product;
@@ -62,6 +69,7 @@ export function AgentProposalCard({
       ? (item.metadata.confidence as number)
       : null;
   const hasSafetyFlags = safetyFlags.length > 0;
+  const isReorder = variant === "reorder";
 
   const snapshotPrice =
     item.unit_price_cents_snapshot != null
@@ -91,6 +99,12 @@ export function AgentProposalCard({
               />
             ) : null}
             <div className="min-w-0 text-sm">
+              {isReorder && (
+                <Badge variant="outline" className="mb-1 inline-flex items-center gap-1">
+                  <RotateCcw className="h-3 w-3" />
+                  {t("universalCart.agent.reorderLabel")}
+                </Badge>
+              )}
               {title ? (
                 <div className="font-medium break-words">{title}</div>
               ) : isLoading ? (

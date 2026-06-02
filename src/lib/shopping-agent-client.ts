@@ -59,6 +59,23 @@ export interface ProposeAgentCartResponse {
   advisory: string[];
 }
 
+export interface ReorderAgentCartInput {
+  max_items?: number;
+}
+
+/**
+ * Phase 2 — reorder response. Same shape as a propose response: the gateway
+ * writes the previously-purchased items server-side into the active universal
+ * cart (metadata.origin === 'reorder'), so callers MUST invalidate the cart
+ * query and render from the refetched cart — NOT from `proposed` here.
+ */
+export interface ReorderAgentCartResponse {
+  ok: true;
+  run_id: string;
+  proposed: AgentProposedItem[];
+  advisory: string[];
+}
+
 // =============================================================================
 // Errors
 // =============================================================================
@@ -188,6 +205,20 @@ export async function shoppingAgentFetch<T>(
 export function proposeAgentCart(input: ProposeAgentCartInput, opts: FetchOpts = {}) {
   return shoppingAgentFetch<ProposeAgentCartResponse>(
     "/api/v1/shopping-agent/propose",
+    { ...opts, method: "POST", body: input }
+  );
+}
+
+/**
+ * POST /api/v1/shopping-agent/reorder. Drops the user's previously-purchased
+ * items back into the active universal cart as proposals (metadata.origin ===
+ * 'reorder'). Throws `ShoppingAgentRoleError` for a non-community session, or
+ * `ShoppingAgentApiError` on failure. Reorder won't return `llm_unavailable`,
+ * but the error parsing stays consistent with `proposeAgentCart`.
+ */
+export function reorderAgentCart(input: ReorderAgentCartInput = {}, opts: FetchOpts = {}) {
+  return shoppingAgentFetch<ReorderAgentCartResponse>(
+    "/api/v1/shopping-agent/reorder",
     { ...opts, method: "POST", body: input }
   );
 }
