@@ -44,7 +44,22 @@
       "unavailable": "Vitana ist gerade nicht verfügbar. Bitte versuche es in einem Moment noch einmal.",
       "roleBlocked": "Vitana-Vorschläge sind nur in der Community-Rolle verfügbar.",
       "empty": "Noch keine Vorschläge. Sag Vitana oben, wonach du suchst.",
-      "reviewNote": "Bitte Hinweise prüfen: Einige Vorschläge haben Sicherheitshinweise. Sieh sie dir an, bevor du fortfährst."
+      "reviewNote": "Bitte Hinweise prüfen: Einige Vorschläge haben Sicherheitshinweise. Sieh sie dir an, bevor du fortfährst.",
+      "reorderCta": "Erneut kaufen",
+      "reorderLabel": "Schon einmal gekauft",
+      "reorderSectionTitle": "Erneut kaufen",
+      "reorderSectionSubtitle": "Schon einmal gekaufte Produkte liegen in deinem Warenkorb. Prüfe sie, behalte oder entferne – kaufen tust du erst mit „Prüfen & Bezahlen“.",
+      "reordering": "Vitana legt deine Produkte zurück …",
+      "overCapAdvisory": "Mit diesen Produkten überschreitest du dein Monatsbudget.",
+      "nearCapAdvisory": "Mit diesen Produkten näherst du dich deinem Monatsbudget."
+    },
+    "budget": {
+      "title": "Budget diesen Monat",
+      "spentOfCap": "{spent} von {cap} diesen Monat",
+      "statusUnder": "Im Budget",
+      "statusNear": "Budget fast erreicht",
+      "statusOver": "Budget überschritten",
+      "noCapHint": "Lege ein Monatsbudget fest, um deine Ausgaben im Blick zu behalten."
     },
     "addButton": {
       "label": "In den Warenkorb",

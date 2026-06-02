@@ -44,7 +44,22 @@
       "unavailable": "Vitana is temporarily unavailable. Please try again in a moment.",
       "roleBlocked": "Vitana suggestions are only available in your community role.",
       "empty": "No suggestions yet. Tell Vitana above what you're shopping for.",
-      "reviewNote": "Please review the notes: some suggestions have safety notes. Check them before you continue."
+      "reviewNote": "Please review the notes: some suggestions have safety notes. Check them before you continue.",
+      "reorderCta": "Buy again",
+      "reorderLabel": "Bought before",
+      "reorderSectionTitle": "Buy again",
+      "reorderSectionSubtitle": "Items you've bought before sit in your cart. Review them, keep or remove — you only buy with \"Approve & Pay\".",
+      "reordering": "Vitana is adding your items back…",
+      "overCapAdvisory": "These items push you over your monthly budget.",
+      "nearCapAdvisory": "These items bring you close to your monthly budget."
+    },
+    "budget": {
+      "title": "Budget this month",
+      "spentOfCap": "{spent} of {cap} this month",
+      "statusUnder": "Within budget",
+      "statusNear": "Almost at budget",
+      "statusOver": "Over budget",
+      "noCapHint": "Set a monthly budget to keep an eye on your spending."
     },
     "addButton": {
       "label": "Add to cart",

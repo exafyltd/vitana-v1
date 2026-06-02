@@ -31,6 +31,7 @@ import {
   Loader2,
   Minus,
   Plus,
+  RotateCcw,
   Sparkles,
   ShoppingBag,
   Trash2,
@@ -45,6 +46,7 @@ import { useUniversalCart } from "@/hooks/useUniversalCart";
 import { useShoppingAgent } from "@/hooks/useShoppingAgent";
 import { useMarketplaceProduct } from "@/hooks/useMarketplace";
 import { AgentProposalCard } from "@/components/universal-cart/AgentProposalCard";
+import { BudgetMeter } from "@/components/universal-cart/BudgetMeter";
 import { GatewayWalletBalanceCard } from "@/components/wallet/GatewayWalletBalanceCard";
 import { AddMoneyDialog } from "@/components/wallet/AddMoneyDialog";
 import { WalletCurrency } from "@/lib/wallet-gateway-client";
@@ -190,6 +192,7 @@ export default function UniversalCartPage() {
     cart,
     cartItems,
     savedItems,
+    budget,
     isLoading,
     error,
     roleBlocked,
@@ -204,6 +207,8 @@ export default function UniversalCartPage() {
   const {
     propose,
     isProposing,
+    reorder,
+    isReordering,
     roleBlocked: agentRoleBlocked,
     llmUnavailable,
   } = useShoppingAgent();
@@ -279,11 +284,25 @@ export default function UniversalCartPage() {
   // other active line renders as before. Both come from the SAME refetched
   // cartItems (single source of truth) — never from the propose response.
   const agentItems = cartItems.filter((i) => i.metadata?.origin === "agent");
-  const buyableItems = cartItems.filter((i) => i.metadata?.origin !== "agent");
+  // Phase 2 — reorder-origin lines render in their own "Erneut kaufen" section,
+  // sourced from the SAME refetched cartItems (single source of truth), never
+  // from the reorder response.
+  const reorderItems = cartItems.filter((i) => i.metadata?.origin === "reorder");
+  const buyableItems = cartItems.filter(
+    (i) => i.metadata?.origin !== "agent" && i.metadata?.origin !== "reorder",
+  );
   const hasAgentSafetyFlags = agentItems.some((i) => {
     const flags = i.metadata?.safety_flags;
     return Array.isArray(flags) && flags.length > 0;
   });
+
+  // Phase 2 — budget advisory keyed off the gateway-computed status band.
+  const budgetAdvisoryKey =
+    budget?.status === "over"
+      ? "universalCart.agent.overCapAdvisory"
+      : budget?.status === "near"
+        ? "universalCart.agent.nearCapAdvisory"
+        : null;
 
   const isCartEmpty = !cart || cartItems.length === 0;
   const isSavedEmpty = savedItems.length === 0;
@@ -296,6 +315,15 @@ export default function UniversalCartPage() {
       setPrompt("");
     } catch {
       // roleBlocked / llmUnavailable / generic surface via the hook state below.
+    }
+  };
+
+  const onReorder = async () => {
+    if (isReordering) return;
+    try {
+      await reorder();
+    } catch {
+      // roleBlocked / generic surface via the hook state below.
     }
   };
 
@@ -395,8 +423,19 @@ export default function UniversalCartPage() {
           <TabsTrigger value="saved">{t("universalCart.tabs.saved")}</TabsTrigger>
         </TabsList>
 
-        {/* ---- Cart tab: agent suggestions + buyable list + wallet + checkout ---- */}
+        {/* ---- Cart tab: budget + agent suggestions + buyable list + wallet + checkout ---- */}
         <TabsContent value="cart" className="mt-4 space-y-4">
+          {/* Standing budget meter — spend-this-month vs cap. */}
+          {budget && <BudgetMeter budget={budget} />}
+
+          {/* Budget advisory — surfaces when the projected spend nears/exceeds the cap. */}
+          {budgetAdvisoryKey && (
+            <Alert variant={budget?.status === "over" ? "destructive" : "default"}>
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>{t(budgetAdvisoryKey)}</AlertDescription>
+            </Alert>
+          )}
+
           {/* Prompt box — "Wonach suchst du?" → gateway proposes INTO this cart. */}
           <Card>
             <CardContent className="space-y-3 pt-6">
@@ -427,6 +466,27 @@ export default function UniversalCartPage() {
                   <>
                     <Sparkles className="mr-2 h-4 w-4" />
                     {t("universalCart.agent.proposeCta")}
+                  </>
+                )}
+              </Button>
+
+              {/* Buy again — gateway drops previously-purchased items back in. */}
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={onReorder}
+                disabled={isReordering || isProposing}
+              >
+                {isReordering ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("universalCart.agent.reordering")}
+                  </>
+                ) : (
+                  <>
+                    <RotateCcw className="mr-2 h-4 w-4" />
+                    {t("universalCart.agent.reorderCta")}
                   </>
                 )}
               </Button>
@@ -478,6 +538,31 @@ export default function UniversalCartPage() {
                   item={item}
                   onRemove={onRemove}
                   isRemoving={isRemoving}
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Erneut kaufen — reorder-proposed lines (metadata.origin === 'reorder'). */}
+          {reorderItems.length > 0 && (
+            <div className="space-y-3">
+              <div>
+                <h2 className="flex items-center gap-1.5 text-lg font-medium">
+                  <RotateCcw className="h-5 w-5" />
+                  {t("universalCart.agent.reorderSectionTitle")}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  {t("universalCart.agent.reorderSectionSubtitle")}
+                </p>
+              </div>
+
+              {reorderItems.map((item) => (
+                <AgentProposalCard
+                  key={item.id}
+                  item={item}
+                  onRemove={onRemove}
+                  isRemoving={isRemoving}
+                  variant="reorder"
                 />
               ))}
             </div>
