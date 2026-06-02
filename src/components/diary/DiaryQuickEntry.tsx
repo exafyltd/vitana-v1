@@ -111,7 +111,7 @@ export const DiaryQuickEntry: React.FC<DiaryQuickEntryProps> = ({
             <div>
               <SheetTitle>{t('screens.diary.quickDiaryEntry')}</SheetTitle>
               <SheetDescription>
-                {(text || initialContent) ? 'Voice transcript captured. Edit and save your entry.' : 'Write your thoughts...'}
+                {(text || initialContent) ? t('screens.diary.voiceTranscriptCaptured') : t('screens.diary.writeYourThoughts')}
               </SheetDescription>
             </div>
             <Button

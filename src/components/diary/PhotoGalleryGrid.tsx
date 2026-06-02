@@ -1,5 +1,6 @@
 import { ImageWithFallback } from "./ImageWithFallback";
 import { formatDate } from '@/lib/locale-format';
+import { t } from '@/lib/i18n-toast';
 interface DiaryEntry {
   id: string;
   text: string;
@@ -28,7 +29,7 @@ export function PhotoGalleryGrid({ entries, onEntryClick }: PhotoGalleryGridProp
           >
             <ImageWithFallback
               src={entry.attachments[0]}
-              alt={entry.text || "Photo entry"}
+              alt={entry.text || t('screens.diary.photoEntry')}
               className="w-full h-full"
             />
             
