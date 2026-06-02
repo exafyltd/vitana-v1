@@ -564,6 +564,16 @@ function SupportRouter() {
   return isMobile ? <MobileSupport /> : <Support />;
 }
 
+// BOOTSTRAP-MOBILE-NAV-CONTAINMENT: /memory/diary renders the desktop Memory hub
+// "Daily Diary" tab (Diary.tsx — the "Wellness Diary" tabbed view). On mobile the
+// dedicated diary surface is MobileDailyDiary at /daily-diary, so redirect there
+// regardless of how the user arrived (ORB, the Memory section sub-nav tab, or a
+// deep link). Desktop keeps the full Memory hub.
+function DiaryRouter() {
+  const isMobile = useIsMobile();
+  return isMobile ? <Navigate to="/daily-diary" replace /> : <Diary />;
+}
+
 // Mobile-only storefront for plans; desktop users get the existing /wallet/subscriptions page.
 function ProfileSubscriptionsRouter() {
   const isMobile = useIsMobile();
@@ -1301,7 +1311,7 @@ const App = () => {
           } />
           <Route path="/memory/diary" element={
             <AuthGuard>
-              <Diary />
+              <DiaryRouter />
             </AuthGuard>
           } />
           <Route path="/memory/recall" element={
