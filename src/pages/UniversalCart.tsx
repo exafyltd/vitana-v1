@@ -16,7 +16,7 @@
  * vitana-v1 hard rule (no raw user-visible strings).
  */
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -35,6 +35,7 @@ import {
   Sparkles,
   ShoppingBag,
   Trash2,
+  X,
 } from "lucide-react";
 import {
   CheckoutAffiliateRedirect,
@@ -211,7 +212,11 @@ export default function UniversalCartPage() {
     isReordering,
     roleBlocked: agentRoleBlocked,
     llmUnavailable,
+    error: agentError,
   } = useShoppingAgent();
+
+  // Ref so an empty "Vitana fragen" tap focuses the prompt instead of doing nothing.
+  const promptRef = useRef<HTMLTextAreaElement>(null);
 
   const [addMoneyOpen, setAddMoneyOpen] = useState(false);
   const [addMoneyCurrency, setAddMoneyCurrency] = useState<WalletCurrency>("EUR");
@@ -308,8 +313,13 @@ export default function UniversalCartPage() {
   const isSavedEmpty = savedItems.length === 0;
 
   const onPropose = async () => {
+    if (isProposing) return;
     const trimmed = prompt.trim();
-    if (!trimmed || isProposing) return;
+    // Empty tap: don't fail silently — focus the prompt so it's clear input is needed.
+    if (!trimmed) {
+      promptRef.current?.focus();
+      return;
+    }
     try {
       await propose({ prompt: trimmed });
       setPrompt("");
@@ -408,10 +418,22 @@ export default function UniversalCartPage() {
   return (
     <main className="container mx-auto max-w-2xl px-4 py-10">
       <header className="mb-6">
-        <h1 className="text-2xl font-semibold flex items-center gap-2">
-          <ShoppingBag className="h-6 w-6" />
-          {t("universalCart.page.title")}
-        </h1>
+        <div className="flex items-start justify-between gap-2">
+          <h1 className="text-2xl font-semibold flex items-center gap-2">
+            <ShoppingBag className="h-6 w-6" />
+            {t("universalCart.page.title")}
+          </h1>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="-mr-2 shrink-0"
+            onClick={() => navigate(-1)}
+            aria-label={t("universalCart.page.close")}
+          >
+            <X className="h-5 w-5" />
+          </Button>
+        </div>
         <p className="text-sm text-muted-foreground mt-1">
           {t("universalCart.page.subtitle")}
         </p>
@@ -444,6 +466,7 @@ export default function UniversalCartPage() {
                 {t("universalCart.agent.promptLabel")}
               </Label>
               <Textarea
+                ref={promptRef}
                 id="agent-prompt"
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
@@ -455,7 +478,7 @@ export default function UniversalCartPage() {
                 type="button"
                 className="w-full"
                 onClick={onPropose}
-                disabled={isProposing || prompt.trim().length === 0}
+                disabled={isProposing}
               >
                 {isProposing ? (
                   <>
@@ -504,6 +527,15 @@ export default function UniversalCartPage() {
                   <AlertTriangle className="h-4 w-4" />
                   <AlertDescription>
                     {t("universalCart.agent.unavailable")}
+                  </AlertDescription>
+                </Alert>
+              )}
+              {/* Any other failure (5xx, network, timeout) — never fail silently. */}
+              {agentError && !agentRoleBlocked && !llmUnavailable && (
+                <Alert variant="destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    {t("universalCart.agent.error")}
                   </AlertDescription>
                 </Alert>
               )}
