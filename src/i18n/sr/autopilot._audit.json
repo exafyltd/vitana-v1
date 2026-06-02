@@ -136,10 +136,8 @@
       "phase": "llm"
     },
     "autopilot.popup.readyToExecute": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The verb 'Spremni' is plural, but the du-form (informal singular) context requires a singular form. 'Spreman si' (masculine) or 'Spremna si' (feminine) would be appropriate.",
-      "suggested": "Spreman si da izvršiš {count} akcija koje je pripremio tvoj AI asistent.",
       "phase": "llm"
     },
     "autopilot.popup.executingTitle": {
@@ -188,10 +186,8 @@
       "phase": "llm"
     },
     "autopilot.popup.toastExecutedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The past participle 'završeno' is neuter singular, but it should agree with 'akcija' (feminine plural).",
-      "suggested": "{success}/{total} akcija uspešno završene",
       "phase": "llm"
     },
     "autopilot.popup.toastFailedTitle": {
@@ -396,9 +392,9 @@
     },
     "autopilot.actions.action1Reason": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Adjective 'društveni' (masculine singular) does not agree with 'vibracije' (feminine plural). A more idiomatic phrasing for 'social wellness vibes' would be 'vibracije društvenog wellnessa'.",
-      "suggested": "Savršen spoj za tvoje ciljeve kretanja + vibracije društvenog wellnessa",
+      "confidence": 0.8,
+      "issue": "The word 'vibracije' for 'vibes' is too literal and not idiomatic in this friendly wellness app context. 'Osećaj' (feeling) or 'energija' (energy) would be more natural.",
+      "suggested": "Savršen spoj za tvoje ciljeve kretanja + osećaj društvenog wellnessa",
       "phase": "llm"
     },
     "autopilot.actions.action2Title": {
@@ -462,5 +458,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:19.915Z"
+  "generatedAt": "2026-06-02T08:12:02.050Z"
 }

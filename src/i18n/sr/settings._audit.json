@@ -144,7 +144,19 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "settings.vitanaOpenedSection": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "settings.vitanaUpdated": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
     }
   },
-  "generatedAt": "2026-05-20T07:29:31.269Z"
+  "generatedAt": "2026-06-02T08:30:00.260Z"
 }

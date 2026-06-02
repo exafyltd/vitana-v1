@@ -11,10 +11,8 @@
       "phase": "llm"
     },
     "health.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "\"tabla\" is too literal and not idiomatic for \"dashboard\" in this context. \"Pregled\" (overview) is more natural.",
-      "suggested": "Tvoj lični zdravstveni pregled",
       "phase": "llm"
     },
     "health.overview": {
@@ -23,10 +21,8 @@
       "phase": "llm"
     },
     "health.overviewDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Repetitive use of \"pregled\". Can be combined for better flow.",
-      "suggested": "Tvoj sveobuhvatni zdravstveni i wellness pregled",
+      "verdict": "OK",
+      "confidence": 0.95,
       "phase": "llm"
     },
     "health.servicesHub": {
@@ -323,10 +319,8 @@
       "phase": "llm"
     },
     "health.missionAlignment.pillarHeading": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "\"Usluženi\" is too literal and not idiomatic for \"pillars served\" in this context. It implies the pillars themselves are being served, rather than the app addressing or supporting them.",
-      "suggested": "Podržani stubovi",
       "phase": "llm"
     },
     "health.missionAlignment.economyHeading": {
@@ -390,5 +384,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:03:52.912Z"
+  "generatedAt": "2026-06-02T08:13:51.861Z"
 }
