@@ -3506,7 +3506,22 @@
       "fromSessions_from": "from €{sessions_from}",
       "newinvitesNewInviteValue1": "{newInvites}new invite{value1}",
       "lengthReportValue1ReadyShare": "{length}report{value1}ready to share",
-      "chat": "💬 Chat"
+      "chat": "💬 Chat",
+      "matchReasonRoutine": "Morning routine & wellness goals align",
+      "matchReasonActivity": "Similar activity patterns & interests",
+      "matchReasonFitness": "Shared fitness & mindfulness journey",
+      "matchReasonLifestyle": "Compatible lifestyle & schedule",
+      "matchReasonGoals": "Overlapping health goals",
+      "matchReasonInterests": "Mutual wellness interests",
+      "matchReasonGeneric": "Suggested based on your profile",
+      "matchReasonGreatAlignment": "Great wellness alignment!",
+      "findingMatches": "Finding your perfect matches...",
+      "sayHi": "Say Hi",
+      "highCompatibilityMatches": "High compatibility matches",
+      "startChat": "💬 Start Chat",
+      "autoIntro": "Auto Intro",
+      "communityMember": "Community Member",
+      "vitanaCommunityMember": "Vitana community member"
     },
     "debug": {
       "presenceDebug": "Presence Debug",

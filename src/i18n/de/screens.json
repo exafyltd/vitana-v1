@@ -3506,7 +3506,22 @@
       "fromSessions_from": "ab €{sessions_from}",
       "newinvitesNewInviteValue1": "{newInvites} neue Einladung{value1}",
       "lengthReportValue1ReadyShare": "{length} Bericht{value1} bereit zum Teilen",
-      "chat": "💬 Chat"
+      "chat": "💬 Chat",
+      "matchReasonRoutine": "Morgenroutine & Wellness-Ziele passen zusammen",
+      "matchReasonActivity": "Ähnliche Aktivitätsmuster & Interessen",
+      "matchReasonFitness": "Gemeinsame Fitness- & Achtsamkeitsreise",
+      "matchReasonLifestyle": "Kompatibler Lebensstil & Zeitplan",
+      "matchReasonGoals": "Überschneidende Gesundheitsziele",
+      "matchReasonInterests": "Gemeinsame Wellness-Interessen",
+      "matchReasonGeneric": "Vorgeschlagen basierend auf deinem Profil",
+      "matchReasonGreatAlignment": "Tolle Wellness-Übereinstimmung!",
+      "findingMatches": "Finde deine perfekten Matches...",
+      "sayHi": "Hallo sagen",
+      "highCompatibilityMatches": "Hohe Kompatibilitäts-Matches",
+      "startChat": "💬 Chat starten",
+      "autoIntro": "Auto-Vorstellung",
+      "communityMember": "Community-Mitglied",
+      "vitanaCommunityMember": "Vitana Community-Mitglied"
     },
     "debug": {
       "presenceDebug": "Präsenz Debug",
