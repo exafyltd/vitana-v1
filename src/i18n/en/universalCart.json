@@ -14,7 +14,8 @@
       "quantityLabel": "Quantity",
       "completeAction": "Mark completed",
       "alreadyCompleted": "Already completed",
-      "linkToDiscover": "Browse Discover"
+      "linkToDiscover": "Browse Discover",
+      "close": "Close"
     },
     "tabs": {
       "cart": "Cart",
@@ -51,7 +52,8 @@
       "reorderSectionSubtitle": "Items you've bought before sit in your cart. Review them, keep or remove — you only buy with \"Approve & Pay\".",
       "reordering": "Vitana is adding your items back…",
       "overCapAdvisory": "These items push you over your monthly budget.",
-      "nearCapAdvisory": "These items bring you close to your monthly budget."
+      "nearCapAdvisory": "These items bring you close to your monthly budget.",
+      "error": "Something went wrong. Please try again."
     },
     "budget": {
       "title": "Budget this month",

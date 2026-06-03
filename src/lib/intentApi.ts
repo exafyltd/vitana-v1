@@ -60,6 +60,10 @@ export interface IntentMatch {
   partner_display_name?: string | null;
   partner_avatar_url?: string | null;
   partner_gender?: 'male' | 'female' | null;
+  // E6 follow-up — counterparty age in whole years (from profiles.date_of_birth),
+  // populated by intent-match-enrich. null when redacted/hidden/unset. Powers the
+  // Find a Match age-range filter.
+  partner_age?: number | null;
   // E6 — Find a Match cover image. Distinct from the avatar: this is
   // a landscape cover photo the user uploads (or an AI-generated
   // themed dance/fitness image) sized for the match preview card.

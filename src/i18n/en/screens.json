@@ -3313,7 +3313,37 @@
       "membersEmptyBody": "The community is growing — see everyone in the dedicated members directory.",
       "openMembers": "Open Members",
       "findMatchDescription": "Dance and fitness partners — matched by AI, ranked by fit.",
-      "membersEmptyInvite": "Be the first — invite a friend to join Vitana."
+      "membersEmptyInvite": "Be the first — invite a friend to join Vitana.",
+      "filterMatches": "Filter matches",
+      "filterAge": "Age range",
+      "filterAgeValue": "{min}–{max} yrs",
+      "filterAgePending": "Age filtering needs profile data we don't surface on matches yet.",
+      "filterDistance": "Distance",
+      "filterDistanceValue": "Within {km} km",
+      "filterDistanceAny": "Any distance",
+      "filterDistancePending": "Distance needs location data we don't surface on matches yet.",
+      "filterInterests": "Interests",
+      "filterGoals": "Goals",
+      "filterOnlineOnly": "Show only online members",
+      "filterHideViewed": "Hide already viewed profiles",
+      "filterClearAll": "Clear all",
+      "filterShowResults": "Show {count} results",
+      "filterShowingOfTotal": "Showing {shown} of {total}",
+      "filterReset": "Reset",
+      "noMatchesForFilters": "No matches fit these filters",
+      "noMatchesForFiltersBody": "Try widening your filters or clearing the search to see more people.",
+      "interestDance": "Dance",
+      "interestYoga": "Yoga",
+      "interestRunning": "Running",
+      "interestMeditation": "Meditation",
+      "interestStrength": "Strength",
+      "interestPilates": "Pilates",
+      "goalPartner": "Find a partner",
+      "goalSocial": "Social & friends",
+      "goalActivity": "Activity buddy",
+      "goalWeightLoss": "Weight loss",
+      "goalMentalWellness": "Mental wellness",
+      "goalValues": "Values aligned"
     },
     "contacts": {
       "addContact": "Add Contact",
@@ -8694,7 +8724,25 @@
       "planInDays": "in {days} days",
       "planTomorrow": "tomorrow",
       "seoDescription": "Your personalized autopilot journey",
-      "headerDescription": "The path your Index walks"
+      "headerDescription": "The path your Index walks",
+      "nextStepsTitle": "Next steps",
+      "nextStepBadge": "Next step",
+      "foundationStepLabels": {
+        "life_compass": "Life Compass",
+        "weakest_habit": "Weakest habit",
+        "reminder": "Reminder",
+        "understand_economy": "Longevity Economy",
+        "profile": "Profile",
+        "diary": "Diary",
+        "vitana_index": "Vitana Index",
+        "economic_aspiration": "Economic aspiration",
+        "calendar": "Calendar",
+        "autopilot": "Autopilot",
+        "connect": "Connect",
+        "events": "Events",
+        "marketplace": "Marketplace",
+        "business_live_media": "Business / Live / Media"
+      }
     },
     "businesshub": {
       "noServicesYet": "No Services Yet",
@@ -9621,7 +9669,11 @@
       "checkingForNewSuggestions": "Checking for new suggestions…",
       "yourAutopilotRecommendations": "Your autopilot recommendations",
       "selectedSuggestionsCount": "{count} suggestions selected",
-      "allSelectedTasksCompleted": "All selected tasks completed successfully."
+      "allSelectedTasksCompleted": "All selected tasks completed successfully.",
+      "preparingNextSteps": "Preparing your next steps…",
+      "allCaughtUpForToday": "All caught up for today",
+      "nothingNewRightNow": "Nothing new for you right now.",
+      "checkForNew": "Check for new"
     }
   }
 }

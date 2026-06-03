@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
@@ -99,6 +99,10 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     completeRecommendation,
     setActionStatus,
     markDismissedLocally,
+    generateRecommendations,
+    generating,
+    generateReason,
+    fetchedOnce,
   } = useAutopilot();
   
   const isMobile = useIsMobile();
@@ -149,6 +153,53 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
       setConsentDialogOpen(true);
     }
   }, [open, hasConsent, fetchRecommendations]);
+
+  // Reset the one-shot auto-generate guard each time the popup opens so a
+  // fresh open always gets one regeneration attempt if the queue is empty.
+  const autoGenAttemptedRef = useRef(false);
+  useEffect(() => {
+    if (open) autoGenAttemptedRef.current = false;
+  }, [open]);
+
+  // VTID — on-demand regeneration. When the popup is open, consent is granted,
+  // the first fetch has resolved, and the queue is empty, ask the gateway for a
+  // fresh batch (this is also what happens after the user completes the last
+  // item). The backend auto-regenerates on the final complete/reject too, so a
+  // batch may already be landing — in that case /generate returns
+  // { generated: 0, reason: "cooldown" } and we refetch shortly to pick it up.
+  // Terminal reasons (daily_cap / disabled / no_signals) stop the retry so the
+  // empty state can show the right copy instead of looping.
+  useEffect(() => {
+    if (!open || !hasConsent) return;
+    if (loading || generating || !fetchedOnce) return;
+    if (allVisibleActions.length > 0) {
+      autoGenAttemptedRef.current = false;
+      return;
+    }
+    if (autoGenAttemptedRef.current) return;
+    if (generateReason && generateReason !== "cooldown") return;
+    autoGenAttemptedRef.current = true;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    (async () => {
+      const result = await generateRecommendations();
+      if (result?.reason === "cooldown") {
+        timer = setTimeout(() => fetchRecommendations(), 1500);
+      }
+    })();
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [
+    open,
+    hasConsent,
+    loading,
+    generating,
+    fetchedOnce,
+    allVisibleActions.length,
+    generateReason,
+    generateRecommendations,
+    fetchRecommendations,
+  ]);
 
   // Reset banner when popup closes
   useEffect(() => {
@@ -388,18 +439,50 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     </div>
   );
 
-  // ── Empty state ──
-  const renderEmpty = () => (
+  // ── Generating state (on-demand regeneration in flight) ──
+  const renderGenerating = () => (
     <div className="py-12 flex flex-col items-center justify-center text-center">
-      <PartyPopper className="w-10 h-10 text-primary mb-4" />
-      <p className="text-sm font-medium mb-1">{t('screens.common.allCaughtUp')}</p>
-      <p className="text-xs text-muted-foreground">{t('screens.common.noNewRecommendationsRightNowCheck')}</p>
+      <Loader2 className="w-10 h-10 text-primary animate-spin mb-4" />
+      <p className="text-sm font-medium mb-1">{t('screens.autopilotpopup.preparingNextSteps')}</p>
     </div>
   );
+
+  // ── Empty state — copy depends on why the queue is empty ──
+  const renderEmpty = () => {
+    const headline =
+      generateReason === "daily_cap"
+        ? t('screens.autopilotpopup.allCaughtUpForToday')
+        : t('screens.common.allCaughtUp');
+    const sub =
+      generateReason === "no_signals"
+        ? t('screens.autopilotpopup.nothingNewRightNow')
+        : t('screens.common.noNewRecommendationsRightNowCheck');
+    // Offer a manual force-refresh unless Autopilot is off (disabled) or the
+    // daily cap is reached (regen would just bounce off the cap again).
+    const showRefresh = generateReason !== "disabled" && generateReason !== "daily_cap";
+    return (
+      <div className="py-12 flex flex-col items-center justify-center text-center">
+        <PartyPopper className="w-10 h-10 text-primary mb-4" />
+        <p className="text-sm font-medium mb-1">{headline}</p>
+        <p className="text-xs text-muted-foreground">{sub}</p>
+        {showRefresh && (
+          <Button
+            size="sm"
+            variant="outline"
+            className="mt-4"
+            onClick={() => generateRecommendations()}
+          >
+            {t('screens.autopilotpopup.checkForNew')}
+          </Button>
+        )}
+      </div>
+    );
+  };
 
   const renderContent = () => {
     if (loading) return renderLoading();
     if (error) return renderError();
+    if (generating) return renderGenerating();
     if (allVisibleActions.length === 0) return renderEmpty();
 
     return (
