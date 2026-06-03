@@ -11,10 +11,8 @@
       "phase": "llm"
     },
     "glassMode.screenSharingDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal Sie-form instead of informal du-form).",
-      "suggested": "Teile deinen Bildschirm mit VITANA für kontextuelle Unterstützung.",
       "phase": "llm"
     },
     "glassMode.screenSharingStopped": {
@@ -63,10 +61,8 @@
       "phase": "llm"
     },
     "glassMode.typeMessage": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal Sie-form instead of informal du-form).",
-      "suggested": "Du kannst jetzt deine Nachricht eingeben.",
       "phase": "llm"
     },
     "glassMode.actionFailed": {
@@ -80,5 +76,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:11:48.777Z"
+  "generatedAt": "2026-06-03T08:37:34.124Z"
 }
