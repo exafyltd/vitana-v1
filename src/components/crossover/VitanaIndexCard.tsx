@@ -49,7 +49,7 @@ function VitanaIndexCardBase({
 
   const scoreStatus = {
     color: tier.color,
-    status: tier.label,
+    status: t(tier.labelKey),
     variant: "success" as const
   };
 

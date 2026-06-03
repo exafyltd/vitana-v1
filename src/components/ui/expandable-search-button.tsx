@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { Search, X, ChevronDown } from "lucide-react";
+import { Search, X, ChevronDown, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
@@ -24,6 +24,14 @@ interface ExpandableSearchButtonProps {
   filterLabel?: string;
   /** Called when the filter chip portion is tapped */
   onFilterClick?: () => void;
+  /**
+   * Optional filter trigger rendered *only while the search is expanded*,
+   * as a trailing icon next to the input. Lets a page hang its filter
+   * sheet off Search instead of a separate utility-bar button.
+   */
+  onFilterToggle?: () => void;
+  /** Active-filter count shown as a badge on the expanded filter icon. */
+  filterActiveCount?: number;
 }
 
 export function ExpandableSearchButton({ 
@@ -35,6 +43,8 @@ export function ExpandableSearchButton({
   className,
   filterLabel,
   onFilterClick,
+  onFilterToggle,
+  filterActiveCount,
 }: ExpandableSearchButtonProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -111,8 +121,8 @@ export function ExpandableSearchButton({
   if (isExpanded) {
     return (
       <>
-        <div ref={wrapperRef} className={cn("relative w-64", className)}>
-          <form onSubmit={handleSearch}>
+        <div ref={wrapperRef} className={cn("relative flex items-center gap-1.5", className)}>
+          <form onSubmit={handleSearch} className="relative w-64">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -141,6 +151,21 @@ export function ExpandableSearchButton({
               </Button>
             </div>
           </form>
+          {onFilterToggle && (
+            <button
+              type="button"
+              onClick={onFilterToggle}
+              aria-label={translate('actionBar.filters', 'Filters')}
+              className="relative flex items-center justify-center h-9 w-9 rounded-full border border-border bg-background hover:bg-muted shrink-0 transition-colors"
+            >
+              <SlidersHorizontal className="h-4 w-4" />
+              {filterActiveCount ? (
+                <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-primary text-primary-foreground text-[11px] font-semibold flex items-center justify-center">
+                  {filterActiveCount}
+                </span>
+              ) : null}
+            </button>
+          )}
         </div>
 
         {/* Search results dropdown via portal */}

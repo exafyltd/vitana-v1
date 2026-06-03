@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Leaf, Users, Stethoscope, Shield, Eye, EyeOff, MailCheck } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
+import { unlockIOSAudioPlayback } from "@/lib/iosAudioUnlock";
 import { getEmailRedirectUrl, CONFIRMATION_PATHS } from '@/utils/redirectUrls';
 import { ResendConfirmationButton } from '@/components/auth/ResendConfirmationButton';
 import { useSupabaseOAuthSignIn } from "@/hooks/useSupabaseOAuthSignIn";
@@ -56,6 +57,9 @@ const EarthlinksPortal = () => {
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    // VTID-03185 follow-up: unlock iOS AudioContext inside the live submit
+    // gesture so the ORB greeting plays on iOS after email/password sign-in.
+    unlockIOSAudioPlayback();
     setLoading(true);
     setError("");
 

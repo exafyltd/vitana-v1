@@ -57,6 +57,33 @@ export const SCREEN_MANIFEST: ScreenManifestEntry[] = [
       },
     },
   },
+  // ── Vitanaland Video Commerce — TikTok-style video-shop feed ─────────────
+  {
+    screen_id: 'SHOP.FEED',
+    path: '/shop',
+    category: 'discover',
+    access: 'authenticated',
+    anonymous_safe: false,
+    aliases: ['shop', 'video-shop', 'shop-feed', 'discover/shop'],
+    priority: 60,
+    allowed_roles: ['community'],
+    i18n: {
+      en: {
+        title: 'Video Shop',
+        description:
+          'A vertical, full-screen short-video feed where each clip showcases one product. Tap the anchor pill to open the product, add it to your cart, and check out.',
+        when_to_visit:
+          'When you want to discover and buy products through a TikTok-style shoppable video feed rather than a traditional product grid.',
+      },
+      de: {
+        title: 'Video-Shop',
+        description:
+          'Ein vertikaler, bildschirmfüllender Kurzvideo-Feed, in dem jeder Clip ein Produkt zeigt. Tippe auf die Produkt-Pille, um das Produkt zu öffnen, in den Warenkorb zu legen und zu kaufen.',
+        when_to_visit:
+          'Wenn du Produkte über einen TikTok-artigen, einkaufbaren Video-Feed entdecken und kaufen möchtest statt über ein klassisches Produktraster.',
+      },
+    },
+  },
 ];
 
 export type { ScreenManifestEntry } from './screen-manifest-types';

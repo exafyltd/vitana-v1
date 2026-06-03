@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.56.0";
+import { getUserLocale, buildLocalizedSystemPrompt } from '../_shared/llm-locale.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -44,12 +45,16 @@ serve(async (req) => {
 
     // Use Gemini API to extract structured insights
     const { generateContent, extractFunctionCall } = await import("../_shared/gemini-client.ts");
+    // Insights are surfaced back to the user — write them in the user's
+    // preferred language (German by default).
+    const userLocale = await getUserLocale(supabase, user.id);
     const extractionResponse = await generateContent(
       geminiApiKey,
       [
         {
           role: 'system',
-          content: `Extract key factual information from this diary entry that should be remembered long-term. Focus ONLY on:
+          content: buildLocalizedSystemPrompt(
+            `Extract key factual information from this diary entry that should be remembered long-term. Focus ONLY on:
 - Personal facts (birthday, age, location, occupation, family, residence)
 - Health data (conditions, medications, allergies, symptoms, treatments)
 - Preferences (foods, activities, routines, sleep schedule)
@@ -62,7 +67,9 @@ CRITICAL RULES:
 2. Skip opinions, feelings, or temporary states unless they indicate patterns
 3. Each insight must be concise and specific
 4. Confidence must be 0.7+ for facts explicitly stated, 0.8+ for clear patterns
-5. Do NOT extract vague or generic statements`
+5. Do NOT extract vague or generic statements`,
+            userLocale,
+          ),
         },
         {
           role: 'user',

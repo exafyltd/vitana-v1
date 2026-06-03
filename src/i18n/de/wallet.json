@@ -2,7 +2,7 @@
   "wallet": {
     "title": "Wallet",
     "description": "Dein Guthaben, Credits und Belohnungen",
-    "usdBalance": "USD-Guthaben",
+    "usdBalance": "EUR / USD-Guthaben",
     "creditsBalance": "Credits-Guthaben",
     "vtnaTokens": "VTNA-Token",
     "available": "Verfügbar",
@@ -22,6 +22,7 @@
       "pending": "Ausstehende Auszahlungen"
     },
     "noActivity": "Noch keine Aktivitäten",
-    "noActivityDesc": "Deine Transaktionen werden hier erscheinen."
+    "noActivityDesc": "Deine Transaktionen werden hier erscheinen.",
+    "displayCurrency": "Anzeigewährung"
   }
 }

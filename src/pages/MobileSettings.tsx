@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { 
-  Bell, BellOff, Shield, SlidersHorizontal, LifeBuoy, 
+import {
+  Bell, BellOff, Shield,
   Trash2, ChevronRight, Moon, Eye, Users, Lock, Brain,
-  Palette, Globe, Type, Monitor, Sun, MessageCircle, Phone, Mail, 
-  Book, Send, Search, HelpCircle, Settings as SettingsIcon
+  Palette, Globe, Monitor, Sun
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { MobileAppShell } from "@/components/mobile/MobileAppShell";
+import AppLayout from "@/components/AppLayout";
 import { useTranslation } from "@/hooks/useTranslation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
@@ -24,8 +23,6 @@ import PushDiagnostics from "@/components/PushDiagnostics";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAIConsent } from "@/hooks/useAIConsent";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
@@ -39,7 +36,6 @@ const VALID_SECTIONS = new Set([
   'privacy', 'privacy.visibility', 'privacy.data', 'privacy.security',
   'preferences', 'preferences.appearance', 'preferences.language',
   'billing', 'billing.plan', 'billing.payment', 'billing.invoices', 'billing.creator',
-  'support', 'support.contact', 'support.knowledge',
 ]);
 
 export default function MobileSettings() {
@@ -76,44 +72,35 @@ export default function MobileSettings() {
   useEffect(() => setThemeMounted(true), []);
 
   const settingsModes: ModeOption[] = [
-    { value: 'notifications', label: 'Notifications', icon: '🔔' },
-    { 
-      value: 'privacy', 
-      label: 'Privacy', 
+    { value: 'notifications', label: t('screens.mobilesettings.modeNotifications'), icon: '🔔' },
+    {
+      value: 'privacy',
+      label: t('screens.mobilesettings.modePrivacy'),
       icon: '🛡️',
       children: [
-        { value: 'privacy.visibility', label: 'Profile Visibility', icon: '👁️' },
-        { value: 'privacy.data', label: 'Data Sharing', icon: '📊' },
-        { value: 'privacy.security', label: 'Security', icon: '🔒' },
+        { value: 'privacy.visibility', label: t('screens.mobilesettings.modePrivacyVisibility'), icon: '👁️' },
+        { value: 'privacy.data', label: t('screens.mobilesettings.modePrivacyData'), icon: '📊' },
+        { value: 'privacy.security', label: t('screens.mobilesettings.modePrivacySecurity'), icon: '🔒' },
       ]
     },
-    { 
-      value: 'preferences', 
-      label: 'Preferences', 
+    {
+      value: 'preferences',
+      label: t('screens.mobilesettings.modePreferences'),
       icon: '🎛️',
       children: [
-        { value: 'preferences.appearance', label: 'Appearance', icon: '🎨' },
-        { value: 'preferences.language', label: 'Language & Region', icon: '🌐' },
+        { value: 'preferences.appearance', label: t('screens.mobilesettings.modePreferencesAppearance'), icon: '🎨' },
+        { value: 'preferences.language', label: t('screens.mobilesettings.modePreferencesLanguage'), icon: '🌐' },
       ]
     },
     {
       value: 'billing',
-      label: 'Billing',
+      label: t('screens.mobilesettings.modeBilling'),
       icon: '💳',
       children: [
-        { value: 'billing.plan', label: 'Current Plan', icon: '⭐' },
-        { value: 'billing.payment', label: 'Payment Method', icon: '💳' },
-        { value: 'billing.invoices', label: 'Invoices & Receipts', icon: '🧾' },
-        { value: 'billing.creator', label: 'Creator Payouts', icon: '💸' },
-      ]
-    },
-    {
-      value: 'support',
-      label: 'Support',
-      icon: '🆘',
-      children: [
-        { value: 'support.contact', label: 'Contact Support', icon: '💬' },
-        { value: 'support.knowledge', label: 'Knowledge Base', icon: '📚' },
+        { value: 'billing.plan', label: t('screens.mobilesettings.modeBillingPlan'), icon: '⭐' },
+        { value: 'billing.payment', label: t('screens.mobilesettings.modeBillingPayment'), icon: '💳' },
+        { value: 'billing.invoices', label: t('screens.mobilesettings.modeBillingInvoices'), icon: '🧾' },
+        { value: 'billing.creator', label: t('screens.mobilesettings.modeBillingCreator'), icon: '💸' },
       ]
     },
   ];
@@ -123,6 +110,51 @@ export default function MobileSettings() {
       navigate("/settings", { replace: true });
     }
   }, [isMobile, navigate]);
+
+  // Vitana-driven navigation: the Orb (voice or text) can ask the Settings page
+  // to jump to a specific section without a full route change.
+  useEffect(() => {
+    const handleNavigate = (e: Event) => {
+      const detail = (e as CustomEvent).detail || {};
+      const section = String(detail.section || '');
+      if (VALID_SECTIONS.has(section)) {
+        setActiveSection(section);
+        const label = settingsModes.find((m) => m.value === section.split('.')[0])?.label || section;
+        toast.success(
+          translate('settings.vitanaOpenedSection', 'Vitana opened {section}').replace('{section}', label),
+        );
+      }
+    };
+    window.addEventListener('vitana:settings-navigate', handleNavigate);
+    return () => window.removeEventListener('vitana:settings-navigate', handleNavigate);
+    // settingsModes is a stable literal redefined every render; intentionally
+    // listing only translate so the listener picks up locale changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [translate]);
+
+  // Vitana can toggle notification preferences on the user's behalf. The Orb
+  // dispatches `vitana:settings-toggle` with `{ field, value }` (top-level
+  // notification toggles) or `{ categoryId, enabled }` (per-category).
+  useEffect(() => {
+    const handler = async (e: Event) => {
+      const detail = (e as CustomEvent).detail || {};
+      try {
+        if (detail.field && typeof detail.value === 'boolean') {
+          await updatePref(detail.field, detail.value);
+          toast.success(translate('settings.vitanaUpdated', 'Vitana updated your setting'));
+          setActiveSection('notifications');
+        } else if (detail.categoryId && typeof detail.enabled === 'boolean') {
+          await toggleCategory(detail.categoryId, detail.enabled);
+          toast.success(translate('settings.vitanaUpdated', 'Vitana updated your setting'));
+          setActiveSection('notifications');
+        }
+      } catch {
+        toast.error(translate('settings.updateFailed', 'Failed to update preference'));
+      }
+    };
+    window.addEventListener('vitana:settings-toggle', handler);
+    return () => window.removeEventListener('vitana:settings-toggle', handler);
+  }, [updatePref, toggleCategory, translate]);
 
   if (!isMobile) return null;
 
@@ -479,100 +511,6 @@ export default function MobileSettings() {
           </Card>
         );
 
-      case 'support.contact':
-        return (
-          <>
-            <Card className="rounded-2xl border-border/50 shadow-sm">
-              <CardContent className="p-5 space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <MessageCircle className="w-4.5 h-4.5 text-primary" />
-                  <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.contactSupport')}</h3>
-                </div>
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { icon: MessageCircle, label: "Live Chat", sub: "Instant help" },
-                    { icon: Mail, label: "Email", sub: "24h response" },
-                    { icon: Phone, label: "Call Back", sub: "Schedule" },
-                  ].map((item, i) => (
-                    <Button key={i} className="h-auto p-3 flex flex-col items-center gap-1.5" variant="outline">
-                      <item.icon className="w-5 h-5 text-primary" />
-                      <span className="font-medium text-xs">{item.label}</span>
-                      <span className="text-[10px] text-muted-foreground">{item.sub}</span>
-                    </Button>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="rounded-2xl border-border/50 shadow-sm">
-              <CardContent className="p-5 space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Send className="w-4.5 h-4.5 text-primary" />
-                  <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.submitTicket')}</h3>
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-1.5 block">{t('screens.mobilesettings.subject')}</label>
-                  <Input placeholder={t('screens.mobilesettings.brieflyDescribeYourIssue')} />
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-1.5 block">{t('screens.mobilesettings.category')}</label>
-                  <Select><SelectTrigger><SelectValue placeholder={t('screens.mobilesettings.selectCategory')} /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="account">{t('screens.mobilesettings.accountIssues')}</SelectItem>
-                      <SelectItem value="billing">{t('screens.mobilesettings.billingPayments')}</SelectItem>
-                      <SelectItem value="technical">{t('screens.mobilesettings.technicalProblems')}</SelectItem>
-                      <SelectItem value="feature">{t('screens.mobilesettings.featureRequests')}</SelectItem>
-                      <SelectItem value="privacy">{t('screens.mobilesettings.privacySecurity')}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <label className="text-sm font-medium mb-1.5 block">{t('screens.mobilesettings.description')}</label>
-                  <Textarea placeholder={t('screens.mobilesettings.pleaseProvideAsMuchDetailAs')} className="min-h-20" />
-                </div>
-                <Button className="w-full"><Send className="w-4 h-4 mr-2" />{t('screens.mobilesettings.submitTicket2')}</Button>
-              </CardContent>
-            </Card>
-          </>
-        );
-
-      case 'support.knowledge':
-        return (
-          <>
-            <Card className="rounded-2xl border-border/50 shadow-sm">
-              <CardContent className="p-5 space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Search className="w-4.5 h-4.5 text-primary" />
-                  <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.knowledgeBase')}</h3>
-                </div>
-                <div className="relative">
-                  <Search className="w-4 h-4 absolute left-3 top-3 text-muted-foreground" />
-                  <Input placeholder={t('screens.mobilesettings.searchHelpArticles')} className="pl-10" />
-                </div>
-                <p className="text-xs text-muted-foreground">{t('screens.mobilesettings.popularGettingStartedSyncIssuesPrivacy')}</p>
-              </CardContent>
-            </Card>
-            <Card className="rounded-2xl border-border/50 shadow-sm">
-              <CardContent className="p-5 space-y-3">
-                <div className="flex items-center gap-2 mb-2">
-                  <Book className="w-4.5 h-4.5 text-primary" />
-                  <h3 className="text-sm font-semibold text-foreground">{t('screens.mobilesettings.popularArticles')}</h3>
-                </div>
-                {[
-                  { title: "Getting Started with Vitana", desc: "Learn the basics of setting up your wellness journey" },
-                  { title: "Connecting Wearable Devices", desc: "Step-by-step guide to sync your fitness trackers" },
-                  { title: "Understanding Your VITANA Index", desc: "How your wellness score is calculated" },
-                  { title: "Privacy and Data Security", desc: "Learn how we protect your personal information" },
-                ].map((a, i) => (
-                  <div key={i} className="p-3 border border-border/50 rounded-xl hover:bg-muted/50 cursor-pointer">
-                    <h4 className="text-sm font-medium">{a.title}</h4>
-                    <p className="text-xs text-muted-foreground mt-0.5">{a.desc}</p>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </>
-        );
-
       case 'billing':
       case 'billing.plan':
       case 'billing.payment':
@@ -591,8 +529,8 @@ export default function MobileSettings() {
   };
 
   return (
-    <MobileAppShell>
-      <div className="px-4 pt-4 pb-0 h-[100dvh] overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
+    <AppLayout>
+      <div className="px-4 pt-4 pb-0 h-full overflow-hidden flex flex-col bg-gradient-to-b from-background to-muted/30">
         <StandardHeader
           title={translate('settings.title', 'Settings')}
           description={translate('settings.description', 'Manage your preferences and account')}
@@ -647,6 +585,6 @@ export default function MobileSettings() {
 
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
       <AIDataConsentDialog open={consentDialogOpen} onOpenChange={setConsentDialogOpen} onConsent={grantConsent} />
-    </MobileAppShell>
+    </AppLayout>
   );
 }

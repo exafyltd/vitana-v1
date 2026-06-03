@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
@@ -39,19 +39,19 @@ import { PillarDeltaBadges } from "@/components/health/PillarDeltaBadges";
 import { useVitanaIndexCache } from "@/components/health/VitanaIndexProvider";
 import { EMPTY_COPY } from "@/lib/celebrate";
 import type { ContributionVector, VitanaPillarKey } from "@/types/autopilot";
-import { notifyError, t } from '@/lib/i18n-toast';
+import { t } from '@/lib/i18n-toast';
 
 interface AutopilotPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-const PILLAR_LABEL: Record<VitanaPillarKey, string> = {
-  nutrition: "Nutrition",
-  hydration: "Hydration",
-  exercise: "Exercise",
-  sleep: "Sleep",
-  mental: "Mental",
+const PILLAR_LABEL_KEY: Record<VitanaPillarKey, string> = {
+  nutrition: 'screens.common.nutrition',
+  hydration: 'screens.common.hydration',
+  exercise: 'screens.common.exercise',
+  sleep: 'screens.common.sleep',
+  mental: 'screens.common.mental',
 };
 
 const PILLAR_EMOJI: Record<VitanaPillarKey, string> = {
@@ -97,6 +97,12 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     error,
     fetchRecommendations,
     completeRecommendation,
+    setActionStatus,
+    markDismissedLocally,
+    generateRecommendations,
+    generating,
+    generateReason,
+    fetchedOnce,
   } = useAutopilot();
   
   const isMobile = useIsMobile();
@@ -147,6 +153,53 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
       setConsentDialogOpen(true);
     }
   }, [open, hasConsent, fetchRecommendations]);
+
+  // Reset the one-shot auto-generate guard each time the popup opens so a
+  // fresh open always gets one regeneration attempt if the queue is empty.
+  const autoGenAttemptedRef = useRef(false);
+  useEffect(() => {
+    if (open) autoGenAttemptedRef.current = false;
+  }, [open]);
+
+  // VTID — on-demand regeneration. When the popup is open, consent is granted,
+  // the first fetch has resolved, and the queue is empty, ask the gateway for a
+  // fresh batch (this is also what happens after the user completes the last
+  // item). The backend auto-regenerates on the final complete/reject too, so a
+  // batch may already be landing — in that case /generate returns
+  // { generated: 0, reason: "cooldown" } and we refetch shortly to pick it up.
+  // Terminal reasons (daily_cap / disabled / no_signals) stop the retry so the
+  // empty state can show the right copy instead of looping.
+  useEffect(() => {
+    if (!open || !hasConsent) return;
+    if (loading || generating || !fetchedOnce) return;
+    if (allVisibleActions.length > 0) {
+      autoGenAttemptedRef.current = false;
+      return;
+    }
+    if (autoGenAttemptedRef.current) return;
+    if (generateReason && generateReason !== "cooldown") return;
+    autoGenAttemptedRef.current = true;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    (async () => {
+      const result = await generateRecommendations();
+      if (result?.reason === "cooldown") {
+        timer = setTimeout(() => fetchRecommendations(), 1500);
+      }
+    })();
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [
+    open,
+    hasConsent,
+    loading,
+    generating,
+    fetchedOnce,
+    allVisibleActions.length,
+    generateReason,
+    generateRecommendations,
+    fetchRecommendations,
+  ]);
 
   // Reset banner when popup closes
   useEffect(() => {
@@ -232,17 +285,21 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
   const [completingId, setCompletingId] = useState<string | null>(null);
 
   const handleCompleteTask = async (actionId: string) => {
+    // The gateway revision in prod doesn't persist /complete for activated
+    // rows (PRs #564→#570 all confirmed this). The user-facing contract is:
+    // they tapped Complete, so the row stays gone — even across popup
+    // reopens and refetches. markDismissedLocally puts the id in a
+    // per-user localStorage set that the state.actions builder filters
+    // out, so the row never resurfaces no matter what the backend says.
+    markDismissedLocally(actionId);
+    setActionStatus(actionId, "completed");
     setCompletingId(actionId);
     try {
       const json = await completeRecommendation(actionId);
-      if (json?.ok) {
-        if (json.reward) toast.success(`+${json.reward} VTN earned!`);
-        fetchRecommendations();
-      } else {
-        notifyError('toasts.common.couldNotCompleteTask');
+      if (json?.ok && json.via === "complete" && json.reward) {
+        toast.success(`+${json.reward} VTN earned!`);
       }
-    } catch {
-      notifyError('toasts.common.couldNotCompleteTask');
+      fetchRecommendations();
     } finally {
       setCompletingId(null);
     }
@@ -355,7 +412,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
             {t('screens.common.erledigt2')}
           </h3>
           <p className="text-sm text-muted-foreground mt-0.5">
-            {bannerMessage || "Alle ausgewählten Aufgaben wurden erfolgreich abgeschlossen."}
+            {bannerMessage || t('screens.autopilotpopup.allSelectedTasksCompleted')}
           </p>
         </div>
       </div>
@@ -382,18 +439,50 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
     </div>
   );
 
-  // ── Empty state ──
-  const renderEmpty = () => (
+  // ── Generating state (on-demand regeneration in flight) ──
+  const renderGenerating = () => (
     <div className="py-12 flex flex-col items-center justify-center text-center">
-      <PartyPopper className="w-10 h-10 text-primary mb-4" />
-      <p className="text-sm font-medium mb-1">{t('screens.common.allCaughtUp')}</p>
-      <p className="text-xs text-muted-foreground">{t('screens.common.noNewRecommendationsRightNowCheck')}</p>
+      <Loader2 className="w-10 h-10 text-primary animate-spin mb-4" />
+      <p className="text-sm font-medium mb-1">{t('screens.autopilotpopup.preparingNextSteps')}</p>
     </div>
   );
+
+  // ── Empty state — copy depends on why the queue is empty ──
+  const renderEmpty = () => {
+    const headline =
+      generateReason === "daily_cap"
+        ? t('screens.autopilotpopup.allCaughtUpForToday')
+        : t('screens.common.allCaughtUp');
+    const sub =
+      generateReason === "no_signals"
+        ? t('screens.autopilotpopup.nothingNewRightNow')
+        : t('screens.common.noNewRecommendationsRightNowCheck');
+    // Offer a manual force-refresh unless Autopilot is off (disabled) or the
+    // daily cap is reached (regen would just bounce off the cap again).
+    const showRefresh = generateReason !== "disabled" && generateReason !== "daily_cap";
+    return (
+      <div className="py-12 flex flex-col items-center justify-center text-center">
+        <PartyPopper className="w-10 h-10 text-primary mb-4" />
+        <p className="text-sm font-medium mb-1">{headline}</p>
+        <p className="text-xs text-muted-foreground">{sub}</p>
+        {showRefresh && (
+          <Button
+            size="sm"
+            variant="outline"
+            className="mt-4"
+            onClick={() => generateRecommendations()}
+          >
+            {t('screens.autopilotpopup.checkForNew')}
+          </Button>
+        )}
+      </div>
+    );
+  };
 
   const renderContent = () => {
     if (loading) return renderLoading();
     if (error) return renderError();
+    if (generating) return renderGenerating();
     if (allVisibleActions.length === 0) return renderEmpty();
 
     return (
@@ -413,7 +502,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                 ) : null}
               </>
             ) : (
-              "Index loading…"
+              t('screens.autopilotpopup.indexLoading')
             )}
           </span>
           {selectedLift > 0 ? (
@@ -436,7 +525,7 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
                       className={`text-xs font-semibold uppercase tracking-wide flex items-center gap-2 mb-2 ${groupIdx === 0 ? "" : "mt-3"} text-pill-${pillar}-accent`}
                     >
                       <span aria-hidden="true">{PILLAR_EMOJI[pillar]}</span>
-                      {PILLAR_LABEL[pillar]}
+                      {t(PILLAR_LABEL_KEY[pillar])}
                     </div>
                   )}
                   {showGroupHeaders && isUnassigned && (
@@ -514,10 +603,10 @@ export function AutopilotPopup({ open, onOpenChange }: AutopilotPopupProps) {
           </ResponsiveDialogTitle>
           <ResponsiveDialogDescription>
             {loading
-              ? "Checking for new suggestions…"
+              ? t('screens.autopilotpopup.checkingForNewSuggestions')
               : pendingActions.length > 0
-                ? `${selectedActions.length} Vorschläge ausgewählt`
-                : "Your autopilot recommendations"
+                ? t('screens.autopilotpopup.selectedSuggestionsCount', { count: selectedActions.length })
+                : t('screens.autopilotpopup.yourAutopilotRecommendations')
             }
           </ResponsiveDialogDescription>
         </ResponsiveDialogHeader>

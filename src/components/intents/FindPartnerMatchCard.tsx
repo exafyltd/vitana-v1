@@ -72,6 +72,9 @@ interface FindPartnerMatchCardProps {
   sourceCategory: string | null;
   perspective: 'outgoing' | 'incoming';
   onAction?: () => void;
+  /** Fired when the user opens the counterparty's profile — powers
+   *  "Hide already viewed profiles" on the Find a Match filter. */
+  onView?: () => void;
 }
 
 const VERTICAL_THEME: Record<
@@ -109,6 +112,7 @@ export function FindPartnerMatchCard({
   sourceCategory,
   perspective,
   onAction,
+  onView,
 }: FindPartnerMatchCardProps) {
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -214,7 +218,10 @@ export function FindPartnerMatchCard({
   const canOpenProfile = !isRedacted && !!counterpartyVid;
 
   const openProfile = () => {
-    if (canOpenProfile) navigate(`/u/${counterpartyVid}`);
+    if (canOpenProfile) {
+      onView?.();
+      navigate(`/u/${counterpartyVid}`);
+    }
   };
 
   const expressInterest = async () => {

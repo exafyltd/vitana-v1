@@ -8,7 +8,7 @@ import { NotificationBadge } from '@/components/ui/notification-badge';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { EnhancedCalendarPopup } from '@/components/calendar/EnhancedCalendarPopup';
 import { AutopilotPopup } from '@/components/AutopilotPopup';
-import { CartSidebar } from '@/components/cart/CartSidebar';
+// Phase 0: CartSidebar retired from the buy path — cart action navigates to /universal-cart.
 import { NotificationsPanel } from '@/components/notifications/NotificationsPanel';
 import { drawerNavItems, drawerNavIconTones } from '@/config/drawer-nav.config';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -18,7 +18,7 @@ import { useProfile } from '@/context/ProfileProvider';
 import { useRole } from '@/hooks/useRole';
 import { useChatUnreadCount } from '@/hooks/useChatUnreadCount';
 import { useNotifications } from '@/hooks/useNotifications';
-import { useCart } from '@/hooks/useCart';
+import { useUniversalCart } from '@/hooks/useUniversalCart';
 import { avatarPositionStyle } from '@/lib/avatarPosition';
 import { supabase } from '@/integrations/supabase/client';
 import { isIAPRestricted } from '@/lib/appilix';
@@ -46,11 +46,11 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const { unreadCount } = useChatUnreadCount();
   // Bell badge only — the panel re-subscribes inside <NotificationsPanel />
   const { unreadCount: notificationUnreadCount } = useNotifications(20);
-  const { cartCount } = useCart();
+  // Phase 0: counts from the one canonical cart (0 when roleBlocked).
+  const { cartCount } = useUniversalCart();
 
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
   const openPopup = (setter: (v: boolean) => void) => {
@@ -256,7 +256,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                 </button>
 
                 <button
-                  onClick={() => openPopup(setCartOpen)}
+                  onClick={() => { onClose(); navigate('/universal-cart'); }}
                   aria-label={`Open cart${cartCount > 0 ? `, ${cartCount} item${cartCount !== 1 ? 's' : ''}` : ''}`}
                   className="flex-1 flex flex-col items-center gap-0.5 py-1 rounded-xl text-foreground/80 hover:bg-muted active:bg-muted/80 transition-colors"
                 >
@@ -392,7 +392,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     {/* Quick-action popups — live outside the drawer so they persist after it closes */}
     <EnhancedCalendarPopup open={calendarOpen} onOpenChange={setCalendarOpen} />
     <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
-    <CartSidebar open={cartOpen} onClose={() => setCartOpen(false)} />
+    {/* Phase 0: CartSidebar retired — the cart action navigates to /universal-cart. */}
 
     <Dialog open={notificationsOpen} onOpenChange={setNotificationsOpen}>
       <DialogContent className="w-[calc(100vw-2rem)] max-w-md p-0 gap-0 rounded-2xl overflow-hidden top-[calc(env(safe-area-inset-top,0px)+1.5rem)] translate-y-0">

@@ -34,6 +34,8 @@
       "connectedAppsCount": "Verbundene Apps",
       "types": "Typen",
       "apps": "Apps"
-    }
+    },
+    "vitanaOpenedSection": "Vitana hat {section} geöffnet",
+    "vitanaUpdated": "Vitana hat deine Einstellung aktualisiert"
   }
 }

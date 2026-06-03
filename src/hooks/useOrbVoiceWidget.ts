@@ -110,6 +110,10 @@ export function useOrbVoiceWidget() {
   // effects below capture them only when they re-run.
   const navigateRef = useRef(navigate);
   navigateRef.current = navigate;
+  // BOOTSTRAP-MOBILE-NAV-CONTAINMENT: keep the freshest viewport flag for the
+  // navigation guard below (the callback is captured at init time).
+  const isMobileRef = useRef(isMobile);
+  isMobileRef.current = isMobile;
   // Plain route-path ring buffer (back-compat with navigator-consult).
   const routeHistoryRef = useRef<string[]>([location.pathname]);
   // VTID-NAV-TIMEJOURNEY: Parallel ring buffer with entry timestamps for
@@ -133,6 +137,24 @@ export function useOrbVoiceWidget() {
       const pathPart = url.split('?')[0] || '';
       if (pathPart.startsWith('/command-hub')) {
         console.warn('[ORB] Refused cross-surface route (command-hub is developer-only):', url);
+        return;
+      }
+      // BOOTSTRAP-MOBILE-NAV-CONTAINMENT: mobile viewport net. The gateway
+      // navigation-catalog is the primary gate (viewport_only / mobile_route),
+      // but the backend deploys separately and can lag the catalog, so we also
+      // refuse known desktop-only routes here rather than stranding a mobile
+      // user on a layout that does not reflow. Overlay markers (?open=…) are
+      // handled below and are exempt. Keep this list tight — it should only
+      // contain routes with NO mobile rendering (see docs/MOBILE_SCREEN_INVENTORY.md).
+      const MOBILE_DESKTOP_ONLY_ROUTES = ['/inbox/archived'];
+      if (
+        isMobileRef.current &&
+        !url.includes('open=') &&
+        MOBILE_DESKTOP_ONLY_ROUTES.some(
+          (r) => pathPart === r || pathPart.startsWith(r + '/'),
+        )
+      ) {
+        console.warn('[ORB] Refused desktop-only route on mobile, staying in voice:', url);
         return;
       }
       const parsed = new URL(url, window.location.origin);
@@ -181,6 +203,26 @@ export function useOrbVoiceWidget() {
             return;
           case 'presence':
             dispatch('presence-debug:open');
+            return;
+          // Settings navigator: Vitana can jump to a specific Settings section
+          // (e.g. `?open=settings_section&section=privacy.security`) and toggle
+          // notification preferences for the user without forcing a route
+          // change. Listeners live in src/pages/MobileSettings.tsx. The
+          // settings route must already be active; otherwise we also navigate
+          // to /settings so the listener mounts.
+          case 'settings_section':
+            if (!window.location.pathname.startsWith('/settings')) {
+              navigateRef.current('/settings');
+            }
+            // Defer the dispatch one tick so the Settings page can mount its
+            // listener before the event fires.
+            setTimeout(() => dispatch('vitana:settings-navigate'), 50);
+            return;
+          case 'settings_toggle':
+            if (!window.location.pathname.startsWith('/settings')) {
+              navigateRef.current('/settings');
+            }
+            setTimeout(() => dispatch('vitana:settings-toggle'), 50);
             return;
           // Unknown overlay marker: log and fall through to a regular
           // navigation so the URL is at least visible to the user.
