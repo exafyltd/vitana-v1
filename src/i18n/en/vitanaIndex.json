@@ -22,6 +22,14 @@
       "strong": "Strong",
       "reallyGood": "Really good",
       "elite": "Elite"
+    },
+    "framings": {
+      "starting": "Just starting",
+      "early": "Baseline established",
+      "building": "Habits forming",
+      "strong": "90-day milestone",
+      "reallyGood": "Thriving",
+      "elite": "Elite"
     }
   }
 }

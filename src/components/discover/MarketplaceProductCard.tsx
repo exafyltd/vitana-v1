@@ -212,6 +212,9 @@ export function MarketplaceProductCard({
 
         {/* Action row */}
         <div className="flex items-center gap-2">
+          {/* Phase 0: single gateway-backed cart button (the Universal Cart is
+              the one canonical cart). The duplicate AddToUniversalCartButton was
+              removed here. */}
           <AddToCartButton
             item={{
               item_type: "product",

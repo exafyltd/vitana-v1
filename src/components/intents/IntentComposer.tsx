@@ -42,13 +42,13 @@ interface IntentComposerProps {
   onPosted?: (intentId: string) => void;
 }
 
-const KIND_OPTIONS: { value: IntentKind; label: string }[] = [
-  { value: "commercial_buy", label: "I'm buying / hiring" },
-  { value: "commercial_sell", label: "I'm selling / offering" },
-  { value: "activity_seek", label: "Activity partner" },
-  { value: "social_seek", label: "Coffee chat / mentorship" },
-  { value: "mutual_aid", label: "Lend / borrow / give" },
-  { value: "partner_seek", label: "Life partner" },
+const KIND_OPTIONS: { value: IntentKind; labelKey: string }[] = [
+  { value: "commercial_buy", labelKey: "screens.intents.kindOptionCommercialBuy" },
+  { value: "commercial_sell", labelKey: "screens.intents.kindOptionCommercialSell" },
+  { value: "activity_seek", labelKey: "screens.intents.kindOptionActivitySeek" },
+  { value: "social_seek", labelKey: "screens.intents.kindOptionSocialSeek" },
+  { value: "mutual_aid", labelKey: "screens.intents.kindOptionMutualAid" },
+  { value: "partner_seek", labelKey: "screens.intents.kindOptionPartnerSeek" },
 ];
 
 export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: IntentComposerProps) {
@@ -250,7 +250,7 @@ export function IntentComposer({ open, onOpenChange, defaultKind, onPosted }: In
                 >
                   {KIND_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>
-                      {opt.label}
+                      {t(opt.labelKey)}
                     </option>
                   ))}
                 </select>
