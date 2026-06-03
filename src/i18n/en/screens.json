@@ -8730,6 +8730,7 @@
       "headerDescription": "The path your Index walks",
       "nextStepsTitle": "Next steps",
       "nextStepBadge": "Next step",
+      "focusStepAria": "Start \"{{step}}\" with Vitana",
       "foundationStepLabels": {
         "life_compass": "Life Compass",
         "weakest_habit": "Weakest habit",
