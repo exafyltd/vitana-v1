@@ -21,7 +21,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { toast } from "@/hooks/use-toast";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,7 +38,6 @@ import {
   Bell,
   Calendar,
   Link2,
-  UserPlus,
   Globe,
   Download,
   CheckCircle2,
@@ -55,9 +53,18 @@ import {
 import { cn } from "@/lib/utils";
 import { differenceInMinutes } from 'date-fns';
 import type { LiveRoom } from "./LiveRoomCard";
-import { notify, t } from '@/lib/i18n-toast';
+import { lookup, notify, notifyError, t } from '@/lib/i18n-toast';
+import { useAuth } from "@/context/AuthProvider";
+import {
+  useMyStreamSubscriptions,
+  useStreamSubscriberCounts,
+  useSubscribeToStream,
+  useUnsubscribeFromStream,
+} from "@/hooks/useStreamSubscription";
+import { useCreateReminder } from "@/hooks/useReminders";
+import { FollowButton } from "@/components/social/FollowButton";
 
-import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
+import { formatDistanceToNow, fmtDate, fmtTime } from '@/lib/locale-format';
 interface LiveRoomDrawerProps {
   room: LiveRoom | null;
   open: boolean;
@@ -87,13 +94,25 @@ export function LiveRoomDrawer({
   onEdit,
   onDelete,
 }: LiveRoomDrawerProps) {
-  const [isNotifying, setIsNotifying] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
   const [showLocalTime, setShowLocalTime] = useState(true);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  // Real "Notify me" wiring — persists to live_stream_subscribers, same as the
+  // card on the Live Rooms page (this used to be a throwaway local toggle that
+  // never hit the backend). `subscriberCount` powers the "Zuhörende" count for
+  // scheduled rooms, where the live viewer_count is always 0. Reads fail soft
+  // to empty, so an un-migrated DB never breaks the screen.
+  const { user } = useAuth();
+  const { data: mySubs } = useMyStreamSubscriptions();
+  const { data: subCounts } = useStreamSubscriberCounts(room?.id ? [room.id] : []);
+  const subscribeStream = useSubscribeToStream();
+  const unsubscribeStream = useUnsubscribeFromStream();
+  const { mutateAsync: createReminder } = useCreateReminder();
+  const isNotifying = !!(room && mySubs?.has(room.id));
+  const subscriberCount = room ? (subCounts?.[room.id] ?? 0) : 0;
 
   // Keyboard navigation
   useEffect(() => {
@@ -121,22 +140,45 @@ export function LiveRoomDrawer({
   const minutesUntil = room.scheduledTime ? differenceInMinutes(new Date(room.scheduledTime), new Date()) : 0;
   const showCountdown = isScheduled && minutesUntil > 0 && minutesUntil < 120;
 
-  const handleNotifyMe = () => {
-    setIsNotifying(!isNotifying);
-    toast({
-      title: isNotifying ? "Notifications off" : "You'll be notified!",
-      description: isNotifying
-        ? "You won't receive notifications for this room"
-        : "We'll notify you when the room goes live",
-    });
+  const handleNotifyMe = async () => {
+    if (!room) return;
+    if (!user) {
+      notifyError('toasts.community.signRequired', 'toasts.community.pleaseSignJoinLiveRooms');
+      return;
+    }
+    try {
+      if (isNotifying) {
+        await unsubscribeStream.mutateAsync(room.id);
+        notify('toasts.liverooms.notifyOffTitle', 'toasts.liverooms.notifyOffDesc');
+      } else {
+        await subscribeStream.mutateAsync(room.id);
+        // Best-effort personal reminder ~10 min before start, mirroring the card
+        // flow in LiveRooms.tsx so drawer subscribers actually get nudged (not
+        // just counted). Failure here must not fail the subscribe.
+        if (room.scheduledTime) {
+          const remindMs = new Date(room.scheduledTime).getTime() - 10 * 60 * 1000;
+          if (remindMs > Date.now()) {
+            createReminder({
+              action_text: lookup('toasts.liverooms.reminderActionText', { title: room.title }),
+              scheduled_for_iso: new Date(remindMs).toISOString(),
+              description: room.title,
+            }).catch((e) => console.warn('[notify] reminder create failed:', e));
+          }
+        }
+        notify('toasts.liverooms.notifyOnTitle', 'toasts.liverooms.notifyOnDesc');
+      }
+    } catch (e) {
+      console.error('[notify] drawer toggle failed:', e);
+      notifyError('toasts.liverooms.notifyError');
+    }
   };
 
   const handleSave = () => {
+    notify(
+      isSaved ? 'toasts.liverooms.unsavedTitle' : 'toasts.liverooms.savedTitle',
+      isSaved ? 'toasts.liverooms.unsavedDesc' : 'toasts.liverooms.savedDesc',
+    );
     setIsSaved(!isSaved);
-    toast({
-      title: isSaved ? "Removed from saved" : "Saved!",
-      description: isSaved ? "Room removed from your saved list" : "Room saved for later",
-    });
   };
 
   const handleShare = (platform?: string) => {
@@ -179,16 +221,6 @@ export function LiveRoomDrawer({
       onJoin(room.id);
       onOpenChange(false);
     }
-  };
-
-  const handleFollow = () => {
-    setIsFollowing(!isFollowing);
-    toast({
-      title: isFollowing ? "Unfollowed" : "Following!",
-      description: isFollowing
-        ? `You unfollowed ${room.host.name}`
-        : `You're now following ${room.host.name}`,
-    });
   };
 
   // Swipe handlers
@@ -307,47 +339,41 @@ export function LiveRoomDrawer({
 
             {/* Host Bar */}
             {!isCreator ? (
-              <div className="flex items-center gap-2 mt-3">
-                <button
-                  onClick={handleFollow}
+              <div className="flex items-center gap-2 mt-3 min-w-0">
+                <div
                   className={cn(
-                    "group flex items-center gap-2 h-11 px-2 rounded-full",
-                    "bg-background/95 backdrop-blur-sm shadow-lg",
-                    "hover:bg-background/100 hover:scale-[1.02] active:scale-[0.98]",
-                    "transition-all duration-200"
+                    "flex items-center gap-2 h-11 px-2 rounded-full min-w-0",
+                    "bg-background/95 backdrop-blur-sm shadow-lg"
                   )}
                 >
-                  <Avatar className="h-7 w-7 ring-1 ring-white/50">
+                  <Avatar className="h-7 w-7 ring-1 ring-white/50 flex-shrink-0">
                     <AvatarImage src={room.host.avatar} />
                     <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
                   </Avatar>
-                  <div className="flex items-center gap-1.5 pr-2">
-                    <span className="text-sm font-semibold">{room.host.name}</span>
+                  <div className="flex items-center gap-1.5 pr-2 min-w-0">
+                    <span className="text-sm font-semibold truncate">{room.host.name}</span>
                     <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                    <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-muted/80 text-muted-foreground font-medium">
+                    <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-muted/80 text-muted-foreground font-medium flex-shrink-0">
                       {t('screens.liverooms.host')}
                     </span>
                   </div>
-                </button>
+                </div>
 
-                <Button
-                  onClick={handleFollow}
-                  variant={isFollowing ? "secondary" : "outline"}
-                  className="h-11 rounded-full px-4 bg-background/95 backdrop-blur-sm shadow-lg"
-                >
-                  <UserPlus className="h-4 w-4 mr-1.5" />
-                  {isFollowing ? "Following" : "Follow"}
-                </Button>
+                {/* Shows only when you don't already follow the host. */}
+                <FollowButton
+                  targetUserId={room.host.id}
+                  className="h-11 rounded-full px-4 bg-background/95 backdrop-blur-sm shadow-lg flex-shrink-0"
+                />
               </div>
             ) : (
-              <div className="flex items-center gap-2 mt-3">
-                <div className="flex items-center gap-2 h-11 px-3 rounded-full bg-background/95 backdrop-blur-sm shadow-lg">
-                  <Avatar className="h-7 w-7 ring-1 ring-white/50">
+              <div className="flex items-center gap-2 mt-3 min-w-0">
+                <div className="flex items-center gap-2 h-11 px-3 rounded-full bg-background/95 backdrop-blur-sm shadow-lg min-w-0">
+                  <Avatar className="h-7 w-7 ring-1 ring-white/50 flex-shrink-0">
                     <AvatarImage src={room.host.avatar} />
                     <AvatarFallback className="text-xs">{room.host.name[0]}</AvatarFallback>
                   </Avatar>
-                  <span className="text-sm font-semibold">{room.host.name}</span>
-                  <Badge variant="secondary" className="text-xs">{t('screens.liverooms.yourRoom')}</Badge>
+                  <span className="text-sm font-semibold truncate">{room.host.name}</span>
+                  <Badge variant="secondary" className="text-xs flex-shrink-0">{t('screens.liverooms.yourRoom')}</Badge>
                 </div>
               </div>
             )}
@@ -373,18 +399,34 @@ export function LiveRoomDrawer({
               <Users className="h-5 w-5 text-muted-foreground" />
               <span className="font-semibold">{t('screens.liverooms.peopleListening')}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="flex -space-x-2">
-                {Array.from({ length: Math.min(room.participants, 5) }).map((_, i) => (
-                  <Avatar key={i} className="h-6 w-6 ring-2 ring-background">
-                    <AvatarFallback className="text-xs">U{i + 1}</AvatarFallback>
-                  </Avatar>
-                ))}
-              </div>
-              {room.participants > 5 && (
-                <span className="text-sm text-muted-foreground">{t('screens.liverooms.value0More', { value0: room.participants - 5 })}</span>
-              )}
-            </div>
+            {(() => {
+              // Scheduled rooms have no live viewers yet — show how many people
+              // tapped "Notify me" (subscriberCount). Live rooms show the real
+              // viewer_count. Either way we always render a number, so the
+              // section is never blank.
+              const audienceCount = isScheduled ? subscriberCount : room.participants;
+              if (audienceCount <= 0) {
+                return (
+                  <p className="text-sm text-muted-foreground">
+                    {t('screens.liverooms.willJoinCount', { count: 0 })}
+                  </p>
+                );
+              }
+              return (
+                <div className="flex items-center gap-2">
+                  <div className="flex -space-x-2">
+                    {Array.from({ length: Math.min(audienceCount, 5) }).map((_, i) => (
+                      <Avatar key={i} className="h-6 w-6 ring-2 ring-background">
+                        <AvatarFallback className="text-xs">U{i + 1}</AvatarFallback>
+                      </Avatar>
+                    ))}
+                  </div>
+                  <span className="text-sm text-muted-foreground">
+                    {t('screens.liverooms.willJoinCount', { count: audienceCount })}
+                  </span>
+                </div>
+              );
+            })()}
           </div>
 
           {/* When */}
@@ -402,7 +444,9 @@ export function LiveRoomDrawer({
                     onClick={() => setShowLocalTime(!showLocalTime)}
                     className="text-xs"
                   >
-                    {showLocalTime ? "Show UTC" : "Show Local"}
+                    {showLocalTime
+                      ? t('screens.liverooms.showUtc')
+                      : t('screens.liverooms.showLocal')}
                   </Button>
                 )}
               </div>
@@ -414,9 +458,28 @@ export function LiveRoomDrawer({
               ) : isScheduled ? (
                 <div>
                   <p className="text-sm">
-                    {showLocalTime
-                      ? formatDate(new Date(room.scheduledTime!), "EEEE, MMMM d 'at' HH:mm")
-                      : formatDate(new Date(room.scheduledTime!), "EEEE, MMMM d 'at' HH:mm 'UTC'")}
+                    {(() => {
+                      const sched = new Date(room.scheduledTime!);
+                      // Local time uses the device timezone; the UTC toggle
+                      // formats the same instant in UTC. The connector word
+                      // ("um" / "at") and UTC suffix come from the catalog so
+                      // the whole phrase localizes — no hardcoded literals.
+                      const timeZone = showLocalTime ? undefined : 'UTC';
+                      const date = fmtDate(sched, {
+                        weekday: 'long',
+                        day: 'numeric',
+                        month: 'long',
+                        timeZone,
+                      });
+                      const time = fmtTime(sched, {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        timeZone,
+                      });
+                      return showLocalTime
+                        ? t('screens.liverooms.scheduledAt', { date, time })
+                        : t('screens.liverooms.scheduledAtUtc', { date, time });
+                    })()}
                   </p>
                   {showCountdown && (
                     <p className="text-sm text-muted-foreground mt-1">{t('screens.liverooms.startsValue0', { value0: formatDistanceToNow(new Date(room.scheduledTime!)) })}</p>
@@ -451,22 +514,22 @@ export function LiveRoomDrawer({
         {room.isLive ? (
           isCreator ? (
             <div className="flex items-center gap-2">
-              <Button size="lg" variant="destructive" className="flex-1" onClick={handleJoin}>
+              <Button size="lg" variant="destructive" className="flex-1 min-w-0" onClick={handleJoin}>
                 {t('screens.liverooms.endRoom')}
               </Button>
-              <Button size="lg" variant="outline" onClick={() => handleShare()}>
+              <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => handleShare()}>
                 <Share2 className="w-4 h-4" />
               </Button>
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <Button size="lg" className="flex-1" onClick={handleJoin}>
+              <Button size="lg" className="flex-1 min-w-0" onClick={handleJoin}>
                 {t('screens.liverooms.joinRoom')}
               </Button>
-              <Button size="lg" variant="outline" onClick={() => handleShare()}>
+              <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => handleShare()}>
                 <Share2 className="w-4 h-4" />
               </Button>
-              <Button size="lg" variant="outline" onClick={handleSave}>
+              <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={handleSave}>
                 <Bookmark className={cn("w-4 h-4", isSaved && "fill-current")} />
               </Button>
             </div>
@@ -474,26 +537,30 @@ export function LiveRoomDrawer({
         ) : isScheduled ? (
           isCreator ? (
             <div className="flex items-center gap-2">
-              <Button size="lg" className="flex-1" onClick={handleJoin}>
+              <Button size="lg" className="flex-1 min-w-0" onClick={handleJoin}>
                 {t('screens.liverooms.goLiveNow')}
               </Button>
-              <Button size="lg" variant="outline" onClick={onEdit}>
+              <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={onEdit}>
                 <Pencil className="w-4 h-4" />
               </Button>
-              <Button size="lg" variant="outline" onClick={() => setShowDeleteDialog(true)}>
+              <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => setShowDeleteDialog(true)}>
                 <Trash2 className="w-4 h-4" />
               </Button>
             </div>
           ) : (
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <Button size="lg" variant="outline" className="flex-1" onClick={handleNotifyMe}>
-                  <Bell className={cn("w-4 h-4 mr-2", isNotifying && "fill-current")} />
-                  {isNotifying ? "Notifying" : "Notify me"}
+                <Button size="lg" variant="outline" className="flex-1 min-w-0" onClick={handleNotifyMe}>
+                  <Bell className={cn("w-4 h-4 mr-2 shrink-0", isNotifying && "fill-current")} />
+                  <span className="truncate">
+                    {isNotifying
+                      ? t('screens.liverooms.notifying')
+                      : t('screens.liverooms.notifyMe')}
+                  </span>
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button size="lg" variant="outline">
+                    <Button size="lg" variant="outline" className="shrink-0 w-11 px-0">
                       <Calendar className="w-4 h-4" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -513,7 +580,7 @@ export function LiveRoomDrawer({
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                <Button size="lg" variant="outline" onClick={() => handleShare()}>
+                <Button size="lg" variant="outline" className="shrink-0 w-11 px-0" onClick={() => handleShare()}>
                   <Share2 className="w-4 h-4" />
                 </Button>
               </div>

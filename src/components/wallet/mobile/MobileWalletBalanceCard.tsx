@@ -1,3 +1,4 @@
+import type { ComponentType, ReactNode } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Coins, DollarSign, CreditCard, ChevronRight } from "lucide-react";
@@ -13,6 +14,9 @@ interface MobileWalletBalanceCardProps {
   isLoading?: boolean;
   onPress?: () => void;
   className?: string;
+  accessory?: ReactNode;
+  /** Overrides the glyph for the `cash` card (e.g. Euro vs DollarSign). */
+  icon?: ComponentType<{ className?: string }>;
 }
 
 export function MobileWalletBalanceCard({
@@ -24,14 +28,18 @@ export function MobileWalletBalanceCard({
   changeType = 'neutral',
   isLoading = false,
   onPress,
-  className = ""
+  className = "",
+  accessory,
+  icon
 }: MobileWalletBalanceCardProps) {
   const getIcon = () => {
     switch (type) {
       case 'tokens':
         return <Coins className="h-5 w-5 text-amber-500" />;
-      case 'cash':
-        return <DollarSign className="h-5 w-5 text-emerald-500" />;
+      case 'cash': {
+        const CashIcon = icon ?? DollarSign;
+        return <CashIcon className="h-5 w-5 text-emerald-500" />;
+      }
       case 'credits':
         return <CreditCard className="h-5 w-5 text-purple-500" />;
     }
@@ -90,7 +98,10 @@ export function MobileWalletBalanceCard({
           
           {/* Content */}
           <div className="flex-1 min-w-0">
-            <p className="text-sm text-muted-foreground truncate">{title}</p>
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-sm text-muted-foreground truncate">{title}</p>
+              {accessory}
+            </div>
             <p className="text-lg font-semibold truncate">{balance}</p>
             {(subBalance || change) && (
               <div className="flex items-center gap-2 mt-0.5">

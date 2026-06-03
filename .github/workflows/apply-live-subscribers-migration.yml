@@ -1,0 +1,93 @@
+name: Apply live_stream_subscribers migration
+
+# Applies the Live Rooms "Notify me" migration
+# (supabase/migrations/20260530120000_live_stream_subscribers.sql) to the live
+# Supabase project using the Management API query endpoint and the existing
+# SUPABASE_ACCESS_TOKEN secret — no DB password required. The SQL is idempotent
+# (CREATE ... IF NOT EXISTS / CREATE OR REPLACE / DROP POLICY IF EXISTS), so the
+# job is safe to re-run.
+#
+# Triggers:
+#   - Auto:   push to main that touches the migration file or this workflow.
+#   - Manual: Actions tab -> "Run workflow".
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/20260530120000_live_stream_subscribers.sql'
+      - '.github/workflows/apply-live-subscribers-migration.yml'
+
+concurrency:
+  group: apply-live-subscribers-migration
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_REF: inmkhvwdcuyhnxkgfvsb
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply migration via Supabase Management API
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_ACCESS_TOKEN:-}" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN secret is not set"; exit 1
+          fi
+          python3 - <<'PY'
+          import os, json, urllib.request, urllib.error
+          ref = os.environ['PROJECT_REF']
+          tok = os.environ['SUPABASE_ACCESS_TOKEN']
+          sql = open('supabase/migrations/20260530120000_live_stream_subscribers.sql').read()
+          req = urllib.request.Request(
+              f'https://api.supabase.com/v1/projects/{ref}/database/query',
+              data=json.dumps({'query': sql}).encode(),
+              headers={'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json'},
+              method='POST',
+          )
+          try:
+              r = urllib.request.urlopen(req)
+              print('Apply OK, status', r.status)
+              print((r.read().decode() or '[]')[:1000])
+          except urllib.error.HTTPError as e:
+              print('Apply FAILED, HTTP', e.code)
+              print(e.read().decode())
+              raise SystemExit(1)
+          PY
+
+      - name: Verify table + RPC exist
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os, json, urllib.request
+          ref = os.environ['PROJECT_REF']
+          tok = os.environ['SUPABASE_ACCESS_TOKEN']
+          sql = ("select to_regclass('public.live_stream_subscribers') is not null as table_exists, "
+                 "exists(select 1 from pg_proc where proname='get_live_stream_subscriber_counts') as rpc_exists;")
+          req = urllib.request.Request(
+              f'https://api.supabase.com/v1/projects/{ref}/database/query',
+              data=json.dumps({'query': sql}).encode(),
+              headers={'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json'},
+              method='POST',
+          )
+          r = urllib.request.urlopen(req)
+          body = r.read().decode()
+          print('Verify:', body)
+          # Assert the apply actually took effect — otherwise a silent no-op
+          # would leave the job green while "Notify me" keeps failing.
+          rows = json.loads(body or '[]')
+          row = rows[0] if rows else {}
+          if not (row.get('table_exists') and row.get('rpc_exists')):
+              raise SystemExit(
+                  f"::error::Migration did not take effect "
+                  f"(table_exists={row.get('table_exists')}, rpc_exists={row.get('rpc_exists')})"
+              )
+          print('Verify OK: table + RPC present.')
+          PY

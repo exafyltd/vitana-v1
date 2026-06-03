@@ -38,6 +38,28 @@ const generateRoomImage = (title: string): string => {
   return ROOM_IMAGES[Math.abs(hash) % ROOM_IMAGES.length];
 };
 
+const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+
+/**
+ * Relative "when" label for a scheduled session. Rules:
+ *   - today            → "Heute 20.00h"
+ *   - tomorrow         → "Morgen 20.00h"
+ *   - within 7 days    → "Di 09 Aug 20.00h"   (weekday + day + month)
+ *   - more than 7 days → "27 Aug 20.00h"      (day + month, no weekday)
+ * Weekday/month names and the locale come from formatDate; the literal "h"
+ * time suffix matches the requested "20.00h" style.
+ */
+function formatRoomWhen(scheduledISO: string): string {
+  const d = new Date(scheduledISO);
+  const time = `${formatDate(d, 'HH.mm')}h`;
+  const dayDiff = Math.round((startOfDay(d) - startOfDay(new Date())) / 86_400_000);
+
+  if (dayDiff <= 0) return t('screens.liverooms.whenToday', { time });
+  if (dayDiff === 1) return t('screens.liverooms.whenTomorrow', { time });
+  const date = dayDiff <= 7 ? formatDate(d, 'EEE dd MMM') : formatDate(d, 'dd MMM');
+  return t('screens.liverooms.whenDated', { date, time });
+}
+
 export function MobileLiveRoomCarousel({
   rooms,
   onCardClick,
@@ -115,11 +137,11 @@ export function MobileLiveRoomCarousel({
   const transformRoomToCard = (room: LiveRoom) => {
     const isCreator = room.host.id === currentUserId;
     const imageUrl = room.imageUrl || generateRoomImage(room.title);
-    const timestamp = room.isLive
-      ? 'LIVE'
-      : room.scheduledTime
-        ? formatDate(new Date(room.scheduledTime), 'HH:mm')
-        : undefined;
+    // Scheduled cards show a prominent relative date/time at the BOTTOM (e.g.
+    // "Heute 20.00h" / "Di 09 Aug 20.00h"). Live cards rely on the LIVE pill.
+    const whenLabel = !room.isLive && room.scheduledTime
+      ? formatRoomWhen(room.scheduledTime)
+      : undefined;
 
     const actionButton = room.isLive ? (
       <Button
@@ -130,7 +152,7 @@ export function MobileLiveRoomCarousel({
           onJoinRoom(room.id);
         }}
       >
-        {isCreator ? 'Manage' : 'Join'}
+        {isCreator ? t('screens.liverooms.manage') : t('screens.liverooms.join')}
       </Button>
     ) : room.scheduledTime ? (
       <Button
@@ -146,7 +168,7 @@ export function MobileLiveRoomCarousel({
         }}
       >
         <Bell className={cn('w-4 h-4', notifyingRooms.has(room.id) && 'fill-current')} />
-        {notifyingRooms.has(room.id) ? 'Notifying' : 'Notify me'}
+        {notifyingRooms.has(room.id) ? t('screens.liverooms.notifying') : t('screens.liverooms.notifyMe')}
       </Button>
     ) : undefined;
 
@@ -155,11 +177,12 @@ export function MobileLiveRoomCarousel({
       description: room.description,
       imageUrl,
       category: 'community' as const,
-      pillar: room.isLive ? 'LIVE' : 'SCHEDULED',
+      pillar: room.isLive ? t('screens.liverooms.live') : undefined,
       author: { name: room.host.name, avatar: room.host.avatar },
-      location: room.location || 'Virtual',
-      attendees: room.participants,
-      timestamp,
+      location: room.location ? t('screens.liverooms.virtual') : undefined,
+      // Scheduled cards count people who tapped Notify ("going"); live cards show viewers.
+      attendees: room.isLive ? room.participants : (room.interestedCount ?? 0),
+      whenLabel,
       price: room.isPremium ? (room.isPremium as any) : ('free' as const),
       onClick: () => onCardClick(room.id),
       actionButton,

@@ -10,8 +10,13 @@ export interface VitanaIndexTier {
   labelKey: string;
   color: string;
   description: string;
-  /** Short user-facing framing shown on the Index Detail Screen tier badge. */
+  /**
+   * Canonical English framing. Kept for back-compat / non-UI callers. UI
+   * surfaces should render `framingKey` via the i18n catalog.
+   */
   framing: string;
+  /** i18n key for the user-facing framing (e.g. "vitanaIndex.framings.early"). */
+  framingKey: string;
 }
 
 /**
@@ -35,6 +40,7 @@ export const VITANA_INDEX_TIERS: VitanaIndexTier[] = [
     color: "#FECACA", // pastel red
     description: "You've begun. Five pillars, 90 days — let's go.",
     framing: "Just starting",
+    framingKey: "vitanaIndex.framings.starting",
   },
   {
     min: 100,
@@ -44,6 +50,7 @@ export const VITANA_INDEX_TIERS: VitanaIndexTier[] = [
     color: "#FDE68A", // amber
     description: "Baseline established. Every completion counts now.",
     framing: "Baseline established",
+    framingKey: "vitanaIndex.framings.early",
   },
   {
     min: 300,
@@ -53,6 +60,7 @@ export const VITANA_INDEX_TIERS: VitanaIndexTier[] = [
     color: "#FEF08A", // yellow
     description: "Habits are forming. Keep the balance across all five.",
     framing: "Habits forming",
+    framingKey: "vitanaIndex.framings.building",
   },
   {
     min: 500,
@@ -62,6 +70,7 @@ export const VITANA_INDEX_TIERS: VitanaIndexTier[] = [
     color: "#D9F99D", // lime
     description: "This is where most people land after a real 90-day push.",
     framing: "90-day milestone",
+    framingKey: "vitanaIndex.framings.strong",
   },
   {
     min: 600,
@@ -71,6 +80,7 @@ export const VITANA_INDEX_TIERS: VitanaIndexTier[] = [
     color: "#BBF7D0", // light green
     description: "Your practice is working. This is the 'thriving' zone.",
     framing: "Thriving",
+    framingKey: "vitanaIndex.framings.reallyGood",
   },
   {
     min: 800,
@@ -80,6 +90,7 @@ export const VITANA_INDEX_TIERS: VitanaIndexTier[] = [
     color: "#BAE6FD", // sky blue
     description: "Sustained excellence across all five pillars. Rare and earned.",
     framing: "Elite",
+    framingKey: "vitanaIndex.framings.elite",
   },
 ];
 

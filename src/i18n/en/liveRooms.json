@@ -129,6 +129,12 @@
         "aiImageHintTitle": "AI Image Generation",
         "aiImageHintDesc": "Image will be generated when stream starts."
       }
+    },
+    "editSession": {
+      "title": "Edit Session",
+      "saving": "Saving …",
+      "changeCover": "Change cover image",
+      "noChanges": "No changes to save"
     }
   }
 }

@@ -1,0 +1,63 @@
+{
+  "marketplaceCheckout": {
+    "balance": {
+      "title": "Your balance",
+      "loading": "Loading balance …",
+      "empty": "No balance yet",
+      "addMoney": "Add money"
+    },
+    "checkout": {
+      "button": "Checkout",
+      "processing": "Processing …",
+      "successTitle": "Order placed",
+      "successBody": "Your balance was charged and your order was created.",
+      "duplicateTitle": "Order already placed",
+      "duplicateBody": "This order has already been processed.",
+      "affiliateTitle": "Complete purchase at merchant",
+      "affiliateBody": "Some items are purchased directly at the merchant. Open the links below to complete the purchase.",
+      "affiliateLink": "Complete purchase at merchant",
+      "affiliateOpened": "Merchant links opened in new tabs."
+    },
+    "addMoney": {
+      "title": "Add money",
+      "description": "Top up your balance by card via Stripe.",
+      "amountLabel": "Amount",
+      "amountPlaceholder": "0.00",
+      "currencyLabel": "Currency",
+      "currencyEur": "EUR",
+      "currencyUsd": "USD",
+      "continue": "Continue to payment",
+      "processing": "Preparing …",
+      "invalidAmount": "Please enter a valid amount.",
+      "failed": "Could not start the top-up."
+    },
+    "deposit": {
+      "checkingTitle": "Confirming payment",
+      "checkingBody": "We are waiting for your payment to be confirmed. This may take a moment.",
+      "succeededTitle": "Balance topped up",
+      "succeededBody": "Your balance was topped up successfully.",
+      "failedTitle": "Top-up failed",
+      "failedBody": "Your top-up could not be completed. Nothing was charged.",
+      "amountLabel": "Amount",
+      "backToCart": "Back to cart"
+    },
+    "errors": {
+      "invalid_request": "The request was invalid. Please check your cart.",
+      "CART_EMPTY": "Your cart is empty.",
+      "PRODUCT_UNAVAILABLE": "A product in your cart is no longer available.",
+      "PRICE_UNAVAILABLE": "A price is currently unavailable for a product.",
+      "MIXED_CURRENCY": "Your cart contains items in different currencies. Please separate them.",
+      "UNSUPPORTED_WALLET_CURRENCY": "This currency is not supported by your balance.",
+      "WALLET_ACCOUNT_MISSING": "No balance account has been set up for this currency yet.",
+      "WALLET_ACCOUNT_INACTIVE": "Your balance account is currently inactive.",
+      "INSUFFICIENT_BALANCE": "Your balance is not enough for this purchase. Please add money.",
+      "TENANT_REQUIRED": "This operation requires an active workspace.",
+      "WALLET_DEBIT_FAILED": "Charging your balance failed. Please try again.",
+      "CART_READ_FAILED": "We could not read your cart. Please try again.",
+      "ORDER_WRITE_FAILED": "Your order could not be saved. Please try again.",
+      "WALLET_READ_FAILED": "We could not read your balance. Please try again.",
+      "GATEWAY_MISCONFIGURED": "The payment service is currently unavailable. Please try again later.",
+      "unknown": "Something went wrong at checkout. Please try again."
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plane, Compass, Sparkles, CalendarClock } from "lucide-react";
@@ -5,19 +6,26 @@ import { motion, useReducedMotion } from "framer-motion";
 import { t } from "@/lib/i18n-toast";
 import { fmtDate } from "@/lib/locale-format";
 import type { MyJourneyGoal } from "@/hooks/useMyJourney";
+import { useGoalPlan } from "@/hooks/useGoalPlan";
+import { buildPhases } from "@/lib/goalPhases";
 
-// Production asset slot — drop the curated AI-painted illustration here:
-//   public/illustrations/journey-coast.webp
-//
-// Until it's in place, the soft pastel-sunrise CSS gradient behind it
-// shows through. We tried an Unsplash photo stand-in but the available
-// IDs returned dark/cold scenes — Unsplash is photos, and the
-// fairy-tale painted feel needs a generated illustration. See
-// public/illustrations/README.md for the recommended prompt + style.
-const HERO_BG = "/illustrations/journey-coast.webp";
+// The painted-illustration slot was wired through here, but the team
+// landed on the pure pastel gradient as the default — calmer, lighter,
+// less visually busy than any painted scene we tried. The asset path
+// is kept in `public/illustrations/journey-coast.webp` (and the slot
+// stays reserved) so a future pillar-aware illustration set can be
+// re-enabled by adding `url(${HERO_BG})` back into the backgroundImage
+// stack below. Until then, gradient only.
+// const HERO_BG = "/illustrations/journey-coast.webp";
 
-const RING_SIZE = 220;
-const RING_STROKE = 14;
+// The ring is sized relative to the card's measured width so it never
+// dwarfs a small phone. RING_MAX keeps the original look on roomy widths;
+// RING_MIN stops it collapsing on very narrow devices. Stroke and the big
+// day-number scale off whatever ring size we land on.
+const RING_MAX = 220;
+const RING_MIN = 150;
+const STROKE_RATIO = 14 / RING_MAX; // ≈ original 14px stroke at 220px ring
+const NUMBER_RATIO = 88 / RING_MAX; // ≈ original 88px number at 220px ring
 
 const SERIF: React.CSSProperties = { fontFamily: "Cormorant, Georgia, serif" };
 
@@ -34,11 +42,15 @@ function HeartDivider({
   );
 }
 
-function TodayDot({ pct }: { pct: number }) {
-  const r = (RING_SIZE - RING_STROKE) / 2;
+function TodayDot({
+  pct,
+  ringSize,
+  stroke,
+}: { pct: number; ringSize: number; stroke: number }) {
+  const r = (ringSize - stroke) / 2;
   const angleRad = (Math.min(100, Math.max(0, pct)) / 100) * 2 * Math.PI - Math.PI / 2;
-  const cx = RING_SIZE / 2 + r * Math.cos(angleRad);
-  const cy = RING_SIZE / 2 + r * Math.sin(angleRad);
+  const cx = ringSize / 2 + r * Math.cos(angleRad);
+  const cy = ringSize / 2 + r * Math.sin(angleRad);
   return (
     <div
       className="absolute pointer-events-none"
@@ -83,6 +95,51 @@ export function DreamNorthStar({
 }) {
   const reduce = useReducedMotion();
 
+  // Plan milestones drive the phase-colored ring — each milestone bounds a
+  // phase, elapsed segments render at full opacity, upcoming at 0.55. When
+  // no plan exists yet the ring falls back to the single pink→violet→amber
+  // gradient stroke.
+  const { data: planData } = useGoalPlan();
+
+  // Phase segments — computed up front so the hook ordering stays stable
+  // across the error / no-goal / happy-path branches below.
+  const phaseTotalDays = goal?.goal_total_days ?? null;
+  const phases = useMemo(() => {
+    if (!phaseTotalDays || phaseTotalDays <= 0) return [];
+    return buildPhases(
+      (planData?.plan?.milestones ?? [])
+        .map((m) => m.day_offset ?? 0)
+        .filter((d) => d > 0),
+      phaseTotalDays,
+    );
+  }, [planData, phaseTotalDays]);
+
+  // Responsive sizing — measure the card and derive the ring + a minimum
+  // (rather than fixed) height. Using minHeight instead of a rigid
+  // aspectRatio lets the card GROW to fit its content on narrow phones, so
+  // the goal pill + tagline are never clipped by `overflow-hidden`.
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [ringSize, setRingSize] = useState(RING_MAX);
+  const [minHeight, setMinHeight] = useState<number | undefined>(undefined);
+
+  useLayoutEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const update = () => {
+      const w = el.clientWidth;
+      if (!w) return;
+      // Leave breathing room around the ring; cap to the original size.
+      const ring = Math.max(RING_MIN, Math.min(RING_MAX, Math.round((w - 40) * 0.62)));
+      setRingSize(ring);
+      // Keep the tall, portrait painted feel as a floor — but only a floor.
+      setMinHeight(Math.round(w * 1.25));
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   // Error: don't pretend "no goal", offer a retry.
   if (!loading && error && !goal) {
     return (
@@ -113,29 +170,77 @@ export function DreamNorthStar({
   const goalDay = Math.min((goal?.goal_day ?? 0) + 1, total ?? (goal?.goal_day ?? 0) + 1);
   const pct = goal?.goal_progress_pct ?? 0;
 
-  const radius = (RING_SIZE - RING_STROKE) / 2;
+  const stroke = Math.round(ringSize * STROKE_RATIO);
+  const numberFont = Math.round(ringSize * NUMBER_RATIO);
+  const radius = (ringSize - stroke) / 2;
+  const cx = ringSize / 2;
+  const cy = ringSize / 2;
   const circumference = 2 * Math.PI * radius;
   const clamped = Math.min(100, Math.max(0, pct));
   const offset = circumference - (clamped / 100) * circumference;
 
+  const hasPhases = phases.length > 1 && total !== null && total > 0;
+  const curFrac =
+    hasPhases && goal?.goal_day != null && total
+      ? Math.max(0, Math.min(1, goal.goal_day / total))
+      : clamped / 100;
+
+  // Perimeter point at a fraction (0 = top, going clockwise) — matches the
+  // shared GoalProgressRing convention so phase math is identical.
+  const ptAt = (frac: number): [number, number] => {
+    const a = frac * 2 * Math.PI;
+    return [cx + radius * Math.sin(a), cy - radius * Math.cos(a)];
+  };
+  const phaseArc = (
+    fA: number,
+    fB: number,
+    color: string,
+    opacity: number,
+    key: string,
+  ) => {
+    if (fB - fA <= 0.002) return null;
+    const [x1, y1] = ptAt(fA);
+    const [x2, y2] = ptAt(fB);
+    const large = fB - fA > 0.5 ? 1 : 0;
+    return (
+      <path
+        key={key}
+        d={`M ${x1.toFixed(2)} ${y1.toFixed(2)} A ${radius} ${radius} 0 ${large} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`}
+        fill="none"
+        stroke={color}
+        strokeWidth={stroke}
+        strokeLinecap="butt"
+        opacity={opacity}
+      />
+    );
+  };
+  const PHASE_GAP = 0.008;
+
   return (
     <Card
+      ref={cardRef}
       className="rounded-[28px] border border-violet-200/50 shadow-2xl overflow-hidden relative"
       style={{
-        aspectRatio: "3 / 4",
-        // Painted illustration on top, soft pastel-sunrise fallback gradient
-        // underneath so the card never looks broken if the asset isn't shipped.
+        // Pure pastel-sunrise gradient. The painted-illustration layer was
+        // intentionally removed — the gradient reads calmer and lighter
+        // than any painted scene we tried. To re-enable a future
+        // pillar-aware illustration, uncomment the HERO_BG const at the
+        // top of this file and add `url(${HERO_BG}),` between the two
+        // gradients below, restoring the matching backgroundSize /
+        // backgroundPosition entries.
         backgroundImage: `
           linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(196,181,253,0.18) 60%, rgba(244,114,182,0.22) 100%),
-          url(${HERO_BG}),
           linear-gradient(180deg, #fde2ec 0%, #fbcfe8 22%, #fed7aa 42%, #fef3c7 60%, #bfdbfe 80%, #93c5fd 100%)
         `,
-        backgroundSize: "cover, cover, cover",
-        backgroundPosition: "center, center 40%, center",
+        backgroundSize: "cover, cover",
+        backgroundPosition: "center, center",
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="relative z-10 flex flex-col h-full px-5 pt-7 pb-3">
+      <div
+        className="relative z-10 flex flex-col px-5 pt-7 pb-3"
+        style={{ minHeight }}
+      >
         {/* Header */}
         <div
           className="text-center font-semibold"
@@ -153,13 +258,12 @@ export function DreamNorthStar({
         {/* Ring */}
         <div
           className="relative mx-auto mt-5"
-          style={{ width: RING_SIZE, height: RING_SIZE }}
+          style={{ width: ringSize, height: ringSize }}
         >
           <svg
-            viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`}
-            width={RING_SIZE}
-            height={RING_SIZE}
-            className="-rotate-90"
+            viewBox={`0 0 ${ringSize} ${ringSize}`}
+            width={ringSize}
+            height={ringSize}
             style={{ filter: "drop-shadow(0 12px 24px rgba(196,181,253,0.4))" }}
             aria-hidden
           >
@@ -172,28 +276,50 @@ export function DreamNorthStar({
             </defs>
             {/* track */}
             <circle
-              cx={RING_SIZE / 2}
-              cy={RING_SIZE / 2}
+              cx={cx}
+              cy={cy}
               r={radius}
               fill="none"
               stroke="#ede9fe"
-              strokeWidth={RING_STROKE}
+              strokeWidth={stroke}
             />
-            {hasDeadline && (
-              <motion.circle
-                cx={RING_SIZE / 2}
-                cy={RING_SIZE / 2}
-                r={radius}
-                fill="none"
-                stroke="url(#dreamRingGrad)"
-                strokeWidth={RING_STROKE}
-                strokeLinecap="round"
-                strokeDasharray={circumference}
-                initial={{ strokeDashoffset: reduce ? offset : circumference }}
-                animate={{ strokeDashoffset: offset }}
-                transition={{ duration: reduce ? 0 : 1.4, ease: "easeOut" }}
-              />
-            )}
+            {hasPhases ? (
+              phases.flatMap((p, i) => {
+                const t = total as number;
+                const sF = Math.min(1, p.start / t + (i > 0 ? PHASE_GAP : 0));
+                const eF = Math.max(
+                  sF,
+                  p.end / t - (i < phases.length - 1 ? PHASE_GAP : 0),
+                );
+                const nodes: Array<JSX.Element | null> = [];
+                if (curFrac > sF)
+                  nodes.push(phaseArc(sF, Math.min(eF, curFrac), p.color, 1, `e${i}`));
+                if (curFrac < eF)
+                  nodes.push(
+                    phaseArc(Math.max(sF, curFrac), eF, p.color, 0.55, `u${i}`),
+                  );
+                return nodes;
+              })
+            ) : hasDeadline ? (
+              // Single gradient fallback when there's no plan yet — keep the
+              // existing animated dashoffset look. Rotated so the fill starts
+              // from the top of the ring and proceeds clockwise.
+              <g transform={`rotate(-90 ${cx} ${cy})`}>
+                <motion.circle
+                  cx={cx}
+                  cy={cy}
+                  r={radius}
+                  fill="none"
+                  stroke="url(#dreamRingGrad)"
+                  strokeWidth={stroke}
+                  strokeLinecap="round"
+                  strokeDasharray={circumference}
+                  initial={{ strokeDashoffset: reduce ? offset : circumference }}
+                  animate={{ strokeDashoffset: offset }}
+                  transition={{ duration: reduce ? 0 : 1.4, ease: "easeOut" }}
+                />
+              </g>
+            ) : null}
           </svg>
 
           {/* Plane badge */}
@@ -207,31 +333,41 @@ export function DreamNorthStar({
             <Plane className="w-5 h-5 -rotate-12" />
           </button>
 
-          {hasDeadline && <TodayDot pct={pct} />}
+          {hasDeadline && (
+            <TodayDot pct={curFrac * 100} ringSize={ringSize} stroke={stroke} />
+          )}
 
-          {/* Inner white circle */}
+          {/* Inner white circle — the big day number is anchored to the exact
+              centre of the circle; the "TAG" label and the days-left caption are
+              positioned above and below it so the number always reads centred. */}
           <div
-            className="absolute rounded-full bg-white/92 flex flex-col items-center justify-center text-center px-4"
+            className="absolute rounded-full bg-white/92"
             style={{
-              inset: 18,
+              inset: stroke + 4,
               backdropFilter: "blur(8px)",
               boxShadow: "0 0 0 1px rgba(255,255,255,0.5) inset",
             }}
           >
             <div
-              className="font-semibold"
-              style={{ color: "#6d28d9", fontSize: 13, letterSpacing: "0.32em" }}
+              className="absolute left-0 right-0 text-center font-semibold"
+              style={{ top: "19%", color: "#6d28d9", fontSize: 13, letterSpacing: "0.32em" }}
             >
               {t("screens.autopilotdashboard.dayLabel").toUpperCase()}
             </div>
             <div
-              className="font-bold leading-none my-0.5"
-              style={{ color: "#7c3aed", fontSize: 88 }}
+              className="absolute left-1/2 top-1/2 font-bold leading-none"
+              style={{
+                transform: "translate(-50%, -50%)",
+                color: "#7c3aed",
+                fontSize: numberFont,
+              }}
             >
               {goal ? goalDay : "—"}
             </div>
-            <HeartDivider width={22} className="mt-1" />
-            <div className="text-xs text-muted-foreground mt-1.5 leading-tight">
+            <div
+              className="absolute left-0 right-0 px-5 text-center text-xs text-muted-foreground leading-tight"
+              style={{ bottom: "15%" }}
+            >
               {hasDeadline
                 ? t("screens.autopilotdashboard.daysToGoalShort", { count: daysLeft })
                 : !goal

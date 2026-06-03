@@ -1,14 +1,15 @@
 import { ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/hooks/useCart";
+import { useUniversalCart } from "@/hooks/useUniversalCart";
 
 interface CartBadgeProps {
   onClick: () => void;
 }
 
 export function CartBadge({ onClick }: CartBadgeProps) {
-  const { cartCount } = useCart();
+  // Phase 0: counts come from the one canonical cart (0 when roleBlocked).
+  const { cartCount } = useUniversalCart();
 
   if (cartCount === 0) return null;
 
