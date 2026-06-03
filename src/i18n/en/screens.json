@@ -3551,7 +3551,13 @@
       "startChat": "💬 Start Chat",
       "autoIntro": "Auto Intro",
       "communityMember": "Community Member",
-      "vitanaCommunityMember": "Vitana community member"
+      "vitanaCommunityMember": "Vitana community member",
+      "matchReasonSharedInterests": "Shared wellness interests",
+      "matchReasonDailyRoutines": "Similar daily routines",
+      "matchReasonFitnessGoals": "Compatible fitness goals",
+      "matchReasonActivityTimes": "Matching activity times",
+      "matchReasonNearby": "Nearby location",
+      "matchReasonJourneyStage": "Similar wellness journey stage"
     },
     "debug": {
       "presenceDebug": "Presence Debug",
@@ -8761,7 +8767,33 @@
         "events": "Events",
         "marketplace": "Marketplace",
         "business_live_media": "Business / Live / Media"
-      }
+      },
+      "foundationStepBenefits": {
+        "life_compass": "Define the one goal your whole journey is built around.",
+        "weakest_habit": "Spot the habit that's holding you back the most.",
+        "reminder": "Set a reminder that keeps you on track every day.",
+        "understand_economy": "Understand how the Longevity Economy works for you.",
+        "profile": "Complete your profile so Maxina understands you.",
+        "diary": "Capture how you're doing — one entry a day.",
+        "vitana_index": "Discover your Vitana Index and what it reveals about you.",
+        "economic_aspiration": "Define what you want to achieve economically.",
+        "calendar": "Connect your calendar so Maxina knows your rhythm.",
+        "autopilot": "Let Autopilot take small steps for you.",
+        "connect": "Connect with people who match you.",
+        "events": "Find events that fit your goals.",
+        "marketplace": "Discover products and services that fit you.",
+        "business_live_media": "Explore Business, Live, and Media in VitanaLand."
+      },
+      "defineYourGoal": "Define your goal",
+      "dayN": "Day {day}",
+      "daysLeftN": "{days} days left",
+      "foundationReady": "Foundation set",
+      "nowImportant": "Now important",
+      "letsGo": "Let's go",
+      "statusOpen": "Open",
+      "statusChecking": "Checking…",
+      "statusDone": "Done",
+      "statusActive": "Active"
     },
     "businesshub": {
       "noServicesYet": "No Services Yet",
