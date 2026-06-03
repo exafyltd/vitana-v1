@@ -322,16 +322,21 @@ export function DreamNorthStar({
             ) : null}
           </svg>
 
-          {/* Plane badge */}
-          <button
-            type="button"
-            onClick={onOpenPlan}
-            className="absolute left-1/2 z-10 -translate-x-1/2 w-11 h-11 rounded-full bg-white/95 border border-violet-200/50 shadow-md flex items-center justify-center text-violet-700 hover:scale-[1.04] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-            style={{ top: -6 }}
-            aria-label={t("screens.autopilotdashboard.openPlan")}
-          >
-            <Plane className="w-5 h-5 -rotate-12" />
-          </button>
+          {/* Plane badge — only shown when there's an actual plan to open
+              (i.e. a deadline exists). Without a deadline, GoalPlanSheet
+              auto-fires plan generation and lands the user on an empty
+              drawer instead of the deadline-setup flow. */}
+          {hasDeadline && (
+            <button
+              type="button"
+              onClick={onOpenPlan}
+              className="absolute left-1/2 z-10 -translate-x-1/2 w-11 h-11 rounded-full bg-white/95 border border-violet-200/50 shadow-md flex items-center justify-center text-violet-700 hover:scale-[1.04] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+              style={{ top: -6 }}
+              aria-label={t("screens.autopilotdashboard.openPlan")}
+            >
+              <Plane className="w-5 h-5 -rotate-12" />
+            </button>
+          )}
 
           {hasDeadline && (
             <TodayDot pct={curFrac * 100} ringSize={ringSize} stroke={stroke} />
@@ -345,8 +350,14 @@ export function DreamNorthStar({
               GoalNorthStar and the desktop layout). */}
           <button
             type="button"
-            onClick={onOpenPlan}
-            aria-label={t("screens.autopilotdashboard.openPlan")}
+            onClick={hasDeadline ? onOpenPlan : onSetGoal}
+            aria-label={t(
+              hasDeadline
+                ? "screens.autopilotdashboard.openPlan"
+                : !goal
+                ? "screens.autopilotdashboard.setGoalCta"
+                : "screens.autopilotdashboard.setDeadlineCta",
+            )}
             className="absolute rounded-full bg-white/92 hover:scale-[1.02] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 text-left"
             style={{
               inset: stroke + 4,
