@@ -8793,7 +8793,17 @@
       "statusOpen": "Offen",
       "statusChecking": "Prüfe…",
       "statusDone": "Erledigt",
-      "statusActive": "Aktiv"
+      "statusActive": "Aktiv",
+      "goalLabels": {
+        "improveQualityExtendLifespan": "Lebensqualität verbessern und Lebensdauer verlängern",
+        "buildFinancialFreedom": "Finanzielle Freiheit aufbauen",
+        "transformHealth": "Gesundheit transformieren",
+        "findLifePartner": "Lebenspartner finden",
+        "advanceCareer": "Karriere vorantreiben",
+        "masterNewSkills": "Neue Fähigkeiten meistern",
+        "spiritualLife": "Spirituelles Leben",
+        "earnFromRecommendations": "Mit Empfehlungen verdienen"
+      }
     },
     "businesshub": {
       "noServicesYet": "Noch keine Dienste",
