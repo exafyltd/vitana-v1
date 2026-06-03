@@ -71,11 +71,11 @@ export const sharingNavigation = [
 ];
 
 export const memoryNavigation = [
-  { id: "overview", name: "Overview", path: "/memory" },
-  { id: "timeline", name: "Timeline", path: "/memory/timeline" },
-  { id: "diary", name: "Daily Diary", path: "/memory/diary" },
-  { id: "recall", name: "Recall & Search", path: "/memory/recall" },
-  { id: "permissions", name: "Permissions", path: "/memory/permissions" },
+  { id: "overview", name: "Overview", i18nKey: "screens.memory.memorySubnav_overview", path: "/memory" },
+  { id: "timeline", name: "Timeline", i18nKey: "screens.memory.memorySubnav_timeline", path: "/memory/timeline" },
+  { id: "diary", name: "Daily Diary", i18nKey: "screens.memory.memorySubnav_diary", path: "/memory/diary" },
+  { id: "recall", name: "Recall & Search", i18nKey: "screens.memory.memorySubnav_recall", path: "/memory/recall" },
+  { id: "permissions", name: "Permissions", i18nKey: "screens.memory.memorySubnav_permissions", path: "/memory/permissions" },
 ];
 
 // ── ADMIN NAVIGATION (Restructured - 9 Sections) ────────────

@@ -11,7 +11,7 @@ import {
   TrendingUp,
   TrendingDown,
 } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton, type SearchDropdownItem } from "@/components/ui/expandable-search-button";
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
@@ -34,7 +34,11 @@ import { GoalPlanSheet } from "@/components/journey/GoalPlanSheet";
 import { MatchesPreview } from "@/components/journey/MatchesPreview";
 import { EventsPreview } from "@/components/journey/EventsPreview";
 import { AutopilotCard } from "@/components/journey/AutopilotCard";
+import { CurrentMoveCard } from "@/components/journey/CurrentMoveCard";
+import { FoundationPath } from "@/components/journey/FoundationPath";
+import { useJourneyFoundation } from "@/hooks/useJourneyFoundation";
 import { useGenerateGoalPlan } from "@/hooks/useGoalPlan";
+import { useAIConsent } from "@/hooks/useAIConsent";
 import { t } from "@/lib/i18n-toast";
 
 interface Recommendation {
@@ -141,7 +145,8 @@ function IndexNowCard() {
 export default function AutopilotDashboard() {
   const { user } = useAuth();
   const isMobile = useIsMobile();
-  const { pendingCount, pendingActions } = useAutopilot();
+  const { allVisibleActions, fetchRecommendations } = useAutopilot();
+  const { hasConsent } = useAIConsent();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
   const [planSheetOpen, setPlanSheetOpen] = useState(false);
@@ -150,6 +155,10 @@ export default function AutopilotDashboard() {
 
   const { data: journeyData, isLoading: journeyLoading, isError: journeyError, refetch: refetchJourney } = useMyJourney();
   const goal = journeyData?.life_compass ?? null;
+
+  // VTID-03255 — the shared Journey Foundation snapshot (next move + path).
+  const { data: jfData, isLoading: jfLoading } = useJourneyFoundation();
+  const jfSnapshot = jfData?.snapshot ?? null;
 
   const { data: recData, isLoading: recLoading, refetch } = useQuery({
     queryKey: ["autopilot-onboarding"],
@@ -186,6 +195,32 @@ export default function AutopilotDashboard() {
       .slice(0, 8)
       .map((r) => ({ id: r.id, title: r.title, subtitle: r.summary }));
   }, [recData, searchQuery]);
+
+  // Populate the Autopilot preview card. useAutopilot() keeps instance-local
+  // state, so the dashboard's copy stays empty (card shows "all caught up")
+  // unless we fetch here too — the popup has its own instance that fetches on
+  // open. Gate on consent to mirror the popup's fetch condition so the card
+  // and popup agree on whether there's anything to show.
+  useEffect(() => {
+    if (user && hasConsent) fetchRecommendations();
+  }, [user, hasConsent, fetchRecommendations]);
+
+  // Match the popup's content exactly: it renders allVisibleActions (pending +
+  // executing + completed) and shows its "all caught up" empty state off that
+  // same set. Driving the card from the same array keeps the two in sync.
+  const autopilotCount = allVisibleActions.length;
+
+  // The card and popup hold separate useAutopilot() instances, so changes made
+  // inside the popup (completing items, on-demand regeneration) don't reach the
+  // card automatically. Refetch this instance when the popup closes so the card
+  // shows the freshly generated next set without waiting for the 5-min poll.
+  const prevAutopilotOpenRef = useRef(false);
+  useEffect(() => {
+    if (prevAutopilotOpenRef.current && !autopilotOpen && user && hasConsent) {
+      fetchRecommendations();
+    }
+    prevAutopilotOpenRef.current = autopilotOpen;
+  }, [autopilotOpen, user, hasConsent, fetchRecommendations]);
 
   const handleOpenAutopilot = () => setAutopilotOpen(true);
 
@@ -236,14 +271,28 @@ export default function AutopilotDashboard() {
     <TodaysGoalCard actions={todayActions} loading={recLoading} onOpenAutopilot={handleOpenAutopilot} />
   );
 
+  // VTID-03255 — "Jetzt wichtig" current move + "Mein Weg" foundation path.
+  // onStart maps the guided step to the existing flow where one exists; the
+  // rest are driven by Vitana in voice, so we never navigate to a dead route.
+  const handleJourneyStart = (stepKey: string) => {
+    if (stepKey === "life_compass" || stepKey === "economic_intent") return handleSetGoal();
+    if (stepKey === "autopilot") return handleOpenAutopilot();
+  };
+  const currentMove = (
+    <CurrentMoveCard snapshot={jfSnapshot} loading={jfLoading} onStart={handleJourneyStart} />
+  );
+  const foundationPath = jfSnapshot ? (
+    <FoundationPath steps={jfSnapshot.foundation_steps} currentKey={jfSnapshot.current_next_step?.key ?? null} />
+  ) : null;
+
   const matchesPreview = <MatchesPreview />;
   const eventsPreview = <EventsPreview />;
 
   // Autopilot preview — top 3 pending actions; tap opens the full popup
   const yourPlanCard = (
     <AutopilotCard
-      pendingCount={pendingCount}
-      previewActions={pendingActions.slice(0, 3)}
+      pendingCount={autopilotCount}
+      previewActions={allVisibleActions.slice(0, 3)}
       onOpen={handleOpenAutopilot}
     />
   );
@@ -275,8 +324,10 @@ export default function AutopilotDashboard() {
   const content = (
     <div className="space-y-4">
       {dreamHero}
+      {currentMove}
       {futureSelf}
       {todaysGoal}
+      {foundationPath}
       {matchesPreview}
       {eventsPreview}
       {yourPlanCard}
@@ -292,7 +343,7 @@ export default function AutopilotDashboard() {
       afterGiftVoucherChildren={
         <>
           <VitanaIndexChip />
-          <AutopilotChip pendingCount={pendingCount} onClick={handleOpenAutopilot} />
+          <AutopilotChip pendingCount={autopilotCount} onClick={handleOpenAutopilot} />
         </>
       }
     >
@@ -342,11 +393,13 @@ export default function AutopilotDashboard() {
           <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-4">
               {northStar}
+              {currentMove}
               {todaysGoal}
               {matchesPreview}
               {eventsPreview}
             </div>
             <div className="space-y-4">
+              {foundationPath}
               {yourPlanCard}
               {howYoureDoing}
             </div>

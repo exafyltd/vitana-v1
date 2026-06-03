@@ -22,6 +22,14 @@
       "strong": "Stark",
       "reallyGood": "Sehr gut",
       "elite": "Elite"
+    },
+    "framings": {
+      "starting": "Gerade gestartet",
+      "early": "Basis geschaffen",
+      "building": "Gewohnheiten entstehen",
+      "strong": "90-Tage-Meilenstein",
+      "reallyGood": "Im Aufblühen",
+      "elite": "Elite"
     }
   }
 }

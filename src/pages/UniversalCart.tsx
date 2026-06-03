@@ -1,27 +1,84 @@
 /**
- * VTID-03236 — Universal Cart page (/universal-cart).
+ * Phase 0 — Universal Cart page (/universal-cart), the single canonical cart.
  *
- * Read-only-by-default view of the caller's active Universal Cart. Lets the
- * user adjust quantity, soft-remove items, and (optionally) mark items
- * completed. Distinct from the legacy `/cart` page — only reads/writes the
- * gateway-backed universal_carts / universal_cart_items / universal_cart_events
- * surface. The legacy Discover cart, Stripe checkout, and CJ Dropshipping
- * flows remain entirely untouched.
+ * Two tabs over ONE gateway-backed cart (universal_carts / universal_cart_items
+ * / universal_cart_events):
+ *   - "Warenkorb" (Cart): buyable list + wallet balance + the existing checkout
+ *     flow (gateway bridge — unchanged).
+ *   - "Gemerkt" (Saved): items flagged metadata.saved, moved in/out via the
+ *     existing PATCH item metadata (no gateway change).
+ *
+ * Line rows hydrate title/image from the products feed via useMarketplaceProduct
+ * (the item.product_id IS the products.id UUID), falling back to the snapshot
+ * price + a "Produkt ansehen" link while hydration is loading/missing.
  *
  * Empty / role-blocked / error states all rendered explicitly per the
  * vitana-v1 hard rule (no raw user-visible strings).
  */
 
-import { Link } from "react-router-dom";
+import { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Bookmark, Loader2, Minus, Plus, Trash2 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
+  AlertTriangle,
+  Bookmark,
+  ExternalLink,
+  Loader2,
+  Minus,
+  Plus,
+  RotateCcw,
+  Sparkles,
+  ShoppingBag,
+  Trash2,
+  X,
+} from "lucide-react";
+import {
+  CheckoutAffiliateRedirect,
   UniversalCartApiError,
   UniversalCartItem,
+  isInsufficientBalanceError,
 } from "@/lib/universal-cart-client";
 import { useUniversalCart } from "@/hooks/useUniversalCart";
-import { notifyError, t } from "@/lib/i18n-toast";
+import { useShoppingAgent } from "@/hooks/useShoppingAgent";
+import { useMarketplaceProduct } from "@/hooks/useMarketplace";
+import { AgentProposalCard } from "@/components/universal-cart/AgentProposalCard";
+import { BudgetMeter } from "@/components/universal-cart/BudgetMeter";
+import { GatewayWalletBalanceCard } from "@/components/wallet/GatewayWalletBalanceCard";
+import { AddMoneyDialog } from "@/components/wallet/AddMoneyDialog";
+import { WalletCurrency } from "@/lib/wallet-gateway-client";
+import { toMajorUnits, formatMoneyMinor, GatewayCurrency } from "@/lib/format-money";
+import { notify, notifyError, t } from "@/lib/i18n-toast";
+
+/** Known checkout error codes that have a dedicated translated message. */
+const CHECKOUT_ERROR_KEYS = new Set([
+  "invalid_request",
+  "CART_EMPTY",
+  "PRODUCT_UNAVAILABLE",
+  "PRICE_UNAVAILABLE",
+  "MIXED_CURRENCY",
+  "UNSUPPORTED_WALLET_CURRENCY",
+  "WALLET_ACCOUNT_MISSING",
+  "WALLET_ACCOUNT_INACTIVE",
+  "INSUFFICIENT_BALANCE",
+  "TENANT_REQUIRED",
+  "WALLET_DEBIT_FAILED",
+  "CART_READ_FAILED",
+  "ORDER_WRITE_FAILED",
+  "WALLET_READ_FAILED",
+  "GATEWAY_MISCONFIGURED",
+]);
+
+function checkoutErrorKey(code: string | undefined): string {
+  if (code && CHECKOUT_ERROR_KEYS.has(code)) {
+    return `marketplaceCheckout.errors.${code}`;
+  }
+  return "marketplaceCheckout.errors.unknown";
+}
 
 function QuantityStepper({
   item,
@@ -66,27 +123,115 @@ function QuantityStepper({
   );
 }
 
+/**
+ * Line header: hydrates the product title/image from the products feed. While
+ * hydration is loading or the product is missing, it falls back to the snapshot
+ * (a price line + a "Produkt ansehen" link to the product page).
+ */
+function CartLineHeader({ item }: { item: UniversalCartItem }) {
+  const { data, isLoading } = useMarketplaceProduct(item.product_id);
+  const product = data?.product;
+
+  const snapshotPrice =
+    item.unit_price_cents_snapshot != null
+      ? formatMoneyMinor(
+          item.unit_price_cents_snapshot,
+          (item.currency_snapshot?.toUpperCase() as GatewayCurrency) || "EUR",
+        )
+      : null;
+
+  const image = product?.images?.[0] ?? item.metadata?.item_image_url;
+  const title =
+    product?.title ??
+    (typeof item.metadata?.source_label === "string"
+      ? (item.metadata.source_label as string)
+      : null);
+
+  return (
+    <div className="flex items-start gap-3">
+      {typeof image === "string" && image ? (
+        <img
+          src={image}
+          alt=""
+          className="h-12 w-12 flex-shrink-0 rounded-md object-cover bg-muted"
+          loading="lazy"
+        />
+      ) : null}
+      <div className="min-w-0 text-sm">
+        {title ? (
+          <div className="font-medium break-words">{title}</div>
+        ) : isLoading ? (
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            <span>{t("universalCart.page.loading")}</span>
+          </div>
+        ) : (
+          <div className="font-medium break-words">
+            {snapshotPrice ?? item.product_id}
+          </div>
+        )}
+        {snapshotPrice && (
+          <div className="text-xs text-muted-foreground tabular-nums">
+            {snapshotPrice}
+          </div>
+        )}
+        <Link
+          to={`/discover/product/${item.product_id}`}
+          className="text-xs text-primary hover:underline inline-flex items-center gap-0.5 mt-0.5"
+        >
+          {t("universalCart.item.viewProduct")}
+          <ExternalLink className="h-3 w-3" />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export default function UniversalCartPage() {
+  const navigate = useNavigate();
   const {
     cart,
-    items,
+    cartItems,
+    savedItems,
+    budget,
     isLoading,
     error,
     roleBlocked,
     patchItem,
     removeItem,
-    completeItem,
+    checkout,
     isPatching,
     isRemoving,
-    isCompleting,
+    isCheckingOut,
   } = useUniversalCart();
+
+  const {
+    propose,
+    isProposing,
+    reorder,
+    isReordering,
+    roleBlocked: agentRoleBlocked,
+    llmUnavailable,
+    error: agentError,
+  } = useShoppingAgent();
+
+  // Ref so an empty "Vitana fragen" tap focuses the prompt instead of doing nothing.
+  const promptRef = useRef<HTMLTextAreaElement>(null);
+
+  const [addMoneyOpen, setAddMoneyOpen] = useState(false);
+  const [addMoneyCurrency, setAddMoneyCurrency] = useState<WalletCurrency>("EUR");
+  const [addMoneyAmount, setAddMoneyAmount] = useState<number | undefined>(undefined);
+  const [affiliateRedirects, setAffiliateRedirects] = useState<
+    CheckoutAffiliateRedirect[]
+  >([]);
+  const [prompt, setPrompt] = useState("");
 
   // -- Role-blocked: explicit community-only empty state ---------------------
   if (roleBlocked) {
     return (
       <main className="container mx-auto max-w-2xl px-4 py-10">
         <h1 className="text-2xl font-semibold flex items-center gap-2">
-          <Bookmark className="h-6 w-6" />
+          <ShoppingBag className="h-6 w-6" />
           {t("universalCart.page.title")}
         </h1>
         <Card className="mt-6">
@@ -107,7 +252,7 @@ export default function UniversalCartPage() {
     return (
       <main className="container mx-auto max-w-2xl px-4 py-10">
         <h1 className="text-2xl font-semibold flex items-center gap-2">
-          <Bookmark className="h-6 w-6" />
+          <ShoppingBag className="h-6 w-6" />
           {t("universalCart.page.title")}
         </h1>
         <div className="mt-10 flex items-center gap-2 text-muted-foreground">
@@ -122,7 +267,7 @@ export default function UniversalCartPage() {
     return (
       <main className="container mx-auto max-w-2xl px-4 py-10">
         <h1 className="text-2xl font-semibold flex items-center gap-2">
-          <Bookmark className="h-6 w-6" />
+          <ShoppingBag className="h-6 w-6" />
           {t("universalCart.page.title")}
         </h1>
         <Card className="mt-6">
@@ -139,8 +284,58 @@ export default function UniversalCartPage() {
     );
   }
 
-  const activeItems = items.filter((it) => it.status === "active");
-  const isEmpty = !cart || activeItems.length === 0;
+  // One cart, two slices: agent-proposed lines (metadata.origin === 'agent')
+  // render in the "Vitana schlägt vor" section ABOVE the buyable list; every
+  // other active line renders as before. Both come from the SAME refetched
+  // cartItems (single source of truth) — never from the propose response.
+  const agentItems = cartItems.filter((i) => i.metadata?.origin === "agent");
+  // Phase 2 — reorder-origin lines render in their own "Erneut kaufen" section,
+  // sourced from the SAME refetched cartItems (single source of truth), never
+  // from the reorder response.
+  const reorderItems = cartItems.filter((i) => i.metadata?.origin === "reorder");
+  const buyableItems = cartItems.filter(
+    (i) => i.metadata?.origin !== "agent" && i.metadata?.origin !== "reorder",
+  );
+  const hasAgentSafetyFlags = agentItems.some((i) => {
+    const flags = i.metadata?.safety_flags;
+    return Array.isArray(flags) && flags.length > 0;
+  });
+
+  // Phase 2 — budget advisory keyed off the gateway-computed status band.
+  const budgetAdvisoryKey =
+    budget?.status === "over"
+      ? "universalCart.agent.overCapAdvisory"
+      : budget?.status === "near"
+        ? "universalCart.agent.nearCapAdvisory"
+        : null;
+
+  const isCartEmpty = !cart || cartItems.length === 0;
+  const isSavedEmpty = savedItems.length === 0;
+
+  const onPropose = async () => {
+    if (isProposing) return;
+    const trimmed = prompt.trim();
+    // Empty tap: don't fail silently — focus the prompt so it's clear input is needed.
+    if (!trimmed) {
+      promptRef.current?.focus();
+      return;
+    }
+    try {
+      await propose({ prompt: trimmed });
+      setPrompt("");
+    } catch {
+      // roleBlocked / llmUnavailable / generic surface via the hook state below.
+    }
+  };
+
+  const onReorder = async () => {
+    if (isReordering) return;
+    try {
+      await reorder();
+    } catch {
+      // roleBlocked / generic surface via the hook state below.
+    }
+  };
 
   const onQuantity = async (item: UniversalCartItem, next: number) => {
     if (next === item.quantity) return;
@@ -149,7 +344,7 @@ export default function UniversalCartPage() {
     } catch (err) {
       const code = err instanceof UniversalCartApiError ? err.code : undefined;
       notifyError("universalCart.addButton.failed");
-      if (code) console.warn("[VTID-03236] patch failed:", code);
+      if (code) console.warn("[Phase 0] patch failed:", code);
     }
   };
 
@@ -159,93 +354,416 @@ export default function UniversalCartPage() {
     } catch (err) {
       const code = err instanceof UniversalCartApiError ? err.code : undefined;
       notifyError("universalCart.addButton.failed");
-      if (code) console.warn("[VTID-03236] remove failed:", code);
+      if (code) console.warn("[Phase 0] remove failed:", code);
     }
   };
 
-  const onComplete = async (item: UniversalCartItem) => {
+  // Saved <-> Cart toggle uses the existing PATCH item metadata (no gateway change).
+  const onSetSaved = async (item: UniversalCartItem, saved: boolean) => {
     try {
-      await completeItem(item.id);
+      await patchItem(item.id, { metadata: { ...item.metadata, saved } });
     } catch (err) {
       const code = err instanceof UniversalCartApiError ? err.code : undefined;
       notifyError("universalCart.addButton.failed");
-      if (code) console.warn("[VTID-03236] complete failed:", code);
+      if (code) console.warn("[Phase 0] save toggle failed:", code);
+    }
+  };
+
+  const onCheckout = async () => {
+    setAffiliateRedirects([]);
+    try {
+      const res = await checkout();
+
+      // Partner/affiliate items: open each merchant link in a new tab and keep
+      // a list rendered so the user can re-open any that the browser blocked.
+      if (res.affiliate_redirects.length > 0) {
+        for (const r of res.affiliate_redirects) {
+          window.open(r.affiliate_url, "_blank", "noopener");
+        }
+        setAffiliateRedirects(res.affiliate_redirects);
+        notify("marketplaceCheckout.checkout.affiliateOpened");
+      }
+
+      // Wallet-payable leg: success toast + navigate to the success page.
+      if (res.wallet_order) {
+        if (res.wallet_order.duplicate) {
+          notify(
+            "marketplaceCheckout.checkout.duplicateTitle",
+            "marketplaceCheckout.checkout.duplicateBody",
+          );
+        } else {
+          notify(
+            "marketplaceCheckout.checkout.successTitle",
+            "marketplaceCheckout.checkout.successBody",
+          );
+        }
+        navigate(`/checkout/success?checkout_id=${encodeURIComponent(res.checkout_id)}`);
+      }
+    } catch (err) {
+      // 402 INSUFFICIENT_BALANCE → prefill + open the Add-Money dialog.
+      if (isInsufficientBalanceError(err)) {
+        const { required_minor, balance_minor, currency } = err.detail;
+        setAddMoneyCurrency(currency);
+        setAddMoneyAmount(toMajorUnits(Math.max(required_minor - balance_minor, 0)));
+        setAddMoneyOpen(true);
+        notifyError(checkoutErrorKey("INSUFFICIENT_BALANCE"));
+        return;
+      }
+      const code = err instanceof UniversalCartApiError ? err.code : undefined;
+      notifyError(checkoutErrorKey(code));
+      if (code) console.warn("[Phase 0] checkout failed:", code);
     }
   };
 
   return (
     <main className="container mx-auto max-w-2xl px-4 py-10">
       <header className="mb-6">
-        <h1 className="text-2xl font-semibold flex items-center gap-2">
-          <Bookmark className="h-6 w-6" />
-          {t("universalCart.page.title")}
-        </h1>
+        <div className="flex items-start justify-between gap-2">
+          <h1 className="text-2xl font-semibold flex items-center gap-2">
+            <ShoppingBag className="h-6 w-6" />
+            {t("universalCart.page.title")}
+          </h1>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="-mr-2 shrink-0"
+            onClick={() => navigate(-1)}
+            aria-label={t("universalCart.page.close")}
+          >
+            <X className="h-5 w-5" />
+          </Button>
+        </div>
         <p className="text-sm text-muted-foreground mt-1">
           {t("universalCart.page.subtitle")}
         </p>
       </header>
 
-      {isEmpty ? (
-        <Card>
-          <CardContent className="py-10 text-center space-y-3">
-            <h2 className="text-lg font-medium">
-              {t("universalCart.page.emptyTitle")}
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              {t("universalCart.page.emptyBody")}
-            </p>
-            <Button asChild variant="outline" className="mt-2">
-              <Link to="/discover">{t("universalCart.page.linkToDiscover")}</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="space-y-3">
-          {activeItems.map((item) => (
-            <Card key={item.id}>
-              <CardHeader className="pb-2">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="text-sm">
-                    <div className="font-medium break-words">
-                      {item.product_id}
-                    </div>
-                    <div className="text-xs text-muted-foreground">
-                      {item.item_type}
-                      {item.source_surface ? ` · ${item.source_surface}` : ""}
-                    </div>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => onRemove(item)}
-                    disabled={isRemoving}
-                    aria-label={t("universalCart.page.removeAction")}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent className="flex items-center justify-between gap-3 pt-0">
-                <QuantityStepper
+      <Tabs defaultValue="cart" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="cart">{t("universalCart.tabs.cart")}</TabsTrigger>
+          <TabsTrigger value="saved">{t("universalCart.tabs.saved")}</TabsTrigger>
+        </TabsList>
+
+        {/* ---- Cart tab: budget + agent suggestions + buyable list + wallet + checkout ---- */}
+        <TabsContent value="cart" className="mt-4 space-y-4">
+          {/* Standing budget meter — spend-this-month vs cap. */}
+          {budget && <BudgetMeter budget={budget} />}
+
+          {/* Budget advisory — surfaces when the projected spend nears/exceeds the cap. */}
+          {budgetAdvisoryKey && (
+            <Alert variant={budget?.status === "over" ? "destructive" : "default"}>
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>{t(budgetAdvisoryKey)}</AlertDescription>
+            </Alert>
+          )}
+
+          {/* Prompt box — "Wonach suchst du?" → gateway proposes INTO this cart. */}
+          <Card>
+            <CardContent className="space-y-3 pt-6">
+              <Label htmlFor="agent-prompt" className="flex items-center gap-1.5 text-sm font-medium">
+                <Sparkles className="h-4 w-4" />
+                {t("universalCart.agent.promptLabel")}
+              </Label>
+              <Textarea
+                ref={promptRef}
+                id="agent-prompt"
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder={t("universalCart.agent.promptPlaceholder")}
+                rows={2}
+                disabled={isProposing}
+              />
+              <Button
+                type="button"
+                className="w-full"
+                onClick={onPropose}
+                disabled={isProposing}
+              >
+                {isProposing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("universalCart.agent.proposing")}
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    {t("universalCart.agent.proposeCta")}
+                  </>
+                )}
+              </Button>
+
+              {/* Buy again — gateway drops previously-purchased items back in. */}
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={onReorder}
+                disabled={isReordering || isProposing}
+              >
+                {isReordering ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("universalCart.agent.reordering")}
+                  </>
+                ) : (
+                  <>
+                    <RotateCcw className="mr-2 h-4 w-4" />
+                    {t("universalCart.agent.reorderCta")}
+                  </>
+                )}
+              </Button>
+
+              {agentRoleBlocked && (
+                <Alert variant="destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    {t("universalCart.agent.roleBlocked")}
+                  </AlertDescription>
+                </Alert>
+              )}
+              {llmUnavailable && (
+                <Alert variant="destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    {t("universalCart.agent.unavailable")}
+                  </AlertDescription>
+                </Alert>
+              )}
+              {/* Any other failure (5xx, network, timeout) — never fail silently. */}
+              {agentError && !agentRoleBlocked && !llmUnavailable && (
+                <Alert variant="destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    {t("universalCart.agent.error")}
+                  </AlertDescription>
+                </Alert>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Vitana schlägt vor — agent-proposed lines, ABOVE the buyable list. */}
+          {agentItems.length > 0 && (
+            <div className="space-y-3">
+              <div>
+                <h2 className="flex items-center gap-1.5 text-lg font-medium">
+                  <Sparkles className="h-5 w-5" />
+                  {t("universalCart.agent.sectionTitle")}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  {t("universalCart.agent.sectionSubtitle")}
+                </p>
+              </div>
+
+              {hasAgentSafetyFlags && (
+                <Alert variant="destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertDescription>
+                    {t("universalCart.agent.reviewNote")}
+                  </AlertDescription>
+                </Alert>
+              )}
+
+              {agentItems.map((item) => (
+                <AgentProposalCard
+                  key={item.id}
                   item={item}
-                  onChange={(next) => onQuantity(item, next)}
-                  disabled={isPatching}
+                  onRemove={onRemove}
+                  isRemoving={isRemoving}
                 />
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onComplete(item)}
-                  disabled={isCompleting}
-                >
-                  {t("universalCart.page.completeAction")}
+              ))}
+            </div>
+          )}
+
+          {/* Erneut kaufen — reorder-proposed lines (metadata.origin === 'reorder'). */}
+          {reorderItems.length > 0 && (
+            <div className="space-y-3">
+              <div>
+                <h2 className="flex items-center gap-1.5 text-lg font-medium">
+                  <RotateCcw className="h-5 w-5" />
+                  {t("universalCart.agent.reorderSectionTitle")}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  {t("universalCart.agent.reorderSectionSubtitle")}
+                </p>
+              </div>
+
+              {reorderItems.map((item) => (
+                <AgentProposalCard
+                  key={item.id}
+                  item={item}
+                  onRemove={onRemove}
+                  isRemoving={isRemoving}
+                  variant="reorder"
+                />
+              ))}
+            </div>
+          )}
+
+          {isCartEmpty ? (
+            <Card>
+              <CardContent className="py-10 text-center space-y-3">
+                <h2 className="text-lg font-medium">
+                  {t("universalCart.page.emptyTitle")}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  {t("universalCart.page.emptyBody")}
+                </p>
+                <Button asChild variant="outline" className="mt-2">
+                  <Link to="/discover">{t("universalCart.page.linkToDiscover")}</Link>
                 </Button>
               </CardContent>
             </Card>
-          ))}
-        </div>
-      )}
+          ) : (
+            <div className="space-y-3">
+              <GatewayWalletBalanceCard />
+
+              {buyableItems.map((item) => (
+                <Card key={item.id}>
+                  <CardHeader className="pb-2">
+                    <div className="flex items-start justify-between gap-3">
+                      <CartLineHeader item={item} />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => onRemove(item)}
+                        disabled={isRemoving}
+                        aria-label={t("universalCart.page.removeAction")}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="flex items-center justify-between gap-3 pt-0">
+                    <QuantityStepper
+                      item={item}
+                      onChange={(next) => onQuantity(item, next)}
+                      disabled={isPatching}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onSetSaved(item, true)}
+                      disabled={isPatching}
+                    >
+                      <Bookmark className="mr-2 h-4 w-4" />
+                      {t("universalCart.saved.saveForLater")}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+
+              {affiliateRedirects.length > 0 && (
+                <Card>
+                  <CardHeader className="pb-2">
+                    <h2 className="text-sm font-medium">
+                      {t("marketplaceCheckout.checkout.affiliateTitle")}
+                    </h2>
+                    <p className="text-xs text-muted-foreground">
+                      {t("marketplaceCheckout.checkout.affiliateBody")}
+                    </p>
+                  </CardHeader>
+                  <CardContent className="space-y-2 pt-0">
+                    {affiliateRedirects.map((r) => (
+                      <Button
+                        key={r.item_id}
+                        asChild
+                        variant="outline"
+                        size="sm"
+                        className="w-full justify-start"
+                      >
+                        <a href={r.affiliate_url} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="mr-2 h-4 w-4" />
+                          {t("marketplaceCheckout.checkout.affiliateLink")}
+                        </a>
+                      </Button>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+
+              <Button
+                type="button"
+                className="w-full"
+                size="lg"
+                onClick={onCheckout}
+                disabled={isCartEmpty || isCheckingOut}
+              >
+                {isCheckingOut ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t("marketplaceCheckout.checkout.processing")}
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag className="mr-2 h-4 w-4" />
+                    {t("marketplaceCheckout.checkout.button")}
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
+        </TabsContent>
+
+        {/* ---- Saved tab: items flagged metadata.saved ---- */}
+        <TabsContent value="saved" className="mt-4">
+          {isSavedEmpty ? (
+            <Card>
+              <CardContent className="py-10 text-center space-y-3">
+                <h2 className="text-lg font-medium">
+                  {t("universalCart.saved.emptyTitle")}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  {t("universalCart.saved.emptyBody")}
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-3">
+              {savedItems.map((item) => (
+                <Card key={item.id}>
+                  <CardHeader className="pb-2">
+                    <div className="flex items-start justify-between gap-3">
+                      <CartLineHeader item={item} />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => onRemove(item)}
+                        disabled={isRemoving}
+                        aria-label={t("universalCart.page.removeAction")}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="flex items-center justify-end gap-3 pt-0">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onSetSaved(item, false)}
+                      disabled={isPatching}
+                    >
+                      <ShoppingBag className="mr-2 h-4 w-4" />
+                      {t("universalCart.saved.moveToCart")}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
+
+      <AddMoneyDialog
+        open={addMoneyOpen}
+        onOpenChange={setAddMoneyOpen}
+        initialCurrency={addMoneyCurrency}
+        initialAmountMajor={addMoneyAmount}
+      />
     </main>
   );
 }

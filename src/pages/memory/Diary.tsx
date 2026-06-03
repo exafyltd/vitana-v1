@@ -71,7 +71,7 @@ function Diary() {
       <div className="p-6">
         <StandardHeader 
           title={t('screens.memory.wellnessDiary')}
-          description="Record and review your wellness journey through multimedia entries."
+          description={t('screens.memory.wellnessDiaryMultimediaDescription')}
           emoji="📔"
         />
 

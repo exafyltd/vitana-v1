@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Clock, Droplets, Building2, Star } from 'lucide-react';
 import { withCardId } from '@/lib/withCardId';
-import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { t } from '@/lib/i18n-toast';
 
 interface LabTest {
@@ -103,24 +102,11 @@ function LabTestCardBase({ labTest, onOrder }: LabTestCardProps) {
         </div>
 
         <div className="pt-2 flex gap-2">
-          <AddToCartButton
-            item={{
-              item_type: 'lab_test',
-              item_id: labTest.id,
-              item_name: labTest.name,
-              item_price: labTest.price,
-              item_metadata: {
-                category: labTest.category,
-                turnaround_days: labTest.turnaround_days,
-                biomarkers_count: labTest.biomarkers.length,
-              },
-            }}
-            variant="outline"
-            size="sm"
-            className="flex-1"
-          />
-          <Button 
-            onClick={() => onOrder(labTest)} 
+          {/* Phase 0: lab_test not yet supported in the unified cart (it is a
+              products-backed cart; lab tests have no products.id row). The
+              add-to-cart affordance is hidden until a later phase adds support. */}
+          <Button
+            onClick={() => onOrder(labTest)}
             className="flex-1"
             size="sm"
           >

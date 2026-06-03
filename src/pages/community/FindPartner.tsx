@@ -41,7 +41,15 @@ import { useAuth } from '@/context/AuthProvider';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { IntentCard } from '@/components/intents/IntentCard';
 import { FindPartnerMatchCard } from '@/components/intents/FindPartnerMatchCard';
+import { FindMatchFilterSheet } from '@/components/intents/FindMatchFilterSheet';
 import { IntentComposer } from '@/components/intents/IntentComposer';
+import {
+  DEFAULT_FILTERS,
+  applyFindMatchFilters,
+  countActiveFilters,
+  matchTextHit,
+  type FindMatchFilters,
+} from '@/lib/findMatchFilters';
 import {
   listMyIntents,
   getIntentBoard,
@@ -58,13 +66,28 @@ const GATEWAY_URL =
 
 const MEMBERS_TAB_THRESHOLD = 1000;
 
+// Locally-tracked "opened" profiles, so "Hide already viewed profiles"
+// works even before a match transitions state server-side. Stores match
+// ids + counterparty vitana ids the user has tapped through to.
+const VIEWED_STORAGE_KEY = 'vitana.findMatch.viewed';
+
+function loadViewedIds(): Set<string> {
+  try {
+    const raw = localStorage.getItem(VIEWED_STORAGE_KEY);
+    const arr = raw ? (JSON.parse(raw) as unknown) : [];
+    return new Set(Array.isArray(arr) ? arr.map(String) : []);
+  } catch {
+    return new Set();
+  }
+}
+
 type View = 'matches' | 'board' | 'posts' | 'members';
 
-const VIEW_OPTIONS: { value: View; icon: string; label: string }[] = [
-  { value: 'matches', icon: '💃', label: 'My Matches' },
-  { value: 'board',   icon: '📣',   label: 'Community Board' },
-  { value: 'posts',   icon: '📝',   label: 'My Posts' },
-  { value: 'members', icon: '👥',   label: 'Members' },
+const VIEW_OPTIONS: { value: View; icon: string; labelKey: string }[] = [
+  { value: 'matches', icon: '💃', labelKey: 'screens.community.viewMatches' },
+  { value: 'board',   icon: '📣',   labelKey: 'screens.community.viewBoard' },
+  { value: 'posts',   icon: '📝',   labelKey: 'screens.community.viewPosts' },
+  { value: 'members', icon: '👥',   labelKey: 'screens.community.viewMembers' },
 ];
 
 function viewMeta(v: View) {
@@ -110,6 +133,26 @@ export default function FindPartner() {
   const [view, setView] = useState<View>(initialView);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [composerOpen, setComposerOpen] = useState(false);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filters, setFilters] = useState<FindMatchFilters>(DEFAULT_FILTERS);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [viewedIds, setViewedIds] = useState<Set<string>>(() => loadViewedIds());
+
+  const markViewed = useCallback((...ids: (string | null | undefined)[]) => {
+    const fresh = ids.filter((x): x is string => !!x);
+    if (fresh.length === 0) return;
+    setViewedIds((prev) => {
+      if (fresh.every((id) => prev.has(id))) return prev;
+      const next = new Set(prev);
+      fresh.forEach((id) => next.add(id));
+      try {
+        localStorage.setItem(VIEWED_STORAGE_KEY, JSON.stringify(Array.from(next)));
+      } catch {
+        /* storage full / unavailable — in-memory tracking still works */
+      }
+      return next;
+    });
+  }, []);
 
   // Keep ?view= in URL synced.
   useEffect(() => {
@@ -174,10 +217,61 @@ export default function FindPartner() {
     staleTime: FIND_PARTNER_STALE_TIME,
   });
 
-  const matches = matchesQuery.data ?? [];
-  const boardIntents = boardQuery.data?.intents ?? [];
-  const myPosts = myPostsQuery.data ?? [];
-  const members = membersQuery.data ?? [];
+  const allMatches = matchesQuery.data ?? [];
+  const allBoardIntents = boardQuery.data?.intents ?? [];
+  const allMyPosts = myPostsQuery.data ?? [];
+  const allMembers = membersQuery.data ?? [];
+
+  // Free-text search is shared across views (the box reads "Search posts
+  // & matches"), so wire a light client-side text filter into each list
+  // instead of leaving it a no-op.
+  const q = searchQuery.trim().toLowerCase();
+  const intentHit = useCallback(
+    (it: UserIntent) =>
+      !q ||
+      [it.title, it.scope, it.category, it.requester_vitana_id]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase()
+        .includes(q),
+    [q],
+  );
+  const boardIntents = useMemo(() => allBoardIntents.filter(intentHit), [allBoardIntents, intentHit]);
+  const myPosts = useMemo(() => allMyPosts.filter(intentHit), [allMyPosts, intentHit]);
+  const members = useMemo(
+    () =>
+      !q
+        ? allMembers
+        : allMembers.filter((m) =>
+            [m.display_name, m.vitana_id, m.location]
+              .filter(Boolean)
+              .join(' ')
+              .toLowerCase()
+              .includes(q),
+          ),
+    [allMembers, q],
+  );
+
+  // My Matches: apply the filter sheet first, then the free-text search.
+  // Both are pure/client-side over the loaded list.
+  const matches = useMemo(() => {
+    const filtered = applyFindMatchFilters(allMatches, filters, viewedIds);
+    return searchQuery.trim()
+      ? filtered.filter((m) => matchTextHit(m, searchQuery))
+      : filtered;
+  }, [allMatches, filters, viewedIds, searchQuery]);
+
+  const activeFilterCount = useMemo(() => countActiveFilters(filters), [filters]);
+  // True when matches are being hidden by a filter/search — drives the
+  // "Showing X of Y · Reset" affordance so the count change is never silent.
+  const matchesNarrowed =
+    view === 'matches' && (activeFilterCount > 0 || !!searchQuery.trim()) &&
+    matches.length < allMatches.length;
+
+  const resetMatchFilters = useCallback(() => {
+    setFilters(DEFAULT_FILTERS);
+    setSearchQuery('');
+  }, []);
 
   // Per-view loading + error derived from the active query. Inactive queries
   // sit at isPending=true / isFetching=false (which v5 surfaces as isLoading=false),
@@ -200,7 +294,7 @@ export default function FindPartner() {
 
   // Active sub-view metadata for the pill label + sheet header.
   const active = viewMeta(view);
-  const filterLabel = `${active.icon} ${active.label}`;
+  const filterLabel = `${active.icon} ${t(active.labelKey)}`;
 
   const visibleViewOptions = useMemo(
     () => VIEW_OPTIONS.filter((o) => o.value !== 'members' || showMembersTab),
@@ -217,19 +311,24 @@ export default function FindPartner() {
           <div className="max-w-7xl mx-auto">
         <StandardHeader
           title={t('screens.community.findMatch')}
-          description="Dance and fitness partners — matched by AI, ranked by fit."
+          description={t('screens.community.findMatchDescription')}
         />
 
         <UtilityActionButton className="min-w-0" compact={isMobile}>
           <div className="flex items-center gap-2 min-w-max">
             <ExpandableSearchButton
               placeholder={t('screens.community.searchPostsMatches')}
-              onSearch={() => { /* search wiring is per-view; leave as no-op for v1 */ }}
+              onSearch={(query) => setSearchQuery(query)}
+              onClear={() => setSearchQuery('')}
               // Mobile uses the chip + sheet picker to switch views;
               // desktop has the SplitBar tab bar directly below this
               // utility row, so the chip would be redundant.
               filterLabel={isMobile ? filterLabel : undefined}
               onFilterClick={isMobile ? () => setPickerOpen(true) : undefined}
+              // Filter sheet lives inside the expanded search (matches view
+              // only) instead of as a standalone utility-bar icon.
+              onFilterToggle={view === 'matches' ? () => setFilterOpen(true) : undefined}
+              filterActiveCount={activeFilterCount}
             />
             <Button
               onClick={() => setComposerOpen(true)}
@@ -248,7 +347,7 @@ export default function FindPartner() {
             <SplitBarList>
               {visibleViewOptions.map((o) => (
                 <SplitBarTrigger key={o.value} value={o.value}>
-                  {o.icon} {o.label}
+                  {o.icon} {t(o.labelKey)}
                 </SplitBarTrigger>
               ))}
             </SplitBarList>
@@ -264,15 +363,43 @@ export default function FindPartner() {
             <div className="text-sm text-destructive py-4">{t('screens.community.couldnTLoadError', { error })}</div>
           )}
 
+          {/* Showing X of Y · Reset — only when a filter/search is hiding matches. */}
+          {!loading && !error && matchesNarrowed && (
+            <div className="flex items-center justify-between gap-3 mb-3 text-sm text-muted-foreground">
+              <span>
+                {t('screens.community.filterShowingOfTotal', {
+                  shown: matches.length,
+                  total: allMatches.length,
+                })}
+              </span>
+              <button
+                type="button"
+                onClick={resetMatchFilters}
+                className="font-medium text-primary hover:underline"
+              >
+                {t('screens.community.filterReset')}
+              </button>
+            </div>
+          )}
+
           {/* My Matches */}
           {!loading && !error && view === 'matches' && (
             matches.length === 0 ? (
+              allMatches.length > 0 ? (
+                <EmptyState
+                  icon={<Heart className="h-10 w-10 text-muted-foreground mb-3" />}
+                  title={t('screens.community.noMatchesForFilters')}
+                  body={t('screens.community.noMatchesForFiltersBody')}
+                  cta={{ label: t('screens.community.filterReset'), onClick: resetMatchFilters }}
+                />
+              ) : (
               <EmptyState
                 icon={<Heart className="h-10 w-10 text-muted-foreground mb-3" />}
                 title={t('screens.community.noMatchesYet')}
-                body="Post a wish to start. The AI ranks people across dance and fitness — your matches show up here."
-                cta={{ label: 'Post a new wish', onClick: () => setComposerOpen(true) }}
+                body={t('screens.community.matchesEmptyBody')}
+                cta={{ label: t('screens.community.postNewWish'), onClick: () => setComposerOpen(true) }}
               />
+              )
             ) : isMobile ? (
               // Bottom padding leaves ~ a card height of clear space so the
               // primary CTA on the last card stays above the fixed mobile
@@ -286,6 +413,7 @@ export default function FindPartner() {
                     sourceCategory={m.source_category}
                     perspective="outgoing"
                     onAction={refresh}
+                    onView={() => markViewed(m.match_id, m.vitana_id_b, m.vitana_id_a)}
                   />
                 ))}
               </div>
@@ -301,6 +429,7 @@ export default function FindPartner() {
                   sourceCategory={m.source_category}
                   perspective="outgoing"
                   onAction={refresh}
+                  onView={() => markViewed(m.match_id, m.vitana_id_b, m.vitana_id_a)}
                 />
               ))
             )
@@ -311,8 +440,8 @@ export default function FindPartner() {
             boardIntents.length === 0 ? (
               <EmptyState
                 title={t('screens.community.boardQuietRightNow')}
-                body="Be the first to post a dance or fitness wish — others will see it here."
-                cta={{ label: 'Post yours', onClick: () => setComposerOpen(true) }}
+                body={t('screens.community.boardEmptyBody')}
+                cta={{ label: t('screens.community.postYours'), onClick: () => setComposerOpen(true) }}
               />
             ) : isMobile ? (
               <div className="space-y-3 max-w-md mx-auto">
@@ -336,8 +465,8 @@ export default function FindPartner() {
             myPosts.length === 0 ? (
               <EmptyState
                 title={t('screens.community.youHavenTPostedYet')}
-                body="Post your dance or fitness wish — Vitana will match you with people who fit."
-                cta={{ label: 'New wish', onClick: () => setComposerOpen(true) }}
+                body={t('screens.community.postsEmptyBody')}
+                cta={{ label: t('screens.community.newWish'), onClick: () => setComposerOpen(true) }}
               />
             ) : isMobile ? (
               <div className="space-y-3 max-w-md mx-auto">
@@ -362,13 +491,13 @@ export default function FindPartner() {
             !showMembersTab ? (
               <EmptyState
                 title={t('screens.community.browseFullMembersList')}
-                body="The community is growing — see everyone in the dedicated members directory."
-                cta={{ label: 'Open Members', onClick: () => navigate('/comm/members') }}
+                body={t('screens.community.membersEmptyBody')}
+                cta={{ label: t('screens.community.openMembers'), onClick: () => navigate('/comm/members') }}
               />
             ) : members.length === 0 ? (
               <EmptyState
                 title={t('screens.community.noMembersYet')}
-                body="Be the first — invite a friend to join Vitana."
+                body={t('screens.community.membersEmptyInvite')}
               />
             ) : (
               <div className="space-y-2">
@@ -436,12 +565,22 @@ export default function FindPartner() {
                 }`}
               >
                 <span className="text-xl">{o.icon}</span>
-                <span className="font-medium">{o.label}</span>
+                <span className="font-medium">{t(o.labelKey)}</span>
               </button>
             ))}
           </div>
         </SheetContent>
       </Sheet>
+
+      {/* Find a Match filter sheet */}
+      <FindMatchFilterSheet
+        open={filterOpen}
+        onOpenChange={setFilterOpen}
+        filters={filters}
+        onApply={setFilters}
+        matches={allMatches}
+        viewedIds={viewedIds}
+      />
 
       {/* Composer modal */}
       <IntentComposer
