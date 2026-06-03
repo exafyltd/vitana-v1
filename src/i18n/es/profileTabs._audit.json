@@ -38,8 +38,8 @@
     "profileTabs.insight": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The translation 'Información' is too generic and doesn't fully capture the nuance and depth of 'Insight' in a wellness context, which often implies a deeper understanding or valuable takeaway.",
-      "suggested": "Perspectiva",
+      "issue": "The Spanish word 'Perspectiva' means 'perspective' or 'viewpoint', which is a related but not always equivalent meaning to 'insight' (deep understanding, key takeaway) in a wellness app context. 'Visión' or 'Conocimiento' would better convey the intended meaning.",
+      "suggested": "Visión",
       "phase": "llm"
     },
     "profileTabs.milestones": {
@@ -48,5 +48,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:03:25.570Z"
+  "generatedAt": "2026-06-03T08:33:54.668Z"
 }

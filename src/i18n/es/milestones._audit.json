@@ -43,8 +43,8 @@
     "milestones.titlePlaceholder": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The example is gender-specific ('Graduado' is masculine) and slightly formal for a friendly app. Using the infinitive is more neutral and common for general examples.",
-      "suggested": "p. ej., Graduarse de la universidad",
+      "issue": "The English 'Graduated' is a past participle implying a completed action/status. The Spanish uses an infinitive ('Graduarse'), which means 'to graduate' and doesn't convey the completed aspect as directly.",
+      "suggested": "p. ej., Graduado de la universidad",
       "phase": "llm"
     },
     "milestones.descPlaceholder": {
@@ -68,5 +68,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:33.845Z"
+  "generatedAt": "2026-06-03T08:33:34.183Z"
 }
