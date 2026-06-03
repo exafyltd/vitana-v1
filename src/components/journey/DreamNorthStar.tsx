@@ -339,9 +339,15 @@ export function DreamNorthStar({
 
           {/* Inner white circle — the big day number is anchored to the exact
               centre of the circle; the "TAG" label and the days-left caption are
-              positioned above and below it so the number always reads centred. */}
-          <div
-            className="absolute rounded-full bg-white/92"
+              positioned above and below it so the number always reads centred.
+              The whole circle is a button — tapping anywhere on the day number
+              opens the day-by-day plan sheet (same affordance as the old
+              GoalNorthStar and the desktop layout). */}
+          <button
+            type="button"
+            onClick={onOpenPlan}
+            aria-label={t("screens.autopilotdashboard.openPlan")}
+            className="absolute rounded-full bg-white/92 hover:scale-[1.02] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 text-left"
             style={{
               inset: stroke + 4,
               backdropFilter: "blur(8px)",
@@ -374,7 +380,7 @@ export function DreamNorthStar({
                 ? t("screens.autopilotdashboard.setGoalSubtitle")
                 : t("screens.autopilotdashboard.noDeadlineHint")}
             </div>
-          </div>
+          </button>
         </div>
 
         {/* Flex spacer pushes the goal card to the bottom of the hero */}
