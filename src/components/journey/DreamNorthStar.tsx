@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Plane, Compass, Sparkles, CalendarClock } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { t } from "@/lib/i18n-toast";
+import { localizeGoal } from "@/lib/goalLabel";
 import { fmtDate } from "@/lib/locale-format";
 import type { MyJourneyGoal } from "@/hooks/useMyJourney";
 import { useGoalPlan } from "@/hooks/useGoalPlan";
@@ -421,7 +422,7 @@ export function DreamNorthStar({
             </div>
             <div className="flex-1 min-w-0">
               <div className="text-[15px] font-bold leading-tight text-slate-900">
-                {goal.active_goal_text}
+                {localizeGoal(goal.active_goal_text)}
               </div>
               {goal.target_date ? (
                 <>

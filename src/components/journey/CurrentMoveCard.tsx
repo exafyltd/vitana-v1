@@ -6,6 +6,7 @@ import type {
   JourneyFoundationSnapshot,
 } from "@/hooks/useJourneyFoundation";
 import { t } from "@/lib/i18n-toast";
+import { localizeGoal } from "@/lib/goalLabel";
 
 /**
  * VTID-03255 — "Jetzt wichtig": the one current move Vitana is guiding, plus a
@@ -92,12 +93,12 @@ export function CurrentMoveCard({
           <div className="flex flex-wrap gap-1.5">
             {snapshot.north_stars.health && (
               <span className="text-[11px] px-2 py-0.5 rounded-full bg-green-50 text-green-700">
-                🌿 {snapshot.north_stars.health}
+                🌿 {localizeGoal(snapshot.north_stars.health)}
               </span>
             )}
             {snapshot.north_stars.economy && (
               <span className="text-[11px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-700">
-                💠 {snapshot.north_stars.economy}
+                💠 {localizeGoal(snapshot.north_stars.economy)}
               </span>
             )}
           </div>
