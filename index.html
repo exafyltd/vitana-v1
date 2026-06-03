@@ -41,16 +41,14 @@
     <link rel="dns-prefetch" href="https://gateway.vitanaland.com">
 
     <!-- ORB Voice Widget -->
-    <!-- VTID-03185: cache-buster bump pulls the audio queue closure fix —
-         see vitana-platform PR #2393. The bug left _s.scheduledSources
-         with stale entries after multi-chunk TTS, gating the mic and
-         leaving the widget stuck in "Vitana speaking..." state. The
-         widget lives in the gateway repo (services/gateway/src/frontend/
-         command-hub/orb-widget.js) and is loaded cross-origin from
-         gateway.vitanaland.com; this v1-side bust ensures mobile
-         browsers refetch the fixed widget instead of serving the
-         cached pre-fix version. -->
-    <script src="https://gateway.vitanaland.com/command-hub/orb-widget.js?v=20260529-VTID-03185-audio-queue-closure" defer></script>
+    <!-- VTID-03300: cache-buster bump pulls the journey-step-focus build —
+         the widget now accepts VitanaOrb.focusJourneyStep(stepKey) /
+         journey_focus_step so tapping a "My Journey" Next-Step opens the orb
+         focused on that exact step. The widget lives in the gateway repo
+         (services/gateway/src/frontend/command-hub/orb-widget.js) and is
+         loaded cross-origin from gateway.vitanaland.com; this v1-side bust
+         ensures browsers refetch the new widget instead of the cached one. -->
+    <script src="https://gateway.vitanaland.com/command-hub/orb-widget.js?v=20260603-VTID-03300-journey-step-focus" defer></script>
   </head>
 
   <body>

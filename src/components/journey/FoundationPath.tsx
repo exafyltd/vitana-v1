@@ -17,6 +17,12 @@ import type {
  * Step labels are localized here (keyed by step.key) so the German UI never
  * shows the gateway's English titles, and the labels are kept short — no
  * descriptive suffixes like "Understand the…" or "— your autonomous…".
+ *
+ * VTID-03300 — each step is a button: tapping it opens the ORB focused on that
+ * exact step so Vitana drives it with the user ("Let's get your Profile set
+ * up…"). When the step is verified complete, the snapshot poll flips its icon
+ * to a green check. `onStepFocus` is optional so the list still renders
+ * read-only where no handler is wired.
  */
 
 /** Short, localized label for a step, falling back to the gateway title. */
@@ -36,9 +42,12 @@ function StepIcon({ status }: { status: FoundationStepStatus }) {
 export function FoundationPath({
   steps,
   currentKey,
+  onStepFocus,
 }: {
   steps: FoundationStepView[];
   currentKey: string | null;
+  /** VTID-03300 — tap a step to open the ORB focused on it. */
+  onStepFocus?: (stepKey: string) => void;
 }) {
   if (!steps?.length) return null;
 
@@ -57,26 +66,41 @@ export function FoundationPath({
           {steps.map((step) => {
             const isCurrent = step.key === currentKey;
             const muted = step.status !== "done";
+            const label = stepLabel(step.key, step.title);
+            const interactive = !!onStepFocus;
             return (
-              <li
-                key={step.key}
-                className={`flex items-center gap-2 rounded-lg px-2 py-1.5 ${
-                  isCurrent ? "bg-purple-50 ring-1 ring-purple-200" : ""
-                }`}
-              >
-                <StepIcon status={step.status} />
-                <span
-                  className={`text-sm flex-1 min-w-0 truncate ${
-                    muted && !isCurrent ? "text-muted-foreground" : "text-foreground"
+              <li key={step.key}>
+                <button
+                  type="button"
+                  disabled={!interactive}
+                  onClick={interactive ? () => onStepFocus!(step.key) : undefined}
+                  aria-label={
+                    interactive
+                      ? t("screens.autopilotdashboard.focusStepAria", { step: label })
+                      : undefined
+                  }
+                  className={`w-full flex items-center gap-2 rounded-lg px-2 py-1.5 text-left transition-colors ${
+                    isCurrent ? "bg-purple-50 ring-1 ring-purple-200" : ""
+                  } ${
+                    interactive
+                      ? "hover:bg-purple-50/70 active:bg-purple-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-300 cursor-pointer"
+                      : "cursor-default"
                   }`}
                 >
-                  {stepLabel(step.key, step.title)}
-                </span>
-                {isCurrent && (
-                  <span className="text-[10px] text-purple-700 font-medium shrink-0">
-                    {t("screens.autopilotdashboard.nextStepBadge")}
+                  <StepIcon status={step.status} />
+                  <span
+                    className={`text-sm flex-1 min-w-0 truncate ${
+                      muted && !isCurrent ? "text-muted-foreground" : "text-foreground"
+                    }`}
+                  >
+                    {label}
                   </span>
-                )}
+                  {isCurrent && (
+                    <span className="text-[10px] text-purple-700 font-medium shrink-0">
+                      {t("screens.autopilotdashboard.nextStepBadge")}
+                    </span>
+                  )}
+                </button>
               </li>
             );
           })}
