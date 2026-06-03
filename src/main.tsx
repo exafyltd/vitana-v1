@@ -116,29 +116,42 @@ if (process.env.NODE_ENV === 'development') {
 import { VitanaIndexProvider } from './components/health/VitanaIndexProvider'
 import { I18nLeakDetector } from './i18n/leak-detector'
 import { preloadHotChunks } from './lib/preloadHotChunks'
+import { ensureLocales, FALLBACK_LOCALE } from './i18n'
+import { getLocalStorageItem } from './lib/localStorage'
 
 // Kick off background download of Messages / FindPartner / GroupChat chunks
 // during the first idle window so they're warm when the user navigates there.
 // Skipped on save-data / 2G connections.
 preloadHotChunks();
 
-createRoot(document.getElementById("root")!).render(
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-      <OfflineProvider>
-        <AuthProvider>
-          <ProfileProvider>
-            <LanguageProvider>
-              <TenantProvider>
-                <VitanaIndexProvider>
-                  <I18nLeakDetector />
-                  <App />
-                </VitanaIndexProvider>
-              </TenantProvider>
-            </LanguageProvider>
-          </ProfileProvider>
-        </AuthProvider>
-      </OfflineProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
-);
+function renderApp() {
+  createRoot(document.getElementById("root")!).render(
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+        <OfflineProvider>
+          <AuthProvider>
+            <ProfileProvider>
+              <LanguageProvider>
+                <TenantProvider>
+                  <VitanaIndexProvider>
+                    <I18nLeakDetector />
+                    <App />
+                  </VitanaIndexProvider>
+                </TenantProvider>
+              </LanguageProvider>
+            </ProfileProvider>
+          </AuthProvider>
+        </OfflineProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
+  );
+}
+
+// Load only the active locale (+ the de-DE fallback) before mounting, so the
+// first paint has real strings instead of key-flicker. This is what replaces
+// the old eager bundling of all locales — the entry chunk no longer carries
+// any translation JSON, and non-German users no longer download German they
+// never see. ensureLocales resolves even if a chunk fails, so a transient
+// network error never blocks the app from mounting.
+const bootLocale = getLocalStorageItem('global', 'language', 'selected_language') || FALLBACK_LOCALE;
+ensureLocales([bootLocale, FALLBACK_LOCALE]).catch(() => undefined).finally(renderApp);

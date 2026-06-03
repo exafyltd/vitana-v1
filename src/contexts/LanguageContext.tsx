@@ -3,12 +3,16 @@ import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { useAuth } from '@/context/AuthProvider';
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
 import { setI18nLocale } from '@/lib/i18n-toast';
+import { loadLocale } from '@/i18n';
 
 interface LanguageContextType {
   selectedLanguage: string;
   setSelectedLanguage: (language: string) => void;
   languageOptions: Array<{ label: string; value: string }>;
   isLoading: boolean;
+  // Bumped when a lazily-loaded locale chunk finishes loading, so consumers
+  // re-render and pick up the freshly-populated catalog.
+  catalogVersion: number;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -66,12 +70,25 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     return initial;
   });
 
-  // Keep i18n-toast singleton + <html lang> in sync with React state.
+  // Bumped once a lazily-loaded locale chunk lands, forcing a re-render so the
+  // newly-populated catalog is shown (until then lookups fall back to de-DE).
+  const [catalogVersion, setCatalogVersion] = useState(0);
+
+  // Keep i18n-toast singleton + <html lang> in sync with React state, and make
+  // sure the active locale's chunk is loaded (no-op if already loaded, e.g. the
+  // boot path in main.tsx already fetched it).
   useEffect(() => {
     setI18nLocale(selectedLanguage);
     if (typeof document !== 'undefined') {
       document.documentElement.lang = selectedLanguage.split('-')[0] || 'de';
     }
+    let cancelled = false;
+    void loadLocale(selectedLanguage).then(() => {
+      if (!cancelled) setCatalogVersion((v) => v + 1);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [selectedLanguage]);
 
   // Tracks a pending language change until server confirms it
@@ -188,11 +205,12 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   return (
     <LanguageContext.Provider 
-      value={{ 
-        selectedLanguage, 
-        setSelectedLanguage, 
+      value={{
+        selectedLanguage,
+        setSelectedLanguage,
         languageOptions,
         isLoading,
+        catalogVersion,
       }}
     >
       {children}

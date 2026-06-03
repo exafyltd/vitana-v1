@@ -62,11 +62,16 @@ export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
+  // Bound the fetch to the 100 soonest upcoming events. Previously this pulled
+  // EVERY future event with no limit, which grows unboundedly and was a real
+  // mobile-load cost on the Events screen. 100 covers the browse experience;
+  // deeper history can move to cursor pagination if it's ever needed.
   const { data, error } = await supabase
     .from("global_community_events")
     .select("*")
     .gte("start_time", today.toISOString())
-    .order("start_time", { ascending: true });
+    .order("start_time", { ascending: true })
+    .limit(100);
 
   if (error) {
     console.error("Database error:", error);

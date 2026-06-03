@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import SEO from "@/components/SEO";
-import { de as deCatalog, en as enCatalog } from "@/i18n";
+import { de as deCatalog, en as enCatalog, ensureLocales } from "@/i18n";
 import { toast } from "sonner";
 
 // Route-scoped locale toggle. /apply renders in German by default (the IG
@@ -100,10 +100,19 @@ export default function Apply() {
   const [locale, setLocale] = useState<Locale>("de");
   const formRef = useRef<HTMLFormElement | null>(null);
 
+  // This page renders BOTH de + en (it switches by audience, not by the user's
+  // app locale), so make sure both catalog chunks are loaded. The shared
+  // catalog objects are mutated in place, so once they land we just re-render.
+  const [i18nReady, setI18nReady] = useState(0);
+  useEffect(() => {
+    void ensureLocales(["de-DE", "en-US"]).then(() => setI18nReady((v) => v + 1));
+  }, []);
+
   const t = useCallback(
     (key: string, params?: Record<string, string | number>) =>
       resolveKey(CATALOG[locale], key, params),
-    [locale],
+    // i18nReady is intentionally a dep so strings re-resolve once chunks load.
+    [locale, i18nReady],
   );
 
   const utm = useMemo(

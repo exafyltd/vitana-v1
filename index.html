@@ -28,10 +28,15 @@
     <meta name="twitter:description" content="Discover events and connect with the longevity community" />
     <meta name="twitter:image" content="https://inmkhvwdcuyhnxkgfvsb.supabase.co/storage/v1/object/public/default-images/vitana-og-default.jpg" />
 
-    <!-- Editorial display font -->
+    <!-- Editorial display font — loaded non-render-blocking. A plain
+         <link rel="stylesheet"> to Google Fonts blocks first paint until the
+         CSS round-trips; the print→all onload swap lets the browser paint
+         immediately and apply Cormorant when it arrives (font-display:swap
+         already prevents invisible text). Saves first-paint time on mobile. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500&display=swap"></noscript>
 
     <!-- Warm the gateway TCP+TLS handshake before the deferred orb-widget script
          and the first /auth/me call. Saves ~150-300ms of cold-load time on mobile.
