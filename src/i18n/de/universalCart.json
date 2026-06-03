@@ -1,30 +1,77 @@
 {
   "universalCart": {
     "page": {
-      "title": "Mein Stack",
-      "subtitle": "Vorgemerkte Empfehlungen, Pakete und Produkte aus Discover.",
-      "emptyTitle": "Dein Stack ist noch leer",
-      "emptyBody": "Tippe in Discover auf „Stack“, um etwas vorzumerken. Dein normaler Einkaufswagen bleibt davon unberührt.",
-      "loading": "Lade Stack …",
-      "roleBlockedTitle": "Stack steht dir hier nicht zur Verfügung",
-      "roleBlockedBody": "Der Stack ist ein Community-Feature. Wechsle in die Community-Rolle, um ihn zu nutzen.",
-      "errorTitle": "Wir konnten deinen Stack gerade nicht laden",
+      "title": "Warenkorb",
+      "subtitle": "Produkte, Pakete und Empfehlungen aus Discover – an einem Ort.",
+      "emptyTitle": "Dein Warenkorb ist noch leer",
+      "emptyBody": "Tippe in Discover auf „In den Warenkorb“, um etwas hinzuzufügen.",
+      "loading": "Lade Warenkorb …",
+      "roleBlockedTitle": "Der Warenkorb steht dir hier nicht zur Verfügung",
+      "roleBlockedBody": "Der Warenkorb ist ein Community-Feature. Wechsle in die Community-Rolle, um ihn zu nutzen.",
+      "errorTitle": "Wir konnten deinen Warenkorb gerade nicht laden",
       "errorBody": "Bitte versuche es in einem Moment noch einmal.",
       "removeAction": "Entfernen",
       "quantityLabel": "Menge",
       "completeAction": "Erledigt markieren",
       "alreadyCompleted": "Bereits erledigt",
-      "linkToDiscover": "Weiter in Discover stöbern"
+      "linkToDiscover": "Weiter in Discover stöbern",
+      "close": "Schließen"
+    },
+    "tabs": {
+      "cart": "Warenkorb",
+      "saved": "Gemerkt"
+    },
+    "saved": {
+      "moveToCart": "In den Warenkorb",
+      "saveForLater": "Für später merken",
+      "emptyTitle": "Noch nichts gemerkt",
+      "emptyBody": "Merke dir Produkte für später, indem du im Warenkorb auf „Für später merken“ tippst."
+    },
+    "item": {
+      "viewProduct": "Produkt ansehen"
+    },
+    "agent": {
+      "promptLabel": "Wonach suchst du?",
+      "promptPlaceholder": "Beschreibe, wofür du einkaufst – z. B. „mehr Energie am Morgen“",
+      "proposeCta": "Vitana fragen",
+      "proposing": "Vitana sucht passende Produkte …",
+      "sectionTitle": "Vitana schlägt vor",
+      "sectionSubtitle": "Vorschläge liegen in deinem Warenkorb. Prüfe sie, behalte oder entferne – kaufen tust du erst mit „Prüfen & Bezahlen“.",
+      "rationaleLabel": "Warum Vitana das vorschlägt",
+      "safetyTitle": "Sicherheitshinweis – bitte lesen",
+      "confidenceLabel": "Vertrauen: {value}",
+      "keep": "Behalten",
+      "remove": "Entfernen",
+      "unavailable": "Vitana ist gerade nicht verfügbar. Bitte versuche es in einem Moment noch einmal.",
+      "roleBlocked": "Vitana-Vorschläge sind nur in der Community-Rolle verfügbar.",
+      "empty": "Noch keine Vorschläge. Sag Vitana oben, wonach du suchst.",
+      "reviewNote": "Bitte Hinweise prüfen: Einige Vorschläge haben Sicherheitshinweise. Sieh sie dir an, bevor du fortfährst.",
+      "reorderCta": "Erneut kaufen",
+      "reorderLabel": "Schon einmal gekauft",
+      "reorderSectionTitle": "Erneut kaufen",
+      "reorderSectionSubtitle": "Schon einmal gekaufte Produkte liegen in deinem Warenkorb. Prüfe sie, behalte oder entferne – kaufen tust du erst mit „Prüfen & Bezahlen“.",
+      "reordering": "Vitana legt deine Produkte zurück …",
+      "overCapAdvisory": "Mit diesen Produkten überschreitest du dein Monatsbudget.",
+      "nearCapAdvisory": "Mit diesen Produkten näherst du dich deinem Monatsbudget.",
+      "error": "Da ist etwas schiefgelaufen. Bitte versuche es noch einmal."
+    },
+    "budget": {
+      "title": "Budget diesen Monat",
+      "spentOfCap": "{spent} von {cap} diesen Monat",
+      "statusUnder": "Im Budget",
+      "statusNear": "Budget fast erreicht",
+      "statusOver": "Budget überschritten",
+      "noCapHint": "Lege ein Monatsbudget fest, um deine Ausgaben im Blick zu behalten."
     },
     "addButton": {
-      "label": "Stack",
-      "added": "Im Stack",
-      "addAria": "Zum Stack hinzufügen",
-      "addedAria": "Bereits im Stack",
-      "signRequired": "Bitte melde dich an, um etwas zum Stack hinzuzufügen.",
-      "roleBlocked": "Stack ist nur in der Community-Rolle verfügbar.",
-      "failed": "Hinzufügen zum Stack fehlgeschlagen",
-      "success": "Zum Stack hinzugefügt"
+      "label": "In den Warenkorb",
+      "added": "Im Warenkorb",
+      "addAria": "In den Warenkorb legen",
+      "addedAria": "Bereits im Warenkorb",
+      "signRequired": "Bitte melde dich an, um etwas in den Warenkorb zu legen.",
+      "roleBlocked": "Der Warenkorb ist nur in der Community-Rolle verfügbar.",
+      "failed": "In den Warenkorb legen fehlgeschlagen",
+      "success": "In den Warenkorb gelegt"
     }
   }
 }

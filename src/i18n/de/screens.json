@@ -3313,7 +3313,37 @@
       "membersEmptyBody": "Die Community wächst – sieh alle im eigenen Mitgliederverzeichnis.",
       "openMembers": "Mitglieder öffnen",
       "findMatchDescription": "Tanz- und Fitness-Partner – per KI gematcht, nach Passung sortiert.",
-      "membersEmptyInvite": "Sei der Erste – lade eine:n Freund:in ein, Vitana beizutreten."
+      "membersEmptyInvite": "Sei der Erste – lade eine:n Freund:in ein, Vitana beizutreten.",
+      "filterMatches": "Matches filtern",
+      "filterAge": "Altersbereich",
+      "filterAgeValue": "{min}–{max} J.",
+      "filterAgePending": "Für den Altersfilter fehlen noch Profildaten zu den Matches.",
+      "filterDistance": "Entfernung",
+      "filterDistanceValue": "Bis {km} km",
+      "filterDistanceAny": "Beliebige Entfernung",
+      "filterDistancePending": "Für den Entfernungsfilter fehlen noch Standortdaten zu den Matches.",
+      "filterInterests": "Interessen",
+      "filterGoals": "Ziele",
+      "filterOnlineOnly": "Nur aktive Mitglieder zeigen",
+      "filterHideViewed": "Bereits gesehene Profile ausblenden",
+      "filterClearAll": "Alle zurücksetzen",
+      "filterShowResults": "{count} Ergebnisse anzeigen",
+      "filterShowingOfTotal": "{shown} von {total} angezeigt",
+      "filterReset": "Zurücksetzen",
+      "noMatchesForFilters": "Keine Matches passen zu diesen Filtern",
+      "noMatchesForFiltersBody": "Erweitere deine Filter oder lösche die Suche, um mehr Leute zu sehen.",
+      "interestDance": "Tanzen",
+      "interestYoga": "Yoga",
+      "interestRunning": "Laufen",
+      "interestMeditation": "Meditation",
+      "interestStrength": "Krafttraining",
+      "interestPilates": "Pilates",
+      "goalPartner": "Partner finden",
+      "goalSocial": "Soziales & Freunde",
+      "goalActivity": "Aktivitätspartner",
+      "goalWeightLoss": "Gewicht verlieren",
+      "goalMentalWellness": "Mentale Gesundheit",
+      "goalValues": "Werte passen"
     },
     "contacts": {
       "addContact": "Kontakt hinzufügen",
@@ -8062,7 +8092,7 @@
       "instantAvailabilityAfterConfirmation": "• Sofort verfügbar nach Bestätigung",
       "enterAmount": "Betrag eingeben",
       "currentCredits": "Aktuelle Credits",
-      "usdBalance": "USD-Kontostand",
+      "usdBalance": "EUR / USD-Kontostand",
       "creditPackages": "Credit-Pakete",
       "customAmount": "Eigener Betrag",
       "rate025PerCredit": "Kurs: 0,25 $ pro Credit",
@@ -8414,7 +8444,10 @@
       "availableBalanceCurrency": "Verfügbar: {balance} {currency}",
       "sending": "Sende...",
       "showingValue0": "Zeige: {value0}",
-      "lengthTransactionValue1": "{length} Transaktion{value1}"
+      "lengthTransactionValue1": "{length} Transaktion{value1}",
+      "addFundsBalance": "Geld zu {currency}-Guthaben hinzufügen",
+      "currentBalanceLabel": "Aktueller {currency}-Kontostand",
+      "amountAddCurrency": "Hinzuzufügender Betrag ({currency})"
     },
     "ai": {
       "subtitle_priorityActions": "KI-kuratierte Aufgaben für maximale Wirkung auf dein Wohlbefinden",
@@ -8709,7 +8742,26 @@
       "planInDays": "in {days} Tagen",
       "planTomorrow": "morgen",
       "seoDescription": "Deine personalisierte Autopilot-Reise",
-      "headerDescription": "Der Weg, den dein Index geht"
+      "headerDescription": "Der Weg, den dein Index geht",
+      "nextStepsTitle": "Nächste Schritte",
+      "nextStepBadge": "Nächster Schritt",
+      "focusStepAria": "„{{step}}“ mit Vitana starten",
+      "foundationStepLabels": {
+        "life_compass": "Lebenskompass",
+        "weakest_habit": "Schwächste Gewohnheit",
+        "reminder": "Erinnerung",
+        "understand_economy": "Longevity Economy",
+        "profile": "Profil",
+        "diary": "Tagebuch",
+        "vitana_index": "Vitana Index",
+        "economic_aspiration": "Wirtschaftliches Ziel",
+        "calendar": "Kalender",
+        "autopilot": "Autopilot",
+        "connect": "Vernetzen",
+        "events": "Events",
+        "marketplace": "Marktplatz",
+        "business_live_media": "Business / Live / Media"
+      }
     },
     "businesshub": {
       "noServicesYet": "Noch keine Dienste",
@@ -9636,7 +9688,11 @@
       "checkingForNewSuggestions": "Suche nach neuen Vorschlägen…",
       "yourAutopilotRecommendations": "Deine Autopilot-Empfehlungen",
       "selectedSuggestionsCount": "{count} Vorschläge ausgewählt",
-      "allSelectedTasksCompleted": "Alle ausgewählten Aufgaben wurden erfolgreich abgeschlossen."
+      "allSelectedTasksCompleted": "Alle ausgewählten Aufgaben wurden erfolgreich abgeschlossen.",
+      "preparingNextSteps": "Wir bereiten deine nächsten Schritte vor…",
+      "allCaughtUpForToday": "Für heute ist alles erledigt",
+      "nothingNewRightNow": "Aktuell gibt es nichts Neues für dich.",
+      "checkForNew": "Nach Neuem suchen"
     }
   }
 }

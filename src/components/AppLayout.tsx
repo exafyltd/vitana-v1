@@ -30,8 +30,10 @@ import { useRoleRouteEnforcement, useInitialLandingRedirect } from "@/hooks/useS
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import PendingCalendarEventProcessor from "@/components/calendar/PendingCalendarEventProcessor";
-import { useCart } from "@/hooks/useCart";
-import { CartSidebar } from "@/components/cart/CartSidebar";
+import { useUniversalCart } from "@/hooks/useUniversalCart";
+// Phase 0: CartSidebar is retired from the buy path — the cart icon now
+// navigates to /universal-cart (the one canonical cart). CartSidebar.tsx is
+// kept on disk but no longer mounted.
 import { useIntelligentGreeting } from "@/hooks/useIntelligentGreeting";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { playSound } from "@/lib/playSound";
@@ -57,16 +59,12 @@ function AppSidebar({
   setAutopilotPopupOpen, 
   walletPopupOpen,
   setWalletPopupOpen,
-  cartOpen,
-  setCartOpen,
   onSidebarOpenChange
-}: { 
+}: {
   autopilotPopupOpen: boolean;
   setAutopilotPopupOpen: (open: boolean) => void;
   walletPopupOpen: boolean;
   setWalletPopupOpen: (open: boolean) => void;
-  cartOpen: boolean;
-  setCartOpen: (open: boolean) => void;
   onSidebarOpenChange: (open: boolean) => void;
 }) {
   const location = useLocation();
@@ -77,7 +75,8 @@ function AppSidebar({
   const { profile } = useProfile();
   const { pendingCount, getLatestActions } = useAutopilot();
   const { signOut, user } = useAuth();
-  const { cartCount } = useCart();
+  // Phase 0: counts from the one canonical cart (0 when roleBlocked).
+  const { cartCount } = useUniversalCart();
   const { translate } = useTranslation();
   const isMobile = useIsMobile();
 
@@ -291,7 +290,7 @@ function AppSidebar({
                   variant="ghost" 
                   className="relative shrink-0 transition-all duration-200 hover:bg-sidebar-accent flex items-center justify-center h-8 w-8 rounded-lg"
                   title={`Shopping Cart • ${cartCount} item${cartCount !== 1 ? 's' : ''}`}
-                  onClick={() => setCartOpen(true)}
+                  onClick={() => navigate('/universal-cart')}
                   aria-label={`Shopping cart with ${cartCount} item${cartCount !== 1 ? 's' : ''}`}
                 >
                   <ShoppingCart className="h-4 w-4 text-white" />
@@ -414,7 +413,6 @@ function AppSidebar({
 export default function AppLayout({ children }: AppLayoutProps) {
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false);
   const isMobile = useIsMobile();
   const { tenant } = useTenant();
   const { preferences } = useUserPreferences();
@@ -482,8 +480,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
               setAutopilotPopupOpen={setAutopilotPopupOpen}
               walletPopupOpen={walletPopupOpen}
               setWalletPopupOpen={setWalletPopupOpen}
-              cartOpen={cartOpen}
-              setCartOpen={setCartOpen}
               onSidebarOpenChange={handleSidebarOpenChange}
             />
           </div>
@@ -506,10 +502,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
         open={walletPopupOpen}
         onOpenChange={setWalletPopupOpen}
       />
-      <CartSidebar
-        open={cartOpen}
-        onClose={() => setCartOpen(false)}
-      />
+      {/* Phase 0: CartSidebar retired — the cart icon navigates to /universal-cart. */}
       <VitanaIndexSheet />
       <VitanaIndexLiftWatcher />
       <InviteSheet />

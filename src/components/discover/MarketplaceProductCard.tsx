@@ -15,7 +15,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, MapPin, ExternalLink, Gift } from "lucide-react";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
-import { AddToUniversalCartButton } from "@/components/universal-cart/AddToUniversalCartButton";
 import { ProductImage } from "@/components/discover/ProductImage";
 import {
   type MarketplaceProduct,
@@ -213,6 +212,9 @@ export function MarketplaceProductCard({
 
         {/* Action row */}
         <div className="flex items-center gap-2">
+          {/* Phase 0: single gateway-backed cart button (the Universal Cart is
+              the one canonical cart). The duplicate AddToUniversalCartButton was
+              removed here. */}
           <AddToCartButton
             item={{
               item_type: "product",
@@ -222,17 +224,6 @@ export function MarketplaceProductCard({
               item_image_url: image ?? undefined,
               item_metadata: { category: p.category, brand: p.brand },
             }}
-          />
-          {/* VTID-03236: parallel Universal Cart affordance — coexists with
-              the legacy cart button above; writes to universal_cart_items
-              via the gateway. Distinct icon + "Stack" label to avoid UX
-              confusion with the primary "Add to Cart". */}
-          <AddToUniversalCartButton
-            productId={p.id}
-            itemType="partner_product"
-            sourceSurface="community"
-            unitPriceCentsSnapshot={p.price_cents ?? undefined}
-            currencySnapshot={p.currency ?? undefined}
           />
           <a
             href={redirectUrl}

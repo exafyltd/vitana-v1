@@ -103,6 +103,21 @@ export interface GetCartResponse {
   items: UniversalCartItem[];
 }
 
+/**
+ * Phase 2 — standing budget summary. Money in integer MINOR units (cents).
+ * `monthly_cap_cents` is null when the user has not set a monthly budget.
+ * `status` is the gateway-computed advisory band against the cap (taking the
+ * active cart subtotal into account).
+ */
+export interface BudgetSummary {
+  ok: true;
+  monthly_cap_cents: number | null;
+  spent_this_month_cents: number;
+  cart_active_subtotal_cents: number;
+  currency: string;
+  status: "under" | "near" | "over";
+}
+
 export interface CreateOrFetchCartResponse {
   ok: true;
   cart: UniversalCart;
@@ -267,6 +282,19 @@ export function getHealth(opts: FetchOpts = {}) {
 export function getCart(opts: FetchOpts = {}) {
   return universalCartFetch<GetCartResponse>(
     "/api/v1/universal-cart",
+    { ...opts, method: "GET" }
+  );
+}
+
+/**
+ * GET /api/v1/universal-cart/budget — standing monthly budget meter. Returns
+ * the user's monthly cap (or null), spend-this-month, the active cart subtotal,
+ * and a gateway-computed advisory status. Same headers / error pattern as the
+ * rest of this client.
+ */
+export function getBudget(opts: FetchOpts = {}) {
+  return universalCartFetch<BudgetSummary>(
+    "/api/v1/universal-cart/budget",
     { ...opts, method: "GET" }
   );
 }

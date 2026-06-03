@@ -2,7 +2,7 @@
   "wallet": {
     "title": "Wallet",
     "description": "Your balance, credits, and rewards",
-    "usdBalance": "USD Balance",
+    "usdBalance": "EUR / USD Balance",
     "creditsBalance": "Credits Balance",
     "vtnaTokens": "VTNA Tokens",
     "available": "Available",
@@ -22,6 +22,7 @@
       "pending": "Pending Payouts"
     },
     "noActivity": "No activity yet",
-    "noActivityDesc": "Your transactions will appear here."
+    "noActivityDesc": "Your transactions will appear here.",
+    "displayCurrency": "Display currency"
   }
 }

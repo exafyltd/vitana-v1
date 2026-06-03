@@ -7690,7 +7690,7 @@
       "instantAvailabilityAfterConfirmation": "• Disponibilidad instantánea tras confirmación",
       "enterAmount": "Ingresa el monto",
       "currentCredits": "Créditos Actuales",
-      "usdBalance": "Saldo en USD",
+      "usdBalance": "Saldo en EUR / USD",
       "creditPackages": "Paquetes de Créditos",
       "customAmount": "Monto Personalizado",
       "rate025PerCredit": "Tarifa: $0.25 por crédito",
@@ -8042,7 +8042,10 @@
       "availableBalanceCurrency": "Disponible: {balance} {currency}",
       "sending": "Enviando...",
       "showingValue0": "Mostrando: {value0}",
-      "lengthTransactionValue1": "{length} transacción{value1}"
+      "lengthTransactionValue1": "{length} transacción{value1}",
+      "addFundsBalance": "Añadir fondos al saldo en {currency}",
+      "currentBalanceLabel": "Saldo actual en {currency}",
+      "amountAddCurrency": "Importe a añadir ({currency})"
     },
     "ai": {
       "rescheduledMeeting": "Reunión reprogramada",

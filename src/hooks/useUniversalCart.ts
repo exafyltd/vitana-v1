@@ -26,6 +26,7 @@ import {
 } from "@tanstack/react-query";
 import {
   AddItemInput,
+  BudgetSummary,
   CheckoutInput,
   CheckoutResponse,
   PatchItemInput,
@@ -38,6 +39,7 @@ import {
   checkout as apiCheckout,
   completeItem as apiCompleteItem,
   createOrFetchCart as apiCreateOrFetchCart,
+  getBudget as apiGetBudget,
   getCart as apiGetCart,
   getEvents as apiGetEvents,
   patchItem as apiPatchItem,
@@ -49,6 +51,7 @@ import {
 export const universalCartQueryKeys = {
   all: ["universal-cart"] as const,
   cart: () => [...universalCartQueryKeys.all, "cart"] as const,
+  budget: () => [...universalCartQueryKeys.all, "budget"] as const,
   events: (limit?: number) =>
     [...universalCartQueryKeys.all, "events", limit ?? 50] as const,
 };
@@ -56,6 +59,19 @@ export const universalCartQueryKeys = {
 export interface UseUniversalCartReturn {
   cart: UniversalCart | null;
   items: UniversalCartItem[];
+  /**
+   * Phase 0 — one-cart selectors so the page and the global badges share a
+   * single source of truth.
+   *   cartItems  = active items NOT flagged metadata.saved (the buyable cart)
+   *   savedItems = active items flagged metadata.saved (the "Saved"/"Gemerkt" tab)
+   *   cartCount  = sum of cartItems quantities (0 when roleBlocked — never throws)
+   */
+  cartItems: UniversalCartItem[];
+  savedItems: UniversalCartItem[];
+  cartCount: number;
+  /** Phase 2 — standing monthly budget summary (null until loaded / when role-blocked). */
+  budget: BudgetSummary | null;
+  budgetLoading: boolean;
   isLoading: boolean;
   error: unknown;
   /** Non-null when the gateway returned 403 cart_unavailable_for_role. */
@@ -97,7 +113,37 @@ export function useUniversalCart(opts?: { enabled?: boolean }): UseUniversalCart
 
   const roleBlocked = detectRoleBlock(cartQuery.error);
 
-  const invalidateCart = () => qc.invalidateQueries({ queryKey: universalCartQueryKeys.cart() });
+  // Phase 2 — standing budget meter. Own query key; only enabled once the cart
+  // is authed and not role-blocked (the gateway gates budget the same way as
+  // the cart, so there is no point firing it for a blocked session).
+  const budgetEnabled = (opts?.enabled ?? true) && !roleBlocked;
+  const budgetQuery = useQuery({
+    queryKey: universalCartQueryKeys.budget(),
+    queryFn: () => apiGetBudget(),
+    enabled: budgetEnabled,
+    retry: (failureCount, error) => {
+      if (error instanceof UniversalCartRoleError) return false;
+      if (error instanceof UniversalCartApiError && error.status === 401) return false;
+      return failureCount < 1;
+    },
+    staleTime: 30 * 1000,
+  });
+
+  // Phase 0 — derived one-cart selectors. A roleBlocked session has no items,
+  // so these naturally collapse to empty arrays / 0 without throwing.
+  const items = cartQuery.data?.items ?? [];
+  const activeItems = items.filter((it) => it.status === "active");
+  const cartItems = activeItems.filter((it) => !it.metadata?.saved);
+  const savedItems = activeItems.filter((it) => !!it.metadata?.saved);
+  const cartCount = roleBlocked
+    ? 0
+    : cartItems.reduce((sum, it) => sum + (it.quantity ?? 0), 0);
+
+  // Cart mutations change the active subtotal, so refresh the budget meter too.
+  const invalidateCart = () => {
+    qc.invalidateQueries({ queryKey: universalCartQueryKeys.cart() });
+    qc.invalidateQueries({ queryKey: universalCartQueryKeys.budget() });
+  };
 
   const addMutation = useMutation({
     mutationFn: (input: AddItemInput) => apiAddItem(input),
@@ -124,7 +170,12 @@ export function useUniversalCart(opts?: { enabled?: boolean }): UseUniversalCart
 
   return {
     cart: cartQuery.data?.cart ?? null,
-    items: cartQuery.data?.items ?? [],
+    items,
+    cartItems,
+    savedItems,
+    cartCount,
+    budget: budgetQuery.data ?? null,
+    budgetLoading: budgetQuery.isLoading,
     isLoading: cartQuery.isLoading,
     error: cartQuery.error,
     roleBlocked,

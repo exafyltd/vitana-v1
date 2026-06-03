@@ -145,8 +145,8 @@ const MobileSettings = lazy(() => import("./pages/MobileSettings"));
 const MobileSubscriptions = lazy(() => import("./pages/MobileSubscriptions"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Search = lazy(() => import("./pages/Search"));
-const Cart = lazy(() => import("./pages/Cart"));
-// VTID-03236: parallel Universal Cart page (universal_* tables via gateway).
+// Phase 0: /cart now redirects to /universal-cart; Cart.tsx is off the buy path.
+// VTID-03236: Universal Cart page (universal_* tables via gateway) — the one cart.
 const UniversalCart = lazy(() => import("./pages/UniversalCart"));
 // Vitanaland Video Commerce: TikTok-style video-shop feed + single-product drawer.
 const ShopFeed = lazy(() => import("./pages/ShopFeed"));
@@ -828,12 +828,10 @@ const App = () => {
               The Add-to-Cart button inside has its own auth gate that
               redirects to sign-in when an unauthenticated user tries to buy. */}
           <Route path="/discover/product/:id" element={<ProductDetail />} />
-          <Route path="/cart" element={
-            <AuthGuard>
-              <Cart />
-            </AuthGuard>
-          } />
-          {/* VTID-03236: parallel Universal Cart route (gateway-backed). */}
+          {/* Phase 0: the Universal Cart is the single canonical cart.
+              /cart redirects into it; the target route owns its own AuthGuard. */}
+          <Route path="/cart" element={<Navigate to="/universal-cart" replace />} />
+          {/* VTID-03236: Universal Cart route (gateway-backed) — the one cart. */}
           <Route path="/universal-cart" element={
             <AuthGuard>
               <UniversalCart />
