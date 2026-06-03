@@ -29,7 +29,7 @@ export function JourneyDayBadge() {
   const dayNumber = dayNumberFromCreated(user?.created_at);
   const inArc = dayNumber >= 0 && dayNumber <= JOURNEY_TOTAL_DAYS;
   const totalProgress = stage?.totalProgress ?? Math.min(100, Math.round((dayNumber / JOURNEY_TOTAL_DAYS) * 100));
-  const tierFraming = index?.tier?.framing ?? null;
+  const tierFraming = index?.tier ? t(index.tier.framingKey) : null;
 
   const dayLabel = inArc ? t('screens.health.dayN', { day: dayNumber }) : t('screens.health.day90Plus');
   const subLabel = inArc

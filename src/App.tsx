@@ -145,7 +145,11 @@ const MobileSettings = lazy(() => import("./pages/MobileSettings"));
 const MobileSubscriptions = lazy(() => import("./pages/MobileSubscriptions"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Search = lazy(() => import("./pages/Search"));
-const Cart = lazy(() => import("./pages/Cart"));
+// Phase 0: /cart now redirects to /universal-cart; Cart.tsx is off the buy path.
+// VTID-03236: Universal Cart page (universal_* tables via gateway) — the one cart.
+const UniversalCart = lazy(() => import("./pages/UniversalCart"));
+// Vitanaland Video Commerce: TikTok-style video-shop feed + single-product drawer.
+const ShopFeed = lazy(() => import("./pages/ShopFeed"));
 const CheckoutSuccess = lazy(() => import("./pages/CheckoutSuccess"));
 const TicketPurchaseSuccess = lazy(() => import("./pages/TicketPurchaseSuccess"));
 const PackagePurchaseSuccess = lazy(() => import("./pages/PackagePurchaseSuccess"));
@@ -167,6 +171,7 @@ const PublicEventLanding = lazy(() => import("./pages/PublicEventLanding"));
 const PublicCampaignLanding = lazy(() => import("./pages/PublicCampaignLanding"));
 const Apply = lazy(() => import("./pages/Apply"));
 const AutopilotDashboard = lazy(() => import("./pages/AutopilotDashboard"));
+const MatchesPage = lazy(() => import("./pages/MatchesPage"));
 const InviteFriends = lazy(() => import("./pages/InviteFriends"));
 const MobileDailyDiary = lazy(() => import("./pages/MobileDailyDiary"));
 const Supplements = lazy(() => import("./pages/discover/Supplements"));
@@ -229,6 +234,7 @@ const Limitations = lazy(() => import("./pages/settings/Limitations"));
 const ConnectedApps = lazy(() => import("./pages/settings/ConnectedApps"));
 const Billing = lazy(() => import("./pages/settings/Billing"));
 const Support = lazy(() => import("./pages/settings/Support"));
+const MobileSupport = lazy(() => import("./pages/MobileSupport"));
 const TenantRole = lazy(() => import("./pages/settings/TenantRole"));
 
 // Wallet sub-pages
@@ -410,19 +416,32 @@ const AppHooksInitializer = () => {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, [user?.id]);
 
-  // BOOTSTRAP-NOTIF-CATEGORIES: Deep-link handler for push notifications.
-  // Two complementary strategies so the user ALWAYS lands in the conversation
-  // when they tap a chat push notification:
-  //   A) Realtime subscription — fires the instant the backend inserts a new
-  //      notification row (catches notifications that arrive while the app is
-  //      open or foregrounded).
-  //   B) Visibility/focus/pageshow polling — fires when the app foregrounds
-  //      from background (catches notifications that arrived while the app
-  //      was hidden or the phone was locked).
+  // BOOTSTRAP-NOTIF-CATEGORIES: Deep-link handler for chat push notifications.
+  //
+  // Appilix native push already deep-links into the app on tap via
+  // `open_link_url` (see gateway notification-service). This handler only
+  // covers the case where the app was already RUNNING in the background and a
+  // tap foregrounds the WebView without re-navigating it.
+  //
+  // CRITICAL: we navigate ONLY as the result of a genuine background →
+  // foreground transition (a tap). A notification that arrives while the app
+  // is open and visible must NEVER force-navigate the user — doing so threw
+  // people out of the media hub / events / live rooms (and back to chat) on
+  // every single incoming message in an active group. That is why the old
+  // realtime-INSERT subscription is gone, and why the lookup is bounded to the
+  // window in which the app was actually backgrounded.
   useEffect(() => {
     if (!user?.id) return;
     const processedIds = new Set<string>();
     let retryTimers: Array<ReturnType<typeof setTimeout>> = [];
+    // `wasHidden` is set only by visibilitychange→hidden, so focus/pageshow
+    // noise while the app is already in the foreground can't trigger a nav.
+    let wasHidden = false;
+    // A cold start (app launched from a tap while killed) has no prior hidden
+    // moment, so seed the window to the last minute — a cold start is almost
+    // always a notification tap.
+    let lastHiddenAt = Date.now() - 60_000;
+    let foregroundAt = Date.now();
 
     const clearRetries = () => {
       for (const t of retryTimers) clearTimeout(t);
@@ -435,7 +454,6 @@ const AppHooksInitializer = () => {
       if (!targetUrl || typeof targetUrl !== 'string') return false;
       const currentPath = window.location.pathname + window.location.search;
       if (currentPath === targetUrl) return false;
-      if (currentPath.startsWith('/inbox')) return false;
 
       processedIds.add(row.id);
       console.log('[DeepLink] Navigating to chat notification:', targetUrl, 'from', currentPath);
@@ -446,7 +464,13 @@ const AppHooksInitializer = () => {
     const checkPendingNotification = async () => {
       if (document.hidden) return;
       try {
-        const since = new Date(Date.now() - 5 * 60_000).toISOString();
+        // Only consider notifications that arrived while the app was
+        // backgrounded — i.e. the one the user most likely tapped. The upper
+        // bound (foregroundAt + grace) guarantees a message that arrives
+        // *after* we foreground can never be picked up, so a retry firing a
+        // few seconds later can't yank an actively-browsing user into chat.
+        const since = new Date(lastHiddenAt).toISOString();
+        const until = new Date(foregroundAt + 5_000).toISOString();
         const { data: rows, error } = await (supabase as any)
           .from('user_notifications')
           .select('id, type, data, created_at')
@@ -454,6 +478,7 @@ const AppHooksInitializer = () => {
           .is('read_at', null)
           .eq('type', 'new_chat_message')
           .gt('created_at', since)
+          .lte('created_at', until)
           .order('created_at', { ascending: false })
           .limit(1);
         if (error) {
@@ -470,49 +495,41 @@ const AppHooksInitializer = () => {
       if (document.hidden) return;
       clearRetries();
       checkPendingNotification();
-      // Retry to handle races where the INSERT hasn't propagated yet.
-      retryTimers.push(setTimeout(checkPendingNotification, 1500));
-      retryTimers.push(setTimeout(checkPendingNotification, 4000));
-      retryTimers.push(setTimeout(checkPendingNotification, 8000));
-      retryTimers.push(setTimeout(checkPendingNotification, 15_000));
+      // Two short retries cover the race where the row hasn't propagated to the
+      // read replica yet. Both stay inside the 5s grace window above.
+      retryTimers.push(setTimeout(checkPendingNotification, 1200));
+      retryTimers.push(setTimeout(checkPendingNotification, 3500));
     };
 
-    // Strategy A: Realtime subscription — immediate trigger on INSERT
-    const channel = (supabase as any)
-      .channel(`deeplink_chat_${user.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'user_notifications',
-          filter: `user_id=eq.${user.id}`,
-        },
-        (payload: any) => {
-          const row = payload?.new;
-          if (!row || row.type !== 'new_chat_message') return;
-          console.log('[DeepLink] Realtime INSERT received for chat notification');
-          // Small delay to let the app settle if it just foregrounded.
-          setTimeout(() => tryNavigateToNotification(row), 250);
-        }
-      )
-      .subscribe();
+    const onForeground = () => {
+      // Ignore focus/visibility events unless we were genuinely backgrounded.
+      if (!wasHidden) return;
+      wasHidden = false;
+      foregroundAt = Date.now();
+      triggerCheck();
+    };
 
-    // Strategy B: foreground/focus/pageshow polling
-    document.addEventListener('visibilitychange', triggerCheck);
-    window.addEventListener('focus', triggerCheck);
-    window.addEventListener('pageshow', triggerCheck);
-    // Also run on mount (cold-start from notification tap when app was killed)
+    const handleVisibility = () => {
+      if (document.hidden) {
+        wasHidden = true;
+        lastHiddenAt = Date.now();
+        clearRetries();
+      } else {
+        onForeground();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+    window.addEventListener('focus', onForeground);
+    window.addEventListener('pageshow', onForeground);
+    // Cold start: app launched from a notification tap while it was killed.
     triggerCheck();
 
     return () => {
       clearRetries();
-      document.removeEventListener('visibilitychange', triggerCheck);
-      window.removeEventListener('focus', triggerCheck);
-      window.removeEventListener('pageshow', triggerCheck);
-      try {
-        (supabase as any).removeChannel(channel);
-      } catch {}
+      document.removeEventListener('visibilitychange', handleVisibility);
+      window.removeEventListener('focus', onForeground);
+      window.removeEventListener('pageshow', onForeground);
     };
   }, [user?.id, navigate]);
 
@@ -540,6 +557,21 @@ const AppHooksInitializer = () => {
 function SettingsRouter() {
   const isMobile = useIsMobile();
   return isMobile ? <MobileSettings /> : <Navigate to="/settings/notifications" replace />;
+}
+
+function SupportRouter() {
+  const isMobile = useIsMobile();
+  return isMobile ? <MobileSupport /> : <Support />;
+}
+
+// BOOTSTRAP-MOBILE-NAV-CONTAINMENT: /memory/diary renders the desktop Memory hub
+// "Daily Diary" tab (Diary.tsx — the "Wellness Diary" tabbed view). On mobile the
+// dedicated diary surface is MobileDailyDiary at /daily-diary, so redirect there
+// regardless of how the user arrived (ORB, the Memory section sub-nav tab, or a
+// deep link). Desktop keeps the full Memory hub.
+function DiaryRouter() {
+  const isMobile = useIsMobile();
+  return isMobile ? <Navigate to="/daily-diary" replace /> : <Diary />;
 }
 
 // Mobile-only storefront for plans; desktop users get the existing /wallet/subscriptions page.
@@ -796,9 +828,19 @@ const App = () => {
               The Add-to-Cart button inside has its own auth gate that
               redirects to sign-in when an unauthenticated user tries to buy. */}
           <Route path="/discover/product/:id" element={<ProductDetail />} />
-          <Route path="/cart" element={
+          {/* Phase 0: the Universal Cart is the single canonical cart.
+              /cart redirects into it; the target route owns its own AuthGuard. */}
+          <Route path="/cart" element={<Navigate to="/universal-cart" replace />} />
+          {/* VTID-03236: Universal Cart route (gateway-backed) — the one cart. */}
+          <Route path="/universal-cart" element={
             <AuthGuard>
-              <Cart />
+              <UniversalCart />
+            </AuthGuard>
+          } />
+          {/* Vitanaland Video Commerce: TikTok-style video-shop feed. */}
+          <Route path="/shop" element={
+            <AuthGuard>
+              <ShopFeed />
             </AuthGuard>
           } />
           <Route path="/checkout/success" element={
@@ -1104,7 +1146,7 @@ const App = () => {
           } />
           <Route path="/support" element={
             <AuthGuard>
-              <Support />
+              <SupportRouter />
             </AuthGuard>
           } />
           <Route path="/settings/connected-apps" element={<RedirectPreservingSearch to="/connectors" />} />
@@ -1150,6 +1192,12 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/u/:identifier" element={<PublicProfilePage />} />
+          {/* Full "People who match you" list — See-all target for MatchesPreview */}
+          <Route path="/me/matches" element={
+            <AuthGuard>
+              <MatchesPage />
+            </AuthGuard>
+          } />
           {/* E5 — Privacy & Visibility settings */}
           <Route path="/profile/me/privacy" element={
             <AuthGuard>
@@ -1261,7 +1309,7 @@ const App = () => {
           } />
           <Route path="/memory/diary" element={
             <AuthGuard>
-              <Diary />
+              <DiaryRouter />
             </AuthGuard>
           } />
           <Route path="/memory/recall" element={

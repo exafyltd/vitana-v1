@@ -27,6 +27,7 @@ import { GoLivePopup } from "@/components/GoLivePopup";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { LiveRoomCard } from "@/components/liverooms/LiveRoomCard";
 import { LiveRoomDrawer } from "@/components/liverooms/LiveRoomDrawer";
+import { EditSessionDialog } from "@/components/liverooms/EditSessionDialog";
 import type { LiveRoom } from "@/components/liverooms/LiveRoomCard";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -36,6 +37,13 @@ import { toast } from "@/hooks/use-toast";
 import SocialShareButton from "@/components/sharing/SocialShareButton";
 import { useScheduledStreams, useLiveStreams, useStartStream, useCancelStream, useDeleteStream, useUpdateStream } from "@/hooks/useLiveStreams";
 import type { LiveStream } from "@/hooks/useLiveStreams";
+import {
+  useMyStreamSubscriptions,
+  useStreamSubscriberCounts,
+  useSubscribeToStream,
+  useUnsubscribeFromStream,
+} from "@/hooks/useStreamSubscription";
+import { useCreateReminder } from "@/hooks/useReminders";
 
 import { useAuth } from "@/context/AuthProvider";
 import { useProfilesByIds } from "@/hooks/useProfiles";
@@ -59,9 +67,9 @@ export default function LiveRooms() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [selectedRoomId, setSelectedRoomId] = useState<string | null>(null);
-  const [notifyingRooms, setNotifyingRooms] = useState<Set<string>>(new Set());
-  const [activeTab, setActiveTab] = useState('live');
+  const [activeTab, setActiveTab] = useState('all');
   const [deleteConfirmRoomId, setDeleteConfirmRoomId] = useState<string | null>(null);
+  const [editRoomId, setEditRoomId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   
   // Fetch live streams data
@@ -71,6 +79,15 @@ export default function LiveRooms() {
   const { mutateAsync: cancelStream } = useCancelStream();
   const { mutateAsync: deleteStream } = useDeleteStream();
   const { mutateAsync: updateStream } = useUpdateStream();
+
+  // "Notify me" — real, persistent subscriptions (replaces the old local-state fake).
+  const scheduledStreamIds = useMemo(() => scheduledStreams.map((s) => s.id), [scheduledStreams]);
+  const { data: subscriberCounts = {} } = useStreamSubscriberCounts(scheduledStreamIds);
+  const { data: myStreamSubs } = useMyStreamSubscriptions();
+  const notifyingRooms = myStreamSubs ?? new Set<string>();
+  const { mutateAsync: subscribeStream } = useSubscribeToStream();
+  const { mutateAsync: unsubscribeStream } = useUnsubscribeFromStream();
+  const { mutateAsync: createReminder } = useCreateReminder();
   
   // Fetch profiles for all creators
   const creatorIds = useMemo(() => {
@@ -106,12 +123,13 @@ export default function LiveRooms() {
       description: stream.description || undefined,
       host: {
         id: stream.created_by,
-        name: profile?.display_name || (isYou ? 'You' : 'Anonymous Host'),
+        name: profile?.display_name || (isYou ? t('screens.liverooms.you') : t('screens.liverooms.anonymousHost')),
         avatar: profile?.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${stream.created_by}`,
       },
       isLive: stream.status === 'live',
       scheduledTime: stream.scheduled_for || undefined,
       participants: stream.viewer_count,
+      interestedCount: subscriberCounts[stream.id] ?? 0,
       maxParticipants: 100,
       tags: stream.tags,
       type: stream.stream_type as "audio" | "video",
@@ -151,6 +169,18 @@ export default function LiveRooms() {
       room.category?.toLowerCase().includes(query)
     );
   }, [scheduledRooms, searchQuery]);
+
+  // "All" mode — show live + scheduled together so users always see rooms.
+  // Sorted purely by time: the soonest/most-recent scheduledTime first, with
+  // undated rooms (live now) kept at the front.
+  const filteredAllRooms = useMemo(() => {
+    const combined = [...filteredLiveRooms, ...filteredScheduledRooms];
+    const timeOf = (room: LiveRoom) => {
+      const ts = room.scheduledTime ? new Date(room.scheduledTime).getTime() : NaN;
+      return Number.isNaN(ts) ? 0 : ts;
+    };
+    return combined.sort((a, b) => timeOf(a) - timeOf(b));
+  }, [filteredLiveRooms, filteredScheduledRooms]);
 
 
   // Handle deep linking
@@ -237,27 +267,40 @@ export default function LiveRooms() {
     });
   };
 
-  const handleNotifyClick = (roomId: string) => {
-    setNotifyingRooms((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(roomId)) {
-        newSet.delete(roomId);
+  const handleNotifyClick = async (roomId: string) => {
+    if (!user) {
+      notifyError('toasts.community.signRequired', 'toasts.community.pleaseSignJoinLiveRooms');
+      return;
+    }
+    const wasOn = notifyingRooms.has(roomId);
+    try {
+      if (wasOn) {
+        await unsubscribeStream(roomId);
+        notify('toasts.liverooms.notifyOffTitle', 'toasts.liverooms.notifyOffDesc');
       } else {
-        newSet.add(roomId);
+        await subscribeStream(roomId);
+        // Best-effort personal reminder ~10 min before start (voice/calendar nudge).
+        const room = scheduledRooms.find((r) => r.id === roomId);
+        if (room?.scheduledTime) {
+          const remindMs = new Date(room.scheduledTime).getTime() - 10 * 60 * 1000;
+          if (remindMs > Date.now()) {
+            createReminder({
+              action_text: lookup('toasts.liverooms.reminderActionText', { title: room.title }),
+              scheduled_for_iso: new Date(remindMs).toISOString(),
+              description: room.title,
+            }).catch((e) => console.warn('[notify] reminder create failed:', e));
+          }
+        }
+        notify('toasts.liverooms.notifyOnTitle', 'toasts.liverooms.notifyOnDesc');
       }
-      return newSet;
-    });
-    toast({
-      title: notifyingRooms.has(roomId) ? "Notifications off" : "You'll be notified!",
-      description: notifyingRooms.has(roomId)
-        ? "You won't receive notifications for this room"
-        : "We'll notify you when the room goes live",
-    });
+    } catch (e) {
+      console.error('[notify] toggle failed:', e);
+      notifyError('toasts.liverooms.notifyError');
+    }
   };
 
   const handleEditRoom = async () => {
-    // Edit mode removed in session-based architecture
-    notify('toasts.community.notYetSupported', 'toasts.community.editingSessionsWillAvailableSoon');
+    if (selectedRoomId) setEditRoomId(selectedRoomId);
   };
 
   const handleDeleteRoom = async (roomId?: string) => {
@@ -280,7 +323,7 @@ export default function LiveRooms() {
 
   const handleCardEdit = async (e: React.MouseEvent, roomId: string) => {
     e.stopPropagation();
-    notify('toasts.community.notYetSupported', 'toasts.community.editingSessionsWillAvailableSoon');
+    setEditRoomId(roomId);
   };
 
   const handleCardDelete = (e: React.MouseEvent, roomId: string) => {
@@ -325,11 +368,11 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[0].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      rowRooms[0].isLive && handleJoinRoom(rowRooms[0].id);
+                      if (rowRooms[0].isLive) handleJoinRoom(rowRooms[0].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
-                      !rowRooms[0].isLive && handleNotifyClick(rowRooms[0].id);
+                      if (!rowRooms[0].isLive) handleNotifyClick(rowRooms[0].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[0].id)}
                     isCreator={rowRooms[0].host.id === user?.id}
@@ -358,11 +401,11 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[1].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      rowRooms[1].isLive && handleJoinRoom(rowRooms[1].id);
+                      if (rowRooms[1].isLive) handleJoinRoom(rowRooms[1].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
-                      !rowRooms[1].isLive && handleNotifyClick(rowRooms[1].id);
+                      if (!rowRooms[1].isLive) handleNotifyClick(rowRooms[1].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[1].id)}
                     isCreator={rowRooms[1].host.id === user?.id}
@@ -391,11 +434,11 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[2].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      rowRooms[2].isLive && handleJoinRoom(rowRooms[2].id);
+                      if (rowRooms[2].isLive) handleJoinRoom(rowRooms[2].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
-                      !rowRooms[2].isLive && handleNotifyClick(rowRooms[2].id);
+                      if (!rowRooms[2].isLive) handleNotifyClick(rowRooms[2].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[2].id)}
                     isCreator={rowRooms[2].host.id === user?.id}
@@ -428,11 +471,11 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[0].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      rowRooms[0].isLive && handleJoinRoom(rowRooms[0].id);
+                      if (rowRooms[0].isLive) handleJoinRoom(rowRooms[0].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
-                      !rowRooms[0].isLive && handleNotifyClick(rowRooms[0].id);
+                      if (!rowRooms[0].isLive) handleNotifyClick(rowRooms[0].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[0].id)}
                     isCreator={rowRooms[0].host.id === user?.id}
@@ -461,11 +504,11 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[1].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      rowRooms[1].isLive && handleJoinRoom(rowRooms[1].id);
+                      if (rowRooms[1].isLive) handleJoinRoom(rowRooms[1].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
-                      !rowRooms[1].isLive && handleNotifyClick(rowRooms[1].id);
+                      if (!rowRooms[1].isLive) handleNotifyClick(rowRooms[1].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[1].id)}
                     isCreator={rowRooms[1].host.id === user?.id}
@@ -495,11 +538,11 @@ export default function LiveRooms() {
                     onClick={() => handleCardClick(rowRooms[2].id)}
                     onJoinClick={(e) => {
                       e.stopPropagation();
-                      rowRooms[2].isLive && handleJoinRoom(rowRooms[2].id);
+                      if (rowRooms[2].isLive) handleJoinRoom(rowRooms[2].id);
                     }}
                     onNotifyClick={(e) => {
                       e.stopPropagation();
-                      !rowRooms[2].isLive && handleNotifyClick(rowRooms[2].id);
+                      if (!rowRooms[2].isLive) handleNotifyClick(rowRooms[2].id);
                     }}
                     isNotifying={notifyingRooms.has(rowRooms[2].id)}
                     isCreator={rowRooms[2].host.id === user?.id}
@@ -591,6 +634,7 @@ export default function LiveRooms() {
             {isMobile && (
               <MobileModePill
                 modes={[
+                  { value: "all", label: translate('liveRooms.tabs.all', 'All Rooms'), icon: "✨", badge: filteredAllRooms.length || undefined },
                   { value: "live", label: translate('liveRooms.tabs.live', 'Live Now'), icon: "📡", badge: filteredLiveRooms.length || undefined },
                   { value: "scheduled", label: translate('liveRooms.tabs.scheduled', 'Scheduled'), icon: "📅", badge: filteredScheduledRooms.length || undefined },
                   { value: "past", label: translate('liveRooms.tabs.past', 'Past'), icon: "📋" },
@@ -619,6 +663,14 @@ export default function LiveRooms() {
         <SplitBar value={activeTab} onValueChange={setActiveTab} className={isMobile ? "mt-1" : "mt-6"}>
           {!isMobile && (
             <SplitBarList>
+              <SplitBarTrigger value="all">
+                ✨ {translate('liveRooms.tabs.all', 'All Rooms')}
+                {filteredAllRooms.length > 0 && (
+                  <Badge variant="secondary" className="ml-2 px-1.5 py-0.5 text-xs">
+                    {filteredAllRooms.length}
+                  </Badge>
+                )}
+              </SplitBarTrigger>
               <SplitBarTrigger value="live">
                 📡 {translate('liveRooms.tabs.live', 'Live Now')}
                 {filteredLiveRooms.length > 0 && (
@@ -646,6 +698,58 @@ export default function LiveRooms() {
               </SplitBarTrigger>
             </SplitBarList>
           )}
+
+          <SplitBarContent value="all" className={isMobile ? "mt-0" : "mt-6"}>
+            {isLoadingLive || isLoadingScheduled ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">{t('screens.community.loadingLiveRooms')}</p>
+              </div>
+            ) : filteredAllRooms.length > 0 ? (
+              isMobile ? (
+                <MobileLiveRoomCarousel
+                  rooms={filteredAllRooms}
+                  onCardClick={handleCardClick}
+                  onJoinRoom={handleJoinRoom}
+                  onNotifyClick={handleNotifyClick}
+                  notifyingRooms={notifyingRooms}
+                  currentUserId={user?.id}
+                  onEdit={handleCardEdit}
+                  onDelete={handleCardDelete}
+                />
+              ) : (
+                <>
+                  {chunkRooms(filteredAllRooms).map((chunk, chunkIndex) => (
+                    <div key={`all-chunk-${chunkIndex}`}>
+                      {renderMosaicGrid(chunk)}
+                      {chunkIndex < chunkRooms(filteredAllRooms).length - 1 && (
+                        <div className="mb-8 mt-2">
+                          <MotivationalBanner variant="encouragement" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {filteredAllRooms.length > 0 && (
+                    <div className="mb-8 mt-2">
+                      <MotivationalBanner variant="partnership" />
+                    </div>
+                  )}
+                </>
+              )
+            ) : (
+              <div className="text-center py-6">
+                <p className="text-muted-foreground">{translate('liveRooms.noRooms', 'No live rooms at the moment')}</p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-4"
+                  onClick={() => setIsGoLiveOpen(true)}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  {translate('liveRooms.beFirst', 'Be the first to go live')}
+                </Button>
+              </div>
+            )}
+          </SplitBarContent>
 
           <SplitBarContent value="live" className={isMobile ? "mt-0" : "mt-6"}>
             {isLoadingLive ? (
@@ -797,6 +901,13 @@ export default function LiveRooms() {
           onDelete={() => setDeleteConfirmRoomId(selectedRoomId)}
         />
       )}
+
+      {/* Edit Session Dialog */}
+      <EditSessionDialog
+        open={!!editRoomId}
+        onOpenChange={(open) => !open && setEditRoomId(null)}
+        room={allRooms.find((r) => r.id === editRoomId) ?? null}
+      />
 
       {/* Delete Confirmation Dialog */}
       <ResponsiveConfirmDialog open={!!deleteConfirmRoomId} onOpenChange={(open) => !open && setDeleteConfirmRoomId(null)}>

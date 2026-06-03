@@ -33,6 +33,9 @@ interface NewsCardProps {
   location?: string;
   attendees?: number;
   timestamp?: string;
+  /** Optional prominent relative date/time rendered at the BOTTOM of the card
+   *  (Live Rooms), e.g. "Today 20.00h". Replaces the top timestamp chip there. */
+  whenLabel?: string;
   price?: number | "free";
   currency?: string;
   className?: string;
@@ -74,6 +77,7 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
     location,
     attendees,
     timestamp,
+    whenLabel,
     price,
     currency,
     className,
@@ -278,6 +282,13 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
 
       const isLoading = eventId ? (eventParticipation?.loading || eventParticipation?.checking) : (category === "people" ? isFollowLoading : false);
 
+      // Product rule: never show a follow/unfollow CTA for someone you already
+      // follow — opening a card must not risk an accidental unfollow. Matches
+      // the shared <FollowButton> behaviour used on the detail screens.
+      if (category === "people" && isFollowing) {
+        return null;
+      }
+
       return (
         <Button
           size="sm"
@@ -439,6 +450,13 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
                 <p className="text-sm text-white/90 line-clamp-2 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]">
                   {description}
                 </p>
+              )}
+
+              {/* Prominent relative date/time (Live Rooms) — e.g. "Today 20.00h" */}
+              {whenLabel && (
+                <div className="text-2xl font-bold text-white leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
+                  {whenLabel}
+                </div>
               )}
 
               {/* Meta Information */}

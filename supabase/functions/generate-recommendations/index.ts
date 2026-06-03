@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.56.0";
+import { getUserLocale, buildLocalizedSystemPrompt } from '../_shared/llm-locale.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -181,6 +182,11 @@ Return ONLY a JSON array of top ${limit} recommendations, each with:
 Sort by compatibility_score descending.`;
 
     const userPrompt = `Candidates:\n${JSON.stringify(candidates, null, 2)}`;
+
+    // Inject user-language directive so reasoning/labels in the output
+    // respect the user's preferred language (German by default).
+    const userLocale = await getUserLocale(supabase, user.id);
+    systemPrompt = buildLocalizedSystemPrompt(systemPrompt, userLocale);
 
     console.log('Calling Gemini API for intelligent matching...');
     const { generateContent } = await import("../_shared/gemini-client.ts");

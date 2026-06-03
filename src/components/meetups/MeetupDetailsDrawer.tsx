@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
-import { useFollow } from "@/hooks/useFollow";
+import { FollowButton } from "@/components/social/FollowButton";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { supabase } from "@/integrations/supabase/client";
 import { useQueryClient } from "@tanstack/react-query";
@@ -198,7 +198,6 @@ export function MeetupDetailsDrawer({
   const [isJoined, setIsJoined] = useState(false);
   const [isCheckingParticipation, setIsCheckingParticipation] = useState(true);
   const [isSaved, setIsSaved] = useState(false);
-  const { isFollowing, loading: isFollowLoading, followUser, unfollowUser } = useFollow(event?.created_by);
   const [showLocalTime, setShowLocalTime] = useState(true);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -997,44 +996,16 @@ export function MeetupDetailsDrawer({
                   </div>
                 </div>
 
-                {/* Follow Button - Same height as chip */}
-                <Button
-                  onClick={async () => {
-                    if (isFollowing) {
-                      await unfollowUser();
-                    } else {
-                      await followUser();
-                    }
-                  }}
-                  disabled={isFollowLoading}
-                  aria-label={`Follow ${event.creator_display_name || event.author?.name || 'host'}`}
-                  aria-pressed={isFollowing}
-                  variant={isFollowing ? "secondary" : "outline"}
+                {/* Follow CTA — shows only when you don't already follow the host. */}
+                <FollowButton
+                  targetUserId={event.created_by}
                   className={cn(
                     "h-11 sm:h-11 rounded-full gap-1.5 px-4",
                     "bg-background/95 backdrop-blur-sm shadow-lg",
                     "hover:scale-[1.02] active:scale-[0.98] transition-all duration-200",
-                    prefersReducedMotion && "transition-none hover:scale-100 active:scale-100",
-                    isFollowing && "bg-muted/50"
+                    prefersReducedMotion && "transition-none hover:scale-100 active:scale-100"
                   )}
-                >
-                  {isFollowLoading ? (
-                    <>
-                      <Loader2 className="h-[18px] w-[18px] animate-spin" />
-                      <span className="text-sm">{translate('eventDrawer.followingLoading', 'Following…')}</span>
-                    </>
-                  ) : isFollowing ? (
-                    <>
-                      <Check className="h-[18px] w-[18px]" />
-                      <span className="text-sm">{translate('eventDrawer.following', 'Following')}</span>
-                    </>
-                  ) : (
-                    <>
-                      <UserPlus className="h-[18px] w-[18px]" />
-                      <span className="text-sm">{translate('eventDrawer.follow', 'Follow')}</span>
-                    </>
-                  )}
-                </Button>
+                />
               </div>
             </div>
           </div>

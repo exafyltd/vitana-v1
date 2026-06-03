@@ -11,6 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Shield, Users, Settings, Eye, EyeOff } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
+import { unlockIOSAudioPlayback } from "@/lib/iosAudioUnlock";
 import { useRoleBasedRedirect } from "@/hooks/useSmartRouting";
 import { useSupabaseOAuthSignIn } from "@/hooks/useSupabaseOAuthSignIn";
 import { friendlyOAuthError } from "@/lib/oauthErrors";
@@ -52,6 +53,9 @@ const ExafyAdminPortal = () => {
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    // VTID-03185 follow-up: unlock iOS AudioContext inside the live submit
+    // gesture so the ORB greeting plays on iOS after email/password sign-in.
+    unlockIOSAudioPlayback();
     setLoading(true);
     setError("");
 
