@@ -5,7 +5,6 @@ import { useTenant } from '@/hooks/useTenant';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { buildOrbContext } from '@/lib/buildOrbContext';
 import { playInstantGreeting, preloadInstantGreeting } from '@/lib/instantGreeting';
 // VTID-02919 (B0d.4-frontend): capture the wake-click timestamp inside
 // the user-gesture call stack so the wake-timeline can compute
@@ -179,44 +178,49 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
       const orbLang = localeToOrbLang(selectedLanguage);
       console.log('[useOrbVoiceClient] Using language:', selectedLanguage, '→ ORB lang:', orbLang);
 
-      // 5. Fetch user context (memory garden + diary) for injection
-      let initialContext = '';
-      try {
-        const ctx = await buildOrbContext(user.id);
-        initialContext = ctx.contextString;
-        console.log('[useOrbVoiceClient] Built context:', ctx.itemCount, 'items,', initialContext.length, 'chars');
-      } catch (ctxErr) {
-        console.warn('[useOrbVoiceClient] Failed to build context, proceeding without:', ctxErr);
-      }
-
-      // 6. Create or reuse conversation for persistence (user-scoped key)
+      // 5. Resolve the persistence conversation id OFF the critical path.
+      //    Previously this hook (a) built a full memory-garden + diary context
+      //    string via buildOrbContext and (b) awaited an ai_conversations
+      //    INSERT *before* OrbVoiceClient.start() ever ran — adding several
+      //    sequential Supabase round-trips to the tap→speech path. The gateway
+      //    already personalises the live system instruction from the user's
+      //    memory at session start (bootstrap context pack), so the frontend
+      //    context injection was redundant; and the conversation row is only
+      //    needed later for transcript logging, not for connecting. Both now
+      //    run without blocking the session start.
       const convStorageKey = `orb_conversation_id:${user.id}`;
-      let convId = conversationIdRef.current;
-      if (!convId) {
-        // Check localStorage for recent orb conversation (user-scoped)
-        const storedConvId = localStorage.getItem(convStorageKey);
-        if (storedConvId) {
-          convId = storedConvId;
-        } else {
-          // Create new conversation
-          const { data: conv } = await supabase.from('ai_conversations').insert({
-            user_id: user.id,
-            agent_type: 'wellness',
-            metadata: { channel: 'orb' },
-          }).select('id').single();
-          if (conv) {
-            convId = conv.id;
-            localStorage.setItem(convStorageKey, conv.id);
+      const storedConvId = conversationIdRef.current || localStorage.getItem(convStorageKey);
+      if (storedConvId) {
+        conversationIdRef.current = storedConvId;
+      } else {
+        // Fire-and-forget: create the conversation in parallel with connect.
+        // logOrbMessage() reads conversationIdRef.current and no-ops until it
+        // resolves, so early turns simply aren't persisted (the first persisted
+        // turn is the assistant greeting transcript, which lands seconds later).
+        void (async () => {
+          try {
+            const { data: conv } = await supabase.from('ai_conversations').insert({
+              user_id: user.id,
+              agent_type: 'wellness',
+              metadata: { channel: 'orb' },
+            }).select('id').single();
+            if (conv) {
+              conversationIdRef.current = conv.id;
+              localStorage.setItem(convStorageKey, conv.id);
+            }
+          } catch (e) {
+            console.warn('[useOrbVoiceClient] Failed to create conversation:', e);
           }
-        }
-        conversationIdRef.current = convId;
+        })();
       }
 
-      // 7. Create config for OrbVoiceClient
+      // 6. Create config for OrbVoiceClient. No initialContext: the gateway
+      //    owns both personalised context (bootstrap pack) AND the first
+      //    spoken words (server-side auto-greet on upstream connect), so the
+      //    frontend no longer injects a context turn or a greeting trigger.
       const config: OrbVoiceClientConfig = {
         lang: orbLang,
         accessToken,
-        initialContext: initialContext || undefined,
       };
 
       // 8. Create new client with callbacks
@@ -238,9 +242,12 @@ export function useOrbVoiceClient(): UseOrbVoiceClientReturn {
         },
         onTranscript: (text) => {
           setTranscript(text);
-          // Persist assistant transcript
-          if (convId && text.trim()) {
-            logOrbMessage(convId, 'assistant', text);
+          // Persist assistant transcript. The conversation id may still be
+          // resolving (created fire-and-forget above), so read the ref at
+          // call time rather than capturing it in this closure.
+          const cid = conversationIdRef.current;
+          if (cid && text.trim()) {
+            logOrbMessage(cid, 'assistant', text);
           }
         },
         onLink: (url) => {

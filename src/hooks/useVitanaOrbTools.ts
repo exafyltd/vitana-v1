@@ -122,7 +122,27 @@ export const useVitanaOrbTools = (options: UseVitanaOrbToolsOptions = {}) => {
       toast({ title: `${navTo} ${translate('navigation.profile')}` });
       return true;
     }
-    if (t.includes('settings')) {
+    // Direct deep-links into Settings sections. The Settings page reads
+    // ?mode= on mount and also listens for `vitana:settings-navigate`. We use
+    // the URL form here so the navigation works from any starting screen.
+    const SETTINGS_SECTION_PATTERNS: Array<{ section: string; match: string[] }> = [
+      { section: 'notifications', match: ['notification settings', 'push settings', 'benachrichtigungseinstellungen', 'benachrichtigungen einstellen'] },
+      { section: 'privacy.security', match: ['security settings', 'two-factor', '2fa', 'biometric', 'sicherheitseinstellungen'] },
+      { section: 'privacy.visibility', match: ['profile visibility', 'profil sichtbarkeit'] },
+      { section: 'privacy.data', match: ['data sharing', 'ai data', 'datenfreigabe', 'datenexport'] },
+      { section: 'preferences.appearance', match: ['appearance', 'dark mode', 'theme settings', 'erscheinungsbild', 'dunkler modus'] },
+      { section: 'preferences.language', match: ['language settings', 'region settings', 'sprache einstellen', 'spracheinstellungen'] },
+      { section: 'billing', match: ['billing settings', 'subscription settings', 'rechnungseinstellungen'] },
+      { section: 'support', match: ['help settings', 'support settings', 'hilfeeinstellungen'] },
+    ];
+    for (const { section, match } of SETTINGS_SECTION_PATTERNS) {
+      if (match.some((m) => t.includes(m))) {
+        navigate(`/settings?mode=${section}`);
+        toast({ title: `${navTo} ${translate('navigation.settings')}` });
+        return true;
+      }
+    }
+    if (t.includes('settings') || t.includes('einstellungen')) {
       navigate('/settings');
       toast({ title: `${navTo} ${translate('navigation.settings')}` });
       return true;

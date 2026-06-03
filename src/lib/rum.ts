@@ -1,23 +1,27 @@
 /**
- * RUM beacon — Phase 1 W1 (VTID-03177 PROFILE).
+ * RUM beacon — Phase 1 W1 (VTID-03177 PROFILE) + W2 INP (VTID-03201).
  *
- * Captures Core Web Vitals (LCP, TTFB, FCP, CLS) per screen and POSTs them
- * to the gateway's `/api/v1/rum/beacon` endpoint. The gateway translates
- * each beacon into a `screen.latency.measured` OASIS event.
+ * Captures Core Web Vitals (LCP, TTFB, FCP, CLS, INP) per screen and POSTs
+ * them to the gateway's `/api/v1/rum/beacon` endpoint. The gateway
+ * translates each beacon into a `screen.latency.measured` OASIS event.
  *
- * INP is deferred to W2 — rolling it by hand without `web-vitals` requires
- * non-trivial event-buffering. Adding the `web-vitals` dep is a one-line
- * follow-up commit.
+ * LCP / TTFB / FCP / CLS use native PerformanceObservers (no deps).
+ * INP uses `web-vitals` (W2 add) — rolling INP by hand requires non-trivial
+ * event-buffering because INP measures the slowest input→paint across a
+ * page's lifetime, with overlap handling that the `web-vitals` library
+ * already gets right.
  *
- * Always-on import: this module installs PerformanceObservers idempotently
- * and is safe to import multiple times. The gateway endpoint returns 204
- * when `FEATURE_LATENCY_TELEMETRY_ENV` is off, so payloads cost ~nothing
+ * Always-on import: this module installs observers idempotently and is
+ * safe to import multiple times. The gateway endpoint returns 204 when
+ * `FEATURE_LATENCY_TELEMETRY_ENV` is off, so payloads cost ~nothing
  * end-to-end when the feature is dark.
  *
  * Usage (called from main.tsx after React mounts):
  *   import { initRum } from './lib/rum';
  *   initRum();
  */
+
+import { onINP, type Metric as WebVitalsMetric } from 'web-vitals';
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || 'https://gateway.vitanaland.com';
 const BEACON_PATH = '/api/v1/rum/beacon';
@@ -176,5 +180,20 @@ export function initRum(): void {
     });
   } catch {
     // ignore
+  }
+
+  // INP — slowest input→paint over the page's lifetime. web-vitals handles
+  // the buffering + overlap logic that's painful to roll by hand. The
+  // library fires the callback once per page (or on each significant
+  // change if reportAllChanges is true; we leave that off — one beacon per
+  // page is what the eval harness expects).
+  try {
+    onINP((metric: WebVitalsMetric) => {
+      if (typeof metric.value === 'number' && Number.isFinite(metric.value)) {
+        emit('INP', metric.value);
+      }
+    });
+  } catch {
+    // ignore — web-vitals is defensive but never let it break a render
   }
 }

@@ -1,14 +1,15 @@
 import { isToday, isYesterday, isThisWeek } from 'date-fns';
 import { formatDate } from '@/lib/locale-format';
+import { t } from '@/lib/i18n-toast';
 interface DateGroupHeaderProps {
   date: Date;
 }
 
 export function DateGroupHeader({ date }: DateGroupHeaderProps) {
   const getDateLabel = (date: Date): string => {
-    if (isToday(date)) return "Today";
-    if (isYesterday(date)) return "Yesterday";
-    if (isThisWeek(date, { weekStartsOn: 0 })) return "This Week";
+    if (isToday(date)) return t('screens.diary.today');
+    if (isYesterday(date)) return t('screens.diary.yesterday');
+    if (isThisWeek(date, { weekStartsOn: 0 })) return t('screens.diary.thisWeek');
     return formatDate(date, "MMMM d, yyyy");
   };
 

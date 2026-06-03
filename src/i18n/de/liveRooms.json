@@ -49,7 +49,7 @@
       "coverLabel": "Titelbild / Thumbnail",
       "coverAlt": "Stream-Titelbild",
       "coverUploadCta": "Tippen, um ein eigenes Bild hochzuladen",
-      "coverUploadHint": "PNG, JPG bis 2 MB",
+      "coverUploadHint": "Beliebiges Bild – wird automatisch angepasst",
       "aiAutoGenerateLabel": "Mit KI automatisch erstellen",
       "aiAutoGenerateHint": "Bild erstellen, wenn kein Upload erfolgt",
       "generatingAiImage": "KI-Bild wird erstellt…",
@@ -129,6 +129,12 @@
         "aiImageHintTitle": "KI-Bildgenerierung",
         "aiImageHintDesc": "Bild wird erstellt, wenn der Stream startet."
       }
+    },
+    "editSession": {
+      "title": "Session bearbeiten",
+      "saving": "Wird gespeichert …",
+      "changeCover": "Titelbild ändern",
+      "noChanges": "Keine Änderungen zum Speichern"
     }
   }
 }

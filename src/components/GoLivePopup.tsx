@@ -19,6 +19,7 @@ import { applyReplacements } from "@/lib/i18n-helpers";
 import { useMyRoom, useCreateSession } from "@/hooks/useMyRoom";
 
 import { formatDate } from '@/lib/locale-format';
+import { resizeImageFile } from '@/lib/resizeImage';
 interface GoLivePopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -57,6 +58,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   const [accessLevel, setAccessLevel] = useState<AccessLevelId>("public");
   const [scheduleDate, setScheduleDate] = useState<Date>();
   const [scheduleTime, setScheduleTime] = useState("");
+  const [scheduleOpen, setScheduleOpen] = useState(false);
   const [enableChat, setEnableChat] = useState(true);
   const [enablePolls, setEnablePolls] = useState(false);
   const [enableRecording, setEnableRecording] = useState(true);
@@ -155,22 +157,27 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
     return times;
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        notify.error('liveRooms.goLivePopup.errors.invalidFileTypeTitle', 'liveRooms.goLivePopup.errors.invalidFileTypeDesc');
-        return;
-      }
-      // Validate file size (2MB max)
-      if (file.size > 2 * 1024 * 1024) {
-        notify.error('liveRooms.goLivePopup.errors.fileTooLargeTitle', 'liveRooms.goLivePopup.errors.fileTooLargeDesc');
-        return;
-      }
-      setSelectedImage(file);
-      setImagePreviewUrl(URL.createObjectURL(file));
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      notify.error('liveRooms.goLivePopup.errors.invalidFileTypeTitle', 'liveRooms.goLivePopup.errors.invalidFileTypeDesc');
+      return;
     }
+
+    // Accept any image: auto-resize/compress (max 1920px edge, ~85% JPEG,
+    // target < 2MB) instead of rejecting large files outright.
+    let processed = file;
+    try {
+      processed = await resizeImageFile(file, { maxEdge: 1920, quality: 0.85 });
+    } catch (e) {
+      console.warn('[GoLivePopup] Image resize failed, using original:', e);
+    }
+
+    setSelectedImage(processed);
+    setImagePreviewUrl(URL.createObjectURL(processed));
   };
 
   const handleRemoveImage = () => {
@@ -226,9 +233,10 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
           effectiveRoomId = newRoom.id;
           setFallbackRoomId(effectiveRoomId);
           console.log('[GoLivePopup] Permanent room created via Gateway:', effectiveRoomId);
-        } catch (createError: any) {
+        } catch (createError: unknown) {
+          const createMsg = createError instanceof Error ? createError.message : String(createError);
           console.error('[GoLivePopup] Failed to create permanent room via Gateway:', createError);
-          notify.error('toasts.common.error', `Failed to create permanent room: ${createError.message}`);
+          notify.error('toasts.common.error', `Failed to create permanent room: ${createMsg}`);
           setIsLoading(false);
           return;
         }
@@ -294,9 +302,10 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       let sessionResult;
       try {
         sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
-      } catch (firstError: any) {
+      } catch (firstError: unknown) {
+        const firstMsg = firstError instanceof Error ? firstError.message : String(firstError);
         // If room is stuck in non-idle state, cancel existing session and retry
-        if (firstError.message?.includes('409') || firstError.message?.includes('ROOM_NOT_IDLE') || firstError.message?.includes('conflict')) {
+        if (firstMsg.includes('409') || firstMsg.includes('ROOM_NOT_IDLE') || firstMsg.includes('conflict')) {
           console.log('[GoLivePopup] Room not idle (409) - canceling stuck session and retrying...');
           try {
             // Step 1: Try gateway cancel
@@ -331,7 +340,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
           await new Promise(r => setTimeout(r, 1500));
           try {
             sessionResult = await createSession({ roomId: effectiveRoomId, request: sessionRequest });
-          } catch (retryError: any) {
+          } catch (retryError: unknown) {
             console.error('[GoLivePopup] Retry after force-reset failed:', retryError);
             notify.error('toasts.common.error', `Room stuck. Please try again in a few seconds.`);
             throw firstError;
@@ -506,7 +515,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
               <input
                 ref={fileInputRef}
                 type="file"
-                accept="image/jpeg,image/png,image/webp"
+                accept="image/*"
                 onChange={handleImageUpload}
                 className="hidden"
               />
@@ -638,7 +647,10 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                 {/* Schedule for Later */}
                 <div>
                   <Label>{t('scheduleLabel', 'Schedule for Later')}</Label>
-                  <Popover>
+                  {/* Date picker — popover contains ONLY the calendar so it can never
+                      push the time picker off-screen on mobile. Picking a date closes
+                      the popover, revealing the time selector inline below. */}
+                  <Popover open={scheduleOpen} onOpenChange={setScheduleOpen}>
                     <PopoverTrigger asChild>
                       <Button
                         variant="outline"
@@ -648,56 +660,77 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                         )}
                       >
                         <Clock className="mr-2 h-4 w-4" />
-                        {scheduleDate && scheduleTime 
+                        {scheduleDate && scheduleTime
                           ? applyReplacements(t('scheduledAt', '{date} at {time}'), { date: formatDate(scheduleDate, "PPP"), time: scheduleTime })
-                          : scheduleDate 
+                          : scheduleDate
                             ? applyReplacements(t('dateNeedsTime', '{date} – select time'), { date: formatDate(scheduleDate, "PPP") })
                             : t('goLiveNow', 'Go Live Now')
                         }
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className="w-auto max-h-[60vh] overflow-y-auto p-0" align="start">
                       <Calendar
                         mode="single"
                         selected={scheduleDate}
-                        onSelect={setScheduleDate}
-                        disabled={(date) => date < new Date()}
+                        onSelect={(date) => {
+                          setScheduleDate(date);
+                          // Default to the next clean 15-min slot the first time a date is set
+                          if (date && !scheduleTime) {
+                            const now = new Date();
+                            const mins = Math.ceil((now.getMinutes() + 1) / 15) * 15;
+                            const next = new Date(now);
+                            next.setMinutes(mins, 0, 0);
+                            setScheduleTime(
+                              `${next.getHours().toString().padStart(2, '0')}:${next.getMinutes().toString().padStart(2, '0')}`
+                            );
+                          }
+                          // Close so the inline time selector below is reachable on mobile
+                          if (date) setScheduleOpen(false);
+                        }}
+                        disabled={(date) => {
+                          const today = new Date();
+                          today.setHours(0, 0, 0, 0);
+                          return date < today;
+                        }}
                         initialFocus
                         className="p-3 pointer-events-auto"
                       />
-                      
-                      {scheduleDate && (
-                        <div className="p-3 border-t space-y-2">
-                          <Label htmlFor="schedule-time">{t('time', 'Time')}</Label>
-                          <Select 
-                            value={scheduleTime || ""} 
-                            onValueChange={setScheduleTime}
-                          >
-                            <SelectTrigger id="schedule-time">
-                              <SelectValue placeholder={t('selectTime', 'Select time')} />
-                            </SelectTrigger>
-                            <SelectContent className="max-h-[200px]">
-                              {generateTimeOptions().map((time) => (
-                                <SelectItem key={time} value={time}>{time}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              setScheduleDate(undefined);
-                              setScheduleTime("");
-                            }}
-                            className="w-full"
-                          >
-                            {t('clearSchedule', 'Clear Schedule (Go Live Now)')}
-                          </Button>
-                        </div>
-                      )}
                     </PopoverContent>
                   </Popover>
+
+                  {/* Time selector — rendered INLINE (outside the popover) so it is
+                      always visible and scrollable within the dialog on mobile. */}
+                  {scheduleDate && (
+                    <div className="mt-3 space-y-2 rounded-md border p-3">
+                      <Label htmlFor="schedule-time">{t('time', 'Time')}</Label>
+                      <Select
+                        value={scheduleTime || ""}
+                        onValueChange={setScheduleTime}
+                      >
+                        <SelectTrigger id="schedule-time">
+                          <SelectValue placeholder={t('selectTime', 'Select time')} />
+                        </SelectTrigger>
+                        <SelectContent className="max-h-[240px]">
+                          {generateTimeOptions().map((time) => (
+                            <SelectItem key={time} value={time}>{time}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          setScheduleDate(undefined);
+                          setScheduleTime("");
+                          setScheduleOpen(false);
+                        }}
+                        className="w-full"
+                      >
+                        {t('clearSchedule', 'Clear Schedule (Go Live Now)')}
+                      </Button>
+                    </div>
+                  )}
                 </div>
 
                 {/* Chat & Engagement */}

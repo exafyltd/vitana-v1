@@ -1,0 +1,41 @@
+{
+  "videoShop": {
+    "feed": {
+      "loading": "Lade Video-Shop …",
+      "loadingMore": "Lade weitere Videos …",
+      "end": "Du hast das Ende erreicht.",
+      "emptyTitle": "Noch keine Videos",
+      "emptyBody": "Es gibt gerade keine Shop-Videos. Schau später wieder vorbei oder stöbere in Discover.",
+      "browseDiscover": "In Discover stöbern",
+      "errorTitle": "Wir konnten den Video-Shop nicht laden",
+      "errorBody": "Bitte versuche es in einem Moment noch einmal.",
+      "retry": "Erneut versuchen",
+      "roleBlockedTitle": "Der Video-Shop steht dir hier nicht zur Verfügung",
+      "roleBlockedBody": "Der Video-Shop ist ein Community-Feature. Wechsle in die Community-Rolle, um ihn zu nutzen.",
+      "mute": "Ton aus",
+      "unmute": "Ton an",
+      "share": "Teilen",
+      "linkCopied": "Link kopiert"
+    },
+    "drawer": {
+      "loading": "Lade Produkt …",
+      "productFallback": "Produkt",
+      "addToCart": "In den Warenkorb",
+      "adding": "Wird hinzugefügt …",
+      "addedTitle": "Hinzugefügt",
+      "addedBody": "Das Produkt liegt jetzt in deinem Warenkorb.",
+      "addFailed": "Hinzufügen zum Warenkorb fehlgeschlagen",
+      "goToCart": "Zum Warenkorb",
+      "moreDetails": "Mehr Details",
+      "notifyMe": "Benachrichtige mich",
+      "outOfStock": "Nicht verfügbar",
+      "retry": "Erneut versuchen",
+      "errorTitle": "Produkt konnte nicht geladen werden",
+      "errorBody": "Bitte versuche es in einem Moment noch einmal.",
+      "unavailableTitle": "Nicht mehr verfügbar",
+      "unavailableBody": "Dieses Produkt ist gerade nicht mehr erhältlich.",
+      "roleBlockedTitle": "Kauf hier nicht verfügbar",
+      "roleBlockedBody": "Käufe sind ein Community-Feature. Wechsle in die Community-Rolle, um fortzufahren."
+    }
+  }
+}

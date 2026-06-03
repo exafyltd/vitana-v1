@@ -15,7 +15,6 @@ import {
   LayoutGrid,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { useTranslation } from '@/hooks/useTranslation';
 
 interface AIRecommendation {
@@ -139,18 +138,9 @@ function RecommendationCard({
             {rec.price}
           </span>
           <div className="flex gap-2 shrink-0">
-            <AddToCartButton
-              item={{
-                item_type: 'wellness_service',
-                item_id: rec.id.toString(),
-                item_name: rec.title,
-                item_price: parseFloat(rec.price.replace('$', '')),
-                item_image_url: rec.image,
-                item_metadata: { provider: rec.provider, match: rec.match }
-              }}
-              size="sm"
-              showLabel={featured}
-            />
+            {/* Phase 0: wellness_service not yet supported in the unified cart
+                (products-backed cart; these have non-UUID ids and no products.id
+                row). The add-to-cart affordance is hidden until a later phase. */}
             {featured && (
               <Button size="sm" onClick={(e) => { e.stopPropagation(); onNavigate(rec); }}>
                 {translate('discover.view')}

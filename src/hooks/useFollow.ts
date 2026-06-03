@@ -16,6 +16,8 @@ interface FollowCounts {
 
 interface UseFollowReturn {
   isFollowing: boolean;
+  /** True while the follow *status* is still being resolved (first load). */
+  statusLoading: boolean;
   followersCount: number;
   followingCount: number;
   loading: boolean;
@@ -208,6 +210,7 @@ export function useFollow(targetUserId: string | undefined): UseFollowReturn {
 
   return {
     isFollowing: statusQuery.data ?? false,
+    statusLoading: statusQuery.isLoading,
     followersCount: countsQuery.data?.followers_count ?? 0,
     followingCount: countsQuery.data?.following_count ?? 0,
     loading: followMutation.isPending || unfollowMutation.isPending,

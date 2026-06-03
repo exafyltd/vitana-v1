@@ -1,0 +1,77 @@
+{
+  "universalCart": {
+    "page": {
+      "title": "Cart",
+      "subtitle": "Products, packages, and recommendations from Discover — all in one place.",
+      "emptyTitle": "Your cart is empty",
+      "emptyBody": "Tap “Add to cart” on any Discover item to add it here.",
+      "loading": "Loading your cart…",
+      "roleBlockedTitle": "The cart isn't available for this role",
+      "roleBlockedBody": "The cart is a community feature. Switch to your community role to use it.",
+      "errorTitle": "We couldn't load your cart",
+      "errorBody": "Please try again in a moment.",
+      "removeAction": "Remove",
+      "quantityLabel": "Quantity",
+      "completeAction": "Mark completed",
+      "alreadyCompleted": "Already completed",
+      "linkToDiscover": "Browse Discover",
+      "close": "Close"
+    },
+    "tabs": {
+      "cart": "Cart",
+      "saved": "Saved"
+    },
+    "saved": {
+      "moveToCart": "Add to cart",
+      "saveForLater": "Save for later",
+      "emptyTitle": "Nothing saved yet",
+      "emptyBody": "Save products for later by tapping “Save for later” in your cart."
+    },
+    "item": {
+      "viewProduct": "View product"
+    },
+    "agent": {
+      "promptLabel": "What are you shopping for?",
+      "promptPlaceholder": "Describe what you're shopping for — e.g. \"more energy in the morning\"",
+      "proposeCta": "Ask Vitana",
+      "proposing": "Vitana is finding matching products…",
+      "sectionTitle": "Vitana suggests",
+      "sectionSubtitle": "Suggestions sit in your cart. Review them, keep or remove — you only buy with \"Approve & Pay\".",
+      "rationaleLabel": "Why Vitana suggests this",
+      "safetyTitle": "Safety note — please read",
+      "confidenceLabel": "Confidence: {value}",
+      "keep": "Keep",
+      "remove": "Remove",
+      "unavailable": "Vitana is temporarily unavailable. Please try again in a moment.",
+      "roleBlocked": "Vitana suggestions are only available in your community role.",
+      "empty": "No suggestions yet. Tell Vitana above what you're shopping for.",
+      "reviewNote": "Please review the notes: some suggestions have safety notes. Check them before you continue.",
+      "reorderCta": "Buy again",
+      "reorderLabel": "Bought before",
+      "reorderSectionTitle": "Buy again",
+      "reorderSectionSubtitle": "Items you've bought before sit in your cart. Review them, keep or remove — you only buy with \"Approve & Pay\".",
+      "reordering": "Vitana is adding your items back…",
+      "overCapAdvisory": "These items push you over your monthly budget.",
+      "nearCapAdvisory": "These items bring you close to your monthly budget.",
+      "error": "Something went wrong. Please try again."
+    },
+    "budget": {
+      "title": "Budget this month",
+      "spentOfCap": "{spent} of {cap} this month",
+      "statusUnder": "Within budget",
+      "statusNear": "Almost at budget",
+      "statusOver": "Over budget",
+      "noCapHint": "Set a monthly budget to keep an eye on your spending."
+    },
+    "addButton": {
+      "label": "Add to cart",
+      "added": "In cart",
+      "addAria": "Add to cart",
+      "addedAria": "Already in cart",
+      "signRequired": "Sign in to add to your cart.",
+      "roleBlocked": "The cart is only available in your community role.",
+      "failed": "Couldn't add to cart",
+      "success": "Added to cart"
+    }
+  }
+}
