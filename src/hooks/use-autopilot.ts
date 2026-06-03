@@ -4,6 +4,17 @@ import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useAIConsent } from "@/hooks/useAIConsent";
+
+// Reasons the gateway returns when /generate produced nothing — surfaced to
+// the UI so it can pick the right empty-state copy instead of a generic one.
+export type AutopilotGenerateReason = "daily_cap" | "disabled" | "cooldown" | "no_signals";
+
+export interface AutopilotGenerateResult {
+  ok: boolean;
+  generated: number;
+  reason?: AutopilotGenerateReason;
+}
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
 
@@ -89,10 +100,20 @@ export function useAutopilot() {
   const { user } = useAuth();
   const { logActivity } = useActivityLogger();
   const { preferences } = useUserPreferences();
+  const { hasConsent } = useAIConsent();
 
   const [recommendations, setRecommendations] = useState<AutopilotRecommendation[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // VTID — on-demand regeneration. `generating` covers a /generate call in
+  // flight; `generateReason` holds the guard reason from the last call that
+  // produced 0 items (daily_cap / disabled / cooldown / no_signals) so the UI
+  // can show the right empty-state copy. `fetchedOnce` gates auto-regeneration
+  // so we never fire before the first real list fetch has resolved.
+  const [generating, setGenerating] = useState(false);
+  const [generateReason, setGenerateReason] = useState<AutopilotGenerateReason | null>(null);
+  const [fetchedOnce, setFetchedOnce] = useState(false);
 
   const [state, setState] = useState<AutopilotState>({
     actions: [],
@@ -100,14 +121,53 @@ export function useAutopilot() {
     lastUpdate: new Date(),
   });
 
-  // Keep state.actions in sync with recommendations
+  // Client-side "user said they did this" set. The gateway revision in
+  // prod doesn't persist /complete (and /reject also returns non-2xx for
+  // activated rows), so without this the user taps Complete, the row
+  // turns green, then the next fetchRecommendations brings it back as
+  // executing. Persisted per-user in localStorage so the dismissal
+  // survives popup reopens and page reloads until the backend catches
+  // up.
+  const DISMISSED_KEY = user ? `vitana.autopilot.dismissed_ids:${user.id}` : "";
+  const [dismissedIds, setDismissedIds] = useState<Set<string>>(() => {
+    if (!DISMISSED_KEY) return new Set();
+    try {
+      const raw = localStorage.getItem(DISMISSED_KEY);
+      if (!raw) return new Set();
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) ? new Set(arr.filter((x): x is string => typeof x === "string")) : new Set();
+    } catch {
+      return new Set();
+    }
+  });
+
+  const markDismissedLocally = useCallback((id: string) => {
+    setDismissedIds((prev) => {
+      if (prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.add(id);
+      if (DISMISSED_KEY) {
+        try {
+          localStorage.setItem(DISMISSED_KEY, JSON.stringify(Array.from(next)));
+        } catch {
+          // localStorage unavailable — set still updates in memory
+        }
+      }
+      return next;
+    });
+  }, [DISMISSED_KEY]);
+
+  // Keep state.actions in sync with recommendations, dropping anything the
+  // user has already cleared client-side.
   useEffect(() => {
     setState((prev) => ({
       ...prev,
-      actions: recommendations.map((r, i) => recToAction(r, i)),
+      actions: recommendations
+        .filter((r) => !dismissedIds.has(r.id))
+        .map((r, i) => recToAction(r, i)),
       lastUpdate: new Date(),
     }));
-  }, [recommendations]);
+  }, [recommendations, dismissedIds]);
 
   // VTID-01946 Phase H.4 — badge count + pulse delta tracking
   const [liveCount, setLiveCount] = useState<number>(0);
@@ -161,8 +221,8 @@ export function useAutopilot() {
   }, [liveCount, LAST_SEEN_KEY]);
 
   // Fetch full list — includes both new and activated items
-  const fetchRecommendations = useCallback(async () => {
-    if (!user) return;
+  const fetchRecommendations = useCallback(async (): Promise<AutopilotRecommendation[]> => {
+    if (!user) return [];
     setLoading(true);
     setError(null);
     try {
@@ -171,15 +231,83 @@ export function useAutopilot() {
       if (!res.ok) throw new Error(`Fetch failed: ${res.status}`);
       const json = await res.json();
       if (json.ok) {
-        setRecommendations(json.recommendations ?? []);
+        const recs: AutopilotRecommendation[] = json.recommendations ?? [];
+        setRecommendations(recs);
+        // Self-prune the dismissed set against the latest server truth.
+        // Anything the server no longer surfaces as new/activated (because
+        // it's truly completed now, expired, or rejected) doesn't need to
+        // sit in our client filter — otherwise an old dismissed id could
+        // mask a freshly-issued recommendation that happens to reuse the
+        // id, and the set just grows forever.
+        const live = new Set(recs.map((r) => r.id));
+        setDismissedIds((prev) => {
+          if (prev.size === 0) return prev;
+          let changed = false;
+          const next = new Set<string>();
+          prev.forEach((id) => {
+            if (live.has(id)) {
+              next.add(id);
+            } else {
+              changed = true;
+            }
+          });
+          if (!changed) return prev;
+          if (DISMISSED_KEY) {
+            try {
+              localStorage.setItem(DISMISSED_KEY, JSON.stringify(Array.from(next)));
+            } catch {
+              // localStorage unavailable — state still updates in memory
+            }
+          }
+          return next;
+        });
+        console.log(`[Autopilot] fetched ${recs.length} recs, dismissed set size after prune: pending state update`);
+        return recs;
       } else {
         throw new Error(json.error ?? "Unknown error");
       }
     } catch (e: any) {
       console.error("[Autopilot] fetch error:", e.message);
       setError(e.message || "Failed to load recommendations");
+      return [];
     } finally {
       setLoading(false);
+      setFetchedOnce(true);
+    }
+  }, [user, DISMISSED_KEY]);
+
+  // VTID — on-demand regeneration. Asks the gateway for a fresh batch. The
+  // backend already auto-regenerates on the last /complete or /reject (queue
+  // hits 0), so this is the explicit "force refresh" path + what the empty
+  // state calls. The backend is idempotent under a ~3-min cooldown, so a
+  // double-tap is safe — it just comes back { generated: 0, reason: "cooldown" }.
+  const generateRecommendations = useCallback(async (): Promise<AutopilotGenerateResult | null> => {
+    if (!user) return null;
+    setGenerating(true);
+    try {
+      const headers = await getAuthHeaders();
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/generate?role=community`, {
+        method: "POST",
+        headers,
+      });
+      if (!res.ok) throw new Error(`Generate failed: ${res.status}`);
+      const json = await res.json();
+      if (json.ok) {
+        const generated = Number(json.generated) || 0;
+        if (generated > 0 && Array.isArray(json.recommendations)) {
+          setRecommendations(json.recommendations as AutopilotRecommendation[]);
+          setGenerateReason(null);
+        } else {
+          setGenerateReason((json.reason as AutopilotGenerateReason) ?? null);
+        }
+        return { ok: true, generated, reason: json.reason as AutopilotGenerateReason | undefined };
+      }
+      return null;
+    } catch (e) {
+      console.error("[Autopilot] generate error:", e);
+      return null;
+    } finally {
+      setGenerating(false);
     }
   }, [user]);
 
@@ -210,10 +338,12 @@ export function useAutopilot() {
   }, []);
 
   // Complete — try the dedicated complete route first, then fall back to
-  // reject for any non-2xx so the user always sees the row leave the list.
-  // We can't tell from this side whether the gateway revision ships /complete
-  // at all, and an "executing"-forever row is a much worse UX than losing
-  // a possible reward.
+  // reject for any non-2xx so the row always leaves the user's list. We
+  // can't tell from this side whether the gateway revision ships /complete
+  // at all, and an "executing"-forever row is much worse UX than losing a
+  // possible reward. The /reject fallback intentionally drops ?role=
+  // community because the proven-working dismissRecommendation path below
+  // doesn't pass it.
   const completeRecommendation = useCallback(async (id: string): Promise<{
     ok: boolean;
     reward?: number;
@@ -236,7 +366,7 @@ export function useAutopilot() {
       console.warn("[Autopilot] complete network error — falling back to reject", e);
     }
     try {
-      const rejectRes = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/reject?role=community`, {
+      const rejectRes = await fetch(`${GATEWAY_URL}/autopilot/recommendations/${id}/reject`, {
         method: "POST",
         headers,
       });
@@ -278,14 +408,19 @@ export function useAutopilot() {
 
   // VTID-01946 Phase H.4 — poll every 5 minutes while app is open so the
   // badge updates without user interaction. Clears on unmount.
+  // Also refetch the full list (not just the count) when consent is granted,
+  // so a batch generated server-side — e.g. by the auto-regeneration that
+  // fires when the queue empties — surfaces in the My Journey card without
+  // needing a remount.
   useEffect(() => {
     if (!user) return;
     const POLL_MS = 5 * 60 * 1000;
     const id = setInterval(() => {
       fetchCount();
+      if (hasConsent) fetchRecommendations();
     }, POLL_MS);
     return () => clearInterval(id);
-  }, [user, fetchCount]);
+  }, [user, hasConsent, fetchCount, fetchRecommendations]);
 
   // ── Legacy compatibility ──
 
@@ -379,7 +514,13 @@ export function useAutopilot() {
     activateRecommendation,
     completeRecommendation,
     dismissRecommendation,
+    markDismissedLocally,
     fetchCount,
+    // VTID — on-demand regeneration
+    generateRecommendations,
+    generating,
+    generateReason,
+    fetchedOnce,
     // VTID-01946 Phase H.4 — live badge + pulse
     liveCount,
     hasNewRecommendations,

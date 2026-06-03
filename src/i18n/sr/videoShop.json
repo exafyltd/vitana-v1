@@ -1,0 +1,41 @@
+{
+  "videoShop": {
+    "feed": {
+      "loading": "Učitavanje Video prodavnice …",
+      "loadingMore": "Učitavanje još video snimaka …",
+      "end": "Stigao si do kraja.",
+      "emptyTitle": "Još nema video snimaka",
+      "emptyBody": "Trenutno nema video snimaka prodavnice. Svrati kasnije ili istraži Discover.",
+      "browseDiscover": "Istraži Discover",
+      "errorTitle": "Nismo mogli da učitamo Video prodavnicu",
+      "errorBody": "Pokušaj ponovo za trenutak.",
+      "retry": "Pokušaj ponovo",
+      "roleBlockedTitle": "Video prodavnica ti ovde nije dostupna",
+      "roleBlockedBody": "Video prodavnica je funkcija zajednice. Pređi na ulogu zajednice da bi je koristio.",
+      "mute": "Isključi zvuk",
+      "unmute": "Uključi zvuk",
+      "share": "Podeli",
+      "linkCopied": "Link kopiran"
+    },
+    "drawer": {
+      "loading": "Učitavanje proizvoda …",
+      "productFallback": "Proizvod",
+      "addToCart": "Dodaj u korpu",
+      "adding": "Dodavanje …",
+      "addedTitle": "Dodato",
+      "addedBody": "Proizvod je sada u tvojoj korpi.",
+      "addFailed": "Nije moguće dodati u korpu",
+      "goToCart": "Idi na korpu",
+      "moreDetails": "Više detalja",
+      "notifyMe": "Obavesti me",
+      "outOfStock": "Nema na zalihama",
+      "retry": "Pokušaj ponovo",
+      "errorTitle": "Nije moguće učitati proizvod",
+      "errorBody": "Pokušaj ponovo za trenutak.",
+      "unavailableTitle": "Više nije dostupno",
+      "unavailableBody": "Ovaj proizvod više nije dostupan.",
+      "roleBlockedTitle": "Kupovina ovde nije dostupna",
+      "roleBlockedBody": "Kupovina je funkcija zajednice. Pređi na ulogu zajednice da bi nastavio."
+    }
+  }
+}

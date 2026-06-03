@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>My Journey — dream-board mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #312e81;
+    --muted-fg: #6b7280;
+    --border: rgba(15, 23, 42, 0.06);
+
+    --ring-from: #fda4af;   /* rose-300 */
+    --ring-via:  #c4b5fd;   /* violet-300 */
+    --ring-to:   #fcd34d;   /* amber-300 */
+
+    --header-color: #4c1d95;
+    --tagline: #6d28d9;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--primary);
+    background: #f5f3ff;
+    padding: 32px 16px 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .display { font-family: 'Cormorant', Georgia, serif; }
+
+  .stage {
+    display: flex; flex-wrap: wrap; gap: 28px;
+    justify-content: center; align-items: flex-start;
+    max-width: 1300px; margin: 0 auto;
+  }
+  .frame-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .frame-label {
+    font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted-fg); font-weight: 600;
+  }
+  .phone {
+    width: 390px; height: 1180px;
+    border-radius: 44px; background: #000;
+    padding: 12px;
+    box-shadow: 0 30px 60px rgba(15, 23, 42, 0.18), 0 8px 16px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+  }
+  .screen {
+    width: 100%; height: 100%;
+    border-radius: 32px; overflow-y: auto;
+    background:
+      radial-gradient(120% 60% at 0% 0%, #fde7ff 0%, transparent 55%),
+      radial-gradient(120% 60% at 100% 0%, #d8f1ff 0%, transparent 55%),
+      radial-gradient(120% 60% at 50% 100%, #ffe2ec 0%, transparent 55%),
+      linear-gradient(180deg, #faf5ff 0%, #eff6ff 50%, #fdf2f8 100%);
+  }
+  .screen::-webkit-scrollbar { width: 0; }
+
+  .status-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 24px 6px; font-size: 13px; font-weight: 600;
+  }
+
+  .app-header {
+    padding: 6px 20px 8px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .app-title {
+    font-family: 'Cormorant', Georgia, serif;
+    font-size: 26px; font-weight: 500; letter-spacing: -0.01em;
+  }
+  .icon-btn {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255,255,255,0.7); border: 1px solid var(--border);
+    display: inline-flex; align-items: center; justify-content: center; font-size: 14px;
+  }
+
+  /* ===================== HERO DREAM CARD ===================== */
+  .dream-card {
+    margin: 12px 16px 0;
+    border-radius: 28px;
+    border: 1px solid rgba(196,181,253,0.4);
+    box-shadow:
+      0 30px 60px rgba(124, 58, 237, 0.12),
+      0 12px 24px rgba(244, 114, 182, 0.08),
+      0 0 0 1px rgba(255,255,255,0.5) inset;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 3 / 4;
+    background: linear-gradient(180deg, #fef3f2 0%, #f5f3ff 100%);
+  }
+
+  /* Real painted backdrop */
+  .bg-art {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+  }
+  /* Soft overlay to keep text legible against any art */
+  .art-overlay {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(120% 60% at 50% 0%, rgba(255,255,255,0.18), transparent 60%),
+      linear-gradient(180deg, rgba(255,255,255,0.0) 30%, rgba(196,181,253,0.18) 75%, rgba(244,114,182,0.22) 100%);
+    pointer-events: none;
+  }
+
+  /* CSS-painted scene retained as fallback only (unused when bg-art renders) */
+  .scene {
+    position: absolute; inset: 0;
+    background:
+      /* sunset gradient sky */
+      linear-gradient(180deg,
+        #fde2ec 0%,
+        #fce7f3 18%,
+        #fbcfe8 32%,
+        #fed7aa 45%,
+        #fef3c7 56%,
+        #bfdbfe 70%,
+        #93c5fd 100%);
+    overflow: hidden;
+  }
+  .sun {
+    position: absolute;
+    left: 22%; top: 40%;
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fef9c3 0%, #fde68a 40%, transparent 70%);
+    box-shadow: 0 0 60px 30px rgba(254, 243, 199, 0.6);
+  }
+  .water {
+    position: absolute;
+    left: 0; right: 0;
+    bottom: 24%;
+    height: 28%;
+    background: linear-gradient(180deg,
+      #93c5fd 0%,
+      #60a5fa 35%,
+      #38bdf8 70%,
+      #67e8f9 100%);
+    opacity: 0.85;
+  }
+  .water::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 200px 6px at 35% 30%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(ellipse 200px 4px at 55% 50%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(ellipse 240px 5px at 45% 70%, rgba(255,255,255,0.4), transparent);
+  }
+  .mountains {
+    position: absolute; right: 0; bottom: 28%;
+    width: 75%; height: 22%;
+    background:
+      linear-gradient(135deg, transparent 50%, #a78bfa 50%, #a78bfa 60%, transparent 60%),
+      linear-gradient(225deg, transparent 50%, #c4b5fd 50%, #c4b5fd 65%, transparent 65%);
+    opacity: 0.65;
+    clip-path: polygon(0% 100%, 12% 30%, 24% 60%, 38% 15%, 52% 50%, 66% 25%, 80% 55%, 100% 20%, 100% 100%);
+    background: linear-gradient(180deg, #a78bfa 0%, #c4b5fd 100%);
+  }
+  .mountains-back {
+    position: absolute; right: 0; bottom: 30%;
+    width: 90%; height: 18%;
+    opacity: 0.35;
+    clip-path: polygon(0% 100%, 10% 50%, 25% 70%, 40% 40%, 55% 60%, 70% 30%, 85% 55%, 100% 35%, 100% 100%);
+    background: linear-gradient(180deg, #f9a8d4 0%, #fbcfe8 100%);
+  }
+  /* Mediterranean village silhouette */
+  .village {
+    position: absolute; right: 0; bottom: 26%;
+    width: 38%; height: 7%;
+    background:
+      repeating-linear-gradient(90deg,
+        #fef3c7 0px, #fef3c7 8px,
+        #fbbf24 8px, #fbbf24 10px,
+        #ffffff 10px, #ffffff 18px,
+        #f97316 18px, #f97316 20px);
+    opacity: 0.7;
+    border-radius: 4px 4px 0 0;
+    clip-path: polygon(0% 100%, 0% 40%, 8% 60%, 16% 30%, 24% 50%, 32% 25%, 42% 45%, 52% 20%, 62% 40%, 72% 30%, 82% 50%, 92% 35%, 100% 55%, 100% 100%);
+  }
+  /* Sailing boat */
+  .boat {
+    position: absolute;
+    left: 45%; bottom: 36%;
+    width: 22px; height: 18px;
+    background: white;
+    clip-path: polygon(50% 0%, 60% 80%, 100% 100%, 0% 100%, 40% 80%);
+    opacity: 0.85;
+  }
+  .boat-small {
+    position: absolute;
+    left: 28%; bottom: 34%;
+    width: 14px; height: 12px;
+    background: white;
+    clip-path: polygon(50% 0%, 60% 80%, 100% 100%, 0% 100%, 40% 80%);
+    opacity: 0.75;
+  }
+  /* Birds */
+  .birds {
+    position: absolute;
+    right: 18%; top: 22%;
+    font-size: 10px; color: rgba(67, 56, 202, 0.55); letter-spacing: 8px;
+  }
+  /* Hot-air balloons */
+  .balloon {
+    position: absolute;
+    width: 50px; height: 75px;
+  }
+  .balloon::before {
+    content: ""; position: absolute; left: 0; top: 0;
+    width: 50px; height: 55px; border-radius: 50% 50% 45% 45%;
+    background: linear-gradient(135deg, #fda4af 0%, #c4b5fd 60%, #93c5fd 100%);
+    box-shadow: 0 4px 10px rgba(196, 181, 253, 0.3);
+  }
+  .balloon::after {
+    content: ""; position: absolute; left: 19px; top: 56px;
+    width: 12px; height: 10px; background: #92400e; border-radius: 2px;
+    box-shadow:
+      -2px -6px 0 -1px #92400e, 12px -6px 0 -1px #92400e;
+  }
+  .balloon.b1 { left: 8%; top: 18%; transform: rotate(-3deg); }
+  .balloon.b2 { left: 18%; top: 28%; transform: scale(0.6); opacity: 0.85; }
+  /* Flowers on the foreground */
+  .flowers-left {
+    position: absolute; left: 0; bottom: 0;
+    width: 35%; height: 28%;
+    background:
+      radial-gradient(circle 12px at 20% 30%, #ec4899 30%, transparent 32%),
+      radial-gradient(circle 8px at 35% 50%, #f9a8d4 30%, transparent 32%),
+      radial-gradient(circle 10px at 10% 60%, #c084fc 30%, transparent 32%),
+      radial-gradient(circle 7px at 50% 40%, #fbbf24 30%, transparent 32%),
+      radial-gradient(circle 9px at 60% 70%, #ec4899 30%, transparent 32%),
+      linear-gradient(180deg, transparent 0%, #166534 70%, #14532d 100%);
+    opacity: 0.85;
+  }
+  .flowers-right {
+    position: absolute; right: 0; bottom: 0;
+    width: 30%; height: 22%;
+    background:
+      radial-gradient(circle 8px at 60% 40%, #f9a8d4 30%, transparent 32%),
+      radial-gradient(circle 10px at 80% 60%, #fcd34d 30%, transparent 32%),
+      radial-gradient(circle 6px at 40% 70%, #ec4899 30%, transparent 32%),
+      linear-gradient(180deg, transparent 0%, #166534 75%, #14532d 100%);
+    opacity: 0.7;
+  }
+
+  /* Content overlay */
+  .dream-content {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    padding: 28px 22px 18px;
+    z-index: 2;
+  }
+  .dream-header {
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.32em;
+    color: var(--header-color);
+    text-shadow: 0 1px 3px rgba(255,255,255,0.6);
+  }
+  .dream-divider {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    margin-top: 6px;
+  }
+  .dream-divider .line { width: 32px; height: 1px; background: rgba(76, 29, 149, 0.4); }
+  .dream-divider .heart { color: #f472b6; font-size: 11px; }
+
+  /* The ring (hero) — a real progress ring, not a decorative gradient.
+     The SVG fills by goal_progress_pct (38% in this mockup), with a
+     subtle today marker at the current point. */
+  .ring-wrap {
+    margin: 22px auto 0;
+    width: 240px; height: 240px;
+    position: relative;
+  }
+  .ring-wrap svg.ring-svg {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    transform: rotate(-90deg);
+    filter: drop-shadow(0 12px 24px rgba(196,181,253,0.35));
+  }
+  .ring-inner {
+    position: absolute; inset: 18px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.5) inset;
+  }
+  .today-dot {
+    position: absolute;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #7c3aed;
+    box-shadow: 0 0 0 6px rgba(124, 58, 237, 0.18), 0 4px 10px rgba(124,58,237,0.3);
+    /* For 38% along a ring of radius 110 centered at 120,120: angle = 38% * 360 = 136.8° from top, clockwise.
+       Position: 120 + 110*sin(136.8°), 120 - 110*cos(136.8°) ≈ 120 + 75.2, 120 + 80.3 ≈ 195, 200 */
+    left: calc(50% + 65px);
+    top: calc(50% + 70px);
+    transform: translate(-50%, -50%);
+  }
+  .ring-day-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.32em;
+    color: #6d28d9;
+  }
+  .ring-day-number {
+    font-family: 'Inter', sans-serif;
+    font-size: 96px;
+    font-weight: 700;
+    line-height: 1;
+    color: #7c3aed;
+    margin: 2px 0;
+  }
+  .ring-sub-divider {
+    margin: 2px 0 4px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .ring-sub-divider .line { width: 24px; height: 1px; background: rgba(125, 89, 191, 0.35); }
+  .ring-sub-divider .heart { color: #f472b6; font-size: 10px; }
+  .ring-deadline {
+    font-size: 13px; color: #6b7280;
+    font-weight: 500;
+  }
+  /* Plane icon badge at top */
+  .ring-badge {
+    position: absolute;
+    top: -4px; left: 50%; transform: translateX(-50%);
+    width: 44px; height: 44px; border-radius: 50%;
+    background: rgba(255,255,255,0.95);
+    border: 1px solid rgba(196,181,253,0.5);
+    box-shadow: 0 4px 10px rgba(124, 58, 237, 0.18);
+    display: flex; align-items: center; justify-content: center;
+    color: #7c3aed;
+  }
+
+  /* Goal pill overlapping below */
+  .goal-card {
+    margin: 18px 4px 0;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(8px);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow:
+      0 8px 20px rgba(124, 58, 237, 0.12),
+      0 0 0 1px rgba(255,255,255,0.5) inset;
+    padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .goal-icon {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 100%);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 16px; color: white;
+    flex-shrink: 0;
+  }
+  .goal-text {
+    flex: 1; min-width: 0;
+  }
+  .goal-title {
+    font-size: 15px; font-weight: 700; line-height: 1.2;
+    color: #1f2937;
+  }
+  .goal-sub-divider {
+    margin: 6px 0 4px;
+    height: 1px; background: rgba(125, 89, 191, 0.2);
+    position: relative;
+  }
+  .goal-sub-divider::after {
+    content: "♡"; color: #f472b6; font-size: 10px;
+    position: absolute; left: 50%; top: -7px; transform: translateX(-50%);
+    background: white; padding: 0 6px;
+  }
+  .goal-deadline {
+    font-size: 12px; color: #6b7280;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .goal-deadline .cal { color: #a78bfa; font-size: 13px; }
+
+  /* Bottom tagline strip */
+  .tagline-strip {
+    margin: 14px -22px -18px;
+    padding: 12px 20px;
+    background: linear-gradient(180deg, rgba(196,181,253,0.25) 0%, rgba(196,181,253,0.4) 100%);
+    text-align: center;
+    border-radius: 0 0 28px 28px;
+  }
+  .tagline-strip .tagline {
+    font-family: 'Cormorant', Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--tagline);
+    letter-spacing: 0.02em;
+  }
+  .tagline-strip .sparkle { color: #fbbf24; }
+
+  /* ===================== SECTIONS BELOW ===================== */
+  .section-head {
+    margin: 22px 20px 8px;
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+  .section-head h2 {
+    margin: 0; font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted-fg);
+  }
+  .section-head .see-all { font-size: 12px; color: #7c3aed; font-weight: 600; }
+
+  .todays-goal-card {
+    margin: 0 16px;
+    padding: 16px 18px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #fefce8 0%, #fef3c7 100%);
+    border: 1px solid rgba(250, 204, 21, 0.3);
+    box-shadow: 0 4px 14px rgba(250, 204, 21, 0.12);
+  }
+  .todays-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+  .todays-head h3 { margin: 0; font-size: 14px; font-weight: 700; }
+  .todays-head .pill { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: #fde68a; color: #92400e; }
+  .progress { height: 6px; border-radius: 999px; background: rgba(250,204,21,0.25); overflow: hidden; margin-bottom: 12px; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #ec4899); border-radius: 999px; }
+  .todays-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+  .todays-list li { display: flex; align-items: center; gap: 10px; }
+  .check {
+    width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: white; border: 1.5px solid #cbd5e1; color: white; font-size: 12px;
+  }
+  .check.done { background: linear-gradient(135deg, #4ade80, #3b82f6); border-color: transparent; }
+  .check.done::after { content: "✓"; font-weight: 800; }
+  li.done span { color: var(--muted-fg); text-decoration: line-through; }
+
+  /* Below-hero accent — Inspiration tile */
+  .inspire-row {
+    margin: 12px 16px 0;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .inspire-tile {
+    position: relative;
+    aspect-ratio: 1 / 1.1;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: linear-gradient(135deg, #fef3c7 0%, #fbcfe8 100%);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+  }
+  .inspire-tile .ovly {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.45) 100%);
+  }
+  .inspire-tile .label {
+    position: absolute; left: 12px; right: 12px; bottom: 10px;
+    color: white;
+    font-family: 'Cormorant', Georgia, serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    line-height: 1.2;
+  }
+  .inspire-tile.t1 {
+    background:
+      radial-gradient(ellipse at 30% 70%, #fde68a 0%, transparent 50%),
+      linear-gradient(135deg, #fed7aa 0%, #fbcfe8 50%, #c4b5fd 100%);
+  }
+  .inspire-tile.t2 {
+    background:
+      radial-gradient(ellipse at 70% 30%, #93c5fd 0%, transparent 50%),
+      linear-gradient(135deg, #c4b5fd 0%, #93c5fd 50%, #67e8f9 100%);
+  }
+
+  /* Notes column */
+  .notes { width: 390px; font-size: 12px; line-height: 1.55; color: var(--muted-fg); }
+  .notes b { color: var(--primary); }
+  .notes code { background: rgba(124,58,237,0.08); color: #5b21b6; padding: 1px 5px; border-radius: 4px; font-size: 11px; }
+
+  .page-head { max-width: 1300px; margin: 0 auto 28px; text-align: center; }
+  .page-head h1 { font-family: 'Cormorant', Georgia, serif; font-size: 32px; font-weight: 500; margin: 0 0 6px; }
+  .page-head p { margin: 0; color: var(--muted-fg); font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>My Journey — dream-board redesign</h1>
+  <p>Illustrated hero · editorial typography · soft pastel sunrise · same data, much more dream</p>
+</div>
+
+<div class="stage">
+
+  <!-- =============== A — The new hero only =============== -->
+  <div class="frame-wrap">
+    <div class="frame-label">A · The dream hero</div>
+    <div class="phone"><div class="screen">
+
+      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;">● ● ●</span></div>
+      <div class="app-header">
+        <div class="app-title">My Journey</div>
+        <div style="display:flex; gap:8px;"><span class="icon-btn">🔍</span><span class="icon-btn">📅</span></div>
+      </div>
+
+      <!-- THE DREAM CARD -->
+      <div class="dream-card">
+        <!-- production backdrop = a real painted illustration. This sample
+             uses a Cappadocia sunrise + hot air balloons photo because it
+             matches the reference's vibe (pastel sky, dreamy distance,
+             balloons). In production we'd commission ~5 painted variants
+             — coast / mountain / garden / city / forest — one per pillar. -->
+        <img class="bg-art" src="https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?w=900&q=80&auto=format" alt="" />
+        <div class="art-overlay"></div>
+
+        <!-- content overlay -->
+        <div class="dream-content">
+          <div class="dream-header">MEINE REISE</div>
+          <div class="dream-divider">
+            <span class="line"></span><span class="heart">♡</span><span class="line"></span>
+          </div>
+
+          <div class="ring-wrap">
+            <div class="ring-badge">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(-12deg);"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+            </div>
+            <svg class="ring-svg" viewBox="0 0 240 240" aria-hidden="true">
+              <defs>
+                <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%"  stop-color="#fda4af"/>
+                  <stop offset="50%" stop-color="#c4b5fd"/>
+                  <stop offset="100%" stop-color="#fcd34d"/>
+                </linearGradient>
+              </defs>
+              <!-- track: faded full ring -->
+              <circle cx="120" cy="120" r="110" fill="none" stroke="#ede9fe" stroke-width="14" />
+              <!-- progress: fills 38% (goal_day / goal_total_days). circumference 2π·110 ≈ 691.15; 38% → offset 428.5 -->
+              <circle cx="120" cy="120" r="110" fill="none"
+                stroke="url(#ringGrad)" stroke-width="14"
+                stroke-linecap="round"
+                stroke-dasharray="691.15"
+                stroke-dashoffset="428.51" />
+            </svg>
+            <div class="today-dot"></div>
+            <div class="ring-inner">
+              <div class="ring-day-label">TAG</div>
+              <div class="ring-day-number">34</div>
+              <div class="ring-sub-divider">
+                <span class="line"></span><span class="heart">♡</span><span class="line"></span>
+              </div>
+              <div class="ring-deadline">56 Tage bis zum Ziel</div>
+            </div>
+          </div>
+
+          <!-- Goal pill -->
+          <div class="goal-card" style="margin-top:auto;">
+            <div class="goal-icon">⭐</div>
+            <div class="goal-text">
+              <div class="goal-title">10 kg abnehmen</div>
+              <div class="goal-sub-divider"></div>
+              <div class="goal-deadline">
+                <span class="cal">📅</span> 23. Juli 2026
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom tagline -->
+          <div class="tagline-strip">
+            <span class="tagline">Jeder Tag bringt dich näher.</span>
+            <span class="sparkle">✨</span>
+          </div>
+        </div>
+      </div>
+    </div></div>
+    <div class="notes">
+      <b>Hero = the dream-board.</b> Illustrated scene (sunrise, mediterranean coast, hot-air balloons, mountains, distant village)
+      paints the destination — same image for everyone in v1, can become per-pillar (vitality coast, mind mountain, finance city, etc) later.
+      <br><br>
+      <b>Same data, new framing:</b>
+      • Ring center = big <code>goal_day</code> ("TAG 34") instead of days-left.<br>
+      • Deadline line below = days_to_deadline ("56 Tage bis zum Ziel").<br>
+      • Goal card = active_goal_text + target_date (already in <code>/api/v1/my-journey</code>).<br>
+      • Tagline = rotating motivational from existing keys.<br>
+      <br>
+      The plane in the badge is the autopilot icon we just shipped — visual continuity with the autopilot card below.
+    </div>
+  </div>
+
+  <!-- =============== B — Hero + full stack =============== -->
+  <div class="frame-wrap">
+    <div class="frame-label">B · Hero with sections beneath</div>
+    <div class="phone"><div class="screen">
+
+      <div class="status-bar"><span>9:41</span><span style="letter-spacing:2px;">● ● ●</span></div>
+      <div class="app-header">
+        <div class="app-title">My Journey</div>
+        <div style="display:flex; gap:8px;"><span class="icon-btn">🔍</span><span class="icon-btn">📅</span></div>
+      </div>
+
+      <!-- DREAM CARD (same as A) -->
+      <div class="dream-card">
+        <div class="scene">
+          <div class="balloon b1"></div>
+          <div class="balloon b2"></div>
+          <div class="birds">∽ ∼ ∽</div>
+          <div class="sun"></div>
+          <div class="water"></div>
+          <div class="boat"></div>
+          <div class="boat-small"></div>
+          <div class="mountains-back"></div>
+          <div class="mountains"></div>
+          <div class="village"></div>
+          <div class="flowers-right"></div>
+          <div class="flowers-left"></div>
+        </div>
+        <div class="dream-content">
+          <div class="dream-header">MEINE REISE</div>
+          <div class="dream-divider"><span class="line"></span><span class="heart">♡</span><span class="line"></span></div>
+          <div class="ring-wrap">
+            <div class="ring-badge">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(-12deg);"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+            </div>
+            <div class="ring-frame">
+              <div class="ring-inner">
+                <div class="ring-day-label">TAG</div>
+                <div class="ring-day-number">34</div>
+                <div class="ring-sub-divider"><span class="line"></span><span class="heart">♡</span><span class="line"></span></div>
+                <div class="ring-deadline">56 Tage bis zum Ziel</div>
+              </div>
+            </div>
+          </div>
+          <div class="goal-card" style="margin-top:auto;">
+            <div class="goal-icon">⭐</div>
+            <div class="goal-text">
+              <div class="goal-title">10 kg abnehmen</div>
+              <div class="goal-sub-divider"></div>
+              <div class="goal-deadline"><span class="cal">📅</span> 23. Juli 2026</div>
+            </div>
+          </div>
+          <div class="tagline-strip">
+            <span class="tagline">Jeder Tag bringt dich näher.</span>
+            <span class="sparkle">✨</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inspiration tiles row — light addition to keep the "dream" feeling -->
+      <div class="section-head"><h2>Dein zukünftiges Ich</h2><span class="see-all">Mehr →</span></div>
+      <div class="inspire-row">
+        <div class="inspire-tile t1">
+          <div class="ovly"></div>
+          <div class="label">Stärker · 5 km laufen</div>
+        </div>
+        <div class="inspire-tile t2">
+          <div class="ovly"></div>
+          <div class="label">Ruhiger · besser schlafen</div>
+        </div>
+      </div>
+
+      <!-- Today's Goal -->
+      <div class="section-head"><h2>Heute</h2></div>
+      <div class="todays-goal-card">
+        <div class="todays-head">
+          <h3>🌟 Heutiges Ziel</h3>
+          <span class="pill">2 / 3</span>
+        </div>
+        <div class="progress"><div class="progress-fill" style="width:66%"></div></div>
+        <ul class="todays-list">
+          <li class="done"><span class="check done"></span><span>20 Min Spaziergang</span></li>
+          <li class="done"><span class="check done"></span><span>8 Gläser Wasser</span></li>
+          <li><span class="check"></span><span>15 Min Meditation</span></li>
+        </ul>
+      </div>
+
+      <p style="text-align:center; font-size:11px; color:var(--muted-fg); margin:18px 0 4px;">
+        ↓ Matches · Events · Autopilot · Index — alle bestehenden Karten bleiben hier ↓
+      </p>
+
+    </div></div>
+    <div class="notes">
+      <b>What changes from today's screen:</b><br>
+      • The whole top half becomes the dream-board. Bigger, more visual, more emotional.<br>
+      • Add a small <b>"Dein zukünftiges Ich"</b> tile row — two illustrated thumbnails showing aspirational "tomorrow" identities tied to the user's pillar focus.<br>
+      • Everything else (Today's Goal, Matches, Events, Autopilot card, Trajectory) <b>keeps</b> its current treatment — they're functional and we just shipped them. The hero carries the inspiration.<br><br>
+      <b>What stays the same data-wise:</b><br>
+      • <code>goal_day</code>, <code>days_to_deadline</code>, <code>active_goal_text</code>, <code>target_date</code> — all from <code>/api/v1/my-journey</code>.<br>
+      • Motivational tagline reuses the existing day-rotated keys.<br><br>
+      <b>Open question:</b> illustrated scene per pillar (coast / mountain / city / forest) or one shared sunrise scene v1?
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

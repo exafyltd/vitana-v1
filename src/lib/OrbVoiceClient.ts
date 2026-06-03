@@ -12,6 +12,7 @@
 
 import { CrossPlatformAudioRecorder, IS_IOS_SAFARI } from './ios-audio-polyfill';
 import { getOrCreateUnlockedAudioContext } from './iosAudioUnlock';
+import { stopInstantGreeting } from './instantGreeting';
 import { pinIOSLoudspeakerRoute, kickIOSLoudspeakerRoute, releaseIOSLoudspeakerRoute } from './iosAudioRoutePin';
 // VTID-02919 (B0d.4-frontend): ORB wake reliability timeline.
 import { postWakeTimelineEvent, takePendingWakeClickedAt } from './wakeTimelineClient';
@@ -334,44 +335,29 @@ export class OrbVoiceClient {
   }
 
   /**
-   * Request AI to greet the user when session starts.
-   * If initialContext is provided, inject it as the first message so
-   * the model is aware of the user's memory garden / diary data.
+   * Greeting is owned by the gateway (server-side auto-greet).
+   *
+   * Historically the frontend drove the welcome by POSTing the user's
+   * memory/diary context as a hidden first turn, then a
+   * "[system] Session started. Greet the user…" trigger, then an
+   * endTurn — three sequential gateway round-trips that ran *after*
+   * getUserMedia, on the critical path to first audio.
+   *
+   * That is all redundant now: the gateway personalises the live system
+   * instruction from the user's memory at session start (bootstrap
+   * context pack) and fires `sendGreetingPromptToLiveAPI` itself the
+   * moment the upstream Live API connects — and already de-duplicates a
+   * client-sent greeting. Driving it from the client only added latency
+   * and risked a context-dump turn racing ahead of the server greeting.
+   *
+   * So this is intentionally a no-op: connecting the SSE stream is enough
+   * to make the gateway greet. Kept as a method (rather than deleting the
+   * call site) so the start() sequence reads clearly and a future
+   * provider could re-hook it if ever needed.
    */
   private async requestWelcome(): Promise<void> {
     if (!this.sessionId) return;
-
-    console.log('[OrbVoiceClient] Requesting welcome greeting...');
-    
-    try {
-      // Inject user context as a hidden system message before the greeting
-      if (this.config.initialContext) {
-        console.log('[OrbVoiceClient] Injecting user context (' + this.config.initialContext.length + ' chars)');
-        await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
-          method: 'POST',
-          headers: this.getAuthHeaders(),
-          body: JSON.stringify({
-            session_id: this.sessionId,
-            type: 'text',
-            text: this.config.initialContext
-          })
-        });
-      }
-
-      await fetch(`${this.GATEWAY_URL}/api/v1/orb/live/stream/send`, {
-        method: 'POST',
-        headers: this.getAuthHeaders(),
-        body: JSON.stringify({
-          session_id: this.sessionId,
-          type: 'text',
-          text: '[system] Session started. Greet the user warmly in their language.'
-        })
-      });
-
-      await this.endTurn();
-    } catch (e) {
-      console.warn('[OrbVoiceClient] Failed to request welcome:', e);
-    }
+    console.log('[OrbVoiceClient] Greeting owned by gateway auto-greet — no client trigger sent');
   }
 
   private connectSSE(): void {
@@ -402,6 +388,10 @@ export class OrbVoiceClient {
         switch (msg.type) {
           case 'audio':
             if (msg.data_b64) {
+              // Real backend audio is arriving — cut the local activation
+              // cue so it never overlaps the spoken greeting on a fast
+              // connect. Idempotent; the cue is usually already finished.
+              stopInstantGreeting();
               this.callbacks.onSpeakingChange?.(true);
               this.callbacks.onProcessingChange?.(false);
               this.clearTurnCompleteTimeout();

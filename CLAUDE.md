@@ -121,3 +121,37 @@ will flag it. After bulk translation, always run the audit workflow:
 `gh workflow run i18n-audit-llm.yml -f locale=<code> -f provider=gemini`.
 Apply the auto-confidence suggestions via:
 `node scripts/apply-audit-suggestions.mjs --locale=<code>` (≥0.80 by default).
+
+### AI-generated content — must respect user locale
+
+**This is the rule that catches new features shipping in English.** Every
+edge function or gateway service that calls an LLM on behalf of a user
+MUST inject the user's preferred language into the system prompt. The LLM
+defaults to English without it.
+
+**For Supabase edge functions** (`supabase/functions/*/index.ts`):
+
+```ts
+import { getUserLocale, buildLocalizedSystemPrompt } from '../_shared/llm-locale.ts';
+
+const userLocale = await getUserLocale(supabase, user.id);
+const systemPrompt = buildLocalizedSystemPrompt(
+  `You are an expert health coach...`,
+  userLocale,
+);
+// then pass systemPrompt to the LLM call as usual
+```
+
+The helper does three things:
+1. Reads `profiles.preferred_language` / `profiles.stt_language` (fallback `'de'`)
+2. Prepends a `LANGUAGE: Respond ONLY in {Deutsch}` directive
+3. Adds register hint (du-form for DE, ti-form for SR, tú-form for ES)
+   and compound-word rule (German hyphens at 22+ chars)
+
+**For gateway TypeScript services** (`services/gateway/src/**`): the
+mirror helper lives in `services/gateway/src/i18n/llm-locale.ts`
+(builds on the existing `getUserLocale` from `i18n/server-locale.ts`).
+
+**When you skip this**: explicit comment why. E.g. `// admin-facing,
+English by design` for admin/dev tooling. New code without either the
+wrapper OR the explicit skip-comment should be rejected in PR review.

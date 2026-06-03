@@ -1,0 +1,63 @@
+{
+  "marketplaceCheckout": {
+    "balance": {
+      "title": "Dein Guthaben",
+      "loading": "Lade Guthaben …",
+      "empty": "Noch kein Guthaben",
+      "addMoney": "Guthaben aufladen"
+    },
+    "checkout": {
+      "button": "Zur Kasse",
+      "processing": "Wird bearbeitet …",
+      "successTitle": "Bestellung aufgegeben",
+      "successBody": "Dein Guthaben wurde belastet und deine Bestellung wurde erstellt.",
+      "duplicateTitle": "Bestellung bereits aufgegeben",
+      "duplicateBody": "Diese Bestellung wurde bereits verarbeitet.",
+      "affiliateTitle": "Kauf beim Händler abschließen",
+      "affiliateBody": "Einige Artikel werden direkt beim Händler gekauft. Öffne die folgenden Links, um den Kauf abzuschließen.",
+      "affiliateLink": "Kauf beim Händler abschließen",
+      "affiliateOpened": "Händler-Links wurden in neuen Tabs geöffnet."
+    },
+    "addMoney": {
+      "title": "Guthaben aufladen",
+      "description": "Lade dein Guthaben per Karte über Stripe auf.",
+      "amountLabel": "Betrag",
+      "amountPlaceholder": "0,00",
+      "currencyLabel": "Währung",
+      "currencyEur": "EUR",
+      "currencyUsd": "USD",
+      "continue": "Weiter zur Zahlung",
+      "processing": "Wird vorbereitet …",
+      "invalidAmount": "Bitte gib einen gültigen Betrag ein.",
+      "failed": "Aufladung konnte nicht gestartet werden."
+    },
+    "deposit": {
+      "checkingTitle": "Zahlung wird bestätigt",
+      "checkingBody": "Wir warten auf die Bestätigung deiner Zahlung. Das kann einen Moment dauern.",
+      "succeededTitle": "Guthaben aufgeladen",
+      "succeededBody": "Dein Guthaben wurde erfolgreich aufgeladen.",
+      "failedTitle": "Aufladung fehlgeschlagen",
+      "failedBody": "Deine Aufladung konnte nicht abgeschlossen werden. Es wurde nichts belastet.",
+      "amountLabel": "Betrag",
+      "backToCart": "Zurück zum Warenkorb"
+    },
+    "errors": {
+      "invalid_request": "Die Anfrage war ungültig. Bitte überprüfe deinen Warenkorb.",
+      "CART_EMPTY": "Dein Warenkorb ist leer.",
+      "PRODUCT_UNAVAILABLE": "Ein Produkt in deinem Warenkorb ist nicht mehr verfügbar.",
+      "PRICE_UNAVAILABLE": "Für ein Produkt ist derzeit kein Preis verfügbar.",
+      "MIXED_CURRENCY": "Dein Warenkorb enthält Artikel in verschiedenen Währungen. Bitte trenne sie.",
+      "UNSUPPORTED_WALLET_CURRENCY": "Diese Währung wird von deinem Guthaben nicht unterstützt.",
+      "WALLET_ACCOUNT_MISSING": "Für diese Währung wurde noch kein Guthabenkonto eingerichtet.",
+      "WALLET_ACCOUNT_INACTIVE": "Dein Guthabenkonto ist derzeit inaktiv.",
+      "INSUFFICIENT_BALANCE": "Dein Guthaben reicht für diesen Kauf nicht aus. Bitte lade es auf.",
+      "TENANT_REQUIRED": "Dieser Vorgang erfordert einen aktiven Workspace.",
+      "WALLET_DEBIT_FAILED": "Die Belastung deines Guthabens ist fehlgeschlagen. Bitte versuche es erneut.",
+      "CART_READ_FAILED": "Wir konnten deinen Warenkorb nicht lesen. Bitte versuche es erneut.",
+      "ORDER_WRITE_FAILED": "Deine Bestellung konnte nicht gespeichert werden. Bitte versuche es erneut.",
+      "WALLET_READ_FAILED": "Wir konnten dein Guthaben nicht lesen. Bitte versuche es erneut.",
+      "GATEWAY_MISCONFIGURED": "Der Zahlungsdienst ist derzeit nicht verfügbar. Bitte versuche es später erneut.",
+      "unknown": "Bei der Kasse ist ein Fehler aufgetreten. Bitte versuche es erneut."
+    }
+  }
+}

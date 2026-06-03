@@ -1,0 +1,41 @@
+{
+  "videoShop": {
+    "feed": {
+      "loading": "Cargando la Tienda de Vídeos …",
+      "loadingMore": "Cargando más vídeos …",
+      "end": "Has llegado al final.",
+      "emptyTitle": "Aún no hay vídeos",
+      "emptyBody": "Ahora mismo no hay vídeos de la tienda. Vuelve más tarde o explora Discover.",
+      "browseDiscover": "Explorar Discover",
+      "errorTitle": "No pudimos cargar la Tienda de Vídeos",
+      "errorBody": "Vuelve a intentarlo en un momento.",
+      "retry": "Reintentar",
+      "roleBlockedTitle": "La Tienda de Vídeos no está disponible para ti aquí",
+      "roleBlockedBody": "La Tienda de Vídeos es una función de la comunidad. Cambia al rol de comunidad para usarla.",
+      "mute": "Silenciar",
+      "unmute": "Activar sonido",
+      "share": "Compartir",
+      "linkCopied": "Enlace copiado"
+    },
+    "drawer": {
+      "loading": "Cargando producto …",
+      "productFallback": "Producto",
+      "addToCart": "Añadir al carrito",
+      "adding": "Añadiendo …",
+      "addedTitle": "Añadido",
+      "addedBody": "El producto ya está en tu carrito.",
+      "addFailed": "No se pudo añadir al carrito",
+      "goToCart": "Ir al carrito",
+      "moreDetails": "Más detalles",
+      "notifyMe": "Avísame",
+      "outOfStock": "Sin existencias",
+      "retry": "Reintentar",
+      "errorTitle": "No se pudo cargar el producto",
+      "errorBody": "Vuelve a intentarlo en un momento.",
+      "unavailableTitle": "Ya no está disponible",
+      "unavailableBody": "Este producto ya no está disponible.",
+      "roleBlockedTitle": "La compra no está disponible aquí",
+      "roleBlockedBody": "Comprar es una función de la comunidad. Cambia al rol de comunidad para continuar."
+    }
+  }
+}
