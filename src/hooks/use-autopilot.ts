@@ -4,6 +4,17 @@ import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useAIConsent } from "@/hooks/useAIConsent";
+
+// Reasons the gateway returns when /generate produced nothing — surfaced to
+// the UI so it can pick the right empty-state copy instead of a generic one.
+export type AutopilotGenerateReason = "daily_cap" | "disabled" | "cooldown" | "no_signals";
+
+export interface AutopilotGenerateResult {
+  ok: boolean;
+  generated: number;
+  reason?: AutopilotGenerateReason;
+}
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
 
@@ -89,10 +100,20 @@ export function useAutopilot() {
   const { user } = useAuth();
   const { logActivity } = useActivityLogger();
   const { preferences } = useUserPreferences();
+  const { hasConsent } = useAIConsent();
 
   const [recommendations, setRecommendations] = useState<AutopilotRecommendation[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // VTID — on-demand regeneration. `generating` covers a /generate call in
+  // flight; `generateReason` holds the guard reason from the last call that
+  // produced 0 items (daily_cap / disabled / cooldown / no_signals) so the UI
+  // can show the right empty-state copy. `fetchedOnce` gates auto-regeneration
+  // so we never fire before the first real list fetch has resolved.
+  const [generating, setGenerating] = useState(false);
+  const [generateReason, setGenerateReason] = useState<AutopilotGenerateReason | null>(null);
+  const [fetchedOnce, setFetchedOnce] = useState(false);
 
   const [state, setState] = useState<AutopilotState>({
     actions: [],
@@ -200,8 +221,8 @@ export function useAutopilot() {
   }, [liveCount, LAST_SEEN_KEY]);
 
   // Fetch full list — includes both new and activated items
-  const fetchRecommendations = useCallback(async () => {
-    if (!user) return;
+  const fetchRecommendations = useCallback(async (): Promise<AutopilotRecommendation[]> => {
+    if (!user) return [];
     setLoading(true);
     setError(null);
     try {
@@ -241,16 +262,54 @@ export function useAutopilot() {
           return next;
         });
         console.log(`[Autopilot] fetched ${recs.length} recs, dismissed set size after prune: pending state update`);
+        return recs;
       } else {
         throw new Error(json.error ?? "Unknown error");
       }
     } catch (e: any) {
       console.error("[Autopilot] fetch error:", e.message);
       setError(e.message || "Failed to load recommendations");
+      return [];
     } finally {
       setLoading(false);
+      setFetchedOnce(true);
     }
   }, [user, DISMISSED_KEY]);
+
+  // VTID — on-demand regeneration. Asks the gateway for a fresh batch. The
+  // backend already auto-regenerates on the last /complete or /reject (queue
+  // hits 0), so this is the explicit "force refresh" path + what the empty
+  // state calls. The backend is idempotent under a ~3-min cooldown, so a
+  // double-tap is safe — it just comes back { generated: 0, reason: "cooldown" }.
+  const generateRecommendations = useCallback(async (): Promise<AutopilotGenerateResult | null> => {
+    if (!user) return null;
+    setGenerating(true);
+    try {
+      const headers = await getAuthHeaders();
+      const res = await fetch(`${GATEWAY_URL}/autopilot/recommendations/generate?role=community`, {
+        method: "POST",
+        headers,
+      });
+      if (!res.ok) throw new Error(`Generate failed: ${res.status}`);
+      const json = await res.json();
+      if (json.ok) {
+        const generated = Number(json.generated) || 0;
+        if (generated > 0 && Array.isArray(json.recommendations)) {
+          setRecommendations(json.recommendations as AutopilotRecommendation[]);
+          setGenerateReason(null);
+        } else {
+          setGenerateReason((json.reason as AutopilotGenerateReason) ?? null);
+        }
+        return { ok: true, generated, reason: json.reason as AutopilotGenerateReason | undefined };
+      }
+      return null;
+    } catch (e) {
+      console.error("[Autopilot] generate error:", e);
+      return null;
+    } finally {
+      setGenerating(false);
+    }
+  }, [user]);
 
   // Activate a single recommendation — returns full API response
   const activateRecommendation = useCallback(async (id: string): Promise<{
@@ -349,14 +408,19 @@ export function useAutopilot() {
 
   // VTID-01946 Phase H.4 — poll every 5 minutes while app is open so the
   // badge updates without user interaction. Clears on unmount.
+  // Also refetch the full list (not just the count) when consent is granted,
+  // so a batch generated server-side — e.g. by the auto-regeneration that
+  // fires when the queue empties — surfaces in the My Journey card without
+  // needing a remount.
   useEffect(() => {
     if (!user) return;
     const POLL_MS = 5 * 60 * 1000;
     const id = setInterval(() => {
       fetchCount();
+      if (hasConsent) fetchRecommendations();
     }, POLL_MS);
     return () => clearInterval(id);
-  }, [user, fetchCount]);
+  }, [user, hasConsent, fetchCount, fetchRecommendations]);
 
   // ── Legacy compatibility ──
 
@@ -452,6 +516,11 @@ export function useAutopilot() {
     dismissRecommendation,
     markDismissedLocally,
     fetchCount,
+    // VTID — on-demand regeneration
+    generateRecommendations,
+    generating,
+    generateReason,
+    fetchedOnce,
     // VTID-01946 Phase H.4 — live badge + pulse
     liveCount,
     hasNewRecommendations,

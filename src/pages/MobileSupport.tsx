@@ -21,6 +21,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalStorageItem } from "@/lib/localStorage";
 import { notifyError, t } from "@/lib/i18n-toast";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
+import { cn } from "@/lib/utils";
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || "https://gateway-q74ibpv6ia-uc.a.run.app";
 
@@ -314,7 +315,7 @@ function MobileSupport() {
         </UtilityActionButton>
 
         {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto pb-24 space-y-3 px-0">
+        <div className="flex-1 overflow-y-auto pb-24 px-0 flex flex-col gap-3">
           {activeTab === "contact" && (
             showSuccess ? (
               <Card className="rounded-2xl border-border/50 shadow-sm">
@@ -333,9 +334,15 @@ function MobileSupport() {
               </Card>
             ) : (
               <>
-                {/* Voice hero */}
-                <Card className="rounded-2xl border-border/50 shadow-sm">
-                  <CardContent className="p-5 flex flex-col items-center text-center space-y-3">
+                {/* Voice hero — fills viewport when idle (no recording, no transcript yet) */}
+                <Card className={cn(
+                  "rounded-2xl border-border/50 shadow-sm",
+                  !isRecording && !transcript && "flex-1"
+                )}>
+                  <CardContent className={cn(
+                    "p-5 flex flex-col items-center text-center space-y-3",
+                    !isRecording && !transcript && "h-full justify-center"
+                  )}>
                     <p className="text-sm text-muted-foreground max-w-xs">
                       {t("mobilesupport.hint")}
                     </p>
@@ -478,8 +485,8 @@ function MobileSupport() {
                   </Card>
                 )}
 
-                {/* Quick contact */}
-                <Card className="rounded-2xl border-border/50 shadow-sm">
+                {/* Quick contact — pinned to the end of the viewport */}
+                <Card className="rounded-2xl border-border/50 shadow-sm shrink-0">
                   <CardContent className="p-4 space-y-3">
                     <h3 className="text-sm font-semibold">
                       {t("mobilesupport.quickContactTitle")}
