@@ -8429,7 +8429,10 @@
       "availableBalanceCurrency": "Available: {balance}{currency}",
       "sending": "Sending...",
       "showingValue0": "Showing: {value0}",
-      "lengthTransactionValue1": "{length}transaction{value1}"
+      "lengthTransactionValue1": "{length}transaction{value1}",
+      "addFundsBalance": "Add Funds to {currency} Balance",
+      "currentBalanceLabel": "Current {currency} Balance",
+      "amountAddCurrency": "Amount to Add ({currency})"
     },
     "ai": {
       "subtitle_priorityActions": "AI-curated tasks for maximum wellness impact",

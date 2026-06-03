@@ -8429,7 +8429,10 @@
       "availableBalanceCurrency": "Verfügbar: {balance} {currency}",
       "sending": "Sende...",
       "showingValue0": "Zeige: {value0}",
-      "lengthTransactionValue1": "{length} Transaktion{value1}"
+      "lengthTransactionValue1": "{length} Transaktion{value1}",
+      "addFundsBalance": "Geld zu {currency}-Guthaben hinzufügen",
+      "currentBalanceLabel": "Aktueller {currency}-Kontostand",
+      "amountAddCurrency": "Hinzuzufügender Betrag ({currency})"
     },
     "ai": {
       "subtitle_priorityActions": "KI-kuratierte Aufgaben für maximale Wirkung auf dein Wohlbefinden",
