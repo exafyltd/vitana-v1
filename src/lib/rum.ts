@@ -29,6 +29,7 @@ const SESSION_KEY = 'vitana-rum-session';
 
 type Metric = 'LCP' | 'TTFB' | 'CLS' | 'FCP' | 'INP';
 type Rating = 'good' | 'needs-improvement' | 'poor';
+type Platform = 'ios' | 'android' | 'desktop' | 'other';
 
 interface RumBeacon {
   screen: string;
@@ -39,7 +40,42 @@ interface RumBeacon {
   captured_at: string;
   user_agent?: string;
   ts_origin_ms?: number;
+  // Device split so the rollup can compare iOS vs Android vs desktop without
+  // brittle UA re-parsing on the server. `webview` distinguishes the Appilix
+  // in-app shell (the surface the complaints come from) from a plain browser.
+  platform?: Platform;
+  webview?: boolean;
 }
+
+// Classified once at module load. Mirrors the detection in src/lib/webview.ts
+// (Android `wv` token; iPadOS desktop-UA + touch; iOS WKWebView = iOS UA with
+// no `Safari/` token) but inlined so this early-loaded beacon module pulls in
+// no extra dependencies and can never throw on a malformed navigator.
+const DEVICE: { platform: Platform; webview: boolean } = (() => {
+  try {
+    const ua = navigator.userAgent || '';
+    const nav = navigator as Navigator & { maxTouchPoints?: number; platform?: string };
+    const isiOS =
+      /iPhone|iPod|iPad/i.test(ua) ||
+      // iPadOS 13+ reports a MacIntel desktop UA but has a touch screen.
+      (nav.platform === 'MacIntel' && (nav.maxTouchPoints ?? 0) > 1);
+    const isAndroid = /Android/i.test(ua);
+
+    let platform: Platform = 'other';
+    if (isiOS) platform = 'ios';
+    else if (isAndroid) platform = 'android';
+    else if (/Windows|Macintosh|Linux|CrOS/i.test(ua)) platform = 'desktop';
+
+    const appilixBridge = typeof (window as unknown as { appilix?: unknown }).appilix !== 'undefined';
+    const androidWebView = /Android.*\bwv\b/.test(ua);
+    const iosWebView = isiOS && !/Safari\//.test(ua);
+    const webview = appilixBridge || androidWebView || iosWebView;
+
+    return { platform, webview };
+  } catch {
+    return { platform: 'other' as Platform, webview: false };
+  }
+})();
 
 const THRESHOLDS: Record<Metric, [number, number] | null> = {
   LCP: [2500, 4000],
@@ -98,6 +134,8 @@ function emit(metric: Metric, value: number): void {
     captured_at: new Date().toISOString(),
     user_agent: navigator.userAgent.slice(0, 512),
     ts_origin_ms: performance.timeOrigin,
+    platform: DEVICE.platform,
+    webview: DEVICE.webview,
   });
 }
 
