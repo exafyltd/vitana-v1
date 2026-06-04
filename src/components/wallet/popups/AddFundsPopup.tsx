@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -10,11 +11,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { DollarSign, CreditCard, Banknote, Loader2, Shield } from "lucide-react";
+import { DollarSign, Euro, CreditCard, Banknote, Loader2, Shield, X } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
+import { useEurUsdRate } from '@/hooks/useEurUsdRate';
+import { convertFromUsd, convertToUsd, getCurrencySymbol } from '@/lib/exchangeRates';
 
 import { fmtNumber } from '@/lib/locale-format';
 interface AddFundsPopupProps {
@@ -24,13 +28,19 @@ interface AddFundsPopupProps {
 
 export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
   const { getBalance, updateBalance } = useWallet();
+  const { displayCurrency } = useDisplayCurrency();
+  const { eurPerUsd } = useEurUsdRate();
   const { toast } = useToast();
   const [fundAmount, setFundAmount] = useState('');
   const [loading, setLoading] = useState(false);
 
   if (isIAPRestricted()) return null;
 
-  const currentBalance = getBalance('USD') || 0;
+  // Balances are stored in USD; present everything in the user's chosen
+  // display currency and convert the entered amount back to USD on submit.
+  const symbol = getCurrencySymbol(displayCurrency);
+  const currentBalance = convertFromUsd(getBalance('USD') || 0, displayCurrency, eurPerUsd);
+  const CurrencyIcon = displayCurrency === 'EUR' ? Euro : DollarSign;
   const quickAmounts = [25, 50, 100, 200, 500];
   const paymentMethods = [
     { id: 'card', name: 'Credit/Debit Card', icon: CreditCard, fee: '2.9%' },
@@ -45,12 +55,13 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
     }
 
     setLoading(true);
-    
+
     try {
-      await updateBalance('USD', parseFloat(fundAmount), 'add');
-      
+      const usdAmount = convertToUsd(parseFloat(fundAmount), displayCurrency, eurPerUsd);
+      await updateBalance('USD', usdAmount, 'add');
+
       notify('toasts.wallet.fundsAddedSuccessfully');
-      
+
       onOpenChange(false);
       setFundAmount('');
     } catch (error) {
@@ -65,23 +76,27 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <DollarSign className="h-5 w-5 text-green-600" />
-            {t('screens.wallet.addFundsUsdBalance')}
+            <CurrencyIcon className="h-5 w-5 text-green-600" />
+            {t('screens.wallet.addFundsBalance', { currency: displayCurrency })}
           </DialogTitle>
+          <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none">
+            <X className="h-4 w-4" />
+            <span className="sr-only">{t('screens.ui.close')}</span>
+          </DialogClose>
         </DialogHeader>
-        
+
         <div className="space-y-4">
           {/* Current Balance */}
           <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">{t('screens.wallet.currentUsdBalance')}</span>
-              <span className="font-semibold text-green-700">${fmtNumber(currentBalance)}</span>
+              <span className="text-sm text-muted-foreground">{t('screens.wallet.currentBalanceLabel', { currency: displayCurrency })}</span>
+              <span className="font-semibold text-green-700">{symbol}{fmtNumber(currentBalance, { maximumFractionDigits: 2 })}</span>
             </div>
           </div>
 
           {/* Amount Input */}
           <div className="space-y-2">
-            <Label htmlFor="fundAmount">{t('screens.wallet.amountAddUsd')}</Label>
+            <Label htmlFor="fundAmount">{t('screens.wallet.amountAddCurrency', { currency: displayCurrency })}</Label>
             <Input
               id="fundAmount"
               type="number"
@@ -98,7 +113,7 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
                   size="sm"
                   onClick={() => setFundAmount(amount.toString())}
                 >
-                  ${amount}
+                  {symbol}{amount}
                 </Button>
               ))}
             </div>
