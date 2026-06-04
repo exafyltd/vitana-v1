@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, ChevronRight, Loader2 } from "lucide-react";
 import { useRealMatches } from "@/hooks/useRealMatches";
 import { t } from "@/lib/i18n-toast";
+import { localizeMatchReason } from "@/lib/matchReason";
 
 /**
  * Compact Matches preview for My Journey. Shows real "people who match you"
@@ -68,7 +69,7 @@ export function MatchesPreview({ limit = 3 }: { limit?: number }) {
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold truncate">{m.display_name}</p>
                     <p className="text-xs text-muted-foreground truncate">
-                      {m.match_reason ||
+                      {localizeMatchReason(m.match_reason) ||
                         t("screens.autopilotdashboard.matchReasonDefault")}
                     </p>
                   </div>
