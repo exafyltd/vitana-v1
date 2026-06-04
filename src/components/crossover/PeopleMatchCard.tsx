@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useDemoMatches } from "@/hooks/useDemoMatches";
 import { SkeletonCard } from "@/components/ui/skeleton-card";
 import { notify, t } from '@/lib/i18n-toast';
+import { localizeMatchReason } from '@/lib/matchReason';
 
 interface PeopleMatch {
   user_id: string;
@@ -70,9 +71,9 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
     
     return profiles.map((profile, index) => ({
       user_id: profile.user_id,
-      display_name: profile.display_name || profile.handle || 'Community Member',
+      display_name: profile.display_name || profile.handle || t('screens.crossover.communityMember'),
       avatar_url: profile.avatar_url,
-      bio: profile.bio || "Vitana community member",
+      bio: profile.bio || t('screens.crossover.vitanaCommunityMember'),
       compatibility_score: 85 - (index * 3),
       match_reason: getMatchReason(index)
     }));
@@ -149,13 +150,13 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
         icon={Users}
         category="mental"
         title={t('screens.crossover.topPeople')}
-        subtitle="Finding your perfect matches..."
+        subtitle={t('screens.crossover.findingMatches')}
         content={
           <div className="flex items-center justify-center py-8">
             <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
           </div>
         }
-        buttonText="Say Hi"
+        buttonText={t('screens.crossover.sayHi')}
         onButtonClick={() => {}}
         className={className}
       />
@@ -194,7 +195,7 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
                   <p className="text-sm font-semibold truncate">{match.display_name}</p>
                   <Badge className="text-xs bg-gradient-to-r from-pink-500 to-fuchsia-500 text-white border-0">{match.compatibility_score}%</Badge>
                 </div>
-                <p className="text-xs text-muted-foreground truncate">{match.match_reason}</p>
+                <p className="text-xs text-muted-foreground truncate">{localizeMatchReason(match.match_reason)}</p>
               </div>
               <Button
                 size="sm"
@@ -229,11 +230,11 @@ function PeopleMatchCardBase({ className }: PeopleMatchCardProps) {
       icon={Users}
       category="mental"
       title={t('screens.crossover.topPeople')}
-      subtitle="High compatibility matches"
+      subtitle={t('screens.crossover.highCompatibilityMatches')}
       content={content}
-      buttonText="💬 Start Chat"
+      buttonText={t('screens.crossover.startChat')}
       onButtonClick={() => navigate('/messages/direct')}
-      secondaryButtonText="Auto Intro"
+      secondaryButtonText={t('screens.crossover.autoIntro')}
       onSecondaryButtonClick={() => console.log("Auto intro activated")}
       className={className}
     />
