@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Mic, Square, Send, CheckCircle2, Mail, MessageCircle, Phone, BookOpen, Paperclip, X, Users, Loader2 } from "lucide-react";
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import StandardHeader from "@/components/StandardHeader";
@@ -35,10 +35,33 @@ type CategoryKey = (typeof CATEGORY_KEYS)[number];
 
 type TabKey = "contact" | "faqs" | "community";
 
+// VTID-NAV-SUPPORT-TABS: map an incoming `?tab=` value (e.g. from a Vitana
+// deep-link like /support?tab=faqs) onto a local tab. Accepts the canonical
+// keys plus a few synonyms the navigator/desktop screen may emit (knowledge →
+// faqs) so "take me to Support FAQs" opens the FAQ tab directly.
+const TAB_ALIASES: Record<string, TabKey> = {
+  contact: "contact",
+  "contact-support": "contact",
+  faqs: "faqs",
+  faq: "faqs",
+  knowledge: "faqs",
+  "knowledge-base": "faqs",
+  help: "faqs",
+  articles: "faqs",
+  community: "community",
+  "community-help": "community",
+};
+
+function normalizeTab(value: string | null | undefined): TabKey | null {
+  if (!value) return null;
+  return TAB_ALIASES[value.trim().toLowerCase().replace(/[\s_]+/g, "-")] ?? null;
+}
+
 const FAQ_KEYS = ["CreateAccount", "ResetPassword", "UpdateProfile", "PaymentMethods", "DataSecure", "DeleteAccount"] as const;
 
 function MobileSupport() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { selectedLanguage } = useLanguage();
   const { pendingCount } = useAutopilot();
   const isAndroid = /Android/i.test(navigator.userAgent);
@@ -48,7 +71,23 @@ function MobileSupport() {
 
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<TabKey>("contact");
+  const [activeTab, setActiveTab] = useState<TabKey>(() => normalizeTab(searchParams.get("tab")) ?? "contact");
+
+  // VTID-NAV-SUPPORT-TABS: honor `?tab=` deep-links. Runs on mount and whenever
+  // the param changes (e.g. Vitana navigates here with ?tab=faqs).
+  useEffect(() => {
+    const next = normalizeTab(searchParams.get("tab"));
+    if (next && next !== activeTab) setActiveTab(next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  // Keep the URL in sync so the active tab is deep-linkable/shareable.
+  const handleTabChange = (next: TabKey) => {
+    setActiveTab(next);
+    const params = new URLSearchParams(searchParams);
+    params.set("tab", next);
+    setSearchParams(params, { replace: true });
+  };
 
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState("");
@@ -416,7 +455,7 @@ function MobileSupport() {
             <MobileModePill
               modes={SUPPORT_MODES}
               activeMode={activeTab}
-              onModeChange={(v) => setActiveTab(v as TabKey)}
+              onModeChange={(v) => handleTabChange(v as TabKey)}
             />
           </div>
         </UtilityActionButton>
