@@ -8042,7 +8042,10 @@
       "availableBalanceCurrency": "Dostupno: {balance}{currency}",
       "sending": "Slanje...",
       "showingValue0": "Prikaz: {value0}",
-      "lengthTransactionValue1": "{length}transakcija{value1}"
+      "lengthTransactionValue1": "{length}transakcija{value1}",
+      "addFundsBalance": "Dodaj sredstva na {currency} saldo",
+      "currentBalanceLabel": "Trenutni {currency} saldo",
+      "amountAddCurrency": "Iznos za dodavanje ({currency})"
     },
     "ai": {
       "rescheduledMeeting": "Ponovo zakazan sastanak",

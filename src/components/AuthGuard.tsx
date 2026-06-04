@@ -171,10 +171,28 @@ export default function AuthGuard({ children }: AuthGuardProps) {
         // conversation, not the home page).
         const intended = window.location.pathname + window.location.search;
         const loginRoute = getLoginRoute();
-        const redirectUrl = (intended && intended !== '/' && !intended.startsWith(loginRoute))
-          ? `${loginRoute}?redirectTo=${encodeURIComponent(intended)}`
-          : loginRoute;
-        navigate(redirectUrl);
+
+        // Default-landing routes the native shell cold-starts on are plain
+        // launches, not user-intended deep links — they should still see the
+        // brand intro (splash → /_intro/<tenant> → sign-up). Only genuine
+        // content deep links skip the intro to reach their target faster.
+        const PLAIN_LAUNCH_PATHS = ['/', '/home', '/autopilot'];
+        const isPlainLaunch = PLAIN_LAUNCH_PATHS.includes(window.location.pathname);
+        const hasDeepLink = !isPlainLaunch
+          && !!intended && intended !== '/' && !intended.startsWith(loginRoute);
+
+        if (hasDeepLink) {
+          // Genuine deep link → skip intro, preserve target (VTID-AUTH-RESUME).
+          navigate(`${loginRoute}?redirectTo=${encodeURIComponent(intended)}`);
+        } else {
+          // Plain launch → route through the brand intro before the sign-up portal.
+          const slug = loginRoute.slice(1); // 'maxina' | 'alkalma' | 'earthlinks' | 'exafy-admin' | ''
+          if (slug === 'maxina' || slug === 'alkalma' || slug === 'earthlinks') {
+            navigate(`/_intro/${slug}`);
+          } else {
+            navigate(loginRoute); // exafy-admin / unknown tenant: no intro
+          }
+        }
       }
     });
 
