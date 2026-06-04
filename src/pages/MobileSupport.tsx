@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Mic, Square, Send, CheckCircle2, Mail, MessageCircle, Phone, BookOpen, Paperclip, X, Users } from "lucide-react";
+import { Mic, Square, Send, CheckCircle2, Mail, MessageCircle, Phone, BookOpen, Paperclip, X, Users, Loader2 } from "lucide-react";
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
@@ -17,6 +17,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
+import {
+  DiaryAudioRecorder,
+  shouldUseBackendSTT,
+  transcribeAudioBlob,
+} from "@/utils/diaryAudioRecorder";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalStorageItem } from "@/lib/localStorage";
 import { notifyError, t } from "@/lib/i18n-toast";
@@ -60,6 +65,9 @@ function MobileSupport() {
   const { selectedLanguage } = useLanguage();
   const { pendingCount } = useAutopilot();
   const isAndroid = /Android/i.test(navigator.userAgent);
+  // iOS Safari / WKWebView (Appilix) can't reliably use the Web Speech API,
+  // so we fall back to MediaRecorder + backend STT on those runtimes.
+  const useBackendSTT = shouldUseBackendSTT();
 
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [, setSearchQuery] = useState("");
@@ -90,8 +98,10 @@ function MobileSupport() {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [isSending, setIsSending] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
 
   const sttRef = useRef<ClientSTT | null>(null);
+  const audioRecorderRef = useRef<DiaryAudioRecorder | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const isRecordingRef = useRef(false);
@@ -104,6 +114,7 @@ function MobileSupport() {
       isRecordingRef.current = false;
       if (restartTimeoutRef.current) clearTimeout(restartTimeoutRef.current);
       if (timerRef.current) clearInterval(timerRef.current);
+      audioRecorderRef.current?.cancel();
       sttRef.current?.stop();
     };
   }, []);
@@ -149,14 +160,72 @@ function MobileSupport() {
     return tail ? `${e} ${tail}`.trim() : e;
   };
 
+  const resolveLanguage = () => {
+    const stored = getLocalStorageItem("global", "language", "selected_language");
+    return (typeof stored === "string" ? stored : selectedLanguage)?.trim() || "de-DE";
+  };
+
+  // iOS path: capture audio with MediaRecorder and transcribe server-side.
+  // The Web Speech API (webkitSpeechRecognition) throws an immediate
+  // `service-not-allowed`/`not-allowed` on iOS Safari + WKWebView even when
+  // the mic is granted, which previously surfaced the bogus "Microphone
+  // access denied" toast. getUserMedia is the FIRST awaited call in the tap
+  // handler — iOS rejects with NotAllowedError if a fetch/WebSocket is
+  // awaited before it.
+  const startBackendRecording = async () => {
+    if (!DiaryAudioRecorder.isSupported()) {
+      notifyError("mobilesupport.errorNotSupported");
+      return;
+    }
+
+    let recorder: DiaryAudioRecorder;
+    try {
+      recorder = new DiaryAudioRecorder({ language: resolveLanguage() });
+      await recorder.start();
+    } catch (e: unknown) {
+      console.error("[MobileSupport] MediaRecorder start failed:", e);
+      const name = (e as { name?: string })?.name;
+      switch (name) {
+        case "NotAllowedError":
+        case "SecurityError":
+          notifyError("mobilesupport.errorMicPermission");
+          break;
+        case "NotFoundError":
+          notifyError("mobilesupport.errorMicNotFound");
+          break;
+        case "NotReadableError":
+          notifyError("mobilesupport.errorMicInUse");
+          break;
+        default:
+          notifyError("mobilesupport.errorMicGeneric");
+      }
+      return;
+    }
+
+    audioRecorderRef.current = recorder;
+    setIsRecording(true);
+    isRecordingRef.current = true;
+    setRecordingDuration(0);
+    setTranscript("");
+    setInterimText("");
+
+    timerRef.current = setInterval(() => {
+      setRecordingDuration((p) => p + 1);
+    }, 1000);
+  };
+
   const startRecording = () => {
+    if (useBackendSTT) {
+      void startBackendRecording();
+      return;
+    }
+
     if (!ClientSTT.isSupported()) {
       notifyError("mobilesupport.errorNotSupported");
       return;
     }
 
-    const stored = getLocalStorageItem("global", "language", "selected_language");
-    const sttLanguage = (typeof stored === "string" ? stored : selectedLanguage)?.trim() || "de-DE";
+    const sttLanguage = resolveLanguage();
     const useContinuous = !isAndroid;
 
     sttRef.current = new ClientSTT({
@@ -183,10 +252,18 @@ function MobileSupport() {
       },
       onError: (error) => {
         if (error === "no-speech" || error === "aborted" || error === "audio-capture") return;
-        if (error === "not-allowed" || error === "service-not-allowed") {
+        // Branch on the specific error instead of mapping everything to
+        // "denied". `service-not-allowed` is a recognition-service failure,
+        // NOT a microphone-permission denial. (iOS no longer reaches this
+        // path — it uses backend STT above — but Android/desktop can.)
+        if (error === "not-allowed") {
           notifyError("mobilesupport.errorMicPermission");
+        } else if (error === "service-not-allowed") {
+          notifyError("mobilesupport.errorMicGeneric");
+        } else {
+          notifyError("mobilesupport.errorMicGeneric");
         }
-        stopRecording();
+        void stopRecording();
       },
       onEnd: () => {
         if (restartTimeoutRef.current) {
@@ -221,20 +298,50 @@ function MobileSupport() {
     }, 1000);
   };
 
-  const stopRecording = () => {
+  const stopRecording = async () => {
     isRecordingRef.current = false;
     if (restartTimeoutRef.current) {
       clearTimeout(restartTimeoutRef.current);
       restartTimeoutRef.current = null;
     }
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+
+    // iOS backend-STT path: stop the recorder and transcribe server-side.
+    if (audioRecorderRef.current) {
+      const recorder = audioRecorderRef.current;
+      audioRecorderRef.current = null;
+      setIsRecording(false);
+      setInterimText("");
+      setIsTranscribing(true);
+      try {
+        const blob = await recorder.stop();
+        if (!blob || blob.size === 0) {
+          notifyError("mobilesupport.errorNoAudio");
+          return;
+        }
+        const text = await transcribeAudioBlob(blob, resolveLanguage());
+        if (!text) {
+          notifyError("mobilesupport.errorNoAudio");
+          return;
+        }
+        setTranscript((prev) => (prev ? `${prev} ${text}`.trim() : text));
+      } catch (e) {
+        console.error("[MobileSupport] Backend transcription failed:", e);
+        notifyError("mobilesupport.errorTranscription");
+      } finally {
+        setIsTranscribing(false);
+      }
+      return;
+    }
+
+    // Web Speech API path (Android/desktop).
     if (sttRef.current) {
       sttRef.current.stop();
       setIsRecording(false);
       setInterimText("");
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
     }
   };
 
@@ -390,10 +497,11 @@ function MobileSupport() {
                       {!isRecording ? (
                         <button
                           onClick={startRecording}
+                          disabled={isTranscribing}
                           aria-label={t("mobilesupport.recordButtonStart")}
-                          className="h-24 w-24 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground flex items-center justify-center shadow-lg active:scale-95 transition-transform"
+                          className="h-24 w-24 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground flex items-center justify-center shadow-lg active:scale-95 transition-transform disabled:opacity-60"
                         >
-                          <Mic className="h-10 w-10" />
+                          {isTranscribing ? <Loader2 className="h-10 w-10 animate-spin" /> : <Mic className="h-10 w-10" />}
                         </button>
                       ) : (
                         <div className="flex flex-col items-center gap-3">
@@ -413,7 +521,11 @@ function MobileSupport() {
                     </div>
 
                     <p className="text-xs text-muted-foreground">
-                      {isRecording ? t("mobilesupport.listening") : t("mobilesupport.tapToSpeak")}
+                      {isTranscribing
+                        ? t("mobilesupport.transcribing")
+                        : isRecording
+                          ? (useBackendSTT ? t("mobilesupport.backendRecordingHint") : t("mobilesupport.listening"))
+                          : t("mobilesupport.tapToSpeak")}
                     </p>
 
                     {isRecording && (
