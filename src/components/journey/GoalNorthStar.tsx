@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Compass, CalendarClock } from "lucide-react";
 import { t } from "@/lib/i18n-toast";
+import { localizeGoal } from "@/lib/goalLabel";
 import { fmtDate } from "@/lib/locale-format";
 import type { MyJourneyGoal } from "@/hooks/useMyJourney";
 import { useGoalPlan } from "@/hooks/useGoalPlan";
@@ -144,7 +145,7 @@ export function GoalNorthStar({
         {hasDeadline && trend && <GoalTrendBadge trend={trend} />}
 
         {goal && (
-          <h2 className="text-lg font-semibold leading-snug max-w-sm">{goal.active_goal_text}</h2>
+          <h2 className="text-lg font-semibold leading-snug max-w-sm">{localizeGoal(goal.active_goal_text)}</h2>
         )}
 
         {hasDeadline && goal?.target_date ? (

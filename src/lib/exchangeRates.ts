@@ -144,3 +144,11 @@ export const convertFromUsd = (
   to: DisplayCurrency,
   eurPerUsd: number = EUR_PER_USD,
 ): number => (to === 'EUR' ? usdAmount * eurPerUsd : usdAmount);
+
+// Inverse of convertFromUsd: turn an amount entered in the display currency
+// back into USD (the currency balances are actually stored in).
+export const convertToUsd = (
+  amount: number,
+  from: DisplayCurrency,
+  eurPerUsd: number = EUR_PER_USD,
+): number => (from === 'EUR' ? amount / eurPerUsd : amount);

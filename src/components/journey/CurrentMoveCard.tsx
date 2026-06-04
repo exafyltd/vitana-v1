@@ -5,20 +5,34 @@ import type {
   FoundationStepStatus,
   JourneyFoundationSnapshot,
 } from "@/hooks/useJourneyFoundation";
+import { t } from "@/lib/i18n-toast";
+import { localizeGoal } from "@/lib/goalLabel";
 
 /**
  * VTID-03255 — "Jetzt wichtig": the one current move Vitana is guiding, plus a
  * compact hero strip (Tag X / Tage übrig / both north stars). One action only —
  * never a menu — so the screen mirrors exactly what Vitana drives by voice.
+ *
+ * The gateway ships step titles/benefits in English. Like FoundationPath, we
+ * localize them here (keyed by step.key) so the German UI never shows the
+ * gateway's English copy; an unknown key falls back to the gateway text.
  */
+function localizedStep(
+  catalog: "foundationStepLabels" | "foundationStepBenefits",
+  key: string,
+  fallback: string,
+): string {
+  const v = t(`screens.autopilotdashboard.${catalog}.${key}`);
+  return v.includes(catalog) ? fallback : v;
+}
 
 function StatusPill({ status }: { status: FoundationStepStatus }) {
   const map: Record<FoundationStepStatus, { label: string; cls: string; icon: JSX.Element }> = {
-    open: { label: "Offen", cls: "text-muted-foreground", icon: <Circle className="w-3.5 h-3.5" /> },
-    not_found: { label: "Offen", cls: "text-muted-foreground", icon: <Circle className="w-3.5 h-3.5" /> },
-    checking: { label: "Prüfe…", cls: "text-blue-600", icon: <Loader2 className="w-3.5 h-3.5 animate-spin" /> },
-    done: { label: "Erledigt", cls: "text-green-600", icon: <CheckCircle2 className="w-3.5 h-3.5" /> },
-    active: { label: "Aktiv", cls: "text-purple-600", icon: <Zap className="w-3.5 h-3.5" /> },
+    open: { label: t("screens.autopilotdashboard.statusOpen"), cls: "text-muted-foreground", icon: <Circle className="w-3.5 h-3.5" /> },
+    not_found: { label: t("screens.autopilotdashboard.statusOpen"), cls: "text-muted-foreground", icon: <Circle className="w-3.5 h-3.5" /> },
+    checking: { label: t("screens.autopilotdashboard.statusChecking"), cls: "text-blue-600", icon: <Loader2 className="w-3.5 h-3.5 animate-spin" /> },
+    done: { label: t("screens.autopilotdashboard.statusDone"), cls: "text-green-600", icon: <CheckCircle2 className="w-3.5 h-3.5" /> },
+    active: { label: t("screens.autopilotdashboard.statusActive"), cls: "text-purple-600", icon: <Zap className="w-3.5 h-3.5" /> },
   };
   const s = map[status];
   return (
@@ -59,14 +73,18 @@ export function CurrentMoveCard({
         {/* Hero strip — where you are + both north stars */}
         <div className="flex items-center justify-between">
           <div className="text-[11px] uppercase tracking-wide text-muted-foreground">
-            {gateOpen ? "Definiere dein Ziel" : `Tag ${snapshot.goal_day ?? 1}`}
+            {gateOpen
+              ? t("screens.autopilotdashboard.defineYourGoal")
+              : t("screens.autopilotdashboard.dayN", { day: snapshot.goal_day ?? 1 })}
             {!gateOpen && snapshot.days_left != null && (
-              <span className="ml-1 text-purple-600">· {snapshot.days_left} Tage übrig</span>
+              <span className="ml-1 text-purple-600">
+                · {t("screens.autopilotdashboard.daysLeftN", { days: snapshot.days_left })}
+              </span>
             )}
           </div>
           {snapshot.graduated && (
             <span className="inline-flex items-center gap-1 text-[11px] text-green-600 font-medium">
-              <Sparkles className="w-3.5 h-3.5" /> Fundament steht
+              <Sparkles className="w-3.5 h-3.5" /> {t("screens.autopilotdashboard.foundationReady")}
             </span>
           )}
         </div>
@@ -75,12 +93,12 @@ export function CurrentMoveCard({
           <div className="flex flex-wrap gap-1.5">
             {snapshot.north_stars.health && (
               <span className="text-[11px] px-2 py-0.5 rounded-full bg-green-50 text-green-700">
-                🌿 {snapshot.north_stars.health}
+                🌿 {localizeGoal(snapshot.north_stars.health)}
               </span>
             )}
             {snapshot.north_stars.economy && (
               <span className="text-[11px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-700">
-                💠 {snapshot.north_stars.economy}
+                💠 {localizeGoal(snapshot.north_stars.economy)}
               </span>
             )}
           </div>
@@ -91,12 +109,16 @@ export function CurrentMoveCard({
           <div className="rounded-xl border border-purple-100 p-3 bg-purple-50/40">
             <div className="flex items-center justify-between mb-1">
               <p className="text-[11px] uppercase tracking-wide text-purple-700 font-semibold">
-                Jetzt wichtig
+                {t("screens.autopilotdashboard.nowImportant")}
               </p>
               <StatusPill status={next.status} />
             </div>
-            <p className="text-sm font-semibold text-foreground">{next.title}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">{next.benefit}</p>
+            <p className="text-sm font-semibold text-foreground">
+              {localizedStep("foundationStepLabels", next.key, next.title)}
+            </p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              {localizedStep("foundationStepBenefits", next.key, next.benefit)}
+            </p>
             {onStart && (
               <Button
                 size="sm"
@@ -104,7 +126,7 @@ export function CurrentMoveCard({
                 className="mt-2 h-8 px-2 text-purple-700 hover:text-purple-800"
                 onClick={() => onStart(next.key)}
               >
-                Los geht's
+                {t("screens.autopilotdashboard.letsGo")}
                 <ChevronRight className="w-4 h-4 ml-1" />
               </Button>
             )}
