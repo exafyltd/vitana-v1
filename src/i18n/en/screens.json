@@ -3536,7 +3536,28 @@
       "fromSessions_from": "from €{sessions_from}",
       "newinvitesNewInviteValue1": "{newInvites}new invite{value1}",
       "lengthReportValue1ReadyShare": "{length}report{value1}ready to share",
-      "chat": "💬 Chat"
+      "chat": "💬 Chat",
+      "matchReasonRoutine": "Morning routine & wellness goals align",
+      "matchReasonActivity": "Similar activity patterns & interests",
+      "matchReasonFitness": "Shared fitness & mindfulness journey",
+      "matchReasonLifestyle": "Compatible lifestyle & schedule",
+      "matchReasonGoals": "Overlapping health goals",
+      "matchReasonInterests": "Mutual wellness interests",
+      "matchReasonGeneric": "Suggested based on your profile",
+      "matchReasonGreatAlignment": "Great wellness alignment!",
+      "findingMatches": "Finding your perfect matches...",
+      "sayHi": "Say Hi",
+      "highCompatibilityMatches": "High compatibility matches",
+      "startChat": "💬 Start Chat",
+      "autoIntro": "Auto Intro",
+      "communityMember": "Community Member",
+      "vitanaCommunityMember": "Vitana community member",
+      "matchReasonSharedInterests": "Shared wellness interests",
+      "matchReasonDailyRoutines": "Similar daily routines",
+      "matchReasonFitnessGoals": "Compatible fitness goals",
+      "matchReasonActivityTimes": "Matching activity times",
+      "matchReasonNearby": "Nearby location",
+      "matchReasonJourneyStage": "Similar wellness journey stage"
     },
     "debug": {
       "presenceDebug": "Presence Debug",
@@ -8429,7 +8450,10 @@
       "availableBalanceCurrency": "Available: {balance}{currency}",
       "sending": "Sending...",
       "showingValue0": "Showing: {value0}",
-      "lengthTransactionValue1": "{length}transaction{value1}"
+      "lengthTransactionValue1": "{length}transaction{value1}",
+      "addFundsBalance": "Add Funds to {currency} Balance",
+      "currentBalanceLabel": "Current {currency} Balance",
+      "amountAddCurrency": "Amount to Add ({currency})"
     },
     "ai": {
       "subtitle_priorityActions": "AI-curated tasks for maximum wellness impact",
@@ -8727,6 +8751,7 @@
       "headerDescription": "The path your Index walks",
       "nextStepsTitle": "Next steps",
       "nextStepBadge": "Next step",
+      "focusStepAria": "Start \"{{step}}\" with Vitana",
       "foundationStepLabels": {
         "life_compass": "Life Compass",
         "weakest_habit": "Weakest habit",
@@ -8742,6 +8767,42 @@
         "events": "Events",
         "marketplace": "Marketplace",
         "business_live_media": "Business / Live / Media"
+      },
+      "foundationStepBenefits": {
+        "life_compass": "Define the one goal your whole journey is built around.",
+        "weakest_habit": "Spot the habit that's holding you back the most.",
+        "reminder": "Set a reminder that keeps you on track every day.",
+        "understand_economy": "Understand how the Longevity Economy works for you.",
+        "profile": "Complete your profile so Maxina understands you.",
+        "diary": "Capture how you're doing — one entry a day.",
+        "vitana_index": "Discover your Vitana Index and what it reveals about you.",
+        "economic_aspiration": "Define what you want to achieve economically.",
+        "calendar": "Connect your calendar so Maxina knows your rhythm.",
+        "autopilot": "Let Autopilot take small steps for you.",
+        "connect": "Connect with people who match you.",
+        "events": "Find events that fit your goals.",
+        "marketplace": "Discover products and services that fit you.",
+        "business_live_media": "Explore Business, Live, and Media in VitanaLand."
+      },
+      "defineYourGoal": "Define your goal",
+      "dayN": "Day {day}",
+      "daysLeftN": "{days} days left",
+      "foundationReady": "Foundation set",
+      "nowImportant": "Now important",
+      "letsGo": "Let's go",
+      "statusOpen": "Open",
+      "statusChecking": "Checking…",
+      "statusDone": "Done",
+      "statusActive": "Active",
+      "goalLabels": {
+        "improveQualityExtendLifespan": "Improve quality of life and extend lifespan",
+        "buildFinancialFreedom": "Build Financial Freedom",
+        "transformHealth": "Transform Health",
+        "findLifePartner": "Find Life Partner",
+        "advanceCareer": "Advance Career",
+        "masterNewSkills": "Master New Skills",
+        "spiritualLife": "Spiritual Life",
+        "earnFromRecommendations": "Earn from recommendations"
       }
     },
     "businesshub": {

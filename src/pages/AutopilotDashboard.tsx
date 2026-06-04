@@ -39,6 +39,7 @@ import { FoundationPath } from "@/components/journey/FoundationPath";
 import { useJourneyFoundation } from "@/hooks/useJourneyFoundation";
 import { useGenerateGoalPlan } from "@/hooks/useGoalPlan";
 import { useAIConsent } from "@/hooks/useAIConsent";
+import { focusJourneyStepInOrb, armJourneyStepFocus } from "@/lib/orbJourneyFocus";
 import { t } from "@/lib/i18n-toast";
 
 interface Recommendation {
@@ -146,7 +147,7 @@ export default function AutopilotDashboard() {
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const { allVisibleActions, fetchRecommendations } = useAutopilot();
-  const { hasConsent } = useAIConsent();
+  const { hasConsent, setDialogOpen } = useAIConsent();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
   const [planSheetOpen, setPlanSheetOpen] = useState(false);
@@ -281,8 +282,28 @@ export default function AutopilotDashboard() {
   const currentMove = (
     <CurrentMoveCard snapshot={jfSnapshot} loading={jfLoading} onStart={handleJourneyStart} />
   );
+
+  // VTID-03300 — tapping a step in the Next-Steps checklist opens the ORB
+  // focused on that exact step, so Vitana drives it with the user instead of
+  // talking in generalities. Verified completion flips the row to a green
+  // check on the next snapshot poll. If the user hasn't granted AI consent
+  // yet, pre-arm the focus and surface the consent dialog first — the
+  // post-consent show() (OrbConsentPlaceholder) then consumes the focus.
+  const handleStepFocus = (stepKey: string) => {
+    if (user && !hasConsent) {
+      armJourneyStepFocus(stepKey);
+      setDialogOpen(true);
+      return;
+    }
+    focusJourneyStepInOrb(stepKey);
+  };
+
   const foundationPath = jfSnapshot ? (
-    <FoundationPath steps={jfSnapshot.foundation_steps} currentKey={jfSnapshot.current_next_step?.key ?? null} />
+    <FoundationPath
+      steps={jfSnapshot.foundation_steps}
+      currentKey={jfSnapshot.current_next_step?.key ?? null}
+      onStepFocus={handleStepFocus}
+    />
   ) : null;
 
   const matchesPreview = <MatchesPreview />;

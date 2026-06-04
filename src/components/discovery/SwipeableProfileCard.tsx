@@ -5,6 +5,7 @@ import { MapPin, Sparkles, Zap } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { ProfileImage } from "./ProfileImage";
 import { t } from '@/lib/i18n-toast';
+import { localizeMatchReason } from '@/lib/matchReason';
 
 interface SwipeableProfileCardProps {
   profile: {
@@ -39,7 +40,7 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
   const rotate = useTransform(x, [-200, 200], [-10, 10]);
   const opacity = useTransform(x, [-200, -100, 0, 100, 200], [0.5, 1, 1, 1, 0.5]);
 
-  const handleDragEnd = (_: any, info: PanInfo) => {
+  const handleDragEnd = (_: unknown, info: PanInfo) => {
     const threshold = 120;
     const upThreshold = -120;
 
@@ -243,7 +244,7 @@ export function SwipeableProfileCard({ profile, onSwipe, onTap, style }: Swipeab
         <div className="bg-gradient-to-r from-accent/20 via-accent/10 to-accent/20 rounded-xl p-3 border border-accent/30 backdrop-blur">
           <p className="text-sm text-center font-semibold text-foreground flex items-center justify-center gap-2">
             <span className="text-base">✨</span>
-            {profile.match_reasons[0] || 'Great wellness alignment!'}
+            {localizeMatchReason(profile.match_reasons[0]) || t('screens.crossover.matchReasonGreatAlignment')}
           </p>
         </div>
       </div>
