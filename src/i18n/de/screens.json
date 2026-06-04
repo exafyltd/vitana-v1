@@ -2265,6 +2265,7 @@
       "activeOpen": "Aktiv ({open})",
       "archiveValue0": "Archiv ({value0})",
       "allTotal": "Alle ({total})",
+      "supportQueue": "Support ({count})",
       "almostEveryConversationStaysWithHer": "Fast jedes Gespräch bleibt bei ihr. Die\n              Kollegen unten übernehmen nur, wenn ein Mitglied explizit darum bittet, für ein Unternehmens-/Organisationsproblem (Bug, Rückerstattung, Konto, Support-Eskalation) verbunden zu werden. Klicke auf eine Karte, um sie anzupassen.",
       "receptionist": "Rezeptionist",
       "handlesValue0": "Behandelt: {value0}",

@@ -418,6 +418,9 @@ function MobileSupport() {
         body: JSON.stringify({
           raw_text: message,
           kind: category ? KIND_BY_CATEGORY[category] : "support_question",
+          // Pin the surface so these form a distinct, human-only queue that
+          // the auto-triage routine skips (no AI specialist auto-handling).
+          surface: "support",
           screen_path: category ? `support/contact:${category}` : "support/contact",
           screenshot_url: uploadedUrls[0] || undefined,
           structured_fields: {
