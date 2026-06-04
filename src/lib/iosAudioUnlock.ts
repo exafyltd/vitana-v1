@@ -77,12 +77,38 @@ export function getOrCreateUnlockedAudioContext(): AudioContext | null {
 }
 
 /**
+ * VTID-03272 — make Web Audio ignore the iOS hardware mute/ring switch.
+ *
+ * iOS silences ALL Web Audio API output (the PCM TTS playback) when the
+ * physical side switch is on silent — so a user whose phone is on silent
+ * hears NOTHING, while a phone with the switch off plays fine. Setting the
+ * Web Audio session category to "play-and-record" makes playback ignore the
+ * mute switch (like a phone/FaceTime call) AND keeps the mic enabled, which a
+ * voice assistant needs. Feature-detected (iOS 16.4+ / WebKit); a no-op
+ * everywhere else, so it cannot regress Android/desktop or older iOS.
+ */
+function setVoiceAudioSession(): void {
+  try {
+    const audioSession = (navigator as unknown as { audioSession?: { type?: string } }).audioSession;
+    if (audioSession && typeof audioSession.type === "string") {
+      audioSession.type = "play-and-record";
+    }
+  } catch {
+    /* noop — unsupported platform */
+  }
+}
+
+/**
  * Unlock iOS audio playback. Call inside a user-gesture handler.
  * Returns immediately; the actual silent play runs async but the
  * gesture is captured at call time.
  */
 export function unlockIOSAudioPlayback(): void {
   if (typeof window === "undefined") return;
+
+  // VTID-03272 — ignore the iOS mute switch so silent-mode phones still
+  // hear Vitana. Set inside the gesture, before any AudioContext work.
+  setVoiceAudioSession();
 
   // Web Audio API unlock — relevant for AudioContext-driven playback
   // (the ORB live-audio pipeline). Reuses the shared context so the
