@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Plane, Compass, Sparkles, CalendarClock } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { t } from "@/lib/i18n-toast";
+import { localizeGoal } from "@/lib/goalLabel";
 import { fmtDate } from "@/lib/locale-format";
 import type { MyJourneyGoal } from "@/hooks/useMyJourney";
 import { useGoalPlan } from "@/hooks/useGoalPlan";
@@ -322,16 +323,21 @@ export function DreamNorthStar({
             ) : null}
           </svg>
 
-          {/* Plane badge */}
-          <button
-            type="button"
-            onClick={onOpenPlan}
-            className="absolute left-1/2 z-10 -translate-x-1/2 w-11 h-11 rounded-full bg-white/95 border border-violet-200/50 shadow-md flex items-center justify-center text-violet-700 hover:scale-[1.04] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
-            style={{ top: -6 }}
-            aria-label={t("screens.autopilotdashboard.openPlan")}
-          >
-            <Plane className="w-5 h-5 -rotate-12" />
-          </button>
+          {/* Plane badge — only shown when there's an actual plan to open
+              (i.e. a deadline exists). Without a deadline, GoalPlanSheet
+              auto-fires plan generation and lands the user on an empty
+              drawer instead of the deadline-setup flow. */}
+          {hasDeadline && (
+            <button
+              type="button"
+              onClick={onOpenPlan}
+              className="absolute left-1/2 z-10 -translate-x-1/2 w-11 h-11 rounded-full bg-white/95 border border-violet-200/50 shadow-md flex items-center justify-center text-violet-700 hover:scale-[1.04] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+              style={{ top: -6 }}
+              aria-label={t("screens.autopilotdashboard.openPlan")}
+            >
+              <Plane className="w-5 h-5 -rotate-12" />
+            </button>
+          )}
 
           {hasDeadline && (
             <TodayDot pct={curFrac * 100} ringSize={ringSize} stroke={stroke} />
@@ -339,9 +345,21 @@ export function DreamNorthStar({
 
           {/* Inner white circle — the big day number is anchored to the exact
               centre of the circle; the "TAG" label and the days-left caption are
-              positioned above and below it so the number always reads centred. */}
-          <div
-            className="absolute rounded-full bg-white/92"
+              positioned above and below it so the number always reads centred.
+              The whole circle is a button — tapping anywhere on the day number
+              opens the day-by-day plan sheet (same affordance as the old
+              GoalNorthStar and the desktop layout). */}
+          <button
+            type="button"
+            onClick={hasDeadline ? onOpenPlan : onSetGoal}
+            aria-label={t(
+              hasDeadline
+                ? "screens.autopilotdashboard.openPlan"
+                : !goal
+                ? "screens.autopilotdashboard.setGoalCta"
+                : "screens.autopilotdashboard.setDeadlineCta",
+            )}
+            className="absolute rounded-full bg-white/92 hover:scale-[1.02] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 text-left"
             style={{
               inset: stroke + 4,
               backdropFilter: "blur(8px)",
@@ -374,7 +392,7 @@ export function DreamNorthStar({
                 ? t("screens.autopilotdashboard.setGoalSubtitle")
                 : t("screens.autopilotdashboard.noDeadlineHint")}
             </div>
-          </div>
+          </button>
         </div>
 
         {/* Flex spacer pushes the goal card to the bottom of the hero */}
@@ -404,7 +422,7 @@ export function DreamNorthStar({
             </div>
             <div className="flex-1 min-w-0">
               <div className="text-[15px] font-bold leading-tight text-slate-900">
-                {goal.active_goal_text}
+                {localizeGoal(goal.active_goal_text)}
               </div>
               {goal.target_date ? (
                 <>
