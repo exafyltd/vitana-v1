@@ -96,17 +96,13 @@
       "phase": "llm"
     },
     "validation.pleaseSelect": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Bitte wähle eine Option",
       "phase": "llm"
     },
     "validation.pleaseEnter": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Bitte gib einen Wert ein",
       "phase": "llm"
     },
     "validation.charactersRemaining": {
@@ -130,5 +126,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:42:42.062Z"
+  "generatedAt": "2026-06-04T08:28:25.101Z"
 }
