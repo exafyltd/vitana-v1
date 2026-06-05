@@ -8664,6 +8664,8 @@
       "setGoalSubtitle": "Tell Vitana what you want to achieve — and by when. Your journey starts here.",
       "setGoalCta": "Set your goal",
       "noDeadlineHint": "Add a target date to start your countdown",
+      "onboardingDaysLeftCount": "{days} days left in your 90-day plan",
+      "onboardingDaysLeftShort": "{count} days in your 90-day plan",
       "adjustGoalCta": "Adjust goal",
       "setDeadlineCta": "Add a deadline",
       "todaysGoal": "Today's goal",
