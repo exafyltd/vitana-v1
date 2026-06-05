@@ -6,10 +6,8 @@
       "phase": "llm"
     },
     "onboarding.subtitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'Ihre' instead of informal 'Deine').",
-      "suggested": "Deine personalisierte Langlebigkeitsplattform",
       "phase": "llm"
     },
     "onboarding.connectApps": {
@@ -18,10 +16,8 @@
       "phase": "llm"
     },
     "onboarding.connectAppsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'Sie' and 'Ihre' instead of informal 'du' and 'deine').",
-      "suggested": "Verknüpfe deine Gesundheits- und Wellness-Apps für bessere Einblicke",
       "phase": "llm"
     },
     "onboarding.setGoals": {
@@ -30,10 +26,8 @@
       "phase": "llm"
     },
     "onboarding.setGoalsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'Sie' and 'Ihre' instead of informal 'du' and 'deine').",
-      "suggested": "Definiere deine Gesundheits- und Langlebigkeitsziele",
       "phase": "llm"
     },
     "onboarding.joinCommunity": {
@@ -43,9 +37,9 @@
     },
     "onboarding.joinCommunityDesc": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'Sie' instead of informal 'du').",
-      "suggested": "Vernetze dich mit Gleichgesinnten auf ähnlichen Reisen",
+      "confidence": 0.9,
+      "issue": "The word 'Reisen' (travels/journeys) is less idiomatic for metaphorical 'journeys' in this context. 'Wege' (paths) is more common.",
+      "suggested": "Vernetze dich mit Gleichgesinnten auf ähnlichen Wegen",
       "phase": "llm"
     },
     "onboarding.getStarted": {
@@ -124,5 +118,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:16:58.836Z"
+  "generatedAt": "2026-06-05T07:58:14.458Z"
 }

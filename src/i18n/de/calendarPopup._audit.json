@@ -16,10 +16,8 @@
       "phase": "llm"
     },
     "calendarPopup.upcomingSchedule": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Ihr' instead of informal 'Dein'.",
-      "suggested": "Dein anstehender Zeitplan und Termine",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "calendarPopup.addNewEvent": {
@@ -33,10 +31,8 @@
       "phase": "llm"
     },
     "calendarPopup.createFirstEvent": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing 'Deinen' for explicit du-form consistency.",
-      "suggested": "Deinen ersten Termin erstellen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "calendarPopup.aiSuggestions": {
@@ -85,12 +81,10 @@
       "phase": "llm"
     },
     "calendarPopup.connectingCalendars": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Verbinde' is imperative/1st person singular, not suitable for continuous action 'Connecting to...'.",
-      "suggested": "Verbinden mit externen Kalendern...",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:06:05.313Z"
+  "generatedAt": "2026-06-05T07:53:37.264Z"
 }

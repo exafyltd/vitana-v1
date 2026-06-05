@@ -169,7 +169,12 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "common.follow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:06:56.655Z"
+  "generatedAt": "2026-06-05T07:53:53.112Z"
 }
