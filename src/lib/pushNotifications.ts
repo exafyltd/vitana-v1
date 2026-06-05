@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { requestFCMToken, onForegroundMessage } from './firebase';
 import {
   isAppilix,
+  waitForAppilixBridge,
   getNativeFcmToken,
   requestNativeFcmTokenFromBridge,
   showNativeNotification,
@@ -75,7 +76,17 @@ class PushNotificationManager {
 
       this.attachAppilixTokenListener();
 
-      if (isAppilix()) {
+      // Resolve Appilix detection reliably BEFORE deciding anything. The
+      // Appilix bridge (window.appilix) can be injected slightly after the
+      // initial page load, so a bare isAppilix() at boot is a false-negative
+      // race: subscribe() could slip past the guard below and register a
+      // crash-prone browser web-push token in an installed-app session.
+      // waitForAppilixBridge() resolves immediately when the bridge is already
+      // present and otherwise waits briefly for late injection (real browsers
+      // wait out the short timeout once — harmless for background push setup).
+      const inAppilix = isAppilix() || (await waitForAppilixBridge(3000));
+
+      if (inAppilix) {
         // 1. Check if Appilix already injected the token (URL param or
         //    pre-mount custom event).
         let nativeToken = getNativeFcmToken();
@@ -117,7 +128,7 @@ class PushNotificationManager {
       // App.tsx via ensureAppilixIdentity) and/or the native bridge FCM token
       // instead, so skipping this fallback removes the crash without losing
       // delivery.
-      if (!token && this.isSupported && !isAppilix()) {
+      if (!token && this.isSupported && !inAppilix) {
         try {
           console.log('[Push] Trying web FCM...');
           token = await requestFCMToken(this.registration || undefined);
@@ -129,7 +140,7 @@ class PushNotificationManager {
         } catch (webErr) {
           console.warn('[Push] ⚠️ Web FCM error (expected in some WebViews):', webErr);
         }
-      } else if (!token && isAppilix()) {
+      } else if (!token && inAppilix) {
         console.log('[Push] Appilix WebView without a native FCM token — skipping web-push fallback (it would crash the WebView on tap). Relying on Appilix user_identity native push.');
       }
 
@@ -138,7 +149,7 @@ class PushNotificationManager {
         // In Appilix, keep retrying the native bridge and refreshing the
         // user_identity so native push can start working once the wrapper
         // responds — but do NOT register a web-push token.
-        if (isAppilix()) {
+        if (inAppilix) {
           this.startTokenRefreshMonitor();
         }
         return null;
