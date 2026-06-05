@@ -16,6 +16,7 @@ export function GoalProgressRing({
   phases,
   currentDay,
   totalDays,
+  daysLeftLabel,
 }: {
   pct: number;
   day: number;
@@ -24,6 +25,8 @@ export function GoalProgressRing({
   phases?: RingPhase[];
   currentDay?: number;
   totalDays?: number;
+  /** Pre-translated countdown caption. Falls back to the "days left to your goal" string. */
+  daysLeftLabel?: string;
 }) {
   const reduce = useReducedMotion();
   const stroke = 12;
@@ -118,7 +121,7 @@ export function GoalProgressRing({
         </span>
         <span className="text-4xl font-bold leading-none tracking-tight">{day}</span>
         <span className="text-[11px] text-muted-foreground mt-2">
-          {t("screens.autopilotdashboard.daysLeftCount", { days: daysLeft })}
+          {daysLeftLabel ?? t("screens.autopilotdashboard.daysLeftCount", { days: daysLeft })}
         </span>
       </div>
     </div>

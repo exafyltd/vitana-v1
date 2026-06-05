@@ -156,6 +156,9 @@ export default function AutopilotDashboard() {
 
   const { data: journeyData, isLoading: journeyLoading, isError: journeyError, refetch: refetchJourney } = useMyJourney();
   const goal = journeyData?.life_compass ?? null;
+  // Onboarding plan (day_in_journey / total_days / days_left). When the goal has
+  // no deadline, the North Star ring counts down this 90-day plan instead.
+  const journey = journeyData?.journey ?? null;
 
   // VTID-03255 — the shared Journey Foundation snapshot (next move + path).
   const { data: jfData, isLoading: jfLoading } = useJourneyFoundation();
@@ -249,6 +252,7 @@ export default function AutopilotDashboard() {
   const dreamHero = (
     <DreamNorthStar
       goal={goal}
+      journey={journey}
       loading={journeyLoading}
       error={journeyError}
       onSetGoal={handleSetGoal}
@@ -259,6 +263,7 @@ export default function AutopilotDashboard() {
   const northStar = (
     <GoalNorthStar
       goal={goal}
+      journey={journey}
       loading={journeyLoading}
       error={journeyError}
       onSetGoal={handleSetGoal}
