@@ -23,6 +23,17 @@ function isOrbAlive(): boolean {
 // VITE_GATEWAY_URL already includes "/api/v1" — see useAIAssistants.ts for the pattern.
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || "").replace(/\/+$/, "");
 
+// BOOTSTRAP-ORB-SESSION-CHURN: module-level init lock shared across this hook's
+// two lifecycle effects (main init + auth-change reinit). On a login/logout the
+// main effect's 500ms polling interval and the auth-change effect can both reach
+// orb.init() — and on slow networks the async backend token probe in one outruns
+// the other's interval tick, firing TWO `/live/session/start` calls. The second
+// supersedes the first mid-greeting (the "constant disconnect during the opening"
+// users report). This flag lets only one init proceed at a time; the loser defers
+// and the `initialized` ref short-circuits it on the next tick.
+let orbInitInFlight = false;
+
+
 /**
  * VTID-AUTH-BACKEND-PROBE: Ask the backend whether it accepts this token.
  *
@@ -261,6 +272,12 @@ export function useOrbVoiceWidget() {
       }
 
       if (!initialized.current) {
+        // BOOTSTRAP-ORB-SESSION-CHURN: if the auth-change effect is already
+        // initialising, defer — returning false keeps the poll alive so the
+        // `initialized` ref short-circuits us cleanly once that init lands.
+        if (orbInitInFlight) return false;
+        orbInitInFlight = true;
+        try {
         const navOpts = {
           showFab: true,
           onNavigationRequest: handleNavigationRequest,
@@ -308,6 +325,9 @@ export function useOrbVoiceWidget() {
           console.log("[ORB] Widget initialized (anonymous)");
         }
         initialized.current = true;
+        } finally {
+          orbInitInFlight = false;
+        }
       }
       return true;
     }
@@ -332,13 +352,32 @@ export function useOrbVoiceWidget() {
     }, 500);
 
     return () => clearInterval(interval);
-  }, [loading, user?.id, session?.access_token]);
+    // BOOTSTRAP-ORB-SESSION-CHURN: intentionally NOT keyed on
+    // `session?.access_token`. Supabase rotates the access token frequently
+    // (hourly, and on every foreground/visibility revalidation — constant on
+    // mobile). Re-running this effect on each rotation periodically coincided
+    // with a transient FAB detachment and tripped destroy()+reinit → a fresh
+    // `/live/session/start` that superseded the live greeting. The widget
+    // always resolves a fresh backend-verified token inside `tryInit()` via
+    // `resolveVerifiedToken()`, so the token is never stale at init time and
+    // this effect does not need the token in its dependency list.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, user?.id]);
 
   // Watch for auth changes — reinit widget when user logs in or out
   useEffect(() => {
     if (loading) return;
     const orb = (window as any).VitanaOrb;
     if (!orb || !initialized.current) return;
+
+    // BOOTSTRAP-ORB-SESSION-CHURN: claim the init lock BEFORE teardown so the
+    // main effect's polling interval defers instead of racing us into a second
+    // `/live/session/start`. `cancelled` guards the async tail against a newer
+    // auth change (or unmount) landing while the backend token probe is in
+    // flight — without it, a stale init would fire after the current mode
+    // already reinitialized.
+    let cancelled = false;
+    orbInitInFlight = true;
 
     // Auth state changed — destroy and reinit with correct mode
     orb.destroy();
@@ -360,27 +399,39 @@ export function useOrbVoiceWidget() {
 
     // VTID-AUTH-BACKEND-PROBE: Verify token with backend before reinit.
     (async () => {
-      if (user && session) {
-        const { token: validToken, rejected } = await resolveVerifiedToken();
-        if (rejected) {
-          console.warn("[ORB] Backend rejected token during reinit — signing out");
-          await supabase.auth.signOut();
-          return;
-        }
-        if (validToken) {
-          orb.init({ ...navOpts, authToken: validToken });
-          setOrbWidgetAuthenticated(true);
+      try {
+        if (user && session) {
+          const { token: validToken, rejected } = await resolveVerifiedToken();
+          if (cancelled) return;
+          if (rejected) {
+            console.warn("[ORB] Backend rejected token during reinit — signing out");
+            await supabase.auth.signOut();
+            return;
+          }
+          if (validToken) {
+            orb.init({ ...navOpts, authToken: validToken });
+            setOrbWidgetAuthenticated(true);
+          } else {
+            orb.init(navOpts);
+            setOrbWidgetAuthenticated(false);
+          }
         } else {
           orb.init(navOpts);
           setOrbWidgetAuthenticated(false);
         }
-      } else {
-        orb.init(navOpts);
-        setOrbWidgetAuthenticated(false);
+        if (cancelled) return;
+        initialized.current = true;
+        console.log("[ORB] Reinitialized for auth change:", user ? "authenticated" : "anonymous");
+      } finally {
+        orbInitInFlight = false;
       }
-      initialized.current = true;
-      console.log("[ORB] Reinitialized for auth change:", user ? "authenticated" : "anonymous");
     })();
+
+    // Cancel a still-in-flight init if auth changes again or the hook unmounts.
+    return () => {
+      cancelled = true;
+      orbInitInFlight = false;
+    };
   }, [user?.id]);
 
   // VTID-AUTH-BACKEND-PROBE: Re-validate with the backend every time the app
