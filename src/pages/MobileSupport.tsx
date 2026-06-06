@@ -33,6 +33,18 @@ const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || "https://gateway-q74ibp
 const CATEGORY_KEYS = ["account", "billing", "technical", "feature", "privacy", "other"] as const;
 type CategoryKey = (typeof CATEGORY_KEYS)[number];
 
+// Map the member-facing Support category onto a unified-pipeline ticket `kind`.
+// This is only a routing hint — the backend classifier is authoritative — but
+// it gives the admin dashboard a sensible kind badge from the start.
+const KIND_BY_CATEGORY: Record<CategoryKey, string> = {
+  account: "account_issue",
+  billing: "account_issue",
+  technical: "bug",
+  feature: "feature_request",
+  privacy: "support_question",
+  other: "support_question",
+};
+
 type TabKey = "contact" | "faqs" | "community";
 
 // VTID-NAV-SUPPORT-TABS: map an incoming `?tab=` value (e.g. from a Vitana
@@ -105,6 +117,9 @@ function MobileSupport() {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const isRecordingRef = useRef(false);
+  // Tracks whether the member used the mic for this message (vs. typing it),
+  // so we can record HOW the feedback was left on the resulting ticket.
+  const usedVoiceRef = useRef(false);
   const restartTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastFinalRef = useRef("");
   const lastFinalAtRef = useRef(0);
@@ -203,6 +218,7 @@ function MobileSupport() {
     }
 
     audioRecorderRef.current = recorder;
+    usedVoiceRef.current = true;
     setIsRecording(true);
     isRecordingRef.current = true;
     setRecordingDuration(0);
@@ -286,6 +302,7 @@ function MobileSupport() {
 
     sttRef.current.setLanguage(sttLanguage);
     sttRef.current.start();
+    usedVoiceRef.current = true;
     setIsRecording(true);
     isRecordingRef.current = true;
     setRecordingDuration(0);
@@ -386,24 +403,38 @@ function MobileSupport() {
         }
       }
 
-      const taggedTranscript = `[SUPPORT${category ? `:${category}` : ""}] ${message}`;
-      const res = await fetch(`${GATEWAY_URL}/api/v1/voice-feedback/submit`, {
+      // Route into the unified feedback pipeline (feedback_tickets) so the
+      // submission shows up on the admin Feedback → Tickets dashboard with
+      // clear attribution. The gateway resolves WHO it came from (vitana_id
+      // from the member's token → member name/avatar on the dashboard); we
+      // tag HOW/WHERE it was left via screen_path + structured_fields
+      // (in-app Support → Contact, the chosen category, voice vs typed).
+      const res = await fetch(`${GATEWAY_URL}/api/v1/feedback/tickets`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
-          transcript: taggedTranscript,
-          report_type: "bug_report",
-          severity: "medium",
-          affected_screen: category ? `support:${category}` : "support",
-          attachments: uploadedUrls,
+          raw_text: message,
+          kind: category ? KIND_BY_CATEGORY[category] : "support_question",
+          // Pin the surface so these form a distinct, human-only queue that
+          // the auto-triage routine skips (no AI specialist auto-handling).
+          surface: "support",
+          screen_path: category ? `support/contact:${category}` : "support/contact",
+          screenshot_url: uploadedUrls[0] || undefined,
+          structured_fields: {
+            source: "support_contact",
+            category: category || null,
+            entry_method: usedVoiceRef.current ? "voice" : "text",
+            attachments: uploadedUrls,
+          },
         }),
       });
       const result = await res.json();
       if (!result.ok) throw new Error(result.error || "Submit failed");
 
+      usedVoiceRef.current = false;
       setTranscript("");
       setRecordingDuration(0);
       setAttachments([]);

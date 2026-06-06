@@ -346,6 +346,11 @@ function CustomerGroupedTickets({ tickets, isLoading, error, onSelectTicket, ten
                         </Badge>
                         <span className="text-muted-foreground">{t.kind}</span>
                         <span className="text-muted-foreground">{(t.priority || "p2").toUpperCase()}</span>
+                        {t.surface === "support" && (
+                          <Badge variant="outline" className="text-[10px] border-primary/50 text-primary">
+                            {t.surface}
+                          </Badge>
+                        )}
                         {t.resolver_agent && (
                           <span className="text-xs text-muted-foreground">{t.resolver_agent}</span>
                         )}
@@ -510,7 +515,7 @@ export default function AdminFeedback() {
   // VTID-02660: filter view. 'active' = exclude terminal-status tickets so
   // the supervisor's main board only shows what needs work. Resolved /
   // rejected / duplicate / wont_fix go to Archive.
-  const [ticketView, setTicketView] = useState<"active" | "archive" | "all">("active");
+  const [ticketView, setTicketView] = useState<"active" | "archive" | "all" | "support">("active");
   // VTID-02656: open SpecialistConfigDrawer when a tenant admin clicks a card
   const [selectedSpecialist, setSelectedSpecialist] = useState<string | null>(null);
 
@@ -544,6 +549,9 @@ export default function AdminFeedback() {
       total: tickets.length,
       open: tickets.filter(t => !["resolved", "user_confirmed", "rejected", "wont_fix", "duplicate"].includes(t.status)).length,
       resolved: tickets.filter(t => ["resolved", "user_confirmed"].includes(t.status)).length,
+      // Distinct, human-only queue: feedback filed via the in-app Support →
+      // Contact screen (surface='support'), which auto-triage skips.
+      support: tickets.filter(t => t.surface === "support").length,
     };
   }, [ticketsQuery.data]);
 
@@ -555,6 +563,7 @@ export default function AdminFeedback() {
     const TERMINAL = new Set([
       "resolved", "user_confirmed", "rejected", "wont_fix", "duplicate",
     ]);
+    if (ticketView === "support") return tickets.filter(t => t.surface === "support");
     if (ticketView === "active") return tickets.filter(t => !TERMINAL.has(t.status));
     if (ticketView === "archive") return tickets.filter(t => TERMINAL.has(t.status));
     return tickets;
@@ -619,6 +628,12 @@ export default function AdminFeedback() {
                   className={`px-2 py-0.5 text-xs rounded ${ticketView === "all" ? "bg-background shadow" : "text-muted-foreground"}`}
                   onClick={() => setTicketView("all")}
                 >{t('screens.admin.allTotal', { total: counts.total })}
+                </button>
+                {/* Distinct human-only queue: in-app Support → Contact submissions. */}
+                <button
+                  className={`px-2 py-0.5 text-xs rounded ${ticketView === "support" ? "bg-background shadow" : "text-muted-foreground"}`}
+                  onClick={() => setTicketView("support")}
+                >{t('screens.admin.supportQueue', { count: counts.support })}
                 </button>
               </div>
             </div>
