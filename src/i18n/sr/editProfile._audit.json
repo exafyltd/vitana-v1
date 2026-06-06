@@ -2,23 +2,23 @@
   "verdicts": {
     "editProfile.unsavedChanges": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'ti').",
-      "suggested": "Imaš nesačuvane izmene. Da li si siguran da želiš da odeš?",
+      "confidence": 0.9,
+      "issue": "Gendered adjective 'siguran' (sure) is used, which assumes a male user. For a friendly app, it's better to be gender-neutral or inclusive.",
+      "suggested": "Imaš nesačuvane izmene. Da li zaista želiš da napustiš?",
       "phase": "llm"
     },
     "editProfile.notAuthenticated": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'ti').",
-      "suggested": "Nisi autentifikovan",
+      "confidence": 0.9,
+      "issue": "Gendered participle 'autentifikovan' (authenticated) is used, which assumes a male user. For a friendly app, it's better to be gender-neutral or inclusive.",
+      "suggested": "Nisi autentifikovan/a",
       "phase": "llm"
     },
     "editProfile.notAuthenticatedDesc": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'ti').",
-      "suggested": "Molimo prijavi se da bi sačuvao svoj profil.",
+      "confidence": 0.9,
+      "issue": "Register mismatch: 'Molimo' (formal/plural 'please') should be 'Molim te' (informal singular 'please'). Also, gendered participle 'sačuvao' (saved) assumes a male user.",
+      "suggested": "Molim te, prijavi se da bi sačuvao/la svoj profil.",
       "phase": "llm"
     },
     "editProfile.profileUpdated": {
@@ -27,10 +27,8 @@
       "phase": "llm"
     },
     "editProfile.profileUpdatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' possessive instead of informal 'ti').",
-      "suggested": "Tvoje izmene su sada aktivne. Tvoj VITANA profil izgleda sjajno.",
       "phase": "llm"
     },
     "editProfile.error": {
@@ -44,10 +42,8 @@
       "phase": "llm"
     },
     "editProfile.showcaseHint": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'ti').",
-      "suggested": "Izaberi objave i sadržaj koji će biti istaknuti na vrhu tvog profila.",
       "phase": "llm"
     },
     "editProfile.showcaseTitle": {
@@ -76,5 +72,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:03:09.253Z"
+  "generatedAt": "2026-06-06T06:43:44.303Z"
 }
