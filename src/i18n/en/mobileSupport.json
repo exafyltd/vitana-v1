@@ -67,6 +67,13 @@
     "errorNotSupported": "Voice input isn't supported on this device — please type your message.",
     "errorEmpty": "Please speak or type a message first.",
     "errorSend": "Could not send. Please try again.",
-    "errorMicPermission": "Microphone access denied. Please allow access in browser settings."
+    "errorMicPermission": "Microphone access denied. Please allow access in browser settings.",
+    "errorMicNotFound": "No microphone found.",
+    "errorMicInUse": "Microphone is in use by another app. Close it and try again.",
+    "errorMicGeneric": "Could not start the microphone. Please try again.",
+    "errorNoAudio": "We didn't catch any audio. Please try again.",
+    "errorTranscription": "Transcription failed. Please try again.",
+    "transcribing": "Transcribing your recording…",
+    "backendRecordingHint": "Your transcription will appear after you tap Stop."
   }
 }
