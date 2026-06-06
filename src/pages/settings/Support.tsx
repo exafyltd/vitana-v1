@@ -7,7 +7,8 @@ import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/components/ui/split-bar";
 import { Button } from "@/components/ui/button";
 import { Plus, MessageCircle, Phone, Mail, Book, Users, Send, Search, HelpCircle, Settings as SettingsIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
@@ -17,9 +18,47 @@ import { StandardCard } from "@/components/templates/StandardCard";
 import { NewTicketPopup } from "@/components/NewTicketPopup";
 import { t } from '@/lib/i18n-toast';
 
+// VTID-NAV-SUPPORT-TABS: map an incoming `?tab=` value onto one of this
+// screen's tabs. Accepts the canonical keys plus synonyms the navigator emits
+// (faq/faqs → knowledge) so a Vitana deep-link like /support?tab=faqs opens the
+// Knowledge Base tab directly instead of the default Contact tab.
+const TAB_ALIASES: Record<string, string> = {
+  contact: "contact",
+  "contact-support": "contact",
+  knowledge: "knowledge",
+  "knowledge-base": "knowledge",
+  faq: "knowledge",
+  faqs: "knowledge",
+  help: "knowledge",
+  articles: "knowledge",
+  community: "community",
+  "community-help": "community",
+};
+
+function normalizeTab(value: string | null | undefined): string | null {
+  if (!value) return null;
+  return TAB_ALIASES[value.trim().toLowerCase().replace(/[\s_]+/g, "-")] ?? null;
+}
+
 function Support() {
-  const [activeTab, setActiveTab] = useState("contact");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState(() => normalizeTab(searchParams.get("tab")) ?? "contact");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
+
+  // Honor `?tab=` deep-links on mount and whenever the param changes.
+  useEffect(() => {
+    const next = normalizeTab(searchParams.get("tab"));
+    if (next && next !== activeTab) setActiveTab(next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  // Keep the URL in sync so the active tab is deep-linkable/shareable.
+  const handleTabChange = (next: string) => {
+    setActiveTab(next);
+    const params = new URLSearchParams(searchParams);
+    params.set("tab", next);
+    setSearchParams(params, { replace: true });
+  };
 
   return (
     <AppLayout>
@@ -40,7 +79,7 @@ function Support() {
             </Button>
           </UtilityActionButton>
 
-          <SplitBar value={activeTab} onValueChange={setActiveTab}>
+          <SplitBar value={activeTab} onValueChange={handleTabChange}>
             <SplitBarList>
               <SplitBarTrigger value="contact">{t('screens.settings.contactSupport')}</SplitBarTrigger>
               <SplitBarTrigger value="knowledge">{t('screens.settings.knowledgeBase')}</SplitBarTrigger>

@@ -2258,6 +2258,7 @@
       "activeOpen": "Activo ({open})",
       "archiveValue0": "Archivo ({value0})",
       "allTotal": "Todos ({total})",
+      "supportQueue": "Soporte ({count})",
       "almostEveryConversationStaysWithHer": "Casi todas las conversaciones se quedan con ella. Los\n              colegas de abajo solo toman el control cuando un miembro pide explícitamente ser conectado por un problema\n              corporativo/organizacional (bug, reembolso, cuenta, escalación de soporte). Haz clic en cualquier tarjeta para personalizar.",
       "receptionist": "recepcionista",
       "handlesValue0": "Maneja: {value0}",
