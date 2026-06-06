@@ -2258,6 +2258,7 @@
       "activeOpen": "Aktivno ({open})",
       "archiveValue0": "Arhiva ({value0})",
       "allTotal": "Sve ({total})",
+      "supportQueue": "Podrška ({count})",
       "almostEveryConversationStaysWithHer": "Skoro svaki razgovor ostaje sa njom. Kolege\n              ispod preuzimaju samo kada član izričito zatraži da bude povezan zbog korporativnog /\n              organizacionog problema (bag, povraćaj novca, nalog, eskalacija podrške). Kliknite na bilo koju karticu da biste prilagodili.",
       "receptionist": "recepcija",
       "handlesValue0": "Rukuje: {value0}",
