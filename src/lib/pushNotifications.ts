@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { requestFCMToken, onForegroundMessage } from './firebase';
 import {
   isAppilix,
+  waitForAppilixBridge,
   getNativeFcmToken,
   requestNativeFcmTokenFromBridge,
   showNativeNotification,
@@ -75,7 +76,17 @@ class PushNotificationManager {
 
       this.attachAppilixTokenListener();
 
-      if (isAppilix()) {
+      // Resolve Appilix detection reliably BEFORE deciding anything. The
+      // Appilix bridge (window.appilix) can be injected slightly after the
+      // initial page load, so a bare isAppilix() at boot is a false-negative
+      // race: subscribe() could slip past the guard below and register a
+      // crash-prone browser web-push token in an installed-app session.
+      // waitForAppilixBridge() resolves immediately when the bridge is already
+      // present and otherwise waits briefly for late injection (real browsers
+      // wait out the short timeout once — harmless for background push setup).
+      const inAppilix = isAppilix() || (await waitForAppilixBridge(3000));
+
+      if (inAppilix) {
         // 1. Check if Appilix already injected the token (URL param or
         //    pre-mount custom event).
         let nativeToken = getNativeFcmToken();
@@ -102,8 +113,22 @@ class PushNotificationManager {
         this.registerAppilixDevice(nativeToken || undefined).catch(() => {});
       }
 
-      // Attempt web FCM (works in browsers, may work in some WebViews)
-      if (!token && this.isSupported) {
+      // Attempt web FCM — REAL BROWSERS ONLY (never inside the Appilix WebView).
+      //
+      // Inside Appilix we must NOT register a web-push FCM token. When the
+      // native FCM bridge fails to return a token (some Appilix wrapper builds
+      // never answer the firebase_token request), this branch used to fall back
+      // to a browser web-push token whose device_label is a plain UA string
+      // (no "Appilix " prefix). The gateway then delivers chat pushes to that
+      // token via FCM web-push, and tapping an FCM-delivered notification
+      // CRASHES the Appilix WebView with "Something went wrong" — the native tap
+      // handler never receives the deep-link URL (see the dispatch comment in
+      // services/gateway/src/services/notification-service.ts). Appilix devices
+      // are reached via Appilix user_identity native push (registered in
+      // App.tsx via ensureAppilixIdentity) and/or the native bridge FCM token
+      // instead, so skipping this fallback removes the crash without losing
+      // delivery.
+      if (!token && this.isSupported && !inAppilix) {
         try {
           console.log('[Push] Trying web FCM...');
           token = await requestFCMToken(this.registration || undefined);
@@ -115,10 +140,18 @@ class PushNotificationManager {
         } catch (webErr) {
           console.warn('[Push] ⚠️ Web FCM error (expected in some WebViews):', webErr);
         }
+      } else if (!token && inAppilix) {
+        console.log('[Push] Appilix WebView without a native FCM token — skipping web-push fallback (it would crash the WebView on tap). Relying on Appilix user_identity native push.');
       }
 
       if (!token) {
         console.warn('[Push] ❌ No FCM token — push notifications unavailable');
+        // In Appilix, keep retrying the native bridge and refreshing the
+        // user_identity so native push can start working once the wrapper
+        // responds — but do NOT register a web-push token.
+        if (inAppilix) {
+          this.startTokenRefreshMonitor();
+        }
         return null;
       }
 
@@ -351,6 +384,11 @@ class PushNotificationManager {
               return;
             }
           }
+
+          // Never register a web-push token inside Appilix — it crashes the
+          // WebView when an FCM-delivered notification is tapped. We rely on
+          // Appilix user_identity native push (re-registered above) instead.
+          return;
         }
 
         const newToken = await requestFCMToken(this.registration || undefined);
