@@ -4,11 +4,12 @@ import { Compass, CalendarClock } from "lucide-react";
 import { t } from "@/lib/i18n-toast";
 import { localizeGoal } from "@/lib/goalLabel";
 import { fmtDate } from "@/lib/locale-format";
-import type { MyJourneyGoal } from "@/hooks/useMyJourney";
+import type { MyJourneyGoal, MyJourneyJourney } from "@/hooks/useMyJourney";
 import { useGoalPlan } from "@/hooks/useGoalPlan";
 import { GoalProgressRing } from "@/components/journey/GoalProgressRing";
 import { GoalTrendBadge } from "@/components/journey/GoalTrendBadge";
 import { buildPhases } from "@/lib/goalPhases";
+import { buildJourneyRing } from "@/lib/journeyRing";
 import { computeGoalTrend } from "@/lib/goalTrend";
 
 const RING_SIZE = 164;
@@ -21,6 +22,7 @@ const RING_SIZE = 164;
  */
 export function GoalNorthStar({
   goal,
+  journey,
   loading,
   error,
   onSetGoal,
@@ -28,6 +30,7 @@ export function GoalNorthStar({
   onOpenPlan,
 }: {
   goal: MyJourneyGoal | null;
+  journey?: MyJourneyJourney | null;
   loading: boolean;
   error?: boolean;
   onSetGoal: () => void;
@@ -83,16 +86,21 @@ export function GoalNorthStar({
   }
 
   const hasDeadline = !!goal?.has_deadline;
-  const daysLeft = goal?.days_to_deadline ?? 0;
-  const total = goal?.goal_total_days ?? null;
-  // 1-based day: the first day is Day 1, never Day 0; clamped to the total.
-  const goalDay = Math.min((goal?.goal_day ?? 0) + 1, total ?? (goal?.goal_day ?? 0) + 1);
-  const pct = goal?.goal_progress_pct ?? 0;
+  // The ring is always a countdown: to the goal deadline when set, otherwise
+  // to the 90-day onboarding plan (so it counts DOWN instead of up).
+  const ring = buildJourneyRing(goal, journey ?? null);
+  const total = ring.total;
+  // Onboarding fallback reads "… in your 90-day plan"; the goal countdown keeps
+  // the default "… to your goal" caption inside the ring.
+  const ringCaption =
+    ring.source === "onboarding"
+      ? t("screens.autopilotdashboard.onboardingDaysLeftCount", { days: ring.daysLeft })
+      : undefined;
 
-  // Color the ring by phase using the active plan's milestones (each milestone
-  // bounds a phase). Falls back to the single gradient when no plan/milestones.
+  // Phase coloring only applies to a real goal plan; the onboarding fallback
+  // uses the single gradient. Each plan milestone bounds a phase.
   const phases =
-    total != null
+    hasDeadline && total != null
       ? buildPhases(
           (planData?.plan?.milestones ?? [])
             .map((m) => m.day_offset ?? 0)
@@ -112,25 +120,32 @@ export function GoalNorthStar({
       />
       <CardContent className="p-5 flex flex-col items-center text-center gap-3 relative">
 
-        {hasDeadline ? (
+        {ring.hasCountdown ? (
+          // Tapping the ring opens the day-by-day plan once a deadline exists;
+          // without one it routes to the goal/deadline setup flow.
           <button
             type="button"
-            onClick={onOpenPlan}
-            aria-label={t("screens.autopilotdashboard.openPlan")}
+            onClick={hasDeadline ? onOpenPlan : onSetGoal}
+            aria-label={t(
+              hasDeadline
+                ? "screens.autopilotdashboard.openPlan"
+                : "screens.autopilotdashboard.setDeadlineCta",
+            )}
             className="rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-transform hover:scale-[1.02]"
           >
             <GoalProgressRing
-              pct={pct}
-              day={goalDay}
-              daysLeft={daysLeft}
+              pct={ring.pct}
+              day={ring.day}
+              daysLeft={ring.daysLeft}
+              daysLeftLabel={ringCaption}
               size={RING_SIZE}
               phases={phases}
               currentDay={goal?.goal_day ?? 0}
-              totalDays={total ?? undefined}
+              totalDays={hasDeadline ? total ?? undefined : undefined}
             />
           </button>
         ) : (
-          // Goal exists but no deadline → encourage adding a target date.
+          // No countdown available at all → encourage adding a target date.
           <div
             className="flex flex-col items-center justify-center gap-2"
             style={{ width: RING_SIZE, height: RING_SIZE }}

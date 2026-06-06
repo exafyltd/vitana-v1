@@ -6,9 +6,10 @@ import { motion, useReducedMotion } from "framer-motion";
 import { t } from "@/lib/i18n-toast";
 import { localizeGoal } from "@/lib/goalLabel";
 import { fmtDate } from "@/lib/locale-format";
-import type { MyJourneyGoal } from "@/hooks/useMyJourney";
+import type { MyJourneyGoal, MyJourneyJourney } from "@/hooks/useMyJourney";
 import { useGoalPlan } from "@/hooks/useGoalPlan";
 import { buildPhases } from "@/lib/goalPhases";
+import { buildJourneyRing } from "@/lib/journeyRing";
 
 // The painted-illustration slot was wired through here, but the team
 // landed on the pure pastel gradient as the default — calmer, lighter,
@@ -81,6 +82,7 @@ function TodayDot({
  */
 export function DreamNorthStar({
   goal,
+  journey,
   loading,
   error,
   onSetGoal,
@@ -88,6 +90,7 @@ export function DreamNorthStar({
   onOpenPlan,
 }: {
   goal: MyJourneyGoal | null;
+  journey?: MyJourneyJourney | null;
   loading: boolean;
   error?: boolean;
   onSetGoal: () => void;
@@ -166,10 +169,12 @@ export function DreamNorthStar({
   }
 
   const hasDeadline = !!goal?.has_deadline;
-  const daysLeft = goal?.days_to_deadline ?? 0;
-  const total = goal?.goal_total_days ?? null;
-  const goalDay = Math.min((goal?.goal_day ?? 0) + 1, total ?? (goal?.goal_day ?? 0) + 1);
-  const pct = goal?.goal_progress_pct ?? 0;
+  // The ring is always a countdown: to the goal deadline when set, otherwise
+  // to the 90-day onboarding plan (so it counts DOWN instead of up).
+  const ring = buildJourneyRing(goal, journey ?? null);
+  const total = ring.total;
+  const goalDay = ring.day;
+  const daysLeft = ring.daysLeft;
 
   const stroke = Math.round(ringSize * STROKE_RATIO);
   const numberFont = Math.round(ringSize * NUMBER_RATIO);
@@ -177,10 +182,12 @@ export function DreamNorthStar({
   const cx = ringSize / 2;
   const cy = ringSize / 2;
   const circumference = 2 * Math.PI * radius;
-  const clamped = Math.min(100, Math.max(0, pct));
+  const clamped = Math.min(100, Math.max(0, ring.pct));
   const offset = circumference - (clamped / 100) * circumference;
 
-  const hasPhases = phases.length > 1 && total !== null && total > 0;
+  // Phase coloring only applies to a real goal plan; the onboarding fallback
+  // uses the single gradient stroke.
+  const hasPhases = hasDeadline && phases.length > 1 && total !== null && total > 0;
   const curFrac =
     hasPhases && goal?.goal_day != null && total
       ? Math.max(0, Math.min(1, goal.goal_day / total))
@@ -301,10 +308,11 @@ export function DreamNorthStar({
                   );
                 return nodes;
               })
-            ) : hasDeadline ? (
-              // Single gradient fallback when there's no plan yet — keep the
-              // existing animated dashoffset look. Rotated so the fill starts
-              // from the top of the ring and proceeds clockwise.
+            ) : ring.hasCountdown ? (
+              // Single gradient fallback when there's no phase plan — used both
+              // for a deadline-without-plan goal and for the 90-day onboarding
+              // countdown. Keeps the animated dashoffset look. Rotated so the
+              // fill starts from the top of the ring and proceeds clockwise.
               <g transform={`rotate(-90 ${cx} ${cy})`}>
                 <motion.circle
                   cx={cx}
@@ -339,7 +347,7 @@ export function DreamNorthStar({
             </button>
           )}
 
-          {hasDeadline && (
+          {ring.hasCountdown && (
             <TodayDot pct={curFrac * 100} ringSize={ringSize} stroke={stroke} />
           )}
 
@@ -380,7 +388,7 @@ export function DreamNorthStar({
                 fontSize: numberFont,
               }}
             >
-              {goal ? goalDay : "—"}
+              {ring.hasCountdown ? goalDay : "—"}
             </div>
             <div
               className="absolute left-0 right-0 px-5 text-center text-xs text-muted-foreground leading-tight"
@@ -388,6 +396,8 @@ export function DreamNorthStar({
             >
               {hasDeadline
                 ? t("screens.autopilotdashboard.daysToGoalShort", { count: daysLeft })
+                : ring.source === "onboarding"
+                ? t("screens.autopilotdashboard.onboardingDaysLeftShort", { count: daysLeft })
                 : !goal
                 ? t("screens.autopilotdashboard.setGoalSubtitle")
                 : t("screens.autopilotdashboard.noDeadlineHint")}
