@@ -11,17 +11,13 @@
       "phase": "identical"
     },
     "support.maxina.subtitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Formal address ('Ihnen') instead of informal ('dir').",
-      "suggested": "Wie können wir dir heute helfen?",
       "phase": "llm"
     },
     "support.maxina.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Formal imperative instead of informal.",
-      "suggested": "Finde Antworten auf häufige Fragen oder kontaktiere unser Support-Team.",
       "phase": "llm"
     },
     "support.maxina.categoriesTitle": {
@@ -60,10 +56,8 @@
       "phase": "llm"
     },
     "support.maxina.faq.createAccount.answer": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Consistent use of formal 'Sie' instead of informal 'du'.",
-      "suggested": "Lade die Maxina-App herunter oder besuche unser Portal unter vitanaland.com/maxina. Tippe auf 'Registrieren' und gib deine E-Mail-Adresse ein. Du erhältst eine Bestätigungs-E-Mail zur Verifizierung deines Kontos. Nach der Bestätigung vervollständige dein Profil, um Wellness-Events und Community-Funktionen zu entdecken.",
       "phase": "llm"
     },
     "support.maxina.faq.resetPassword.question": {
@@ -72,10 +66,8 @@
       "phase": "llm"
     },
     "support.maxina.faq.resetPassword.answer": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Consistent use of formal 'Sie' instead of informal 'du'.",
-      "suggested": "Tippe auf dem Anmeldebildschirm auf 'Passwort vergessen' und gib deine registrierte E-Mail-Adresse ein. Du erhältst innerhalb weniger Minuten einen Link zum Zurücksetzen des Passworts. Prüfe deinen Spam-Ordner, falls du die E-Mail nicht siehst. Der Link läuft aus Sicherheitsgründen nach 24 Stunden ab.",
       "phase": "llm"
     },
     "support.maxina.faq.joinEvents.question": {
@@ -84,10 +76,8 @@
       "phase": "llm"
     },
     "support.maxina.faq.joinEvents.answer": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Consistent use of formal 'Sie' instead of informal 'du'.",
-      "suggested": "Durchsuche verfügbare Events im Bereich Events & MeetUps. Tippe auf ein Event, um Details wie Datum, Ort und Preis anzuzeigen. Bei kostenlosen Events tippe einfach auf 'Teilnehmen' oder 'Zusagen'. Für kostenpflichtige Events kannst du Tickets sicher über unser integriertes Zahlungssystem erwerben.",
       "phase": "llm"
     },
     "support.maxina.faq.updateProfile.question": {
@@ -96,10 +86,8 @@
       "phase": "llm"
     },
     "support.maxina.faq.updateProfile.answer": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Consistent use of formal 'Sie' instead of informal 'du'.",
-      "suggested": "Gehe zu deinem Profil-Tab und tippe auf das Bearbeiten-Symbol oder 'Profil bearbeiten'. Du kannst deinen Anzeigenamen, deine Bio, dein Profilbild und deine Wellness-Interessen aktualisieren. Änderungen werden automatisch gespeichert. Dein Profil hilft uns, Event-Empfehlungen für dich zu personalisieren.",
       "phase": "llm"
     },
     "support.maxina.faq.deleteAccount.question": {
@@ -108,10 +96,8 @@
       "phase": "llm"
     },
     "support.maxina.faq.deleteAccount.answer": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Consistent use of formal 'Sie' instead of informal 'du'.",
-      "suggested": "Um dein Maxina-Konto und die zugehörigen Daten zu löschen, sende bitte eine E-Mail an support@exafy.io mit dem Betreff 'Kontolöschung – Maxina'. Gib die mit deinem Konto verknüpfte E-Mail-Adresse an. Wir bearbeiten Löschanfragen innerhalb von 30 Tagen.",
       "phase": "llm"
     },
     "support.maxina.faq.paymentMethods.question": {
@@ -130,10 +116,8 @@
       "phase": "llm"
     },
     "support.maxina.faq.contactOrganizers.answer": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Consistent use of formal 'Sie' instead of informal 'du'.",
-      "suggested": "Auf jeder Event-Seite findest du das Profil des Organisators. Tippe auf den Namen, um das Profil anzuzeigen und auf Nachrichtenoptionen zuzugreifen. Bei Fragen zu bestimmten Events nutze den Q&A-Bereich des Events oder kontaktiere den Organisator direkt über die In-App-Nachrichten.",
       "phase": "llm"
     },
     "support.maxina.faq.dataSecure.question": {
@@ -142,10 +126,8 @@
       "phase": "llm"
     },
     "support.maxina.faq.dataSecure.answer": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Mix of formal possessive pronoun and formal imperative.",
-      "suggested": "Ja, deine Privatsphäre und Sicherheit haben für uns höchste Priorität. Wir verwenden branchenübliche Verschlüsselung, sichere Authentifizierung und befolgen die DSGVO-Richtlinien. Wir geben deine persönlichen Daten niemals ohne deine Zustimmung an Dritte weiter. Lies unsere vollständige Datenschutzerklärung für weitere Details.",
       "phase": "llm"
     },
     "support.maxina.contact.title": {
@@ -189,5 +171,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:32:53.025Z"
+  "generatedAt": "2026-06-06T07:02:29.043Z"
 }
