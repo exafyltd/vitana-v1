@@ -15,7 +15,7 @@ import { SplitBar, SplitBarContent, SplitBarList, SplitBarTrigger } from "@/comp
 import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
 import { NewsCard } from "@/components/crossover/NewsCard";
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useAutopilotComplete } from "@/hooks/useAutopilotComplete";
 import VitanaIndexMini from "@/components/health/VitanaIndexMini";
 import AutopilotWidget from "@/components/health/AutopilotWidget";
@@ -87,6 +87,32 @@ const overviewCards = [
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { t } from '@/lib/i18n-toast';
 
+type HealthMode = 'overview' | 'medical' | 'supplements';
+
+// VTID-NAV-HEALTH-SUPP: map an incoming `?mode=` value (e.g. from a Vitana
+// deep-link like /health?mode=supplements) onto a Health mode tab. Accepts the
+// canonical keys plus synonyms the navigator may emit so "take me to my health
+// supplements" opens the Supplements tracker, not the marketplace.
+const HEALTH_MODE_ALIASES: Record<string, HealthMode> = {
+  overview: 'overview',
+  health: 'overview',
+  medical: 'medical',
+  records: 'medical',
+  reports: 'medical',
+  labs: 'medical',
+  supplements: 'supplements',
+  supplement: 'supplements',
+  stack: 'supplements',
+  vitamins: 'supplements',
+};
+
+function normalizeHealthMode(value: string | null | undefined): HealthMode | null {
+  if (!value) return null;
+  return HEALTH_MODE_ALIASES[value.trim().toLowerCase().replace(/[\s_-]+/g, '')]
+    ?? HEALTH_MODE_ALIASES[value.trim().toLowerCase()]
+    ?? null;
+}
+
 export default withScreenId(function Health() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -103,8 +129,27 @@ export default withScreenId(function Health() {
   const [orderSheetOpen, setOrderSheetOpen] = useState(false);
   const { index: liveVitanaIndex } = useVitanaIndexCache();
   const vitanaScore = liveVitanaIndex?.total ?? 0;
+  const [searchParams, setSearchParams] = useSearchParams();
   const [selectedPillar, setSelectedPillar] = useState("overview");
-  const [mobileTab, setMobileTab] = useState<'overview' | 'medical' | 'supplements'>('overview');
+  const [mobileTab, setMobileTab] = useState<HealthMode>(
+    () => normalizeHealthMode(searchParams.get('mode')) ?? 'overview',
+  );
+
+  // VTID-NAV-HEALTH-SUPP: honor `?mode=` deep-links (e.g. Vitana navigating to
+  // /health?mode=supplements). Runs on mount and whenever the param changes.
+  useEffect(() => {
+    const next = normalizeHealthMode(searchParams.get('mode'));
+    if (next && next !== mobileTab) setMobileTab(next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  // Keep the URL in sync so the active mode is deep-linkable/shareable.
+  const handleModeChange = (next: HealthMode) => {
+    setMobileTab(next);
+    const params = new URLSearchParams(searchParams);
+    params.set('mode', next);
+    setSearchParams(params, { replace: true });
+  };
 
   const healthModes: ModeOption[] = [
     { value: 'overview', label: translate('health.overview', 'Overview'), icon: '🏠' },
@@ -251,7 +296,7 @@ export default withScreenId(function Health() {
                 <MobileModePill
                   modes={healthModes}
                   activeMode={mobileTab}
-                  onModeChange={(v) => setMobileTab(v as any)}
+                  onModeChange={(v) => handleModeChange(v as HealthMode)}
                 />
                 <UniversalCalendarButton />
                 <Button
