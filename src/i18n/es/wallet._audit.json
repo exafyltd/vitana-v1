@@ -94,7 +94,14 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "wallet.displayCurrency": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "Awkward phrasing; 'visualización' is a bit formal and less natural than other options for a UI setting.",
+      "suggested": "Moneda a mostrar",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:09:09.058Z"
+  "generatedAt": "2026-06-07T07:43:56.803Z"
 }
