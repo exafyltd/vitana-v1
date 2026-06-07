@@ -1,309 +1,250 @@
 {
   "verdicts": {
-    "discover.filters.services": {
+    "marketplaceCheckout.addMoney.currencyEur": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "discover.title": {
+    "marketplaceCheckout.addMoney.currencyUsd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.balance.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.mobileTitle": {
+    "marketplaceCheckout.balance.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.mobileDescription": {
+    "marketplaceCheckout.balance.empty": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward and slightly formal phrasing for 'healthy aging journey'. 'Reise zu einem gesunden Altern' is a bit clunky.",
-      "suggested": "Finde Ärzte, Wellness-Services und Community-Gruppen, die perfekt zu deiner Reise für ein gesundes Leben passen.",
-      "phase": "llm"
-    },
-    "discover.searchPlaceholder": {
+    "marketplaceCheckout.balance.addMoney": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.doctorsCoaches": {
+    "marketplaceCheckout.checkout.button": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.doctorsCoachesDesc": {
+    "marketplaceCheckout.checkout.processing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.wellnessServices": {
+    "marketplaceCheckout.checkout.successTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.wellnessServicesDesc": {
+    "marketplaceCheckout.checkout.successBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.communityGroups": {
+    "marketplaceCheckout.checkout.duplicateTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.communityGroupsDesc": {
+    "marketplaceCheckout.checkout.duplicateBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.explore": {
+    "marketplaceCheckout.checkout.affiliateTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicksForYou": {
+    "marketplaceCheckout.checkout.affiliateBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.recommendedForYou": {
+    "marketplaceCheckout.checkout.affiliateLink": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.moreToExplore": {
+    "marketplaceCheckout.checkout.affiliateOpened": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.seeAll": {
+    "marketplaceCheckout.addMoney.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.suggestedForYou": {
+    "marketplaceCheckout.addMoney.description": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.browseCategories": {
+    "marketplaceCheckout.addMoney.amountLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.all": {
+    "marketplaceCheckout.addMoney.amountPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.shareAndEarn": {
+    "marketplaceCheckout.addMoney.currencyLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.shareAndEarnDesc": {
+    "marketplaceCheckout.addMoney.continue": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.start": {
+    "marketplaceCheckout.addMoney.processing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.view": {
+    "marketplaceCheckout.addMoney.invalidAmount": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.matchPerfect": {
+    "marketplaceCheckout.addMoney.failed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.matchGreat": {
+    "marketplaceCheckout.deposit.checkingTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.matchGood": {
+    "marketplaceCheckout.deposit.checkingBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.noResults": {
+    "marketplaceCheckout.deposit.succeededTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.noResultsDesc": {
+    "marketplaceCheckout.deposit.succeededBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.categories.sleep": {
+    "marketplaceCheckout.deposit.failedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.categories.nutrition": {
+    "marketplaceCheckout.deposit.failedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.categories.movement": {
+    "marketplaceCheckout.deposit.amountLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.categories.mind": {
+    "marketplaceCheckout.deposit.backToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.categories.supplements": {
+    "marketplaceCheckout.errors.invalid_request": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.categories.experts": {
+    "marketplaceCheckout.errors.CART_EMPTY": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.title": {
+    "marketplaceCheckout.errors.PRODUCT_UNAVAILABLE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.viewCart": {
+    "marketplaceCheckout.errors.PRICE_UNAVAILABLE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.bookAppointment": {
+    "marketplaceCheckout.errors.MIXED_CURRENCY": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.quickCheckout": {
+    "marketplaceCheckout.errors.UNSUPPORTED_WALLET_CURRENCY": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.trackOrders": {
+    "marketplaceCheckout.errors.WALLET_ACCOUNT_MISSING": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.reorderPrevious": {
+    "marketplaceCheckout.errors.WALLET_ACCOUNT_INACTIVE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.managePayment": {
+    "marketplaceCheckout.errors.INSUFFICIENT_BALANCE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.findServicesNearMe": {
+    "marketplaceCheckout.errors.TENANT_REQUIRED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.viewSavedItems": {
+    "marketplaceCheckout.errors.WALLET_DEBIT_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.title": {
+    "marketplaceCheckout.errors.CART_READ_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.description": {
+    "marketplaceCheckout.errors.ORDER_WRITE_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.backToDiscover": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Phrasing 'Zurück zur Entdeckung' is grammatically correct but sounds slightly formal and less idiomatic for a UI element/section named 'Discover'.",
-      "suggested": "Zurück zum Entdecken",
-      "phase": "llm"
-    },
-    "discover.aiPicks.loading": {
+    "marketplaceCheckout.errors.WALLET_READ_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.unavailable": {
+    "marketplaceCheckout.errors.GATEWAY_MISCONFIGURED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.unavailableDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.aiPicks.recommendationsFound": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.aiPicks.noRecommendations": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.aiPicks.noRecommendationsDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.aiPicks.viewAllPicks": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.filters.all": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.filters.supplements": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.filters.experts": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.filters.deals": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.toast.actionSelected": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.toast.comingSoon": {
+    "marketplaceCheckout.errors.unknown": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-06-07T07:44:29.797Z"
+  "generatedAt": "2026-06-07T07:46:28.600Z"
 }

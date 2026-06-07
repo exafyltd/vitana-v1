@@ -21,10 +21,8 @@
       "phase": "llm"
     },
     "home.mediaContent": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du')",
-      "suggested": "Medien für dich",
       "phase": "llm"
     },
     "home.eventsAndMeetups": {
@@ -43,5 +41,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:13:18.456Z"
+  "generatedAt": "2026-06-07T07:45:30.923Z"
 }

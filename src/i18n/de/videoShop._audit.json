@@ -1,185 +1,178 @@
 {
   "verdicts": {
-    "connectedApps.sections.fitness": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "connectedApps.popup.categories.social": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "connectedApps.title": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.description": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.searchPlaceholder": {
+    "videoShop.feed.end": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.addApp": {
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.connected": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.syncing": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.sections.social": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.sections.health": {
+    "videoShop.feed.errorBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing for 'in a moment'. 'In einem Moment' is not idiomatic for 'shortly'.",
+      "suggested": "Bitte versuche es gleich noch einmal.",
+      "phase": "llm"
+    },
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.sections.other": {
+    "videoShop.feed.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.status.connected": {
+    "videoShop.feed.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.status.notConnected": {
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.status.comingSoon": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.status.soon": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.actions.connect": {
+    "videoShop.feed.linkCopied": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.actions.disconnect": {
+    "videoShop.drawer.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.actions.configure": {
+    "videoShop.drawer.productFallback": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.actions.manage": {
+    "videoShop.drawer.addToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.lastSync": {
+    "videoShop.drawer.adding": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.dataSync": {
+    "videoShop.drawer.addedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.comingSoonMessage": {
+    "videoShop.drawer.addedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.title": {
+    "videoShop.drawer.addFailed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.searchPlaceholder": {
+    "videoShop.drawer.goToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.categories.all": {
+    "videoShop.drawer.moreDetails": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.categories.health": {
+    "videoShop.drawer.notifyMe": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.availableApps": {
+    "videoShop.drawer.outOfStock": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.verified": {
+    "videoShop.drawer.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.connected": {
+    "videoShop.drawer.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.settings": {
+    "videoShop.drawer.errorBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing for 'in a moment'. 'In einem Moment' is not idiomatic for 'shortly'.",
+      "suggested": "Bitte versuche es gleich noch einmal.",
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.disconnect": {
+    "videoShop.drawer.unavailableBody": {
       "verdict": "OK",
-      "confidence": 1,
+      "confidence": 0.9,
       "phase": "llm"
     },
-    "connectedApps.popup.connect": {
-      "verdict": "OK",
-      "confidence": 1,
+    "videoShop.drawer.roleBlockedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.95,
+      "issue": "Awkward phrasing; 'Kauf' (noun) is less natural than 'Kaufen' (gerund/infinitive as noun) for 'Buying'.",
+      "suggested": "Kaufen ist hier nicht möglich.",
       "phase": "llm"
     },
-    "connectedApps.popup.done": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "connectedApps.popup.noResults": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "connectedApps.popup.connectionSuccess": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "connectedApps.popup.connectionPlaceholder": {
-      "verdict": "OK",
-      "confidence": 1,
+    "videoShop.drawer.roleBlockedBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.95,
+      "issue": "'Käufe' (purchases, plural) is used instead of 'Kaufen' (the act of buying, singular).",
+      "suggested": "Kaufen ist ein Community-Feature. Wechsle in die Community-Rolle, um fortzufahren.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-06-07T07:43:42.337Z"
+  "generatedAt": "2026-06-07T08:04:19.719Z"
 }

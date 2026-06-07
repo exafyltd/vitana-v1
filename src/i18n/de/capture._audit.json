@@ -21,10 +21,8 @@
       "phase": "llm"
     },
     "capture.tapToDescribe": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du')",
-      "suggested": "Tippe auf das Mikrofon, um das Problem zu beschreiben",
       "phase": "llm"
     },
     "capture.liveTranscription": {
@@ -33,31 +31,23 @@
       "phase": "llm"
     },
     "capture.yourVoiceEntry": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihr' instead of informal 'Dein')",
-      "suggested": "Dein Spracheintrag",
       "phase": "llm"
     },
     "capture.yourFeedback": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihr' instead of informal 'Dein')",
-      "suggested": "Dein Feedback",
       "phase": "llm"
     },
     "capture.startSpeaking": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du')",
-      "suggested": "Sprich los...",
       "phase": "llm"
     },
     "capture.editOrType": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing/inconsistent imperative form for 'du'",
-      "suggested": "Bearbeite oder tippe direkt ein...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "capture.interimHint": {
@@ -136,10 +126,8 @@
       "phase": "llm"
     },
     "capture.reportSentDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'deine')",
-      "suggested": "Das Exafy-Team schätzt deine Unterstützung, um Vitanaland jeden Tag besser zu machen.",
       "phase": "llm"
     },
     "capture.sendAnother": {
@@ -153,10 +141,8 @@
       "phase": "llm"
     },
     "capture.recordingStartedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' and 'Ihre' instead of informal 'du' and 'deine')",
-      "suggested": "Sprich deutlich – deine Worte erscheinen in Echtzeit",
       "phase": "llm"
     },
     "capture.recordingStopped": {
@@ -165,10 +151,8 @@
       "phase": "llm"
     },
     "capture.recordingStoppedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Überprüfe und bearbeite deine Transkription vor dem Speichern.",
       "phase": "llm"
     },
     "capture.noContent": {
@@ -177,17 +161,13 @@
       "phase": "llm"
     },
     "capture.noContentDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Bitte nimm etwas auf oder gib Inhalt ein, bevor du speicherst.",
       "phase": "llm"
     },
     "capture.noContentBugDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Bitte nimm dein Feedback auf oder tippe es ein, bevor du es sendest.",
       "phase": "llm"
     },
     "capture.entrySaved": {
@@ -196,10 +176,8 @@
       "phase": "llm"
     },
     "capture.entrySavedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal possessive 'Ihrer' instead of informal 'deiner'.",
-      "suggested": "Dein Tagebucheintrag wurde zu deiner Erinnerungszeitleiste hinzugefügt.",
       "phase": "llm"
     },
     "capture.saveFailed": {
@@ -208,10 +186,8 @@
       "phase": "llm"
     },
     "capture.saveFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihr' and 'Sie' instead of informal 'dein' and 'du'.",
-      "suggested": "Dein Tagebucheintrag konnte nicht gespeichert werden. Bitte versuche es erneut.",
       "phase": "llm"
     },
     "capture.sendFailed": {
@@ -220,10 +196,8 @@
       "phase": "llm"
     },
     "capture.sendFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihr' and 'Sie' instead of informal 'dein' and 'du'.",
-      "suggested": "Dein Feedback konnte nicht gesendet werden. Bitte versuche es erneut.",
       "phase": "llm"
     },
     "capture.recognitionError": {
@@ -232,12 +206,10 @@
       "phase": "llm"
     },
     "capture.recognitionErrorDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Die Spracherkennung hat einen Fehler festgestellt. Bitte versuche es erneut.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:06:40.363Z"
+  "generatedAt": "2026-06-07T07:43:23.315Z"
 }
