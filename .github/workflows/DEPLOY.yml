@@ -18,6 +18,10 @@ on:
       reason:
         description: 'Why are you deploying community-app to PROD manually (the documented exception)?'
         required: true
+      commit_sha:
+        description: 'Exact commit SHA to rebuild + deploy (the commit verified on community-app-staging). Empty → main HEAD. The frontend is REBUILT here (not image-promoted) because Vite bakes prod URLs from .env at build time — the staging image carries staging URLs and must never be promoted as-is.'
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -57,7 +61,16 @@ jobs:
     if: needs.cutover_gate.outputs.frozen != 'true'
     runs-on: ubuntu-latest
     steps:
+      # Check out the exact tested staging commit when provided (the PUBLISH flow
+      # passes it); otherwise main HEAD. Rebuilds with the committed prod .env.
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.commit_sha != '' && github.event.inputs.commit_sha || github.sha }}
+
+      - name: Resolve deploy SHA
+        id: deploy_sha
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -75,6 +88,7 @@ jobs:
             --region=us-central1 \
             --project=lovable-vitana-vers1 \
             --allow-unauthenticated \
+            --update-env-vars=GIT_COMMIT_SHA=${{ steps.deploy_sha.outputs.sha }},COMMIT_SHA=${{ steps.deploy_sha.outputs.sha }} \
             --quiet
 
           # Get deployed URL
