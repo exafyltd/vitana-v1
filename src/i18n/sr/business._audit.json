@@ -236,10 +236,8 @@
       "phase": "llm"
     },
     "business.kpi.topPerformer": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The term 'izvođač' (performer/executor) is a bit generic and can sound formal for a person excelling in a wellness app. 'Najuspešniji' (most successful) or 'Najbolji učesnik' (best participant) would be more natural.",
-      "suggested": "Najuspešniji",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "business.kpi.noDataYet": {
@@ -403,10 +401,8 @@
       "phase": "llm"
     },
     "business.transfer.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.95,
-      "issue": "While 'pending' is sometimes used as a loanword, 'na čekanju' is the native and more natural Serbian equivalent, fitting better with a friendly app's tone.",
-      "suggested": "Prenesi svoje provizije preprodavaca na čekanju u svoj VITANA novčanik.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "business.transfer.pending": {
@@ -490,10 +486,8 @@
       "phase": "llm"
     },
     "business.missionOpportunities.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Misione prilike' is grammatically correct but sounds somewhat formal or specific (e.g., religious missions). 'Prilike za misije' (opportunities for missions) is a more common and natural phrasing for tasks/challenges in an app context.",
-      "suggested": "Prilike za misije",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "business.missionOpportunities.subtitle": {
@@ -522,9 +516,8 @@
       "phase": "llm"
     },
     "business.missionOpportunities.axisBadge.find_match": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.5,
-      "issue": "'Pronađi spoj' strongly implies finding a romantic date. In a wellness/longevity app, 'Find a Match' could refer to a compatible workout partner, a matching challenge, or other non-romantic contexts. Without further context, it's ambiguous and potentially misleading.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "business.missionOpportunities.axisBadge.income_generation": {
@@ -538,5 +531,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:34.788Z"
+  "generatedAt": "2026-06-07T07:40:58.811Z"
 }
