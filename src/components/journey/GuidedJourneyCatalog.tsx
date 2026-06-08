@@ -28,6 +28,7 @@ import {
 import { cn } from '@/lib/utils';
 import { t } from '@/lib/i18n-toast';
 import { useJourneyChecklist, type PublicTopic } from '@/hooks/useJourneyChecklist';
+import { activateOrb } from '@/lib/orbActivate'; // VTID-03281: activate Vitana/ORB
 
 const CHAPTER_ORDER = ['basics', 'daily_use', 'community', 'health', 'intelligence', 'discovery'];
 
@@ -76,9 +77,19 @@ export function GuidedJourneyCatalog({
       ? sessions
       : sessions.filter((s) => s.chapterId === activeChapter);
 
+  // VTID-03281: clicking a topic activates Vitana/ORB (voice goes live), then
+  // opens the Topic Explanation. The optional onActivateTopic prop overrides.
   const handleTopicClick = (topic: PublicTopic) => {
+    activateOrb();
     if (onActivateTopic) onActivateTopic(topic);
     else setOpenTopic(topic);
+  };
+
+  // VTID-03281: clicking a session activates Vitana/ORB then opens its first
+  // topic's explanation (avoids a separate Session Detail screen, per spec).
+  const handleSessionClick = (firstTopic: PublicTopic | undefined) => {
+    if (!firstTopic) return;
+    handleTopicClick(firstTopic);
   };
 
   return (
@@ -104,14 +115,18 @@ export function GuidedJourneyCatalog({
       <div className="space-y-3">
         {visibleSessions.map((s) => (
           <div key={s.session} className="space-y-2">
-            <div className="flex items-center justify-between px-1">
+            <button
+              type="button"
+              onClick={() => handleSessionClick(s.topics[0])}
+              className="flex w-full items-center justify-between px-1 text-left"
+            >
               <span className="text-xs font-semibold tracking-wide text-foreground/70">
                 {t('screens.guidedCatalog.sessionN', { n: s.session })}
               </span>
               <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
                 {chapterLabel(s.chapterId)}
               </span>
-            </div>
+            </button>
             <div className="grid grid-cols-2 gap-2">
               {s.topics.map((topic) => (
                 <button
@@ -169,6 +184,8 @@ export function GuidedJourneyCatalog({
                     variant="outline"
                     className="flex-1"
                     onClick={() => {
+                      // VTID-03281: Replay re-activates Vitana/ORB for this topic.
+                      activateOrb();
                       if (onActivateTopic) onActivateTopic(openTopic);
                     }}
                   >
