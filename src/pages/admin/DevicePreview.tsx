@@ -38,9 +38,11 @@ const DEVICES = [
 ] as const;
 
 // Environment base URLs. Staging is the default — this is the whole point.
+// Production is the apex domain the Appilix iOS/Android WebView shells load
+// (iOS → /, Android → /home).
 const ENVIRONMENTS = {
   staging: { url: "https://preview.vitanaland.com", labelKey: "devicePreviewEnvStaging" },
-  production: { url: "https://app.vitanaland.com", labelKey: "devicePreviewEnvProduction" },
+  production: { url: "https://vitanaland.com", labelKey: "devicePreviewEnvProduction" },
   custom: { url: "", labelKey: "devicePreviewEnvCustom" },
 } as const;
 
