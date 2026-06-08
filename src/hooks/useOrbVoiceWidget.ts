@@ -23,6 +23,18 @@ function isOrbAlive(): boolean {
 // VITE_GATEWAY_URL already includes "/api/v1" — see useAIAssistants.ts for the pattern.
 const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || "").replace(/\/+$/, "");
 
+// BOOTSTRAP-ORB-STAGING-GATEWAY: the external VitanaOrb widget script is loaded
+// from a hardcoded prod URL in index.html, so it auto-detects its gateway as
+// PROD (gateway.vitanaland.com) from its own script src. Without an explicit
+// override it sends `/orb/live/session/*` to PROD even when the app itself runs
+// against a different gateway (e.g. preview → gateway-staging). That cross-env
+// mismatch is rejected by the prod origin/CORS gate → the orb opens but never
+// starts a session. Passing `gatewayUrl` pins the widget to the SAME gateway
+// the rest of the app uses. On prod this resolves to the prod gateway (no-op);
+// on staging it correctly targets gateway-staging. The widget wants the base
+// WITHOUT the trailing `/api/v1` (it appends `/api/v1/orb/...` itself).
+const ORB_WIDGET_GATEWAY = GATEWAY_URL.replace(/\/api\/v1$/, "");
+
 /**
  * VTID-AUTH-BACKEND-PROBE: Ask the backend whether it accepts this token.
  *
@@ -263,6 +275,10 @@ export function useOrbVoiceWidget() {
       if (!initialized.current) {
         const navOpts = {
           showFab: true,
+          // BOOTSTRAP-ORB-STAGING-GATEWAY: pin the widget to THIS environment's
+          // gateway (staging on preview, prod on prod) instead of the prod URL
+          // it auto-detects from its hardcoded script src.
+          ...(ORB_WIDGET_GATEWAY ? { gatewayUrl: ORB_WIDGET_GATEWAY } : {}),
           onNavigationRequest: handleNavigationRequest,
           // Suppress the Soundscape background music for the lifetime of an Orb
           // voice session — the widget plays TTS via its own AudioContext, which
@@ -347,6 +363,8 @@ export function useOrbVoiceWidget() {
 
     const navOpts = {
       showFab: true,
+      // BOOTSTRAP-ORB-STAGING-GATEWAY: pin the widget to THIS environment's gateway.
+      ...(ORB_WIDGET_GATEWAY ? { gatewayUrl: ORB_WIDGET_GATEWAY } : {}),
       onNavigationRequest: handleNavigationRequest,
       onSessionStart: () => setOrbWidgetSessionActive(true),
       onSessionEnd: () => setOrbWidgetSessionActive(false),
