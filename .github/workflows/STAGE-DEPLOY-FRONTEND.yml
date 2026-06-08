@@ -97,6 +97,7 @@ jobs:
             --region="${GCP_REGION}" \
             --project="${GCP_PROJECT}" \
             --allow-unauthenticated \
+            --update-env-vars=GIT_COMMIT_SHA=${{ github.sha }},COMMIT_SHA=${{ github.sha }} \
             --quiet
 
           URL=$(gcloud run services describe "${CLOUD_RUN_SERVICE}" \
