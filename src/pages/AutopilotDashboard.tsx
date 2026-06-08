@@ -27,6 +27,7 @@ import { bucketFromWaveId, type HorizonBucket } from "@/lib/horizonBuckets";
 import { useMyJourney } from "@/hooks/useMyJourney";
 import { GoalNorthStar } from "@/components/journey/GoalNorthStar";
 import { DreamNorthStar } from "@/components/journey/DreamNorthStar";
+import { GuidedModeSwitch } from "@/components/journey/GuidedModeSwitch"; // VTID-03279
 import { FutureSelfTiles } from "@/components/journey/FutureSelfTiles";
 import { TodaysGoalCard, type TodayAction } from "@/components/journey/TodaysGoalCard";
 import { GoalSetupDialog } from "@/components/journey/GoalSetupDialog";
@@ -350,6 +351,7 @@ export default function AutopilotDashboard() {
   const content = (
     <div className="space-y-4">
       {dreamHero}
+      <GuidedModeSwitch className="px-1" />{/* VTID-03279: Guided/Full switch below Journey card */}
       {currentMove}
       {futureSelf}
       {todaysGoal}
@@ -419,6 +421,7 @@ export default function AutopilotDashboard() {
           <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-4">
               {northStar}
+              <GuidedModeSwitch className="px-1" />{/* VTID-03279: Guided/Full switch below Journey card */}
               {currentMove}
               {todaysGoal}
               {matchesPreview}

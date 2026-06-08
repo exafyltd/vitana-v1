@@ -10,6 +10,7 @@ import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
 import { PaywallProvider } from "@/components/paywall/PaywallProvider"; // VTID-03107
+import { GuidedModeProvider } from "@/context/GuidedModeProvider"; // VTID-03279 Guided Journey
 import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
 import { DevErrorBoundary } from "@/components/dev/DevErrorBoundary";
 import { GlobalErrorBoundary } from "@/components/GlobalErrorBoundary";
@@ -637,6 +638,7 @@ const App = () => {
                   {/* VTID-03107: PaywallProvider listens for `vitana:paywall-shown` window events
                       from billingApi.ts on HTTP 402 and renders a single global PaywallModal.
                       Lives inside <BrowserRouter> so the modal's useNavigate works. */}
+                  <GuidedModeProvider>{/* VTID-03279: Guided vs Full app mode */}
                   <PaywallProvider>
                   <GlobalErrorBoundary>
                   <Suspense fallback={<RouteFallback />}>
@@ -1872,6 +1874,7 @@ const App = () => {
                   </Suspense>
                   </GlobalErrorBoundary>
                   </PaywallProvider>{/* VTID-03107 */}
+                  </GuidedModeProvider>{/* VTID-03279 */}
                   </GreetingProviderWrapper>
                   </LifeCompassPopupProvider>
                 </VitanalandNavigationProvider>
