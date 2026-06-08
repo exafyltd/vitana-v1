@@ -37,18 +37,22 @@
          and the first /auth/me call. Saves ~150-300ms of cold-load time on mobile.
          Cloudflare-fronted custom domain — bypasses the *.a.run.app GFE per-IP
          throttle (BOOTSTRAP-CLOUDFLARE-GATEWAY-DOMAIN). -->
-    <link rel="preconnect" href="https://gateway.vitanaland.com" crossorigin>
-    <link rel="dns-prefetch" href="https://gateway.vitanaland.com">
+    <link rel="preconnect" href="%VITE_GATEWAY_BASE%" crossorigin>
+    <link rel="dns-prefetch" href="%VITE_GATEWAY_BASE%">
 
     <!-- ORB Voice Widget -->
-    <!-- VTID-03300: cache-buster bump pulls the journey-step-focus build —
-         the widget now accepts VitanaOrb.focusJourneyStep(stepKey) /
-         journey_focus_step so tapping a "My Journey" Next-Step opens the orb
-         focused on that exact step. The widget lives in the gateway repo
-         (services/gateway/src/frontend/command-hub/orb-widget.js) and is
-         loaded cross-origin from gateway.vitanaland.com; this v1-side bust
-         ensures browsers refetch the new widget instead of the cached one. -->
-    <script src="https://gateway.vitanaland.com/command-hub/orb-widget.js?v=20260603-VTID-03300-journey-step-focus" defer></script>
+    <!-- BOOTSTRAP-ORB-STAGING-GATEWAY: load the widget from THIS environment's
+         gateway via %VITE_GATEWAY_BASE% (Vite bakes it at build:
+         gateway.vitanaland.com on prod — identical to before — and
+         preview-gateway.vitanaland.com on staging). The widget auto-detects its
+         gateway from its own script src, so loading it from prod on the preview
+         frontend made the orb call prod (rejected by the prod origin gate) and
+         the orb stayed silent. Loading it from the env's own gateway keeps the
+         whole voice flow (widget JS + session + SSE) within one environment.
+         The widget lives in the gateway repo
+         (services/gateway/src/frontend/command-hub/orb-widget.js); the ?v= bump
+         forces browsers to refetch instead of serving the cached prod widget. -->
+    <script src="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260608-env-aware-gateway" defer></script>
   </head>
 
   <body>
