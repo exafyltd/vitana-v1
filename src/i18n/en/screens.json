@@ -1,5 +1,9 @@
 {
   "screens": {
+    "guidedMode": {
+      "guidedLabel": "Guided Journey",
+      "fullLabel": "Full App"
+    },
     "common": {
       "languageToggleAriaLabel": "Language",
       "testResults": "Test Results",
