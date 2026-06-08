@@ -88,8 +88,8 @@
     "calendar.tryQuickAdd": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Agregado Rápido' is a literal but awkward translation for a feature name; 'Añadir Rápido' is more natural and idiomatic for 'Quick Add'.",
-      "suggested": "Prueba Añadir Rápido o deja que Autopilot planifique tu día",
+      "issue": "Awkward phrasing for 'Quick Add'. 'Añadir Rápido' is a verb phrase, but 'Quick Add' is a feature name (noun phrase).",
+      "suggested": "Prueba Añadido Rápido o deja que Autopilot planifique tu día",
       "phase": "llm"
     },
     "calendar.clickSlotHint": {
@@ -543,10 +543,8 @@
       "phase": "llm"
     },
     "calendar.journey.tasksCompleted": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'listo' is singular and means 'ready' or 'finished' (singular). 'Done' implies 'completed' and needs to match the number of completed items (plural if {completed} > 1). 'Completados' is more accurate and grammatically correct for a count.",
-      "suggested": "{completed}/{total} completados",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "calendar.journey.waveNames.wave-1": {
@@ -580,5 +578,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:54.808Z"
+  "generatedAt": "2026-06-08T08:26:45.466Z"
 }
