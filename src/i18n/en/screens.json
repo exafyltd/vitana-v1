@@ -4,6 +4,25 @@
       "guidedLabel": "Guided Journey",
       "fullLabel": "Full App"
     },
+    "guidedCatalog": {
+      "allChapters": "All",
+      "chapter_basics": "Basics",
+      "chapter_daily_use": "Daily Use",
+      "chapter_community": "Community",
+      "chapter_health": "Health",
+      "chapter_intelligence": "Intelligence",
+      "chapter_discovery": "Discovery",
+      "sessionN": "Session {{n}}",
+      "whatItIs": "What it is",
+      "userBenefit": "Your benefit",
+      "whenToUse": "When it helps",
+      "tryThis": "Try this",
+      "replay": "Replay",
+      "startPractice": "Start Practice",
+      "backToJourney": "Back to Journey",
+      "loading": "Loading catalog …",
+      "empty": "No topics published yet."
+    },
     "common": {
       "languageToggleAriaLabel": "Language",
       "testResults": "Test Results",

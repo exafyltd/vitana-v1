@@ -28,6 +28,8 @@ import { useMyJourney } from "@/hooks/useMyJourney";
 import { GoalNorthStar } from "@/components/journey/GoalNorthStar";
 import { DreamNorthStar } from "@/components/journey/DreamNorthStar";
 import { GuidedModeSwitch } from "@/components/journey/GuidedModeSwitch"; // VTID-03279
+import { GuidedJourneyCatalog } from "@/components/journey/GuidedJourneyCatalog"; // VTID-03280
+import { useGuidedMode } from "@/context/GuidedModeProvider"; // VTID-03280
 import { FutureSelfTiles } from "@/components/journey/FutureSelfTiles";
 import { TodaysGoalCard, type TodayAction } from "@/components/journey/TodaysGoalCard";
 import { GoalSetupDialog } from "@/components/journey/GoalSetupDialog";
@@ -146,6 +148,7 @@ function IndexNowCard() {
 
 export default function AutopilotDashboard() {
   const { user } = useAuth();
+  const { isGuided } = useGuidedMode(); // VTID-03280: show guided catalog below start view
   const isMobile = useIsMobile();
   const { allVisibleActions, fetchRecommendations } = useAutopilot();
   const { hasConsent, setDialogOpen } = useAIConsent();
@@ -246,6 +249,12 @@ export default function AutopilotDashboard() {
   };
 
   const motivational = <MotivationalLine />;
+
+  // VTID-03280: Guided Journey catalog — rendered BELOW the existing start view
+  // in Guided Mode only (additive; Full App is unchanged).
+  const guidedCatalog = isGuided ? (
+    <GuidedJourneyCatalog className="pt-1" />
+  ) : null;
 
   // Mobile leads with the painted "dream-board" hero (vision-board feel,
   // emotional first anchor). Desktop keeps the structured GoalNorthStar
@@ -361,6 +370,7 @@ export default function AutopilotDashboard() {
       {yourPlanCard}
       {howYoureDoing}
       {keepCheckingIn}
+      {guidedCatalog}
     </div>
   );
 
@@ -434,6 +444,7 @@ export default function AutopilotDashboard() {
             </div>
           </div>
           {keepCheckingIn}
+          {guidedCatalog}
         </div>
       </div>
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />

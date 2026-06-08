@@ -4,6 +4,25 @@
       "guidedLabel": "Geführte Reise",
       "fullLabel": "Volle App"
     },
+    "guidedCatalog": {
+      "allChapters": "Alle",
+      "chapter_basics": "Grundlagen",
+      "chapter_daily_use": "Täglich",
+      "chapter_community": "Community",
+      "chapter_health": "Gesundheit",
+      "chapter_intelligence": "Intelligenz",
+      "chapter_discovery": "Entdecken",
+      "sessionN": "Session {{n}}",
+      "whatItIs": "Was es ist",
+      "userBenefit": "Dein Nutzen",
+      "whenToUse": "Wann es hilft",
+      "tryThis": "Probier das",
+      "replay": "Nochmal",
+      "startPractice": "Übung starten",
+      "backToJourney": "Zurück zur Reise",
+      "loading": "Lade Katalog …",
+      "empty": "Noch keine Themen veröffentlicht."
+    },
     "common": {
       "languageToggleAriaLabel": "Sprache",
       "testResults": "Testergebnisse",
