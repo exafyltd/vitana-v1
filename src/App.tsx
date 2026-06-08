@@ -367,6 +367,7 @@ const AdminNavigatorCatalog = lazy(() => import("./pages/admin/navigator/Catalog
 const AdminNavigatorCoverage = lazy(() => import("./pages/admin/navigator/Coverage"));
 const AdminNavigatorTelemetry = lazy(() => import("./pages/admin/navigator/Telemetry"));
 const AdminNavigatorHistory = lazy(() => import("./pages/admin/navigator/History"));
+const AdminDevicePreview = lazy(() => import("./pages/admin/DevicePreview"));
 const CommunitySupervision = lazy(() => import("./pages/admin/CommunitySupervision"));
 const EventsModeration = lazy(() => import("./pages/admin/community/Events"));
 const GroupsModeration = lazy(() => import("./pages/admin/community/Groups"));
@@ -1813,6 +1814,11 @@ const App = () => {
           } />
           <Route path="/admin/navigator/history" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorHistory /></ProtectedRoute></AuthGuard>
+          } />
+
+          {/* Device Preview: mobile UI "simulator" for staging (UI-only, not the Appilix shell) */}
+          <Route path="/admin/device-preview" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminDevicePreview /></ProtectedRoute></AuthGuard>
           } />
 
           {/* VTID-AP-ADMIN: Autopilot admin */}
