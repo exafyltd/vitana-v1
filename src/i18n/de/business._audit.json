@@ -21,10 +21,8 @@
       "phase": "llm"
     },
     "business.earning.choosePathGuide": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Wähle einen Weg und wir führen dich zu deinem ersten Einkommensstrom.",
       "phase": "llm"
     },
     "business.earning.startEarning": {
@@ -33,17 +31,15 @@
       "phase": "llm"
     },
     "business.earning.howToEarn": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Wie möchtest du verdienen?",
       "phase": "llm"
     },
     "business.earning.pickOne": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Wähle eine Option — du kannst die anderen später erkunden.",
+      "confidence": 0.9,
+      "issue": "''erkunden'' (explore) is too passive for ''do the others''; ''ausprobieren'' (try out) is more active and fitting.",
+      "suggested": "Wähle eine Option — du kannst die anderen später ausprobieren.",
       "phase": "llm"
     },
     "business.earning.createEvent": {
@@ -52,10 +48,8 @@
       "phase": "llm"
     },
     "business.earning.createEventDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Veranstalte dein eigenes Event und verkaufe Tickets.",
       "phase": "llm"
     },
     "business.earning.addToInventory": {
@@ -74,10 +68,8 @@
       "phase": "llm"
     },
     "business.earning.createServiceDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Biete buchbare Sitzungen an.",
       "phase": "llm"
     },
     "business.earning.createPromotion": {
@@ -126,17 +118,13 @@
       "phase": "llm"
     },
     "business.history.noEarningsYet": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing nuance of 'history'. 'Noch keine Einnahmen' means 'No earnings yet', not 'No earnings history yet'.",
-      "suggested": "Noch keine Verdiensthistorie",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "business.history.startSellingToSee": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Beginne mit dem Verkauf, um deine Transaktionen hier zu sehen.",
       "phase": "llm"
     },
     "business.history.ticketsSold": {
@@ -150,10 +138,8 @@
       "phase": "llm"
     },
     "business.history.youEarned": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Du hast verdient",
       "phase": "llm"
     },
     "business.history.paidToWallet": {
@@ -193,9 +179,9 @@
     },
     "business.history.allTime": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "More idiomatic phrasing for 'All time'.",
-      "suggested": "Gesamtzeit",
+      "confidence": 0.9,
+      "issue": "''Gesamtzeit'' (total time) is a literal translation but not the most idiomatic for ''All time'' in an earnings context. ''Insgesamt'' (overall/total) is more common.",
+      "suggested": "Insgesamt",
       "phase": "llm"
     },
     "business.history.earningsActivity": {
@@ -204,10 +190,8 @@
       "phase": "llm"
     },
     "business.history.noEarningsStartSelling": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du' form.",
-      "suggested": "Noch keine Einnahmen. Beginne mit dem Verkauf, um hier Aktivitäten zu sehen.",
       "phase": "llm"
     },
     "business.kpi.totalEarnings": {
@@ -271,10 +255,8 @@
       "phase": "llm"
     },
     "business.kpi.createServiceToStart": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du' form.",
-      "suggested": "Erstelle einen Service, um loszulegen.",
       "phase": "llm"
     },
     "business.kpi.bookings": {
@@ -303,17 +285,13 @@
       "phase": "llm"
     },
     "business.kpi.goToSellEarn": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward phrasing for a UI element/instruction. More natural as a button label or with 'Gehe zu'.",
-      "suggested": "Verkaufen & Verdienen",
       "phase": "llm"
     },
     "business.kpi.totalEarned": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Slightly awkward phrasing. 'Insgesamt verdient' is more natural.",
-      "suggested": "Insgesamt verdient",
       "phase": "llm"
     },
     "business.kpi.earningsBySource": {
@@ -327,9 +305,10 @@
       "phase": "llm"
     },
     "business.reseller.next": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Ambiguous without context. 'Nächste' implies a feminine noun. 'Weiter' is more common for a general 'Next' button.",
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "''Nächste'' is grammatically incomplete for a standalone button label. ''Weiter'' is the standard translation for a 'Next' button.",
+      "suggested": "Weiter",
       "phase": "llm"
     },
     "business.reseller.resellerCode": {
@@ -348,10 +327,8 @@
       "phase": "llm"
     },
     "business.reseller.shareLinkToStart": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Teile einen Link, um zu verdienen.",
       "phase": "llm"
     },
     "business.reseller.tickets": {
@@ -370,10 +347,8 @@
       "phase": "llm"
     },
     "business.reseller.shareLinkOrPromotion": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Teile deine Wiederverkäufer-Links oder erstelle eine Promotion, um Provisionen zu verdienen.",
       "phase": "llm"
     },
     "business.reseller.selectEventToShare": {
@@ -382,10 +357,8 @@
       "phase": "llm"
     },
     "business.reseller.pickEventForLink": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Wähle ein Event, um deinen Wiederverkäufer-Link zu generieren.",
       "phase": "llm"
     },
     "business.reseller.noEventsToSell": {
@@ -439,10 +412,8 @@
       "phase": "llm"
     },
     "business.transfer.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Übertrage deine ausstehenden Wiederverkäufer-Provisionen auf dein VITANA Wallet.",
       "phase": "llm"
     },
     "business.transfer.pending": {
@@ -451,10 +422,8 @@
       "phase": "llm"
     },
     "business.transfer.instantCredit": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Dies wird deine Einnahmen sofort auf dein Wallet-Guthaben gutschreiben.",
       "phase": "llm"
     },
     "business.transfer.transferring": {
@@ -513,10 +482,8 @@
       "phase": "llm"
     },
     "business.typeSelector.alreadyReseller": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Du bist bereits Wiederverkäufer! Schau im Tab \"Verkaufen & Verdienen\" nach.",
       "phase": "llm"
     },
     "business.typeSelector.cancel": {
@@ -570,5 +537,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:04:20.627Z"
+  "generatedAt": "2026-06-08T08:29:14.541Z"
 }
