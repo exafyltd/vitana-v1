@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense } from "react";
+import { useEffect, useState, lazy, Suspense, type ReactNode } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "sonner"; // Global toast provider
@@ -559,6 +559,17 @@ const AppHooksInitializer = () => {
 function SettingsRouter() {
   const isMobile = useIsMobile();
   return isMobile ? <MobileSettings /> : <Navigate to="/settings/notifications" replace />;
+}
+
+// VTID-NAV-SETTINGS-TABS: the /settings/<section> routes render standalone
+// desktop pages. On mobile the canonical experience is the unified
+// MobileSettings screen selected by a ?mode= pill, so redirect there (same
+// pattern as SettingsRouter for /settings). This also guarantees the ORB
+// navigator lands on the correct mobile screen even when the session's mobile
+// viewport flag isn't threaded and it falls back to the desktop route.
+function MobileSettingsSection({ mode, children }: { mode: string; children: ReactNode }) {
+  const isMobile = useIsMobile();
+  return isMobile ? <Navigate to={`/settings?mode=${mode}`} replace /> : <>{children}</>;
 }
 
 function SupportRouter() {
@@ -1124,17 +1135,17 @@ const App = () => {
           } />
           <Route path="/settings/privacy" element={
             <AuthGuard>
-              <Privacy />
+              <MobileSettingsSection mode="privacy"><Privacy /></MobileSettingsSection>
             </AuthGuard>
           } />
           <Route path="/settings/notifications" element={
             <AuthGuard>
-              <SettingsNotifications />
+              <MobileSettingsSection mode="notifications"><SettingsNotifications /></MobileSettingsSection>
             </AuthGuard>
           } />
           <Route path="/settings/preferences" element={
             <AuthGuard>
-              <Preferences />
+              <MobileSettingsSection mode="preferences"><Preferences /></MobileSettingsSection>
             </AuthGuard>
           } />
           <Route path="/settings/limitations" element={
@@ -1164,7 +1175,7 @@ const App = () => {
           } />
           <Route path="/settings/billing" element={
             <AuthGuard>
-              <Billing />
+              <MobileSettingsSection mode="billing"><Billing /></MobileSettingsSection>
             </AuthGuard>
           } />
           <Route path="/settings/autopilot" element={<Navigate to="/assistant?tab=autopilot" replace />} />
