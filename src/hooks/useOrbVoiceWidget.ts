@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { setOrbWidgetAuthenticated } from "@/lib/orbWidgetReady";
 import { setOrbWidgetSessionActive } from "@/lib/orbWidgetSession";
+// VTID-03292 (#4): consume the one-shot "close after the guided teaching turn" flag.
+import { consumeGuidedAutoClose } from "@/lib/orbActivate";
 
 /** Check whether the external ORB widget is actually alive in the DOM */
 function isOrbAlive(): boolean {
@@ -285,6 +287,18 @@ export function useOrbVoiceWidget() {
           // the Soundscape manager's media listeners can't see otherwise.
           onSessionStart: () => setOrbWidgetSessionActive(true),
           onSessionEnd: () => setOrbWidgetSessionActive(false),
+          // VTID-03292 (#4): when the ORB was opened by tapping a guided topic,
+          // auto-close the overlay after the teaching turn finishes so the Topic
+          // drawer's next-step buttons are usable. Only fires for guided opens
+          // (the one-shot flag is armed by activateOrb(topicId)); normal voice
+          // sessions are unaffected.
+          onTurnComplete: (info: { was_greeting?: boolean }) => {
+            if (info?.was_greeting && consumeGuidedAutoClose()) {
+              try {
+                (window as unknown as { VitanaOrb?: { hide?: () => void } }).VitanaOrb?.hide?.();
+              } catch { /* ignore */ }
+            }
+          },
           initialContext: {
             current_route: location.pathname,
             current_route_entered_at: currentRouteEnteredAtRef.current,
