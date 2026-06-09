@@ -97,7 +97,8 @@ export function GuidedJourneyCatalog({
   // VTID-03281: clicking a topic activates Vitana/ORB (voice goes live), then
   // opens the Topic Explanation. The optional onActivateTopic prop overrides.
   const handleTopicClick = (topic: PublicTopic) => {
-    activateOrb();
+    // VTID-03291: focus the ORB on this topic so Vitana teaches it from the KB.
+    activateOrb(topic.topicId);
     if (onActivateTopic) onActivateTopic(topic);
     else setOpenTopic(topic);
   };
@@ -210,8 +211,8 @@ export function GuidedJourneyCatalog({
                     variant="outline"
                     className="flex-1"
                     onClick={() => {
-                      // VTID-03281: Replay re-activates Vitana/ORB for this topic.
-                      activateOrb();
+                      // VTID-03291: Replay re-activates Vitana/ORB focused on this topic.
+                      activateOrb(openTopic.topicId);
                       if (onActivateTopic) onActivateTopic(openTopic);
                     }}
                   >
