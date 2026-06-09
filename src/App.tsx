@@ -10,6 +10,7 @@ import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AuthGuard from "@/components/AuthGuard";
 import { PaywallProvider } from "@/components/paywall/PaywallProvider"; // VTID-03107
+import { GuidedModeProvider } from "@/context/GuidedModeProvider"; // VTID-03279 Guided Journey
 import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
 import { DevErrorBoundary } from "@/components/dev/DevErrorBoundary";
 import { GlobalErrorBoundary } from "@/components/GlobalErrorBoundary";
@@ -367,6 +368,7 @@ const AdminNavigatorCatalog = lazy(() => import("./pages/admin/navigator/Catalog
 const AdminNavigatorCoverage = lazy(() => import("./pages/admin/navigator/Coverage"));
 const AdminNavigatorTelemetry = lazy(() => import("./pages/admin/navigator/Telemetry"));
 const AdminNavigatorHistory = lazy(() => import("./pages/admin/navigator/History"));
+const AdminDevicePreview = lazy(() => import("./pages/admin/DevicePreview"));
 const CommunitySupervision = lazy(() => import("./pages/admin/CommunitySupervision"));
 const EventsModeration = lazy(() => import("./pages/admin/community/Events"));
 const GroupsModeration = lazy(() => import("./pages/admin/community/Groups"));
@@ -636,6 +638,7 @@ const App = () => {
                   {/* VTID-03107: PaywallProvider listens for `vitana:paywall-shown` window events
                       from billingApi.ts on HTTP 402 and renders a single global PaywallModal.
                       Lives inside <BrowserRouter> so the modal's useNavigate works. */}
+                  <GuidedModeProvider>{/* VTID-03279: Guided vs Full app mode */}
                   <PaywallProvider>
                   <GlobalErrorBoundary>
                   <Suspense fallback={<RouteFallback />}>
@@ -1815,6 +1818,11 @@ const App = () => {
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminNavigatorHistory /></ProtectedRoute></AuthGuard>
           } />
 
+          {/* Device Preview: mobile UI "simulator" for staging (UI-only, not the Appilix shell) */}
+          <Route path="/admin/device-preview" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminDevicePreview /></ProtectedRoute></AuthGuard>
+          } />
+
           {/* VTID-AP-ADMIN: Autopilot admin */}
           <Route path="/admin/autopilot/planning" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminAutopilotPlanning /></ProtectedRoute></AuthGuard>
@@ -1866,6 +1874,7 @@ const App = () => {
                   </Suspense>
                   </GlobalErrorBoundary>
                   </PaywallProvider>{/* VTID-03107 */}
+                  </GuidedModeProvider>{/* VTID-03279 */}
                   </GreetingProviderWrapper>
                   </LifeCompassPopupProvider>
                 </VitanalandNavigationProvider>
