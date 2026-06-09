@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Plus, Type, Camera, Image, X, Plane } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
+import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 import { useTranslation } from "@/hooks/useTranslation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
@@ -168,10 +169,13 @@ export default function MobileDailyDiary() {
         </div>
       </div>
 
-      <AutopilotPopup 
-        open={autopilotOpen} 
-        onOpenChange={setAutopilotOpen} 
+      <AutopilotPopup
+        open={autopilotOpen}
+        onOpenChange={setAutopilotOpen}
       />
+
+      {/* Bottom navigation with integrated Orb FAB */}
+      <MobileBottomNav />
     </MobileAppShell>
   );
 }
