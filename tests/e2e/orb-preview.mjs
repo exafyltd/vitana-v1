@@ -137,6 +137,25 @@ for (const profile of PROFILES) {
     }
   });
 
+  // CDP — the authoritative failure reason. Network.loadingFailed carries
+  // corsErrorStatus.corsError (e.g. MissingAllowOriginHeader,
+  // HeaderDisallowedByPreflightResponse, PreflightDisallowedRedirect) and
+  // blockedReason (csp, mixed-content, ...) that fetch() hides from JS as a
+  // generic "Failed to fetch".
+  const cdpFails = [];
+  const cdpUrls = new Map();
+  try {
+    const cdp = await ctx.newCDPSession(page);
+    await cdp.send('Network.enable');
+    cdp.on('Network.requestWillBeSent', (e) => { cdpUrls.set(e.requestId, (e.request && e.request.url) || ''); });
+    cdp.on('Network.loadingFailed', (e) => {
+      const u = cdpUrls.get(e.requestId) || '';
+      if (/orb\/live\/|session\/start/.test(u)) {
+        cdpFails.push(`${new URL(u).pathname} type=${e.type} canceled=${e.canceled} blocked=${e.blockedReason || '-'} cors=${e.corsErrorStatus ? e.corsErrorStatus.corsError : '-'} err=${e.errorText || '-'}`);
+      }
+    });
+  } catch (e) { console.log(`  cdp attach failed: ${e.message}`); }
+
   // inject the auth session BEFORE app scripts run, on every navigation
   await page.addInitScript(({ ref, s }) => {
     try {
@@ -162,28 +181,9 @@ for (const profile of PROFILES) {
     !!document.querySelector('.vtorb-fab,[class^="vtorb-fab"],#vitana-orb-fab') ||
     !!(window.VitanaOrb && typeof window.VitanaOrb.show === 'function'));
 
-  // DECISIVE PROBE — replicate the widget's exact session/start POST from INSIDE
-  // the browser, with NO abort signal (removes the 8s-timeout variable). Tells us
-  // definitively whether the in-browser failure is the timeout (this succeeds,
-  // slowly) or a genuine network/CORS failure (this throws with a name/message).
-  const inBrowserStart = await page.evaluate(async ({ gw, token }) => {
-    const t0 = Date.now();
-    try {
-      const r = await fetch(gw + '/api/v1/orb/live/session/start', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-        body: JSON.stringify({ lang: 'de' }),
-        // intentionally NO signal — we want true latency / true failure mode
-      });
-      const ms = Date.now() - t0;
-      let bodyOk = null;
-      try { const j = await r.json(); bodyOk = j && j.ok; } catch { /* ignore */ }
-      return { ok: true, status: r.status, ms, acao: r.headers.get('access-control-allow-origin'), bodyOk };
-    } catch (e) {
-      return { ok: false, ms: Date.now() - t0, name: e && e.name, message: e && e.message };
-    }
-  }, { gw: GW, token: session.access_token });
-  console.log(`  [in-browser session/start probe] ${JSON.stringify(inBrowserStart)}`);
+  // let the SPA settle so we don't open the orb mid-navigation (a hard nav aborts
+  // in-flight fetches with a misleading "Failed to fetch").
+  await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
 
   // open the orb like a user: click the FAB (a real gesture, so AudioContext can start)
   let opened = false;
@@ -208,6 +208,7 @@ for (const profile of PROFILES) {
   console.log(`  navOk=${navOk} orbReady=${orbReady} opened=${opened}`);
   console.log(`  session/start: ${JSON.stringify(sessionStarts) || '[]'}`);
   console.log(`  failed orb requests: ${reqFails.join(' | ') || '(none)'}`);
+  console.log(`  CDP loadingFailed (orb): ${cdpFails.join(' || ') || '(none)'}`);
   console.log(`  audio/greeting signal: ${audioSeen}`);
   console.log(`  CORS/credential diagnostics (${corsMsgs.length}): ${corsMsgs.slice(0, 4).join(' || ') || '(none captured)'}`);
   console.log(`  gateway responses (ACAO/ACAC):\n    ${gwResponses.slice(0, 12).join('\n    ') || '(none — all requests failed at network layer before a response)'}`);
