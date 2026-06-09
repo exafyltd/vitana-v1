@@ -55,6 +55,18 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useToast } from '@/hooks/use-toast';
 import { notifyError, t } from '@/lib/i18n-toast';
 
+// VTID-NAV-DISCOVER-TABS: the Discover mode pills (shared by mobile pill +
+// desktop split-bar). Vitana deep-links to a pill via /discover?tab=<value>
+// (e.g. ?tab=categories); the gateway navigation catalog routes
+// "Discover <Pill>" here. Returns null for absent/invalid so an unrelated
+// searchParams change (e.g. the ?m= match cleanup) never resets the pill.
+const VALID_DISCOVER_TABS = new Set<string>(['suggested', 'categories', 'share']);
+function resolveDiscoverTab(raw: string | null): string | null {
+  if (!raw) return null;
+  const v = raw.trim().toLowerCase();
+  return VALID_DISCOVER_TABS.has(v) ? v : null;
+}
+
 function DiscoverInner() {
   const { selectProduct } = useProductSelection();
   const navigate = useNavigate();
@@ -64,10 +76,19 @@ function DiscoverInner() {
   const { pendingCount } = useAutopilot();
   const { translate } = useTranslation();
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('suggested');
+  const [activeTab, setActiveTab] = useState(() => resolveDiscoverTab(searchParams.get('tab')) ?? 'suggested');
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [highlightedMatchId, setHighlightedMatchId] = useState<string | null>(null);
+
+  // VTID-NAV-DISCOVER-TABS: honor ?tab= deep-links (e.g. Vitana navigates to
+  // /discover?tab=categories). Only acts on an explicit valid value, so the
+  // ?m= cleanup below never clobbers the active pill.
+  useEffect(() => {
+    const tab = resolveDiscoverTab(searchParams.get('tab'));
+    if (tab) setActiveTab(tab);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   // Handle ?m= deep link for match highlights
   useEffect(() => {
