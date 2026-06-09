@@ -90,9 +90,14 @@ async function main() {
       ),
     );
   const hasKebab = () => page.evaluate(() => !!document.querySelector('header button [class*="lucide-more"]'));
+  // Catalog rendered = a Session row OR a seeded topic card is present (the
+  // catalog loads its topics async, so either signal proves it hydrated).
   const hasCatalog = () =>
     page.evaluate(() =>
-      !!Array.from(document.querySelectorAll('button')).find((b) => /^Session \d+/.test((b.textContent || '').trim())),
+      !!Array.from(document.querySelectorAll('button')).find((b) => {
+        const txt = (b.textContent || '').trim();
+        return /^Session \d+/.test(txt) || /What Is Vitanaland|Maxina Community|My Journey/i.test(txt);
+      }),
     );
   const click = (re) =>
     page.evaluate((src) => {
@@ -101,6 +106,9 @@ async function main() {
       if (b) { b.click(); return true; }
       return false;
     }, re);
+
+  // Wait for the My Journey page (and its switch) to hydrate before asserting.
+  for (let i = 0; i < 20 && !(await hasSwitch()); i++) await page.waitForTimeout(1000);
 
   console.log('FULL MODE (design freeze):');
   check(await hasSwitch(), 'Guided/Full switch present');
@@ -114,8 +122,14 @@ async function main() {
   console.log('GUIDED MODE (additive layer):');
   check(await guidedActive(), 'switch shows Guided active');
   check(await hasKebab() === false, 'menu dots (kebab) hidden in Guided');
-  check(await hasCatalog(), '90/250 catalog renders (Session rows present)');
-  await page.screenshot({ path: path.join(OUT, 'guided.png') });
+  // The catalog loads the published checklist async — poll before asserting.
+  let catalogShown = false;
+  for (let i = 0; i < 15 && !catalogShown; i++) {
+    catalogShown = await hasCatalog();
+    if (!catalogShown) await page.waitForTimeout(1000);
+  }
+  check(catalogShown, '90/250 catalog renders (Session rows present)');
+  await page.screenshot({ path: path.join(OUT, 'guided.png'), fullPage: true });
 
   // Open a topic → Topic Explanation, then Start Practice → Mark-as-done.
   await page.evaluate(() => {
