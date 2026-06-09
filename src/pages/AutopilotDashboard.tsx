@@ -268,6 +268,7 @@ export default function AutopilotDashboard() {
       onSetGoal={handleSetGoal}
       onRetry={() => refetchJourney()}
       onOpenPlan={() => setPlanSheetOpen(true)}
+      guided={isGuided}
     />
   );
   const northStar = (
@@ -279,6 +280,7 @@ export default function AutopilotDashboard() {
       onSetGoal={handleSetGoal}
       onRetry={() => refetchJourney()}
       onOpenPlan={() => setPlanSheetOpen(true)}
+      guided={isGuided}
     />
   );
   const futureSelf = <FutureSelfTiles goal={goal} />;
