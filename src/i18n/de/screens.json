@@ -1,8 +1,8 @@
 {
   "screens": {
     "guidedMode": {
-      "guidedLabel": "Geführte Reise",
-      "fullLabel": "Volle App"
+      "guidedLabel": "Einführung",
+      "fullLabel": "Vollversion"
     },
     "guidedCatalog": {
       "allChapters": "Alle",
