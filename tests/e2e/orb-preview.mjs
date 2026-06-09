@@ -46,6 +46,27 @@ const results = [];
 const session = await getSession();
 console.log(`[auth] OK — user ${session.user?.id} (${EMAIL}) against ${SUPA}`);
 
+// Direct CORS-preflight probe (node fetch ignores CORS, so it returns the raw
+// response headers the browser would judge). Pinpoints why the in-browser
+// session/start fetch fails with "Failed to fetch".
+const GW = process.env.ORB_GATEWAY || 'https://preview-gateway.vitanaland.com';
+try {
+  const pf = await fetch(`${GW}/api/v1/orb/live/session/start`, {
+    method: 'OPTIONS',
+    headers: {
+      Origin: 'https://preview.vitanaland.com',
+      'Access-Control-Request-Method': 'POST',
+      'Access-Control-Request-Headers': 'authorization,content-type',
+    },
+  });
+  console.log(`[preflight] OPTIONS ${GW}/api/v1/orb/live/session/start -> HTTP ${pf.status}`);
+  for (const h of ['access-control-allow-origin', 'access-control-allow-methods', 'access-control-allow-headers', 'access-control-allow-credentials', 'vary']) {
+    console.log(`[preflight]   ${h}: ${pf.headers.get(h) ?? '(absent)'}`);
+  }
+} catch (e) {
+  console.log(`[preflight] probe error: ${e.message}`);
+}
+
 const browser = await chromium.launch();
 for (const profile of PROFILES) {
   console.log(`\n========== ${profile.name} ==========`);
@@ -64,7 +85,13 @@ for (const profile of PROFILES) {
   });
   page.on('response', (resp) => {
     if (resp.url().includes('/orb/live/session/start')) {
-      sessionStarts.push({ status: resp.status(), host: new URL(resp.url()).host });
+      sessionStarts.push({ status: resp.status(), method: resp.request().method(), host: new URL(resp.url()).host });
+    }
+  });
+  const reqFails = [];
+  page.on('requestfailed', (req) => {
+    if (req.url().includes('/orb/live/')) {
+      reqFails.push(`${req.method()} ${new URL(req.url()).pathname} -> ${req.failure()?.errorText || 'failed'}`);
     }
   });
 
@@ -115,6 +142,7 @@ for (const profile of PROFILES) {
 
   console.log(`  navOk=${navOk} orbReady=${orbReady} opened=${opened}`);
   console.log(`  session/start: ${JSON.stringify(sessionStarts) || '[]'}`);
+  console.log(`  failed orb requests: ${reqFails.join(' | ') || '(none)'}`);
   console.log(`  audio/greeting signal: ${audioSeen}`);
   console.log(`  orb logs: ${orbLogs.slice(-6).join(' | ') || '(none)'}`);
   console.log(`  fatal console errors (${fatalErrors.length}): ${fatalErrors.slice(0, 6).join(' || ') || 'none'}`);
