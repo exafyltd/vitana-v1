@@ -85,6 +85,13 @@ for (const label of ['cold', 'warm']) {
     const ms = Date.now() - t0;
     const body = (await r.text()).slice(0, 140);
     console.log(`[timed-auth-start:${label}] HTTP ${r.status} in ${ms}ms  ${ms > 8000 ? '⚠️ >8s (widget would ABORT)' : 'under 8s'}  body=${body}`);
+    // Does the ACTUAL POST response carry the CORS headers the browser enforces?
+    // (OPTIONS preflight passing is not enough — the POST response itself must
+    // echo Access-Control-Allow-Origin, and Allow-Credentials if the request is
+    // credentialed.) This is what a node fetch silently ignores but a browser blocks on.
+    for (const h of ['access-control-allow-origin', 'access-control-allow-credentials', 'vary']) {
+      console.log(`[timed-auth-start:${label}]   resp ${h}: ${r.headers.get(h) ?? '(absent)'}`);
+    }
   } catch (e) {
     console.log(`[timed-auth-start:${label}] error: ${e.message}`);
   }
@@ -100,15 +107,27 @@ for (const profile of PROFILES) {
   const sessionStarts = [];
   let audioSeen = false;
 
+  const corsMsgs = [];   // full-length CORS/credential diagnostics — the real reason
+  const gwResponses = []; // every preview-gateway response + its ACAO header
   page.on('console', (m) => {
     const t = m.text();
     if (m.type() === 'error') consoleErrors.push(t.slice(0, 300));
+    if (/cors|access-control|credential|preflight|has been blocked/i.test(t)) corsMsgs.push(t); // NO slice — keep full reason
     if (/\[VTOrb\]|\[ORB\]/.test(t)) orbLogs.push(t.slice(0, 200));
     if (/audio_out|audio chunk|greeting|isModelSpeaking|model_speaking|speaking/i.test(t)) audioSeen = true;
   });
   page.on('response', (resp) => {
+    const u = resp.url();
     if (resp.url().includes('/orb/live/session/start')) {
       sessionStarts.push({ status: resp.status(), method: resp.request().method(), host: new URL(resp.url()).host });
+    }
+    // Record ACAO on EVERY gateway response so we can see if the actual (non-OPTIONS)
+    // responses are missing it — the browser blocks those even when OPTIONS is fine.
+    if (/gateway\.vitanaland\.com/.test(u) && resp.request().method() !== 'OPTIONS') {
+      try {
+        const h = resp.headers();
+        gwResponses.push(`${resp.request().method()} ${new URL(u).pathname} -> ${resp.status()} ACAO=${h['access-control-allow-origin'] ?? '(absent)'} ACAC=${h['access-control-allow-credentials'] ?? '(absent)'}`);
+      } catch { /* ignore */ }
     }
   });
   const reqFails = [];
@@ -167,6 +186,8 @@ for (const profile of PROFILES) {
   console.log(`  session/start: ${JSON.stringify(sessionStarts) || '[]'}`);
   console.log(`  failed orb requests: ${reqFails.join(' | ') || '(none)'}`);
   console.log(`  audio/greeting signal: ${audioSeen}`);
+  console.log(`  CORS/credential diagnostics (${corsMsgs.length}): ${corsMsgs.slice(0, 4).join(' || ') || '(none captured)'}`);
+  console.log(`  gateway responses (ACAO/ACAC):\n    ${gwResponses.slice(0, 12).join('\n    ') || '(none — all requests failed at network layer before a response)'}`);
   console.log(`  orb logs: ${orbLogs.slice(-6).join(' | ') || '(none)'}`);
   console.log(`  fatal console errors (${fatalErrors.length}): ${fatalErrors.slice(0, 6).join(' || ') || 'none'}`);
   console.log(`  screenshot: ${SCREEN_DIR}/${profile.name}.png`);
