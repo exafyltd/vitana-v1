@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Plus, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import StandardHeader from "@/components/StandardHeader";
@@ -80,7 +81,20 @@ export function MobileConnectedAppsView() {
   const [searchQuery, setSearchQuery] = useState("");
   const [connectPopupOpen, setConnectPopupOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState('all');
+  // VTID-NAV-CONNECTORS-TABS: the Connectors category mode pills. Vitana
+  // deep-links a pill via /connectors?tab=<category>; the gateway catalog
+  // routes "Connectors <Category>" here. Only an explicit valid value sets it.
+  const [searchParams] = useSearchParams();
+  const CONNECTOR_TABS = ['all', 'ai', 'productivity', 'media', 'social', 'fitness', 'health', 'other', 'agent'];
+  const [activeCategory, setActiveCategory] = useState(() => {
+    const t = searchParams.get('tab');
+    return t && CONNECTOR_TABS.includes(t) ? t : 'all';
+  });
+  useEffect(() => {
+    const t = searchParams.get('tab');
+    if (t && CONNECTOR_TABS.includes(t)) setActiveCategory(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const connectorModes: ModeOption[] = [
     { value: 'all', label: translate('connectedApps.sections.all', 'All'), icon: '🔌' },
