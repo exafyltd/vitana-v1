@@ -182,8 +182,9 @@ for (const profile of PROFILES) {
     !!(window.VitanaOrb && typeof window.VitanaOrb.show === 'function'));
 
   // let the SPA settle so we don't open the orb mid-navigation (a hard nav aborts
-  // in-flight fetches with a misleading "Failed to fetch").
-  await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
+  // in-flight fetches with a misleading "Failed to fetch"). networkidle never
+  // fires here because reminders/stream is a long-lived SSE — use a fixed settle.
+  await page.waitForTimeout(4000);
 
   // open the orb like a user: click the FAB (a real gesture, so AudioContext can start)
   let opened = false;
@@ -191,12 +192,15 @@ for (const profile of PROFILES) {
   if (fab) {
     await fab.click({ force: true }).catch(() => {});
     opened = true;
-  } else if (orbReady) {
-    opened = await page.evaluate(() => { try { window.VitanaOrb.show(); return true; } catch { return false; } });
   }
+  // Belt-and-suspenders: also call the public show() — opens the overlay AND
+  // (re)starts the session. Safe to call alongside the FAB click.
+  await page.evaluate(() => { try { window.VitanaOrb && window.VitanaOrb.show(); } catch { /* ignore */ } });
+  if (!opened) opened = orbReady;
 
   // give the conversation flow time to start + greet
   await page.waitForTimeout(16000);
+  const startAttempted = orbLogs.some((l) => /Starting Gemini Live session|_sessionStart: hasToken/.test(l));
   await page.screenshot({ path: `${SCREEN_DIR}/${profile.name}.png` }).catch(() => {});
 
   const start200 = sessionStarts.find((s) => s.status === 200);
@@ -212,7 +216,8 @@ for (const profile of PROFILES) {
   console.log(`  audio/greeting signal: ${audioSeen}`);
   console.log(`  CORS/credential diagnostics (${corsMsgs.length}): ${corsMsgs.slice(0, 4).join(' || ') || '(none captured)'}`);
   console.log(`  gateway responses (ACAO/ACAC):\n    ${gwResponses.slice(0, 12).join('\n    ') || '(none — all requests failed at network layer before a response)'}`);
-  console.log(`  orb logs: ${orbLogs.slice(-6).join(' | ') || '(none)'}`);
+  console.log(`  session/start attempted by widget: ${startAttempted}`);
+  console.log(`  orb logs: ${orbLogs.slice(-12).join(' | ') || '(none)'}`);
   console.log(`  fatal console errors (${fatalErrors.length}): ${fatalErrors.slice(0, 6).join(' || ') || 'none'}`);
   console.log(`  screenshot: ${SCREEN_DIR}/${profile.name}.png`);
   console.log(`  RESULT ${profile.name}: ${pass ? '✅ PASS' : '❌ FAIL'}`);
