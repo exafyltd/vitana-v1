@@ -28,6 +28,7 @@ export function GoalNorthStar({
   onSetGoal,
   onRetry,
   onOpenPlan,
+  guided = false,
 }: {
   goal: MyJourneyGoal | null;
   journey?: MyJourneyJourney | null;
@@ -36,7 +37,13 @@ export function GoalNorthStar({
   onSetGoal: () => void;
   onRetry?: () => void;
   onOpenPlan?: () => void;
+  guided?: boolean; // VTID-03287: Guided Mode → bright Maxina-header blue card
 }) {
+  // VTID-03287: bright Maxina-header blue (same gradient as .maxina-topbar),
+  // applied as the Guided-Mode visual signal. Overrides the Tailwind gradient.
+  const guidedCardStyle = guided
+    ? { backgroundImage: "linear-gradient(180deg, hsl(201 90% 78%) 0%, hsl(201 75% 70%) 100%)" }
+    : undefined;
   // Plan milestones power the phase-colored ring (hook must run before any early return).
   const { data: planData } = useGoalPlan();
 
@@ -65,7 +72,7 @@ export function GoalNorthStar({
   // No goal at all → invite the user to set their Life Compass goal.
   if (!loading && !goal) {
     return (
-      <Card className="rounded-3xl border border-amber-200/60 shadow-sm bg-gradient-to-br from-amber-50 via-rose-50 to-fuchsia-50 dark:from-amber-950/20 dark:via-rose-950/20 dark:to-fuchsia-950/20">
+      <Card className={`rounded-3xl border shadow-sm ${guided ? "border-sky-300/60" : "border-amber-200/60 bg-gradient-to-br from-amber-50 via-rose-50 to-fuchsia-50 dark:from-amber-950/20 dark:via-rose-950/20 dark:to-fuchsia-950/20"}`} style={guidedCardStyle}>
         <CardContent className="p-8 flex flex-col items-center text-center gap-3">
           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400/40 via-rose-400/40 to-fuchsia-500/40 flex items-center justify-center shadow-sm">
             <Compass className="w-8 h-8 text-rose-600 dark:text-rose-300" />
@@ -113,10 +120,10 @@ export function GoalNorthStar({
   const trend = computeGoalTrend(planData?.plan ?? null, new Date().toISOString().slice(0, 10));
 
   return (
-    <Card className="rounded-3xl border border-emerald-200/50 shadow-sm bg-gradient-to-br from-emerald-50 via-sky-50 to-pink-50 dark:from-emerald-950/20 dark:via-sky-950/20 dark:to-pink-950/20 relative overflow-hidden">
+    <Card className={`rounded-3xl border shadow-sm relative overflow-hidden ${guided ? "border-sky-300/60" : "border-emerald-200/50 bg-gradient-to-br from-emerald-50 via-sky-50 to-pink-50 dark:from-emerald-950/20 dark:via-sky-950/20 dark:to-pink-950/20"}`} style={guidedCardStyle}>
       <div
         aria-hidden
-        className="pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full bg-gradient-to-br from-emerald-300/30 via-sky-300/20 to-fuchsia-300/30 blur-3xl"
+        className={`pointer-events-none absolute -top-12 left-1/2 -translate-x-1/2 w-72 h-72 rounded-full blur-3xl ${guided ? "hidden" : "bg-gradient-to-br from-emerald-300/30 via-sky-300/20 to-fuchsia-300/30"}`}
       />
       <CardContent className="p-5 flex flex-col items-center text-center gap-3 relative">
 

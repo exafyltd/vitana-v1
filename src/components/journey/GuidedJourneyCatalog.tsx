@@ -144,23 +144,32 @@ export function GuidedJourneyCatalog({
                 {chapterLabel(s.chapterId)}
               </span>
             </button>
-            <div className="grid grid-cols-2 gap-2">
+            {/* Full-width horizontal rows (per prototype): topic id + label left, status right */}
+            <div className="space-y-2">
               {s.topics.map((topic) => (
                 <button
                   key={topic.topicId}
                   type="button"
                   onClick={() => handleTopicClick(topic)}
-                  className="text-left"
+                  className="block w-full text-left"
                 >
-                  <Card className="h-full p-3 transition-colors hover:bg-accent/40">
-                    <span className="block text-sm font-medium leading-snug">
-                      {topic.displayLabel}
-                    </span>
-                    {topic.shortDescription && (
-                      <span className="mt-1 block text-xs text-muted-foreground line-clamp-2">
-                        {topic.shortDescription}
+                  <Card className="flex items-center gap-3 p-3 transition-colors hover:bg-accent/40">
+                    <div className="min-w-0 flex-1">
+                      <span className="block text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        {topic.topicId}
                       </span>
-                    )}
+                      <span className="block text-sm font-medium leading-snug">
+                        {topic.displayLabel}
+                      </span>
+                      {topic.shortDescription && (
+                        <span className="mt-0.5 block text-xs text-muted-foreground line-clamp-1">
+                          {topic.shortDescription}
+                        </span>
+                      )}
+                    </div>
+                    <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-medium text-primary">
+                      {t('screens.guidedCatalog.statusReady')}
+                    </span>
                   </Card>
                 </button>
               ))}

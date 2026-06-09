@@ -88,6 +88,7 @@ export function DreamNorthStar({
   onSetGoal,
   onRetry,
   onOpenPlan,
+  guided = false,
 }: {
   goal: MyJourneyGoal | null;
   journey?: MyJourneyJourney | null;
@@ -96,6 +97,7 @@ export function DreamNorthStar({
   onSetGoal: () => void;
   onRetry?: () => void;
   onOpenPlan?: () => void;
+  guided?: boolean; // VTID-03287: Guided Mode → bright Maxina-header blue card
 }) {
   const reduce = useReducedMotion();
 
@@ -227,23 +229,34 @@ export function DreamNorthStar({
   return (
     <Card
       ref={cardRef}
-      className="rounded-[28px] border border-violet-200/50 shadow-2xl overflow-hidden relative"
-      style={{
-        // Pure pastel-sunrise gradient. The painted-illustration layer was
-        // intentionally removed — the gradient reads calmer and lighter
-        // than any painted scene we tried. To re-enable a future
-        // pillar-aware illustration, uncomment the HERO_BG const at the
-        // top of this file and add `url(${HERO_BG}),` between the two
-        // gradients below, restoring the matching backgroundSize /
-        // backgroundPosition entries.
-        backgroundImage: `
+      className={`rounded-[28px] border shadow-2xl overflow-hidden relative ${guided ? "border-sky-300/60" : "border-violet-200/50"}`}
+      style={
+        guided
+          ? {
+              // VTID-03287: Guided Mode signal — the bright Maxina-header blue
+              // (same gradient as .maxina-topbar). Full App keeps the pastel
+              // sunrise below (unchanged).
+              backgroundImage:
+                "linear-gradient(180deg, hsl(201 90% 78%) 0%, hsl(201 75% 70%) 100%)",
+              backgroundRepeat: "no-repeat",
+            }
+          : {
+              // Pure pastel-sunrise gradient. The painted-illustration layer was
+              // intentionally removed — the gradient reads calmer and lighter
+              // than any painted scene we tried. To re-enable a future
+              // pillar-aware illustration, uncomment the HERO_BG const at the
+              // top of this file and add `url(${HERO_BG}),` between the two
+              // gradients below, restoring the matching backgroundSize /
+              // backgroundPosition entries.
+              backgroundImage: `
           linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(196,181,253,0.18) 60%, rgba(244,114,182,0.22) 100%),
           linear-gradient(180deg, #fde2ec 0%, #fbcfe8 22%, #fed7aa 42%, #fef3c7 60%, #bfdbfe 80%, #93c5fd 100%)
         `,
-        backgroundSize: "cover, cover",
-        backgroundPosition: "center, center",
-        backgroundRepeat: "no-repeat",
-      }}
+              backgroundSize: "cover, cover",
+              backgroundPosition: "center, center",
+              backgroundRepeat: "no-repeat",
+            }
+      }
     >
       <div
         className="relative z-10 flex flex-col px-5 pt-7 pb-3"
