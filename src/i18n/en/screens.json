@@ -21,7 +21,13 @@
       "startPractice": "Start Practice",
       "backToJourney": "Back to Journey",
       "loading": "Loading catalog …",
-      "empty": "No topics published yet."
+      "empty": "No topics published yet.",
+      "practiceHeader": "Practice",
+      "openFeature": "Open feature",
+      "markDone": "Mark as done",
+      "skip": "Skip for now",
+      "doneToast": "Practice complete!",
+      "doneError": "Couldn't save."
     },
     "common": {
       "languageToggleAriaLabel": "Language",

@@ -21,7 +21,13 @@
       "startPractice": "Übung starten",
       "backToJourney": "Zurück zur Reise",
       "loading": "Lade Katalog …",
-      "empty": "Noch keine Themen veröffentlicht."
+      "empty": "Noch keine Themen veröffentlicht.",
+      "practiceHeader": "Übung",
+      "openFeature": "Funktion öffnen",
+      "markDone": "Als erledigt markieren",
+      "skip": "Überspringen",
+      "doneToast": "Übung erledigt!",
+      "doneError": "Konnte nicht speichern."
     },
     "common": {
       "languageToggleAriaLabel": "Sprache",
