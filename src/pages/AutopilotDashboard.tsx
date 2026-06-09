@@ -361,16 +361,24 @@ export default function AutopilotDashboard() {
     <div className="space-y-4">
       {dreamHero}
       <GuidedModeSwitch className="px-1" />{/* VTID-03279: Guided/Full switch below Journey card */}
-      {currentMove}
-      {futureSelf}
-      {todaysGoal}
-      {foundationPath}
-      {matchesPreview}
-      {eventsPreview}
-      {yourPlanCard}
-      {howYoureDoing}
-      {keepCheckingIn}
-      {guidedCatalog}
+      {/* VTID-03284: the switch swaps the screen. Guided = catalog-led onboarding
+          (Full App feed hidden); Full App = the existing feed (no catalog). The
+          start view (Journey card + switch) is shared by both. */}
+      {isGuided ? (
+        guidedCatalog
+      ) : (
+        <>
+          {currentMove}
+          {futureSelf}
+          {todaysGoal}
+          {foundationPath}
+          {matchesPreview}
+          {eventsPreview}
+          {yourPlanCard}
+          {howYoureDoing}
+          {keepCheckingIn}
+        </>
+      )}
     </div>
   );
 
@@ -428,22 +436,29 @@ export default function AutopilotDashboard() {
           <StandardHeader title={t("screens.autopilotdashboard.myJourney")} description={t("screens.autopilotdashboard.northStarTagline")} emoji="🧭" />
           <div className="mb-4">{utilityBar}</div>
           {motivational}
+          {/* VTID-03284: Guided swaps the screen to the catalog; Full keeps the feed grid. */}
           <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-4">
               {northStar}
               <GuidedModeSwitch className="px-1" />{/* VTID-03279: Guided/Full switch below Journey card */}
-              {currentMove}
-              {todaysGoal}
-              {matchesPreview}
-              {eventsPreview}
+              {!isGuided && (
+                <>
+                  {currentMove}
+                  {todaysGoal}
+                  {matchesPreview}
+                  {eventsPreview}
+                </>
+              )}
             </div>
-            <div className="space-y-4">
-              {foundationPath}
-              {yourPlanCard}
-              {howYoureDoing}
-            </div>
+            {!isGuided && (
+              <div className="space-y-4">
+                {foundationPath}
+                {yourPlanCard}
+                {howYoureDoing}
+              </div>
+            )}
           </div>
-          {keepCheckingIn}
+          {!isGuided && keepCheckingIn}
           {guidedCatalog}
         </div>
       </div>
