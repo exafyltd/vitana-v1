@@ -32,6 +32,24 @@ This app currently deploys to **two** hosts simultaneously:
 
 Once Cloud Run is verified working, Lovable will be decommissioned.
 
+### Staging-first cutover (effective Mon 8 Jun 2026, 10:00 Europe/Berlin)
+
+Auto deploy-to-live is **time-gated**. Before the cutover instant, a push to
+`main` deploys the **live** `community-app` as before. At/after it, the
+automatic (push) path in `DEPLOY.yml` is **frozen** (via its `cutover_gate`
+job): frontend changes auto-deploy to **staging** (`community-app-staging` via
+`STAGE-DEPLOY-FRONTEND.yml`, on `preview.vitanaland.com`), and production is
+reached only via:
+
+1. the single **PUBLISH** button in the backend Command Hub, or
+2. a deliberate manual `workflow_dispatch` of `DEPLOY.yml` (requires a `reason`)
+   — the documented exception.
+
+`supabase-functions-deploy.yml` is gated the same way (no staging-functions
+auto-deploy yet, so it is freeze-only on the auto path post-cutover; ship via
+manual dispatch). `STAGE-DEPLOY-FRONTEND.yml` is **not** gated — staging deploys
+always run. The backend half of the cutover lives in `exafyltd/vitana-platform`.
+
 ## Project Structure
 
 ```
