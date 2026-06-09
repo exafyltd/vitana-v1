@@ -11,17 +11,13 @@
       "phase": "llm"
     },
     "orders.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal/polite 'Vaša' instead of informal 'Tvoja').",
-      "suggested": "Tvoja istorija porudžbina i aktivne pretplate",
       "phase": "llm"
     },
     "orders.trackDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal/polite imperative 'Pratite' instead of informal 'Prati').",
-      "suggested": "Prati svoje porudžbine proizvoda i karte za događaje",
       "phase": "llm"
     },
     "orders.searchPlaceholder": {
@@ -85,10 +81,8 @@
       "phase": "llm"
     },
     "orders.previewNotice": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal/polite 'Vaše' instead of informal 'Tvoje').",
-      "suggested": "Ovo su probne porudžbine. Tvoje stvarne porudžbine će se pojaviti ovde.",
       "phase": "llm"
     },
     "orders.sampleData": {
@@ -102,10 +96,8 @@
       "phase": "llm"
     },
     "orders.emptyActive.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal/polite 'Nemate' instead of informal 'Nemaš').",
-      "suggested": "Nemaš aktivnih porudžbina ili predstojećih događaja.",
       "phase": "llm"
     },
     "orders.emptyHistory.title": {
@@ -114,10 +106,8 @@
       "phase": "llm"
     },
     "orders.emptyHistory.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal/polite 'Vaše' instead of informal 'Tvoje').",
-      "suggested": "Tvoje završene porudžbine i prošli događaji će se pojaviti ovde.",
       "phase": "llm"
     },
     "orders.noOrders": {
@@ -126,10 +116,8 @@
       "phase": "llm"
     },
     "orders.noOrdersDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal/polite 'Vaše' and 'obavite' instead of informal 'Tvoje' and 'obaviš').",
-      "suggested": "Tvoje porudžbine će se pojaviti ovde nakon što obaviš kupovinu.",
       "phase": "llm"
     },
     "orders.browseProducts": {
@@ -153,10 +141,8 @@
       "phase": "llm"
     },
     "orders.noFilterDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal/polite 'vašoj' instead of informal 'tvojoj').",
-      "suggested": "Nema {filter} u tvojoj istoriji.",
       "phase": "llm"
     },
     "orders.orderDate": {
@@ -340,5 +326,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:05:28.050Z"
+  "generatedAt": "2026-06-09T07:04:05.113Z"
 }
