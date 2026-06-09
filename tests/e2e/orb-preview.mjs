@@ -9,6 +9,10 @@
  *
  * Exit 0 only if every profile passes. This is how we stop claiming "done"
  * without proof: the job log IS the proof.
+ *
+ * Re-run after BOOTSTRAP-ORB-STAGING-WARM (gateway-staging min-instances=1):
+ * the [timed-auth-start:cold] figure should now drop under the 8s widget abort
+ * so the logged-in orb starts and greets on the very first open.
  */
 import { chromium, devices } from '@playwright/test';
 import fs from 'node:fs';
