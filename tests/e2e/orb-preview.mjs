@@ -234,3 +234,5 @@ console.log(allPass ? 'OVERALL: ✅ PASS' : 'OVERALL: ❌ FAIL');
 process.exit(allPass ? 0 : 1);
 
 // Phase 0 verify run: native session resumption + GoAway deployed to gateway-staging.
+
+// Phase 1 verify run: single Opening Contract (decideOpening) deployed to gateway-staging.
