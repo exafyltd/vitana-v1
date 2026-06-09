@@ -21,6 +21,12 @@ export function useRoleRouteEnforcement() {
 
     const path = location.pathname;
 
+    // Device Preview is an admin tool that previews the (community) mobile UI.
+    // Its route guard already checks admin permission; exempt it from view-role
+    // enforcement so admins can open it even while viewing as community (which
+    // is forced on mobile-width viewports), instead of being bounced to /home.
+    if (path === '/admin/device-preview') return;
+
     // Don't enforce on portal, auth, settings, or dev pages (shared across roles)
     if (SHARED_PATHS.some(p => path === p || (p !== '/' && path.startsWith(p)))) return;
 

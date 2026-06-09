@@ -43,6 +43,7 @@ import { useBackgroundRefresh } from "@/hooks/useBackgroundRefresh";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
+import { useGuidedMode } from "@/context/GuidedModeProvider"; // VTID-03279
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
@@ -414,6 +415,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const isMobile = useIsMobile();
+  const { isGuided } = useGuidedMode(); // VTID-03279: Guided Mode hides sidebar/menu
   const { tenant } = useTenant();
   const { preferences } = useUserPreferences();
   const { triggerGreeting } = useIntelligentGreeting();
@@ -474,15 +476,19 @@ export default function AppLayout({ children }: AppLayoutProps) {
     <div>
       <SidebarProvider open={sidebarOpen} onOpenChange={handleSidebarOpenChange}>
         <div className="flex min-h-screen w-full overflow-x-hidden">
-          <div className="dark">
-            <AppSidebar 
-              autopilotPopupOpen={autopilotPopupOpen}
-              setAutopilotPopupOpen={setAutopilotPopupOpen}
-              walletPopupOpen={walletPopupOpen}
-              setWalletPopupOpen={setWalletPopupOpen}
-              onSidebarOpenChange={handleSidebarOpenChange}
-            />
-          </div>
+          {/* VTID-03279: Guided Mode hides the sidebar/menu (no dots, no drawer).
+              Account/settings/support are reached by switching to Full App. */}
+          {!isGuided && (
+            <div className="dark">
+              <AppSidebar
+                autopilotPopupOpen={autopilotPopupOpen}
+                setAutopilotPopupOpen={setAutopilotPopupOpen}
+                walletPopupOpen={walletPopupOpen}
+                setWalletPopupOpen={setWalletPopupOpen}
+                onSidebarOpenChange={handleSidebarOpenChange}
+              />
+            </div>
+          )}
 
           <SidebarInset className="flex flex-col w-full overflow-x-hidden">
             <div className="flex flex-col h-full min-h-0 bg-background rounded-tl-2xl">
