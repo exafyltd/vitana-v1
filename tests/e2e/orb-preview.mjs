@@ -67,6 +67,25 @@ try {
   console.log(`[preflight] probe error: ${e.message}`);
 }
 
+// Timed AUTHENTICATED session/start from node (no 8s browser abort) — tells us
+// the real server latency. If it's > 8000ms, the widget's AbortSignal.timeout(8s)
+// is what kills the in-browser request (net::ERR_ABORTED).
+for (const label of ['cold', 'warm']) {
+  try {
+    const t0 = Date.now();
+    const r = await fetch(`${GW}/api/v1/orb/live/session/start`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Origin: 'https://preview.vitanaland.com', Authorization: `Bearer ${session.access_token}` },
+      body: JSON.stringify({ lang: 'de' }),
+    });
+    const ms = Date.now() - t0;
+    const body = (await r.text()).slice(0, 140);
+    console.log(`[timed-auth-start:${label}] HTTP ${r.status} in ${ms}ms  ${ms > 8000 ? '⚠️ >8s (widget would ABORT)' : 'under 8s'}  body=${body}`);
+  } catch (e) {
+    console.log(`[timed-auth-start:${label}] error: ${e.message}`);
+  }
+}
+
 const browser = await chromium.launch();
 for (const profile of PROFILES) {
   console.log(`\n========== ${profile.name} ==========`);
