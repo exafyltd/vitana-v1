@@ -236,3 +236,5 @@ process.exit(allPass ? 0 : 1);
 // Phase 0 verify run: native session resumption + GoAway deployed to gateway-staging.
 
 // Phase 1 verify run: single Opening Contract (decideOpening) deployed to gateway-staging.
+
+// Phase 2 verify run: explicit conversation state machine deployed to gateway-staging.
