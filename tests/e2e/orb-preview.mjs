@@ -162,6 +162,29 @@ for (const profile of PROFILES) {
     !!document.querySelector('.vtorb-fab,[class^="vtorb-fab"],#vitana-orb-fab') ||
     !!(window.VitanaOrb && typeof window.VitanaOrb.show === 'function'));
 
+  // DECISIVE PROBE — replicate the widget's exact session/start POST from INSIDE
+  // the browser, with NO abort signal (removes the 8s-timeout variable). Tells us
+  // definitively whether the in-browser failure is the timeout (this succeeds,
+  // slowly) or a genuine network/CORS failure (this throws with a name/message).
+  const inBrowserStart = await page.evaluate(async ({ gw, token }) => {
+    const t0 = Date.now();
+    try {
+      const r = await fetch(gw + '/api/v1/orb/live/session/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+        body: JSON.stringify({ lang: 'de' }),
+        // intentionally NO signal — we want true latency / true failure mode
+      });
+      const ms = Date.now() - t0;
+      let bodyOk = null;
+      try { const j = await r.json(); bodyOk = j && j.ok; } catch { /* ignore */ }
+      return { ok: true, status: r.status, ms, acao: r.headers.get('access-control-allow-origin'), bodyOk };
+    } catch (e) {
+      return { ok: false, ms: Date.now() - t0, name: e && e.name, message: e && e.message };
+    }
+  }, { gw: GW, token: session.access_token });
+  console.log(`  [in-browser session/start probe] ${JSON.stringify(inBrowserStart)}`);
+
   // open the orb like a user: click the FAB (a real gesture, so AudioContext can start)
   let opened = false;
   const fab = await page.$('.vtorb-fab, [class^="vtorb-fab"], #vitana-orb-fab');
