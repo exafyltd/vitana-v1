@@ -12,7 +12,7 @@
       "chapter_health": "Health",
       "chapter_intelligence": "Intelligence",
       "chapter_discovery": "Discovery",
-      "sessionN": "Session {{n}}",
+      "sessionN": "Session {n}",
       "whatItIs": "What it is",
       "userBenefit": "Your benefit",
       "whenToUse": "When it helps",
