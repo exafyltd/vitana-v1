@@ -232,3 +232,5 @@ for (const r of results) {
 const allPass = results.length > 0 && results.every((r) => r.pass);
 console.log(allPass ? 'OVERALL: ✅ PASS' : 'OVERALL: ❌ FAIL');
 process.exit(allPass ? 0 : 1);
+
+// Phase 0 verify run: native session resumption + GoAway deployed to gateway-staging.
