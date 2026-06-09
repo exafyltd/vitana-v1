@@ -16,6 +16,7 @@
  */
 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -26,9 +27,10 @@ import {
   DrawerFooter,
 } from '@/components/ui/drawer';
 import { cn } from '@/lib/utils';
-import { t } from '@/lib/i18n-toast';
+import { t, notify } from '@/lib/i18n-toast';
 import { useJourneyChecklist, type PublicTopic } from '@/hooks/useJourneyChecklist';
 import { activateOrb } from '@/lib/orbActivate'; // VTID-03281: activate Vitana/ORB
+import { completePractice, practiceTargetRoute } from '@/lib/journeyPractice'; // VTID-03282
 
 const CHAPTER_ORDER = ['basics', 'daily_use', 'community', 'health', 'intelligence', 'discovery'];
 
@@ -55,6 +57,21 @@ export function GuidedJourneyCatalog({
   const { sessions, chapters, loading, error } = useJourneyChecklist();
   const [activeChapter, setActiveChapter] = useState<string>('all');
   const [openTopic, setOpenTopic] = useState<PublicTopic | null>(null);
+  const [practiceMode, setPracticeMode] = useState(false); // VTID-03282: screen 03
+  const navigate = useNavigate();
+
+  const closeDrawer = () => {
+    setOpenTopic(null);
+    setPracticeMode(false);
+  };
+
+  // VTID-03282: record completion (an explicit action, never from listening),
+  // then close. Optionally the user opened the real feature first.
+  const markPracticeDone = async (topic: PublicTopic) => {
+    const ok = await completePractice(topic.topicId);
+    notify(ok ? 'screens.guidedCatalog.doneToast' : 'screens.guidedCatalog.doneError');
+    closeDrawer();
+  };
 
   if (loading) {
     return (
@@ -152,10 +169,10 @@ export function GuidedJourneyCatalog({
         ))}
       </div>
 
-      {/* Topic Explanation drawer (screen 02) */}
-      <Drawer open={!!openTopic} onOpenChange={(o) => !o && setOpenTopic(null)}>
+      {/* Topic Explanation (screen 02) ⇄ Guided Practice (screen 03) drawer */}
+      <Drawer open={!!openTopic} onOpenChange={(o) => { if (!o) closeDrawer(); }}>
         <DrawerContent>
-          {openTopic && (
+          {openTopic && !practiceMode && (
             <>
               <DrawerHeader>
                 <DrawerTitle>{openTopic.displayLabel}</DrawerTitle>
@@ -194,14 +211,49 @@ export function GuidedJourneyCatalog({
                   <Button
                     className="flex-1"
                     onClick={() => {
+                      // VTID-03282: go to the Guided Practice step (screen 03).
                       if (onStartPractice) onStartPractice(openTopic);
+                      else setPracticeMode(true);
                     }}
                   >
                     {t('screens.guidedCatalog.startPractice')}
                   </Button>
                 </div>
-                <Button variant="ghost" onClick={() => setOpenTopic(null)}>
+                <Button variant="ghost" onClick={closeDrawer}>
                   {t('screens.guidedCatalog.backToJourney')}
+                </Button>
+              </DrawerFooter>
+            </>
+          )}
+
+          {openTopic && practiceMode && (
+            <>
+              <DrawerHeader>
+                <DrawerTitle>{t('screens.guidedCatalog.practiceHeader')}</DrawerTitle>
+              </DrawerHeader>
+              <div className="space-y-3 px-4 pb-2 text-sm">
+                <ExplanationRow
+                  label={t('screens.guidedCatalog.tryThis')}
+                  value={openTopic.explanation.tryThis}
+                />
+              </div>
+              <DrawerFooter>
+                {practiceTargetRoute(openTopic.guidedPracticeTarget) && (
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      const route = practiceTargetRoute(openTopic.guidedPracticeTarget);
+                      if (route) navigate(route);
+                    }}
+                  >
+                    {t('screens.guidedCatalog.openFeature')}
+                  </Button>
+                )}
+                <Button onClick={() => markPracticeDone(openTopic)}>
+                  {t('screens.guidedCatalog.markDone')}
+                </Button>
+                <Button variant="ghost" onClick={closeDrawer}>
+                  {t('screens.guidedCatalog.skip')}
                 </Button>
               </DrawerFooter>
             </>
