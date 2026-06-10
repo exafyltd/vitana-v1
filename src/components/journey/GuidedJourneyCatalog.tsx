@@ -17,6 +17,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -31,6 +32,7 @@ import { t, notify } from '@/lib/i18n-toast';
 import { useJourneyChecklist, type PublicTopic } from '@/hooks/useJourneyChecklist';
 import { activateOrb } from '@/lib/orbActivate'; // VTID-03281: activate Vitana/ORB
 import { completePractice, practiceTargetRoute } from '@/lib/journeyPractice'; // VTID-03282
+import { JOURNEY_STATE_QUERY_KEY } from '@/hooks/useGuidedJourneyProgress';
 
 const CHAPTER_ORDER = ['basics', 'daily_use', 'community', 'health', 'intelligence', 'discovery'];
 
@@ -59,6 +61,7 @@ export function GuidedJourneyCatalog({
   const [openTopic, setOpenTopic] = useState<PublicTopic | null>(null);
   const [practiceMode, setPracticeMode] = useState(false); // VTID-03282: screen 03
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const closeDrawer = () => {
     setOpenTopic(null);
@@ -69,6 +72,10 @@ export function GuidedJourneyCatalog({
   // then close. Optionally the user opened the real feature first.
   const markPracticeDone = async (topic: PublicTopic) => {
     const ok = await completePractice(topic.topicId);
+    if (ok) {
+      // Refresh the durable journey state so the hero ring fills live.
+      queryClient.invalidateQueries({ queryKey: JOURNEY_STATE_QUERY_KEY });
+    }
     notify(ok ? 'screens.guidedCatalog.doneToast' : 'screens.guidedCatalog.doneError');
     closeDrawer();
   };

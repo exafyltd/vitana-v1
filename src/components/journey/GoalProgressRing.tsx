@@ -17,6 +17,7 @@ export function GoalProgressRing({
   currentDay,
   totalDays,
   daysLeftLabel,
+  topLabel,
 }: {
   pct: number;
   day: number;
@@ -27,6 +28,8 @@ export function GoalProgressRing({
   totalDays?: number;
   /** Pre-translated countdown caption. Falls back to the "days left to your goal" string. */
   daysLeftLabel?: string;
+  /** Pre-translated small top label. Falls back to the "Day" label. */
+  topLabel?: string;
 }) {
   const reduce = useReducedMotion();
   const stroke = 12;
@@ -117,7 +120,7 @@ export function GoalProgressRing({
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
         <span className="text-xs uppercase tracking-wide text-muted-foreground">
-          {t("screens.autopilotdashboard.dayLabel")}
+          {topLabel ?? t("screens.autopilotdashboard.dayLabel")}
         </span>
         <span className="text-4xl font-bold leading-none tracking-tight">{day}</span>
         <span className="text-[11px] text-muted-foreground mt-2">
