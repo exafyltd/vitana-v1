@@ -28,6 +28,7 @@ import {
   RotateCcw,
   CheckCircle2,
   Circle,
+  X,
   type LucideProps,
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -38,6 +39,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerFooter,
+  DrawerClose,
 } from '@/components/ui/drawer';
 import { cn } from '@/lib/utils';
 import { t, notify } from '@/lib/i18n-toast';
@@ -320,9 +322,22 @@ export function GuidedJourneyCatalog({
 
       {/* Topic Explanation (screen 02) ⇄ Guided Practice (screen 03) drawer */}
       <Drawer open={!!openTopic} onOpenChange={(o) => { if (!o) closeDrawer(); }}>
-        <DrawerContent>
+        <DrawerContent className="max-h-[92dvh]">
+          {/* Close (X) — top-right, like other Maxina popups. Shown in both states. */}
+          <DrawerClose asChild>
+            <button
+              type="button"
+              aria-label={t('screens.guidedCatalog.close')}
+              className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </DrawerClose>
+
           {openTopic && !practiceMode && (
             <>
+              {/* Scrollable body so a tall popup never gets clipped at the top. */}
+              <div className="min-h-0 flex-1 overflow-y-auto">
               {/* Celebration header — Vitana praises the user after a listened
                   session and surfaces the VITANA INDEX reward they just earned. */}
               <DrawerHeader className="items-center gap-2 pb-1 text-center">
@@ -372,6 +387,7 @@ export function GuidedJourneyCatalog({
                   value={openTopic.explanation.tryThis}
                 />
               </div>
+              </div>
               <DrawerFooter>
                 <div className="flex gap-2">
                   <Button
@@ -407,15 +423,17 @@ export function GuidedJourneyCatalog({
 
           {openTopic && practiceMode && (
             <>
-              <DrawerHeader>
-                <DrawerTitle>{t('screens.guidedCatalog.practiceHeader')}</DrawerTitle>
-              </DrawerHeader>
-              <div className="space-y-2.5 px-4 pb-2">
-                <ExplanationCard
-                  tint={SECTION_TINTS.try}
-                  label={t('screens.guidedCatalog.tryThis')}
-                  value={openTopic.explanation.tryThis}
-                />
+              <div className="min-h-0 flex-1 overflow-y-auto">
+                <DrawerHeader>
+                  <DrawerTitle>{t('screens.guidedCatalog.practiceHeader')}</DrawerTitle>
+                </DrawerHeader>
+                <div className="space-y-2.5 px-4 pb-2">
+                  <ExplanationCard
+                    tint={SECTION_TINTS.try}
+                    label={t('screens.guidedCatalog.tryThis')}
+                    value={openTopic.explanation.tryThis}
+                  />
+                </div>
               </div>
               <DrawerFooter>
                 {practiceTargetRoute(openTopic.guidedPracticeTarget) && (
