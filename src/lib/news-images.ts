@@ -230,6 +230,44 @@ export function getNewsImage(
   return pool[fnvHash(seed) % pool.length];
 }
 
+/**
+ * Feed-aware variant of {@link getNewsImage}: picks the LEAST-used photo from
+ * the article's category pool so the same stock cover doesn't land on
+ * different stories within one feed render.
+ *
+ * Caller threads a shared `usage` map across every article in the feed (in
+ * render order). Within a category, photos are handed out round-robin — a
+ * cover only repeats once the whole pool has been used once. A hashed offset
+ * keeps the starting point stable per article and spreads assignments out.
+ */
+export function pickFeedNewsImage(
+  tags: string[],
+  articleId: string | undefined,
+  title: string | undefined,
+  summary: string | null | undefined,
+  usage: Map<string, number>
+): string {
+  const category = pickCategory(tags, title || '', summary || null);
+  const pool = CATEGORY_POOLS[category] || CATEGORY_POOLS.general;
+  const offset = fnvHash(articleId || tags.join(',')) % pool.length;
+
+  let chosen = pool[offset];
+  let chosenUses = usage.get(chosen) ?? 0;
+  // Scan the pool (from the hashed offset) for the least-used photo; stop
+  // early at the first never-used one.
+  for (let i = 1; i < pool.length && chosenUses > 0; i++) {
+    const candidate = pool[(offset + i) % pool.length];
+    const uses = usage.get(candidate) ?? 0;
+    if (uses < chosenUses) {
+      chosen = candidate;
+      chosenUses = uses;
+    }
+  }
+
+  usage.set(chosen, chosenUses + 1);
+  return chosen;
+}
+
 export type LongevityPillar = 'Nutrition' | 'Hydration' | 'Sleep' | 'Exercise' | 'Mental';
 
 const CATEGORY_TO_PILLAR: Record<string, string> = {

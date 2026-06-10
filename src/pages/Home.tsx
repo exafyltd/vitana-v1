@@ -5,10 +5,15 @@
  * Mobile: MobileModePill dropdown in UtilityActionButton (standard pattern).
  * Desktop: SplitBar tabs + 3-column grid.
  *
- * Image strategy (per card):
- *   - Primary (imageUrl): article's own RSS / og:image (unique per article)
- *   - Fallback (fallbackImageUrl): keyword-matched category pool photo
- *   - NewsCard swaps to fallback automatically if primary fails to load.
+ * Image strategy (computed feed-wide in `cardImages`):
+ *   - Primary (imageUrl): article's own RSS / og:image — but only if it is
+ *     NOT reused across articles (a shared banner is a generic source default,
+ *     e.g. the old "FA!" cover, so we drop it).
+ *   - Fallback (fallbackImageUrl): keyword-matched category pool photo, handed
+ *     out via a shared usage map so the same stock cover doesn't repeat on
+ *     different stories.
+ *   - NewsArticleCard renders the fallback as an always-present base layer, so
+ *     a card is never imageless even if the primary 404s/hangs/loads blank.
  */
 
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
@@ -38,7 +43,7 @@ import {
   useCommunityNews,
   type NewsArticle,
 } from "@/hooks/useNewsFeed";
-import { getNewsImage, getArticlePillar } from "@/lib/news-images";
+import { pickFeedNewsImage, getArticlePillar } from "@/lib/news-images";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { t } from '@/lib/i18n-toast';
@@ -156,15 +161,38 @@ export default function Home() {
     try { return formatDistanceToNow(new Date(dateStr), { addSuffix: true }); } catch { return ""; }
   };
 
-  /** Build primary+fallback image URLs for an article. */
-  const getCardImages = (article: NewsArticle): { primary: string; fallback: string } => {
-    const categoryImage = getNewsImage(article.tags, article.id, article.title, article.summary);
-    // Primary: RSS/og:image if we have one, else use category image as primary (and no fallback needed)
-    return {
-      primary: article.image_url || categoryImage,
-      fallback: categoryImage,
-    };
-  };
+  /**
+   * Build primary+fallback cover images for the whole visible feed at once.
+   * Doing it feed-wide (rather than per card) lets us:
+   *   1. Drop source covers that repeat across articles — a banner reused by
+   *      several stories is a generic source default (e.g. the old "FA!"
+   *      cover), not real article art, so we fall back to a category photo.
+   *   2. Hand out DISTINCT category fallbacks via a shared usage map, so the
+   *      same stock photo doesn't land on different stories.
+   */
+  const cardImages = useMemo(() => {
+    const map = new Map<string, { primary: string; fallback: string }>();
+
+    // Count how often each source image_url appears — >1 ⇒ generic default.
+    const urlCounts = new Map<string, number>();
+    for (const a of visibleArticles) {
+      if (a.image_url) urlCounts.set(a.image_url, (urlCounts.get(a.image_url) ?? 0) + 1);
+    }
+
+    // Shared across the feed so fallbacks are spread, not repeated.
+    const fallbackUsage = new Map<string, number>();
+
+    for (const a of visibleArticles) {
+      const fallback = pickFeedNewsImage(a.tags, a.id, a.title, a.summary, fallbackUsage);
+      const isGenericCover = !!a.image_url && (urlCounts.get(a.image_url) ?? 0) > 1;
+      const primary = a.image_url && !isGenericCover ? a.image_url : fallback;
+      map.set(a.id, { primary, fallback });
+    }
+    return map;
+  }, [visibleArticles]);
+
+  const getCardImages = (article: NewsArticle): { primary: string; fallback: string } =>
+    cardImages.get(article.id) ?? { primary: article.image_url || "", fallback: "" };
 
   const renderFeedContent = () => (
     <>
