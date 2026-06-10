@@ -27,9 +27,9 @@
     },
     "businessHub.tabs.insights": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is too generic, misses the nuance of 'deeper understanding' or 'valuable observations' implied by 'Insights'.",
-      "suggested": "Perspectivas",
+      "confidence": 0.8,
+      "issue": "Translation misses the 'data-driven understanding' nuance of 'Insights'. 'Perspectivas' means 'perspectives' or 'outlooks', not typically 'key learnings' or 'data-driven observations' in this context.",
+      "suggested": "Análisis",
       "phase": "llm"
     },
     "businessHub.recentActivity": {
@@ -88,5 +88,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:46.296Z"
+  "generatedAt": "2026-06-10T07:51:31.092Z"
 }
