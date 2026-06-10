@@ -10,8 +10,12 @@ export interface NewsArticleCardProps {
   description?: string;
   imageUrl: string;
   /**
-   * Optional fallback image used when the primary `imageUrl` fails to load
-   * (e.g. og:image blocked/broken). When unset, only the primary is used.
+   * Category-matched fallback image. Rendered as an always-present BASE layer
+   * beneath the source image so a card is never imageless — the source
+   * `imageUrl` only paints on top once it genuinely loads. This guarantees a
+   * visual even when the source's og:image is null, 404s, is CSP-blocked,
+   * hangs, or "loads" as a blank/tracking pixel (none of which reliably fire
+   * an `onError`). When unset, only the primary is used.
    */
   fallbackImageUrl?: string;
   category?: string;
@@ -62,25 +66,22 @@ const NewsArticleCardBase = React.forwardRef<HTMLDivElement, NewsArticleCardProp
     },
     ref
   ) => {
-    const [imageLoaded, setImageLoaded] = useState(false);
-    const [currentSrc, setCurrentSrc] = useState(imageUrl);
-    const [hasFallenBack, setHasFallenBack] = useState(false);
+    // The category fallback is an always-present base layer; the source image
+    // only paints on top once it successfully loads. We never rely on `onError`
+    // to reveal the fallback, because a hanging or blank-but-200 source image
+    // never fires it — that is exactly how cards ended up imageless.
     const avatarLetter = (sourceName || "•").trim().charAt(0).toUpperCase();
+    const baseSrc = fallbackImageUrl || imageUrl;
+    const hasOverlay = !!imageUrl && imageUrl !== baseSrc;
 
-    // Reset image state when the primary URL changes (e.g. different article)
+    const [baseLoaded, setBaseLoaded] = useState(false);
+    const [overlayLoaded, setOverlayLoaded] = useState(false);
+
+    // Reset image state when the article changes (different primary URL)
     React.useEffect(() => {
-      setCurrentSrc(imageUrl);
-      setImageLoaded(false);
-      setHasFallenBack(false);
-    }, [imageUrl]);
-
-    const handleImageError = () => {
-      if (!hasFallenBack && fallbackImageUrl && fallbackImageUrl !== imageUrl) {
-        setHasFallenBack(true);
-        setImageLoaded(false);
-        setCurrentSrc(fallbackImageUrl);
-      }
-    };
+      setBaseLoaded(false);
+      setOverlayLoaded(false);
+    }, [imageUrl, baseSrc]);
 
     return (
       <Card
@@ -112,18 +113,37 @@ const NewsArticleCardBase = React.forwardRef<HTMLDivElement, NewsArticleCardProp
                 "linear-gradient(135deg, hsl(var(--muted)) 0%, hsl(var(--muted) / 0.8) 50%, hsl(var(--muted) / 0.6) 100%)",
             }}
           />
-          {currentSrc && (
+
+          {/* Guaranteed base layer — the category-matched fallback. Always
+              rendered so the card is never imageless, whatever the source does. */}
+          {baseSrc && (
             <img
-              src={currentSrc}
+              src={baseSrc}
               alt=""
               loading="lazy"
               decoding="async"
-              onLoad={() => setImageLoaded(true)}
-              onError={handleImageError}
+              onLoad={() => setBaseLoaded(true)}
               className={cn(
                 "absolute inset-0 h-full w-full object-cover transition-all duration-500",
                 "group-hover:scale-[1.03]",
-                imageLoaded ? "opacity-100" : "opacity-0"
+                baseLoaded ? "opacity-100" : "opacity-0"
+              )}
+            />
+          )}
+
+          {/* Source image overlay — paints over the base ONLY once it genuinely
+              loads. On error/hang it simply never appears and the base shows. */}
+          {hasOverlay && (
+            <img
+              src={imageUrl}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              onLoad={() => setOverlayLoaded(true)}
+              className={cn(
+                "absolute inset-0 h-full w-full object-cover transition-all duration-500",
+                "group-hover:scale-[1.03]",
+                overlayLoaded ? "opacity-100" : "opacity-0"
               )}
             />
           )}
