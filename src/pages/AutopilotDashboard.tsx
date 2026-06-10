@@ -289,17 +289,6 @@ export default function AutopilotDashboard() {
     <TodaysGoalCard actions={todayActions} loading={recLoading} onOpenAutopilot={handleOpenAutopilot} />
   );
 
-  // VTID-03255 — "Jetzt wichtig" current move + "Mein Weg" foundation path.
-  // onStart maps the guided step to the existing flow where one exists; the
-  // rest are driven by Vitana in voice, so we never navigate to a dead route.
-  const handleJourneyStart = (stepKey: string) => {
-    if (stepKey === "life_compass" || stepKey === "economic_intent") return handleSetGoal();
-    if (stepKey === "autopilot") return handleOpenAutopilot();
-  };
-  const currentMove = (
-    <CurrentMoveCard snapshot={jfSnapshot} loading={jfLoading} onStart={handleJourneyStart} />
-  );
-
   // VTID-03300 — tapping a step in the Next-Steps checklist opens the ORB
   // focused on that exact step, so Vitana drives it with the user instead of
   // talking in generalities. Verified completion flips the row to a green
@@ -314,6 +303,23 @@ export default function AutopilotDashboard() {
     }
     focusJourneyStepInOrb(stepKey);
   };
+
+  // VTID-03255 — "Jetzt wichtig" current move + "Mein Weg" foundation path.
+  // "Los geht's" maps the guided step to the dedicated flow where one exists
+  // (set the goal, open Autopilot). Every other step (profile, diary, calendar,
+  // connect, …) is driven by Vitana in voice, so we fall through to the same
+  // ORB-focus mechanism the Next-Steps list uses — the button must never be a
+  // dead no-op for a step without a dedicated screen.
+  const handleJourneyStart = (stepKey: string) => {
+    if (stepKey === "life_compass" || stepKey === "economic_intent" || stepKey === "economic_aspiration") {
+      return handleSetGoal();
+    }
+    if (stepKey === "autopilot") return handleOpenAutopilot();
+    return handleStepFocus(stepKey);
+  };
+  const currentMove = (
+    <CurrentMoveCard snapshot={jfSnapshot} loading={jfLoading} onStart={handleJourneyStart} />
+  );
 
   const foundationPath = jfSnapshot ? (
     <FoundationPath
