@@ -259,6 +259,8 @@ export default function AutopilotDashboard() {
     ? {
         completedSessions: guidedJourneyProgress.completedSessions,
         totalSessions: guidedJourneyProgress.totalSessions,
+        completedTopics: guidedJourneyProgress.completedTopics,
+        totalTopics: guidedJourneyProgress.totalTopics,
         pct: guidedJourneyProgress.pct,
       }
     : undefined;

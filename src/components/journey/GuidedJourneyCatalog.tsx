@@ -18,6 +18,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
+import { CheckCircle2, Circle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,7 +33,7 @@ import { t, notify } from '@/lib/i18n-toast';
 import { useJourneyChecklist, type PublicTopic } from '@/hooks/useJourneyChecklist';
 import { activateOrb } from '@/lib/orbActivate'; // VTID-03281: activate Vitana/ORB
 import { completePractice, practiceTargetRoute } from '@/lib/journeyPractice'; // VTID-03282
-import { JOURNEY_STATE_QUERY_KEY } from '@/hooks/useGuidedJourneyProgress';
+import { JOURNEY_STATE_QUERY_KEY, useGuidedJourneyProgress } from '@/hooks/useGuidedJourneyProgress';
 
 const CHAPTER_ORDER = ['basics', 'daily_use', 'community', 'health', 'intelligence', 'discovery'];
 
@@ -57,6 +58,9 @@ export function GuidedJourneyCatalog({
   className,
 }: GuidedJourneyCatalogProps) {
   const { sessions, chapters, loading, error } = useJourneyChecklist();
+  // Per-step completion (shares the same React Query state the hero ring uses,
+  // so a mark-done updates the checklist and the hero counter together).
+  const { completedSet } = useGuidedJourneyProgress();
   const [activeChapter, setActiveChapter] = useState<string>('all');
   const [openTopic, setOpenTopic] = useState<PublicTopic | null>(null);
   const [practiceMode, setPracticeMode] = useState(false); // VTID-03282: screen 03
@@ -136,54 +140,115 @@ export function GuidedJourneyCatalog({
         ))}
       </div>
 
-      {/* Session list */}
-      <div className="space-y-3">
-        {visibleSessions.map((s) => (
-          <div key={s.session} className="space-y-2">
-            <button
-              type="button"
-              onClick={() => handleSessionClick(s.topics[0])}
-              className="flex w-full items-center justify-between px-1 text-left"
-            >
-              <span className="text-xs font-semibold tracking-wide text-foreground/70">
-                {t('screens.guidedCatalog.sessionN', { n: s.session })}
-              </span>
-              <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                {chapterLabel(s.chapterId)}
-              </span>
-            </button>
-            {/* Full-width horizontal rows (per prototype): topic id + label left, status right */}
-            <div className="space-y-2">
-              {s.topics.map((topic) => (
-                <button
-                  key={topic.topicId}
-                  type="button"
-                  onClick={() => handleTopicClick(topic)}
-                  className="block w-full text-left"
+      {/* Session list — premium checklist: each session is a titled section
+          with a completion chip + check; its steps render as a connected
+          timeline of rows that flip to a green check once done. */}
+      <div className="space-y-5">
+        {visibleSessions.map((s) => {
+          const doneCount = s.topics.reduce(
+            (n, tp) => (completedSet.has(tp.topicId) ? n + 1 : n),
+            0,
+          );
+          const totalCount = s.topics.length;
+          const sessionComplete = totalCount > 0 && doneCount === totalCount;
+          return (
+            <div key={s.session} className="space-y-2.5">
+              {/* Session header */}
+              <button
+                type="button"
+                onClick={() => handleSessionClick(s.topics[0])}
+                className="flex w-full items-center gap-2 px-1 text-left"
+              >
+                {sessionComplete ? (
+                  <CheckCircle2
+                    className="h-4 w-4 shrink-0 text-emerald-500"
+                    aria-label={t('screens.guidedCatalog.sessionComplete')}
+                  />
+                ) : (
+                  <span className="h-4 w-4 shrink-0 rounded-full border-2 border-foreground/25" aria-hidden />
+                )}
+                <span className="text-xs font-bold tracking-wide text-foreground/80">
+                  {t('screens.guidedCatalog.sessionN', { n: s.session })}
+                </span>
+                <span
+                  className={cn(
+                    'rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums',
+                    sessionComplete
+                      ? 'bg-emerald-100 text-emerald-700'
+                      : 'bg-muted text-muted-foreground',
+                  )}
                 >
-                  <Card className="flex items-center gap-3 p-3 transition-colors hover:bg-accent/40">
-                    <div className="min-w-0 flex-1">
-                      <span className="block text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                        {topic.topicId}
-                      </span>
-                      <span className="block text-sm font-medium leading-snug">
-                        {topic.displayLabel}
-                      </span>
-                      {topic.shortDescription && (
-                        <span className="mt-0.5 block text-xs text-muted-foreground line-clamp-1">
-                          {topic.shortDescription}
-                        </span>
-                      )}
-                    </div>
-                    <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-medium text-primary">
-                      {t('screens.guidedCatalog.statusReady')}
-                    </span>
-                  </Card>
-                </button>
-              ))}
+                  {t('screens.guidedCatalog.sessionProgress', { done: doneCount, total: totalCount })}
+                </span>
+                <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
+                  {chapterLabel(s.chapterId)}
+                </span>
+              </button>
+
+              {/* Steps — connected by a soft vertical rail on the left */}
+              <div className="relative space-y-2 pl-1">
+                <span
+                  aria-hidden
+                  className="absolute left-[22px] top-3 bottom-3 w-px bg-gradient-to-b from-border via-border/60 to-transparent"
+                />
+                {s.topics.map((topic) => {
+                  const done = completedSet.has(topic.topicId);
+                  return (
+                    <button
+                      key={topic.topicId}
+                      type="button"
+                      onClick={() => handleTopicClick(topic)}
+                      className="relative block w-full text-left"
+                    >
+                      <Card
+                        className={cn(
+                          'flex items-center gap-3 p-3 transition-all hover:shadow-md',
+                          done
+                            ? 'border-emerald-200 bg-emerald-50/50 dark:bg-emerald-950/20'
+                            : 'hover:bg-accent/40',
+                        )}
+                      >
+                        {done ? (
+                          <CheckCircle2 className="h-6 w-6 shrink-0 text-emerald-500" />
+                        ) : (
+                          <Circle className="h-6 w-6 shrink-0 text-muted-foreground/35" />
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <span className="block text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                            {topic.topicId}
+                          </span>
+                          <span
+                            className={cn(
+                              'block text-sm font-medium leading-snug',
+                              done && 'text-foreground/70',
+                            )}
+                          >
+                            {topic.displayLabel}
+                          </span>
+                          {topic.shortDescription && (
+                            <span className="mt-0.5 block text-xs text-muted-foreground line-clamp-1">
+                              {topic.shortDescription}
+                            </span>
+                          )}
+                        </div>
+                        {done ? (
+                          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-semibold text-emerald-700">
+                            <CheckCircle2 className="h-3 w-3" />
+                            {t('screens.guidedCatalog.statusDone')}
+                          </span>
+                        ) : (
+                          <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-0.5 text-[10px] font-medium text-primary">
+                            {t('screens.guidedCatalog.statusReady')}
+                          </span>
+                        )}
+                      </Card>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Topic Explanation (screen 02) ⇄ Guided Practice (screen 03) drawer */}

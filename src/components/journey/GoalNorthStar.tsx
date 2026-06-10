@@ -41,9 +41,16 @@ export function GoalNorthStar({
   guided?: boolean; // VTID-03287: Guided Mode → bright Maxina-header blue card
   /**
    * Guided Journey learning progress. When present (Guided Mode), the ring
-   * reflects sessions/topics learned instead of the goal-deadline countdown.
+   * reflects steps (topics) learned instead of the goal-deadline countdown.
+   * The ring fills by `pct` (topics completed); the headline number is steps.
    */
-  guidedProgress?: { completedSessions: number; totalSessions: number; pct: number };
+  guidedProgress?: {
+    completedSessions: number;
+    totalSessions: number;
+    completedTopics: number;
+    totalTopics: number;
+    pct: number;
+  };
 }) {
   // VTID-03287: bright Maxina-header blue (same gradient as .maxina-topbar),
   // applied as the Guided-Mode visual signal. Overrides the Tailwind gradient.
@@ -145,16 +152,16 @@ export function GoalNorthStar({
         )}
 
         {showGuided ? (
-          // Guided Mode — the ring fills by topics learned; the center number is
-          // sessions learned out of the total. Single gradient (no phases/plan).
+          // Guided Mode — the ring fills by steps (topics) learned; the center
+          // number is steps completed out of the total. Single gradient (no plan).
           <GoalProgressRing
             pct={guidedProgress!.pct}
-            day={guidedProgress!.completedSessions}
+            day={guidedProgress!.completedTopics}
             daysLeft={0}
-            daysLeftLabel={t("screens.autopilotdashboard.sessionsCompletedOf", {
-              total: guidedProgress!.totalSessions,
+            daysLeftLabel={t("screens.autopilotdashboard.stepsCompletedOf", {
+              total: guidedProgress!.totalTopics,
             })}
-            topLabel={t("screens.autopilotdashboard.sessionsLabel")}
+            topLabel={t("screens.autopilotdashboard.stepsLabel")}
             size={RING_SIZE}
           />
         ) : ring.hasCountdown ? (
