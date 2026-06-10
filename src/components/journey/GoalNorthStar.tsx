@@ -29,6 +29,7 @@ export function GoalNorthStar({
   onRetry,
   onOpenPlan,
   guided = false,
+  guidedProgress,
 }: {
   goal: MyJourneyGoal | null;
   journey?: MyJourneyJourney | null;
@@ -38,6 +39,11 @@ export function GoalNorthStar({
   onRetry?: () => void;
   onOpenPlan?: () => void;
   guided?: boolean; // VTID-03287: Guided Mode → bright Maxina-header blue card
+  /**
+   * Guided Journey learning progress. When present (Guided Mode), the ring
+   * reflects sessions/topics learned instead of the goal-deadline countdown.
+   */
+  guidedProgress?: { completedSessions: number; totalSessions: number; pct: number };
 }) {
   // VTID-03287: bright Maxina-header blue (same gradient as .maxina-topbar),
   // applied as the Guided-Mode visual signal. Overrides the Tailwind gradient.
@@ -93,6 +99,9 @@ export function GoalNorthStar({
   }
 
   const hasDeadline = !!goal?.has_deadline;
+  // Guided Mode shows learning progress (sessions/topics learned), not the
+  // goal-deadline countdown. The ring fills smoothly by topics completed.
+  const showGuided = guided && !!guidedProgress;
   // The ring is always a countdown: to the goal deadline when set, otherwise
   // to the 90-day onboarding plan (so it counts DOWN instead of up).
   const ring = buildJourneyRing(goal, journey ?? null);
@@ -127,7 +136,26 @@ export function GoalNorthStar({
       />
       <CardContent className="p-5 flex flex-col items-center text-center gap-3 relative">
 
-        {ring.hasCountdown ? (
+        {showGuided && (
+          <h2 className="text-sm font-semibold uppercase tracking-[0.32em] text-sky-900/80">
+            {t("screens.autopilotdashboard.myGuidedJourney")}
+          </h2>
+        )}
+
+        {showGuided ? (
+          // Guided Mode — the ring fills by topics learned; the center number is
+          // sessions learned out of the total. Single gradient (no phases/plan).
+          <GoalProgressRing
+            pct={guidedProgress!.pct}
+            day={guidedProgress!.completedSessions}
+            daysLeft={0}
+            daysLeftLabel={t("screens.autopilotdashboard.sessionsCompletedOf", {
+              total: guidedProgress!.totalSessions,
+            })}
+            topLabel={t("screens.autopilotdashboard.sessionsLabel")}
+            size={RING_SIZE}
+          />
+        ) : ring.hasCountdown ? (
           // Tapping the ring opens the day-by-day plan once a deadline exists;
           // without one it routes to the goal/deadline setup flow.
           <button
