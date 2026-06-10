@@ -569,7 +569,17 @@ function SettingsRouter() {
 // viewport flag isn't threaded and it falls back to the desktop route.
 function MobileSettingsSection({ mode, children }: { mode: string; children: ReactNode }) {
   const isMobile = useIsMobile();
-  return isMobile ? <Navigate to={`/settings?mode=${mode}`} replace /> : <>{children}</>;
+  const { search } = useLocation();
+  if (!isMobile) return <>{children}</>;
+  // Preserve the desktop deep-link's ?section=<slug> as the nested mobile mode
+  // so the Orb's sub-pill navigation lands on the right child, not the bare
+  // parent. e.g. /settings/preferences?section=appearance →
+  // /settings?mode=preferences.appearance. The catalog's ?section slugs match
+  // MobileSettings' child mode suffixes 1:1 (appearance/language,
+  // visibility/data/security, plan/payment/invoices/creator).
+  const section = new URLSearchParams(search).get('section');
+  const targetMode = section ? `${mode}.${section}` : mode;
+  return <Navigate to={`/settings?mode=${targetMode}`} replace />;
 }
 
 function SupportRouter() {
