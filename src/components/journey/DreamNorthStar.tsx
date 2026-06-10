@@ -471,8 +471,39 @@ export function DreamNorthStar({
         {/* Flex spacer pushes the goal card to the bottom of the hero */}
         <div className="flex-1" />
 
-        {/* Goal pill (or CTA when no goal) */}
-        {goal ? (
+        {/* Goal pill — Guided Mode shows the fixed learning goal (learn the app
+            / pass the sessions); Full App shows the user's life-compass goal. */}
+        {showGuided ? (
+          <div
+            className="text-left rounded-2xl border border-white/60 px-4 py-3.5 flex items-center gap-3 mt-4"
+            style={{
+              background: "rgba(255,255,255,0.92)",
+              backdropFilter: "blur(8px)",
+              boxShadow: "0 8px 20px rgba(124,58,237,0.12)",
+            }}
+          >
+            <div
+              className="w-11 h-11 rounded-full flex items-center justify-center text-white shrink-0"
+              style={{
+                background: "linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 100%)",
+                boxShadow: "0 4px 10px rgba(196,181,253,0.4)",
+              }}
+            >
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-[15px] font-bold leading-tight text-slate-900">
+                {t("screens.autopilotdashboard.guidedGoalTitle")}
+              </div>
+              <HeartDivider width={20} className="my-1.5" />
+              <div className="text-[12px] text-slate-500">
+                {t("screens.autopilotdashboard.guidedGoalSubtitle", {
+                  total: guidedProgress!.totalSessions,
+                })}
+              </div>
+            </div>
+          </div>
+        ) : goal ? (
           <button
             type="button"
             onClick={onSetGoal}
