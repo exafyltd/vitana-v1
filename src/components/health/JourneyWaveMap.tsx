@@ -61,7 +61,7 @@ export function JourneyWaveMap({ dayNumber }: JourneyWaveMapProps) {
                   </span>
                 </TooltipTrigger>
                 <TooltipContent side="top" className="max-w-xs">
-                  <p className="text-xs">{w.description}</p>
+                  <p className="text-xs">{t(w.descKey)}</p>
                 </TooltipContent>
               </Tooltip>
             );

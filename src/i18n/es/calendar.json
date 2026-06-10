@@ -57,7 +57,8 @@
       "today": "Hoy",
       "tomorrow": "Mañana",
       "thisWeek": "Esta semana",
-      "later": "Más tarde"
+      "later": "Más tarde",
+      "past": "Pasado"
     },
     "autopilot": {
       "suggestions": "Sugerencias de Autopilot",
@@ -141,7 +142,17 @@
         "wave-4": "Inteligencia de salud",
         "wave-5": "Momentos de insight",
         "wave-6": "Recomendaciones y descubrimiento"
+      },
+      "waveDescriptions": {
+        "wave-1": "Configura tu perfil, conoce a Maxina, explora la comunidad",
+        "wave-2": "Crea hábitos diarios: diario, coincidencias, encuentros",
+        "wave-3": "Profundiza conexiones, fija metas, invita a amigos",
+        "wave-4": "Seguimiento de salud, tendencias de biomarcadores, Índice Vitana",
+        "wave-5": "Informes semanales, patrones revelados, hitos",
+        "wave-6": "Productos, servicios y profesionales a tu medida"
       }
-    }
+    },
+    "yourEvents": "Tus eventos y actividades",
+    "reminders": "Recordatorios"
   }
 }

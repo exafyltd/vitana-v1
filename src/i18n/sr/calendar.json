@@ -57,7 +57,8 @@
       "today": "Danas",
       "tomorrow": "Sutra",
       "thisWeek": "Ove nedelje",
-      "later": "Kasnije"
+      "later": "Kasnije",
+      "past": "Prošlo"
     },
     "autopilot": {
       "suggestions": "Autopilot predlozi",
@@ -141,7 +142,17 @@
         "wave-4": "Zdravstvena inteligencija",
         "wave-5": "Trenuci uvida",
         "wave-6": "Preporuke i otkrića"
+      },
+      "waveDescriptions": {
+        "wave-1": "Podesi svoj profil, upoznaj Maxinu, istraži zajednicu",
+        "wave-2": "Izgradi dnevne navike — dnevnik, podudaranja, druženja",
+        "wave-3": "Produbi veze, postavi ciljeve, pozovi prijatelje",
+        "wave-4": "Praćenje zdravlja, trendovi biomarkera, Vitana indeks",
+        "wave-5": "Nedeljni izveštaji, otkrivanje obrazaca, prekretnice",
+        "wave-6": "Proizvodi, usluge i stručnjaci prilagođeni tebi"
       }
-    }
+    },
+    "yourEvents": "Tvoji događaji i aktivnosti",
+    "reminders": "Podsetnici"
   }
 }

@@ -61,7 +61,7 @@ export function JourneyDayBadge() {
         <Badge
           variant="outline"
           className="shrink-0 bg-primary/10 text-primary border-primary/20 text-xs"
-          title={stage.wave.description}
+          title={t(stage.wave.descKey)}
         >{t('screens.health.nameDayStart_dayEnd_day', { name: t(stage.wave.nameKey), start_day: stage.wave.timeline.start_day, end_day: stage.wave.timeline.end_day })}</Badge>
       )}
 

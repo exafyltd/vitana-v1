@@ -7,18 +7,21 @@ export interface JourneyWave {
   id: string;
   name: string;
   nameKey: string;
+  /** English fallback description. */
   description: string;
+  /** i18n key for the localized description (resolves to the German/ES/SR catalog). */
+  descKey: string;
   icon: string;
   timeline: { start_day: number; end_day: number };
 }
 
 export const JOURNEY_WAVES: JourneyWave[] = [
-  { id: 'wave-1', name: 'Getting Started', nameKey: 'calendar.journey.waveNames.wave-1', description: 'Set up your profile, meet Maxina, explore the community', icon: 'rocket', timeline: { start_day: 0, end_day: 7 } },
-  { id: 'wave-2', name: 'Daily Anchors', nameKey: 'calendar.journey.waveNames.wave-2', description: 'Build daily habits — diary, matches, meetups', icon: 'sun', timeline: { start_day: 1, end_day: 14 } },
-  { id: 'wave-3', name: 'Deepening Connections', nameKey: 'calendar.journey.waveNames.wave-3', description: 'Deepen connections, set goals, invite friends', icon: 'heart', timeline: { start_day: 7, end_day: 30 } },
-  { id: 'wave-4', name: 'Health Intelligence', nameKey: 'calendar.journey.waveNames.wave-4', description: 'Health tracking, biomarker trends, Vitana Index', icon: 'activity', timeline: { start_day: 14, end_day: 60 } },
-  { id: 'wave-5', name: 'Insight Moments', nameKey: 'calendar.journey.waveNames.wave-5', description: 'Weekly reports, pattern reveals, milestones', icon: 'lightbulb', timeline: { start_day: 30, end_day: 60 } },
-  { id: 'wave-6', name: 'Recommendations & Discovery', nameKey: 'calendar.journey.waveNames.wave-6', description: 'Products, services, professionals tailored to you', icon: 'compass', timeline: { start_day: 30, end_day: 90 } },
+  { id: 'wave-1', name: 'Getting Started', nameKey: 'calendar.journey.waveNames.wave-1', description: 'Set up your profile, meet Maxina, explore the community', descKey: 'calendar.journey.waveDescriptions.wave-1', icon: 'rocket', timeline: { start_day: 0, end_day: 7 } },
+  { id: 'wave-2', name: 'Daily Anchors', nameKey: 'calendar.journey.waveNames.wave-2', description: 'Build daily habits — diary, matches, meetups', descKey: 'calendar.journey.waveDescriptions.wave-2', icon: 'sun', timeline: { start_day: 1, end_day: 14 } },
+  { id: 'wave-3', name: 'Deepening Connections', nameKey: 'calendar.journey.waveNames.wave-3', description: 'Deepen connections, set goals, invite friends', descKey: 'calendar.journey.waveDescriptions.wave-3', icon: 'heart', timeline: { start_day: 7, end_day: 30 } },
+  { id: 'wave-4', name: 'Health Intelligence', nameKey: 'calendar.journey.waveNames.wave-4', description: 'Health tracking, biomarker trends, Vitana Index', descKey: 'calendar.journey.waveDescriptions.wave-4', icon: 'activity', timeline: { start_day: 14, end_day: 60 } },
+  { id: 'wave-5', name: 'Insight Moments', nameKey: 'calendar.journey.waveNames.wave-5', description: 'Weekly reports, pattern reveals, milestones', descKey: 'calendar.journey.waveDescriptions.wave-5', icon: 'lightbulb', timeline: { start_day: 30, end_day: 60 } },
+  { id: 'wave-6', name: 'Recommendations & Discovery', nameKey: 'calendar.journey.waveNames.wave-6', description: 'Products, services, professionals tailored to you', descKey: 'calendar.journey.waveDescriptions.wave-6', icon: 'compass', timeline: { start_day: 30, end_day: 90 } },
 ];
 
 export const JOURNEY_TOTAL_DAYS = 90;

@@ -53,7 +53,7 @@ export function JourneyProgressStrip({ progress, milestoneEvents }: JourneyProgr
       {expanded && (
         <div className="mt-3 pt-3 border-t border-amber-200/30 dark:border-amber-800/30">
           <p className="text-xs font-medium text-amber-700 dark:text-amber-400 mb-1">{waveName}</p>
-          <p className="text-xs text-muted-foreground mb-2">{progress.wave.description}</p>
+          <p className="text-xs text-muted-foreground mb-2">{translate(progress.wave.descKey, progress.wave.description)}</p>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[10px] text-muted-foreground">
               {translate('calendar.journey.yourJourney', 'Your journey')}: {progress.waveProgress}%
