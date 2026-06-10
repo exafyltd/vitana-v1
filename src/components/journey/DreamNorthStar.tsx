@@ -89,6 +89,7 @@ export function DreamNorthStar({
   onRetry,
   onOpenPlan,
   guided = false,
+  guidedProgress,
 }: {
   goal: MyJourneyGoal | null;
   journey?: MyJourneyJourney | null;
@@ -98,6 +99,18 @@ export function DreamNorthStar({
   onRetry?: () => void;
   onOpenPlan?: () => void;
   guided?: boolean; // VTID-03287: Guided Mode → bright Maxina-header blue card
+  /**
+   * Guided Journey learning progress. When present (Guided Mode), the ring
+   * reflects steps (topics) learned instead of the goal-deadline countdown.
+   * The ring fills by `pct` (topics completed); the headline number is steps.
+   */
+  guidedProgress?: {
+    completedSessions: number;
+    totalSessions: number;
+    completedTopics: number;
+    totalTopics: number;
+    pct: number;
+  };
 }) {
   const reduce = useReducedMotion();
 
@@ -171,6 +184,9 @@ export function DreamNorthStar({
   }
 
   const hasDeadline = !!goal?.has_deadline;
+  // Guided Mode shows learning progress (sessions/topics learned), not the
+  // goal-deadline countdown. The ring fills smoothly by topics completed.
+  const showGuided = guided && !!guidedProgress;
   // The ring is always a countdown: to the goal deadline when set, otherwise
   // to the 90-day onboarding plan (so it counts DOWN instead of up).
   const ring = buildJourneyRing(goal, journey ?? null);
@@ -184,12 +200,13 @@ export function DreamNorthStar({
   const cx = ringSize / 2;
   const cy = ringSize / 2;
   const circumference = 2 * Math.PI * radius;
-  const clamped = Math.min(100, Math.max(0, ring.pct));
+  const ringPct = showGuided ? guidedProgress!.pct : ring.pct;
+  const clamped = Math.min(100, Math.max(0, ringPct));
   const offset = circumference - (clamped / 100) * circumference;
 
   // Phase coloring only applies to a real goal plan; the onboarding fallback
-  // uses the single gradient stroke.
-  const hasPhases = hasDeadline && phases.length > 1 && total !== null && total > 0;
+  // uses the single gradient stroke. Guided Mode always uses the single gradient.
+  const hasPhases = !showGuided && hasDeadline && phases.length > 1 && total !== null && total > 0;
   const curFrac =
     hasPhases && goal?.goal_day != null && total
       ? Math.max(0, Math.min(1, goal.goal_day / total))
@@ -272,7 +289,11 @@ export function DreamNorthStar({
             textShadow: "0 1px 3px rgba(255,255,255,0.6)",
           }}
         >
-          {t("screens.autopilotdashboard.myJourney").toUpperCase()}
+          {t(
+            showGuided
+              ? "screens.autopilotdashboard.myGuidedJourney"
+              : "screens.autopilotdashboard.myJourney",
+          ).toUpperCase()}
         </div>
         <HeartDivider className="mt-1.5" />
 
@@ -321,11 +342,12 @@ export function DreamNorthStar({
                   );
                 return nodes;
               })
-            ) : ring.hasCountdown ? (
-              // Single gradient fallback when there's no phase plan — used both
-              // for a deadline-without-plan goal and for the 90-day onboarding
-              // countdown. Keeps the animated dashoffset look. Rotated so the
-              // fill starts from the top of the ring and proceeds clockwise.
+            ) : showGuided || ring.hasCountdown ? (
+              // Single gradient fallback when there's no phase plan — used for a
+              // deadline-without-plan goal, the 90-day onboarding countdown, and
+              // Guided Mode's learning progress. Keeps the animated dashoffset
+              // look. Rotated so the fill starts from the top of the ring and
+              // proceeds clockwise.
               <g transform={`rotate(-90 ${cx} ${cy})`}>
                 <motion.circle
                   cx={cx}
@@ -348,7 +370,7 @@ export function DreamNorthStar({
               (i.e. a deadline exists). Without a deadline, GoalPlanSheet
               auto-fires plan generation and lands the user on an empty
               drawer instead of the deadline-setup flow. */}
-          {hasDeadline && (
+          {!showGuided && hasDeadline && (
             <button
               type="button"
               onClick={onOpenPlan}
@@ -360,69 +382,135 @@ export function DreamNorthStar({
             </button>
           )}
 
-          {ring.hasCountdown && (
+          {!showGuided && ring.hasCountdown && (
             <TodayDot pct={curFrac * 100} ringSize={ringSize} stroke={stroke} />
           )}
 
-          {/* Inner white circle — the big day number is anchored to the exact
-              centre of the circle; the "TAG" label and the days-left caption are
-              positioned above and below it so the number always reads centred.
-              The whole circle is a button — tapping anywhere on the day number
-              opens the day-by-day plan sheet (same affordance as the old
-              GoalNorthStar and the desktop layout). */}
-          <button
-            type="button"
-            onClick={hasDeadline ? onOpenPlan : onSetGoal}
-            aria-label={t(
-              hasDeadline
-                ? "screens.autopilotdashboard.openPlan"
-                : !goal
-                ? "screens.autopilotdashboard.setGoalCta"
-                : "screens.autopilotdashboard.setDeadlineCta",
-            )}
-            className="absolute rounded-full bg-white/92 hover:scale-[1.02] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 text-left"
-            style={{
-              inset: stroke + 4,
-              backdropFilter: "blur(8px)",
-              boxShadow: "0 0 0 1px rgba(255,255,255,0.5) inset",
-            }}
-          >
+          {/* Inner white circle — the big number is anchored to the exact
+              centre of the circle; the label and caption are positioned above
+              and below it so the number always reads centred. In Guided Mode it
+              shows sessions learned (non-interactive); otherwise it's a button —
+              tapping anywhere on the day number opens the day-by-day plan sheet. */}
+          {showGuided ? (
             <div
-              className="absolute left-0 right-0 text-center font-semibold"
-              style={{ top: "19%", color: "#6d28d9", fontSize: 13, letterSpacing: "0.32em" }}
-            >
-              {t("screens.autopilotdashboard.dayLabel").toUpperCase()}
-            </div>
-            <div
-              className="absolute left-1/2 top-1/2 font-bold leading-none"
+              className="absolute rounded-full bg-white/92"
               style={{
-                transform: "translate(-50%, -50%)",
-                color: "#7c3aed",
-                fontSize: numberFont,
+                inset: stroke + 4,
+                backdropFilter: "blur(8px)",
+                boxShadow: "0 0 0 1px rgba(255,255,255,0.5) inset",
               }}
             >
-              {ring.hasCountdown ? goalDay : "—"}
+              <div
+                className="absolute left-0 right-0 text-center font-semibold"
+                style={{ top: "19%", color: "#6d28d9", fontSize: 13, letterSpacing: "0.32em" }}
+              >
+                {t("screens.autopilotdashboard.stepsLabel").toUpperCase()}
+              </div>
+              <div
+                className="absolute left-1/2 top-1/2 font-bold leading-none"
+                style={{
+                  transform: "translate(-50%, -50%)",
+                  color: "#7c3aed",
+                  fontSize: numberFont,
+                }}
+              >
+                {guidedProgress!.completedTopics}
+              </div>
+              <div
+                className="absolute left-0 right-0 px-5 text-center text-xs text-muted-foreground leading-tight"
+                style={{ bottom: "15%" }}
+              >
+                {t("screens.autopilotdashboard.stepsCompletedOf", {
+                  total: guidedProgress!.totalTopics,
+                })}
+              </div>
             </div>
-            <div
-              className="absolute left-0 right-0 px-5 text-center text-xs text-muted-foreground leading-tight"
-              style={{ bottom: "15%" }}
+          ) : (
+            <button
+              type="button"
+              onClick={hasDeadline ? onOpenPlan : onSetGoal}
+              aria-label={t(
+                hasDeadline
+                  ? "screens.autopilotdashboard.openPlan"
+                  : !goal
+                  ? "screens.autopilotdashboard.setGoalCta"
+                  : "screens.autopilotdashboard.setDeadlineCta",
+              )}
+              className="absolute rounded-full bg-white/92 hover:scale-[1.02] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 text-left"
+              style={{
+                inset: stroke + 4,
+                backdropFilter: "blur(8px)",
+                boxShadow: "0 0 0 1px rgba(255,255,255,0.5) inset",
+              }}
             >
-              {hasDeadline
-                ? t("screens.autopilotdashboard.daysToGoalShort", { count: daysLeft })
-                : ring.source === "onboarding"
-                ? t("screens.autopilotdashboard.onboardingDaysLeftShort", { count: daysLeft })
-                : !goal
-                ? t("screens.autopilotdashboard.setGoalSubtitle")
-                : t("screens.autopilotdashboard.noDeadlineHint")}
-            </div>
-          </button>
+              <div
+                className="absolute left-0 right-0 text-center font-semibold"
+                style={{ top: "19%", color: "#6d28d9", fontSize: 13, letterSpacing: "0.32em" }}
+              >
+                {t("screens.autopilotdashboard.dayLabel").toUpperCase()}
+              </div>
+              <div
+                className="absolute left-1/2 top-1/2 font-bold leading-none"
+                style={{
+                  transform: "translate(-50%, -50%)",
+                  color: "#7c3aed",
+                  fontSize: numberFont,
+                }}
+              >
+                {ring.hasCountdown ? goalDay : "—"}
+              </div>
+              <div
+                className="absolute left-0 right-0 px-5 text-center text-xs text-muted-foreground leading-tight"
+                style={{ bottom: "15%" }}
+              >
+                {hasDeadline
+                  ? t("screens.autopilotdashboard.daysToGoalShort", { count: daysLeft })
+                  : ring.source === "onboarding"
+                  ? t("screens.autopilotdashboard.onboardingDaysLeftShort", { count: daysLeft })
+                  : !goal
+                  ? t("screens.autopilotdashboard.setGoalSubtitle")
+                  : t("screens.autopilotdashboard.noDeadlineHint")}
+              </div>
+            </button>
+          )}
         </div>
 
         {/* Flex spacer pushes the goal card to the bottom of the hero */}
         <div className="flex-1" />
 
-        {/* Goal pill (or CTA when no goal) */}
-        {goal ? (
+        {/* Goal pill — Guided Mode shows the fixed learning goal (learn the app
+            / pass the sessions); Full App shows the user's life-compass goal. */}
+        {showGuided ? (
+          <div
+            className="text-left rounded-2xl border border-white/60 px-4 py-3.5 flex items-center gap-3 mt-4"
+            style={{
+              background: "rgba(255,255,255,0.92)",
+              backdropFilter: "blur(8px)",
+              boxShadow: "0 8px 20px rgba(124,58,237,0.12)",
+            }}
+          >
+            <div
+              className="w-11 h-11 rounded-full flex items-center justify-center text-white shrink-0"
+              style={{
+                background: "linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 100%)",
+                boxShadow: "0 4px 10px rgba(196,181,253,0.4)",
+              }}
+            >
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-[15px] font-bold leading-tight text-slate-900">
+                {t("screens.autopilotdashboard.guidedGoalTitle")}
+              </div>
+              <HeartDivider width={20} className="my-1.5" />
+              <div className="text-[12px] text-slate-500">
+                {t("screens.autopilotdashboard.guidedGoalSubtitle", {
+                  total: guidedProgress!.totalSessions,
+                })}
+              </div>
+            </div>
+          </div>
+        ) : goal ? (
           <button
             type="button"
             onClick={onSetGoal}

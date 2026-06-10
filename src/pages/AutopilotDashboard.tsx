@@ -30,6 +30,7 @@ import { DreamNorthStar } from "@/components/journey/DreamNorthStar";
 import { GuidedModeSwitch } from "@/components/journey/GuidedModeSwitch"; // VTID-03279
 import { GuidedJourneyCatalog } from "@/components/journey/GuidedJourneyCatalog"; // VTID-03280
 import { useGuidedMode } from "@/context/GuidedModeProvider"; // VTID-03280
+import { useGuidedJourneyProgress } from "@/hooks/useGuidedJourneyProgress";
 import { FutureSelfTiles } from "@/components/journey/FutureSelfTiles";
 import { TodaysGoalCard, type TodayAction } from "@/components/journey/TodaysGoalCard";
 import { GoalSetupDialog } from "@/components/journey/GoalSetupDialog";
@@ -37,12 +38,8 @@ import { GoalPlanSheet } from "@/components/journey/GoalPlanSheet";
 import { MatchesPreview } from "@/components/journey/MatchesPreview";
 import { EventsPreview } from "@/components/journey/EventsPreview";
 import { AutopilotCard } from "@/components/journey/AutopilotCard";
-import { CurrentMoveCard } from "@/components/journey/CurrentMoveCard";
-import { FoundationPath } from "@/components/journey/FoundationPath";
-import { useJourneyFoundation } from "@/hooks/useJourneyFoundation";
 import { useGenerateGoalPlan } from "@/hooks/useGoalPlan";
 import { useAIConsent } from "@/hooks/useAIConsent";
-import { focusJourneyStepInOrb, armJourneyStepFocus } from "@/lib/orbJourneyFocus";
 import { t } from "@/lib/i18n-toast";
 
 interface Recommendation {
@@ -149,9 +146,10 @@ function IndexNowCard() {
 export default function AutopilotDashboard() {
   const { user } = useAuth();
   const { isGuided } = useGuidedMode(); // VTID-03280: show guided catalog below start view
+  const guidedJourneyProgress = useGuidedJourneyProgress(); // sessions/topics learned for the hero ring
   const isMobile = useIsMobile();
   const { allVisibleActions, fetchRecommendations } = useAutopilot();
-  const { hasConsent, setDialogOpen } = useAIConsent();
+  const { hasConsent } = useAIConsent();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [goalDialogOpen, setGoalDialogOpen] = useState(false);
   const [planSheetOpen, setPlanSheetOpen] = useState(false);
@@ -163,10 +161,6 @@ export default function AutopilotDashboard() {
   // Onboarding plan (day_in_journey / total_days / days_left). When the goal has
   // no deadline, the North Star ring counts down this 90-day plan instead.
   const journey = journeyData?.journey ?? null;
-
-  // VTID-03255 — the shared Journey Foundation snapshot (next move + path).
-  const { data: jfData, isLoading: jfLoading } = useJourneyFoundation();
-  const jfSnapshot = jfData?.snapshot ?? null;
 
   const { data: recData, isLoading: recLoading, refetch } = useQuery({
     queryKey: ["autopilot-onboarding"],
@@ -259,6 +253,17 @@ export default function AutopilotDashboard() {
   // Mobile leads with the painted "dream-board" hero (vision-board feel,
   // emotional first anchor). Desktop keeps the structured GoalNorthStar
   // until we redesign the wide layout — mobile-first per the brief.
+  // Guided Mode → the hero card reflects learning progress (sessions/topics
+  // learned) instead of the goal-deadline countdown. Omitted in Full App.
+  const guidedProgress = isGuided
+    ? {
+        completedSessions: guidedJourneyProgress.completedSessions,
+        totalSessions: guidedJourneyProgress.totalSessions,
+        completedTopics: guidedJourneyProgress.completedTopics,
+        totalTopics: guidedJourneyProgress.totalTopics,
+        pct: guidedJourneyProgress.pct,
+      }
+    : undefined;
   const dreamHero = (
     <DreamNorthStar
       goal={goal}
@@ -269,6 +274,7 @@ export default function AutopilotDashboard() {
       onRetry={() => refetchJourney()}
       onOpenPlan={() => setPlanSheetOpen(true)}
       guided={isGuided}
+      guidedProgress={guidedProgress}
     />
   );
   const northStar = (
@@ -281,6 +287,7 @@ export default function AutopilotDashboard() {
       onRetry={() => refetchJourney()}
       onOpenPlan={() => setPlanSheetOpen(true)}
       guided={isGuided}
+      guidedProgress={guidedProgress}
     />
   );
   const futureSelf = <FutureSelfTiles goal={goal} />;
@@ -288,46 +295,6 @@ export default function AutopilotDashboard() {
   const todaysGoal = (
     <TodaysGoalCard actions={todayActions} loading={recLoading} onOpenAutopilot={handleOpenAutopilot} />
   );
-
-  // VTID-03300 — tapping a step in the Next-Steps checklist opens the ORB
-  // focused on that exact step, so Vitana drives it with the user instead of
-  // talking in generalities. Verified completion flips the row to a green
-  // check on the next snapshot poll. If the user hasn't granted AI consent
-  // yet, pre-arm the focus and surface the consent dialog first — the
-  // post-consent show() (OrbConsentPlaceholder) then consumes the focus.
-  const handleStepFocus = (stepKey: string) => {
-    if (user && !hasConsent) {
-      armJourneyStepFocus(stepKey);
-      setDialogOpen(true);
-      return;
-    }
-    focusJourneyStepInOrb(stepKey);
-  };
-
-  // VTID-03255 — "Jetzt wichtig" current move + "Mein Weg" foundation path.
-  // "Los geht's" maps the guided step to the dedicated flow where one exists
-  // (set the goal, open Autopilot). Every other step (profile, diary, calendar,
-  // connect, …) is driven by Vitana in voice, so we fall through to the same
-  // ORB-focus mechanism the Next-Steps list uses — the button must never be a
-  // dead no-op for a step without a dedicated screen.
-  const handleJourneyStart = (stepKey: string) => {
-    if (stepKey === "life_compass" || stepKey === "economic_intent" || stepKey === "economic_aspiration") {
-      return handleSetGoal();
-    }
-    if (stepKey === "autopilot") return handleOpenAutopilot();
-    return handleStepFocus(stepKey);
-  };
-  const currentMove = (
-    <CurrentMoveCard snapshot={jfSnapshot} loading={jfLoading} onStart={handleJourneyStart} />
-  );
-
-  const foundationPath = jfSnapshot ? (
-    <FoundationPath
-      steps={jfSnapshot.foundation_steps}
-      currentKey={jfSnapshot.current_next_step?.key ?? null}
-      onStepFocus={handleStepFocus}
-    />
-  ) : null;
 
   const matchesPreview = <MatchesPreview />;
   const eventsPreview = <EventsPreview />;
@@ -376,10 +343,8 @@ export default function AutopilotDashboard() {
         guidedCatalog
       ) : (
         <>
-          {currentMove}
           {futureSelf}
           {todaysGoal}
-          {foundationPath}
           {matchesPreview}
           {eventsPreview}
           {yourPlanCard}
@@ -451,7 +416,6 @@ export default function AutopilotDashboard() {
               <GuidedModeSwitch className="px-1" />{/* VTID-03279: Guided/Full switch below Journey card */}
               {!isGuided && (
                 <>
-                  {currentMove}
                   {todaysGoal}
                   {matchesPreview}
                   {eventsPreview}
@@ -460,7 +424,6 @@ export default function AutopilotDashboard() {
             </div>
             {!isGuided && (
               <div className="space-y-4">
-                {foundationPath}
                 {yourPlanCard}
                 {howYoureDoing}
               </div>
