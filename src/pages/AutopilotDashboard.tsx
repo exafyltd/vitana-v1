@@ -30,6 +30,7 @@ import { DreamNorthStar } from "@/components/journey/DreamNorthStar";
 import { GuidedModeSwitch } from "@/components/journey/GuidedModeSwitch"; // VTID-03279
 import { GuidedJourneyCatalog } from "@/components/journey/GuidedJourneyCatalog"; // VTID-03280
 import { useGuidedMode } from "@/context/GuidedModeProvider"; // VTID-03280
+import { useGuidedJourneyProgress } from "@/hooks/useGuidedJourneyProgress";
 import { FutureSelfTiles } from "@/components/journey/FutureSelfTiles";
 import { TodaysGoalCard, type TodayAction } from "@/components/journey/TodaysGoalCard";
 import { GoalSetupDialog } from "@/components/journey/GoalSetupDialog";
@@ -149,6 +150,7 @@ function IndexNowCard() {
 export default function AutopilotDashboard() {
   const { user } = useAuth();
   const { isGuided } = useGuidedMode(); // VTID-03280: show guided catalog below start view
+  const guidedJourneyProgress = useGuidedJourneyProgress(); // sessions/topics learned for the hero ring
   const isMobile = useIsMobile();
   const { allVisibleActions, fetchRecommendations } = useAutopilot();
   const { hasConsent, setDialogOpen } = useAIConsent();
@@ -259,6 +261,15 @@ export default function AutopilotDashboard() {
   // Mobile leads with the painted "dream-board" hero (vision-board feel,
   // emotional first anchor). Desktop keeps the structured GoalNorthStar
   // until we redesign the wide layout — mobile-first per the brief.
+  // Guided Mode → the hero card reflects learning progress (sessions/topics
+  // learned) instead of the goal-deadline countdown. Omitted in Full App.
+  const guidedProgress = isGuided
+    ? {
+        completedSessions: guidedJourneyProgress.completedSessions,
+        totalSessions: guidedJourneyProgress.totalSessions,
+        pct: guidedJourneyProgress.pct,
+      }
+    : undefined;
   const dreamHero = (
     <DreamNorthStar
       goal={goal}
@@ -269,6 +280,7 @@ export default function AutopilotDashboard() {
       onRetry={() => refetchJourney()}
       onOpenPlan={() => setPlanSheetOpen(true)}
       guided={isGuided}
+      guidedProgress={guidedProgress}
     />
   );
   const northStar = (
@@ -281,6 +293,7 @@ export default function AutopilotDashboard() {
       onRetry={() => refetchJourney()}
       onOpenPlan={() => setPlanSheetOpen(true)}
       guided={isGuided}
+      guidedProgress={guidedProgress}
     />
   );
   const futureSelf = <FutureSelfTiles goal={goal} />;
