@@ -15,8 +15,18 @@
  * Reuses existing ui primitives (Card, Button, Drawer) — no new design system.
  */
 
-import { useState } from 'react';
+import { useState, type ComponentType } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  Sparkles,
+  TrendingUp,
+  Info,
+  Gift,
+  Clock,
+  Rocket,
+  RotateCcw,
+  type LucideProps,
+} from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -33,6 +43,63 @@ import { activateOrb } from '@/lib/orbActivate'; // VTID-03281: activate Vitana/
 import { completePractice, practiceTargetRoute } from '@/lib/journeyPractice'; // VTID-03282
 
 const CHAPTER_ORDER = ['basics', 'daily_use', 'community', 'health', 'intelligence', 'discovery'];
+
+/** VITANA INDEX points awarded for listening to a guided session. */
+const SESSION_INDEX_REWARD = 2;
+
+/**
+ * Subtle per-chapter accent so the catalog list isn't a monotonous wall of
+ * identical cards. A 4px left border tint keyed to the chapter — harmonious,
+ * not loud (the rest of the card stays neutral).
+ */
+const CHAPTER_ACCENT: Record<string, string> = {
+  basics: 'border-l-sky-400',
+  daily_use: 'border-l-emerald-400',
+  community: 'border-l-violet-400',
+  health: 'border-l-rose-400',
+  intelligence: 'border-l-amber-400',
+  discovery: 'border-l-cyan-400',
+};
+
+/** Colour + icon per explanation section — turns the plain text rows into
+ *  scannable, motivating cards instead of a "Word document". */
+interface SectionTint {
+  icon: ComponentType<LucideProps>;
+  card: string;
+  chip: string;
+  glyph: string;
+  label: string;
+}
+const SECTION_TINTS: Record<'what' | 'benefit' | 'when' | 'try', SectionTint> = {
+  what: {
+    icon: Info,
+    card: 'bg-sky-50 border-sky-100 dark:bg-sky-950/30 dark:border-sky-900/40',
+    chip: 'bg-sky-500/15',
+    glyph: 'text-sky-600 dark:text-sky-400',
+    label: 'text-sky-700 dark:text-sky-300',
+  },
+  benefit: {
+    icon: Gift,
+    card: 'bg-emerald-50 border-emerald-100 dark:bg-emerald-950/30 dark:border-emerald-900/40',
+    chip: 'bg-emerald-500/15',
+    glyph: 'text-emerald-600 dark:text-emerald-400',
+    label: 'text-emerald-700 dark:text-emerald-300',
+  },
+  when: {
+    icon: Clock,
+    card: 'bg-amber-50 border-amber-100 dark:bg-amber-950/30 dark:border-amber-900/40',
+    chip: 'bg-amber-500/15',
+    glyph: 'text-amber-600 dark:text-amber-400',
+    label: 'text-amber-700 dark:text-amber-300',
+  },
+  try: {
+    icon: Rocket,
+    card: 'bg-violet-50 border-violet-100 dark:bg-violet-950/30 dark:border-violet-900/40',
+    chip: 'bg-violet-500/15',
+    glyph: 'text-violet-600 dark:text-violet-400',
+    label: 'text-violet-700 dark:text-violet-300',
+  },
+};
 
 function chapterLabel(chapterId: string): string {
   const key = `screens.guidedCatalog.chapter_${chapterId}`;
@@ -154,7 +221,12 @@ export function GuidedJourneyCatalog({
                   onClick={() => handleTopicClick(topic)}
                   className="block w-full text-left"
                 >
-                  <Card className="flex items-center gap-3 p-3 transition-colors hover:bg-accent/40">
+                  <Card
+                    className={cn(
+                      'flex items-center gap-3 rounded-2xl border-l-4 p-3 transition-all hover:bg-accent/40 hover:shadow-sm',
+                      CHAPTER_ACCENT[topic.chapterId] ?? 'border-l-primary/40',
+                    )}
+                  >
                     <div className="min-w-0 flex-1">
                       <span className="block text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
                         {topic.topicId}
@@ -184,23 +256,51 @@ export function GuidedJourneyCatalog({
         <DrawerContent>
           {openTopic && !practiceMode && (
             <>
-              <DrawerHeader>
-                <DrawerTitle>{openTopic.displayLabel}</DrawerTitle>
+              {/* Celebration header — Vitana praises the user after a listened
+                  session and surfaces the VITANA INDEX reward they just earned. */}
+              <DrawerHeader className="items-center gap-2 pb-1 text-center">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary/60 text-primary-foreground shadow-lg shadow-primary/30">
+                  <Sparkles className="h-7 w-7" />
+                </div>
+                <DrawerTitle className="text-lg">
+                  {t('screens.guidedCatalog.congratsTitle')}
+                </DrawerTitle>
+                <p className="text-sm text-muted-foreground">
+                  {t('screens.guidedCatalog.congratsSubtitle')}
+                </p>
+                <div className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3.5 py-1.5 text-sm font-bold text-emerald-600 ring-1 ring-inset ring-emerald-500/25 dark:text-emerald-400">
+                  <TrendingUp className="h-4 w-4" />
+                  {t('screens.guidedCatalog.reward', { points: SESSION_INDEX_REWARD })}
+                </div>
+                <span className="text-[11px] uppercase tracking-wide text-muted-foreground">
+                  {t('screens.guidedCatalog.rewardCaption')}
+                </span>
               </DrawerHeader>
-              <div className="space-y-3 px-4 pb-2 text-sm">
-                <ExplanationRow
+
+              <div className="px-4 pb-1 text-center">
+                <span className="text-xs font-semibold uppercase tracking-wider text-primary/70">
+                  {openTopic.displayLabel}
+                </span>
+              </div>
+
+              <div className="space-y-2.5 px-4 pb-2">
+                <ExplanationCard
+                  tint={SECTION_TINTS.what}
                   label={t('screens.guidedCatalog.whatItIs')}
                   value={openTopic.explanation.whatItIs}
                 />
-                <ExplanationRow
+                <ExplanationCard
+                  tint={SECTION_TINTS.benefit}
                   label={t('screens.guidedCatalog.userBenefit')}
                   value={openTopic.explanation.userBenefit}
                 />
-                <ExplanationRow
+                <ExplanationCard
+                  tint={SECTION_TINTS.when}
                   label={t('screens.guidedCatalog.whenToUse')}
                   value={openTopic.explanation.whenToUse}
                 />
-                <ExplanationRow
+                <ExplanationCard
+                  tint={SECTION_TINTS.try}
                   label={t('screens.guidedCatalog.tryThis')}
                   value={openTopic.explanation.tryThis}
                 />
@@ -209,27 +309,29 @@ export function GuidedJourneyCatalog({
                 <div className="flex gap-2">
                   <Button
                     variant="outline"
-                    className="flex-1"
+                    className="flex-1 rounded-full"
                     onClick={() => {
                       // VTID-03291: Replay re-activates Vitana/ORB focused on this topic.
                       activateOrb(openTopic.topicId);
                       if (onActivateTopic) onActivateTopic(openTopic);
                     }}
                   >
+                    <RotateCcw className="h-4 w-4" />
                     {t('screens.guidedCatalog.replay')}
                   </Button>
                   <Button
-                    className="flex-1"
+                    className="flex-1 rounded-full bg-gradient-to-r from-primary to-primary/80 shadow-md shadow-primary/30 hover:from-primary/90 hover:to-primary/70"
                     onClick={() => {
                       // VTID-03282: go to the Guided Practice step (screen 03).
                       if (onStartPractice) onStartPractice(openTopic);
                       else setPracticeMode(true);
                     }}
                   >
+                    <Rocket className="h-4 w-4" />
                     {t('screens.guidedCatalog.startPractice')}
                   </Button>
                 </div>
-                <Button variant="ghost" onClick={closeDrawer}>
+                <Button variant="ghost" className="rounded-full" onClick={closeDrawer}>
                   {t('screens.guidedCatalog.backToJourney')}
                 </Button>
               </DrawerFooter>
@@ -241,8 +343,9 @@ export function GuidedJourneyCatalog({
               <DrawerHeader>
                 <DrawerTitle>{t('screens.guidedCatalog.practiceHeader')}</DrawerTitle>
               </DrawerHeader>
-              <div className="space-y-3 px-4 pb-2 text-sm">
-                <ExplanationRow
+              <div className="space-y-2.5 px-4 pb-2">
+                <ExplanationCard
+                  tint={SECTION_TINTS.try}
                   label={t('screens.guidedCatalog.tryThis')}
                   value={openTopic.explanation.tryThis}
                 />
@@ -251,6 +354,7 @@ export function GuidedJourneyCatalog({
                 {practiceTargetRoute(openTopic.guidedPracticeTarget) && (
                   <Button
                     variant="outline"
+                    className="rounded-full"
                     onClick={() => {
                       const route = practiceTargetRoute(openTopic.guidedPracticeTarget);
                       if (route) navigate(route);
@@ -259,10 +363,13 @@ export function GuidedJourneyCatalog({
                     {t('screens.guidedCatalog.openFeature')}
                   </Button>
                 )}
-                <Button onClick={() => markPracticeDone(openTopic)}>
+                <Button
+                  className="rounded-full bg-gradient-to-r from-primary to-primary/80 shadow-md shadow-primary/30 hover:from-primary/90 hover:to-primary/70"
+                  onClick={() => markPracticeDone(openTopic)}
+                >
                   {t('screens.guidedCatalog.markDone')}
                 </Button>
-                <Button variant="ghost" onClick={closeDrawer}>
+                <Button variant="ghost" className="rounded-full" onClick={closeDrawer}>
                   {t('screens.guidedCatalog.skip')}
                 </Button>
               </DrawerFooter>
@@ -300,12 +407,30 @@ function ChapterPill({
   );
 }
 
-function ExplanationRow({ label, value }: { label: string; value: string | null }) {
+function ExplanationCard({
+  tint,
+  label,
+  value,
+}: {
+  tint: SectionTint;
+  label: string;
+  value: string | null;
+}) {
   if (!value) return null;
+  const Icon = tint.icon;
   return (
-    <div>
-      <span className="block text-xs font-semibold text-foreground/60">{label}</span>
-      <span className="block text-foreground/90">{value}</span>
+    <div className={cn('rounded-2xl border p-3', tint.card)}>
+      <div className="mb-1.5 flex items-center gap-2">
+        <span
+          className={cn('flex h-6 w-6 items-center justify-center rounded-full', tint.chip)}
+        >
+          <Icon className={cn('h-3.5 w-3.5', tint.glyph)} />
+        </span>
+        <span className={cn('text-xs font-semibold uppercase tracking-wide', tint.label)}>
+          {label}
+        </span>
+      </div>
+      <p className="text-sm leading-relaxed text-foreground/90">{value}</p>
     </div>
   );
 }
