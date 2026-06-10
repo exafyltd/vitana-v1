@@ -31,6 +31,8 @@ export interface GuidedJourneyProgress {
   totalSessions: number;
   /** Ring fill percentage, 0–100, driven by topics completed. */
   pct: number;
+  /** Per-topic completion lookup — drives the catalog's green checkmarks. */
+  completedSet: Set<string>;
   loading: boolean;
 }
 
@@ -86,6 +88,7 @@ export function useGuidedJourneyProgress(): GuidedJourneyProgress {
     completedSessions,
     totalSessions,
     pct,
+    completedSet,
     loading: checklistLoading || stateLoading,
   };
 }

@@ -101,9 +101,16 @@ export function DreamNorthStar({
   guided?: boolean; // VTID-03287: Guided Mode → bright Maxina-header blue card
   /**
    * Guided Journey learning progress. When present (Guided Mode), the ring
-   * reflects sessions/topics learned instead of the goal-deadline countdown.
+   * reflects steps (topics) learned instead of the goal-deadline countdown.
+   * The ring fills by `pct` (topics completed); the headline number is steps.
    */
-  guidedProgress?: { completedSessions: number; totalSessions: number; pct: number };
+  guidedProgress?: {
+    completedSessions: number;
+    totalSessions: number;
+    completedTopics: number;
+    totalTopics: number;
+    pct: number;
+  };
 }) {
   const reduce = useReducedMotion();
 
@@ -397,7 +404,7 @@ export function DreamNorthStar({
                 className="absolute left-0 right-0 text-center font-semibold"
                 style={{ top: "19%", color: "#6d28d9", fontSize: 13, letterSpacing: "0.32em" }}
               >
-                {t("screens.autopilotdashboard.sessionsLabel").toUpperCase()}
+                {t("screens.autopilotdashboard.stepsLabel").toUpperCase()}
               </div>
               <div
                 className="absolute left-1/2 top-1/2 font-bold leading-none"
@@ -407,14 +414,14 @@ export function DreamNorthStar({
                   fontSize: numberFont,
                 }}
               >
-                {guidedProgress!.completedSessions}
+                {guidedProgress!.completedTopics}
               </div>
               <div
                 className="absolute left-0 right-0 px-5 text-center text-xs text-muted-foreground leading-tight"
                 style={{ bottom: "15%" }}
               >
-                {t("screens.autopilotdashboard.sessionsCompletedOf", {
-                  total: guidedProgress!.totalSessions,
+                {t("screens.autopilotdashboard.stepsCompletedOf", {
+                  total: guidedProgress!.totalTopics,
                 })}
               </div>
             </div>
