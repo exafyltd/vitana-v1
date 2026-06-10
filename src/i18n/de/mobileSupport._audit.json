@@ -1,393 +1,384 @@
 {
   "verdicts": {
-    "health.vitanaIndex": {
+    "mobilesupport.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "health.topPercentile": {
+    "mobilesupport.tabFaqs": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "health.pillars.hydration": {
+    "mobilesupport.quickContactEmailSub": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "health.pillars.mental": {
+    "mobilesupport.quickContactChat": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "health.missionAlignment.pillars.hydration": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "health.missionAlignment.economyAxes.find_match": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "health.title": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "health.description": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "health.overview": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "health.overviewDesc": {
+    "mobilesupport.description": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Missing gender agreement for 'Wellness-Übersicht'. 'Dein' applies to 'Dashboard', but 'Übersicht' is feminine and needs 'deine'.",
-      "suggested": "Dein umfassendes Gesundheits-Dashboard und deine Wellness-Übersicht",
+      "confidence": 0.9,
+      "issue": "The phrase 'womit du Hilfe brauchst' is slightly clunky; 'wobei' is more natural for 'what you need help with'.",
+      "suggested": "Sag uns, wobei du Hilfe brauchst",
       "phase": "llm"
     },
-    "health.servicesHub": {
+    "mobilesupport.tabContact": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.servicesHubDesc": {
+    "mobilesupport.tabCommunity": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.biomarkers": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "health.biomarkersDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "health.healthTracker": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "health.healthTrackerDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "health.education": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "health.educationDesc": {
+    "mobilesupport.hint": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Lernen' is not the most natural verb for 'learn about topics'. 'Sich informieren über' or 'erfahren' is more idiomatic.",
-      "suggested": "Über Gesundheitsthemen informieren und auf Wellness-Ressourcen zugreifen",
+      "confidence": 0.9,
+      "issue": "'mit deiner Stimme' is a bit redundant and less idiomatic than 'laut' or 'mündlich' when describing an issue out loud.",
+      "suggested": "Tippe auf das Mikrofon und beschreibe dein Anliegen laut.",
       "phase": "llm"
     },
-    "health.priorityFocus": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Dein Fokusbereich' is a bit generic and loses the nuance of 'priority'. 'Schwerpunkt' or 'vorrangiger Fokus' would be better.",
-      "suggested": "Dein Schwerpunkt",
-      "phase": "llm"
-    },
-    "health.priorityFocusExplanation": {
+    "mobilesupport.recordButtonStart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.autopilotGuidance": {
+    "mobilesupport.recordButtonStop": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.autopilotSuggests": {
+    "mobilesupport.recording": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.takeAction": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Handeln' is a bit formal for a friendly app's call to action. 'Aktiv werden' or 'Jetzt handeln' is more common and encouraging.",
-      "suggested": "Aktiv werden",
-      "phase": "llm"
-    },
-    "health.uploadBloodTest": {
+    "mobilesupport.listening": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.orderBloodTest": {
+    "mobilesupport.tapToSpeak": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.viewPlans": {
+    "mobilesupport.speakNaturally": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.healthSnapshot": {
+    "mobilesupport.transcriptTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.trend.improving": {
+    "mobilesupport.transcriptPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.trend.declining": {
+    "mobilesupport.searchPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.trend.stable": {
+    "mobilesupport.categoryLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.suggestions.uploadBloodTestResults": {
+    "mobilesupport.categoryPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.suggestions.startFitnessChallenge": {
+    "mobilesupport.categoryAccount": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.pillars.sleep": {
+    "mobilesupport.categoryBilling": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.pillars.exercise": {
+    "mobilesupport.categoryTechnical": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.pillars.nutrition": {
+    "mobilesupport.categoryFeature": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.emptyStates.noSleepPlan": {
+    "mobilesupport.categoryPrivacy": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.emptyStates.noSleepPlanDesc": {
+    "mobilesupport.categoryOther": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.emptyStates.noExercisePlan": {
+    "mobilesupport.attachLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.emptyStates.noExercisePlanDesc": {
+    "mobilesupport.submitButton": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.emptyStates.noNutritionPlan": {
+    "mobilesupport.submitting": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.emptyStates.noNutritionPlanDesc": {
+    "mobilesupport.sentTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.emptyStates.noHydrationPlan": {
+    "mobilesupport.sentBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.emptyStates.noHydrationPlanDesc": {
+    "mobilesupport.sendAnother": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.emptyStates.noMentalPlan": {
+    "mobilesupport.quickContactTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.emptyStates.noMentalPlanDesc": {
+    "mobilesupport.quickContactEmail": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.emptyStates.generatePlan": {
+    "mobilesupport.quickContactChatSub": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.emptyStates.generating": {
+    "mobilesupport.quickContactCall": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.noSupplements": {
+    "mobilesupport.quickContactCallSub": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.noSupplementsDesc": {
+    "mobilesupport.responseTime": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.noReports": {
+    "mobilesupport.faqsTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.noReportsDesc": {
+    "mobilesupport.faqsSubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.medical": {
+    "mobilesupport.faqsOpenHelpCenter": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.supplements": {
+    "mobilesupport.faqCreateAccountQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.uploadDescription": {
+    "mobilesupport.faqCreateAccountA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.unknownProvider": {
+    "mobilesupport.faqResetPasswordQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.addSupplement": {
+    "mobilesupport.faqResetPasswordA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.uploadFirstReport": {
+    "mobilesupport.faqUpdateProfileQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.title": {
+    "mobilesupport.faqUpdateProfileA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.subtitle": {
+    "mobilesupport.faqPaymentMethodsQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.loading": {
+    "mobilesupport.faqPaymentMethodsA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.error": {
+    "mobilesupport.faqDataSecureQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.noRecs": {
+    "mobilesupport.faqDataSecureA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.summaryServed": {
+    "mobilesupport.faqDeleteAccountQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.summaryServedCount": {
+    "mobilesupport.faqDeleteAccountA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.pillarHeading": {
+    "mobilesupport.communityTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.economyHeading": {
+    "mobilesupport.communitySubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.noPillar": {
+    "mobilesupport.communityGroupTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.noEconomy": {
+    "mobilesupport.communityGroupBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.pillars.nutrition": {
+    "mobilesupport.communityGroupCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.pillars.exercise": {
+    "mobilesupport.communityForumTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.pillars.sleep": {
+    "mobilesupport.communityForumBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.pillars.mental": {
+    "mobilesupport.communityForumCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.economyAxes.marketplace": {
+    "mobilesupport.communityStatsActive": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.economyAxes.income_generation": {
+    "mobilesupport.communityStatsAnswered": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.economyAxes.business_formation": {
+    "mobilesupport.communityStatsResponse": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "health.missionAlignment.contractLink": {
+    "mobilesupport.communityStatsResponseValue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorNotSupported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorEmpty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorSend": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorMicPermission": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorMicNotFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorMicInUse": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorMicGeneric": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorNoAudio": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorTranscription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.transcribing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.backendRecordingHint": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-06-10T07:56:23.230Z"
+  "generatedAt": "2026-06-10T07:58:44.852Z"
 }

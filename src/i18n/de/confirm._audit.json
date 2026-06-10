@@ -1,10 +1,8 @@
 {
   "verdicts": {
     "confirm.delete": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Bist du sicher, dass du dies löschen möchtest?",
       "phase": "llm"
     },
     "confirm.deleteDesc": {
@@ -13,38 +11,30 @@
       "phase": "llm"
     },
     "confirm.cancel": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Bist du sicher, dass du abbrechen möchtest?",
       "phase": "llm"
     },
     "confirm.cancelDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'deine').",
-      "suggested": "Deine Änderungen gehen verloren.",
       "phase": "llm"
     },
     "confirm.unsavedChanges": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Du hast ungespeicherte Änderungen",
       "phase": "llm"
     },
     "confirm.unsavedChangesDesc": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' and 'Ihre' instead of informal 'du' and 'deine').",
-      "suggested": "Möchtest du wirklich verlassen? Deine Änderungen gehen verloren.",
+      "confidence": 0.9,
+      "issue": "Using 'verlassen' without an object is slightly awkward; 'abbrechen' or 'gehen' is more common in this context.",
+      "suggested": "Möchtest du wirklich abbrechen? Deine Änderungen gehen verloren.",
       "phase": "llm"
     },
     "confirm.leave": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Möchtest du diese Seite wirklich verlassen?",
       "phase": "llm"
     },
     "confirm.leaveDesc": {
@@ -53,24 +43,18 @@
       "phase": "llm"
     },
     "confirm.logout": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Möchtest du dich wirklich abmelden?",
       "phase": "llm"
     },
     "confirm.logoutDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Du musst dich erneut anmelden.",
       "phase": "llm"
     },
     "confirm.remove": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Möchtest du dieses Element wirklich entfernen?",
       "phase": "llm"
     },
     "confirm.removeDesc": {
@@ -79,24 +63,18 @@
       "phase": "llm"
     },
     "confirm.disconnect": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Möchtest du diese Verbindung wirklich trennen?",
       "phase": "llm"
     },
     "confirm.disconnectDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Du kannst dich später erneut verbinden.",
       "phase": "llm"
     },
     "confirm.proceed": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Möchtest du fortfahren?",
       "phase": "llm"
     },
     "confirm.proceedDesc": {
@@ -105,5 +83,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:07:07.497Z"
+  "generatedAt": "2026-06-10T07:54:33.207Z"
 }
