@@ -53,8 +53,13 @@ export function GoalNorthStar({
   // Plan milestones power the phase-colored ring (hook must run before any early return).
   const { data: planData } = useGoalPlan();
 
+  // Guided Mode shows learning progress (sessions/topics learned) and a fixed
+  // learning goal — independent of the user's Life Compass goal, so it skips the
+  // no-goal / journey-error early returns below and always renders the card.
+  const showGuided = guided && !!guidedProgress;
+
   // Couldn't load the journey — show a retry, not a misleading "no goal" state.
-  if (!loading && error && !goal) {
+  if (!showGuided && !loading && error && !goal) {
     return (
       <Card className="rounded-3xl border ring-1 ring-border/60 shadow-sm bg-card/80">
         <CardContent className="p-8 flex flex-col items-center text-center gap-3">
@@ -76,7 +81,7 @@ export function GoalNorthStar({
   }
 
   // No goal at all → invite the user to set their Life Compass goal.
-  if (!loading && !goal) {
+  if (!showGuided && !loading && !goal) {
     return (
       <Card className={`rounded-3xl border shadow-sm ${guided ? "border-sky-300/60" : "border-amber-200/60 bg-gradient-to-br from-amber-50 via-rose-50 to-fuchsia-50 dark:from-amber-950/20 dark:via-rose-950/20 dark:to-fuchsia-950/20"}`} style={guidedCardStyle}>
         <CardContent className="p-8 flex flex-col items-center text-center gap-3">
@@ -99,9 +104,6 @@ export function GoalNorthStar({
   }
 
   const hasDeadline = !!goal?.has_deadline;
-  // Guided Mode shows learning progress (sessions/topics learned), not the
-  // goal-deadline countdown. The ring fills smoothly by topics completed.
-  const showGuided = guided && !!guidedProgress;
   // The ring is always a countdown: to the goal deadline when set, otherwise
   // to the 90-day onboarding plan (so it counts DOWN instead of up).
   const ring = buildJourneyRing(goal, journey ?? null);
@@ -192,31 +194,47 @@ export function GoalNorthStar({
           </div>
         )}
 
-        {hasDeadline && trend && <GoalTrendBadge trend={trend} />}
+        {!showGuided && hasDeadline && trend && <GoalTrendBadge trend={trend} />}
 
-        {goal && (
-          <h2 className="text-lg font-semibold leading-snug max-w-sm">{localizeGoal(goal.active_goal_text)}</h2>
+        {showGuided ? (
+          // Guided Mode goal — fixed: learn the app / pass the sessions.
+          <>
+            <h2 className="text-lg font-semibold leading-snug max-w-sm">
+              {t("screens.autopilotdashboard.guidedGoalTitle")}
+            </h2>
+            <p className="text-xs text-muted-foreground">
+              {t("screens.autopilotdashboard.guidedGoalSubtitle", {
+                total: guidedProgress!.totalSessions,
+              })}
+            </p>
+          </>
+        ) : (
+          <>
+            {goal && (
+              <h2 className="text-lg font-semibold leading-snug max-w-sm">{localizeGoal(goal.active_goal_text)}</h2>
+            )}
+
+            {hasDeadline && goal?.target_date ? (
+              <p className="text-xs text-muted-foreground">
+                {t("screens.autopilotdashboard.goalDateOn", {
+                  date: fmtDate(new Date(goal.target_date), { day: "numeric", month: "long", year: "numeric" }),
+                })}
+              </p>
+            ) : null}
+
+            {hasDeadline && (
+              <button type="button" onClick={onOpenPlan} className="text-xs text-primary font-medium hover:underline">
+                {t("screens.autopilotdashboard.tapForPlan")}
+              </button>
+            )}
+
+            <Button variant="outline" size="sm" onClick={onSetGoal} className="mt-1">
+              {hasDeadline
+                ? t("screens.autopilotdashboard.adjustGoalCta")
+                : t("screens.autopilotdashboard.setDeadlineCta")}
+            </Button>
+          </>
         )}
-
-        {hasDeadline && goal?.target_date ? (
-          <p className="text-xs text-muted-foreground">
-            {t("screens.autopilotdashboard.goalDateOn", {
-              date: fmtDate(new Date(goal.target_date), { day: "numeric", month: "long", year: "numeric" }),
-            })}
-          </p>
-        ) : null}
-
-        {hasDeadline && (
-          <button type="button" onClick={onOpenPlan} className="text-xs text-primary font-medium hover:underline">
-            {t("screens.autopilotdashboard.tapForPlan")}
-          </button>
-        )}
-
-        <Button variant="outline" size="sm" onClick={onSetGoal} className="mt-1">
-          {hasDeadline
-            ? t("screens.autopilotdashboard.adjustGoalCta")
-            : t("screens.autopilotdashboard.setDeadlineCta")}
-        </Button>
       </CardContent>
     </Card>
   );

@@ -8697,6 +8697,8 @@
       "myGuidedJourney": "My Guided Journey",
       "sessionsLabel": "Sessions",
       "sessionsCompletedOf": "of {total} completed",
+      "guidedGoalTitle": "Learn Maxina, one session at a time",
+      "guidedGoalSubtitle": "Complete all {total} sessions",
       "searchTasks": "Search tasks...",
       "pickDirectionSoSuggestionsStayAligned": "Pick a direction so suggestions stay aligned with what matters to you.",
       "open": "Open",
