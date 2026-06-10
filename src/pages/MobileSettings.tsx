@@ -181,7 +181,16 @@ export default function MobileSettings() {
   };
 
   const renderContent = () => {
-    switch (activeSection) {
+    // A bare parent section (e.g. 'preferences', 'privacy') has no content of its
+    // own — it's a group of children. Landing on it directly (parent pill tap, or
+    // a redirect that lost the ?section) would otherwise hit `default: null` and
+    // show only the Delete Account button. Fall through to the first child so the
+    // parent is never a dead-end. ('billing' has its own overview case.)
+    const section =
+      activeSection === 'preferences' ? 'preferences.appearance'
+      : activeSection === 'privacy' ? 'privacy.visibility'
+      : activeSection;
+    switch (section) {
       case 'notifications':
         return (
           <>
