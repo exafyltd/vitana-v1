@@ -40,7 +40,11 @@ import { cn } from '@/lib/utils';
 import { t, notify } from '@/lib/i18n-toast';
 import { useJourneyChecklist, type PublicTopic } from '@/hooks/useJourneyChecklist';
 import { activateOrb } from '@/lib/orbActivate'; // VTID-03281: activate Vitana/ORB
-import { completePractice, practiceTargetRoute } from '@/lib/journeyPractice'; // VTID-03282
+import {
+  completePractice,
+  practiceTargetRoute,
+  recordSessionListened,
+} from '@/lib/journeyPractice'; // VTID-03282 + session-listen reward
 
 const CHAPTER_ORDER = ['basics', 'daily_use', 'community', 'health', 'intelligence', 'discovery'];
 
@@ -166,6 +170,9 @@ export function GuidedJourneyCatalog({
   const handleTopicClick = (topic: PublicTopic) => {
     // VTID-03291: focus the ORB on this topic so Vitana teaches it from the KB.
     activateOrb(topic.topicId);
+    // Award the +2 VITANA INDEX reward for listening to this session. Idempotent
+    // per topic server-side; fire-and-forget so it never blocks opening the popup.
+    void recordSessionListened(topic.topicId);
     if (onActivateTopic) onActivateTopic(topic);
     else setOpenTopic(topic);
   };
