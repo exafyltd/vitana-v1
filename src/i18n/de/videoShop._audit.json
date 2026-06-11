@@ -1,145 +1,172 @@
 {
   "verdicts": {
-    "portals.maxina.roles.community": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "portals.maxina.roles.patient": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "portals.maxina.roles.professional": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "portals.maxina.roles.admin": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "portals.maxina.title": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.maxina.welcomeBack": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.maxina.continueJourney": {
+    "videoShop.feed.end": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.maxina.joinMaxina": {
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.maxina.joinCommunity": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.maxina.createAccount": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.maxina.signingIn": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.maxina.creatingAccount": {
+    "videoShop.feed.errorBody": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.maxina.joiningAs": {
+    "videoShop.feed.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.maxina.yourFullName": {
+    "videoShop.feed.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.maxina.forgotPassword": {
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.maxina.partOfVitana": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.maxina.allPortals": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.maxina.emailConfirmed": {
+    "videoShop.feed.linkCopied": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.maxina.checkEmail": {
+    "videoShop.drawer.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.alkalma.joinAlkalma": {
+    "videoShop.drawer.productFallback": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.alkalma.welcomeBack": {
+    "videoShop.drawer.addToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.alkalma.continueJourney": {
+    "videoShop.drawer.adding": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.earthlinks.joinEarthlinks": {
+    "videoShop.drawer.addedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.earthlinks.welcomeBack": {
+    "videoShop.drawer.addedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.earthlinks.continueJourney": {
+    "videoShop.drawer.addFailed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.community.joinCommunity": {
+    "videoShop.drawer.goToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.community.welcomeBack": {
+    "videoShop.drawer.moreDetails": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "portals.community.continueJourney": {
+    "videoShop.drawer.notifyMe": {
       "verdict": "OK",
       "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.outOfStock": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.retry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.errorTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.errorBody": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableBody": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "videoShop.drawer.roleBlockedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Awkward and ungrammatical phrasing. 'Kauf hier nicht verfügbar' is too terse and lacks proper sentence structure for 'Buying isn't available here'.",
+      "suggested": "Kaufen ist hier nicht möglich.",
+      "phase": "llm"
+    },
+    "videoShop.drawer.roleBlockedBody": {
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-06-11T08:27:09.901Z"
+  "generatedAt": "2026-06-11T08:43:12.764Z"
 }
