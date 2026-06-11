@@ -1,0 +1,542 @@
+{
+  "verdicts": {
+    "autopilot.suggestions.bannerTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.suggestions.bannerDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.suggestions.enable": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.suggestions.showcaseTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.suggestions.showcaseBadge": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.suggestions.showcaseDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.suggestions.suggestPopular": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.suggestions.recentHighlights": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.suggestions.archetypeTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.suggestions.archetypeBadge": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.suggestions.archetypeDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.suggestions.updateArchetype": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.suggestions.profileSectionTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.suggestions.profileSectionDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.suggestions.tryAutopilot": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.selectedOf": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.readyToExecute": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.executingTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.executingDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.complete": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.go": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.notNow": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.seeOptions": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.seeAllInAI": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.moreActions": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.toastExecutedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.toastExecutedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.toastFailedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.popup.toastFailedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.priorities.high": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.priorities.medium": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.priorities.low": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.widget.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.widget.active": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.widget.paused": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.widget.doNow": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.widget.allOptimized": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.widget.enableToSee": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.widget.completeForRewards": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.widget.enableForCredits": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.insightBanner.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.insightBanner.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.insightBanner.synergyIndex": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.insightBanner.statusBalanced": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.insightBanner.statusNeedsAttention": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.insightBanner.statusImproving": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.polishBio": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.polishBioDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.refreshArchetype": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.refreshArchetypeDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.highlightShowcase": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.highlightShowcaseDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.styleProfile": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.styleProfileDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.cancel": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.runAutopilot": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.generating": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.suggestedBio": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.suggestedArchetype": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.currentValue": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.accept": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.reject": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.acceptAll": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.applied": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.error": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.profilePopup.comingSoon": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.actions.action1Title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.actions.action1Reason": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.actions.action2Title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.actions.action2Reason": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.actions.action3Title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.actions.action3Reason": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.actions.action4Title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.actions.action4Reason": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.actions.action5Title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.actions.action5Reason": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.actions.action6Title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.actions.action6Reason": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.actions.newActionTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.actions.newActionReason": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "autopilot.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.preview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.viewAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.noSuggestions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.execute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.dismiss": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.executing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.success": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "autopilot.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-06-11T08:19:19.161Z"
+}
