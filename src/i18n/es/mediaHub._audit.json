@@ -221,10 +221,8 @@
       "phase": "llm"
     },
     "mediaHub.toast.filtersCleared": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing; 'limpiados' is too literal. 'Borrados' or 'restablecidos' are more idiomatic for filters.",
-      "suggested": "Filtros borrados",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "mediaHub.toast.filtersClearedDesc": {
@@ -473,10 +471,8 @@
       "phase": "llm"
     },
     "mediaHub.upload.languagePlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The example language was translated instead of the word itself, changing the meaning.",
-      "suggested": "Ej., Inglés",
       "phase": "llm"
     },
     "mediaHub.upload.topic": {
@@ -583,7 +579,85 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "mediaHub.toast.commentError": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.toast.commentErrorDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.placeholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.empty": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.beFirst": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.signIn": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.send": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.member": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.reply": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.replyingTo": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.cancelReply": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.like": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
     }
   },
-  "generatedAt": "2026-05-20T07:02:20.814Z"
+  "generatedAt": "2026-06-11T08:19:53.821Z"
 }
