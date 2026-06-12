@@ -1,4 +1,16 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+
+// Guided Journey (VTID-03279) is a community-member onboarding experience that
+// intentionally hides the app sidebar. It must NEVER apply on privileged
+// operator surfaces (admin/staff/professional/patient/dev), where the sidebar
+// is the only navigation between sections — hiding it there leaves the screen
+// with no way to move around (regression reported on /admin/dashboard).
+const GUIDED_MODE_EXEMPT_PREFIXES = ['/admin', '/staff', '/professional', '/patient', '/dev', '/exafy-admin'];
+function isGuidedModeExemptPath(pathname: string): boolean {
+  return GUIDED_MODE_EXEMPT_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(prefix + '/'),
+  );
+}
 import { SidebarProvider, Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -415,7 +427,12 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const isMobile = useIsMobile();
+  const location = useLocation();
   const { isGuided } = useGuidedMode(); // VTID-03279: Guided Mode hides sidebar/menu
+  // Guided Mode hides the sidebar for community onboarding only — never on
+  // privileged operator routes (admin/staff/professional/patient/dev), where
+  // the sidebar is the sole navigation.
+  const hideSidebarForGuided = isGuided && !isGuidedModeExemptPath(location.pathname);
   const { tenant } = useTenant();
   const { preferences } = useUserPreferences();
   const { triggerGreeting } = useIntelligentGreeting();
@@ -477,8 +494,10 @@ export default function AppLayout({ children }: AppLayoutProps) {
       <SidebarProvider open={sidebarOpen} onOpenChange={handleSidebarOpenChange}>
         <div className="flex min-h-screen w-full overflow-x-hidden">
           {/* VTID-03279: Guided Mode hides the sidebar/menu (no dots, no drawer).
-              Account/settings/support are reached by switching to Full App. */}
-          {!isGuided && (
+              Account/settings/support are reached by switching to Full App.
+              Privileged operator routes (admin/staff/…) are exempt — the
+              sidebar is their only navigation. */}
+          {!hideSidebarForGuided && (
             <div className="dark">
               <AppSidebar
                 autopilotPopupOpen={autopilotPopupOpen}
