@@ -39,6 +39,7 @@ import { initializePushNotifications } from "@/lib/pushNotifications";
 import { useOrbVoiceWidget } from "@/hooks/useOrbVoiceWidget";
 import { useOrbFrontDoor } from "@/hooks/useOrbFrontDoor";
 import { useRouteTracker } from "@/hooks/useRouteTracker";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { OrbConsentPlaceholder } from "@/components/audio/OrbConsentPlaceholder";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 import MilestoneCelebration from "./components/MilestoneCelebration";
@@ -638,6 +639,11 @@ const App = () => {
                         useNavigate / useLocation) has a valid Router context.
                         Moving it outside crashes the whole app at boot. */}
                     <AppHooksInitializer />
+                    {/* BOOTSTRAP-PRODUCT-ANALYTICS: feeds tenant/user/locale
+                        context to the analytics client and emits screen_viewed
+                        on every route change. Lives inside <BrowserRouter>
+                        for useLocation(). */}
+                    <AnalyticsTracker />
                     {/* VTID-01954: deep-link handler for identity-mutation
                         intents emitted by the brain (Identity Lock, Plan Part 1.5).
                         Lives inside <BrowserRouter> for useNavigate(). */}
