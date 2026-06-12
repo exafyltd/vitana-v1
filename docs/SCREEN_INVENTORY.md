@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 331
-- **Distinct i18n keys consumed:** 5341
+- **Distinct i18n keys consumed:** 5344
 - **Namespaces in use:** 45
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -117,12 +117,12 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Discover.tsx
 
-**Status:** ✅ clean — keys consumed: 22, namespaces: 4
+**Status:** ✅ clean — keys consumed: 25, namespaces: 4
 
 **i18n namespaces:**
 
 - `actionBar` — used: 1, total in shard: 5
-- `discover` — used: 4, total in shard: 60
+- `discover` — used: 7, total in shard: 64
 - `screens` — used: 15, total in shard: 9568
 - `toasts` — used: 2, total in shard: 1248
 
@@ -2286,7 +2286,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `discover` — used: 16, total in shard: 60
+- `discover` — used: 16, total in shard: 64
 - `screens` — used: 1, total in shard: 9568
 
 ### src/pages/discover/DealsOffers.tsx
