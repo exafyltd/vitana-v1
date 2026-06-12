@@ -39,6 +39,7 @@ import { initializePushNotifications } from "@/lib/pushNotifications";
 import { useOrbVoiceWidget } from "@/hooks/useOrbVoiceWidget";
 import { useOrbFrontDoor } from "@/hooks/useOrbFrontDoor";
 import { useRouteTracker } from "@/hooks/useRouteTracker";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { OrbConsentPlaceholder } from "@/components/audio/OrbConsentPlaceholder";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 import MilestoneCelebration from "./components/MilestoneCelebration";
@@ -341,6 +342,10 @@ const InsightsEngagement = lazy(() => import("./pages/admin/insights/Engagement"
 const InsightsAssistantUsage = lazy(() => import("./pages/admin/insights/AssistantUsage"));
 const InsightsAutopilotImpact = lazy(() => import("./pages/admin/insights/AutopilotImpact"));
 const InsightsReports = lazy(() => import("./pages/admin/insights/Reports"));
+// BOOTSTRAP-PRODUCT-ANALYTICS: product/behavior supervision screens
+const InsightsJourneys = lazy(() => import("./pages/admin/insights/Journeys"));
+const InsightsFeatures = lazy(() => import("./pages/admin/insights/Features"));
+const InsightsInterests = lazy(() => import("./pages/admin/insights/Interests"));
 const AdminNotificationsCompose = lazy(() => import("./pages/admin/notifications/Compose"));
 const AdminNotificationsSentLog = lazy(() => import("./pages/admin/notifications/SentLog"));
 const AdminNotificationsPreferences = lazy(() => import("./pages/admin/notifications/Preferences"));
@@ -638,6 +643,11 @@ const App = () => {
                         useNavigate / useLocation) has a valid Router context.
                         Moving it outside crashes the whole app at boot. */}
                     <AppHooksInitializer />
+                    {/* BOOTSTRAP-PRODUCT-ANALYTICS: feeds tenant/user/locale
+                        context to the analytics client and emits screen_viewed
+                        on every route change. Lives inside <BrowserRouter>
+                        for useLocation(). */}
+                    <AnalyticsTracker />
                     {/* VTID-01954: deep-link handler for identity-mutation
                         intents emitted by the brain (Identity Lock, Plan Part 1.5).
                         Lives inside <BrowserRouter> for useNavigate(). */}
@@ -1725,6 +1735,15 @@ const App = () => {
           } />
           <Route path="/admin/insights/assistant-usage" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsAssistantUsage /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/insights/journeys" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsJourneys /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/insights/features" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsFeatures /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/insights/interests" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsInterests /></ProtectedRoute></AuthGuard>
           } />
           <Route path="/admin/insights/autopilot-impact" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsAutopilotImpact /></ProtectedRoute></AuthGuard>

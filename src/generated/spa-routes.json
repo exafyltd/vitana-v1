@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-05-21T11:30:08.384Z",
+  "generated_at": "2026-06-12T20:17:49.684Z",
   "source": "src/App.tsx",
-  "count": 354,
+  "count": 362,
   "routes": [
     {
       "path": "*",
@@ -289,6 +289,12 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/admin/device-preview",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/admin/feedback",
       "requires_auth": false,
       "file": "src/App.tsx"
@@ -329,7 +335,25 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/admin/insights/features",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/admin/insights/growth",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/insights/interests",
+      "requires_auth": true,
+      "requires_role": "admin",
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/admin/insights/journeys",
       "requires_auth": true,
       "requires_role": "admin",
       "file": "src/App.tsx"
@@ -739,7 +763,7 @@
     },
     {
       "path": "/cart",
-      "requires_auth": true,
+      "requires_auth": false,
       "file": "src/App.tsx"
     },
     {
@@ -1234,6 +1258,11 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/me/matches",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/me/profile",
       "requires_auth": true,
       "file": "src/App.tsx"
@@ -1416,6 +1445,11 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/profile/subscriptions",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/pub/campaigns/:id",
       "requires_auth": false,
       "file": "src/App.tsx"
@@ -1538,6 +1572,11 @@
       "file": "src/App.tsx"
     },
     {
+      "path": "/shop",
+      "requires_auth": true,
+      "file": "src/App.tsx"
+    },
+    {
       "path": "/staff/communications",
       "requires_auth": true,
       "requires_role": "staff",
@@ -1608,6 +1647,11 @@
     {
       "path": "/u/:identifier",
       "requires_auth": false,
+      "file": "src/App.tsx"
+    },
+    {
+      "path": "/universal-cart",
+      "requires_auth": true,
       "file": "src/App.tsx"
     },
     {
