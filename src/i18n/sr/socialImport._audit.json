@@ -47,9 +47,9 @@
     },
     "socialImport.urlRequiredDesc": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register for possessive pronoun. 'vašeg' is formal, should be informal 'tvog'.",
-      "suggested": "Molimo unesite URL tvog {platform} profila",
+      "confidence": 0.9,
+      "issue": "Inconsistent register: uses formal 'vi' imperative 'unesite' instead of informal 'ti' imperative 'unesi' for a du-form app.",
+      "suggested": "Molimo unesi URL tvog {platform} profila",
       "phase": "llm"
     },
     "socialImport.importSuccess": {
@@ -128,5 +128,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:29:37.992Z"
+  "generatedAt": "2026-06-12T08:26:54.909Z"
 }
