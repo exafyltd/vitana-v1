@@ -48,6 +48,7 @@ import { MobileAppShell } from "@/components/mobile/MobileAppShell";
 import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
 import { t } from '@/lib/i18n-toast';
+import PublicAppShell from "@/components/PublicAppShell";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -411,7 +412,22 @@ function AppSidebar({
   );
 }
 
+/**
+ * Public browse surfaces (e.g. /discover) render for signed-out visitors. The
+ * full member layout below depends on an authenticated session (role, profile,
+ * cart, tenant, autopilot), so for guests we short-circuit to a minimal public
+ * storefront shell instead. Auth-gated routes never reach this branch because
+ * their AuthGuard redirects first — only routes mounted with `allowGuest` do.
+ */
 export default function AppLayout({ children }: AppLayoutProps) {
+  const { user, loading } = useAuth();
+  if (!loading && !user) {
+    return <PublicAppShell>{children}</PublicAppShell>;
+  }
+  return <AuthedAppLayout>{children}</AuthedAppLayout>;
+}
+
+function AuthedAppLayout({ children }: AppLayoutProps) {
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const isMobile = useIsMobile();

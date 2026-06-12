@@ -801,8 +801,11 @@ const App = () => {
           <Route path="/dashboard/aifeed" element={<Navigate to="/home" replace />} />
           
           {/* Discover routes */}
+          {/* Public browse surface: /discover and the Supplements / Wellness
+              Services / Deals & Offers tabs render for signed-out visitors
+              (allowGuest). Orders / Cart / checkout stay gated below. */}
           <Route path="/discover" element={
-            <AuthGuard>
+            <AuthGuard allowGuest>
               <Discover />
             </AuthGuard>
           } />
@@ -818,12 +821,12 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/discover/supplements" element={
-            <AuthGuard>
+            <AuthGuard allowGuest>
               <Supplements />
             </AuthGuard>
           } />
           <Route path="/discover/wellness-services" element={
-            <AuthGuard>
+            <AuthGuard allowGuest>
               <WellnessServices />
             </AuthGuard>
           } />
@@ -838,7 +841,7 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/discover/deals-offers" element={
-            <AuthGuard>
+            <AuthGuard allowGuest>
               <DealsOffers />
             </AuthGuard>
           } />

@@ -69,6 +69,12 @@
     "toast": {
       "actionSelected": "Action Selected",
       "comingSoon": "{action} feature coming soon!"
+    },
+    "guest": {
+      "bannerTitle": "Sign in to earn Vitana rewards on every purchase",
+      "bannerSubtitle": "Browse freely — sign in (it's free) to buy and start earning rewards.",
+      "bannerCta": "Sign in",
+      "signIn": "Sign in"
     }
   }
 }
