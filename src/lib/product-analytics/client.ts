@@ -173,7 +173,7 @@ function install(): void {
 
   flushTimer = setInterval(() => void flush(), FLUSH_INTERVAL_MS);
   // Don't keep node-ish environments alive (no-op in browsers).
-  (flushTimer as any)?.unref?.();
+  (flushTimer as unknown as { unref?: () => void }).unref?.();
 
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") void flush(true);
