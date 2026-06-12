@@ -415,7 +415,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const isMobile = useIsMobile();
-  const { isGuided } = useGuidedMode(); // VTID-03279: Guided Mode hides sidebar/menu
+  // VTID-03279: Guided Mode hides sidebar/menu. `isGuided` is mobile-only (the
+  // provider forces Full chrome on desktop), so the desktop sidebar always shows.
+  const { isGuided } = useGuidedMode();
   const { tenant } = useTenant();
   const { preferences } = useUserPreferences();
   const { triggerGreeting } = useIntelligentGreeting();
@@ -476,8 +478,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
     <div>
       <SidebarProvider open={sidebarOpen} onOpenChange={handleSidebarOpenChange}>
         <div className="flex min-h-screen w-full overflow-x-hidden">
-          {/* VTID-03279: Guided Mode hides the sidebar/menu (no dots, no drawer).
-              Account/settings/support are reached by switching to Full App. */}
+          {/* VTID-03279: Guided Mode hides the sidebar/menu (no dots, no drawer)
+              on the MOBILE app. `isGuided` is false on desktop (provider gates
+              it to mobile), so the desktop sidebar always renders. */}
           {!isGuided && (
             <div className="dark">
               <AppSidebar
