@@ -5,6 +5,11 @@
  * (P1: GET /api/v1/journey/state, POST /api/v1/journey/mode) and exposes
  * `isGuided` to the app shell + My Journey.
  *
+ * MOBILE-ONLY (for now): the Guided Journey chrome ships on the mobile app
+ * only. On desktop `isGuided` is forced false so the platform keeps its normal
+ * sidebar/Full-App look — Guided Mode must not alter the desktop experience yet.
+ * `mode` is still tracked/persisted, so resizing to a mobile width activates it.
+ *
  * SAFETY — never auto-flip existing users into Guided. The P1 table defaults
  * mode='guided', so a brand-new row reads guided. We treat guided as effective
  * ONLY when the user has genuinely engaged the guided journey (an interaction
@@ -23,6 +28,7 @@ import React, {
 } from 'react';
 import { useAuth } from '@/context/AuthProvider';
 import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { communityFetch } from '@/lib/community-gateway';
 
 export type JourneyMode = 'guided' | 'full';
@@ -70,6 +76,7 @@ function resolveEffectiveMode(s: JourneyState, isOnboarded: boolean): JourneyMod
 export function GuidedModeProvider({ children }: { children: React.ReactNode }) {
   const { user, loading: authLoading } = useAuth();
   const { needsOnboarding, loading: onboardingLoading } = useOnboardingStatus();
+  const isMobile = useIsMobile();
   const [mode, setModeState] = useState<JourneyMode>('full');
   const [loading, setLoading] = useState(true);
   const resolvedFor = useRef<string | null>(null);
@@ -143,7 +150,7 @@ export function GuidedModeProvider({ children }: { children: React.ReactNode }) 
   }, []);
 
   return (
-    <GuidedModeContext.Provider value={{ mode, isGuided: mode === 'guided', loading, setMode }}>
+    <GuidedModeContext.Provider value={{ mode, isGuided: mode === 'guided' && isMobile, loading, setMode }}>
       {children}
     </GuidedModeContext.Provider>
   );
