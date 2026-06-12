@@ -2452,7 +2452,7 @@
       "ticketHasReopenedRefineInstructionsReactivate": ". Das Ticket wurde wieder geöffnet — verfeinere die Anweisungen und reaktiviere, um es erneut zu versuchen.",
       "revertPr": "PR rückgängig machen",
       "noAnalyticsData": "Noch keine Analysedaten für diesen Zeitraum.",
-      "analyticsPrivacyNote": "Konversationsanalysen verwenden nur Metadaten. Rohe Gesundheitsnachrichten werden hier nicht angezeigt.",
+      "analyticsPrivacyNote": "Konversationsanalysen verwenden nur Metadaten. Rohe Gesundheits-Nachrichten werden hier nicht angezeigt.",
       "analyticsMetadataNote": "Analysen basieren auf Metadaten und aggregiertem Verhalten.",
       "paConversations": "Gespräche",
       "paAssistantUsers": "Assistant-Nutzer",
