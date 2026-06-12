@@ -16,10 +16,8 @@
       "phase": "identical"
     },
     "navigation.navigatingTo": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Imperative form 'Navigiere zu' doesn't match the gerund 'Navigating to' if it's a general label or status. It implies a command rather than a concept or process.",
-      "suggested": "Navigation zu",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "navigation.hydrationTracker": {
@@ -98,5 +96,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:16:33.889Z"
+  "generatedAt": "2026-06-12T08:14:27.009Z"
 }

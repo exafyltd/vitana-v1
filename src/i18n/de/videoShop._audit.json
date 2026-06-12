@@ -1,215 +1,176 @@
 {
   "verdicts": {
-    "capture.notSupported": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.notSupportedDesc": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.recording": {
+    "videoShop.feed.end": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.tapToRecord": {
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.tapToDescribe": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.liveTranscription": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.yourVoiceEntry": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.yourFeedback": {
+    "videoShop.feed.errorBody": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.startSpeaking": {
+    "videoShop.feed.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.editOrType": {
+    "videoShop.feed.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.interimHint": {
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.attach": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.bugReport": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.uxImprovement": {
+    "videoShop.feed.linkCopied": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.severity": {
+    "videoShop.drawer.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.affectedScreen": {
+    "videoShop.drawer.productFallback": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.select": {
+    "videoShop.drawer.addToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.low": {
+    "videoShop.drawer.adding": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.medium": {
+    "videoShop.drawer.addedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.high": {
+    "videoShop.drawer.addedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.critical": {
+    "videoShop.drawer.addFailed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.saveEntry": {
+    "videoShop.drawer.goToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.sending": {
+    "videoShop.drawer.moreDetails": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.sendToTeam": {
+    "videoShop.drawer.notifyMe": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.reportSent": {
+    "videoShop.drawer.outOfStock": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.reportSentDesc": {
+    "videoShop.drawer.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.sendAnother": {
+    "videoShop.drawer.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.recordingStarted": {
+    "videoShop.drawer.errorBody": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "capture.recordingStartedDesc": {
-      "verdict": "OK",
+    "videoShop.drawer.unavailableBody": {
+      "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
+      "issue": "The word 'gerade' adds an unnecessary temporal nuance ('currently') not present in the original 'no longer available'.",
+      "suggested": "Dieses Produkt ist nicht mehr erhältlich.",
       "phase": "llm"
     },
-    "capture.recordingStopped": {
-      "verdict": "OK",
+    "videoShop.drawer.roleBlockedTitle": {
+      "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
+      "issue": "The German 'Kauf' (noun, purchase) is grammatically awkward here. The English 'Buying' refers to the act, which is better translated with the infinitive 'Kaufen'. 'nicht möglich' is also more idiomatic than 'nicht verfügbar' in this context.",
+      "suggested": "Kaufen ist hier nicht möglich.",
       "phase": "llm"
     },
-    "capture.recordingStoppedDesc": {
-      "verdict": "OK",
+    "videoShop.drawer.roleBlockedBody": {
+      "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "phase": "llm"
-    },
-    "capture.noContent": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "capture.noContentDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "capture.noContentBugDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "capture.entrySaved": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "capture.entrySavedDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "capture.saveFailed": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "capture.saveFailedDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "capture.sendFailed": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "capture.sendFailedDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "capture.recognitionError": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "capture.recognitionErrorDesc": {
-      "verdict": "OK",
-      "confidence": 1,
+      "issue": "The German 'Käufe' (plural noun, purchases) is inaccurate. The English 'Buying' refers to the act, which is better translated with the infinitive 'Kaufen'.",
+      "suggested": "Kaufen ist ein Community-Feature. Wechsle in die Community-Rolle, um fortzufahren.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-06-12T08:10:20.847Z"
+  "generatedAt": "2026-06-12T08:30:23.067Z"
 }

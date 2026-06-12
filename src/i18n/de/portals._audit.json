@@ -31,10 +31,8 @@
       "phase": "llm"
     },
     "portals.maxina.continueJourney": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Melde dich an, um deine Reise fortzusetzen.",
       "phase": "llm"
     },
     "portals.maxina.joinMaxina": {
@@ -43,17 +41,13 @@
       "phase": "llm"
     },
     "portals.maxina.joinCommunity": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Tritt der Maxina-Community bei.",
       "phase": "llm"
     },
     "portals.maxina.createAccount": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Erstelle dein Konto und beginne deine Reise.",
       "phase": "llm"
     },
     "portals.maxina.signingIn": {
@@ -72,10 +66,8 @@
       "phase": "llm"
     },
     "portals.maxina.yourFullName": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihr' instead of informal 'dein'.",
-      "suggested": "Dein vollständiger Name",
       "phase": "llm"
     },
     "portals.maxina.forgotPassword": {
@@ -99,10 +91,8 @@
       "phase": "llm"
     },
     "portals.maxina.checkEmail": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' and 'Ihr' instead of informal 'du' and 'dein'.",
-      "suggested": "Bitte überprüfe deine E-Mail, um dein Konto zu bestätigen.",
       "phase": "llm"
     },
     "portals.alkalma.joinAlkalma": {
@@ -116,10 +106,8 @@
       "phase": "llm"
     },
     "portals.alkalma.continueJourney": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Melde dich an, um fortzufahren.",
       "phase": "llm"
     },
     "portals.earthlinks.joinEarthlinks": {
@@ -133,10 +121,8 @@
       "phase": "llm"
     },
     "portals.earthlinks.continueJourney": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Melde dich an, um fortzufahren.",
       "phase": "llm"
     },
     "portals.community.joinCommunity": {
@@ -150,12 +136,10 @@
       "phase": "llm"
     },
     "portals.community.continueJourney": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Melde dich an, um fortzufahren.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:18:14.129Z"
+  "generatedAt": "2026-06-12T08:15:06.437Z"
 }
