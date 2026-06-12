@@ -2,7 +2,8 @@
  * VTID-03279 — Guided Journey / Full App segmented switch (P4).
  *
  * Reuses the existing ProfileIdSegmentedControl primitive (no new design).
- * Sits directly below the My Journey card. Switching never clears progress —
+ * Sits directly above the My Journey card so first-time users see the
+ * Guided/Full choice prominently. Switching never clears progress —
  * it only flips the durable mode (P1) and restores the same session on return.
  */
 

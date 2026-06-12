@@ -334,8 +334,8 @@ export default function AutopilotDashboard() {
   // beat before the screen drops into utility (Today / Matches / etc).
   const content = (
     <div className="space-y-4">
+      <GuidedModeSwitch className="px-1" />{/* VTID-03279: Guided/Full switch above Journey card — more prominent for first-time users */}
       {dreamHero}
-      <GuidedModeSwitch className="px-1" />{/* VTID-03279: Guided/Full switch below Journey card */}
       {/* VTID-03284: the switch swaps the screen. Guided = catalog-led onboarding
           (Full App feed hidden); Full App = the existing feed (no catalog). The
           start view (Journey card + switch) is shared by both. */}
@@ -412,8 +412,8 @@ export default function AutopilotDashboard() {
           {/* VTID-03284: Guided swaps the screen to the catalog; Full keeps the feed grid. */}
           <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-4">
+              <GuidedModeSwitch className="px-1" />{/* VTID-03279: Guided/Full switch above Journey card — more prominent for first-time users */}
               {northStar}
-              <GuidedModeSwitch className="px-1" />{/* VTID-03279: Guided/Full switch below Journey card */}
               {!isGuided && (
                 <>
                   {todaysGoal}
