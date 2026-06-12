@@ -342,6 +342,10 @@ const InsightsEngagement = lazy(() => import("./pages/admin/insights/Engagement"
 const InsightsAssistantUsage = lazy(() => import("./pages/admin/insights/AssistantUsage"));
 const InsightsAutopilotImpact = lazy(() => import("./pages/admin/insights/AutopilotImpact"));
 const InsightsReports = lazy(() => import("./pages/admin/insights/Reports"));
+// BOOTSTRAP-PRODUCT-ANALYTICS: product/behavior supervision screens
+const InsightsJourneys = lazy(() => import("./pages/admin/insights/Journeys"));
+const InsightsFeatures = lazy(() => import("./pages/admin/insights/Features"));
+const InsightsInterests = lazy(() => import("./pages/admin/insights/Interests"));
 const AdminNotificationsCompose = lazy(() => import("./pages/admin/notifications/Compose"));
 const AdminNotificationsSentLog = lazy(() => import("./pages/admin/notifications/SentLog"));
 const AdminNotificationsPreferences = lazy(() => import("./pages/admin/notifications/Preferences"));
@@ -1731,6 +1735,15 @@ const App = () => {
           } />
           <Route path="/admin/insights/assistant-usage" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsAssistantUsage /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/insights/journeys" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsJourneys /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/insights/features" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsFeatures /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/insights/interests" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsInterests /></ProtectedRoute></AuthGuard>
           } />
           <Route path="/admin/insights/autopilot-impact" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsAutopilotImpact /></ProtectedRoute></AuthGuard>
