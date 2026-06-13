@@ -21,10 +21,8 @@
       "phase": "llm"
     },
     "lifeCompass.confidence": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "''Vertrauen'' is not the most common or precise term for 'Confidence' in a technical or metric context. ''Konfidenz'' or ''Sicherheit'' would be more appropriate.",
-      "suggested": "Konfidenz: {value}%",
       "phase": "llm"
     },
     "lifeCompass.suggestedGoals": {
@@ -109,9 +107,9 @@
     },
     "lifeCompass.goals.health.title": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "''Transformieren'' is a bit formal/technical for a friendly wellness app. ''Verbessern'' (improve) is more common and fitting.",
-      "suggested": "Gesundheit verbessern",
+      "confidence": 0.95,
+      "issue": "'Verbessern' is too weak for 'Transform'. 'Transformieren' or 'verwandeln' better conveys the meaning of a significant change.",
+      "suggested": "Transformiere deine Gesundheit",
       "phase": "llm"
     },
     "lifeCompass.goals.health.description": {
@@ -160,5 +158,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:14:15.294Z"
+  "generatedAt": "2026-06-13T07:14:45.510Z"
 }

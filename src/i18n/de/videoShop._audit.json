@@ -1,0 +1,178 @@
+{
+  "verdicts": {
+    "videoShop.feed.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.loadingMore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.end": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.emptyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.emptyBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.browseDiscover": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.errorTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.errorBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing for 'in a moment'. 'In einem Moment' is too literal and not idiomatic for 'shortly'.",
+      "suggested": "Bitte versuche es gleich noch einmal.",
+      "phase": "llm"
+    },
+    "videoShop.feed.retry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.roleBlockedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.roleBlockedBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.mute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.unmute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.share": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.productFallback": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.adding": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addedBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.goToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.moreDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.notifyMe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.outOfStock": {
+      "verdict": "OK",
+      "confidence": 0.8,
+      "phase": "llm"
+    },
+    "videoShop.drawer.retry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.errorTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.errorBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing for 'in a moment'. 'In einem Moment' is too literal and not idiomatic for 'shortly'.",
+      "suggested": "Bitte versuche es gleich noch einmal.",
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The word 'gerade' adds a nuance ('currently') not present in the original 'no longer available', which implies a more general or indefinite unavailability.",
+      "suggested": "Dieses Produkt ist nicht mehr erhältlich.",
+      "phase": "llm"
+    },
+    "videoShop.drawer.roleBlockedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The German translation is too terse and grammatically awkward. 'Kauf' (singular noun) doesn't naturally convey 'Buying' as an activity or feature in this context.",
+      "suggested": "Kaufen ist hier nicht verfügbar.",
+      "phase": "llm"
+    },
+    "videoShop.drawer.roleBlockedBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-06-13T07:34:50.170Z"
+}
