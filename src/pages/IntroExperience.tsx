@@ -252,12 +252,12 @@ export default function IntroExperience() {
           {t.intro?.experience || 'Experience'}
         </p>
 
-        {/* Longevity Tagline - Single line */}
-        <p 
-          className="text-sm md:text-base text-white/70 text-center mb-10 animate-fade-in whitespace-nowrap"
+        {/* Longevity Tagline - wraps gracefully on narrow screens */}
+        <p
+          className="text-sm md:text-base text-white/70 text-center text-balance max-w-xs md:max-w-sm mb-10 animate-fade-in"
           style={{ animationDelay: '2000ms', animationFillMode: 'both' }}
         >
-          {t.intro?.tagline || 'Your longevity journey, guided.'}
+          {t.intro?.tagline || 'Start your Longevity Journey together with us'}
         </p>
 
         {/* CTA Stack - Premium glass buttons */}
