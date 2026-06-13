@@ -1,181 +1,174 @@
 {
   "verdicts": {
-    "common.ok": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "common.filter": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "common.search": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.save": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.cancel": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.loading": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.back": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.next": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.submit": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.delete": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.edit": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.create": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.close": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.actions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.yes": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.no": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.done": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.apply": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.reset": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.sort": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.more": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.less": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.all": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.none": {
-      "verdict": "OK",
-      "confidence": 0.9,
-      "phase": "llm"
-    },
-    "common.select": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.selectAll": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.deselectAll": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.copy": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.paste": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.share": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.download": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.upload": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.refresh": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.retry": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.follow": {
+    "videoShop.feed.end": {
       "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender-specific (masculine 'Stigao si'). Should be gender-neutral or adapt to user's gender.",
+      "suggested": "Ovo je kraj.",
+      "phase": "llm"
+    },
+    "videoShop.feed.emptyTitle": {
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "target is not a string",
-      "phase": "static"
+      "phase": "llm"
+    },
+    "videoShop.feed.emptyBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.browseDiscover": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.errorTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.errorBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.retry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.roleBlockedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.roleBlockedBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender-specific (masculine 'koristio'). Should be gender-neutral or adapt to user's gender.",
+      "suggested": "Video prodavnica je funkcija zajednice. Pređi na ulogu zajednice za korišćenje.",
+      "phase": "llm"
+    },
+    "videoShop.feed.mute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.unmute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.share": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.productFallback": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.adding": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addedBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.goToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.moreDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.notifyMe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.outOfStock": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.retry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.errorTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.errorBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.roleBlockedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.roleBlockedBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-06-13T07:10:01.569Z"
+  "generatedAt": "2026-06-13T07:28:44.091Z"
 }
