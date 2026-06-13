@@ -44,16 +44,12 @@ import { OrbConsentPlaceholder } from "@/components/audio/OrbConsentPlaceholder"
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 import MilestoneCelebration from "./components/MilestoneCelebration";
 import ReminderInterruptOverlay from "./components/reminders/ReminderInterruptOverlay";
+import { DelayedLoader } from "./components/ui/DelayedLoader";
 
-// Route loading fallback
-const RouteFallback = () => (
-  <div className="flex items-center justify-center min-h-[60vh]">
-    <div className="animate-pulse flex flex-col items-center gap-3">
-      <div className="w-10 h-10 rounded-full bg-muted" />
-      <div className="h-3 w-24 rounded bg-muted" />
-    </div>
-  </div>
-);
+// Route loading fallback — clean background + delayed spinner so a lazy chunk
+// that loads instantly never flashes a placeholder, and a slow one shows a
+// spinner rather than an intermediate screen.
+const RouteFallback = () => <DelayedLoader />;
 
 // ─── Eager imports: shell-critical pages (auth, entry, public landing) ───
 import Index from "./pages/Index";
