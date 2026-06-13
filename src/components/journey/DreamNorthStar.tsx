@@ -90,6 +90,8 @@ export function DreamNorthStar({
   onOpenPlan,
   guided = false,
   guidedProgress,
+  guidedNextSession,
+  onStartSession,
 }: {
   goal: MyJourneyGoal | null;
   journey?: MyJourneyJourney | null;
@@ -111,6 +113,13 @@ export function DreamNorthStar({
     totalTopics: number;
     pct: number;
   };
+  /**
+   * The next session to start (first incomplete). When present the ring centre
+   * becomes the "Start your session N" call to action — the big number is the
+   * NEXT session, the caption is its title, and tapping starts it (Vitana speaks).
+   */
+  guidedNextSession?: { session: number; title: string } | null;
+  onStartSession?: () => void;
 }) {
   const reduce = useReducedMotion();
 
@@ -392,8 +401,22 @@ export function DreamNorthStar({
               shows sessions learned (non-interactive); otherwise it's a button —
               tapping anywhere on the day number opens the day-by-day plan sheet. */}
           {showGuided ? (
-            <div
-              className="absolute rounded-full bg-white/92"
+            // Next-session CTA — the big number is the NEXT session to start,
+            // the caption is its title; tapping starts it (Vitana speaks). Falls
+            // back to the steps-learned readout while the next session resolves
+            // (loading) or when everything is complete.
+            <button
+              type="button"
+              onClick={guidedNextSession ? onStartSession : undefined}
+              disabled={!guidedNextSession}
+              aria-label={
+                guidedNextSession
+                  ? t("screens.autopilotdashboard.startSessionAria", {
+                      n: guidedNextSession.session,
+                    })
+                  : undefined
+              }
+              className="absolute rounded-full bg-white/92 text-left enabled:hover:scale-[1.02] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               style={{
                 inset: stroke + 4,
                 backdropFilter: "blur(8px)",
@@ -401,10 +424,14 @@ export function DreamNorthStar({
               }}
             >
               <div
-                className="absolute left-0 right-0 text-center font-semibold"
-                style={{ top: "19%", color: "#6d28d9", fontSize: 13, letterSpacing: "0.32em" }}
+                className="absolute left-0 right-0 px-4 text-center font-semibold"
+                style={{ top: "17%", color: "#6d28d9", fontSize: 12, letterSpacing: "0.18em" }}
               >
-                {t("screens.autopilotdashboard.stepsLabel").toUpperCase()}
+                {t(
+                  guidedNextSession
+                    ? "screens.autopilotdashboard.startYourSession"
+                    : "screens.autopilotdashboard.stepsLabel",
+                ).toUpperCase()}
               </div>
               <div
                 className="absolute left-1/2 top-1/2 font-bold leading-none"
@@ -414,17 +441,21 @@ export function DreamNorthStar({
                   fontSize: numberFont,
                 }}
               >
-                {guidedProgress!.completedTopics}
+                {guidedNextSession
+                  ? guidedNextSession.session
+                  : guidedProgress!.completedTopics}
               </div>
               <div
-                className="absolute left-0 right-0 px-5 text-center text-xs text-muted-foreground leading-tight"
-                style={{ bottom: "15%" }}
+                className="absolute left-0 right-0 px-5 text-center text-xs text-muted-foreground leading-tight line-clamp-2"
+                style={{ bottom: "13%" }}
               >
-                {t("screens.autopilotdashboard.stepsCompletedOf", {
-                  total: guidedProgress!.totalTopics,
-                })}
+                {guidedNextSession
+                  ? guidedNextSession.title
+                  : t("screens.autopilotdashboard.stepsCompletedOf", {
+                      total: guidedProgress!.totalTopics,
+                    })}
               </div>
-            </div>
+            </button>
           ) : (
             <button
               type="button"

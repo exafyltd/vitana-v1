@@ -29,8 +29,11 @@ import { GoalNorthStar } from "@/components/journey/GoalNorthStar";
 import { DreamNorthStar } from "@/components/journey/DreamNorthStar";
 import { GuidedModeSwitch } from "@/components/journey/GuidedModeSwitch"; // VTID-03279
 import { GuidedJourneyCatalog } from "@/components/journey/GuidedJourneyCatalog"; // VTID-03280
+import { JourneyHowItWorks } from "@/components/journey/JourneyHowItWorks";
 import { useGuidedMode } from "@/context/GuidedModeProvider"; // VTID-03280
 import { useGuidedJourneyProgress } from "@/hooks/useGuidedJourneyProgress";
+import { activateOrb } from "@/lib/orbActivate"; // VTID-03281
+import { recordSessionListened } from "@/lib/journeyPractice";
 import { FutureSelfTiles } from "@/components/journey/FutureSelfTiles";
 import { TodaysGoalCard, type TodayAction } from "@/components/journey/TodaysGoalCard";
 import { GoalSetupDialog } from "@/components/journey/GoalSetupDialog";
@@ -250,6 +253,22 @@ export default function AutopilotDashboard() {
     <GuidedJourneyCatalog className="pt-1" />
   ) : null;
 
+  // First-time explainer between the next-session card and the catalog.
+  const guidedHowItWorks = isGuided ? <JourneyHowItWorks /> : null;
+
+  // Tapping the next-session card starts that session: Vitana/ORB speaks the
+  // topic (same flow as tapping it in the catalog) and the listen reward is
+  // credited idempotently server-side.
+  const nextSession = guidedJourneyProgress.nextSession;
+  const handleStartNextSession = () => {
+    if (!nextSession) return;
+    activateOrb(nextSession.topic.topicId);
+    void recordSessionListened(nextSession.topic.topicId);
+  };
+  const guidedNextSession = nextSession
+    ? { session: nextSession.session, title: nextSession.topic.displayLabel }
+    : null;
+
   // Mobile leads with the painted "dream-board" hero (vision-board feel,
   // emotional first anchor). Desktop keeps the structured GoalNorthStar
   // until we redesign the wide layout — mobile-first per the brief.
@@ -275,6 +294,8 @@ export default function AutopilotDashboard() {
       onOpenPlan={() => setPlanSheetOpen(true)}
       guided={isGuided}
       guidedProgress={guidedProgress}
+      guidedNextSession={guidedNextSession}
+      onStartSession={handleStartNextSession}
     />
   );
   const northStar = (
@@ -288,6 +309,8 @@ export default function AutopilotDashboard() {
       onOpenPlan={() => setPlanSheetOpen(true)}
       guided={isGuided}
       guidedProgress={guidedProgress}
+      guidedNextSession={guidedNextSession}
+      onStartSession={handleStartNextSession}
     />
   );
   const futureSelf = <FutureSelfTiles goal={goal} />;
@@ -340,7 +363,10 @@ export default function AutopilotDashboard() {
           (Full App feed hidden); Full App = the existing feed (no catalog). The
           start view (Journey card + switch) is shared by both. */}
       {isGuided ? (
-        guidedCatalog
+        <>
+          {guidedHowItWorks}
+          {guidedCatalog}
+        </>
       ) : (
         <>
           {futureSelf}
@@ -430,6 +456,7 @@ export default function AutopilotDashboard() {
             )}
           </div>
           {!isGuided && keepCheckingIn}
+          {isGuided && <div className="mt-4">{guidedHowItWorks}</div>}
           {guidedCatalog}
         </div>
       </div>
