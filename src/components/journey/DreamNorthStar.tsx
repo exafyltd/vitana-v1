@@ -288,22 +288,40 @@ export function DreamNorthStar({
         className="relative z-10 flex flex-col px-5 pt-7 pb-3"
         style={{ minHeight }}
       >
-        {/* Header */}
-        <div
-          className="text-center font-semibold"
-          style={{
-            color: "#4c1d95",
-            fontSize: 14,
-            letterSpacing: "0.32em",
-            textShadow: "0 1px 3px rgba(255,255,255,0.6)",
-          }}
-        >
-          {t(
-            showGuided
-              ? "screens.autopilotdashboard.myGuidedJourney"
-              : "screens.autopilotdashboard.myJourney",
-          ).toUpperCase()}
-        </div>
+        {/* Header — in Guided Mode the card title IS the next-session
+            instruction (the screen header already reads "My Longevity Journey",
+            so repeating it here is redundant). Readable sentence case, not the
+            wide all-caps treatment used for the static label. */}
+        {showGuided && guidedNextSession ? (
+          <div
+            className="text-center font-bold text-balance"
+            style={{
+              color: "#4c1d95",
+              fontSize: 20,
+              lineHeight: 1.2,
+              letterSpacing: "0.01em",
+              textShadow: "0 1px 3px rgba(255,255,255,0.6)",
+            }}
+          >
+            {guidedNextSession.title}
+          </div>
+        ) : (
+          <div
+            className="text-center font-semibold"
+            style={{
+              color: "#4c1d95",
+              fontSize: 14,
+              letterSpacing: "0.32em",
+              textShadow: "0 1px 3px rgba(255,255,255,0.6)",
+            }}
+          >
+            {t(
+              showGuided
+                ? "screens.autopilotdashboard.myGuidedJourney"
+                : "screens.autopilotdashboard.myJourney",
+            ).toUpperCase()}
+          </div>
+        )}
         <HeartDivider className="mt-1.5" />
 
         {/* Ring */}
@@ -416,16 +434,19 @@ export function DreamNorthStar({
                     })
                   : undefined
               }
-              className="absolute rounded-full bg-white/92 text-left enabled:hover:scale-[1.02] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+              className="absolute rounded-full bg-white/92 flex flex-col items-center justify-center text-center px-4 enabled:hover:scale-[1.02] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               style={{
                 inset: stroke + 4,
                 backdropFilter: "blur(8px)",
                 boxShadow: "0 0 0 1px rgba(255,255,255,0.5) inset",
               }}
             >
+              {/* Flex-centred stack — never overlaps. The session INSTRUCTION is
+                  the card title above; here the ring shows the start affordance:
+                  a small label + the next-session number. */}
               <div
-                className="absolute left-0 right-0 px-4 text-center font-semibold"
-                style={{ top: "17%", color: "#6d28d9", fontSize: 12, letterSpacing: "0.18em" }}
+                className="font-semibold"
+                style={{ color: "#6d28d9", fontSize: 12, letterSpacing: "0.14em" }}
               >
                 {t(
                   guidedNextSession
@@ -434,27 +455,23 @@ export function DreamNorthStar({
                 ).toUpperCase()}
               </div>
               <div
-                className="absolute left-1/2 top-1/2 font-bold leading-none"
-                style={{
-                  transform: "translate(-50%, -50%)",
-                  color: "#7c3aed",
-                  fontSize: numberFont,
-                }}
+                className="font-bold leading-none"
+                style={{ color: "#7c3aed", fontSize: numberFont, marginTop: 6 }}
               >
                 {guidedNextSession
                   ? guidedNextSession.session
                   : guidedProgress!.completedTopics}
               </div>
-              <div
-                className="absolute left-0 right-0 px-5 text-center text-xs text-muted-foreground leading-tight line-clamp-2"
-                style={{ bottom: "13%" }}
-              >
-                {guidedNextSession
-                  ? guidedNextSession.title
-                  : t("screens.autopilotdashboard.stepsCompletedOf", {
-                      total: guidedProgress!.totalTopics,
-                    })}
-              </div>
+              {!guidedNextSession && (
+                <div
+                  className="px-2 text-xs text-muted-foreground leading-tight"
+                  style={{ marginTop: 6 }}
+                >
+                  {t("screens.autopilotdashboard.stepsCompletedOf", {
+                    total: guidedProgress!.totalTopics,
+                  })}
+                </div>
+              )}
             </button>
           ) : (
             <button
