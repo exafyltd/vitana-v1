@@ -205,6 +205,12 @@ export function DreamNorthStar({
 
   const stroke = Math.round(ringSize * STROKE_RATIO);
   const numberFont = Math.round(ringSize * NUMBER_RATIO);
+  const guidedInnerInset = stroke + 4;
+  const guidedInnerDiameter = Math.max(0, ringSize - guidedInnerInset * 2);
+  const guidedNumberFont = Math.min(numberFont, Math.round(guidedInnerDiameter * 0.48));
+  const clickHereTop = Math.max(12, Math.round(guidedInnerDiameter * 0.12));
+  const numberTop = Math.round(guidedInnerDiameter * 0.48);
+  const captionTop = Math.round(guidedInnerDiameter * 0.74);
   const radius = (ringSize - stroke) / 2;
   const cx = ringSize / 2;
   const cy = ringSize / 2;
@@ -436,17 +442,18 @@ export function DreamNorthStar({
               }
               className="absolute rounded-full flex flex-col items-center justify-center text-center px-4 enabled:hover:scale-[1.03] enabled:active:scale-[0.98] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               style={{
-                inset: stroke + 4,
+                inset: guidedInnerInset,
                 backdropFilter: "blur(8px)",
                 // Domed glass surface — a bright highlight near the top fading to
                 // a soft violet rim makes the CTA read as a raised, tappable
                 // button rather than a flat label.
                 background: guidedNextSession
-                  ? "radial-gradient(circle at 50% 32%, #ffffff 0%, #faf5ff 55%, #ede9fe 100%)"
+                  ? "radial-gradient(circle at 50% 24%, #ffffff 0%, #fff 30%, #faf5ff 58%, #ddd6fe 100%)"
                   : "rgba(255,255,255,0.92)",
                 boxShadow: guidedNextSession
-                  ? undefined
+                  ? "inset 0 2px 8px rgba(255,255,255,0.95), inset 0 -14px 22px rgba(124,58,237,0.14), 0 16px 28px rgba(91,33,182,0.32), 0 0 34px rgba(167,139,250,0.72)"
                   : "0 0 0 1px rgba(255,255,255,0.5) inset",
+                overflow: "hidden",
               }}
               // Gentle pulsing violet glow draws the eye to the start affordance
               // (disabled once everything's complete or while next session loads).
@@ -454,9 +461,9 @@ export function DreamNorthStar({
                 guidedNextSession && !reduce
                   ? {
                       boxShadow: [
-                        "0 0 0 1px rgba(255,255,255,0.6) inset, 0 10px 22px rgba(124,58,237,0.30), 0 0 22px 4px rgba(167,139,250,0.45)",
-                        "0 0 0 1px rgba(255,255,255,0.6) inset, 0 12px 26px rgba(124,58,237,0.35), 0 0 36px 10px rgba(167,139,250,0.78)",
-                        "0 0 0 1px rgba(255,255,255,0.6) inset, 0 10px 22px rgba(124,58,237,0.30), 0 0 22px 4px rgba(167,139,250,0.45)",
+                        "inset 0 2px 8px rgba(255,255,255,0.95), inset 0 -14px 22px rgba(124,58,237,0.14), 0 14px 24px rgba(91,33,182,0.30), 0 0 26px rgba(167,139,250,0.58)",
+                        "inset 0 2px 8px rgba(255,255,255,0.95), inset 0 -16px 26px rgba(124,58,237,0.18), 0 18px 32px rgba(91,33,182,0.38), 0 0 44px rgba(167,139,250,0.86)",
+                        "inset 0 2px 8px rgba(255,255,255,0.95), inset 0 -14px 22px rgba(124,58,237,0.14), 0 14px 24px rgba(91,33,182,0.30), 0 0 26px rgba(167,139,250,0.58)",
                       ],
                     }
                   : undefined
@@ -467,8 +474,13 @@ export function DreamNorthStar({
                   the card title above; here the ring shows the start affordance:
                   a "click here" prompt, the next-session number, and its label. */}
               <div
-                className="font-semibold"
-                style={{ color: "#6d28d9", fontSize: 12, letterSpacing: "0.14em" }}
+                className="absolute left-2 right-2 font-semibold leading-none"
+                style={{
+                  top: clickHereTop,
+                  color: "#6d28d9",
+                  fontSize: 12,
+                  letterSpacing: "0.12em",
+                }}
               >
                 {t(
                   guidedNextSession
@@ -477,8 +489,13 @@ export function DreamNorthStar({
                 ).toUpperCase()}
               </div>
               <div
-                className="font-bold leading-none"
-                style={{ color: "#7c3aed", fontSize: numberFont, marginTop: 6 }}
+                className="absolute left-0 right-0 font-bold leading-none"
+                style={{
+                  top: numberTop,
+                  transform: "translateY(-50%)",
+                  color: "#7c3aed",
+                  fontSize: guidedNumberFont,
+                }}
               >
                 {guidedNextSession
                   ? guidedNextSession.session
@@ -486,8 +503,8 @@ export function DreamNorthStar({
               </div>
               {guidedNextSession ? (
                 <div
-                  className="px-2 text-xs font-medium leading-tight"
-                  style={{ color: "#7c3aed", marginTop: 6 }}
+                  className="absolute left-2 right-2 px-2 text-xs font-medium leading-tight"
+                  style={{ top: captionTop, color: "#7c3aed" }}
                 >
                   {t("screens.autopilotdashboard.sessionNumber", {
                     n: guidedNextSession.session,
@@ -495,8 +512,8 @@ export function DreamNorthStar({
                 </div>
               ) : (
                 <div
-                  className="px-2 text-xs text-muted-foreground leading-tight"
-                  style={{ marginTop: 6 }}
+                  className="absolute left-2 right-2 px-2 text-xs text-muted-foreground leading-tight"
+                  style={{ top: captionTop }}
                 >
                   {t("screens.autopilotdashboard.stepsCompletedOf", {
                     total: guidedProgress!.totalTopics,

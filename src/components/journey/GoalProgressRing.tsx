@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { t } from "@/lib/i18n-toast";
 import type { RingPhase } from "@/lib/goalPhases";
+import { cn } from "@/lib/utils";
 
 /**
  * The My Journey progress ring — shared by the North Star card and the plan
@@ -18,6 +19,9 @@ export function GoalProgressRing({
   totalDays,
   daysLeftLabel,
   topLabel,
+  topLabelClassName,
+  dayClassName,
+  captionClassName,
   glow = false,
 }: {
   pct: number;
@@ -31,6 +35,12 @@ export function GoalProgressRing({
   daysLeftLabel?: string;
   /** Pre-translated small top label. Falls back to the "Day" label. */
   topLabel?: string;
+  /** Optional fit override for long in-ring labels such as "Hier klicken". */
+  topLabelClassName?: string;
+  /** Optional fit override for the large in-ring number. */
+  dayClassName?: string;
+  /** Optional fit override for the lower in-ring caption. */
+  captionClassName?: string;
   /** When true the ring reads as a raised, glowing CTA button (3D domed fill +
    *  pulsing violet glow) so users recognise it as something to tap. */
   glow?: boolean;
@@ -144,11 +154,13 @@ export function GoalProgressRing({
         )}
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-        <span className="text-xs uppercase tracking-wide text-muted-foreground">
+        <span className={cn("text-xs uppercase tracking-wide text-muted-foreground", topLabelClassName)}>
           {topLabel ?? t("screens.autopilotdashboard.dayLabel")}
         </span>
-        <span className="text-4xl font-bold leading-none tracking-tight">{day}</span>
-        <span className="text-[11px] text-muted-foreground mt-2">
+        <span className={cn("text-4xl font-bold leading-none tracking-tight", dayClassName)}>
+          {day}
+        </span>
+        <span className={cn("text-[11px] text-muted-foreground mt-2", captionClassName)}>
           {daysLeftLabel ?? t("screens.autopilotdashboard.daysLeftCount", { days: daysLeft })}
         </span>
       </div>

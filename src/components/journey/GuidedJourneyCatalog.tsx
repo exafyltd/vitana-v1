@@ -33,6 +33,7 @@ import {
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthProvider';
 import {
   Drawer,
   DrawerContent,
@@ -50,7 +51,11 @@ import {
   practiceTargetRoute,
   recordSessionListened,
 } from '@/lib/journeyPractice'; // VTID-03282 + session-listen reward
-import { JOURNEY_STATE_QUERY_KEY, useGuidedJourneyProgress } from '@/hooks/useGuidedJourneyProgress';
+import {
+  JOURNEY_STATE_QUERY_KEY,
+  markSessionListenedInJourneyState,
+  useGuidedJourneyProgress,
+} from '@/hooks/useGuidedJourneyProgress';
 
 const CHAPTER_ORDER = ['basics', 'daily_use', 'community', 'health', 'intelligence', 'discovery'];
 
@@ -118,9 +123,10 @@ export function GuidedJourneyCatalog({
   className,
 }: GuidedJourneyCatalogProps) {
   const { sessions, chapters, loading, error } = useJourneyChecklist();
+  const { user } = useAuth();
   // Per-step completion (shares the same React Query state the hero ring uses,
   // so a mark-done updates the checklist and the hero counter together).
-  const { completedSet } = useGuidedJourneyProgress();
+  const { completedSet, listenedSessionSet } = useGuidedJourneyProgress();
   const [activeChapter, setActiveChapter] = useState<string>('all');
   const [openTopic, setOpenTopic] = useState<PublicTopic | null>(null);
   const [practiceMode, setPracticeMode] = useState(false); // VTID-03282: screen 03
@@ -167,6 +173,13 @@ export function GuidedJourneyCatalog({
 
   // VTID-03281: clicking a topic activates Vitana/ORB (voice goes live), then
   // opens the Topic Explanation. The optional onActivateTopic prop overrides.
+  const recordListenedSession = (session: number, topicId?: string) => {
+    markSessionListenedInJourneyState(queryClient, session, topicId, user?.id);
+    void recordSessionListened(session, topicId).finally(() => {
+      queryClient.invalidateQueries({ queryKey: JOURNEY_STATE_QUERY_KEY });
+    });
+  };
+
   const handleTopicClick = (topic: PublicTopic) => {
     // VTID-03291: focus the ORB on this topic so Vitana teaches it from the KB.
     activateOrb(topic.topicId);
@@ -179,15 +192,22 @@ export function GuidedJourneyCatalog({
       // INDEX reward only once it's shown — not on a click that may be a no-op.
       // Idempotent per topic server-side; fire-and-forget so it never blocks UI.
       setOpenTopic(topic);
-      void recordSessionListened(topic.topicId);
+      recordListenedSession(topic.session, topic.topicId);
     }
   };
 
   // VTID-03281: clicking a session activates Vitana/ORB then opens its first
   // topic's explanation (avoids a separate Session Detail screen, per spec).
-  const handleSessionClick = (firstTopic: PublicTopic | undefined) => {
+  const handleSessionClick = (s: { session: number; topics: PublicTopic[] }) => {
+    const firstTopic = s.topics[0];
     if (!firstTopic) return;
-    handleTopicClick(firstTopic);
+    activateOrb(firstTopic.topicId);
+    if (onActivateTopic) {
+      onActivateTopic(firstTopic);
+    } else {
+      setOpenTopic(firstTopic);
+      recordListenedSession(s.session, firstTopic.topicId);
+    }
   };
 
   return (
@@ -219,13 +239,15 @@ export function GuidedJourneyCatalog({
             0,
           );
           const totalCount = s.topics.length;
-          const sessionComplete = totalCount > 0 && doneCount === totalCount;
+          const sessionComplete =
+            listenedSessionSet.has(s.session) || (totalCount > 0 && doneCount === totalCount);
+          const displayDoneCount = sessionComplete ? totalCount : doneCount;
           return (
             <div key={s.session} className="space-y-2.5">
               {/* Session header */}
               <button
                 type="button"
-                onClick={() => handleSessionClick(s.topics[0])}
+                onClick={() => handleSessionClick(s)}
                 className="flex w-full items-center gap-2 px-1 text-left"
               >
                 {sessionComplete ? (
@@ -241,13 +263,23 @@ export function GuidedJourneyCatalog({
                 </span>
                 <span
                   className={cn(
-                    'rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums',
+                    'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold tabular-nums',
                     sessionComplete
                       ? 'bg-emerald-100 text-emerald-700'
                       : 'bg-muted text-muted-foreground',
                   )}
                 >
-                  {t('screens.guidedCatalog.sessionProgress', { done: doneCount, total: totalCount })}
+                  {sessionComplete ? (
+                    <>
+                      <CheckCircle2 className="h-3 w-3" />
+                      {t('screens.guidedCatalog.statusDone')}
+                    </>
+                  ) : (
+                    t('screens.guidedCatalog.sessionProgress', {
+                      done: displayDoneCount,
+                      total: totalCount,
+                    })
+                  )}
                 </span>
                 <span className="ml-auto text-[10px] uppercase tracking-wider text-muted-foreground">
                   {chapterLabel(s.chapterId)}
@@ -261,7 +293,7 @@ export function GuidedJourneyCatalog({
                   className="absolute left-[22px] top-3 bottom-3 w-px bg-gradient-to-b from-border via-border/60 to-transparent"
                 />
                 {s.topics.map((topic) => {
-                  const done = completedSet.has(topic.topicId);
+                  const done = sessionComplete || completedSet.has(topic.topicId);
                   return (
                     <button
                       key={topic.topicId}

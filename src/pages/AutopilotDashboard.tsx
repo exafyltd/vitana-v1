@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
@@ -31,7 +31,11 @@ import { GuidedModeSwitch } from "@/components/journey/GuidedModeSwitch"; // VTI
 import { GuidedJourneyCatalog } from "@/components/journey/GuidedJourneyCatalog"; // VTID-03280
 import { JourneyHowItWorks } from "@/components/journey/JourneyHowItWorks";
 import { useGuidedMode } from "@/context/GuidedModeProvider"; // VTID-03280
-import { useGuidedJourneyProgress } from "@/hooks/useGuidedJourneyProgress";
+import {
+  JOURNEY_STATE_QUERY_KEY,
+  markSessionListenedInJourneyState,
+  useGuidedJourneyProgress,
+} from "@/hooks/useGuidedJourneyProgress";
 import { activateOrb } from "@/lib/orbActivate"; // VTID-03281
 import { recordSessionListened } from "@/lib/journeyPractice";
 import { FutureSelfTiles } from "@/components/journey/FutureSelfTiles";
@@ -148,6 +152,7 @@ function IndexNowCard() {
 
 export default function AutopilotDashboard() {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const { isGuided } = useGuidedMode(); // VTID-03280: show guided catalog below start view
   const guidedJourneyProgress = useGuidedJourneyProgress(); // sessions/topics learned for the hero ring
   const isMobile = useIsMobile();
@@ -263,7 +268,15 @@ export default function AutopilotDashboard() {
   const handleStartNextSession = () => {
     if (!nextSession) return;
     activateOrb(nextSession.topic.topicId);
-    void recordSessionListened(nextSession.topic.topicId);
+    markSessionListenedInJourneyState(
+      queryClient,
+      nextSession.session,
+      nextSession.topic.topicId,
+      user?.id,
+    );
+    void recordSessionListened(nextSession.session, nextSession.topic.topicId).finally(() => {
+      queryClient.invalidateQueries({ queryKey: JOURNEY_STATE_QUERY_KEY });
+    });
   };
   const guidedNextSession = nextSession
     ? { session: nextSession.session, title: nextSession.topic.displayLabel }

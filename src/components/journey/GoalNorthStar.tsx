@@ -182,6 +182,9 @@ export function GoalNorthStar({
                   n: guidedNextSession.session,
                 })}
                 topLabel={t("screens.autopilotdashboard.clickHere")}
+                topLabelClassName="text-[11px] tracking-[0.12em] leading-none text-violet-700"
+                dayClassName="text-5xl text-violet-600"
+                captionClassName="mt-1 text-[12px] text-violet-700"
                 size={RING_SIZE}
                 glow
               />
@@ -195,6 +198,9 @@ export function GoalNorthStar({
                 total: guidedProgress!.totalTopics,
               })}
               topLabel={t("screens.autopilotdashboard.stepsLabel")}
+              topLabelClassName="text-[11px] tracking-[0.12em] leading-none"
+              dayClassName="text-5xl"
+              captionClassName="mt-1"
               size={RING_SIZE}
             />
           )
