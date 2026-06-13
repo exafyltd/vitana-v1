@@ -88,8 +88,8 @@
     "calendar.tryQuickAdd": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Agregado Rápido' is a literal but awkward translation for a feature name; 'Añadir Rápido' is more natural and idiomatic for 'Quick Add'.",
-      "suggested": "Prueba Añadir Rápido o deja que Autopilot planifique tu día",
+      "issue": "Awkward phrasing for a feature name. 'Añadir Rápido' (verb + adjective) is less natural than a noun phrase for 'Quick Add'.",
+      "suggested": "Prueba Añadido Rápido o deja que Autopilot planifique tu día",
       "phase": "llm"
     },
     "calendar.clickSlotHint": {
@@ -543,10 +543,9 @@
       "phase": "llm"
     },
     "calendar.journey.tasksCompleted": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'listo' is singular and means 'ready' or 'finished' (singular). 'Done' implies 'completed' and needs to match the number of completed items (plural if {completed} > 1). 'Completados' is more accurate and grammatically correct for a count.",
-      "suggested": "{completed}/{total} completados",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.7,
+      "issue": "Gender agreement for 'completados' is ambiguous. 'done' is gender-neutral in English. 'completados' is masculine plural. If the items being counted are feminine (e.g., 'tareas', 'actividades'), then 'completadas' would be correct. Without context, it's a guess.",
       "phase": "llm"
     },
     "calendar.journey.waveNames.wave-1": {
@@ -580,5 +579,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:54.808Z"
+  "generatedAt": "2026-06-13T07:09:42.436Z"
 }
