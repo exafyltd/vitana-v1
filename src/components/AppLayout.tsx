@@ -45,6 +45,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 import { useGuidedMode } from "@/context/GuidedModeProvider"; // VTID-03279
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
+import { DelayedLoader } from "@/components/ui/DelayedLoader";
 import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
 import { t } from '@/lib/i18n-toast';
@@ -433,7 +434,10 @@ function AuthedAppLayout({ children }: AppLayoutProps) {
   const isMobile = useIsMobile();
   // VTID-03279: Guided Mode hides sidebar/menu. `isGuided` is mobile-only (the
   // provider forces Full chrome on desktop), so the desktop sidebar always shows.
-  const { isGuided } = useGuidedMode();
+  // `guidedLoading` is true only on the first-ever load (no cached mode); we use
+  // it below to gate the mobile shell so the Full-app chrome never flashes
+  // before the Guided Journey resolves.
+  const { isGuided, loading: guidedLoading } = useGuidedMode();
   const { tenant } = useTenant();
   const { preferences } = useUserPreferences();
   const { triggerGreeting } = useIntelligentGreeting();
@@ -489,6 +493,14 @@ function AuthedAppLayout({ children }: AppLayoutProps) {
     window.addEventListener("autopilot:open", handler);
     return () => window.removeEventListener("autopilot:open", handler);
   }, []);
+
+  // First-ever load on mobile: until Guided/Full is resolved, show a clean
+  // delayed spinner instead of committing to either chrome. This is what stops
+  // My Journey from flashing the Full-app shell before the Guided screen.
+  // Returning users resolve from cache (guidedLoading=false) and skip this.
+  if (isMobile && guidedLoading) {
+    return <DelayedLoader fullscreen />;
+  }
 
   return (
     <div>
