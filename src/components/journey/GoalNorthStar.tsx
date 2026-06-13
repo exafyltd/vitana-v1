@@ -30,6 +30,8 @@ export function GoalNorthStar({
   onOpenPlan,
   guided = false,
   guidedProgress,
+  guidedNextSession,
+  onStartSession,
 }: {
   goal: MyJourneyGoal | null;
   journey?: MyJourneyJourney | null;
@@ -51,6 +53,13 @@ export function GoalNorthStar({
     totalTopics: number;
     pct: number;
   };
+  /**
+   * The next session to start (first incomplete). When present the ring centre
+   * becomes the "Start your session N" call to action — the big number is the
+   * NEXT session, the caption is its title, and tapping starts it (Vitana speaks).
+   */
+  guidedNextSession?: { session: number; title: string } | null;
+  onStartSession?: () => void;
 }) {
   // VTID-03287: bright Maxina-header blue (same gradient as .maxina-topbar),
   // applied as the Guided-Mode visual signal. Overrides the Tailwind gradient.
@@ -152,18 +161,40 @@ export function GoalNorthStar({
         )}
 
         {showGuided ? (
-          // Guided Mode — the ring fills by steps (topics) learned; the center
-          // number is steps completed out of the total. Single gradient (no plan).
-          <GoalProgressRing
-            pct={guidedProgress!.pct}
-            day={guidedProgress!.completedTopics}
-            daysLeft={0}
-            daysLeftLabel={t("screens.autopilotdashboard.stepsCompletedOf", {
-              total: guidedProgress!.totalTopics,
-            })}
-            topLabel={t("screens.autopilotdashboard.stepsLabel")}
-            size={RING_SIZE}
-          />
+          // Guided Mode — the ring fills by steps (topics) learned; the centre
+          // is the next-session CTA: big number = NEXT session, caption = its
+          // title, tap = start it (Vitana speaks). Falls back to the steps
+          // readout while the next session resolves or once all are complete.
+          guidedNextSession ? (
+            <button
+              type="button"
+              onClick={onStartSession}
+              aria-label={t("screens.autopilotdashboard.startSessionAria", {
+                n: guidedNextSession.session,
+              })}
+              className="rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 transition-transform hover:scale-[1.02]"
+            >
+              <GoalProgressRing
+                pct={guidedProgress!.pct}
+                day={guidedNextSession.session}
+                daysLeft={0}
+                daysLeftLabel={guidedNextSession.title}
+                topLabel={t("screens.autopilotdashboard.startYourSession")}
+                size={RING_SIZE}
+              />
+            </button>
+          ) : (
+            <GoalProgressRing
+              pct={guidedProgress!.pct}
+              day={guidedProgress!.completedTopics}
+              daysLeft={0}
+              daysLeftLabel={t("screens.autopilotdashboard.stepsCompletedOf", {
+                total: guidedProgress!.totalTopics,
+              })}
+              topLabel={t("screens.autopilotdashboard.stepsLabel")}
+              size={RING_SIZE}
+            />
+          )
         ) : ring.hasCountdown ? (
           // Tapping the ring opens the day-by-day plan once a deadline exists;
           // without one it routes to the goal/deadline setup flow.

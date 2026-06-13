@@ -14,7 +14,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/context/AuthProvider';
 import { communityFetch } from '@/lib/community-gateway';
-import { useJourneyChecklist } from '@/hooks/useJourneyChecklist';
+import { useJourneyChecklist, type PublicTopic } from '@/hooks/useJourneyChecklist';
 
 /** React Query key for the durable journey state (shared for live invalidation). */
 export const JOURNEY_STATE_QUERY_KEY = ['journey', 'state'] as const;
@@ -22,6 +22,13 @@ export const JOURNEY_STATE_QUERY_KEY = ['journey', 'state'] as const;
 interface JourneyStateProgress {
   completedTopicIds: string[];
   completedPracticeCount: number;
+}
+
+export interface NextJourneySession {
+  /** Session number the user should start next (first incomplete in order). */
+  session: number;
+  /** That session's first incomplete topic — what a tap activates. */
+  topic: PublicTopic;
 }
 
 export interface GuidedJourneyProgress {
@@ -33,6 +40,8 @@ export interface GuidedJourneyProgress {
   pct: number;
   /** Per-topic completion lookup — drives the catalog's green checkmarks. */
   completedSet: Set<string>;
+  /** The next session to start — drives the "Start your session N" hero card. */
+  nextSession: NextJourneySession | null;
   loading: boolean;
 }
 
@@ -82,6 +91,17 @@ export function useGuidedJourneyProgress(): GuidedJourneyProgress {
 
   const pct = totalTopics > 0 ? (completedTopics / totalTopics) * 100 : 0;
 
+  // The next session = first session (in curriculum order) with an incomplete
+  // topic; its first incomplete topic is what the hero card activates.
+  let nextSession: NextJourneySession | null = null;
+  for (const s of sessions) {
+    const topic = s.topics.find((t) => !completedSet.has(t.topicId));
+    if (topic) {
+      nextSession = { session: s.session, topic };
+      break;
+    }
+  }
+
   return {
     completedTopics,
     totalTopics,
@@ -89,6 +109,7 @@ export function useGuidedJourneyProgress(): GuidedJourneyProgress {
     totalSessions,
     pct,
     completedSet,
+    nextSession,
     loading: checklistLoading || stateLoading,
   };
 }
