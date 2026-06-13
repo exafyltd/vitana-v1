@@ -18,6 +18,7 @@ export function GoalProgressRing({
   totalDays,
   daysLeftLabel,
   topLabel,
+  glow = false,
 }: {
   pct: number;
   day: number;
@@ -30,8 +31,17 @@ export function GoalProgressRing({
   daysLeftLabel?: string;
   /** Pre-translated small top label. Falls back to the "Day" label. */
   topLabel?: string;
+  /** When true the ring reads as a raised, glowing CTA button (3D domed fill +
+   *  pulsing violet glow) so users recognise it as something to tap. */
+  glow?: boolean;
 }) {
   const reduce = useReducedMotion();
+  // Pulsing-glow keyframes for the CTA state — a domed surface lifted off the
+  // card with a soft violet halo that breathes to draw the eye.
+  const glowSoft =
+    "0 8px 20px rgba(124,58,237,0.28), 0 0 22px 4px rgba(167,139,250,0.45)";
+  const glowBright =
+    "0 12px 26px rgba(124,58,237,0.34), 0 0 36px 10px rgba(167,139,250,0.78)";
   const stroke = 12;
   const radius = (size - stroke) / 2;
   const cx = size / 2;
@@ -72,7 +82,22 @@ export function GoalProgressRing({
   const GAP = 0.008; // small visual gap between phase bands
 
   return (
-    <div className="relative" style={{ width: size, height: size }}>
+    <motion.div
+      className={`relative ${glow ? "rounded-full" : ""}`}
+      style={{
+        width: size,
+        height: size,
+        ...(glow
+          ? {
+              background:
+                "radial-gradient(circle at 50% 32%, #ffffff 0%, #faf5ff 55%, #ede9fe 100%)",
+              boxShadow: reduce ? glowBright : undefined,
+            }
+          : {}),
+      }}
+      animate={glow && !reduce ? { boxShadow: [glowSoft, glowBright, glowSoft] } : undefined}
+      transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+    >
       <svg width={size} height={size}>
         {/* track */}
         <circle cx={cx} cy={cy} r={radius} fill="none" stroke="currentColor" strokeWidth={stroke} className="text-slate-400/30" />
@@ -127,7 +152,7 @@ export function GoalProgressRing({
           {daysLeftLabel ?? t("screens.autopilotdashboard.daysLeftCount", { days: daysLeft })}
         </span>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

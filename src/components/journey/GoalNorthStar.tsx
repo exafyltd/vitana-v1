@@ -178,9 +178,12 @@ export function GoalNorthStar({
                 pct={guidedProgress!.pct}
                 day={guidedNextSession.session}
                 daysLeft={0}
-                daysLeftLabel={guidedNextSession.title}
-                topLabel={t("screens.autopilotdashboard.startYourSession")}
+                daysLeftLabel={t("screens.autopilotdashboard.sessionNumber", {
+                  n: guidedNextSession.session,
+                })}
+                topLabel={t("screens.autopilotdashboard.clickHere")}
                 size={RING_SIZE}
+                glow
               />
             </button>
           ) : (

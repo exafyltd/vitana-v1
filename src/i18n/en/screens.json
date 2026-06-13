@@ -8779,6 +8779,8 @@
       "allYourWork": "All your work",
       "myJourney": "My Longevity Journey",
       "startYourSession": "Start your session",
+      "clickHere": "Click here",
+      "sessionNumber": "Session {n}",
       "startSessionAria": "Start session {n}",
       "myGuidedJourney": "My Longevity Journey",
       "sessionsLabel": "Sessions",

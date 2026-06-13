@@ -423,7 +423,7 @@ export function DreamNorthStar({
             // the caption is its title; tapping starts it (Vitana speaks). Falls
             // back to the steps-learned readout while the next session resolves
             // (loading) or when everything is complete.
-            <button
+            <motion.button
               type="button"
               onClick={guidedNextSession ? onStartSession : undefined}
               disabled={!guidedNextSession}
@@ -434,23 +434,45 @@ export function DreamNorthStar({
                     })
                   : undefined
               }
-              className="absolute rounded-full bg-white/92 flex flex-col items-center justify-center text-center px-4 enabled:hover:scale-[1.02] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+              className="absolute rounded-full flex flex-col items-center justify-center text-center px-4 enabled:hover:scale-[1.03] enabled:active:scale-[0.98] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               style={{
                 inset: stroke + 4,
                 backdropFilter: "blur(8px)",
-                boxShadow: "0 0 0 1px rgba(255,255,255,0.5) inset",
+                // Domed glass surface — a bright highlight near the top fading to
+                // a soft violet rim makes the CTA read as a raised, tappable
+                // button rather than a flat label.
+                background: guidedNextSession
+                  ? "radial-gradient(circle at 50% 32%, #ffffff 0%, #faf5ff 55%, #ede9fe 100%)"
+                  : "rgba(255,255,255,0.92)",
+                boxShadow: guidedNextSession
+                  ? undefined
+                  : "0 0 0 1px rgba(255,255,255,0.5) inset",
               }}
+              // Gentle pulsing violet glow draws the eye to the start affordance
+              // (disabled once everything's complete or while next session loads).
+              animate={
+                guidedNextSession && !reduce
+                  ? {
+                      boxShadow: [
+                        "0 0 0 1px rgba(255,255,255,0.6) inset, 0 10px 22px rgba(124,58,237,0.30), 0 0 22px 4px rgba(167,139,250,0.45)",
+                        "0 0 0 1px rgba(255,255,255,0.6) inset, 0 12px 26px rgba(124,58,237,0.35), 0 0 36px 10px rgba(167,139,250,0.78)",
+                        "0 0 0 1px rgba(255,255,255,0.6) inset, 0 10px 22px rgba(124,58,237,0.30), 0 0 22px 4px rgba(167,139,250,0.45)",
+                      ],
+                    }
+                  : undefined
+              }
+              transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
             >
               {/* Flex-centred stack — never overlaps. The session INSTRUCTION is
                   the card title above; here the ring shows the start affordance:
-                  a small label + the next-session number. */}
+                  a "click here" prompt, the next-session number, and its label. */}
               <div
                 className="font-semibold"
                 style={{ color: "#6d28d9", fontSize: 12, letterSpacing: "0.14em" }}
               >
                 {t(
                   guidedNextSession
-                    ? "screens.autopilotdashboard.startYourSession"
+                    ? "screens.autopilotdashboard.clickHere"
                     : "screens.autopilotdashboard.stepsLabel",
                 ).toUpperCase()}
               </div>
@@ -462,7 +484,16 @@ export function DreamNorthStar({
                   ? guidedNextSession.session
                   : guidedProgress!.completedTopics}
               </div>
-              {!guidedNextSession && (
+              {guidedNextSession ? (
+                <div
+                  className="px-2 text-xs font-medium leading-tight"
+                  style={{ color: "#7c3aed", marginTop: 6 }}
+                >
+                  {t("screens.autopilotdashboard.sessionNumber", {
+                    n: guidedNextSession.session,
+                  })}
+                </div>
+              ) : (
                 <div
                   className="px-2 text-xs text-muted-foreground leading-tight"
                   style={{ marginTop: 6 }}
@@ -472,7 +503,7 @@ export function DreamNorthStar({
                   })}
                 </div>
               )}
-            </button>
+            </motion.button>
           ) : (
             <button
               type="button"
