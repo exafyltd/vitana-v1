@@ -8,7 +8,7 @@
  * Pure presentational — all copy comes from the i18n catalog.
  */
 
-import { BookHeart, FileSearch, Heart, MousePointerClick, Sparkles } from "lucide-react";
+import { BookOpen, Heart, MousePointerClick, Search, Sparkles } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n-toast";
@@ -29,8 +29,8 @@ export function JourneyHowItWorks({ className }: { className?: string }) {
             <span className="flex-1 border-t-2 border-dotted border-violet-300/70" />
           </div>
           <div className="flex flex-col items-center text-center">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-100 to-pink-100">
-              <BookHeart className="h-7 w-7 text-rose-500" />
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-300 to-pink-300">
+              <BookOpen className="h-7 w-7 text-white" />
             </span>
             <span className="mt-2 text-sm font-bold text-sky-600">
               {t("screens.guidedCatalog.howItWorksJourneyTitle")}
@@ -40,8 +40,8 @@ export function JourneyHowItWorks({ className }: { className?: string }) {
             </p>
           </div>
           <div className="flex flex-col items-center text-center">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-sky-100 to-violet-100">
-              <FileSearch className="h-7 w-7 text-sky-600" />
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-emerald-300 to-teal-400">
+              <Search className="h-7 w-7 text-white" />
             </span>
             <span className="mt-2 text-sm font-bold text-sky-600">
               {t("screens.guidedCatalog.howItWorksCatalogTitle")}
