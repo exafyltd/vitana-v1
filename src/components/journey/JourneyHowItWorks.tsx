@@ -14,6 +14,15 @@ import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n-toast";
 
 export function JourneyHowItWorks({ className }: { className?: string }) {
+  // First-time users often don't realise the session list is further down the
+  // page. Tapping the "Session overview" tile smooth-scrolls them straight to it.
+  const scrollToSessionList = () => {
+    if (typeof document === "undefined") return;
+    document
+      .getElementById("guided-session-list")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <div className={cn("space-y-4", className)}>
       {/* How it works — guided journey vs. session catalog */}
@@ -39,8 +48,12 @@ export function JourneyHowItWorks({ className }: { className?: string }) {
               {t("screens.guidedCatalog.howItWorksJourneyBody")}
             </p>
           </div>
-          <div className="flex flex-col items-center text-center">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-emerald-300 to-teal-400">
+          <button
+            type="button"
+            onClick={scrollToSessionList}
+            className="flex flex-col items-center rounded-2xl px-1 py-1 text-center transition-transform hover:scale-[1.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/60"
+          >
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-sky-300 to-blue-400 shadow-sm shadow-sky-300/40">
               <Search className="h-7 w-7 text-white" />
             </span>
             <span className="mt-2 text-sm font-bold text-sky-600">
@@ -49,7 +62,7 @@ export function JourneyHowItWorks({ className }: { className?: string }) {
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
               {t("screens.guidedCatalog.howItWorksCatalogBody")}
             </p>
-          </div>
+          </button>
         </div>
       </Card>
 
