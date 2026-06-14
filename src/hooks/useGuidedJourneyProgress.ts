@@ -20,6 +20,16 @@ import { useJourneyChecklist, type PublicTopic } from '@/hooks/useJourneyCheckli
 /** React Query key for the durable journey state (shared for live invalidation). */
 export const JOURNEY_STATE_QUERY_KEY = ['journey', 'state'] as const;
 const LISTENED_SESSIONS_STORAGE_PREFIX = 'vitana.guidedJourney.listenedSessions.v1';
+/**
+ * Daily-goal storage. The backend journey state only tracks all-time progress,
+ * so the "5 sessions today" motivator is kept client-side: a per-user record of
+ * which session numbers were listened to *today*. It auto-resets at midnight —
+ * any record whose stored date isn't today reads back as empty, so every new
+ * day starts the countdown fresh at DAILY_SESSION_GOAL.
+ */
+const DAILY_LISTENED_STORAGE_PREFIX = 'vitana.guidedJourney.dailyListened.v1';
+/** Sessions we encourage the user to complete each day. */
+export const DAILY_SESSION_GOAL = 5;
 
 interface JourneyStateProgress {
   completedTopicIds: string[];
@@ -48,7 +58,23 @@ export interface GuidedJourneyProgress {
   listenedSessionSet: Set<number>;
   /** The next session to start — drives the "Start your session N" hero card. */
   nextSession: NextJourneySession | null;
+  /** Daily motivator target (sessions to complete today). */
+  dailyGoal: number;
+  /** Distinct sessions the user has listened to *today* (optimistic, local). */
+  completedToday: number;
+  /** Sessions still to do today — counts DOWN from dailyGoal to 0. */
+  remainingToday: number;
+  /** True once the user has hit the daily goal — show the medal / 100% state. */
+  dailyGoalMet: boolean;
   loading: boolean;
+}
+
+/** Local YYYY-MM-DD key (used only as an internal day bucket, never displayed). */
+function localDayKey(d: Date = new Date()): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 
 function numberArray(value: unknown): number[] {
@@ -95,6 +121,43 @@ function rememberListenedSession(session: number, userId?: string | null) {
   }
 }
 
+function dailyListenedStorageKey(userId?: string | null): string {
+  return userId
+    ? `${DAILY_LISTENED_STORAGE_PREFIX}.${userId}`
+    : DAILY_LISTENED_STORAGE_PREFIX;
+}
+
+/** Distinct session numbers listened today (empty once the stored day rolls over). */
+function readDailyListenedSessions(userId?: string | null): number[] {
+  if (typeof window === 'undefined' || !window.localStorage) return [];
+  try {
+    const raw = window.localStorage.getItem(dailyListenedStorageKey(userId));
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as { date?: unknown; sessions?: unknown };
+    // A record from a previous day resets the counter — new day, fresh goal.
+    if (parsed?.date !== localDayKey()) return [];
+    return numberArray(parsed.sessions);
+  } catch {
+    return [];
+  }
+}
+
+function rememberDailyListen(session: number, userId?: string | null) {
+  if (!Number.isInteger(session) || session <= 0) return;
+  if (typeof window === 'undefined' || !window.localStorage) return;
+  try {
+    const next = uniqueNumbers([...readDailyListenedSessions(userId), session]).sort(
+      (a, b) => a - b,
+    );
+    window.localStorage.setItem(
+      dailyListenedStorageKey(userId),
+      JSON.stringify({ date: localDayKey(), sessions: next }),
+    );
+  } catch {
+    /* daily-goal tracking is best-effort; the React Query cache still updates. */
+  }
+}
+
 export function markSessionListenedInJourneyState(
   queryClient: QueryClient,
   session: number,
@@ -102,6 +165,7 @@ export function markSessionListenedInJourneyState(
   userId?: string | null,
 ) {
   rememberListenedSession(session, userId);
+  rememberDailyListen(session, userId);
   queryClient.setQueryData<JourneyStateProgress>(JOURNEY_STATE_QUERY_KEY, (prev) => {
     const current: JourneyStateProgress = prev ?? {
       completedTopicIds: [],
@@ -201,6 +265,15 @@ export function useGuidedJourneyProgress(): GuidedJourneyProgress {
     }
   }
 
+  // Daily motivator — distinct sessions listened today (optimistic/local). Read
+  // here in the body so it refreshes whenever the journey-state cache changes
+  // (markSessionListenedInJourneyState updates that cache on every tap) and
+  // resets on its own once the calendar day rolls over.
+  const completedToday = readDailyListenedSessions(userId).length;
+  const dailyGoal = DAILY_SESSION_GOAL;
+  const remainingToday = Math.max(0, dailyGoal - completedToday);
+  const dailyGoalMet = completedToday >= dailyGoal;
+
   return {
     completedTopics,
     totalTopics,
@@ -210,6 +283,10 @@ export function useGuidedJourneyProgress(): GuidedJourneyProgress {
     completedSet,
     listenedSessionSet,
     nextSession,
+    dailyGoal,
+    completedToday,
+    remainingToday,
+    dailyGoalMet,
     loading: checklistLoading || stateLoading,
   };
 }

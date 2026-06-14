@@ -1,7 +1,7 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plane, Compass, Sparkles, CalendarClock, Check } from "lucide-react";
+import { Plane, Compass, Sparkles, CalendarClock, Check, Medal } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { t } from "@/lib/i18n-toast";
 import { localizeGoal } from "@/lib/goalLabel";
@@ -80,6 +80,7 @@ function TodayDot({
 // halo rather than a size change, keeping that alignment intact.
 function JourneyStep({
   value,
+  icon,
   label,
   ring,
   fill,
@@ -87,7 +88,9 @@ function JourneyStep({
   emphasized = false,
   done = false,
 }: {
-  value: number | string;
+  value?: number | string;
+  /** Renders inside the disc instead of `value` — used for the daily-goal medal. */
+  icon?: React.ReactNode;
   label: string;
   ring: string;
   fill: string;
@@ -110,7 +113,7 @@ function JourneyStep({
               : "0 2px 6px rgba(15,23,42,0.06)",
           }}
         >
-          {value}
+          {icon ?? value}
         </div>
         {done && (
           <span
@@ -186,6 +189,12 @@ export function DreamNorthStar({
     completedTopics: number;
     totalTopics: number;
     pct: number;
+    /** Daily motivator: target sessions/day, how many done today, the countdown,
+     *  and whether today's goal is already met (medal / 100% state). */
+    dailyGoal: number;
+    completedToday: number;
+    remainingToday: number;
+    dailyGoalMet: boolean;
   };
   /**
    * The next session to start (first incomplete). When present the ring centre
@@ -702,13 +711,28 @@ export function DreamNorthStar({
                   emphasized
                 />
                 <StepConnector />
-                <JourneyStep
-                  value={guidedProgress!.totalSessions}
-                  label={t("screens.autopilotdashboard.stepGoalLabel")}
-                  fill="#fef3c7"
-                  ring="#fcd34d"
-                  text="#d97706"
-                />
+                {guidedProgress!.dailyGoalMet ? (
+                  // Daily goal smashed — celebrate with a gold medal + "100% done"
+                  // instead of a number, so the user sees they're complete today.
+                  <JourneyStep
+                    icon={<Medal className="w-7 h-7" style={{ color: "#b45309" }} />}
+                    label={t("screens.autopilotdashboard.dailyGoalMetLabel")}
+                    fill="linear-gradient(135deg, #fde68a 0%, #fcd34d 100%)"
+                    ring="#f59e0b"
+                    text="#b45309"
+                    emphasized
+                  />
+                ) : (
+                  // Daily countdown — starts at 5 each morning and ticks down to 0
+                  // as today's sessions are completed, motivating the daily streak.
+                  <JourneyStep
+                    value={guidedProgress!.remainingToday}
+                    label={t("screens.autopilotdashboard.stepGoalLabel")}
+                    fill="#fef3c7"
+                    ring="#fcd34d"
+                    text="#d97706"
+                  />
+                )}
               </div>
             </button>
           ) : (
