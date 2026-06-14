@@ -73,11 +73,17 @@ function TodayDot({
   );
 }
 
+// Stepper geometry. Every disc is vertically centred inside a fixed-height
+// "zone" so the dashed connectors line up through their centres even though the
+// middle (current) disc is larger than the two flanking ones.
+const STEP_ZONE = 56; // shared circle-area height → common centreline at STEP_ZONE/2
+const STEP_SIZE_MAIN = 56; // "Jetzt" — the current step, largest
+const STEP_SIZE_SIDE = 40; // flanking discs — smaller, symmetrical
+
 // A single node on the Guided-Journey "next step" stepper — a pastel disc with
-// the milestone number, an optional done-check badge, and a caption beneath.
-// All three discs share one diameter so the dashed connectors line up through
-// their centres; emphasis (the current "up next" step) is carried by a soft
-// halo rather than a size change, keeping that alignment intact.
+// the milestone number (or a medal icon), an optional done-check badge, and a
+// caption beneath. The disc sits inside a fixed-height zone so discs of
+// different sizes still share one centreline for the connectors.
 function JourneyStep({
   value,
   icon,
@@ -85,6 +91,7 @@ function JourneyStep({
   ring,
   fill,
   text,
+  size = STEP_SIZE_SIDE,
   emphasized = false,
   done = false,
 }: {
@@ -95,38 +102,47 @@ function JourneyStep({
   ring: string;
   fill: string;
   text: string;
+  /** Disc diameter in px (defaults to the smaller flanking size). */
+  size?: number;
   emphasized?: boolean;
   done?: boolean;
 }) {
+  const badge = Math.round(size * 0.4);
   return (
-    <div className="flex flex-col items-center gap-2" style={{ width: 60 }}>
-      <div className="relative">
-        <div
-          className="w-14 h-14 rounded-full flex items-center justify-center font-bold leading-none"
-          style={{
-            background: fill,
-            color: text,
-            border: `2px solid ${ring}`,
-            fontSize: 22,
-            boxShadow: emphasized
-              ? `0 6px 16px ${ring}66, 0 0 0 4px ${ring}26`
-              : "0 2px 6px rgba(15,23,42,0.06)",
-          }}
-        >
-          {icon ?? value}
-        </div>
-        {done && (
-          <span
-            className="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full flex items-center justify-center"
+    <div className="flex flex-col items-center gap-1.5" style={{ width: STEP_SIZE_MAIN + 4 }}>
+      <div className="flex items-center justify-center" style={{ height: STEP_ZONE }}>
+        <div className="relative">
+          <div
+            className="rounded-full flex items-center justify-center font-bold leading-none"
             style={{
-              background: "#10b981",
-              boxShadow: "0 2px 5px rgba(16,185,129,0.5)",
+              width: size,
+              height: size,
+              background: fill,
+              color: text,
+              border: `2px solid ${ring}`,
+              fontSize: Math.round(size * 0.42),
+              boxShadow: emphasized
+                ? `0 6px 16px ${ring}66, 0 0 0 4px ${ring}26`
+                : "0 2px 6px rgba(15,23,42,0.06)",
             }}
-            aria-hidden
           >
-            <Check className="w-3 h-3 text-white" strokeWidth={3} />
-          </span>
-        )}
+            {icon ?? value}
+          </div>
+          {done && (
+            <span
+              className="absolute -top-0.5 -right-0.5 rounded-full flex items-center justify-center"
+              style={{
+                width: badge,
+                height: badge,
+                background: "#10b981",
+                boxShadow: "0 2px 5px rgba(16,185,129,0.5)",
+              }}
+              aria-hidden
+            >
+              <Check className="w-2.5 h-2.5 text-white" strokeWidth={3} />
+            </span>
+          )}
+        </div>
       </div>
       <span
         className="text-[11px] font-semibold leading-tight text-center"
@@ -138,13 +154,13 @@ function JourneyStep({
   );
 }
 
-// Dashed link between two stepper discs. `mt` lands it on the 28px disc centre
-// (56px disc ÷ 2) so the line reads as a continuous path across the row.
+// Dashed link between two stepper discs. Its top margin lands it on the shared
+// disc centreline (STEP_ZONE ÷ 2) so the line reads as a continuous path.
 function StepConnector() {
   return (
     <div
-      className="flex-1 border-t-2 border-dashed mt-7"
-      style={{ borderColor: "rgba(148,163,184,0.5)" }}
+      className="flex-1 border-t-2 border-dashed"
+      style={{ marginTop: STEP_ZONE / 2, borderColor: "rgba(148,163,184,0.5)" }}
       aria-hidden
     />
   );
@@ -675,7 +691,7 @@ export function DreamNorthStar({
               aria-label={t("screens.autopilotdashboard.startSessionAria", {
                 n: guidedNextSession.session,
               })}
-              className="rounded-2xl border border-white/60 px-4 py-4 mt-4 hover:scale-[1.01] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+              className="rounded-2xl border border-white/60 px-4 py-2.5 mt-4 hover:scale-[1.01] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               style={{
                 background: "rgba(255,255,255,0.95)",
                 backdropFilter: "blur(8px)",
@@ -690,15 +706,15 @@ export function DreamNorthStar({
                   n: guidedNextSession.session,
                 })}
               </div>
-              <HeartDivider width={26} className="mt-2" />
 
-              <div className="flex items-start mt-3.5">
+              <div className="flex items-start justify-center mt-2">
                 <JourneyStep
                   value={guidedProgress!.completedSessions}
                   label={t("screens.autopilotdashboard.stepDone")}
                   fill="#d1fae5"
                   ring="#6ee7b7"
                   text="#059669"
+                  size={STEP_SIZE_SIDE}
                   done
                 />
                 <StepConnector />
@@ -708,6 +724,7 @@ export function DreamNorthStar({
                   fill="linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%)"
                   ring="#a78bfa"
                   text="#7c3aed"
+                  size={STEP_SIZE_MAIN}
                   emphasized
                 />
                 <StepConnector />
@@ -715,12 +732,12 @@ export function DreamNorthStar({
                   // Daily goal smashed — celebrate with a gold medal + "100% done"
                   // instead of a number, so the user sees they're complete today.
                   <JourneyStep
-                    icon={<Medal className="w-7 h-7" style={{ color: "#b45309" }} />}
+                    icon={<Medal className="w-5 h-5" style={{ color: "#b45309" }} />}
                     label={t("screens.autopilotdashboard.dailyGoalMetLabel")}
                     fill="linear-gradient(135deg, #fde68a 0%, #fcd34d 100%)"
                     ring="#f59e0b"
                     text="#b45309"
-                    emphasized
+                    size={STEP_SIZE_SIDE}
                   />
                 ) : (
                   // Daily countdown — starts at 5 each morning and ticks down to 0
@@ -731,6 +748,7 @@ export function DreamNorthStar({
                     fill="#fef3c7"
                     ring="#fcd34d"
                     text="#d97706"
+                    size={STEP_SIZE_SIDE}
                   />
                 )}
               </div>
