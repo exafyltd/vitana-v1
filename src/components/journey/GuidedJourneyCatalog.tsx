@@ -211,7 +211,9 @@ export function GuidedJourneyCatalog({
   };
 
   return (
-    <div className={cn('space-y-3', className)}>
+    // id is the scroll target for the "Session overview" tile in JourneyHowItWorks,
+    // so first-time users can jump straight to the session list.
+    <div id="guided-session-list" className={cn('space-y-3', className)}>
       {/* Chapter filter pills */}
       <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
         <ChapterPill
