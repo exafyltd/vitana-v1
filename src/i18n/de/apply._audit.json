@@ -96,10 +96,8 @@
       "phase": "llm"
     },
     "apply.subheadlineTicket": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical agreement and clunky gender-neutral phrasing. 'verifizierte' does not agree with masculine 'Test User' in the 'Jede:r' construction. A more natural and inclusive phrasing is preferred for an app.",
-      "suggested": "🎟️ Alle verifizierten Test User erhalten 1 Freiticket im Wert von 99 EUR für eines unserer 12 Sommer-Events — voller Rhythmus, Bewegung, Verbindung und Freude.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "apply.subheadlineCommunity": {
@@ -318,10 +316,8 @@
       "phase": "llm"
     },
     "apply.aboutEyebrow": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "'betrittst' (entering a place) is not idiomatic for 'joining' a community or program.",
-      "suggested": "Worum es geht",
       "phase": "llm"
     },
     "apply.aboutTitle": {
@@ -380,12 +376,10 @@
       "phase": "llm"
     },
     "apply.benefitSeat": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing nuance of 'at the table' (active participation/influence); 'Gründersitz' is too literal and passive.",
-      "suggested": "Als Gründungsmitglied die Entwicklung von Vitanaland mitgestalten",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:05.477Z"
+  "generatedAt": "2026-06-14T08:00:19.440Z"
 }

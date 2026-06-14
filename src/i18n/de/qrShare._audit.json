@@ -6,10 +6,8 @@
       "phase": "llm"
     },
     "qrShare.scanToView": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, missing possessive pronoun for 'profile'. An imperative is more direct for an instruction.",
-      "suggested": "Scanne, um dein Profil anzusehen.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "qrShare.shareProfile": {
@@ -33,5 +31,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:19:51.690Z"
+  "generatedAt": "2026-06-14T08:08:47.047Z"
 }

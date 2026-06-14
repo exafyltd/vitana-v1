@@ -7,8 +7,8 @@
     },
     "authPage.subtitle": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect possessive pronoun (formal instead of informal) and missing 'intelligence' from the translation.",
+      "confidence": 0.9,
+      "issue": "Slightly awkward phrasing; overly hyphenated for a friendly tone. A single hyphenated compound is more common and natural.",
       "suggested": "Deine personalisierte Gesundheitsintelligenz-Plattform",
       "phase": "llm"
     },
@@ -78,5 +78,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:24.568Z"
+  "generatedAt": "2026-06-14T08:00:35.434Z"
 }
