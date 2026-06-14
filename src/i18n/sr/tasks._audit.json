@@ -7,9 +7,9 @@
     },
     "tasks.confirmCancelTask": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'vi' instead of informal 'ti').",
-      "suggested": "Da li si siguran da želiš da otkažeš ovaj zadatak?",
+      "confidence": 0.9,
+      "issue": "Gendered adjective 'siguran' (masculine) is used. For a friendly app, a gender-neutral phrasing is more appropriate if the user's gender is unknown.",
+      "suggested": "Da li zaista želiš da otkažeš ovaj zadatak?",
       "phase": "llm"
     },
     "tasks.postponeComingSoon": {
@@ -18,10 +18,8 @@
       "phase": "llm"
     },
     "tasks.addNotePrompt": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'vi' instead of informal 'ti').",
-      "suggested": "Dodaj belešku ovom zadatku:",
       "phase": "llm"
     },
     "tasks.noteAdded": {
@@ -80,5 +78,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:29:45.662Z"
+  "generatedAt": "2026-06-14T08:17:26.916Z"
 }
