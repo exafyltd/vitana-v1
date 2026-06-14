@@ -1,7 +1,7 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plane, Compass, Sparkles, CalendarClock } from "lucide-react";
+import { Plane, Compass, Sparkles, CalendarClock, Check } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { t } from "@/lib/i18n-toast";
 import { localizeGoal } from "@/lib/goalLabel";
@@ -68,6 +68,80 @@ function TodayDot({
         boxShadow:
           "0 0 0 6px rgba(124,58,237,0.18), 0 4px 10px rgba(124,58,237,0.3)",
       }}
+      aria-hidden
+    />
+  );
+}
+
+// A single node on the Guided-Journey "next step" stepper — a pastel disc with
+// the milestone number, an optional done-check badge, and a caption beneath.
+// All three discs share one diameter so the dashed connectors line up through
+// their centres; emphasis (the current "up next" step) is carried by a soft
+// halo rather than a size change, keeping that alignment intact.
+function JourneyStep({
+  value,
+  label,
+  ring,
+  fill,
+  text,
+  emphasized = false,
+  done = false,
+}: {
+  value: number | string;
+  label: string;
+  ring: string;
+  fill: string;
+  text: string;
+  emphasized?: boolean;
+  done?: boolean;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-2" style={{ width: 60 }}>
+      <div className="relative">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center font-bold leading-none"
+          style={{
+            background: fill,
+            color: text,
+            border: `2px solid ${ring}`,
+            fontSize: 22,
+            boxShadow: emphasized
+              ? `0 6px 16px ${ring}66, 0 0 0 4px ${ring}26`
+              : "0 2px 6px rgba(15,23,42,0.06)",
+          }}
+        >
+          {value}
+        </div>
+        {done && (
+          <span
+            className="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full flex items-center justify-center"
+            style={{
+              background: "#10b981",
+              boxShadow: "0 2px 5px rgba(16,185,129,0.5)",
+            }}
+            aria-hidden
+          >
+            <Check className="w-3 h-3 text-white" strokeWidth={3} />
+          </span>
+        )}
+      </div>
+      <span
+        className="text-[11px] font-semibold leading-tight text-center"
+        style={{ color: text }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+}
+
+// Dashed link between two stepper discs. `mt` lands it on the 28px disc centre
+// (56px disc ÷ 2) so the line reads as a continuous path across the row.
+function StepConnector() {
+  return (
+    <div
+      className="flex-1 border-t-2 border-dashed mt-7"
+      style={{ borderColor: "rgba(148,163,184,0.5)" }}
       aria-hidden
     />
   );
@@ -208,7 +282,12 @@ export function DreamNorthStar({
   const guidedInnerInset = stroke + 4;
   const guidedInnerDiameter = Math.max(0, ringSize - guidedInnerInset * 2);
   const guidedNumberFont = Math.min(numberFont, Math.round(guidedInnerDiameter * 0.48));
-  const clickHereTop = Math.max(12, Math.round(guidedInnerDiameter * 0.12));
+  // "Hier klicken" must sit clearly INSIDE the inner white circle without its
+  // letters kissing the rim. The label lives near the top where the circle's
+  // chord is narrowest, so the type is scaled down off the inner diameter and
+  // the tracking kept tight — together they keep the word inset from the edge.
+  const clickHereFont = Math.max(9, Math.min(11, Math.round(guidedInnerDiameter * 0.06)));
+  const clickHereTop = Math.max(14, Math.round(guidedInnerDiameter * 0.14));
   const numberTop = Math.round(guidedInnerDiameter * 0.48);
   const captionTop = Math.round(guidedInnerDiameter * 0.74);
   const radius = (ringSize - stroke) / 2;
@@ -474,12 +553,12 @@ export function DreamNorthStar({
                   the card title above; here the ring shows the start affordance:
                   a "click here" prompt, the next-session number, and its label. */}
               <div
-                className="absolute left-2 right-2 font-semibold leading-none"
+                className="absolute left-2 right-2 font-semibold leading-none truncate"
                 style={{
                   top: clickHereTop,
                   color: "#6d28d9",
-                  fontSize: 12,
-                  letterSpacing: "0.12em",
+                  fontSize: clickHereFont,
+                  letterSpacing: "0.05em",
                 }}
               >
                 {t(
@@ -577,35 +656,94 @@ export function DreamNorthStar({
         {/* Goal pill — Guided Mode shows the fixed learning goal (learn the app
             / pass the sessions); Full App shows the user's life-compass goal. */}
         {showGuided ? (
-          <div
-            className="text-left rounded-2xl border border-white/60 px-4 py-3.5 flex items-center gap-3 mt-4"
-            style={{
-              background: "rgba(255,255,255,0.92)",
-              backdropFilter: "blur(8px)",
-              boxShadow: "0 8px 20px rgba(124,58,237,0.12)",
-            }}
-          >
-            <div
-              className="w-11 h-11 rounded-full flex items-center justify-center text-white shrink-0"
+          guidedNextSession ? (
+            // Next-step stepper — a calm pastel progress map (Completed →
+            // Up next → Goal) that doubles as the "start session N" CTA. Tapping
+            // anywhere on the card starts the next session (same as the ring).
+            <button
+              type="button"
+              onClick={onStartSession}
+              aria-label={t("screens.autopilotdashboard.startSessionAria", {
+                n: guidedNextSession.session,
+              })}
+              className="rounded-2xl border border-white/60 px-4 py-4 mt-4 hover:scale-[1.01] transition-transform focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               style={{
-                background: "linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 100%)",
-                boxShadow: "0 4px 10px rgba(196,181,253,0.4)",
+                background: "rgba(255,255,255,0.95)",
+                backdropFilter: "blur(8px)",
+                boxShadow: "0 8px 20px rgba(124,58,237,0.12)",
               }}
             >
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-[15px] font-bold leading-tight text-slate-900">
-                {t("screens.autopilotdashboard.guidedGoalTitle")}
+              <div className="text-[15px] font-bold leading-tight text-slate-900 text-center">
+                {t("screens.autopilotdashboard.nextStepLabel")}
               </div>
-              <HeartDivider width={20} className="my-1.5" />
-              <div className="text-[12px] text-slate-500">
-                {t("screens.autopilotdashboard.guidedGoalSubtitle", {
-                  total: guidedProgress!.totalSessions,
+              <div className="text-[13px] font-medium text-violet-700 text-center mt-0.5">
+                {t("screens.autopilotdashboard.startSessionShort", {
+                  n: guidedNextSession.session,
                 })}
               </div>
+              <HeartDivider width={26} className="mt-2" />
+
+              <div className="flex items-start mt-3.5">
+                <JourneyStep
+                  value={guidedProgress!.completedSessions}
+                  label={t("screens.autopilotdashboard.stepDone")}
+                  fill="#d1fae5"
+                  ring="#6ee7b7"
+                  text="#059669"
+                  done
+                />
+                <StepConnector />
+                <JourneyStep
+                  value={guidedNextSession.session}
+                  label={t("screens.autopilotdashboard.stepUpNext")}
+                  fill="linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%)"
+                  ring="#a78bfa"
+                  text="#7c3aed"
+                  emphasized
+                />
+                <StepConnector />
+                <JourneyStep
+                  value={guidedProgress!.totalSessions}
+                  label={t("screens.autopilotdashboard.stepGoalLabel")}
+                  fill="#fef3c7"
+                  ring="#fcd34d"
+                  text="#d97706"
+                />
+              </div>
+            </button>
+          ) : (
+            // No next session resolved yet (loading) or all sessions done — keep
+            // the static learning-goal pill as the calm fallback.
+            <div
+              className="text-left rounded-2xl border border-white/60 px-4 py-3.5 flex items-center gap-3 mt-4"
+              style={{
+                background: "rgba(255,255,255,0.92)",
+                backdropFilter: "blur(8px)",
+                boxShadow: "0 8px 20px rgba(124,58,237,0.12)",
+              }}
+            >
+              <div
+                className="w-11 h-11 rounded-full flex items-center justify-center text-white shrink-0"
+                style={{
+                  background: "linear-gradient(135deg, #c4b5fd 0%, #f9a8d4 100%)",
+                  boxShadow: "0 4px 10px rgba(196,181,253,0.4)",
+                }}
+              >
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-[15px] font-bold leading-tight text-slate-900">
+                  {t("screens.autopilotdashboard.guidedGoalTitle")}
+                </div>
+                <HeartDivider width={20} className="my-1.5" />
+                <div className="text-[12px] text-slate-500">
+                  {t("screens.autopilotdashboard.guidedGoalSubtitle", {
+                    total: guidedProgress!.totalSessions,
+                  })}
+                </div>
+              </div>
             </div>
-          </div>
+          )
         ) : goal ? (
           <button
             type="button"
