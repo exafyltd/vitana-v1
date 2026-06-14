@@ -294,6 +294,10 @@ export default function AutopilotDashboard() {
         completedTopics: guidedJourneyProgress.completedTopics,
         totalTopics: guidedJourneyProgress.totalTopics,
         pct: guidedJourneyProgress.pct,
+        dailyGoal: guidedJourneyProgress.dailyGoal,
+        completedToday: guidedJourneyProgress.completedToday,
+        remainingToday: guidedJourneyProgress.remainingToday,
+        dailyGoalMet: guidedJourneyProgress.dailyGoalMet,
       }
     : undefined;
   const dreamHero = (
