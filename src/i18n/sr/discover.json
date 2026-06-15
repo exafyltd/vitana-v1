@@ -69,6 +69,12 @@
     "toast": {
       "actionSelected": "Akcija izabrana",
       "comingSoon": "{action} funkcija uskoro stiže!"
+    },
+    "guest": {
+      "bannerTitle": "Prijavi se i osvoji Vitana nagrade pri svakoj kupovini",
+      "bannerSubtitle": "Slobodno razgledaj — prijavi se (besplatno je) da kupuješ i skupljaš nagrade.",
+      "bannerCta": "Prijavi se",
+      "signIn": "Prijavi se"
     }
   }
 }
