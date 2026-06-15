@@ -71,10 +71,8 @@
       "phase": "llm"
     },
     "voucher.email.subtitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward phrasing for 'beautifully designed'. 'Diseñado hermosamente' is grammatically correct but less idiomatic than 'bellamente diseñado' or 'con un diseño hermoso'.",
-      "suggested": "Enviaremos un correo bellamente diseñado con el vale.",
       "phase": "llm"
     },
     "voucher.email.recipientEmail": {
@@ -243,5 +241,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:09:09.058Z"
+  "generatedAt": "2026-06-15T09:45:48.686Z"
 }
