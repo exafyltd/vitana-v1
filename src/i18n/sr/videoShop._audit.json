@@ -1,150 +1,174 @@
 {
   "verdicts": {
-    "newsCard.menu.share": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.save": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.saved": {
+    "videoShop.feed.end": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Gender-specific (masculine) for a general user. Should be gender-inclusive.",
+      "suggested": "Stigao/la si do kraja.",
+      "phase": "llm"
+    },
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.summarize": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.copyLink": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.openInBrowser": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.hide": {
+    "videoShop.feed.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.showLess": {
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.muteSource": {
+    "videoShop.feed.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.linkCopied": {
+    "videoShop.feed.roleBlockedBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Gender-specific (masculine) for a general user. Should be gender-inclusive.",
+      "suggested": "Video prodavnica je funkcija zajednice. Pređi na ulogu zajednice da bi je koristio/la.",
+      "phase": "llm"
+    },
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.savedToast": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.unsavedToast": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.summarizeToast": {
+    "videoShop.feed.linkCopied": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.hiddenToast": {
+    "videoShop.drawer.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.showLessToast": {
+    "videoShop.drawer.productFallback": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.mutedToast": {
+    "videoShop.drawer.addToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.undo": {
+    "videoShop.drawer.adding": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.menu.unmute": {
+    "videoShop.drawer.addedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.detail.back": {
+    "videoShop.drawer.addedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.detail.continueReading": {
+    "videoShop.drawer.addFailed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.detail.openInBrowser": {
+    "videoShop.drawer.goToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.detail.couldNotLoad": {
+    "videoShop.drawer.moreDetails": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.detail.readOn": {
+    "videoShop.drawer.notifyMe": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.pillars.all": {
+    "videoShop.drawer.outOfStock": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.pillars.nutrition": {
+    "videoShop.drawer.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.pillars.hydration": {
+    "videoShop.drawer.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.pillars.sleep": {
+    "videoShop.drawer.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.pillars.exercise": {
+    "videoShop.drawer.unavailableTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "newsCard.pillars.mental": {
+    "videoShop.drawer.unavailableBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.roleBlockedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-06-15T09:44:05.318Z"
+  "generatedAt": "2026-06-15T10:03:41.919Z"
 }
