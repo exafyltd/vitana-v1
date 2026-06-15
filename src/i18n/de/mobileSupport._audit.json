@@ -1,480 +1,388 @@
 {
   "verdicts": {
-    "inbox.contextTabs.community": {
+    "mobilesupport.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "inbox.title": {
+    "mobilesupport.tabFaqs": {
       "verdict": "OK",
       "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.subtitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.description": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.desktopTitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.desktopDescription": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.tabs.all": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.tabs.groups": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.tabs.direct": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.tabs.contacts": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.tabs.notifications": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.tabs.archived": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.contextTabs.network": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.actions.new": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.actions.newMessage": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.actions.createGroup": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.composer.placeholder": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.composer.send": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.composer.attachments": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
+      "phase": "identical"
     },
-    "inbox.composer.recipients": {
+    "mobilesupport.quickContactEmailSub": {
       "verdict": "OK",
       "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.composer.add": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.states.empty": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "inbox.states.loading": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
+      "phase": "identical"
     },
-    "inbox.states.error": {
+    "mobilesupport.quickContactChat": {
       "verdict": "OK",
       "confidence": 1,
-      "phase": "llm"
+      "phase": "identical"
     },
-    "inbox.newConversation.title": {
-      "verdict": "OK",
-      "confidence": 1,
+    "mobilesupport.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The phrasing 'womit du Hilfe brauchst' is a bit clunky and less idiomatic than 'wobei'.",
+      "suggested": "Sag uns, wobei du Hilfe brauchst",
       "phase": "llm"
     },
-    "inbox.newConversation.titleGroup": {
+    "mobilesupport.tabContact": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.groupName": {
+    "mobilesupport.tabCommunity": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.groupNamePlaceholder": {
-      "verdict": "OK",
-      "confidence": 1,
+    "mobilesupport.hint": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'mit deiner Stimme' is a bit verbose and less direct than 'laut' for 'out loud'.",
+      "suggested": "Tippe auf das Mikrofon und beschreibe dein Anliegen laut.",
       "phase": "llm"
     },
-    "inbox.newConversation.members": {
+    "mobilesupport.recordButtonStart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.recipient": {
+    "mobilesupport.recordButtonStop": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.addMore": {
+    "mobilesupport.recording": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.searchPeople": {
+    "mobilesupport.listening": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.searchPlaceholder": {
+    "mobilesupport.tapToSpeak": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.searchMinChars": {
+    "mobilesupport.speakNaturally": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.searchResults": {
+    "mobilesupport.transcriptTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.noResults": {
+    "mobilesupport.transcriptPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.add": {
+    "mobilesupport.searchPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.added": {
+    "mobilesupport.categoryLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.cancel": {
+    "mobilesupport.categoryPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.startChat": {
+    "mobilesupport.categoryAccount": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.createGroup": {
+    "mobilesupport.categoryBilling": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversation.creating": {
+    "mobilesupport.categoryTechnical": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createGroup.title": {
+    "mobilesupport.categoryFeature": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createGroup.avatarSoon": {
+    "mobilesupport.categoryPrivacy": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createGroup.groupName": {
+    "mobilesupport.categoryOther": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createGroup.addMembers": {
+    "mobilesupport.attachLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createGroup.searchPlaceholder": {
+    "mobilesupport.submitButton": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createGroup.groupNameRequired": {
+    "mobilesupport.submitting": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createGroup.groupNameRequiredDesc": {
+    "mobilesupport.sentTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createGroup.addMembersRequired": {
+    "mobilesupport.sentBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createGroup.addMembersRequiredDesc": {
+    "mobilesupport.sendAnother": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createGroup.groupExists": {
+    "mobilesupport.quickContactTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createGroup.groupExistsDesc": {
+    "mobilesupport.quickContactEmail": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createGroup.created": {
+    "mobilesupport.quickContactChatSub": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createGroup.createdDesc": {
-      "verdict": "OK",
-      "confidence": 1,
+    "mobilesupport.quickContactCall": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.5,
+      "issue": "Ambiguous English. 'Call' can be a verb (Anrufen) or a noun (Anruf). Without context (e.g., button vs. label), it's hard to judge. 'Anruf' is a noun.",
       "phase": "llm"
     },
-    "inbox.createGroup.failed": {
-      "verdict": "OK",
-      "confidence": 1,
+    "mobilesupport.quickContactCallSub": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.5,
+      "issue": "Ambiguous English. 'Schedule' can be a verb (Termin vereinbaren) or a noun (Termin/Zeitplan). 'Termin' means 'appointment' and is a noun. If it's a button or a general 'schedule' (like a timetable), it might be different.",
       "phase": "llm"
     },
-    "inbox.createGroup.failedDesc": {
-      "verdict": "OK",
-      "confidence": 1,
+    "mobilesupport.responseTime": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing. The German sounds like a noun phrase, not a complete statement. 'Antwortzeit' is more natural for UI.",
+      "suggested": "Antwortzeit: meist innerhalb von 24 Stunden",
       "phase": "llm"
     },
-    "inbox.toast.success": {
+    "mobilesupport.faqsTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.toast.error": {
+    "mobilesupport.faqsSubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.toast.conversationStarted": {
+    "mobilesupport.faqsOpenHelpCenter": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.toast.authRequired": {
+    "mobilesupport.faqCreateAccountQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.toast.noTenantContext": {
+    "mobilesupport.faqCreateAccountA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.toast.searchFailed": {
+    "mobilesupport.faqResetPasswordQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.toast.accessDenied": {
+    "mobilesupport.faqResetPasswordA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.toast.communityOnly": {
+    "mobilesupport.faqUpdateProfileQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.toast.pleaseLogin": {
+    "mobilesupport.faqUpdateProfileA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.toast.groupRecipientsRequired": {
+    "mobilesupport.faqPaymentMethodsQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.toast.singleRecipientRequired": {
+    "mobilesupport.faqPaymentMethodsA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.toast.groupCreated": {
+    "mobilesupport.faqDataSecureQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.toast.groupFailed": {
+    "mobilesupport.faqDataSecureA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createGroupAction": {
+    "mobilesupport.faqDeleteAccountQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.newConversationAction": {
+    "mobilesupport.faqDeleteAccountA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.noGroups": {
+    "mobilesupport.communityTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.noGroupsDesc": {
+    "mobilesupport.communitySubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.createFirstGroup": {
+    "mobilesupport.communityGroupTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.loading": {
+    "mobilesupport.communityGroupBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.searchConversations": {
+    "mobilesupport.communityGroupCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.searchPlaceholder": {
+    "mobilesupport.communityForumTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.noMessages": {
+    "mobilesupport.communityForumBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.noMessagesDesc": {
+    "mobilesupport.communityForumCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.startConversation": {
+    "mobilesupport.communityStatsActive": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.emptyState.title": {
+    "mobilesupport.communityStatsAnswered": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.emptyState.globalDescription": {
+    "mobilesupport.communityStatsResponse": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.emptyState.tenantDescription": {
+    "mobilesupport.communityStatsResponseValue": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.emptyState.startConversation": {
+    "mobilesupport.errorNotSupported": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.emptyState.discoverPeople": {
+    "mobilesupport.errorEmpty": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.group.loading": {
+    "mobilesupport.errorSend": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.group.cantOpen": {
+    "mobilesupport.errorMicPermission": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.group.backToInbox": {
+    "mobilesupport.errorMicNotFound": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.group.back": {
+    "mobilesupport.errorMicInUse": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.group.memberOne": {
+    "mobilesupport.errorMicGeneric": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.group.memberOther": {
+    "mobilesupport.errorNoAudio": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.group.officialBadge": {
+    "mobilesupport.errorTranscription": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.group.empty": {
+    "mobilesupport.transcribing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "inbox.group.composerPlaceholder": {
+    "mobilesupport.backendRecordingHint": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-06-15T09:47:16.614Z"
+  "generatedAt": "2026-06-15T09:49:16.067Z"
 }

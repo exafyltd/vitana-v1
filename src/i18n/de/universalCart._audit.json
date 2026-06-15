@@ -1,325 +1,306 @@
 {
   "verdicts": {
-    "discover.filters.services": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "discover.title": {
+    "universalCart.page.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.mobileTitle": {
+    "universalCart.page.subtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.mobileDescription": {
+    "universalCart.page.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.description": {
+    "universalCart.page.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.searchPlaceholder": {
+    "universalCart.page.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.doctorsCoaches": {
+    "universalCart.page.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.doctorsCoachesDesc": {
+    "universalCart.page.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.wellnessServices": {
+    "universalCart.page.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.wellnessServicesDesc": {
+    "universalCart.page.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.communityGroups": {
+    "universalCart.page.removeAction": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.communityGroupsDesc": {
+    "universalCart.page.quantityLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.explore": {
+    "universalCart.page.completeAction": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicksForYou": {
+    "universalCart.page.alreadyCompleted": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.recommendedForYou": {
+    "universalCart.page.linkToDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.moreToExplore": {
+    "universalCart.page.close": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.seeAll": {
+    "universalCart.tabs.cart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.suggestedForYou": {
+    "universalCart.tabs.saved": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.browseCategories": {
+    "universalCart.saved.moveToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.all": {
+    "universalCart.saved.saveForLater": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.shareAndEarn": {
+    "universalCart.saved.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.shareAndEarnDesc": {
+    "universalCart.saved.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.start": {
+    "universalCart.item.viewProduct": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.view": {
+    "universalCart.agent.promptLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.matchPerfect": {
+    "universalCart.agent.promptPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.matchGreat": {
+    "universalCart.agent.proposeCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.matchGood": {
+    "universalCart.agent.proposing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.noResults": {
+    "universalCart.agent.sectionTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.noResultsDesc": {
+    "universalCart.agent.sectionSubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.categories.sleep": {
+    "universalCart.agent.rationaleLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.categories.nutrition": {
+    "universalCart.agent.safetyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.categories.movement": {
+    "universalCart.agent.confidenceLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.categories.mind": {
+    "universalCart.agent.keep": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.categories.supplements": {
+    "universalCart.agent.remove": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.categories.experts": {
+    "universalCart.agent.unavailable": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The phrase 'in einem Moment' is a bit literal and less idiomatic for 'in a moment' or 'shortly'. 'Gleich' or 'in Kürze' would be more natural.",
+      "suggested": "Vitana ist gerade nicht verfügbar. Bitte versuche es gleich noch einmal.",
+      "phase": "llm"
+    },
+    "universalCart.agent.roleBlocked": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.title": {
+    "universalCart.agent.empty": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.viewCart": {
+    "universalCart.agent.reviewNote": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.bookAppointment": {
+    "universalCart.agent.reorderCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.quickCheckout": {
+    "universalCart.agent.reorderLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.trackOrders": {
+    "universalCart.agent.reorderSectionTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.reorderPrevious": {
+    "universalCart.agent.reorderSectionSubtitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The phrasing 'kaufen tust du erst mit' is grammatically correct but sounds a bit clunky and overly colloquial for UI text. A more direct or slightly more formal informal phrasing would be better.",
+      "suggested": "Schon einmal gekaufte Produkte liegen in deinem Warenkorb. Prüfe sie, behalte oder entferne – du kaufst erst mit „Prüfen & Bezahlen“.",
+      "phase": "llm"
+    },
+    "universalCart.agent.reordering": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.managePayment": {
+    "universalCart.agent.overCapAdvisory": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.findServicesNearMe": {
+    "universalCart.agent.nearCapAdvisory": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.quickActions.viewSavedItems": {
+    "universalCart.agent.error": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.title": {
+    "universalCart.budget.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.description": {
+    "universalCart.budget.spentOfCap": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.backToDiscover": {
+    "universalCart.budget.statusUnder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.loading": {
+    "universalCart.budget.statusNear": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.unavailable": {
+    "universalCart.budget.statusOver": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.unavailableDesc": {
+    "universalCart.budget.noCapHint": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.recommendationsFound": {
+    "universalCart.addButton.label": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.noRecommendations": {
+    "universalCart.addButton.added": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.noRecommendationsDesc": {
+    "universalCart.addButton.addAria": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.aiPicks.viewAllPicks": {
+    "universalCart.addButton.addedAria": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.filters.all": {
+    "universalCart.addButton.signRequired": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.filters.supplements": {
+    "universalCart.addButton.roleBlocked": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "discover.filters.experts": {
-      "verdict": "OK",
-      "confidence": 1,
+    "universalCart.addButton.failed": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The phrasing 'In den Warenkorb legen fehlgeschlagen' is a direct translation that sounds a bit awkward. More idiomatic would be to use a passive construction or a noun phrase.",
+      "suggested": "Konnte nicht zum Warenkorb hinzugefügt werden.",
       "phase": "llm"
     },
-    "discover.filters.deals": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.toast.actionSelected": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.toast.comingSoon": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.guest.bannerTitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.guest.bannerSubtitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.guest.bannerCta": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "discover.guest.signIn": {
+    "universalCart.addButton.success": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-06-15T09:45:58.954Z"
+  "generatedAt": "2026-06-15T10:08:32.281Z"
 }
