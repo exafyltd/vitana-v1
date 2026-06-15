@@ -114,7 +114,8 @@ export default function NavigatorCatalog() {
         <AdminHeader
           emoji="🧭"
           title={t('screens.admin.vitanaNavigator')}
-          description="Manage the catalog of screens and trigger phrases that drive Vitana's in-conversation redirects. Edit a screen's when-to-visit text, add override phrases for exact matches, and test your changes in the live simulator before saving."
+          subtitle={t('screens.admin.vitanaNavigatorSubtitle')}
+          description={t('screens.admin.vitanaNavigatorDesc')}
           rightAction={
             <Button onClick={openNew}>
               <Plus className="mr-2 h-4 w-4" />
