@@ -104,6 +104,15 @@ export default function NavigatorCatalog() {
     return m;
   }, [entries]);
 
+  // Pre-fill the simulator with one of the selected screen's trigger phrases
+  // (if any), so testing "does this route to my screen?" is one click.
+  const simSuggestion = useMemo(() => {
+    const trig = (selectedEntry?.override_triggers || []).find(
+      (x) => x.active && x.phrase?.trim()
+    );
+    return trig?.phrase?.trim() || "";
+  }, [selectedEntry]);
+
   function openNew() {
     setSelectedId(null);
     setCreating(true);
@@ -315,7 +324,8 @@ export default function NavigatorCatalog() {
           {/* ── Right: simulator ─────────────────────────────────────────── */}
           <SimulatorPanel
             tenantId={tenantQuery === null ? null : tenantQuery}
-            defaultUtterance=""
+            selectedScreenId={selectedEntry?.screen_id || null}
+            suggestedUtterance={simSuggestion}
           />
         </div>
       </div>
