@@ -126,7 +126,6 @@ export default function NavigatorCatalog() {
         <AdminHeader
           emoji="🧭"
           title={t('screens.admin.vitanaNavigator')}
-          subtitle={t(platform === 'desktop' ? 'screens.admin.vitanaNavigatorSubtitleDesktop' : 'screens.admin.vitanaNavigatorSubtitle')}
           description={t('screens.admin.vitanaNavigatorDesc')}
           rightAction={
             <Button onClick={openNew}>
