@@ -46,10 +46,8 @@
       "phase": "llm"
     },
     "calendar.bookedActivities": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'Deine').",
-      "suggested": "Deine gebuchten Aktivitäten in VITANA",
       "phase": "llm"
     },
     "calendar.addEvent": {
@@ -83,11 +81,9 @@
       "phase": "llm"
     },
     "calendar.agenda": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Tag' (Day) is too narrow; 'Agenda' in calendar UIs typically refers to a list view, not just a single day. Keeping 'Agenda' as a loanword is common and more accurate.",
-      "suggested": "Agenda",
-      "phase": "llm"
+      "phase": "identical"
     },
     "calendar.nothingScheduled": {
       "verdict": "OK",
@@ -97,15 +93,13 @@
     "calendar.tryQuickAdd": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' forms and 'Ihren' instead of informal 'du' forms and 'deinen').",
-      "suggested": "Versuche Quick Add oder lass Autopilot deinen Tag planen",
+      "issue": "''Versuche Quick Add'' is less idiomatic than ''Probiere Quick Add aus'' for 'Try Quick Add' in the sense of 'give it a go' or 'use it'.",
+      "suggested": "Probiere Quick Add aus oder lass Autopilot deinen Tag planen",
       "phase": "llm"
     },
     "calendar.clickSlotHint": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' form) and slightly awkward phrasing for the second part.",
-      "suggested": "Klicke auf einen Slot, um ein Event zu erstellen • Zum Verschieben ziehen",
       "phase": "llm"
     },
     "calendar.noEventsOnDate": {
@@ -159,10 +153,8 @@
       "phase": "llm"
     },
     "calendar.exploreActivities": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihren') and the English imperative 'Explore' is not translated as an imperative.",
-      "suggested": "Entdecke Aktivitäten für deinen Kalender",
       "phase": "llm"
     },
     "calendar.browseActivities": {
@@ -171,10 +163,8 @@
       "phase": "llm"
     },
     "calendar.bookedEvents.title": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'Deine').",
-      "suggested": "Deine gebuchten Events",
       "phase": "llm"
     },
     "calendar.bookedEvents.todayLabel": {
@@ -278,10 +268,8 @@
       "phase": "llm"
     },
     "calendar.autopilot.snooze": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Not the most idiomatic translation for 'snooze' in a UI context.",
-      "suggested": "Später erinnern",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "calendar.autopilot.dismiss": {
@@ -315,10 +303,8 @@
       "phase": "llm"
     },
     "calendar.autopilot.calendarUpdated": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Autopilot hat deinen Kalender aktualisiert",
       "phase": "llm"
     },
     "calendar.autopilot.suggestionUndone": {
@@ -332,10 +318,8 @@
       "phase": "llm"
     },
     "calendar.autopilot.suggestionSnoozed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Not the most idiomatic translation for 'snoozed' in this context.",
-      "suggested": "Vorschlag auf später verschoben",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "calendar.autopilot.reminderLaterToday": {
@@ -354,10 +338,8 @@
       "phase": "llm"
     },
     "calendar.autopilot.focusBlockDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Du hast ein 90-minütiges Zeitfenster verfügbar. Perfekt für konzentriertes Arbeiten.",
       "phase": "llm"
     },
     "calendar.toasts.eventCreated": {
@@ -366,10 +348,8 @@
       "phase": "llm"
     },
     "calendar.toasts.eventCreatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Formal register ('Ihr') instead of informal 'du-form'.",
-      "suggested": "Dein Event wurde dem Kalender hinzugefügt",
       "phase": "llm"
     },
     "calendar.toasts.eventDeleted": {
@@ -378,24 +358,18 @@
       "phase": "llm"
     },
     "calendar.toasts.eventDeletedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Formal register ('Ihrem') instead of informal 'du-form'.",
-      "suggested": "Das Event wurde aus deinem Kalender entfernt",
       "phase": "llm"
     },
     "calendar.toasts.syncingTitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Noun ('Synchronisierung') used instead of an ongoing action/verb.",
-      "suggested": "Wird synchronisiert...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "calendar.toasts.syncingDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Noun ('Synchronisierung') used instead of an ongoing action/verb.",
-      "suggested": "Wird mit externen Kalendern synchronisiert",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "calendar.toasts.syncedTitle": {
@@ -604,5 +578,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:05:53.615Z"
+  "generatedAt": "2026-06-16T09:10:24.810Z"
 }
