@@ -1651,8 +1651,6 @@
       "noEntriesMatch": "No entries match.",
       "newScreen": "New screen",
       "vitanaNavigator": "Vitana Navigator",
-      "vitanaNavigatorSubtitle": "The navigation & routing catalog for the Maxina mobile app",
-      "vitanaNavigatorSubtitleDesktop": "The navigation & routing catalog for the Maxina desktop app",
       "navigatorMobileCatalog": "Mobile MAXINA",
       "navigatorDesktopCatalog": "Desktop MAXINA",
       "vitanaNavigatorDesc": "Every screen, tab and mode the app can open, plus the trigger phrases that let Vitana redirect members there mid-conversation. Edit a screen's when-to-visit text, add override phrases for exact matches, and test in the live simulator before saving.",
