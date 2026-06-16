@@ -48,7 +48,12 @@ interface LongevityNewsResponse {
   has_more: boolean;
 }
 
-async function fetchLongevityNews(
+// Key helper exported for the prefetch registry / warmup. Mirrors the hook's
+// queryKey shape: ["longevity-news", tag, limit, language].
+export const longevityNewsKey = (tag: string | undefined, limit: number | undefined, language: string) =>
+  ["longevity-news", tag, limit, language] as const;
+
+export async function fetchLongevityNews(
   page: number,
   token: string | null,
   options?: { tag?: string; limit?: number; language?: string }
@@ -105,14 +110,14 @@ export function useLongevityNewsFeed(options?: {
   });
 }
 
-export function useCommunityNews(options?: { limit?: number; enabled?: boolean }) {
-  const limit = options?.limit ?? 10;
+// Exported so the prefetch registry / post-login warmup can hydrate the exact
+// same key+fetch the Home news feed binds to.
+export const communityNewsKey = (limit: number) => ["community-news", limit] as const;
 
-  return useQuery({
-    queryKey: ["community-news", limit],
-    queryFn: async (): Promise<NewsArticle[]> => {
-      const articles: NewsArticle[] = [];
+export async function fetchCommunityNews(limit: number): Promise<NewsArticle[]> {
+  const articles: NewsArticle[] = [];
 
+  {
       const { data: events } = await supabase
         .from("global_community_events")
         .select("id, title, description, event_type, image_url, start_time, created_at")
@@ -193,9 +198,18 @@ export function useCommunityNews(options?: { limit?: number; enabled?: boolean }
       );
 
       return articles;
-    },
+  }
+}
+
+export function useCommunityNews(options?: { limit?: number; enabled?: boolean }) {
+  const limit = options?.limit ?? 10;
+
+  return useQuery({
+    queryKey: communityNewsKey(limit),
+    queryFn: () => fetchCommunityNews(limit),
     enabled: options?.enabled !== false,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 }
+
