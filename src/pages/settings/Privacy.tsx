@@ -1,3 +1,4 @@
+import { useUrlTab } from "@/hooks/useUrlTab";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -20,7 +21,7 @@ import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
 import { t } from '@/lib/i18n-toast';
 
 function Privacy() {
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeTab, setActiveTab] = useUrlTab("section", "profile");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent, revokeConsent } = useAIConsent();
 
