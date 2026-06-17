@@ -119,7 +119,14 @@ export default function Wallet() {
   const [exchangeAndSendOpen, setExchangeAndSendOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState<string>('');
   const [activeTab, setActiveTab] = useState("balance-overview");
-  const [mobileWalletMode, setMobileWalletMode] = useState("balances");
+  // VTID-NAV-WALLET-TABS: the mobile Wallet mode pills (Balances / Activity /
+  // Actions). Vitana deep-links a pill via /wallet?tab=<mode>; the gateway
+  // catalog routes "Wallet Activity"/"Wallet Actions" here. Only an explicit
+  // valid value sets it, so the existing ?filter= usage never resets it.
+  const [mobileWalletMode, setMobileWalletMode] = useState(() => {
+    const t = searchParams.get("tab");
+    return t === "activity" || t === "actions" || t === "balances" ? t : "balances";
+  });
 
   const mobileWalletModes: ModeOption[] = [
     { value: 'balances', label: translate('wallet.tabs.balances', 'Balances'), icon: '💰' },
@@ -127,6 +134,13 @@ export default function Wallet() {
     { value: 'actions', label: translate('wallet.tabs.actions', 'Actions'), icon: '⚡' },
   ];
   const [autopilotOpen, setAutopilotOpen] = useState(false);
+  // VTID-NAV-WALLET-TABS: honor ?tab= deep-links (e.g. Vitana navigates to
+  // /wallet?tab=activity). Only acts on an explicit valid value.
+  useEffect(() => {
+    const t = searchParams.get("tab");
+    if (t === "balances" || t === "activity" || t === "actions") setMobileWalletMode(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
   const { balances, transactions, loading, error, getBalance, isLoaded } = useWallet();
   const { displayCurrency, setDisplayCurrency } = useDisplayCurrency();
   const { eurPerUsd } = useEurUsdRate();

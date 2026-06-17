@@ -23,7 +23,12 @@
 
 import { onINP, type Metric as WebVitalsMetric } from 'web-vitals';
 
-const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || 'https://gateway.vitanaland.com';
+// VITE_GATEWAY_URL includes "/api/v1" in this repo's .env. Strip it (the
+// same normalization admin-api.ts does) so the beacon posts to
+// /api/v1/rum/beacon and not the doubled /api/v1/api/v1/rum/beacon that
+// shipped in earlier builds.
+const RAW_GATEWAY = import.meta.env.VITE_GATEWAY_URL || 'https://gateway.vitanaland.com';
+const GATEWAY_URL = RAW_GATEWAY.replace(/\/api\/v1\/?$/, '').replace(/\/$/, '');
 const BEACON_PATH = '/api/v1/rum/beacon';
 const SESSION_KEY = 'vitana-rum-session';
 
@@ -82,6 +87,9 @@ function send(beacon: RumBeacon): void {
       headers: { 'Content-Type': 'application/json' },
       body,
       keepalive: true,
+      // Beacons are anonymous — omitting credentials sidesteps the
+      // credentialed-CORS requirements (Access-Control-Allow-Credentials).
+      credentials: 'omit',
     }).catch(() => undefined);
   } catch {
     // Beacons must NEVER throw — they run in production user paths.

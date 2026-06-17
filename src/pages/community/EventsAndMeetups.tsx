@@ -499,6 +499,19 @@ const EventsAndMeetups = () => {
     }
   }, []);
 
+  // Respect external ?tab changes AFTER mount (e.g. the Orb navigating to
+  // /comm/events-meetups?tab=upcoming while the user is already on this page).
+  // The mount-only initializer above won't catch it, and the activeTab→URL sync
+  // below would otherwise revert the Orb's change back to the current tab.
+  // Read-only (no setSearchParams), so it can't loop with the sync effect.
+  useEffect(() => {
+    const tabParam = searchParams.get('tab');
+    const validTabs = ['hot', 'upcoming', 'today', 'following'];
+    if (tabParam && validTabs.includes(tabParam) && tabParam !== activeTab) {
+      setActiveTab(tabParam);
+    }
+  }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Sync activeTab to URL when user switches tabs
   useEffect(() => {
     const currentTab = searchParams.get('tab');
