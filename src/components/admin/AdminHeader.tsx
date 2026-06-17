@@ -2,17 +2,19 @@ import { t } from '@/lib/i18n-toast';
 interface AdminHeaderProps {
   title: string;
   description: string;
+  subtitle?: string;
   emoji?: string;
   syncTimestamp?: string;
   rightAction?: React.ReactNode;
 }
 
-export default function AdminHeader({ 
-  title, 
-  description, 
+export default function AdminHeader({
+  title,
+  description,
+  subtitle,
   emoji,
   syncTimestamp,
-  rightAction 
+  rightAction
 }: AdminHeaderProps) {
   return (
     <div className="bg-gradient-to-r from-card via-card/95 to-card border rounded-2xl shadow-lg p-8">
@@ -22,6 +24,11 @@ export default function AdminHeader({
             {emoji && <span className="text-4xl">{emoji}</span>}
             {title}
           </h1>
+          {subtitle && (
+            <span className="inline-flex items-center rounded-full bg-primary/10 text-primary px-3 py-1 text-sm font-semibold mb-3">
+              {subtitle}
+            </span>
+          )}
           <p className="text-muted-foreground text-lg max-w-3xl">
             {description}
           </p>

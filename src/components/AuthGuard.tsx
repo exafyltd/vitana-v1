@@ -9,6 +9,13 @@ import { t } from '@/lib/i18n-toast';
 
 interface AuthGuardProps {
   children: ReactElement;
+  /**
+   * When true, signed-out visitors are allowed to render `children` instead of
+   * being redirected to the sign-in portal. Used for public browse surfaces
+   * (e.g. /discover and its child tabs) that must work without a session.
+   * OAuth-callback handling still runs so an authenticated arrival is hydrated.
+   */
+  allowGuest?: boolean;
 }
 
 type OAuthState = 'idle' | 'processing' | 'timedOut';
@@ -28,7 +35,7 @@ function clearCallbackParams() {
   window.history.replaceState(null, '', window.location.pathname);
 }
 
-export default function AuthGuard({ children }: AuthGuardProps) {
+export default function AuthGuard({ children, allowGuest = false }: AuthGuardProps) {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const [oauthState, setOauthState] = useState<OAuthState>('idle');
@@ -159,6 +166,8 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   // One-shot hydration check: when auth settles with no user AND no callback, redirect
   useEffect(() => {
     if (loading || user || isCallback || oauthState !== 'idle') return;
+    // Public surface: guests stay and render children — no redirect.
+    if (allowGuest) return;
 
     let cancelled = false;
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -197,7 +206,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     });
 
     return () => { cancelled = true; };
-  }, [user, loading, navigate, isCallback, oauthState, getLoginRoute]);
+  }, [user, loading, navigate, isCallback, oauthState, getLoginRoute, allowGuest]);
 
   // --- Render ---
 
@@ -281,8 +290,10 @@ export default function AuthGuard({ children }: AuthGuardProps) {
     );
   }
 
-  // No user and no callback — AuthGuard will redirect via the hydration check
+  // No user and no callback. On a public surface, render children for the
+  // guest; otherwise AuthGuard redirects via the hydration check above.
   if (!user) {
+    if (allowGuest) return children;
     return null;
   }
 
