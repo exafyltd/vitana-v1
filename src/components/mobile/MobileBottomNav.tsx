@@ -1,17 +1,28 @@
 import { useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { Calendar, LayoutGrid, Mail, Radio } from "lucide-react";
+import { Calendar, Compass, LayoutGrid, Mail, Radio } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useChatUnreadCount } from "@/hooks/useChatUnreadCount";
+import { useGuidedMode } from "@/context/GuidedModeProvider"; // VTID-03285
 
+// Full App bottom nav (unchanged — design freeze).
 const navItems = [
   { id: 'events', icon: Calendar, label: 'Events', path: '/comm/events-meetups', i18nKey: 'mobileNav.events' },
   { id: 'inbox', icon: Mail, label: 'Inbox', path: '/inbox', i18nKey: 'mobileNav.inbox' },
   { id: 'live', icon: Radio, label: 'Live', path: '/comm/live-rooms', i18nKey: 'mobileNav.live' },
   { id: 'media', icon: LayoutGrid, label: 'Media', path: '/comm/media-hub', i18nKey: 'mobileNav.media' },
+];
+
+// VTID-03285: Guided Mode nav — Journey replaces Media (spec screen 01:
+// My Journey, Inbox, ORB, Live, Events). Journey is the onboarding home.
+const guidedNavItems = [
+  { id: 'journey', icon: Compass, label: 'Journey', path: '/autopilot', i18nKey: 'mobileNav.myJourney' },
+  { id: 'inbox', icon: Mail, label: 'Inbox', path: '/inbox', i18nKey: 'mobileNav.inbox' },
+  { id: 'live', icon: Radio, label: 'Live', path: '/comm/live-rooms', i18nKey: 'mobileNav.live' },
+  { id: 'events', icon: Calendar, label: 'Events', path: '/comm/events-meetups', i18nKey: 'mobileNav.events' },
 ];
 
 /**
@@ -22,6 +33,8 @@ export function MobileBottomNav() {
   const isMobile = useIsMobile();
   const location = useLocation();
   const { unreadCount } = useChatUnreadCount();
+  const { isGuided } = useGuidedMode(); // VTID-03285: Guided Mode swaps Media→Journey
+  const items = isGuided ? guidedNavItems : navItems;
   
   // Routes where the bottom nav should be hidden
   const hideNavRoutes = [
@@ -71,7 +84,7 @@ export function MobileBottomNav() {
       className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-50 md:hidden"
     >
       <div className="relative grid grid-cols-5 items-end bg-background/95 backdrop-blur-3xl border-t border-foreground/8 pb-safe pt-2 px-4 shadow-[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">
-        {navItems.slice(0, 2).map((item) => (
+        {items.slice(0, 2).map((item) => (
           <NavItem
             key={item.id}
             {...item}
@@ -81,7 +94,7 @@ export function MobileBottomNav() {
         ))}
         {/* Spacer for central Orb FAB */}
         <div />
-        {navItems.slice(2).map((item) => (
+        {items.slice(2).map((item) => (
           <NavItem
             key={item.id}
             {...item}

@@ -69,6 +69,12 @@
     "toast": {
       "actionSelected": "Aktion ausgewählt",
       "comingSoon": "{action} Funktion bald verfügbar!"
+    },
+    "guest": {
+      "bannerTitle": "Melde dich an und sichere dir Vitana-Prämien bei jedem Einkauf",
+      "bannerSubtitle": "Stöbere frei – zum Kaufen und Sammeln von Prämien einfach kostenlos anmelden.",
+      "bannerCta": "Anmelden",
+      "signIn": "Anmelden"
     }
   }
 }
