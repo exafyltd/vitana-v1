@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 import { useTranslation } from "@/hooks/useTranslation";
+import { track } from "@/lib/product-analytics/client";
 
 interface SubNavItem {
   id: string;
@@ -33,6 +34,15 @@ export default function SubNavigation({ items, className, rightActions }: SubNav
                 onClick={() => {
                   console.log(`Navigating to: ${item.path} (${item.name})`);
                   console.log("Current pathname:", window.location.pathname);
+                  track("navigation_clicked", {
+                    event_type: "journey",
+                    feature_key: "navigation",
+                    properties: {
+                      nav_label: item.name,
+                      nav_target_route: item.path,
+                      current_route: window.location.pathname,
+                    },
+                  });
                 }}
                 className={({ isActive }) =>
                   cn(

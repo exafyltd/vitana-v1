@@ -81,6 +81,9 @@ export interface FeedContext {
   region_group: string | null;
   scope: string;
   rationale: string;
+  // True when the backend served the guest starter feed (no session). Drives
+  // the signed-out CTA on the Discover surface.
+  guest?: boolean;
 }
 
 export interface MarketplaceFeedResponse {

@@ -1,3 +1,4 @@
+import { useUrlTab } from "@/hooks/useUrlTab";
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
@@ -27,6 +28,7 @@ import { lookup, t } from '@/lib/i18n-toast';
 
 export default withScreenId(function Plans() {
   const [wizardOpen, setWizardOpen] = useState(false);
+  const [activeTab, setActiveTab] = useUrlTab("tab", "all");
   const [selectedPlanType, setSelectedPlanType] = useState<string | undefined>(undefined);
   const { plans, isLoading } = useHealthPlans();
   const navigate = useNavigate();
@@ -110,7 +112,7 @@ export default withScreenId(function Plans() {
           </UtilityActionButton>
           
           {/* Split Bar Navigation */}
-          <SplitBar defaultValue="all" className="mb-6">
+          <SplitBar value={activeTab} onValueChange={setActiveTab} className="mb-6">
             <SplitBarList className="w-full bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-lg p-1">
               <SplitBarTrigger value="all">{t('screens.health.allPlans')}</SplitBarTrigger>
               <SplitBarTrigger value="nutrition">{t('screens.health.nutrition')}</SplitBarTrigger>
