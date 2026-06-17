@@ -5,10 +5,15 @@
  * POST /api/v1/journey/practice-complete). Listening never calls this — only an
  * explicit "mark as done" after the user performs the tiny action.
  *
- * practiceTargetRoute maps a topic's guidedPracticeTarget to a VERIFIED v1 route
- * (paths confirmed against App.tsx). Targets without a route (e.g. event/popup-
- * driven surfaces like life_compass) return null and simply show no "Open
- * feature" button — the explanation + confirmation still let the user complete.
+ * practiceTargetAction maps a topic's guidedPracticeTarget to the right way to
+ * OPEN that practice surface so "Open feature" is never a dead end:
+ *   - { kind: 'route' }   → a VERIFIED v1 route (paths confirmed against App.tsx)
+ *   - { kind: 'overlay' } → a popup/drawer dispatched via CustomEvent (e.g.
+ *     life_compass → 'vitana:open-life-compass'), reusing the same events the
+ *     ORB voice navigator uses (useOrbVoiceWidget.ts / AutopilotPopup.tsx)
+ *   - { kind: 'orb' }     → open the Vitana ORB focused on the topic
+ * Unknown/empty targets return null; the caller treats that as "open the ORB",
+ * so every guided practice stays doable with Vitana.
  */
 
 import { communityFetch } from '@/lib/community-gateway';
@@ -49,9 +54,25 @@ export async function recordSessionListened(
   }
 }
 
+/** How a guided-practice target should be opened. */
+export type PracticeAction =
+  | { kind: 'route'; route: string }
+  | { kind: 'overlay'; event: string }
+  | { kind: 'orb' };
+
+/** Targets that live as a popup/drawer (no route) — opened via CustomEvent.
+ *  Mirrors the overlay markers in useOrbVoiceWidget.ts. */
+const OVERLAY_EVENTS: Record<string, string> = {
+  life_compass: 'vitana:open-life-compass',
+};
+
+/** Targets whose practice IS talking to Vitana — open the ORB on the topic. */
+const ORB_TARGETS = new Set(['orb_overview']);
+
 const TARGET_ROUTES: Record<string, string> = {
   vitana_index: '/health/vitana-index',
   my_journey: '/autopilot',
+  community_overview: '/comm',
   memory: '/memory',
   reminders: '/reminders',
   calendar: '/reminders',
@@ -66,7 +87,13 @@ const TARGET_ROUTES: Record<string, string> = {
   business_hub: '/business',
 };
 
-export function practiceTargetRoute(target: string | null | undefined): string | null {
+export function practiceTargetAction(
+  target: string | null | undefined,
+): PracticeAction | null {
   if (!target) return null;
-  return TARGET_ROUTES[target] ?? null;
+  const overlay = OVERLAY_EVENTS[target];
+  if (overlay) return { kind: 'overlay', event: overlay };
+  if (ORB_TARGETS.has(target)) return { kind: 'orb' };
+  const route = TARGET_ROUTES[target];
+  return route ? { kind: 'route', route } : null;
 }
