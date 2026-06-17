@@ -3,6 +3,8 @@
  * Handles impression and interaction tracking for card components
  */
 
+import { track as trackProductEvent } from './product-analytics/client';
+
 export interface AnalyticsPayload {
   template_id: string;
   version: string;
@@ -166,18 +168,40 @@ class AnalyticsService {
   }
 
   private sendToAnalyticsProvider(event: AnalyticsEvent): void {
-    // Implement your analytics provider integration here
-    // Examples: Google Analytics, Mixpanel, Amplitude, etc.
-    
-    // For now, we'll store in localStorage for development
+    // BOOTSTRAP-PRODUCT-ANALYTICS: forward card events to the gateway
+    // pipeline that backs /admin/insights/*. The legacy event names map to
+    // the product analytics taxonomy; the original payload fields ride
+    // along in properties.
+    const EVENT_NAME_MAP: Record<string, string> = {
+      card_impression: 'card_impression',
+      card_click: 'card_clicked',
+      cta_execute: 'cta_clicked',
+    };
+    trackProductEvent(EVENT_NAME_MAP[event.event_name] ?? event.event_name, {
+      event_type: 'journey',
+      feature_key: 'cards',
+      properties: {
+        template_id: event.payload.template_id,
+        version: event.payload.version,
+        system_card_id: event.payload.system_card_id,
+        slot_id: event.payload.slot_id,
+        item_id: event.payload.item_id,
+        sku: event.payload.sku,
+        screen_route: event.payload.screen_route,
+        experiment_id: event.payload.experiment_id,
+      },
+    });
+
+    // Keep the localStorage ring buffer — getStoredEvents() is still used
+    // for local debugging.
     const events = JSON.parse(localStorage.getItem('vitana_analytics_events') || '[]');
     events.push(event);
-    
+
     // Keep only last 1000 events
     if (events.length > 1000) {
       events.splice(0, events.length - 1000);
     }
-    
+
     localStorage.setItem('vitana_analytics_events', JSON.stringify(events));
   }
 

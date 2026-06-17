@@ -1,3 +1,4 @@
+import { useUrlTab } from "@/hooks/useUrlTab";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -90,7 +91,7 @@ function JoinLeaveButton({ groupId }: { groupId: string }) {
 
 export default function Groups() {
   const [createGroupOpen, setCreateGroupOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("my-groups");
+  const [activeTab, setActiveTab] = useUrlTab("tab", "my-groups");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const isMobile = useIsMobile();

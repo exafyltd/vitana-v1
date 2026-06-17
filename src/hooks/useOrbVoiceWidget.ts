@@ -9,6 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { setOrbWidgetAuthenticated } from "@/lib/orbWidgetReady";
 import { setOrbWidgetSessionActive } from "@/lib/orbWidgetSession";
+// VTID-03292 (#4): consume the one-shot "close after the guided teaching turn" flag.
+import { consumeGuidedAutoClose } from "@/lib/orbActivate";
 
 /** Check whether the external ORB widget is actually alive in the DOM */
 function isOrbAlive(): boolean {
@@ -126,6 +128,24 @@ export function useOrbVoiceWidget() {
   // navigation guard below (the callback is captured at init time).
   const isMobileRef = useRef(isMobile);
   isMobileRef.current = isMobile;
+  // BOOTSTRAP-ORB-SCREEN-TRACKING: keep the freshest current route in a ref so
+  // the widget-init closures below read the LIVE route, not the route captured
+  // when the init effect last ran. The init effects are keyed on
+  // [loading, user?.id, session?.access_token] — deliberately NOT location, so
+  // the widget doesn't re-init on every navigation. The side effect is that the
+  // `location.pathname` captured inside their closures goes stale: right after
+  // login the user is redirected (e.g. "/" → "/journey") WITHOUT user.id or the
+  // access_token changing, and the deferred external widget script frequently
+  // finishes loading only AFTER that redirect (see the 60s polling fallback
+  // below). tryInit then initialized the widget with the STALE login route
+  // ("/"), and because the user then sits on the destination screen with no
+  // further navigation, the route-change updateContext never fires to correct
+  // it — so the orb session started with current_route="/" and Vitana announced
+  // the user was on the login/landing page. Reading this ref (re-synced on every
+  // render, before any effect runs) makes init use the route the user is
+  // actually on.
+  const currentRouteRef = useRef(location.pathname);
+  currentRouteRef.current = location.pathname;
   // Plain route-path ring buffer (back-compat with navigator-consult).
   const routeHistoryRef = useRef<string[]>([location.pathname]);
   // VTID-NAV-TIMEJOURNEY: Parallel ring buffer with entry timestamps for
@@ -285,13 +305,28 @@ export function useOrbVoiceWidget() {
           // the Soundscape manager's media listeners can't see otherwise.
           onSessionStart: () => setOrbWidgetSessionActive(true),
           onSessionEnd: () => setOrbWidgetSessionActive(false),
+          // VTID-03292 (#4): when the ORB was opened by tapping a guided topic,
+          // auto-close the overlay after the teaching turn finishes so the Topic
+          // drawer's next-step buttons are usable. Only fires for guided opens
+          // (the one-shot flag is armed by activateOrb(topicId)); normal voice
+          // sessions are unaffected.
+          onTurnComplete: (info: { was_greeting?: boolean }) => {
+            if (info?.was_greeting && consumeGuidedAutoClose()) {
+              try {
+                (window as unknown as { VitanaOrb?: { hide?: () => void } }).VitanaOrb?.hide?.();
+              } catch { /* ignore */ }
+            }
+          },
           initialContext: {
-            current_route: location.pathname,
+            // BOOTSTRAP-ORB-SCREEN-TRACKING: read the LIVE route via the ref, not
+            // the closure-captured `location.pathname` (stale by the time the
+            // deferred widget script loads — see currentRouteRef above).
+            current_route: currentRouteRef.current,
             current_route_entered_at: currentRouteEnteredAtRef.current,
             recent_routes: routeHistoryRef.current,
             journey_trail: journeyTrailRef.current,
             // VTID-02789: viewport flag → gateway picks mobile_route over route
-            is_mobile: isMobile,
+            is_mobile: isMobileRef.current,
           },
         };
 
@@ -369,10 +404,15 @@ export function useOrbVoiceWidget() {
       onSessionStart: () => setOrbWidgetSessionActive(true),
       onSessionEnd: () => setOrbWidgetSessionActive(false),
       initialContext: {
-        current_route: location.pathname,
+        // BOOTSTRAP-ORB-SCREEN-TRACKING: live route via ref (the auth-change
+        // effect is keyed on user?.id, so its closure-captured location.pathname
+        // is the route at login time, not where the user is now).
+        current_route: currentRouteRef.current,
         current_route_entered_at: currentRouteEnteredAtRef.current,
         recent_routes: routeHistoryRef.current,
         journey_trail: journeyTrailRef.current,
+        // VTID-02789: viewport flag → gateway picks mobile_route over route
+        is_mobile: isMobileRef.current,
       },
     };
 

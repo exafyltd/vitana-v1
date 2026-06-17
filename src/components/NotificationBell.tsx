@@ -16,15 +16,24 @@ export default function NotificationBell() {
   // Listening to the same hook here is cheap (it dedupes via the realtime
   // channel's queue) and keeps the bell sound + badge responsive even when
   // the dropdown is closed.
-  const { unreadCount } = useNotifications(20);
+  const { unreadCount, loading } = useNotifications(20);
   const { open } = useSidebar();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const prevUnreadRef = useRef(unreadCount);
+  const hasSeenUnreadSnapshotRef = useRef(false);
 
   useEffect(() => {
+    if (loading) return;
+
+    if (!hasSeenUnreadSnapshotRef.current) {
+      hasSeenUnreadSnapshotRef.current = true;
+      prevUnreadRef.current = unreadCount;
+      return;
+    }
+
     if (unreadCount > prevUnreadRef.current) playNotificationBell();
     prevUnreadRef.current = unreadCount;
-  }, [unreadCount]);
+  }, [unreadCount, loading]);
 
   return (
     <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
