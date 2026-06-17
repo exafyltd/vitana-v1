@@ -47,6 +47,9 @@ import {
   deriveIntentLine,
   deriveFallbackTitle,
   humanizeMatchReasons,
+  matchTierOf,
+  dimensionBreakdown,
+  activityMismatchLabel,
   type MatchVertical,
 } from '@/lib/matchReasons';
 import {
@@ -193,6 +196,14 @@ export function FindPartnerMatchCard({
     1,
   )[0];
 
+  // BOOTSTRAP-MATCHMAKING-V4 — visual tier (color + icon + label), the
+  // per-dimension breakdown (location → time → activity → profile), and an
+  // honest "different activity" badge when this isn't the exact activity asked.
+  const matchReasonsObj = match.match_reasons as Record<string, unknown> | null | undefined;
+  const tier = matchTierOf(matchReasonsObj, match.score ?? null);
+  const breakdown = dimensionBreakdown(matchReasonsObj);
+  const activityBadge = activityMismatchLabel(matchReasonsObj);
+
   const coverTags = coverTagsForMatch({
     kindPairing: match.kind_pairing,
     partnerIntentKind: match.partner_intent_kind ?? null,
@@ -337,6 +348,14 @@ export function FindPartnerMatchCard({
             and (optional) active-status pill underneath. Compass-aligned
             ribbon stays separate just below. */}
         <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5">
+          {/* BOOTSTRAP-MATCHMAKING-V4 — colored tier badge with a victory icon
+              so a strong match reads as a win at a glance. */}
+          <span
+            className={`inline-flex items-center gap-1 px-2.5 py-0.5 text-[11px] font-semibold rounded-full shadow-sm ${tier.badgeClass}`}
+          >
+            <span aria-hidden>{tier.icon}</span>
+            <span>{tier.label}</span>
+          </span>
           <div
             className={`flex flex-col items-end gap-0.5 rounded-2xl bg-black/65 text-white backdrop-blur px-3 py-1.5 shadow-sm ${
               activeLabel ? '' : 'py-1'
@@ -424,13 +443,33 @@ export function FindPartnerMatchCard({
           // visual weight).
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-muted-foreground">
-              {topReason && (
-                <span className="inline-flex items-center gap-1.5">
-                  <span aria-hidden className="text-violet-500">★</span>
-                  <span className="truncate">{topReason.label}</span>
-                </span>
+              {breakdown.length > 0 ? (
+                <>
+                  {activityBadge && (
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-orange-100 text-orange-700 font-medium">
+                      <span aria-hidden>🎯</span>
+                      <span className="truncate">{activityBadge}</span>
+                    </span>
+                  )}
+                  {breakdown
+                    .filter((d) => d.fit >= 0.5)
+                    .slice(0, 3)
+                    .map((d) => (
+                      <span key={d.key} className="inline-flex items-center gap-1">
+                        <span aria-hidden>{d.icon}</span>
+                        <span className="truncate">{d.label}</span>
+                      </span>
+                    ))}
+                </>
+              ) : (
+                topReason && (
+                  <span className="inline-flex items-center gap-1.5">
+                    <span aria-hidden className="text-violet-500">★</span>
+                    <span className="truncate">{topReason.label}</span>
+                  </span>
+                )
               )}
-              {topReason && activeLabel && <span aria-hidden>·</span>}
+              {(breakdown.length > 0 || topReason) && activeLabel && <span aria-hidden>·</span>}
               {activeLabel && (
                 <span className="inline-flex items-center gap-1">
                   <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-emerald-500" />

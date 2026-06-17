@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense } from "react";
+import { useEffect, useState, lazy, Suspense, type ReactNode } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "sonner"; // Global toast provider
@@ -39,20 +39,17 @@ import { initializePushNotifications } from "@/lib/pushNotifications";
 import { useOrbVoiceWidget } from "@/hooks/useOrbVoiceWidget";
 import { useOrbFrontDoor } from "@/hooks/useOrbFrontDoor";
 import { useRouteTracker } from "@/hooks/useRouteTracker";
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { OrbConsentPlaceholder } from "@/components/audio/OrbConsentPlaceholder";
 import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 import MilestoneCelebration from "./components/MilestoneCelebration";
 import ReminderInterruptOverlay from "./components/reminders/ReminderInterruptOverlay";
+import { DelayedLoader } from "./components/ui/DelayedLoader";
 
-// Route loading fallback
-const RouteFallback = () => (
-  <div className="flex items-center justify-center min-h-[60vh]">
-    <div className="animate-pulse flex flex-col items-center gap-3">
-      <div className="w-10 h-10 rounded-full bg-muted" />
-      <div className="h-3 w-24 rounded bg-muted" />
-    </div>
-  </div>
-);
+// Route loading fallback — clean background + delayed spinner so a lazy chunk
+// that loads instantly never flashes a placeholder, and a slow one shows a
+// spinner rather than an intermediate screen.
+const RouteFallback = () => <DelayedLoader />;
 
 // ─── Eager imports: shell-critical pages (auth, entry, public landing) ───
 import Index from "./pages/Index";
@@ -341,6 +338,10 @@ const InsightsEngagement = lazy(() => import("./pages/admin/insights/Engagement"
 const InsightsAssistantUsage = lazy(() => import("./pages/admin/insights/AssistantUsage"));
 const InsightsAutopilotImpact = lazy(() => import("./pages/admin/insights/AutopilotImpact"));
 const InsightsReports = lazy(() => import("./pages/admin/insights/Reports"));
+// BOOTSTRAP-PRODUCT-ANALYTICS: product/behavior supervision screens
+const InsightsJourneys = lazy(() => import("./pages/admin/insights/Journeys"));
+const InsightsFeatures = lazy(() => import("./pages/admin/insights/Features"));
+const InsightsInterests = lazy(() => import("./pages/admin/insights/Interests"));
 const AdminNotificationsCompose = lazy(() => import("./pages/admin/notifications/Compose"));
 const AdminNotificationsSentLog = lazy(() => import("./pages/admin/notifications/SentLog"));
 const AdminNotificationsPreferences = lazy(() => import("./pages/admin/notifications/Preferences"));
@@ -561,6 +562,27 @@ function SettingsRouter() {
   return isMobile ? <MobileSettings /> : <Navigate to="/settings/notifications" replace />;
 }
 
+// VTID-NAV-SETTINGS-TABS: the /settings/<section> routes render standalone
+// desktop pages. On mobile the canonical experience is the unified
+// MobileSettings screen selected by a ?mode= pill, so redirect there (same
+// pattern as SettingsRouter for /settings). This also guarantees the ORB
+// navigator lands on the correct mobile screen even when the session's mobile
+// viewport flag isn't threaded and it falls back to the desktop route.
+function MobileSettingsSection({ mode, children }: { mode: string; children: ReactNode }) {
+  const isMobile = useIsMobile();
+  const { search } = useLocation();
+  if (!isMobile) return <>{children}</>;
+  // Preserve the desktop deep-link's ?section=<slug> as the nested mobile mode
+  // so the Orb's sub-pill navigation lands on the right child, not the bare
+  // parent. e.g. /settings/preferences?section=appearance →
+  // /settings?mode=preferences.appearance. The catalog's ?section slugs match
+  // MobileSettings' child mode suffixes 1:1 (appearance/language,
+  // visibility/data/security, plan/payment/invoices/creator).
+  const section = new URLSearchParams(search).get('section');
+  const targetMode = section ? `${mode}.${section}` : mode;
+  return <Navigate to={`/settings?mode=${targetMode}`} replace />;
+}
+
 function SupportRouter() {
   const isMobile = useIsMobile();
   return isMobile ? <MobileSupport /> : <Support />;
@@ -617,6 +639,11 @@ const App = () => {
                         useNavigate / useLocation) has a valid Router context.
                         Moving it outside crashes the whole app at boot. */}
                     <AppHooksInitializer />
+                    {/* BOOTSTRAP-PRODUCT-ANALYTICS: feeds tenant/user/locale
+                        context to the analytics client and emits screen_viewed
+                        on every route change. Lives inside <BrowserRouter>
+                        for useLocation(). */}
+                    <AnalyticsTracker />
                     {/* VTID-01954: deep-link handler for identity-mutation
                         intents emitted by the brain (Identity Lock, Plan Part 1.5).
                         Lives inside <BrowserRouter> for useNavigate(). */}
@@ -780,8 +807,11 @@ const App = () => {
           <Route path="/dashboard/aifeed" element={<Navigate to="/home" replace />} />
           
           {/* Discover routes */}
+          {/* Public browse surface: /discover and the Supplements / Wellness
+              Services / Deals & Offers tabs render for signed-out visitors
+              (allowGuest). Orders / Cart / checkout stay gated below. */}
           <Route path="/discover" element={
-            <AuthGuard>
+            <AuthGuard allowGuest>
               <Discover />
             </AuthGuard>
           } />
@@ -797,12 +827,12 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/discover/supplements" element={
-            <AuthGuard>
+            <AuthGuard allowGuest>
               <Supplements />
             </AuthGuard>
           } />
           <Route path="/discover/wellness-services" element={
-            <AuthGuard>
+            <AuthGuard allowGuest>
               <WellnessServices />
             </AuthGuard>
           } />
@@ -817,7 +847,7 @@ const App = () => {
             </AuthGuard>
           } />
           <Route path="/discover/deals-offers" element={
-            <AuthGuard>
+            <AuthGuard allowGuest>
               <DealsOffers />
             </AuthGuard>
           } />
@@ -1124,17 +1154,17 @@ const App = () => {
           } />
           <Route path="/settings/privacy" element={
             <AuthGuard>
-              <Privacy />
+              <MobileSettingsSection mode="privacy"><Privacy /></MobileSettingsSection>
             </AuthGuard>
           } />
           <Route path="/settings/notifications" element={
             <AuthGuard>
-              <SettingsNotifications />
+              <MobileSettingsSection mode="notifications"><SettingsNotifications /></MobileSettingsSection>
             </AuthGuard>
           } />
           <Route path="/settings/preferences" element={
             <AuthGuard>
-              <Preferences />
+              <MobileSettingsSection mode="preferences"><Preferences /></MobileSettingsSection>
             </AuthGuard>
           } />
           <Route path="/settings/limitations" element={
@@ -1164,7 +1194,7 @@ const App = () => {
           } />
           <Route path="/settings/billing" element={
             <AuthGuard>
-              <Billing />
+              <MobileSettingsSection mode="billing"><Billing /></MobileSettingsSection>
             </AuthGuard>
           } />
           <Route path="/settings/autopilot" element={<Navigate to="/assistant?tab=autopilot" replace />} />
@@ -1701,6 +1731,15 @@ const App = () => {
           } />
           <Route path="/admin/insights/assistant-usage" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsAssistantUsage /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/insights/journeys" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsJourneys /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/insights/features" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsFeatures /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/insights/interests" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsInterests /></ProtectedRoute></AuthGuard>
           } />
           <Route path="/admin/insights/autopilot-impact" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsAutopilotImpact /></ProtectedRoute></AuthGuard>

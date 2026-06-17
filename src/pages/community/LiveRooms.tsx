@@ -193,6 +193,21 @@ export default function LiveRooms() {
     }
   }, [searchParams]);
 
+  // Vitana / deep-link tab selection: honor ?tab=<all|live|scheduled|past> so the
+  // Orb (and shareable links) can open a specific Live Rooms tab. Works on both
+  // mobile (MobileModePill) and desktop (SplitBar) since they share activeTab —
+  // no is_mobile dependency. Strip the param once consumed so the pill picker
+  // stays usable (mirrors MobileSettings' ?mode handling).
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab && ['all', 'live', 'scheduled', 'past'].includes(tab)) {
+      setActiveTab(tab);
+      const next = new URLSearchParams(searchParams);
+      next.delete('tab');
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
+
   const handleCardClick = (roomId: string) => {
     // Check if it's a mock room
     if (roomId.startsWith('mock-')) {

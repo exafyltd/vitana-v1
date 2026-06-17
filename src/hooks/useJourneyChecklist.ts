@@ -8,6 +8,8 @@
 
 import { useState, useEffect } from 'react';
 import { communityFetch } from '@/lib/community-gateway';
+import { getI18nLocale } from '@/lib/i18n-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export interface PublicTopic {
   topicId: string;
@@ -44,13 +46,21 @@ export function useJourneyChecklist(): UseJourneyChecklist {
   const [topics, setTopics] = useState<PublicTopic[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // Reactive UI language — drives a refetch so switching language while My
+  // Journey is mounted reloads the curriculum in the new locale (not just labels).
+  const { selectedLanguage } = useLanguage();
+  const locale = (selectedLanguage || getI18nLocale() || 'de').split('-')[0];
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       setLoading(true);
       try {
-        const resp = await communityFetch('/api/v1/journey-checklist');
+        // Pass the live UI language so the curriculum content (authored in
+        // German) is served translated, not just the field labels.
+        const resp = await communityFetch(
+          `/api/v1/journey-checklist?locale=${encodeURIComponent(locale)}`,
+        );
         const json = await resp.json();
         if (cancelled) return;
         if (resp.ok && json?.ok) {
@@ -59,8 +69,8 @@ export function useJourneyChecklist(): UseJourneyChecklist {
         } else {
           setError(json?.error || 'load_failed');
         }
-      } catch (e: any) {
-        if (!cancelled) setError(e?.message || 'load_failed');
+      } catch (e) {
+        if (!cancelled) setError(e instanceof Error ? e.message : 'load_failed');
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -68,7 +78,7 @@ export function useJourneyChecklist(): UseJourneyChecklist {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [locale]);
 
   const bySession = new Map<number, PublicTopic[]>();
   for (const t of topics) {

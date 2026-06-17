@@ -77,17 +77,20 @@ async function main() {
   await page.goto(BASE_URL + '/autopilot', { waitUntil: 'networkidle', timeout: 60000 }).catch(() => {});
   await page.waitForTimeout(6000);
 
+  // Toggle labels: en "Guided Journey"/"Full App"; de "Einführung"/"Vollversion".
+  const GUIDED_RE = 'Einführung|Geführte Reise|Guided Journey';
+  const FULL_RE = 'Vollversion|Volle App|Full App';
   const hasSwitch = () =>
-    page.evaluate(() =>
-      !!Array.from(document.querySelectorAll('button')).find((b) =>
-        /Geführte Reise|Guided Journey|Volle App|Full App/.test(b.textContent || ''),
-      ),
+    page.evaluate((re) =>
+      !!Array.from(document.querySelectorAll('button')).find((b) => new RegExp(re).test(b.textContent || '')),
+      `${GUIDED_RE}|${FULL_RE}`,
     );
   const guidedActive = () =>
-    page.evaluate(() =>
+    page.evaluate((re) =>
       !!Array.from(document.querySelectorAll('button[aria-pressed="true"]')).find((b) =>
-        /Geführte Reise|Guided Journey/.test(b.textContent || ''),
+        new RegExp(re).test(b.textContent || ''),
       ),
+      GUIDED_RE,
     );
   const hasKebab = () => page.evaluate(() => !!document.querySelector('header button [class*="lucide-more"]'));
   // Catalog rendered = a Session row OR a seeded topic card is present (the
@@ -110,13 +113,18 @@ async function main() {
   // Wait for the My Journey page (and its switch) to hydrate before asserting.
   for (let i = 0; i < 20 && !(await hasSwitch()); i++) await page.waitForTimeout(1000);
 
+  // Force a Full baseline first (the test user's persisted mode may be guided),
+  // so "catalog not shown in Full" is deterministic.
+  await click(FULL_RE);
+  await page.waitForTimeout(3500);
+
   console.log('FULL MODE (design freeze):');
   check(await hasSwitch(), 'Guided/Full switch present');
   check(await hasCatalog() === false, 'guided catalog NOT shown in Full mode');
   await page.screenshot({ path: path.join(OUT, 'full.png') });
 
   console.log('Switching to Guided…');
-  await click('Geführte Reise|Guided Journey');
+  await click(GUIDED_RE);
   await page.waitForTimeout(3500);
 
   console.log('GUIDED MODE (additive layer):');
@@ -152,10 +160,7 @@ async function main() {
   await page.screenshot({ path: path.join(OUT, 'practice.png') });
 
   // Cleanup: back to Full so the test user is left in its prior mode.
-  await page.evaluate(() => {
-    const b = Array.from(document.querySelectorAll('button')).find((x) => /Volle App|Full App/.test(x.textContent || ''));
-    if (b) b.click();
-  });
+  await click(FULL_RE);
   await page.waitForTimeout(1500);
 
   await browser.close();
