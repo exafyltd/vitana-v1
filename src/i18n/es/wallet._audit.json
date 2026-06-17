@@ -94,7 +94,14 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "wallet.displayCurrency": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "Awkward phrasing and slightly formal for a friendly app. 'Visualización' is a bit clunky here.",
+      "suggested": "Moneda a mostrar",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:09:09.058Z"
+  "generatedAt": "2026-06-17T08:44:01.519Z"
 }

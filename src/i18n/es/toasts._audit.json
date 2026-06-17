@@ -1352,9 +1352,9 @@
     },
     "toasts.admin.automationPrefilledFromDiscoveredPattern": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The term 'prellenada' is understandable but sounds a bit clunky and less natural than other options for 'pre-filled'.",
-      "suggested": "Automatización rellenada automáticamente a partir del patrón descubierto",
+      "confidence": 1,
+      "issue": "Translation is verbose and slightly redundant. 'Pre-filled' is better conveyed by 'precargada' or simply 'rellenada' without 'automáticamente'.",
+      "suggested": "Automatización precargada a partir del patrón descubierto",
       "phase": "llm"
     },
     "toasts.admin.failedLoadPatternData": {
@@ -1443,10 +1443,8 @@
       "phase": "llm"
     },
     "toasts.admin.toggleFailed": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Literal translation 'Alternar falló' is not idiomatic for a UI message. It should be 'Error al alternar' or 'No se pudo alternar'.",
-      "suggested": "Error al alternar",
       "phase": "llm"
     },
     "toasts.admin.intakeSchemaMustValidJson": {
@@ -1460,10 +1458,8 @@
       "phase": "llm"
     },
     "toasts.admin.saveFailed": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Literal translation 'Guardado falló' is not idiomatic for a UI message. It should be 'Error al guardar' or 'No se pudo guardar'.",
-      "suggested": "Error al guardar",
       "phase": "llm"
     },
     "toasts.admin.kbBindingsSaved": {
@@ -1477,17 +1473,13 @@
       "phase": "llm"
     },
     "toasts.admin.reclassifyFailed": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Literal translation 'Reclasificar falló' is not idiomatic for a UI message. It should be 'Error al reclasificar' or 'No se pudo reclasificar'.",
-      "suggested": "Error al reclasificar",
       "phase": "llm"
     },
     "toasts.admin.generateSpecFailed": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Literal translation 'Generar especificación falló' is not idiomatic for a UI message. It should be 'Error al generar la especificación' or 'No se pudo generar la especificación'.",
-      "suggested": "Error al generar la especificación",
       "phase": "llm"
     },
     "toasts.admin.activateFailed": {
@@ -1516,10 +1508,8 @@
       "phase": "llm"
     },
     "toasts.admin.baselineDocUpdatedAppliesAllNonoptedout": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The phrase 'que no optaron por no participar' is grammatically correct but verbose and clunky due to the double negative. A more concise and natural phrasing is preferred.",
-      "suggested": "Documento base actualizado: aplica a todos los inquilinos que no se dieron de baja",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.admin.documentDeleted": {
@@ -2758,10 +2748,8 @@
       "phase": "llm"
     },
     "toasts.intents.ifTheyReInterestedTooWe": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The English 'they're' is plural, but the Spanish 'está interesado' is singular and masculine, creating a number and gender mismatch. A plural and/or gender-neutral option is needed.",
-      "suggested": "Si también les interesa, te conectaremos.",
       "phase": "llm"
     },
     "toasts.intents.couldNotRecordInterest": {
@@ -4356,9 +4344,9 @@
     },
     "toasts.sharing.shareOpened": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Literal translation 'Compartir abierto' is not idiomatic. It implies 'To share opened' rather than 'Share (interface) opened' or 'Sharing activated'.",
-      "suggested": "Compartir activado",
+      "confidence": 1,
+      "issue": "Misinterpretation of 'opened'. 'Compartir activado' means 'Sharing enabled/activated', not 'Share opened'.",
+      "suggested": "Compartir abierto",
       "phase": "llm"
     },
     "toasts.sharing.connectAccount": {
@@ -4662,10 +4650,8 @@
       "phase": "llm"
     },
     "toasts.wallet.tokensStakedSuccessfully": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "The term 'Stakados' is an Anglicism. While understood in specific tech/crypto communities, its appropriateness for a general 'wellness/longevity mobile app' is questionable without more context on the app's features.",
-      "suggested": "✅ ¡Tokens Apostados Exitosamente!",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.wallet.stakingFailed": {
@@ -5219,10 +5205,8 @@
       "phase": "llm"
     },
     "toasts.hooks.blastingNow": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation '¡Explotando ahora!' (Exploding now!) is a literal and likely incorrect interpretation of 'Blasting now!' in a UI context. The intended meaning is probably 'sending/broadcasting' or 'playing loudly'.",
-      "suggested": "¡Enviando ahora!",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.invitesSent": {
@@ -5666,10 +5650,8 @@
       "phase": "llm"
     },
     "toasts.hooks.dismissFailed": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Literal translation 'Descartar fallido' is not idiomatic for a UI message. It should be 'Error al descartar' or 'No se pudo descartar'.",
-      "suggested": "Error al descartar",
       "phase": "llm"
     },
     "toasts.hooks.aiConsentRequired": {
@@ -5793,10 +5775,8 @@
       "phase": "llm"
     },
     "toasts.hooks.shareFailed": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Literal translation 'Compartir fallido' is not idiomatic for a UI message. It should be 'Error al compartir' or 'No se pudo compartir'.",
-      "suggested": "Error al compartir",
       "phase": "llm"
     },
     "toasts.hooks.pleaseTryAnotherSharingMethod": {
@@ -6163,7 +6143,127 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "toasts.liverooms.notifyOnTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.liverooms.notifyOnDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.liverooms.notifyOffTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.liverooms.notifyOffDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.liverooms.notifyError": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.liverooms.reminderActionText": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.liverooms.savedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.liverooms.savedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.liverooms.unsavedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.liverooms.unsavedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.liverooms.followedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.liverooms.followedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.liverooms.unfollowedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.liverooms.unfollowedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.reminders.failedToCreate": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.reminders.failedToDelete": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.reminders.failedToMarkDone": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.reminders.remindersDeleted": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.dailyGoal.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "toasts.dailyGoal.body": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
     }
   },
-  "generatedAt": "2026-05-20T07:08:59.340Z"
+  "generatedAt": "2026-06-17T08:43:39.795Z"
 }
