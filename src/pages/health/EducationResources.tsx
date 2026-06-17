@@ -1,3 +1,4 @@
+import { useUrlTab } from "@/hooks/useUrlTab";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -16,7 +17,7 @@ import { t } from '@/lib/i18n-toast';
 
 
 export default function EducationResources() {
-  const [activeSection, setActiveSection] = useState("articles");
+  const [activeSection, setActiveSection] = useUrlTab("tab", "articles");
   const [educationActionsOpen, setEducationActionsOpen] = useState(false);
 
   return (

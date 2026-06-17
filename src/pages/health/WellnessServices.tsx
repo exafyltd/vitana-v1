@@ -1,3 +1,4 @@
+import { useUrlTab } from "@/hooks/useUrlTab";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -52,7 +53,7 @@ const servicesData = {
 };
 
 export default function WellnessServices() {
-  const [activeSection, setActiveSection] = useState("preventiveCare");
+  const [activeSection, setActiveSection] = useUrlTab("tab", "preventiveCare");
   const [selectedService, setSelectedService] = useState<any>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [servicesActionsOpen, setServicesActionsOpen] = useState(false);
