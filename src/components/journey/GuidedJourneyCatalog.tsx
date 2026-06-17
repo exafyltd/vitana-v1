@@ -16,7 +16,7 @@
  */
 
 import { useState, type ComponentType } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   Sparkles,
@@ -29,6 +29,7 @@ import {
   CheckCircle2,
   Circle,
   X,
+  ArrowRight,
   type LucideProps,
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -47,7 +48,7 @@ import { useJourneyChecklist, type PublicTopic } from '@/hooks/useJourneyCheckli
 import { activateOrb } from '@/lib/orbActivate'; // VTID-03281: activate Vitana/ORB
 import {
   completePractice,
-  practiceTargetRoute,
+  practiceTargetAction,
   recordSessionListened,
 } from '@/lib/journeyPractice'; // VTID-03282 + session-listen reward
 import { JOURNEY_STATE_QUERY_KEY, useGuidedJourneyProgress } from '@/hooks/useGuidedJourneyProgress';
@@ -125,11 +126,35 @@ export function GuidedJourneyCatalog({
   const [openTopic, setOpenTopic] = useState<PublicTopic | null>(null);
   const [practiceMode, setPracticeMode] = useState(false); // VTID-03282: screen 03
   const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
 
   const closeDrawer = () => {
     setOpenTopic(null);
     setPracticeMode(false);
+  };
+
+  // Open the feature this practice refers to so the user can actually DO it,
+  // then auto-credit the practice (opening IS performing the tiny action).
+  // The "Open feature" button + the tappable "Try this" card both call this.
+  // Falls back to the Vitana ORB when the target is the ORB, is unknown, or is
+  // the page we're already on (e.g. my_journey while on /autopilot) — so the
+  // button is never a dead end. Mirrors the overlay dispatch in AutopilotPopup.
+  const openPracticeFeature = (topic: PublicTopic) => {
+    void completePractice(topic.topicId).then((ok) => {
+      if (ok) queryClient.invalidateQueries({ queryKey: JOURNEY_STATE_QUERY_KEY });
+    });
+    closeDrawer();
+    const action = practiceTargetAction(topic.guidedPracticeTarget);
+    if (action?.kind === 'route' && action.route !== location.pathname) {
+      navigate(action.route);
+    } else if (action?.kind === 'overlay') {
+      window.dispatchEvent(new CustomEvent(action.event));
+    } else {
+      // orb target, unknown target, or a route we're already on → talk to Vitana.
+      activateOrb(topic.topicId);
+    }
+    notify('screens.guidedCatalog.doneToast');
   };
 
   // VTID-03282: record completion (an explicit action, never from listening),
@@ -432,22 +457,18 @@ export function GuidedJourneyCatalog({
                     tint={SECTION_TINTS.try}
                     label={t('screens.guidedCatalog.tryThis')}
                     value={openTopic.explanation.tryThis}
+                    onClick={() => openPracticeFeature(openTopic)}
                   />
                 </div>
               </div>
               <DrawerFooter>
-                {practiceTargetRoute(openTopic.guidedPracticeTarget) && (
-                  <Button
-                    variant="outline"
-                    className="rounded-full"
-                    onClick={() => {
-                      const route = practiceTargetRoute(openTopic.guidedPracticeTarget);
-                      if (route) navigate(route);
-                    }}
-                  >
-                    {t('screens.guidedCatalog.openFeature')}
-                  </Button>
-                )}
+                <Button
+                  variant="outline"
+                  className="rounded-full"
+                  onClick={() => openPracticeFeature(openTopic)}
+                >
+                  {t('screens.guidedCatalog.openFeature')}
+                </Button>
                 <Button
                   className="rounded-full bg-gradient-to-r from-primary to-primary/80 shadow-md shadow-primary/30 hover:from-primary/90 hover:to-primary/70"
                   onClick={() => markPracticeDone(openTopic)}
@@ -496,26 +517,49 @@ function ExplanationCard({
   tint,
   label,
   value,
+  onClick,
 }: {
   tint: SectionTint;
   label: string;
   value: string | null;
+  /** When set, the whole card becomes a button that triggers the practice
+   *  action (so the "Try this" instruction is itself tappable). */
+  onClick?: () => void;
 }) {
   if (!value) return null;
   const Icon = tint.icon;
+  const header = (
+    <div className="mb-1.5 flex items-center gap-2">
+      <span className={cn('flex h-6 w-6 items-center justify-center rounded-full', tint.chip)}>
+        <Icon className={cn('h-3.5 w-3.5', tint.glyph)} />
+      </span>
+      <span className={cn('text-xs font-semibold uppercase tracking-wide', tint.label)}>
+        {label}
+      </span>
+      {onClick && <ArrowRight className={cn('ml-auto h-4 w-4', tint.glyph)} aria-hidden />}
+    </div>
+  );
+  const body = <p className="text-sm leading-relaxed text-foreground/90">{value}</p>;
+
+  if (onClick) {
+    return (
+      <button
+        type="button"
+        onClick={onClick}
+        className={cn(
+          'w-full rounded-2xl border p-3 text-left transition-all hover:shadow-md hover:ring-2 hover:ring-inset hover:ring-current/20',
+          tint.card,
+        )}
+      >
+        {header}
+        {body}
+      </button>
+    );
+  }
   return (
     <div className={cn('rounded-2xl border p-3', tint.card)}>
-      <div className="mb-1.5 flex items-center gap-2">
-        <span
-          className={cn('flex h-6 w-6 items-center justify-center rounded-full', tint.chip)}
-        >
-          <Icon className={cn('h-3.5 w-3.5', tint.glyph)} />
-        </span>
-        <span className={cn('text-xs font-semibold uppercase tracking-wide', tint.label)}>
-          {label}
-        </span>
-      </div>
-      <p className="text-sm leading-relaxed text-foreground/90">{value}</p>
+      {header}
+      {body}
     </div>
   );
 }
