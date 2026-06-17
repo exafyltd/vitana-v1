@@ -19,7 +19,12 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "mobileNav.myJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:16:18.397Z"
+  "generatedAt": "2026-06-17T08:46:32.114Z"
 }

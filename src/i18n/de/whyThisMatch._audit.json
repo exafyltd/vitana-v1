@@ -21,10 +21,8 @@
       "phase": "llm"
     },
     "whyThisMatch.showSomeoneElse": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incomplete sentence; not an imperative. 'Jemand anderes' means 'Someone else', not 'Show me someone else'.",
-      "suggested": "Zeig mir jemand anderen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "whyThisMatch.dismiss": {
@@ -53,19 +51,15 @@
       "phase": "llm"
     },
     "whyThisMatch.tierLabel.3": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Beste Annäherung' (best approximation) is a bit technical and less common than 'Beste Übereinstimmung' (best match) for UI.",
-      "suggested": "Beste Übereinstimmung",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "whyThisMatch.tierLabel.4": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Re-route' implies a redirection or change of path, which is not accurately conveyed by 'Filter' (a selection/exclusion mechanism).",
-      "suggested": "Fairness-Umleitung",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:43:54.743Z"
+  "generatedAt": "2026-06-17T09:06:26.132Z"
 }

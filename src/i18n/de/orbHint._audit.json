@@ -1,10 +1,10 @@
 {
   "verdicts": {
-    "wellnessServices.searchPlaceholder": {
+    "orbHint.tapToTalk": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-06-17T09:06:22.772Z"
+  "generatedAt": "2026-06-17T08:47:23.976Z"
 }
