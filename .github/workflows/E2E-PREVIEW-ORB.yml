@@ -1,0 +1,37 @@
+# BOOTSTRAP-ORB-E2E: runs the ORB conversation-flow self-test against the live
+# preview from a GitHub runner (open egress), in desktop + mobile viewports.
+# Uploads screenshots as artifacts. Manual + auto on the claude branch.
+name: E2E Preview ORB (mobile+desktop)
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [claude/sleepy-fermi-migpP]
+    paths:
+      - '.github/workflows/E2E-PREVIEW-ORB.yml'
+      - 'tests/e2e/**'
+permissions:
+  contents: read
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Playwright (chromium only)
+        run: |
+          npm install --no-save @playwright/test@1.51.0
+          npx playwright install --with-deps chromium
+      - name: Run ORB preview conversation-flow test
+        env:
+          PREVIEW_URL: https://preview.vitanaland.com
+        run: node tests/e2e/orb-preview.mjs
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: orb-preview-screenshots
+          path: tests/e2e/screenshots/
+          if-no-files-found: warn

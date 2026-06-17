@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Mic, Square, Send, CheckCircle2, Mail, MessageCircle, Phone, BookOpen, Paperclip, X, Users, Loader2 } from "lucide-react";
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
+import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
@@ -492,7 +493,7 @@ function MobileSupport() {
         </UtilityActionButton>
 
         {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto pb-24 px-0 flex flex-col gap-3">
+        <div className="flex-1 overflow-y-auto pb-[120px] px-0 flex flex-col gap-3">
           {activeTab === "contact" && (
             showSuccess ? (
               <Card className="rounded-2xl border-border/50 shadow-sm">
@@ -805,6 +806,9 @@ function MobileSupport() {
       </div>
 
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
+
+      {/* Bottom navigation with integrated Orb FAB */}
+      <MobileBottomNav />
     </MobileAppShell>
   );
 }
