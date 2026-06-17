@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Plus, Type, Camera, Image, X, Plane } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
+import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 import { useTranslation } from "@/hooks/useTranslation";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
@@ -27,8 +28,20 @@ type PlusOption = "text" | "camera" | "photo";
 export default function MobileDailyDiary() {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { translate } = useTranslation();
-  const [activeTab, setActiveTab] = useState<CategoryTab>("health");
+  // VTID-NAV-DIARY-TABS: the Daily Diary mode pills (Health Diary / Bug
+  // Reports). Vitana deep-links a pill via /daily-diary?tab=health|bugs; the
+  // gateway catalog routes "Health Diary"/"Bug Reports" here. Only an explicit
+  // valid value sets it.
+  const [activeTab, setActiveTab] = useState<CategoryTab>(
+    () => (searchParams.get("tab") === "bugs" ? "bugs" : "health"),
+  );
+  useEffect(() => {
+    const t = searchParams.get("tab");
+    if (t === "health" || t === "bugs") setActiveTab(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
   const [activePlusOption, setActivePlusOption] = useState<PlusOption | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
   const [feedbackRefreshKey, setFeedbackRefreshKey] = useState(0);
@@ -168,10 +181,13 @@ export default function MobileDailyDiary() {
         </div>
       </div>
 
-      <AutopilotPopup 
-        open={autopilotOpen} 
-        onOpenChange={setAutopilotOpen} 
+      <AutopilotPopup
+        open={autopilotOpen}
+        onOpenChange={setAutopilotOpen}
       />
+
+      {/* Bottom navigation with integrated Orb FAB */}
+      <MobileBottomNav />
     </MobileAppShell>
   );
 }

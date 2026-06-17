@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from '@/hooks/useTranslation';
 import { isPast } from 'date-fns';
 import {
@@ -60,12 +60,24 @@ export function MobileOrdersView({
   isShowingMockData,
 }: MobileOrdersViewProps) {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { translate } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedOrder, setSelectedOrder] = useState<UnifiedMobileOrder | null>(null);
   const { pendingCount } = useAutopilot();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
-  const [activeMode, setActiveMode] = useState('active');
+  // VTID-NAV-ORDERS-TABS: the Orders mode pills (Active / History). Vitana
+  // deep-links a pill via /discover/orders?tab=active|history; the gateway
+  // navigation catalog routes "Orders Active"/"Order History" here. Only an
+  // explicit valid value sets it, so unrelated searchParams never reset it.
+  const [activeMode, setActiveMode] = useState(
+    () => (searchParams.get('tab') === 'history' ? 'history' : 'active'),
+  );
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab === 'active' || tab === 'history') setActiveMode(tab);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const orderModes: ModeOption[] = [
     { value: 'active', label: translate('orders.tabs.active', 'Active'), icon: '📦' },

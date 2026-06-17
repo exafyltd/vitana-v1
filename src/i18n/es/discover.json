@@ -69,6 +69,12 @@
     "toast": {
       "actionSelected": "Acción Seleccionada",
       "comingSoon": "¡Función de {action} próximamente!"
+    },
+    "guest": {
+      "bannerTitle": "Inicia sesión para ganar recompensas Vitana en cada compra",
+      "bannerSubtitle": "Explora libremente: inicia sesión (es gratis) para comprar y empezar a ganar recompensas.",
+      "bannerCta": "Iniciar sesión",
+      "signIn": "Iniciar sesión"
     }
   }
 }

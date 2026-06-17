@@ -63,10 +63,14 @@ export interface NavOverrideTrigger {
   active: boolean;
 }
 
+// BOOTSTRAP-NAV-PLATFORM: the two MAXINA catalogs the Navigator manages.
+export type NavPlatform = "mobile" | "desktop";
+
 export interface NavCatalogRow {
   id: string;
   screen_id: string;
   tenant_id: string | null;
+  platform: NavPlatform;
   route: string;
   category: string;
   access: "public" | "authenticated";
@@ -128,6 +132,7 @@ export interface SimulateResult {
 
 export interface CoverageReport {
   tenant_id: string | null;
+  platform?: NavPlatform;
   summary: {
     catalog_size: number;
     spa_route_count: number;
@@ -155,12 +160,14 @@ export function useNavCatalogList(params: {
   tenantId?: string | null;
   category?: string;
   q?: string;
+  platform?: NavPlatform;
 } = {}) {
-  const { tenantId, category, q } = params;
+  const { tenantId, category, q, platform = "mobile" } = params;
   return useQuery({
-    queryKey: ["nav-catalog", { tenantId, category, q }],
+    queryKey: ["nav-catalog", { tenantId, category, q, platform }],
     queryFn: async () => {
       const qs = new URLSearchParams();
+      qs.set("platform", platform);
       if (tenantId === null) qs.set("tenant_id", "__shared__");
       else if (tenantId) qs.set("tenant_id", tenantId);
       if (category) qs.set("category", category);
@@ -194,12 +201,14 @@ export function useSpaRoutes() {
   });
 }
 
-export function useNavCoverage(tenantId: string | null | undefined) {
+export function useNavCoverage(tenantId: string | null | undefined, platform: NavPlatform = "mobile") {
   return useQuery({
-    queryKey: ["nav-coverage", tenantId || "all"],
+    queryKey: ["nav-coverage", tenantId || "all", platform],
     queryFn: async () => {
-      const qs = tenantId ? `?tenant_id=${encodeURIComponent(tenantId)}` : "";
-      const json = await authFetch(`/coverage${qs}`);
+      const qs = new URLSearchParams();
+      qs.set("platform", platform);
+      if (tenantId) qs.set("tenant_id", tenantId);
+      const json = await authFetch(`/coverage?${qs.toString()}`);
       return json as { ok: boolean } & CoverageReport;
     },
   });
