@@ -63,6 +63,16 @@ export default function Home() {
     setActiveTabState(tab);
     setSearchParams(tab === "longevity" ? {} : { tab }, { replace: true });
   };
+  // Keep the active News tab in sync with the URL so the Orb (and deep links)
+  // can switch the filter by voice even when already on /home — the initial
+  // useState reads ?tab only once at mount. The URL is the source of truth; an
+  // absent/invalid tab falls back to the default Longevity feed. Read-only
+  // (no setSearchParams here), so it can't loop with the setter above.
+  useEffect(() => {
+    const t = searchParams.get("tab");
+    const next: FilterTab = t && ["all", "longevity", "community"].includes(t) ? (t as FilterTab) : "longevity";
+    setActiveTabState((prev) => (prev === next ? prev : next));
+  }, [searchParams]);
   const [searchQuery, setSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const navigate = useNavigate();

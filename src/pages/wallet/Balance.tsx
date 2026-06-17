@@ -1,3 +1,4 @@
+import { useUrlTab } from "@/hooks/useUrlTab";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -64,7 +65,7 @@ const balanceData = {
 };
 
 function Balance() {
-  const [activeTab, setActiveTab] = useState("credits");
+  const [activeTab, setActiveTab] = useUrlTab("tab", "credits");
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isTokensOpen, setIsTokensOpen] = useState(false);
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);

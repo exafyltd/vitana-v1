@@ -26,6 +26,29 @@ export async function completePractice(topicId: string): Promise<boolean> {
   }
 }
 
+/**
+ * Record that the user listened to a guided session (the +2 VITANA INDEX
+ * reward). Always send the session number so the durable state can mark the
+ * whole session as listened; topicId remains available for the focused ORB
+ * lesson and older idempotency rules. Fire-and-forget: never block the UI on
+ * it. Returns whether a NEW award was granted (false when already credited).
+ */
+export async function recordSessionListened(
+  session: number,
+  topicId?: string,
+): Promise<boolean> {
+  try {
+    const resp = await communityFetch('/api/v1/journey/session-listened', {
+      method: 'POST',
+      body: JSON.stringify({ session, topicId }),
+    });
+    const json = await resp.json();
+    return !!(resp.ok && json?.ok && json?.awarded);
+  } catch {
+    return false;
+  }
+}
+
 const TARGET_ROUTES: Record<string, string> = {
   vitana_index: '/health/vitana-index',
   my_journey: '/autopilot',

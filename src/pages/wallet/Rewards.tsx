@@ -1,3 +1,4 @@
+import { useUrlTab } from "@/hooks/useUrlTab";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -88,7 +89,7 @@ const rewardsData = {
 };
 
 function Rewards() {
-  const [activeTab, setActiveTab] = useState("earned");
+  const [activeTab, setActiveTab] = useUrlTab("tab", "earned");
   const [actionDialogOpen, setActionDialogOpen] = useState(false);
 
   return (
