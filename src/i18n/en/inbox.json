@@ -25,7 +25,8 @@
       "menu": "More"
     },
     "toast": {
-      "allMarkedRead": "All messages marked as read"
+      "allMarkedRead": "All messages marked as read",
+      "markAllReadFailed": "Couldn't mark all as read. Please try again."
     },
     "composer": {
       "placeholder": "Type your message...",
