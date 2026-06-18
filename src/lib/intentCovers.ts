@@ -21,25 +21,23 @@
  * unchanged so the consumer doesn't change.
  */
 
-import danceCommunity from '@/assets/actions/community-dance-group.jpg';
 import wellnessYoga from '@/assets/actions/wellness-yoga-nature.jpg';
 import morningYogaFlow from '@/assets/ai-feed/morning-yoga-flow.jpg';
 import morningStretch from '@/assets/shorts-morning-stretch.jpg';
 import breathingExercise from '@/assets/shorts-breathing-exercise.jpg';
 import friendsMeetup from '@/assets/actions/friends-meetup-selfie.jpg';
-import happyCoffeeGroup from '@/assets/happy-coffee-group.jpg';
 
 import type { UserIntent } from './intentApi';
 
 export type CoverTheme = 'dance' | 'fitness' | 'generic';
 
 const COVERS: Record<CoverTheme, string[]> = {
-  // Only one curated dance photo today; backend AI gen will add
-  // variety. Until then dance covers will repeat — acceptable
-  // tradeoff vs. exposing the open Flickr CC pool.
-  dance: [danceCommunity],
+  // Backend AI gen adds dance-specific variety. The retired dance
+  // fallback overrepresented a demographic that does not match the
+  // Mallorca community, so this placeholder uses safer brand imagery.
+  dance: [friendsMeetup, wellnessYoga],
   fitness: [wellnessYoga, morningYogaFlow, morningStretch, breathingExercise],
-  generic: [friendsMeetup, happyCoffeeGroup],
+  generic: [friendsMeetup],
 };
 
 export function themeFromCategory(category: string | null | undefined): CoverTheme {
