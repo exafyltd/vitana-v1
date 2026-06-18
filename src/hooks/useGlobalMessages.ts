@@ -1191,27 +1191,36 @@ export function useGlobalMessages(
 
       const cachedThreads =
         queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
-      const groupThreadIds = cachedThreads
-        .filter((t) => t.type === "group")
-        .map((t) => t.id);
 
       const now = new Date().toISOString();
       const doDirect = filter === "all" || filter === "direct";
       const doGroups = filter === "all" || filter === "groups";
 
+      // Real global-thread UUIDs to watermark, scoped to the active filter.
+      // Both GROUP threads and LEGACY DIRECT threads track unread via
+      // global_thread_participants.last_read_at (not chat_messages.read_at), so
+      // both must be covered here. For direct threads `id` is the peer id, so the
+      // real thread UUID lives in `_legacyThreadId` (falls back to id for groups).
+      // Pure chat_messages DMs have no participant row, so their peer id simply
+      // matches nothing in this update — a harmless no-op handled by /read-all.
+      const participantThreadIds = cachedThreads
+        .filter((t) => (t.type === "group" ? doGroups : doDirect))
+        .map((t) => (t as any)._legacyThreadId || t.id)
+        .filter(Boolean);
+
       try {
-        // Direct DMs: single bulk request via gateway.
+        // chat_messages-based direct DMs: single bulk request via gateway.
         if (doDirect) {
           await markAllChatRead();
         }
 
-        // Group threads: single bulk watermark update.
-        if (doGroups && groupThreadIds.length > 0) {
+        // Group + legacy-direct threads: single bulk watermark update.
+        if (participantThreadIds.length > 0) {
           await (supabase as any)
             .from("global_thread_participants")
             .update({ last_read_at: now })
             .eq("user_id", user.id)
-            .in("thread_id", groupThreadIds);
+            .in("thread_id", participantThreadIds);
         }
 
         // Clear related chat notifications.
