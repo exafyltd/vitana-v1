@@ -48,11 +48,36 @@ serve(async (req) => {
     const { data: userProfile } = await supabase
       .rpc('get_user_profile_by_identifier', { identifier: user.id });
 
-    // Get potential matches (other active users, excluding self)
+    // Get potential matches (other active users, excluding self).
+    //
+    // IMPORTANT: only consider users who are actually viewable as a public
+    // profile. Profile resolution (get_user_profile_by_identifier, used by both
+    // the matches list and the profile detail page) requires a
+    // global_community_profiles row with is_visible = true. If we matched
+    // against the raw profiles table we would create matches that the detail
+    // page cannot open, surfacing "Benutzer nicht gefunden" / "user not found"
+    // when the member taps the match.
+    const { data: visibleRows } = await supabase
+      .from('global_community_profiles')
+      .select('user_id')
+      .eq('is_visible', true)
+      .neq('user_id', user.id);
+
+    const visibleIds = (visibleRows ?? [])
+      .map((r: { user_id: string }) => r.user_id)
+      .filter(Boolean);
+
+    if (visibleIds.length === 0) {
+      return new Response(
+        JSON.stringify({ matches: [], message: 'No candidates found' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const { data: candidates } = await supabase
       .from('profiles')
       .select('user_id, display_name, full_name, avatar_url, bio, location')
-      .neq('user_id', user.id)
+      .in('user_id', visibleIds)
       .limit(50);
 
     if (!candidates || candidates.length === 0) {
