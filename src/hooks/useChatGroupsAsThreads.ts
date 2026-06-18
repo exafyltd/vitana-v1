@@ -8,7 +8,7 @@
  * trying to open it inline with the global-message loader.
  */
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchGroups, type ChatGroup } from "./useChatApi";
 import type { GlobalMessageThread, GlobalMessage } from "./useGlobalMessages";
@@ -115,6 +115,22 @@ export function useChatGroupsAsThreads(enabled: boolean = true) {
     return () => { supabase.removeChannel(channel); };
   }, [enabled, groupIdsKey]);
 
+  // Optimistically zero the unread badge for the given raw group ids (no prefix)
+  // so "Mark all as read" clears them instantly, before the backend round-trip
+  // and the next poll/realtime reconcile.
+  const markGroupsReadLocal = useCallback((groupIds: string[]) => {
+    if (groupIds.length === 0) return;
+    const set = new Set(groupIds);
+    setGroups((prev) =>
+      prev.map((g) => (set.has(g.id) ? { ...g, unread_count: 0 } : g)),
+    );
+  }, []);
+
+  // Force an authoritative refetch (reconcile after a bulk read).
+  const reload = useCallback(() => {
+    loadRef.current?.();
+  }, []);
+
   const threads: GlobalMessageThread[] = groups.map(toThread);
-  return { threads, groups, isLoading, error };
+  return { threads, groups, isLoading, error, markGroupsReadLocal, reload };
 }
