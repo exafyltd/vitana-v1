@@ -25,7 +25,8 @@
       "menu": "Mehr"
     },
     "toast": {
-      "allMarkedRead": "Alle Nachrichten als gelesen markiert"
+      "allMarkedRead": "Alle Nachrichten als gelesen markiert",
+      "markAllReadFailed": "Konnte nicht alle als gelesen markieren. Bitte versuch es erneut."
     },
     "composer": {
       "placeholder": "Nachricht eingeben...",

@@ -55,7 +55,7 @@ import { MobileConversationSkeleton } from "@/components/messages/mobile/MobileC
 import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useTranslation } from "@/hooks/useTranslation";
-import { t, notify } from '@/lib/i18n-toast';
+import { t, notify, notifyError } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
 export default function Messages() {
@@ -212,8 +212,9 @@ export default function Messages() {
     try {
       await markAllAsRead(filter);
       notify('inbox.toast.allMarkedRead');
-    } catch {
-      // markAllAsRead already logs; swallow to avoid an unhandled rejection.
+    } catch (err) {
+      console.error('[inbox] mark all as read failed:', err);
+      notifyError('inbox.toast.markAllReadFailed');
     }
   }, [markAllAsRead, totalUnread, conversationFilter]);
 

@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 334
-- **Distinct i18n keys consumed:** 5417
+- **Distinct i18n keys consumed:** 5418
 - **Namespaces in use:** 45
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -237,11 +237,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Messages.tsx
 
-**Status:** ✅ clean — keys consumed: 36, namespaces: 2
+**Status:** ✅ clean — keys consumed: 37, namespaces: 2
 
 **i18n namespaces:**
 
-- `inbox` — used: 16, total in shard: 97, **MISSING:** inbox.tabs.${filter}, inbox.toast.allMarkedRead
+- `inbox` — used: 17, total in shard: 97, **MISSING:** inbox.tabs.${filter}, inbox.toast.allMarkedRead, inbox.toast.markAllReadFailed
 - `screens` — used: 20, total in shard: 9660
 
 ### src/pages/MobileDailyDiary.tsx
