@@ -360,37 +360,6 @@ export default function MediaHub() {
       return data || [];
     }
   });
-  // VTID-ORB-SONG: ORB "play me a song" deep-link. After the user accepts
-  // Vitana's "darf ich dir einen Song vorspielen?" offer, the gateway
-  // redirects here with ?autoplay=random. We land on the Music tab and start
-  // a RANDOM approved track right away. Fires once per mount and strips the
-  // trigger param so a refresh / back-nav does not replay it.
-  const hasAutoPlayedMusicRef = useRef(false);
-  useEffect(() => {
-    if (hasAutoPlayedMusicRef.current) return;
-    const wants =
-      searchParams.get('autoplay') === 'random' || searchParams.get('play') === 'random';
-    if (!wants) return;
-    if (!approvedMusic || approvedMusic.length === 0) return; // wait for the list to load
-    hasAutoPlayedMusicRef.current = true;
-    setActiveMediaTab('music');
-    const track = approvedMusic[Math.floor(Math.random() * approvedMusic.length)];
-    if (track?.file_url) {
-      playMedia({
-        id: track.id,
-        title: track.title,
-        creator: track.music_metadata?.[0]?.artist_name || 'Unknown Artist',
-        audioUrl: track.file_url,
-        duration: track.duration || 0,
-        mediaType: 'music',
-      });
-    }
-    const next = new URLSearchParams(searchParams);
-    next.delete('autoplay');
-    next.delete('play');
-    setSearchParams(next, { replace: true });
-  }, [approvedMusic, searchParams, playMedia, setSearchParams]);
-
   // Fetch real video shorts from database with filtering
   const { data: realShorts = [], isLoading: isShortsLoading, refetch: refetchShorts } = useShorts({ 
     limit: 100,
