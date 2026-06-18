@@ -241,7 +241,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `inbox` — used: 17, total in shard: 97, **MISSING:** inbox.tabs.${filter}, inbox.toast.allMarkedRead, inbox.toast.markAllReadFailed
+- `inbox` — used: 17, total in shard: 99, **MISSING:** inbox.tabs.${filter}
 - `screens` — used: 20, total in shard: 9660
 
 ### src/pages/MobileDailyDiary.tsx
@@ -2585,7 +2585,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `inbox` — used: 9, total in shard: 97
+- `inbox` — used: 9, total in shard: 99
 
 ### src/pages/messages/Inspiration.tsx
 

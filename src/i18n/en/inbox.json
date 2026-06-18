@@ -24,10 +24,6 @@
       "markAllRead": "Mark all as read",
       "menu": "More"
     },
-    "toast": {
-      "allMarkedRead": "All messages marked as read",
-      "markAllReadFailed": "Couldn't mark all as read. Please try again."
-    },
     "composer": {
       "placeholder": "Type your message...",
       "send": "Send",
@@ -90,7 +86,9 @@
       "groupRecipientsRequired": "Group name and recipients are required",
       "singleRecipientRequired": "Select exactly one recipient for direct message",
       "groupCreated": "Group \"{name}\" created successfully!",
-      "groupFailed": "Failed to create group"
+      "groupFailed": "Failed to create group",
+      "allMarkedRead": "All messages marked as read",
+      "markAllReadFailed": "Couldn't mark all as read. Please try again."
     },
     "createGroupAction": "Create New Group",
     "newConversationAction": "New Conversation",

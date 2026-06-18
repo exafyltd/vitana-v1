@@ -1254,6 +1254,11 @@ export function useGlobalMessages(
           new CustomEvent("chat-unread-count-update", { detail: { count: totalUnread } })
         );
         window.dispatchEvent(new Event("notifications-refresh"));
+
+        // Reconcile all derived counters (bottom-nav + sidebar badges) from the
+        // now-persisted state. Without this the unread-count singleton can keep a
+        // stale value even though every thread row has already been zeroed.
+        window.dispatchEvent(new Event("chat-threads-refetch"));
       } catch (error) {
         console.error("Error marking all chats as read:", error);
         throw error;
