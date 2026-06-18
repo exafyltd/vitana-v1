@@ -1,17 +1,13 @@
 {
   "verdicts": {
     "discount.welcomeTitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Dein Willkommensgeschenk",
       "phase": "llm"
     },
     "discount.welcomeMessage": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Nutze diesen Code für 10% Rabatt auf dein erstes Event",
       "phase": "llm"
     },
     "discount.validFor": {
@@ -26,9 +22,9 @@
     },
     "discount.applied": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Slightly stiff/technical phrasing; 'angewandt' is more common for UI.",
-      "suggested": "Rabatt angewandt!",
+      "confidence": 0.9,
+      "issue": "Less idiomatic; 'angewendet' is more common for discounts.",
+      "suggested": "Rabatt angewendet!",
       "phase": "llm"
     },
     "discount.expired": {
@@ -53,9 +49,9 @@
     },
     "discount.discountAppliedAmount": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Slightly stiff/technical phrasing; 'angewandt' is more common for UI.",
-      "suggested": "{percent}% Rabatt angewandt",
+      "confidence": 0.9,
+      "issue": "Less idiomatic; 'angewendet' is more common for discounts.",
+      "suggested": "{percent}% Rabatt angewendet",
       "phase": "llm"
     },
     "discount.remove": {
@@ -69,17 +65,13 @@
       "phase": "llm"
     },
     "discount.contactOrganizer": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Kontaktiere den Veranstalter für Ticketinformationen.",
       "phase": "llm"
     },
     "discount.contactOrganizerPrice": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Dieses Event kostet ${price}. Kontaktiere den Veranstalter für Ticketverfügbarkeit.",
       "phase": "llm"
     },
     "discount.soldOut": {
@@ -118,10 +110,8 @@
       "phase": "llm"
     },
     "discount.guestDetails": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Gib deine Daten ein, um dein Ticket zu erhalten. Kein Konto erforderlich.",
       "phase": "llm"
     },
     "discount.fullName": {
@@ -135,10 +125,8 @@
       "phase": "llm"
     },
     "discount.ticketEmailNote": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Dein Ticket und die Bestätigung werden an diese E-Mail gesendet.",
       "phase": "llm"
     },
     "discount.left": {
@@ -152,5 +140,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:09:07.803Z"
+  "generatedAt": "2026-06-18T08:27:03.082Z"
 }
