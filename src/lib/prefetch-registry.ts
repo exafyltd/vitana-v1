@@ -8,13 +8,27 @@ import { EMPTY_SHORTS_PARAMS } from '@/hooks/useShorts';
 import { fetchCommunityEventsQueryFn } from '@/hooks/useCommunityEvents';
 import { getFindPartnerMatches, getIntentBoard } from '@/lib/intentApi';
 import { buildGlobalThreadsQueryFn } from '@/hooks/useGlobalMessages';
+import { communityFetch } from '@/lib/community-gateway';
+import {
+  SCHEDULED_STREAMS_KEY,
+  LIVE_STREAMS_KEY,
+  fetchScheduledStreams,
+  fetchLiveStreams,
+} from '@/hooks/useLiveStreams';
+import {
+  communityNewsKey,
+  fetchCommunityNews,
+  longevityNewsKey,
+  fetchLongevityNews,
+} from '@/hooks/useNewsFeed';
 
 /**
  * Map of adjacent pillars to prefetch when on a given route
  * Routes must match actual app routes (/comm not /community)
  */
 export const ADJACENT_PILLARS: Record<string, string[]> = {
-  '/home': ['/comm', '/discover', '/health', '/business', '/wallet', '/inbox', '/comm/find-partner'],
+  '/autopilot': ['/home', '/comm', '/inbox', '/comm/live-rooms', '/comm/media-hub'],
+  '/home': ['/comm', '/discover', '/health', '/business', '/wallet', '/inbox', '/comm/find-partner', '/autopilot'],
   '/comm': ['/home', '/discover', '/inbox', '/comm/find-partner'],
   '/discover': ['/home', '/comm', '/calendar'],
   '/health': ['/home', '/calendar'],
@@ -37,6 +51,79 @@ export async function prefetchForPath(
 
   const staleTime = 2 * 60 * 1000;
   const eventsKey = ['global-community-events', userId ?? 'anonymous'];
+
+  // My Journey / Autopilot — the post-login landing screen. Warm both the
+  // journey summary and the onboarding recommendations so the screen paints
+  // from cache on first arrival. Keys MUST match the hooks (user-scoped).
+  if (path === '/autopilot') {
+    await Promise.all([
+      queryClient.prefetchQuery({
+        queryKey: ['my-journey', userId],
+        queryFn: async () => {
+          const res = await communityFetch('/api/v1/my-journey');
+          if (!res.ok) throw new Error('Failed to fetch my-journey');
+          return res.json();
+        },
+        staleTime,
+      }),
+      queryClient.prefetchQuery({
+        queryKey: ['autopilot-onboarding', userId],
+        queryFn: async () => {
+          const res = await communityFetch(
+            '/api/v1/autopilot/recommendations?status=new,activated,completed&limit=100',
+          );
+          if (!res.ok) throw new Error('Failed to fetch autopilot recommendations');
+          return res.json();
+        },
+        staleTime,
+      }),
+    ]);
+  }
+
+  // Home (News feed) — longevity + community news. Longevity is an infinite
+  // query; its language segment must match the hook (selectedLanguage → 2-letter
+  // code, default 'de'). A session token is needed for the longevity endpoint.
+  if (path === '/home') {
+    const newsStale = 5 * 60 * 1000;
+    let lang = 'de';
+    try {
+      lang = (localStorage.getItem('vitana.lang') || 'de-DE').split('-')[0] || 'de';
+    } catch {
+      /* SSR / private mode — fall back to default */
+    }
+    const { data: { session } } = await supabase.auth.getSession();
+    const token = session?.access_token ?? null;
+    await Promise.all([
+      queryClient.prefetchInfiniteQuery({
+        queryKey: longevityNewsKey(undefined, 20, lang),
+        queryFn: ({ pageParam = 1 }) =>
+          fetchLongevityNews(pageParam as number, token, { limit: 20, language: lang }),
+        initialPageParam: 1,
+        staleTime: newsStale,
+      }),
+      queryClient.prefetchQuery({
+        queryKey: communityNewsKey(15),
+        queryFn: () => fetchCommunityNews(15),
+        staleTime: newsStale,
+      }),
+    ]);
+  }
+
+  // Live Rooms — scheduled + live streams (public). Reuses the exact hook keys.
+  if (path === '/comm/live-rooms') {
+    await Promise.all([
+      queryClient.prefetchQuery({
+        queryKey: SCHEDULED_STREAMS_KEY,
+        queryFn: fetchScheduledStreams,
+        staleTime,
+      }),
+      queryClient.prefetchQuery({
+        queryKey: LIVE_STREAMS_KEY,
+        queryFn: fetchLiveStreams,
+        staleTime,
+      }),
+    ]);
+  }
 
   // Prefetch based on path
   if (path.startsWith('/business')) {

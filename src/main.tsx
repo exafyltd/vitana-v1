@@ -64,7 +64,19 @@ const queryClient = new QueryClient({
  * Simple persistence for stable data - survives page refresh
  */
 const PERSIST_KEY = 'vitana-query-cache';
-const PERSIST_KEYS = ['profiles', 'tenant', 'user_preferences', 'health-plans', 'life-compass', 'global-community-events', 'live-streams', 'profile-stats-count', 'follow-counts', 'follow-status', 'fx-rate'];
+// Private query keys (global-threads, my-journey, autopilot-onboarding) are
+// user-scoped — their queryKey embeds the user id — so persisting them to
+// localStorage can't leak one account's data into another's session: a
+// different user's query (with a different id) simply won't read the stored
+// entry. News + live streams are public.
+const PERSIST_KEYS = [
+  'profiles', 'tenant', 'user_preferences', 'health-plans', 'life-compass',
+  'global-community-events', 'live-streams', 'profile-stats-count',
+  'follow-counts', 'follow-status', 'fx-rate',
+  // Added (VTID-03255): warm the first authenticated screens across refreshes.
+  'global-threads', 'my-journey', 'autopilot-onboarding',
+  'longevity-news', 'community-news',
+];
 
 // Restore cache from localStorage on startup
 try {

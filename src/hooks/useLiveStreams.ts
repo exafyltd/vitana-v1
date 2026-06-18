@@ -30,49 +30,59 @@ export interface LiveStream {
   creator_avatar_url?: string | null;
 }
 
+// Query keys + fetchers exported so the prefetch registry / post-login warmup
+// reuse the EXACT same key+fetch the hooks bind to (single source of truth — a
+// prefetched result the screen can read on mount instead of refetching).
+export const SCHEDULED_STREAMS_KEY = ['live-streams', 'scheduled'] as const;
+export const LIVE_STREAMS_KEY = ['live-streams', 'live'] as const;
+
+export async function fetchScheduledStreams(): Promise<LiveStream[]> {
+  const { data, error } = await supabase
+    .from('community_live_streams')
+    .select('*')
+    .eq('status', 'pending')
+    .not('scheduled_for', 'is', null)
+    .gte('scheduled_for', new Date().toISOString())
+    .order('scheduled_for', { ascending: true });
+
+  if (error) throw error;
+
+  return (data || []).map((stream: any) => ({
+    ...stream,
+    creator_display_name: null,
+    creator_avatar_url: null,
+    creator: undefined
+  })) as LiveStream[];
+}
+
+export async function fetchLiveStreams(): Promise<LiveStream[]> {
+  const { data, error } = await supabase
+    .from('community_live_streams')
+    .select('*')
+    .eq('status', 'live')
+    .order('started_at', { ascending: false });
+
+  if (error) throw error;
+
+  return (data || []).map((stream: any) => ({
+    ...stream,
+    creator_display_name: null,
+    creator_avatar_url: null,
+    creator: undefined
+  })) as LiveStream[];
+}
+
 export function useScheduledStreams() {
   return useQuery({
-    queryKey: ['live-streams', 'scheduled'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('community_live_streams')
-        .select('*')
-        .eq('status', 'pending')
-        .not('scheduled_for', 'is', null)
-        .gte('scheduled_for', new Date().toISOString())
-        .order('scheduled_for', { ascending: true });
-      
-      if (error) throw error;
-      
-      return (data || []).map((stream: any) => ({
-        ...stream,
-        creator_display_name: null,
-        creator_avatar_url: null,
-        creator: undefined
-      })) as LiveStream[];
-    },
+    queryKey: SCHEDULED_STREAMS_KEY,
+    queryFn: fetchScheduledStreams,
   });
 }
 
 export function useLiveStreams() {
   return useQuery({
-    queryKey: ['live-streams', 'live'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('community_live_streams')
-        .select('*')
-        .eq('status', 'live')
-        .order('started_at', { ascending: false });
-      
-      if (error) throw error;
-      
-      return (data || []).map((stream: any) => ({
-        ...stream,
-        creator_display_name: null,
-        creator_avatar_url: null,
-        creator: undefined
-      })) as LiveStream[];
-    },
+    queryKey: LIVE_STREAMS_KEY,
+    queryFn: fetchLiveStreams,
     refetchInterval: 30000,
   });
 }

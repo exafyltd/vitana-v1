@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
 import { useTenant } from "@/hooks/useTenant";
 import { useRole } from "@/hooks/useRole";
+import { markRouteTransition } from "@/lib/routeTransition";
 
 // ── Role-route enforcement ──────────────────────────────────────────
 // Call from AppLayout so it runs on every authenticated page.
@@ -90,6 +91,8 @@ export function useInitialLandingRedirect() {
     if (slug !== "maxina") return;
     if (currentRole && currentRole !== "community") return;
     if (location.pathname === "/home") {
+      // Mask the News→My Journey hop so /home never flashes before /autopilot.
+      markRouteTransition();
       navigate("/autopilot", { replace: true });
     }
   }, [authLoading, roleLoading, user, tenant?.slug, currentRole, location.pathname, navigate]);
@@ -128,6 +131,8 @@ export function useSmartRouting() {
       if (isExafyAdmin) {
         // Only redirect from root path to avoid interfering with navigation
         if (location.pathname === '/' || location.pathname === '/home') {
+          // Mask the landing redirect chain (role/tenant resolution → dest).
+          markRouteTransition();
           // Route based on stored role preference, not always to admin
           switch (currentRole) {
             case "admin":
@@ -170,6 +175,7 @@ export function useSmartRouting() {
 
       // Regular users - route to appropriate dashboard based on role
       if (currentRole && location.pathname === '/') {
+        markRouteTransition();
         switch (currentRole) {
           case "admin":
           case "staff":
