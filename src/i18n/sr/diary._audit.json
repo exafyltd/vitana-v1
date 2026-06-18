@@ -2,9 +2,9 @@
   "verdicts": {
     "diary.title": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Redundant phrasing; 'Dnevni dnevnik' literally means 'Daily daily'.",
-      "suggested": "Dnevnik",
+      "confidence": 0.9,
+      "issue": "Missing 'Daily' modifier; 'Dnevnik' means 'Diary', not 'Daily Diary'.",
+      "suggested": "Dnevni dnevnik",
       "phase": "llm"
     },
     "diary.description": {
@@ -48,5 +48,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:26.036Z"
+  "generatedAt": "2026-06-18T08:24:01.362Z"
 }
