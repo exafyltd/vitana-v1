@@ -18,6 +18,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/hooks/useTranslation";
 import MessageInput from "@/components/messages/MessageInput";
 import MessageBubble from "@/components/messages/MessageBubble";
+import MessageDivider from "@/components/messages/MessageDivider";
 import {
   fetchGroup,
   fetchGroupMessages,
@@ -27,6 +28,9 @@ import {
   type ChatGroupMember,
   type ChatGroupMessage,
 } from "@/hooks/useChatApi";
+import { getDateSeparatedMessageItems } from "@/lib/messageDateSeparators";
+import { formatDate } from "@/lib/locale-format";
+import { isThisYear, isToday, isYesterday } from "date-fns";
 
 // Realtime drives live updates now; the poll is only a reconnect-safety
 // fallback, so it can run far less aggressively than the old 5s loop.
@@ -85,6 +89,20 @@ export default function GroupChat() {
     (group?.members || []).forEach(m => map.set(m.user_id, m));
     return map;
   }, [group]);
+
+  const messageItems = useMemo(() => {
+    return getDateSeparatedMessageItems(
+      messages,
+      msg => msg.created_at,
+      messageDate => {
+        if (isToday(messageDate)) return "Today";
+        if (isYesterday(messageDate)) return "Yesterday";
+        return isThisYear(messageDate)
+          ? formatDate(messageDate, "d MMMM")
+          : formatDate(messageDate, "d MMMM yyyy");
+      },
+    );
+  }, [messages]);
 
   const reload = useCallback(async () => {
     if (!groupId) return;
@@ -233,7 +251,18 @@ export default function GroupChat() {
           </div>
         ) : (
           <div className="space-y-2">
-            {messages.map(msg => {
+            {messageItems.map(item => {
+              if (item.type === "date") {
+                return (
+                  <MessageDivider
+                    key={item.id}
+                    type="date"
+                    text={item.text}
+                  />
+                );
+              }
+
+              const msg = item.message;
               const isOwn = msg.sender_id === userId;
               const sender = memberById.get(msg.sender_id);
               return (

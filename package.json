@@ -20,7 +20,8 @@
     "test:orb-stop": "node scripts/orb-voice-client-stop-regression.mjs",
     "test:universal-cart": "node scripts/universal-cart-client-regression.mjs",
     "test:analytics-client": "node scripts/analytics-client-regression.mjs",
-    "test:guided-journey": "node scripts/guided-journey-session-regression.mjs"
+    "test:guided-journey": "node scripts/guided-journey-session-regression.mjs",
+    "test:group-chat-dates": "node scripts/group-chat-date-divider-regression.mjs"
   },
   "dependencies": {
     "@axe-core/react": "^4.10.2",
