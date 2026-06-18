@@ -7,6 +7,7 @@ export interface ProfilePost {
   user_id: string;
   content: string;
   image_url: string | null;
+  video_url: string | null;
   likes_count: number;
   comments_count: number;
   shares_count: number;
@@ -36,11 +37,11 @@ export function useProfilePosts(userId?: string) {
   });
 
   const createPost = useMutation({
-    mutationFn: async ({ content, imageUrl }: { content: string; imageUrl?: string }) => {
+    mutationFn: async ({ content, imageUrl, videoUrl }: { content: string; imageUrl?: string; videoUrl?: string }) => {
       if (!user?.id) throw new Error('Not authenticated');
       const { data, error } = await supabase
         .from('profile_posts' as any)
-        .insert({ user_id: user.id, content, image_url: imageUrl || null } as any)
+        .insert({ user_id: user.id, content, image_url: imageUrl || null, video_url: videoUrl || null } as any)
         .select()
         .single();
       if (error) throw error;

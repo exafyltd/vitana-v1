@@ -5675,6 +5675,8 @@
       "filterMedia": "Filtrar medios",
       "loading": "Cargando...",
       "postImage": "Publicar imagen",
+      "postVideo": "Publicar video",
+      "removeMedia": "Quitar contenido",
       "share": "Compartir",
       "noServicesAvailable": "No hay servicios disponibles",
       "professionalServices": "Servicios profesionales",
