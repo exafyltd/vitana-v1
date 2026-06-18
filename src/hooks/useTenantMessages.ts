@@ -595,6 +595,55 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
     markAsReadTimeouts.current.set(threadId, timeout);
   }, [user, activeTenantId, isTenantContext]);
 
+  // Mark ALL tenant conversations as read (bulk)
+  const markAllAsRead = useCallback(async (filter: 'all' | 'direct' | 'groups' = 'all') => {
+    if (!user || !activeTenantId || !isTenantContext) return;
+
+    const cached = queryClient.getQueryData<TenantMessageThread[]>(
+      ['tenant-threads', user.id, activeTenantId]
+    ) || [];
+    const threadIds = cached
+      .filter((t) => {
+        const isGroup = t.type === 'group';
+        if (filter === 'direct') return !isGroup;
+        if (filter === 'groups') return isGroup;
+        return true;
+      })
+      .map((t) => t.id);
+
+    if (threadIds.length === 0) return;
+
+    const now = new Date().toISOString();
+    try {
+      const { error } = await supabase
+        .from('thread_participants')
+        .update({ last_read_at: now })
+        .eq('user_id', user.id)
+        .in('thread_id', threadIds);
+
+      if (error) throw error;
+
+      updateThreadsOptimistically((prev) =>
+        prev.map((thread) =>
+          threadIds.includes(thread.id) ? { ...thread, unread_count: 0 } : thread
+        )
+      );
+
+      await supabase.channel('unread_sync').send({
+        type: 'broadcast',
+        event: 'unread_change',
+        payload: { userId: user.id, context: 'tenant', tenantId: activeTenantId },
+      });
+
+      setTimeout(() => {
+        fetchThreads();
+      }, 500);
+    } catch (error) {
+      console.error('Error marking all tenant threads as read:', error);
+      throw error;
+    }
+  }, [user, activeTenantId, isTenantContext, queryClient, updateThreadsOptimistically, fetchThreads]);
+
   // Set up real-time subscriptions
   useEffect(() => {
     if (!user || !activeTenantId || !isTenantContext) return;
@@ -790,6 +839,7 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
     sendMessage,
     createThread,
     markAsRead,
+    markAllAsRead,
     fetchMessages,
     fetchThreads,
     refetchMessages: fetchMessages,

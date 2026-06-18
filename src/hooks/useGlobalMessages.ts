@@ -17,9 +17,13 @@ import {
   fetchConversation,
   sendChatMessage,
   markChatRead,
+  markAllChatRead,
   type ChatMessage,
   type ChatConversation,
 } from "./useChatApi";
+
+/** Which conversations a bulk "mark all as read" should affect. */
+export type MarkAllFilter = "all" | "direct" | "groups";
 interface SendMessageArgs {
   threadId: string;
   content: string;
@@ -1180,6 +1184,75 @@ export function useGlobalMessages(
     [user, isGlobalContext, updateThreadsOptimistically, queryClient]
   );
 
+  // ── Mark ALL conversations as read (bulk) ─────────────────────────
+  const markAllAsRead = useCallback(
+    async (filter: MarkAllFilter = "all") => {
+      if (!user || !isGlobalContext) return;
+
+      const cachedThreads =
+        queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+      const groupThreadIds = cachedThreads
+        .filter((t) => t.type === "group")
+        .map((t) => t.id);
+
+      const now = new Date().toISOString();
+      const doDirect = filter === "all" || filter === "direct";
+      const doGroups = filter === "all" || filter === "groups";
+
+      try {
+        // Direct DMs: single bulk request via gateway.
+        if (doDirect) {
+          await markAllChatRead();
+        }
+
+        // Group threads: single bulk watermark update.
+        if (doGroups && groupThreadIds.length > 0) {
+          await (supabase as any)
+            .from("global_thread_participants")
+            .update({ last_read_at: now })
+            .eq("user_id", user.id)
+            .in("thread_id", groupThreadIds);
+        }
+
+        // Clear related chat notifications.
+        try {
+          await (supabase as any)
+            .from("user_notifications")
+            .update({ read_at: now })
+            .eq("type", "new_chat_message")
+            .eq("user_id", user.id)
+            .is("read_at", null);
+        } catch (notifErr) {
+          console.warn("[chat] Failed to clear chat notifications:", notifErr);
+        }
+
+        // Optimistically zero the affected threads.
+        updateThreadsOptimistically((prev) =>
+          prev.map((t) => {
+            const isGroup = t.type === "group";
+            const affected = isGroup ? doGroups : doDirect;
+            return affected ? { ...t, unread_count: 0 } : t;
+          })
+        );
+
+        // Notify badge: recompute total from updated thread cache.
+        const updatedThreads = queryClient.getQueryData<any[]>(["global-threads", user.id]) ?? [];
+        const totalUnread = updatedThreads.reduce(
+          (sum: number, t: any) => sum + (t.unread_count || 0),
+          0
+        );
+        window.dispatchEvent(
+          new CustomEvent("chat-unread-count-update", { detail: { count: totalUnread } })
+        );
+        window.dispatchEvent(new Event("notifications-refresh"));
+      } catch (error) {
+        console.error("Error marking all chats as read:", error);
+        throw error;
+      }
+    },
+    [user, isGlobalContext, updateThreadsOptimistically, queryClient]
+  );
+
   // ─── FIX 1: STABILIZED REALTIME SUBSCRIPTION ───────────────────────
   // Create stable channel ID per hook instance (not regenerated on every render)
   const realtimeChannelId = useRef(`chat_realtime_${Math.random().toString(36).slice(2, 11)}`);
@@ -1363,6 +1436,7 @@ export function useGlobalMessages(
     sendMessage,
     createThread,
     markAsRead,
+    markAllAsRead,
     fetchMessages: fetchMessagesCompat,
     fetchThreads,
     refetchMessages: fetchMessagesCompat,

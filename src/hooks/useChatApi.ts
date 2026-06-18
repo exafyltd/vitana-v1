@@ -114,6 +114,15 @@ export async function markChatRead(peerId: string): Promise<void> {
   });
 }
 
+/** Mark ALL of the caller's unread direct messages as read. Returns the number updated. */
+export async function markAllChatRead(): Promise<number> {
+  const json = await gatewayFetch("/read-all", {
+    method: "POST",
+    body: JSON.stringify({}),
+  });
+  return json.updated ?? 0;
+}
+
 /** Get total unread message count from gateway. */
 export async function fetchUnreadCount(): Promise<number> {
   const json = await gatewayFetch("/unread-count");
