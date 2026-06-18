@@ -26,6 +26,8 @@ import { useHybridMessages } from "@/hooks/useHybridMessages";
 // VTID-03089: chat_groups appear in the unified /inbox list when in the
 // global community context. Selecting one routes to /inbox/g/<id>.
 import { useChatGroupsAsThreads, isChatGroupThreadId, chatGroupIdFromThreadId } from "@/hooks/useChatGroupsAsThreads";
+import { useChatUnreadCount } from "@/hooks/useChatUnreadCount";
+import { markGroupRead } from "@/hooks/useChatApi";
 import { useUnreadSync } from "@/hooks/useUnreadSync";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
@@ -78,7 +80,8 @@ export default function Messages() {
   // VTID-03089: merge chat_groups (new system) into the inbox list when in
   // the community/global context. Selecting one is intercepted below and
   // routed to /inbox/g/<id> instead of inline thread load.
-  const { threads: chatGroupThreads } = useChatGroupsAsThreads(isGlobalContext);
+  const { threads: chatGroupThreads, markGroupsReadLocal, reload: reloadChatGroups } = useChatGroupsAsThreads(isGlobalContext);
+  const { refresh: refreshUnreadBadge } = useChatUnreadCount();
   const threads = useMemo(() => {
     if (!isGlobalContext) return apiThreads;
     return [...chatGroupThreads, ...apiThreads];
@@ -207,16 +210,33 @@ export default function Messages() {
     | ((filter?: 'all' | 'direct' | 'groups') => Promise<void>)
     | undefined;
   const handleMarkAllAsRead = useCallback(async () => {
-    if (!markAllAsRead || totalUnread === 0) return;
+    if (totalUnread === 0) return;
     const filter = conversationFilter === 'contacts' ? 'all' : conversationFilter;
     try {
-      await markAllAsRead(filter);
+      // 1. Direct DMs + legacy global threads (chat_messages + global_thread_participants).
+      if (markAllAsRead) await markAllAsRead(filter);
+
+      // 2. chat_groups (e.g. "FIRST 100") — a separate system that markAllAsRead
+      //    doesn't cover. Clear each unread group via its own read endpoint.
+      if (filter === 'all' || filter === 'groups') {
+        const groupIds = displayThreads
+          .filter((t) => isChatGroupThreadId(t.id) && (t.unread_count || 0) > 0)
+          .map((t) => chatGroupIdFromThreadId(t.id));
+        if (groupIds.length > 0) {
+          markGroupsReadLocal(groupIds); // optimistic: clear the rows immediately
+          await Promise.allSettled(groupIds.map((id) => markGroupRead(id)));
+          reloadChatGroups(); // reconcile the group list from the backend
+        }
+      }
+
+      // 3. Force the footer/sidebar badge to recompute now that DMs + groups are read.
+      refreshUnreadBadge();
       notify('inbox.toast.allMarkedRead');
     } catch (err) {
       console.error('[inbox] mark all as read failed:', err);
       notifyError('inbox.toast.markAllReadFailed');
     }
-  }, [markAllAsRead, totalUnread, conversationFilter]);
+  }, [markAllAsRead, totalUnread, conversationFilter, displayThreads, markGroupsReadLocal, reloadChatGroups, refreshUnreadBadge]);
 
   // Auto-select the most recent conversation (WhatsApp-style behavior)
   // Only auto-select on desktop - on mobile, users should see the list first and tap to open
