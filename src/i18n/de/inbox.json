@@ -20,7 +20,12 @@
     "actions": {
       "new": "Neu",
       "newMessage": "Neue Nachricht",
-      "createGroup": "Gruppe erstellen"
+      "createGroup": "Gruppe erstellen",
+      "markAllRead": "Alle als gelesen markieren",
+      "menu": "Mehr"
+    },
+    "toast": {
+      "allMarkedRead": "Alle Nachrichten als gelesen markiert"
     },
     "composer": {
       "placeholder": "Nachricht eingeben...",
