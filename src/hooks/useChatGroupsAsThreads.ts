@@ -8,7 +8,8 @@
  * trying to open it inline with the global-message loader.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { fetchGroups, type ChatGroup } from "./useChatApi";
 import type { GlobalMessageThread, GlobalMessage } from "./useGlobalMessages";
 
@@ -55,6 +56,9 @@ export function useChatGroupsAsThreads(enabled: boolean = true) {
   const [groups, setGroups] = useState<ChatGroup[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(enabled);
   const [error, setError] = useState<string | null>(null);
+  // Holds the latest loader so the realtime effect can refetch without
+  // re-subscribing whenever the loader closure changes.
+  const loadRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     if (!enabled) {
@@ -79,12 +83,37 @@ export function useChatGroupsAsThreads(enabled: boolean = true) {
     }
 
     load();
+    // Poll kept as a reconnect-safety fallback; realtime (below) handles the
+    // common case so the list no longer relies on the 30s tick to feel live.
     const id = setInterval(load, POLL_INTERVAL_MS);
+    loadRef.current = load;
     return () => {
       cancelled = true;
+      loadRef.current = null;
       clearInterval(id);
     };
   }, [enabled]);
+
+  // Realtime: a new message in any group the user belongs to refreshes the
+  // list (last message + unread badge). Requires public.chat_messages in the
+  // supabase_realtime publication (migration 20260618110546).
+  const groupIdsKey = useMemo(
+    () => groups.map((g) => g.id).sort().join(","),
+    [groups],
+  );
+
+  useEffect(() => {
+    if (!enabled || !groupIdsKey) return;
+    const channel = supabase
+      .channel(`chat_groups_threads_${groupIdsKey.slice(0, 24)}`)
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "chat_messages", filter: `group_id=in.(${groupIdsKey})` },
+        () => { loadRef.current?.(); },
+      )
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [enabled, groupIdsKey]);
 
   const threads: GlobalMessageThread[] = groups.map(toThread);
   return { threads, groups, isLoading, error };
