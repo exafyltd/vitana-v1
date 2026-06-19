@@ -18,6 +18,7 @@ import { StandardCard } from "@/components/templates/StandardCard";
 import { PrivacyAuditPopup } from "@/components/PrivacyAuditPopup";
 import { useAIConsent } from "@/hooks/useAIConsent";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
+import { SpotlightConsentToggle } from "@/components/settings/SpotlightConsentToggle";
 import { t } from '@/lib/i18n-toast';
 
 function Privacy() {
@@ -153,6 +154,7 @@ function Privacy() {
                           </div>
                           <Switch />
                         </div>
+                        <SpotlightConsentToggle />
                       </div>
                     }
                   />
