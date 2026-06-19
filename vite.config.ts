@@ -41,4 +41,14 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // ffmpeg.wasm ships a module Web Worker (`new Worker(new URL('./worker.js',
+  // import.meta.url), { type: 'module' })`). Pre-bundling it with esbuild
+  // mangles that worker URL, so exclude it and let Rollup/Vite handle the
+  // worker plus the self-hosted core asset emission.
+  optimizeDeps: {
+    exclude: ["@ffmpeg/ffmpeg", "@ffmpeg/util"],
+  },
+  worker: {
+    format: "es",
+  },
 }));

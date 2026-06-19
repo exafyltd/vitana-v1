@@ -6093,6 +6093,7 @@
       "postImage": "Post image",
       "postVideo": "Post video",
       "removeMedia": "Remove media",
+      "compressingVideoPct": "Compressing… {{pct}}%",
       "share": "Share",
       "noServicesAvailable": "No Services Available",
       "professionalServices": "Professional Services",
