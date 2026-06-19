@@ -85,10 +85,21 @@ try {
     const parsed = JSON.parse(cached);
     const now = Date.now();
     
-    // Restore each cached query if not expired (24 hours)
+    // Restore each cached query if not expired (24 hours).
+    //
+    // CRITICAL: pass the ORIGINAL fetch timestamp via `updatedAt`. Without it,
+    // setQueryData stamps the restored data as freshly-fetched (dataUpdatedAt =
+    // now), so React Query considers day-old cache "fresh" for the full
+    // staleTime and refetchOnMount never fires — which froze time-based values
+    // like the My Journey "Day N" counter at whatever value was first cached
+    // (users saw the same day number for days). Preserving the real timestamp
+    // means anything older than staleTime is correctly stale and refetched in
+    // the background on next mount, while still rendering instantly from cache.
     Object.entries(parsed).forEach(([key, value]: [string, any]) => {
       if (value && value.data && (now - value.timestamp) < 24 * 60 * 60 * 1000) {
-        queryClient.setQueryData(JSON.parse(key), value.data);
+        queryClient.setQueryData(JSON.parse(key), value.data, {
+          updatedAt: typeof value.timestamp === 'number' ? value.timestamp : undefined,
+        });
       }
     });
   }
