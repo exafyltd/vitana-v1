@@ -2,23 +2,21 @@
   "verdicts": {
     "auth.notAuthorized": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'Vi' instead of informal 'ti').",
-      "suggested": "Nisi autorizovan",
+      "confidence": 0.9,
+      "issue": "The translation 'Nisi autorizovan' is masculine. For a general 'Not Authorized' message in a friendly app, it should ideally be gender-neutral or adapt to the user's gender. 'Nemaš autorizaciju' (You don't have authorization) is a gender-neutral alternative that maintains the informal 'du' form.",
+      "suggested": "Nemaš autorizaciju",
       "phase": "llm"
     },
     "auth.noPermission": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'Vi' instead of informal 'ti').",
-      "suggested": "Nemaš dozvolu da pristupiš ovoj stranici",
       "phase": "llm"
     },
     "auth.contactAdmin": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'Vi' instead of informal 'ti').",
-      "suggested": "Kontaktiraj svog administratora za pristup",
+      "confidence": 0.9,
+      "issue": "The English phrase includes 'Please', which conveys a friendly and polite tone. The Serbian 'Kontaktiraj' is a direct imperative. Adding 'Molim te' (Please, informal) would better match the friendly register of the source text and app.",
+      "suggested": "Molim te kontaktiraj svog administratora za pristup",
       "phase": "llm"
     },
     "auth.backHome": {
@@ -27,5 +25,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:44.101Z"
+  "generatedAt": "2026-06-19T08:43:40.680Z"
 }

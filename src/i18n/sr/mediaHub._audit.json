@@ -26,10 +26,8 @@
       "phase": "llm"
     },
     "mediaHub.discoverContent": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register (uses formal Vi-form instead of informal du-form).",
-      "suggested": "Otkrij i deli inspirativni wellness sadržaj sa svojom zajednicom.",
       "phase": "llm"
     },
     "mediaHub.tabs.music": {
@@ -323,10 +321,8 @@
       "phase": "llm"
     },
     "mediaHub.noMusicDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register (uses formal Vi-form instead of informal du-form).",
-      "suggested": "Budi prvi koji će podeliti muziku sa zajednicom!",
       "phase": "llm"
     },
     "mediaHub.noPodcasts": {
@@ -583,7 +579,85 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "mediaHub.toast.commentError": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.toast.commentErrorDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.placeholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.empty": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.beFirst": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.signIn": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.send": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.member": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.reply": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.replyingTo": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.cancelReply": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mediaHub.comments.like": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
     }
   },
-  "generatedAt": "2026-05-20T07:04:41.114Z"
+  "generatedAt": "2026-06-19T08:45:45.682Z"
 }
