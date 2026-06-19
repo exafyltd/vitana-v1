@@ -37,11 +37,19 @@ export function useProfilePosts(userId?: string) {
   });
 
   const createPost = useMutation({
-    mutationFn: async ({ content, imageUrl, videoUrl }: { content: string; imageUrl?: string; videoUrl?: string }) => {
+    mutationFn: async ({ content, imageUrl, videoUrl, isPublic }: { content: string; imageUrl?: string; videoUrl?: string; isPublic?: boolean }) => {
       if (!user?.id) throw new Error('Not authenticated');
       const { data, error } = await supabase
         .from('profile_posts' as any)
-        .insert({ user_id: user.id, content, image_url: imageUrl || null, video_url: videoUrl || null } as any)
+        .insert({
+          user_id: user.id,
+          content,
+          image_url: imageUrl || null,
+          video_url: videoUrl || null,
+          // Defaults to public to preserve prior behaviour; the composer maps its
+          // visibility control (public/friends/groups) onto this flag.
+          ...(isPublic === undefined ? {} : { is_public: isPublic }),
+        } as any)
         .select()
         .single();
       if (error) throw error;

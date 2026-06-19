@@ -62,3 +62,13 @@ export function forceEnableForDev(flag: keyof FeatureFlags) {
 export function setTestsPassed(passed: boolean) {
   testsPassed = passed;
 }
+
+/**
+ * VTID-03319 — unified "All News" home feed (feed v2). Standalone, env-driven
+ * flag (independent of the horizontal-cards gate above). Defaults ON so it can
+ * be exercised on staging; set VITE_FEED_V2_ENABLED="false" to fall back to the
+ * timestamp-merged legacy feed.
+ */
+export function isFeedV2Enabled(): boolean {
+  return import.meta.env.VITE_FEED_V2_ENABLED !== "false";
+}
