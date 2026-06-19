@@ -822,6 +822,8 @@
       "onlyImagesOrVideosAllowed": "Nur Bilder oder Videos sind erlaubt",
       "videoMustUnder50mb": "Video muss unter 50 MB sein",
       "couldNotReadSelectedFile": "Ausgewählte Datei konnte nicht gelesen werden",
+      "videoTooLargeToCompress": "Das Video ist zu groß (max. 300 MB). Bitte wähle ein kürzeres Video.",
+      "videoCompressionFailed": "Video konnte nicht komprimiert werden. Bitte wähle ein kürzeres Video.",
       "failedCopy": "Kopieren fehlgeschlagen",
       "shareFailed": "Teilen fehlgeschlagen",
       "qrCodeDownloaded2": "QR-Code heruntergeladen",
