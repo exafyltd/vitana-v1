@@ -61,9 +61,10 @@
       "phase": "llm"
     },
     "sidebar.memory": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "Ambiguous English term 'Memory'. 'Speicher' usually refers to data storage. If it means cognitive memory, 'Gedächtnis' is better. If it means recollections/journal entries, 'Erinnerungen' is better.",
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect meaning for cognitive memory; 'Speicher' refers to storage, not the faculty of memory.",
+      "suggested": "Gedächtnis",
       "phase": "llm"
     },
     "sidebar.settings": {
@@ -208,23 +209,31 @@
     },
     "sidebar.clinicalOps": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Ops' is an awkward abbreviation in German UI; 'Operationen' is more standard.",
-      "suggested": "Klinische Operationen",
+      "confidence": 0.8,
+      "issue": "'Klinische Operationen' can be misinterpreted as surgical operations and is quite formal. 'Klinischer Betrieb' or 'Klinische Abläufe' is clearer for organizational operations.",
+      "suggested": "Klinischer Betrieb",
       "phase": "llm"
     },
     "sidebar.monitoring": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Überwachung' can sound formal or have a slightly negative connotation; 'Monitoring' is a common and often preferred loanword in this context.",
-      "suggested": "Monitoring",
-      "phase": "llm"
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
     },
     "sidebar.logout": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "sidebar.connectors": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "sidebar.support": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:31:45.656Z"
+  "generatedAt": "2026-06-20T07:33:34.151Z"
 }

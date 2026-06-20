@@ -121,10 +121,8 @@
       "phase": "llm"
     },
     "newsCard.detail.readOn": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Lesen auf\" is less natural than \"Weiterlesen\" for a standalone button or prompt to continue reading.",
-      "suggested": "Weiterlesen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "newsCard.pillars.all": {
@@ -148,5 +146,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:16:47.172Z"
+  "generatedAt": "2026-06-20T07:18:22.133Z"
 }
