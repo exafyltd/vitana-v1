@@ -12,14 +12,15 @@
  * user's hide/mute/"show less" preferences) is applied in a useMemo so toggling
  * a preference re-ranks instantly without a refetch.
  */
-import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useMemo } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRealMatches } from "@/hooks/useRealMatches";
 import { useNewsFeedPreferencesStore } from "@/stores/newsFeedPreferencesStore";
 import { fetchLongevityNews } from "@/hooks/useNewsFeed";
+import { FEED_INCLUDE_OWN_POSTS, FEED_FOLLOWING_ONLY } from "@/config/feed";
 import {
   rankFeed,
   type FeedItem,
@@ -158,7 +159,9 @@ async function loadCandidates(
   const posts: PostFeedItem[] = [];
 
   for (const p of postRows) {
-    if (userId && p.user_id === userId) continue; // skip the viewer's own posts
+    const isOwn = !!userId && p.user_id === userId;
+    if (isOwn && !FEED_INCLUDE_OWN_POSTS) continue; // launch mode keeps own posts
+    if (FEED_FOLLOWING_ONLY && !isOwn && !followingIds.has(p.user_id)) continue;
     const author = authors.get(p.user_id);
     posts.push({
       id: `post-${p.id}`,
@@ -179,7 +182,9 @@ async function loadCandidates(
   }
 
   for (const m of mediaRows) {
-    if (userId && m.user_id === userId) continue;
+    const isOwn = !!userId && m.user_id === userId;
+    if (isOwn && !FEED_INCLUDE_OWN_POSTS) continue;
+    if (FEED_FOLLOWING_ONLY && !isOwn && !followingIds.has(m.user_id)) continue;
     const author = authors.get(m.user_id);
     posts.push({
       id: `media-${m.id}`,
@@ -231,14 +236,39 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
   const language = selectedLanguage?.split("-")[0] || "en";
 
   const matchesQuery = useRealMatches(6);
+  const queryClient = useQueryClient();
 
   const candidatesQuery = useQuery({
     queryKey: ["all-news-feed", userId, language],
     queryFn: () => loadCandidates(userId, token, language),
     enabled: options?.enabled !== false,
-    staleTime: 5 * 60 * 1000,
-    refetchOnWindowFocus: false,
+    // Launch phase: keep the feed lively. Realtime (below) drives instant
+    // updates; the short stale time + focus refetch + slow poll are belt-and-
+    // suspenders so a new post never sits hidden for long even if a realtime
+    // event is missed (e.g. flaky connection, tab restored from bfcache).
+    staleTime: 15 * 1000,
+    refetchOnWindowFocus: true,
+    refetchInterval: 60 * 1000,
   });
+
+  // Realtime: a new public post (or a freshly approved community video) should
+  // surface in everyone's feed immediately. Invalidate the candidates query so
+  // it refetches + re-ranks. profile_posts/media_uploads are in the
+  // supabase_realtime publication (see migration 20260620120000).
+  useEffect(() => {
+    if (options?.enabled === false) return;
+    const refresh = () =>
+      queryClient.invalidateQueries({ queryKey: ["all-news-feed", userId, language] });
+    const channel = supabase
+      .channel("all-news-feed-live")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "profile_posts" }, refresh)
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "media_uploads" }, refresh)
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "media_uploads" }, refresh)
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient, userId, language, options?.enabled]);
 
   const hiddenArticleIds = useNewsFeedPreferencesStore((s) => s.hiddenArticleIds);
   const mutedSources = useNewsFeedPreferencesStore((s) => s.mutedSources);

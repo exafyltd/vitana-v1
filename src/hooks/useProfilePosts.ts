@@ -57,6 +57,9 @@ export function useProfilePosts(userId?: string) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile-posts', targetUserId] });
+      // Launch-phase News feed shows the author's own posts too — refresh it
+      // immediately so a new post appears without waiting for realtime/poll.
+      queryClient.invalidateQueries({ queryKey: ['all-news-feed'] });
     },
   });
 
@@ -70,6 +73,7 @@ export function useProfilePosts(userId?: string) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile-posts', targetUserId] });
+      queryClient.invalidateQueries({ queryKey: ['all-news-feed'] });
     },
   });
 
