@@ -87,16 +87,16 @@
     },
     "settings.categories.tenantRole": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The term 'inquilino' (tenant, as in renter) is inaccurate for a software context. 'Tenant' in software usually refers to an account, organization, or client instance.",
-      "suggested": "Cuenta y Rol",
+      "confidence": 0.8,
+      "issue": "\"Cuenta\" (account) is a generic term and may not accurately convey \"Tenant\" as a distinct organizational or system entity in a multi-tenant context.",
+      "suggested": "Organización y Rol",
       "phase": "llm"
     },
     "settings.categories.tenantRoleDesc": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The term 'inquilinos' (tenants, as in renters) is inaccurate for a software context and should align with the corrected term for 'Tenant'.",
-      "suggested": "Cambia entre roles y cuentas",
+      "confidence": 0.8,
+      "issue": "\"Cuentas\" (accounts) is a generic term and may not accurately convey \"Tenants\" as distinct organizational or system entities, and is inconsistent with the suggested change for \"Tenant\" in entry 0.",
+      "suggested": "Cambia entre roles y organizaciones",
       "phase": "llm"
     },
     "settings.categories.billing": {
@@ -148,7 +148,19 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "settings.vitanaOpenedSection": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "settings.vitanaUpdated": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
     }
   },
-  "generatedAt": "2026-05-20T07:08:26.397Z"
+  "generatedAt": "2026-06-20T07:15:57.345Z"
 }
