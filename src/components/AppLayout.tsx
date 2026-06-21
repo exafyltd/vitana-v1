@@ -445,7 +445,7 @@ function AuthedAppLayout({ children }: AppLayoutProps) {
   // Enforce role-route alignment (admin on community routes → redirect, etc.)
   useRoleRouteEnforcement();
 
-  // Land the native app on My Journey when it cold-starts on the News feed.
+  // News (/home) is the default landing screen; no cold-start redirect needed.
   useInitialLandingRedirect();
 
   // Background loading system
