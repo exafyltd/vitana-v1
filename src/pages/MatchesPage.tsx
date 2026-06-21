@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Heart, MapPin } from "lucide-react";
 import { useRealMatches } from "@/hooks/useRealMatches";
+import { localizeMatchReason } from "@/lib/matchReason";
 import { t } from "@/lib/i18n-toast";
 
 function initials(name: string) {
@@ -88,7 +89,7 @@ export default function MatchesPage() {
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-semibold truncate">{m.display_name}</p>
                           <p className="text-xs text-muted-foreground truncate">
-                            {m.match_reason ||
+                            {localizeMatchReason(m.match_reason) ||
                               t("screens.autopilotdashboard.matchReasonDefault")}
                           </p>
                           {m.location && (
