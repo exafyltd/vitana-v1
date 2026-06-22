@@ -12,7 +12,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
-import { RefreshCw, Loader2 } from "lucide-react";
+import { RefreshCw, Loader2, Plus } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
@@ -29,6 +29,8 @@ import {
   SplitBarTrigger,
 } from "@/components/ui/split-bar";
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
+import { CreateContentPopup } from "@/components/CreateContentPopup";
+import { MobileCreatePostSheet } from "@/components/profile/mobile/MobileCreatePostSheet";
 import { WelcomeBackBanner } from "@/components/home/WelcomeBackBanner";
 import { DidYouKnowCard } from "@/components/proactive/DidYouKnowCard";
 import { PriorityOfDayBanner } from "@/components/PriorityOfDayBanner";
@@ -80,6 +82,7 @@ export default function Home() {
   }, [searchParams]);
   const [searchQuery, setSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const [createPostOpen, setCreatePostOpen] = useState(false);
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
@@ -344,6 +347,10 @@ export default function Home() {
               <ExpandableSearchButton placeholder={isMobile ? t('screens.home.searchShort') : t('screens.home.searchNewsTopicsSources')} onSearch={(query) => setSearchQuery(query)} />
               {isMobile && <MobileModePill modes={FILTER_MODES} activeMode={activeTab} onModeChange={(v) => setActiveTab(v as FilterTab)} />}
               <UniversalCalendarButton />
+              <Button size="sm" onClick={() => setCreatePostOpen(true)}>
+                <Plus className="w-4 h-4 mr-2" />
+                {t('screens.home.createPost')}
+              </Button>
             </div>
           </UtilityActionButton>
           <div className="mt-3 space-y-2">
@@ -366,6 +373,11 @@ export default function Home() {
           {isMobile && renderFeedContent()}
         </div>
       </div>
+      {isMobile ? (
+        <MobileCreatePostSheet open={createPostOpen} onOpenChange={setCreatePostOpen} />
+      ) : (
+        <CreateContentPopup isOpen={createPostOpen} onClose={() => setCreatePostOpen(false)} />
+      )}
     </AppLayout>
   );
 }
