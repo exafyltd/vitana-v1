@@ -93,7 +93,13 @@ export default function Home() {
 
   const {
     data: communityData, isLoading: isLoadingCommunity, refetch: refetchCommunity,
-  } = useCommunityNews({ limit: 15, enabled: activeTab !== "longevity" && !isFeedV2Enabled() });
+  } = useCommunityNews({
+    // The Community tab always pulls community items (incl. followed users'
+    // posts), even when feed v2 powers the "All" tab. Under v2-off it also
+    // feeds the "All" tab as before.
+    limit: 15,
+    enabled: activeTab === "community" || (activeTab !== "longevity" && !isFeedV2Enabled()),
+  });
 
   // VTID-03319: unified, ranked feed powers the "All" tab when feed v2 is on.
   const feedV2 = isFeedV2Enabled();
