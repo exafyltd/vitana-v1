@@ -51,6 +51,8 @@ export interface PerformerFeedItem extends FeedItemBase {
 
 export interface PostFeedItem extends FeedItemBase {
   kind: "post";
+  /** Backend the post lives in — selects the like/comment tables for inline actions. */
+  source: "post" | "media";
   post_id: string;
   user_id: string;
   author_name: string;
