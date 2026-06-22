@@ -218,6 +218,7 @@ export function NewsFeedItemCard({
               postId={item.post_id}
               authorId={item.user_id}
               authorName={item.author_name}
+              postContent={item.content}
             />
           </div>
         </div>
