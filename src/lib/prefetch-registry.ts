@@ -93,6 +93,7 @@ export async function prefetchForPath(
     }
     const { data: { session } } = await supabase.auth.getSession();
     const token = session?.access_token ?? null;
+    const viewerId = session?.user?.id ?? null;
     await Promise.all([
       queryClient.prefetchInfiniteQuery({
         queryKey: longevityNewsKey(undefined, 20, lang),
@@ -102,8 +103,8 @@ export async function prefetchForPath(
         staleTime: newsStale,
       }),
       queryClient.prefetchQuery({
-        queryKey: communityNewsKey(15),
-        queryFn: () => fetchCommunityNews(15),
+        queryKey: communityNewsKey(15, viewerId),
+        queryFn: () => fetchCommunityNews(15, viewerId),
         staleTime: newsStale,
       }),
     ]);
