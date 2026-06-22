@@ -17,6 +17,7 @@ import { getNewsImage } from "@/lib/news-images";
 import { formatDistanceToNow } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { reasonKeyFor, type FeedItem, type ArticleFeedItem } from "@/lib/news-feed-ranker";
+import { NewsPostModerationMenu } from "@/components/home/NewsPostModerationMenu";
 
 function timeAgo(iso: string): string {
   try {
@@ -213,6 +214,11 @@ export function NewsFeedItemCard({
               <MessageCircle className="h-3.5 w-3.5" />
               {item.comments_count}
             </span>
+            <NewsPostModerationMenu
+              postId={item.post_id}
+              authorId={item.user_id}
+              authorName={item.author_name}
+            />
           </div>
         </div>
       </CardContent>
