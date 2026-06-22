@@ -28,11 +28,22 @@ function timeAgo(iso: string): string {
 }
 
 /** Small "why you're seeing this" label shown atop every non-article card. */
-function WhyLabel({ item, icon }: { item: FeedItem; icon: React.ReactNode }) {
+function WhyLabel({
+  item,
+  icon,
+  trailing,
+}: {
+  item: FeedItem;
+  icon: React.ReactNode;
+  trailing?: React.ReactNode;
+}) {
   return (
     <div className="flex items-center gap-1.5 text-xs font-medium text-primary mb-2">
       {icon}
       <span className="truncate">{t(reasonKeyFor(item))}</span>
+      {trailing && (
+        <span className="ml-auto shrink-0 text-muted-foreground">{trailing}</span>
+      )}
     </div>
   );
 }

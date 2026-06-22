@@ -132,6 +132,7 @@ export function CommunityPostCard({
         <div className="flex items-center gap-1.5 text-xs font-medium text-primary mb-2">
           <MessageCircle className="h-3.5 w-3.5" />
           <span className="truncate">{t(reasonKeyFor(item))}</span>
+          <span className="ml-auto shrink-0 text-muted-foreground">{timeAgo(item.published_at)}</span>
         </div>
         {item.content && (
           <p className="text-sm leading-relaxed text-foreground line-clamp-3">{item.content}</p>
@@ -146,7 +147,6 @@ export function CommunityPostCard({
               </AvatarFallback>
             </Avatar>
             <span className="truncate text-sm text-foreground/80">{item.author_name}</span>
-            <span className="text-xs text-muted-foreground shrink-0">{`· ${timeAgo(item.published_at)}`}</span>
           </div>
 
           <div className="flex items-center gap-3 shrink-0">
