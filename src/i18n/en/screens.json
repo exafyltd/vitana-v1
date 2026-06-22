@@ -3700,7 +3700,18 @@
       "matchReasonFitnessGoals": "Compatible fitness goals",
       "matchReasonActivityTimes": "Matching activity times",
       "matchReasonNearby": "Nearby location",
-      "matchReasonJourneyStage": "Similar wellness journey stage"
+      "matchReasonJourneyStage": "Similar wellness journey stage",
+      "matchReasonSharedPillar": "You're both strong in {pillar}",
+      "matchReasonPillarSleep": "Sleep",
+      "matchReasonPillarNutrition": "Nutrition",
+      "matchReasonPillarExercise": "Exercise",
+      "matchReasonPillarHydration": "Hydration",
+      "matchReasonPillarMental": "Mental wellbeing",
+      "matchReasonSimilarIndex": "Similar Vitana Index — comparable longevity stage",
+      "matchReasonMutualConnectionsOne": "{count} mutual connection",
+      "matchReasonMutualConnectionsOther": "{count} mutual connections",
+      "matchReasonSameLocation": "Also in {location}",
+      "matchReasonActiveMember": "Active member of the longevity community"
     },
     "debug": {
       "presenceDebug": "Presence Debug",
