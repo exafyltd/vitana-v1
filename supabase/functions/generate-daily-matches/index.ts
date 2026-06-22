@@ -7,45 +7,26 @@ const corsHeaders = {
 };
 
 // ── Vitana Index pillars (the richest real signal we have for the community) ──
+// `short` is the locale-independent pillar code stored in the reason payload;
+// the frontend maps it to a localized display name at render time.
 const PILLARS = [
-  { key: 'score_sleep', de: 'Schlaf', en: 'Sleep' },
-  { key: 'score_nutrition', de: 'Ernährung', en: 'Nutrition' },
-  { key: 'score_exercise', de: 'Bewegung', en: 'Exercise' },
-  { key: 'score_hydration', de: 'Flüssigkeitshaushalt', en: 'Hydration' },
-  { key: 'score_mental', de: 'Mentale Gesundheit', en: 'Mental wellbeing' },
+  { key: 'score_sleep', short: 'sleep' },
+  { key: 'score_nutrition', short: 'nutrition' },
+  { key: 'score_exercise', short: 'exercise' },
+  { key: 'score_hydration', short: 'hydration' },
+  { key: 'score_mental', short: 'mental' },
 ] as const;
 
-type Lang = 'de' | 'en';
-
-// The daily_matches.match_reasons column is a jsonb array of *display strings*
-// consumed verbatim by three frontend surfaces (MatchesPage, PeopleDiscoveryHero,
-// MatchesPreview). Converting that contract to the {key, params} i18n shape is a
-// larger cross-component refactor and out of scope here, so we localize the
-// reason text server-side per the viewer's preferred language (DE-first, du-form
-// brand voice). This function does not call an LLM, so the LLM-locale wrapper
-// rule does not apply.
-function reasonStrings(lang: Lang) {
-  return {
-    sharedPillar: (p: string) =>
-      lang === 'de'
-        ? `Ihr seid beide stark im Bereich ${p}`
-        : `You're both strong in ${p}`,
-    similarIndex: () =>
-      lang === 'de'
-        ? 'Ähnlicher Vitana-Index – ähnliche Longevity-Phase'
-        : 'Similar Vitana Index — comparable longevity stage',
-    mutualConnections: (n: number) =>
-      lang === 'de'
-        ? `${n} gemeinsame ${n === 1 ? 'Kontaktperson' : 'Kontakte'}`
-        : `${n} mutual ${n === 1 ? 'connection' : 'connections'}`,
-    sameLocation: (loc: string) =>
-      lang === 'de' ? `Auch in ${loc}` : `Also in ${loc}`,
-    activeMember: () =>
-      lang === 'de'
-        ? 'Aktives Mitglied der Longevity-Community'
-        : 'Active member of the longevity community',
-  };
-}
+// The daily_matches.match_reasons column is a jsonb array consumed by three
+// frontend surfaces (MatchesPage, PeopleDiscoveryHero, MatchesPreview). Per the
+// i18n hard rule ("backend-supplied UI text ships {key, params}, never raw
+// strings"), we store *structured* reason objects — a stable `code` plus any
+// params — and let the frontend localize them at RENDER time against the active
+// UI language. This fixes reasons being frozen in whatever language they were
+// generated in (the bug where a German user saw English match descriptions).
+// This function does not call an LLM, so the LLM-locale wrapper rule does not
+// apply.
+type ReasonObj = { code: string; params?: Record<string, string | number> };
 
 interface ScoreRow {
   user_id: string;
@@ -113,18 +94,11 @@ serve(async (req) => {
 
     console.log(`Generating daily matches for user ${userId}`);
 
-    // Viewer's preferred language (DE-first per brand). preferred_languages is a
-    // text[]; fall back to inferred_language, then 'de'.
     const { data: meProfile } = await supabase
       .from('profiles')
-      .select('preferred_languages, inferred_language, location')
+      .select('location')
       .eq('user_id', userId)
       .maybeSingle();
-    const langPref = String(
-      meProfile?.preferred_languages?.[0] ?? meProfile?.inferred_language ?? 'de',
-    ).toLowerCase();
-    const lang: Lang = langPref.startsWith('en') ? 'en' : 'de';
-    const R = reasonStrings(lang);
     const myLocation = (meProfile?.location ?? '').trim().toLowerCase();
 
     // Candidate pool: only members who are actually viewable as a public profile
@@ -235,7 +209,7 @@ serve(async (req) => {
     // ── Score every candidate (deterministic, explainable) ──
     const scored = candidates.map((candidate) => {
       let score = 50; // honest neutral base — everyone is a real community member
-      const reasons: string[] = [];
+      const reasons: ReasonObj[] = [];
 
       const candScore = latestScore.get(candidate.user_id);
 
@@ -243,7 +217,7 @@ serve(async (req) => {
       const candTop = topPillar(candScore);
       if (myTopPillar && candTop && myTopPillar.key === candTop.key) {
         score += 16;
-        reasons.push(R.sharedPillar(myTopPillar[lang]));
+        reasons.push({ code: 'shared_pillar', params: { pillar: myTopPillar.short } });
       }
 
       // Overall Index proximity → similar longevity stage.
@@ -252,7 +226,7 @@ serve(async (req) => {
         // Closer totals score higher; 0 diff → +18, fades to 0 by ~360 apart.
         const proximity = Math.max(0, 18 - Math.round(diff / 20));
         score += proximity;
-        if (proximity >= 10) reasons.push(R.similarIndex());
+        if (proximity >= 10) reasons.push({ code: 'similar_index' });
       }
 
       // Network overlap → mutual connections.
@@ -262,7 +236,7 @@ serve(async (req) => {
         for (const id of candNet) if (myNetwork.has(id)) mutual++;
         if (mutual > 0) {
           score += Math.min(15, mutual * 5);
-          reasons.push(R.mutualConnections(mutual));
+          reasons.push({ code: 'mutual_connections', params: { count: mutual } });
         }
       }
 
@@ -270,11 +244,11 @@ serve(async (req) => {
       const candLoc = (candidate.location ?? '').trim().toLowerCase();
       if (myLocation && candLoc && myLocation === candLoc) {
         score += 10;
-        reasons.push(R.sameLocation((candidate.location ?? '').trim()));
+        reasons.push({ code: 'same_location', params: { location: (candidate.location ?? '').trim() } });
       }
 
       // Honest fallback so a card is never reasonless.
-      if (reasons.length === 0) reasons.push(R.activeMember());
+      if (reasons.length === 0) reasons.push({ code: 'active_member' });
 
       // Deterministic tie-breaker (no fake reason attached).
       score += pairJitter(userId, candidate.user_id);
