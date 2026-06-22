@@ -2683,6 +2683,8 @@
     "audio": {
       "volume": "Lautstärke",
       "soundscape": "Klanglandschaft",
+      "mute": "Stummschalten",
+      "unmute": "Ton einschalten",
       "send": "Senden",
       "exitAudioMode": "Audiomodus beenden",
       "soundscapeValue0": "Klanglandschaft {value0}",
@@ -5801,6 +5803,7 @@
       "searchMembersGroups": "Mitglieder, Gruppen oder... suchen",
       "tapResumeSoundscape": "Tippen, um Soundscape fortzusetzen",
       "openNavigationMenu": "Navigationsmenü öffnen",
+      "openLiveRooms": "Live-Räume öffnen",
       "search": "Suchen",
       "calendar": "Kalender",
       "alerts": "Info",

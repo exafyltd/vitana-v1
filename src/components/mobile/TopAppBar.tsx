@@ -1,7 +1,6 @@
-import { MoreVertical, Volume2, VolumeX } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
+import { MoreVertical, Radio } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTenant } from '@/hooks/useTenant';
-import { useSoundscape } from '@/context/SoundscapeContext';
 import { getInstantTenantName } from '@/lib/tenant-display';
 import { t } from '@/lib/i18n-toast';
 import { useGuidedMode } from '@/context/GuidedModeProvider';
@@ -13,6 +12,7 @@ interface TopAppBarProps {
 export function TopAppBar({ onMenuClick }: TopAppBarProps) {
   const { tenant } = useTenant();
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const { isGuided } = useGuidedMode(); // VTID-03279: hide menu dots in Guided Mode
 
   // Deterministic branding: prefer instant slug from URL/localStorage over async tenant context
@@ -23,14 +23,10 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
   const isMaxina = resolvedSlug === 'maxina';
   const isInLiveRoom = pathname.startsWith('/comm/live-rooms/') || pathname.startsWith('/community/live-rooms/');
 
-  let soundscapeContext: ReturnType<typeof useSoundscape> | null = null;
-  try {
-    soundscapeContext = useSoundscape();
-  } catch {
-    // Context not available yet
-  }
-
-  const showMute = !!soundscapeContext && !isInLiveRoom;
+  // Live entry point lives in the App Bar (replaces the old mute toggle, which
+  // moved into the side drawer). Hidden while already inside a live room so the
+  // centered title stays balanced.
+  const showLive = !isInLiveRoom;
 
   return (
     <header
@@ -67,18 +63,14 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
           {tenantName.toUpperCase()}
         </span>
 
-        {/* Mute toggle – right */}
-        {showMute ? (
+        {/* Live – right */}
+        {showLive ? (
           <button
-            onClick={soundscapeContext!.toggleMute}
+            onClick={() => navigate('/comm/live-rooms')}
             className="relative z-10 flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-white/10 ml-auto"
-            aria-label={soundscapeContext!.isMuted ? 'Unmute background music' : 'Mute background music'}
+            aria-label={t('screens.mobile.openLiveRooms')}
           >
-            {soundscapeContext!.isMuted ? (
-              <VolumeX className="h-5 w-5" style={!isMaxina ? { color: 'hsl(var(--muted-foreground))' } : undefined} />
-            ) : (
-              <Volume2 className="h-5 w-5" style={!isMaxina ? { color: 'hsl(var(--foreground))' } : undefined} />
-            )}
+            <Radio className="h-5 w-5" style={!isMaxina ? { color: 'hsl(var(--foreground))' } : undefined} />
           </button>
         ) : (
           <div className="w-8 ml-auto" />
