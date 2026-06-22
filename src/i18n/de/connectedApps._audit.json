@@ -16,10 +16,8 @@
       "phase": "llm"
     },
     "connectedApps.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal Sie-form instead of informal du-form).",
-      "suggested": "Verwalte deine verbundenen Geräte und Dienste",
       "phase": "llm"
     },
     "connectedApps.searchPlaceholder": {
@@ -38,10 +36,8 @@
       "phase": "llm"
     },
     "connectedApps.syncing": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Meaning slightly off; 'synchronisiert' means 'synced' (past participle/state), not 'syncing' (present participle/ongoing action).",
-      "suggested": "Synchronisierung läuft",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "connectedApps.sections.social": {
@@ -100,17 +96,13 @@
       "phase": "llm"
     },
     "connectedApps.lastSync": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement for 'Sync' (usually masculine in German tech slang).",
-      "suggested": "Letzter Sync",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "connectedApps.dataSync": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Synchronisation' is the noun, not the ongoing action implied by 'syncing'.",
-      "suggested": "Daten-Synchronisierung läuft",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "connectedApps.comingSoonMessage": {
@@ -189,5 +181,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:07:27.260Z"
+  "generatedAt": "2026-06-22T09:29:24.763Z"
 }

@@ -1,215 +1,178 @@
 {
   "verdicts": {
-    "subNav.matches": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "subNav.liveRooms": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "subNav.inspiration": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "subNav.support": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "subNav.overview": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.context": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.actions": {
+    "videoShop.feed.end": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.aiFeed": {
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.insights": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.recommendations": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.dailySummary": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.companion": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.eventsMeetups": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.mediaHub": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.services": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.sellEarn": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.clients": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.analytics": {
-      "verdict": "OK",
+    "videoShop.feed.errorBody": {
+      "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
+      "issue": "Awkward phrasing for 'in a moment'; 'gleich' or 'in Kürze' is more idiomatic for 'soon'.",
+      "suggested": "Bitte versuche es gleich noch einmal.",
       "phase": "llm"
     },
-    "subNav.supplements": {
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.wellnessServices": {
+    "videoShop.feed.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.doctorsCoaches": {
+    "videoShop.feed.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.dealsOffers": {
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.orders": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.reminder": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.archived": {
+    "videoShop.feed.linkCopied": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.servicesHub": {
+    "videoShop.drawer.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.myBiology": {
+    "videoShop.drawer.productFallback": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.plans": {
+    "videoShop.drawer.addToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.educationScience": {
+    "videoShop.drawer.adding": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.balance": {
+    "videoShop.drawer.addedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.subscriptions": {
+    "videoShop.drawer.addedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.rewards": {
+    "videoShop.drawer.addFailed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.campaigns": {
+    "videoShop.drawer.goToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.distribution": {
+    "videoShop.drawer.moreDetails": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.dataConsent": {
+    "videoShop.drawer.notifyMe": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.timeline": {
+    "videoShop.drawer.outOfStock": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.diary": {
+    "videoShop.drawer.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.recall": {
+    "videoShop.drawer.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.permissions": {
+    "videoShop.drawer.errorBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing for 'in a moment'; 'gleich' or 'in Kürze' is more idiomatic for 'soon'.",
+      "suggested": "Bitte versuche es gleich noch einmal.",
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.preferences": {
+    "videoShop.drawer.unavailableBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.privacy": {
-      "verdict": "OK",
-      "confidence": 1,
+    "videoShop.drawer.roleBlockedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing, not idiomatic for a friendly app.",
+      "suggested": "Kaufen ist hier nicht möglich.",
       "phase": "llm"
     },
-    "subNav.connectedApps": {
-      "verdict": "OK",
-      "confidence": 1,
+    "videoShop.drawer.roleBlockedBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Uses plural noun 'Käufe' (purchases) instead of gerund 'Kaufen' (buying activity).",
+      "suggested": "Kaufen ist ein Community-Feature. Wechsle in die Community-Rolle, um fortzufahren.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-06-22T09:49:32.531Z"
+  "generatedAt": "2026-06-22T09:51:41.196Z"
 }
