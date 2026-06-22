@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart } from 'lucide-react';
+import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart, Music2, Volume2, VolumeX } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { NotificationBadge } from '@/components/ui/notification-badge';
@@ -22,6 +22,7 @@ import { useUniversalCart } from '@/hooks/useUniversalCart';
 import { avatarPositionStyle } from '@/lib/avatarPosition';
 import { supabase } from '@/integrations/supabase/client';
 import { isIAPRestricted } from '@/lib/appilix';
+import { useSoundscape } from '@/context/SoundscapeContext';
 import { t } from '@/lib/i18n-toast';
 
 interface SideDrawerNavProps {
@@ -48,6 +49,11 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const { unreadCount: notificationUnreadCount } = useNotifications(20);
   // Phase 0: counts from the one canonical cart (0 when roleBlocked).
   const { cartCount } = useUniversalCart();
+
+  // Soundscape mute — relocated here from the mobile App Bar (mirrors the
+  // desktop sidebar's SoundscapeControl). SoundscapeProvider wraps the whole
+  // app (App.tsx), so the context is always available here.
+  const soundscape = useSoundscape();
 
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
@@ -139,7 +145,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 z-50 bg-black/40"
+            className="fixed inset-0 z-[60] bg-black/40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -148,7 +154,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
           {/* Drawer panel */}
           <motion.nav
-            className="fixed top-0 left-0 bottom-0 z-50 w-72 flex flex-col bg-background shadow-2xl"
+            className="fixed top-0 left-0 bottom-0 z-[60] w-72 flex flex-col bg-background shadow-2xl"
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
@@ -383,6 +389,34 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   </button>
                 );
               })}
+            </div>
+
+            {/* Soundscape footer — play/pause + mute, mirrors the desktop sidebar */}
+            <div
+              className="border-t border-border/50 px-3 pt-2 pb-3"
+              style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))' }}
+            >
+              <div className="flex items-center gap-2 rounded-xl bg-muted/40 px-3 py-2">
+                <button
+                  onClick={() => soundscape.toggle()}
+                  aria-label={t('screens.audio.soundscape')}
+                  className="flex items-center justify-center h-8 w-8 rounded-full shrink-0 hover:bg-muted transition-colors"
+                >
+                  <Music2 className={`h-4 w-4 ${soundscape.isPlaying ? 'text-primary' : 'text-muted-foreground'}`} />
+                </button>
+                <span className="flex-1 text-sm text-foreground">{t('screens.audio.soundscape')}</span>
+                <button
+                  onClick={() => soundscape.toggleMute()}
+                  aria-label={soundscape.isMuted ? t('screens.audio.unmute') : t('screens.audio.mute')}
+                  className="flex items-center justify-center h-8 w-8 rounded-lg hover:bg-muted transition-colors"
+                >
+                  {soundscape.isMuted ? (
+                    <VolumeX className="h-[18px] w-[18px] text-muted-foreground" />
+                  ) : (
+                    <Volume2 className="h-[18px] w-[18px] text-foreground" />
+                  )}
+                </button>
+              </div>
             </div>
           </motion.nav>
         </>

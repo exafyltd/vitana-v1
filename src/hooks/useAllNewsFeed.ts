@@ -128,6 +128,7 @@ async function loadCandidates(
       .from("profile_posts" as never)
       .select("*")
       .eq("is_public", true)
+      .eq("moderation_status", "active") // hide removed/hidden posts + banned authors' posts
       .order("created_at", { ascending: false })
       .limit(40),
     // Approved, public community videos.

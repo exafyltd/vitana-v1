@@ -18,6 +18,7 @@ import { t, notify, notifyError } from "@/lib/i18n-toast";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthProvider";
 import { useFeedPostInteractions } from "@/hooks/useFeedPostInteractions";
+import { NewsPostModerationMenu } from "@/components/home/NewsPostModerationMenu";
 import { reasonKeyFor, type FeedItem, type PostFeedItem } from "@/lib/news-feed-ranker";
 
 function timeAgo(iso: string): string {
@@ -178,6 +179,13 @@ export function CommunityPostCard({
               <MessageCircle className="h-3.5 w-3.5" />
               {commentCount}
             </button>
+            {item.source === "post" && (
+              <NewsPostModerationMenu
+                postId={item.post_id}
+                authorId={item.user_id}
+                authorName={item.author_name}
+              />
+            )}
           </div>
         </div>
 

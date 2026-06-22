@@ -1,5 +1,7 @@
 {
   "mobileNav": {
+    "news": "News",
+    "inbox": "Inbox",
     "events": "Events",
     "business": "Business",
     "live": "Live",
