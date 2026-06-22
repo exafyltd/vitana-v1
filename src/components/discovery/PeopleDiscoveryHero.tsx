@@ -18,12 +18,13 @@ import {
 } from "@/components/ui/select";
 import confetti from "canvas-confetti";
 import { notify, t } from '@/lib/i18n-toast';
+import type { MatchReason } from '@/lib/matchReason';
 
 interface DailyMatch {
   id: string;
   matched_user_id: string;
   match_score: number;
-  match_reasons: string[];
+  match_reasons: MatchReason[];
   viewed_at: string | null;
 }
 
@@ -42,7 +43,7 @@ interface MatchProfile {
   top_3_interests?: string[];
   certification_badges?: string[];
   match_score: number;
-  match_reasons: string[];
+  match_reasons: MatchReason[];
   shared_interests?: string[];
   streak_days?: number;
   primary_pillar?: string;

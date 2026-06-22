@@ -100,6 +100,7 @@
       "couldNotCompleteTask": "Aufgabe konnte nicht abgeschlossen werden",
       "incomingCall": "Eingehender Anruf",
       "contentCreated": "Inhalt erstellt! 🎉",
+      "contentCreateFailed": "Inhalt konnte nicht erstellt werden",
       "nameRequired": "Name erforderlich",
       "pleaseEnterGroupName": "Bitte gib einen Gruppennamen ein.",
       "notLogged": "Nicht angemeldet",

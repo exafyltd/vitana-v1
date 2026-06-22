@@ -2,6 +2,7 @@ import { useState } from "react";
 import { SwipeableProfileCard } from "./SwipeableProfileCard";
 import { AnimatePresence } from "framer-motion";
 import { t } from '@/lib/i18n-toast';
+import type { MatchReason } from '@/lib/matchReason';
 
 interface Profile {
   user_id: string;
@@ -10,7 +11,7 @@ interface Profile {
   bio?: string;
   location?: string;
   match_score: number;
-  match_reasons: string[];
+  match_reasons: MatchReason[];
   shared_interests?: string[];
 }
 
