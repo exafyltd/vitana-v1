@@ -163,8 +163,8 @@
     "business.history.allTime": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Meaning incorrect for UI context. 'Todo el tiempo' means 'always' or 'continuously,' not 'cumulative' or 'historical.'",
-      "suggested": "Histórico",
+      "issue": "Not the most natural or accurate translation for 'All time' in a UI context.",
+      "suggested": "De todos los tiempos",
       "phase": "llm"
     },
     "business.history.details": {
@@ -234,9 +234,9 @@
     },
     "business.kpi.topPerformer": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Mejor rendimiento' means 'best performance,' not 'top performer' (the person/entity).",
-      "suggested": "El mejor",
+      "confidence": 0.8,
+      "issue": "Omits the 'performer' aspect; 'El mejor' means 'the best,' not 'the best performer.'",
+      "suggested": "El que mejor rinde",
       "phase": "llm"
     },
     "business.kpi.noDataYet": {
@@ -535,5 +535,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:42.192Z"
+  "generatedAt": "2026-06-22T09:26:30.006Z"
 }
