@@ -66,11 +66,24 @@ export function MobileIdentityCard({
   return (
     <div className={cn("px-4 pt-safe-top pb-2", className)}>
       {/* Glass Identity Card */}
-      <div 
+      <div
         className="relative rounded-2xl border border-white/5 overflow-hidden"
         style={{
-          background: "linear-gradient(135deg, hsl(216, 53%, 8%) 0%, hsl(222, 47%, 11%) 100%)",
-          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)"
+          // Android WebView (Appilix) drops this card's gradient `background`
+          // because of the heavy blur/backdrop-blur/drop-shadow layers it
+          // contains (avatar glow, score halo, glass buttons): a descendant
+          // compositing layer makes the ancestor gradient paint transparent,
+          // so the card washes out to the light page underneath — while the
+          // Social/Account cards (no such filters) render fine. Keep a SOLID
+          // dark `backgroundColor` as a fallback so the card can never render
+          // light even if the gradient layer fails to paint, and promote the
+          // card onto its own stable compositing layer so the child filters
+          // can't knock out its background.
+          backgroundColor: "hsl(216, 53%, 8%)",
+          backgroundImage: "linear-gradient(135deg, hsl(216, 53%, 8%) 0%, hsl(222, 47%, 11%) 100%)",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+          isolation: "isolate",
+          transform: "translateZ(0)"
         }}
         onClick={onViewFullId}
         role={onViewFullId ? "button" : undefined}
