@@ -28,11 +28,22 @@ function timeAgo(iso: string): string {
 }
 
 /** Small "why you're seeing this" label shown atop every non-article card. */
-function WhyLabel({ item, icon }: { item: FeedItem; icon: React.ReactNode }) {
+function WhyLabel({
+  item,
+  icon,
+  trailing,
+}: {
+  item: FeedItem;
+  icon: React.ReactNode;
+  trailing?: React.ReactNode;
+}) {
   return (
     <div className="flex items-center gap-1.5 text-xs font-medium text-primary mb-2">
       {icon}
       <span className="truncate">{t(reasonKeyFor(item))}</span>
+      {trailing && (
+        <span className="ml-auto shrink-0 text-muted-foreground">{trailing}</span>
+      )}
     </div>
   );
 }
@@ -190,7 +201,11 @@ export function NewsFeedItemCard({
       ) : null}
 
       <CardContent className="p-4 pt-3">
-        <WhyLabel item={item} icon={<MessageCircle className="h-3.5 w-3.5" />} />
+        <WhyLabel
+          item={item}
+          icon={<MessageCircle className="h-3.5 w-3.5" />}
+          trailing={timeAgo(item.published_at)}
+        />
         {item.content && (
           <p className="text-sm leading-relaxed text-foreground line-clamp-3">{item.content}</p>
         )}
@@ -203,7 +218,6 @@ export function NewsFeedItemCard({
               </AvatarFallback>
             </Avatar>
             <span className="truncate text-sm text-foreground/80">{item.author_name}</span>
-            <span className="text-xs text-muted-foreground shrink-0">{`· ${timeAgo(item.published_at)}`}</span>
           </div>
           <div className="flex items-center gap-3 shrink-0 text-muted-foreground">
             <span className="flex items-center gap-1 text-xs">
