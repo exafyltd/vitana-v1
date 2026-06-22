@@ -1,6 +1,7 @@
 import { BookFlipCard } from "./BookFlipCard";
 import { AnimatePresence, motion } from "framer-motion";
 import { t } from '@/lib/i18n-toast';
+import { localizeMatchReason, type MatchReason } from '@/lib/matchReason';
 
 interface Profile {
   user_id: string;
@@ -9,7 +10,7 @@ interface Profile {
   bio?: string;
   location?: string;
   match_score: number;
-  match_reasons: string[];
+  match_reasons: MatchReason[];
   shared_interests?: string[];
 }
 
@@ -150,7 +151,8 @@ export function BookFlipView({
       <div className="mt-1.5 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100/10 backdrop-blur-md text-xs italic text-foreground">
           <span>✨</span>
-          {currentProfile.match_reasons[0] || 'Great wellness alignment!'}
+          {localizeMatchReason(currentProfile.match_reasons[0]) ||
+            t('screens.crossover.matchReasonGreatAlignment')}
         </div>
       </div>
     </div>

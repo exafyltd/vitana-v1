@@ -14,9 +14,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthProvider";
+import { supabase } from "@/integrations/supabase/client";
 import { useTranslation } from "@/hooks/useTranslation";
 import MessageInput from "@/components/messages/MessageInput";
 import MessageBubble from "@/components/messages/MessageBubble";
+import MessageDivider from "@/components/messages/MessageDivider";
 import {
   fetchGroup,
   fetchGroupMessages,
@@ -26,8 +28,13 @@ import {
   type ChatGroupMember,
   type ChatGroupMessage,
 } from "@/hooks/useChatApi";
+import { getDateSeparatedMessageItems } from "@/lib/messageDateSeparators";
+import { formatDate } from "@/lib/locale-format";
+import { isThisYear, isToday, isYesterday } from "date-fns";
 
-const POLL_INTERVAL_MS = 5000;
+// Realtime drives live updates now; the poll is only a reconnect-safety
+// fallback, so it can run far less aggressively than the old 5s loop.
+const POLL_INTERVAL_MS = 20000;
 
 interface GroupWithMembers extends ChatGroup {
   members: ChatGroupMember[];
@@ -83,6 +90,20 @@ export default function GroupChat() {
     return map;
   }, [group]);
 
+  const messageItems = useMemo(() => {
+    return getDateSeparatedMessageItems(
+      messages,
+      msg => msg.created_at,
+      messageDate => {
+        if (isToday(messageDate)) return "Today";
+        if (isYesterday(messageDate)) return "Yesterday";
+        return isThisYear(messageDate)
+          ? formatDate(messageDate, "d MMMM")
+          : formatDate(messageDate, "d MMMM yyyy");
+      },
+    );
+  }, [messages]);
+
   const reload = useCallback(async () => {
     if (!groupId) return;
     try {
@@ -110,6 +131,23 @@ export default function GroupChat() {
     markGroupRead(groupId).catch(() => {});
   }, [groupId, messages.length]);
 
+  // Realtime: new messages in this group push an immediate reload. Requires
+  // public.chat_messages in the supabase_realtime publication
+  // (migration 20260618110546).
+  useEffect(() => {
+    if (!groupId) return;
+    const channel = supabase
+      .channel(`group_chat_${groupId}`)
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "chat_messages", filter: `group_id=eq.${groupId}` },
+        () => { reload(); },
+      )
+      .subscribe();
+    return () => { supabase.removeChannel(channel); };
+  }, [groupId, reload]);
+
+  // Fallback poll — covers dropped realtime events / reconnects.
   useEffect(() => {
     const id = setInterval(() => { reload(); }, POLL_INTERVAL_MS);
     return () => clearInterval(id);
@@ -213,7 +251,18 @@ export default function GroupChat() {
           </div>
         ) : (
           <div className="space-y-2">
-            {messages.map(msg => {
+            {messageItems.map(item => {
+              if (item.type === "date") {
+                return (
+                  <MessageDivider
+                    key={item.id}
+                    type="date"
+                    text={item.text}
+                  />
+                );
+              }
+
+              const msg = item.message;
               const isOwn = msg.sender_id === userId;
               const sender = memberById.get(msg.sender_id);
               return (

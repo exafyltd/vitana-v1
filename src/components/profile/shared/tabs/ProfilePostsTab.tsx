@@ -224,6 +224,18 @@ function PostCardWithInteractions({
                 <img src={post.image_url} alt={t('screens.profile.postImage')} className="w-full h-48 object-cover" />
               </div>
             )}
+            {post.video_url && (
+              <div className="mt-4 rounded-xl overflow-hidden shadow-md bg-black">
+                <video
+                  src={post.video_url}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  aria-label={t('screens.profile.postVideo')}
+                  className="w-full max-h-80 object-contain"
+                />
+              </div>
+            )}
           </div>
         </div>
 

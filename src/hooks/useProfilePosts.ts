@@ -7,6 +7,7 @@ export interface ProfilePost {
   user_id: string;
   content: string;
   image_url: string | null;
+  video_url: string | null;
   likes_count: number;
   comments_count: number;
   shares_count: number;
@@ -36,11 +37,19 @@ export function useProfilePosts(userId?: string) {
   });
 
   const createPost = useMutation({
-    mutationFn: async ({ content, imageUrl }: { content: string; imageUrl?: string }) => {
+    mutationFn: async ({ content, imageUrl, videoUrl, isPublic }: { content: string; imageUrl?: string; videoUrl?: string; isPublic?: boolean }) => {
       if (!user?.id) throw new Error('Not authenticated');
       const { data, error } = await supabase
         .from('profile_posts' as any)
-        .insert({ user_id: user.id, content, image_url: imageUrl || null } as any)
+        .insert({
+          user_id: user.id,
+          content,
+          image_url: imageUrl || null,
+          video_url: videoUrl || null,
+          // Defaults to public to preserve prior behaviour; the composer maps its
+          // visibility control (public/friends/groups) onto this flag.
+          ...(isPublic === undefined ? {} : { is_public: isPublic }),
+        } as any)
         .select()
         .single();
       if (error) throw error;
@@ -48,6 +57,9 @@ export function useProfilePosts(userId?: string) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile-posts', targetUserId] });
+      // Launch-phase News feed shows the author's own posts too — refresh it
+      // immediately so a new post appears without waiting for realtime/poll.
+      queryClient.invalidateQueries({ queryKey: ['all-news-feed'] });
     },
   });
 
@@ -61,6 +73,7 @@ export function useProfilePosts(userId?: string) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile-posts', targetUserId] });
+      queryClient.invalidateQueries({ queryKey: ['all-news-feed'] });
     },
   });
 

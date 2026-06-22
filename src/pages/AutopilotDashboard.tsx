@@ -171,7 +171,8 @@ export default function AutopilotDashboard() {
   const journey = journeyData?.journey ?? null;
 
   const { data: recData, isLoading: recLoading, refetch } = useQuery({
-    queryKey: ["autopilot-onboarding"],
+    // User-scoped so cached/persisted recommendations never bleed across accounts.
+    queryKey: ["autopilot-onboarding", user?.id],
     queryFn: async () => {
       const res = await communityFetch(
         "/api/v1/autopilot/recommendations?status=new,activated,completed&limit=100",

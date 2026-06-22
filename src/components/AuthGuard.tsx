@@ -6,6 +6,7 @@ import { DOMAIN_TENANT_MAP } from "@/config/domain-tenant-mapping";
 import { Button } from "@/components/ui/button";
 import { Loader2, RefreshCw, ArrowLeft } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
+import { DelayedLoader } from "@/components/ui/DelayedLoader";
 
 interface AuthGuardProps {
   children: ReactElement;
@@ -291,10 +292,11 @@ export default function AuthGuard({ children, allowGuest = false }: AuthGuardPro
   }
 
   // No user and no callback. On a public surface, render children for the
-  // guest; otherwise AuthGuard redirects via the hydration check above.
+  // guest; otherwise AuthGuard redirects via the hydration check above —
+  // show a full-screen spinner (not a blank screen) for that redirect window.
   if (!user) {
     if (allowGuest) return children;
-    return null;
+    return <DelayedLoader fullscreen />;
   }
 
   return children;

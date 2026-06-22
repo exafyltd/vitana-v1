@@ -45,11 +45,13 @@ import LegacyProfileRedirect from "./components/LegacyProfileRedirect";
 import MilestoneCelebration from "./components/MilestoneCelebration";
 import ReminderInterruptOverlay from "./components/reminders/ReminderInterruptOverlay";
 import { DelayedLoader } from "./components/ui/DelayedLoader";
+import RouteTransitionOverlay from "./components/RouteTransitionOverlay";
+import { usePostLoginWarmup } from "@/hooks/usePostLoginWarmup";
 
-// Route loading fallback — clean background + delayed spinner so a lazy chunk
-// that loads instantly never flashes a placeholder, and a slow one shows a
-// spinner rather than an intermediate screen.
-const RouteFallback = () => <DelayedLoader />;
+// Route loading fallback — a full-screen clean background + delayed spinner so a
+// lazy chunk that loads instantly never flashes a placeholder, and a slow one
+// covers the whole viewport rather than showing a partial/intermediate screen.
+const RouteFallback = () => <DelayedLoader fullscreen />;
 
 // ─── Eager imports: shell-critical pages (auth, entry, public landing) ───
 import Index from "./pages/Index";
@@ -393,6 +395,9 @@ const AppHooksInitializer = () => {
   useOrbVoiceWidget();
   useOrbFrontDoor();
   useRouteTracker();
+  // Warm route chunks + React Query data for the first authenticated screens as
+  // soon as auth + tenant settle — earlier than AppLayout's own prefetch.
+  usePostLoginWarmup();
   const { user, session } = useAuth();
   const navigate = useNavigate();
 
@@ -639,6 +644,11 @@ const App = () => {
                         useNavigate / useLocation) has a valid Router context.
                         Moving it outside crashes the whole app at boot. */}
                     <AppHooksInitializer />
+                    {/* Full-screen spinner that masks redirect chains (e.g.
+                        /home → /autopilot) so the wrong screen never flashes
+                        while the app resolves the final destination. Lives
+                        inside <BrowserRouter> but outside <Routes>. */}
+                    <RouteTransitionOverlay />
                     {/* BOOTSTRAP-PRODUCT-ANALYTICS: feeds tenant/user/locale
                         context to the analytics client and emits screen_viewed
                         on every route change. Lives inside <BrowserRouter>
