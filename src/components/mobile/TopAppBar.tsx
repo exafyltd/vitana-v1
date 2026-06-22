@@ -1,4 +1,4 @@
-import { MoreVertical, Radio } from 'lucide-react';
+import { MoreVertical } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTenant } from '@/hooks/useTenant';
 import { getInstantTenantName } from '@/lib/tenant-display';
@@ -63,14 +63,19 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
           {tenantName.toUpperCase()}
         </span>
 
-        {/* Live – right */}
+        {/* Live – right. Styled as a recognizable "LIVE" badge (red live dot +
+            label) so its purpose reads instantly, à la TikTok. */}
         {showLive ? (
           <button
             onClick={() => navigate('/comm/live-rooms')}
-            className="relative z-10 flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-white/10 ml-auto"
+            className={`relative z-10 ml-auto flex items-center gap-1.5 rounded-full border px-2.5 h-6 transition-colors ${isMaxina ? 'border-white/45 text-white hover:bg-white/10' : 'border-foreground/25 hover:bg-foreground/5'}`}
+            style={!isMaxina ? { color: 'hsl(var(--foreground))' } : undefined}
             aria-label={t('screens.mobile.openLiveRooms')}
           >
-            <Radio className="h-5 w-5" style={!isMaxina ? { color: 'hsl(var(--foreground))' } : undefined} />
+            <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
+            <span className="text-[11px] font-bold uppercase leading-none tracking-wide">
+              {t('mobileNav.live')}
+            </span>
           </button>
         ) : (
           <div className="w-8 ml-auto" />
