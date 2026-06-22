@@ -38,6 +38,11 @@ import {
   useCommunityNews,
   type NewsArticle,
 } from "@/hooks/useNewsFeed";
+import { isFeedV2Enabled } from "@/lib/feature-flags";
+import { useAllNewsFeed } from "@/hooks/useAllNewsFeed";
+import { NewsFeedItemCard } from "@/components/home/NewsFeedItemCard";
+import { track } from "@/lib/product-analytics/client";
+import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -57,20 +62,20 @@ export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const tabFromUrl = searchParams.get("tab") as FilterTab | null;
   const [activeTab, setActiveTabState] = useState<FilterTab>(
-    tabFromUrl && ["all", "longevity", "community"].includes(tabFromUrl) ? tabFromUrl : "longevity"
+    tabFromUrl && ["all", "longevity", "community"].includes(tabFromUrl) ? tabFromUrl : "all"
   );
   const setActiveTab = (tab: FilterTab) => {
     setActiveTabState(tab);
-    setSearchParams(tab === "longevity" ? {} : { tab }, { replace: true });
+    setSearchParams(tab === "all" ? {} : { tab }, { replace: true });
   };
   // Keep the active News tab in sync with the URL so the Orb (and deep links)
   // can switch the filter by voice even when already on /home — the initial
   // useState reads ?tab only once at mount. The URL is the source of truth; an
-  // absent/invalid tab falls back to the default Longevity feed. Read-only
+  // absent/invalid tab falls back to the default All feed. Read-only
   // (no setSearchParams here), so it can't loop with the setter above.
   useEffect(() => {
     const t = searchParams.get("tab");
-    const next: FilterTab = t && ["all", "longevity", "community"].includes(t) ? (t as FilterTab) : "longevity";
+    const next: FilterTab = t && ["all", "longevity", "community"].includes(t) ? (t as FilterTab) : "all";
     setActiveTabState((prev) => (prev === next ? prev : next));
   }, [searchParams]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -85,7 +90,22 @@ export default function Home() {
 
   const {
     data: communityData, isLoading: isLoadingCommunity, refetch: refetchCommunity,
-  } = useCommunityNews({ limit: 15, enabled: activeTab !== "longevity" });
+  } = useCommunityNews({ limit: 15, enabled: activeTab !== "longevity" && !isFeedV2Enabled() });
+
+  // VTID-03319: unified, ranked feed powers the "All" tab when feed v2 is on.
+  const feedV2 = isFeedV2Enabled();
+  const {
+    items: feedItems, isLoading: isLoadingFeedV2, refetch: refetchFeedV2,
+  } = useAllNewsFeed({ enabled: feedV2 && activeTab === "all" });
+
+  // One impression event per tab activation (fire-and-forget).
+  useEffect(() => {
+    track("news_feed_viewed", {
+      event_type: "content",
+      feature_key: "news_feed",
+      properties: { tab: activeTab, feed_v2: feedV2 },
+    });
+  }, [activeTab, feedV2]);
 
   const articles = useMemo(() => {
     const allArticles: NewsArticle[] = [];
@@ -141,8 +161,66 @@ export default function Home() {
     navigate(`/news/${article.id}`, { state: { article } });
   };
 
-  const handleRefresh = () => { refetchLongevity(); refetchCommunity(); };
+  const handleRefresh = () => { refetchLongevity(); refetchCommunity(); refetchFeedV2(); };
   const isLoading = isLoadingLongevity || isLoadingCommunity;
+
+  // VTID-03319: open handlers for the unified feed (analytics + navigation).
+  const handleFeedItemOpen = (item: FeedItem) => {
+    track("news_feed_item_opened", {
+      event_type: "content",
+      feature_key: "news_feed_v2",
+      properties: { kind: item.kind, item_id: item.id },
+    });
+  };
+  const handleFeedArticleClick = (article: ArticleFeedItem) => {
+    const rawId = article.id.replace(/^article-/, "");
+    handleFeedItemOpen(article);
+    navigate(`/news/${rawId}`, {
+      state: {
+        article: {
+          id: rawId, source: "longevity", source_name: article.source_name,
+          title: article.title, link: article.link, summary: article.summary,
+          image_url: article.image_url, published_at: article.published_at,
+          tags: article.tags, category: article.tags[0] || "general",
+        } satisfies NewsArticle,
+      },
+    });
+  };
+
+  const renderV2Feed = () => (
+    <>
+      {isLoadingFeedV2 && feedItems.length === 0 && (
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <span className="ml-3 text-muted-foreground">{t('screens.home.loadingNews')}</span>
+        </div>
+      )}
+      {!isLoadingFeedV2 && feedItems.length === 0 && (
+        <div className="text-center py-20 px-4">
+          <p className="text-lg text-muted-foreground">{t('screens.home.noNewsArticlesYet')}</p>
+          <p className="text-sm text-muted-foreground mt-1">{t('screens.home.articlesWillAppearOnceFeedSources')}</p>
+          <Button variant="outline" className="mt-4" onClick={handleRefresh}>
+            <RefreshCw className="h-4 w-4 mr-2" />{t('screens.home.refresh')}
+          </Button>
+        </div>
+      )}
+      {feedItems.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5 mt-2 md:mt-5">
+          {feedItems.map((item) => (
+            <NewsFeedItemCard
+              key={item.id}
+              item={item}
+              onArticleClick={handleFeedArticleClick}
+              onOpen={handleFeedItemOpen}
+            />
+          ))}
+        </div>
+      )}
+      {!isLoadingFeedV2 && feedItems.length > 0 && (
+        <p className="text-center text-sm text-muted-foreground py-8">{t('screens.home.youReAllCaughtUp')}</p>
+      )}
+    </>
+  );
 
   // Pillar/source → the short uppercase category label shown above the title
   // (e.g. "COMMUNITY", "LONGEVITY", "NUTRITION", …)
@@ -166,7 +244,9 @@ export default function Home() {
     };
   };
 
-  const renderFeedContent = () => (
+  const renderFeedContent = () => {
+    if (activeTab === "all" && feedV2) return renderV2Feed();
+    return (
     <>
       {isLoading && articles.length === 0 && (
         <div className="flex items-center justify-center py-20">
@@ -240,7 +320,8 @@ export default function Home() {
         <p className="text-center text-sm text-muted-foreground py-8">{t('screens.home.youReAllCaughtUp')}</p>
       )}
     </>
-  );
+    );
+  };
 
   return (
     <AppLayout>
@@ -260,7 +341,7 @@ export default function Home() {
             ) : undefined}
           >
             <div className="flex items-center gap-2 min-w-max">
-              <ExpandableSearchButton placeholder={isMobile ? "Search..." : "Search news, topics, sources…"} onSearch={(query) => setSearchQuery(query)} />
+              <ExpandableSearchButton placeholder={isMobile ? t('screens.home.searchShort') : t('screens.home.searchNewsTopicsSources')} onSearch={(query) => setSearchQuery(query)} />
               {isMobile && <MobileModePill modes={FILTER_MODES} activeMode={activeTab} onModeChange={(v) => setActiveTab(v as FilterTab)} />}
               <UniversalCalendarButton />
             </div>

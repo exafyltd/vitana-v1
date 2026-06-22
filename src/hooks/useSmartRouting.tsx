@@ -60,42 +60,14 @@ export function useRoleRouteEnforcement() {
   }, [user, authLoading, roleLoading, currentRole, location.pathname, navigate]);
 }
 
-// One-shot initial-landing redirect for the MAXINA community app. The native
-// (Appilix) shell can open the WebView directly on /home (News) — a route the
-// `/`-only smart routing never evaluates — so a fresh app launch would sit on
-// News instead of My Journey. On the first fully-resolved authenticated route
-// of a browser/app session, if that route is the News feed, send the user to
-// My Journey once. Deliberate navigation to News later in the session is left
-// untouched (the flag is already set).
-const INITIAL_LANDING_FLAG = "mj_initial_landing_redirected";
-
+// News (the "All News" home feed at /home) is the default landing screen after
+// login for MAXINA community users. The native (Appilix) shell already opens the
+// WebView directly on /home, and the `/`-based smart routing now resolves to
+// /home too, so no initial-landing redirect is required — News is the intended
+// cold-start destination. Kept as a no-op so existing call sites stay valid.
 export function useInitialLandingRedirect() {
-  const { user, loading: authLoading } = useAuth();
-  const { tenant } = useTenant();
-  const { currentRole, isLoading: roleLoading } = useRole();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    if (authLoading || roleLoading || !user) return;
-    if (typeof window === "undefined") return;
-    if (sessionStorage.getItem(INITIAL_LANDING_FLAG)) return;
-
-    const slug = tenant?.slug;
-    if (!slug) return; // wait for the tenant to resolve before deciding
-
-    // First fully-resolved authenticated route of the session — record it so
-    // this only ever fires once, then act only on a News-feed cold start.
-    sessionStorage.setItem(INITIAL_LANDING_FLAG, "1");
-
-    if (slug !== "maxina") return;
-    if (currentRole && currentRole !== "community") return;
-    if (location.pathname === "/home") {
-      // Mask the News→My Journey hop so /home never flashes before /autopilot.
-      markRouteTransition();
-      navigate("/autopilot", { replace: true });
-    }
-  }, [authLoading, roleLoading, user, tenant?.slug, currentRole, location.pathname, navigate]);
+  // Intentionally empty: /home (News) is the default landing screen, so there is
+  // nothing to redirect away from on a cold start.
 }
 
 export function useSmartRouting() {
@@ -165,7 +137,7 @@ export function useSmartRouting() {
                     break;
                 }
               } else {
-                navigate("/autopilot");
+                navigate("/home");
               }
               break;
           }
@@ -207,8 +179,8 @@ export function useSmartRouting() {
                   break;
               }
             } else {
-              // Fallback to My Journey if no tenant info available
-              navigate("/autopilot");
+              // Fallback to News (default landing) if no tenant info available
+              navigate("/home");
             }
             break;
         }
@@ -248,7 +220,7 @@ export function useRoleBasedRedirect() {
               return "/maxina";
           }
         }
-        return "/autopilot";
+        return "/home";
     }
   };
 

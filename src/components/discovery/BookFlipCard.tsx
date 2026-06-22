@@ -5,6 +5,7 @@ import { MapPin, Sparkles, Zap } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { ProfileImage } from "./ProfileImage";
 import { t } from '@/lib/i18n-toast';
+import type { MatchReason } from '@/lib/matchReason';
 
 interface BookFlipCardProps {
   profile: {
@@ -22,7 +23,7 @@ interface BookFlipCardProps {
     top_3_interests?: string[];
     certification_badges?: string[];
     match_score: number;
-    match_reasons: string[];
+    match_reasons: MatchReason[];
     shared_interests?: string[];
     streak_days?: number;
     primary_pillar?: string;

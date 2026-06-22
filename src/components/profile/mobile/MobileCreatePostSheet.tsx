@@ -16,7 +16,12 @@ interface MobileCreatePostSheetProps {
 
 const MAX_CHARS = 500;
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024; // 10 MB
-const MAX_VIDEO_BYTES = 50 * 1024 * 1024; // 50 MB — matches the media-uploads bucket limit
+// The media-uploads bucket rejects anything over 50 MB. Videos above this get
+// transcoded down client-side before upload (see @/lib/videoCompression).
+const BUCKET_MAX_VIDEO_BYTES = 50 * 1024 * 1024; // 50 MB
+// Upper bound we'll attempt to compress (loaded into wasm memory). Bigger than
+// this we reject up front rather than risk an out-of-memory crash on mobile.
+const MAX_COMPRESSIBLE_VIDEO_BYTES = 300 * 1024 * 1024; // 300 MB
 
 type MediaKind = 'image' | 'video';
 
@@ -25,6 +30,8 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [mediaPreview, setMediaPreview] = useState<string | null>(null);
   const [mediaKind, setMediaKind] = useState<MediaKind | null>(null);
+  const [isCompressing, setIsCompressing] = useState(false);
+  const [compressProgress, setCompressProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { translate } = useTranslation();
   const { createPost } = useProfilePosts();
@@ -45,8 +52,10 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
       notifyError('toasts.profile.imageMustUnder10mb');
       return;
     }
-    if (isVideo && file.size > MAX_VIDEO_BYTES) {
-      notifyError('toasts.profile.videoMustUnder50mb');
+    // Videos over the bucket limit are accepted and compressed at post time;
+    // only reject ones too large to compress safely in-browser.
+    if (isVideo && file.size > MAX_COMPRESSIBLE_VIDEO_BYTES) {
+      notifyError('toasts.profile.videoTooLargeToCompress');
       return;
     }
 
@@ -79,17 +88,38 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
       let imageUrl: string | undefined;
       let videoUrl: string | undefined;
       if (mediaFile) {
+        let fileToUpload = mediaFile;
+
+        // Oversized videos are transcoded down to fit the 50 MB bucket limit.
+        if (mediaKind === 'video' && mediaFile.size > BUCKET_MAX_VIDEO_BYTES) {
+          setIsCompressing(true);
+          setCompressProgress(0);
+          try {
+            const { compressVideoUnderLimit } = await import('@/lib/videoCompression');
+            fileToUpload = await compressVideoUnderLimit(mediaFile, {
+              onProgress: (ratio) => setCompressProgress(Math.round(ratio * 100)),
+            });
+            console.log('[PostUpload] compressed:', mediaFile.size, '->', fileToUpload.size);
+          } catch (compressErr) {
+            console.error('[PostUpload] compression failed:', compressErr);
+            notifyError('toasts.profile.videoCompressionFailed');
+            return;
+          } finally {
+            setIsCompressing(false);
+          }
+        }
+
         console.log('[PostUpload] auth check...');
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) throw new Error('Not authenticated');
 
-        const fileExt = mediaFile.name.split('.').pop();
+        const fileExt = fileToUpload.name.split('.').pop();
         const path = `${user.id}/posts/${Date.now()}.${fileExt}`;
 
-        console.log('[PostUpload] uploading...', { size: mediaFile.size, type: mediaFile.type, path, kind: mediaKind });
+        console.log('[PostUpload] uploading...', { size: fileToUpload.size, type: fileToUpload.type, path, kind: mediaKind });
         const { error: uploadError } = await supabase.storage
           .from('media-uploads')
-          .upload(path, mediaFile, { contentType: mediaFile.type, upsert: false });
+          .upload(path, fileToUpload, { contentType: fileToUpload.type, upsert: false });
         if (uploadError) {
           console.error('[PostUpload] upload failed:', uploadError);
           throw new Error(`Upload failed: ${uploadError.message}`);
@@ -109,15 +139,18 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
       toast({ title: translate('profilePosts.posted', 'Posted!') });
       cleanup();
       onOpenChange(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('[PostUpload] error:', err);
-      toast({ title: translate('profilePosts.error', 'Something went wrong'), description: err?.message || '', variant: 'destructive' });
+      const description = err instanceof Error ? err.message : '';
+      toast({ title: translate('profilePosts.error', 'Something went wrong'), description, variant: 'destructive' });
     }
   };
 
   const cleanup = () => {
     setContent('');
     removeMedia();
+    setIsCompressing(false);
+    setCompressProgress(0);
   };
 
   const handleClose = () => {
@@ -135,17 +168,22 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
 
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b">
-          <Button variant="ghost" size="icon" onClick={handleClose}>
+          <Button variant="ghost" size="icon" onClick={handleClose} disabled={isCompressing || createPost.isPending}>
             <X className="h-5 w-5" />
           </Button>
           <h2 className="text-base font-semibold">{translate('profilePosts.createPost', 'Create Post')}</h2>
           <Button
             size="sm"
-            disabled={(!content.trim() && !mediaFile) || content.length > MAX_CHARS || createPost.isPending}
+            disabled={(!content.trim() && !mediaFile) || content.length > MAX_CHARS || createPost.isPending || isCompressing}
             onClick={handlePost}
             className="rounded-full"
           >
-            {createPost.isPending ? (
+            {isCompressing ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
+                <span className="text-xs">{t('screens.profile.compressingVideoPct', { pct: compressProgress })}</span>
+              </>
+            ) : createPost.isPending ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <>
@@ -200,6 +238,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
             variant="outline"
             size="sm"
             onClick={() => fileInputRef.current?.click()}
+            disabled={isCompressing || createPost.isPending}
             className="rounded-full border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 gap-1.5 px-4"
           >
             <ImagePlus className="h-5 w-5" />

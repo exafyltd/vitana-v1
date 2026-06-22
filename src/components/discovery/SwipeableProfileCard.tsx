@@ -5,7 +5,7 @@ import { MapPin, Sparkles, Zap } from "lucide-react";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { ProfileImage } from "./ProfileImage";
 import { t } from '@/lib/i18n-toast';
-import { localizeMatchReason } from '@/lib/matchReason';
+import { localizeMatchReason, type MatchReason } from '@/lib/matchReason';
 
 interface SwipeableProfileCardProps {
   profile: {
@@ -22,7 +22,7 @@ interface SwipeableProfileCardProps {
     top_3_interests?: string[];
     certification_badges?: string[];
     match_score: number;
-    match_reasons: string[];
+    match_reasons: MatchReason[];
     shared_interests?: string[];
   };
   onSwipe: (direction: 'left' | 'right' | 'up') => void;
