@@ -2637,6 +2637,8 @@
     "audio": {
       "volume": "Jačina",
       "soundscape": "Zvučni pejzaž",
+      "mute": "Utišaj",
+      "unmute": "Uključi zvuk",
       "send": "Pošalji",
       "exitAudioMode": "Izađi iz audio režima",
       "soundscapeValue0": "Zvučni pejzaž {value0}",
@@ -5346,6 +5348,7 @@
       "searchMembersGroups": "Pretraži članove, grupe ili...",
       "tapResumeSoundscape": "Dodirni da nastaviš Soundscape",
       "openNavigationMenu": "Otvori navigacioni meni",
+      "openLiveRooms": "Otvori uživo sobe",
       "search": "Pretraga",
       "calendar": "Kalendar",
       "alerts": "Obaveštenja",

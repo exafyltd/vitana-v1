@@ -2683,6 +2683,8 @@
     "audio": {
       "volume": "Volume",
       "soundscape": "Soundscape",
+      "mute": "Mute",
+      "unmute": "Unmute",
       "send": "Send",
       "exitAudioMode": "Exit audio mode",
       "soundscapeValue0": "Soundscape {value0}",
@@ -5789,6 +5791,7 @@
       "searchMembersGroups": "Search members, groups, or...",
       "tapResumeSoundscape": "Tap to resume Soundscape",
       "openNavigationMenu": "Open navigation menu",
+      "openLiveRooms": "Open Live Rooms",
       "search": "Search",
       "calendar": "Calendar",
       "alerts": "Alerts",

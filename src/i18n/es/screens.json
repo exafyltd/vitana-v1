@@ -2637,6 +2637,8 @@
     "audio": {
       "volume": "Volumen",
       "soundscape": "Paisaje sonoro",
+      "mute": "Silenciar",
+      "unmute": "Activar sonido",
       "send": "Enviar",
       "exitAudioMode": "Salir del modo de audio",
       "soundscapeValue0": "Paisaje sonoro {value0}",
@@ -5346,6 +5348,7 @@
       "searchMembersGroups": "Buscar miembros, grupos o...",
       "tapResumeSoundscape": "Toca para reanudar Soundscape",
       "openNavigationMenu": "Abrir menú de navegación",
+      "openLiveRooms": "Abrir salas en vivo",
       "search": "Buscar",
       "calendar": "Calendario",
       "alerts": "Alertas",
