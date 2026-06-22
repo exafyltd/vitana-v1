@@ -18,12 +18,15 @@ CREATE TABLE IF NOT EXISTS public.media_upload_likes (
 
 ALTER TABLE public.media_upload_likes ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view all video likes" ON public.media_upload_likes;
 CREATE POLICY "Users can view all video likes" ON public.media_upload_likes
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Users can like videos" ON public.media_upload_likes;
 CREATE POLICY "Users can like videos" ON public.media_upload_likes
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can unlike videos" ON public.media_upload_likes;
 CREATE POLICY "Users can unlike videos" ON public.media_upload_likes
   FOR DELETE USING (auth.uid() = user_id);
 
@@ -39,15 +42,19 @@ CREATE TABLE IF NOT EXISTS public.media_upload_comments (
 
 ALTER TABLE public.media_upload_comments ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Users can view all video comments" ON public.media_upload_comments;
 CREATE POLICY "Users can view all video comments" ON public.media_upload_comments
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Users can create video comments" ON public.media_upload_comments;
 CREATE POLICY "Users can create video comments" ON public.media_upload_comments
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can update own video comments" ON public.media_upload_comments;
 CREATE POLICY "Users can update own video comments" ON public.media_upload_comments
   FOR UPDATE USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can delete own video comments" ON public.media_upload_comments;
 CREATE POLICY "Users can delete own video comments" ON public.media_upload_comments
   FOR DELETE USING (auth.uid() = user_id);
 
@@ -70,6 +77,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
+DROP TRIGGER IF EXISTS trigger_sync_media_upload_likes_count ON public.media_upload_likes;
 CREATE TRIGGER trigger_sync_media_upload_likes_count
 AFTER INSERT OR DELETE ON public.media_upload_likes
 FOR EACH ROW EXECUTE FUNCTION public.sync_media_upload_likes_count();
@@ -93,6 +101,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
+DROP TRIGGER IF EXISTS trigger_sync_media_upload_comments_count ON public.media_upload_comments;
 CREATE TRIGGER trigger_sync_media_upload_comments_count
 AFTER INSERT OR DELETE ON public.media_upload_comments
 FOR EACH ROW EXECUTE FUNCTION public.sync_media_upload_comments_count();
