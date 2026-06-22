@@ -17,9 +17,13 @@ import {
   fetchConversation,
   sendChatMessage,
   markChatRead,
+  markAllChatRead,
   type ChatMessage,
   type ChatConversation,
 } from "./useChatApi";
+
+/** Which conversations a bulk "mark all as read" should affect. */
+export type MarkAllFilter = "all" | "direct" | "groups";
 interface SendMessageArgs {
   threadId: string;
   content: string;
@@ -1180,6 +1184,89 @@ export function useGlobalMessages(
     [user, isGlobalContext, updateThreadsOptimistically, queryClient]
   );
 
+  // ── Mark ALL conversations as read (bulk) ─────────────────────────
+  const markAllAsRead = useCallback(
+    async (filter: MarkAllFilter = "all") => {
+      if (!user || !isGlobalContext) return;
+
+      const cachedThreads =
+        queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
+
+      const now = new Date().toISOString();
+      const doDirect = filter === "all" || filter === "direct";
+      const doGroups = filter === "all" || filter === "groups";
+
+      // Real global-thread UUIDs to watermark, scoped to the active filter.
+      // Both GROUP threads and LEGACY DIRECT threads track unread via
+      // global_thread_participants.last_read_at (not chat_messages.read_at), so
+      // both must be covered here. For direct threads `id` is the peer id, so the
+      // real thread UUID lives in `_legacyThreadId` (falls back to id for groups).
+      // Pure chat_messages DMs have no participant row, so their peer id simply
+      // matches nothing in this update — a harmless no-op handled by /read-all.
+      const participantThreadIds = cachedThreads
+        .filter((t) => (t.type === "group" ? doGroups : doDirect))
+        .map((t) => (t as any)._legacyThreadId || t.id)
+        .filter(Boolean);
+
+      try {
+        // chat_messages-based direct DMs: single bulk request via gateway.
+        if (doDirect) {
+          await markAllChatRead();
+        }
+
+        // Group + legacy-direct threads: single bulk watermark update.
+        if (participantThreadIds.length > 0) {
+          await (supabase as any)
+            .from("global_thread_participants")
+            .update({ last_read_at: now })
+            .eq("user_id", user.id)
+            .in("thread_id", participantThreadIds);
+        }
+
+        // Clear related chat notifications.
+        try {
+          await (supabase as any)
+            .from("user_notifications")
+            .update({ read_at: now })
+            .eq("type", "new_chat_message")
+            .eq("user_id", user.id)
+            .is("read_at", null);
+        } catch (notifErr) {
+          console.warn("[chat] Failed to clear chat notifications:", notifErr);
+        }
+
+        // Optimistically zero the affected threads.
+        updateThreadsOptimistically((prev) =>
+          prev.map((t) => {
+            const isGroup = t.type === "group";
+            const affected = isGroup ? doGroups : doDirect;
+            return affected ? { ...t, unread_count: 0 } : t;
+          })
+        );
+
+        // Notify badge: recompute total from updated thread cache.
+        const updatedThreads = queryClient.getQueryData<any[]>(["global-threads", user.id]) ?? [];
+        const totalUnread = updatedThreads.reduce(
+          (sum: number, t: any) => sum + (t.unread_count || 0),
+          0
+        );
+        window.dispatchEvent(
+          new CustomEvent("chat-unread-count-update", { detail: { count: totalUnread } })
+        );
+        window.dispatchEvent(new Event("notifications-refresh"));
+
+        // Reconcile all derived counters (bottom-nav + sidebar badges) from the
+        // now-persisted state. Without this the unread-count singleton can keep a
+        // stale value even though every thread row has already been zeroed.
+        window.dispatchEvent(new Event("chat-threads-refetch"));
+      } catch (error) {
+        console.error("Error marking all chats as read:", error);
+        throw error;
+      }
+    },
+    [user, isGlobalContext, updateThreadsOptimistically, queryClient]
+  );
+
   // ─── FIX 1: STABILIZED REALTIME SUBSCRIPTION ───────────────────────
   // Create stable channel ID per hook instance (not regenerated on every render)
   const realtimeChannelId = useRef(`chat_realtime_${Math.random().toString(36).slice(2, 11)}`);
@@ -1363,6 +1450,7 @@ export function useGlobalMessages(
     sendMessage,
     createThread,
     markAsRead,
+    markAllAsRead,
     fetchMessages: fetchMessagesCompat,
     fetchThreads,
     refetchMessages: fetchMessagesCompat,

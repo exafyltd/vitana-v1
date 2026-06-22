@@ -1,5 +1,5 @@
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { supabase } from "@/integrations/supabase/client";
@@ -75,20 +75,55 @@ export default function PublicProfilePage() {
 
   const isSharedLink = searchParams.get('utm_source') === 'profile' || !user;
 
+  // Monotonic request id. Only the most recent fetchProfile call is allowed to
+  // write state — a slower/stale call (e.g. one kicked off by an auth-token
+  // refresh that re-created the `user` object) can never clobber a freshly
+  // loaded profile. Without this guard a transient re-fetch could overwrite a
+  // good profile with null and surface "user not found".
+  const reqIdRef = useRef(0);
+
+  // Core profile fetch keyed ONLY on the identifier. It deliberately does NOT
+  // depend on `user`: the public profile is identical regardless of who is
+  // viewing, and `user` changes reference on every token refresh (~hourly and
+  // on tab focus in the Appilix WebView). Re-running the destructive fetch on
+  // those events is what flipped an already-rendered profile to "not found".
   useEffect(() => {
     if (identifier) {
-      fetchProfile(identifier);
+      const reqId = ++reqIdRef.current;
+      fetchProfile(identifier, reqId);
     } else {
       setLoading(false);
       setError("No profile identifier provided");
     }
-  }, [identifier, user]);
+  }, [identifier]);
 
-  const fetchProfile = async (id: string) => {
+  // Follow status is the only piece that genuinely depends on the viewer, so it
+  // lives in its own effect. A failure here only affects the follow button — it
+  // can never null out the profile.
+  useEffect(() => {
+    if (!user || !profile || profile.id === user.id) {
+      setIsFollower(false);
+      return;
+    }
+    let active = true;
+    supabase
+      .rpc('get_follow_status', { target_user_id: profile.id })
+      .then(({ data }) => {
+        if (active) setIsFollower(Boolean(data));
+      })
+      .catch((e) => console.warn('PublicProfilePage: get_follow_status failed', e));
+    return () => {
+      active = false;
+    };
+  }, [user, profile]);
+
+  const fetchProfile = async (id: string, reqId: number) => {
+    // Bail out of any state write if a newer request has superseded this one.
+    const isStale = () => reqIdRef.current !== reqId;
     try {
       setLoading(true);
       setError(null);
-      
+
       // Clean identifier (remove @ if present)
       const cleanId = id.startsWith('@') ? id.slice(1) : id;
 
@@ -128,14 +163,23 @@ export default function PublicProfilePage() {
         }
       }
 
+      // A newer request superseded us while the RPC was in flight — drop out
+      // without touching state.
+      if (isStale()) return;
+
       if (dbError) {
         console.error('Database error:', dbError);
         setError('Failed to load profile');
         setProfile(null);
-      } else if (!data || data.length === 0) {
+        return;
+      }
+      if (!data || data.length === 0) {
         console.log('No profile found for identifier:', cleanId);
         setProfile(null);
-      } else {
+        return;
+      }
+
+      {
         const dbProfile = data[0] as DatabaseProfile;
         console.log('Found profile:', dbProfile);
 
@@ -220,40 +264,48 @@ export default function PublicProfilePage() {
           }
         };
         
+        if (isStale()) return;
         setProfile(transformedProfile);
 
-        // Fetch milestones and gallery in parallel
-        const [milestonesRes, galleryRes] = await Promise.all([
-          supabase
-            .from('profile_milestones')
-            .select('*')
-            .eq('user_id', dbProfile.user_id)
-            .eq('is_public', true)
-            .order('milestone_date', { ascending: false }),
-          supabase
-            .from('profile_gallery')
-            .select('*')
-            .eq('user_id', dbProfile.user_id)
-            .eq('is_public', true)
-            .order('sort_order', { ascending: true }),
-        ]);
+        // Secondary, non-critical data (milestones + gallery). A failure here
+        // must NEVER null the profile we just rendered, so it gets its own
+        // try/catch isolated from the core-lookup error handling below. This
+        // was the bug behind the intermittent "user not found": a transient
+        // failure on these calls used to fall into the outer catch and wipe a
+        // perfectly good profile.
+        try {
+          const [milestonesRes, galleryRes] = await Promise.all([
+            supabase
+              .from('profile_milestones')
+              .select('*')
+              .eq('user_id', dbProfile.user_id)
+              .eq('is_public', true)
+              .order('milestone_date', { ascending: false }),
+            supabase
+              .from('profile_gallery')
+              .select('*')
+              .eq('user_id', dbProfile.user_id)
+              .eq('is_public', true)
+              .order('sort_order', { ascending: true }),
+          ]);
 
-        setMilestones((milestonesRes.data || []) as Milestone[]);
-        setGalleryPhotos((galleryRes.data || []) as GalleryPhoto[]);
-
-        // Fetch follow status if user is authenticated
-        if (user && transformedProfile.id !== user.id) {
-          const { data: followStatus } = await supabase
-            .rpc('get_follow_status', { target_user_id: transformedProfile.id });
-          setIsFollower(followStatus || false);
+          if (isStale()) return;
+          setMilestones((milestonesRes.data || []) as Milestone[]);
+          setGalleryPhotos((galleryRes.data || []) as GalleryPhoto[]);
+        } catch (secondaryErr) {
+          console.warn('PublicProfilePage: secondary profile data failed', secondaryErr);
         }
       }
     } catch (err) {
+      // Only the core profile lookup reaches here. We still avoid nulling an
+      // already-rendered profile when a newer request is in flight.
       console.error('Error fetching profile:', err);
-      setError('An unexpected error occurred');
-      setProfile(null);
+      if (!isStale()) {
+        setError('An unexpected error occurred');
+        setProfile(null);
+      }
     } finally {
-      setLoading(false);
+      if (!isStale()) setLoading(false);
     }
   };
 

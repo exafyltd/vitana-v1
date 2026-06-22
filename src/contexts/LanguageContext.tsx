@@ -3,6 +3,7 @@ import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { useAuth } from '@/context/AuthProvider';
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
 import { setI18nLocale } from '@/lib/i18n-toast';
+import { ensureCatalog, onCatalogLoaded } from '@/i18n';
 
 interface LanguageContextType {
   selectedLanguage: string;
@@ -66,12 +67,23 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     return initial;
   });
 
-  // Keep i18n-toast singleton + <html lang> in sync with React state.
+  // Bumped when a lazily-loaded locale catalog (en/ar) finishes loading, to
+  // re-render the tree so consumers re-read the now-populated catalog. Only the
+  // default (de) is bundled; non-default locales arrive asynchronously.
+  const [, setCatalogVersion] = useState(0);
+  useEffect(() => {
+    const unsubscribe = onCatalogLoaded(() => setCatalogVersion((v) => v + 1));
+    return unsubscribe;
+  }, []);
+
+  // Keep i18n-toast singleton + <html lang> in sync with React state, and make
+  // sure the selected locale's catalog is loaded (no-op for de / draft locales).
   useEffect(() => {
     setI18nLocale(selectedLanguage);
     if (typeof document !== 'undefined') {
       document.documentElement.lang = selectedLanguage.split('-')[0] || 'de';
     }
+    void ensureCatalog(selectedLanguage);
   }, [selectedLanguage]);
 
   // Tracks a pending language change until server confirms it

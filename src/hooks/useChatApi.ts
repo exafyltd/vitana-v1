@@ -9,7 +9,12 @@
 
 import { supabase } from "@/integrations/supabase/client";
 
-const GATEWAY_BASE = "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
+// Honor VITE_GATEWAY_URL (already includes "/api/v1") so the staging frontend
+// exercises the staging gateway code (VTID-03292) instead of always hitting
+// prod. Falls back to the prod gateway for builds without the env var.
+const GATEWAY_BASE =
+  (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
+  "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
 
 // ── Types ─────────────────────────────────────────────────────────────
 
@@ -112,6 +117,15 @@ export async function markChatRead(peerId: string): Promise<void> {
     method: "POST",
     body: JSON.stringify({ peer_id: peerId }),
   });
+}
+
+/** Mark ALL of the caller's unread direct messages as read. Returns the number updated. */
+export async function markAllChatRead(): Promise<number> {
+  const json = await gatewayFetch("/read-all", {
+    method: "POST",
+    body: JSON.stringify({}),
+  });
+  return json.updated ?? 0;
 }
 
 /** Get total unread message count from gateway. */

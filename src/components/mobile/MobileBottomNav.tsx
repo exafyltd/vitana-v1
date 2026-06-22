@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Calendar, Compass, LayoutGrid, Mail, Radio } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -7,6 +7,22 @@ import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useChatUnreadCount } from "@/hooks/useChatUnreadCount";
 import { useGuidedMode } from "@/context/GuidedModeProvider"; // VTID-03285
+import { useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/context/AuthProvider";
+import { useTenantSafe } from "@/hooks/useTenant";
+import { prefetchForPath } from "@/lib/prefetch-registry";
+
+// Lazy-route chunk importers per destination — fired on tap-intent
+// (pointerdown / touchstart) so the chunk's network fetch starts ~100-300ms
+// before navigation commits, turning a blank Suspense flash into an instant
+// paint. Each importer matches the lazy import in App.tsx.
+const ROUTE_CHUNK_IMPORTERS: Record<string, () => Promise<unknown>> = {
+  '/autopilot': () => import('@/pages/AutopilotDashboard'),
+  '/inbox': () => import('@/pages/Messages'),
+  '/comm/live-rooms': () => import('@/pages/community/LiveRooms'),
+  '/comm/media-hub': () => import('@/pages/community/MediaHub'),
+  '/comm/events-meetups': () => import('@/pages/community/EventsAndMeetups'),
+};
 
 // Full App bottom nav (unchanged — design freeze).
 const navItems = [
@@ -118,10 +134,30 @@ interface NavItemProps {
 
 function NavItem({ id, icon: Icon, label, path, i18nKey, unreadCount = 0 }: NavItemProps) {
   const { translate } = useTranslation();
+  const queryClient = useQueryClient();
+  const { user } = useAuth();
+  const tenantCtx = useTenantSafe();
+  const tenantId = tenantCtx?.activeTenantId ?? null;
+  // De-dupe: only warm once per mount per destination, even across the
+  // pointerdown + touchstart pair some browsers fire together.
+  const warmedRef = useRef(false);
+
+  const handleTapIntent = () => {
+    if (warmedRef.current) return;
+    warmedRef.current = true;
+    // Kick the route chunk download immediately…
+    ROUTE_CHUNK_IMPORTERS[path]?.().catch(() => {});
+    // …and warm the screen's data so it paints from cache on arrival.
+    if (user?.id) {
+      void prefetchForPath(queryClient, path, user.id, tenantId ?? undefined).catch(() => {});
+    }
+  };
 
   return (
     <NavLink
       to={path}
+      onPointerDown={handleTapIntent}
+      onTouchStart={handleTapIntent}
       className={() =>
         cn(
           "flex flex-col items-center gap-0.5 flex-1 px-1 py-1 transition-all duration-200"

@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Plus, Users, MessageSquareText, Globe, Building, Plane, Search } from "lucide-react";
+import { Plus, Users, MessageSquareText, Globe, Building, Plane, Search, MoreVertical, CheckCheck } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
 import { ConversationErrorBoundary } from "@/components/messages/ConversationErrorBoundary";
@@ -26,6 +26,8 @@ import { useHybridMessages } from "@/hooks/useHybridMessages";
 // VTID-03089: chat_groups appear in the unified /inbox list when in the
 // global community context. Selecting one routes to /inbox/g/<id>.
 import { useChatGroupsAsThreads, isChatGroupThreadId, chatGroupIdFromThreadId } from "@/hooks/useChatGroupsAsThreads";
+import { useChatUnreadCount } from "@/hooks/useChatUnreadCount";
+import { markGroupRead } from "@/hooks/useChatApi";
 import { useUnreadSync } from "@/hooks/useUnreadSync";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
@@ -55,7 +57,7 @@ import { MobileConversationSkeleton } from "@/components/messages/mobile/MobileC
 import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useTranslation } from "@/hooks/useTranslation";
-import { t } from '@/lib/i18n-toast';
+import { t, notify, notifyError } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
 export default function Messages() {
@@ -78,7 +80,8 @@ export default function Messages() {
   // VTID-03089: merge chat_groups (new system) into the inbox list when in
   // the community/global context. Selecting one is intercepted below and
   // routed to /inbox/g/<id> instead of inline thread load.
-  const { threads: chatGroupThreads } = useChatGroupsAsThreads(isGlobalContext);
+  const { threads: chatGroupThreads, markGroupsReadLocal, reload: reloadChatGroups } = useChatGroupsAsThreads(isGlobalContext);
+  const { refresh: refreshUnreadBadge } = useChatUnreadCount();
   const threads = useMemo(() => {
     if (!isGlobalContext) return apiThreads;
     return [...chatGroupThreads, ...apiThreads];
@@ -195,6 +198,45 @@ export default function Messages() {
       return { ...thread, unread_count };
     });
   }, [threads, optimisticUnreadUpdates]);
+
+  // Total unread across all conversations — drives the "Mark all as read" enablement.
+  const totalUnread = React.useMemo(
+    () => displayThreads.reduce((sum, t) => sum + (t.unread_count || 0), 0),
+    [displayThreads]
+  );
+
+  // Bulk "mark all as read" for the current context, honoring the active filter.
+  const markAllAsRead = (hybridMessages as any).markAllAsRead as
+    | ((filter?: 'all' | 'direct' | 'groups') => Promise<void>)
+    | undefined;
+  const handleMarkAllAsRead = useCallback(async () => {
+    if (totalUnread === 0) return;
+    const filter = conversationFilter === 'contacts' ? 'all' : conversationFilter;
+    try {
+      // 1. Direct DMs + legacy global threads (chat_messages + global_thread_participants).
+      if (markAllAsRead) await markAllAsRead(filter);
+
+      // 2. chat_groups (e.g. "FIRST 100") — a separate system that markAllAsRead
+      //    doesn't cover. Clear each unread group via its own read endpoint.
+      if (filter === 'all' || filter === 'groups') {
+        const groupIds = displayThreads
+          .filter((t) => isChatGroupThreadId(t.id) && (t.unread_count || 0) > 0)
+          .map((t) => chatGroupIdFromThreadId(t.id));
+        if (groupIds.length > 0) {
+          markGroupsReadLocal(groupIds); // optimistic: clear the rows immediately
+          await Promise.allSettled(groupIds.map((id) => markGroupRead(id)));
+          reloadChatGroups(); // reconcile the group list from the backend
+        }
+      }
+
+      // 3. Force the footer/sidebar badge to recompute now that DMs + groups are read.
+      refreshUnreadBadge();
+      notify('inbox.toast.allMarkedRead');
+    } catch (err) {
+      console.error('[inbox] mark all as read failed:', err);
+      notifyError('inbox.toast.markAllReadFailed');
+    }
+  }, [markAllAsRead, totalUnread, conversationFilter, displayThreads, markGroupsReadLocal, reloadChatGroups, refreshUnreadBadge]);
 
   // Auto-select the most recent conversation (WhatsApp-style behavior)
   // Only auto-select on desktop - on mobile, users should see the list first and tap to open
@@ -1089,25 +1131,45 @@ export default function Messages() {
                   </div>
                 </UtilityActionButton>
                 
-                {/* Sub-filter pills */}
-                <div className="flex gap-2 overflow-x-auto pb-1">
-                  {['all', 'direct', 'groups'].map((filter) => (
-                    <Button
-                      key={filter}
-                      variant={conversationFilter === filter ? "default" : "ghost"}
-                      size="sm"
-                      onClick={() => setConversationFilter(filter as any)}
-                      className={`h-8 px-3 rounded-full shrink-0 text-sm ${
-                        conversationFilter === filter 
-                          ? 'bg-primary text-primary-foreground' 
-                          : 'bg-muted/60'
-                      }`}
-                    >
-                      {translate(`inbox.tabs.${filter}`)}
-                    </Button>
-                  ))}
+                {/* Sub-filter pills + overflow menu */}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex gap-2 overflow-x-auto pb-1">
+                    {['all', 'direct', 'groups'].map((filter) => (
+                      <Button
+                        key={filter}
+                        variant={conversationFilter === filter ? "default" : "ghost"}
+                        size="sm"
+                        onClick={() => setConversationFilter(filter as any)}
+                        className={`h-8 px-3 rounded-full shrink-0 text-sm ${
+                          conversationFilter === filter
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-muted/60'
+                        }`}
+                      >
+                        {translate(`inbox.tabs.${filter}`)}
+                      </Button>
+                    ))}
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 rounded-full shrink-0"
+                        aria-label={translate('inbox.actions.menu')}
+                      >
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem disabled={totalUnread === 0} onClick={handleMarkAllAsRead}>
+                        <CheckCheck className="w-4 h-4 mr-2" />
+                        {translate('inbox.actions.markAllRead')}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
-                
+
                 {renderMobileConversationList()}
               </div>
             )}
@@ -1180,6 +1242,19 @@ export default function Messages() {
                 <DropdownMenuItem onClick={() => setShowCreateGroup(true)}>
                   <Users className="w-4 h-4 mr-2" />
                   {t('screens.messages.createGroup')}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" aria-label={translate('inbox.actions.menu')}>
+                  <MoreVertical className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem disabled={totalUnread === 0} onClick={handleMarkAllAsRead}>
+                  <CheckCheck className="w-4 h-4 mr-2" />
+                  {translate('inbox.actions.markAllRead')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

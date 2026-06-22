@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import type { MatchReason } from "@/lib/matchReason";
 
 export interface RealMatch {
   user_id: string;
@@ -7,10 +8,10 @@ export interface RealMatch {
   avatar_url: string | null;
   bio: string | null;
   location: string | null;
-  /** First/primary reason, ready to show in a single line. */
-  match_reason: string;
-  /** All reasons returned for this match. */
-  match_reasons: string[];
+  /** First/primary reason — localize with localizeMatchReason() at render. */
+  match_reason: MatchReason | null;
+  /** All reasons returned for this match (structured objects or legacy strings). */
+  match_reasons: MatchReason[];
   compatibility_score: number;
 }
 
@@ -75,25 +76,34 @@ export function useRealMatches(limit = 6) {
         }),
       );
 
-      return matches.map((m, idx) => {
-        const profile = profiles[idx];
-        const reasons = Array.isArray(m.match_reasons)
-          ? (m.match_reasons as unknown[]).filter(
-              (r): r is string => typeof r === "string",
-            )
-          : [];
-        return {
-          user_id: m.matched_user_id,
-          display_name:
-            profile?.display_name || profile?.full_name || "Community Member",
-          avatar_url: profile?.avatar_url ?? null,
-          bio: profile?.bio ?? null,
-          location: profile?.location ?? null,
-          match_reason: reasons[0] ?? "",
-          match_reasons: reasons,
-          compatibility_score: Math.round(Number(m.match_score) || 0),
-        };
-      });
+      return matches
+        // Drop matches whose profile can't be resolved by
+        // get_user_profile_by_identifier (e.g. the member is not publicly
+        // visible). Tapping such a card opens /u/<id>, which runs the SAME
+        // RPC and would render "Benutzer nicht gefunden" — so never show a
+        // card we can't open.
+        .map((m, idx) => ({ m, profile: profiles[idx] }))
+        .filter(({ profile }) => Boolean(profile))
+        .map(({ m, profile }) => {
+          const reasons: MatchReason[] = Array.isArray(m.match_reasons)
+            ? (m.match_reasons as unknown[]).filter(
+                (r): r is MatchReason =>
+                  typeof r === "string" ||
+                  (typeof r === "object" && r !== null && "code" in r),
+              )
+            : [];
+          return {
+            user_id: m.matched_user_id,
+            display_name:
+              profile?.display_name || profile?.full_name || "Community Member",
+            avatar_url: profile?.avatar_url ?? null,
+            bio: profile?.bio ?? null,
+            location: profile?.location ?? null,
+            match_reason: reasons[0] ?? null,
+            match_reasons: reasons,
+            compatibility_score: Math.round(Number(m.match_score) || 0),
+          };
+        });
     },
   });
 }
