@@ -130,16 +130,24 @@ const { rankFeed, reasonKeyFor } = await loadRanker();
   assert(out[0].id === "post-followedText", "§2 followed text beats stranger video");
 }
 
-// §3 — Within a follow group, video > image > text.
+// §3 — Within a follow group, newest wins regardless of media format.
 {
   const out = rankFeed([
-    post("t", { followed: true }),
-    post("i", { followed: true, image_url: "i.png" }),
-    post("v", { followed: true, video_url: "v.mp4" }),
+    post("newText", { followed: true, published_at: "2026-06-22T12:00:00Z" }),
+    post("olderImage", {
+      followed: true,
+      image_url: "i.png",
+      published_at: "2026-06-22T11:00:00Z",
+    }),
+    post("oldestVideo", {
+      followed: true,
+      video_url: "v.mp4",
+      published_at: "2026-06-22T10:00:00Z",
+    }),
   ]);
   assert(
-    out.map((x) => x.id).join(",") === "post-v,post-i,post-t",
-    "§3 video then image then text within group",
+    out.map((x) => x.id).join(",") === "post-newText,post-olderImage,post-oldestVideo",
+    "§3 newest post wins regardless of media format",
   );
 }
 

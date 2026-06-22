@@ -10,8 +10,8 @@
  * Deterministic order (approved design):
  *   1. New unseen match            (capped — at most `maxPinnedMatches`)
  *   2. Opt-in "most improved" spotlight (consent-gated, supplied by gateway)
- *   3. Posts from followed members  → video, then image, then text
- *   4. Posts from other members     → video, then image, then text
+ *   3. Posts from followed members  → newest first, regardless of media
+ *   4. Posts from other members     → newest first, regardless of media
  *   5. Public-source news           → interleaved, not starved
  *
  * Within each group: newest first, engagement second, stable id last.
@@ -92,18 +92,6 @@ export interface RankOptions {
   maxPinnedMatches?: number;
 }
 
-const MEDIA_FORMAT_RANK: Record<"video" | "image" | "text", number> = {
-  video: 0,
-  image: 1,
-  text: 2,
-};
-
-function postFormat(p: PostFeedItem): "video" | "image" | "text" {
-  if (p.video_url) return "video";
-  if (p.image_url) return "image";
-  return "text";
-}
-
 function ts(iso: string): number {
   const n = new Date(iso).getTime();
   return Number.isFinite(n) ? n : 0;
@@ -172,13 +160,10 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
   );
   const pinnedPerformer = performers.slice(0, 1);
 
-  // 3 + 4. Posts — followed before others, then media format, then "show less"
-  //    penalty, then newest, then engagement, then stable id.
+  // 3 + 4. Posts — followed before others, then "show less" penalty, then
+  //    newest regardless of media format, then engagement, then stable id.
   posts.sort((a, b) => {
     if (a.followed !== b.followed) return a.followed ? -1 : 1;
-    const fa = MEDIA_FORMAT_RANK[postFormat(a)];
-    const fb = MEDIA_FORMAT_RANK[postFormat(b)];
-    if (fa !== fb) return fa - fb;
     const pa = downrankPenalty(a.tags, downranked);
     const pb = downrankPenalty(b.tags, downranked);
     if (pa !== pb) return pa - pb;
