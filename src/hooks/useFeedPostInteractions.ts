@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
+import { notifyInteraction } from '@/lib/notify-interaction';
 
 /**
  * Unified inline like + comment for the News / Community feed.
@@ -78,6 +79,8 @@ export function useFeedPostInteractions(source: FeedPostSource, id: string) {
           .from(cfg.likes as any)
           .insert({ [cfg.fk]: id, user_id: user.id } as any);
         if (error) throw error;
+        // Notify the post author (in-app + push). Fire-and-forget.
+        void notifyInteraction({ source, targetId: id, kind: 'like' });
       }
     },
     onMutate: async () => {
@@ -134,6 +137,8 @@ export function useFeedPostInteractions(source: FeedPostSource, id: string) {
         .from(cfg.comments as any)
         .insert({ [cfg.fk]: id, user_id: user.id, content } as any);
       if (error) throw error;
+      // Notify the post author (in-app + push). Fire-and-forget.
+      void notifyInteraction({ source, targetId: id, kind: 'comment' });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: commentsKey });
