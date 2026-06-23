@@ -26,7 +26,7 @@ export function useProfilePosts(userId?: string) {
     queryFn: async () => {
       if (!targetUserId) return [];
       const { data, error } = await supabase
-        .from('profile_posts' as any)
+        .from('profile_posts' as never)
         .select('*')
         .eq('user_id', targetUserId)
         .order('created_at', { ascending: false });
@@ -40,7 +40,7 @@ export function useProfilePosts(userId?: string) {
     mutationFn: async ({ content, imageUrl, videoUrl, isPublic }: { content: string; imageUrl?: string; videoUrl?: string; isPublic?: boolean }) => {
       if (!user?.id) throw new Error('Not authenticated');
       const { data, error } = await supabase
-        .from('profile_posts' as any)
+        .from('profile_posts' as never)
         .insert({
           user_id: user.id,
           content,
@@ -49,7 +49,7 @@ export function useProfilePosts(userId?: string) {
           // Defaults to public to preserve prior behaviour; the composer maps its
           // visibility control (public/friends/groups) onto this flag.
           ...(isPublic === undefined ? {} : { is_public: isPublic }),
-        } as any)
+        } as never)
         .select()
         .single();
       if (error) throw error;
@@ -63,10 +63,28 @@ export function useProfilePosts(userId?: string) {
     },
   });
 
+  const updatePost = useMutation({
+    mutationFn: async ({ postId, content }: { postId: string; content: string }) => {
+      if (!user?.id) throw new Error('Not authenticated');
+      const { error } = await supabase
+        .from('profile_posts' as never)
+        // RLS "owner can update own posts" gates this server-side; the
+        // moderation-status protect trigger keeps authors from un-hiding.
+        .update({ content } as never)
+        .eq('id', postId)
+        .eq('user_id', user.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['profile-posts', targetUserId] });
+      queryClient.invalidateQueries({ queryKey: ['all-news-feed'] });
+    },
+  });
+
   const deletePost = useMutation({
     mutationFn: async (postId: string) => {
       const { error } = await supabase
-        .from('profile_posts' as any)
+        .from('profile_posts' as never)
         .delete()
         .eq('id', postId);
       if (error) throw error;
@@ -82,6 +100,7 @@ export function useProfilePosts(userId?: string) {
     isLoading: postsQuery.isLoading,
     error: postsQuery.error,
     createPost,
+    updatePost,
     deletePost,
   };
 }
