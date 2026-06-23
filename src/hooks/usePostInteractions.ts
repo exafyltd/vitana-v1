@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
+import { notifyInteraction } from '@/lib/notify-interaction';
 
 export interface PostComment {
   id: string;
@@ -50,6 +51,8 @@ export function usePostInteractions(postId: string) {
           .from('profile_post_likes' as any)
           .insert({ post_id: postId, user_id: user.id } as any);
         if (error) throw error;
+        // Notify the post author (in-app + push). Best-effort: logged, never throws.
+        await notifyInteraction({ source: 'post', targetId: postId, kind: 'like' });
       }
     },
     onMutate: async () => {
@@ -107,6 +110,8 @@ export function usePostInteractions(postId: string) {
         .from('profile_post_comments' as any)
         .insert({ post_id: postId, user_id: user.id, content } as any);
       if (error) throw error;
+      // Notify the post author (in-app + push). Best-effort: logged, never throws.
+      await notifyInteraction({ source: 'post', targetId: postId, kind: 'comment' });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['post-comments', postId] });

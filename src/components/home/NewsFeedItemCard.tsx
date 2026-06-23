@@ -168,7 +168,7 @@ export function NewsFeedItemCard({
   }
 
   // Community post (text / image / inline-muted video) — interactive: inline
-  // heart + expandable comments + the moderation menu, rendered by its own card
-  // so the like/comment hook is called unconditionally.
+  // heart + expandable comments + the role-aware moderation menu, rendered by
+  // its own card so the like/comment hook is called unconditionally.
   return <CommunityPostCard item={item} onOpen={onOpen} />;
 }
