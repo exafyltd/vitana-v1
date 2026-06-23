@@ -98,13 +98,16 @@ export function ProfilePostsTab({ profile, scope, editMode, onEditAbout, onCreat
       {isOwner && onCreatePost && (
         <button
           onClick={onCreatePost}
-          className="w-full p-4 rounded-2xl border border-dashed border-primary/30 bg-primary/5 hover:bg-primary/10 transition-colors flex items-center gap-3 text-left"
+          className="w-full p-4 rounded-2xl border border-primary/40 bg-primary/10 hover:bg-primary/15 shadow-[0_2px_10px_rgba(124,58,237,0.10)] hover:shadow-[0_6px_18px_rgba(124,58,237,0.18)] transition-all flex items-center gap-3 text-left"
         >
-          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+          <div className="h-11 w-11 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
             <PenSquare className="h-5 w-5 text-primary" />
           </div>
-          <span className="text-sm font-medium text-primary">
-            {translate('profilePosts.placeholder', "What's on your mind?")}
+          <span className="text-sm font-medium text-foreground/90">
+            {translate('profilePosts.shareCta', 'Share something with the community')}
+          </span>
+          <span className="ml-auto shrink-0 rounded-full bg-primary text-primary-foreground px-4 py-1.5 text-sm font-semibold shadow-sm">
+            {translate('profilePosts.post', 'Post')}
           </span>
         </button>
       )}
