@@ -56,10 +56,8 @@
       "phase": "llm"
     },
     "drawerNav.diary": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Redundant and awkward phrasing. 'Dnevnik' already implies 'daily'.",
-      "suggested": "Dnevnik",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "drawerNav.connectors": {
@@ -81,7 +79,12 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "drawerNav.support": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:59.359Z"
+  "generatedAt": "2026-06-23T07:04:35.701Z"
 }
