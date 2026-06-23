@@ -21,7 +21,7 @@ import { useNotifications } from '@/hooks/useNotifications';
 import { useUniversalCart } from '@/hooks/useUniversalCart';
 import { avatarPositionStyle } from '@/lib/avatarPosition';
 import { supabase } from '@/integrations/supabase/client';
-import { isIAPRestricted, isAppilix } from '@/lib/appilix';
+import { isIAPRestricted } from '@/lib/appilix';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { t } from '@/lib/i18n-toast';
 
@@ -138,14 +138,6 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     return location.pathname.startsWith(route + '/');
   };
 
-  // The Appilix native Android WebView leaves a ~56px gap below `bottom-0` /
-  // `100dvh` (the same gap patched for [data-drawer-sheet] in index.css), so we
-  // overshoot the drawer height to land the pinned soundscape footer flush at
-  // the physical bottom. In a normal browser (incl. /admin/device-preview and
-  // mobile Chrome) there is no such gap — overshooting there pushes the footer
-  // off-screen — so the overshoot is gated to the native shell only.
-  const nativeShellOvershoot = isAppilix() ? ' h-[calc(100dvh+56px)]' : ' bottom-0';
-
   return (
     <>
     <AnimatePresence>
@@ -153,7 +145,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
         <>
           {/* Backdrop */}
           <motion.div
-            className={`fixed inset-0 z-[60] bg-black/40${nativeShellOvershoot}`}
+            className="fixed inset-0 z-[60] bg-black/40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -162,7 +154,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
           {/* Drawer panel */}
           <motion.nav
-            className={`fixed top-0 left-0 z-[60] w-72 flex flex-col bg-background shadow-2xl${nativeShellOvershoot}`}
+            className="fixed top-0 left-0 bottom-0 z-[60] w-72 flex flex-col bg-background shadow-2xl"
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
@@ -399,10 +391,15 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
               })}
             </div>
 
-            {/* Soundscape footer — play/pause + mute, mirrors the desktop sidebar */}
+            {/* Soundscape footer — play/pause + mute, mirrors the desktop sidebar.
+                The safe-area inset is CAPPED: the Appilix Android WebView reports
+                a large `env(safe-area-inset-bottom)` (~120px) even though the
+                system nav renders as a separate bar outside the drawer, which
+                otherwise leaves a big empty band below the player. Cap the inset
+                contribution so we still clear a gesture pill without the bloat. */}
             <div
               className="border-t border-border/50 px-3 pt-1.5"
-              style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))' }}
+              style={{ paddingBottom: 'calc(0.75rem + min(env(safe-area-inset-bottom, 0px), 16px))' }}
             >
               <div className="flex items-center gap-2 rounded-xl bg-muted/40 px-3 py-2">
                 <button
