@@ -1,10 +1,10 @@
 {
   "verdicts": {
-    "groups.searchPlaceholder": {
+    "orbHint.tapToTalk": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-06-23T07:07:11.762Z"
+  "generatedAt": "2026-06-23T07:09:49.342Z"
 }
