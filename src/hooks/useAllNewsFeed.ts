@@ -114,12 +114,25 @@ async function loadCandidates(
 ): Promise<RawCandidates> {
   // Followed ids (for the follow-before-others ranking tier).
   const followingIds = new Set<string>();
+  // Personal, viewer-scoped safety filters (VTID-03319 Phase 2): posts the user
+  // hid, and authors they muted or blocked. These only affect this user's feed.
+  const hiddenPostIds = new Set<string>();
+  const suppressedAuthorIds = new Set<string>();
   if (userId) {
-    const { data: follows } = await supabase
-      .from("user_follows")
-      .select("following_id")
-      .eq("follower_id", userId);
-    for (const f of follows || []) followingIds.add(f.following_id);
+    const [followsRes, hiddenRes, mutedRes, blockedRes] = await Promise.allSettled([
+      supabase.from("user_follows").select("following_id").eq("follower_id", userId),
+      supabase.from("user_hidden_posts" as never).select("post_id").eq("user_id", userId),
+      supabase.from("user_muted_authors" as never).select("author_id").eq("user_id", userId),
+      supabase.from("user_blocked_authors" as never).select("author_id").eq("user_id", userId),
+    ]);
+    if (followsRes.status === "fulfilled")
+      for (const f of (followsRes.value.data as { following_id: string }[]) || []) followingIds.add(f.following_id);
+    if (hiddenRes.status === "fulfilled")
+      for (const r of (hiddenRes.value.data as { post_id: string }[]) || []) hiddenPostIds.add(r.post_id);
+    if (mutedRes.status === "fulfilled")
+      for (const r of (mutedRes.value.data as { author_id: string }[]) || []) suppressedAuthorIds.add(r.author_id);
+    if (blockedRes.status === "fulfilled")
+      for (const r of (blockedRes.value.data as { author_id: string }[]) || []) suppressedAuthorIds.add(r.author_id);
   }
 
   const [postsRes, mediaRes, newsRes, performer] = await Promise.allSettled([
@@ -162,6 +175,8 @@ async function loadCandidates(
 
   for (const p of postRows) {
     const isOwn = !!userId && p.user_id === userId;
+    if (hiddenPostIds.has(p.id)) continue; // user hid this post
+    if (!isOwn && suppressedAuthorIds.has(p.user_id)) continue; // muted/blocked author
     if (isOwn && !FEED_INCLUDE_OWN_POSTS) continue; // launch mode keeps own posts
     if (FEED_FOLLOWING_ONLY && !isOwn && !followingIds.has(p.user_id)) continue;
     const author = authors.get(p.user_id);
@@ -186,6 +201,8 @@ async function loadCandidates(
 
   for (const m of mediaRows) {
     const isOwn = !!userId && m.user_id === userId;
+    if (hiddenPostIds.has(m.id)) continue; // user hid this item
+    if (!isOwn && suppressedAuthorIds.has(m.user_id)) continue; // muted/blocked author
     if (isOwn && !FEED_INCLUDE_OWN_POSTS) continue;
     if (FEED_FOLLOWING_ONLY && !isOwn && !followingIds.has(m.user_id)) continue;
     const author = authors.get(m.user_id);

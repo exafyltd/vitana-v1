@@ -351,7 +351,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             )}
 
             {/* Nav items */}
-            <div className="flex-1 overflow-y-auto pt-1.5 pb-2 px-3" style={{ paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom, 0px))' }}>
+            <div className="flex-1 overflow-y-auto pt-1.5 pb-2 px-3">
               {(isIAPRestricted() ? drawerNavItems.filter(item => item.id !== 'wallet') : drawerNavItems).map((item) => {
                 const active = isActive(item.route);
                 const Icon = item.icon;
@@ -391,10 +391,15 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
               })}
             </div>
 
-            {/* Soundscape footer — play/pause + mute, mirrors the desktop sidebar */}
+            {/* Soundscape footer — play/pause + mute, mirrors the desktop sidebar.
+                The safe-area inset is CAPPED: the Appilix Android WebView reports
+                a large `env(safe-area-inset-bottom)` (~120px) even though the
+                system nav renders as a separate bar outside the drawer, which
+                otherwise leaves a big empty band below the player. Cap the inset
+                contribution so we still clear a gesture pill without the bloat. */}
             <div
-              className="border-t border-border/50 px-3 pt-2 pb-3"
-              style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))' }}
+              className="border-t border-border/50 px-3 pt-1.5"
+              style={{ paddingBottom: 'calc(0.75rem + min(env(safe-area-inset-bottom, 0px), 16px))' }}
             >
               <div className="flex items-center gap-2 rounded-xl bg-muted/40 px-3 py-2">
                 <button
