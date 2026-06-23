@@ -48,6 +48,7 @@ import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 
 import { formatDistanceToNow } from '@/lib/locale-format';
@@ -353,9 +354,19 @@ export default function Home() {
               <ExpandableSearchButton placeholder={isMobile ? t('screens.home.searchShort') : t('screens.home.searchNewsTopicsSources')} onSearch={(query) => setSearchQuery(query)} />
               {isMobile && <MobileModePill modes={FILTER_MODES} activeMode={activeTab} onModeChange={(v) => setActiveTab(v as FilterTab)} />}
               <UniversalCalendarButton />
-              <Button size="sm" onClick={() => setCreatePostOpen(true)}>
-                <Plus className="w-4 h-4 mr-2" />
-                {t('screens.home.createPost')}
+              <Button
+                onClick={() => setCreatePostOpen(true)}
+                variant="ghost"
+                size="sm"
+                aria-label={t('screens.home.createPost')}
+                title={t('screens.home.createPost')}
+                className={cn(
+                  "h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shrink-0",
+                  isMobile ? "w-9 px-0 justify-center" : "px-3 gap-1.5"
+                )}
+              >
+                <Plus className="h-4 w-4" />
+                {!isMobile && <span className="text-sm">{t('screens.home.createPost')}</span>}
               </Button>
             </div>
           </UtilityActionButton>
