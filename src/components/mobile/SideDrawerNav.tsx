@@ -21,7 +21,7 @@ import { useNotifications } from '@/hooks/useNotifications';
 import { useUniversalCart } from '@/hooks/useUniversalCart';
 import { avatarPositionStyle } from '@/lib/avatarPosition';
 import { supabase } from '@/integrations/supabase/client';
-import { isIAPRestricted } from '@/lib/appilix';
+import { isIAPRestricted, isAppilix } from '@/lib/appilix';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { t } from '@/lib/i18n-toast';
 
@@ -138,6 +138,14 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     return location.pathname.startsWith(route + '/');
   };
 
+  // The Appilix native Android WebView leaves a ~56px gap below `bottom-0` /
+  // `100dvh` (the same gap patched for [data-drawer-sheet] in index.css), so we
+  // overshoot the drawer height to land the pinned soundscape footer flush at
+  // the physical bottom. In a normal browser (incl. /admin/device-preview and
+  // mobile Chrome) there is no such gap — overshooting there pushes the footer
+  // off-screen — so the overshoot is gated to the native shell only.
+  const nativeShellOvershoot = isAppilix() ? ' h-[calc(100dvh+56px)]' : ' bottom-0';
+
   return (
     <>
     <AnimatePresence>
@@ -145,7 +153,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 z-[60] bg-black/40 h-[calc(100dvh+56px)]"
+            className={`fixed inset-0 z-[60] bg-black/40${nativeShellOvershoot}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -154,7 +162,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
           {/* Drawer panel */}
           <motion.nav
-            className="fixed top-0 left-0 z-[60] w-72 flex flex-col bg-background shadow-2xl h-[calc(100dvh+56px)]"
+            className={`fixed top-0 left-0 z-[60] w-72 flex flex-col bg-background shadow-2xl${nativeShellOvershoot}`}
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
