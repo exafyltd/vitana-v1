@@ -6224,6 +6224,7 @@ export type Database = {
       media_uploads: {
         Row: {
           category: string | null
+          comments_count: number | null
           created_at: string
           description: string | null
           duration: number | null
@@ -6250,6 +6251,7 @@ export type Database = {
         }
         Insert: {
           category?: string | null
+          comments_count?: number | null
           created_at?: string
           description?: string | null
           duration?: number | null
@@ -6276,6 +6278,7 @@ export type Database = {
         }
         Update: {
           category?: string | null
+          comments_count?: number | null
           created_at?: string
           description?: string | null
           duration?: number | null

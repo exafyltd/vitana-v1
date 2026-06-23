@@ -10,14 +10,14 @@
  */
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart, MessageCircle, Sparkles, UserPlus, TrendingUp } from "lucide-react";
+import { Sparkles, UserPlus, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
+import { CommunityPostCard } from "@/components/home/CommunityPostCard";
 import { getNewsImage } from "@/lib/news-images";
 import { formatDistanceToNow } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { reasonKeyFor, type FeedItem, type ArticleFeedItem } from "@/lib/news-feed-ranker";
-import { NewsPostModerationMenu } from "@/components/home/NewsPostModerationMenu";
 
 function timeAgo(iso: string): string {
   try {
@@ -28,11 +28,22 @@ function timeAgo(iso: string): string {
 }
 
 /** Small "why you're seeing this" label shown atop every non-article card. */
-function WhyLabel({ item, icon }: { item: FeedItem; icon: React.ReactNode }) {
+function WhyLabel({
+  item,
+  icon,
+  trailing,
+}: {
+  item: FeedItem;
+  icon: React.ReactNode;
+  trailing?: React.ReactNode;
+}) {
   return (
     <div className="flex items-center gap-1.5 text-xs font-medium text-primary mb-2">
       {icon}
       <span className="truncate">{t(reasonKeyFor(item))}</span>
+      {trailing && (
+        <span className="ml-auto shrink-0 text-muted-foreground">{trailing}</span>
+      )}
     </div>
   );
 }
@@ -156,73 +167,8 @@ export function NewsFeedItemCard({
     );
   }
 
-  // Community post (text / image / inline-muted video).
-  return (
-    <Card
-      className={cardShell}
-      role="button"
-      tabIndex={0}
-      onClick={() => openProfile(item.user_id)}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          openProfile(item.user_id);
-        }
-      }}
-    >
-      {item.video_url ? (
-        <div className="relative w-full aspect-[16/9] overflow-hidden bg-black">
-          <video
-            src={item.video_url}
-            poster={item.image_url || undefined}
-            muted
-            loop
-            playsInline
-            autoPlay
-            preload="metadata"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        </div>
-      ) : item.image_url ? (
-        <div className="relative w-full aspect-[16/9] overflow-hidden bg-muted">
-          <img src={item.image_url} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
-        </div>
-      ) : null}
-
-      <CardContent className="p-4 pt-3">
-        <WhyLabel item={item} icon={<MessageCircle className="h-3.5 w-3.5" />} />
-        {item.content && (
-          <p className="text-sm leading-relaxed text-foreground line-clamp-3">{item.content}</p>
-        )}
-        <div className="mt-3 flex items-center justify-between">
-          <div className="flex items-center gap-2 min-w-0">
-            <Avatar className="h-7 w-7 shrink-0">
-              {item.author_avatar && <AvatarImage src={item.author_avatar} alt="" />}
-              <AvatarFallback className="text-xs">
-                {(item.author_name || "?").charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <span className="truncate text-sm text-foreground/80">{item.author_name}</span>
-            <span className="text-xs text-muted-foreground shrink-0">{`· ${timeAgo(item.published_at)}`}</span>
-          </div>
-          <div className="flex items-center gap-3 shrink-0 text-muted-foreground">
-            <span className="flex items-center gap-1 text-xs">
-              <Heart className="h-3.5 w-3.5" />
-              {item.likes_count}
-            </span>
-            <span className="flex items-center gap-1 text-xs">
-              <MessageCircle className="h-3.5 w-3.5" />
-              {item.comments_count}
-            </span>
-            <NewsPostModerationMenu
-              postId={item.post_id}
-              authorId={item.user_id}
-              authorName={item.author_name}
-              postContent={item.content}
-            />
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
+  // Community post (text / image / inline-muted video) — interactive: inline
+  // heart + expandable comments + the role-aware moderation menu, rendered by
+  // its own card so the like/comment hook is called unconditionally.
+  return <CommunityPostCard item={item} onOpen={onOpen} />;
 }

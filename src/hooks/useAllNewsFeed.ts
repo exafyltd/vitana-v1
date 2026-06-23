@@ -60,6 +60,7 @@ interface RawMediaRow {
   file_url: string | null;
   tags: string[] | null;
   likes_count: number | null;
+  comments_count: number | null;
   created_at: string;
 }
 
@@ -146,7 +147,7 @@ async function loadCandidates(
     // Approved, public community videos.
     supabase
       .from("media_uploads")
-      .select("id, user_id, title, description, media_type, file_url, thumbnail_url, status, is_public, created_at, tags, likes_count")
+      .select("id, user_id, title, description, media_type, file_url, thumbnail_url, status, is_public, created_at, tags, likes_count, comments_count")
       .eq("status", "approved")
       .eq("is_public", true)
       .eq("media_type", "video")
@@ -182,6 +183,7 @@ async function loadCandidates(
     posts.push({
       id: `post-${p.id}`,
       kind: "post",
+      source: "post",
       post_id: p.id,
       user_id: p.user_id,
       author_name: author?.display_name || "Community Member",
@@ -207,6 +209,7 @@ async function loadCandidates(
     posts.push({
       id: `media-${m.id}`,
       kind: "post",
+      source: "media",
       post_id: m.id,
       user_id: m.user_id,
       author_name: author?.display_name || "Community Member",
@@ -215,7 +218,7 @@ async function loadCandidates(
       image_url: m.thumbnail_url ?? null,
       video_url: m.file_url ?? null,
       likes_count: Number(m.likes_count) || 0,
-      comments_count: 0,
+      comments_count: Number(m.comments_count) || 0,
       followed: followingIds.has(m.user_id),
       tags: Array.isArray(m.tags) ? m.tags : [],
       published_at: m.created_at,
