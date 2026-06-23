@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
-import { notifyInteraction } from '@/lib/notify-interaction';
 
 export interface PostComment {
   id: string;
@@ -51,8 +50,8 @@ export function usePostInteractions(postId: string) {
           .from('profile_post_likes' as any)
           .insert({ post_id: postId, user_id: user.id } as any);
         if (error) throw error;
-        // Notify the post author (in-app + push). Best-effort: logged, never throws.
-        await notifyInteraction({ source: 'post', targetId: postId, kind: 'like' });
+        // The post author is notified by a DB trigger on profile_post_likes
+        // (20260623000000_post_interaction_notifications.sql) — no client call.
       }
     },
     onMutate: async () => {
@@ -110,8 +109,8 @@ export function usePostInteractions(postId: string) {
         .from('profile_post_comments' as any)
         .insert({ post_id: postId, user_id: user.id, content } as any);
       if (error) throw error;
-      // Notify the post author (in-app + push). Best-effort: logged, never throws.
-      await notifyInteraction({ source: 'post', targetId: postId, kind: 'comment' });
+      // The post author is notified by a DB trigger on profile_post_comments
+      // (20260623000000_post_interaction_notifications.sql) — no client call.
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['post-comments', postId] });
