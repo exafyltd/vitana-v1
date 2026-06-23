@@ -123,6 +123,14 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
     icon: '📨', label: 'Group Invitation', category: 'community',
     channel: 'push_and_inapp', priority: 'p1', route: '/community',
   },
+  post_like: {
+    icon: '❤️', label: 'New Like', category: 'community',
+    channel: 'push_and_inapp', priority: 'p1', route: '/home',
+  },
+  post_comment: {
+    icon: '💬', label: 'New Comment', category: 'community',
+    channel: 'push_and_inapp', priority: 'p1', route: '/home',
+  },
 
   // ═══════════════════════════════════════════════════════════
   // 3. MEETUPS / EVENTS (7)
