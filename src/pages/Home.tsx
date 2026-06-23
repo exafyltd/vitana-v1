@@ -48,7 +48,6 @@ import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
 
 import { formatDistanceToNow } from '@/lib/locale-format';
@@ -358,15 +357,10 @@ export default function Home() {
                 onClick={() => setCreatePostOpen(true)}
                 variant="ghost"
                 size="sm"
-                aria-label={t('screens.home.createPost')}
-                title={t('screens.home.createPost')}
-                className={cn(
-                  "h-9 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 shrink-0",
-                  isMobile ? "w-9 px-0 justify-center" : "px-3 gap-1.5"
-                )}
+                className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
               >
                 <Plus className="h-4 w-4" />
-                {!isMobile && <span className="text-sm">{t('screens.home.createPost')}</span>}
+                <span className="text-sm">{t('screens.home.createPost')}</span>
               </Button>
             </div>
           </UtilityActionButton>
