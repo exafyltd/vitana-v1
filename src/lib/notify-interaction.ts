@@ -37,6 +37,13 @@ export async function notifyInteraction(input: {
   targetId: string;
   kind: InteractionKind;
 }): Promise<void> {
+  // TEMPORARY diagnostic: on the preview host only, surface the gateway's exact
+  // response so we can see the runtime outcome (server logs / DB / DevTools are
+  // all unavailable). Inert on prod. Remove once the cause is identified.
+  const isPreview =
+    typeof window !== 'undefined' &&
+    window.location.hostname === 'preview.vitanaland.com';
+
   try {
     const headers = await getAuthHeaders();
     const res = await fetch(`${GATEWAY_BASE}/community/interactions/notify`, {
@@ -48,11 +55,19 @@ export async function notifyInteraction(input: {
         kind: input.kind,
       }),
     });
+    const body = await res.text().catch(() => '');
+    if (isPreview) {
+      // eslint-disable-next-line no-alert
+      window.alert(`notify ${res.status}: ${body.slice(0, 400)}`);
+    }
     if (!res.ok) {
-      const body = await res.text().catch(() => '');
       console.warn(`[notifyInteraction] gateway ${res.status}: ${body.slice(0, 300)}`);
     }
   } catch (err) {
+    if (isPreview) {
+      // eslint-disable-next-line no-alert
+      window.alert(`notify threw: ${String(err).slice(0, 400)}`);
+    }
     // Best-effort — never block or throw into the liker's flow.
     console.warn('[notifyInteraction] failed:', err);
   }
