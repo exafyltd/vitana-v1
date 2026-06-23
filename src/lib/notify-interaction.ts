@@ -1,23 +1,36 @@
 import { supabase } from '@/integrations/supabase/client';
 
 /**
- * Fire-and-forget: tell the gateway that the current user just liked or
- * commented on a community post, so the post's author gets an in-app + push
- * notification (Instagram/Facebook style).
+ * Tell the gateway that the current user liked or commented on a community post
+ * so the post's author gets an in-app + push notification (Instagram/Facebook
+ * style). Mirrors the proven chat client (src/hooks/useChatApi.ts) exactly:
+ * same gateway base (VITE_GATEWAY_URL, already includes /api/v1, with a hardcoded
+ * prod fallback so it NEVER no-ops), same Bearer-token resolution with a single
+ * refresh retry, and an awaited fetch.
  *
- * The like/comment row is already written client-side (RLS-guarded) by the
- * interaction hooks; this only triggers the author notification. The gateway
- * verifies the interaction row exists for the caller (anti-spoof), skips
- * self-interactions, dedups repeat likes, and localizes via the author's
- * locale — so this client side stays dumb on purpose.
- *
- * Never throws and never blocks the UI: a failed notification must not surface
- * to the person who liked/commented (their action already succeeded).
+ * Best-effort: it logs failures but never throws into the caller — the
+ * like/comment itself already succeeded.
  */
-const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || '';
+
+// Same as useChatApi.ts: VITE_GATEWAY_URL includes "/api/v1"; fall back to the
+// prod gateway so a build without the env var still reaches a real gateway.
+const GATEWAY_BASE =
+  (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
+  'https://gateway.vitanaland.com/api/v1';
 
 export type InteractionSource = 'post' | 'media';
 export type InteractionKind = 'like' | 'comment';
+
+async function getAuthHeaders(): Promise<Record<string, string>> {
+  let { data } = await supabase.auth.getSession();
+  let token = data?.session?.access_token;
+  if (!token) {
+    const { data: refreshed } = await supabase.auth.refreshSession();
+    token = refreshed?.session?.access_token;
+  }
+  if (!token) return { 'Content-Type': 'application/json' };
+  return { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` };
+}
 
 export async function notifyInteraction(input: {
   source: InteractionSource;
@@ -25,25 +38,22 @@ export async function notifyInteraction(input: {
   kind: InteractionKind;
 }): Promise<void> {
   try {
-    if (!GATEWAY_URL) return;
-    const { data } = await supabase.auth.getSession();
-    const jwt = data?.session?.access_token;
-    if (!jwt) return;
-
-    await fetch(`${GATEWAY_URL}/api/v1/community/interactions/notify`, {
+    const headers = await getAuthHeaders();
+    const res = await fetch(`${GATEWAY_BASE}/community/interactions/notify`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
-      },
+      headers,
       body: JSON.stringify({
         source: input.source,
         target_id: input.targetId,
         kind: input.kind,
       }),
-      keepalive: true,
     });
-  } catch {
-    // swallow — notifications are best-effort, never block the liker
+    if (!res.ok) {
+      const body = await res.text().catch(() => '');
+      console.warn(`[notifyInteraction] gateway ${res.status}: ${body.slice(0, 300)}`);
+    }
+  } catch (err) {
+    // Best-effort — never block or throw into the liker's flow.
+    console.warn('[notifyInteraction] failed:', err);
   }
 }
