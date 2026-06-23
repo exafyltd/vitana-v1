@@ -1,0 +1,27 @@
+{
+  "verdicts": {
+    "auth.notAuthorized": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "auth.noPermission": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "auth.contactAdmin": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The term 'المدير' (al-mudeer) is masculine. 'Administrator' can be male or female. 'المسؤول' (al-mas'ool) is a more gender-neutral and commonly used term for 'administrator' or 'responsible party' in UI contexts.",
+      "suggested": "يرجى الاتصال بالمسؤول للحصول على الوصول",
+      "phase": "llm"
+    },
+    "auth.backHome": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-06-23T07:02:38.889Z"
+}
