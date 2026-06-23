@@ -47,7 +47,8 @@ jobs:
           req = urllib.request.Request(
               f'https://api.supabase.com/v1/projects/{ref}/database/query',
               data=json.dumps({'query': sql}).encode(),
-              headers={'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json'},
+              headers={'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json',
+                       'User-Agent': 'Mozilla/5.0 (vitana-ci) supabase-management-api'},
               method='POST',
           )
           try:
@@ -80,7 +81,8 @@ jobs:
           req = urllib.request.Request(
               f'https://api.supabase.com/v1/projects/{ref}/database/query',
               data=json.dumps({'query': sql}).encode(),
-              headers={'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json'},
+              headers={'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json',
+                       'User-Agent': 'Mozilla/5.0 (vitana-ci) supabase-management-api'},
               method='POST',
           )
           r = urllib.request.urlopen(req)
