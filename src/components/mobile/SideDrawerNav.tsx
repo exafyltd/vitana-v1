@@ -145,7 +145,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 z-[60] bg-black/40"
+            className="fixed inset-0 z-[60] bg-black/40 h-[calc(100dvh+56px)]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -154,7 +154,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
           {/* Drawer panel */}
           <motion.nav
-            className="fixed top-0 left-0 bottom-0 z-[60] w-72 flex flex-col bg-background shadow-2xl"
+            className="fixed top-0 left-0 z-[60] w-72 flex flex-col bg-background shadow-2xl h-[calc(100dvh+56px)]"
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
@@ -351,7 +351,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             )}
 
             {/* Nav items */}
-            <div className="flex-1 overflow-y-auto pt-1.5 pb-2 px-3" style={{ paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom, 0px))' }}>
+            <div className="flex-1 overflow-y-auto pt-1.5 pb-2 px-3">
               {(isIAPRestricted() ? drawerNavItems.filter(item => item.id !== 'wallet') : drawerNavItems).map((item) => {
                 const active = isActive(item.route);
                 const Icon = item.icon;
@@ -393,7 +393,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
             {/* Soundscape footer — play/pause + mute, mirrors the desktop sidebar */}
             <div
-              className="border-t border-border/50 px-3 pt-2 pb-3"
+              className="border-t border-border/50 px-3 pt-1.5"
               style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))' }}
             >
               <div className="flex items-center gap-2 rounded-xl bg-muted/40 px-3 py-2">
