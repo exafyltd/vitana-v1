@@ -9949,6 +9949,11 @@
       "allCaughtUpForToday": "Für heute ist alles erledigt",
       "nothingNewRightNow": "Aktuell gibt es nichts Neues für dich.",
       "checkForNew": "Nach Neuem suchen"
+    },
+    "postDetail": {
+      "title": "Beitrag",
+      "notFound": "Beitrag nicht gefunden",
+      "back": "Zurück"
     }
   }
 }

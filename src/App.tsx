@@ -181,6 +181,7 @@ const AIAssistant = lazy(() => import("./pages/assistant/AIAssistant"));
 
 // VTID-01900: Home sub-pages removed — Home is now a standalone News Feed
 const NewsArticleDetail = lazy(() => import("./pages/NewsArticleDetail"));
+const PostDetail = lazy(() => import("./pages/PostDetail"));
 
 // Discover sub-pages
 const WellnessServices = lazy(() => import("./pages/discover/WellnessServices"));
@@ -824,6 +825,15 @@ const App = () => {
             <AuthGuard>
               <ProtectedRoute requiredRole="community">
                 <NewsArticleDetail />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+
+          {/* Single community post / video — deep-link target for like & comment notifications */}
+          <Route path="/post/:source/:id" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <PostDetail />
               </ProtectedRoute>
             </AuthGuard>
           } />
