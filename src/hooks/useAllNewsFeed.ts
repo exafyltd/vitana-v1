@@ -21,6 +21,7 @@ import { useRealMatches } from "@/hooks/useRealMatches";
 import { useNewsFeedPreferencesStore } from "@/stores/newsFeedPreferencesStore";
 import { fetchLongevityNews } from "@/hooks/useNewsFeed";
 import { FEED_INCLUDE_OWN_POSTS, FEED_FOLLOWING_ONLY } from "@/config/feed";
+import { isVipAuthor } from "@/config/vip-authors";
 import {
   rankFeed,
   type FeedItem,
@@ -194,6 +195,7 @@ async function loadCandidates(
       likes_count: Number(p.likes_count) || 0,
       comments_count: Number(p.comments_count) || 0,
       followed: followingIds.has(p.user_id),
+      vip: isVipAuthor(p.user_id, author?.display_name),
       tags: [],
       published_at: p.created_at,
     });
@@ -220,6 +222,7 @@ async function loadCandidates(
       likes_count: Number(m.likes_count) || 0,
       comments_count: Number(m.comments_count) || 0,
       followed: followingIds.has(m.user_id),
+      vip: isVipAuthor(m.user_id, author?.display_name),
       tags: Array.isArray(m.tags) ? m.tags : [],
       published_at: m.created_at,
     });

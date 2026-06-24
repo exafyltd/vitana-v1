@@ -3,9 +3,10 @@
  *
  * Pure Node ESM. Transpiles src/lib/news-feed-ranker.ts with esbuild (already a
  * Vite dependency) to a temp module, imports it, and exercises the REAL ranking
- * logic — not a string-grep. Covers the approved deterministic order, follow-
- * before-format, public-news interleave, hide/mute, "show less" downrank,
- * match cap + seen-match exclusion, and tie-breaking by stable id.
+ * logic — not a string-grep. Covers the approved deterministic order: VIP-first
+ * pinning, chronological non-VIP ordering (follow status no longer reorders),
+ * public-news interleave, hide/mute, "show less" downrank, match cap +
+ * seen-match exclusion, and tie-breaking by stable id.
  *
  * Invocation:
  *   npm run test:news-feed-ranker
@@ -57,6 +58,7 @@ function post(id, over = {}) {
     likes_count: 0,
     comments_count: 0,
     followed: false,
+    vip: false,
     tags: [],
     published_at: "2026-06-01T00:00:00.000Z",
     ...over,
@@ -104,30 +106,53 @@ function performer(id, over = {}) {
 
 const { rankFeed, reasonKeyFor } = await loadRanker();
 
-// §1 — Tier order: match → performer → followed post → other post → article.
+// §1 — Tier order: VIP post → match → performer → other post → article.
 {
   const out = rankFeed([
     article("a"),
-    post("other", { followed: false }),
-    post("followed", { followed: true }),
+    post("other", { followed: false, published_at: "2026-06-02T00:00:00Z" }),
+    // VIP but OLDEST — must still lead the whole feed.
+    post("vip", { vip: true, published_at: "2026-05-01T00:00:00Z" }),
     performer("p"),
     match("m"),
   ]);
-  const kinds = out.map((i) => i.kind);
-  assert(kinds[0] === "match", "§1 match is pinned first");
-  assert(kinds[1] === "performer", "§1 performer is second");
-  assert(out[2].id === "post-followed", "§1 followed post before other post");
+  assert(out[0].id === "post-vip", "§1 VIP post pinned first even when oldest");
+  assert(out[1].kind === "match", "§1 match after VIP");
+  assert(out[2].kind === "performer", "§1 performer after match");
   assert(out[3].id === "post-other", "§1 other post next");
-  assert(kinds[4] === "article", "§1 public news after community posts");
+  assert(out[4].kind === "article", "§1 public news after community posts");
 }
 
-// §2 — Follow status outranks media format (followed text beats stranger video).
+// §2 — Non-VIP posts are purely chronological; follow status does NOT reorder.
 {
   const out = rankFeed([
-    post("strangerVideo", { followed: false, video_url: "v.mp4" }),
-    post("followedText", { followed: true }),
+    post("oldFollowed", { followed: true, published_at: "2026-06-01T00:00:00Z" }),
+    post("newStranger", { followed: false, published_at: "2026-06-10T00:00:00Z" }),
   ]);
-  assert(out[0].id === "post-followedText", "§2 followed text beats stranger video");
+  assert(out[0].id === "post-newStranger", "§2 newest non-VIP wins regardless of follow status");
+  assert(out[1].id === "post-oldFollowed", "§2 older followed post comes second");
+}
+
+// §2b — A VIP author always beats a newer non-VIP post.
+{
+  const out = rankFeed([
+    post("freshStranger", { published_at: "2026-06-20T00:00:00Z" }),
+    post("vipOld", { vip: true, published_at: "2026-01-01T00:00:00Z" }),
+  ]);
+  assert(out[0].id === "post-vipOld", "§2b VIP outranks a much newer non-VIP post");
+}
+
+// §2c — Multiple VIPs are chronological among themselves, still ahead of all others.
+{
+  const out = rankFeed([
+    post("stranger", { published_at: "2026-06-30T00:00:00Z" }),
+    post("vipOlder", { vip: true, published_at: "2026-06-01T00:00:00Z" }),
+    post("vipNewer", { vip: true, published_at: "2026-06-15T00:00:00Z" }),
+  ]);
+  assert(
+    out.map((x) => x.id).join(",") === "post-vipNewer,post-vipOlder,post-stranger",
+    "§2c VIPs newest-first, both ahead of newer non-VIP",
+  );
 }
 
 // §3 — Within a follow group, newest wins regardless of media format.
@@ -212,6 +237,8 @@ const { rankFeed, reasonKeyFor } = await loadRanker();
   assert(reasonKeyFor(performer("x")) === "screens.home.whySpotlight", "§9 performer reason key");
   assert(reasonKeyFor(post("x", { followed: true })) === "screens.home.whyFollowed", "§9 followed reason key");
   assert(reasonKeyFor(post("x", { followed: false })) === "screens.home.whyCommunity", "§9 community reason key");
+  assert(reasonKeyFor(post("x", { vip: true })) === "screens.home.whyVip", "§9 vip reason key");
+  assert(reasonKeyFor(post("x", { vip: true, followed: true })) === "screens.home.whyVip", "§9 vip outranks followed label");
   assert(reasonKeyFor(article("x")) === "screens.home.whyPublic", "§9 public reason key");
 }
 

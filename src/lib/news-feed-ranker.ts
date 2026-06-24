@@ -8,17 +8,20 @@
  * isolation (see scripts/news-feed-ranker-regression.mjs).
  *
  * Deterministic order (approved design):
- *   1. New unseen match            (capped — at most `maxPinnedMatches`)
- *   2. Opt-in "most improved" spotlight (consent-gated, supplied by gateway)
- *   3. Posts from followed members  → newest first, regardless of media
- *   4. Posts from other members     → newest first, regardless of media
- *   5. Public-source news           → interleaved, not starved
+ *   1. VIP-author posts            → always first, newest first (see config/vip-authors.ts)
+ *   2. New unseen match            (capped — at most `maxPinnedMatches`)
+ *   3. Opt-in "most improved" spotlight (consent-gated, supplied by gateway)
+ *   4. All other posts             → strictly newest first (chronological), any author
+ *   5. Public-source news          → interleaved into the post stream, not starved
  *
- * Within each group: newest first, engagement second, stable id last.
- * Follow status outranks media format (a followed member's text post beats a
- * stranger's video). Public news is interleaved at a tunable cadence rather
- * than always dumped last, so it is never permanently starved — this is a
- * longevity-news product and public science is core, not filler.
+ * Ordering rules (updated): VIP authors (a small allow-list of community-face
+ * accounts) are pinned to the very top regardless of follow status, so they are
+ * always visible. Every *other* post is ordered purely chronologically (newest
+ * first) — follow status no longer changes a non-VIP post's position; it only
+ * drives the "why you're seeing this" label. Engagement and a stable id break
+ * ties. Public news is interleaved at a tunable cadence rather than dumped last,
+ * so it is never permanently starved — this is a longevity-news product and
+ * public science is core, not filler.
  */
 
 export type FeedItemKind = "match" | "performer" | "post" | "article";
@@ -62,8 +65,10 @@ export interface PostFeedItem extends FeedItemBase {
   video_url: string | null;
   likes_count: number;
   comments_count: number;
-  /** Author is followed by the current viewer. */
+  /** Author is followed by the current viewer. Drives the label, not the order. */
   followed: boolean;
+  /** Author is a pinned VIP (community-face account) — always boosted to the top. */
+  vip: boolean;
   tags: string[];
 }
 
@@ -162,13 +167,17 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
   );
   const pinnedPerformer = performers.slice(0, 1);
 
-  // 3 + 4. Posts — followed before others, then "show less" penalty, then
-  //    newest regardless of media format, then engagement, then stable id.
+  // Posts — VIP authors first (always, regardless of follow status), then every
+  //    other post strictly newest-first (chronological). Within the non-VIP
+  //    group the user's "show less" penalty still demotes tagged items; VIPs are
+  //    never demoted. Engagement and a stable id break remaining ties.
   posts.sort((a, b) => {
-    if (a.followed !== b.followed) return a.followed ? -1 : 1;
-    const pa = downrankPenalty(a.tags, downranked);
-    const pb = downrankPenalty(b.tags, downranked);
-    if (pa !== pb) return pa - pb;
+    if (a.vip !== b.vip) return a.vip ? -1 : 1;
+    if (!a.vip) {
+      const pa = downrankPenalty(a.tags, downranked);
+      const pb = downrankPenalty(b.tags, downranked);
+      if (pa !== pb) return pa - pb;
+    }
     const ta = ts(a.published_at);
     const tb = ts(b.published_at);
     if (ta !== tb) return tb - ta;
@@ -177,6 +186,8 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
     if (ea !== eb) return eb - ea;
     return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
   });
+  const vipPosts = posts.filter((p) => p.vip);
+  const otherPosts = posts.filter((p) => !p.vip);
 
   // 5. Public news — newest first, "show less" penalty applied, stable id.
   articles.sort((a, b) => {
@@ -189,12 +200,13 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
     return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
   });
 
-  // Compose: pinned community items first, then interleave the post stream with
-  // public news at the configured cadence so neither side is starved.
-  const result: FeedItem[] = [...pinnedMatches, ...pinnedPerformer];
+  // Compose: VIP posts lead (always on top), then the pinned match + spotlight,
+  // then the chronological stream of every other post with public news
+  // interleaved at the configured cadence so neither side is starved.
+  const result: FeedItem[] = [...vipPosts, ...pinnedMatches, ...pinnedPerformer];
   let ai = 0;
-  for (let i = 0; i < posts.length; i++) {
-    result.push(posts[i]);
+  for (let i = 0; i < otherPosts.length; i++) {
+    result.push(otherPosts[i]);
     if ((i + 1) % interleave === 0 && ai < articles.length) {
       result.push(articles[ai++]);
     }
@@ -212,6 +224,7 @@ export function reasonKeyFor(item: FeedItem): string {
     case "performer":
       return "screens.home.whySpotlight";
     case "post":
+      if (item.vip) return "screens.home.whyVip";
       return item.followed ? "screens.home.whyFollowed" : "screens.home.whyCommunity";
     case "article":
       return "screens.home.whyPublic";

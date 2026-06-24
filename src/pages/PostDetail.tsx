@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { CommunityPostCard } from "@/components/home/CommunityPostCard";
 import { t } from "@/lib/i18n-toast";
 import type { PostFeedItem } from "@/lib/news-feed-ranker";
+import { isVipAuthor } from "@/config/vip-authors";
 
 async function fetchAuthor(userId: string): Promise<{ name: string; avatar: string | null }> {
   const { data } = await supabase
@@ -45,7 +46,8 @@ async function fetchPost(source: "post" | "media", id: string): Promise<PostFeed
       author_name: author.name, author_avatar: author.avatar,
       content: row.title || row.description || "", image_url: row.thumbnail_url ?? null,
       video_url: row.file_url ?? null, likes_count: Number(row.likes_count) || 0,
-      comments_count: Number(row.comments_count) || 0, followed: false, tags: [],
+      comments_count: Number(row.comments_count) || 0, followed: false,
+      vip: isVipAuthor(row.user_id, author.name), tags: [],
       published_at: row.created_at,
     };
   }
@@ -64,7 +66,8 @@ async function fetchPost(source: "post" | "media", id: string): Promise<PostFeed
     author_name: author.name, author_avatar: author.avatar,
     content: row.content ?? "", image_url: row.image_url ?? null, video_url: row.video_url ?? null,
     likes_count: Number(row.likes_count) || 0, comments_count: Number(row.comments_count) || 0,
-    followed: false, tags: [], published_at: row.created_at,
+    followed: false, vip: isVipAuthor(row.user_id, author.name), tags: [],
+    published_at: row.created_at,
   };
 }
 
