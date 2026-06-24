@@ -672,6 +672,22 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
     opacity: 0 !important;
   }
 
+  /* Keep ORB docked to the bottom nav but BELOW the side drawer + backdrop
+     (SideDrawerNav, both z-60) so the drawer's scrim dims it instead of the
+     ORB floating over the panel. Position/opacity untouched — it stays in
+     place, just tucked behind the scrim; taps fall through to close the drawer. */
+  body[data-side-drawer-open="true"] .vtorb-fab,
+  body[data-side-drawer-open="true"] .vitana-orb,
+  body[data-side-drawer-open="true"] [data-vitana-orb="true"],
+  body[data-side-drawer-open="true"] #vitana-orb,
+  body[data-side-drawer-open="true"] .OrbFloatingButton,
+  body[data-side-drawer-open="true"] #vitana-orb-fab,
+  body[data-side-drawer-open="true"] [id^="vitana-orb"],
+  body[data-side-drawer-open="true"] [class^="vtorb-fab"] {
+    z-index: 55 !important;          /* above bottom nav (50), below drawer/backdrop (60) */
+    pointer-events: none !important; /* taps fall through to the backdrop → closes drawer */
+  }
+
   /* Suppress ORB when direct chat screen is open (belt-and-suspenders) */
   body[data-chat-screen-open="true"] .vtorb-fab,
   body[data-chat-screen-open="true"] .vitana-orb,
