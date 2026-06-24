@@ -32,7 +32,7 @@ import { VitanaIdOnboardingCard } from "@/components/onboarding/VitanaIdOnboardi
 import { useAppointmentNotifications } from "@/hooks/useAppointmentNotifications";
 import { useAudioPriority } from "@/hooks/useAudioPriority";
 import { useAppilix } from "@/hooks/useAppilix";
-import { registerAppilixIdentity, ensureAppilixIdentity } from "@/lib/appilix";
+import { isAppilix, registerAppilixIdentity, ensureAppilixIdentity } from "@/lib/appilix";
 import { useAuth } from "@/context/AuthProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { initializePushNotifications } from "@/lib/pushNotifications";
@@ -409,6 +409,25 @@ const AppHooksInitializer = () => {
       // Use robust async version that waits for native bridge + retries on failure.
       // Critical for old users whose identity was never registered before this code shipped.
       ensureAppilixIdentity(user.id);
+
+      // Appilix (esp. the Android shell) reads the push identity only at PAGE LOAD.
+      // A mid-session account switch is an in-SPA navigation, not a page load, so the
+      // device stays mapped to the PREVIOUS account and the newly-selected account gets
+      // no push until the app is relaunched (confirmed: a manual relaunch fixes it).
+      // The dynamic firebase_record_user_identity postMessage isn't honored mid-session.
+      // Reproduce the relaunch automatically: reload once when the identity changes from
+      // a different, previously-active one. Guarded by a persisted value so it fires
+      // exactly once per switch and never loops, and only inside the Appilix shell.
+      if (isAppilix()) {
+        try {
+          const KEY = 'appilix_active_identity';
+          const prev = localStorage.getItem(KEY);
+          if (prev !== user.id) {
+            localStorage.setItem(KEY, user.id); // persist BEFORE reload → no loop
+            if (prev) window.location.reload();  // only on a real switch, not first registration
+          }
+        } catch { /* localStorage unavailable — skip the reload safeguard */ }
+      }
     }
   }, [user?.id]);
 
