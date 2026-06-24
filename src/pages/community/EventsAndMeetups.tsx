@@ -784,8 +784,8 @@ const EventsAndMeetups = () => {
                   </>
                 )}
               >
-                <div className="flex items-center gap-2 min-w-max">
-                  <ExpandableSearchButton 
+                <div className="flex items-center gap-1.5 min-w-max">
+                  <ExpandableSearchButton
                     placeholder={translate('events.searchPlaceholder', 'Search events and meetups...')} 
                     onSearch={(query) => setSearchQuery(query)}
                     dropdownItems={searchDropdownItems}
@@ -802,8 +802,8 @@ const EventsAndMeetups = () => {
                     })() : undefined}
                     onFilterClick={isMobile ? () => setFilterSheetOpen(true) : undefined}
                   />
-                  <UniversalCalendarButton />
-                  
+                  <UniversalCalendarButton showText={!isMobile} />
+
                   {/* Create button - matches pill style */}
                   <Button 
                     onClick={() => setCreateSelectionOpen(true)}
