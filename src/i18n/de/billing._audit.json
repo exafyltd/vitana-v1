@@ -1,0 +1,909 @@
+{
+  "verdicts": {
+    "billing.plans.free.name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.plans.premium.name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.plans.premium_5x.name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.plans.premium_5x.ribbon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.plans.premium_20x.name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.plans.premium_20x.ribbon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.features.storageUnit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.features.no": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.features.used": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.creditPacks.starterShort": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.creditPacks.boostShort": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.creditPacks.powerShort": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.redeemCard.placeholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.state.premiumActive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.state.upgrade": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "paywall.remainingCounter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "billing.promises.anchorHeading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.promises.subheading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.promises.owned.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.promises.owned.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.promises.noSell.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.promises.noSell.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.promises.earn.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.promises.earn.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.promises.control.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.promises.control.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.needMoreTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.needMoreBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.showAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.hideAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.headlineSection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.expandedSection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.currentPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.selectPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.perMonth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.perYear": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.saveAnnual": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.trial14": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.free.tagline": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "'Verfallsdatum' is too literal and sounds unnatural for a digital trial; 'Ablaufdatum' or 'zeitliche Begrenzung' would be more appropriate.",
+      "suggested": "Zum Ausprobieren · kein Risiko, ohne Ablaufdatum",
+      "phase": "llm"
+    },
+    "billing.plans.free.price": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.premium.tagline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.premium_5x.tagline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.plans.premium_20x.tagline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.voiceLive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.voiceLiveUnit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.voiceStandard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.voiceStandardUnit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.liveRooms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.liveRoomsUnit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.matchPosts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.matchPostsUnit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.matchReveals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.matchRevealsUnit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.labAnalyses": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.labAnalysesUnit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.photoUploads": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.photoUploadsUnit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.storage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.aiDigest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.aiDigestWeekly": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.aiDigestDaily": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.aiDigestOnDemand": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.sellAndEarnCatalog": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.sellAndEarnCatalogUnit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.priorityPractitioner": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.yes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.fairUse": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.resetIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.features.comparisonTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.creditPacks.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.creditPacks.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.creditPacks.starter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.creditPacks.boost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.creditPacks.power": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.creditPacks.credits": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.creditPacks.creditsWithBonus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.creditPacks.buy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.creditPacks.yourBalance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.redeemCard.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.redeemCard.button": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.redeemCard.redeeming": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.redeemCard.successTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.redeemCard.successBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.redeemCard.founding": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.redeemCard.error.invalid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.redeemCard.error.expired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.redeemCard.error.maxUsed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.redeemCard.error.alreadyRedeemed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.redeemCard.error.stripeActive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.redeemCard.error.budgetExhausted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.redeemCard.error.generic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.earnings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.earnings.youPaid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.earnings.youEarned": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.earnings.net": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.earnings.withdraw": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.earnings.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.founding.bannerTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Gender-specific translation where English is neutral. 'eine der ersten' implies female.",
+      "suggested": "Sei unter den ersten {max}",
+      "phase": "llm"
+    },
+    "billing.founding.bannerBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.founding.spotsRemaining": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.launchGrant.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Awkward phrasing, not fully idiomatic. 'Premium auf uns' is too literal.",
+      "suggested": "Willkommen — Premium geht auf uns",
+      "phase": "llm"
+    },
+    "billing.launchGrant.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.launchGrant.noAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.launchGrant.dismissAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.mobileBilling.rootIntro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.mobileBilling.navPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.mobileBilling.navPayment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.mobileBilling.navInvoices": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.mobileBilling.navCreator": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.mobileBilling.changePlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.mobileBilling.openStripe": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Slight nuance difference; 'Im Stripe-Portal öffnen' means 'Open in the Stripe portal', while 'Open Stripe portal' implies opening the portal itself.",
+      "suggested": "Stripe-Portal öffnen",
+      "phase": "llm"
+    },
+    "billing.mobileBilling.paymentTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.mobileBilling.paymentBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.mobileBilling.paymentNoneTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.mobileBilling.paymentNoneBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.mobileBilling.invoicesTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.mobileBilling.invoicesBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Compound word 'Stripe-Abrechnungsportal' is longer than 22 characters and can be split for readability.",
+      "suggested": "Alle Rechnungen und Belege findest du im Stripe-Abrechnungs-Portal.",
+      "phase": "llm"
+    },
+    "billing.mobileBilling.summaryRenewsOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.state.freeStatus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.state.freeBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.state.renewsAt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.state.autoGrantUntil": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.state.cancelAtPeriodEnd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.state.pastDue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.state.pastDueBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.state.manage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.state.viewPlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.state.trialEndsAt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.state.trialingBadge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.state.activeBadge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.subscriptionsPage.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.subscriptionsPage.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.subscriptionsPage.tabs.yourPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.subscriptionsPage.tabs.billing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.faq.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.faq.q1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.faq.a1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.faq.q2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.faq.a2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.faq.q3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.faq.a3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.faq.q4": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.faq.a4": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.checkoutErrors.stripeNotConfigured": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.checkoutErrors.alreadySubscribed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.checkoutErrors.noStripeCustomer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.checkoutErrors.checkoutFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "billing.checkoutErrors.portalFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.softExtension": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.creditsUsed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.voice_live_minutes.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.voice_live_minutes.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.voice_live_minutes.stayInStandard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.voice_live_minutes.addMinutes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.live_room_minutes.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation of 'running low' is too strong; 'aufgebraucht' means 'used up'. 'Wird knapp' is more accurate.",
+      "suggested": "Hosting-Zeit wird knapp",
+      "phase": "llm"
+    },
+    "paywall.live_room_minutes.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.live_room_minutes.wrapUp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.live_room_minutes.addTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.match_posts.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.match_posts.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.match_reveals.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.match_reveals.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.lab_analyses.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.lab_analyses.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.photo_uploads.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.photo_uploads.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.memory_garden.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.memory_garden.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.autopilot.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.autopilot.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.default.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.default.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.ctaUpgrade": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.ctaCredits": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Meaning changed from general 'use' to specific 'unlock with'.",
+      "suggested": "Nutze {credits} Credits",
+      "phase": "llm"
+    },
+    "paywall.ctaLater": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.resetsIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "paywall.creditsInsufficient": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-06-24T07:02:01.256Z"
+}
