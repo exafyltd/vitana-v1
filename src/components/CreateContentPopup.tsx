@@ -46,8 +46,14 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
   const [compressProgress, setCompressProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Synchronous re-entrancy lock: media upload happens before the mutation, so
+  // `createPost.isPending` lags and rapid clicks could otherwise fire handleSubmit
+  // multiple times, inserting duplicate posts. The ref blocks re-entry instantly.
+  const submittingRef = useRef(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const { createPost } = useProfilePosts();
-  const isBusy = createPost.isPending || isCompressing;
+  const isBusy = createPost.isPending || isCompressing || isSubmitting;
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags(prev =>
@@ -151,6 +157,10 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
     const content = buildContent();
     // Require something to publish: text, or media on the media tab.
     if (!content && !mediaFile) return;
+    // Hard guard against double/triple submit (see submittingRef above).
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+    setIsSubmitting(true);
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -169,6 +179,9 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
       onClose();
     } catch {
       notifyError("toasts.common.contentCreateFailed");
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
     }
   };
 

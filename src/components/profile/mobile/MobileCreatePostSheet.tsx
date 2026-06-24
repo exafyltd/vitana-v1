@@ -32,7 +32,14 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
   const [mediaKind, setMediaKind] = useState<MediaKind | null>(null);
   const [isCompressing, setIsCompressing] = useState(false);
   const [compressProgress, setCompressProgress] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // Synchronous re-entrancy lock. `createPost.isPending` only flips true AFTER
+  // the long media-upload step reaches the mutation, so on rapid taps the button
+  // is still enabled and handlePost re-enters — uploading the media and
+  // inserting a duplicate post per tap. This ref blocks re-entry immediately,
+  // before any await. (See migration 20260624120000 for the DB-level backstop.)
+  const submittingRef = useRef(false);
   const { translate } = useTranslation();
   const { createPost } = useProfilePosts();
 
@@ -84,6 +91,10 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
 
   const handlePost = async () => {
     if (!content.trim() && !mediaFile) return;
+    // Hard guard against double/triple submit (see submittingRef above).
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+    setIsSubmitting(true);
     try {
       let imageUrl: string | undefined;
       let videoUrl: string | undefined;
@@ -143,6 +154,9 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
       console.error('[PostUpload] error:', err);
       const description = err instanceof Error ? err.message : '';
       toast({ title: translate('profilePosts.error', 'Something went wrong'), description, variant: 'destructive' });
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
     }
   };
 
@@ -168,13 +182,13 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
 
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b">
-          <Button variant="ghost" size="icon" onClick={handleClose} disabled={isCompressing || createPost.isPending}>
+          <Button variant="ghost" size="icon" onClick={handleClose} disabled={isCompressing || isSubmitting || createPost.isPending}>
             <X className="h-5 w-5" />
           </Button>
           <h2 className="text-base font-semibold">{translate('profilePosts.createPost', 'Create Post')}</h2>
           <Button
             size="sm"
-            disabled={(!content.trim() && !mediaFile) || content.length > MAX_CHARS || createPost.isPending || isCompressing}
+            disabled={(!content.trim() && !mediaFile) || content.length > MAX_CHARS || isSubmitting || createPost.isPending || isCompressing}
             onClick={handlePost}
             className="rounded-full"
           >
@@ -183,7 +197,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
                 <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
                 <span className="text-xs">{t('screens.profile.compressingVideoPct', { pct: compressProgress })}</span>
               </>
-            ) : createPost.isPending ? (
+            ) : (isSubmitting || createPost.isPending) ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <>
@@ -238,7 +252,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
             variant="outline"
             size="sm"
             onClick={() => fileInputRef.current?.click()}
-            disabled={isCompressing || createPost.isPending}
+            disabled={isCompressing || isSubmitting || createPost.isPending}
             className="rounded-full border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 gap-1.5 px-4"
           >
             <ImagePlus className="h-5 w-5" />

@@ -218,7 +218,7 @@ export async function fetchCommunityNews(
             .order("created_at", { ascending: false })
             .limit(limit);
 
-          const posts =
+          const rawPosts =
             (postRows as unknown as Array<{
               id: string;
               user_id: string;
@@ -227,6 +227,19 @@ export async function fetchCommunityNews(
               video_url: string | null;
               created_at: string;
             }>) || [];
+
+          // Display-level safety net: collapse same-author + identical non-empty
+          // content to one entry (rows are newest-first), so any duplicate rows
+          // never surface twice. Media-only posts (empty content) are kept as-is.
+          const seenKeys = new Set<string>();
+          const posts = rawPosts.filter((p) => {
+            const text = (p.content || "").trim();
+            if (!text) return true;
+            const key = `${p.user_id}|${text}`;
+            if (seenKeys.has(key)) return false;
+            seenKeys.add(key);
+            return true;
+          });
 
           if (posts.length) {
             const authorIds = [...new Set(posts.map((p) => p.user_id))];

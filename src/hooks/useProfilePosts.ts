@@ -52,7 +52,20 @@ export function useProfilePosts(userId?: string) {
         } as never)
         .select()
         .single();
-      if (error) throw error;
+      if (error) {
+        // The DB duplicate guard (trg_profile_posts_block_duplicate) rejects a
+        // near-identical post by the same author within a short window with
+        // SQLSTATE 23505 / hint "duplicate_post". This means the user's content
+        // is already published (a double-submit) — treat it as success rather
+        // than surfacing an error toast, so accidental re-taps are invisible.
+        const code = (error as { code?: string }).code;
+        const hint = (error as { hint?: string }).hint;
+        const message = (error as { message?: string }).message ?? '';
+        if (code === '23505' || hint === 'duplicate_post' || /duplicate_post_suppressed/.test(message)) {
+          return null;
+        }
+        throw error;
+      }
       return data as unknown as ProfilePost;
     },
     onSuccess: () => {

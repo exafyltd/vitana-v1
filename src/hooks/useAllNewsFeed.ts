@@ -159,8 +159,22 @@ async function loadCandidates(
     fetchTopPerformer(token),
   ]);
 
-  const postRows: RawPostRow[] =
+  const rawPostRows: RawPostRow[] =
     postsRes.status === "fulfilled" ? ((postsRes.value.data as unknown as RawPostRow[]) || []) : [];
+  // Display-level safety net against duplicate posts (the DB guard +
+  // composer re-entrancy lock are the primary fixes). Collapse rows with the
+  // same author + identical non-empty content to a single card, keeping the
+  // newest (rows arrive ordered created_at desc). Media-only posts (empty
+  // content) are left untouched so distinct uploads are never merged.
+  const seenPostKeys = new Set<string>();
+  const postRows: RawPostRow[] = rawPostRows.filter((p) => {
+    const text = (p.content || "").trim();
+    if (!text) return true;
+    const key = `${p.user_id}|${text}`;
+    if (seenPostKeys.has(key)) return false;
+    seenPostKeys.add(key);
+    return true;
+  });
   const mediaRows: RawMediaRow[] =
     mediaRes.status === "fulfilled" ? ((mediaRes.value.data as unknown as RawMediaRow[]) || []) : [];
 
