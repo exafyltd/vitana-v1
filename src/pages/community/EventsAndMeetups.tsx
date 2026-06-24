@@ -802,7 +802,7 @@ const EventsAndMeetups = () => {
                     })() : undefined}
                     onFilterClick={isMobile ? () => setFilterSheetOpen(true) : undefined}
                   />
-                  <UniversalCalendarButton showText={!isMobile} />
+                  <UniversalCalendarButton />
 
                   {/* Create button - matches pill style */}
                   <Button 
