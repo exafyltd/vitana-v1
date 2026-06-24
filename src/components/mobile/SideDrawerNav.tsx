@@ -59,6 +59,22 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
 
+  // Flag the body while the side drawer is open so the ORB FAB (injected into
+  // <body> by the external widget at z-index 60) can be layered *below* the
+  // drawer + backdrop (also z-60). Distinct from the fullscreen Sheet's
+  // `data-drawer-open`, which hides the bottom nav and the ORB entirely — here
+  // we keep the ORB docked to the bottom nav, just tucked behind the scrim.
+  useEffect(() => {
+    if (open) {
+      document.body.dataset.sideDrawerOpen = 'true';
+    } else {
+      delete document.body.dataset.sideDrawerOpen;
+    }
+    return () => {
+      delete document.body.dataset.sideDrawerOpen;
+    };
+  }, [open]);
+
   const openPopup = (setter: (v: boolean) => void) => {
     setter(true);
     onClose();
