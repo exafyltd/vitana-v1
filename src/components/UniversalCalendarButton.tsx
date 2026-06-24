@@ -61,7 +61,7 @@ export function UniversalCalendarButton({
           variant="ghost"
           size="sm"
           onClick={() => setCalendarOpen(true)} 
-          className={`h-9 px-3 rounded-full bg-muted/60 hover:bg-muted text-foreground gap-1.5 ${className}`}
+          className={`h-9 px-2.5 rounded-full bg-muted/60 hover:bg-muted text-foreground gap-1 ${className}`}
         >
           <Calendar className="w-4 h-4" />
           {showText && <span className="text-sm">{translate('actionBar.calendar', 'Calendar')}</span>}

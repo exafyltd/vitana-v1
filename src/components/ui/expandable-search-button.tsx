@@ -207,7 +207,7 @@ export function ExpandableSearchButton({
       <button 
         type="button"
         onClick={handleExpand}
-        className="flex items-center gap-1.5 px-3 h-full hover:bg-muted/80 transition-colors rounded-l-full"
+        className="flex items-center gap-1 px-2.5 h-full hover:bg-muted/80 transition-colors rounded-l-full"
       >
         <Search className="w-4 h-4 text-muted-foreground" />
         <span className="text-sm text-foreground">{translate('actionBar.search', 'Search')}</span>
