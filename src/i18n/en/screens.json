@@ -9949,6 +9949,11 @@
       "allCaughtUpForToday": "All caught up for today",
       "nothingNewRightNow": "Nothing new for you right now.",
       "checkForNew": "Check for new"
+    },
+    "postDetail": {
+      "title": "Post",
+      "notFound": "Post not found",
+      "back": "Back"
     }
   }
 }
