@@ -106,6 +106,8 @@ export interface GlobalMessageThread {
   created_by: string;
   created_at: string;
   updated_at: string;
+  /** Optional group profile image (e.g. system chat groups via metadata.avatar_url). */
+  avatar_url?: string;
   participants?: {
     user_id: string;
     display_name?: string;
