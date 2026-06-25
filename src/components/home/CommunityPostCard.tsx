@@ -109,8 +109,15 @@ export function CommunityPostCard({
         }
       }}
     >
+      {/*
+        Media is shown in full (object-contain) rather than cropped to a fixed
+        16:9 box. Members upload portrait smartphone selfies; object-cover on a
+        landscape frame chopped off heads. We let the upload keep its natural
+        aspect ratio, capped at a sane height so a tall portrait can't dominate
+        the feed, with a neutral letterbox behind any unused space.
+      */}
       {item.video_url ? (
-        <div className="relative w-full aspect-[16/9] overflow-hidden bg-black">
+        <div className="flex w-full items-center justify-center overflow-hidden bg-black">
           <video
             src={item.video_url}
             poster={item.image_url || undefined}
@@ -119,12 +126,17 @@ export function CommunityPostCard({
             playsInline
             autoPlay
             preload="metadata"
-            className="absolute inset-0 h-full w-full object-cover"
+            className="h-auto w-full max-h-[70vh] object-contain"
           />
         </div>
       ) : item.image_url ? (
-        <div className="relative w-full aspect-[16/9] overflow-hidden bg-muted">
-          <img src={item.image_url} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="flex w-full items-center justify-center overflow-hidden bg-muted">
+          <img
+            src={item.image_url}
+            alt=""
+            loading="lazy"
+            className="h-auto w-full max-h-[70vh] object-contain"
+          />
         </div>
       ) : null}
 
