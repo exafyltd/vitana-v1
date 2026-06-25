@@ -14,6 +14,7 @@ import { usePostInteractions, PostComment } from "@/hooks/usePostInteractions";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useAuth } from "@/context/AuthProvider";
 import { I18nEmptyState } from "@/components/ui/i18n-empty-state";
+import { FeedMedia } from "@/components/media/FeedMedia";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
@@ -223,13 +224,11 @@ function PostCardWithInteractions({
               {post.content}
             </p>
             {post.image_url && (
-              <div className="mt-4 rounded-xl overflow-hidden shadow-md bg-muted flex items-center justify-center">
-                <img
-                  src={post.image_url}
-                  alt={t('screens.profile.postImage')}
-                  className="w-full h-auto max-h-80 object-contain"
-                />
-              </div>
+              <FeedMedia
+                imageUrl={post.image_url}
+                alt={t('screens.profile.postImage')}
+                className="mt-4 rounded-xl shadow-md"
+              />
             )}
             {post.video_url && (
               <div className="mt-4 rounded-xl overflow-hidden shadow-md bg-black">
