@@ -684,10 +684,19 @@ export default function Messages() {
                       onClick={() => handleThreadOpen(thread)}
                     >
                       <div className="flex items-start space-x-3">
-                        <GroupAvatarStack 
-                          participants={thread.participants || []}
-                          size={densityMode === 'compact' ? 'sm' : 'md'}
-                        />
+                        {thread.avatar_url ? (
+                          <Avatar className={densityMode === 'compact' ? 'h-8 w-8' : 'h-10 w-10'}>
+                            <AvatarImage src={thread.avatar_url} alt={thread.name || ''} className="object-cover" />
+                            <AvatarFallback>
+                              <Users className="w-4 h-4 text-muted-foreground" />
+                            </AvatarFallback>
+                          </Avatar>
+                        ) : (
+                          <GroupAvatarStack
+                            participants={thread.participants || []}
+                            size={densityMode === 'compact' ? 'sm' : 'md'}
+                          />
+                        )}
                         
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between">

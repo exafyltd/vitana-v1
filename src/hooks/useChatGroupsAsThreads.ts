@@ -39,10 +39,16 @@ function toThread(g: ChatGroup): GlobalMessageThread {
       }
     : undefined;
 
+  const avatarUrl =
+    g.metadata && typeof g.metadata === "object" && typeof (g.metadata as any).avatar_url === "string"
+      ? String((g.metadata as any).avatar_url)
+      : undefined;
+
   return {
     id: `${CHAT_GROUP_THREAD_PREFIX}${g.id}`,
     name: g.name,
     type: "group",
+    avatar_url: avatarUrl,
     created_by: g.metadata && typeof g.metadata === "object" && "seeded_by" in g.metadata ? String((g.metadata as any).seeded_by) : "system",
     created_at: g.created_at,
     updated_at: last?.created_at || g.created_at,

@@ -19,6 +19,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import MessageInput from "@/components/messages/MessageInput";
 import MessageBubble from "@/components/messages/MessageBubble";
 import MessageDivider from "@/components/messages/MessageDivider";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   fetchGroup,
   fetchGroupMessages,
@@ -235,6 +236,16 @@ export default function GroupChat() {
           className="rounded p-2 hover:bg-gray-100"
           onClick={goBack}
         >←</button>
+        {typeof (group.metadata as Record<string, unknown> | null)?.avatar_url === "string" && (
+          <Avatar className="h-9 w-9">
+            <AvatarImage
+              src={String((group.metadata as Record<string, unknown>).avatar_url)}
+              alt={group.name}
+              className="object-cover"
+            />
+            <AvatarFallback>{group.name?.[0] ?? "#"}</AvatarFallback>
+          </Avatar>
+        )}
         <div className="flex-1">
           <div className="font-semibold leading-tight">{group.name}</div>
           <div className="text-xs text-gray-500">
