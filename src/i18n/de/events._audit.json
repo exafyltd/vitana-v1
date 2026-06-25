@@ -26,10 +26,8 @@
       "phase": "llm"
     },
     "events.tabs.following": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Ambiguous and not idiomatic for a 'Following' category in a social app context. 'Folgende' means 'the following (items)', not 'content from people you follow'.",
-      "suggested": "Gefolgt",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "events.tabs.recommended": {
@@ -53,10 +51,8 @@
       "phase": "llm"
     },
     "events.emptyStates.noEventsTodayDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'Sie' and 'Ihr' instead of informal 'du' and 'dein'.",
-      "suggested": "Heute sind keine Events geplant. Schau dir kommende Events an oder erstelle dein eigenes!",
       "phase": "llm"
     },
     "events.emptyStates.createEvent": {
@@ -70,17 +66,13 @@
       "phase": "llm"
     },
     "events.emptyStates.followingTitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Beiträge von Personen, denen du folgst",
       "phase": "llm"
     },
     "events.emptyStates.followingDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Inhalte von Personen und Gruppen, denen du folgst, erscheinen hier",
       "phase": "llm"
     },
     "events.emptyStates.findPeople": {
@@ -94,17 +86,13 @@
       "phase": "llm"
     },
     "events.emptyStates.noPostsFromFollowingDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Personen, denen du folgst, haben noch keine Events oder Meetups erstellt.",
       "phase": "llm"
     },
     "events.emptyStates.youFollow": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Du folgst",
       "phase": "llm"
     },
     "events.emptyStates.loadingFollowing": {
@@ -113,5 +101,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:11:27.581Z"
+  "generatedAt": "2026-06-25T07:04:01.091Z"
 }

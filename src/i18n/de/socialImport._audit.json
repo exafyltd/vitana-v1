@@ -6,17 +6,13 @@
       "phase": "identical"
     },
     "socialImport.dialogTitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent terminology with 'Import Profile' (entry 5). 'Verbinden' means 'connect', while 'Import' is 'importieren'.",
-      "suggested": "{platform} Profil importieren",
       "phase": "llm"
     },
     "socialImport.dialogDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' form instead of informal 'du' form.",
-      "suggested": "Verbinde dein {platform}-Profil, um deine Vitana-Identität mit KI-gestützten Einblicken zu bereichern.",
       "phase": "llm"
     },
     "socialImport.profileUrl": {
@@ -50,10 +46,8 @@
       "phase": "llm"
     },
     "socialImport.urlRequiredDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' form instead of informal 'du' form.",
-      "suggested": "Bitte gib deine {platform} Profil-URL ein",
       "phase": "llm"
     },
     "socialImport.importSuccess": {
@@ -62,10 +56,8 @@
       "phase": "llm"
     },
     "socialImport.importSuccessDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihr' form instead of informal 'dein' form.",
-      "suggested": "Dein {platform}-Profil wurde importiert und mit KI-Einblicken angereichert.",
       "phase": "llm"
     },
     "socialImport.importFailed": {
@@ -84,10 +76,8 @@
       "phase": "llm"
     },
     "socialImport.verifiedConnections": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihrem' form instead of informal 'deinem' form.",
-      "suggested": "Verifizierte Verbindungen in deinem digitalen Leben",
       "phase": "llm"
     },
     "socialImport.tapToVisit": {
@@ -106,47 +96,35 @@
       "phase": "llm"
     },
     "socialImport.platformHelp.linkedin": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihre' form instead of informal 'deine' form.",
-      "suggested": "Wir verwenden KI, um deine Überschrift, Zusammenfassung und beruflichen Fähigkeiten zu extrahieren.",
       "phase": "llm"
     },
     "socialImport.platformHelp.instagram": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihre' form instead of informal 'deine' form.",
-      "suggested": "Wir analysieren deine Bio, um deine Interessen und Lifestyle-Themen zu verstehen.",
       "phase": "llm"
     },
     "socialImport.platformHelp.tiktok": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihre' form instead of informal 'deine' form.",
-      "suggested": "Wir extrahieren deine Content-Themen und kreative Persönlichkeit aus deiner Bio.",
       "phase": "llm"
     },
     "socialImport.platformHelp.youtube": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihre' form instead of informal 'deine' form.",
-      "suggested": "Wir identifizieren deine Content-Kategorien und Fachbereiche aus deiner Beschreibung.",
       "phase": "llm"
     },
     "socialImport.platformHelp.facebook": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihre' form instead of informal 'deine' form.",
-      "suggested": "Wir extrahieren deine Interessen und Community-Beteiligung aus deiner Bio.",
       "phase": "llm"
     },
     "socialImport.platformHelp.x": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihre' form instead of informal 'deine' form, and incorrect case for 'Kommunikationsstil'.",
-      "suggested": "Wir analysieren deine Bio, um deine Themengebiete und deinen Kommunikationsstil zu verstehen.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:31:59.721Z"
+  "generatedAt": "2026-06-25T07:23:59.514Z"
 }
