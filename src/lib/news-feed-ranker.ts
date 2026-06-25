@@ -95,6 +95,12 @@ export interface RankOptions {
   articleInterleave?: number;
   /** Max matches pinned to the top (default 1, to avoid match spam). */
   maxPinnedMatches?: number;
+  /**
+   * Round-robin public-news articles across their source so one high-volume
+   * outlet (e.g. a feed that posts many times a day) can't monopolize the head
+   * of the article stream. Default on. Set false for pure newest-first order.
+   */
+  diversifyArticlesBySource?: boolean;
 }
 
 function ts(iso: string): number {
@@ -107,6 +113,72 @@ function downrankPenalty(tags: string[] | undefined, downranked: Record<string, 
   let p = 0;
   for (const t of tags) p += downranked[t] || 0;
   return p;
+}
+
+/**
+ * Reorder already-recency-sorted articles so their sources rotate. Within each
+ * "show less" penalty tier (lower penalty always emitted first, preserving the
+ * demote contract), repeatedly take the newest still-unused article from every
+ * source in turn — so the first slot of each round comes from a different
+ * outlet. A single daily-posting feed (e.g. one source with hundreds of recent
+ * items) therefore no longer fills the entire head of the feed, while overall
+ * recency bias is preserved (each round still leads with the freshest source).
+ * Pure and deterministic: ties broken by stable id.
+ */
+function diversifyArticlesBySource(
+  sorted: ArticleFeedItem[],
+  downranked: Record<string, number>,
+): ArticleFeedItem[] {
+  if (sorted.length < 2) return sorted;
+
+  // Partition into ascending penalty tiers so penalized items always trail
+  // un-penalized ones (the same ordering the recency sort already produced).
+  const tiers = new Map<number, ArticleFeedItem[]>();
+  for (const a of sorted) {
+    const p = downrankPenalty(a.tags, downranked);
+    let tier = tiers.get(p);
+    if (!tier) {
+      tier = [];
+      tiers.set(p, tier);
+    }
+    tier.push(a);
+  }
+
+  const out: ArticleFeedItem[] = [];
+  for (const penalty of [...tiers.keys()].sort((a, b) => a - b)) {
+    // Bucket this tier by source, preserving the incoming recency order so each
+    // bucket's head is that source's newest remaining article.
+    const bySource = new Map<string, ArticleFeedItem[]>();
+    for (const a of tiers.get(penalty)!) {
+      let bucket = bySource.get(a.source_name);
+      if (!bucket) {
+        bucket = [];
+        bySource.set(a.source_name, bucket);
+      }
+      bucket.push(a);
+    }
+    // Round-robin: each round emits the current head of every non-empty source,
+    // those heads ordered newest-first (stable id tie-break) so the rotation
+    // still leads with the freshest content.
+    let remaining = tiers.get(penalty)!.length;
+    while (remaining > 0) {
+      const heads: ArticleFeedItem[] = [];
+      for (const bucket of bySource.values()) {
+        if (bucket.length) heads.push(bucket[0]);
+      }
+      heads.sort(
+        (a, b) =>
+          ts(b.published_at) - ts(a.published_at) ||
+          (a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
+      );
+      for (const h of heads) {
+        out.push(h);
+        bySource.get(h.source_name)!.shift();
+        remaining--;
+      }
+    }
+  }
+  return out;
 }
 
 /**
@@ -192,17 +264,25 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
     return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
   });
 
+  // Rotate sources through the article stream (unless opted out) so a single
+  // high-volume outlet can't monopolize the newest pages — the recency sort
+  // above is the input order each source's bucket preserves.
+  const orderedArticles =
+    options.diversifyArticlesBySource === false
+      ? articles
+      : diversifyArticlesBySource(articles, downranked);
+
   // Compose: pinned community items first, then interleave the post stream with
   // public news at the configured cadence so neither side is starved.
   const result: FeedItem[] = [...pinnedMatches, ...pinnedPerformer];
   let ai = 0;
   for (let i = 0; i < posts.length; i++) {
     result.push(posts[i]);
-    if ((i + 1) % interleave === 0 && ai < articles.length) {
-      result.push(articles[ai++]);
+    if ((i + 1) % interleave === 0 && ai < orderedArticles.length) {
+      result.push(orderedArticles[ai++]);
     }
   }
-  for (; ai < articles.length; ai++) result.push(articles[ai]);
+  for (; ai < orderedArticles.length; ai++) result.push(orderedArticles[ai]);
 
   return result;
 }

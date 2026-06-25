@@ -215,6 +215,31 @@ const { rankFeed, reasonKeyFor } = await loadRanker();
   assert(reasonKeyFor(article("x")) === "screens.home.whyPublic", "§9 public reason key");
 }
 
+// §10 — Public-news source diversity: one high-volume source can't monopolize
+//        the head of the article stream; sources round-robin, newest-first.
+{
+  const arts = [
+    article("f1", { source_name: "Flood", published_at: "2026-06-25T12:00:00Z" }),
+    article("f2", { source_name: "Flood", published_at: "2026-06-25T11:00:00Z" }),
+    article("f3", { source_name: "Flood", published_at: "2026-06-25T10:00:00Z" }),
+    article("b1", { source_name: "B", published_at: "2026-06-24T00:00:00Z" }),
+    article("c1", { source_name: "C", published_at: "2026-06-23T00:00:00Z" }),
+  ];
+  // No posts → articles flow straight through (interleave doesn't apply).
+  const out = rankFeed(arts).filter((x) => x.kind === "article");
+  const sources = out.map((x) => x.source_name);
+  assert(new Set(sources.slice(0, 3)).size === 3, "§10 first three articles are distinct sources");
+  assert(sources[0] === "Flood", "§10 round-robin still leads with the freshest source");
+  assert(out.length === 5, "§10 all articles retained");
+
+  // Opt-out preserves pure newest-first (the flooding source monopolizes again).
+  const pure = rankFeed(arts, { diversifyArticlesBySource: false }).filter((x) => x.kind === "article");
+  assert(
+    pure.slice(0, 3).every((x) => x.source_name === "Flood"),
+    "§10 diversify=false keeps pure newest-first",
+  );
+}
+
 if (failures.length) {
   console.error(`\n✗ news-feed-ranker: ${failures.length} failure(s)`);
   process.exit(1);
