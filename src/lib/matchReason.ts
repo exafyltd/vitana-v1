@@ -233,10 +233,12 @@ export function matchCategoryLabel(
     return t("screens.crossover.matchCatFriends");
   if (/also in|auch in|nearby|in der nähe|location|standort|ort\b/.test(s))
     return t("screens.crossover.matchCatLocation");
+  // Check community/member BEFORE longevity: the active-member fallback phrase
+  // "Active member of the longevity community" also contains "longevity".
+  if (/community|mitglied|active member/.test(s))
+    return t("screens.crossover.matchCatCommunity");
   if (/vitana.?index|longevity|journey|wellness-reise/.test(s))
     return t("screens.crossover.matchCatLongevity");
-  if (/community|mitglied/.test(s))
-    return t("screens.crossover.matchCatCommunity");
   if (/goal|ziel/.test(s)) return t("screens.crossover.matchCatGoals");
   if (/routine|tagesablauf|tagesabläufe/.test(s))
     return t("screens.crossover.matchCatRoutine");
