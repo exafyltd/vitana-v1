@@ -19,6 +19,19 @@ import { formatDistanceToNow } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { reasonKeyFor, type FeedItem, type ArticleFeedItem } from "@/lib/news-feed-ranker";
 
+/** Sunburst tick marks for the match dial — 12 evenly spaced rays around the score. */
+const MATCH_RAYS = Array.from({ length: 12 }, (_, i) => {
+  const a = (i * Math.PI) / 6; // 30° steps
+  const cos = Math.cos(a);
+  const sin = Math.sin(a);
+  return {
+    x1: 32 + 25 * cos,
+    y1: 32 + 25 * sin,
+    x2: 32 + 30 * cos,
+    y2: 32 + 30 * sin,
+  };
+});
+
 function timeAgo(iso: string): string {
   try {
     return formatDistanceToNow(new Date(iso), { addSuffix: true });
@@ -116,14 +129,35 @@ export function NewsFeedItemCard({
                 <p className="truncate text-sm text-muted-foreground">{item.match_reason}</p>
               )}
             </div>
-            <span className="shrink-0 inline-flex items-baseline gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-primary">
-              <span className="text-lg font-extrabold leading-none">
-                {t("screens.home.matchPercent", { score: item.compatibility_score })}
-              </span>
-              <span className="text-[10px] font-semibold tracking-wide">
-                {t("screens.home.matchLabel")}
-              </span>
-            </span>
+            <div className="relative flex h-16 w-16 shrink-0 items-center justify-center text-amber-400">
+              <svg
+                viewBox="0 0 64 64"
+                className="absolute inset-0 h-full w-full"
+                aria-hidden="true"
+              >
+                {MATCH_RAYS.map((r, i) => (
+                  <line
+                    key={i}
+                    x1={r.x1}
+                    y1={r.y1}
+                    x2={r.x2}
+                    y2={r.y2}
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    className="opacity-70"
+                  />
+                ))}
+              </svg>
+              <div className="flex h-11 w-11 flex-col items-center justify-center rounded-full bg-amber-100">
+                <span className="text-xs font-bold leading-none text-amber-600">
+                  {t("screens.home.matchPercent", { score: item.compatibility_score })}
+                </span>
+                <span className="mt-0.5 text-[8px] font-medium leading-none text-amber-500">
+                  {t("screens.home.matchLabel")}
+                </span>
+              </div>
+            </div>
           </div>
           <div className="mt-3 flex items-center gap-1.5 text-sm font-medium text-primary">
             <UserPlus className="h-4 w-4" />
