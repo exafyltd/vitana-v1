@@ -176,10 +176,8 @@
       "phase": "llm"
     },
     "subNav.diary": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Redundant and clunky phrasing. 'Dnevni dnevnik' literally means 'Daily daily'.",
-      "suggested": "Dnevnik",
       "phase": "llm"
     },
     "subNav.recall": {
@@ -213,5 +211,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:29:40.901Z"
+  "generatedAt": "2026-06-25T07:16:57.568Z"
 }

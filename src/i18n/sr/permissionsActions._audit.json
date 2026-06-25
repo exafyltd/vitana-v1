@@ -2,9 +2,9 @@
   "verdicts": {
     "permissionsActions.title": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'Radnje privatnosti' is not idiomatic for a UI label; 'Postavke privatnosti' or 'Upravljanje privatnošću' would be more natural.",
-      "suggested": "Postavke privatnosti i dozvola",
+      "confidence": 0.8,
+      "issue": "English 'Actions' is translated as 'Settings', which changes the meaning. 'Actions' implies active steps or choices, while 'Settings' implies configuration.",
+      "suggested": "Opcije privatnosti i dozvola",
       "phase": "llm"
     },
     "permissionsActions.items.privacySettings.title": {
@@ -13,10 +13,8 @@
       "phase": "llm"
     },
     "permissionsActions.items.privacySettings.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The verb 'Konfigurišite' is in the formal 'Vi' form; it should be in the informal 'ti' form for consistency with the app's register.",
-      "suggested": "Konfiguriši privatnost podataka i podešavanja deljenja",
       "phase": "llm"
     },
     "permissionsActions.items.manageAccess.title": {
@@ -90,5 +88,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:05:50.169Z"
+  "generatedAt": "2026-06-25T07:02:27.666Z"
 }
