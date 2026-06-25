@@ -180,3 +180,75 @@ export function localizeMatchReason(
   const localized = localizeLegacyString(s);
   return localized != null ? localized : s;
 }
+
+/**
+ * Reduce a match reason to a SHORT, localized category label (1–2 words) that
+ * tells the user *what* the match is based on — "Gemeinsame Interessen",
+ * "Gleicher Ort", "Bewegung" — instead of a long, often-truncated sentence.
+ *
+ * Used by compact surfaces like the News-feed match card where there is only
+ * room for a couple of words. Always returns a localized string (falls back to
+ * a generic "shared wellness" category) so the card never shows raw English.
+ */
+export function matchCategoryLabel(
+  reason: MatchReason | null | undefined,
+): string {
+  const wellness = () => t("screens.crossover.matchCatWellness");
+  if (!reason) return wellness();
+
+  // Structured reason `{ code, params }` — the canonical shape.
+  if (typeof reason === "object") {
+    switch (reason.code) {
+      case "shared_pillar": {
+        const sub = PILLAR_KEY[String(reason.params?.pillar ?? "")];
+        return sub ? t(`screens.crossover.${sub}`) : wellness();
+      }
+      case "similar_index":
+        return t("screens.crossover.matchCatLongevity");
+      case "mutual_connections":
+        return t("screens.crossover.matchCatFriends");
+      case "same_location":
+        return t("screens.crossover.matchCatLocation");
+      case "active_member":
+        return t("screens.crossover.matchCatCommunity");
+      default:
+        return wellness();
+    }
+  }
+
+  // Legacy free-text string (DE or EN) — map keywords to a category.
+  const raw = reason.trim();
+  if (!raw) return wellness();
+
+  // "You're both strong in X" / "Ihr seid beide stark im Bereich X" → pillar.
+  const pillarMatch =
+    raw.match(/strong in (.+)$/i) || raw.match(/bereich (.+)$/i);
+  if (pillarMatch) {
+    const key = PILLAR_NAME_TO_KEY[pillarMatch[1].trim().toLowerCase()];
+    if (key) return t(`screens.crossover.${PILLAR_KEY[key]}`);
+  }
+
+  const s = raw.toLowerCase();
+  if (/mutual connection|gemeinsame kontakt|friend|freund/.test(s))
+    return t("screens.crossover.matchCatFriends");
+  if (/also in|auch in|nearby|in der nähe|location|standort|ort\b/.test(s))
+    return t("screens.crossover.matchCatLocation");
+  if (/vitana.?index|longevity|journey|wellness-reise/.test(s))
+    return t("screens.crossover.matchCatLongevity");
+  if (/community|mitglied/.test(s))
+    return t("screens.crossover.matchCatCommunity");
+  if (/goal|ziel/.test(s)) return t("screens.crossover.matchCatGoals");
+  if (/routine|tagesablauf|tagesabläufe/.test(s))
+    return t("screens.crossover.matchCatRoutine");
+  if (/fitness/.test(s)) return t("screens.crossover.matchCatFitness");
+  if (/lifestyle|lebensstil/.test(s))
+    return t("screens.crossover.matchCatLifestyle");
+  if (/sport/.test(s)) return t("screens.crossover.matchCatSports");
+  if (/activity|aktivit/.test(s))
+    return t("screens.crossover.matchCatActivity");
+  if (/business|geschäft|geschäft/.test(s))
+    return t("screens.crossover.matchCatBusiness");
+  if (/interest|interesse/.test(s))
+    return t("screens.crossover.matchCatInterests");
+  return wellness();
+}

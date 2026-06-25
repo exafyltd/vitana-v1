@@ -3569,7 +3569,20 @@
       "fromSessions_from": "od €{sessions_from}",
       "newinvitesNewInviteValue1": "{newInvites}novi poziv{value1}",
       "lengthReportValue1ReadyShare": "{length}izveštaj{value1}spreman za deljenje",
-      "chat": "💬 Ćaskanje"
+      "chat": "💬 Ćaskanje",
+      "matchCatInterests": "Zajednička interesovanja",
+      "matchCatLocation": "Isto područje",
+      "matchCatActivity": "Slične aktivnosti",
+      "matchCatSports": "Sport",
+      "matchCatGoals": "Isti ciljevi",
+      "matchCatFriends": "Zajednički prijatelji",
+      "matchCatBusiness": "Posao",
+      "matchCatRoutine": "Slična rutina",
+      "matchCatLifestyle": "Sličan stil života",
+      "matchCatFitness": "Fitnes",
+      "matchCatLongevity": "Faza dugovečnosti",
+      "matchCatCommunity": "Zajednica",
+      "matchCatWellness": "Zajednički wellness"
     },
     "debug": {
       "presenceDebug": "Prisutnost Debug",

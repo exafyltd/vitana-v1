@@ -3736,7 +3736,20 @@
       "matchReasonMutualConnectionsOne": "{count} mutual connection",
       "matchReasonMutualConnectionsOther": "{count} mutual connections",
       "matchReasonSameLocation": "Also in {location}",
-      "matchReasonActiveMember": "Active member of the longevity community"
+      "matchReasonActiveMember": "Active member of the longevity community",
+      "matchCatInterests": "Shared interests",
+      "matchCatLocation": "Same area",
+      "matchCatActivity": "Similar activities",
+      "matchCatSports": "Sports",
+      "matchCatGoals": "Shared goals",
+      "matchCatFriends": "Mutual friends",
+      "matchCatBusiness": "Business",
+      "matchCatRoutine": "Similar routine",
+      "matchCatLifestyle": "Similar lifestyle",
+      "matchCatFitness": "Fitness",
+      "matchCatLongevity": "Longevity stage",
+      "matchCatCommunity": "Community",
+      "matchCatWellness": "Shared wellness"
     },
     "debug": {
       "presenceDebug": "Presence Debug",

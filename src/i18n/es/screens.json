@@ -3569,7 +3569,20 @@
       "fromSessions_from": "desde €{sessions_from}",
       "newinvitesNewInviteValue1": "{newInvites} nueva invitación{value1}",
       "lengthReportValue1ReadyShare": "{length} informe{value1} listo para compartir",
-      "chat": "💬 Chat"
+      "chat": "💬 Chat",
+      "matchCatInterests": "Intereses comunes",
+      "matchCatLocation": "Misma zona",
+      "matchCatActivity": "Actividades similares",
+      "matchCatSports": "Deporte",
+      "matchCatGoals": "Mismos objetivos",
+      "matchCatFriends": "Amigos en común",
+      "matchCatBusiness": "Negocios",
+      "matchCatRoutine": "Rutina similar",
+      "matchCatLifestyle": "Estilo de vida similar",
+      "matchCatFitness": "Fitness",
+      "matchCatLongevity": "Etapa de longevidad",
+      "matchCatCommunity": "Comunidad",
+      "matchCatWellness": "Bienestar común"
     },
     "debug": {
       "presenceDebug": "Depuración de presencia",

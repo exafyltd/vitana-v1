@@ -21,6 +21,8 @@
  * longevity-news product and public science is core, not filler.
  */
 
+import type { MatchReason } from "@/lib/matchReason";
+
 export type FeedItemKind = "match" | "performer" | "post" | "article";
 
 interface FeedItemBase {
@@ -36,7 +38,8 @@ export interface MatchFeedItem extends FeedItemBase {
   user_id: string;
   display_name: string;
   avatar_url: string | null;
-  match_reason: string;
+  /** Raw reason (structured or legacy string) — localize at render time. */
+  match_reason: MatchReason | null;
   compatibility_score: number;
 }
 
