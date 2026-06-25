@@ -17,6 +17,7 @@ import { CommunityPostCard } from "@/components/home/CommunityPostCard";
 import { getNewsImage } from "@/lib/news-images";
 import { formatDistanceToNow } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
+import { matchCategoryLabel } from "@/lib/matchReason";
 import { reasonKeyFor, type FeedItem, type ArticleFeedItem } from "@/lib/news-feed-ranker";
 
 /** Sunburst tick marks for the match dial — 12 evenly spaced rays around the score. */
@@ -125,9 +126,9 @@ export function NewsFeedItemCard({
             </Avatar>
             <div className="min-w-0 flex-1">
               <p className="truncate font-semibold text-foreground">{item.display_name}</p>
-              {item.match_reason && (
-                <p className="truncate text-sm text-muted-foreground">{item.match_reason}</p>
-              )}
+              <p className="truncate text-sm text-muted-foreground">
+                {matchCategoryLabel(item.match_reason)}
+              </p>
             </div>
             <div className="relative flex h-16 w-16 shrink-0 items-center justify-center text-amber-400">
               <svg

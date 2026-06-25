@@ -3736,7 +3736,20 @@
       "matchReasonMutualConnectionsOne": "{count} gemeinsame Kontaktperson",
       "matchReasonMutualConnectionsOther": "{count} gemeinsame Kontakte",
       "matchReasonSameLocation": "Auch in {location}",
-      "matchReasonActiveMember": "Aktives Mitglied der Longevity-Community"
+      "matchReasonActiveMember": "Aktives Mitglied der Longevity-Community",
+      "matchCatInterests": "Gemeinsame Interessen",
+      "matchCatLocation": "Gleicher Ort",
+      "matchCatActivity": "Ähnliche Aktivitäten",
+      "matchCatSports": "Sport",
+      "matchCatGoals": "Gleiche Ziele",
+      "matchCatFriends": "Gemeinsame Freunde",
+      "matchCatBusiness": "Business",
+      "matchCatRoutine": "Ähnliche Routine",
+      "matchCatLifestyle": "Ähnlicher Lebensstil",
+      "matchCatFitness": "Fitness",
+      "matchCatLongevity": "Longevity-Phase",
+      "matchCatCommunity": "Community",
+      "matchCatWellness": "Gemeinsame Wellness"
     },
     "debug": {
       "presenceDebug": "Präsenz Debug",
