@@ -110,8 +110,6 @@ export function CommunityPostCard({
         }
       }}
     >
-      <FeedMedia videoUrl={item.video_url} imageUrl={item.image_url} />
-
       <CardContent className="p-4 pt-3">
         <div className="flex items-center gap-1.5 text-xs font-medium text-primary mb-2">
           <MessageCircle className="h-3.5 w-3.5" />
@@ -121,6 +119,8 @@ export function CommunityPostCard({
         {item.content && (
           <p className="text-sm leading-relaxed text-foreground line-clamp-3">{item.content}</p>
         )}
+
+        <FeedMedia videoUrl={item.video_url} imageUrl={item.image_url} />
 
         <div className="mt-3 flex items-center justify-between">
           <div className="flex items-center gap-2 min-w-0">

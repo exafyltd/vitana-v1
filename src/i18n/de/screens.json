@@ -5286,7 +5286,8 @@
       "noRoutinesYetCreateYourFirst": "Noch keine Routinen. Erstelle deine erste Routine, um loszulegen!",
       "text4NewIdeas": "4 neue Ideen",
       "executeAllValue0": "Alle {value0} ausführen",
-      "noValue0ActionsAvailable": "Keine {value0}Aktionen verfügbar"
+      "noValue0ActionsAvailable": "Keine {value0}Aktionen verfügbar",
+      "enlargeMedia": "Vergrößern"
     },
     "icons": {
       "xFormerlyTwitter": "X (ehemals Twitter)"
