@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthProvider";
 import { useFeedPostInteractions } from "@/hooks/useFeedPostInteractions";
 import { NewsPostModerationMenu } from "@/components/home/NewsPostModerationMenu";
+import { FeedMedia } from "@/components/media/FeedMedia";
 import { reasonKeyFor, type FeedItem, type PostFeedItem } from "@/lib/news-feed-ranker";
 
 function timeAgo(iso: string): string {
@@ -109,36 +110,7 @@ export function CommunityPostCard({
         }
       }}
     >
-      {/*
-        Media is shown in full (object-contain) rather than cropped to a fixed
-        16:9 box. Members upload portrait smartphone selfies; object-cover on a
-        landscape frame chopped off heads. We let the upload keep its natural
-        aspect ratio, capped at a sane height so a tall portrait can't dominate
-        the feed, with a neutral letterbox behind any unused space.
-      */}
-      {item.video_url ? (
-        <div className="flex w-full items-center justify-center overflow-hidden bg-black">
-          <video
-            src={item.video_url}
-            poster={item.image_url || undefined}
-            muted
-            loop
-            playsInline
-            autoPlay
-            preload="metadata"
-            className="h-auto w-full max-h-[70vh] object-contain"
-          />
-        </div>
-      ) : item.image_url ? (
-        <div className="flex w-full items-center justify-center overflow-hidden bg-muted">
-          <img
-            src={item.image_url}
-            alt=""
-            loading="lazy"
-            className="h-auto w-full max-h-[70vh] object-contain"
-          />
-        </div>
-      ) : null}
+      <FeedMedia videoUrl={item.video_url} imageUrl={item.image_url} />
 
       <CardContent className="p-4 pt-3">
         <div className="flex items-center gap-1.5 text-xs font-medium text-primary mb-2">
