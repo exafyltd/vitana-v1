@@ -4730,6 +4730,8 @@
       "markAnyJourneyEventCompletePillar": "Marca cualquier evento del viaje como completado → el pilar que apunta sube. Mantenlo día tras día →\n                la racha de bonificación se activa. Conecta un wearable → la barra de datos conectados se llena.\n                Equilibra los cinco → el factor de equilibrio se mantiene en 1.0× y cada punto cuenta completamente."
     },
     "home": {
+      "matchPercent": "{score} %",
+      "matchLabel": "Match",
       "noUpcomingEvents": "No hay próximos eventos",
       "dismissWelcomeBanner": "Descartar banner de bienvenida",
       "loadingNews": "Cargando noticias…",
