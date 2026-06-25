@@ -4730,6 +4730,8 @@
       "markAnyJourneyEventCompletePillar": "Označite bilo koji događaj na putovanju kao završen → stub koji cilja raste. Nastavite iz dana u dan →\n                bonus za niz se aktivira. Povežite nosivi uređaj → traka sa povezanim podacima se puni.\n                Balansirajte svih pet → faktor balansa ostaje 1.0× i svaki poen se u potpunosti računa."
     },
     "home": {
+      "matchPercent": "{score} %",
+      "matchLabel": "Match",
       "noUpcomingEvents": "Nema predstojećih događaja",
       "dismissWelcomeBanner": "Odbaci dobrodošli banner",
       "loadingNews": "Učitavanje vesti…",

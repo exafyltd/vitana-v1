@@ -5146,6 +5146,8 @@
       "communityMember": "Community Member",
       "whyPublic": "Longevity news",
       "matchScore": "{score}% match",
+      "matchPercent": "{score}%",
+      "matchLabel": "Match",
       "viewProfile": "View profile",
       "mostImproved": "Most improved",
       "improvementPts": "+{pts} points",

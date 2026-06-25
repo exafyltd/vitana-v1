@@ -116,8 +116,13 @@ export function NewsFeedItemCard({
                 <p className="truncate text-sm text-muted-foreground">{item.match_reason}</p>
               )}
             </div>
-            <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary">
-              {t("screens.home.matchScore", { score: item.compatibility_score })}
+            <span className="shrink-0 inline-flex items-baseline gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-primary">
+              <span className="text-lg font-extrabold leading-none">
+                {t("screens.home.matchPercent", { score: item.compatibility_score })}
+              </span>
+              <span className="text-[10px] font-semibold tracking-wide">
+                {t("screens.home.matchLabel")}
+              </span>
             </span>
           </div>
           <div className="mt-3 flex items-center gap-1.5 text-sm font-medium text-primary">
