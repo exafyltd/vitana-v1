@@ -105,6 +105,7 @@ export default function Home() {
   const feedV2 = isFeedV2Enabled();
   const {
     items: feedItems, isLoading: isLoadingFeedV2, refetch: refetchFeedV2,
+    fetchNextPage: fetchNextV2, hasNextPage: hasNextV2, isFetchingNextPage: isFetchingNextV2,
   } = useAllNewsFeed({ enabled: feedV2 && activeTab === "all" });
 
   // One impression event per tab activation (fire-and-forget).
@@ -166,6 +167,22 @@ export default function Home() {
     return () => observer.disconnect();
   }, [handleObserver]);
 
+  // Endless scroll for the unified v2 "All" feed — its own sentinel, since it
+  // renders in a separate branch from the legacy feed above.
+  const v2ObserverRef = useRef<HTMLDivElement>(null);
+  const handleV2Observer = useCallback((entries: IntersectionObserverEntry[]) => {
+    const [entry] = entries;
+    if (entry.isIntersecting && hasNextV2 && !isFetchingNextV2) fetchNextV2();
+  }, [hasNextV2, isFetchingNextV2, fetchNextV2]);
+
+  useEffect(() => {
+    const el = v2ObserverRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(handleV2Observer, { rootMargin: "200px" });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [handleV2Observer]);
+
   const handleArticleClick = (article: NewsArticle) => {
     navigate(`/news/${article.id}`, { state: { article } });
   };
@@ -225,7 +242,15 @@ export default function Home() {
           ))}
         </div>
       )}
-      {!isLoadingFeedV2 && feedItems.length > 0 && (
+      {/* Endless-scroll sentinel: loads the next news page as it nears the viewport. */}
+      <div ref={v2ObserverRef} className="h-1" />
+      {isFetchingNextV2 && (
+        <div className="flex items-center justify-center py-8">
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+          <span className="ml-2 text-sm text-muted-foreground">{t('screens.home.loadingMore')}</span>
+        </div>
+      )}
+      {!isLoadingFeedV2 && !hasNextV2 && !isFetchingNextV2 && feedItems.length > 0 && (
         <p className="text-center text-sm text-muted-foreground py-8">{t('screens.home.youReAllCaughtUp')}</p>
       )}
     </>

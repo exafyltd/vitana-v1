@@ -19,7 +19,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useRealMatches } from "@/hooks/useRealMatches";
 import { useNewsFeedPreferencesStore } from "@/stores/newsFeedPreferencesStore";
-import { fetchLongevityNews } from "@/hooks/useNewsFeed";
+import { useLongevityNewsFeed } from "@/hooks/useNewsFeed";
 import { FEED_INCLUDE_OWN_POSTS, FEED_FOLLOWING_ONLY } from "@/config/feed";
 import {
   rankFeed,
@@ -36,7 +36,6 @@ const GATEWAY_URL =
 
 interface RawCandidates {
   posts: PostFeedItem[];
-  articles: ArticleFeedItem[];
   performer: PerformerFeedItem | null;
 }
 
@@ -110,7 +109,6 @@ async function fetchTopPerformer(token: string | null): Promise<PerformerFeedIte
 async function loadCandidates(
   userId: string | null,
   token: string | null,
-  language: string,
 ): Promise<RawCandidates> {
   // Followed ids (for the follow-before-others ranking tier).
   const followingIds = new Set<string>();
@@ -135,7 +133,7 @@ async function loadCandidates(
       for (const r of (blockedRes.value.data as { author_id: string }[]) || []) suppressedAuthorIds.add(r.author_id);
   }
 
-  const [postsRes, mediaRes, newsRes, performer] = await Promise.allSettled([
+  const [postsRes, mediaRes, performer] = await Promise.allSettled([
     // Public member posts.
     supabase
       .from("profile_posts" as never)
@@ -153,8 +151,6 @@ async function loadCandidates(
       .eq("media_type", "video")
       .order("created_at", { ascending: false })
       .limit(20),
-    // Public-source longevity news (page 1).
-    fetchLongevityNews(1, token, { limit: 20, language }),
     // Consent-gated spotlight (gateway).
     fetchTopPerformer(token),
   ]);
@@ -225,26 +221,8 @@ async function loadCandidates(
     });
   }
 
-  const articles: ArticleFeedItem[] = [];
-  if (newsRes.status === "fulfilled") {
-    for (const item of newsRes.value.items || []) {
-      articles.push({
-        id: `article-${item.id}`,
-        kind: "article",
-        source_name: item.source_name,
-        title: item.title,
-        summary: item.summary,
-        image_url: item.image_url,
-        link: item.link,
-        tags: item.tags || [],
-        published_at: item.published_at,
-      });
-    }
-  }
-
   return {
     posts,
-    articles,
     performer: performer.status === "fulfilled" ? performer.value : null,
   };
 }
@@ -261,7 +239,7 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
 
   const candidatesQuery = useQuery({
     queryKey: ["all-news-feed", userId, language],
-    queryFn: () => loadCandidates(userId, token, language),
+    queryFn: () => loadCandidates(userId, token),
     enabled: options?.enabled !== false,
     // Launch phase: keep the feed lively. Realtime (below) drives instant
     // updates; the short stale time + focus refetch + slow poll are belt-and-
@@ -271,6 +249,12 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
     refetchOnWindowFocus: true,
     refetchInterval: 60 * 1000,
   });
+
+  // Public-source longevity news — paginated so the feed never "ends". As the
+  // viewer scrolls, fetchNextPage() pulls the next page from the gateway and the
+  // memo below re-ranks the larger article pool into the stream. Community posts
+  // are finite and load once (above); the endless tail is public news.
+  const newsQuery = useLongevityNewsFeed({ limit: 20, enabled: options?.enabled !== false });
 
   // Realtime: a new public post (or a freshly approved community video) should
   // surface in everyone's feed immediately. Invalidate the candidates query so
@@ -308,11 +292,30 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
       published_at: new Date().toISOString(),
     }));
 
+    // Flatten every loaded news page into article candidates. Newer pages just
+    // grow this pool; rankFeed keeps the deterministic order stable.
+    const articles: ArticleFeedItem[] = [];
+    for (const page of newsQuery.data?.pages || []) {
+      for (const item of page.items || []) {
+        articles.push({
+          id: `article-${item.id}`,
+          kind: "article",
+          source_name: item.source_name,
+          title: item.title,
+          summary: item.summary,
+          image_url: item.image_url,
+          link: item.link,
+          tags: item.tags || [],
+          published_at: item.published_at,
+        });
+      }
+    }
+
     const all: FeedItem[] = [
       ...matchItems,
       ...(candidates?.performer ? [candidates.performer] : []),
       ...(candidates?.posts || []),
-      ...(candidates?.articles || []),
+      ...articles,
     ];
 
     return rankFeed(all, {
@@ -320,15 +323,20 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
       mutedSources,
       downrankedTags,
     });
-  }, [candidatesQuery.data, matchesQuery.data, hiddenArticleIds, mutedSources, downrankedTags]);
+  }, [candidatesQuery.data, matchesQuery.data, newsQuery.data, hiddenArticleIds, mutedSources, downrankedTags]);
 
   return {
     items,
     isLoading: candidatesQuery.isLoading || matchesQuery.isLoading,
     isError: candidatesQuery.isError,
+    // Endless scroll: drive these from the consumer's intersection observer.
+    fetchNextPage: newsQuery.fetchNextPage,
+    hasNextPage: newsQuery.hasNextPage,
+    isFetchingNextPage: newsQuery.isFetchingNextPage,
     refetch: () => {
       candidatesQuery.refetch();
       matchesQuery.refetch();
+      newsQuery.refetch();
     },
   };
 }
