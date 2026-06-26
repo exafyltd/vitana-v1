@@ -10,19 +10,28 @@
  * survive, nothing dominates the screen.
  *
  * Inline controls (Facebook-style, lower-right): a sound toggle for videos and
- * a fullscreen toggle for both photos and videos.
+ * an expand/fullscreen toggle for both photos and videos.
  *
- * Audio is scroll-following and feed-wide. Browsers only autoplay muted clips,
- * so videos always mount muted. The speaker button is a single GLOBAL mute
- * switch (its first tap is the user gesture that unlocks unmuted playback):
- * once feed sound is on, the most-visible video carries audio and the rest stay
- * muted, so exactly one track ever plays and it follows you as you scroll. Tap
- * any speaker again to turn feed sound back off. Every control stops
- * propagation — the card navigates to the author's profile on click, and the
- * controls must not trigger that.
+ * Audio is scroll-following and feed-wide: videos always mount muted, the
+ * speaker is a single global mute switch, and only the most-visible video
+ * carries sound (see the controller below).
+ *
+ * Fullscreen:
+ *  - iOS keeps its native video player (`webkitEnterFullscreen`) — it already
+ *    works well there (smooth, and returns to the same scroll spot), so we do
+ *    not touch it.
+ *  - Everywhere else (Android, desktop) we open an in-app overlay instead of the
+ *    OS Fullscreen API. Android's WebView is slow to enter element fullscreen
+ *    and snaps the feed back to the top on exit; the overlay opens instantly and
+ *    never touches the feed's scroll position, so closing returns the member to
+ *    the exact post they were on.
+ *
+ * Every control stops propagation — the card navigates to the author's profile
+ * on click, and the controls must not trigger that.
  */
-import { useEffect, useId, useRef, useState } from "react";
-import { Maximize2, Volume2, VolumeX } from "lucide-react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { Maximize2, Volume2, VolumeX, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n-toast";
 
@@ -34,6 +43,16 @@ const DEFAULT_RATIO = PORTRAIT_MIN_RATIO; // before dimensions are known
 function clampRatio(width: number, height: number): number {
   if (!width || !height) return DEFAULT_RATIO;
   return Math.min(LANDSCAPE_MAX_RATIO, Math.max(PORTRAIT_MIN_RATIO, width / height));
+}
+
+// iOS (iPhone/iPad) — the platform whose native fullscreen already works and
+// which we must leave untouched.
+function isIOS(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return (
+    /iP(hone|ad|od)/.test(navigator.userAgent) ||
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
+  );
 }
 
 // --- Scroll-following feed audio ------------------------------------------
@@ -68,8 +87,6 @@ const feedAudio = (() => {
         }
       }
       if (bestRatio < VISIBILITY_FLOOR) {
-        // Nothing is sufficiently on-screen; keep the current clip if it is still
-        // visible at all, otherwise go silent until something scrolls into view.
         next = current && currentRatio > 0 ? current : null;
       } else if (current && currentRatio >= VISIBILITY_FLOOR && bestRatio - currentRatio < SWITCH_MARGIN) {
         next = current; // current clip is still good enough — avoid flicker
@@ -124,43 +141,10 @@ export function FeedMedia({
   // this clip is the one currently carrying that sound.
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [isActive, setIsActive] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const instanceId = useId();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  // Scroll restore around fullscreen. On Android, exiting element fullscreen
-  // snaps the feed back to the top; we snapshot the scroll position(s) when THIS
-  // card enters fullscreen and re-assert them on exit. We record the window AND
-  // any scrollable ancestor so it works whether the feed scrolls the document or
-  // a nested container. `enteredFsRef` ensures only the initiating card restores
-  // (every mounted card hears the event).
-  const scrollSnapshotRef = useRef<{ win: number; nodes: { el: HTMLElement; top: number }[] }>({
-    win: 0,
-    nodes: [],
-  });
-  const enteredFsRef = useRef(false);
-
-  const snapshotScroll = () => {
-    const nodes: { el: HTMLElement; top: number }[] = [];
-    let el = containerRef.current?.parentElement ?? null;
-    while (el && el !== document.body && el !== document.documentElement) {
-      const oy = getComputedStyle(el).overflowY;
-      if ((oy === "auto" || oy === "scroll") && el.scrollHeight > el.clientHeight) {
-        nodes.push({ el, top: el.scrollTop });
-      }
-      el = el.parentElement;
-    }
-    scrollSnapshotRef.current = { win: window.scrollY, nodes };
-  };
-
-  const restoreScroll = () => {
-    const { win, nodes } = scrollSnapshotRef.current;
-    if (Math.abs(window.scrollY - win) > 2) window.scrollTo(0, win);
-    const se = document.scrollingElement as HTMLElement | null;
-    if (se && Math.abs(se.scrollTop - win) > 2) se.scrollTop = win;
-    for (const n of nodes) {
-      if (Math.abs(n.el.scrollTop - n.top) > 2) n.el.scrollTop = n.top;
-    }
-  };
 
   // Subscribe to the feed audio controller + report this clip's visibility.
   useEffect(() => {
@@ -199,38 +183,32 @@ export function FeedMedia({
     };
   }, [videoUrl, instanceId]);
 
-  // Restore the feed scroll position when leaving fullscreen. Android's WebView
-  // snaps the window-scrolled feed back to the top on exit — and it does so a
-  // few hundred ms AFTER the fullscreenchange event (once the fullscreen UI
-  // animation + relayout settle), so a one-shot restore loses the race. Instead
-  // re-assert the saved position every frame for a short window, but only when
-  // something has displaced it, so we correct the WebView's reset without
-  // fighting a scroll the user makes themselves.
+  const closeExpanded = useCallback(() => setExpanded(false), []);
+
+  // While the in-app overlay is open: close on Android back button (via a pushed
+  // history entry) and on Escape, and lock the background from scrolling. The
+  // feed stays mounted underneath at its current scroll, so closing returns the
+  // member to the exact post.
   useEffect(() => {
-    if (!videoUrl) return;
-    let rafId = 0;
-    const onFsChange = () => {
-      const fsEl =
-        document.fullscreenElement ||
-        (document as Document & { webkitFullscreenElement?: Element }).webkitFullscreenElement;
-      if (fsEl || !enteredFsRef.current) return;
-      enteredFsRef.current = false;
-      const start = performance.now();
-      cancelAnimationFrame(rafId);
-      const tick = (now: number) => {
-        restoreScroll();
-        if (now - start < 900) rafId = requestAnimationFrame(tick);
-      };
-      rafId = requestAnimationFrame(tick);
+    if (!expanded) return;
+    window.history.pushState({ feedMediaOverlay: true }, "");
+    const onPop = () => setExpanded(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setExpanded(false);
     };
-    document.addEventListener("fullscreenchange", onFsChange);
-    document.addEventListener("webkitfullscreenchange", onFsChange);
+    window.addEventListener("popstate", onPop);
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     return () => {
-      cancelAnimationFrame(rafId);
-      document.removeEventListener("fullscreenchange", onFsChange);
-      document.removeEventListener("webkitfullscreenchange", onFsChange);
+      window.removeEventListener("popstate", onPop);
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+      // If we still own the pushed history entry (closed via button/backdrop,
+      // not the back gesture), pop it so history stays clean.
+      if (window.history.state?.feedMediaOverlay) window.history.back();
     };
-  }, [videoUrl]);
+  }, [expanded]);
 
   if (!videoUrl && !imageUrl) return null;
 
@@ -242,43 +220,19 @@ export function FeedMedia({
     feedAudio.toggle();
   };
 
-  const toggleFullscreen = (e: React.MouseEvent) => {
+  const openFullscreen = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    const el = containerRef.current as
-      | (HTMLDivElement & { webkitRequestFullscreen?: () => void })
-      | null;
     const video = videoRef.current as
       | (HTMLVideoElement & { webkitEnterFullscreen?: () => void })
       | null;
-    try {
-      const fsEl =
-        document.fullscreenElement ||
-        (document as Document & { webkitFullscreenElement?: Element }).webkitFullscreenElement;
-      if (fsEl) {
-        void document.exitFullscreen?.();
-        return;
-      }
-      // Snapshot the feed scroll position(s) so we can restore on exit (Android
-      // resets scroll when leaving fullscreen).
-      snapshotScroll();
-      // Fullscreen the CONTAINER (not the bare <video>) so the overlay sound +
-      // fullscreen controls stay visible in fullscreen on Android/desktop.
-      if (el?.requestFullscreen) {
-        enteredFsRef.current = true;
-        void el.requestFullscreen();
-      } else if (typeof el?.webkitRequestFullscreen === "function") {
-        enteredFsRef.current = true;
-        el.webkitRequestFullscreen();
-      } else if (video && typeof video.webkitEnterFullscreen === "function") {
-        // iOS Safari / Appilix WebView: only the <video> can go fullscreen. The
-        // native player handles its own scroll, so no restore needed here.
-        video.webkitEnterFullscreen();
-      }
-    } catch {
-      enteredFsRef.current = false;
-      /* fullscreen unsupported / blocked — ignore */
+    // iOS: keep the native video player (works well, do not touch).
+    if (videoUrl && isIOS() && video && typeof video.webkitEnterFullscreen === "function") {
+      video.webkitEnterFullscreen();
+      return;
     }
+    // Android / desktop: instant in-app overlay; the feed's scroll is untouched.
+    setExpanded(true);
   };
 
   return (
@@ -333,7 +287,7 @@ export function FeedMedia({
           )}
           <button
             type="button"
-            onClick={toggleFullscreen}
+            onClick={openFullscreen}
             aria-label={t("screens.home.enterFullscreen")}
             className="flex h-9 w-9 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition-colors hover:bg-black/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
           >
@@ -341,6 +295,50 @@ export function FeedMedia({
           </button>
         </div>
       )}
+
+      {expanded &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black"
+            onClick={closeExpanded}
+            role="dialog"
+            aria-modal="true"
+          >
+            {videoUrl ? (
+              <video
+                src={videoUrl}
+                poster={imageUrl || undefined}
+                className="max-h-full max-w-full"
+                autoPlay
+                loop
+                playsInline
+                controls
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              <img
+                src={imageUrl as string}
+                alt={alt}
+                className="max-h-full max-w-full object-contain"
+                onClick={(e) => e.stopPropagation()}
+              />
+            )}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                closeExpanded();
+              }}
+              aria-label={t("screens.home.exitFullscreen")}
+              className="absolute right-4 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors hover:bg-black/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+              style={{ top: "calc(env(safe-area-inset-top, 0px) + 1rem)" }}
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }
