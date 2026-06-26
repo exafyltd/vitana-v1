@@ -6,24 +6,18 @@
       "phase": "llm"
     },
     "tasks.confirmCancelTask": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du')",
-      "suggested": "Bist du sicher, dass du diese Aufgabe abbrechen möchtest?",
       "phase": "llm"
     },
     "tasks.postponeComingSoon": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly awkward compound noun, 'Verschiebefunktion' is more idiomatic.",
-      "suggested": "Verschiebefunktion demnächst verfügbar",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "tasks.addNotePrompt": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du')",
-      "suggested": "Füge dieser Aufgabe eine Notiz hinzu:",
       "phase": "llm"
     },
     "tasks.noteAdded": {
@@ -32,17 +26,13 @@
       "phase": "llm"
     },
     "tasks.navigateTo": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Infinitive used as imperative; should be 'du-form' imperative for consistency.",
-      "suggested": "Navigiere zu: {url}",
       "phase": "llm"
     },
     "tasks.openVtid": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Infinitive used as imperative; should be 'du-form' imperative for consistency.",
-      "suggested": "Öffne VTID: {vtid}",
       "phase": "llm"
     },
     "tasks.description": {
@@ -86,5 +76,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:33:06.043Z"
+  "generatedAt": "2026-06-26T07:31:17.447Z"
 }
