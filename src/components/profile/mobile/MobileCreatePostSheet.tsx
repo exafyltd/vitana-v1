@@ -1,13 +1,16 @@
 import { useState, useRef } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { X, Send, Loader2, ImagePlus } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useProfilePosts } from '@/hooks/useProfilePosts';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { notifyError, t } from '@/lib/i18n-toast';
+import { MentionTextarea } from '@/components/feed/MentionTextarea';
+import { PostBackgroundPicker } from '@/components/feed/PostBackgroundPicker';
+import { getPostBackground } from '@/lib/post-backgrounds';
+import type { PostMention } from '@/lib/news-feed-ranker';
 
 interface MobileCreatePostSheetProps {
   open: boolean;
@@ -27,6 +30,8 @@ type MediaKind = 'image' | 'video';
 
 export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSheetProps) {
   const [content, setContent] = useState('');
+  const [backgroundStyle, setBackgroundStyle] = useState<string | null>(null);
+  const [mentions, setMentions] = useState<PostMention[]>([]);
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [mediaPreview, setMediaPreview] = useState<string | null>(null);
   const [mediaKind, setMediaKind] = useState<MediaKind | null>(null);
@@ -135,7 +140,14 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
         console.log('[PostUpload] mediaUrl:', publicUrl, 'kind:', mediaKind);
       }
       console.log('[PostUpload] inserting post...');
-      await createPost.mutateAsync({ content: content.trim(), imageUrl, videoUrl });
+      await createPost.mutateAsync({
+        content: content.trim(),
+        imageUrl,
+        videoUrl,
+        // Backgrounds only apply to text-only posts.
+        backgroundStyle: mediaFile ? null : backgroundStyle,
+        mentions,
+      });
       toast({ title: translate('profilePosts.posted', 'Posted!') });
       cleanup();
       onOpenChange(false);
@@ -148,6 +160,8 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
 
   const cleanup = () => {
     setContent('');
+    setBackgroundStyle(null);
+    setMentions([]);
     removeMedia();
     setIsCompressing(false);
     setCompressProgress(0);
@@ -196,11 +210,13 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
 
         {/* Content */}
         <div className="flex-1 p-4 overflow-y-auto">
-          <Textarea
+          <MentionTextarea
             value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder={translate('profilePosts.placeholder', "What's on your mind?")}
-            className="min-h-[200px] border-0 resize-none text-base focus-visible:ring-0 bg-transparent p-0"
+            onChange={setContent}
+            mentions={mentions}
+            onMentionsChange={setMentions}
+            placeholder={translate('profilePosts.mentionPlaceholder', "What's on your mind? Type @ to tag someone")}
+            background={mediaFile ? null : getPostBackground(backgroundStyle)}
             autoFocus
           />
 
@@ -224,6 +240,13 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
             </div>
           )}
         </div>
+
+        {/* Background picker — text-only posts (hidden once media is attached) */}
+        {!mediaPreview && (
+          <div className="px-4 pt-2">
+            <PostBackgroundPicker value={backgroundStyle} onChange={setBackgroundStyle} />
+          </div>
+        )}
 
         {/* Footer */}
         <div className="px-4 py-3 border-t flex items-center justify-between">

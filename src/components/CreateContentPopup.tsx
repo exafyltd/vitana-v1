@@ -12,6 +12,10 @@ import { MessageSquare, Image, FileText, X, Upload, Loader2 } from "lucide-react
 import { useProfilePosts } from "@/hooks/useProfilePosts";
 import { supabase } from "@/integrations/supabase/client";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { MentionTextarea } from "@/components/feed/MentionTextarea";
+import { PostBackgroundPicker } from "@/components/feed/PostBackgroundPicker";
+import { getPostBackground } from "@/lib/post-backgrounds";
+import type { PostMention } from "@/lib/news-feed-ranker";
 
 interface CreateContentPopupProps {
   isOpen: boolean;
@@ -38,6 +42,10 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const availableTags = ["Tips", "Motivation", "Progress", "Question", "Achievement", "Recipe", "Workout", "Community"];
+
+  // Coloured background + tagged members for the "post" tab (text-only posts).
+  const [backgroundStyle, setBackgroundStyle] = useState<string | null>(null);
+  const [mentions, setMentions] = useState<PostMention[]>([]);
 
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [mediaPreview, setMediaPreview] = useState<string | null>(null);
@@ -98,6 +106,8 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
   const resetForm = () => {
     setFormData({ title: "", content: "", category: "", visibility: "public", allowComments: true });
     setSelectedTags([]);
+    setBackgroundStyle(null);
+    setMentions([]);
     removeMedia();
     setIsCompressing(false);
     setCompressProgress(0);
@@ -157,11 +167,15 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
       if (!user) throw new Error("Not authenticated");
 
       const media = await uploadMedia(user.id);
+      const isTextPost = contentType === "post" && !media.imageUrl && !media.videoUrl;
       await createPost.mutateAsync({
         content,
         imageUrl: media.imageUrl,
         videoUrl: media.videoUrl,
         isPublic: formData.visibility === "public",
+        // Background + mentions only come from the text "post" tab.
+        backgroundStyle: isTextPost ? backgroundStyle : null,
+        mentions: isTextPost ? mentions : [],
       });
 
       notify("toasts.common.contentCreated");
@@ -220,13 +234,21 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
               <CardContent className="space-y-4">
                 <div>
                   <Label htmlFor="content">{t('screens.common.whatSYourMind')}</Label>
-                  <Textarea
-                    id="content"
-                    value={formData.content}
-                    onChange={(e) => setFormData({...formData, content: e.target.value})}
-                    placeholder={t('screens.common.shareYourThoughtsProgressTipsAsk')}
-                    className="mt-1 min-h-[120px]"
-                  />
+                  <div className="mt-1 rounded-md border px-3 py-2">
+                    <MentionTextarea
+                      value={formData.content}
+                      onChange={(value) => setFormData({ ...formData, content: value })}
+                      mentions={mentions}
+                      onMentionsChange={setMentions}
+                      placeholder={t('screens.common.shareYourThoughtsProgressTipsAsk')}
+                      background={getPostBackground(backgroundStyle)}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label>{t('profilePosts.background')}</Label>
+                  <PostBackgroundPicker value={backgroundStyle} onChange={setBackgroundStyle} className="mt-2" />
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
