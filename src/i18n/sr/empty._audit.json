@@ -1,10 +1,8 @@
 {
   "verdicts": {
     "empty.noAppsFound": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'vašoj' instead of informal 'tvojoj'.",
-      "suggested": "Nema pronađenih aplikacija koje odgovaraju tvojoj pretrazi.",
       "phase": "llm"
     },
     "empty.noEventsFound": {
@@ -48,17 +46,13 @@
       "phase": "llm"
     },
     "empty.noEventsYet": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal imperative 'kreirajte' instead of informal 'kreiraj'.",
-      "suggested": "Još uvek nema događaja. Prvo kreiraj događaj.",
       "phase": "llm"
     },
     "empty.tryAdjustingFilters": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'Pokušajte' and 'da prilagodite' instead of informal 'Pokušaj' and 'da prilagodiš'.",
-      "suggested": "Pokušaj da prilagodiš filtere ili upit za pretragu.",
       "phase": "llm"
     },
     "empty.noData": {
@@ -77,45 +71,33 @@
       "phase": "llm"
     },
     "empty.indexSheetNextDays": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Register inconsistency: uses formal 'vaš' instead of informal 'tvoj'. Also, 'završetak' (completion) is a noun, while 'completing it' is a gerund phrase; 'dovršavanje toga' is a more accurate and natural translation for the gerund.",
-      "suggested": "Nema aktivnih Autopilot predloga. Kada se nešto pojavi ovde, dovršavanje toga će pomeriti tvoj Indeks.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "empty.indexSheetHorizon": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'vaš' instead of informal 'tvoj'.",
-      "suggested": "Potrebno je još nekoliko dana podataka da bi se projektovao tvoj 30-dnevni luk.",
       "phase": "llm"
     },
     "empty.myJourneyPath": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal 'Vaš' and 'možete' instead of informal 'Tvoj' and 'možeš'.",
-      "suggested": "Tvoj put tek počinje. Kada Autopilot bude imao predloge, pojaviće se ovde kao put kojim možeš hodati.",
       "phase": "llm"
     },
     "empty.myJourneyOnePillar": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal imperatives 'Izaberite' and 'gledajte', and possessive 'vaš', instead of informal 'Izaberi', 'gledaj', and 'tvoj'.",
-      "suggested": "Izaberi jednu malu stvar — gledaj kako se tvoj Indeks pomera.",
       "phase": "llm"
     },
     "empty.autopilotPopupZero": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal imperative 'Izaberite' and 'da vidite' instead of informal 'Izaberi' and 'da vidiš'.",
-      "suggested": "Izaberi akcije da vidiš podizanje Indeksa.",
       "phase": "llm"
     },
     "empty.healthEmpty": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency: uses formal imperative 'Zabeležite' and 'da biste pokrenuli' instead of informal 'Zabeleži' and 'da bi pokrenuo'.",
-      "suggested": "Zabeleži svoj prvi unos da bi pokrenuo Indeks.",
       "phase": "llm"
     },
     "empty.noActionsMatchedYet": {
@@ -134,5 +116,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:03:30.003Z"
+  "generatedAt": "2026-06-26T07:08:28.520Z"
 }
