@@ -32,10 +32,12 @@ interface ExpandableSearchButtonProps {
   onFilterToggle?: () => void;
   /** Active-filter count shown as a badge on the expanded filter icon. */
   filterActiveCount?: number;
+  /** Tightens the collapsed pill's horizontal padding to save rail space. */
+  compact?: boolean;
 }
 
-export function ExpandableSearchButton({ 
-  placeholder, 
+export function ExpandableSearchButton({
+  placeholder,
   onSearch,
   onClear,
   dropdownItems,
@@ -45,6 +47,7 @@ export function ExpandableSearchButton({
   onFilterClick,
   onFilterToggle,
   filterActiveCount,
+  compact = false,
 }: ExpandableSearchButtonProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -204,10 +207,13 @@ export function ExpandableSearchButton({
         className
       )}
     >
-      <button 
+      <button
         type="button"
         onClick={handleExpand}
-        className="flex items-center gap-1 px-2.5 h-full hover:bg-muted/80 transition-colors rounded-l-full"
+        className={cn(
+          "flex items-center gap-1 h-full hover:bg-muted/80 transition-colors rounded-l-full",
+          compact ? "px-2" : "px-2.5"
+        )}
       >
         <Search className="w-4 h-4 text-muted-foreground" />
         <span className="text-sm text-foreground">{translate('actionBar.search', 'Search')}</span>
