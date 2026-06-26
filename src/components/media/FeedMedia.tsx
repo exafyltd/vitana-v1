@@ -35,11 +35,6 @@ import { Maximize2, Volume2, VolumeX, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n-toast";
 
-// Brand wordmark shown atop the in-app fullscreen overlay (replaces the bare
-// "<domain> is in full screen" the OS shows). A proper-noun literal rendered via
-// a variable, so the i18n no-raw-jsx-text rule is satisfied without a catalog key.
-const BRAND_WORDMARK = "MAXINA";
-
 // Instagram's published display bounds.
 const PORTRAIT_MIN_RATIO = 4 / 5; // 0.8 — tallest allowed (width / height)
 const LANDSCAPE_MAX_RATIO = 1.91; // widest allowed
@@ -48,16 +43,6 @@ const DEFAULT_RATIO = PORTRAIT_MIN_RATIO; // before dimensions are known
 function clampRatio(width: number, height: number): number {
   if (!width || !height) return DEFAULT_RATIO;
   return Math.min(LANDSCAPE_MAX_RATIO, Math.max(PORTRAIT_MIN_RATIO, width / height));
-}
-
-// iOS (iPhone/iPad) — the platform whose native fullscreen already works and
-// which we must leave untouched.
-function isIOS(): boolean {
-  if (typeof navigator === "undefined") return false;
-  return (
-    /iP(hone|ad|od)/.test(navigator.userAgent) ||
-    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)
-  );
 }
 
 // --- Scroll-following feed audio ------------------------------------------
@@ -228,15 +213,10 @@ export function FeedMedia({
   const openFullscreen = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    const video = videoRef.current as
-      | (HTMLVideoElement & { webkitEnterFullscreen?: () => void })
-      | null;
-    // iOS: keep the native video player (works well, do not touch).
-    if (videoUrl && isIOS() && video && typeof video.webkitEnterFullscreen === "function") {
-      video.webkitEnterFullscreen();
-      return;
-    }
-    // Android / desktop: instant in-app overlay; the feed's scroll is untouched.
+    // Every platform uses the in-app overlay so fullscreen always has a visible
+    // close (X) and never loses the feed's scroll position. We deliberately do
+    // NOT use iOS's native video player here: it has no obvious exit affordance
+    // (swipe-down only), which members did not discover.
     setExpanded(true);
   };
 
@@ -310,12 +290,6 @@ export function FeedMedia({
             role="dialog"
             aria-modal="true"
           >
-            <span
-              className="pointer-events-none absolute left-1/2 -translate-x-1/2 text-sm font-semibold tracking-[0.3em] text-white/80"
-              style={{ top: "calc(env(safe-area-inset-top, 0px) + 1.15rem)" }}
-            >
-              {BRAND_WORDMARK}
-            </span>
             {videoUrl ? (
               <video
                 src={videoUrl}
