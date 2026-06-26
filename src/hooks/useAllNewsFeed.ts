@@ -25,6 +25,7 @@ import {
   rankFeed,
   type FeedItem,
   type PostFeedItem,
+  type PostMention,
   type ArticleFeedItem,
   type PerformerFeedItem,
   type MatchFeedItem,
@@ -45,6 +46,8 @@ interface RawPostRow {
   content: string | null;
   image_url: string | null;
   video_url: string | null;
+  background_style: string | null;
+  mentions: PostMention[] | null;
   likes_count: number | null;
   comments_count: number | null;
   created_at: string;
@@ -187,6 +190,8 @@ async function loadCandidates(
       content: p.content ?? "",
       image_url: p.image_url ?? null,
       video_url: p.video_url ?? null,
+      background_style: p.background_style ?? null,
+      mentions: Array.isArray(p.mentions) ? p.mentions : [],
       likes_count: Number(p.likes_count) || 0,
       comments_count: Number(p.comments_count) || 0,
       followed: followingIds.has(p.user_id),
@@ -213,6 +218,8 @@ async function loadCandidates(
       content: m.title || m.description || "",
       image_url: m.thumbnail_url ?? null,
       video_url: m.file_url ?? null,
+      background_style: null,
+      mentions: [],
       likes_count: Number(m.likes_count) || 0,
       comments_count: Number(m.comments_count) || 0,
       followed: followingIds.has(m.user_id),

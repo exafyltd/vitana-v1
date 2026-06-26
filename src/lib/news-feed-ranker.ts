@@ -25,6 +25,12 @@ import type { MatchReason } from "@/lib/matchReason";
 
 export type FeedItemKind = "match" | "performer" | "post" | "article";
 
+/** A member tagged in a post body via an inline @mention. */
+export interface PostMention {
+  user_id: string;
+  display_name: string;
+}
+
 interface FeedItemBase {
   /** Stable, globally-unique id (e.g. "post-<uuid>", "match-<uuid>"). */
   id: string;
@@ -63,6 +69,10 @@ export interface PostFeedItem extends FeedItemBase {
   content: string;
   image_url: string | null;
   video_url: string | null;
+  /** Optional coloured-background preset id for text-only posts (null = plain). */
+  background_style: string | null;
+  /** Members tagged via inline @mentions, for rendering clickable links. */
+  mentions: PostMention[];
   likes_count: number;
   comments_count: number;
   /** Author is followed by the current viewer. */
