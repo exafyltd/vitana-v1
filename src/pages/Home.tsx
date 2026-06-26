@@ -377,7 +377,7 @@ export default function Home() {
             <div className="flex items-center gap-1 min-w-max">
               <ExpandableSearchButton compact placeholder={isMobile ? t('screens.home.searchShort') : t('screens.home.searchNewsTopicsSources')} onSearch={(query) => setSearchQuery(query)} />
               {isMobile && <MobileModePill className="px-2" modes={FILTER_MODES} activeMode={activeTab} onModeChange={(v) => setActiveTab(v as FilterTab)} />}
-              <UniversalCalendarButton className="!px-2" />
+              <UniversalCalendarButton showText={!isMobile} className="!px-2" />
               <Button
                 onClick={() => setCreatePostOpen(true)}
                 variant="ghost"
