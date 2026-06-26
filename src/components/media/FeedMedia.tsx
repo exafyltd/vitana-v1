@@ -10,13 +10,14 @@
  * survive, nothing dominates the screen.
  *
  * Inline controls (Facebook-style, lower-right): a sound toggle for videos and
- * a fullscreen toggle for both photos and videos. The sound preference is
- * remembered across the whole feed via sessionStorage + a window event, so
- * unmuting one clip makes the next ones play with sound too. Every control stops
- * propagation — the card around this frame navigates to the author's profile on
- * click, and the controls must not trigger that.
+ * a fullscreen toggle for both photos and videos. Audio is single-active across
+ * the whole feed — only one clip plays sound at a time. Unmuting a card mutes
+ * whichever other card was sounding, so the grid of autoplaying previews never
+ * blasts several audio tracks at once. Every control stops propagation — the
+ * card around this frame navigates to the author's profile on click, and the
+ * controls must not trigger that.
  */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Maximize2, Volume2, VolumeX } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { t } from "@/lib/i18n-toast";
@@ -31,28 +32,18 @@ function clampRatio(width: number, height: number): number {
   return Math.min(LANDSCAPE_MAX_RATIO, Math.max(PORTRAIT_MIN_RATIO, width / height));
 }
 
-// --- Feed-wide sound preference -------------------------------------------
-// Default OFF (muted) — browsers only allow muted videos to autoplay. Once the
-// member unmutes anywhere in the feed we remember it for the session and tell
-// every other mounted FeedMedia so they flip too.
-const AUDIO_PREF_KEY = "feed_audio_enabled";
-const AUDIO_EVENT = "feed-audio-changed";
+// --- Single-active feed audio ---------------------------------------------
+// Videos autoplay muted (the only state browsers allow without a gesture). The
+// feed mounts many of them at once, so we let exactly ONE carry sound: tapping a
+// card's unmute makes it the active source and mutes whatever was sounding
+// before. `activeAudioId` holds that source's id; a window event fans the change
+// out to every mounted FeedMedia so each can mute/unmute itself accordingly.
+const AUDIO_EVENT = "feed-audio-active-changed";
+let activeAudioId: string | null = null;
 
-function readAudioPref(): boolean {
-  try {
-    return sessionStorage.getItem(AUDIO_PREF_KEY) === "true";
-  } catch {
-    return false;
-  }
-}
-
-function writeAudioPref(enabled: boolean): void {
-  try {
-    sessionStorage.setItem(AUDIO_PREF_KEY, String(enabled));
-  } catch {
-    /* private mode / storage disabled — fall back to in-memory event only */
-  }
-  window.dispatchEvent(new CustomEvent<boolean>(AUDIO_EVENT, { detail: enabled }));
+function setActiveAudio(id: string | null): void {
+  activeAudioId = id;
+  window.dispatchEvent(new CustomEvent<string | null>(AUDIO_EVENT, { detail: id }));
 }
 
 export function FeedMedia({
@@ -69,45 +60,43 @@ export function FeedMedia({
   showControls?: boolean;
 }) {
   const [ratio, setRatio] = useState(DEFAULT_RATIO);
-  // `audioOn` mirrors the feed-wide preference; `muted` on the element follows
-  // it but may be forced back on if an unmuted autoplay attempt is rejected.
-  const [audioOn, setAudioOn] = useState(readAudioPref);
+  // `audioOn` = this clip is the single active audio source. Videos still mount
+  // muted+autoplaying; sound is opt-in per tap and only ever one at a time.
+  const [audioOn, setAudioOn] = useState(false);
+  const instanceId = useId();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  // Keep this instance in sync when any other card toggles sound.
+  // React to the active-audio source changing anywhere in the feed: become the
+  // sounding clip if it's us, otherwise mute. Also self-mutes when another card
+  // takes over, which is what prevents overlapping audio.
   useEffect(() => {
     if (!videoUrl) return;
-    const onChange = (e: Event) => {
-      const enabled = (e as CustomEvent<boolean>).detail;
-      setAudioOn(enabled);
+    const apply = (active: string | null) => {
+      const mine = active === instanceId;
+      setAudioOn(mine);
       const v = videoRef.current;
-      if (v) {
-        v.muted = !enabled;
-        if (enabled) v.play().catch(() => {});
-      }
+      if (!v) return;
+      v.muted = !mine;
+      if (mine) v.play().catch(() => {});
     };
+    const onChange = (e: Event) => apply((e as CustomEvent<string | null>).detail);
     window.addEventListener(AUDIO_EVENT, onChange);
-    return () => window.removeEventListener(AUDIO_EVENT, onChange);
-  }, [videoUrl]);
+    return () => {
+      window.removeEventListener(AUDIO_EVENT, onChange);
+      // If this sounding clip unmounts (scrolled away), release audio ownership.
+      if (activeAudioId === instanceId) setActiveAudio(null);
+    };
+  }, [videoUrl, instanceId]);
 
   if (!videoUrl && !imageUrl) return null;
 
   const toggleSound = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    const next = !audioOn;
-    const v = videoRef.current;
-    if (v) {
-      v.muted = !next;
-      // Unmuting often needs a fresh play() gesture, especially on iOS.
-      v.play().catch(() => {
-        v.muted = true;
-        v.play().catch(() => {});
-      });
-    }
-    setAudioOn(next);
-    writeAudioPref(next);
+    // Tapping is a user gesture, so unmuted playback is allowed. Claim audio
+    // (mutes any other sounding card via the event) or release it.
+    setActiveAudio(audioOn ? null : instanceId);
   };
 
   const toggleFullscreen = (e: React.MouseEvent) => {
