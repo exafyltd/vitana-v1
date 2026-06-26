@@ -206,6 +206,11 @@ export default function DevicePreview() {
                   key={reloadKey}
                   src={src}
                   title={t("screens.admin.devicePreview")}
+                  // Allow the framed app's Fullscreen API (feed media fullscreen
+                  // button) — without this the browser blocks the in-iframe
+                  // request and snaps straight back out of fullscreen.
+                  allow="fullscreen"
+                  allowFullScreen
                   className="h-full w-full rounded-[1.6rem] bg-white"
                 />
               </div>

@@ -127,6 +127,12 @@ export function FeedMedia({
   const instanceId = useId();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  // Scroll restore around fullscreen. On Android, exiting element fullscreen
+  // snaps the window-scrolled feed back to the top; we save the position when
+  // THIS card enters fullscreen and restore it on exit. `enteredFsRef` ensures
+  // only the initiating card restores (every mounted card hears the event).
+  const scrollYRef = useRef(0);
+  const enteredFsRef = useRef(false);
 
   // Subscribe to the feed audio controller + report this clip's visibility.
   useEffect(() => {
@@ -165,6 +171,29 @@ export function FeedMedia({
     };
   }, [videoUrl, instanceId]);
 
+  // Restore the feed scroll position when leaving fullscreen (Android resets it).
+  useEffect(() => {
+    if (!videoUrl) return;
+    const onFsChange = () => {
+      const fsEl =
+        document.fullscreenElement ||
+        (document as Document & { webkitFullscreenElement?: Element }).webkitFullscreenElement;
+      if (fsEl || !enteredFsRef.current) return;
+      enteredFsRef.current = false;
+      const y = scrollYRef.current;
+      const restore = () => window.scrollTo(0, y);
+      restore();
+      requestAnimationFrame(restore); // defeat the browser's post-exit scroll nudge
+      setTimeout(restore, 250);
+    };
+    document.addEventListener("fullscreenchange", onFsChange);
+    document.addEventListener("webkitfullscreenchange", onFsChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", onFsChange);
+      document.removeEventListener("webkitfullscreenchange", onFsChange);
+    };
+  }, [videoUrl]);
+
   if (!videoUrl && !imageUrl) return null;
 
   const toggleSound = (e: React.MouseEvent) => {
@@ -178,22 +207,38 @@ export function FeedMedia({
   const toggleFullscreen = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    const el = containerRef.current;
-    const video = videoRef.current;
+    const el = containerRef.current as
+      | (HTMLDivElement & { webkitRequestFullscreen?: () => void })
+      | null;
+    const video = videoRef.current as
+      | (HTMLVideoElement & { webkitEnterFullscreen?: () => void })
+      | null;
     try {
-      if (document.fullscreenElement) {
-        void document.exitFullscreen();
+      const fsEl =
+        document.fullscreenElement ||
+        (document as Document & { webkitFullscreenElement?: Element }).webkitFullscreenElement;
+      if (fsEl) {
+        void document.exitFullscreen?.();
         return;
       }
+      // Save the feed scroll position so we can restore it on exit (Android
+      // resets window scroll when leaving fullscreen).
+      scrollYRef.current = window.scrollY;
+      // Fullscreen the CONTAINER (not the bare <video>) so the overlay sound +
+      // fullscreen controls stay visible in fullscreen on Android/desktop.
       if (el?.requestFullscreen) {
+        enteredFsRef.current = true;
         void el.requestFullscreen();
-      } else if (video && typeof (video as HTMLVideoElement & {
-        webkitEnterFullscreen?: () => void;
-      }).webkitEnterFullscreen === "function") {
-        // iOS Safari: only the <video> element can go fullscreen.
-        (video as HTMLVideoElement & { webkitEnterFullscreen: () => void }).webkitEnterFullscreen();
+      } else if (typeof el?.webkitRequestFullscreen === "function") {
+        enteredFsRef.current = true;
+        el.webkitRequestFullscreen();
+      } else if (video && typeof video.webkitEnterFullscreen === "function") {
+        // iOS Safari / Appilix WebView: only the <video> can go fullscreen. The
+        // native player handles its own scroll, so no restore needed here.
+        video.webkitEnterFullscreen();
       }
     } catch {
+      enteredFsRef.current = false;
       /* fullscreen unsupported / blocked — ignore */
     }
   };
