@@ -128,11 +128,39 @@ export function FeedMedia({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   // Scroll restore around fullscreen. On Android, exiting element fullscreen
-  // snaps the window-scrolled feed back to the top; we save the position when
-  // THIS card enters fullscreen and restore it on exit. `enteredFsRef` ensures
-  // only the initiating card restores (every mounted card hears the event).
-  const scrollYRef = useRef(0);
+  // snaps the feed back to the top; we snapshot the scroll position(s) when THIS
+  // card enters fullscreen and re-assert them on exit. We record the window AND
+  // any scrollable ancestor so it works whether the feed scrolls the document or
+  // a nested container. `enteredFsRef` ensures only the initiating card restores
+  // (every mounted card hears the event).
+  const scrollSnapshotRef = useRef<{ win: number; nodes: { el: HTMLElement; top: number }[] }>({
+    win: 0,
+    nodes: [],
+  });
   const enteredFsRef = useRef(false);
+
+  const snapshotScroll = () => {
+    const nodes: { el: HTMLElement; top: number }[] = [];
+    let el = containerRef.current?.parentElement ?? null;
+    while (el && el !== document.body && el !== document.documentElement) {
+      const oy = getComputedStyle(el).overflowY;
+      if ((oy === "auto" || oy === "scroll") && el.scrollHeight > el.clientHeight) {
+        nodes.push({ el, top: el.scrollTop });
+      }
+      el = el.parentElement;
+    }
+    scrollSnapshotRef.current = { win: window.scrollY, nodes };
+  };
+
+  const restoreScroll = () => {
+    const { win, nodes } = scrollSnapshotRef.current;
+    if (Math.abs(window.scrollY - win) > 2) window.scrollTo(0, win);
+    const se = document.scrollingElement as HTMLElement | null;
+    if (se && Math.abs(se.scrollTop - win) > 2) se.scrollTop = win;
+    for (const n of nodes) {
+      if (Math.abs(n.el.scrollTop - n.top) > 2) n.el.scrollTop = n.top;
+    }
+  };
 
   // Subscribe to the feed audio controller + report this clip's visibility.
   useEffect(() => {
@@ -171,24 +199,34 @@ export function FeedMedia({
     };
   }, [videoUrl, instanceId]);
 
-  // Restore the feed scroll position when leaving fullscreen (Android resets it).
+  // Restore the feed scroll position when leaving fullscreen. Android's WebView
+  // snaps the window-scrolled feed back to the top on exit — and it does so a
+  // few hundred ms AFTER the fullscreenchange event (once the fullscreen UI
+  // animation + relayout settle), so a one-shot restore loses the race. Instead
+  // re-assert the saved position every frame for a short window, but only when
+  // something has displaced it, so we correct the WebView's reset without
+  // fighting a scroll the user makes themselves.
   useEffect(() => {
     if (!videoUrl) return;
+    let rafId = 0;
     const onFsChange = () => {
       const fsEl =
         document.fullscreenElement ||
         (document as Document & { webkitFullscreenElement?: Element }).webkitFullscreenElement;
       if (fsEl || !enteredFsRef.current) return;
       enteredFsRef.current = false;
-      const y = scrollYRef.current;
-      const restore = () => window.scrollTo(0, y);
-      restore();
-      requestAnimationFrame(restore); // defeat the browser's post-exit scroll nudge
-      setTimeout(restore, 250);
+      const start = performance.now();
+      cancelAnimationFrame(rafId);
+      const tick = (now: number) => {
+        restoreScroll();
+        if (now - start < 900) rafId = requestAnimationFrame(tick);
+      };
+      rafId = requestAnimationFrame(tick);
     };
     document.addEventListener("fullscreenchange", onFsChange);
     document.addEventListener("webkitfullscreenchange", onFsChange);
     return () => {
+      cancelAnimationFrame(rafId);
       document.removeEventListener("fullscreenchange", onFsChange);
       document.removeEventListener("webkitfullscreenchange", onFsChange);
     };
@@ -221,9 +259,9 @@ export function FeedMedia({
         void document.exitFullscreen?.();
         return;
       }
-      // Save the feed scroll position so we can restore it on exit (Android
-      // resets window scroll when leaving fullscreen).
-      scrollYRef.current = window.scrollY;
+      // Snapshot the feed scroll position(s) so we can restore on exit (Android
+      // resets scroll when leaving fullscreen).
+      snapshotScroll();
       // Fullscreen the CONTAINER (not the bare <video>) so the overlay sound +
       // fullscreen controls stay visible in fullscreen on Android/desktop.
       if (el?.requestFullscreen) {
