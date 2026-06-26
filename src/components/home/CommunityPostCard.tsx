@@ -20,6 +20,8 @@ import { useAuth } from "@/context/AuthProvider";
 import { useFeedPostInteractions } from "@/hooks/useFeedPostInteractions";
 import { NewsPostModerationMenu } from "@/components/home/NewsPostModerationMenu";
 import { FeedMedia } from "@/components/media/FeedMedia";
+import { renderMentions } from "@/components/feed/MentionText";
+import { getPostBackground } from "@/lib/post-backgrounds";
 import { reasonKeyFor, type FeedItem, type PostFeedItem } from "@/lib/news-feed-ranker";
 
 function timeAgo(iso: string): string {
@@ -95,6 +97,10 @@ export function CommunityPostCard({
 
   const stop = (e: React.MouseEvent) => e.stopPropagation();
 
+  // Coloured backgrounds only apply to text-only posts; media frames itself.
+  const hasMedia = !!item.image_url || !!item.video_url;
+  const background = hasMedia ? null : getPostBackground(item.background_style);
+
   return (
     <Card
       className={cn(cardShell, "cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2")}
@@ -118,9 +124,28 @@ export function CommunityPostCard({
           <span className="truncate">{t(reasonKeyFor(item))}</span>
           <span className="ml-auto shrink-0 text-muted-foreground">{timeAgo(item.published_at)}</span>
         </div>
-        {item.content && (
-          <p className="text-sm leading-relaxed text-foreground line-clamp-3">{item.content}</p>
-        )}
+        {item.content &&
+          (background ? (
+            <div
+              className={cn(
+                "-mx-4 mb-1 flex min-h-[180px] items-center justify-center px-6 py-8 text-center",
+                background.fillClass,
+              )}
+            >
+              <p
+                className={cn(
+                  "line-clamp-6 whitespace-pre-wrap break-words text-lg font-semibold leading-snug",
+                  background.textClass,
+                )}
+              >
+                {renderMentions(item.content, item.mentions)}
+              </p>
+            </div>
+          ) : (
+            <p className="text-sm leading-relaxed text-foreground line-clamp-3">
+              {renderMentions(item.content, item.mentions)}
+            </p>
+          ))}
 
         <div className="mt-3 flex items-center justify-between">
           <div className="flex items-center gap-2 min-w-0">

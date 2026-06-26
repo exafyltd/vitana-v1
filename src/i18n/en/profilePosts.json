@@ -9,6 +9,11 @@
     "emptyTitle": "No posts yet",
     "emptyDescription": "Share your first update with the community",
     "deleteConfirm": "Delete this post?",
-    "error": "Something went wrong"
+    "error": "Something went wrong",
+    "mentionPlaceholder": "What's on your mind? Type @ to tag someone",
+    "background": "Background",
+    "noBackground": "No background",
+    "searchingPeople": "Searching people …",
+    "noPeopleFound": "No one found"
   }
 }

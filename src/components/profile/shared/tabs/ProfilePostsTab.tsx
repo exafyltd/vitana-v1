@@ -15,6 +15,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { useAuth } from "@/context/AuthProvider";
 import { I18nEmptyState } from "@/components/ui/i18n-empty-state";
 import { FeedMedia } from "@/components/media/FeedMedia";
+import { renderMentions } from "@/components/feed/MentionText";
+import { getPostBackground } from "@/lib/post-backgrounds";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { t } from '@/lib/i18n-toast';
@@ -167,6 +169,10 @@ function PostCardWithInteractions({
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState("");
 
+  // Coloured backgrounds only apply to text-only posts; media frames itself.
+  const hasMedia = !!post.image_url || !!post.video_url;
+  const background = hasMedia ? null : getPostBackground(post.background_style);
+
   const handleAddComment = async () => {
     if (!commentText.trim()) return;
     try {
@@ -220,9 +226,18 @@ function PostCardWithInteractions({
                 </button>
               )}
             </div>
-            <p className="mt-2.5 text-gray-800 dark:text-gray-100 leading-[1.75] tracking-wide">
-              {post.content}
-            </p>
+            {post.content &&
+              (background ? (
+                <div className={cn("mt-2.5 flex min-h-[160px] items-center justify-center rounded-xl px-5 py-8 text-center", background.fillClass)}>
+                  <p className={cn("whitespace-pre-wrap break-words text-lg font-semibold leading-snug", background.textClass)}>
+                    {renderMentions(post.content, post.mentions)}
+                  </p>
+                </div>
+              ) : (
+                <p className="mt-2.5 text-gray-800 dark:text-gray-100 leading-[1.75] tracking-wide whitespace-pre-wrap break-words">
+                  {renderMentions(post.content, post.mentions)}
+                </p>
+              ))}
             {post.image_url && (
               <FeedMedia
                 imageUrl={post.image_url}

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
+import type { PostMention } from '@/lib/news-feed-ranker';
 
 export interface ProfilePost {
   id: string;
@@ -8,6 +9,10 @@ export interface ProfilePost {
   content: string;
   image_url: string | null;
   video_url: string | null;
+  /** Coloured-background preset id for text-only posts (null = plain card). */
+  background_style: string | null;
+  /** Members tagged via inline @mentions. */
+  mentions: PostMention[];
   likes_count: number;
   comments_count: number;
   shares_count: number;
@@ -37,7 +42,7 @@ export function useProfilePosts(userId?: string) {
   });
 
   const createPost = useMutation({
-    mutationFn: async ({ content, imageUrl, videoUrl, isPublic }: { content: string; imageUrl?: string; videoUrl?: string; isPublic?: boolean }) => {
+    mutationFn: async ({ content, imageUrl, videoUrl, isPublic, backgroundStyle, mentions }: { content: string; imageUrl?: string; videoUrl?: string; isPublic?: boolean; backgroundStyle?: string | null; mentions?: PostMention[] }) => {
       if (!user?.id) throw new Error('Not authenticated');
       const { data, error } = await supabase
         .from('profile_posts' as never)
@@ -46,6 +51,10 @@ export function useProfilePosts(userId?: string) {
           content,
           image_url: imageUrl || null,
           video_url: videoUrl || null,
+          // Coloured backgrounds only apply to text-only posts; the composer
+          // passes null once media is attached.
+          background_style: backgroundStyle ?? null,
+          mentions: mentions ?? [],
           // Defaults to public to preserve prior behaviour; the composer maps its
           // visibility control (public/friends/groups) onto this flag.
           ...(isPublic === undefined ? {} : { is_public: isPublic }),
