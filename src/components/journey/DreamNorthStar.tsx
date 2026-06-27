@@ -201,6 +201,9 @@ export function DreamNorthStar({
    */
   guidedProgress?: {
     completedSessions: number;
+    /** Contiguous sessions done from the start — the value shown on the
+     *  "Erledigt" step so it can't collide with the next-session number. */
+    completedInOrder: number;
     totalSessions: number;
     completedTopics: number;
     totalTopics: number;
@@ -709,13 +712,13 @@ export function DreamNorthStar({
 
               <div className="flex items-start justify-center mt-2">
                 <JourneyStep
-                  value={guidedProgress!.completedSessions}
+                  value={guidedProgress!.completedInOrder}
                   label={t("screens.autopilotdashboard.stepDone")}
                   fill="#d1fae5"
                   ring="#6ee7b7"
                   text="#059669"
                   size={STEP_SIZE_SIDE}
-                  done
+                  done={guidedProgress!.completedInOrder > 0}
                 />
                 <StepConnector />
                 <JourneyStep
@@ -740,10 +743,12 @@ export function DreamNorthStar({
                     size={STEP_SIZE_SIDE}
                   />
                 ) : (
-                  // Daily countdown — starts at 5 each morning and ticks down to 0
-                  // as today's sessions are completed, motivating the daily streak.
+                  // Daily goal — shown as a "done / goal" ratio (e.g. 0/5) so it
+                  // reads as a distinct daily meter, not the next number in the
+                  // session sequence (which is what made the row look like it was
+                  // counting the same thing three times).
                   <JourneyStep
-                    value={guidedProgress!.remainingToday}
+                    value={`${guidedProgress!.completedToday}/${guidedProgress!.dailyGoal}`}
                     label={t("screens.autopilotdashboard.stepGoalLabel")}
                     fill="#fef3c7"
                     ring="#fcd34d"

@@ -49,6 +49,15 @@ export interface GuidedJourneyProgress {
   completedTopics: number;
   totalTopics: number;
   completedSessions: number;
+  /**
+   * Sessions completed contiguously from the start (in curriculum order, no
+   * gaps). Unlike `completedSessions` (the raw distinct count), this stays in
+   * lock-step with `nextSession`: finish 1–9 in order and this is 9 while the
+   * next session is 10. The card uses this so it can never show the
+   * contradictory "9 done · now 9" / "10 done · now 10" state that a raw count
+   * produces when a later session is completed out of order.
+   */
+  completedInOrder: number;
   totalSessions: number;
   /** Ring fill percentage, 0–100, driven by listened sessions. */
   pct: number;
@@ -251,6 +260,16 @@ export function useGuidedJourneyProgress(): GuidedJourneyProgress {
   }
   const completedSessions = listenedSessionSet.size;
 
+  // Contiguous progress from the start, in curriculum order: count leading
+  // sessions until the first gap. This is the count we surface on the journey
+  // card's "Erledigt" step — it equals nextSession − 1, so the stepper always
+  // reads as a coherent sequence (… 9 done → 10 now …) instead of colliding.
+  let completedInOrder = 0;
+  for (const s of sessions) {
+    if (!listenedSessionSet.has(s.session)) break;
+    completedInOrder += 1;
+  }
+
   const pct = totalSessions > 0 ? (completedSessions / totalSessions) * 100 : 0;
 
   // The next session = first session (in curriculum order) not listened yet;
@@ -278,6 +297,7 @@ export function useGuidedJourneyProgress(): GuidedJourneyProgress {
     completedTopics,
     totalTopics,
     completedSessions,
+    completedInOrder,
     totalSessions,
     pct,
     completedSet,

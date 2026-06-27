@@ -291,6 +291,7 @@ export default function AutopilotDashboard() {
   const guidedProgress = isGuided
     ? {
         completedSessions: guidedJourneyProgress.completedSessions,
+        completedInOrder: guidedJourneyProgress.completedInOrder,
         totalSessions: guidedJourneyProgress.totalSessions,
         completedTopics: guidedJourneyProgress.completedTopics,
         totalTopics: guidedJourneyProgress.totalTopics,
