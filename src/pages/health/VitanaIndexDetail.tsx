@@ -147,16 +147,16 @@ export default function VitanaIndexDetail() {
         canonical={window.location.href}
       />
 
-      <div className="p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
+      <div className="p-4 sm:p-6 bg-gradient-to-br from-calendar-background via-background to-calendar-background/50 min-h-screen">
         <div className="max-w-5xl mx-auto space-y-6">
-          <div className="flex items-start justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-foreground mb-1">{t('screens.health.yourVitanaIndex')}</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-1">{t('screens.health.yourVitanaIndex')}</h1>
               <p className="text-muted-foreground">
                 {t('screens.health.oneNumberFivePillarsNinetyDays')}
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <Button size="sm" onClick={() => setLogDialogOpen(true)}>
                 <Plus className="w-4 h-4 mr-1" />
                 {t('screens.health.logData')}
