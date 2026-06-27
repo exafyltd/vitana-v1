@@ -1,464 +1,382 @@
 {
   "verdicts": {
-    "autopilot.title": {
+    "mobilesupport.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "autopilot.suggestions.showcaseBadge": {
+    "mobilesupport.tabFaqs": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "autopilot.widget.title": {
+    "mobilesupport.quickContactEmailSub": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "autopilot.suggestions.bannerTitle": {
+    "mobilesupport.quickContactChat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mobilesupport.description": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.bannerDesc": {
+    "mobilesupport.tabContact": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.enable": {
+    "mobilesupport.tabCommunity": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.showcaseTitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.suggestions.showcaseDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.suggestions.suggestPopular": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.suggestions.recentHighlights": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.suggestions.archetypeTitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.suggestions.archetypeBadge": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.suggestions.archetypeDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.suggestions.updateArchetype": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.suggestions.profileSectionTitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.suggestions.profileSectionDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.suggestions.tryAutopilot": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.preview": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.viewAll": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.noSuggestions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.execute": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.dismiss": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.executing": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.success": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.failed": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.title": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.selectedOf": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.readyToExecute": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.executingTitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.executingDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.complete": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.go": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.notNow": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.seeOptions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.seeAllInAI": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.moreActions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.toastExecutedTitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.toastExecutedDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.toastFailedTitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.toastFailedDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.priorities.high": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.priorities.medium": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.priorities.low": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.widget.active": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.widget.paused": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.widget.doNow": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.widget.allOptimized": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.widget.enableToSee": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.widget.completeForRewards": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.widget.enableForCredits": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.insightBanner.title": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.insightBanner.description": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.insightBanner.synergyIndex": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.insightBanner.statusBalanced": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.insightBanner.statusNeedsAttention": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.insightBanner.statusImproving": {
-      "verdict": "OK",
-      "confidence": 0.8,
-      "phase": "llm"
-    },
-    "autopilot.profilePopup.title": {
+    "mobilesupport.hint": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The German 'optimieren' (optimize) is less precise than 'aufpolieren' (polish) for 'polish', especially with the accompanying ✨ emoji.",
-      "suggested": "Lass Autopilot dein Profil aufpolieren ✨",
+      "issue": "Translation for 'out loud' is a bit literal; 'laut' is more natural.",
+      "suggested": "Tippe auf das Mikrofon und beschreibe dein Anliegen laut.",
       "phase": "llm"
     },
-    "autopilot.profilePopup.polishBio": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The German 'optimieren' (optimize) is less precise than 'aufpolieren' (polish) for 'polish'.",
-      "suggested": "Poliere deine Bio auf",
-      "phase": "llm"
-    },
-    "autopilot.profilePopup.polishBioDesc": {
+    "mobilesupport.recordButtonStart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.refreshArchetype": {
+    "mobilesupport.recordButtonStop": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.refreshArchetypeDesc": {
+    "mobilesupport.recording": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.highlightShowcase": {
+    "mobilesupport.listening": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.highlightShowcaseDesc": {
+    "mobilesupport.tapToSpeak": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.styleProfile": {
+    "mobilesupport.speakNaturally": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.styleProfileDesc": {
+    "mobilesupport.transcriptTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.cancel": {
+    "mobilesupport.transcriptPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.runAutopilot": {
+    "mobilesupport.searchPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.generating": {
+    "mobilesupport.categoryLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.suggestedBio": {
+    "mobilesupport.categoryPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.suggestedArchetype": {
+    "mobilesupport.categoryAccount": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.currentValue": {
+    "mobilesupport.categoryBilling": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.accept": {
+    "mobilesupport.categoryTechnical": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.reject": {
+    "mobilesupport.categoryFeature": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.acceptAll": {
+    "mobilesupport.categoryPrivacy": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.applied": {
+    "mobilesupport.categoryOther": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.error": {
+    "mobilesupport.attachLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.comingSoon": {
+    "mobilesupport.submitButton": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action1Title": {
+    "mobilesupport.submitting": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action1Reason": {
+    "mobilesupport.sentTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action2Title": {
-      "verdict": "OK",
-      "confidence": 0.9,
-      "phase": "llm"
-    },
-    "autopilot.actions.action2Reason": {
+    "mobilesupport.sentBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action3Title": {
+    "mobilesupport.sendAnother": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action3Reason": {
+    "mobilesupport.quickContactTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action4Title": {
+    "mobilesupport.quickContactEmail": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action4Reason": {
+    "mobilesupport.quickContactChatSub": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action5Title": {
+    "mobilesupport.quickContactCall": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action5Reason": {
+    "mobilesupport.quickContactCallSub": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action6Title": {
+    "mobilesupport.responseTime": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action6Reason": {
+    "mobilesupport.faqsTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.newActionTitle": {
+    "mobilesupport.faqsSubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.newActionReason": {
+    "mobilesupport.faqsOpenHelpCenter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.faqCreateAccountQ": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.faqCreateAccountA": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.faqResetPasswordQ": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.faqResetPasswordA": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.faqUpdateProfileQ": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.faqUpdateProfileA": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.faqPaymentMethodsQ": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.faqPaymentMethodsA": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.faqDataSecureQ": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.faqDataSecureA": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.faqDeleteAccountQ": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.faqDeleteAccountA": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.communityTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.communitySubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.communityGroupTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.communityGroupBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.communityGroupCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.communityForumTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.communityForumBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.communityForumCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.communityStatsActive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.communityStatsAnswered": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.communityStatsResponse": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.communityStatsResponseValue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorNotSupported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorEmpty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorSend": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorMicPermission": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorMicNotFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorMicInUse": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorMicGeneric": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorNoAudio": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorTranscription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.transcribing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.backendRecordingHint": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-06-27T06:41:27.466Z"
+  "generatedAt": "2026-06-27T06:47:43.575Z"
 }
