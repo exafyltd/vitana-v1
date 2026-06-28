@@ -118,6 +118,16 @@
       "officialBadge": "official group",
       "empty": "No messages yet.",
       "composerPlaceholder": "Message…"
+    },
+    "forward": {
+      "title": "Forward to",
+      "searchPlaceholder": "Search chats…",
+      "empty": "No chats found",
+      "sent": "Forwarded to {name}",
+      "failed": "Failed to forward",
+      "groupLabel": "Group",
+      "dmLabel": "Direct message",
+      "unknownUser": "Unknown"
     }
   }
 }

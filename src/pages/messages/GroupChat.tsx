@@ -25,10 +25,13 @@ import {
   fetchGroupMessages,
   sendGroupMessage,
   markGroupRead,
+  updateGroupMessage,
+  deleteGroupMessage,
   type ChatGroup,
   type ChatGroupMember,
   type ChatGroupMessage,
 } from "@/hooks/useChatApi";
+import { notify, notifyError } from "@/lib/i18n-toast";
 import { getDateSeparatedMessageItems } from "@/lib/messageDateSeparators";
 import { formatDate } from "@/lib/locale-format";
 import { isThisYear, isToday, isYesterday } from "date-fns";
@@ -291,6 +294,28 @@ export default function GroupChat() {
                   }}
                   isOwnMessage={isOwn}
                   showAvatar={!isOwn}
+                  onUpdateMessage={async (messageId: string, updates: { body?: string; content?: string }) => {
+                    const newContent = updates.body ?? updates.content ?? "";
+                    try {
+                      await updateGroupMessage(group.id, messageId, newContent);
+                      setMessages(prev =>
+                        prev.map(m => (m.id === messageId ? { ...m, content: newContent } : m)),
+                      );
+                    } catch (err) {
+                      notifyError("toasts.messages.updateFailed", "toasts.messages.failedUpdateMessagePleaseTryAgain");
+                      throw err;
+                    }
+                  }}
+                  onDeleteMessage={async (messageId: string) => {
+                    try {
+                      await deleteGroupMessage(group.id, messageId);
+                      setMessages(prev => prev.filter(m => m.id !== messageId));
+                      notify("toasts.messages.messageDeleted");
+                    } catch (err) {
+                      notifyError("toasts.messages.deleteFailed", "toasts.messages.failedDeleteMessagePleaseTryAgain");
+                      throw err;
+                    }
+                  }}
                 />
               );
             })}

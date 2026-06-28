@@ -38,6 +38,7 @@ import { ImageZoomModal } from './ImageZoomModal';
 import { formatFileSize, isImageType, getSignedAttachmentUrl } from '@/lib/fileUpload';
 import { useMessageReactions } from '@/hooks/useMessageReactions';
 import { MessageContextMenu } from './MessageContextMenu';
+import { ForwardMessageSheet } from './ForwardMessageSheet';
 import { ReactionCluster } from './ReactionCluster';
 import { ReactionPopover } from './ReactionPopover';
 import { ReplyQuote } from './ReplyQuote';
@@ -184,6 +185,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
     filename: ''
   });
   const [showReactionPopover, setShowReactionPopover] = useState(false);
+  const [showForwardSheet, setShowForwardSheet] = useState(false);
   const [resolvedUrls, setResolvedUrls] = useState<Map<string, string>>(new Map());
 
   // Resolve fresh signed URLs for attachments from private bucket
@@ -377,9 +379,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   }, [message]);
 
   const handleForward = useCallback(() => {
-    // TODO: Implement forward functionality
-    console.log('Forward message:', message.id);
-  }, [message]);
+    setShowForwardSheet(true);
+  }, []);
 
   const handleStar = useCallback(() => {
     // TODO: Implement star functionality
@@ -1060,6 +1061,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         onClose={() => setImageZoomModal({ isOpen: false, url: '', filename: '' })}
         imageUrl={imageZoomModal.url}
         filename={imageZoomModal.filename}
+      />
+
+      {/* Forward target picker (DMs + group chats) */}
+      <ForwardMessageSheet
+        open={showForwardSheet}
+        onOpenChange={setShowForwardSheet}
+        message={message}
       />
 
       {/* Mobile long-press reaction/action drawer */}
