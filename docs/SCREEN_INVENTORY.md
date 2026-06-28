@@ -1776,7 +1776,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `actionBar` — used: 1, total in shard: 5
-- `liveRooms` — used: 9, total in shard: 110
+- `liveRooms` — used: 9, total in shard: 111
 - `screens` — used: 16, total in shard: 9782
 - `toasts` — used: 15, total in shard: 1254
 

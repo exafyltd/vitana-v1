@@ -117,7 +117,8 @@
         "imageUploadFailedTitle": "Image upload failed",
         "imageUploadFailedDesc": "We'll keep the existing image.",
         "genericTitle": "Error",
-        "genericDesc": "Failed to create stream. Please try again."
+        "genericDesc": "Failed to create stream. Please try again.",
+        "genericDescWithReason": "Failed to create stream: {reason}. Please try again."
       },
       "success": {
         "streamUpdatedTitle": "Stream Updated! ✨",

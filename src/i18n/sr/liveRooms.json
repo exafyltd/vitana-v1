@@ -117,7 +117,8 @@
         "imageUploadFailedTitle": "Otpremanje slike nije uspelo",
         "imageUploadFailedDesc": "Zadržaćemo postojeću sliku.",
         "genericTitle": "Greška",
-        "genericDesc": "Kreiranje strima nije uspelo. Pokušaj ponovo."
+        "genericDesc": "Kreiranje strima nije uspelo. Pokušaj ponovo.",
+        "genericDescWithReason": "Kreiranje strima nije uspelo: {reason}. Pokušaj ponovo."
       },
       "success": {
         "streamUpdatedTitle": "Strim ažuriran! ✨",

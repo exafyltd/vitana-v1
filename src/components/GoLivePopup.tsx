@@ -406,8 +406,18 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
       onOpenChange(false);
       resetForm();
     } catch (error) {
+      // Surface the REAL failure reason instead of a generic message. apiFetch
+      // throws "<gateway message> [<status> <code>]" (e.g. "Room already has an
+      // active session [409 ROOM_NOT_IDLE]"), and network failures throw
+      // "Failed to fetch" / "Load failed" — all of which are far more
+      // actionable for the user (and for support) than "please try again".
+      const reason = error instanceof Error ? error.message : String(error);
       console.error('Error creating session:', error);
-      notify.error('liveRooms.goLivePopup.errors.genericTitle', 'liveRooms.goLivePopup.errors.genericDesc');
+      notify.error(
+        'liveRooms.goLivePopup.errors.genericTitle',
+        'liveRooms.goLivePopup.errors.genericDescWithReason',
+        { reason },
+      );
       setIsLoading(false);
     }
   };
