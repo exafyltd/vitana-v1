@@ -117,7 +117,8 @@
         "imageUploadFailedTitle": "Error al subir la imagen",
         "imageUploadFailedDesc": "Mantendremos la imagen actual.",
         "genericTitle": "Error",
-        "genericDesc": "Error al crear la transmisión. Intenta de nuevo."
+        "genericDesc": "Error al crear la transmisión. Intenta de nuevo.",
+        "genericDescWithReason": "Error al crear la transmisión: {reason}. Inténtalo de nuevo."
       },
       "success": {
         "streamUpdatedTitle": "¡Transmisión actualizada! ✨",

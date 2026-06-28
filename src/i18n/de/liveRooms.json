@@ -117,7 +117,8 @@
         "imageUploadFailedTitle": "Bild-Upload fehlgeschlagen",
         "imageUploadFailedDesc": "Das bestehende Bild wird beibehalten.",
         "genericTitle": "Fehler",
-        "genericDesc": "Stream konnte nicht erstellt werden. Bitte erneut versuchen."
+        "genericDesc": "Stream konnte nicht erstellt werden. Bitte erneut versuchen.",
+        "genericDescWithReason": "Stream konnte nicht erstellt werden: {reason}. Bitte erneut versuchen."
       },
       "success": {
         "streamUpdatedTitle": "Stream aktualisiert! ✨",
