@@ -56,10 +56,8 @@
       "phase": "llm"
     },
     "mediaHub.discoverContent": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Formal 'Sie' form used instead of informal 'du' form.",
-      "suggested": "Entdecke und teile inspirierende Wellness-Inhalte mit deiner Community.",
       "phase": "llm"
     },
     "mediaHub.tabs.music": {
@@ -138,10 +136,8 @@
       "phase": "llm"
     },
     "mediaHub.noMatchingShorts": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Formal 'Sie' form used instead of informal 'du' form.",
-      "suggested": "Keine Kurzvideos entsprechen deinen Interessen",
       "phase": "llm"
     },
     "mediaHub.viewAllShorts": {
@@ -210,10 +206,8 @@
       "phase": "llm"
     },
     "mediaHub.menu.singleUpload": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, 'Einzel-Upload' is more common and concise for UI.",
-      "suggested": "Einzel-Upload",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "mediaHub.menu.bulkUpload": {
@@ -257,10 +251,8 @@
       "phase": "llm"
     },
     "mediaHub.toast.podcastDeletedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'Ihr' instead of informal 'Dein'.",
-      "suggested": "Dein Podcast wurde erfolgreich gelöscht.",
       "phase": "llm"
     },
     "mediaHub.toast.videoDeleted": {
@@ -269,10 +261,8 @@
       "phase": "llm"
     },
     "mediaHub.toast.videoDeletedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'Ihr' instead of informal 'Dein'.",
-      "suggested": "Dein Video wurde erfolgreich gelöscht.",
       "phase": "llm"
     },
     "mediaHub.toast.videoUpdated": {
@@ -291,10 +281,8 @@
       "phase": "llm"
     },
     "mediaHub.toast.uploadSuccessDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'Ihr' instead of informal 'Dein'.",
-      "suggested": "Dein {type} ist jetzt in der Community live.",
       "phase": "llm"
     },
     "mediaHub.toast.deleteError": {
@@ -303,10 +291,8 @@
       "phase": "llm"
     },
     "mediaHub.toast.deleteErrorDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'Sie' in 'versuchen Sie es' instead of informal 'versuche es'.",
-      "suggested": "Löschen fehlgeschlagen. Bitte versuche es erneut.",
       "phase": "llm"
     },
     "mediaHub.deletePodcast.title": {
@@ -315,10 +301,8 @@
       "phase": "llm"
     },
     "mediaHub.deletePodcast.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'Sind Sie' instead of informal 'Bist du'.",
-      "suggested": "Bist du sicher, dass du diesen Podcast löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
       "phase": "llm"
     },
     "mediaHub.deletePodcast.cancel": {
@@ -337,10 +321,8 @@
       "phase": "llm"
     },
     "mediaHub.deleteVideo.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'Sind Sie' instead of informal 'Bist du'.",
-      "suggested": "Bist du sicher, dass du dieses Video löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden und entfernt das Video aus dem Speicher.",
       "phase": "llm"
     },
     "mediaHub.deleteVideo.cancel": {
@@ -369,10 +351,8 @@
       "phase": "llm"
     },
     "mediaHub.noPodcastsDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The verb 'erscheinen' is a bit formal for UI content; 'angezeigt werden' or 'zu sehen sein' is more common and friendly.",
-      "suggested": "Podcasts werden bald hier angezeigt.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "mediaHub.noShorts": {
@@ -381,10 +361,8 @@
       "phase": "llm"
     },
     "mediaHub.noShortsDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The verb 'erscheinen' is a bit formal for UI content; 'angezeigt werden' or 'zu sehen sein' is more common and friendly.",
-      "suggested": "Kurze Videos werden bald hier angezeigt.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "mediaHub.noVideos": {
@@ -393,10 +371,8 @@
       "phase": "llm"
     },
     "mediaHub.noVideosDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The verb 'erscheinen' is a bit formal for UI content; 'angezeigt werden' or 'zu sehen sein' is more common and friendly.",
-      "suggested": "Videos werden bald hier angezeigt.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "mediaHub.uploadMusic": {
@@ -603,7 +579,72 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "mediaHub.toast.commentError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.commentErrorDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.placeholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.beFirst": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.signIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.send": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.member": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.reply": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.replyingTo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.cancelReply": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.like": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:15:46.250Z"
+  "generatedAt": "2026-06-28T07:18:47.066Z"
 }
