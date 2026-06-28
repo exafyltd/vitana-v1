@@ -163,8 +163,8 @@
     "business.history.allTime": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Meaning incorrect for UI context. 'Todo el tiempo' means 'always' or 'continuously,' not 'cumulative' or 'historical.'",
-      "suggested": "Histórico",
+      "issue": "The Spanish translation 'Histórico' means 'historic' or 'historical' (adjective), which doesn't quite capture the meaning of 'All time' (as in 'all time record' or 'since the beginning') in a UI context. 'Historial' (history/record) or 'Desde siempre' (since forever/always) would be more appropriate depending on the exact context.",
+      "suggested": "Historial",
       "phase": "llm"
     },
     "business.history.details": {
@@ -233,10 +233,8 @@
       "phase": "llm"
     },
     "business.kpi.topPerformer": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Mejor rendimiento' means 'best performance,' not 'top performer' (the person/entity).",
-      "suggested": "El mejor",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "business.kpi.noDataYet": {
@@ -535,5 +533,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:42.192Z"
+  "generatedAt": "2026-06-28T07:12:55.733Z"
 }
