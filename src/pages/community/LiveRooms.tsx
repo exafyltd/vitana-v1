@@ -399,7 +399,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[0].title,
                           description: rowRooms[0].description || `Join ${rowRooms[0].host.name}'s live session`,
-                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[0].id)}`
+                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[0].id)}`
                         }}
                         variant="icon"
                         size="sm"
@@ -432,7 +432,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[1].title,
                           description: rowRooms[1].description || `Join ${rowRooms[1].host.name}'s live session`,
-                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[1].id)}`
+                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[1].id)}`
                         }}
                         variant="icon"
                         size="sm"
@@ -465,7 +465,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[2].title,
                           description: rowRooms[2].description || `Join ${rowRooms[2].host.name}'s live session`,
-                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[2].id)}`
+                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[2].id)}`
                         }}
                         variant="icon"
                         size="sm"
@@ -502,7 +502,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[0].title,
                           description: rowRooms[0].description || `Join ${rowRooms[0].host.name}'s live session`,
-                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[0].id)}`
+                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[0].id)}`
                         }}
                         variant="icon"
                         size="sm"
@@ -535,7 +535,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[1].title,
                           description: rowRooms[1].description || `Join ${rowRooms[1].host.name}'s live session`,
-                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[1].id)}`
+                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[1].id)}`
                         }}
                         variant="icon"
                         size="sm"
@@ -569,7 +569,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[2].title,
                           description: rowRooms[2].description || `Join ${rowRooms[2].host.name}'s live session`,
-                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[2].id)}`
+                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[2].id)}`
                         }}
                         variant="icon"
                         size="sm"
