@@ -85,10 +85,20 @@ try {
     const parsed = JSON.parse(cached);
     const now = Date.now();
     
-    // Restore each cached query if not expired (24 hours)
+    // Restore each cached query if not expired (24 hours).
+    //
+    // CRITICAL: restore with the ORIGINAL `updatedAt` timestamp. Without it,
+    // setQueryData stamps dataUpdatedAt=now, so a day-old snapshot looks "fresh"
+    // for the full staleTime (2m) and refetchOnMount SKIPS the background refetch
+    // — the screen is pinned to stale persisted data. This is why a host who just
+    // scheduled a Live Room (and thus has a very recent persisted scheduled-list
+    // snapshot that predates her own room) never saw it: her list restored as
+    // "fresh" and never refetched, while everyone else fetched on mount and saw it.
+    // Passing updatedAt makes truly-stale snapshots refetch immediately on mount
+    // (proper stale-while-revalidate: render cache instantly, refresh in background).
     Object.entries(parsed).forEach(([key, value]: [string, any]) => {
       if (value && value.data && (now - value.timestamp) < 24 * 60 * 60 * 1000) {
-        queryClient.setQueryData(JSON.parse(key), value.data);
+        queryClient.setQueryData(JSON.parse(key), value.data, { updatedAt: value.timestamp });
       }
     });
   }
