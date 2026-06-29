@@ -78,6 +78,10 @@ function RecommendationCard({
       aria-label={`${rec.title} — ${rec.provider}`}
       onClick={() => onNavigate(rec)}
       onKeyDown={(e) => {
+        // Only act when the card itself is focused. Enter/Space originating from
+        // an interactive child (Add to Cart / Buy) must activate that control,
+        // not bubble up and get hijacked into product navigation.
+        if (e.target !== e.currentTarget) return;
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           onNavigate(rec);
