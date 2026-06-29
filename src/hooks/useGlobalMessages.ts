@@ -33,8 +33,14 @@ interface SendMessageArgs {
 }
 
 // ── Cache timing constants ──────────────────────────────────────────
-const STALE_TIME = 10 * 60 * 1000;  // 10 minutes — data shown without refetch
+const STALE_TIME = 10 * 60 * 1000;  // 10 minutes — thread list shown without refetch
 const GC_TIME = 30 * 60 * 1000;     // 30 minutes — cache kept in memory after unmount
+// Messages are realtime-critical: keep their staleTime at 0 so opening (or
+// switching back into) a conversation ALWAYS refetches the latest tail rather
+// than serving a cache that could be up to 10 minutes old when realtime missed
+// an event. placeholderData still renders the cached messages instantly, so
+// there is no loading spinner — we just reconcile against the server on open.
+const MESSAGES_STALE_TIME = 0;
 
 // ── SCROLL FIX: In-memory profile cache (prevents redundant Supabase queries) ──
 // `_missing` flags peers that have no row in global_community_profiles or
@@ -264,6 +270,31 @@ async function enrichProfiles(
     // Store in cache (including _missing so subsequent fetches stay consistent)
     profileCache.set(uid, { ...profile, cachedAt: now });
   });
+  return map;
+}
+
+/**
+ * Synchronous, network-free read of already-cached profiles. Used on the
+ * realtime hot path so an incoming message renders instantly with whatever
+ * identity we already know; enrichProfiles() then fills any gaps in the
+ * background. Returns an empty entry-less map for unknown ids (toGlobalMessage
+ * tolerates a missing entry → sender: null).
+ */
+function getCachedProfiles(
+  userIds: string[]
+): Record<string, { display_name: string; avatar_url: string | null }> {
+  const now = Date.now();
+  const map: Record<string, { display_name: string; avatar_url: string | null }> = {};
+  for (const uid of Array.from(new Set(userIds)).filter(Boolean)) {
+    if (isVitanaBot(uid)) {
+      map[uid] = { display_name: VITANA_BOT_DISPLAY_NAME, avatar_url: VITANA_BOT_AVATAR_URL };
+      continue;
+    }
+    const cached = profileCache.get(uid);
+    if (cached && now - cached.cachedAt < PROFILE_CACHE_TTL) {
+      map[uid] = { display_name: cached.display_name, avatar_url: cached.avatar_url };
+    }
+  }
   return map;
 }
 
@@ -852,7 +883,7 @@ export function useGlobalMessages(
       return fetchLegacyMessages(activeThreadId);
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
-    staleTime: STALE_TIME,
+    staleTime: MESSAGES_STALE_TIME,
     gcTime: GC_TIME,
     // Show last-known messages from localStorage instantly while refetching
     placeholderData: (prev) => prev ?? (activeThreadId ? getCachedMessages(activeThreadId) ?? undefined : undefined),
@@ -1276,9 +1307,17 @@ export function useGlobalMessages(
 
   // FIX 2: ADD GUARANTEED CONVERGENCE PATH - web-only periodic refresh as safety net
   const conversationOpenRef = useRef(false);
+  // Set whenever realtime drops (error/closed) so the next successful
+  // (re)subscribe knows to backfill any messages missed during the gap.
+  const needsBackfillRef = useRef(false);
+  // Mirror of activeThreadId for use inside the realtime subscribe closure,
+  // whose effect intentionally does NOT depend on activeThreadId (so the
+  // channel is not torn down on every thread switch).
+  const activeThreadIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     conversationOpenRef.current = !!activeThreadId;
+    activeThreadIdRef.current = activeThreadId ?? null;
   }, [activeThreadId]);
 
   useEffect(() => {
@@ -1296,29 +1335,38 @@ export function useGlobalMessages(
           table: "chat_messages",
           filter: `receiver_id=eq.${user.id}`,
         },
-        async (payload) => {
+        (payload) => {
           const raw = payload.new as ChatMessage;
           const peerId = raw.sender_id;
 
-          try {
-            const profileMap = await enrichProfiles([raw.sender_id]);
-            const msg = toGlobalMessage(raw, peerId, profileMap);
-
-            // FIX 2.1: Update both active thread messages cache AND threads cache
+          // LATENCY FIX: render the incoming message IMMEDIATELY. Previously this
+          // callback `await`ed enrichProfiles() (a network round-trip) BEFORE
+          // touching the cache, adding 0.5–2s of delay per message on mobile.
+          // We now write the message into the cache synchronously with whatever
+          // profile data is already available, then enrich + patch in the
+          // background so the sender name/avatar fills in a moment later.
+          const applyToCaches = (msg: GlobalMessage, isPatch: boolean) => {
             queryClient.setQueryData(
               ["global-messages", peerId],
               (prev: GlobalMessage[] | undefined) => {
                 if (!prev) return [msg];
-                if (prev.some((m) => m.id === msg.id)) return prev;
+                const idx = prev.findIndex((m) => m.id === msg.id);
+                if (idx >= 0) {
+                  // Already present — replace (used by the enrichment patch).
+                  const next = prev.slice();
+                  next[idx] = msg;
+                  return next;
+                }
                 return [...prev, msg];
               }
             );
 
+            // Only bump the thread/unread state on first insert, not on the patch.
+            if (isPatch) return;
             queryClient.setQueryData(
               ["global-threads", user.id],
               (prev: GlobalMessageThread[] | undefined) => {
                 if (!prev) {
-                  // FIX 2.2: Fallback refetch when cache is missing/stale
                   queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
                   return prev;
                 }
@@ -1336,38 +1384,59 @@ export function useGlobalMessages(
                   ];
                 }
 
-                // Trigger thread refetch for new conversation — badge will update via thread persistence effect
-                // (no manual dispatch needed; invalidation triggers re-render → useEffect dispatches count)
-
-                // New conversation - trigger refetch
+                // New conversation - trigger refetch so it appears in the list
                 queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
                 return prev;
               }
             );
+          };
 
-            // Show local browser notification when app is backgrounded
-            const senderName = msg.sender?.display_name || 'Someone';
-            const preview = raw.content || '';
-            notifyNewMessage(senderName, preview, peerId);
-          } catch (error) {
-            console.error("[useGlobalMessages] Realtime event processing error:", error);
-            // FIX 1.3: On realtime failure, trigger targeted query invalidation
-            queryClient.invalidateQueries({ queryKey: ["global-messages", peerId] });
-            queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
-          }
+          // 1) Instant render with any cached profile (no await).
+          const cachedProfiles = getCachedProfiles([raw.sender_id]);
+          const instantMsg = toGlobalMessage(raw, peerId, cachedProfiles);
+          applyToCaches(instantMsg, false);
+
+          // Show local browser notification when app is backgrounded.
+          const senderName = instantMsg.sender?.display_name || 'Someone';
+          notifyNewMessage(senderName, raw.content || '', peerId);
+
+          // 2) Enrich the sender profile in the background and patch the bubble.
+          enrichProfiles([raw.sender_id])
+            .then((profileMap) => {
+              const enriched = toGlobalMessage(raw, peerId, profileMap);
+              if (enriched.sender?.display_name) applyToCaches(enriched, true);
+            })
+            .catch((error) => {
+              console.warn("[useGlobalMessages] Realtime profile enrichment failed:", error);
+            });
         }
       )
       .subscribe((status) => {
         // FIX 1.3: Add subscription status/error handling
         if (status === 'SUBSCRIBED') {
           setRealtimeStatus('connected');
+          // BACKFILL ON RECONNECT: realtime only delivers events that occur
+          // while subscribed, so anything that arrived during a drop is missed.
+          // After a (re)connect that followed a drop, do a one-shot real
+          // refetch of the open conversation + thread list to catch up.
+          if (needsBackfillRef.current) {
+            needsBackfillRef.current = false;
+            queryClient.refetchQueries({ queryKey: ["global-threads", user.id] });
+            if (conversationOpenRef.current && activeThreadIdRef.current) {
+              queryClient.refetchQueries({ queryKey: ["global-messages", activeThreadIdRef.current] });
+            }
+          }
         } else if (status === 'CHANNEL_ERROR') {
           setRealtimeStatus('error');
+          needsBackfillRef.current = true;
           console.error('[useGlobalMessages] Realtime subscription error - falling back to polling');
-          // On channel failure, invalidate queries to trigger refetch
-          queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
-        } else if (status === 'CLOSED') {
+        } else if (status === 'CLOSED' || status === 'TIMED_OUT') {
+          // CLOSED/TIMED_OUT are silent drops (common on mobile background /
+          // network handoff). Mark disconnected so the fallback poll engages —
+          // previously only CHANNEL_ERROR did, so a silent drop meant messages
+          // stalled until the user re-focused the tab.
           setRealtimeStatus('disconnected');
+          needsBackfillRef.current = true;
         }
       });
 
@@ -1376,23 +1445,30 @@ export function useGlobalMessages(
     };
   }, [user, isGlobalContext, queryClient]); // FIX 1.2: Remove unstable dependencies (updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads)
 
-  // SCROLL FIX: Only poll as fallback when realtime is broken (NOT during normal operation)
-  // The 10-second polling was the PRIMARY cause of scroll freeze — it triggered refetches
-  // during scroll, causing re-renders that disrupted scroll position.
+  // FALLBACK POLL: engage whenever realtime is NOT actively connected. Two
+  // bugs were fixed here:
+  //   1. The gate was `!== 'error'`, so a SILENT drop (CLOSED/TIMED_OUT →
+  //      'disconnected') never started the poll — messages stalled for up to a
+  //      minute until the tab regained focus. It now runs for any non-connected
+  //      state ('disconnected' | 'error').
+  //   2. It used invalidateQueries({ refetchType: 'none' }), which only MARKS
+  //      the open conversation stale and never actually refetches it. It now
+  //      does a real refetchQueries() so new messages are pulled.
+  // Interval dropped 30s → 6s: still gentle enough to avoid the scroll-freeze
+  // the old 10s loop caused (that loop ran during NORMAL operation; this only
+  // runs while realtime is down), but 5× faster to converge.
   useEffect(() => {
     if (!user || !isGlobalContext || typeof window === 'undefined') return;
-    // Only enable polling when realtime subscription has failed
-    if (realtimeStatus !== 'error') return;
+    if (realtimeStatus === 'connected') return;
 
-    console.warn('[useGlobalMessages] Realtime failed, falling back to 30s polling');
+    console.warn('[useGlobalMessages] Realtime not connected — engaging 6s fallback poll');
     const interval = setInterval(() => {
+      if (document.visibilityState !== 'visible') return;
+      queryClient.refetchQueries({ queryKey: ["global-threads", user.id] });
       if (conversationOpenRef.current && activeThreadId) {
-        queryClient.invalidateQueries({
-          queryKey: ["global-messages", activeThreadId],
-          refetchType: 'none'
-        });
+        queryClient.refetchQueries({ queryKey: ["global-messages", activeThreadId] });
       }
-    }, 30000); // 30 seconds (was 10s — that was far too aggressive)
+    }, 6000);
 
     return () => clearInterval(interval);
   }, [user, isGlobalContext, activeThreadId, queryClient, realtimeStatus]);

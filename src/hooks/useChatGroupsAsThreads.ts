@@ -13,7 +13,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { fetchGroups, type ChatGroup } from "./useChatApi";
 import type { GlobalMessageThread, GlobalMessage } from "./useGlobalMessages";
 
-const POLL_INTERVAL_MS = 30_000;
+// Reconnect-safety fallback for the group thread list. Tightened 30s → 10s so
+// the inbox last-message / unread badge for groups still converges quickly when
+// realtime misses an event on flaky mobile networks.
+const POLL_INTERVAL_MS = 10_000;
 
 export const CHAT_GROUP_THREAD_PREFIX = "chat_group:";
 

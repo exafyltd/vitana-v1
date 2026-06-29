@@ -33,9 +33,11 @@ import { getDateSeparatedMessageItems } from "@/lib/messageDateSeparators";
 import { formatDate } from "@/lib/locale-format";
 import { isThisYear, isToday, isYesterday } from "date-fns";
 
-// Realtime drives live updates now; the poll is only a reconnect-safety
-// fallback, so it can run far less aggressively than the old 5s loop.
-const POLL_INTERVAL_MS = 20000;
+// Realtime drives live updates now; the poll is a reconnect-safety fallback.
+// Kept tight (8s) so that if realtime drops on mobile the group still
+// converges quickly — the previous 20s gap was a large part of the perceived
+// "messages take half a minute to appear" complaint.
+const POLL_INTERVAL_MS = 8000;
 
 interface GroupWithMembers extends ChatGroup {
   members: ChatGroupMember[];
