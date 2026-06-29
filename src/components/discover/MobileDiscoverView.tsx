@@ -165,15 +165,16 @@ function RecommendationCard({
                 item_image_url: rec._product.images?.[0],
                 item_metadata: { brand: rec._product.brand, category: rec._product.category },
               }}
-              size="sm"
-              className="flex-1"
+              size="icon"
+              showLabel={false}
+              className="shrink-0"
             />
             <a
               href={getRedirectUrl(rec._product.id, 'feed')}
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="inline-flex flex-1 items-center justify-center gap-1 rounded-md border border-primary bg-primary/10 px-4 py-2 text-xs font-semibold text-primary hover:bg-primary/20"
+              className="inline-flex flex-1 items-center justify-center gap-1 rounded-md border border-primary bg-primary/10 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/20"
             >
               {t('screens.discover.buy')} <ExternalLink className="w-3.5 h-3.5" />
             </a>
