@@ -4962,7 +4962,24 @@
       "streamOptions": "Opcije strimovanja",
       "nextRoom": "Sledeća soba",
       "value0More": "+{value0} više",
-      "thisWillPermanentlyDeleteTitleThis": "Ovo će trajno obrisati \"{title}\". Ova radnja se ne može poništiti."
+      "thisWillPermanentlyDeleteTitleThis": "Ovo će trajno obrisati \"{title}\". Ova radnja se ne može poništiti.",
+      "past": {
+        "endedBadge": "Ended",
+        "watchRecording": "Watch recording",
+        "endedValue": "Ended {value0}",
+        "peakListeners": "{value0} peak listeners",
+        "messages": "{value0} messages",
+        "plannedMinutes": "{value0} min planned",
+        "noRecording": "No recording available",
+        "delete": "Delete",
+        "deleteTitle": "Delete room?",
+        "deleteDescription": "This past room and its recording will be permanently removed. This can’t be undone.",
+        "deleteCancel": "Cancel",
+        "deleteConfirm": "Delete",
+        "empty": "No past rooms yet",
+        "emptyHint": "Finished rooms appear here — with a recap, highlights and recording.",
+        "loading": "Loading past rooms…"
+      }
     },
     "meetups": {
       "detailsProgram": "Detalji i program",

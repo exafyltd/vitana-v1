@@ -59,6 +59,7 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
   const [scheduleDate, setScheduleDate] = useState<Date>();
   const [scheduleTime, setScheduleTime] = useState("");
   const [scheduleOpen, setScheduleOpen] = useState(false);
+  const [durationMinutes, setDurationMinutes] = useState<number>(60);
   const [enableChat, setEnableChat] = useState(true);
   const [enablePolls, setEnablePolls] = useState(false);
   const [enableRecording, setEnableRecording] = useState(true);
@@ -293,6 +294,10 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
           enable_chat: enableChat,
           enable_polls: enablePolls,
           enable_recording: enableRecording,
+          // Planned length → deterministic finish (start + duration). The
+          // gateway sets the session ends_at and syncs duration_minutes onto
+          // community_live_streams so a finished meetup auto-moves to "Past".
+          duration_minutes: durationMinutes,
         },
       };
 
@@ -515,6 +520,31 @@ export function GoLivePopup({ open, onOpenChange, defaultTitle = "", onCreated, 
                   {t('streamTypeVideo', 'Video')}
                 </Button>
               </div>
+            </div>
+
+            {/* Duration */}
+            <div>
+              <Label>{t('durationLabel', 'Duration')}</Label>
+              <Select
+                value={String(durationMinutes)}
+                onValueChange={(v) => setDurationMinutes(Number(v))}
+              >
+                <SelectTrigger className="mt-2">
+                  <Clock className="w-4 h-4 mr-2" />
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="15">{t('duration15', '15 minutes')}</SelectItem>
+                  <SelectItem value="30">{t('duration30', '30 minutes')}</SelectItem>
+                  <SelectItem value="45">{t('duration45', '45 minutes')}</SelectItem>
+                  <SelectItem value="60">{t('duration60', '1 hour')}</SelectItem>
+                  <SelectItem value="90">{t('duration90', '1.5 hours')}</SelectItem>
+                  <SelectItem value="120">{t('duration120', '2 hours')}</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground mt-1">
+                {t('durationHint', 'The room closes automatically after this time if you don’t end it manually.')}
+              </p>
             </div>
 
             {/* Cover Image */}

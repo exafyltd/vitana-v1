@@ -35,8 +35,9 @@ import { Badge } from "@/components/ui/badge";
 import { communityNavigation } from "@/config/navigation";
 import { toast } from "@/hooks/use-toast";
 import SocialShareButton from "@/components/sharing/SocialShareButton";
-import { useScheduledStreams, useLiveStreams, useStartStream, useCancelStream, useDeleteStream, useUpdateStream } from "@/hooks/useLiveStreams";
+import { useScheduledStreams, useLiveStreams, useEndedStreams, useStartStream, useCancelStream, useDeleteStream, useUpdateStream } from "@/hooks/useLiveStreams";
 import type { LiveStream } from "@/hooks/useLiveStreams";
+import { PastRoomCard } from "@/components/liverooms/PastRoomCard";
 import {
   useMyStreamSubscriptions,
   useStreamSubscriberCounts,
@@ -75,6 +76,8 @@ export default function LiveRooms() {
   // Fetch live streams data
   const { data: liveStreams = [], isLoading: isLoadingLive } = useLiveStreams();
   const { data: scheduledStreams = [], isLoading: isLoadingScheduled } = useScheduledStreams();
+  // Past tab — only fetch when it's open (avoids an extra query on every visit).
+  const { data: endedStreams = [], isLoading: isLoadingEnded } = useEndedStreams(activeTab === 'past');
   const { mutateAsync: startStream } = useStartStream();
   const { mutateAsync: cancelStream } = useCancelStream();
   const { mutateAsync: deleteStream } = useDeleteStream();
@@ -91,8 +94,8 @@ export default function LiveRooms() {
   
   // Fetch profiles for all creators
   const creatorIds = useMemo(() => {
-    return Array.from(new Set([...liveStreams, ...scheduledStreams].map(s => s.created_by))).filter(Boolean);
-  }, [liveStreams, scheduledStreams]);
+    return Array.from(new Set([...liveStreams, ...scheduledStreams, ...endedStreams].map(s => s.created_by))).filter(Boolean);
+  }, [liveStreams, scheduledStreams, endedStreams]);
   
   const { data: profiles = [] } = useProfilesByIds(creatorIds);
   
@@ -332,6 +335,17 @@ export default function LiveRooms() {
       }
     } catch (error) {
       console.error('Delete stream error:', error);
+      notifyError('toasts.community.error');
+    }
+  };
+
+  // Past tab delete — PastRoomCard already confirms, so delete straight away.
+  const handleDeletePastRoom = async (streamId: string) => {
+    try {
+      await deleteStream(streamId);
+      notify('toasts.community.streamDeleted', 'toasts.community.yourLiveStreamHasDeleted');
+    } catch (error) {
+      console.error('Delete past room error:', error);
       notifyError('toasts.community.error');
     }
   };
@@ -871,11 +885,33 @@ export default function LiveRooms() {
           </SplitBarContent>
 
           <SplitBarContent value="past" className={isMobile ? "mt-1" : "mt-6"}>
-            <div className="text-center py-6">
-              <p className="text-muted-foreground">{t('screens.community.pastSessionsWillAppearHereOnce')}</p>
-              <p className="text-sm text-muted-foreground mt-2">{t('screens.community.viewSummariesHighlightsRecordingsFromCompleted')}
-              </p>
-            </div>
+            {isLoadingEnded ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">{t('screens.liverooms.past.loading')}</p>
+              </div>
+            ) : endedStreams.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {endedStreams.map((stream) => {
+                  const profile = profilesMap[stream.created_by];
+                  const isYou = user?.id === stream.created_by;
+                  return (
+                    <PastRoomCard
+                      key={stream.id}
+                      stream={stream}
+                      hostName={profile?.display_name || (isYou ? t('screens.liverooms.you') : t('screens.liverooms.anonymousHost'))}
+                      hostAvatar={profile?.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${stream.created_by}`}
+                      isHost={isYou}
+                      onDelete={handleDeletePastRoom}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-6">
+                <p className="text-muted-foreground">{t('screens.liverooms.past.empty')}</p>
+                <p className="text-sm text-muted-foreground mt-2">{t('screens.liverooms.past.emptyHint')}</p>
+              </div>
+            )}
           </SplitBarContent>
         </SplitBar>
       </div>
