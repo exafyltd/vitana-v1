@@ -5454,7 +5454,29 @@
       "joinAria": "Join live room",
       "whenToday": "Today {time}",
       "whenTomorrow": "Tomorrow {time}",
-      "whenDated": "{date} {time}"
+      "whenDated": "{date} {time}",
+      "past": {
+        "endedBadge": "Ended",
+        "watchRecording": "Watch recording",
+        "endedValue": "Ended {value0}",
+        "peakListeners": "{value0} peak listeners",
+        "messages": "{value0} messages",
+        "plannedMinutes": "{value0} min planned",
+        "noRecording": "No recording available",
+        "delete": "Delete",
+        "deleteTitle": "Delete room?",
+        "deleteDescription": "This past room and its recording will be permanently removed. This can’t be undone.",
+        "deleteCancel": "Cancel",
+        "deleteConfirm": "Delete",
+        "empty": "No past rooms yet",
+        "emptyHint": "Finished rooms appear here — with a recap, highlights and recording.",
+        "loading": "Loading past rooms…",
+        "heldAt": "{date} · {time}",
+        "heldRange": "{date} · {start}–{end}"
+      },
+      "durationMin": "{value0} min",
+      "durationHour": "{value0} h",
+      "durationHourMin": "{value0} h {value1} min"
     },
     "meetups": {
       "detailsProgram": "Details & Program",

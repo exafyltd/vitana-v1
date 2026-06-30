@@ -5454,7 +5454,29 @@
       "joinAria": "Live-Raum beitreten",
       "whenToday": "Heute {time}",
       "whenTomorrow": "Morgen {time}",
-      "whenDated": "{date} {time}"
+      "whenDated": "{date} {time}",
+      "past": {
+        "endedBadge": "Beendet",
+        "watchRecording": "Aufzeichnung ansehen",
+        "endedValue": "Beendet {value0}",
+        "peakListeners": "{value0} Zuhörer max.",
+        "messages": "{value0} Nachrichten",
+        "plannedMinutes": "{value0} Min. geplant",
+        "noRecording": "Keine Aufzeichnung verfügbar",
+        "delete": "Löschen",
+        "deleteTitle": "Raum löschen?",
+        "deleteDescription": "Dieser vergangene Raum und seine Aufzeichnung werden dauerhaft entfernt. Das kann nicht rückgängig gemacht werden.",
+        "deleteCancel": "Abbrechen",
+        "deleteConfirm": "Löschen",
+        "empty": "Noch keine vergangenen Räume",
+        "emptyHint": "Beendete Räume erscheinen hier – mit Zusammenfassung, Highlights und Aufzeichnung.",
+        "loading": "Lade vergangene Räume…",
+        "heldAt": "{date} · {time}",
+        "heldRange": "{date} · {start}–{end}"
+      },
+      "durationMin": "{value0} Min",
+      "durationHour": "{value0} Std",
+      "durationHourMin": "{value0} Std {value1} Min"
     },
     "meetups": {
       "detailsProgram": "Details & Programm",
