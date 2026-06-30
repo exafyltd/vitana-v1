@@ -344,6 +344,22 @@ export default function LiveRooms() {
   // Past tab delete — PastRoomCard already confirms, so delete straight away.
   const handleDeletePastRoom = async (streamId: string) => {
     try {
+      // Remove the recording object(s) from the public `stream-recordings`
+      // bucket FIRST. deleteStream only removes the DB row (the stream_recordings
+      // row cascades), but the uploaded file would otherwise stay reachable via
+      // its public recording_url after the UI says the room was permanently
+      // deleted. Fetch every storage_path for this stream and delete the objects.
+      const { data: recs } = await supabase
+        .from('stream_recordings')
+        .select('storage_path')
+        .eq('stream_id', streamId);
+      const paths = (recs ?? [])
+        .map((r) => r.storage_path)
+        .filter((p): p is string => Boolean(p));
+      if (paths.length > 0) {
+        const { error: rmErr } = await supabase.storage.from('stream-recordings').remove(paths);
+        if (rmErr) console.warn('[DeletePastRoom] storage object removal failed:', rmErr.message);
+      }
       await deleteStream(streamId);
       notify('toasts.community.streamDeleted', 'toasts.community.yourLiveStreamHasDeleted');
     } catch (error) {
