@@ -6578,6 +6578,7 @@
       "postapiv1capabilitiesmusicPlay": "POST /api/v1/capabilities/music.play",
       "musicYoutubeCom": "music.youtube.com",
       "aiAssistants": "KI-Assistenten",
+      "shoppingRewards": "Shopping & Prämien",
       "youReAllSet": "Du bist startklar.",
       "dismiss": "Schließen",
       "yourSessionExpired": "Deine Sitzung ist abgelaufen",
