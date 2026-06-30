@@ -6054,6 +6054,7 @@
       "postapiv1capabilitiesmusicPlay": "POST /api/v1/capabilities/music.play",
       "musicYoutubeCom": "music.youtube.com",
       "aiAssistants": "AI asistenti",
+      "shoppingRewards": "Kupovina i nagrade",
       "youReAllSet": "Sve je spremno.",
       "dismiss": "Odbaci",
       "yourSessionExpired": "Tvoja sesija je istekla",
