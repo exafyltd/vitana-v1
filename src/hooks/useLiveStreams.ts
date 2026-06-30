@@ -38,9 +38,11 @@ export const SCHEDULED_STREAMS_KEY = ['live-streams', 'scheduled'] as const;
 export const LIVE_STREAMS_KEY = ['live-streams', 'live'] as const;
 export const ENDED_STREAMS_KEY = ['live-streams', 'ended'] as const;
 
-// How far back the "Past" tab looks, and how many rooms it lists.
-const ENDED_STREAMS_LOOKBACK_DAYS = 60;
-const ENDED_STREAMS_LIMIT = 50;
+// The "Past" tab keeps EVERY ended session indefinitely — nothing is
+// auto-expired — so a host's past rooms (and their recordings) stay saved
+// until the host deletes them. The limit is only a query-safety cap for very
+// large histories; raise it / add pagination if a tenant ever exceeds it.
+const ENDED_STREAMS_LIMIT = 500;
 
 export interface StreamRecording {
   id: string;
@@ -143,13 +145,11 @@ export async function fetchLiveStreams(): Promise<LiveStream[]> {
  * staleness guard finishes it automatically.
  */
 export async function fetchEndedStreams(): Promise<EndedStream[]> {
-  const since = new Date(Date.now() - ENDED_STREAMS_LOOKBACK_DAYS * 24 * 60 * 60 * 1000).toISOString();
   const { data, error } = await supabase
     .from('community_live_streams')
     .select('*')
     .eq('status', 'ended')
-    .gte('ended_at', since)
-    .order('ended_at', { ascending: false })
+    .order('ended_at', { ascending: false, nullsFirst: false })
     .limit(ENDED_STREAMS_LIMIT);
 
   if (error) throw error;
