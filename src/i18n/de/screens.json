@@ -5470,7 +5470,9 @@
         "deleteConfirm": "Löschen",
         "empty": "Noch keine vergangenen Räume",
         "emptyHint": "Beendete Räume erscheinen hier – mit Zusammenfassung, Highlights und Aufzeichnung.",
-        "loading": "Lade vergangene Räume…"
+        "loading": "Lade vergangene Räume…",
+        "heldAt": "{date} · {time}",
+        "heldRange": "{date} · {start}–{end}"
       },
       "durationMin": "{value0} Min",
       "durationHour": "{value0} Std",

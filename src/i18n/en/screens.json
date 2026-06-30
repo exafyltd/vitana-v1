@@ -5470,7 +5470,9 @@
         "deleteConfirm": "Delete",
         "empty": "No past rooms yet",
         "emptyHint": "Finished rooms appear here — with a recap, highlights and recording.",
-        "loading": "Loading past rooms…"
+        "loading": "Loading past rooms…",
+        "heldAt": "{date} · {time}",
+        "heldRange": "{date} · {start}–{end}"
       },
       "durationMin": "{value0} min",
       "durationHour": "{value0} h",
