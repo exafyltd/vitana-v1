@@ -1,0 +1,12 @@
+{
+  "notif": {
+    "community_post_published": {
+      "title": "New post",
+      "body": "{name} shared a new post."
+    },
+    "community_video_published": {
+      "title": "New video",
+      "body": "{name} shared a new video."
+    }
+  }
+}
