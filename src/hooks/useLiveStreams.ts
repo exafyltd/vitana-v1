@@ -36,6 +36,35 @@ export interface LiveStream {
 export const SCHEDULED_STREAMS_KEY = ['live-streams', 'scheduled'] as const;
 export const LIVE_STREAMS_KEY = ['live-streams', 'live'] as const;
 
+// A stream is only flipped out of `status='live'` when the host explicitly ends
+// it (gateway `/live/rooms/:id/end`). If the host just closes the app / loses
+// connection, the row stays `live` forever and the UI keeps advertising it as
+// "LIVE NOW" — even a day later. Guard against that: any stream that has been
+// "live" longer than this window is treated as stale and excluded from the live
+// listing. The backend reaper (pg_cron `fn_reap_stale_live_streams` in
+// vitana-platform) flips these to `ended` at the source on the same threshold;
+// this client-side check is belt-and-braces so the UI never shows a stale room
+// even before the reaper runs or for rows it hasn't reached yet.
+// NOTE: keep this value in sync with `p_max_hours` in the platform reaper.
+export const MAX_LIVE_STREAM_DURATION_MS = 4 * 60 * 60 * 1000; // 4 hours
+
+/**
+ * True when a stream claims `status='live'` but has clearly been orphaned —
+ * either it started longer ago than a real session would run, or it is "live"
+ * with no start timestamp at all (which only happens for stuck rows).
+ */
+export function isLiveStreamStale(
+  stream: Pick<LiveStream, 'status' | 'started_at' | 'created_at'>,
+  now: number = Date.now(),
+): boolean {
+  if (stream.status !== 'live') return false;
+  const startedRaw = stream.started_at ?? stream.created_at;
+  const startedMs = startedRaw ? new Date(startedRaw).getTime() : NaN;
+  // Live but no usable start timestamp → definitely orphaned.
+  if (Number.isNaN(startedMs)) return true;
+  return now - startedMs > MAX_LIVE_STREAM_DURATION_MS;
+}
+
 export async function fetchScheduledStreams(): Promise<LiveStream[]> {
   const { data, error } = await supabase
     .from('community_live_streams')
@@ -64,12 +93,16 @@ export async function fetchLiveStreams(): Promise<LiveStream[]> {
 
   if (error) throw error;
 
-  return (data || []).map((stream: any) => ({
-    ...stream,
-    creator_display_name: null,
-    creator_avatar_url: null,
-    creator: undefined
-  })) as LiveStream[];
+  return (data || [])
+    // Drop streams stuck in `live` from a past, never-ended session so the
+    // listing (and the "LIVE NOW" card) never shows a room that ended long ago.
+    .filter((stream) => !isLiveStreamStale(stream))
+    .map((stream: any) => ({
+      ...stream,
+      creator_display_name: null,
+      creator_avatar_url: null,
+      creator: undefined
+    })) as LiveStream[];
 }
 
 export function useScheduledStreams() {
