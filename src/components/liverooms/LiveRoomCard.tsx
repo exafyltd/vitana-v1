@@ -3,12 +3,13 @@ import { ClickableAvatar } from "@/components/ui/clickable-avatar";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Users, Clock, Bell, Share2, MapPin, Pencil, Trash2, CalendarDays } from "lucide-react";
+import { Users, Clock, Bell, Share2, MapPin, Pencil, Trash2, CalendarDays, Timer } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { differenceInMinutes } from 'date-fns';
 import { useState } from "react";
 import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu-kebab";
 import { t } from '@/lib/i18n-toast';
+import { formatDuration } from '@/components/liverooms/liveRoomFormat';
 
 import { formatDate, formatDistanceToNow } from '@/lib/locale-format';
 export interface LiveRoom {
@@ -22,6 +23,10 @@ export interface LiveRoom {
   };
   isLive: boolean;
   scheduledTime?: string;
+  /** Actual start of a live session (used for the "started at" time on live cards). */
+  startedAt?: string;
+  /** Planned session length in minutes — shown as a duration chip on the card. */
+  durationMinutes?: number;
   participants: number;
   /** How many people tapped "Notify me" — drives the "X going" counter on scheduled cards. */
   interestedCount?: number;
@@ -84,6 +89,15 @@ export function LiveRoomCard({
   const showCountdown = isScheduled && minutesUntil > 0 && minutesUntil < 120;
 
   const gradientClass = categoryGradients[room.category || ""] || categoryGradients.default;
+
+  // Time + duration shown on the card. For a live room the "time" is when it
+  // actually started (falling back to the scheduled time); duration is the
+  // planned length set at creation.
+  const durationLabel = formatDuration(room.durationMinutes);
+  const liveStartIso = room.startedAt || room.scheduledTime;
+  const liveStartLabel = room.isLive && liveStartIso
+    ? formatDate(new Date(liveStartIso), "HH:mm")
+    : null;
 
   // Determine aspect ratio based on featured status
   const aspectRatio = isFeatured ? "aspect-[16/9]" : "aspect-[4/5]";
@@ -153,10 +167,22 @@ export function LiveRoomCard({
           {/* Top-left badges */}
           <div className="absolute top-3 left-3 right-12 flex flex-wrap items-center gap-1.5 z-10">
             {room.isLive ? (
-              <Badge className="bg-red-500 text-white border-0 gap-1.5 px-2.5 py-1 shadow-lg">
-                <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                {t('screens.liverooms.live')}
-              </Badge>
+              <>
+                <Badge className="bg-red-500 text-white border-0 gap-1.5 px-2.5 py-1 shadow-lg">
+                  <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                  {t('screens.liverooms.live')}
+                </Badge>
+                {/* Start-time chip — when the session went live */}
+                {liveStartLabel && (
+                  <Badge
+                    variant="secondary"
+                    className="gap-1.5 px-2.5 py-1 bg-background/95 backdrop-blur-sm shadow-lg"
+                  >
+                    <Clock className="w-3 h-3" />
+                    {t('screens.liverooms.timeChip', { time: liveStartLabel })}
+                  </Badge>
+                )}
+              </>
             ) : isScheduled ? (
               <>
                 {/* Date chip — e.g. "So., 31. Mai" / "Sun, 31. May" */}
@@ -177,6 +203,16 @@ export function LiveRoomCard({
                 </Badge>
               </>
             ) : null}
+            {/* Duration chip — planned session length (live or scheduled) */}
+            {durationLabel && (room.isLive || isScheduled) && (
+              <Badge
+                variant="secondary"
+                className="gap-1.5 px-2.5 py-1 bg-background/95 backdrop-blur-sm shadow-lg"
+              >
+                <Timer className="w-3 h-3" />
+                {durationLabel}
+              </Badge>
+            )}
             {/* Price chip — FREE vs Premium */}
             {room.isPremium ? (
               <Badge

@@ -5471,7 +5471,10 @@
         "empty": "Noch keine vergangenen Räume",
         "emptyHint": "Beendete Räume erscheinen hier – mit Zusammenfassung, Highlights und Aufzeichnung.",
         "loading": "Lade vergangene Räume…"
-      }
+      },
+      "durationMin": "{value0} Min",
+      "durationHour": "{value0} Std",
+      "durationHourMin": "{value0} Std {value1} Min"
     },
     "meetups": {
       "detailsProgram": "Details & Programm",

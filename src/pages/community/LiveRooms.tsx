@@ -131,6 +131,8 @@ export default function LiveRooms() {
       },
       isLive: stream.status === 'live',
       scheduledTime: stream.scheduled_for || undefined,
+      startedAt: stream.started_at || undefined,
+      durationMinutes: stream.duration_minutes ?? undefined,
       participants: stream.viewer_count,
       interestedCount: subscriberCounts[stream.id] ?? 0,
       maxParticipants: 100,
