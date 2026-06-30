@@ -70,8 +70,11 @@ export function PastRoomCard({ stream, hostName, hostAvatar, isHost, onDelete }:
 
   return (
     <div className="rounded-2xl border bg-card overflow-hidden flex flex-col">
-      {/* Cover */}
-      <div className="relative aspect-video bg-muted">
+      {/* Cover — capped to a fraction of the viewport on mobile (sized box, not
+          an aspect-ratio, so a portrait source still crops to a short banner)
+          so the whole card fits on screen when the Past tab opens; fixed height
+          in the desktop grid. */}
+      <div className="relative h-[34vh] sm:h-44 shrink-0 bg-muted">
         {stream.cover_image_url ? (
           <img
             src={stream.cover_image_url}
@@ -99,7 +102,7 @@ export function PastRoomCard({ stream, hostName, hostAvatar, isHost, onDelete }:
       </div>
 
       {/* Body */}
-      <div className="p-4 flex flex-col gap-3 flex-1">
+      <div className="p-3.5 flex flex-col gap-2 flex-1 min-h-0">
         <div>
           <h3 className="font-semibold leading-tight line-clamp-2">{stream.title}</h3>
           {heldLabel && (
