@@ -28,9 +28,9 @@ import {
   ResponsiveConfirmDialogHeader,
   ResponsiveConfirmDialogTitle,
 } from '@/components/ui/responsive-confirm-dialog';
-import { Play, Users, MessageSquare, Clock, Trash2 } from 'lucide-react';
+import { Play, Users, MessageSquare, Clock, Trash2, CalendarDays } from 'lucide-react';
 import { StreamRecordingPlayer } from '@/components/StreamRecordingPlayer';
-import { fmtDateTime, formatDistanceToNow } from '@/lib/locale-format';
+import { fmtDate, fmtTime, fmtDateTime, formatDistanceToNow } from '@/lib/locale-format';
 import { t } from '@/lib/i18n-toast';
 import type { EndedStream } from '@/hooks/useLiveStreams';
 
@@ -48,6 +48,25 @@ export function PastRoomCard({ stream, hostName, hostAvatar, isHost, onDelete }:
 
   const endedAt = stream.ended_at ? new Date(stream.ended_at) : null;
   const recording = stream.recording;
+
+  // Absolute "when it was held": the actual start (started_at, else the
+  // scheduled time), with the end time appended when known. Rendered as e.g.
+  // "Sa., 28. Juni · 17:00–17:45" so a finished session shows concretely when
+  // it ran — not just a relative "ended 2 days ago".
+  const heldStartRaw = stream.started_at ?? stream.scheduled_for;
+  const heldStart = heldStartRaw ? new Date(heldStartRaw) : null;
+  const heldLabel = heldStart
+    ? (endedAt
+        ? t('screens.liverooms.past.heldRange', {
+            date: fmtDate(heldStart, { weekday: 'short', day: 'numeric', month: 'long' }),
+            start: fmtTime(heldStart, { hour: '2-digit', minute: '2-digit' }),
+            end: fmtTime(endedAt, { hour: '2-digit', minute: '2-digit' }),
+          })
+        : t('screens.liverooms.past.heldAt', {
+            date: fmtDate(heldStart, { weekday: 'short', day: 'numeric', month: 'long' }),
+            time: fmtTime(heldStart, { hour: '2-digit', minute: '2-digit' }),
+          }))
+    : null;
 
   return (
     <div className="rounded-2xl border bg-card overflow-hidden flex flex-col">
@@ -83,6 +102,12 @@ export function PastRoomCard({ stream, hostName, hostAvatar, isHost, onDelete }:
       <div className="p-4 flex flex-col gap-3 flex-1">
         <div>
           <h3 className="font-semibold leading-tight line-clamp-2">{stream.title}</h3>
+          {heldLabel && (
+            <p className="flex items-center gap-1.5 text-xs text-foreground/80 mt-1.5">
+              <CalendarDays className="w-3.5 h-3.5 shrink-0" />
+              {heldLabel}
+            </p>
+          )}
           {endedAt && (
             <p className="text-xs text-muted-foreground mt-1">
               {t('screens.liverooms.past.endedValue', {
