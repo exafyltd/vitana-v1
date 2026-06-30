@@ -41,6 +41,11 @@ export interface Integration {
   syncData: string;
   lastSync?: string;
   comingSoon?: boolean;
+  // Optional status line that overrides the generic "Connected"/syncData subtitle
+  // in the mobile row. Used by the Shopping & Rewards tiles to say what "connected"
+  // actually means here (rewards on, checkout still on the merchant's site) so the
+  // badge doesn't imply in-app checkout.
+  statusLabel?: string;
   // VTID-02403: extended category list to include 'ai' for AI Assistants (ChatGPT, Claude)
   // Added 'productivity' for email/calendar/contacts and 'media' for music/video playback
   category: 'social' | 'fitness' | 'health' | 'other' | 'ai' | 'productivity' | 'media' | 'shopping';
@@ -60,6 +65,7 @@ export const shoppingIntegrations: Integration[] = [
     icon: ShoppingBag,
     connected: true,
     syncData: 'Rewards active — shop in Discover to earn',
+    statusLabel: 'Rewards active · checkout on merchant site',
     category: 'shopping',
   },
   {
@@ -68,6 +74,7 @@ export const shoppingIntegrations: Integration[] = [
     icon: ShoppingBag,
     connected: true,
     syncData: 'Rewards active — German supplements',
+    statusLabel: 'Rewards active · checkout on merchant site',
     category: 'shopping',
   },
   {
@@ -76,6 +83,7 @@ export const shoppingIntegrations: Integration[] = [
     icon: Globe,
     connected: true,
     syncData: 'Rewards active — global marketplace',
+    statusLabel: 'Rewards active · checkout on merchant site',
     category: 'shopping',
   },
   {
@@ -84,14 +92,16 @@ export const shoppingIntegrations: Integration[] = [
     icon: Store,
     connected: true,
     syncData: 'Rewards active — fitness & outdoor gear',
+    statusLabel: 'Rewards active · checkout on merchant site',
     category: 'shopping',
   },
   {
     id: 'amazon',
     name: 'Amazon',
     icon: ShoppingBag,
-    connected: true,
-    syncData: 'Recommendations only — no rewards (Amazon terms)',
+    connected: false,
+    syncData: 'Recommendations only — opens on Amazon',
+    statusLabel: 'Recommendations only · opens on Amazon',
     category: 'shopping',
   },
   {
