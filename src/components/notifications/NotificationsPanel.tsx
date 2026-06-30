@@ -313,20 +313,6 @@ function NotificationRow({
   onClick: () => void;
   onDelete: () => void;
 }) {
-  // Trigger-created notifications (e.g. community_post_published) store catalog
-  // keys + params in `data` so each recipient sees their own locale; the stored
-  // title/body is a German fallback. Localize from the keys when present.
-  const data = (notification.data || {}) as Record<string, any>;
-  const i18nParams =
-    data.i18n_params && typeof data.i18n_params === 'object'
-      ? (data.i18n_params as Record<string, string | number>)
-      : undefined;
-  const displayTitle = data.i18n_title_key
-    ? t(data.i18n_title_key as string, i18nParams)
-    : notification.title;
-  const displayBody = data.i18n_body_key
-    ? t(data.i18n_body_key as string, i18nParams)
-    : notification.body;
   return (
     <div
       className={`
@@ -364,11 +350,11 @@ function NotificationRow({
         <div className="flex-1 min-w-0 space-y-0.5 pt-0.5">
           <p className="text-sm leading-snug break-words">
             <span className={!notification.read_at ? 'font-semibold' : ''}>
-              {displayTitle}
+              {notification.title}
             </span>
           </p>
-          {displayBody && (
-            <p className="text-xs text-muted-foreground line-clamp-2 break-words">{displayBody}</p>
+          {notification.body && (
+            <p className="text-xs text-muted-foreground line-clamp-2 break-words">{notification.body}</p>
           )}
           <p className="text-[11px] text-muted-foreground/70">
             {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
