@@ -42,11 +42,18 @@ jobs:
       - name: Evaluate staging-first cutover
         id: gate
         shell: bash
+        # DISPATCH_REASON is passed via env (NOT interpolated inline into the
+        # script). The reason is free text from the PUBLISH button / a human; a
+        # shell-special character (quote, backtick, $(), …) spliced straight into
+        # `run:` would break this gate step and, because `deploy` needs it, silently
+        # skip the whole prod promotion. Reading it as an env var is injection-safe.
+        env:
+          DISPATCH_REASON: ${{ github.event.inputs.reason }}
         run: |
           CUTOVER_EPOCH="$(date -d 'TZ="Europe/Berlin" 2026-06-08 10:00:00' +%s)"
           NOW_EPOCH="$(date -u +%s)"
           if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
-            echo "Manual dispatch (reason: ${{ github.event.inputs.reason }}) → not frozen (deliberate prod exception)."
+            echo "Manual dispatch (reason: ${DISPATCH_REASON}) → not frozen (deliberate prod exception)."
             echo "frozen=false" >> "$GITHUB_OUTPUT"
           elif [ "$NOW_EPOCH" -ge "$CUTOVER_EPOCH" ]; then
             echo "::warning::Staging-first cutover ACTIVE — auto deploy of community-app to LIVE is frozen. Frontend auto-deploys to community-app-staging; promote via the Command Hub PUBLISH button or a manual dispatch."
