@@ -19,7 +19,25 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "mobileNav.myJourney": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mobileNav.news": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.inbox": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "While 'Buzón' is technically correct, 'Bandeja de entrada' is more commonly used and natural for a digital 'Inbox' in a mobile app UI.",
+      "suggested": "Bandeja de entrada",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:33.846Z"
+  "generatedAt": "2026-07-02T08:11:45.341Z"
 }

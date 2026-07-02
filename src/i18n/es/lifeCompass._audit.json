@@ -153,10 +153,10 @@
     "lifeCompass.goals.longevity.description": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'healthspan' is not accurately translated as 'salud'; it loses the specific nuance of healthy years of life. 'Salud' is too general.",
-      "suggested": "Enfócate en una vida sana y activa, energía y longevidad — la misión de Vitanaland",
+      "issue": "The translation for 'healthspan' ('una vida sana y activa') describes the quality of life, but misses the crucial 'span' or 'duration' aspect of the term, which refers to the period of life spent in good health. 'Años de vida saludable' is a more accurate and common way to convey this concept in Spanish.",
+      "suggested": "Enfócate en tus años de vida saludable, energía y longevidad — la misión de Vitanaland",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:14.548Z"
+  "generatedAt": "2026-07-02T08:11:32.211Z"
 }
