@@ -230,3 +230,21 @@ export async function sendGroupMessage(
 export async function markGroupRead(groupId: string): Promise<void> {
   await gatewayGroupFetch(`/${groupId}/read`, { method: "POST" });
 }
+
+/** Edit a group message the caller sent. Returns the updated message. */
+export async function updateGroupMessage(
+  groupId: string,
+  messageId: string,
+  content: string,
+): Promise<ChatGroupMessage> {
+  const json = await gatewayGroupFetch(`/${groupId}/messages/${messageId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ content }),
+  });
+  return json.data;
+}
+
+/** Delete a group message the caller sent. */
+export async function deleteGroupMessage(groupId: string, messageId: string): Promise<void> {
+  await gatewayGroupFetch(`/${groupId}/messages/${messageId}`, { method: "DELETE" });
+}
