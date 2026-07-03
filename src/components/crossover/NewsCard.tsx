@@ -15,6 +15,8 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 interface NewsCardProps {
   title: string;
+  /** Short line rendered in a smaller font directly under the title, e.g. "with Special Guests" */
+  subtitle?: string;
   description?: string;
   imageUrl: string;
   fallbackImageUrl?: string;
@@ -62,6 +64,7 @@ interface NewsCardProps {
 const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
   ({
     title,
+    subtitle,
     description,
     imageUrl,
     fallbackImageUrl,
@@ -444,6 +447,13 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
               <h3 className="text-lg font-bold leading-tight group-hover:text-primary-foreground transition-colors drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
                 {title}
               </h3>
+
+              {/* Subtitle */}
+              {subtitle && (
+                <p className="text-xs text-white/80 font-medium -mt-2 drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]">
+                  {subtitle}
+                </p>
+              )}
 
               {/* Description */}
               {description && (
