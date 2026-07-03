@@ -177,9 +177,9 @@
     },
     "subNav.diary": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Redundant and awkward phrasing. 'Diario diario' literally means 'Diary daily' or 'Daily daily'.",
-      "suggested": "Tu diario",
+      "confidence": 0.9,
+      "issue": "Omits explicit 'Daily' aspect; 'Tu diario' primarily means 'Your diary', not 'Your daily diary' or 'Your daily log'.",
+      "suggested": "Tu registro diario",
       "phase": "llm"
     },
     "subNav.recall": {
@@ -213,5 +213,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:08:36.760Z"
+  "generatedAt": "2026-07-03T06:49:32.348Z"
 }

@@ -151,12 +151,10 @@
       "phase": "llm"
     },
     "lifeCompass.goals.longevity.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'healthspan' is not accurately translated as 'salud'; it loses the specific nuance of healthy years of life. 'Salud' is too general.",
-      "suggested": "Enfócate en una vida sana y activa, energía y longevidad — la misión de Vitanaland",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:14.548Z"
+  "generatedAt": "2026-07-03T06:46:33.179Z"
 }

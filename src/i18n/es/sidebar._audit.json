@@ -81,10 +81,8 @@
       "phase": "llm"
     },
     "sidebar.testResults": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is too general; 'Resultados' means 'Results', but 'Test Results' implies a specific type of result. 'Resultados de pruebas' or 'Resultados de análisis' would be more precise.",
-      "suggested": "Resultados de pruebas",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "sidebar.careTeam": {
@@ -221,7 +219,17 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "sidebar.connectors": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.support": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:08:30.134Z"
+  "generatedAt": "2026-07-03T06:49:23.742Z"
 }
