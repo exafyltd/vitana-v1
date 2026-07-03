@@ -159,6 +159,7 @@ export function MobileEventCarousel({
 
     return {
       title: event.title,
+      subtitle: event.metadata?.subtitle,
       description: event.description,
       imageUrl: imageUrl,
       category: 'event' as const,

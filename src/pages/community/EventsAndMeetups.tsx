@@ -119,6 +119,7 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
   
   return {
     title: event.title,
+    subtitle: event.metadata?.subtitle,
     description: event.description,
     imageUrl: imageUrl,
     category: 'event' as const,
