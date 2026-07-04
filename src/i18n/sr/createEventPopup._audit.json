@@ -462,9 +462,9 @@
     },
     "createEventPopup.toasts.generatingImageDesc": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect subject/voice. 'Kreiram' means 'I am creating', but this is a system message indicating an ongoing process. Should be impersonal or passive.",
-      "suggested": "Kreiranje prilagođene slike za vaš događaj.",
+      "confidence": 0.9,
+      "issue": "Inconsistent register: 'vaš' (formal/plural 'your') should be 'tvoj' (informal singular 'your') for du-form.",
+      "suggested": "Kreiranje prilagođene slike za tvoj događaj.",
       "phase": "llm"
     },
     "createEventPopup.toasts.imageGenerated": {
@@ -548,5 +548,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:22.864Z"
+  "generatedAt": "2026-07-04T06:33:23.130Z"
 }
