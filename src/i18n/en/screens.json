@@ -8195,6 +8195,13 @@
       "enterVitanalandK": "Enter Vitanaland (⌘K)",
       "enterVitanalandCmdK": "Enter VITANALAND (Cmd+K)"
     },
+    "vitanaIdentity": {
+      "vitana": "Vitana",
+      "vitanaEmpfiehlt": "Vitana recommends",
+      "vitanaPick": "Vitana Pick",
+      "fuerDich": "For you",
+      "orbAlt": "Vitana"
+    },
     "voucher": {
       "friendExampleCom": "friend@example.com",
       "jane": "Jane",

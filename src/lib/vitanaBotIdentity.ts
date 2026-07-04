@@ -13,7 +13,7 @@ export const VITANA_BOT_USER_ID =
 
 export const VITANA_BOT_DISPLAY_NAME = "Vitana";
 
-export const VITANA_BOT_AVATAR_URL = "/vitana-orb-avatar.png";
+export const VITANA_BOT_AVATAR_URL = "/vitana-orb-clean.svg";
 
 /** Check whether a user ID belongs to the Vitana AI bot */
 export function isVitanaBot(userId: string | null | undefined): boolean {
