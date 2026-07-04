@@ -20,6 +20,7 @@ import { t } from "@/lib/i18n-toast";
 import { matchCategoryLabel } from "@/lib/matchReason";
 import { reasonKeyFor, type FeedItem, type ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { VitanaRecommendationHeader, type VitanaRecommendationLabel } from "@/components/vitana/VitanaRecommendationHeader";
+import { cn } from "@/lib/utils";
 
 /** Sunburst tick marks for the match dial — 12 evenly spaced rays around the score. */
 const MATCH_RAYS = Array.from({ length: 12 }, (_, i) => {
@@ -27,10 +28,10 @@ const MATCH_RAYS = Array.from({ length: 12 }, (_, i) => {
   const cos = Math.cos(a);
   const sin = Math.sin(a);
   return {
-    x1: 32 + 25 * cos,
-    y1: 32 + 25 * sin,
-    x2: 32 + 30 * cos,
-    y2: 32 + 30 * sin,
+    x1: 32 + 23 * cos,
+    y1: 32 + 23 * sin,
+    x2: 32 + 31 * cos,
+    y2: 32 + 31 * sin,
   };
 });
 
@@ -43,31 +44,49 @@ function timeAgo(iso: string): string {
 }
 
 /**
- * Vitana identity + "why you're seeing this" label shown atop every
+ * Vitana identity + "why you're seeing this" pill shown atop every
  * algorithmically-surfaced card (match, spotlight performer) — never on
  * community posts or public articles, which come from a real person/source,
- * not Vitana.
+ * not Vitana. The reason text lives in the trailing pill (not its own line)
+ * to keep these cards the same height as the top News banners.
  */
 function WhyLabel({
   item,
   label,
+  pillClassName,
 }: {
   item: FeedItem;
   label: VitanaRecommendationLabel;
+  pillClassName: string;
 }) {
   return (
-    <div className="mb-2">
-      <VitanaRecommendationHeader label={label} size={20} />
-      <span className="text-xs font-medium text-primary truncate">{t(reasonKeyFor(item))}</span>
-    </div>
+    <VitanaRecommendationHeader
+      label={label}
+      className="mb-3"
+      trailing={
+        <span className={cn(
+          "inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold flex-shrink-0 whitespace-nowrap",
+          pillClassName,
+        )}>
+          {t(reasonKeyFor(item))}
+        </span>
+      }
+    />
   );
 }
 
-const cardShell =
-  "group relative cursor-pointer overflow-hidden rounded-2xl border border-border/40 bg-card " +
+const baseCardShell =
+  "group relative cursor-pointer overflow-hidden rounded-2xl border " +
   "shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-all duration-300 " +
   "hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] " +
   "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2";
+
+// Match/performer cards are Vitana-branded, so — like the top News banners —
+// they get a happy tinted background instead of the plain card surface.
+const matchCardShell = cn(baseCardShell, "border-sky-300/30 bg-gradient-to-r from-sky-500/10 via-blue-500/10 to-sky-500/10");
+const performerCardShell = cn(baseCardShell, "border-emerald-300/30 bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-emerald-500/10");
+const matchPillClassName = "bg-blue-100 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300";
+const performerPillClassName = "bg-emerald-100 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-300";
 
 export function NewsFeedItemCard({
   item,
@@ -107,7 +126,7 @@ export function NewsFeedItemCard({
   if (item.kind === "match") {
     return (
       <Card
-        className={cardShell}
+        className={matchCardShell}
         role="button"
         tabIndex={0}
         onClick={() => openProfile(item.user_id)}
@@ -119,7 +138,7 @@ export function NewsFeedItemCard({
         }}
       >
         <CardContent className="p-4">
-          <WhyLabel item={item} label="empfiehlt" />
+          <WhyLabel item={item} label="empfiehlt" pillClassName={matchPillClassName} />
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12 shrink-0">
               {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
@@ -131,7 +150,7 @@ export function NewsFeedItemCard({
                 {matchCategoryLabel(item.match_reason)}
               </p>
             </div>
-            <div className="relative flex h-16 w-16 shrink-0 items-center justify-center text-amber-400">
+            <div className="relative flex h-16 w-16 shrink-0 items-center justify-center text-amber-500">
               <svg
                 viewBox="0 0 64 64"
                 className="absolute inset-0 h-full w-full"
@@ -145,17 +164,16 @@ export function NewsFeedItemCard({
                     x2={r.x2}
                     y2={r.y2}
                     stroke="currentColor"
-                    strokeWidth={2}
+                    strokeWidth={3}
                     strokeLinecap="round"
-                    className="opacity-70"
                   />
                 ))}
               </svg>
-              <div className="flex h-11 w-11 flex-col items-center justify-center rounded-full bg-amber-100">
-                <span className="text-xs font-bold leading-none text-amber-600">
+              <div className="flex h-11 w-11 flex-col items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-amber-300 shadow-sm">
+                <span className="text-xs font-bold leading-none text-amber-800">
                   {t("screens.home.matchPercent", { score: item.compatibility_score })}
                 </span>
-                <span className="mt-0.5 text-[8px] font-medium leading-none text-amber-500">
+                <span className="mt-0.5 text-[8px] font-semibold leading-none text-amber-700">
                   {t("screens.home.matchLabel")}
                 </span>
               </div>
@@ -173,7 +191,7 @@ export function NewsFeedItemCard({
   if (item.kind === "performer") {
     return (
       <Card
-        className={cardShell}
+        className={performerCardShell}
         role="button"
         tabIndex={0}
         onClick={() => openProfile(item.user_id)}
@@ -185,7 +203,7 @@ export function NewsFeedItemCard({
         }}
       >
         <CardContent className="p-4">
-          <WhyLabel item={item} label="pick" />
+          <WhyLabel item={item} label="pick" pillClassName={performerPillClassName} />
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12 shrink-0">
               {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
