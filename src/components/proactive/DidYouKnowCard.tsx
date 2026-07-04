@@ -10,7 +10,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, ArrowRight, X, MoreVertical } from 'lucide-react';
+import { ArrowRight, X, MoreVertical } from 'lucide-react';
 import { useDidYouKnowTip } from '@/hooks/useDidYouKnowTip';
 import {
   DropdownMenu,
@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { t } from '@/lib/i18n-toast';
+import { VitanaRecommendationHeader } from '@/components/vitana/VitanaRecommendationHeader';
 
 export function DidYouKnowCard() {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ export function DidYouKnowCard() {
 
   return (
     <div
-      className="relative w-full rounded-xl border border-violet-300/30 bg-gradient-to-r from-violet-500/10 via-fuchsia-500/10 to-violet-500/10 p-4 animate-fade-in"
+      className="relative w-full rounded-xl border border-violet-300/30 bg-gradient-to-r from-violet-500/10 via-fuchsia-500/10 to-violet-500/10 p-3 animate-fade-in"
       role="status"
       aria-live="polite"
       data-testid="dyk-card"
@@ -78,27 +79,20 @@ export function DidYouKnowCard() {
         </button>
       </div>
 
-      <div className="flex items-start gap-3 pr-14">
-        <div className="flex-shrink-0">
-          <div className="w-9 h-9 rounded-full bg-violet-500/15 flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-violet-600 dark:text-violet-300" />
-          </div>
-        </div>
-        <div className="flex-1">
-          <div className="inline-flex items-center gap-1.5 mb-1.5 rounded-full bg-violet-500/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-violet-700 dark:text-violet-300">
-            {t('screens.proactive.didYouKnow')}
-          </div>
-          <p className="text-sm text-foreground leading-relaxed">{tip.card_copy}</p>
-          <button
-            onClick={handleShowMe}
-            disabled={busy}
-            className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-violet-700 dark:text-violet-300 hover:text-violet-800 dark:hover:text-violet-200 transition-colors disabled:opacity-50"
-          >
-            {tip.cta_label}
-            <ArrowRight className="w-3 h-3" />
-          </button>
-        </div>
+      <VitanaRecommendationHeader label="empfiehlt" className="pr-14 mb-2" />
+
+      <div className="inline-flex items-center gap-1.5 mb-1.5 rounded-full bg-violet-500/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-violet-700 dark:text-violet-300">
+        {t('screens.proactive.didYouKnow')}
       </div>
+      <p className="text-sm text-foreground leading-relaxed">{tip.card_copy}</p>
+      <button
+        onClick={handleShowMe}
+        disabled={busy}
+        className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-violet-700 dark:text-violet-300 hover:text-violet-800 dark:hover:text-violet-200 transition-colors disabled:opacity-50"
+      >
+        {tip.cta_label}
+        <ArrowRight className="w-3 h-3" />
+      </button>
     </div>
   );
 }
