@@ -10,7 +10,7 @@
  */
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Sparkles, UserPlus, TrendingUp } from "lucide-react";
+import { UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
 import { CommunityPostCard } from "@/components/home/CommunityPostCard";
@@ -19,6 +19,7 @@ import { formatDistanceToNow } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { matchCategoryLabel } from "@/lib/matchReason";
 import { reasonKeyFor, type FeedItem, type ArticleFeedItem } from "@/lib/news-feed-ranker";
+import { VitanaRecommendationHeader, type VitanaRecommendationLabel } from "@/components/vitana/VitanaRecommendationHeader";
 
 /** Sunburst tick marks for the match dial — 12 evenly spaced rays around the score. */
 const MATCH_RAYS = Array.from({ length: 12 }, (_, i) => {
@@ -41,23 +42,23 @@ function timeAgo(iso: string): string {
   }
 }
 
-/** Small "why you're seeing this" label shown atop every non-article card. */
+/**
+ * Vitana identity + "why you're seeing this" label shown atop every
+ * algorithmically-surfaced card (match, spotlight performer) — never on
+ * community posts or public articles, which come from a real person/source,
+ * not Vitana.
+ */
 function WhyLabel({
   item,
-  icon,
-  trailing,
+  label,
 }: {
   item: FeedItem;
-  icon: React.ReactNode;
-  trailing?: React.ReactNode;
+  label: VitanaRecommendationLabel;
 }) {
   return (
-    <div className="flex items-center gap-1.5 text-xs font-medium text-primary mb-2">
-      {icon}
-      <span className="truncate">{t(reasonKeyFor(item))}</span>
-      {trailing && (
-        <span className="ml-auto shrink-0 text-muted-foreground">{trailing}</span>
-      )}
+    <div className="mb-2">
+      <VitanaRecommendationHeader label={label} size={20} />
+      <span className="text-xs font-medium text-primary truncate">{t(reasonKeyFor(item))}</span>
     </div>
   );
 }
@@ -118,7 +119,7 @@ export function NewsFeedItemCard({
         }}
       >
         <CardContent className="p-4">
-          <WhyLabel item={item} icon={<Sparkles className="h-3.5 w-3.5" />} />
+          <WhyLabel item={item} label="empfiehlt" />
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12 shrink-0">
               {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
@@ -184,7 +185,7 @@ export function NewsFeedItemCard({
         }}
       >
         <CardContent className="p-4">
-          <WhyLabel item={item} icon={<TrendingUp className="h-3.5 w-3.5" />} />
+          <WhyLabel item={item} label="pick" />
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12 shrink-0">
               {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
