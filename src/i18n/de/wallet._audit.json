@@ -6,10 +6,8 @@
       "phase": "identical"
     },
     "wallet.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihr' instead of informal 'Dein').",
-      "suggested": "Dein Guthaben, Credits und Belohnungen",
       "phase": "llm"
     },
     "wallet.usdBalance": {
@@ -58,10 +56,8 @@
       "phase": "llm"
     },
     "wallet.filters.commissions": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Meaning lost; 'Sell & Earn' part is missing.",
-      "suggested": "Verkaufen & Provisionen verdienen",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "wallet.filters.transfers": {
@@ -95,12 +91,15 @@
       "phase": "llm"
     },
     "wallet.noActivityDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'Deine').",
-      "suggested": "Deine Transaktionen werden hier erscheinen.",
+      "phase": "llm"
+    },
+    "wallet.displayCurrency": {
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:43:29.901Z"
+  "generatedAt": "2026-07-05T07:20:47.045Z"
 }
