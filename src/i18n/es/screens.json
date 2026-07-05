@@ -4962,7 +4962,29 @@
       "streamOptions": "Opciones de transmisión",
       "nextRoom": "Siguiente sala",
       "value0More": "+{value0} más",
-      "thisWillPermanentlyDeleteTitleThis": "Esto eliminará permanentemente \"{title}\". Esta acción no se puede deshacer."
+      "thisWillPermanentlyDeleteTitleThis": "Esto eliminará permanentemente \"{title}\". Esta acción no se puede deshacer.",
+      "past": {
+        "endedBadge": "Ended",
+        "watchRecording": "Watch recording",
+        "endedValue": "Ended {value0}",
+        "peakListeners": "{value0} peak listeners",
+        "messages": "{value0} messages",
+        "plannedMinutes": "{value0} min planned",
+        "noRecording": "No recording available",
+        "delete": "Delete",
+        "deleteTitle": "Delete room?",
+        "deleteDescription": "This past room and its recording will be permanently removed. This can’t be undone.",
+        "deleteCancel": "Cancel",
+        "deleteConfirm": "Delete",
+        "empty": "No past rooms yet",
+        "emptyHint": "Finished rooms appear here — with a recap, highlights and recording.",
+        "loading": "Loading past rooms…",
+        "heldAt": "{date} · {time}",
+        "heldRange": "{date} · {start}–{end}"
+      },
+      "durationMin": "{value0} min",
+      "durationHour": "{value0} h",
+      "durationHourMin": "{value0} h {value1} min"
     },
     "meetups": {
       "detailsProgram": "Detalles y programa",
@@ -6054,6 +6076,7 @@
       "postapiv1capabilitiesmusicPlay": "POST /api/v1/capabilities/music.play",
       "musicYoutubeCom": "music.youtube.com",
       "aiAssistants": "Asistentes de IA",
+      "shoppingRewards": "Compras y recompensas",
       "youReAllSet": "Todo listo.",
       "dismiss": "Descartar",
       "yourSessionExpired": "Tu sesión expiró",

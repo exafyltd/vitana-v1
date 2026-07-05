@@ -290,6 +290,11 @@ export default function PublicEventLanding() {
                 <h1 className="text-2xl md:text-3xl font-bold text-foreground">
                   {event.title}
                 </h1>
+                {event.metadata?.subtitle && (
+                  <p className="text-sm md:text-base font-medium text-muted-foreground">
+                    {event.metadata.subtitle}
+                  </p>
+                )}
                 <div className="flex items-center gap-2 flex-wrap">
                   <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
                     {event.event_type}

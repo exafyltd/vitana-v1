@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
+import {
   Brain,
   Sparkles,
   ChevronRight,
@@ -13,9 +13,13 @@ import {
   Pill,
   Stethoscope,
   LayoutGrid,
+  ExternalLink,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/useTranslation';
+import { AddToCartButton } from '@/components/cart/AddToCartButton';
+import { getRedirectUrl, type MarketplaceProduct } from '@/hooks/useMarketplace';
+import { t } from '@/lib/i18n-toast';
 
 interface AIRecommendation {
   id: number;
@@ -27,6 +31,10 @@ interface AIRecommendation {
   provider: string;
   image: string;
   badge: string;
+  // Real marketplace product behind this card (VTID-02000). Carries the true
+  // products.id used for navigation + cart + the affiliate Buy redirect; the
+  // legacy numeric `id` above is only a render key.
+  _product?: MarketplaceProduct;
 }
 
 interface MobileDiscoverViewProps {
@@ -70,6 +78,10 @@ function RecommendationCard({
       aria-label={`${rec.title} — ${rec.provider}`}
       onClick={() => onNavigate(rec)}
       onKeyDown={(e) => {
+        // Only act when the card itself is focused. Enter/Space originating from
+        // an interactive child (Add to Cart / Buy) must activate that control,
+        // not bubble up and get hijacked into product navigation.
+        if (e.target !== e.currentTarget) return;
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           onNavigate(rec);
@@ -129,7 +141,7 @@ function RecommendationCard({
           <span className="text-xs text-purple-700 dark:text-purple-300 line-clamp-1">{rec.reason}</span>
         </div>
         
-        {/* Price + actions */}
+        {/* Price */}
         <div className="flex items-center justify-between gap-2 min-w-0">
           <span className={cn(
             "font-bold truncate",
@@ -137,17 +149,43 @@ function RecommendationCard({
           )}>
             {rec.price}
           </span>
-          <div className="flex gap-2 shrink-0">
-            {/* Phase 0: wellness_service not yet supported in the unified cart
-                (products-backed cart; these have non-UUID ids and no products.id
-                row). The add-to-cart affordance is hidden until a later phase. */}
-            {featured && (
-              <Button size="sm" onClick={(e) => { e.stopPropagation(); onNavigate(rec); }}>
-                {translate('discover.view')}
-              </Button>
-            )}
-          </div>
         </div>
+
+        {/* CTAs — real products are products-backed (UUID products.id), so the
+            unified cart + affiliate Buy redirect work. Stop propagation so the
+            buttons don't also trigger the card's navigate-to-detail tap. */}
+        {rec._product ? (
+          <div className="flex items-center gap-2 mt-3">
+            <AddToCartButton
+              item={{
+                item_type: 'product',
+                item_id: rec._product.id,
+                item_name: rec._product.title,
+                item_price: rec._product.price_cents ? rec._product.price_cents / 100 : 0,
+                item_image_url: rec._product.images?.[0],
+                item_metadata: { brand: rec._product.brand, category: rec._product.category },
+              }}
+              size="icon"
+              showLabel={false}
+              className="shrink-0"
+            />
+            <a
+              href={getRedirectUrl(rec._product.id, 'feed')}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex flex-1 items-center justify-center gap-1 rounded-md border border-primary bg-primary/10 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/20"
+            >
+              {t('screens.discover.buy')} <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+        ) : featured ? (
+          <div className="mt-3">
+            <Button size="sm" className="w-full" onClick={(e) => { e.stopPropagation(); onNavigate(rec); }}>
+              {translate('discover.view')}
+            </Button>
+          </div>
+        ) : null}
       </div>
     </div>
   );
@@ -163,7 +201,12 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
   }));
 
   const handleNavigate = (rec: AIRecommendation) => {
-    navigate(`/discover/product/${rec.id}`, { state: rec });
+    // Navigate by the REAL product id. The detail page (/discover/product/:id)
+    // loads strictly from the API by id, so the legacy numeric `rec.id`
+    // (a render index) produced "Product not found". Use the marketplace
+    // product's UUID when present.
+    const productId = rec._product?.id ?? String(rec.id);
+    navigate(`/discover/product/${productId}`, { state: rec });
   };
 
   // AI Picks tab

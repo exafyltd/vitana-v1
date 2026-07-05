@@ -137,5 +137,15 @@
       "changeCover": "Titelbild ändern",
       "noChanges": "Keine Änderungen zum Speichern"
     }
+  },
+  "goLivePopup": {
+    "durationLabel": "Dauer",
+    "duration15": "15 Minuten",
+    "duration30": "30 Minuten",
+    "duration45": "45 Minuten",
+    "duration60": "1 Stunde",
+    "duration90": "1,5 Stunden",
+    "duration120": "2 Stunden",
+    "durationHint": "Der Raum schließt automatisch nach dieser Zeit, wenn du ihn nicht selbst beendest."
   }
 }

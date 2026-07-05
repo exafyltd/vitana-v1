@@ -25,10 +25,13 @@ import {
   fetchGroupMessages,
   sendGroupMessage,
   markGroupRead,
+  updateGroupMessage,
+  deleteGroupMessage,
   type ChatGroup,
   type ChatGroupMember,
   type ChatGroupMessage,
 } from "@/hooks/useChatApi";
+import { notify, notifyError } from "@/lib/i18n-toast";
 import { getDateSeparatedMessageItems } from "@/lib/messageDateSeparators";
 import { formatDate } from "@/lib/locale-format";
 import { isThisYear, isToday, isYesterday } from "date-fns";
@@ -197,6 +200,33 @@ export default function GroupChat() {
     }
   }, [groupId, isSending, userId]);
 
+  // MessageBubble's edit ("correction") flow is a no-op unless onUpdateMessage
+  // is supplied — see handleEditSave's `!onUpdateMessage` guard.
+  const handleUpdateMessage = useCallback(async (messageId: string, updates: any) => {
+    if (!groupId) return;
+    const content = String(updates?.body ?? updates?.content ?? "").trim();
+    if (!content) return;
+    try {
+      const saved = await updateGroupMessage(groupId, messageId, content);
+      setMessages(prev => prev.map(m => (m.id === messageId ? saved : m)));
+    } catch (err) {
+      notifyError('toasts.messages.updateFailed', 'toasts.messages.failedUpdateMessagePleaseTryAgain');
+      throw err;
+    }
+  }, [groupId]);
+
+  const handleDeleteMessage = useCallback(async (messageId: string) => {
+    if (!groupId) return;
+    try {
+      await deleteGroupMessage(groupId, messageId);
+      setMessages(prev => prev.filter(m => m.id !== messageId));
+      notify('toasts.messages.messageDeleted');
+    } catch (err) {
+      notifyError('toasts.messages.deleteFailed', 'toasts.messages.failedDeleteMessagePleaseTryAgain');
+      throw err;
+    }
+  }, [groupId]);
+
   const goBack = useCallback(() => {
     navigate("/inbox", { replace: true });
   }, [navigate]);
@@ -293,6 +323,8 @@ export default function GroupChat() {
                   }}
                   isOwnMessage={isOwn}
                   showAvatar={!isOwn}
+                  onUpdateMessage={handleUpdateMessage}
+                  onDeleteMessage={handleDeleteMessage}
                 />
               );
             })}

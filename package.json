@@ -22,7 +22,8 @@
     "test:analytics-client": "node scripts/analytics-client-regression.mjs",
     "test:guided-journey": "node scripts/guided-journey-session-regression.mjs",
     "test:group-chat-dates": "node scripts/group-chat-date-divider-regression.mjs",
-    "test:news-feed-ranker": "node scripts/news-feed-ranker-regression.mjs"
+    "test:news-feed-ranker": "node scripts/news-feed-ranker-regression.mjs",
+    "test:maxina-kira-price": "node scripts/maxina-kira-price-regression.mjs"
   },
   "dependencies": {
     "@axe-core/react": "^4.10.2",

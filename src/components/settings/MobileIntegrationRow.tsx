@@ -36,11 +36,13 @@ export function MobileIntegrationRow({ integration, onTap }: MobileIntegrationRo
       <div className="flex-1 min-w-0">
         <h3 className="font-medium text-sm truncate">{integration.name}</h3>
         <p className="text-xs text-muted-foreground truncate">
-          {integration.connected
-            ? translate('connectedApps.status.connected')
-            : integration.comingSoon
-              ? translate('connectedApps.status.comingSoon')
-              : integration.syncData}
+          {integration.statusLabel
+            ? integration.statusLabel
+            : integration.connected
+              ? translate('connectedApps.status.connected')
+              : integration.comingSoon
+                ? translate('connectedApps.status.comingSoon')
+                : integration.syncData}
         </p>
       </div>
 

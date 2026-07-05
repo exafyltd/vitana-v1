@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Plus, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import StandardHeader from "@/components/StandardHeader";
@@ -28,6 +28,7 @@ import {
   aiAssistantsIntegrations,
   productivityIntegrations,
   mediaIntegrations,
+  shoppingIntegrations,
   getConnectionStats,
   type Integration,
 } from "./integrationData";
@@ -76,6 +77,7 @@ export function MobileConnectedAppsView() {
   const { toast } = useToast();
   const { user } = useAuth();
   const { refreshProfile } = useProfile();
+  const navigate = useNavigate();
 
   const [selectedApp, setSelectedApp] = useState<Integration | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -85,7 +87,7 @@ export function MobileConnectedAppsView() {
   // deep-links a pill via /connectors?tab=<category>; the gateway catalog
   // routes "Connectors <Category>" here. Only an explicit valid value sets it.
   const [searchParams] = useSearchParams();
-  const CONNECTOR_TABS = ['all', 'ai', 'productivity', 'media', 'social', 'fitness', 'health', 'other', 'agent'];
+  const CONNECTOR_TABS = ['all', 'shopping', 'ai', 'productivity', 'media', 'social', 'fitness', 'health', 'other', 'agent'];
   const [activeCategory, setActiveCategory] = useState(() => {
     const t = searchParams.get('tab');
     return t && CONNECTOR_TABS.includes(t) ? t : 'all';
@@ -98,6 +100,7 @@ export function MobileConnectedAppsView() {
 
   const connectorModes: ModeOption[] = [
     { value: 'all', label: translate('connectedApps.sections.all', 'All'), icon: '🔌' },
+    { value: 'shopping', label: translate('connectedApps.sections.shopping', 'Shopping'), icon: '🛍️' },
     { value: 'ai', label: 'AI', icon: '✨' },
     { value: 'productivity', label: translate('connectedApps.sections.productivity', 'Mail & Calendar'), icon: '📅' },
     { value: 'media', label: translate('connectedApps.sections.media', 'Music & Video'), icon: '🎵' },
@@ -215,6 +218,7 @@ export function MobileConnectedAppsView() {
       return integration;
     });
 
+  const filteredShopping = filterIntegrations(shoppingIntegrations);
   const filteredAi = filterIntegrations(aiIntegrationsLive);
   const filteredSocial = filterIntegrations(socialIntegrations);
   const filteredFitness = filterIntegrations(fitnessIntegrations);
@@ -225,6 +229,15 @@ export function MobileConnectedAppsView() {
 
   // Handle connect action
   const handleConnect = (integration: Integration) => {
+    // Shopping & Rewards connectors: there is no per-merchant login to store
+    // (rewards flow through the affiliate Buy link). "Connect" sends the member
+    // into Discover to shop and earn — the complete rewards-bearing journey.
+    if (integration.category === 'shopping') {
+      if (integration.comingSoon) return;
+      setSelectedApp(null);
+      navigate('/discover');
+      return;
+    }
     // VTID-02403: AI Assistants open the paste-key modal
     if (integration.category === 'ai' && (integration.id === 'chatgpt' || integration.id === 'claude')) {
       setAiModalProvider(integration.id as AIProviderId);
@@ -359,6 +372,16 @@ export function MobileConnectedAppsView() {
 
         {/* Integration Sections */}
         <div className="space-y-3">
+          {/* Shopping & Rewards — commerce providers powering the Discover marketplace */}
+          {(activeCategory === 'all' || activeCategory === 'shopping') && filteredShopping.length > 0 && (
+            <MobileIntegrationSection
+              title={translate('connectedApps.sections.shopping', 'Shopping & Rewards')}
+              emoji="🛍️"
+              integrations={filteredShopping}
+              onSelect={(i) => { if (i.comingSoon) { setSelectedApp(i); } else { navigate('/discover'); } }}
+            />
+          )}
+
           {/* VTID-02403: AI Assistants (ChatGPT + Claude) */}
           {(activeCategory === 'all' || activeCategory === 'ai') && filteredAi.length > 0 && (
             <MobileIntegrationSection
