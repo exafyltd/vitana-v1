@@ -55,8 +55,15 @@ export function PriorityOfDayBanner({ vitanaBreakdown }: PriorityOfDayBannerProp
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       <div className="relative">
+        {/*
+          "Vitana" is always the primary label — never replaced by "Für dich"
+          — so every card on the News screen keeps the same who's-recommending
+          identity slot. "Für dich" is a secondary pill, same as the autopilot
+          banner above, shown only for the personalized/proactive path.
+        */}
         <VitanaRecommendationHeader
-          label={effective.isProactive ? 'fuer_dich' : 'pick'}
+          label={effective.isProactive ? 'vitana' : 'pick'}
+          showForYouBadge={effective.isProactive}
           className="mb-2"
         />
 
