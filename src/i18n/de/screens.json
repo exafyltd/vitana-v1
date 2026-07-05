@@ -5485,6 +5485,7 @@
       "shareMeetup": "Treffen teilen"
     },
     "memory": {
+      "updatedAgo": "Aktualisiert {distance}",
       "deleteActivity": "Aktivität löschen",
       "addMemory": "Erinnerung hinzufügen",
       "categoryOptional": "Kategorie (optional)",

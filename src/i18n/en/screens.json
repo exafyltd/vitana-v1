@@ -5485,6 +5485,7 @@
       "shareMeetup": "Share meetup"
     },
     "memory": {
+      "updatedAgo": "Updated {distance}",
       "deleteActivity": "Delete Activity",
       "addMemory": "Add Memory",
       "categoryOptional": "Category (Optional)",

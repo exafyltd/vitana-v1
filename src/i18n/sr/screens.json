@@ -4993,6 +4993,7 @@
       "shareMeetup": "Podeli meetup"
     },
     "memory": {
+      "updatedAgo": "Ažurirano {distance}",
       "deleteActivity": "Obriši aktivnost",
       "addMemory": "Dodaj uspomenu",
       "categoryOptional": "Kategorija (opciono)",
