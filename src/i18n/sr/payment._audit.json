@@ -51,10 +51,8 @@
       "phase": "llm"
     },
     "payment.insufficientBalanceDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Vi' instead of informal 'ti').",
-      "suggested": "Nemaš dovoljno {currency} za ovu razmenu",
       "phase": "llm"
     },
     "payment.transactionFailed": {
@@ -68,10 +66,8 @@
       "phase": "llm"
     },
     "payment.paymentFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Vi' instead of informal 'ti').",
-      "suggested": "Obrada plaćanja nije uspela. Pokušaj ponovo.",
       "phase": "llm"
     },
     "payment.balanceRefreshed": {
@@ -90,10 +86,8 @@
       "phase": "llm"
     },
     "payment.refreshFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Vi' instead of informal 'ti').",
-      "suggested": "Osvežavanje stanja nije uspelo. Pokušaj ponovo.",
       "phase": "llm"
     },
     "payment.error": {
@@ -102,5 +96,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:05:40.782Z"
+  "generatedAt": "2026-07-05T06:55:55.851Z"
 }
