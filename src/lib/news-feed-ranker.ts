@@ -10,14 +10,13 @@
  * Deterministic order (approved design):
  *   1. New unseen match            (capped — at most `maxPinnedMatches`)
  *   2. Opt-in "most improved" spotlight (consent-gated, supplied by gateway)
- *   3. Posts from followed members  → newest first, regardless of media
- *   4. Posts from other members     → newest first, regardless of media
- *   5. Public-source news           → interleaved, not starved
+ *   3. Community posts              → newest first, regardless of follow/media
+ *   4. Public-source news           → interleaved, not starved
  *
  * Within each group: newest first, engagement second, stable id last.
- * Follow status outranks media format (a followed member's text post beats a
- * stranger's video). Public news is interleaved at a tunable cadence rather
- * than always dumped last, so it is never permanently starved — this is a
+ * Within this ranker, follow status is display metadata only; it never changes
+ * post order. Public news is interleaved at a tunable cadence rather than
+ * always dumped last, so it is never permanently starved — this is a
  * longevity-news product and public science is core, not filler.
  */
 
@@ -175,10 +174,9 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
   );
   const pinnedPerformer = performers.slice(0, 1);
 
-  // 3 + 4. Posts — followed before others, then "show less" penalty, then
-  //    newest regardless of media format, then engagement, then stable id.
+  // 3. Posts — "show less" penalty, then newest regardless of follow status or
+  //    media format, then engagement, then stable id.
   posts.sort((a, b) => {
-    if (a.followed !== b.followed) return a.followed ? -1 : 1;
     const pa = downrankPenalty(a.tags, downranked);
     const pb = downrankPenalty(b.tags, downranked);
     if (pa !== pb) return pa - pb;

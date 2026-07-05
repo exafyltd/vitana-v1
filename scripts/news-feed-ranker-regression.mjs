@@ -3,8 +3,8 @@
  *
  * Pure Node ESM. Transpiles src/lib/news-feed-ranker.ts with esbuild (already a
  * Vite dependency) to a temp module, imports it, and exercises the REAL ranking
- * logic — not a string-grep. Covers the approved deterministic order, follow-
- * before-format, public-news interleave, hide/mute, "show less" downrank,
+ * logic — not a string-grep. Covers the approved deterministic order, global
+ * newest-first post ordering, public-news interleave, hide/mute, "show less" downrank,
  * match cap + seen-match exclusion, and tie-breaking by stable id.
  *
  * Invocation:
@@ -104,33 +104,42 @@ function performer(id, over = {}) {
 
 const { rankFeed, reasonKeyFor } = await loadRanker();
 
-// §1 — Tier order: match → performer → followed post → other post → article.
+// §1 — Tier order: match → performer → community posts → article.
 {
   const out = rankFeed([
     article("a"),
-    post("other", { followed: false }),
-    post("followed", { followed: true }),
+    post("b"),
+    post("a"),
     performer("p"),
     match("m"),
   ]);
   const kinds = out.map((i) => i.kind);
   assert(kinds[0] === "match", "§1 match is pinned first");
   assert(kinds[1] === "performer", "§1 performer is second");
-  assert(out[2].id === "post-followed", "§1 followed post before other post");
-  assert(out[3].id === "post-other", "§1 other post next");
+  assert(out[2].id === "post-a", "§1 community posts follow pinned cards");
+  assert(out[3].id === "post-b", "§1 all community posts remain present");
   assert(kinds[4] === "article", "§1 public news after community posts");
 }
 
-// §2 — Follow status outranks media format (followed text beats stranger video).
+// §2 — Recency outranks follow status in the global community feed.
 {
   const out = rankFeed([
-    post("strangerVideo", { followed: false, video_url: "v.mp4" }),
-    post("followedText", { followed: true }),
+    post("olderFollowed", {
+      followed: true,
+      published_at: "2026-07-04T10:00:00Z",
+    }),
+    post("newerCommunity", {
+      followed: false,
+      published_at: "2026-07-04T11:00:00Z",
+    }),
   ]);
-  assert(out[0].id === "post-followedText", "§2 followed text beats stranger video");
+  assert(
+    out[0].id === "post-newerCommunity",
+    "§2 newest community post wins regardless of follow status",
+  );
 }
 
-// §3 — Within a follow group, newest wins regardless of media format.
+// §3 — Newest community post wins regardless of media format.
 {
   const out = rankFeed([
     post("newText", { followed: true, published_at: "2026-06-22T12:00:00Z" }),
