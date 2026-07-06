@@ -138,8 +138,8 @@
     "autopilot.popup.readyToExecute": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "The verb 'Spremni' is plural, but the du-form (informal singular) context requires a singular form. 'Spreman si' (masculine) or 'Spremna si' (feminine) would be appropriate.",
-      "suggested": "Spreman si da izvršiš {count} akcija koje je pripremio tvoj AI asistent.",
+      "issue": "Noun case/number agreement with placeholder {count} is incorrect. 'Akcija' (genitive plural) is only correct for {count} >= 5. For {count}=1, it should be 'akciju' (accusative singular). For {count}=2,3,4, it should be 'akcije' (accusative plural).",
+      "suggested": "Spreman si da izvršiš {count} akcije koje je pripremio tvoj AI asistent.",
       "phase": "llm"
     },
     "autopilot.popup.executingTitle": {
@@ -190,8 +190,8 @@
     "autopilot.popup.toastExecutedDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "The past participle 'završeno' is neuter singular, but it should agree with 'akcija' (feminine plural).",
-      "suggested": "{success}/{total} akcija uspešno završene",
+      "issue": "Noun and participle agreement is inconsistent. 'Akcija' (genitive plural, typically for 5+ items) and 'završene' (feminine plural, typically for 2-4 items) do not align. The phrasing can be improved to handle variable counts more robustly.",
+      "suggested": "Uspešno je završeno {success}/{total} akcija.",
       "phase": "llm"
     },
     "autopilot.popup.toastFailedTitle": {
@@ -395,10 +395,8 @@
       "phase": "llm"
     },
     "autopilot.actions.action1Reason": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Adjective 'društveni' (masculine singular) does not agree with 'vibracije' (feminine plural). A more idiomatic phrasing for 'social wellness vibes' would be 'vibracije društvenog wellnessa'.",
-      "suggested": "Savršen spoj za tvoje ciljeve kretanja + vibracije društvenog wellnessa",
       "phase": "llm"
     },
     "autopilot.actions.action2Title": {
@@ -462,5 +460,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:19.915Z"
+  "generatedAt": "2026-07-06T08:01:02.529Z"
 }

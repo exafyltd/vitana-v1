@@ -1,10 +1,8 @@
 {
   "verdicts": {
     "discover.title": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form.",
-      "suggested": "Otkrij svoj Longevity Marketplace",
       "phase": "llm"
     },
     "discover.mobileTitle": {
@@ -18,17 +16,13 @@
       "phase": "llm"
     },
     "discover.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form for verbs and possessive pronoun.",
-      "suggested": "Pronađi lekare, wellness usluge i zajednice savršeno usklađene sa tvojim putem zdravog starenja.",
       "phase": "llm"
     },
     "discover.searchPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form.",
-      "suggested": "Šta tražiš? (npr. časovi joge, lekar za dugovečnost, sastanci)",
       "phase": "llm"
     },
     "discover.doctorsCoaches": {
@@ -37,10 +31,8 @@
       "phase": "llm"
     },
     "discover.doctorsCoachesDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form.",
-      "suggested": "Pronađi specijaliste za dugovečnost, zdravstvene trenere i medicinske stručnjake",
       "phase": "llm"
     },
     "discover.wellnessServices": {
@@ -49,10 +41,8 @@
       "phase": "llm"
     },
     "discover.wellnessServicesDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form.",
-      "suggested": "Otkrij jogu, masažu, ples, terapiju i usluge oporavka",
       "phase": "llm"
     },
     "discover.communityGroups": {
@@ -61,10 +51,8 @@
       "phase": "llm"
     },
     "discover.communityGroupsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form for both verbs.",
-      "suggested": "Pridruži se sastancima, grupama i poveži se sa istomišljenicima",
       "phase": "llm"
     },
     "discover.explore": {
@@ -73,17 +61,13 @@
       "phase": "llm"
     },
     "discover.aiPicksForYou": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form.",
-      "suggested": "AI preporuke za tebe",
       "phase": "llm"
     },
     "discover.recommendedForYou": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form.",
-      "suggested": "Preporučeno za tebe",
       "phase": "llm"
     },
     "discover.moreToExplore": {
@@ -97,10 +81,8 @@
       "phase": "llm"
     },
     "discover.suggestedForYou": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form.",
-      "suggested": "Predloženo za tebe",
       "phase": "llm"
     },
     "discover.browseCategories": {
@@ -119,10 +101,8 @@
       "phase": "llm"
     },
     "discover.shareAndEarnDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form for both verbs.",
-      "suggested": "Preporuči proizvode, zaradi proviziju",
       "phase": "llm"
     },
     "discover.start": {
@@ -156,10 +136,8 @@
       "phase": "llm"
     },
     "discover.noResultsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form for both verbs.",
-      "suggested": "Probaj druge pojmove za pretragu ili pregledaj kategorije.",
       "phase": "llm"
     },
     "discover.categories.sleep": {
@@ -321,7 +299,27 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "discover.guest.bannerTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.guest.bannerSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.guest.bannerCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.guest.signIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:55.082Z"
+  "generatedAt": "2026-07-06T08:02:00.916Z"
 }
