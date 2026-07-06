@@ -164,6 +164,54 @@ for (const [key, value] of Object.entries(expectedEnglish)) {
   assert(enIdentity[key] === value, `English ${key} copy is ${value}`);
 }
 
+console.log("\n[news-card-features] News card assignments and actions");
+
+const welcomeSource = readFileSync(
+  resolve(repoRoot, "src/components/home/WelcomeBackBanner.tsx"),
+  "utf8",
+);
+const dykSource = readFileSync(
+  resolve(repoRoot, "src/components/proactive/DidYouKnowCard.tsx"),
+  "utf8",
+);
+const prioritySource = readFileSync(
+  resolve(repoRoot, "src/components/PriorityOfDayBanner.tsx"),
+  "utf8",
+);
+const feedSource = readFileSync(
+  resolve(repoRoot, "src/components/home/NewsFeedItemCard.tsx"),
+  "utf8",
+);
+
+assert(
+  welcomeSource.includes('feature="vitana-index"'),
+  "welcome card declares Vitana Index",
+);
+assert(
+  welcomeSource.includes("t('screens.vitanaIdentity.viewIndex')"),
+  "welcome card uses Index ansehen",
+);
+assert(
+  dykSource.includes('feature="vitana-index"'),
+  "did-you-know card declares Vitana Index",
+);
+assert(
+  prioritySource.includes('feature="guided-journey"'),
+  "priority card declares Guided Journey",
+);
+assert(
+  prioritySource.includes("t('screens.vitanaIdentity.viewJourney')"),
+  "priority card uses Meine Reise ansehen",
+);
+assert(
+  feedSource.includes('feature="find-a-match"'),
+  "match cards declare Find a Match",
+);
+assert(
+  feedSource.includes('t("screens.vitanaIdentity.viewMatch")'),
+  "match card uses Match ansehen",
+);
+
 if (failures.length > 0) {
   console.error(`\nFAILED: ${failures.length} assertion(s) failed.`);
   process.exit(1);

@@ -55,10 +55,7 @@ export function PriorityOfDayBanner({ vitanaBreakdown }: PriorityOfDayBannerProp
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       <div className="relative">
-        <VitanaRecommendationHeader
-          label={effective.isProactive ? 'fuer_dich' : 'pick'}
-          className="mb-2"
-        />
+        <VitanaRecommendationHeader feature="guided-journey" className="mb-2" />
 
         <div className="flex items-baseline gap-2 flex-wrap">
           <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -70,12 +67,10 @@ export function PriorityOfDayBanner({ vitanaBreakdown }: PriorityOfDayBannerProp
               : `${effective.message}, ${firstName}!`}
           </span>
         </div>
-        {effective.actionText && (
-          <p className="text-xs text-muted-foreground mt-0.5 flex items-center gap-2">
-            {effective.actionText}
-            <ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </p>
-        )}
+        <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
+          {t('screens.vitanaIdentity.viewJourney')}
+          <ArrowRight className="w-3 h-3" />
+        </span>
       </div>
     </button>
   );

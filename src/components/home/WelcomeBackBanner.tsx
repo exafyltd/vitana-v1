@@ -46,7 +46,7 @@ export function WelcomeBackBanner() {
         <X className="w-4 h-4" />
       </button>
 
-      <VitanaRecommendationHeader label="vitana" showForYouBadge className="pr-6 mb-2" />
+      <VitanaRecommendationHeader feature="vitana-index" className="pr-6 mb-2" />
 
       <p className="text-sm text-foreground leading-relaxed">{banner.copy}</p>
       {banner.cta_url && (
@@ -54,7 +54,7 @@ export function WelcomeBackBanner() {
           onClick={handleCta}
           className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
         >
-          {t('screens.home.showMe')}
+          {t('screens.vitanaIdentity.viewIndex')}
           <ArrowRight className="w-3 h-3" />
         </button>
       )}

@@ -10,7 +10,7 @@
  */
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UserPlus } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
 import { CommunityPostCard } from "@/components/home/CommunityPostCard";
@@ -19,7 +19,7 @@ import { formatDistanceToNow } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { matchCategoryLabel } from "@/lib/matchReason";
 import { reasonKeyFor, type FeedItem, type ArticleFeedItem } from "@/lib/news-feed-ranker";
-import { VitanaRecommendationHeader, type VitanaRecommendationLabel } from "@/components/vitana/VitanaRecommendationHeader";
+import { VitanaRecommendationHeader } from "@/components/vitana/VitanaRecommendationHeader";
 import { cn } from "@/lib/utils";
 
 /** Sunburst tick marks for the match dial — 12 evenly spaced rays around the score. */
@@ -44,33 +44,16 @@ function timeAgo(iso: string): string {
 }
 
 /**
- * Vitana identity + "why you're seeing this" pill shown atop every
+ * Vitana identity + destination feature shown atop every
  * algorithmically-surfaced card (match, spotlight performer) — never on
  * community posts or public articles, which come from a real person/source,
- * not Vitana. The reason text lives in the trailing pill (not its own line)
- * to keep these cards the same height as the top News banners.
+ * not Vitana.
  */
-function WhyLabel({
-  item,
-  label,
-  pillClassName,
-}: {
-  item: FeedItem;
-  label: VitanaRecommendationLabel;
-  pillClassName: string;
-}) {
+function MatchFeatureHeader() {
   return (
     <VitanaRecommendationHeader
-      label={label}
+      feature="find-a-match"
       className="mb-3"
-      trailing={
-        <span className={cn(
-          "inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold flex-shrink-0 whitespace-nowrap",
-          pillClassName,
-        )}>
-          {t(reasonKeyFor(item))}
-        </span>
-      }
     />
   );
 }
@@ -85,9 +68,6 @@ const baseCardShell =
 // they get a happy tinted background instead of the plain card surface.
 const matchCardShell = cn(baseCardShell, "border-sky-300/30 bg-gradient-to-r from-sky-500/10 via-blue-500/10 to-sky-500/10");
 const performerCardShell = cn(baseCardShell, "border-emerald-300/30 bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-emerald-500/10");
-const matchPillClassName = "bg-blue-100 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300";
-const performerPillClassName = "bg-emerald-100 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-300";
-
 export function NewsFeedItemCard({
   item,
   onArticleClick,
@@ -138,7 +118,7 @@ export function NewsFeedItemCard({
         }}
       >
         <CardContent className="p-4">
-          <WhyLabel item={item} label="empfiehlt" pillClassName={matchPillClassName} />
+          <MatchFeatureHeader />
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12 shrink-0">
               {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
@@ -180,8 +160,8 @@ export function NewsFeedItemCard({
             </div>
           </div>
           <div className="mt-3 flex items-center gap-1.5 text-sm font-medium text-primary">
-            <UserPlus className="h-4 w-4" />
-            {t("screens.home.viewProfile")}
+            {t("screens.vitanaIdentity.viewMatch")}
+            <ArrowRight className="h-4 w-4" />
           </div>
         </CardContent>
       </Card>
@@ -203,7 +183,7 @@ export function NewsFeedItemCard({
         }}
       >
         <CardContent className="p-4">
-          <WhyLabel item={item} label="pick" pillClassName={performerPillClassName} />
+          <MatchFeatureHeader />
           <div className="flex items-center gap-3">
             <Avatar className="h-12 w-12 shrink-0">
               {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
@@ -220,6 +200,10 @@ export function NewsFeedItemCard({
                 {t("screens.home.improvementPts", { pts: item.improvement })}
               </span>
             )}
+          </div>
+          <div className="mt-3 flex items-center gap-1.5 text-sm font-medium text-primary">
+            {t("screens.vitanaIdentity.viewMatch")}
+            <ArrowRight className="h-4 w-4" />
           </div>
         </CardContent>
       </Card>
