@@ -8200,7 +8200,13 @@
       "vitanaEmpfiehlt": "Vitana recommends",
       "vitanaPick": "Vitana Pick",
       "fuerDich": "For you",
-      "orbAlt": "Vitana"
+      "orbAlt": "Vitana",
+      "vitanaIndex": "Vitana Index",
+      "guidedJourney": "Guided Journey",
+      "findAMatch": "Find a Match",
+      "viewIndex": "View Index",
+      "viewJourney": "View My Journey",
+      "viewMatch": "View Match"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
