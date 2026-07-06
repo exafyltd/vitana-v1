@@ -31,9 +31,9 @@ import {
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
 import { CreateContentPopup } from "@/components/CreateContentPopup";
 import { MobileCreatePostSheet } from "@/components/profile/mobile/MobileCreatePostSheet";
-import { WelcomeBackBanner } from "@/components/home/WelcomeBackBanner";
+import { VitanaIndexCard } from "@/components/home/VitanaIndexCard";
 import { DidYouKnowCard } from "@/components/proactive/DidYouKnowCard";
-import { PriorityOfDayBanner } from "@/components/PriorityOfDayBanner";
+import { LongevityJourneyCard } from "@/components/home/LongevityJourneyCard";
 import { useNewsFeedPreferencesStore } from "@/stores/newsFeedPreferencesStore";
 import {
   useLongevityNewsFeed,
@@ -390,9 +390,9 @@ export default function Home() {
             </div>
           </UtilityActionButton>
           <div className="mt-3 space-y-2">
-            <WelcomeBackBanner />
+            <VitanaIndexCard />
             <DidYouKnowCard />
-            <PriorityOfDayBanner />
+            <LongevityJourneyCard />
           </div>
           {!isMobile && (
             <div className="mt-5">
