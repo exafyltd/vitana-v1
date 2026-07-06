@@ -4993,6 +4993,7 @@
       "shareMeetup": "Compartir meetup"
     },
     "memory": {
+      "updatedAgo": "Actualizado {distance}",
       "deleteActivity": "Eliminar actividad",
       "addMemory": "Agregar recuerdo",
       "categoryOptional": "Categoría (opcional)",
