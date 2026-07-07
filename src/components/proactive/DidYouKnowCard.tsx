@@ -79,7 +79,7 @@ export function DidYouKnowCard() {
         </button>
       </div>
 
-      <VitanaRecommendationHeader label="empfiehlt" className="pr-14 mb-2" />
+      <VitanaRecommendationHeader feature="vitana-index" className="pr-14 mb-2" />
 
       <div className="inline-flex items-center gap-1.5 mb-1.5 rounded-full bg-violet-500/15 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-violet-700 dark:text-violet-300">
         {t('screens.proactive.didYouKnow')}

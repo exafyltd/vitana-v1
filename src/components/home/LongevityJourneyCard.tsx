@@ -6,6 +6,7 @@
  */
 
 import { useNavigate } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import { useGuidedJourneyProgress } from '@/hooks/useGuidedJourneyProgress';
 import { t } from '@/lib/i18n-toast';
 import { VitanaRecommendationHeader } from '@/components/vitana/VitanaRecommendationHeader';
@@ -24,7 +25,7 @@ export function LongevityJourneyCard() {
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       <div className="relative">
-        <VitanaRecommendationHeader label="vitana" showForYouBadge className="mb-2" />
+        <VitanaRecommendationHeader feature="guided-journey" className="mb-2" />
 
         <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
           {t('screens.home.longevityJourneyEyebrow')}
@@ -37,6 +38,10 @@ export function LongevityJourneyCard() {
               })
             : t('screens.home.longevityJourneyAllDone')}
         </p>
+        <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
+          {t('screens.vitanaIdentity.viewJourney')}
+          <ArrowRight className="w-3 h-3" />
+        </span>
       </div>
     </button>
   );

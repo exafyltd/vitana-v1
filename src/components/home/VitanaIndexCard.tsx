@@ -28,7 +28,7 @@ export function VitanaIndexCard() {
       role="status"
       aria-live="polite"
     >
-      <VitanaRecommendationHeader label="vitana" showForYouBadge className="mb-2" />
+      <VitanaRecommendationHeader feature="vitana-index" className="mb-2" />
 
       <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
         {t('screens.home.vitanaIndexEyebrow')}
@@ -44,7 +44,7 @@ export function VitanaIndexCard() {
         onClick={openIndex}
         className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
       >
-        {t('screens.home.vitanaIndexViewIndex')}
+        {t('screens.vitanaIdentity.viewIndex')}
         <ArrowRight className="w-3 h-3" />
       </button>
     </div>
