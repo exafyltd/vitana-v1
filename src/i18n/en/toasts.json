@@ -1157,6 +1157,7 @@
       "aiAnalyzingYourPreferences": "AI is analyzing your preferences...",
       "recommendationsReady": "Recommendations Ready!",
       "failedLoadYourTickets": "Failed to load your tickets",
+      "failedPurchaseTicket": "Failed to purchase ticket",
       "failedFollowUser": "Failed to follow user",
       "success": "Success",
       "youNowFollowingThisUser": "You are now following this user",

@@ -237,7 +237,7 @@ export function usePurchaseTicket() {
 
       return response.data;
     } catch (error: any) {
-      notifyError('toasts.hooks.error');
+      notifyError('toasts.hooks.error', 'toasts.hooks.failedPurchaseTicket');
       throw error;
     } finally {
       setLoading(false);
