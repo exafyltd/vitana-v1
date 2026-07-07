@@ -29,7 +29,7 @@ const ACCENT_CLASSES: Record<VitanaCardAccent, string> = {
  * cap their own headline/subtext with `line-clamp` so nothing ever forces
  * the box to grow.
  */
-const CARD_HEIGHT_CLASS = 'h-[196px]';
+const CARD_HEIGHT_CLASS = 'h-[138px]';
 
 export interface VitanaRecommendationCardProps {
   /** Destination feature — drives the header badge icon + label. */
@@ -73,7 +73,7 @@ export function VitanaRecommendationCard({
       onClick={onOpen}
       onKeyDown={handleKeyDown}
       className={cn(
-        'group relative flex w-full flex-col overflow-hidden rounded-2xl border p-4 cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md animate-fade-in',
+        'group relative flex w-full flex-col overflow-hidden rounded-2xl border p-2.5 cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md animate-fade-in',
         CARD_HEIGHT_CLASS,
         ACCENT_CLASSES[accent],
       )}
@@ -83,19 +83,19 @@ export function VitanaRecommendationCard({
           e.stopPropagation();
           onDismiss();
         }}
-        className="absolute top-3 right-3 z-10 p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-background/40 transition-colors"
+        className="absolute top-2 right-2 z-10 p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-background/40 transition-colors"
         aria-label={dismissLabel}
       >
-        <X className="w-4 h-4" />
+        <X className="w-3.5 h-3.5" />
       </button>
 
-      <VitanaRecommendationHeader feature={feature} className="pr-6 mb-3" />
+      <VitanaRecommendationHeader feature={feature} className="pr-6 mb-1" />
 
-      <span className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+      <span className="block text-[10px] font-semibold text-muted-foreground uppercase tracking-wider leading-tight">
         {eyebrow}
       </span>
 
-      <div className="mt-1.5 flex flex-1 min-h-0 items-center gap-3">
+      <div className="mt-0.5 flex flex-1 min-h-0 items-center gap-2.5">
         <div className="min-w-0 flex-1">{children}</div>
         <div className="shrink-0 flex items-center justify-center" aria-hidden="true">
           {widget}

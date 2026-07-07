@@ -76,34 +76,34 @@ export function NewsFeedItemCard({
         onDismiss={() => setDismissed(true)}
         dismissLabel={t('screens.vitanaIdentity.dismissCard')}
         widget={
-          <div className="relative flex h-14 w-14 shrink-0 items-center justify-center">
-            <Heart className="absolute inset-0 h-14 w-14 text-pink-400 fill-pink-400" aria-hidden="true" />
-            <Sparkles className="absolute -top-1 -right-1 h-3.5 w-3.5 text-pink-200" aria-hidden="true" />
+          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
+            <Heart className="absolute inset-0 h-10 w-10 text-pink-400 fill-pink-400" aria-hidden="true" />
+            <Sparkles className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 text-pink-200" aria-hidden="true" />
             <div className="relative flex flex-col items-center">
-              <span className="text-xs font-bold leading-none text-white">
+              <span className="text-[10px] font-bold leading-none text-white">
                 {t("screens.home.matchPercent", { score: item.compatibility_score })}
               </span>
-              <span className="mt-0.5 text-[8px] font-semibold leading-none text-white/90">
+              <span className="mt-0.5 text-[6px] font-semibold leading-none text-white/90">
                 {t("screens.home.matchLabel")}
               </span>
             </div>
           </div>
         }
       >
-        <div className="flex items-center gap-2">
-          <Avatar className="h-9 w-9 shrink-0">
+        <div className="flex items-center gap-1.5">
+          <Avatar className="h-7 w-7 shrink-0">
             {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
             <AvatarFallback>{(item.display_name || "?").charAt(0).toUpperCase()}</AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <p className="truncate font-semibold text-foreground leading-snug">{item.display_name}</p>
-            <p className="truncate text-sm text-muted-foreground leading-snug">
+            <p className="truncate text-sm font-semibold text-foreground leading-tight">{item.display_name}</p>
+            <p className="truncate text-xs text-muted-foreground leading-tight">
               {matchCategoryLabel(item.match_reason)}
             </p>
           </div>
         </div>
-        <p className="text-sm text-muted-foreground mt-0.5 line-clamp-1">{t("screens.home.findAMatchSubtext")}</p>
-        <span className="mt-2 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
+        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{t("screens.home.findAMatchSubtext")}</p>
+        <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
           <span className="truncate">{t("screens.vitanaIdentity.viewMatch")}</span>
           <ArrowRight className="w-3 h-3 shrink-0" />
         </span>
@@ -122,27 +122,27 @@ export function NewsFeedItemCard({
         onDismiss={() => setDismissed(true)}
         dismissLabel={t('screens.vitanaIdentity.dismissCard')}
         widget={
-          <div className="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-full bg-gradient-to-br from-emerald-200 to-teal-300 shadow-sm">
-            <span className="text-xs font-bold leading-none text-emerald-900">
+          <div className="flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded-full bg-gradient-to-br from-emerald-200 to-teal-300 shadow-sm">
+            <span className="text-[10px] font-bold leading-none text-emerald-900">
               {item.improvement > 0 ? t("screens.home.improvementPts", { pts: item.improvement }) : "—"}
             </span>
           </div>
         }
       >
-        <div className="flex items-center gap-2">
-          <Avatar className="h-9 w-9 shrink-0">
+        <div className="flex items-center gap-1.5">
+          <Avatar className="h-7 w-7 shrink-0">
             {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
             <AvatarFallback>{(item.display_name || "?").charAt(0).toUpperCase()}</AvatarFallback>
           </Avatar>
           <div className="min-w-0">
-            <p className="truncate font-semibold text-foreground leading-snug">{item.display_name}</p>
-            <p className="truncate text-sm text-muted-foreground leading-snug">
+            <p className="truncate text-sm font-semibold text-foreground leading-tight">{item.display_name}</p>
+            <p className="truncate text-xs text-muted-foreground leading-tight">
               {t("screens.home.mostImproved")}
             </p>
           </div>
         </div>
-        <p className="text-sm text-muted-foreground mt-0.5 line-clamp-1">{t("screens.home.findAMatchSubtext")}</p>
-        <span className="mt-2 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
+        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{t("screens.home.findAMatchSubtext")}</p>
+        <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
           <span className="truncate">{t("screens.vitanaIdentity.viewMatch")}</span>
           <ArrowRight className="w-3 h-3 shrink-0" />
         </span>
