@@ -36,6 +36,18 @@
       "supplements": "Nahrungsergänzung",
       "experts": "Experten"
     },
+    "subcategories": {
+      "longevity": "Langlebigkeit",
+      "adaptogens": "Adaptogene",
+      "vitamins": "Vitamine",
+      "essentialFattyAcids": "Omega-3 & Fettsäuren",
+      "minerals": "Mineralstoffe",
+      "immunity": "Immunsystem",
+      "beauty": "Schönheit",
+      "nootropics": "Nootropika",
+      "performance": "Leistung",
+      "antioxidants": "Antioxidantien"
+    },
     "quickActions": {
       "title": "Schnellaktionen",
       "viewCart": "Warenkorb",
