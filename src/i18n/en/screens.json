@@ -5123,7 +5123,6 @@
       "vitanaIndexEyebrow": "YOUR VITANA INDEX",
       "vitanaIndexScoreLine": "{score} / 999 · {tier}",
       "vitanaIndexWeakestPillar": "Your {pillar} pillar could use some attention.",
-      "vitanaIndexViewIndex": "View Index",
       "longevityJourneyEyebrow": "YOUR LONGEVITY JOURNEY",
       "longevityJourneyContinue": "Continue with Session {session}: {topic}",
       "longevityJourneyAllDone": "You've completed every session. Well done.",
@@ -8205,10 +8204,13 @@
     },
     "vitanaIdentity": {
       "vitana": "Vitana",
-      "vitanaEmpfiehlt": "Vitana recommends",
-      "vitanaPick": "Vitana Pick",
-      "fuerDich": "For you",
-      "orbAlt": "Vitana"
+      "orbAlt": "Vitana",
+      "vitanaIndex": "Vitana Index",
+      "guidedJourney": "Guided Journey",
+      "findAMatch": "Find a Match",
+      "viewIndex": "View Index",
+      "viewJourney": "View My Journey",
+      "viewMatch": "View Match"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
