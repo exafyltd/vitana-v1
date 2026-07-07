@@ -19,6 +19,7 @@ import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/useTranslation';
 import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { getRedirectUrl, type MarketplaceProduct } from '@/hooks/useMarketplace';
+import { CategoryShopSections } from '@/components/discover/CategoryShopSections';
 import { t } from '@/lib/i18n-toast';
 
 interface AIRecommendation {
@@ -261,40 +262,47 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
 
   // Categories tab
   if (activeTab === 'categories') {
+    const nonProductCategories = mobileCategories.filter(
+      (c) => c.id !== 'nutrition' && c.id !== 'supplements'
+    );
+
     return (
-      <div className="space-y-3">
+      <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold">{translate('discover.browseCategories')}</h2>
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             className="text-xs text-muted-foreground h-7 px-2"
             onClick={() => navigate('/discover/supplements')}
           >
             {translate('discover.all')} <LayoutGrid className="h-3 w-3 ml-0.5" />
           </Button>
         </div>
-        
-        <div className="grid grid-cols-2 gap-3">
-          {mobileCategories.map((category) => (
-            <div 
+
+        <CategoryShopSections />
+
+        {/* Non-product categories (services & experts) stay reachable as compact chips */}
+        <div className="flex flex-wrap gap-2 pt-2">
+          {nonProductCategories.map((category) => (
+            <button
               key={category.id}
-              className={cn(
-                "relative overflow-hidden rounded-[20px] cursor-pointer",
-                "bg-card border border-border/50 p-4",
-                "shadow-lg shadow-purple-500/5",
-                "active:scale-[0.97] transition-all duration-200"
-              )}
+              type="button"
               onClick={() => navigate(category.path)}
+              className={cn(
+                "flex items-center gap-2 rounded-full pl-2 pr-3 py-1.5",
+                "bg-card border border-border/50 text-xs font-medium",
+                "active:scale-[0.97] transition-transform"
+              )}
             >
-              <div className={cn(
-                "w-12 h-12 rounded-2xl flex items-center justify-center mb-3",
-                "bg-gradient-to-br", category.color
+              <span className={cn(
+                "w-5 h-5 rounded-full flex items-center justify-center bg-gradient-to-br",
+                category.color
               )}>
-                <category.icon className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="text-sm font-semibold">{category.title}</h3>
-            </div>
+                <category.icon className="h-3 w-3 text-white" />
+              </span>
+              {category.title}
+            </button>
           ))}
         </div>
       </div>

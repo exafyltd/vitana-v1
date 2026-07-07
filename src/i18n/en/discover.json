@@ -36,6 +36,18 @@
       "supplements": "Supplements",
       "experts": "Experts"
     },
+    "subcategories": {
+      "longevity": "Longevity",
+      "adaptogens": "Adaptogens",
+      "vitamins": "Vitamins",
+      "essentialFattyAcids": "Omega-3 & Fatty Acids",
+      "minerals": "Minerals",
+      "immunity": "Immunity",
+      "beauty": "Beauty",
+      "nootropics": "Nootropics",
+      "performance": "Performance",
+      "antioxidants": "Antioxidants"
+    },
     "quickActions": {
       "title": "Quick Actions",
       "viewCart": "View Cart",

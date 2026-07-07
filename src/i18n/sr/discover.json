@@ -36,6 +36,18 @@
       "supplements": "Suplementi",
       "experts": "Stručnjaci"
     },
+    "subcategories": {
+      "longevity": "Dugovečnost",
+      "adaptogens": "Adaptogeni",
+      "vitamins": "Vitamini",
+      "essentialFattyAcids": "Omega-3 i masne kiseline",
+      "minerals": "Minerali",
+      "immunity": "Imunitet",
+      "beauty": "Lepota",
+      "nootropics": "Nootropici",
+      "performance": "Performanse",
+      "antioxidants": "Antioksidansi"
+    },
     "quickActions": {
       "title": "Brze radnje",
       "viewCart": "Pregledaj korpu",
