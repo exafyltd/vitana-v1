@@ -79,15 +79,15 @@ export function VitanaIndexCard() {
       onDismiss={() => setDismissed(true)}
       dismissLabel={t('screens.vitanaIdentity.dismissCard')}
       widget={
-        <div className="flex items-end gap-1.5">
-          <div className="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-full bg-gradient-to-br from-emerald-200 to-sky-300 shadow-sm">
-            <span className="text-sm font-bold leading-none text-emerald-900">{index.total}</span>
+        <div className="flex items-end gap-1">
+          <div className="flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded-full bg-gradient-to-br from-emerald-200 to-sky-300 shadow-sm">
+            <span className="text-xs font-bold leading-none text-emerald-900">{index.total}</span>
           </div>
-          <div className="flex items-end gap-1 h-11">
+          <div className="flex items-end gap-0.5 h-9">
             {bars.map((height, i) => (
               <div
                 key={i}
-                className={cn('w-2 rounded-t-sm', style.barClass)}
+                className={cn('w-1.5 rounded-t-sm', style.barClass)}
                 style={{ height: `${height}%` }}
               />
             ))}
@@ -95,12 +95,12 @@ export function VitanaIndexCard() {
         </div>
       }
     >
-      <p className={cn('flex items-center gap-1 text-base font-bold leading-snug line-clamp-2', style.textClass)}>
-        <TrendIcon className="w-4 h-4 shrink-0" />
+      <p className={cn('flex items-center gap-1 text-sm font-bold leading-tight line-clamp-2', style.textClass)}>
+        <TrendIcon className="w-3.5 h-3.5 shrink-0" />
         {t(style.headlineKey, { pct })}
       </p>
-      <p className="text-sm text-muted-foreground mt-0.5 line-clamp-1">{t(style.subtextKey)}</p>
-      <span className="mt-2 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
+      <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{t(style.subtextKey)}</p>
+      <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
         <span className="truncate">{t('screens.vitanaIdentity.viewIndex')}</span>
         <ArrowRight className="w-3 h-3 shrink-0" />
       </span>
