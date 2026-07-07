@@ -8210,7 +8210,8 @@
       "findAMatch": "Find a Match",
       "viewIndex": "View Index",
       "viewJourney": "View My Journey",
-      "viewMatch": "View Match"
+      "viewMatch": "View Match",
+      "dismissCard": "Dismiss card"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",

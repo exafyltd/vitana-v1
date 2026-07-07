@@ -8,9 +8,10 @@
  *   - match / performer / post author → /u/:user_id
  *   - article                         → /news/:id (existing detail route)
  */
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
 import { CommunityPostCard } from "@/components/home/CommunityPostCard";
@@ -50,7 +51,7 @@ function timeAgo(iso: string): string {
  * not Vitana.
  */
 function MatchFeatureHeader() {
-  return <VitanaRecommendationHeader feature="find-a-match" className="mb-3" />;
+  return <VitanaRecommendationHeader feature="find-a-match" className="pr-6 mb-3" />;
 }
 
 const baseCardShell =
@@ -74,6 +75,7 @@ export function NewsFeedItemCard({
   onOpen?: (item: FeedItem) => void;
 }) {
   const navigate = useNavigate();
+  const [dismissed, setDismissed] = useState(false);
 
   const openProfile = (userId: string) => {
     onOpen?.(item);
@@ -100,6 +102,7 @@ export function NewsFeedItemCard({
   }
 
   if (item.kind === "match") {
+    if (dismissed) return null;
     return (
       <Card
         className={matchCardShell}
@@ -113,6 +116,16 @@ export function NewsFeedItemCard({
           }
         }}
       >
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setDismissed(true);
+          }}
+          className="absolute top-2 right-2 z-10 p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-background/40 transition-colors"
+          aria-label={t('screens.vitanaIdentity.dismissCard')}
+        >
+          <X className="w-4 h-4" />
+        </button>
         <CardContent className="p-4">
           <MatchFeatureHeader />
           <div className="flex items-center gap-3">
@@ -165,6 +178,7 @@ export function NewsFeedItemCard({
   }
 
   if (item.kind === "performer") {
+    if (dismissed) return null;
     return (
       <Card
         className={performerCardShell}
@@ -178,6 +192,16 @@ export function NewsFeedItemCard({
           }
         }}
       >
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setDismissed(true);
+          }}
+          className="absolute top-2 right-2 z-10 p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-background/40 transition-colors"
+          aria-label={t('screens.vitanaIdentity.dismissCard')}
+        >
+          <X className="w-4 h-4" />
+        </button>
         <CardContent className="p-4">
           <MatchFeatureHeader />
           <div className="flex items-center gap-3">
