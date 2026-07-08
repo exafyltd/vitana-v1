@@ -260,7 +260,7 @@ export default function IntroExperience() {
             style={{ animationDelay: '1900ms', animationFillMode: 'both' }}
           >
             <div className="pointer-events-none absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#E0AA52] to-transparent" />
-            <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#FAF0DC] shadow-[0_0_10px_3px_rgba(240,205,130,0.7)]" />
+            <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[#FDF6E8] shadow-[0_0_16px_5px_rgba(240,205,130,0.65)]" />
           </div>
         </div>
 
