@@ -254,10 +254,11 @@ export default function IntroExperience() {
             {t.intro?.experience || 'Experience'}
           </p>
 
-          {/* Golden shine flare - thin horizontal glow with a bright center point, directly below Experience */}
-          <div className="pointer-events-none absolute left-1/2 top-full -translate-x-1/2 -translate-y-1/2 w-40 md:w-52 h-2 flex items-center justify-center">
-            <div className="absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#F3DFA8] to-transparent opacity-70" />
-            <div className="absolute w-1.5 h-1.5 rounded-full bg-[#FBF3DE] blur-[2px] opacity-90" />
+          {/* Golden shine flare - thin horizontal glow with a sharp bright center sparkle, directly below Experience */}
+          <div className="pointer-events-none absolute left-1/2 top-full -translate-x-1/2 -translate-y-1/2 w-40 md:w-52 h-3 flex items-center justify-center">
+            <div className="absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#F3DFA8] to-transparent opacity-80" />
+            <div className="absolute left-1/2 -translate-x-1/2 w-px h-2.5 bg-gradient-to-b from-transparent via-[#F3DFA8] to-transparent opacity-70" />
+            <div className="absolute left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#FFFBEF] shadow-[0_0_6px_1.5px_rgba(243,223,168,0.85)]" />
           </div>
         </div>
 
