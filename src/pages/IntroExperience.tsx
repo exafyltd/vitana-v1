@@ -256,7 +256,7 @@ export default function IntroExperience() {
 
           {/* Golden shine flare - clearly visible thin line with a soft bright center, sits right under Experience as part of the brand block */}
           <div
-            className="relative w-40 md:w-52 h-3 mx-auto mb-7 animate-fade-in"
+            className="relative w-28 md:w-36 h-3 mx-auto mb-7 animate-fade-in"
             style={{ animationDelay: '1900ms', animationFillMode: 'both' }}
           >
             <div className="pointer-events-none absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#E0AA52] to-transparent" />
