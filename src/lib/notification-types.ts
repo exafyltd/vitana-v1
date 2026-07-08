@@ -1,5 +1,5 @@
 /**
- * Notification Type Registry — All 70 Vitana Notification Types
+ * Notification Type Registry — All 71 Vitana Notification Types
  *
  * Central definition of every notification type across the platform.
  * Each type defines icon, label, category, channel, priority, and click route.
@@ -60,7 +60,7 @@ export const CATEGORY_TO_PREF_COLUMN: Record<NotificationCategory, string> = {
   system: 'system_notifications',
 };
 
-// ── Master Registry (70 types) ──────────────────────────────
+// ── Master Registry (71 types) ──────────────────────────────
 
 export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
 
@@ -349,8 +349,12 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
   },
 
   // ═══════════════════════════════════════════════════════════
-  // 12. RELATIONSHIPS & SOCIAL (3)
+  // 12. RELATIONSHIPS & SOCIAL (4)
   // ═══════════════════════════════════════════════════════════
+  new_follower: {
+    icon: '👤', label: 'New Follower', category: 'social',
+    channel: 'push_and_inapp', priority: 'p1', route: '/u/{id}',
+  },
   new_connection_formed: {
     icon: '🔗', label: 'New Connection', category: 'social',
     channel: 'push_and_inapp', priority: 'p1',
