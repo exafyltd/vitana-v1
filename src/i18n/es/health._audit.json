@@ -231,10 +231,8 @@
       "phase": "llm"
     },
     "health.noSupplements": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing; 'Sin X aún' is less natural than 'Aún no hay X'.",
-      "suggested": "Aún no hay suplementos",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "health.noSupplementsDesc": {
@@ -243,10 +241,8 @@
       "phase": "llm"
     },
     "health.noReports": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing; 'Sin X aún' is less natural than 'Aún no hay X'.",
-      "suggested": "Aún no hay informes de salud",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "health.noReportsDesc": {
@@ -385,5 +381,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:39.473Z"
+  "generatedAt": "2026-07-08T06:11:49.931Z"
 }
