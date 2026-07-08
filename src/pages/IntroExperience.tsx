@@ -238,18 +238,9 @@ export default function IntroExperience() {
 
         {/* Brand block - MAXINA wordmark + Experience, with a soft golden flare accent */}
         <div className="relative">
-          {/* Golden light flare - subtle accent behind/below the brand block */}
-          <div
-            className="pointer-events-none absolute left-1/2 top-full -translate-x-1/2 -translate-y-1/2 w-56 h-24 md:w-64 md:h-28 rounded-full blur-2xl opacity-60"
-            style={{
-              background:
-                'radial-gradient(ellipse at center, rgba(255,214,140,0.55) 0%, rgba(230,180,90,0.25) 45%, transparent 75%)',
-            }}
-          />
-
-          {/* Primary Title - MAXINA in ALL CAPS, champagne/gold gradient for brand presence */}
+          {/* Primary Title - MAXINA in ALL CAPS, champagne/ivory gradient for contrast + brand presence */}
           <h1
-            className="relative text-4xl md:text-5xl font-bold text-center mb-1 animate-fade-in leading-tight tracking-tight uppercase bg-gradient-to-b from-amber-100 via-yellow-100 to-amber-300 bg-clip-text text-transparent drop-shadow-[0_0_18px_rgba(230,190,120,0.35)]"
+            className="relative text-4xl md:text-5xl font-bold text-center mb-1 animate-fade-in leading-tight tracking-tight uppercase bg-gradient-to-b from-[#FBF3DE] via-[#F3E2B0] to-[#D9B873] bg-clip-text text-transparent [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.45))_drop-shadow(0_0_16px_rgba(235,205,150,0.35))]"
             style={{ animationDelay: '1600ms', animationFillMode: 'both' }}
           >
             MAXINA
@@ -262,6 +253,12 @@ export default function IntroExperience() {
           >
             {t.intro?.experience || 'Experience'}
           </p>
+
+          {/* Golden shine flare - thin horizontal glow with a bright center point, directly below Experience */}
+          <div className="pointer-events-none absolute left-1/2 top-full -translate-x-1/2 -translate-y-1/2 w-40 md:w-52 h-2 flex items-center justify-center">
+            <div className="absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#F3DFA8] to-transparent opacity-70" />
+            <div className="absolute w-1.5 h-1.5 rounded-full bg-[#FBF3DE] blur-[2px] opacity-90" />
+          </div>
         </div>
 
         {/* Purpose statement - dominant headline + smaller supporting line */}
@@ -332,7 +329,7 @@ export default function IntroExperience() {
           {/* Go to Login - secondary text button, champagne/gold, still subordinate to Play Welcome */}
           <button
             onClick={handleSkip}
-            className="text-amber-200/80 hover:text-amber-100 text-sm font-semibold transition-colors duration-200 underline-offset-4 hover:underline"
+            className="text-[#D8C6A0]/90 hover:text-[#EFE1BE] text-sm font-semibold transition-colors duration-200 underline-offset-4 hover:underline"
           >
             {t.intro?.goToLogin || 'Go to Login'}
           </button>
