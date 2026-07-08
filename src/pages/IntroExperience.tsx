@@ -236,28 +236,46 @@ export default function IntroExperience() {
           {t.intro?.welcomeTo || 'WELCOME TO VITANALAND'}
         </p>
 
-        {/* Primary Title - MAXINA in ALL CAPS */}
-        <h1 
-          className="text-4xl md:text-5xl font-bold text-white text-center mb-1 animate-fade-in leading-tight tracking-tight uppercase"
-          style={{ animationDelay: '1600ms', animationFillMode: 'both' }}
-        >
-          MAXINA
-        </h1>
+        {/* Brand block - MAXINA wordmark + Experience, with a soft golden flare accent */}
+        <div className="relative">
+          {/* Golden light flare - subtle accent behind/below the brand block */}
+          <div
+            className="pointer-events-none absolute left-1/2 top-full -translate-x-1/2 -translate-y-1/2 w-56 h-24 md:w-64 md:h-28 rounded-full blur-2xl opacity-60"
+            style={{
+              background:
+                'radial-gradient(ellipse at center, rgba(255,214,140,0.55) 0%, rgba(230,180,90,0.25) 45%, transparent 75%)',
+            }}
+          />
 
-        {/* Signature Subtitle */}
-        <p 
-          className="text-lg md:text-xl font-light text-white/80 text-center mb-6 animate-fade-in italic tracking-wide"
-          style={{ animationDelay: '1800ms', animationFillMode: 'both' }}
-        >
-          {t.intro?.experience || 'Experience'}
-        </p>
+          {/* Primary Title - MAXINA in ALL CAPS, champagne/gold gradient for brand presence */}
+          <h1
+            className="relative text-4xl md:text-5xl font-bold text-center mb-1 animate-fade-in leading-tight tracking-tight uppercase bg-gradient-to-b from-amber-100 via-yellow-100 to-amber-300 bg-clip-text text-transparent drop-shadow-[0_0_18px_rgba(230,190,120,0.35)]"
+            style={{ animationDelay: '1600ms', animationFillMode: 'both' }}
+          >
+            MAXINA
+          </h1>
 
-        {/* Longevity Tagline - wraps gracefully on narrow screens */}
+          {/* Signature Subtitle */}
+          <p
+            className="relative text-lg md:text-xl font-light text-white/80 text-center mb-6 animate-fade-in italic tracking-wide"
+            style={{ animationDelay: '1800ms', animationFillMode: 'both' }}
+          >
+            {t.intro?.experience || 'Experience'}
+          </p>
+        </div>
+
+        {/* Purpose statement - dominant headline + smaller supporting line */}
         <p
-          className="text-sm md:text-base text-white/70 text-center text-balance max-w-xs md:max-w-sm mb-10 animate-fade-in"
+          className="text-4xl md:text-5xl font-bold text-white text-center leading-tight tracking-tight text-balance max-w-xs md:max-w-sm mb-1 animate-fade-in"
           style={{ animationDelay: '2000ms', animationFillMode: 'both' }}
         >
-          {t.intro?.tagline || 'Start your Longevity Journey together with us'}
+          {t.intro?.taglineMain || 'Start your Longevity Journey'}
+        </p>
+        <p
+          className="text-lg md:text-xl font-light text-white/70 text-center italic tracking-wide mb-10 animate-fade-in"
+          style={{ animationDelay: '2100ms', animationFillMode: 'both' }}
+        >
+          {t.intro?.taglineSub || 'together with us!'}
         </p>
 
         {/* CTA Stack - Premium glass buttons */}
@@ -311,12 +329,12 @@ export default function IntroExperience() {
             <LanguageToggleButton size="md" />
           </div>
 
-          {/* Skip intro - secondary text button */}
+          {/* Go to Login - secondary text button, champagne/gold, still subordinate to Play Welcome */}
           <button
             onClick={handleSkip}
-            className="text-white/50 hover:text-white/80 text-sm font-medium transition-colors duration-200 underline-offset-4 hover:underline"
+            className="text-amber-200/80 hover:text-amber-100 text-sm font-semibold transition-colors duration-200 underline-offset-4 hover:underline"
           >
-            {t.intro?.skipIntro || 'Skip intro'}
+            {t.intro?.goToLogin || 'Go to Login'}
           </button>
         </div>
 
