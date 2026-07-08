@@ -254,13 +254,23 @@ export default function IntroExperience() {
             {t.intro?.experience || 'Experience'}
           </p>
 
-          {/* Golden shine flare - clearly visible thin line with a soft bright center, sits right under Experience as part of the brand block */}
+          {/* Golden shine flare - refined glint: thin champagne streak + luminous center + soft cinematic bloom, sits right under Experience as part of the brand block */}
           <div
             className="relative w-28 md:w-36 h-3 mx-auto mb-7 animate-fade-in"
             style={{ animationDelay: '1900ms', animationFillMode: 'both' }}
           >
+            {/* Ambient warm bloom - soft, wide, distinct from the sharp center point */}
+            <div
+              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full blur-lg opacity-70"
+              style={{
+                background:
+                  'radial-gradient(circle, rgba(250,230,180,0.6) 0%, rgba(224,170,82,0.28) 50%, transparent 75%)',
+              }}
+            />
+            {/* Thin champagne-gold streak, strongest at center fading to transparent at both ends */}
             <div className="pointer-events-none absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#E0AA52] to-transparent" />
-            <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[#FDF6E8] shadow-[0_0_16px_5px_rgba(240,205,130,0.65)]" />
+            {/* Small bright luminous point */}
+            <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#FFFDF6] shadow-[0_0_6px_2px_rgba(250,235,190,0.9)]" />
           </div>
         </div>
 
