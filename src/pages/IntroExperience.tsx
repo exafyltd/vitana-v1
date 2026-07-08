@@ -248,16 +248,19 @@ export default function IntroExperience() {
 
           {/* Signature Subtitle */}
           <p
-            className="relative text-base md:text-lg font-light text-white/80 text-center mb-6 animate-fade-in italic tracking-wide"
+            className="relative text-base md:text-lg font-light text-white/80 text-center mb-2 animate-fade-in italic tracking-wide"
             style={{ animationDelay: '1800ms', animationFillMode: 'both' }}
           >
             {t.intro?.experience || 'Experience'}
           </p>
 
-          {/* Golden shine flare - soft, subtle glow line, directly below Experience */}
-          <div className="pointer-events-none absolute left-1/2 top-full -translate-x-1/2 -translate-y-1/2 w-36 md:w-48 h-2 flex items-center justify-center">
-            <div className="absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#E8C77E]/60 to-transparent" />
-            <div className="absolute w-2 h-2 rounded-full bg-[#F6E6BE] blur-[3px] opacity-75" />
+          {/* Golden shine flare - soft, subtle glow line, sits right under Experience as part of the brand block */}
+          <div
+            className="relative w-36 md:w-48 h-2 mx-auto mb-7 animate-fade-in"
+            style={{ animationDelay: '1900ms', animationFillMode: 'both' }}
+          >
+            <div className="pointer-events-none absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#E8C77E]/60 to-transparent" />
+            <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[#F6E6BE] blur-[3px] opacity-75" />
           </div>
         </div>
 
