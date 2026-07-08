@@ -240,7 +240,7 @@ export default function IntroExperience() {
         <div className="relative">
           {/* Primary Title - MAXINA in ALL CAPS, champagne/ivory gradient for contrast + brand presence */}
           <h1
-            className="relative text-4xl md:text-5xl font-bold text-center mb-1 animate-fade-in leading-tight tracking-tight uppercase bg-gradient-to-b from-[#FBF3DE] via-[#F3E2B0] to-[#D9B873] bg-clip-text text-transparent [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.45))_drop-shadow(0_0_16px_rgba(235,205,150,0.35))]"
+            className="relative text-3xl md:text-4xl font-bold text-center mb-1 animate-fade-in leading-tight tracking-tight uppercase bg-gradient-to-b from-[#FBF3DE] via-[#F3E2B0] to-[#D9B873] bg-clip-text text-transparent [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.45))_drop-shadow(0_0_16px_rgba(235,205,150,0.35))]"
             style={{ animationDelay: '1600ms', animationFillMode: 'both' }}
           >
             MAXINA
@@ -248,17 +248,16 @@ export default function IntroExperience() {
 
           {/* Signature Subtitle */}
           <p
-            className="relative text-lg md:text-xl font-light text-white/80 text-center mb-6 animate-fade-in italic tracking-wide"
+            className="relative text-base md:text-lg font-light text-white/80 text-center mb-6 animate-fade-in italic tracking-wide"
             style={{ animationDelay: '1800ms', animationFillMode: 'both' }}
           >
             {t.intro?.experience || 'Experience'}
           </p>
 
-          {/* Golden shine flare - thin horizontal glow with a sharp bright center sparkle, directly below Experience */}
-          <div className="pointer-events-none absolute left-1/2 top-full -translate-x-1/2 -translate-y-1/2 w-40 md:w-52 h-3 flex items-center justify-center">
-            <div className="absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#F3DFA8] to-transparent opacity-80" />
-            <div className="absolute left-1/2 -translate-x-1/2 w-px h-2.5 bg-gradient-to-b from-transparent via-[#F3DFA8] to-transparent opacity-70" />
-            <div className="absolute left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#FFFBEF] shadow-[0_0_6px_1.5px_rgba(243,223,168,0.85)]" />
+          {/* Golden shine flare - soft, subtle glow line, directly below Experience */}
+          <div className="pointer-events-none absolute left-1/2 top-full -translate-x-1/2 -translate-y-1/2 w-36 md:w-48 h-2 flex items-center justify-center">
+            <div className="absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#E8C77E]/60 to-transparent" />
+            <div className="absolute w-2 h-2 rounded-full bg-[#F6E6BE] blur-[3px] opacity-75" />
           </div>
         </div>
 
@@ -330,7 +329,7 @@ export default function IntroExperience() {
           {/* Go to Login - secondary text button, champagne/gold, still subordinate to Play Welcome */}
           <button
             onClick={handleSkip}
-            className="text-[#D8C6A0]/90 hover:text-[#EFE1BE] text-sm font-semibold transition-colors duration-200 underline-offset-4 hover:underline"
+            className="text-[#E8D5A0] hover:text-[#F5E9C0] text-sm font-semibold [text-shadow:0_1px_4px_rgba(0,0,0,0.5)] transition-colors duration-200 underline-offset-4 hover:underline"
           >
             {t.intro?.goToLogin || 'Go to Login'}
           </button>
