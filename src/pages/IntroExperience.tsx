@@ -254,13 +254,13 @@ export default function IntroExperience() {
             {t.intro?.experience || 'Experience'}
           </p>
 
-          {/* Golden shine flare - soft, subtle glow line, sits right under Experience as part of the brand block */}
+          {/* Golden shine flare - clearly visible thin line with a soft bright center, sits right under Experience as part of the brand block */}
           <div
-            className="relative w-36 md:w-48 h-2 mx-auto mb-7 animate-fade-in"
+            className="relative w-40 md:w-52 h-3 mx-auto mb-7 animate-fade-in"
             style={{ animationDelay: '1900ms', animationFillMode: 'both' }}
           >
-            <div className="pointer-events-none absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#E8C77E]/60 to-transparent" />
-            <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[#F6E6BE] blur-[3px] opacity-75" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#E0AA52] to-transparent" />
+            <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[#FAF0DC] shadow-[0_0_10px_3px_rgba(240,205,130,0.7)]" />
           </div>
         </div>
 
@@ -329,10 +329,10 @@ export default function IntroExperience() {
             <LanguageToggleButton size="md" />
           </div>
 
-          {/* Go to Login - secondary text button, champagne/gold, still subordinate to Play Welcome */}
+          {/* Go to Login - secondary text button, bright ivory + permanent underline, still subordinate to Play Welcome */}
           <button
             onClick={handleSkip}
-            className="text-[#E8D5A0] hover:text-[#F5E9C0] text-sm font-semibold [text-shadow:0_1px_4px_rgba(0,0,0,0.5)] transition-colors duration-200 underline-offset-4 hover:underline"
+            className="text-[#F5ECD8] hover:text-white text-sm font-semibold [text-shadow:0_1px_4px_rgba(0,0,0,0.55)] transition-colors duration-200 underline underline-offset-4"
           >
             {t.intro?.goToLogin || 'Go to Login'}
           </button>
