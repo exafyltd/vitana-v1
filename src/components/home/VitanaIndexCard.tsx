@@ -73,7 +73,6 @@ export function VitanaIndexCard() {
   return (
     <VitanaRecommendationCard
       feature="vitana-index"
-      accent="amber"
       eyebrow={t('screens.home.vitanaIndexEyebrow')}
       onOpen={openIndex}
       onDismiss={() => setDismissed(true)}
