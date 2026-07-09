@@ -14,14 +14,6 @@ import { X } from 'lucide-react';
 import { VitanaRecommendationHeader, type VitanaFeature } from '@/components/vitana/VitanaRecommendationHeader';
 import { cn } from '@/lib/utils';
 
-export type VitanaCardAccent = 'amber' | 'indigo' | 'mint';
-
-const ACCENT_CLASSES: Record<VitanaCardAccent, string> = {
-  amber: 'border-amber-300/30 bg-gradient-to-r from-amber-500/10 via-yellow-500/10 to-amber-500/10',
-  indigo: 'border-indigo-300/30 bg-gradient-to-r from-indigo-500/10 via-violet-500/10 to-indigo-500/10',
-  mint: 'border-emerald-300/30 bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-emerald-500/10',
-};
-
 /**
  * Fixed card height, identical across every card in this family. Content
  * that would otherwise vary the height (a wrapped headline, a locale with
@@ -34,8 +26,6 @@ const CARD_HEIGHT_CLASS = 'h-[138px]';
 export interface VitanaRecommendationCardProps {
   /** Destination feature — drives the header badge icon + label. */
   feature: VitanaFeature;
-  /** Card color family, matched to the destination screen. */
-  accent: VitanaCardAccent;
   /** Uppercase eyebrow label (slot 5). */
   eyebrow: string;
   /** Right-column destination-preview visual (slot 9). Purely decorative. */
@@ -51,7 +41,6 @@ export interface VitanaRecommendationCardProps {
 
 export function VitanaRecommendationCard({
   feature,
-  accent,
   eyebrow,
   widget,
   onOpen,
@@ -73,9 +62,8 @@ export function VitanaRecommendationCard({
       onClick={onOpen}
       onKeyDown={handleKeyDown}
       className={cn(
-        'group relative flex w-full flex-col overflow-hidden rounded-2xl border p-2.5 cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md animate-fade-in',
+        'group relative flex w-full flex-col overflow-hidden rounded-2xl border border-sys-vitana-card-border bg-sys-vitana-card p-2.5 shadow-sm cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md animate-fade-in',
         CARD_HEIGHT_CLASS,
-        ACCENT_CLASSES[accent],
       )}
     >
       <button

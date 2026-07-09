@@ -51,7 +51,6 @@ export function LongevityJourneyCard() {
   return (
     <VitanaRecommendationCard
       feature="guided-journey"
-      accent="indigo"
       eyebrow={t('screens.home.longevityJourneyEyebrow')}
       onOpen={goToJourney}
       onDismiss={() => setDismissed(true)}

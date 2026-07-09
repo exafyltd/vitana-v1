@@ -108,7 +108,9 @@ export default {
 				sys: {
 					vitana: {
 						accent: 'hsl(var(--sys-vitana-accent))',
-						tint: 'hsl(var(--sys-vitana-tint))'
+						tint: 'hsl(var(--sys-vitana-tint))',
+						card: 'hsl(var(--sys-vitana-card))',
+						'card-border': 'hsl(var(--sys-vitana-card-border))'
 					},
 					autopilot: {
 						accent: 'hsl(var(--sys-autopilot-accent))',

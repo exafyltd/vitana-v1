@@ -70,7 +70,6 @@ export function NewsFeedItemCard({
     return (
       <VitanaRecommendationCard
         feature="find-a-match"
-        accent="mint"
         eyebrow={t("screens.home.findAMatchEyebrow")}
         onOpen={() => openProfile(item.user_id)}
         onDismiss={() => setDismissed(true)}
@@ -116,7 +115,6 @@ export function NewsFeedItemCard({
     return (
       <VitanaRecommendationCard
         feature="find-a-match"
-        accent="mint"
         eyebrow={t("screens.home.findAMatchEyebrow")}
         onOpen={() => openProfile(item.user_id)}
         onDismiss={() => setDismissed(true)}
