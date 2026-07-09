@@ -27,6 +27,11 @@
     "matchPerfect": "Match Perfecto",
     "matchGreat": "Gran Match",
     "matchGood": "Buen Match",
+    "vitanaPickBadge": "Recomendación Vitana",
+    "popularBadge": "Popular",
+    "reasonForCategory": "Para tu objetivo de {category}",
+    "reasonGeneric": "Coincide con tu viaje",
+    "viewProduct": "Ver producto",
     "noResults": "No se encontraron resultados",
     "noResultsDesc": "Prueba diferentes términos de búsqueda o explora categorías.",
     "categories": {

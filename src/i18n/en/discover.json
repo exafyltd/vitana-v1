@@ -27,6 +27,11 @@
     "matchPerfect": "Perfect Match",
     "matchGreat": "Great Match",
     "matchGood": "Good Match",
+    "vitanaPickBadge": "Vitana Pick",
+    "popularBadge": "Popular",
+    "reasonForCategory": "For your {category} goal",
+    "reasonGeneric": "Matches your Journey",
+    "viewProduct": "View product",
     "noResults": "No results found",
     "noResultsDesc": "Try different search terms or browse categories.",
     "categories": {

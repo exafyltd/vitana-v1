@@ -10,13 +10,13 @@ import {
   Brain,
   Zap,
   Clock,
-  Star,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
-import { useMarketplaceSearch, formatPrice, type MarketplaceProduct } from "@/hooks/useMarketplace";
-import { ProductImage } from "@/components/discover/ProductImage";
-import { AddToCartButton } from "@/components/cart/AddToCartButton";
+import { useMarketplaceSearch, type MarketplaceProduct } from "@/hooks/useMarketplace";
+import { CompactProductCard } from "@/components/discover/PremiumProductCard";
+import { getPersonalizedReason, hasPersonalizationSignal } from "@/lib/discover-reason";
+import { t } from "@/lib/i18n-toast";
 
 interface SectionMeta {
   /** Matches products.subcategory in the DB. */
@@ -115,56 +115,13 @@ export function CategoryShopSections() {
 
           <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory px-0.5 pb-1 -mx-0.5">
             {products.map((product) => (
-              <div
+              <CompactProductCard
                 key={product.id}
-                role="button"
-                tabIndex={0}
-                aria-label={product.title}
+                product={product}
+                badgeText={hasPersonalizationSignal(product) ? t("discover.vitanaPickBadge") : t("discover.popularBadge")}
+                reasonText={getPersonalizedReason(product)}
                 onClick={() => goToProduct(product)}
-                onKeyDown={(e) => {
-                  if (e.target !== e.currentTarget) return;
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    goToProduct(product);
-                  }
-                }}
-                className="snap-start shrink-0 w-[132px] rounded-2xl bg-card border border-border/50 shadow-sm cursor-pointer overflow-hidden active:scale-[0.97] transition-transform"
-              >
-                <ProductImage
-                  src={product.images?.[0]}
-                  alt={product.title}
-                  category={product.category}
-                  subcategory={product.subcategory}
-                  sizeClass="w-full h-[100px]"
-                />
-                <div className="p-2 space-y-1">
-                  <p className="text-xs font-medium line-clamp-2 leading-snug">{product.title}</p>
-                  {product.rating != null && (
-                    <div className="flex items-center gap-0.5 text-[11px] text-muted-foreground">
-                      <Star className="h-2.5 w-2.5 fill-yellow-400 text-yellow-400" />
-                      {product.rating.toFixed(1)}
-                    </div>
-                  )}
-                  <div className="flex items-center justify-between gap-1 pt-0.5">
-                    <span className="text-xs font-semibold">
-                      {formatPrice(product.price_cents, product.currency)}
-                    </span>
-                    <AddToCartButton
-                      item={{
-                        item_type: "product",
-                        item_id: product.id,
-                        item_name: product.title,
-                        item_price: (product.price_cents ?? 0) / 100,
-                        item_image_url: product.images?.[0],
-                        item_metadata: { brand: product.brand, category: product.subcategory },
-                      }}
-                      size="icon"
-                      showLabel={false}
-                      className="h-6 w-6 shrink-0"
-                    />
-                  </div>
-                </div>
-              </div>
+              />
             ))}
           </div>
         </div>
