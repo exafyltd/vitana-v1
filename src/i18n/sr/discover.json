@@ -27,6 +27,11 @@
     "matchPerfect": "Savršeno podudaranje",
     "matchGreat": "Odlično podudaranje",
     "matchGood": "Dobro podudaranje",
+    "vitanaPickBadge": "Vitana preporuka",
+    "popularBadge": "Popularno",
+    "reasonForCategory": "Za tvoj cilj: {category}",
+    "reasonGeneric": "Odgovara tvom putu",
+    "viewProduct": "Pogledaj proizvod",
     "noResults": "Nema rezultata",
     "noResultsDesc": "Probaj druge pojmove za pretragu ili pregledaj kategorije.",
     "categories": {
