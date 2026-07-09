@@ -6,10 +6,8 @@
       "phase": "identical"
     },
     "packages.confirmDelete": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Formal 'Sie' used instead of informal 'du'.",
-      "suggested": "Bist du sicher, dass du dieses Paket löschen möchtest?",
       "phase": "llm"
     },
     "packages.types.bundle": {
@@ -38,15 +36,17 @@
       "phase": "llm"
     },
     "packages.item": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "'Element' is acceptable but might not be the most natural choice depending on the specific context of 'item' (e.g., 'Artikel' or 'Posten' could be better for products/content).",
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "'Element' is often too generic or technical for 'item' in a friendly app UI. 'Eintrag' is a more common and appropriate translation for a list item.",
+      "suggested": "Eintrag",
       "phase": "llm"
     },
     "packages.items": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "'Elemente' is acceptable but might not be the most natural choice depending on the specific context of 'items' (e.g., 'Artikel' or 'Posten' could be better for products/content).",
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "'Elemente' is often too generic or technical for 'items' in a friendly app UI. 'Einträge' is a more common and appropriate translation for list items.",
+      "suggested": "Einträge",
       "phase": "llm"
     },
     "packages.total": {
@@ -75,5 +75,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:17:38.155Z"
+  "generatedAt": "2026-07-09T07:07:01.000Z"
 }

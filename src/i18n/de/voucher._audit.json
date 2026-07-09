@@ -11,10 +11,8 @@
       "phase": "llm"
     },
     "voucher.modal.subtitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Formal 'Sie' used instead of informal 'du'.",
-      "suggested": "Verschenke Wellness und Community-Verbindung",
       "phase": "llm"
     },
     "voucher.modal.buyVoucher": {
@@ -43,10 +41,8 @@
       "phase": "llm"
     },
     "voucher.success.ready": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Ambiguous 'Ihr' (should be 'Dein'); 'ist bereit' is a bit literal.",
-      "suggested": "Dein {tier} Gutschein ist fertig",
       "phase": "llm"
     },
     "voucher.success.download": {
@@ -110,10 +106,8 @@
       "phase": "llm"
     },
     "voucher.preview.title": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Ambiguous 'Ihr' (should be 'Dein').",
-      "suggested": "Dein Gutschein",
       "phase": "llm"
     },
     "voucher.preview.giftVoucher": {
@@ -168,9 +162,9 @@
     },
     "voucher.preview.downloadHint": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Wenn der Download leer öffnet, tippe auf Im Browser öffnen",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing ('leer öffnet')",
+      "suggested": "Wenn der Download leer bleibt, tippe auf Im Browser öffnen",
       "phase": "llm"
     },
     "voucher.toast.downloadStarted": {
@@ -189,10 +183,8 @@
       "phase": "llm"
     },
     "voucher.toast.linkCopiedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward phrasing; an imperative (du-form) is more direct and friendly for an instruction.",
-      "suggested": "Füge im Browser ein, um herunterzuladen.",
       "phase": "llm"
     },
     "voucher.toast.voucherSent": {
@@ -206,10 +198,8 @@
       "phase": "llm"
     },
     "voucher.toast.checkoutFailed": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency; 'Bitte erneut versuchen' is infinitive, but a du-form imperative is more consistent with a friendly app.",
-      "suggested": "Checkout konnte nicht gestartet werden. Bitte versuche es erneut.",
       "phase": "llm"
     },
     "voucher.toast.generatingVoucher": {
@@ -223,17 +213,13 @@
       "phase": "llm"
     },
     "voucher.toast.downloadFailedCopyLink": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Download fehlgeschlagen. Versuche, den Link zu kopieren.",
       "phase": "llm"
     },
     "voucher.toast.useTicketView": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Nutze die Ticketansicht zum Drucken oder Speichern.",
       "phase": "llm"
     },
     "voucher.toast.pdfNotAvailable": {
@@ -242,10 +228,8 @@
       "phase": "llm"
     },
     "voucher.toast.enterRecipientEmail": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistency; 'eingeben' is infinitive, but a du-form imperative is more consistent with a friendly app.",
-      "suggested": "Bitte gib die Empfänger-E-Mail ein.",
       "phase": "llm"
     },
     "voucher.toast.emailOnlyForVouchers": {
@@ -259,5 +243,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:43:22.500Z"
+  "generatedAt": "2026-07-09T07:27:37.807Z"
 }
