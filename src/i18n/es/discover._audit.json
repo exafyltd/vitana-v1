@@ -6,10 +6,8 @@
       "phase": "llm"
     },
     "discover.mobileTitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Infinitive used instead of imperative for a likely action/button, which is less natural for a friendly, du-form app.",
-      "suggested": "Descubre",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "discover.mobileDescription": {
@@ -58,10 +56,8 @@
       "phase": "llm"
     },
     "discover.explore": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Infinitive used instead of imperative for a likely action/button, which is less natural for a friendly, du-form app.",
-      "suggested": "Explora",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "discover.aiPicksForYou": {
@@ -110,10 +106,8 @@
       "phase": "llm"
     },
     "discover.start": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Infinitive used instead of imperative for a likely action/button, which is less natural for a friendly, du-form app.",
-      "suggested": "Comienza",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "discover.view": {
@@ -202,10 +196,8 @@
       "phase": "llm"
     },
     "discover.quickActions.reorderPrevious": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "Grammatically awkward and incomplete. 'Anterior' (previous) is an adjective without a noun. Also, infinitive used instead of imperative for a likely action/button.",
-      "suggested": "Reordena lo anterior",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "discover.quickActions.managePayment": {
@@ -307,7 +299,77 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "discover.subcategories.longevity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.adaptogens": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.vitamins": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.essentialFattyAcids": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.minerals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.immunity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.beauty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.nootropics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.performance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.antioxidants": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.guest.bannerTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.guest.bannerSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.guest.bannerCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.guest.signIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:27.227Z"
+  "generatedAt": "2026-07-09T06:59:57.196Z"
 }

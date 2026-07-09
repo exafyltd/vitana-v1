@@ -1,215 +1,172 @@
 {
   "verdicts": {
-    "subNav.overview": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.context": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.actions": {
+    "videoShop.feed.end": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.matches": {
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.aiFeed": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.insights": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.recommendations": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.dailySummary": {
+    "videoShop.feed.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.companion": {
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.eventsMeetups": {
+    "videoShop.feed.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.liveRooms": {
+    "videoShop.feed.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.mediaHub": {
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.services": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.sellEarn": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.clients": {
+    "videoShop.feed.linkCopied": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.analytics": {
+    "videoShop.drawer.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.supplements": {
+    "videoShop.drawer.productFallback": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.wellnessServices": {
+    "videoShop.drawer.addToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.doctorsCoaches": {
+    "videoShop.drawer.adding": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.dealsOffers": {
+    "videoShop.drawer.addedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.orders": {
+    "videoShop.drawer.addedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.reminder": {
+    "videoShop.drawer.addFailed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.inspiration": {
+    "videoShop.drawer.goToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.archived": {
+    "videoShop.drawer.moreDetails": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.servicesHub": {
+    "videoShop.drawer.notifyMe": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.myBiology": {
+    "videoShop.drawer.outOfStock": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.plans": {
+    "videoShop.drawer.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.educationScience": {
+    "videoShop.drawer.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.balance": {
+    "videoShop.drawer.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.subscriptions": {
+    "videoShop.drawer.unavailableTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.rewards": {
+    "videoShop.drawer.unavailableBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.campaigns": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.distribution": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.dataConsent": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.timeline": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.diary": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.recall": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.permissions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.preferences": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.privacy": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.connectedApps": {
-      "verdict": "OK",
+    "videoShop.drawer.roleBlockedTitle": {
+      "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
+      "issue": "Translation is grammatically correct but sounds a bit stiff and less natural for a friendly app. 'La compra' refers to 'the purchase' rather than the action of 'buying' in this context.",
+      "suggested": "No puedes comprar aquí",
       "phase": "llm"
     },
-    "subNav.support": {
+    "videoShop.drawer.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-07-09T07:03:09.146Z"
+  "generatedAt": "2026-07-09T07:03:36.887Z"
 }
