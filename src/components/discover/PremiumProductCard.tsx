@@ -137,6 +137,9 @@ export function CompactProductCard({ product, badgeText, reasonText, onClick }: 
           <Sparkles className="h-2.5 w-2.5" /> {badgeText}
         </span>
         <h4 className="text-sm font-medium leading-snug line-clamp-2 min-h-[2.5rem]">{product.title}</h4>
+        {product.brand && (
+          <p className="text-[11px] text-muted-foreground/80 line-clamp-1">{product.brand}</p>
+        )}
         <p className="text-xs text-muted-foreground line-clamp-1">{reasonText}</p>
         <div className="flex items-center justify-between gap-1 pt-0.5">
           <span className="text-sm font-semibold">{formatPrice(product.price_cents, product.currency)}</span>
