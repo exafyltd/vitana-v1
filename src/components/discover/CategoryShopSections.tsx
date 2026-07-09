@@ -40,7 +40,10 @@ const SECTION_ORDER: SectionMeta[] = [
 ];
 
 const ITEMS_PER_SECTION = 6;
-const FETCH_LIMIT = 60;
+// Gateway's discover-search validates limit <= 50 (SearchQuerySchema); a
+// higher value 400s the whole request, which surfaced as "No results found"
+// since useMarketplaceSearch throws on a non-OK response.
+const FETCH_LIMIT = 50;
 
 export function CategoryShopSections() {
   const navigate = useNavigate();
