@@ -6,6 +6,10 @@
  *   - FeaturedProductCard — large hero, full width
  *   - CompactProductCard  — narrow card for horizontal-scroll collections
  *
+ * A third variant, ProductListRow (see ./ProductListRow.tsx), reuses the
+ * exported bookmarkItem/cardKeyDown helpers for a dense vertical-list layout
+ * (the "See all" destination screens).
+ *
  * Badge/reason text is computed by the caller (see `@/lib/discover-reason`)
  * and passed in, so these stay presentational.
  */
@@ -28,7 +32,7 @@ interface PremiumCardProps {
   onClick?: () => void;
 }
 
-function bookmarkItem(product: MarketplaceProduct) {
+export function bookmarkItem(product: MarketplaceProduct) {
   return {
     item_type: "supplement" as const,
     item_id: product.id,
@@ -38,7 +42,7 @@ function bookmarkItem(product: MarketplaceProduct) {
   };
 }
 
-function cardKeyDown(e: KeyboardEvent, onClick?: () => void) {
+export function cardKeyDown(e: KeyboardEvent, onClick?: () => void) {
   // Only act when the card itself is focused — Enter/Space from a nested
   // interactive child (bookmark, view-product link) must activate that
   // control, not bubble up into card navigation.

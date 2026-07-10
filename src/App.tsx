@@ -175,6 +175,7 @@ const MatchesPage = lazy(() => import("./pages/MatchesPage"));
 const InviteFriends = lazy(() => import("./pages/InviteFriends"));
 const MobileDailyDiary = lazy(() => import("./pages/MobileDailyDiary"));
 const Supplements = lazy(() => import("./pages/discover/Supplements"));
+const CategoryProducts = lazy(() => import("./pages/discover/CategoryProducts"));
 const ProductDetail = lazy(() => import("./pages/discover/ProductDetail"));
 const BusinessHub = lazy(() => import("./pages/BusinessHub"));
 const AIAssistant = lazy(() => import("./pages/assistant/AIAssistant"));
@@ -868,6 +869,11 @@ const App = () => {
           <Route path="/discover/supplements" element={
             <AuthGuard allowGuest>
               <Supplements />
+            </AuthGuard>
+          } />
+          <Route path="/discover/category/:subcategory" element={
+            <AuthGuard allowGuest>
+              <CategoryProducts />
             </AuthGuard>
           } />
           <Route path="/discover/wellness-services" element={

@@ -107,7 +107,7 @@ export function CategoryShopSections() {
               variant="ghost"
               size="sm"
               className="text-xs text-muted-foreground h-7 px-2"
-              onClick={() => navigate(`/discover/supplements?category=${meta.key}`)}
+              onClick={() => navigate(`/discover/category/${meta.key}`)}
             >
               {translate("discover.seeAll")} <ChevronRight className="h-3 w-3 ml-0.5" />
             </Button>
