@@ -1,180 +1,178 @@
 {
   "verdicts": {
-    "common.ok": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "common.search": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.save": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.cancel": {
+    "videoShop.feed.end": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.loading": {
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.back": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.next": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.submit": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.delete": {
+    "videoShop.feed.errorBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "\"In einem Moment\" is too literal and slightly awkward for \"in a moment\" (meaning shortly).",
+      "suggested": "Bitte versuche es gleich noch einmal.",
+      "phase": "llm"
+    },
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.edit": {
+    "videoShop.feed.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.create": {
+    "videoShop.feed.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.close": {
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.actions": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.yes": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.no": {
+    "videoShop.feed.linkCopied": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.done": {
+    "videoShop.drawer.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.apply": {
+    "videoShop.drawer.productFallback": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.reset": {
+    "videoShop.drawer.addToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.filter": {
+    "videoShop.drawer.adding": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.sort": {
+    "videoShop.drawer.addedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.more": {
+    "videoShop.drawer.addedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.less": {
+    "videoShop.drawer.addFailed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.all": {
+    "videoShop.drawer.goToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.none": {
+    "videoShop.drawer.moreDetails": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.select": {
+    "videoShop.drawer.notifyMe": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.selectAll": {
+    "videoShop.drawer.outOfStock": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "videoShop.drawer.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.deselectAll": {
+    "videoShop.drawer.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.copy": {
+    "videoShop.drawer.errorBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "\"In einem Moment\" is too literal and slightly awkward for \"in a moment\" (meaning shortly).",
+      "suggested": "Bitte versuche es gleich noch einmal.",
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.paste": {
+    "videoShop.drawer.unavailableBody": {
       "verdict": "OK",
-      "confidence": 1,
+      "confidence": 0.9,
       "phase": "llm"
     },
-    "common.share": {
-      "verdict": "OK",
-      "confidence": 1,
+    "videoShop.drawer.roleBlockedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.95,
+      "issue": "Grammatically awkward and not idiomatic for 'Buying'.",
+      "suggested": "Kaufen ist hier nicht verfügbar.",
       "phase": "llm"
     },
-    "common.download": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.upload": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.refresh": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.retry": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.follow": {
-      "verdict": "OK",
-      "confidence": 1,
+    "videoShop.drawer.roleBlockedBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.95,
+      "issue": "Incorrect noun form for 'Buying' (gerund). 'Käufe' means 'purchases' (plural noun), not the act of buying.",
+      "suggested": "Kaufen ist ein Community-Feature. Wechsle in die Community-Rolle, um fortzufahren.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-07-10T07:02:33.838Z"
+  "generatedAt": "2026-07-10T07:25:42.298Z"
 }
