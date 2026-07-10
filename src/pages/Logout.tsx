@@ -36,6 +36,15 @@ export default function Logout() {
       // 3. Clear persisted localStorage cache + ORB state + AI consent
       localStorage.removeItem('vitana-query-cache');
       localStorage.removeItem('vitana_ai_consent_given');
+      // Appilix (Android WebView) only re-reads the push identity at a genuine
+      // page load — App.tsx's AppHooksInitializer forces one reload whenever
+      // `appilix_active_identity` differs from the incoming user.id. If we
+      // leave this key in place across logout, logging back into the SAME
+      // account looks like "no change" and the reload (and the underlying
+      // native re-registration) never fires, even if the previous session's
+      // registration silently failed. Clearing it here guarantees the next
+      // login — same account or different — is treated as a real switch.
+      localStorage.removeItem('appilix_active_identity');
       // Clear all ORB session keys to prevent cross-account leakage
       for (let i = localStorage.length - 1; i >= 0; i--) {
         const key = localStorage.key(i);
