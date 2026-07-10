@@ -19,6 +19,7 @@ import { type MarketplaceProduct } from '@/hooks/useMarketplace';
 import { CategoryShopSections } from '@/components/discover/CategoryShopSections';
 import { FeaturedProductCard, CompactProductCard } from '@/components/discover/PremiumProductCard';
 import { getPersonalizedReason, hasPersonalizationSignal } from '@/lib/discover-reason';
+import { VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 import { t } from '@/lib/i18n-toast';
 
 interface AIRecommendation {
@@ -81,7 +82,13 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
         {/* Section header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-violet-500" />
+            <img
+              src={VITANA_BOT_AVATAR_URL}
+              alt={t('screens.vitanaIdentity.orbAlt')}
+              width={20}
+              height={20}
+              className="rounded-full shrink-0"
+            />
             <h2 className="text-base font-semibold">{translate('discover.recommendedForYou')}</h2>
           </div>
           <Button
