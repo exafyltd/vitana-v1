@@ -34,6 +34,8 @@
     "viewProduct": "Produkt ansehen",
     "noResults": "Keine Ergebnisse gefunden",
     "noResultsDesc": "Versuche andere Suchbegriffe oder durchsuche die Kategorien.",
+    "back": "Zurück",
+    "productsFound": "{count} Produkte",
     "categories": {
       "sleep": "Schlaf",
       "nutrition": "Ernährung",
