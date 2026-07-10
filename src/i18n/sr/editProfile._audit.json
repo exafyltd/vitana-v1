@@ -3,22 +3,22 @@
     "editProfile.unsavedChanges": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'ti').",
-      "suggested": "Imaš nesačuvane izmene. Da li si siguran da želiš da odeš?",
+      "issue": "Gendered adjective 'siguran' (masculine) is not ideal for a general user in a friendly app. A gender-neutral phrasing is preferred.",
+      "suggested": "Imaš nesačuvane izmene. Da li zaista želiš da odeš?",
       "phase": "llm"
     },
     "editProfile.notAuthenticated": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'ti').",
-      "suggested": "Nisi autentifikovan",
+      "issue": "Gendered participle 'autentifikovan' (masculine). A more common and gender-neutral UI phrase for 'Not authenticated' exists.",
+      "suggested": "Autentifikacija nije uspela.",
       "phase": "llm"
     },
     "editProfile.notAuthenticatedDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'ti').",
-      "suggested": "Molimo prijavi se da bi sačuvao svoj profil.",
+      "issue": "Register mismatch: 'Molimo' (formal 'we ask') with 'prijavi se' (informal 'log in'). Also, 'sačuvao' is masculine. The suggested phrase is more concise and gender-neutral.",
+      "suggested": "Prijavi se da sačuvaš svoj profil.",
       "phase": "llm"
     },
     "editProfile.profileUpdated": {
@@ -27,10 +27,8 @@
       "phase": "llm"
     },
     "editProfile.profileUpdatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' possessive instead of informal 'ti').",
-      "suggested": "Tvoje izmene su sada aktivne. Tvoj VITANA profil izgleda sjajno.",
       "phase": "llm"
     },
     "editProfile.error": {
@@ -44,10 +42,8 @@
       "phase": "llm"
     },
     "editProfile.showcaseHint": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'ti').",
-      "suggested": "Izaberi objave i sadržaj koji će biti istaknuti na vrhu tvog profila.",
       "phase": "llm"
     },
     "editProfile.showcaseTitle": {
@@ -76,5 +72,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:03:09.253Z"
+  "generatedAt": "2026-07-10T07:01:08.989Z"
 }
