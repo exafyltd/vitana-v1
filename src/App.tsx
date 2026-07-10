@@ -1165,10 +1165,30 @@ const App = () => {
               <Messages />
             </AuthGuard>
           } />
+          {/* Reaction notification deep-links: same path-based forms as above
+              plus a trailing /msg/:messageId segment so the conversation
+              scrolls to and highlights the reacted-to message. Kept as a
+              path segment (not a query string) for the same Appilix reason
+              documented above. */}
+          <Route path="/inbox/u/:recipientId/msg/:messageId" element={
+            <AuthGuard>
+              <Messages />
+            </AuthGuard>
+          } />
+          <Route path="/inbox/t/:threadId/msg/:messageId" element={
+            <AuthGuard>
+              <Messages />
+            </AuthGuard>
+          } />
           {/* VTID-03089: group chat — deep-link from push notifications
               (gateway notification url is /inbox/g/<groupId>). Standalone
               page; main /inbox list integration is a separate follow-up. */}
           <Route path="/inbox/g/:groupId" element={
+            <AuthGuard>
+              <GroupChat />
+            </AuthGuard>
+          } />
+          <Route path="/inbox/g/:groupId/msg/:messageId" element={
             <AuthGuard>
               <GroupChat />
             </AuthGuard>

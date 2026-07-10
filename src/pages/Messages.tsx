@@ -112,10 +112,18 @@ export default function Messages() {
   // form is kept for backward compatibility with legacy notifications and
   // bookmarks.
   const [searchParams, setSearchParams] = useSearchParams();
-  const pathParams = useParams<{ recipientId?: string; threadId?: string }>();
+  const pathParams = useParams<{ recipientId?: string; threadId?: string; messageId?: string }>();
   const urlThreadId = pathParams.threadId || searchParams.get('thread');
   const urlRecipientId = pathParams.recipientId || searchParams.get('recipient');
   const urlContext = searchParams.get('context') as 'global' | 'tenant' | null;
+
+  // Reaction notification deep-link: /inbox/u|t/:id/msg/:messageId. Captured
+  // once into state (not read from the URL downstream) because the
+  // thread/recipient effects below immediately navigate('/inbox', {replace}),
+  // stripping the path segment before ConversationView could use it.
+  const [deepLinkMessageId, setDeepLinkMessageId] = useState<string | null>(
+    pathParams.messageId || null,
+  );
 
   // ?thread= param OR /inbox/t/:threadId path (thread UUID)
   useEffect(() => {
@@ -917,6 +925,8 @@ export default function Messages() {
                   onConversationOpened={handleConversationOpened}
                   onMessageSent={handleMessageSent}
                   onGroupCreated={handleGroupCreated}
+                  initialScrollMessageId={deepLinkMessageId}
+                  onInitialMessageScrolled={() => setDeepLinkMessageId(null)}
                 />
               </ConversationErrorBoundary>
             </div>
@@ -965,6 +975,8 @@ export default function Messages() {
                     onConversationOpened={handleConversationOpened}
                     onMessageSent={handleMessageSent}
                     onGroupCreated={handleGroupCreated}
+                    initialScrollMessageId={deepLinkMessageId}
+                    onInitialMessageScrolled={() => setDeepLinkMessageId(null)}
                   />
                 </ConversationErrorBoundary>
               ) : (
@@ -1089,6 +1101,8 @@ export default function Messages() {
                     onConversationOpened={handleConversationOpened}
                     onMessageSent={handleMessageSent}
                     onGroupCreated={handleGroupCreated}
+                    initialScrollMessageId={deepLinkMessageId}
+                    onInitialMessageScrolled={() => setDeepLinkMessageId(null)}
                   />
                 </ConversationErrorBoundary>
               </div>
