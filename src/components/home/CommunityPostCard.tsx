@@ -142,7 +142,7 @@ export function CommunityPostCard({
               </p>
             </div>
           ) : (
-            <p className="text-sm leading-relaxed text-foreground line-clamp-3">
+            <p className="text-sm leading-relaxed text-foreground line-clamp-3 whitespace-pre-wrap break-words">
               {renderMentions(item.content, item.mentions)}
             </p>
           ))}
