@@ -53,6 +53,9 @@ interface ConversationViewProps {
   onConversationOpened?: (threadId: string) => void;
   onMessageSent?: (threadId: string, newMessage: any, context: 'global' | 'tenant') => void;
   onGroupCreated?: (threadId: string) => void;
+  /** Reaction-notification deep-link: scroll to and highlight this message once loaded, instead of the default scroll-to-bottom. */
+  initialScrollMessageId?: string | null;
+  onInitialMessageScrolled?: () => void;
 }
 
 const ComposerDock: React.FC<{ children: React.ReactNode; isMobile: boolean }> = ({ children, isMobile }) => {
@@ -79,7 +82,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   onThreadRead,
   onConversationOpened,
   onMessageSent,
-  onGroupCreated
+  onGroupCreated,
+  initialScrollMessageId,
+  onInitialMessageScrolled,
 }) => {
   // Import calendar hook at the top
   const { respondToInvite, getInviteResponse, addEvent, fetchEvents } = useCalendarEvents();
@@ -390,10 +395,13 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   // Scroll to latest messages instantly when entering a conversation (WhatsApp-style)
   // Use useLayoutEffect to run before browser paint for smoother UX
+  // Skipped when a reaction-notification deep-link is pending — that scroll
+  // target wins instead (see the effect below).
   useLayoutEffect(() => {
+    if (initialScrollMessageId) return;
     if (threadId && messages.length > 0 && hasInitialScrolledRef.current !== threadId) {
       hasInitialScrolledRef.current = threadId;
-      
+
       const scrollToEnd = () => {
         const el = scrollRef.current;
         if (el) {
@@ -401,18 +409,34 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           isUserNearBottomRef.current = true;
         }
       };
-      
+
       scrollToEnd();
-      
-      const timers = [50, 150, 300].map(delay => 
+
+      const timers = [50, 150, 300].map(delay =>
         setTimeout(() => {
           requestAnimationFrame(scrollToEnd);
         }, delay)
       );
-      
+
       return () => timers.forEach(clearTimeout);
     }
-  }, [threadId, messages.length]);
+  }, [threadId, messages.length, initialScrollMessageId]);
+
+  // Reaction-notification deep-link: once the target message is rendered,
+  // scroll it into view and highlight it, then hand control back to the
+  // normal bottom-scroll behavior (via onInitialMessageScrolled clearing the
+  // parent's state, which drops initialScrollMessageId to null/undefined).
+  useEffect(() => {
+    if (!initialScrollMessageId || !threadId || messages.length === 0) return;
+    const el = document.getElementById(`msg-${initialScrollMessageId}`);
+    if (!el) return; // not rendered yet (e.g. still paginating) — retry on next messages update
+    hasInitialScrolledRef.current = threadId;
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.add('message-highlight');
+    const timer = setTimeout(() => el.classList.remove('message-highlight'), 1500);
+    onInitialMessageScrolled?.();
+    return () => clearTimeout(timer);
+  }, [initialScrollMessageId, threadId, messages, onInitialMessageScrolled]);
 
   // ResizeObserver to keep pinned at bottom when content resizes (images loading, etc.)
   useEffect(() => {

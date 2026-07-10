@@ -1,5 +1,5 @@
 /**
- * Notification Type Registry — All 71 Vitana Notification Types
+ * Notification Type Registry — All 72 Vitana Notification Types
  *
  * Central definition of every notification type across the platform.
  * Each type defines icon, label, category, channel, priority, and click route.
@@ -60,7 +60,7 @@ export const CATEGORY_TO_PREF_COLUMN: Record<NotificationCategory, string> = {
   system: 'system_notifications',
 };
 
-// ── Master Registry (71 types) ──────────────────────────────
+// ── Master Registry (72 types) ──────────────────────────────
 
 export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
 
@@ -201,7 +201,7 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
   },
 
   // ═══════════════════════════════════════════════════════════
-  // 5. CHAT / CONVERSATION (4)
+  // 5. CHAT / CONVERSATION (5)
   // ═══════════════════════════════════════════════════════════
   new_chat_message: {
     icon: '💬', label: 'New Message', category: 'chat',
@@ -218,6 +218,15 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
   orb_suggestion: {
     icon: '💡', label: 'ORB Suggestion', category: 'chat',
     channel: 'push_and_inapp', priority: 'p1',
+  },
+  // Emitted by the notify_on_reaction() DB trigger on message_reactions
+  // inserts. Always ships with an explicit data.url (built server-side to
+  // the specific conversation + /msg/:messageId), so no `route` template
+  // here — resolveNotificationRoute() honors data.url before falling back
+  // to this registry.
+  message_reaction: {
+    icon: '❤️', label: 'New Reaction', category: 'chat',
+    channel: 'push_and_inapp', priority: 'p2',
   },
 
   // ═══════════════════════════════════════════════════════════
