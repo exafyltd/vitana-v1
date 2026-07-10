@@ -105,6 +105,26 @@ export class OrbVoiceClient {
   private _reconnectRebuildTimer: ReturnType<typeof setTimeout> | null = null;
   private readonly RECONNECT_REBUILD_MS = 8000;
 
+  // VTID-02637 follow-up: forceRebuildEventSource() used to reschedule itself
+  // forever with no cap. If the backend session is actually dead (gateway
+  // restart, session TTL expiry, prolonged backgrounding), rebuilding the SSE
+  // pipe against the same session_id never succeeds — the app spun in
+  // "reconnecting" forever with the mic muted and no way out. Cap attempts
+  // and surface a terminal error instead of retrying silently.
+  private _rebuildAttempts = 0;
+  private readonly MAX_REBUILD_ATTEMPTS = 5; // ~40s of rebuild attempts before giving up
+
+  // Background/idle watchdog (mobile overheating fix): `visibilitychange`
+  // alone can't be trusted in every mobile WebView, so we detect actual OS
+  // throttling instead. A setTimeout scheduled for BG_CHECK_MS that fires
+  // more than BG_KILL_DRIFT_MS late means the JS thread was frozen/deprioritized
+  // for that long — a reliable signal the app was backgrounded, independent
+  // of what the visibility API reports. Ends the session rather than letting
+  // the mic + audio pipeline keep running hot in the user's pocket.
+  private _bgWatchdogTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly BG_CHECK_MS = 5000;
+  private readonly BG_KILL_DRIFT_MS = 30000;
+
   // SSE stream watchdog: if no SSE traffic for STREAM_STALE_MS while we
   // believe we're listening, treat as a silent disconnect and surface it.
   private lastSseMessageAt: number = 0;
@@ -174,6 +194,7 @@ export class OrbVoiceClient {
 
   async start(): Promise<void> {
     try {
+      this._rebuildAttempts = 0;
       this.callbacks.onConnectionStateChange?.('connecting');
 
       // iOS UNLOCK (BOOTSTRAP-ORB-IOS-UNLOCK): Create + unlock the output
@@ -285,6 +306,14 @@ export class OrbVoiceClient {
 
       // 2. Connect to SSE stream
       this.connectSSE();
+
+      // Background watchdog: WebView `visibilitychange` is unreliable on
+      // some Appilix/Android builds (document stays "visible" while the app
+      // is backgrounded), so the mic + volume-meter rAF loop can keep
+      // running full-tilt in the user's pocket. Start the drift-based
+      // watchdog now, for the whole session lifetime, not just while
+      // listening — the audio pipeline burns CPU even while muted.
+      this.startBackgroundWatchdog();
 
       // VTID-02637: iOS Safari kills SSE connections silently on
       // background→foreground transitions and does not auto-reopen them.
@@ -589,6 +618,7 @@ export class OrbVoiceClient {
     }
     if (!this._isReconnecting) return;
     this._isReconnecting = false;
+    this._rebuildAttempts = 0;
     this.callbacks.onReconnectingChange?.(false);
 
     // VTID-02715: re-assert the iOS loudspeaker route. iOS sometimes
@@ -615,6 +645,17 @@ export class OrbVoiceClient {
    */
   private forceRebuildEventSource(): void {
     if (!this.sessionId) return;
+
+    this._rebuildAttempts++;
+    if (this._rebuildAttempts > this.MAX_REBUILD_ATTEMPTS) {
+      console.error(
+        `[OrbVoiceClient] Reconnect gave up after ${this._rebuildAttempts - 1} rebuild attempts — session likely dead`
+      );
+      this.callbacks.onError?.('Connection lost — please restart the conversation.');
+      void this.stop();
+      return;
+    }
+
     try {
       this.eventSource?.close();
     } catch (_e) { /* ignore */ }
@@ -671,6 +712,37 @@ export class OrbVoiceClient {
     if (this.streamWatchdogInterval) {
       clearInterval(this.streamWatchdogInterval);
       this.streamWatchdogInterval = null;
+    }
+  }
+
+  /**
+   * Background/idle watchdog (mobile overheating fix). Reschedules itself
+   * every BG_CHECK_MS; if a check fires more than BG_KILL_DRIFT_MS late, the
+   * JS thread was frozen/throttled for that long, which only happens when
+   * the app is actually backgrounded (not merely `document.hidden` lying).
+   * Ends the session instead of leaving the mic/audio pipeline running hot.
+   */
+  private startBackgroundWatchdog(): void {
+    this.stopBackgroundWatchdog();
+    const scheduledAt = Date.now();
+    this._bgWatchdogTimer = setTimeout(() => {
+      const drift = Date.now() - scheduledAt - this.BG_CHECK_MS;
+      if (drift > this.BG_KILL_DRIFT_MS) {
+        console.warn(
+          `[OrbVoiceClient] Background watchdog: timer drifted ${drift}ms — app was backgrounded, ending session`
+        );
+        this.callbacks.onError?.('Voice session ended because the app was backgrounded.');
+        void this.stop();
+        return;
+      }
+      this.startBackgroundWatchdog();
+    }, this.BG_CHECK_MS);
+  }
+
+  private stopBackgroundWatchdog(): void {
+    if (this._bgWatchdogTimer) {
+      clearTimeout(this._bgWatchdogTimer);
+      this._bgWatchdogTimer = null;
     }
   }
 
@@ -1277,8 +1349,9 @@ export class OrbVoiceClient {
     this.closeEventSource();
     this.stopActivePlayback();
 
-    // Reset reconnect bookkeeping and stop the stream watchdog.
+    // Reset reconnect bookkeeping and stop the stream + background watchdogs.
     this.stopStreamWatchdog();
+    this.stopBackgroundWatchdog();
     if (this._isReconnecting) {
       this._isReconnecting = false;
       this.callbacks.onReconnectingChange?.(false);
