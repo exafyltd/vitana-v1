@@ -221,7 +221,7 @@ export function formatPrice(cents: number | null | undefined, currency: string |
   return new Intl.NumberFormat(undefined, {
     style: "currency",
     currency: currency.toUpperCase(),
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(cents / 100);
 }
