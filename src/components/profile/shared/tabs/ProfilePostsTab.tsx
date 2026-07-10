@@ -212,7 +212,7 @@ function PostCardWithInteractions({
               <p className="font-medium">{profile.name}</p>
             </TooltipContent>
           </Tooltip>
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="font-semibold text-base tracking-wide text-gray-800 dark:text-gray-100">{profile.name}</span>
               <span className="text-muted-foreground/70 text-sm">@{profile.handle} • {formatDate(post.created_at)}</span>
