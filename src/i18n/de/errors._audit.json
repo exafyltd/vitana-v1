@@ -6,10 +6,8 @@
       "phase": "llm"
     },
     "errors.tryAgain": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Bitte versuch es erneut",
       "phase": "llm"
     },
     "errors.pageNotFound": {
@@ -38,10 +36,8 @@
       "phase": "llm"
     },
     "errors.networkErrorDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Bitte überprüfe deine Internetverbindung.",
       "phase": "llm"
     },
     "errors.unauthorized": {
@@ -50,10 +46,8 @@
       "phase": "llm"
     },
     "errors.unauthorizedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Bitte melde dich an, um fortzufahren.",
       "phase": "llm"
     },
     "errors.forbidden": {
@@ -62,10 +56,8 @@
       "phase": "llm"
     },
     "errors.forbiddenDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Du hast keine Berechtigung für diese Aktion.",
       "phase": "llm"
     },
     "errors.notFound": {
@@ -79,5 +71,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:10:26.491Z"
+  "generatedAt": "2026-07-11T06:01:13.364Z"
 }
