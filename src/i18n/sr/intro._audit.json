@@ -1,16 +1,15 @@
 {
   "verdicts": {
     "intro.welcomeTo": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Register inconsistent. 'DOBRODOŠLI' is plural/formal. For a friendly, du-form (informal singular) app, a gender-neutral informal singular is preferred.",
-      "suggested": "DOBRODOŠAO/LA U VITANALAND",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "intro.experience": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.5,
-      "issue": "Ambiguous English meaning. 'Experience' can be a noun or a verb. 'Iskustvo' is the noun form. If 'Experience' is intended as an imperative verb (e.g., 'Experience our app'), the translation is incorrect.",
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "English 'Experience' is likely an imperative verb in UI context, but Serbian is translated as a noun. Should be an informal imperative verb.",
+      "suggested": "Doživi",
       "phase": "llm"
     },
     "intro.tagline": {
@@ -37,7 +36,22 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "intro.taglineMain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.taglineSub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.goToLogin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:04:28.394Z"
+  "generatedAt": "2026-07-11T05:58:57.632Z"
 }

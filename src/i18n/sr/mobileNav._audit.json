@@ -19,7 +19,25 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "mobileNav.myJourney": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mobileNav.news": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.inbox": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "While 'Sanduče' can mean 'mailbox', 'Pristigla pošta' or 'Inboks' are more common and accurate for a digital 'Inbox' in Serbian.",
+      "suggested": "Pristigla pošta",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:04:55.826Z"
+  "generatedAt": "2026-07-11T05:59:11.844Z"
 }
