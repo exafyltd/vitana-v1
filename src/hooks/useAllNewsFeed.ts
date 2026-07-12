@@ -287,16 +287,23 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
   const mutedSources = useNewsFeedPreferencesStore((s) => s.mutedSources);
   const downrankedTags = useNewsFeedPreferencesStore((s) => s.downrankedTags);
 
-  // Gate the FIRST paint on every contributing source. The single-fetch
-  // longevity-news query usually resolves before the multi-round-trip
-  // candidates (user posts) query; painting articles alone and re-ranking
-  // when posts arrived visibly shoved the already-rendered feed around.
-  // Hold the feed (spinner shows) until all sources have settled — errors
-  // settle too, so a failed source never blocks — with a hard 6s cap so a
-  // degraded network shows a partial feed instead of an endless spinner.
+  // Gate the FIRST paint on the two CONTENT sources only (candidates +
+  // longevity news). The single-fetch longevity-news query usually resolves
+  // before the multi-round-trip candidates (user posts) query; painting
+  // articles alone and re-ranking when posts arrived visibly shoved the
+  // already-rendered feed around.
+  //
+  // Deliberately EXCLUDES matchesQuery: it's a single optional decorative
+  // card (backed by a slow/flaky generate-daily-matches edge-function call)
+  // that can legitimately re-enter isLoading on a remount without ever
+  // having cached data. Including it here previously blanked the ENTIRE
+  // feed (candidates + articles the user had already seen) back to a full
+  // spinner on every revisit — a regression this fix introduced. Matches
+  // always degraded gracefully by simply being absent from the rank before
+  // this change; that's restored by leaving it out of the hold-gate.
+  //
   // Cached revisits are unaffected: isLoading is false when data exists.
-  const anySourcePending =
-    candidatesQuery.isLoading || matchesQuery.isLoading || newsQuery.isLoading;
+  const anySourcePending = candidatesQuery.isLoading || newsQuery.isLoading;
   const [firstPaintTimedOut, setFirstPaintTimedOut] = useState(false);
   useEffect(() => {
     if (!anySourcePending) {
