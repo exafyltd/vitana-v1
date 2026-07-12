@@ -1264,6 +1264,7 @@
       "commissionCreditedWallet": "Commission credited to wallet!",
       "failedCreditPayoutWallet": "Failed to credit payout to wallet",
       "failedTransferWallet": "Failed to transfer to wallet",
+      "payoutRequestSubmitted": "Payout of {amount} requested — pending review",
       "postScheduledSuccessfully": "Post scheduled successfully",
       "scheduledPostCancelled": "Scheduled post cancelled",
       "scheduledPostPaused": "Scheduled post paused",

@@ -137,14 +137,16 @@ export function useResellerPayouts() {
     },
   });
 
-  // Combined: request + credit in one step (MVP flow)
+  // Request a payout for review (formerly a combined request+instant-credit
+  // "MVP flow" — SECURITY: crediting is now gated behind admin approval via
+  // approve-reseller-payout, so this only submits the request and reports
+  // it as pending, never an instant wallet credit).
   const transferToWalletMutation = useMutation({
     mutationFn: async () => {
       if (!resellerProfile?.id) {
         throw new Error("No reseller profile");
       }
 
-      // Step 1: Create payout
       const payoutResponse = await supabase.functions.invoke("create-reseller-payout", {
         body: {
           reseller_profile_id: resellerProfile.id,
@@ -162,36 +164,25 @@ export function useResellerPayouts() {
         return { success: false, message: "No unpaid commissions to transfer" };
       }
 
-      // Step 2: Credit to wallet
-      const creditResponse = await supabase.functions.invoke("credit-reseller-payout", {
-        body: { payout_id: payoutData.payout.id },
-      });
-
-      if (creditResponse.error) {
-        throw new Error(creditResponse.error.message || "Failed to credit to wallet");
-      }
-
       return {
         success: true,
         payout: payoutData.payout,
-        wallet_transaction: creditResponse.data.wallet_transaction,
         amount: payoutData.total_commission,
       };
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["reseller-payouts"] });
       queryClient.invalidateQueries({ queryKey: ["reseller-attributed-sales"] });
-      queryClient.invalidateQueries({ queryKey: ["user-wallet"] });
-      
+
       if (data.success) {
-        toast.success(`€${data.amount?.toFixed(2)} transferred to wallet!`);
+        notifySuccess('toasts.hooks.payoutRequestSubmitted', undefined, { amount: `€${data.amount?.toFixed(2)}` });
       } else {
         toast.info(data.message);
       }
     },
     onError: (error) => {
-      console.error("Transfer to wallet error:", error);
-      notifyError('toasts.hooks.failedTransferWallet');
+      console.error("Payout request error:", error);
+      notifyError('toasts.hooks.failedRequestPayout');
     },
   });
 

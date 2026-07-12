@@ -87,13 +87,13 @@
       "mockDataActive": "Mock data active"
     },
     "transfer": {
-      "title": "Transfer to Wallet",
-      "description": "Transfer your pending reseller commissions to your VITANA Wallet.",
+      "title": "Request Payout",
+      "description": "Request payout of your pending reseller commissions to your VITANA Wallet.",
       "pending": "Pending",
       "wallet": "Wallet",
-      "instantCredit": "This will credit your earnings instantly to your wallet balance.",
-      "transferring": "Transferring...",
-      "transfer": "Transfer"
+      "instantCredit": "Your request will be reviewed by our team before being credited to your wallet balance.",
+      "transferring": "Requesting...",
+      "transfer": "Request"
     },
     "typeSelector": {
       "title": "Start a Business",
