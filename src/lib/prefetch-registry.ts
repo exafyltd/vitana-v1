@@ -23,6 +23,8 @@ import {
   longevityNewsKey,
   fetchLongevityNews,
 } from '@/hooks/useNewsFeed';
+import { journeyChecklistQueryKey, fetchJourneyChecklist } from '@/hooks/useJourneyChecklist';
+import { JOURNEY_STATE_QUERY_KEY, fetchJourneyState } from '@/hooks/useGuidedJourneyProgress';
 
 /**
  * Map of adjacent pillars to prefetch when on a given route
@@ -58,6 +60,11 @@ export async function prefetchForPath(
   // journey summary and the onboarding recommendations so the screen paints
   // from cache on first arrival. Keys MUST match the hooks (user-scoped).
   if (path === '/autopilot') {
+    // 'de' matches LanguageContext's documented default for the primary user
+    // base. If a user's resolved locale differs, this prefetch simply goes
+    // unused (the hook's own queryKey won't match) — no correctness issue,
+    // just a missed optimization for non-German users.
+    const journeyLocale = 'de';
     await Promise.all([
       queryClient.prefetchQuery({
         queryKey: ['my-journey', userId],
@@ -78,6 +85,20 @@ export async function prefetchForPath(
           return res.json();
         },
         staleTime,
+      }),
+      // Guided Journey hero data — the 90-session curriculum (rarely changes,
+      // long staleTime matches the hook) and the user's durable progress.
+      // Warming these is what stops the "0 of 0 for several seconds" flash
+      // the FIRST time /autopilot is opened after a fresh load.
+      queryClient.prefetchQuery({
+        queryKey: journeyChecklistQueryKey(journeyLocale),
+        queryFn: () => fetchJourneyChecklist(journeyLocale),
+        staleTime: 10 * 60 * 1000,
+      }),
+      queryClient.prefetchQuery({
+        queryKey: JOURNEY_STATE_QUERY_KEY,
+        queryFn: () => fetchJourneyState(userId ?? null),
+        staleTime: 60 * 1000,
       }),
     ]);
   }
