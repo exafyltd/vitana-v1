@@ -62,33 +62,6 @@
     "uploadDescription": "Blood tests, imaging, lab results",
     "unknownProvider": "Unknown provider",
     "addSupplement": "Add Supplement",
-    "uploadFirstReport": "Upload First Report",
-    "missionAlignment": {
-      "title": "Mission Alignment",
-      "subtitle": "How your recommendations advance the five pillars and the longevity economy",
-      "loading": "Loading mission data…",
-      "error": "Could not load mission data",
-      "noRecs": "No recommendations in your queue yet.",
-      "summaryServed": "{pct}% of your recommendations advance the mission",
-      "summaryServedCount": "{served} of {total} recommendations aligned",
-      "pillarHeading": "Pillars served",
-      "economyHeading": "Longevity economy",
-      "noPillar": "Not pillar-aligned",
-      "noEconomy": "Not economy-aligned",
-      "pillars": {
-        "nutrition": "Nutrition",
-        "hydration": "Hydration",
-        "exercise": "Exercise",
-        "sleep": "Sleep",
-        "mental": "Mental Health"
-      },
-      "economyAxes": {
-        "find_match": "Find a Match",
-        "marketplace": "Marketplace",
-        "income_generation": "Income generation",
-        "business_formation": "Business formation"
-      },
-      "contractLink": "View the Ultimate Goal contract"
-    }
+    "uploadFirstReport": "Upload First Report"
   }
 }
