@@ -114,6 +114,24 @@ export function useChatGroupsAsThreads(enabled: boolean = true) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled, groupIdsKey, queryClient, user?.id]);
 
+  // Catch silent websocket drops from backgrounding: the realtime channel
+  // above is known to suspend when a WebView-wrapped mobile app is
+  // backgrounded (locked screen, app switch, push notification), so a group
+  // that received new messages while backgrounded won't have bumped to the
+  // top by the time the app is reopened. Mirrors the same guard already in
+  // useGlobalMessages.ts for DM threads.
+  useEffect(() => {
+    if (!enabled) return;
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        queryClient.invalidateQueries({ queryKey });
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, queryClient, user?.id]);
+
   // Optimistically zero the unread badge for the given raw group ids (no prefix)
   // so "Mark all as read" clears them instantly, before the backend round-trip
   // and the next poll/realtime reconcile.
