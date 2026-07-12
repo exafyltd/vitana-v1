@@ -23,6 +23,7 @@
     "test:guided-journey": "node scripts/guided-journey-session-regression.mjs",
     "test:group-chat-dates": "node scripts/group-chat-date-divider-regression.mjs",
     "test:news-feed-ranker": "node scripts/news-feed-ranker-regression.mjs",
+    "test:news-feed-revisit": "node scripts/news-feed-revisit-regression.mjs",
     "test:news-card-features": "node scripts/news-card-feature-badges-regression.mjs",
     "test:maxina-kira-price": "node scripts/maxina-kira-price-regression.mjs"
   },
