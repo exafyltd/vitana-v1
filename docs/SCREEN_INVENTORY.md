@@ -5,8 +5,8 @@
 
 ## Summary
 
-- **Pages scanned:** 335
-- **Distinct i18n keys consumed:** 5459
+- **Pages scanned:** 336
+- **Distinct i18n keys consumed:** 5464
 - **Namespaces in use:** 45
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -117,12 +117,12 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Discover.tsx
 
-**Status:** ✅ clean — keys consumed: 25, namespaces: 4
+**Status:** ✅ clean — keys consumed: 26, namespaces: 4
 
 **i18n namespaces:**
 
 - `actionBar` — used: 1, total in shard: 5
-- `discover` — used: 7, total in shard: 74
+- `discover` — used: 8, total in shard: 82
 - `screens` — used: 15, total in shard: 9831
 - `toasts` — used: 2, total in shard: 1255
 
@@ -2318,8 +2318,16 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `discover` — used: 16, total in shard: 74
+- `discover` — used: 16, total in shard: 82
 - `screens` — used: 1, total in shard: 9831
+
+### src/pages/discover/CategoryProducts.tsx
+
+**Status:** ✅ clean — keys consumed: 4, namespaces: 1
+
+**i18n namespaces:**
+
+- `discover` — used: 4, total in shard: 82, **MISSING:** discover.subcategories.${meta.i18nKey}
 
 ### src/pages/discover/DealsOffers.tsx
 
@@ -2930,7 +2938,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 | `toasts` | 61 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
-| `discover` | 2 |
+| `discover` | 3 |
 | `inbox` | 2 |
 | `event` | 2 |
 | `eventCta` | 2 |

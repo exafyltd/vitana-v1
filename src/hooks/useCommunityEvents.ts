@@ -53,11 +53,53 @@ function eventsQueryKey(userId: string | undefined) {
 }
 
 /**
+ * Attendee counts per event, aggregated in the database (one tiny response)
+ * instead of downloading one row per attendee across all events just to
+ * count them client-side — that payload scaled with total attendance.
+ * Falls back to the legacy per-row fetch if PostgREST aggregates are
+ * unavailable, so counts never silently regress to zero.
+ */
+async function fetchParticipantCounts(eventIds: string[]): Promise<Map<string, number>> {
+  const counts = new Map<string, number>();
+  if (eventIds.length === 0) return counts;
+
+  const agg = await supabase
+    .from('global_event_participants')
+    .select('event_id, count()')
+    .in('event_id', eventIds)
+    .eq('status', 'attending');
+  if (!agg.error && agg.data) {
+    for (const row of agg.data as unknown as Array<{ event_id: string; count: number }>) {
+      counts.set(row.event_id, Number(row.count) || 0);
+    }
+    return counts;
+  }
+  console.warn('[CommunityEvents] Aggregate count unavailable, falling back to row fetch:', agg.error?.message);
+
+  const rows = await supabase
+    .from('global_event_participants')
+    .select('event_id')
+    .in('event_id', eventIds)
+    .eq('status', 'attending');
+  if (rows.error) {
+    console.warn('[CommunityEvents] Participants enrichment failed:', rows.error);
+    return counts;
+  }
+  for (const row of rows.data || []) {
+    counts.set(row.event_id, (counts.get(row.event_id) || 0) + 1);
+  }
+  return counts;
+}
+
+/**
  * Shared query function for fetching community events
  * Used by both the hook and prefetch registry for cache consistency
  */
 export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
-  const { data: { user } } = await supabase.auth.getUser();
+  // getSession() reads the local session — getUser() made a full auth-server
+  // round-trip that serially delayed every events load by one RTT.
+  const { data: { session } } = await supabase.auth.getSession();
+  const user = session?.user ?? null;
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -66,7 +108,10 @@ export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
     .from("global_community_events")
     .select("*")
     .gte("start_time", today.toISOString())
-    .order("start_time", { ascending: true });
+    .order("start_time", { ascending: true })
+    // Bound the payload: the screen shows the nearest events per tab and
+    // filters client-side; without a limit this pulled EVERY future event.
+    .limit(100);
 
   if (error) {
     console.error("Database error:", error);
@@ -76,7 +121,7 @@ export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
   const eventIds = data?.map(e => e.id) || [];
 
   // Fetch co-creator status, creator profiles, and real participant counts in parallel
-  const [coCreatorResult, profilesResult, participantsResult] = await Promise.all([
+  const [coCreatorResult, profilesResult, participantCounts] = await Promise.all([
     user
       ? supabase.from('event_co_creators').select('event_id').eq('user_id', user.id)
       : Promise.resolve({ data: [] as { event_id: string }[], error: null }),
@@ -84,13 +129,7 @@ export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
       .from('global_community_profiles')
       .select('user_id, display_name, avatar_url')
       .in('user_id', [...new Set(data?.map(event => event.created_by) || [])]),
-    eventIds.length > 0
-      ? supabase
-          .from('global_event_participants')
-          .select('event_id')
-          .in('event_id', eventIds)
-          .eq('status', 'attending')
-      : Promise.resolve({ data: [] as { event_id: string }[], error: null }),
+    fetchParticipantCounts(eventIds),
   ]);
 
   // Throw on profiles error so host names aren't silently degraded
@@ -102,21 +141,12 @@ export async function fetchCommunityEventsQueryFn(): Promise<CommunityEvent[]> {
   if (coCreatorResult.error) {
     console.warn('[CommunityEvents] Co-creator enrichment failed:', coCreatorResult.error);
   }
-  if (participantsResult.error) {
-    console.warn('[CommunityEvents] Participants enrichment failed:', participantsResult.error);
-  }
 
   const coCreatorEventIds = new Set(coCreatorResult.data?.map(cc => cc.event_id) || []);
 
   const profilesMap = new Map(
     profilesResult.data?.map(p => [p.user_id, p]) || []
   );
-
-  // Count participants per event
-  const participantCounts = new Map<string, number>();
-  for (const row of participantsResult.data || []) {
-    participantCounts.set(row.event_id, (participantCounts.get(row.event_id) || 0) + 1);
-  }
 
   // Add is_co_creator flag, creator info, and real participant counts to events
   const eventsWithMetadata = (data || []).map(event => {
@@ -155,7 +185,11 @@ export function useCommunityEvents() {
   } = useQuery({
     queryKey,
     queryFn: fetchCommunityEventsQueryFn,
-    staleTime: 30 * 1000, // 30 seconds
+    // 2min (global default): matches the prefetch registry's staleTime so a
+    // warmed cache is actually used. The old 30s override forced a full
+    // refetch waterfall on nearly every navigation, defeating the prefetch;
+    // the realtime subscription below keeps the list live in between.
+    staleTime: 2 * 60 * 1000,
     enabled: !authLoading,
   });
 

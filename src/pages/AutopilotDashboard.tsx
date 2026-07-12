@@ -288,6 +288,11 @@ export default function AutopilotDashboard() {
   // until we redesign the wide layout — mobile-first per the brief.
   // Guided Mode → the hero card reflects learning progress (sessions/topics
   // learned) instead of the goal-deadline countdown. Omitted in Full App.
+  // The hero must treat the guided-progress queries (checklist + journey
+  // state) as part of its loading window: they are what produce the session
+  // counters, and rendering before they resolve painted "0 of 0" first and
+  // swapped in the real numbers seconds later.
+  const heroLoading = journeyLoading || (isGuided && guidedJourneyProgress.loading);
   const guidedProgress = isGuided
     ? {
         completedSessions: guidedJourneyProgress.completedSessions,
@@ -306,7 +311,7 @@ export default function AutopilotDashboard() {
     <DreamNorthStar
       goal={goal}
       journey={journey}
-      loading={journeyLoading}
+      loading={heroLoading}
       error={journeyError}
       onSetGoal={handleSetGoal}
       onRetry={() => refetchJourney()}
@@ -321,7 +326,7 @@ export default function AutopilotDashboard() {
     <GoalNorthStar
       goal={goal}
       journey={journey}
-      loading={journeyLoading}
+      loading={heroLoading}
       error={journeyError}
       onSetGoal={handleSetGoal}
       onRetry={() => refetchJourney()}

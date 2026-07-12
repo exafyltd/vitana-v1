@@ -10,14 +10,15 @@ import { Heart, BookOpen, Leaf, Shield, Terminal, ExternalLink } from "lucide-re
 import { getCommandHubUrl } from "@/config/devHub.config";
 import { toast } from "sonner";
 import { lookup, t } from '@/lib/i18n-toast';
+import DelayedLoader from "@/components/ui/DelayedLoader";
 
 
 const Index = () => {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const { isExafyAdmin } = useTenant();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  
+
   // Use smart routing to redirect authenticated users
   useSmartRouting();
 
@@ -26,6 +27,16 @@ const Index = () => {
     // Always show intro - users can skip if they want
     navigate(`/_intro/maxina${window.location.search || ''}`);
   };
+
+  // Never paint the multi-tenant platform grid while auth is still resolving,
+  // or for a signed-in user: useSmartRouting always redirects an authenticated
+  // user away from "/" (currentRole defaults to 'community', so the redirect
+  // cannot stall on role resolution). Painting the grid in that window was the
+  // post-login "wrong screen flashes before the first MAXINA screen" bug —
+  // loading must look like loading (spinner), never like a different screen.
+  if (authLoading || user) {
+    return <DelayedLoader fullscreen />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-pink-50">
