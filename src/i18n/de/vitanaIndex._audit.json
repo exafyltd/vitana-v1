@@ -21,10 +21,8 @@
       "phase": "llm"
     },
     "vitanaIndex.subtitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The preposition 'über' is a bit literal and less idiomatic here. 'In' or 'über ... hinweg' would be more natural.",
-      "suggested": "Allgemeine Wellness-Balance in allen Gesundheitssäulen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "vitanaIndex.veryPoor": {
@@ -44,9 +42,9 @@
     },
     "vitanaIndex.improving": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Verbessernd' is a participle and not idiomatic as a standalone status. It means 'improving (something)'.",
-      "suggested": "Verbessert sich",
+      "confidence": 1,
+      "issue": "Less idiomatic as a status; implies a specific subject improving.",
+      "suggested": "Wird besser",
       "phase": "llm"
     },
     "vitanaIndex.good": {
@@ -86,22 +84,19 @@
     },
     "vitanaIndex.tiers.starting": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Anfang' is a noun ('beginning'). As a status or level, it's not idiomatic.",
-      "suggested": "Anfänger",
+      "confidence": 1,
+      "issue": "Translates to 'Beginner' (noun), not 'Starting' (action/status).",
+      "suggested": "Beginnt",
       "phase": "llm"
     },
     "vitanaIndex.tiers.early": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "'Früh' (early) is a bit abrupt as a standalone level/status. While understandable, it could be more specific (e.g., 'Frühphase').",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "vitanaIndex.tiers.building": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Aufbau' is a noun ('build-up', 'construction'). As a status, it's not idiomatic.",
-      "suggested": "Im Aufbau",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "vitanaIndex.tiers.strong": {
@@ -113,7 +108,37 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "vitanaIndex.framings.elite": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "vitanaIndex.framings.starting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.early": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.building": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.strong": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.reallyGood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:42:57.872Z"
+  "generatedAt": "2026-07-12T06:43:09.525Z"
 }

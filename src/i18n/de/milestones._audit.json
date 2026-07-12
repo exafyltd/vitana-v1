@@ -3,8 +3,8 @@
     "milestones.title": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Translation 'Magic Moments' does not accurately convey 'Life Milestones'. It's a creative reinterpretation, but not a direct translation of significant life events. Also inconsistent with 'Moment' used for singular 'Milestone' later.",
-      "suggested": "Besondere Momente",
+      "issue": "The translation 'Besondere Momente' (Special Moments) is too general and loses the specific nuance of 'milestones' as significant achievements or markers. 'Meilensteine' is more accurate.",
+      "suggested": "Meilensteine",
       "phase": "llm"
     },
     "milestones.add": {
@@ -20,15 +20,15 @@
     "milestones.empty": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Inconsistent with 'Moment' used for singular 'Milestone' in other entries. If 'Milestone' is 'Moment', then the plural should be 'Momente'.",
-      "suggested": "Noch keine Momente",
+      "issue": "Inconsistent with the more accurate translation of 'milestones' as 'Meilensteine' for consistency with the suggested change in entry 0.",
+      "suggested": "Noch keine Meilensteine",
       "phase": "llm"
     },
     "milestones.addFirst": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Inconsistent with 'Moment' used for singular 'Milestone' in other entries. 'Magic' is an unnecessary addition. 'Your' is also missing.",
-      "suggested": "Deinen ersten Moment hinzufügen",
+      "issue": "Inconsistent with the more accurate translation of 'milestones' as 'Meilensteine' for consistency with the suggested change in entry 0. 'Meilenstein' is masculine, so 'deinen ersten Meilenstein' is grammatically correct.",
+      "suggested": "Deinen ersten Meilenstein hinzufügen",
       "phase": "llm"
     },
     "milestones.date": {
@@ -72,5 +72,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:16:15.741Z"
+  "generatedAt": "2026-07-12T06:23:20.302Z"
 }

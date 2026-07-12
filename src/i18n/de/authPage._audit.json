@@ -6,10 +6,8 @@
       "phase": "llm"
     },
     "authPage.subtitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect possessive pronoun (formal instead of informal) and missing 'intelligence' from the translation.",
-      "suggested": "Deine personalisierte Gesundheitsintelligenz-Plattform",
       "phase": "llm"
     },
     "authPage.signIn": {
@@ -78,5 +76,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:24.568Z"
+  "generatedAt": "2026-07-12T06:17:00.750Z"
 }
