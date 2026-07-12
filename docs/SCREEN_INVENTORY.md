@@ -5,9 +5,9 @@
 
 ## Summary
 
-- **Pages scanned:** 335
-- **Distinct i18n keys consumed:** 5459
-- **Namespaces in use:** 45
+- **Pages scanned:** 278
+- **Distinct i18n keys consumed:** 4244
+- **Namespaces in use:** 43
 - **Hardcoded string suspects (regex heuristic):** 66
 
 Pages with hardcoded suspects need migration into the catalog. The authoritative PR-time check is the ESLint rule `i18n/no-raw-jsx-text`.
@@ -27,14 +27,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 ### src/pages/Apply.tsx
 
 **Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
-
-### src/pages/AuthPages.tsx
-
-**Status:** ✅ clean — keys consumed: 9, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 9, total in shard: 9831
 
 ### src/pages/AutopilotDashboard.tsx
 
@@ -73,22 +65,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 6, total in shard: 9831
 - `toasts` — used: 1, total in shard: 1255
 
-### src/pages/Calendar.tsx
-
-**Status:** ✅ clean — keys consumed: 21, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 21, total in shard: 9831
-
-### src/pages/Cart.tsx
-
-**Status:** ✅ clean — keys consumed: 17, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 17, total in shard: 9831
-
 ### src/pages/CheckoutSuccess.tsx
 
 **Status:** ✅ clean — keys consumed: 16, namespaces: 2
@@ -117,12 +93,12 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Discover.tsx
 
-**Status:** ✅ clean — keys consumed: 25, namespaces: 4
+**Status:** ✅ clean — keys consumed: 26, namespaces: 4
 
 **i18n namespaces:**
 
 - `actionBar` — used: 1, total in shard: 5
-- `discover` — used: 7, total in shard: 74
+- `discover` — used: 8, total in shard: 82
 - `screens` — used: 15, total in shard: 9831
 - `toasts` — used: 2, total in shard: 1255
 
@@ -145,14 +121,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `health` — used: 11, total in shard: 76, **MISSING:** health.pillars.${key}, health.subtitle, health.searchPlaceholder, health.upload
 - `screens` — used: 11, total in shard: 9831
-
-### src/pages/HealthTracker.tsx
-
-**Status:** ✅ clean — keys consumed: 48, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 48, total in shard: 9831
 
 ### src/pages/Home.tsx
 
@@ -206,10 +174,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 23, total in shard: 9831
 - `toasts` — used: 4, total in shard: 1255
-
-### src/pages/Login.tsx
-
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/Logout.tsx
 
@@ -383,10 +347,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 14, total in shard: 9831
 
-### src/pages/Register.tsx
-
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
-
 ### src/pages/Reminders.tsx
 
 **Status:** ✅ clean — keys consumed: 2, namespaces: 1
@@ -460,23 +420,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ## admin/
 
-### src/pages/admin/AIAssistant.tsx
-
-**Status:** ✅ clean — keys consumed: 24, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 24, total in shard: 9831
-
-### src/pages/admin/APIMonitoring.tsx
-
-**Status:** ✅ clean — keys consumed: 53, namespaces: 2
-
-**i18n namespaces:**
-
-- `screens` — used: 42, total in shard: 9831
-- `toasts` — used: 11, total in shard: 1255
-
 ### src/pages/admin/AdminPlaceholder.tsx
 
 **Status:** ✅ clean — keys consumed: 5, namespaces: 1
@@ -484,22 +427,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 5, total in shard: 9831
-
-### src/pages/admin/Audit.tsx
-
-**Status:** ✅ clean — keys consumed: 23, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 23, total in shard: 9831
-
-### src/pages/admin/Automation.tsx
-
-**Status:** ✅ clean — keys consumed: 21, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 21, total in shard: 9831
 
 ### src/pages/admin/Bootstrap.tsx
 
@@ -567,111 +494,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 23, total in shard: 9831
 
-### src/pages/admin/NotificationDashboard.tsx
-
-**Status:** ✅ clean — keys consumed: 2, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 2, total in shard: 9831
-
-### src/pages/admin/PatientRecords.tsx
-
-**Status:** ✅ clean — keys consumed: 19, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 19, total in shard: 9831
-
-### src/pages/admin/Queue.tsx
-
-**Status:** ✅ clean — keys consumed: 18, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 18, total in shard: 9831
-
-### src/pages/admin/Reports.tsx
-
-**Status:** ✅ clean — keys consumed: 30, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 30, total in shard: 9831
-
-### src/pages/admin/Staff.tsx
-
-**Status:** ✅ clean — keys consumed: 18, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 18, total in shard: 9831
-
-### src/pages/admin/StreamSettings.tsx
-
-**Status:** ✅ clean — keys consumed: 49, namespaces: 2
-
-**i18n namespaces:**
-
-- `screens` — used: 47, total in shard: 9831
-- `toasts` — used: 2, total in shard: 1255
-
-### src/pages/admin/StreamSupervision.tsx
-
-**Status:** ✅ clean — keys consumed: 20, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 20, total in shard: 9831
-
-### src/pages/admin/SystemConfig.tsx
-
-**Status:** ✅ clean — keys consumed: 40, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 40, total in shard: 9831
-
-### src/pages/admin/SystemHealth.tsx
-
-**Status:** ✅ clean — keys consumed: 9, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 9, total in shard: 9831
-
-### src/pages/admin/SystemSecurity.tsx
-
-**Status:** ✅ clean — keys consumed: 15, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 15, total in shard: 9831
-
-### src/pages/admin/TelemedicineSessions.tsx
-
-**Status:** ✅ clean — keys consumed: 27, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 27, total in shard: 9831
-
-### src/pages/admin/TenantAudit.tsx
-
-**Status:** ✅ clean — keys consumed: 6, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 6, total in shard: 9831
-
-### src/pages/admin/TenantConfig.tsx
-
-**Status:** ✅ clean — keys consumed: 5, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 5, total in shard: 9831
-
 ### src/pages/admin/TenantManagement.tsx
 
 **Status:** ✅ clean — keys consumed: 19, namespaces: 2
@@ -680,65 +502,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 15, total in shard: 9831
 - `toasts` — used: 4, total in shard: 1255
-
-### src/pages/admin/UserAudit.tsx
-
-**Status:** ✅ clean — keys consumed: 5, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 5, total in shard: 9831
-
-### src/pages/admin/UserManagement.tsx
-
-**Status:** ✅ clean — keys consumed: 23, namespaces: 2
-
-**i18n namespaces:**
-
-- `screens` — used: 19, total in shard: 9831
-- `toasts` — used: 4, total in shard: 1255
-
-### src/pages/admin/VertexTesting.tsx
-
-**Status:** ✅ clean — keys consumed: 32, namespaces: 2
-
-**i18n namespaces:**
-
-- `screens` — used: 29, total in shard: 9831
-- `toasts` — used: 3, total in shard: 1255
-
-### src/pages/admin/ai-assistant/AISituationAnalyzer.tsx
-
-**Status:** ✅ clean — keys consumed: 12, namespaces: 2
-
-**i18n namespaces:**
-
-- `screens` — used: 2, total in shard: 9831
-- `toasts` — used: 10, total in shard: 1255
-
-### src/pages/admin/ai-assistant/Analytics.tsx
-
-**Status:** ✅ clean — keys consumed: 19, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 19, total in shard: 9831
-
-### src/pages/admin/ai-assistant/PatternDiscovery.tsx
-
-**Status:** ✅ clean — keys consumed: 23, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 23, total in shard: 9831
-
-### src/pages/admin/ai-assistant/ProactiveSettings.tsx
-
-**Status:** ✅ clean — keys consumed: 7, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 7, total in shard: 9831
 
 ### src/pages/admin/assistant/Personality.tsx
 
@@ -868,15 +631,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 5, total in shard: 9831
-
-### src/pages/admin/automation/AutomationBuilder.tsx
-
-**Status:** ✅ clean — keys consumed: 25, namespaces: 2
-
-**i18n namespaces:**
-
-- `screens` — used: 12, total in shard: 9831
-- `toasts` — used: 13, total in shard: 1255
 
 ### src/pages/admin/autopilot/Automations.tsx
 
@@ -1262,14 +1016,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 22, total in shard: 9831
 - `toasts` — used: 4, total in shard: 1255
 
-### src/pages/admin/media/Analytics.tsx
-
-**Status:** ✅ clean — keys consumed: 9, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 9, total in shard: 9831
-
 ### src/pages/admin/media/Music.tsx
 
 **Status:** ✅ clean — keys consumed: 23, namespaces: 2
@@ -1603,14 +1349,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 25, total in shard: 9831
 
-### src/pages/ai/AgentPromptCenter.tsx
-
-**Status:** ✅ clean — keys consumed: 13, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 13, total in shard: 9831
-
 ### src/pages/ai/Companion.tsx
 
 **Status:** ✅ clean — keys consumed: 17, namespaces: 1
@@ -1634,14 +1372,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 30, total in shard: 9831
-
-### src/pages/ai/PersonalAITimeline.tsx
-
-**Status:** ✅ clean — keys consumed: 5, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 5, total in shard: 9831
 
 ## assistant/
 
@@ -1681,31 +1411,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ## community/
 
-### src/pages/community/AIInsights.tsx
-
-**Status:** ✅ clean — keys consumed: 28, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 28, total in shard: 9831
-
-### src/pages/community/Challenges.tsx
-
-**Status:** ✅ clean — keys consumed: 13, namespaces: 2
-
-**i18n namespaces:**
-
-- `challenges` — used: 1, total in shard: 1
-- `screens` — used: 12, total in shard: 9831
-
-### src/pages/community/Events.tsx
-
-**Status:** ✅ clean — keys consumed: 7, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 7, total in shard: 9831
-
 ### src/pages/community/EventsAndMeetups.tsx
 
 **Status:** ✅ clean — keys consumed: 28, namespaces: 5
@@ -1717,14 +1422,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `events` — used: 19, total in shard: 20, **MISSING:** events.titleShort, events.tabs.hot, events.filterTitle
 - `screens` — used: 5, total in shard: 9831
 - `toasts` — used: 2, total in shard: 1255
-
-### src/pages/community/Feed.tsx
-
-**Status:** ✅ clean — keys consumed: 14, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 14, total in shard: 9831
 
 ### src/pages/community/FindPartner.tsx
 
@@ -1752,14 +1449,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `groups` — used: 1, total in shard: 1
 - `screens` — used: 11, total in shard: 9831
 
-### src/pages/community/LiveInteraction.tsx
-
-**Status:** ✅ clean — keys consumed: 34, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 34, total in shard: 9831
-
 ### src/pages/community/LiveRoomViewer.tsx
 
 **Status:** ✅ clean — keys consumed: 19, namespaces: 2
@@ -1780,14 +1469,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 17, total in shard: 9831
 - `toasts` — used: 15, total in shard: 1255
 
-### src/pages/community/Matchmaking.tsx
-
-**Status:** ✅ clean — keys consumed: 9, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 9, total in shard: 9831
-
 ### src/pages/community/MediaHub.tsx
 
 **Status:** ✅ clean — keys consumed: 61, namespaces: 3
@@ -1798,22 +1479,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `mediaHub` — used: 59, total in shard: 129
 - `screens` — used: 1, total in shard: 9831
 
-### src/pages/community/Meetups.tsx
-
-**Status:** ✅ clean — keys consumed: 7, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 7, total in shard: 9831
-
-### src/pages/community/Meetups2.tsx
-
-**Status:** ✅ clean — keys consumed: 9, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 9, total in shard: 9831
-
 ### src/pages/community/Members.tsx
 
 **Status:** ✅ clean — keys consumed: 8, namespaces: 1
@@ -1821,22 +1486,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 8, total in shard: 9831
-
-### src/pages/community/MyBusinessRenamed.tsx
-
-**Status:** ✅ clean — keys consumed: 13, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 13, total in shard: 9831
-
-### src/pages/community/MyGroups.tsx
-
-**Status:** ✅ clean — keys consumed: 31, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 31, total in shard: 9831
 
 ### src/pages/community/OpenAsks.tsx
 
@@ -2318,8 +1967,16 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `discover` — used: 16, total in shard: 74
+- `discover` — used: 16, total in shard: 82
 - `screens` — used: 1, total in shard: 9831
+
+### src/pages/discover/CategoryProducts.tsx
+
+**Status:** ✅ clean — keys consumed: 4, namespaces: 1
+
+**i18n namespaces:**
+
+- `discover` — used: 4, total in shard: 82, **MISSING:** discover.subcategories.${meta.i18nKey}
 
 ### src/pages/discover/DealsOffers.tsx
 
@@ -2337,14 +1994,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 95, total in shard: 9831
 - `toasts` — used: 4, total in shard: 1255
-
-### src/pages/discover/IntentRouter.tsx
-
-**Status:** ✅ clean — keys consumed: 5, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 5, total in shard: 9831
 
 ### src/pages/discover/Marketplace.tsx
 
@@ -2398,14 +2047,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 72, total in shard: 9831
 
 ## health/
-
-### src/pages/health/BiomarkerResults.tsx
-
-**Status:** ✅ clean — keys consumed: 18, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 18, total in shard: 9831
 
 ### src/pages/health/ConditionsRisks.tsx
 
@@ -2465,46 +2106,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 16, total in shard: 9831
 - `wellnessServices` — used: 1, total in shard: 1
-
-## home/
-
-### src/pages/home/AIFeed.tsx
-
-**Status:** ✅ clean — keys consumed: 31, namespaces: 2
-
-**i18n namespaces:**
-
-- `screens` — used: 27, total in shard: 9831
-- `toasts` — used: 4, total in shard: 1255
-
-### src/pages/home/Actions.tsx
-
-**Status:** ✅ clean — keys consumed: 21, namespaces: 2
-
-**i18n namespaces:**
-
-- `screens` — used: 17, total in shard: 9831
-- `toasts` — used: 4, total in shard: 1255
-
-### src/pages/home/Context.tsx
-
-**Status:** ✅ clean — keys consumed: 12, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 12, total in shard: 9831
-
-### src/pages/home/Dashboard.tsx
-
-**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
-
-### src/pages/home/Matches.tsx
-
-**Status:** ✅ clean — keys consumed: 9, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 9, total in shard: 9831
 
 ## legal/
 
@@ -2721,14 +2322,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ## settings/
 
-### src/pages/settings/AutopilotSettings.tsx
-
-**Status:** ✅ clean — keys consumed: 29, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 29, total in shard: 9831
-
 ### src/pages/settings/Billing.tsx
 
 **Status:** ✅ clean — keys consumed: 2, namespaces: 1
@@ -2797,14 +2390,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 17, total in shard: 9831
 - `toasts` — used: 6, total in shard: 1255
 
-### src/pages/settings/VoiceAISettings.tsx
-
-**Status:** ✅ clean — keys consumed: 52, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 52, total in shard: 9831
-
 ## sharing/
 
 ### src/pages/sharing/CampaignDetail.tsx
@@ -2825,15 +2410,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 8, total in shard: 9831
 - `toasts` — used: 2, total in shard: 1255
 
-### src/pages/sharing/Consent.tsx
-
-**Status:** ✅ clean — keys consumed: 34, namespaces: 2
-
-**i18n namespaces:**
-
-- `consent` — used: 1, total in shard: 1
-- `screens` — used: 33, total in shard: 9831
-
 ### src/pages/sharing/DataConsent.tsx
 
 **Status:** ✅ clean — keys consumed: 18, namespaces: 1
@@ -2849,38 +2425,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 160, total in shard: 9831
-
-### src/pages/sharing/Logs.tsx
-
-**Status:** ✅ clean — keys consumed: 46, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 46, total in shard: 9831
-
-### src/pages/sharing/Marketplace.tsx
-
-**Status:** ✅ clean — keys consumed: 71, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 71, total in shard: 9831
-
-### src/pages/sharing/Packages.tsx
-
-**Status:** ✅ clean — keys consumed: 22, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 22, total in shard: 9831
-
-### src/pages/sharing/SmartPackage.tsx
-
-**Status:** ✅ clean — keys consumed: 58, namespaces: 1
-
-**i18n namespaces:**
-
-- `screens` — used: 58, total in shard: 9831
 
 ## staff/
 
@@ -2926,11 +2470,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 | Namespace | Pages using it |
 |---|---|
-| `screens` | 278 |
-| `toasts` | 61 |
+| `screens` | 223 |
+| `toasts` | 53 |
 | `actionBar` | 5 |
 | `buttons` | 3 |
-| `discover` | 2 |
+| `discover` | 3 |
 | `inbox` | 2 |
 | `event` | 2 |
 | `eventCta` | 2 |
@@ -2955,7 +2499,6 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 | `privacy` | 1 |
 | `payment` | 1 |
 | `admin` | 1 |
-| `challenges` | 1 |
 | `events` | 1 |
 | `groupDetail` | 1 |
 | `groups` | 1 |
@@ -2970,4 +2513,3 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 | `discount` | 1 |
 | `portals` | 1 |
 | `authPage` | 1 |
-| `consent` | 1 |
