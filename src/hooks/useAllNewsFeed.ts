@@ -17,6 +17,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/lib/i18n-toast";
 import { useRealMatches } from "@/hooks/useRealMatches";
 import { useNewsFeedPreferencesStore } from "@/stores/newsFeedPreferencesStore";
 import { useLongevityNewsFeed } from "@/hooks/useNewsFeed";
@@ -185,7 +186,7 @@ async function loadCandidates(
       source: "post",
       post_id: p.id,
       user_id: p.user_id,
-      author_name: author?.display_name || "Community Member",
+      author_name: author?.display_name || t("screens.home.communityMember"),
       author_avatar: author?.avatar_url ?? null,
       content: p.content ?? "",
       image_url: p.image_url ?? null,
@@ -213,7 +214,7 @@ async function loadCandidates(
       source: "media",
       post_id: m.id,
       user_id: m.user_id,
-      author_name: author?.display_name || "Community Member",
+      author_name: author?.display_name || t("screens.home.communityMember"),
       author_avatar: author?.avatar_url ?? null,
       content: m.title || m.description || "",
       image_url: m.thumbnail_url ?? null,
