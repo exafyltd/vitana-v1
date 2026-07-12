@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Compass, CalendarClock } from "lucide-react";
+import { Compass, CalendarClock, Loader2 } from "lucide-react";
 import { t } from "@/lib/i18n-toast";
 import { localizeGoal } from "@/lib/goalLabel";
 import { fmtDate } from "@/lib/locale-format";
@@ -73,6 +73,25 @@ export function GoalNorthStar({
   // learning goal — independent of the user's Life Compass goal, so it skips the
   // no-goal / journey-error early returns below and always renders the card.
   const showGuided = guided && !!guidedProgress;
+
+  // Loading: never paint the hero with placeholder zeros ("session 0 of 0")
+  // while the journey/checklist queries resolve — loading must look like
+  // loading. Only holds while there is nothing real to show; cached data
+  // (goal set, or guided progress with a known curriculum) paints instantly.
+  if (loading && !goal && (!guidedProgress || guidedProgress.totalSessions === 0)) {
+    return (
+      <Card className="rounded-3xl border ring-1 ring-border/60 shadow-sm bg-card/80" style={guidedCardStyle}>
+        <CardContent
+          className="p-8 flex min-h-[220px] flex-col items-center justify-center gap-3"
+          role="status"
+          aria-live="polite"
+        >
+          <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" aria-hidden="true" />
+          <span className="sr-only">{t("common.loading")}</span>
+        </CardContent>
+      </Card>
+    );
+  }
 
   // Couldn't load the journey — show a retry, not a misleading "no goal" state.
   if (!showGuided && !loading && error && !goal) {

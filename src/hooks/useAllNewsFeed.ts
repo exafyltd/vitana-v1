@@ -12,7 +12,7 @@
  * user's hide/mute/"show less" preferences) is applied in a useMemo so toggling
  * a preference re-ranks instantly without a refetch.
  */
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
@@ -286,6 +286,27 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
   const mutedSources = useNewsFeedPreferencesStore((s) => s.mutedSources);
   const downrankedTags = useNewsFeedPreferencesStore((s) => s.downrankedTags);
 
+  // Gate the FIRST paint on every contributing source. The single-fetch
+  // longevity-news query usually resolves before the multi-round-trip
+  // candidates (user posts) query; painting articles alone and re-ranking
+  // when posts arrived visibly shoved the already-rendered feed around.
+  // Hold the feed (spinner shows) until all sources have settled — errors
+  // settle too, so a failed source never blocks — with a hard 6s cap so a
+  // degraded network shows a partial feed instead of an endless spinner.
+  // Cached revisits are unaffected: isLoading is false when data exists.
+  const anySourcePending =
+    candidatesQuery.isLoading || matchesQuery.isLoading || newsQuery.isLoading;
+  const [firstPaintTimedOut, setFirstPaintTimedOut] = useState(false);
+  useEffect(() => {
+    if (!anySourcePending) {
+      setFirstPaintTimedOut(false);
+      return;
+    }
+    const id = window.setTimeout(() => setFirstPaintTimedOut(true), 6000);
+    return () => window.clearTimeout(id);
+  }, [anySourcePending]);
+  const holdFirstPaint = anySourcePending && !firstPaintTimedOut;
+
   const items = useMemo<FeedItem[]>(() => {
     const candidates = candidatesQuery.data;
     const matchItems: MatchFeedItem[] = (matchesQuery.data || []).map((m) => ({
@@ -333,8 +354,10 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
   }, [candidatesQuery.data, matchesQuery.data, newsQuery.data, hiddenArticleIds, mutedSources, downrankedTags]);
 
   return {
-    items,
-    isLoading: candidatesQuery.isLoading || matchesQuery.isLoading,
+    // While the first paint is held back, expose an empty list + loading so
+    // the consumer renders its spinner once, then the complete ranked feed.
+    items: holdFirstPaint ? [] : items,
+    isLoading: holdFirstPaint || candidatesQuery.isLoading || matchesQuery.isLoading,
     isError: candidatesQuery.isError,
     // Endless scroll: drive these from the consumer's intersection observer.
     fetchNextPage: newsQuery.fetchNextPage,
