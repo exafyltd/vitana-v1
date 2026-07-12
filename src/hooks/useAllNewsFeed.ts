@@ -100,7 +100,7 @@ async function fetchTopPerformer(token: string | null): Promise<PerformerFeedIte
       id: `performer-${p.user_id}`,
       kind: "performer",
       user_id: p.user_id,
-      display_name: p.display_name || "Community Member",
+      display_name: p.display_name || t("screens.home.communityMember"),
       avatar_url: p.avatar_url ?? null,
       improvement: Number(p.improvement) || 0,
       published_at: p.computed_at || new Date().toISOString(),

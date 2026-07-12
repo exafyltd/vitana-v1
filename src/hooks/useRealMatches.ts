@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { MatchReason } from "@/lib/matchReason";
+import { t } from "@/lib/i18n-toast";
 
 export interface RealMatch {
   user_id: string;
@@ -95,7 +96,7 @@ export function useRealMatches(limit = 6) {
           return {
             user_id: m.matched_user_id,
             display_name:
-              profile?.display_name || profile?.full_name || "Community Member",
+              profile?.display_name || profile?.full_name || t("screens.home.communityMember"),
             avatar_url: profile?.avatar_url ?? null,
             bio: profile?.bio ?? null,
             location: profile?.location ?? null,
