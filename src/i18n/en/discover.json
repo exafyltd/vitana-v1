@@ -19,6 +19,7 @@
     "seeAll": "See all",
     "suggestedForYou": "Suggested For You",
     "browseCategories": "Browse Categories",
+    "skincareCosmetics": "Skincare & Cosmetics",
     "all": "All",
     "shareAndEarn": "Share & Earn",
     "shareAndEarnDesc": "Recommend products, earn commissions",
@@ -54,7 +55,13 @@
       "beauty": "Beauty",
       "nootropics": "Nootropics",
       "performance": "Performance",
-      "antioxidants": "Antioxidants"
+      "antioxidants": "Antioxidants",
+      "faceCare": "Face Care",
+      "makeup": "Makeup",
+      "hairCare": "Hair Care",
+      "bodyCare": "Body Care",
+      "fragrance": "Fragrance",
+      "sunCare": "Sun Care"
     },
     "quickActions": {
       "title": "Quick Actions",

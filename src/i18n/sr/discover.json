@@ -19,6 +19,7 @@
     "seeAll": "Prikaži sve",
     "suggestedForYou": "Predloženo za tebe",
     "browseCategories": "Pregledaj kategorije",
+    "skincareCosmetics": "Nega kože i kozmetika",
     "all": "Sve",
     "shareAndEarn": "Podeli i zaradi",
     "shareAndEarnDesc": "Preporuči proizvode, zaradi proviziju",
@@ -54,7 +55,13 @@
       "beauty": "Lepota",
       "nootropics": "Nootropici",
       "performance": "Performanse",
-      "antioxidants": "Antioksidansi"
+      "antioxidants": "Antioksidansi",
+      "faceCare": "Nega lica",
+      "makeup": "Šminka",
+      "hairCare": "Nega kose",
+      "bodyCare": "Nega tela",
+      "fragrance": "Parfemi",
+      "sunCare": "Zaštita od sunca"
     },
     "quickActions": {
       "title": "Brze radnje",

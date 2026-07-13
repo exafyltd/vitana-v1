@@ -31,19 +31,27 @@ interface SectionMeta {
   icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
   gradient: string;
   i18nKey: string;
+  /** Discover product category this subcategory belongs to. */
+  category: string;
 }
 
 const SECTION_META: Record<string, SectionMeta> = {
-  longevity: { icon: Clock, gradient: "from-violet-500 to-purple-600", i18nKey: "longevity" },
-  adaptogens: { icon: Leaf, gradient: "from-emerald-500 to-teal-600", i18nKey: "adaptogens" },
-  vitamins: { icon: Sparkles, gradient: "from-sky-500 to-blue-600", i18nKey: "vitamins" },
-  "essential-fatty-acids": { icon: Droplet, gradient: "from-amber-500 to-orange-600", i18nKey: "essentialFattyAcids" },
-  minerals: { icon: Gem, gradient: "from-cyan-500 to-teal-600", i18nKey: "minerals" },
-  immunity: { icon: Shield, gradient: "from-blue-500 to-indigo-600", i18nKey: "immunity" },
-  beauty: { icon: Sparkles, gradient: "from-rose-500 to-pink-600", i18nKey: "beauty" },
-  nootropics: { icon: Brain, gradient: "from-purple-500 to-fuchsia-600", i18nKey: "nootropics" },
-  performance: { icon: Zap, gradient: "from-orange-500 to-red-600", i18nKey: "performance" },
-  antioxidants: { icon: Leaf, gradient: "from-lime-500 to-green-600", i18nKey: "antioxidants" },
+  longevity: { icon: Clock, gradient: "from-violet-500 to-purple-600", i18nKey: "longevity", category: "supplements" },
+  adaptogens: { icon: Leaf, gradient: "from-emerald-500 to-teal-600", i18nKey: "adaptogens", category: "supplements" },
+  vitamins: { icon: Sparkles, gradient: "from-sky-500 to-blue-600", i18nKey: "vitamins", category: "supplements" },
+  "essential-fatty-acids": { icon: Droplet, gradient: "from-amber-500 to-orange-600", i18nKey: "essentialFattyAcids", category: "supplements" },
+  minerals: { icon: Gem, gradient: "from-cyan-500 to-teal-600", i18nKey: "minerals", category: "supplements" },
+  immunity: { icon: Shield, gradient: "from-blue-500 to-indigo-600", i18nKey: "immunity", category: "supplements" },
+  beauty: { icon: Sparkles, gradient: "from-rose-500 to-pink-600", i18nKey: "beauty", category: "supplements" },
+  nootropics: { icon: Brain, gradient: "from-purple-500 to-fuchsia-600", i18nKey: "nootropics", category: "supplements" },
+  performance: { icon: Zap, gradient: "from-orange-500 to-red-600", i18nKey: "performance", category: "supplements" },
+  antioxidants: { icon: Leaf, gradient: "from-lime-500 to-green-600", i18nKey: "antioxidants", category: "supplements" },
+  "face-care": { icon: Droplet, gradient: "from-pink-400 to-rose-500", i18nKey: "faceCare", category: "skincare" },
+  makeup: { icon: Sparkles, gradient: "from-fuchsia-500 to-pink-600", i18nKey: "makeup", category: "skincare" },
+  "hair-care": { icon: Leaf, gradient: "from-amber-500 to-orange-600", i18nKey: "hairCare", category: "skincare" },
+  "body-care": { icon: Shield, gradient: "from-teal-500 to-cyan-600", i18nKey: "bodyCare", category: "skincare" },
+  fragrance: { icon: Gem, gradient: "from-purple-500 to-violet-600", i18nKey: "fragrance", category: "skincare" },
+  "sun-care": { icon: Zap, gradient: "from-yellow-500 to-amber-600", i18nKey: "sunCare", category: "skincare" },
 };
 
 export default function CategoryProducts() {
@@ -53,7 +61,7 @@ export default function CategoryProducts() {
   const meta = SECTION_META[subcategory];
 
   const { data, isLoading } = useMarketplaceSearch({
-    category: "supplements",
+    category: meta?.category ?? "supplements",
     subcategory,
     sort: "rating",
     limit: 50,
