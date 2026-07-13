@@ -177,9 +177,9 @@
     },
     "subNav.diary": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Redundant and clunky phrasing. 'Dnevni dnevnik' literally means 'Daily daily'.",
-      "suggested": "Dnevnik",
+      "confidence": 0.9,
+      "issue": "The translation 'Dnevnik' means 'Diary' but omits the 'Daily' aspect of the English phrase. A more accurate and natural translation for 'Daily Diary' in this context would convey the idea of a daily record or log.",
+      "suggested": "Dnevni zapis",
       "phase": "llm"
     },
     "subNav.recall": {
@@ -213,5 +213,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:29:40.901Z"
+  "generatedAt": "2026-07-13T06:56:24.879Z"
 }
