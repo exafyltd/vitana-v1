@@ -36,8 +36,18 @@ export function MobileAccountCard({
       <div
         className="relative rounded-2xl border border-white/5 overflow-hidden"
         style={{
-          background: "linear-gradient(135deg, hsl(216, 53%, 8%) 0%, hsl(222, 47%, 11%) 100%)",
+          // Android WebView (Appilix) can drop a card's gradient `background`
+          // when the card paints on its own compositing layer, washing it out
+          // to the light page underneath (see MobileIdentityCard.tsx for the
+          // original occurrence). Keep a SOLID dark `backgroundColor` as a
+          // fallback so the card can never render light even if the gradient
+          // layer fails to paint, and promote the card onto its own stable
+          // compositing layer so descendants can't knock out its background.
+          backgroundColor: "hsl(216, 53%, 8%)",
+          backgroundImage: "linear-gradient(135deg, hsl(216, 53%, 8%) 0%, hsl(222, 47%, 11%) 100%)",
           boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+          isolation: "isolate",
+          transform: "translateZ(0)",
         }}
       >
         {isOwner && editMode && onEdit && (
