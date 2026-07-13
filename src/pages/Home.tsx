@@ -12,7 +12,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
-import { RefreshCw, Loader2, Plus } from "lucide-react";
+import { RefreshCw, Loader2, Plus, UserPlus } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
@@ -34,6 +34,8 @@ import { MobileCreatePostSheet } from "@/components/profile/mobile/MobileCreateP
 import { VitanaIndexCard } from "@/components/home/VitanaIndexCard";
 import { DidYouKnowCard } from "@/components/proactive/DidYouKnowCard";
 import { LongevityJourneyCard } from "@/components/home/LongevityJourneyCard";
+import { InviteFriendCard } from "@/components/home/InviteFriendCard";
+import { useInviteFriendShare } from "@/hooks/useInviteFriendShare";
 import { useNewsFeedPreferencesStore } from "@/stores/newsFeedPreferencesStore";
 import {
   useLongevityNewsFeed,
@@ -85,6 +87,7 @@ export default function Home() {
   const [createPostOpen, setCreatePostOpen] = useState(false);
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const { shareInvite } = useInviteFriendShare();
 
   const {
     data: longevityData, fetchNextPage, hasNextPage, isFetchingNextPage,
@@ -227,6 +230,7 @@ export default function Home() {
     const cardSlots: { key: string; node: JSX.Element }[] = [
       { key: "card-vitana-index", node: <VitanaIndexCard /> },
       { key: "card-guided-journey", node: <LongevityJourneyCard /> },
+      { key: "card-invite-friend", node: <InviteFriendCard /> },
     ];
     if (matchItem) {
       cardSlots.push({
@@ -414,6 +418,16 @@ export default function Home() {
             <div className="flex items-center gap-1 min-w-max">
               <ExpandableSearchButton compact placeholder={isMobile ? t('screens.home.searchShort') : t('screens.home.searchNewsTopicsSources')} onSearch={(query) => setSearchQuery(query)} />
               {isMobile && <MobileModePill className="px-2" modes={FILTER_MODES} activeMode={activeTab} onModeChange={(v) => setActiveTab(v as FilterTab)} />}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full shrink-0"
+                onClick={() => void shareInvite()}
+                title={t('screens.downloadFlyer.inviteCardCta')}
+                aria-label={t('screens.downloadFlyer.inviteCardCta')}
+              >
+                <UserPlus className="h-4 w-4" />
+              </Button>
               <UniversalCalendarButton showText={!isMobile} className="!px-2" />
               <Button
                 onClick={() => setCreatePostOpen(true)}
