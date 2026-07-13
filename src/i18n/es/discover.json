@@ -19,6 +19,7 @@
     "seeAll": "Ver todo",
     "suggestedForYou": "Sugerido para ti",
     "browseCategories": "Explorar Categorías",
+    "skincareCosmetics": "Cuidado de la Piel y Cosméticos",
     "all": "Todo",
     "shareAndEarn": "Comparte y Gana",
     "shareAndEarnDesc": "Recomienda productos, gana comisiones",
@@ -54,7 +55,13 @@
       "beauty": "Belleza",
       "nootropics": "Nootrópicos",
       "performance": "Rendimiento",
-      "antioxidants": "Antioxidantes"
+      "antioxidants": "Antioxidantes",
+      "faceCare": "Cuidado Facial",
+      "makeup": "Maquillaje",
+      "hairCare": "Cuidado del Cabello",
+      "bodyCare": "Cuidado Corporal",
+      "fragrance": "Fragancia",
+      "sunCare": "Protección Solar"
     },
     "quickActions": {
       "title": "Acciones Rápidas",

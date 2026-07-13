@@ -163,6 +163,8 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
 
         <CategoryShopSections />
 
+        <CategoryShopSections category="skincare" title={translate('discover.skincareCosmetics')} />
+
         {/* Non-product categories (services & experts) stay reachable as compact chips */}
         <div className="flex flex-wrap gap-2 pt-2">
           {nonProductCategories.map((category) => (
