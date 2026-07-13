@@ -1,280 +1,306 @@
 {
   "verdicts": {
-    "buttons.ok": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "buttons.save": {
+    "universalCart.page.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.cancel": {
+    "universalCart.page.subtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.delete": {
+    "universalCart.page.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.edit": {
+    "universalCart.page.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.create": {
+    "universalCart.page.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.close": {
+    "universalCart.page.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.confirm": {
+    "universalCart.page.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.submit": {
+    "universalCart.page.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.next": {
+    "universalCart.page.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.back": {
+    "universalCart.page.removeAction": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.previous": {
+    "universalCart.page.quantityLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.retry": {
+    "universalCart.page.completeAction": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.refresh": {
+    "universalCart.page.alreadyCompleted": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.viewAll": {
+    "universalCart.page.linkToDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.seeMore": {
+    "universalCart.page.close": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.seeLess": {
+    "universalCart.tabs.cart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.learnMore": {
+    "universalCart.tabs.saved": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.getStarted": {
+    "universalCart.saved.moveToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.continue": {
+    "universalCart.saved.saveForLater": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.done": {
+    "universalCart.saved.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.apply": {
+    "universalCart.saved.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.reset": {
+    "universalCart.item.viewProduct": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.clear": {
+    "universalCart.agent.promptLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.filter": {
+    "universalCart.agent.promptPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.sort": {
+    "universalCart.agent.proposeCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.search": {
+    "universalCart.agent.proposing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.add": {
+    "universalCart.agent.sectionTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.remove": {
+    "universalCart.agent.sectionSubtitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing for 'you only buy with'. 'kaufen tust du erst' is colloquial; 'du kaufst erst' is more direct and common in UI.",
+      "suggested": "Vorschläge liegen in deinem Warenkorb. Prüfe sie, behalte oder entferne – du kaufst erst mit „Prüfen & Bezahlen“.",
+      "phase": "llm"
+    },
+    "universalCart.agent.rationaleLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.update": {
+    "universalCart.agent.safetyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.upload": {
+    "universalCart.agent.confidenceLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.download": {
+    "universalCart.agent.keep": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.export": {
+    "universalCart.agent.remove": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.import": {
+    "universalCart.agent.unavailable": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The phrase 'in einem Moment' is not idiomatic for 'in a moment' in this context; 'gleich' or 'in Kürze' would be more natural.",
+      "suggested": "Vitana ist gerade nicht verfügbar. Bitte versuche es gleich noch einmal.",
+      "phase": "llm"
+    },
+    "universalCart.agent.roleBlocked": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.share": {
+    "universalCart.agent.empty": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.copy": {
+    "universalCart.agent.reviewNote": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.paste": {
+    "universalCart.agent.reorderCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.send": {
+    "universalCart.agent.reorderLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.reply": {
+    "universalCart.agent.reorderSectionTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.forward": {
+    "universalCart.agent.reorderSectionSubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.connect": {
+    "universalCart.agent.reordering": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.disconnect": {
+    "universalCart.agent.overCapAdvisory": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.enable": {
+    "universalCart.agent.nearCapAdvisory": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.disable": {
+    "universalCart.agent.error": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.show": {
+    "universalCart.budget.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.hide": {
+    "universalCart.budget.spentOfCap": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.expand": {
+    "universalCart.budget.statusUnder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.collapse": {
+    "universalCart.budget.statusNear": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.select": {
+    "universalCart.budget.statusOver": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.selectAll": {
+    "universalCart.budget.noCapHint": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.deselectAll": {
+    "universalCart.addButton.label": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.yes": {
+    "universalCart.addButton.added": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.no": {
+    "universalCart.addButton.addAria": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.generate": {
+    "universalCart.addButton.addedAria": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "buttons.generating": {
+    "universalCart.addButton.signRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.roleBlocked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.failed": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The phrasing 'In den Warenkorb legen fehlgeschlagen' is grammatically correct but sounds a bit clunky for a UI message. A more natural and concise phrasing is preferred.",
+      "suggested": "Hinzufügen zum Warenkorb fehlgeschlagen",
+      "phase": "llm"
+    },
+    "universalCart.addButton.success": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-07-13T06:38:36.630Z"
+  "generatedAt": "2026-07-13T07:01:25.925Z"
 }

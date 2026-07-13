@@ -1,460 +1,383 @@
 {
   "verdicts": {
-    "autopilot.title": {
+    "mobilesupport.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "autopilot.suggestions.showcaseBadge": {
+    "mobilesupport.tabFaqs": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "autopilot.widget.title": {
+    "mobilesupport.quickContactEmailSub": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "autopilot.suggestions.bannerTitle": {
+    "mobilesupport.quickContactChat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mobilesupport.description": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.bannerDesc": {
+    "mobilesupport.tabContact": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.enable": {
+    "mobilesupport.tabCommunity": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.showcaseTitle": {
+    "mobilesupport.hint": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing for 'out loud'. 'Mit deiner Stimme' is less natural than 'laut aussprechen' or 'mündlich'.",
+      "suggested": "Tippe auf das Mikrofon und sprich dein Anliegen laut aus.",
+      "phase": "llm"
+    },
+    "mobilesupport.recordButtonStart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.showcaseDesc": {
+    "mobilesupport.recordButtonStop": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.suggestPopular": {
+    "mobilesupport.recording": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.recentHighlights": {
+    "mobilesupport.listening": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.archetypeTitle": {
+    "mobilesupport.tapToSpeak": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.archetypeBadge": {
+    "mobilesupport.speakNaturally": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.archetypeDesc": {
+    "mobilesupport.transcriptTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.updateArchetype": {
+    "mobilesupport.transcriptPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.profileSectionTitle": {
+    "mobilesupport.searchPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.profileSectionDesc": {
+    "mobilesupport.categoryLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.suggestions.tryAutopilot": {
+    "mobilesupport.categoryPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.preview": {
+    "mobilesupport.categoryAccount": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.viewAll": {
+    "mobilesupport.categoryBilling": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.noSuggestions": {
+    "mobilesupport.categoryTechnical": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.execute": {
+    "mobilesupport.categoryFeature": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.dismiss": {
+    "mobilesupport.categoryPrivacy": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.executing": {
+    "mobilesupport.categoryOther": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.success": {
+    "mobilesupport.attachLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.failed": {
+    "mobilesupport.submitButton": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.popup.title": {
+    "mobilesupport.submitting": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.popup.selectedOf": {
+    "mobilesupport.sentTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.popup.readyToExecute": {
+    "mobilesupport.sentBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.popup.executingTitle": {
+    "mobilesupport.sendAnother": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.popup.executingDesc": {
+    "mobilesupport.quickContactTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.popup.complete": {
+    "mobilesupport.quickContactEmail": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.popup.go": {
+    "mobilesupport.quickContactChatSub": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.popup.notNow": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.seeOptions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.seeAllInAI": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.moreActions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.toastExecutedTitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.toastExecutedDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.toastFailedTitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.popup.toastFailedDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.priorities.high": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.priorities.medium": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.priorities.low": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.widget.active": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.widget.paused": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.widget.doNow": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.widget.allOptimized": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.widget.enableToSee": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.widget.completeForRewards": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.widget.enableForCredits": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.insightBanner.title": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.insightBanner.description": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.insightBanner.synergyIndex": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.insightBanner.statusBalanced": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.insightBanner.statusNeedsAttention": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "autopilot.insightBanner.statusImproving": {
+    "mobilesupport.quickContactCall": {
       "verdict": "OK",
       "confidence": 0.8,
       "phase": "llm"
     },
-    "autopilot.profilePopup.title": {
+    "mobilesupport.quickContactCallSub": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Ambiguous English source. 'Schedule' can be a noun (a schedule, an appointment) or a verb (to schedule). 'Termin' translates to 'appointment', which is one possible meaning, but not exhaustive.",
+      "phase": "llm"
+    },
+    "mobilesupport.responseTime": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.polishBio": {
+    "mobilesupport.faqsTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.polishBioDesc": {
+    "mobilesupport.faqsSubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.refreshArchetype": {
+    "mobilesupport.faqsOpenHelpCenter": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.refreshArchetypeDesc": {
+    "mobilesupport.faqCreateAccountQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.highlightShowcase": {
+    "mobilesupport.faqCreateAccountA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.highlightShowcaseDesc": {
+    "mobilesupport.faqResetPasswordQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.styleProfile": {
+    "mobilesupport.faqResetPasswordA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.styleProfileDesc": {
+    "mobilesupport.faqUpdateProfileQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.cancel": {
+    "mobilesupport.faqUpdateProfileA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.runAutopilot": {
+    "mobilesupport.faqPaymentMethodsQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.generating": {
+    "mobilesupport.faqPaymentMethodsA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.suggestedBio": {
+    "mobilesupport.faqDataSecureQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.suggestedArchetype": {
+    "mobilesupport.faqDataSecureA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.currentValue": {
+    "mobilesupport.faqDeleteAccountQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.accept": {
+    "mobilesupport.faqDeleteAccountA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.reject": {
+    "mobilesupport.communityTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.acceptAll": {
+    "mobilesupport.communitySubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.applied": {
+    "mobilesupport.communityGroupTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.error": {
+    "mobilesupport.communityGroupBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.profilePopup.comingSoon": {
+    "mobilesupport.communityGroupCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action1Title": {
+    "mobilesupport.communityForumTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action1Reason": {
+    "mobilesupport.communityForumBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action2Title": {
-      "verdict": "OK",
-      "confidence": 0.9,
-      "phase": "llm"
-    },
-    "autopilot.actions.action2Reason": {
+    "mobilesupport.communityForumCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action3Title": {
+    "mobilesupport.communityStatsActive": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action3Reason": {
+    "mobilesupport.communityStatsAnswered": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action4Title": {
+    "mobilesupport.communityStatsResponse": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action4Reason": {
+    "mobilesupport.communityStatsResponseValue": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action5Title": {
+    "mobilesupport.errorNotSupported": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action5Reason": {
+    "mobilesupport.errorEmpty": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action6Title": {
+    "mobilesupport.errorSend": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.action6Reason": {
+    "mobilesupport.errorMicPermission": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.newActionTitle": {
+    "mobilesupport.errorMicNotFound": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "autopilot.actions.newActionReason": {
+    "mobilesupport.errorMicInUse": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorMicGeneric": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorNoAudio": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.errorTranscription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.transcribing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobilesupport.backendRecordingHint": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-07-13T06:36:36.037Z"
+  "generatedAt": "2026-07-13T06:42:54.898Z"
 }

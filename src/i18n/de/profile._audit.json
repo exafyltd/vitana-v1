@@ -13,8 +13,8 @@
     "profile.autopilot.polishBio": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Missing verb, 'archetype' translated incorrectly, not an imperative. 'Profil' is too general for 'archetype'.",
-      "suggested": "Poliere dein Bio, deinen Archetyp & deine Highlights",
+      "issue": "The direct translation 'Poliere dein Bio' sounds unnatural and overly literal in German for refining a profile. More idiomatic verbs are preferred.",
+      "suggested": "Optimiere dein Bio, deinen Archetyp & deine Highlights",
       "phase": "llm"
     },
     "profile.autopilot.editHighlights": {
@@ -28,10 +28,8 @@
       "phase": "llm"
     },
     "profile.autopilot.highlightsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register: uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Wähle deine besten Beiträge und Medien aus, die oben in deinem Profil angezeigt werden. Hervorgehobene Inhalte erscheinen im Highlights-Bereich und ziehen mehr Follower an.",
       "phase": "llm"
     },
     "profile.autopilot.try": {
@@ -50,5 +48,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:18:24.264Z"
+  "generatedAt": "2026-07-13T06:43:35.563Z"
 }
