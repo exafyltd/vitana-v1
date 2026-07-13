@@ -17,7 +17,7 @@ describe('formatMoneyMinor', () => {
   it('formats EUR minor units in the German locale', () => {
     getI18nLocale.mockReturnValue('de-DE');
     // de-DE uses a comma decimal separator and trailing € (non-breaking space)
-    expect(formatMoneyMinor(1234, 'EUR').replace(/ /g, ' ')).toBe('12,34 €');
+    expect(formatMoneyMinor(1234, 'EUR').replace(/\u00a0/g, ' ')).toBe('12,34 €');
   });
 
   it('formats USD minor units in the en-US locale', () => {
@@ -27,7 +27,7 @@ describe('formatMoneyMinor', () => {
 
   it('defaults to de-DE when no locale is active', () => {
     getI18nLocale.mockReturnValue(undefined);
-    expect(formatMoneyMinor(100, 'EUR').replace(/ /g, ' ')).toBe('1,00 €');
+    expect(formatMoneyMinor(100, 'EUR').replace(/\u00a0/g, ' ')).toBe('1,00 €');
   });
 
   it('treats null/undefined amounts as zero', () => {
