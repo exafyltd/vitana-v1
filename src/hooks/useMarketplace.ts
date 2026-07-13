@@ -7,6 +7,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { toEurCents } from "@/lib/currency-convert";
 
 // VITE_GATEWAY_URL in this repo already includes "/api/v1"; VITE_GATEWAY_BASE
 // is the bare origin. Normalize to a bare origin so paths below can append
@@ -218,12 +219,13 @@ export function useMarketplaceSearch(params: MarketplaceSearchParams, opts: { en
 
 export function formatPrice(cents: number | null | undefined, currency: string | null | undefined): string {
   if (cents === null || cents === undefined || !currency) return "";
+  const eurCents = toEurCents(cents, currency);
   return new Intl.NumberFormat(undefined, {
     style: "currency",
-    currency: currency.toUpperCase(),
+    currency: "EUR",
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(cents / 100);
+  }).format(eurCents / 100);
 }
 
 export function getRedirectUrl(productId: string, surface: string = "discover"): string {
