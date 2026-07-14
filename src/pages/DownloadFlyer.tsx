@@ -124,7 +124,7 @@ export default function DownloadFlyer() {
         <div className="relative mt-12 h-[440px] w-full">
           {/* Side cards mirror each other: same size (w-36 h-64), same top
               offset, opposite edge inset and rotation as the orb card. */}
-          <PhoneShot src="/images/flyer/phone-home.jpg" fill className="absolute -left-2 top-16 h-64 w-36 -rotate-6" />
+          <PhoneShot src="/images/flyer/phone-health.jpg" fill className="absolute -left-2 top-16 h-64 w-36 -rotate-6" />
           {/* Vitana orb card — replica of the real "Vitana speaking" screen:
               steel-blue orb (vitana-orb-clean.svg) with amber glow on a
               near-black screen, caption + mic/close controls. */}
