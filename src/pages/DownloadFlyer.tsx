@@ -24,7 +24,7 @@ import SEO from '@/components/SEO';
 import { ensureCatalog, onCatalogLoaded } from '@/i18n';
 import { setI18nLocale, t } from '@/lib/i18n-toast';
 import { redirectViaSystemBrowser } from '@/lib/webview';
-import { APP_STORE_URL, PLAY_STORE_URL } from '@/lib/store-links';
+import { APP_STORE_URL, PLAY_STORE_URL, PLAY_STORE_MARKET_URL } from '@/lib/store-links';
 
 /** GA locales only — draft locales fall back to normal detection (de). */
 const LANG_TO_LOCALE: Record<string, string> = {
@@ -32,12 +32,23 @@ const LANG_TO_LOCALE: Record<string, string> = {
   en: 'en-US',
 };
 
-function StoreBadge({ href, src, alt }: { href: string; src: string; alt: string }) {
+function StoreBadge({ href, marketHref, src, alt }: { href: string; marketHref?: string; src: string; alt: string }) {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // Route through the proven system-browser helper on every platform:
-    // Android WebView (window.open "_system" → intent:// fallback), iOS
-    // WKWebView (direct nav → Safari), plain browsers (direct nav).
     e.preventDefault();
+    // Android + Play badge: the OS-native market:// link opens the Play
+    // Store app directly (play.google.com refuses to render in WebViews).
+    // If the store didn't take over (page still visible), fall back to the
+    // https listing via the system browser.
+    if (marketHref && typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent)) {
+      window.location.href = marketHref;
+      window.setTimeout(() => {
+        if (!document.hidden) redirectViaSystemBrowser(href);
+      }, 1500);
+      return;
+    }
+    // Everything else: the proven system-browser helper (Android WebView:
+    // window.open "_system" → intent:// fallback; iOS WKWebView + plain
+    // browsers: direct nav).
     redirectViaSystemBrowser(href);
   };
   return (
@@ -200,6 +211,7 @@ export default function DownloadFlyer() {
           />
           <StoreBadge
             href={PLAY_STORE_URL}
+            marketHref={PLAY_STORE_MARKET_URL}
             src="/images/badges/google-play-badge.svg"
             alt={t('screens.downloadFlyer.badgeGooglePlayAlt')}
           />
