@@ -14,6 +14,12 @@ const SUBCATEGORY_I18N_KEY: Record<string, string> = {
   nootropics: 'nootropics',
   performance: 'performance',
   antioxidants: 'antioxidants',
+  'face-care': 'faceCare',
+  makeup: 'makeup',
+  'hair-care': 'hairCare',
+  'body-care': 'bodyCare',
+  fragrance: 'fragrance',
+  'sun-care': 'sunCare',
 };
 
 type ReasonSource = Pick<MarketplaceProduct, 'match_reasons' | 'rank_reasons' | 'subcategory'>;
