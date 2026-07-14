@@ -1,22 +1,30 @@
 /**
  * MAXINA download flyer — public, no-auth landing page shared via the
- * "Invite a friend" flow. Renders the app pitch with App Store / Google
- * Play badges linking to the store listings.
+ * "Invite a friend" flow. Premium "pearl" design after the marketing
+ * flyer: gradient wordmark, serif headline, phone collage with real app
+ * screens, glass cards, and App Store / Google Play badges.
  *
  * Language: the invite link carries the SENDER's app language as ?lang=
  * (de|en). We force that locale for this page so a German user's flyer is
  * German for the recipient regardless of the recipient's device settings;
  * without a valid param the app's normal detection applies (de default).
+ *
+ * Store badges: opened via redirectViaSystemBrowser (lib/webview), NOT the
+ * Appilix `launch_external` bridge — the bridge gives no acknowledgment
+ * and some shell builds silently drop the action, leaving the badge dead
+ * (same failure mode webview.ts documents for OAuth). The shared link
+ * opens inside the MAXINA app via App Links, so the WebView path is the
+ * common case, not the exception.
  */
 
 import { useEffect, useReducer } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Compass, HeartPulse, Leaf, Users, Heart } from 'lucide-react';
+import { Compass, HeartPulse, Leaf, Users, Heart, Mic, X } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { ensureCatalog, onCatalogLoaded } from '@/i18n';
 import { setI18nLocale, t } from '@/lib/i18n-toast';
-import { isAppilix, launchExternal } from '@/lib/appilix';
-import { APP_STORE_URL, PLAY_STORE_URL } from '@/lib/store-links';
+import { redirectViaSystemBrowser } from '@/lib/webview';
+import { APP_STORE_URL, PLAY_STORE_URL, PLAY_STORE_MARKET_URL } from '@/lib/store-links';
 
 /** GA locales only — draft locales fall back to normal detection (de). */
 const LANG_TO_LOCALE: Record<string, string> = {
@@ -24,32 +32,51 @@ const LANG_TO_LOCALE: Record<string, string> = {
   en: 'en-US',
 };
 
-function StoreBadge({ href, src, alt }: { href: string; src: string; alt: string }) {
+function StoreBadge({ href, marketHref, src, alt }: { href: string; marketHref?: string; src: string; alt: string }) {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    // Inside the Appilix WebView the store listing must open in the device
-    // browser / store app, not inside the shell.
-    if (isAppilix()) {
-      e.preventDefault();
-      launchExternal(href);
+    e.preventDefault();
+    // Android + Play badge: the OS-native market:// link opens the Play
+    // Store app directly (play.google.com refuses to render in WebViews).
+    // If the store didn't take over (page still visible), fall back to the
+    // https listing via the system browser.
+    if (marketHref && typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent)) {
+      window.location.href = marketHref;
+      window.setTimeout(() => {
+        if (!document.hidden) redirectViaSystemBrowser(href);
+      }, 1500);
+      return;
     }
+    // Everything else: the proven system-browser helper (Android WebView:
+    // window.open "_system" → intent:// fallback; iOS WKWebView + plain
+    // browsers: direct nav).
+    redirectViaSystemBrowser(href);
   };
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" onClick={handleClick} className="inline-block transition-transform hover:scale-105">
-      <img src={src} alt={alt} className="h-12 w-auto" />
+      <img src={src} alt={alt} className="h-14 w-auto drop-shadow-md" />
     </a>
   );
 }
 
 function FeatureRow({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
   return (
-    <div className="flex items-start gap-3">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300">
+    <div className="flex items-start gap-3 text-left">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
         {icon}
       </div>
       <div className="min-w-0">
         <p className="text-sm font-semibold text-slate-800 dark:text-slate-100">{title}</p>
         <p className="text-sm text-slate-500 dark:text-slate-400">{body}</p>
       </div>
+    </div>
+  );
+}
+
+/** White-bezel phone frame around a real app screenshot. */
+function PhoneShot({ src, className, fill }: { src: string; className?: string; fill?: boolean }) {
+  return (
+    <div className={`overflow-hidden rounded-[1.75rem] border-4 border-white bg-white shadow-2xl shadow-indigo-900/20 dark:border-slate-700 dark:bg-slate-800 ${className ?? ''}`}>
+      <img src={src} alt="" aria-hidden="true" className={fill ? 'block h-full w-full object-cover object-top' : 'block w-full'} />
     </div>
   );
 }
@@ -70,18 +97,24 @@ export default function DownloadFlyer() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-100 via-indigo-50 to-orange-50 dark:from-slate-950 dark:via-indigo-950 dark:to-slate-900">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-sky-100 via-indigo-100/70 to-rose-50 dark:from-slate-950 dark:via-indigo-950 dark:to-slate-900">
+      {/* Iridescent pearl highlights */}
+      <div aria-hidden="true" className="pointer-events-none absolute -left-24 top-24 h-72 w-72 rounded-full bg-violet-300/40 blur-3xl dark:bg-violet-500/10" />
+      <div aria-hidden="true" className="pointer-events-none absolute -right-24 top-96 h-72 w-72 rounded-full bg-sky-300/40 blur-3xl dark:bg-sky-500/10" />
+      <div aria-hidden="true" className="pointer-events-none absolute bottom-24 left-1/4 h-72 w-72 rounded-full bg-amber-200/40 blur-3xl dark:bg-amber-500/10" />
+
       <SEO
         title={t('screens.downloadFlyer.seoTitle')}
         description={t('screens.downloadFlyer.seoDescription')}
         canonical="https://vitanaland.com/download"
       />
-      <div className="mx-auto flex max-w-md flex-col items-center px-6 py-12 text-center">
+
+      <div className="relative mx-auto flex max-w-md flex-col items-center px-6 py-12 text-center">
         {/* Brand */}
-        <h1 className="text-3xl font-light tracking-[0.4em] text-indigo-950 dark:text-indigo-100">
+        <h1 className="bg-gradient-to-r from-indigo-700 via-violet-600 to-sky-500 bg-clip-text text-4xl font-light tracking-[0.4em] text-transparent dark:from-indigo-300 dark:via-violet-300 dark:to-sky-300">
           {t('screens.downloadFlyer.brandName')}
         </h1>
-        <div className="mt-2 flex w-32 items-center gap-2 text-amber-500/80" aria-hidden="true">
+        <div className="mt-3 flex w-32 items-center gap-2 text-violet-400" aria-hidden="true">
           <span className="h-px flex-1 bg-current" />
           <Heart className="h-3 w-3 fill-current" />
           <span className="h-px flex-1 bg-current" />
@@ -91,15 +124,47 @@ export default function DownloadFlyer() {
         </p>
 
         {/* Headline */}
-        <h2 className="mt-8 font-serif text-4xl font-bold leading-tight text-indigo-950 dark:text-indigo-50">
+        <h2 className="mt-8 font-serif text-[2.6rem] font-bold leading-[1.15] text-indigo-950 dark:text-indigo-50">
           {t('screens.downloadFlyer.headline')}
         </h2>
         <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
           {t('screens.downloadFlyer.tagline')}
         </p>
 
+        {/* Phone collage — real app screens */}
+        <div className="relative mt-12 h-[440px] w-full">
+          {/* Side cards mirror each other: same size (w-36 h-64), same top
+              offset, opposite edge inset and rotation as the orb card. */}
+          <PhoneShot src="/images/flyer/phone-health.jpg" fill className="absolute -left-2 top-16 h-64 w-36 -rotate-6" />
+          {/* Vitana orb card — replica of the real "Vitana speaking" screen:
+              steel-blue orb (vitana-orb-clean.svg) with amber glow on a
+              near-black screen, caption + mic/close controls. */}
+          <div className="absolute -right-2 top-16 flex h-64 w-36 rotate-6 flex-col items-center justify-center gap-2.5 overflow-hidden rounded-[1.75rem] border-4 border-white bg-[#101318] shadow-2xl shadow-indigo-900/30 dark:border-slate-700">
+            <div className="relative">
+              <div aria-hidden="true" className="absolute inset-0 -m-4 rounded-full bg-amber-500/60 blur-xl" />
+              <img
+                src="/vitana-orb-clean.svg"
+                alt={t('screens.vitanaIdentity.orbAlt')}
+                className="relative h-20 w-20"
+              />
+            </div>
+            <p className="text-[9px] font-medium text-amber-400/90">
+              {t('screens.common.vitanaSpeaking')}
+            </p>
+            <div aria-hidden="true" className="mt-1 flex gap-2.5">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#1e3a5f]">
+                <Mic className="h-3.5 w-3.5 text-sky-300" />
+              </span>
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#2a2f36]">
+                <X className="h-3.5 w-3.5 text-slate-300" />
+              </span>
+            </div>
+          </div>
+          <PhoneShot src="/images/flyer/phone-news.jpg" className="relative z-10 mx-auto w-56" />
+        </div>
+
         {/* Features */}
-        <div className="mt-10 w-full space-y-5 rounded-3xl bg-white/70 p-6 text-left shadow-sm backdrop-blur dark:bg-white/5">
+        <div className="z-10 -mt-6 w-full space-y-5 rounded-[2rem] bg-white/70 p-6 shadow-lg shadow-indigo-900/10 backdrop-blur-md dark:bg-white/5">
           <FeatureRow
             icon={<Compass className="h-5 w-5" />}
             title={t('screens.downloadFlyer.featureJourneysTitle')}
@@ -123,11 +188,16 @@ export default function DownloadFlyer() {
         </div>
 
         {/* Join card */}
-        <div className="mt-8 w-full rounded-3xl bg-gradient-to-r from-sky-200/80 via-indigo-200/80 to-orange-200/80 p-6 shadow-sm dark:from-sky-500/20 dark:via-indigo-500/20 dark:to-orange-500/20">
-          <p className="font-serif text-2xl font-bold text-indigo-950 dark:text-indigo-50">
+        <div className="mt-8 w-full rounded-[2rem] bg-white/60 p-8 shadow-lg shadow-indigo-900/10 backdrop-blur-md dark:bg-white/5">
+          <p className="bg-gradient-to-r from-indigo-800 via-violet-700 to-sky-600 bg-clip-text font-serif text-3xl font-bold text-transparent dark:from-indigo-200 dark:via-violet-200 dark:to-sky-200">
             {t('screens.downloadFlyer.joinTitle')}
           </p>
-          <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+          <div className="mx-auto mt-3 flex w-24 items-center gap-2 text-violet-400" aria-hidden="true">
+            <span className="h-px flex-1 bg-current" />
+            <Heart className="h-3 w-3 fill-current" />
+            <span className="h-px flex-1 bg-current" />
+          </div>
+          <p className="mt-3 text-sm text-slate-600 dark:text-slate-300">
             {t('screens.downloadFlyer.joinSubtitle')}
           </p>
         </div>
@@ -141,6 +211,7 @@ export default function DownloadFlyer() {
           />
           <StoreBadge
             href={PLAY_STORE_URL}
+            marketHref={PLAY_STORE_MARKET_URL}
             src="/images/badges/google-play-badge.svg"
             alt={t('screens.downloadFlyer.badgeGooglePlayAlt')}
           />
