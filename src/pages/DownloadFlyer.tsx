@@ -19,7 +19,7 @@
 
 import { useEffect, useReducer } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Compass, HeartPulse, Leaf, Users, Heart } from 'lucide-react';
+import { Compass, HeartPulse, Leaf, Users, Heart, Mic, X } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { ensureCatalog, onCatalogLoaded } from '@/i18n';
 import { setI18nLocale, t } from '@/lib/i18n-toast';
@@ -125,22 +125,28 @@ export default function DownloadFlyer() {
           <div className="absolute -left-4 top-10 w-36 -rotate-6">
             <PhoneShot src="/images/flyer/phone-home.jpg" />
           </div>
-          {/* Vitana orb card */}
-          <div className="absolute -right-2 top-16 flex h-64 w-36 rotate-6 flex-col items-center justify-center gap-3 overflow-hidden rounded-[1.75rem] border-4 border-white bg-slate-900 shadow-2xl shadow-indigo-900/30 dark:border-slate-700">
+          {/* Vitana orb card — replica of the real "Vitana speaking" screen:
+              steel-blue orb (vitana-orb-clean.svg) with amber glow on a
+              near-black screen, caption + mic/close controls. */}
+          <div className="absolute -right-2 top-16 flex h-64 w-36 rotate-6 flex-col items-center justify-center gap-2.5 overflow-hidden rounded-[1.75rem] border-4 border-white bg-[#101318] shadow-2xl shadow-indigo-900/30 dark:border-slate-700">
             <div className="relative">
-              <div aria-hidden="true" className="absolute inset-0 -m-3 rounded-full bg-amber-400/50 blur-lg" />
+              <div aria-hidden="true" className="absolute inset-0 -m-4 rounded-full bg-amber-500/60 blur-xl" />
               <img
-                src="/vitana-orb-avatar.png"
+                src="/vitana-orb-clean.svg"
                 alt={t('screens.vitanaIdentity.orbAlt')}
-                className="relative h-20 w-20 rounded-full"
+                className="relative h-20 w-20"
               />
             </div>
-            <p className="text-[10px] font-medium tracking-wide text-amber-300">
-              {t('screens.vitanaIdentity.vitana')}
+            <p className="text-[9px] font-medium text-amber-400/90">
+              {t('screens.common.vitanaSpeaking')}
             </p>
-            <div aria-hidden="true" className="flex gap-2">
-              <span className="h-5 w-5 rounded-full bg-slate-700" />
-              <span className="h-5 w-5 rounded-full bg-slate-700" />
+            <div aria-hidden="true" className="mt-1 flex gap-2.5">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#1e3a5f]">
+                <Mic className="h-3.5 w-3.5 text-sky-300" />
+              </span>
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#2a2f36]">
+                <X className="h-3.5 w-3.5 text-slate-300" />
+              </span>
             </div>
           </div>
           <PhoneShot src="/images/flyer/phone-news.jpg" className="relative z-10 mx-auto w-56" />
