@@ -137,7 +137,7 @@ export function CategoryShopSections({ category = "supplements", title }: Catego
             </Button>
           </div>
 
-          <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory px-0.5 pb-1 -mx-0.5">
+          <div className="flex items-stretch gap-3 overflow-x-auto snap-x snap-mandatory px-0.5 pb-1 -mx-0.5">
             {products.map((product) => (
               <CompactProductCard
                 key={product.id}
