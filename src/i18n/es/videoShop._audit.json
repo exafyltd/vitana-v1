@@ -1,210 +1,170 @@
 {
   "verdicts": {
-    "historyManagement.beta": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "historyManagement.title": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.viewAnalyze": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.organizeManage": {
+    "videoShop.feed.end": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.privacyData": {
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.exportHistory": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.exportHistoryDesc": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.viewStatistics": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.viewStatisticsDesc": {
+    "videoShop.feed.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.advancedSearch": {
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.advancedSearchDesc": {
+    "videoShop.feed.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.bulkActions": {
+    "videoShop.feed.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.bulkActionsDesc": {
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.archiveSettings": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.archiveSettingsDesc": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.manageCategories": {
+    "videoShop.feed.linkCopied": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.manageCategoriesDesc": {
+    "videoShop.drawer.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.privacyControls": {
+    "videoShop.drawer.productFallback": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.privacyControlsDesc": {
+    "videoShop.drawer.addToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.clearOldHistory": {
+    "videoShop.drawer.adding": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.clearOldHistoryDesc": {
+    "videoShop.drawer.addedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.deleteAllHistory": {
+    "videoShop.drawer.addedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.deleteAllHistoryDesc": {
+    "videoShop.drawer.addFailed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.exporting": {
+    "videoShop.drawer.goToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.clearing": {
+    "videoShop.drawer.moreDetails": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.deleting": {
+    "videoShop.drawer.notifyMe": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.exportComplete": {
+    "videoShop.drawer.outOfStock": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.exportCompleteDesc": {
+    "videoShop.drawer.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.exportFailed": {
+    "videoShop.drawer.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.exportFailedDesc": {
+    "videoShop.drawer.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.historyCleared": {
+    "videoShop.drawer.unavailableTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.historyClearedDesc": {
+    "videoShop.drawer.unavailableBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.clearFailed": {
+    "videoShop.drawer.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "historyManagement.clearFailedDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "historyManagement.allHistoryDeleted": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "historyManagement.allHistoryDeletedDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "historyManagement.deleteFailed": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "historyManagement.deleteFailedDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "historyManagement.confirmClearOld": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "historyManagement.confirmDeleteAll": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "historyManagement.danger": {
+    "videoShop.drawer.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-07-14T05:45:11.874Z"
+  "generatedAt": "2026-07-14T05:48:57.414Z"
 }
