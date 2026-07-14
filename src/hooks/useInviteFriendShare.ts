@@ -1,17 +1,13 @@
 /**
  * "Invite a friend" share flow — shares the hosted MAXINA download-flyer
- * page (/download) through the best channel available:
+ * page (/download) exactly like event/profile sharing does:
  *
- *   1. Web Share API → navigator.share (mobile browsers, Safari/Edge desktop)
- *   2. Appilix shell bridge → fire-and-forget (see below)
- *   3. Clipboard → copy link + toast — ALWAYS reached when (1) didn't handle
- *      the tap, so no environment can turn the tap into a silent no-op
- *
- * The Appilix bridge gives no acknowledgment: post() only tells us the
- * message was delivered to the shell, not that the shell supports the
- * `share` action (in production it ignored it, making the button appear
- * dead). So the bridge is never trusted as the terminal step — the
- * clipboard+toast always follows it as guaranteed visible feedback.
+ *   1. Web Share API → navigator.share — the native share dialog. Works in
+ *      the Appilix WebView too (event sharing proves it), so NO Appilix
+ *      bridge branch here: the shell's `share` action is unacknowledged and
+ *      ignored in production, and gating on it made the button a dead tap.
+ *   2. Clipboard → copy link + toast — only where no share dialog exists
+ *      (e.g. desktop Firefox), so a tap always has a visible outcome.
  *
  * The flyer URL carries the SENDER's app language (?lang=de) so a German
  * user's invite always opens a German flyer, independent of the recipient's
@@ -20,7 +16,6 @@
  */
 
 import { useCallback } from 'react';
-import { isAppilix, share as appilixShare } from '@/lib/appilix';
 import { useNativeShare } from '@/hooks/useNativeShare';
 import { DOWNLOAD_FLYER_URL } from '@/lib/store-links';
 import { getI18nLocale, t, notifySuccess, notifyError } from '@/lib/i18n-toast';
@@ -41,13 +36,6 @@ export function useInviteFriendShare() {
       const result = await share({ title, text, url: flyerUrl });
       // "cancelled" is a deliberate user action — no fallback, no toast.
       if (result !== 'failed') return;
-    }
-
-    if (isAppilix()) {
-      // The shell's share action takes plain text — append the URL so it
-      // stays tappable in messengers. Deliberately not returned on: the
-      // shell may not support the action and never acknowledges either way.
-      appilixShare(`${text}\n${flyerUrl}`, title);
     }
 
     try {
