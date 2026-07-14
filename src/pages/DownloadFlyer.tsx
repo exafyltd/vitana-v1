@@ -62,10 +62,10 @@ function FeatureRow({ icon, title, body }: { icon: React.ReactNode; title: strin
 }
 
 /** White-bezel phone frame around a real app screenshot. */
-function PhoneShot({ src, className }: { src: string; className?: string }) {
+function PhoneShot({ src, className, fill }: { src: string; className?: string; fill?: boolean }) {
   return (
     <div className={`overflow-hidden rounded-[1.75rem] border-4 border-white bg-white shadow-2xl shadow-indigo-900/20 dark:border-slate-700 dark:bg-slate-800 ${className ?? ''}`}>
-      <img src={src} alt="" aria-hidden="true" className="block w-full" />
+      <img src={src} alt="" aria-hidden="true" className={fill ? 'block h-full w-full object-cover object-top' : 'block w-full'} />
     </div>
   );
 }
@@ -122,9 +122,9 @@ export default function DownloadFlyer() {
 
         {/* Phone collage — real app screens */}
         <div className="relative mt-12 h-[440px] w-full">
-          <div className="absolute -left-4 top-10 w-36 -rotate-6">
-            <PhoneShot src="/images/flyer/phone-home.jpg" />
-          </div>
+          {/* Side cards mirror each other: same size (w-36 h-64), same top
+              offset, opposite edge inset and rotation as the orb card. */}
+          <PhoneShot src="/images/flyer/phone-home.jpg" fill className="absolute -left-2 top-16 h-64 w-36 -rotate-6" />
           {/* Vitana orb card — replica of the real "Vitana speaking" screen:
               steel-blue orb (vitana-orb-clean.svg) with amber glow on a
               near-black screen, caption + mic/close controls. */}
