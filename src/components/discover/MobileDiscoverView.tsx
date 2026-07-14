@@ -137,6 +137,8 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
 
         {/* Thematic collections — Longevity, Adaptogens, Sleep & Recovery, etc. */}
         <CategoryShopSections />
+
+        <CategoryShopSections category="skincare" title={translate('discover.skincareCosmetics')} />
       </div>
     );
   }
