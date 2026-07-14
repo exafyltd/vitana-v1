@@ -1,160 +1,170 @@
 {
   "verdicts": {
-    "lifeCompass.title": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.description": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.currentCompass": {
+    "videoShop.feed.end": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.alignment": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.confidence": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.suggestedGoals": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.customGoal": {
+    "videoShop.feed.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.customGoalPlaceholder": {
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.setCustomGoal": {
+    "videoShop.feed.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.closeAria": {
+    "videoShop.feed.roleBlockedBody": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.categoryLabels.wealth": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.categoryLabels.relationship": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.categoryLabels.health": {
+    "videoShop.feed.linkCopied": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.categoryLabels.career": {
+    "videoShop.drawer.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.categoryLabels.learning": {
+    "videoShop.drawer.productFallback": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.categoryLabels.spiritual": {
+    "videoShop.drawer.addToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.categoryLabels.longevity": {
+    "videoShop.drawer.adding": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.goals.wealth.title": {
+    "videoShop.drawer.addedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.goals.wealth.description": {
+    "videoShop.drawer.addedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.goals.relationship.title": {
+    "videoShop.drawer.addFailed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.goals.relationship.description": {
+    "videoShop.drawer.goToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.goals.health.title": {
+    "videoShop.drawer.moreDetails": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.goals.health.description": {
+    "videoShop.drawer.notifyMe": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.goals.career.title": {
+    "videoShop.drawer.outOfStock": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.goals.career.description": {
+    "videoShop.drawer.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.goals.learning.title": {
+    "videoShop.drawer.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.goals.learning.description": {
+    "videoShop.drawer.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.goals.spiritual.title": {
+    "videoShop.drawer.unavailableTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.goals.spiritual.description": {
+    "videoShop.drawer.unavailableBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.goals.longevity.title": {
+    "videoShop.drawer.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "lifeCompass.goals.longevity.description": {
+    "videoShop.drawer.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-07-14T05:46:40.753Z"
+  "generatedAt": "2026-07-14T06:05:56.800Z"
 }
