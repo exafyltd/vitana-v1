@@ -96,6 +96,18 @@ export default function DownloadFlyer() {
     void ensureCatalog(forcedLocale);
   }
 
+  // Platform-aware badges: only show the store the viewer can actually
+  // install from. Apple's store page has no download button on Android
+  // (and vice versa), which reads as a broken link. Desktop/unknown
+  // devices keep both badges. iPadOS reports "Macintosh" + touch.
+  const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
+  const isAndroid = /Android/i.test(ua);
+  const isIOS =
+    /iPhone|iPad|iPod/i.test(ua) ||
+    (/Macintosh/i.test(ua) && typeof navigator !== 'undefined' && navigator.maxTouchPoints > 1);
+  const showAppStore = !isAndroid;
+  const showPlayStore = !isIOS;
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-sky-100 via-indigo-100/70 to-rose-50 dark:from-slate-950 dark:via-indigo-950 dark:to-slate-900">
       {/* Iridescent pearl highlights */}
@@ -204,17 +216,21 @@ export default function DownloadFlyer() {
 
         {/* Store badges */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-          <StoreBadge
-            href={APP_STORE_URL}
-            src="/images/badges/app-store-badge.svg"
-            alt={t('screens.downloadFlyer.badgeAppStoreAlt')}
-          />
-          <StoreBadge
-            href={PLAY_STORE_URL}
-            marketHref={PLAY_STORE_MARKET_URL}
-            src="/images/badges/google-play-badge.svg"
-            alt={t('screens.downloadFlyer.badgeGooglePlayAlt')}
-          />
+          {showAppStore && (
+            <StoreBadge
+              href={APP_STORE_URL}
+              src="/images/badges/app-store-badge.svg"
+              alt={t('screens.downloadFlyer.badgeAppStoreAlt')}
+            />
+          )}
+          {showPlayStore && (
+            <StoreBadge
+              href={PLAY_STORE_URL}
+              marketHref={PLAY_STORE_MARKET_URL}
+              src="/images/badges/google-play-badge.svg"
+              alt={t('screens.downloadFlyer.badgeGooglePlayAlt')}
+            />
+          )}
         </div>
       </div>
     </div>
