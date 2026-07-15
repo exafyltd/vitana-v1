@@ -220,6 +220,7 @@ export default function ProductDetail() {
                         </a>
                       </Button>
                     </div>
+                    <RecommendButton productId={p.id} variant="cta" size="lg" className="w-full" />
                     <div className="flex flex-wrap gap-2">
                       <BookmarkButton
                         className="static"
@@ -231,7 +232,6 @@ export default function ProductDetail() {
                           item_metadata: { brand: p.brand, category: p.category },
                         }}
                       />
-                      <RecommendButton productId={p.id} variant="pill" />
                       <UniversalShareButton
                         content={{
                           type: "product",
