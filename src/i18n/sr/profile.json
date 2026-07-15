@@ -11,7 +11,55 @@
     "identity": {
       "vitanaIndex": "Vitana indeks",
       "basedOnActivity": "Na osnovu aktivnosti, angažovanja u zdravlju i doprinosa",
-      "viewLongevityId": "Pogledaj moj Longevity ID"
+      "viewLongevityId": "Pogledaj moj Longevity ID",
+      "follow": "Zaprati",
+      "followingState": "Pratim",
+      "understandIndex": "Razumi indeks",
+      "brandFooter": "MAXINA × VITANA"
+    },
+    "tabs": {
+      "identity": "Identitet",
+      "social": "Društveno",
+      "account": "Nalog"
+    },
+    "account": {
+      "notSet": "Nije uneseno",
+      "editField": "Uredi {field}",
+      "visibilityToggle": "Vidljivost: {label}. Dodirni da promeniš.",
+      "visibility": {
+        "private": "Privatno",
+        "connections": "Kontakti",
+        "public": "Javno"
+      },
+      "sections": {
+        "publicProfile": "Javni profil",
+        "publicProfileSubtitle": "Prikazano na identitetu",
+        "basicInfo": "Osnovni lični podaci",
+        "basicInfoSubtitle": "Fiksni podaci identiteta",
+        "contactInfo": "Kontakt informacije",
+        "accountDetails": "Detalji naloga"
+      },
+      "fields": {
+        "avatar": "Profilna slika",
+        "handle": "Handle",
+        "longevityArchetype": "Arhetip dugovečnosti",
+        "firstName": "Ime",
+        "lastName": "Prezime",
+        "dateOfBirth": "Datum rođenja",
+        "gender": "Pol",
+        "maritalStatus": "Bračni status",
+        "email": "Imejl",
+        "phone": "Telefon",
+        "address": "Adresa",
+        "country": "Država",
+        "city": "Grad",
+        "memberSince": "Član od",
+        "accountType": "Tip naloga",
+        "verificationStatus": "Status verifikacije"
+      },
+      "values": {
+        "uploaded": "Otpremljeno"
+      }
     }
   }
 }

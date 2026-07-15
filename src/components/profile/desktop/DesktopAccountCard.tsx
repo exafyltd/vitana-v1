@@ -12,6 +12,7 @@ import {
   useAccountVisibility,
 } from "../shared/useAccountVisibility";
 import { t } from '@/lib/i18n-toast';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface DesktopAccountCardProps {
   profile: UserProfile;
@@ -154,9 +155,14 @@ function DesktopAccountRow({
   onCycleVisibility,
   onEditField,
 }: DesktopAccountRowProps) {
+  const { translate } = useTranslation();
   const meta = VISIBILITY_META[visibility];
   const Icon = meta.icon;
   const hasValue = !!field.value;
+  const visibilityFallbacks: Record<string, string> = {
+    private: 'Private', connections: 'Connections', public: 'Public',
+  };
+  const metaLabel = translate(meta.labelKey, visibilityFallbacks[visibility]);
 
   return (
     <div className="flex items-center gap-3 rounded-xl border bg-background/60 px-4 py-3 transition-colors hover:bg-background">
@@ -168,7 +174,7 @@ function DesktopAccountRow({
           <p className="text-sm text-foreground truncate mt-0.5">{field.value}</p>
         ) : (
           <p className="text-sm italic text-muted-foreground/60 mt-0.5">
-            {isOwner ? "Not set" : "—"}
+            {isOwner ? translate('profile.account.notSet', 'Not set') : "—"}
           </p>
         )}
       </div>
@@ -176,7 +182,7 @@ function DesktopAccountRow({
       {isOwner && onEditField && (
         <button
           onClick={onEditField}
-          aria-label={`Edit ${field.label}`}
+          aria-label={t('profile.account.editField', { field: field.label })}
           className="h-8 w-8 rounded-full flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
         >
           <Pencil className="h-3.5 w-3.5" />
@@ -186,7 +192,7 @@ function DesktopAccountRow({
       {isOwner ? (
         <button
           onClick={onCycleVisibility}
-          aria-label={`Visibility: ${meta.label}. Click to change.`}
+          aria-label={t('profile.account.visibilityToggle', { label: metaLabel })}
           className="flex items-center gap-1.5 h-8 px-3 rounded-full border transition-all active:scale-95"
           style={{
             borderColor: `${meta.tint}40`,
@@ -195,7 +201,7 @@ function DesktopAccountRow({
           }}
         >
           <Icon className="h-3.5 w-3.5" strokeWidth={2.25} />
-          <span className="text-xs font-semibold">{meta.label}</span>
+          <span className="text-xs font-semibold">{metaLabel}</span>
         </button>
       ) : visibility === "private" ? (
         <div

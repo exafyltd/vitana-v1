@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 279
-- **Distinct i18n keys consumed:** 4263
+- **Distinct i18n keys consumed:** 4265
 - **Namespaces in use:** 43
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -104,11 +104,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/DownloadFlyer.tsx
 
-**Status:** ✅ clean — keys consumed: 18, namespaces: 1
+**Status:** ✅ clean — keys consumed: 20, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 18, total in shard: 9856
+- `screens` — used: 20, total in shard: 9856
 
 ### src/pages/EditProfilePage.tsx
 
@@ -117,7 +117,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `editProfile` — used: 11, total in shard: 17
-- `profile` — used: 1, total in shard: 9
+- `profile` — used: 1, total in shard: 45
 - `profileEditor` — used: 2, total in shard: 88
 - `screens` — used: 1, total in shard: 9856
 

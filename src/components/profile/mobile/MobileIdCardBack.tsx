@@ -109,20 +109,20 @@ export function MobileIdCardBack({
 
   return (
     <div className={cn("px-4 pb-2", className)}>
-      {/* Glass Card - Same style as Front ID */}
+      {/* Pastel Card - Same style as Front ID */}
       <div
-        className="relative rounded-2xl border border-white/5 overflow-hidden"
+        className="relative rounded-2xl border border-white/60 overflow-hidden"
         style={{
           // Android WebView (Appilix) can drop a card's gradient `background`
           // when the card paints on its own compositing layer, washing it out
-          // to the light page underneath (see MobileIdentityCard.tsx for the
-          // original occurrence). Keep a SOLID dark `backgroundColor` as a
-          // fallback so the card can never render light even if the gradient
+          // to the page underneath (see MobileIdentityCard.tsx for the
+          // original occurrence). Keep a SOLID pastel `backgroundColor` as a
+          // fallback so the card still renders on-brand even if the gradient
           // layer fails to paint, and promote the card onto its own stable
           // compositing layer so descendants can't knock out its background.
-          backgroundColor: "hsl(216, 53%, 8%)",
-          backgroundImage: "linear-gradient(135deg, hsl(216, 53%, 8%) 0%, hsl(222, 47%, 11%) 100%)",
-          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3)",
+          backgroundColor: "hsl(218, 65%, 92%)",
+          backgroundImage: "linear-gradient(170deg, hsl(205, 85%, 89%) 0%, hsl(228, 72%, 92%) 40%, hsl(262, 55%, 93%) 72%, hsl(310, 55%, 94%) 100%)",
+          boxShadow: "0 8px 28px rgba(99, 102, 241, 0.14)",
           isolation: "isolate",
           transform: "translateZ(0)"
         }}
@@ -131,10 +131,10 @@ export function MobileIdCardBack({
         <div className="p-6">
           {/* Header */}
           <div className="text-center mb-6">
-            <h2 className="text-lg font-semibold text-white mb-1">
+            <h2 className="text-lg font-semibold text-slate-800 mb-1">
               {translate('socialImport.socialPresence', 'Social Presence')}
             </h2>
-            <p className="text-xs text-white/50">
+            <p className="text-xs text-slate-500">
               {translate('socialImport.verifiedConnections', 'Verified connections across your digital life')}
             </p>
           </div>
@@ -176,7 +176,7 @@ export function MobileIdCardBack({
                     </span>
                     
                     {/* External link hint */}
-                    <ExternalLink className="h-2.5 w-2.5 text-white/30 mt-1" />
+                    <ExternalLink className="h-2.5 w-2.5 text-slate-400 mt-1" />
                   </button>
                 );
               })}
@@ -186,14 +186,14 @@ export function MobileIdCardBack({
           {/* Unconnected Platforms - Compact row */}
           {unconnectedPlatforms.length > 0 && editMode && (
             <>
-              <div className="h-px bg-white/5 my-4" />
+              <div className="h-px bg-black/5 my-4" />
               <div className="flex items-center justify-center gap-2">
-                <span className="text-[10px] text-white/40 mr-2">{translate('socialImport.connect', 'Connect:')}</span>
+                <span className="text-[10px] text-slate-500 mr-2">{translate('socialImport.connect', 'Connect:')}</span>
                 {unconnectedPlatforms.map((platform) => (
                   <button
                     key={platform.id}
                     onClick={() => handleConnect(platform)}
-                    className="flex items-center justify-center w-8 h-8 rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-white/10"
+                    className="flex items-center justify-center w-8 h-8 rounded-full border border-black/10 bg-white/60 transition-colors hover:bg-white/80"
                   >
                     <div className="opacity-40 grayscale">
                       {platform.icon}
@@ -207,16 +207,16 @@ export function MobileIdCardBack({
           {/* Empty state when no platforms connected */}
           {connectedPlatforms.length === 0 && (
             <div className="text-center py-6">
-              <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3">
-                <Plus className="h-5 w-5 text-white/40" />
+              <div className="w-12 h-12 rounded-full bg-white/60 flex items-center justify-center mx-auto mb-3">
+                <Plus className="h-5 w-5 text-slate-500" />
               </div>
-              <p className="text-sm text-white/50 mb-3">{translate('socialImport.noAccountsConnected', 'No social accounts connected')}</p>
+              <p className="text-sm text-slate-500 mb-3">{translate('socialImport.noAccountsConnected', 'No social accounts connected')}</p>
             </div>
           )}
 
           {/* Subtle footer note */}
           {connectedPlatforms.length > 0 && (
-            <p className="text-[10px] text-white/30 text-center mt-4 italic">
+            <p className="text-[10px] text-slate-400 text-center mt-4 italic">
               {translate('socialImport.tapToVisit', 'Tap to visit profile')}
             </p>
           )}

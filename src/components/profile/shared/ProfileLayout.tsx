@@ -205,14 +205,14 @@ export function ProfileLayout({
           onMessage={!isOwner ? handleMessageClick : undefined}
           isFollowing={isFollowing}
           followLoading={followLoading}
+          followersCount={followersCount}
+          followingCount={followingCount}
         />
-        
-        {/* Compact Stats Strip */}
+
+        {/* Compact Stats Strip (followers/following live inside the ID card) */}
         <MobileProfileStats
           userId={profileUserId}
           profileId={profile.id}
-          followersCount={followersCount}
-          followingCount={followingCount}
         />
         
         {/* Sticky Tab Bar for content below ID card */}

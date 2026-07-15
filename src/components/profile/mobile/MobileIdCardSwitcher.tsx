@@ -8,6 +8,7 @@ import { MobileAccountCard } from "./MobileAccountCard";
 import { MobileSubscriptionSummary } from "./MobileSubscriptionSummary";
 import { ProfileIdSegmentedControl } from "../shared/ProfileIdSegmentedControl";
 import { UserProfile } from "@/types/profile";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type CardSide = "front" | "back" | "account";
 const VALID_SIDES: ReadonlySet<CardSide> = new Set(["front", "back", "account"]);
@@ -25,14 +26,10 @@ interface MobileIdCardSwitcherProps {
   onMessage?: () => void;
   isFollowing?: boolean;
   followLoading?: boolean;
+  followersCount?: number;
+  followingCount?: number;
   className?: string;
 }
-
-const SEGMENTS: readonly { id: CardSide; label: string }[] = [
-  { id: "front", label: "Identity" },
-  { id: "back", label: "Social" },
-  { id: "account", label: "Account" },
-] as const;
 
 export function MobileIdCardSwitcher({
   profile,
@@ -47,8 +44,17 @@ export function MobileIdCardSwitcher({
   onMessage,
   isFollowing = false,
   followLoading = false,
+  followersCount,
+  followingCount,
   className
 }: MobileIdCardSwitcherProps) {
+  // Resolved at render so the labels follow the user's chosen language.
+  const { translate } = useTranslation();
+  const segments: readonly { id: CardSide; label: string }[] = [
+    { id: "front", label: translate('profile.tabs.identity', 'Identity') },
+    { id: "back", label: translate('profile.tabs.social', 'Social') },
+    { id: "account", label: translate('profile.tabs.account', 'Account') },
+  ];
   // Persist the active segment in the URL (?card=front|back|account) so
   // navigating away (e.g. into /profile/subscriptions) and back returns the
   // user to the segment they were on, instead of resetting to Identity.
@@ -79,11 +85,12 @@ export function MobileIdCardSwitcher({
       {/* Segmented Control — soft, secondary treatment so the card below
           stays the hero. Extra top padding gives it room to breathe
           between the app bar and the card. */}
-      <ProfileIdSegmentedControl<CardSide>
-        segments={SEGMENTS}
+      <ProfileIdSegmentedControl
+        segments={segments}
         value={activeSide}
         onChange={handleSegmentChange}
         size="sm"
+        accent="mint"
         className="px-4 pt-5 pb-5"
       />
 
@@ -107,6 +114,10 @@ export function MobileIdCardSwitcher({
                 onMessage={onMessage}
                 isFollowing={isFollowing}
                 followLoading={followLoading}
+                userId={profile.user_id}
+                profileId={profile.id}
+                followersCount={followersCount}
+                followingCount={followingCount}
               />
             </motion.div>
           )}

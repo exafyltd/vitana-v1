@@ -10,8 +10,11 @@ import {
 import { useProfile } from "@/context/ProfileProvider";
 import { useToast } from '@/hooks/use-toast';
 import { notifyError } from '@/lib/i18n-toast';
+import { useTranslation } from '@/hooks/useTranslation';
 
 import { fmtDate } from '@/lib/locale-format';
+
+type TranslateFn = (key: string, fallback?: string) => string;
 export interface AccountFieldDef {
   key: AccountFieldKey;
   label: string;
@@ -27,11 +30,11 @@ export interface AccountSectionDef {
 
 export const VISIBILITY_META: Record<
   FieldVisibility,
-  { label: string; icon: typeof Eye; tint: string }
+  { labelKey: string; icon: typeof Eye; tint: string }
 > = {
-  private:     { label: "Private",     icon: Lock,  tint: "hsl(0, 70%, 60%)"   },
-  connections: { label: "Connections", icon: Users, tint: "hsl(42, 90%, 58%)"  },
-  public:      { label: "Public",      icon: Eye,   tint: "hsl(150, 60%, 55%)" },
+  private:     { labelKey: "profile.account.visibility.private",     icon: Lock,  tint: "hsl(0, 70%, 60%)"   },
+  connections: { labelKey: "profile.account.visibility.connections", icon: Users, tint: "hsl(42, 90%, 58%)"  },
+  public:      { labelKey: "profile.account.visibility.public",      icon: Eye,   tint: "hsl(150, 60%, 55%)" },
 };
 
 const NEXT_VISIBILITY: Record<FieldVisibility, FieldVisibility> = {
@@ -47,46 +50,46 @@ export function formatAccountDate(iso?: string): string | undefined {
   return fmtDate(d, { year: "numeric", month: "short", day: "numeric" });
 }
 
-function buildSections(account: AccountInfo): AccountSectionDef[] {
+function buildSections(account: AccountInfo, tr: TranslateFn): AccountSectionDef[] {
   return [
     {
-      title: "Public profile",
-      subtitle: "Shown on Identity",
+      title: tr('profile.account.sections.publicProfile', 'Public profile'),
+      subtitle: tr('profile.account.sections.publicProfileSubtitle', 'Shown on Identity'),
       fields: [
-        { key: "avatarUrl",          label: "Avatar",              value: account.avatarUrl ? "Uploaded" : undefined },
-        { key: "handle",             label: "Handle",              value: account.handle ? `@${account.handle}` : undefined },
-        { key: "longevityArchetype", label: "Longevity archetype", value: account.longevityArchetype },
+        { key: "avatarUrl",          label: tr('profile.account.fields.avatar', 'Avatar'),                          value: account.avatarUrl ? tr('profile.account.values.uploaded', 'Uploaded') : undefined },
+        { key: "handle",             label: tr('profile.account.fields.handle', 'Handle'),                          value: account.handle ? `@${account.handle}` : undefined },
+        { key: "longevityArchetype", label: tr('profile.account.fields.longevityArchetype', 'Longevity archetype'), value: account.longevityArchetype },
       ],
     },
     {
-      title: "Basic Personal Information",
-      subtitle: "Fixed identity data",
+      title: tr('profile.account.sections.basicInfo', 'Basic Personal Information'),
+      subtitle: tr('profile.account.sections.basicInfoSubtitle', 'Fixed identity data'),
       fields: [
-        { key: "firstName",     label: "First name",     value: account.firstName },
-        { key: "lastName",      label: "Last name",      value: account.lastName },
-        { key: "dateOfBirth",   label: "Date of birth",  value: formatAccountDate(account.dateOfBirth) },
-        { key: "gender",        label: "Gender",         value: account.gender },
-        { key: "maritalStatus", label: "Marital status", value: account.maritalStatus },
+        { key: "firstName",     label: tr('profile.account.fields.firstName', 'First name'),         value: account.firstName },
+        { key: "lastName",      label: tr('profile.account.fields.lastName', 'Last name'),           value: account.lastName },
+        { key: "dateOfBirth",   label: tr('profile.account.fields.dateOfBirth', 'Date of birth'),    value: formatAccountDate(account.dateOfBirth) },
+        { key: "gender",        label: tr('profile.account.fields.gender', 'Gender'),                value: account.gender },
+        { key: "maritalStatus", label: tr('profile.account.fields.maritalStatus', 'Marital status'), value: account.maritalStatus },
       ],
     },
     {
-      title: "Contact Information",
+      title: tr('profile.account.sections.contactInfo', 'Contact Information'),
       fields: [
-        { key: "email",   label: "Email",   value: account.email },
-        { key: "phone",   label: "Phone",   value: account.phone },
-        { key: "address", label: "Address", value: account.address },
-        { key: "country", label: "Country", value: account.country },
-        { key: "city",    label: "City",    value: account.city },
+        { key: "email",   label: tr('profile.account.fields.email', 'Email'),     value: account.email },
+        { key: "phone",   label: tr('profile.account.fields.phone', 'Phone'),     value: account.phone },
+        { key: "address", label: tr('profile.account.fields.address', 'Address'), value: account.address },
+        { key: "country", label: tr('profile.account.fields.country', 'Country'), value: account.country },
+        { key: "city",    label: tr('profile.account.fields.city', 'City'),       value: account.city },
       ],
     },
     {
-      title: "Account Details",
+      title: tr('profile.account.sections.accountDetails', 'Account Details'),
       fields: [
-        { key: "memberSince",        label: "Member since", value: formatAccountDate(account.memberSince) },
-        { key: "accountType",        label: "Account type", value: account.accountType },
+        { key: "memberSince", label: tr('profile.account.fields.memberSince', 'Member since'), value: formatAccountDate(account.memberSince) },
+        { key: "accountType", label: tr('profile.account.fields.accountType', 'Account type'), value: account.accountType },
         {
           key: "verificationStatus",
-          label: "Verification status",
+          label: tr('profile.account.fields.verificationStatus', 'Verification status'),
           value: account.verificationStatus
             ? account.verificationStatus.charAt(0).toUpperCase() +
               account.verificationStatus.slice(1)
@@ -115,13 +118,17 @@ export function useAccountVisibility({
 }: UseAccountVisibilityOptions): UseAccountVisibilityResult {
   const { setFieldVisibility } = useProfile();
   const { toast } = useToast();
+  // Labels resolve through the i18n catalog — re-derive when the user's
+  // chosen language changes.
+  const { language, translate } = useTranslation();
 
   const account: AccountInfo = profile.account ?? {
     visibility: DEFAULT_ACCOUNT_VISIBILITY,
   };
   const visibility = account.visibility ?? DEFAULT_ACCOUNT_VISIBILITY;
 
-  const allSections = useMemo(() => buildSections(account), [account]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const allSections = useMemo(() => buildSections(account, translate), [account, language]);
 
   const sections = useMemo(() => {
     if (isOwner) return allSections;
@@ -141,7 +148,7 @@ export function useAccountVisibility({
       const next = NEXT_VISIBILITY[visibility[key]];
       try {
         await setFieldVisibility(key, next);
-      } catch (error: any) {
+      } catch {
         notifyError('toasts.profile.couldNotUpdateVisibility');
       }
     },
