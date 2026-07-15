@@ -200,47 +200,52 @@ export default function ProductDetail() {
                     ) : null}
                   </div>
 
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    <AddToCartButton
-                      item={{
-                        item_type: "product",
-                        item_id: p.id,
-                        item_name: p.title,
-                        item_price: p.price_cents ? p.price_cents / 100 : 0,
-                        item_image_url: p.images?.[0],
-                        item_metadata: { brand: p.brand, category: p.category },
-                      }}
-                      size="lg"
-                      className="flex-1 min-w-[160px]"
-                    />
-                    <Button asChild variant="outline" size="lg">
-                      <a href={redirectUrl} target="_blank" rel="noopener noreferrer">
-                        {t('screens.discover.buy')} <ExternalLink className="w-4 h-4 ml-1.5" />
-                      </a>
-                    </Button>
-                    <BookmarkButton
-                      item={{
-                        item_type: "product",
-                        item_id: p.id,
-                        item_name: p.title,
-                        item_image_url: p.images?.[0],
-                        item_metadata: { brand: p.brand, category: p.category },
-                      }}
-                    />
-                    <RecommendButton productId={p.id} variant="pill" size="lg" />
-                    <UniversalShareButton
-                      content={{
-                        type: "product",
-                        id: p.id,
-                        title: p.title,
-                        description: p.description ?? "",
-                        image_url: p.images?.[0],
-                        url: getShareUrl("product", p.id),
-                      }}
-                      variant="outline"
-                      size="lg"
-                      showLabel={false}
-                    />
+                  <div className="flex flex-col gap-2 pt-2">
+                    <div className="flex gap-2">
+                      <AddToCartButton
+                        item={{
+                          item_type: "product",
+                          item_id: p.id,
+                          item_name: p.title,
+                          item_price: p.price_cents ? p.price_cents / 100 : 0,
+                          item_image_url: p.images?.[0],
+                          item_metadata: { brand: p.brand, category: p.category },
+                        }}
+                        size="lg"
+                        className="flex-1 min-w-[160px]"
+                      />
+                      <Button asChild variant="outline" size="lg" className="flex-shrink-0">
+                        <a href={redirectUrl} target="_blank" rel="noopener noreferrer">
+                          {t('screens.discover.buy')} <ExternalLink className="w-4 h-4 ml-1.5" />
+                        </a>
+                      </Button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <BookmarkButton
+                        className="static"
+                        item={{
+                          item_type: "product",
+                          item_id: p.id,
+                          item_name: p.title,
+                          item_image_url: p.images?.[0],
+                          item_metadata: { brand: p.brand, category: p.category },
+                        }}
+                      />
+                      <RecommendButton productId={p.id} variant="pill" />
+                      <UniversalShareButton
+                        content={{
+                          type: "product",
+                          id: p.id,
+                          title: p.title,
+                          description: p.description ?? "",
+                          image_url: p.images?.[0],
+                          url: getShareUrl("product", p.id),
+                        }}
+                        variant="outline"
+                        size="icon"
+                        showLabel={false}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
