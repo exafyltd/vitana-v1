@@ -9,8 +9,10 @@ import { ProfileIdCardFront } from "../shared/ProfileIdCardFront";
 import { ProfileIdCardBack } from "../shared/ProfileIdCardBack";
 import { ProfileIdSegmentedControl } from "../shared/ProfileIdSegmentedControl";
 import { DesktopAccountCard } from "./DesktopAccountCard";
+import { DesktopBusinessCard } from "./DesktopBusinessCard";
+import { t } from "@/lib/i18n-toast";
 
-type DesktopCardSide = "identity" | "social" | "account";
+type DesktopCardSide = "identity" | "social" | "account" | "business";
 
 interface DesktopIdCardSwitcherProps {
   profile: UserProfile;
@@ -22,12 +24,6 @@ interface DesktopIdCardSwitcherProps {
   onEditAccount?: () => void;
   className?: string;
 }
-
-const SEGMENTS: readonly { id: DesktopCardSide; label: string }[] = [
-  { id: "identity", label: "Identity" },
-  { id: "social", label: "Social" },
-  { id: "account", label: "Account" },
-] as const;
 
 export function DesktopIdCardSwitcher({
   profile,
@@ -50,11 +46,22 @@ export function DesktopIdCardSwitcher({
     exit: { opacity: 0, x: -24 * direction },
   });
 
+  // Business (Recommend & Earn stats, VTID-02950) is owner-only — recomputed
+  // per render (not module-scope) so the new "business" label reacts to
+  // language changes; the other 3 stay hardcoded English pre-existing tech
+  // debt, out of scope for this feature.
+  const segments: readonly { id: DesktopCardSide; label: string }[] = [
+    { id: "identity", label: "Identity" },
+    { id: "social", label: "Social" },
+    { id: "account", label: "Account" },
+    ...(isOwner ? [{ id: "business" as const, label: t("profile.tabs.business") }] : []),
+  ];
+
   return (
     <div className={cn("relative pt-3 pb-3", className)}>
       <div className="container mx-auto px-6">
         <ProfileIdSegmentedControl<DesktopCardSide>
-          segments={SEGMENTS}
+          segments={segments}
           value={activeSide}
           onChange={setActiveSide}
           size="md"
@@ -100,6 +107,15 @@ export function DesktopIdCardSwitcher({
                   editMode={editMode}
                   onEdit={onEditAccount}
                 />
+              </motion.div>
+            )}
+            {activeSide === "business" && isOwner && (
+              <motion.div
+                key="business"
+                {...slotAnim(1)}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+              >
+                <DesktopBusinessCard />
               </motion.div>
             )}
           </AnimatePresence>

@@ -37,6 +37,10 @@
     "noResultsDesc": "Probaj druge pojmove za pretragu ili pregledaj kategorije.",
     "back": "Nazad",
     "productsFound": "{count} proizvoda",
+    "recommendProduct": "Preporuči",
+    "recommendShareTitle": "Pogledaj ovo: {product}",
+    "recommendLinkCopied": "Link za preporuku kopiran",
+    "recommendFailed": "Preporuka nije uspela. Pokušaj ponovo.",
     "categories": {
       "sleep": "Spavanje",
       "nutrition": "Ishrana",

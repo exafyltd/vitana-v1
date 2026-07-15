@@ -20,7 +20,8 @@
     "tabs": {
       "identity": "Identitet",
       "social": "Društveno",
-      "account": "Nalog"
+      "account": "Nalog",
+      "business": "Biznis"
     },
     "account": {
       "notSet": "Nije uneseno",
@@ -60,6 +61,16 @@
       "values": {
         "uploaded": "Otpremljeno"
       }
+    },
+    "business": {
+      "title": "Moje preporuke",
+      "subtitle": "Proizvodi koje si preporučio/la i koliko si na njima zaradio/la",
+      "empty": "Još nema preporuka",
+      "emptyDesc": "Preporuči proizvod iz Otkrij da bi ovde video/la svoje klikove, kupovine i provizije.",
+      "clicks": "{count} klikova",
+      "conversions": "{count} kupovina",
+      "totalEarned": "Ukupno zarađeno",
+      "statusActive": "Aktivna"
     }
   }
 }

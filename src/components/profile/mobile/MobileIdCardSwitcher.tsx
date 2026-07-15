@@ -5,13 +5,14 @@ import { cn } from "@/lib/utils";
 import { MobileIdentityCard } from "./MobileIdentityCard";
 import { MobileIdCardBack } from "./MobileIdCardBack";
 import { MobileAccountCard } from "./MobileAccountCard";
+import { MobileBusinessCard } from "./MobileBusinessCard";
 import { MobileSubscriptionSummary } from "./MobileSubscriptionSummary";
 import { ProfileIdSegmentedControl } from "../shared/ProfileIdSegmentedControl";
 import { UserProfile } from "@/types/profile";
 import { useTranslation } from "@/hooks/useTranslation";
 
-type CardSide = "front" | "back" | "account";
-const VALID_SIDES: ReadonlySet<CardSide> = new Set(["front", "back", "account"]);
+type CardSide = "front" | "back" | "account" | "business";
+const VALID_SIDES: ReadonlySet<CardSide> = new Set(["front", "back", "account", "business"]);
 
 interface MobileIdCardSwitcherProps {
   profile: UserProfile;
@@ -50,10 +51,12 @@ export function MobileIdCardSwitcher({
 }: MobileIdCardSwitcherProps) {
   // Resolved at render so the labels follow the user's chosen language.
   const { translate } = useTranslation();
+  // Business (Recommend & Earn stats, VTID-02950) is owner-only.
   const segments: readonly { id: CardSide; label: string }[] = [
     { id: "front", label: translate('profile.tabs.identity', 'Identity') },
     { id: "back", label: translate('profile.tabs.social', 'Social') },
     { id: "account", label: translate('profile.tabs.account', 'Account') },
+    ...(isOwner ? [{ id: "business" as const, label: translate('profile.tabs.business', 'Business') }] : []),
   ];
   // Persist the active segment in the URL (?card=front|back|account) so
   // navigating away (e.g. into /profile/subscriptions) and back returns the
@@ -85,7 +88,7 @@ export function MobileIdCardSwitcher({
       {/* Segmented Control — soft, secondary treatment so the card below
           stays the hero. Extra top padding gives it room to breathe
           between the app bar and the card. */}
-      <ProfileIdSegmentedControl
+      <ProfileIdSegmentedControl<CardSide>
         segments={segments}
         value={activeSide}
         onChange={handleSegmentChange}
@@ -145,6 +148,11 @@ export function MobileIdCardSwitcher({
                   <MobileSubscriptionSummary />
                 </div>
               )}
+            </motion.div>
+          )}
+          {activeSide === "business" && isOwner && (
+            <motion.div key="business" {...slotAnim(1)} transition={{ duration: 0.25, ease: "easeInOut" }}>
+              <MobileBusinessCard />
             </motion.div>
           )}
         </AnimatePresence>

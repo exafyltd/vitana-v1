@@ -11,7 +11,8 @@
  * different container.
  */
 
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -34,6 +35,7 @@ import SEO from "@/components/SEO";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
 import { UniversalShareButton } from "@/components/sharing/UniversalShareButton";
 import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
+import { RecommendButton } from "@/components/discover/RecommendButton";
 import { ProductImage } from "@/components/discover/ProductImage";
 import { AffiliateDisclosure } from "@/components/discover/AffiliateDisclosure";
 import {
@@ -45,10 +47,26 @@ import { getShareUrl } from "@/lib/shareUrl";
 import { t } from '@/lib/i18n-toast';
 
 import { fmtNumber } from '@/lib/locale-format';
+function useRecommendationId(productId: string | undefined): string | null {
+  const [searchParams] = useSearchParams();
+  const urlRecId = searchParams.get("rec");
+
+  useEffect(() => {
+    if (urlRecId && productId) {
+      sessionStorage.setItem(`vitana.rec.${productId}`, urlRecId);
+    }
+  }, [urlRecId, productId]);
+
+  if (urlRecId) return urlRecId;
+  if (!productId) return null;
+  return sessionStorage.getItem(`vitana.rec.${productId}`);
+}
+
 export default function ProductDetail() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { data, isLoading, error } = useMarketplaceProduct(id);
+  const recId = useRecommendationId(id);
 
   if (isLoading) {
     return (
@@ -100,7 +118,10 @@ export default function ProductDetail() {
   const goals = Array.isArray(p.health_goals) ? p.health_goals : [];
   const dietary = Array.isArray(p.dietary_tags) ? p.dietary_tags : [];
   const evidence = Array.isArray(p.evidence_links) ? p.evidence_links : [];
-  const redirectUrl = getRedirectUrl(p.id, "product-page");
+  // "product_detail" (underscore) matches the gateway's ATTRIBUTION_SURFACES
+  // enum exactly — the previous "product-page" (hyphen) never matched, so
+  // every click from this page silently fell through to the 'direct' default.
+  const redirectUrl = getRedirectUrl(p.id, "product_detail", recId);
   const priceText = formatPrice(p.price_cents, p.currency);
   const compareAtText = formatPrice(p.compare_at_price_cents, p.currency);
 
@@ -206,6 +227,7 @@ export default function ProductDetail() {
                         item_metadata: { brand: p.brand, category: p.category },
                       }}
                     />
+                    <RecommendButton productId={p.id} className="static" />
                     <UniversalShareButton
                       content={{
                         type: "product",

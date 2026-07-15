@@ -20,7 +20,8 @@
     "tabs": {
       "identity": "Identity",
       "social": "Social",
-      "account": "Account"
+      "account": "Account",
+      "business": "Business"
     },
     "account": {
       "notSet": "Not set",
@@ -60,6 +61,16 @@
       "values": {
         "uploaded": "Uploaded"
       }
+    },
+    "business": {
+      "title": "My Recommendations",
+      "subtitle": "Products you've recommended, and what you've earned from them",
+      "empty": "No recommendations yet",
+      "emptyDesc": "Recommend a product from Discover to see your clicks, purchases, and commissions here.",
+      "clicks": "{count} clicks",
+      "conversions": "{count} purchases",
+      "totalEarned": "Total earned",
+      "statusActive": "Active"
     }
   }
 }

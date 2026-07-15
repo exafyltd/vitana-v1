@@ -228,6 +228,59 @@ export function formatPrice(cents: number | null | undefined, currency: string |
   }).format(eurCents / 100);
 }
 
-export function getRedirectUrl(productId: string, surface: string = "discover"): string {
-  return `${GATEWAY_URL}/r/${productId}?surface=${surface}`;
+export function getRedirectUrl(productId: string, surface: string = "discover", recId?: string | null): string {
+  const base = `${GATEWAY_URL}/r/${productId}?surface=${surface}`;
+  return recId ? `${base}&rec_id=${encodeURIComponent(recId)}` : base;
+}
+
+// ==================== Recommend & Earn (VTID-02950) ====================
+
+export interface CreateRecommendationResponse {
+  ok: boolean;
+  recommendation_id: string;
+  share_url: string;
+  product_title: string;
+  error?: string;
+}
+
+/** Creates (or reuses) the caller's recommendation for a product and returns a shareable link. */
+export async function createProductRecommendation(productId: string): Promise<CreateRecommendationResponse> {
+  const headers = await authHeaders();
+  const resp = await fetch(`${GATEWAY_URL}/api/v1/discover/recommendations`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ product_id: productId }),
+  });
+  const data = await resp.json();
+  if (!resp.ok || !data.ok) throw new Error(data.error || `Recommend failed: ${resp.status}`);
+  return data;
+}
+
+export interface MyRecommendationItem {
+  id: string;
+  product_id: string;
+  product_title: string | null;
+  product_thumbnail_url: string | null;
+  status: string;
+  click_count: number;
+  conversion_count: number;
+  commission_earned_minor: number;
+  currency: string;
+  created_at: string;
+}
+
+export function useMyRecommendations(opts: { enabled?: boolean } = {}) {
+  return useQuery<{ ok: boolean; items: MyRecommendationItem[] }>({
+    queryKey: ["my-recommendations"],
+    queryFn: async () => {
+      if (!GATEWAY_URL) throw new Error("GATEWAY_URL not configured");
+      const headers = await authHeaders();
+      const resp = await fetch(`${GATEWAY_URL}/api/v1/discover/my-recommendations`, { headers });
+      if (!resp.ok) throw new Error(`My recommendations failed: ${resp.status}`);
+      return resp.json();
+    },
+    enabled: opts.enabled !== false,
+    staleTime: 30_000,
+    refetchOnWindowFocus: false,
+  });
 }
