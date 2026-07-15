@@ -48,12 +48,10 @@ export function RecommendButton({ productId, className, variant = "badge", size 
         onClick={handleClick}
         disabled={isRecommending || isRecommended}
         className={cn(
-          "rounded-full border-2 transition-all",
-          isRecommended
-            ? "bg-emerald-600 border-emerald-600 text-white hover:bg-emerald-600 disabled:opacity-100"
-            : "border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40",
+          "rounded-full transition-all",
           isRecommending && "opacity-60",
-          className
+          className,
+          isRecommended && "bg-emerald-600 border-emerald-600 text-white hover:bg-emerald-600 disabled:opacity-100"
         )}
       >
         <BadgeCheck className="h-4 w-4" />
