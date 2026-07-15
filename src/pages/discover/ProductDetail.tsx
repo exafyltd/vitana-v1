@@ -227,7 +227,7 @@ export default function ProductDetail() {
                         item_metadata: { brand: p.brand, category: p.category },
                       }}
                     />
-                    <RecommendButton productId={p.id} className="static" />
+                    <RecommendButton productId={p.id} variant="pill" size="lg" />
                     <UniversalShareButton
                       content={{
                         type: "product",
