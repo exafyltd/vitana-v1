@@ -11,7 +11,55 @@
     "identity": {
       "vitanaIndex": "Vitana Index",
       "basedOnActivity": "Basierend auf Aktivität, Gesundheitsengagement & Beitrag",
-      "viewLongevityId": "Meine Langlebigkeits-ID anzeigen"
+      "viewLongevityId": "Meine Langlebigkeits-ID anzeigen",
+      "follow": "Folgen",
+      "followingState": "Folge ich",
+      "understandIndex": "Index verstehen",
+      "brandFooter": "MAXINA × VITANA"
+    },
+    "tabs": {
+      "identity": "Identität",
+      "social": "Soziales",
+      "account": "Konto"
+    },
+    "account": {
+      "notSet": "Nicht angegeben",
+      "editField": "{field} bearbeiten",
+      "visibilityToggle": "Sichtbarkeit: {label}. Zum Ändern tippen.",
+      "visibility": {
+        "private": "Privat",
+        "connections": "Kontakte",
+        "public": "Öffentlich"
+      },
+      "sections": {
+        "publicProfile": "Öffentliches Profil",
+        "publicProfileSubtitle": "Wird auf Identität angezeigt",
+        "basicInfo": "Persönliche Basisdaten",
+        "basicInfoSubtitle": "Feste Identitätsdaten",
+        "contactInfo": "Kontaktinformationen",
+        "accountDetails": "Kontodetails"
+      },
+      "fields": {
+        "avatar": "Profilbild",
+        "handle": "Handle",
+        "longevityArchetype": "Langlebigkeits-Archetyp",
+        "firstName": "Vorname",
+        "lastName": "Nachname",
+        "dateOfBirth": "Geburtsdatum",
+        "gender": "Geschlecht",
+        "maritalStatus": "Familienstand",
+        "email": "E-Mail",
+        "phone": "Telefon",
+        "address": "Adresse",
+        "country": "Land",
+        "city": "Stadt",
+        "memberSince": "Mitglied seit",
+        "accountType": "Kontotyp",
+        "verificationStatus": "Verifizierungsstatus"
+      },
+      "values": {
+        "uploaded": "Hochgeladen"
+      }
     }
   }
 }
