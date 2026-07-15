@@ -336,7 +336,7 @@ function DrawerBody() {
             {t('screens.discover.buy')} <ExternalLink className="w-4 h-4 ml-1.5" />
           </a>
         </Button>
-        <RecommendButton productId={p.id} className="static flex-shrink-0" />
+        <RecommendButton productId={p.id} variant="pill" size="sm" className="flex-shrink-0" />
         <UniversalShareButton
           content={{
             type: "product",
