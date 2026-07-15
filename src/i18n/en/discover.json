@@ -41,6 +41,8 @@
     "recommendShareTitle": "Check this out: {product}",
     "recommendLinkCopied": "Recommendation link copied",
     "recommendFailed": "Recommendation failed. Try again.",
+    "recommendAdded": "Added to your recommendations",
+    "alreadyRecommended": "Already recommended",
     "categories": {
       "sleep": "Sleep",
       "nutrition": "Nutrition",

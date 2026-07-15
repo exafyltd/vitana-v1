@@ -41,6 +41,8 @@
     "recommendShareTitle": "Mira esto: {product}",
     "recommendLinkCopied": "Enlace de recomendación copiado",
     "recommendFailed": "No se pudo recomendar. Inténtalo de nuevo.",
+    "recommendAdded": "Añadido a tus recomendaciones",
+    "alreadyRecommended": "Ya recomendado",
     "categories": {
       "sleep": "Sueño",
       "nutrition": "Nutrición",

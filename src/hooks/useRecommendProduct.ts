@@ -1,43 +1,36 @@
 /**
  * VTID-02950: "Recommend & Earn" — recommend a Discover product to others.
  *
- * Mirrors useInviteFriendShare.ts's share pattern: native share dialog first,
- * clipboard-copy + toast fallback where no share dialog exists.
+ * Silently records the recommendation (find-or-create, idempotent on the
+ * backend) and confirms with a toast. Sharing the resulting link is a
+ * separate, on-demand action from the Business profile tab — see the
+ * per-row share button in MobileBusinessCard.tsx / DesktopBusinessCard.tsx.
  */
 
 import { useCallback, useState } from "react";
-import { useNativeShare } from "@/hooks/useNativeShare";
-import { createProductRecommendation } from "@/hooks/useMarketplace";
-import { t, notifySuccess, notifyError } from "@/lib/i18n-toast";
+import { useQueryClient } from "@tanstack/react-query";
+import { createProductRecommendation, useMyRecommendations } from "@/hooks/useMarketplace";
+import { notifySuccess, notifyError } from "@/lib/i18n-toast";
 
-export function useRecommendProduct() {
+export function useRecommendProduct(productId: string) {
   const [isRecommending, setIsRecommending] = useState(false);
-  const { share } = useNativeShare({ contentId: "product-recommend", contentType: "product_recommendation" });
+  const queryClient = useQueryClient();
+  const { data } = useMyRecommendations();
+  const isRecommended = (data?.items ?? []).some((item) => item.product_id === productId);
 
-  const recommendProduct = useCallback(
-    async (productId: string) => {
-      setIsRecommending(true);
-      try {
-        const { share_url, product_title } = await createProductRecommendation(productId);
-        const title = t("discover.recommendShareTitle", { product: product_title });
+  const recommendProduct = useCallback(async () => {
+    if (isRecommended) return;
+    setIsRecommending(true);
+    try {
+      await createProductRecommendation(productId);
+      notifySuccess("discover.recommendAdded");
+      await queryClient.invalidateQueries({ queryKey: ["my-recommendations"] });
+    } catch {
+      notifyError("discover.recommendFailed");
+    } finally {
+      setIsRecommending(false);
+    }
+  }, [productId, isRecommended, queryClient]);
 
-        const result = await share({ title, url: share_url });
-        if (result === "failed") {
-          try {
-            await navigator.clipboard.writeText(share_url);
-            notifySuccess("discover.recommendLinkCopied");
-          } catch {
-            notifyError("toasts.common.couldnTCopyPleaseCopyLink");
-          }
-        }
-      } catch {
-        notifyError("discover.recommendFailed");
-      } finally {
-        setIsRecommending(false);
-      }
-    },
-    [share]
-  );
-
-  return { recommendProduct, isRecommending };
+  return { recommendProduct, isRecommending, isRecommended };
 }

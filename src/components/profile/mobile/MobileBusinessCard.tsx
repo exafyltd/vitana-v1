@@ -5,13 +5,31 @@
  */
 
 import { Link } from "react-router-dom";
-import { Briefcase, MousePointerClick, ShoppingBag } from "lucide-react";
-import { useMyRecommendations, formatPrice } from "@/hooks/useMarketplace";
-import { t } from "@/lib/i18n-toast";
+import { Briefcase, MousePointerClick, ShoppingBag, Share2 } from "lucide-react";
+import { useMyRecommendations, formatPrice, MyRecommendationItem } from "@/hooks/useMarketplace";
+import { useNativeShare } from "@/hooks/useNativeShare";
+import { t, notifySuccess, notifyError } from "@/lib/i18n-toast";
 
 export function MobileBusinessCard() {
   const { data, isLoading } = useMyRecommendations();
   const items = data?.items ?? [];
+  const { share } = useNativeShare({ contentId: "business-recommendation-row", contentType: "product_recommendation" });
+
+  const handleShare = async (e: React.MouseEvent, item: MyRecommendationItem) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const url = `${window.location.origin}/discover/product/${item.product_id}?rec=${item.id}`;
+    const title = t("discover.recommendShareTitle", { product: item.product_title ?? "" });
+    const result = await share({ title, url });
+    if (result === "failed") {
+      try {
+        await navigator.clipboard.writeText(url);
+        notifySuccess("discover.recommendLinkCopied");
+      } catch {
+        notifyError("toasts.common.couldnTCopyPleaseCopyLink");
+      }
+    }
+  };
 
   return (
     <div className="rounded-2xl bg-card border border-border/40 shadow-sm p-4 space-y-1">
@@ -61,6 +79,15 @@ export function MobileBusinessCard() {
                   {formatPrice(item.commission_earned_minor, item.currency)}
                 </div>
               </div>
+              <button
+                type="button"
+                onClick={(e) => handleShare(e, item)}
+                className="self-center shrink-0 p-2 -mr-1 rounded-full hover:bg-muted/60 text-muted-foreground"
+                aria-label={t("profile.business.shareRow")}
+                title={t("profile.business.shareRow")}
+              >
+                <Share2 className="h-4 w-4" />
+              </button>
             </Link>
           ))}
         </div>

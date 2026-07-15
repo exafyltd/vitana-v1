@@ -12,7 +12,7 @@ import { DesktopAccountCard } from "./DesktopAccountCard";
 import { DesktopBusinessCard } from "./DesktopBusinessCard";
 import { t } from "@/lib/i18n-toast";
 
-type DesktopCardSide = "identity" | "social" | "account" | "business";
+export type DesktopCardSide = "identity" | "social" | "account" | "business";
 
 interface DesktopIdCardSwitcherProps {
   profile: UserProfile;
@@ -23,6 +23,11 @@ interface DesktopIdCardSwitcherProps {
   onEditSocial?: () => void;
   onEditAccount?: () => void;
   className?: string;
+  /** Controlled active segment — lets the parent (ProfileLayout.tsx) gate its
+   *  own Posts/About/Media/Groups tab system off of this value (VTID-02950
+   *  round 2). Falls back to internal state when the parent doesn't pass it. */
+  activeSide?: DesktopCardSide;
+  onActiveSideChange?: (side: DesktopCardSide) => void;
 }
 
 export function DesktopIdCardSwitcher({
@@ -34,8 +39,15 @@ export function DesktopIdCardSwitcher({
   onEditSocial,
   onEditAccount,
   className,
+  activeSide: controlledActiveSide,
+  onActiveSideChange,
 }: DesktopIdCardSwitcherProps) {
-  const [activeSide, setActiveSide] = useState<DesktopCardSide>("identity");
+  const [internalActiveSide, setInternalActiveSide] = useState<DesktopCardSide>("identity");
+  const activeSide = controlledActiveSide ?? internalActiveSide;
+  const setActiveSide = (side: DesktopCardSide) => {
+    setInternalActiveSide(side);
+    onActiveSideChange?.(side);
+  };
   const { user } = useAuth();
   const targetUserId = scope === "owner" ? user?.id : profile.id;
   const { themeConfig, cycleTheme } = useProfileTheme(targetUserId);
