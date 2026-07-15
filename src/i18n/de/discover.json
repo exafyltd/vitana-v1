@@ -37,6 +37,10 @@
     "noResultsDesc": "Versuche andere Suchbegriffe oder durchsuche die Kategorien.",
     "back": "Zurück",
     "productsFound": "{count} Produkte",
+    "recommendProduct": "Empfehlen",
+    "recommendShareTitle": "Schau dir das an: {product}",
+    "recommendLinkCopied": "Empfehlungslink kopiert",
+    "recommendFailed": "Empfehlung fehlgeschlagen. Versuch's noch mal.",
     "categories": {
       "sleep": "Schlaf",
       "nutrition": "Ernährung",

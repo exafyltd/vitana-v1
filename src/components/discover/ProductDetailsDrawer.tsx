@@ -30,6 +30,7 @@ import { formatPrice, getRedirectUrl } from "@/hooks/useMarketplace";
 import { ProductImage } from "@/components/discover/ProductImage";
 import { AffiliateDisclosure } from "@/components/discover/AffiliateDisclosure";
 import { AddToCartButton } from "@/components/cart/AddToCartButton";
+import { RecommendButton } from "@/components/discover/RecommendButton";
 import { UniversalShareButton } from "@/components/sharing/UniversalShareButton";
 import { getShareUrl } from "@/lib/shareUrl";
 import { t } from '@/lib/i18n-toast';
@@ -79,7 +80,14 @@ function DrawerBody() {
   const ingredients = Array.isArray(p.ingredients_primary) ? p.ingredients_primary : [];
   const goals = Array.isArray(p.health_goals) ? p.health_goals : [];
   const dietary = Array.isArray(p.dietary_tags) ? p.dietary_tags : [];
-  const redirectUrl = getRedirectUrl(p.id, "product-drawer");
+  // "product_detail" (underscore) matches the gateway's ATTRIBUTION_SURFACES
+  // enum exactly — the previous "product-drawer" never matched, so every
+  // click from this drawer silently fell through to the 'direct' default.
+  // The rec id (if the user arrived via a recommend link earlier this
+  // session) is read from the same sessionStorage key ProductDetail.tsx
+  // writes — the drawer has no URL of its own to carry ?rec= directly.
+  const recId = typeof window !== "undefined" ? sessionStorage.getItem(`vitana.rec.${p.id}`) : null;
+  const redirectUrl = getRedirectUrl(p.id, "product_detail", recId);
 
   return (
     <div className="flex flex-col h-full pb-24 md:pb-0">
@@ -328,6 +336,7 @@ function DrawerBody() {
             {t('screens.discover.buy')} <ExternalLink className="w-4 h-4 ml-1.5" />
           </a>
         </Button>
+        <RecommendButton productId={p.id} className="static flex-shrink-0" />
         <UniversalShareButton
           content={{
             type: "product",

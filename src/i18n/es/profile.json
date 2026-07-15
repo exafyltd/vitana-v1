@@ -20,7 +20,8 @@
     "tabs": {
       "identity": "Identidad",
       "social": "Social",
-      "account": "Cuenta"
+      "account": "Cuenta",
+      "business": "Negocio"
     },
     "account": {
       "notSet": "Sin especificar",
@@ -60,6 +61,16 @@
       "values": {
         "uploaded": "Subido"
       }
+    },
+    "business": {
+      "title": "Mis recomendaciones",
+      "subtitle": "Productos que has recomendado y lo que has ganado con ellos",
+      "empty": "Aún no hay recomendaciones",
+      "emptyDesc": "Recomienda un producto desde Descubre para ver aquí tus clics, compras y comisiones.",
+      "clicks": "{count} clics",
+      "conversions": "{count} compras",
+      "totalEarned": "Total ganado",
+      "statusActive": "Activa"
     }
   }
 }
