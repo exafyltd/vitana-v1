@@ -38,6 +38,7 @@
     "back": "Back",
     "productsFound": "{count} products",
     "recommendProduct": "Recommend",
+    "recommendAndEarn": "Recommend & Earn",
     "recommendShareTitle": "Check this out: {product}",
     "recommendLinkCopied": "Recommendation link copied",
     "recommendFailed": "Recommendation failed. Try again.",

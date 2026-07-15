@@ -38,6 +38,7 @@
     "back": "Nazad",
     "productsFound": "{count} proizvoda",
     "recommendProduct": "Preporuči",
+    "recommendAndEarn": "Preporuči i zaradi",
     "recommendShareTitle": "Pogledaj ovo: {product}",
     "recommendLinkCopied": "Link za preporuku kopiran",
     "recommendFailed": "Preporuka nije uspela. Pokušaj ponovo.",

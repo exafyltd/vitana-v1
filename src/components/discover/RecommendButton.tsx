@@ -3,20 +3,22 @@
  * buys it via the shared link, the recommender earns a wallet commission.
  *
  * Clicking silently records the recommendation (toast confirms) — it does
- * NOT open a share dialog. Once recommended, the button shows an "already
- * recommended" filled state and further clicks are a no-op. Sharing the
- * link is a separate action from the Business profile tab.
+ * NOT open a share dialog. Once recommended, the button shows a "recommended"
+ * filled state and further clicks are a no-op. Sharing the link is a
+ * separate action from the Business profile tab.
  *
  * Two visual treatments:
  *  - "badge" (default): compact icon-only circle for card-corner overlays
  *    (PremiumProductCard, ProductListRow) — sibling to BookmarkButton
  *    (opposite corner: bookmark is top-right, this is top-left).
- *  - "pill": labeled chip (icon + "Recommend" text) for spacious action rows
- *    (ProductDetail, ProductDetailsDrawer) where a bare icon read as barely
- *    visible next to bordered siblings like Buy/Share.
+ *  - "cta": prominent green pill (icon badge + "Recommend & Earn" text +
+ *    trailing chevron) for spacious action rows (ProductDetail,
+ *    ProductDetailsDrawer) — the chevron is purely decorative, matching
+ *    this codebase's existing row-affordance convention (MobileWalletBalanceCard,
+ *    MobileIntegrationRow), not an independently-clickable target.
  */
 
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, Star, ChevronRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useRecommendProduct } from "@/hooks/useRecommendProduct";
@@ -25,7 +27,7 @@ import { t } from "@/lib/i18n-toast";
 interface RecommendButtonProps {
   productId: string;
   className?: string;
-  variant?: "badge" | "pill";
+  variant?: "badge" | "cta";
   size?: "sm" | "default" | "lg";
 }
 
@@ -40,22 +42,27 @@ export function RecommendButton({ productId, className, variant = "badge", size 
 
   const label = t(isRecommended ? "discover.alreadyRecommended" : "discover.recommendProduct");
 
-  if (variant === "pill") {
+  if (variant === "cta") {
+    const ctaLabel = isRecommended ? t("discover.alreadyRecommended") : t("discover.recommendAndEarn");
     return (
       <Button
-        variant="outline"
+        variant="default"
         size={size}
         onClick={handleClick}
         disabled={isRecommending || isRecommended}
         className={cn(
-          "rounded-full transition-all",
-          isRecommending && "opacity-60",
-          className,
-          isRecommended && "bg-emerald-600 border-emerald-600 text-white hover:bg-emerald-600 disabled:opacity-100"
+          "justify-between rounded-full bg-emerald-600 hover:bg-emerald-700 text-white disabled:opacity-100",
+          isRecommending && "opacity-70",
+          className
         )}
       >
-        <BadgeCheck className="h-4 w-4" />
-        {label}
+        <span className="flex items-center gap-2">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20">
+            <Star className="h-3.5 w-3.5 fill-white text-white" />
+          </span>
+          {ctaLabel}
+        </span>
+        {isRecommended ? <Check className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
       </Button>
     );
   }

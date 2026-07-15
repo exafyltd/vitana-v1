@@ -38,6 +38,7 @@
     "back": "Zurück",
     "productsFound": "{count} Produkte",
     "recommendProduct": "Empfehlen",
+    "recommendAndEarn": "Empfehlen & verdienen",
     "recommendShareTitle": "Schau dir das an: {product}",
     "recommendLinkCopied": "Empfehlungslink kopiert",
     "recommendFailed": "Empfehlung fehlgeschlagen. Versuch's noch mal.",
