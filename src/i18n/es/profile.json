@@ -70,7 +70,8 @@
       "clicks": "{count} clics",
       "conversions": "{count} compras",
       "totalEarned": "Total ganado",
-      "statusActive": "Activa"
+      "statusActive": "Activa",
+      "shareRow": "Compartir enlace de recomendación"
     }
   }
 }

@@ -11,8 +11,20 @@ import { ProfileIdSegmentedControl } from "../shared/ProfileIdSegmentedControl";
 import { UserProfile } from "@/types/profile";
 import { useTranslation } from "@/hooks/useTranslation";
 
-type CardSide = "front" | "back" | "account" | "business";
+export type CardSide = "front" | "back" | "account" | "business";
 const VALID_SIDES: ReadonlySet<CardSide> = new Set(["front", "back", "account", "business"]);
+
+/**
+ * Shared with parent pages (EditProfilePage.tsx, ProfileLayout.tsx) so they
+ * can independently derive which segment is active — from the same ?card=
+ * URL param this component itself reads — to gate the unrelated
+ * Posts/About/Media/Groups tab system below them (VTID-02950 round 2: that
+ * system must not render under the Business segment).
+ */
+export function getActiveCardSide(searchParams: URLSearchParams): CardSide {
+  const param = searchParams.get("card");
+  return param && VALID_SIDES.has(param as CardSide) ? (param as CardSide) : "front";
+}
 
 interface MobileIdCardSwitcherProps {
   profile: UserProfile;
@@ -62,10 +74,7 @@ export function MobileIdCardSwitcher({
   // navigating away (e.g. into /profile/subscriptions) and back returns the
   // user to the segment they were on, instead of resetting to Identity.
   const [searchParams, setSearchParams] = useSearchParams();
-  const param = searchParams.get("card");
-  const activeSide: CardSide = param && VALID_SIDES.has(param as CardSide)
-    ? (param as CardSide)
-    : "front";
+  const activeSide = getActiveCardSide(searchParams);
 
   const handleSegmentChange = useCallback(
     (next: CardSide) => {

@@ -4,10 +4,11 @@
  */
 
 import { Link } from "react-router-dom";
-import { Briefcase, MousePointerClick, ShoppingBag } from "lucide-react";
+import { Briefcase, MousePointerClick, ShoppingBag, Share2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useMyRecommendations, formatPrice } from "@/hooks/useMarketplace";
-import { t } from "@/lib/i18n-toast";
+import { useMyRecommendations, formatPrice, MyRecommendationItem } from "@/hooks/useMarketplace";
+import { useNativeShare } from "@/hooks/useNativeShare";
+import { t, notifySuccess, notifyError } from "@/lib/i18n-toast";
 
 interface DesktopBusinessCardProps {
   className?: string;
@@ -16,6 +17,23 @@ interface DesktopBusinessCardProps {
 export function DesktopBusinessCard({ className }: DesktopBusinessCardProps) {
   const { data, isLoading } = useMyRecommendations();
   const items = data?.items ?? [];
+  const { share } = useNativeShare({ contentId: "business-recommendation-row", contentType: "product_recommendation" });
+
+  const handleShare = async (e: React.MouseEvent, item: MyRecommendationItem) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const url = `${window.location.origin}/discover/product/${item.product_id}?rec=${item.id}`;
+    const title = t("discover.recommendShareTitle", { product: item.product_title ?? "" });
+    const result = await share({ title, url });
+    if (result === "failed") {
+      try {
+        await navigator.clipboard.writeText(url);
+        notifySuccess("discover.recommendLinkCopied");
+      } catch {
+        notifyError("toasts.common.couldnTCopyPleaseCopyLink");
+      }
+    }
+  };
 
   return (
     <div className={cn("relative rounded-2xl border bg-card/50 backdrop-blur-sm shadow-sm p-6", className)}>
@@ -65,6 +83,15 @@ export function DesktopBusinessCard({ className }: DesktopBusinessCardProps) {
                   {formatPrice(item.commission_earned_minor, item.currency)}
                 </div>
               </div>
+              <button
+                type="button"
+                onClick={(e) => handleShare(e, item)}
+                className="self-center shrink-0 p-3 -mr-1 rounded-full hover:bg-muted/60 text-muted-foreground"
+                aria-label={t("profile.business.shareRow")}
+                title={t("profile.business.shareRow")}
+              >
+                <Share2 className="h-4 w-4" />
+              </button>
             </Link>
           ))}
         </div>

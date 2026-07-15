@@ -70,7 +70,8 @@
       "clicks": "{count} klikova",
       "conversions": "{count} kupovina",
       "totalEarned": "Ukupno zarađeno",
-      "statusActive": "Aktivna"
+      "statusActive": "Aktivna",
+      "shareRow": "Podeli link za preporuku"
     }
   }
 }
