@@ -13,8 +13,21 @@ interface ProfileIdSegmentedControlProps<T extends string> {
   value: T;
   onChange: (value: T) => void;
   size?: SegmentedControlSize;
+  /** Active-pill styling. "mint" matches the pastel profile cards. */
+  accent?: "indigo" | "mint";
   className?: string;
 }
+
+const ACCENT_STYLES: Record<"indigo" | "mint", { background: string; boxShadow: string }> = {
+  indigo: {
+    background: "linear-gradient(135deg, hsl(240, 70%, 90%) 0%, hsl(210, 70%, 88%) 100%)",
+    boxShadow: "0 1px 3px rgba(99, 102, 241, 0.18)",
+  },
+  mint: {
+    background: "linear-gradient(135deg, hsl(160, 65%, 88%) 0%, hsl(175, 60%, 85%) 55%, hsl(195, 65%, 88%) 100%)",
+    boxShadow: "0 1px 4px rgba(16, 185, 129, 0.22)",
+  },
+};
 
 const SIZE_STYLES: Record<
   SegmentedControlSize,
@@ -40,11 +53,13 @@ export function ProfileIdSegmentedControl<T extends string>({
   value,
   onChange,
   size = "sm",
+  accent = "indigo",
   className,
 }: ProfileIdSegmentedControlProps<T>) {
   const activeIndex = segments.findIndex((s) => s.id === value);
   const safeIndex = activeIndex >= 0 ? activeIndex : 0;
   const sizeStyle = SIZE_STYLES[size];
+  const accentStyle = ACCENT_STYLES[accent];
 
   return (
     <div className={cn("flex justify-center", className)}>
@@ -57,11 +72,7 @@ export function ProfileIdSegmentedControl<T extends string>({
       >
         <motion.div
           className="absolute top-1 bottom-1 rounded-full"
-          style={{
-            background:
-              "linear-gradient(135deg, hsl(240, 70%, 90%) 0%, hsl(210, 70%, 88%) 100%)",
-            boxShadow: "0 1px 3px rgba(99, 102, 241, 0.18)",
-          }}
+          style={accentStyle}
           initial={false}
           animate={getPosition(safeIndex, segments.length)}
           transition={{ type: "spring", stiffness: 400, damping: 30 }}

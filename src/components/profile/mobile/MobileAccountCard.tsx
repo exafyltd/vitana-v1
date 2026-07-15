@@ -44,9 +44,9 @@ export function MobileAccountCard({
           // fallback so the card still renders on-brand even if the gradient
           // layer fails to paint, and promote the card onto its own stable
           // compositing layer so descendants can't knock out its background.
-          backgroundColor: "hsl(215, 60%, 93%)",
-          backgroundImage: "linear-gradient(160deg, hsl(210, 75%, 92%) 0%, hsl(235, 65%, 94%) 55%, hsl(270, 45%, 94%) 100%)",
-          boxShadow: "0 4px 20px rgba(99, 102, 241, 0.10)",
+          backgroundColor: "hsl(218, 65%, 92%)",
+          backgroundImage: "linear-gradient(170deg, hsl(205, 85%, 89%) 0%, hsl(228, 72%, 92%) 40%, hsl(262, 55%, 93%) 72%, hsl(310, 55%, 94%) 100%)",
+          boxShadow: "0 8px 28px rgba(99, 102, 241, 0.14)",
           isolation: "isolate",
           transform: "translateZ(0)",
         }}
@@ -64,7 +64,7 @@ export function MobileAccountCard({
         <div className="p-6">
           {/* Header */}
           <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center h-8 px-3 rounded-full bg-white/60 border border-white/80 mb-3">
+            <div className="inline-flex items-center justify-center h-8 px-3 rounded-full bg-gradient-to-b from-white/95 to-white/55 border border-white/80 mb-3 shadow-sm">
               <ShieldCheck className="h-3.5 w-3.5 text-teal-700 mr-1.5" />
               <span className="text-[10px] font-medium tracking-[0.2em] text-teal-700/80 uppercase">
                 {t('screens.profile.account')}
@@ -146,7 +146,7 @@ function AccountSection({
         )}
       </div>
 
-      <div className="rounded-xl border border-white/70 bg-white/50 overflow-hidden">
+      <div className="rounded-xl border border-white/70 bg-gradient-to-b from-white/70 to-white/40 overflow-hidden">
         {section.fields.map((field, idx) => (
           <AccountRow
             key={field.key}

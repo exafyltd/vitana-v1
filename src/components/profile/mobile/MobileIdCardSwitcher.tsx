@@ -90,6 +90,7 @@ export function MobileIdCardSwitcher({
         value={activeSide}
         onChange={handleSegmentChange}
         size="sm"
+        accent="mint"
         className="px-4 pt-5 pb-5"
       />
 

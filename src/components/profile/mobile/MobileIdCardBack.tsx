@@ -120,9 +120,9 @@ export function MobileIdCardBack({
           // fallback so the card still renders on-brand even if the gradient
           // layer fails to paint, and promote the card onto its own stable
           // compositing layer so descendants can't knock out its background.
-          backgroundColor: "hsl(215, 60%, 93%)",
-          backgroundImage: "linear-gradient(160deg, hsl(210, 75%, 92%) 0%, hsl(235, 65%, 94%) 55%, hsl(270, 45%, 94%) 100%)",
-          boxShadow: "0 4px 20px rgba(99, 102, 241, 0.10)",
+          backgroundColor: "hsl(218, 65%, 92%)",
+          backgroundImage: "linear-gradient(170deg, hsl(205, 85%, 89%) 0%, hsl(228, 72%, 92%) 40%, hsl(262, 55%, 93%) 72%, hsl(310, 55%, 94%) 100%)",
+          boxShadow: "0 8px 28px rgba(99, 102, 241, 0.14)",
           isolation: "isolate",
           transform: "translateZ(0)"
         }}

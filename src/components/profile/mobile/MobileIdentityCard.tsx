@@ -110,9 +110,9 @@ export function MobileIdentityCard({
           // on-brand even if the gradient layer fails to paint, and promote
           // the card onto its own stable compositing layer so the child
           // filters can't knock out its background.
-          backgroundColor: "hsl(215, 60%, 93%)",
-          backgroundImage: "linear-gradient(160deg, hsl(210, 75%, 92%) 0%, hsl(235, 65%, 94%) 55%, hsl(270, 45%, 94%) 100%)",
-          boxShadow: "0 4px 20px rgba(99, 102, 241, 0.10)",
+          backgroundColor: "hsl(218, 65%, 92%)",
+          backgroundImage: "linear-gradient(170deg, hsl(205, 85%, 89%) 0%, hsl(228, 72%, 92%) 40%, hsl(262, 55%, 93%) 72%, hsl(310, 55%, 94%) 100%)",
+          boxShadow: "0 8px 28px rgba(99, 102, 241, 0.14)",
           isolation: "isolate",
           transform: "translateZ(0)"
         }}
@@ -125,7 +125,7 @@ export function MobileIdentityCard({
           <Button
             variant="ghost"
             size="sm"
-            className="absolute top-3 left-3 h-8 px-3 rounded-full bg-white/70 backdrop-blur-sm border border-white/80 hover:bg-white/90 text-teal-800 hover:text-teal-900 z-10 text-xs font-medium gap-1.5 shadow-sm"
+            className="absolute top-3 left-3 h-8 px-3 rounded-full bg-gradient-to-b from-white/95 to-white/60 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 z-10 text-xs font-medium gap-1.5 shadow-sm"
             onClick={(e) => {
               e.stopPropagation();
               onShare();
@@ -204,10 +204,10 @@ export function MobileIdentityCard({
                   variant="ghost"
                   size="sm"
                   className={cn(
-                    "h-10 px-5 rounded-full backdrop-blur-sm text-sm font-semibold gap-2 shadow-sm",
+                    "h-10 px-5 rounded-full backdrop-blur-sm text-sm font-semibold gap-2",
                     isFollowing
-                      ? "bg-white/70 border border-white/80 text-teal-900 hover:bg-white/90"
-                      : "bg-gradient-to-r from-teal-100 to-emerald-200 border border-teal-200/60 text-teal-900 hover:from-teal-200 hover:to-emerald-300"
+                      ? "bg-gradient-to-b from-white/95 to-white/60 border border-white/80 text-teal-900 hover:from-white hover:to-white/80 shadow-sm"
+                      : "bg-gradient-to-br from-teal-50 via-emerald-100 to-emerald-300 border border-emerald-200/70 text-teal-900 hover:from-teal-100 hover:to-emerald-400 shadow-[0_4px_14px_rgba(16,185,129,0.25)]"
                   )}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -229,7 +229,7 @@ export function MobileIdentityCard({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-10 px-5 rounded-full bg-white/70 backdrop-blur-sm border border-white/80 hover:bg-white/90 text-teal-800 hover:text-teal-900 text-sm font-semibold gap-2 shadow-sm"
+                  className="h-10 px-5 rounded-full bg-gradient-to-b from-white/95 to-white/60 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 text-sm font-semibold gap-2 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     onMessage();
@@ -244,7 +244,7 @@ export function MobileIdentityCard({
                   variant="ghost"
                   size="icon"
                   aria-label={translate('common.share', 'Share')}
-                  className="h-10 w-10 rounded-full bg-white/70 backdrop-blur-sm border border-white/80 hover:bg-white/90 text-teal-800 hover:text-teal-900 shadow-sm"
+                  className="h-10 w-10 rounded-full bg-gradient-to-b from-white/95 to-white/60 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     onShare();
@@ -257,7 +257,7 @@ export function MobileIdentityCard({
           )}
 
           {/* Vitana Index Section — frosted inner card */}
-          <div className="flex flex-col items-center w-full mt-6 rounded-3xl bg-white/60 border border-white/70 backdrop-blur-sm px-4 pt-5 pb-4">
+          <div className="flex flex-col items-center w-full mt-6 rounded-3xl bg-gradient-to-b from-white/80 via-white/55 to-white/40 border border-white/70 backdrop-blur-sm px-4 pt-5 pb-4 shadow-[0_2px_16px_rgba(255,255,255,0.45)_inset]">
             {/* Label */}
             <span className="text-[10px] font-semibold tracking-[0.2em] text-teal-700/80 uppercase mb-3">
               {translate('profile.identity.vitanaIndex')}
@@ -275,9 +275,10 @@ export function MobileIdentityCard({
               <span
                 className="relative text-6xl font-extrabold"
                 style={{
-                  background: "linear-gradient(135deg, hsl(160, 65%, 45%) 0%, hsl(174, 70%, 32%) 100%)",
+                  background: "linear-gradient(160deg, hsl(150, 75%, 55%) 0%, hsl(163, 70%, 42%) 45%, hsl(175, 75%, 28%) 100%)",
                   WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent"
+                  WebkitTextFillColor: "transparent",
+                  filter: "drop-shadow(0 2px 10px rgba(16, 185, 129, 0.25))"
                 }}
               >
                 {vitanaIndex}
@@ -287,11 +288,14 @@ export function MobileIdentityCard({
             {/* Tier badge + trend chip */}
             <div className="flex items-center gap-2 mb-3">
               <div
-                className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-800"
-                style={{ backgroundColor: tier.color }}
+                className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-800 shadow-sm"
+                style={{
+                  backgroundColor: tier.color,
+                  backgroundImage: `linear-gradient(135deg, ${tier.color}66 0%, ${tier.color} 55%, ${tier.color}cc 100%), linear-gradient(135deg, #ffffff, #ffffff)`,
+                }}
               >{t('screens.profile.labelTopVitanapercentile', { label: t(tier.labelKey), vitanaPercentile })}
               </div>
-              <div className="h-7 w-7 rounded-full bg-white/80 border border-white/90 flex items-center justify-center shadow-sm">
+              <div className="h-7 w-7 rounded-full bg-gradient-to-b from-white to-white/70 border border-white/90 flex items-center justify-center shadow-sm">
                 <TrendingUp className="h-3.5 w-3.5 text-emerald-600" />
               </div>
             </div>
