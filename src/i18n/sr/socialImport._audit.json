@@ -46,10 +46,8 @@
       "phase": "llm"
     },
     "socialImport.urlRequiredDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register for possessive pronoun. 'vašeg' is formal, should be informal 'tvog'.",
-      "suggested": "Molimo unesite URL tvog {platform} profila",
       "phase": "llm"
     },
     "socialImport.importSuccess": {
@@ -128,5 +126,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:29:37.992Z"
+  "generatedAt": "2026-07-16T06:19:22.097Z"
 }
