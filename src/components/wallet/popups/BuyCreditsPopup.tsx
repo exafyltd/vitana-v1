@@ -15,6 +15,7 @@ import { CreditCard, Gift, Zap, Loader2, Star } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
+import { getExchangeRate } from '@/lib/exchangeRates';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 import { fmtDateTime, fmtNumber } from '@/lib/locale-format';
@@ -33,12 +34,17 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
 
   const currentCredits = getBalance('CREDITS') || 0;
   const usdBalance = getBalance('USD') || 0;
-  
+
+  // Get actual exchange rate: 1 USD = 100 Credits, so 1 Credit = $0.01
+  const exchangeRate = getExchangeRate('CREDITS', 'USD');
+  const creditPriceInUSD = exchangeRate?.rate || 0.01; // Fallback to $0.01 per Credit
+
+  // Credit packages at the canonical market rate (matches BuyTokensPopup/VTNA)
   const creditPackages = [
-    { credits: 100, cost: 25, bonus: 0, popular: false },
-    { credits: 250, cost: 50, bonus: 25, popular: true },
-    { credits: 500, cost: 90, bonus: 75, popular: false },
-    { credits: 1000, cost: 150, bonus: 200, popular: false }
+    { credits: 100, cost: Math.round(100 * creditPriceInUSD), bonus: 0, popular: false },
+    { credits: 500, cost: Math.round(500 * creditPriceInUSD), bonus: 50, popular: true },
+    { credits: 1000, cost: Math.round(1000 * creditPriceInUSD), bonus: 150, popular: false },
+    { credits: 2500, cost: Math.round(2500 * creditPriceInUSD), bonus: 500, popular: false }
   ];
 
   const handleBuyCredits = async (credits: number, cost: number, bonus: number) => {
@@ -71,8 +77,8 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
     }
 
     const credits = parseFloat(creditAmount);
-    const cost = Math.round(credits * 0.25); // $0.25 per credit
-    
+    const cost = Math.round(credits * creditPriceInUSD * 100) / 100; // Use actual exchange rate
+
     if (cost > usdBalance) {
       notifyError('toasts.wallet.insufficientUsdBalance', 'toasts.wallet.youDonTHaveEnoughUsd');
       return;
@@ -176,9 +182,9 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
               min="1"
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>{t('screens.wallet.rate025PerCredit')}</span>
+              <span>{t('screens.wallet.rateValue0PerCredit', { value0: creditPriceInUSD.toFixed(2) })}</span>
               {creditAmount && (
-                <span>{t('screens.wallet.costValue0', { value0: (parseFloat(creditAmount) * 0.25).toFixed(2) })}</span>
+                <span>{t('screens.wallet.costValue0', { value0: (parseFloat(creditAmount) * creditPriceInUSD).toFixed(2) })}</span>
               )}
             </div>
             <Button

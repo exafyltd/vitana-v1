@@ -7847,6 +7847,7 @@
       "creditPackages": "Paketi kredita",
       "customAmount": "Prilagođeni iznos",
       "rate025PerCredit": "Cena: $0.25 po kreditu",
+      "rateValue0PerCredit": "Cena: ${value0} po kreditu",
       "creditUsage": "Korišćenje kredita",
       "accessPremiumFeaturesServices": "• Pristup premium funkcijama i uslugama",
       "purchaseInappItemsUpgrades": "• Kupovina u aplikaciji i nadogradnje",

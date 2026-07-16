@@ -7847,6 +7847,7 @@
       "creditPackages": "Paquetes de Créditos",
       "customAmount": "Monto Personalizado",
       "rate025PerCredit": "Tarifa: $0.25 por crédito",
+      "rateValue0PerCredit": "Tarifa: ${value0} por crédito",
       "creditUsage": "Uso de Créditos",
       "accessPremiumFeaturesServices": "• Accede a funciones y servicios premium",
       "purchaseInappItemsUpgrades": "• Compra artículos y mejoras dentro de la app",

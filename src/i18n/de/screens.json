@@ -8441,6 +8441,7 @@
       "creditPackages": "Credit-Pakete",
       "customAmount": "Eigener Betrag",
       "rate025PerCredit": "Kurs: 0,25 $ pro Credit",
+      "rateValue0PerCredit": "Kurs: ${value0} pro Credit",
       "creditUsage": "Credit-Nutzung",
       "accessPremiumFeaturesServices": "• Zugriff auf Premium-Funktionen und -Dienste",
       "purchaseInappItemsUpgrades": "• In-App-Käufe und Upgrades tätigen",
