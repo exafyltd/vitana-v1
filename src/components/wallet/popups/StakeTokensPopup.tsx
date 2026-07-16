@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogHeader,
+  ResponsiveDialogBody,
+  ResponsiveDialogTitle,
+} from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -67,16 +68,16 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveDialogContent className="sm:max-w-md" fullscreenOnMobile>
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle className="flex items-center gap-2">
             <Coins className="h-5 w-5 text-purple-600" />
             {t('screens.wallet.stakeVtnaTokens')}
-          </DialogTitle>
-        </DialogHeader>
-        
-        <div className="space-y-4">
+          </ResponsiveDialogTitle>
+        </ResponsiveDialogHeader>
+
+        <ResponsiveDialogBody className="space-y-4">
           {/* Current Balance */}
           <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-100">
             <div className="flex items-center justify-between">
@@ -175,8 +176,8 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
               <li>{t('screens.wallet.accessExclusiveCommunityFeatures')}</li>
             </ul>
           </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </ResponsiveDialogBody>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   );
 }

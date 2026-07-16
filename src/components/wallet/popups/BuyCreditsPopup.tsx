@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogHeader,
+  ResponsiveDialogBody,
+  ResponsiveDialogTitle,
+} from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -95,16 +96,16 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveDialogContent className="sm:max-w-md" fullscreenOnMobile>
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle className="flex items-center gap-2">
             <CreditCard className="h-5 w-5 text-blue-600" />
             {t('screens.wallet.buyCredits')}
-          </DialogTitle>
-        </DialogHeader>
-        
-        <div className="space-y-4">
+          </ResponsiveDialogTitle>
+        </ResponsiveDialogHeader>
+
+        <ResponsiveDialogBody className="space-y-4">
           {/* Current Balances */}
           <div className="grid grid-cols-2 gap-3">
             <div className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
@@ -206,8 +207,8 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
               <li>{t('screens.wallet.participateExclusiveEvents')}</li>
             </ul>
           </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </ResponsiveDialogBody>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   );
 }

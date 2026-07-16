@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogHeader,
+  ResponsiveDialogBody,
+  ResponsiveDialogTitle,
+} from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { DollarSign, Euro, CreditCard, Banknote, Loader2, Shield, X } from "lucide-react";
+import { DollarSign, Euro, CreditCard, Banknote, Loader2, Shield } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
 import { useToast } from '@/hooks/use-toast';
 import { isIAPRestricted } from '@/lib/appilix';
@@ -72,20 +72,16 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveDialogContent className="sm:max-w-md" fullscreenOnMobile>
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle className="flex items-center gap-2">
             <CurrencyIcon className="h-5 w-5 text-green-600" />
             {t('screens.wallet.addFundsBalance', { currency: displayCurrency })}
-          </DialogTitle>
-          <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none">
-            <X className="h-4 w-4" />
-            <span className="sr-only">{t('screens.ui.close')}</span>
-          </DialogClose>
-        </DialogHeader>
+          </ResponsiveDialogTitle>
+        </ResponsiveDialogHeader>
 
-        <div className="space-y-4">
+        <ResponsiveDialogBody className="space-y-4">
           {/* Current Balance */}
           <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
             <div className="flex items-center justify-between">
@@ -163,8 +159,8 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
               <li>{t('screens.wallet.instantAvailabilityAfterConfirmation')}</li>
             </ul>
           </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+        </ResponsiveDialogBody>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   );
 }
