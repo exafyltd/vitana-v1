@@ -125,7 +125,7 @@ export function MobileIdentityCard({
           <Button
             variant="ghost"
             size="sm"
-            className="absolute top-3 left-3 h-8 px-3 rounded-full bg-gradient-to-b from-white/95 to-white/60 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 z-10 text-xs font-medium gap-1.5 shadow-sm"
+            className="absolute top-3 left-3 h-8 px-3 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 z-10 text-xs font-medium gap-1.5 shadow-sm"
             onClick={(e) => {
               e.stopPropagation();
               onShare();
@@ -156,12 +156,12 @@ export function MobileIdentityCard({
           </div>
 
           {/* Name */}
-          <h1 className="text-2xl font-bold text-slate-800 text-center">
+          <h1 className="text-2xl font-bold text-slate-900 text-center">
             {displayName}
           </h1>
 
           {/* Handle + Archetype */}
-          <p className="text-sm text-slate-500 text-center mt-0.5">
+          <p className="text-sm text-slate-600 text-center mt-0.5">
             {handle && <span>@{handle}</span>}
             {handle && archetype && <span> · </span>}
             {archetype && <span>{archetype}</span>}
@@ -178,8 +178,8 @@ export function MobileIdentityCard({
                   openFollowList("followers");
                 }}
               >
-                <span className="text-base font-bold text-slate-800">{followersCount ?? 0}</span>
-                <span className="text-sm text-slate-500">{translate('profileStats.followers', 'Followers')}</span>
+                <span className="text-base font-bold text-slate-900">{followersCount ?? 0}</span>
+                <span className="text-sm text-slate-600">{translate('profileStats.followers', 'Followers')}</span>
               </button>
               <span className="w-px h-4 bg-slate-400/40" />
               <button
@@ -190,8 +190,8 @@ export function MobileIdentityCard({
                   openFollowList("following");
                 }}
               >
-                <span className="text-base font-bold text-slate-800">{followingCount ?? 0}</span>
-                <span className="text-sm text-slate-500">{translate('profileStats.following', 'Following')}</span>
+                <span className="text-base font-bold text-slate-900">{followingCount ?? 0}</span>
+                <span className="text-sm text-slate-600">{translate('profileStats.following', 'Following')}</span>
               </button>
             </div>
           )}
@@ -206,7 +206,7 @@ export function MobileIdentityCard({
                   className={cn(
                     "h-10 px-5 rounded-full backdrop-blur-sm text-sm font-semibold gap-2",
                     isFollowing
-                      ? "bg-gradient-to-b from-white/95 to-white/60 border border-white/80 text-teal-900 hover:from-white hover:to-white/80 shadow-sm"
+                      ? "bg-gradient-to-b from-white/95 to-white/75 border border-white/80 text-teal-900 hover:from-white hover:to-white/80 shadow-sm"
                       : "bg-gradient-to-br from-teal-50 via-emerald-100 to-emerald-300 border border-emerald-200/70 text-teal-900 hover:from-teal-100 hover:to-emerald-400 shadow-[0_4px_14px_rgba(16,185,129,0.25)]"
                   )}
                   onClick={(e) => {
@@ -229,7 +229,7 @@ export function MobileIdentityCard({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-10 px-5 rounded-full bg-gradient-to-b from-white/95 to-white/60 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 text-sm font-semibold gap-2 shadow-sm"
+                  className="h-10 px-5 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 text-sm font-semibold gap-2 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     onMessage();
@@ -244,7 +244,7 @@ export function MobileIdentityCard({
                   variant="ghost"
                   size="icon"
                   aria-label={translate('common.share', 'Share')}
-                  className="h-10 w-10 rounded-full bg-gradient-to-b from-white/95 to-white/60 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 shadow-sm"
+                  className="h-10 w-10 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 shadow-sm"
                   onClick={(e) => {
                     e.stopPropagation();
                     onShare();
@@ -257,9 +257,9 @@ export function MobileIdentityCard({
           )}
 
           {/* Vitana Index Section — frosted inner card */}
-          <div className="flex flex-col items-center w-full mt-6 rounded-3xl bg-gradient-to-b from-white/80 via-white/55 to-white/40 border border-white/70 backdrop-blur-sm px-4 pt-5 pb-4 shadow-[0_2px_16px_rgba(255,255,255,0.45)_inset]">
+          <div className="flex flex-col items-center w-full mt-6 rounded-3xl bg-gradient-to-b from-white/90 via-white/75 to-white/60 border border-white/80 backdrop-blur-sm px-4 pt-5 pb-4 shadow-[0_2px_16px_rgba(255,255,255,0.45)_inset]">
             {/* Label */}
-            <span className="text-[10px] font-semibold tracking-[0.2em] text-teal-700/80 uppercase mb-3">
+            <span className="text-[11px] font-semibold tracking-[0.2em] text-teal-700 uppercase mb-3">
               {translate('profile.identity.vitanaIndex')}
             </span>
 
@@ -288,7 +288,7 @@ export function MobileIdentityCard({
             {/* Tier badge + trend chip */}
             <div className="flex items-center gap-2 mb-3">
               <div
-                className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-800 shadow-sm"
+                className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-900 shadow-sm"
                 style={{
                   backgroundColor: tier.color,
                   backgroundImage: `linear-gradient(135deg, ${tier.color}66 0%, ${tier.color} 55%, ${tier.color}cc 100%), linear-gradient(135deg, #ffffff, #ffffff)`,
@@ -301,14 +301,14 @@ export function MobileIdentityCard({
             </div>
 
             {/* Explanation */}
-            <p className="text-[11px] text-slate-500 text-center px-4">
+            <p className="text-xs text-slate-600 text-center px-4">
               {translate('profile.identity.basedOnActivity')}
             </p>
 
             {/* Understand index link */}
             <button
               type="button"
-              className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-teal-700 hover:text-teal-800 active:opacity-70"
+              className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-teal-800 hover:text-teal-900 active:opacity-70"
               onClick={(e) => {
                 e.stopPropagation();
                 navigate('/health/vitana-index');
@@ -324,7 +324,7 @@ export function MobileIdentityCard({
             <Button
               variant="ghost"
               size="sm"
-              className="mt-4 text-slate-500 hover:text-slate-700 hover:bg-black/5 text-xs gap-1"
+              className="mt-4 text-slate-600 hover:text-slate-800 hover:bg-black/5 text-xs gap-1"
               onClick={(e) => {
                 e.stopPropagation();
                 onViewFullId();
@@ -336,7 +336,7 @@ export function MobileIdentityCard({
           )}
 
           {/* Brand footer */}
-          <span className="mt-5 text-[10px] font-medium tracking-[0.3em] text-slate-400 uppercase">
+          <span className="mt-5 text-[11px] font-semibold tracking-[0.3em] text-slate-500 uppercase">
             {translate('profile.identity.brandFooter', 'MAXINA × VITANA')}
           </span>
         </div>

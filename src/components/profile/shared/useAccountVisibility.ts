@@ -30,11 +30,13 @@ export interface AccountSectionDef {
 
 export const VISIBILITY_META: Record<
   FieldVisibility,
-  { labelKey: string; icon: typeof Eye; tint: string }
+  // tint paints the chip's light background/border; tintText is the darker
+  // ink for the label/icon so the chip stays readable on pastel surfaces.
+  { labelKey: string; icon: typeof Eye; tint: string; tintText: string }
 > = {
-  private:     { labelKey: "profile.account.visibility.private",     icon: Lock,  tint: "hsl(0, 70%, 60%)"   },
-  connections: { labelKey: "profile.account.visibility.connections", icon: Users, tint: "hsl(42, 90%, 58%)"  },
-  public:      { labelKey: "profile.account.visibility.public",      icon: Eye,   tint: "hsl(150, 60%, 55%)" },
+  private:     { labelKey: "profile.account.visibility.private",     icon: Lock,  tint: "hsl(0, 70%, 60%)",   tintText: "hsl(0, 65%, 42%)"   },
+  connections: { labelKey: "profile.account.visibility.connections", icon: Users, tint: "hsl(42, 90%, 58%)",  tintText: "hsl(35, 90%, 34%)"  },
+  public:      { labelKey: "profile.account.visibility.public",      icon: Eye,   tint: "hsl(150, 60%, 55%)", tintText: "hsl(152, 65%, 30%)" },
 };
 
 const NEXT_VISIBILITY: Record<FieldVisibility, FieldVisibility> = {
