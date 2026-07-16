@@ -97,7 +97,7 @@ export function MobileIdCardSwitcher({
       {/* Segmented Control — soft, secondary treatment so the card below
           stays the hero. Extra top padding gives it room to breathe
           between the app bar and the card. */}
-      <ProfileIdSegmentedControl<CardSide>
+      <ProfileIdSegmentedControl
         segments={segments}
         value={activeSide}
         onChange={handleSegmentChange}

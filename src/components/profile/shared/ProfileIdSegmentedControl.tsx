@@ -89,7 +89,7 @@ export function ProfileIdSegmentedControl<T extends string>({
               className={cn(
                 "relative z-10 flex-1 font-semibold tracking-wide transition-colors duration-200",
                 sizeStyle.button,
-                isActive ? "text-foreground" : "text-foreground/60 hover:text-foreground/80"
+                isActive ? "text-foreground" : "text-foreground/75 hover:text-foreground/90"
               )}
             >
               {segment.label}

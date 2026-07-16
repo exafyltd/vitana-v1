@@ -131,10 +131,10 @@ export function MobileIdCardBack({
         <div className="p-6">
           {/* Header */}
           <div className="text-center mb-6">
-            <h2 className="text-lg font-semibold text-slate-800 mb-1">
+            <h2 className="text-lg font-semibold text-slate-900 mb-1">
               {translate('socialImport.socialPresence', 'Social Presence')}
             </h2>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-600">
               {translate('socialImport.verifiedConnections', 'Verified connections across your digital life')}
             </p>
           </div>
@@ -176,7 +176,7 @@ export function MobileIdCardBack({
                     </span>
                     
                     {/* External link hint */}
-                    <ExternalLink className="h-2.5 w-2.5 text-slate-400 mt-1" />
+                    <ExternalLink className="h-2.5 w-2.5 text-slate-500 mt-1" />
                   </button>
                 );
               })}
@@ -188,7 +188,7 @@ export function MobileIdCardBack({
             <>
               <div className="h-px bg-black/5 my-4" />
               <div className="flex items-center justify-center gap-2">
-                <span className="text-[10px] text-slate-500 mr-2">{translate('socialImport.connect', 'Connect:')}</span>
+                <span className="text-[11px] text-slate-600 mr-2">{translate('socialImport.connect', 'Connect:')}</span>
                 {unconnectedPlatforms.map((platform) => (
                   <button
                     key={platform.id}
@@ -208,15 +208,15 @@ export function MobileIdCardBack({
           {connectedPlatforms.length === 0 && (
             <div className="text-center py-6">
               <div className="w-12 h-12 rounded-full bg-white/60 flex items-center justify-center mx-auto mb-3">
-                <Plus className="h-5 w-5 text-slate-500" />
+                <Plus className="h-5 w-5 text-slate-600" />
               </div>
-              <p className="text-sm text-slate-500 mb-3">{translate('socialImport.noAccountsConnected', 'No social accounts connected')}</p>
+              <p className="text-sm text-slate-600 mb-3">{translate('socialImport.noAccountsConnected', 'No social accounts connected')}</p>
             </div>
           )}
 
           {/* Subtle footer note */}
           {connectedPlatforms.length > 0 && (
-            <p className="text-[10px] text-slate-400 text-center mt-4 italic">
+            <p className="text-[11px] text-slate-500 text-center mt-4 italic">
               {translate('socialImport.tapToVisit', 'Tap to visit profile')}
             </p>
           )}

@@ -195,9 +195,9 @@ function DesktopAccountRow({
           aria-label={t('profile.account.visibilityToggle', { label: metaLabel })}
           className="flex items-center gap-1.5 h-8 px-3 rounded-full border transition-all active:scale-95"
           style={{
-            borderColor: `${meta.tint}40`,
-            backgroundColor: `${meta.tint}12`,
-            color: meta.tint,
+            borderColor: `${meta.tint}55`,
+            backgroundColor: `${meta.tint}20`,
+            color: meta.tintText,
           }}
         >
           <Icon className="h-3.5 w-3.5" strokeWidth={2.25} />
