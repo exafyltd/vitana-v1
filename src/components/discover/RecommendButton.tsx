@@ -51,14 +51,27 @@ export function RecommendButton({ productId, className, variant = "badge", size 
         onClick={handleClick}
         disabled={isRecommending || isRecommended}
         className={cn(
-          "justify-between rounded-full bg-emerald-600 hover:bg-emerald-700 text-white disabled:opacity-100",
+          "justify-between rounded-full disabled:opacity-100",
+          isRecommended
+            ? "bg-emerald-600 border-emerald-600 text-white hover:bg-emerald-700"
+            : "bg-white dark:bg-background border-2 border-emerald-500 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/30",
           isRecommending && "opacity-70",
           className
         )}
       >
         <span className="flex items-center gap-2">
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20">
-            <Star className="h-3.5 w-3.5 fill-white text-white" />
+          <span
+            className={cn(
+              "flex h-6 w-6 items-center justify-center rounded-full",
+              isRecommended ? "bg-white/20" : "bg-emerald-100 dark:bg-emerald-900/40"
+            )}
+          >
+            <Star
+              className={cn(
+                "h-3.5 w-3.5",
+                isRecommended ? "fill-white text-white" : "fill-emerald-600 text-emerald-600"
+              )}
+            />
           </span>
           {ctaLabel}
         </span>
