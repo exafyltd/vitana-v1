@@ -137,9 +137,9 @@
     },
     "autopilot.popup.readyToExecute": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The verb 'Spremni' is plural, but the du-form (informal singular) context requires a singular form. 'Spreman si' (masculine) or 'Spremna si' (feminine) would be appropriate.",
-      "suggested": "Spreman si da izvršiš {count} akcija koje je pripremio tvoj AI asistent.",
+      "confidence": 0.9,
+      "issue": "The masculine form 'Spreman si' is not gender-neutral. The number agreement for 'akcija' is incorrect for {count} values 1-4 (should be 'akciju' for 1, 'akcije' for 2-4).",
+      "suggested": "Vreme je za izvršenje {count} akcija koje je pripremio tvoj AI asistent.",
       "phase": "llm"
     },
     "autopilot.popup.executingTitle": {
@@ -189,9 +189,9 @@
     },
     "autopilot.popup.toastExecutedDesc": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The past participle 'završeno' is neuter singular, but it should agree with 'akcija' (feminine plural).",
-      "suggested": "{success}/{total} akcija uspešno završene",
+      "confidence": 0.9,
+      "issue": "The number agreement for 'akcija' and 'završene' is incorrect for {success} values 1-4 (e.g., for 1, it should be '1 akcija uspešno završena'; for 2-4, it should be '2 akcije uspešno završene').",
+      "suggested": "Uspešno je završeno {success} od {total} akcija.",
       "phase": "llm"
     },
     "autopilot.popup.toastFailedTitle": {
@@ -396,9 +396,9 @@
     },
     "autopilot.actions.action1Reason": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Adjective 'društveni' (masculine singular) does not agree with 'vibracije' (feminine plural). A more idiomatic phrasing for 'social wellness vibes' would be 'vibracije društvenog wellnessa'.",
-      "suggested": "Savršen spoj za tvoje ciljeve kretanja + vibracije društvenog wellnessa",
+      "confidence": 0.8,
+      "issue": "The translation 'vibracije' for 'vibes' is too literal and doesn't fully capture the informal, positive nuance of 'vibes' in this context.",
+      "suggested": "Savršen spoj za tvoje ciljeve kretanja + pozitivna energija društvenog wellnessa",
       "phase": "llm"
     },
     "autopilot.actions.action2Title": {
@@ -462,5 +462,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:19.915Z"
+  "generatedAt": "2026-07-17T05:59:38.665Z"
 }
