@@ -272,9 +272,12 @@ export function DreamNorthStar({
 
   // Loading: never paint the hero with placeholder zeros ("session 0 of 0")
   // while the journey/checklist queries resolve — loading must look like
-  // loading. Only holds while there is nothing real to show; cached data
-  // (goal set, or guided progress with a known curriculum) paints instantly.
-  if (loading && !goal && (!guidedProgress || guidedProgress.totalSessions === 0)) {
+  // loading. The guided card renders independently of `goal` (a user can have
+  // a Life Compass goal AND be in Guided Mode), so guided-not-ready must gate
+  // on its own — requiring `!goal` here let any user with an existing goal
+  // skip this spinner entirely and fall through to the zero-data render below.
+  const guidedNotReady = guided && (!guidedProgress || guidedProgress.totalSessions === 0);
+  if (loading && (guidedNotReady || !goal)) {
     return (
       <Card className="rounded-[28px] border border-violet-200/50 shadow-lg bg-white/80">
         <div
