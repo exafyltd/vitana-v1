@@ -7,12 +7,12 @@
  * Vitana-authored card names both who's recommending and what it opens.
  */
 
-import { Activity, Users, Zap, type LucideIcon } from 'lucide-react';
+import { Activity, UserPlus, Users, Zap, type LucideIcon } from 'lucide-react';
 import { t } from '@/lib/i18n-toast';
 import { VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 import { cn } from '@/lib/utils';
 
-export type VitanaFeature = 'vitana-index' | 'guided-journey' | 'find-a-match';
+export type VitanaFeature = 'vitana-index' | 'guided-journey' | 'find-a-match' | 'invite-friend';
 
 const FEATURE_CONFIG: Record<VitanaFeature, { icon: LucideIcon; labelKey: string }> = {
   'vitana-index': {
@@ -26,6 +26,10 @@ const FEATURE_CONFIG: Record<VitanaFeature, { icon: LucideIcon; labelKey: string
   'find-a-match': {
     icon: Users,
     labelKey: 'screens.vitanaIdentity.findAMatch',
+  },
+  'invite-friend': {
+    icon: UserPlus,
+    labelKey: 'screens.vitanaIdentity.inviteFriend',
   },
 };
 

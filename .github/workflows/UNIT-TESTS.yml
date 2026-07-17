@@ -1,0 +1,39 @@
+name: UNIT-TESTS
+# BOOTSTRAP-TEST-COVERAGE: the routine that runs the frontend unit-test
+# suite (Vitest + Testing Library, configured in vitest.config.ts).
+# Before this workflow the repo had no unit tests and no runner at all.
+#
+# Triggers: every PR, every push to main, nightly cron, manual dispatch.
+# Build-out schedule for the missing coverage: docs/TEST_COVERAGE_PLAN.md
+# (this repo) + the master plan in vitana-platform/docs/TEST_COVERAGE_PLAN.md.
+
+run-name: 'Unit Tests (${{ github.event_name }} on ${{ github.ref_name }})'
+
+on:
+  pull_request: {}
+  push:
+    branches: [ main ]
+  schedule:
+    # Nightly stability run — 03:47 UTC
+    - cron: '47 3 * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: unit-tests-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  vitest:
+    name: Vitest (jsdom)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install
+        run: npm ci
+      - name: Run unit tests
+        run: npm run test:unit
