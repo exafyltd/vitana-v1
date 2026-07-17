@@ -169,6 +169,7 @@ const BusinessOpportunities = lazy(() => import("./pages/BusinessOpportunities")
 const BusinessListings = lazy(() => import("./pages/BusinessListings"));
 const PublicEventLanding = lazy(() => import("./pages/PublicEventLanding"));
 const PublicCampaignLanding = lazy(() => import("./pages/PublicCampaignLanding"));
+const DownloadFlyer = lazy(() => import("./pages/DownloadFlyer"));
 const Apply = lazy(() => import("./pages/Apply"));
 const AutopilotDashboard = lazy(() => import("./pages/AutopilotDashboard"));
 const MatchesPage = lazy(() => import("./pages/MatchesPage"));
@@ -738,6 +739,8 @@ const App = () => {
           <Route path="/e/:slug" element={<PublicEventLanding />} />
           <Route path="/pub/events/:id" element={<PublicEventLanding />} />
           <Route path="/pub/campaigns/:id" element={<PublicCampaignLanding />} />
+          {/* Download flyer — shared via "Invite a friend"; recipients are logged out */}
+          <Route path="/download" element={<DownloadFlyer />} />
           <Route path="/apply" element={<Apply />} />
           
           {/* Portal Routes */}
