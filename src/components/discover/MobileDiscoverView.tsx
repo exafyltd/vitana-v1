@@ -121,7 +121,7 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
               <div className="h-[1px] flex-1 bg-border/50" />
             </div>
 
-            <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory px-0.5 pb-1 -mx-0.5">
+            <div className="flex items-stretch gap-3 overflow-x-auto snap-x snap-mandatory px-0.5 pb-1 -mx-0.5">
               {rest.map((rec) => (
                 <CompactProductCard
                   key={rec.id}
@@ -137,6 +137,8 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
 
         {/* Thematic collections — Longevity, Adaptogens, Sleep & Recovery, etc. */}
         <CategoryShopSections />
+
+        <CategoryShopSections category="skincare" title={translate('discover.skincareCosmetics')} />
       </div>
     );
   }
@@ -162,6 +164,8 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
         </div>
 
         <CategoryShopSections />
+
+        <CategoryShopSections category="skincare" title={translate('discover.skincareCosmetics')} />
 
         {/* Non-product categories (services & experts) stay reachable as compact chips */}
         <div className="flex flex-wrap gap-2 pt-2">

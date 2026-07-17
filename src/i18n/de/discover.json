@@ -19,6 +19,7 @@
     "seeAll": "Alle anzeigen",
     "suggestedForYou": "Für dich empfohlen",
     "browseCategories": "Kategorien durchsuchen",
+    "skincareCosmetics": "Hautpflege & Kosmetik",
     "all": "Alle",
     "shareAndEarn": "Teilen & Verdienen",
     "shareAndEarnDesc": "Produkte empfehlen, Provisionen verdienen",
@@ -36,6 +37,13 @@
     "noResultsDesc": "Versuche andere Suchbegriffe oder durchsuche die Kategorien.",
     "back": "Zurück",
     "productsFound": "{count} Produkte",
+    "recommendProduct": "Empfehlen",
+    "recommendAndEarn": "Empfehlen & verdienen",
+    "recommendShareTitle": "Schau dir das an: {product}",
+    "recommendLinkCopied": "Empfehlungslink kopiert",
+    "recommendFailed": "Empfehlung fehlgeschlagen. Versuch's noch mal.",
+    "recommendAdded": "Zu deinen Empfehlungen hinzugefügt",
+    "alreadyRecommended": "Empfohlen",
     "categories": {
       "sleep": "Schlaf",
       "nutrition": "Ernährung",
@@ -54,7 +62,13 @@
       "beauty": "Schönheit",
       "nootropics": "Nootropika",
       "performance": "Leistung",
-      "antioxidants": "Antioxidantien"
+      "antioxidants": "Antioxidantien",
+      "faceCare": "Gesichtspflege",
+      "makeup": "Make-up",
+      "hairCare": "Haarpflege",
+      "bodyCare": "Körperpflege",
+      "fragrance": "Parfüm",
+      "sunCare": "Sonnenschutz"
     },
     "quickActions": {
       "title": "Schnellaktionen",

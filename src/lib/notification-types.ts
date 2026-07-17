@@ -1,5 +1,5 @@
 /**
- * Notification Type Registry — All 72 Vitana Notification Types
+ * Notification Type Registry — All 73 Vitana Notification Types
  *
  * Central definition of every notification type across the platform.
  * Each type defines icon, label, category, channel, priority, and click route.
@@ -130,6 +130,15 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
   post_comment: {
     icon: '💬', label: 'New Comment', category: 'community',
     channel: 'push_and_inapp', priority: 'p1', route: '/home',
+  },
+  // Emitted by the notify_on_post_mention_insert()/_update() DB triggers on
+  // profile_posts inserts/updates. Always ships with an explicit data.url
+  // (the specific /post/post/<id>), so no `route` template here —
+  // resolveNotificationRoute() honors data.url before falling back to this
+  // registry.
+  post_mention: {
+    icon: '🏷️', label: 'Tagged You', category: 'community',
+    channel: 'push_and_inapp', priority: 'p1',
   },
   community_post_published: {
     icon: '📝', label: 'New Post', category: 'community',
