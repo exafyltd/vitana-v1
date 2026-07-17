@@ -58,8 +58,8 @@
     "calendarPopup.syncExternal": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Grammatically awkward; 'externo' is an adjective without a noun to modify. It sounds incomplete.",
-      "suggested": "Sincronizar con externos",
+      "issue": "The term 'externos' is vague and could be interpreted as 'external people' rather than 'external devices' or 'external sources'.",
+      "suggested": "Sincronizar con fuentes externas",
       "phase": "llm"
     },
     "calendarPopup.addEvent": {
@@ -88,5 +88,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:01.562Z"
+  "generatedAt": "2026-07-17T05:59:17.054Z"
 }
