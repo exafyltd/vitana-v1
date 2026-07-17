@@ -16,10 +16,8 @@
       "phase": "llm"
     },
     "createSelection.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal Sie instead of informal du).",
-      "suggested": "Wähle die Art der Veranstaltung, die du erstellen möchtest",
       "phase": "llm"
     },
     "createSelection.eventDescription": {
@@ -33,5 +31,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:08:34.424Z"
+  "generatedAt": "2026-07-17T06:02:43.220Z"
 }
