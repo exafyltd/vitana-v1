@@ -6,10 +6,8 @@
       "phase": "llm"
     },
     "profilePosts.placeholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Wrong pronoun, changes meaning from 'What's on your mind?' to 'What's on my mind?'.",
-      "suggested": "Was bewegt dich gerade?",
       "phase": "llm"
     },
     "profilePosts.post": {
@@ -46,7 +44,37 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "profilePosts.shareCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.mentionPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.background": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.noBackground": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.searchingPeople": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.noPeopleFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:19:20.298Z"
+  "generatedAt": "2026-07-19T06:19:27.463Z"
 }
