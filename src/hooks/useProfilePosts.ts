@@ -44,7 +44,14 @@ export function useProfilePosts(userId?: string) {
   const createPost = useMutation({
     mutationFn: async ({ content, imageUrl, videoUrl, isPublic, backgroundStyle, mentions }: { content: string; imageUrl?: string; videoUrl?: string; isPublic?: boolean; backgroundStyle?: string | null; mentions?: PostMention[] }) => {
       if (!user?.id) throw new Error('Not authenticated');
-      const { data, error } = await supabase
+      // Bare insert — no `.select().single()` read-back. The read-back's
+      // response leg could intermittently fail (flaky mobile network) even
+      // after the insert already committed, which surfaced as a false
+      // "something went wrong" toast while the post was actually already
+      // live (and visible via the independent realtime feed subscription in
+      // useAllNewsFeed.ts). No caller reads the resolved post, so dropping
+      // the read-back is safe.
+      const { error } = await supabase
         .from('profile_posts' as never)
         .insert({
           user_id: user.id,
@@ -58,11 +65,8 @@ export function useProfilePosts(userId?: string) {
           // Defaults to public to preserve prior behaviour; the composer maps its
           // visibility control (public/friends/groups) onto this flag.
           ...(isPublic === undefined ? {} : { is_public: isPublic }),
-        } as never)
-        .select()
-        .single();
+        } as never);
       if (error) throw error;
-      return data as unknown as ProfilePost;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile-posts', targetUserId] });
