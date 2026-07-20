@@ -169,12 +169,14 @@ const BusinessOpportunities = lazy(() => import("./pages/BusinessOpportunities")
 const BusinessListings = lazy(() => import("./pages/BusinessListings"));
 const PublicEventLanding = lazy(() => import("./pages/PublicEventLanding"));
 const PublicCampaignLanding = lazy(() => import("./pages/PublicCampaignLanding"));
+const DownloadFlyer = lazy(() => import("./pages/DownloadFlyer"));
 const Apply = lazy(() => import("./pages/Apply"));
 const AutopilotDashboard = lazy(() => import("./pages/AutopilotDashboard"));
 const MatchesPage = lazy(() => import("./pages/MatchesPage"));
 const InviteFriends = lazy(() => import("./pages/InviteFriends"));
 const MobileDailyDiary = lazy(() => import("./pages/MobileDailyDiary"));
 const Supplements = lazy(() => import("./pages/discover/Supplements"));
+const CategoryProducts = lazy(() => import("./pages/discover/CategoryProducts"));
 const ProductDetail = lazy(() => import("./pages/discover/ProductDetail"));
 const BusinessHub = lazy(() => import("./pages/BusinessHub"));
 const AIAssistant = lazy(() => import("./pages/assistant/AIAssistant"));
@@ -737,6 +739,8 @@ const App = () => {
           <Route path="/e/:slug" element={<PublicEventLanding />} />
           <Route path="/pub/events/:id" element={<PublicEventLanding />} />
           <Route path="/pub/campaigns/:id" element={<PublicCampaignLanding />} />
+          {/* Download flyer — shared via "Invite a friend"; recipients are logged out */}
+          <Route path="/download" element={<DownloadFlyer />} />
           <Route path="/apply" element={<Apply />} />
           
           {/* Portal Routes */}
@@ -868,6 +872,11 @@ const App = () => {
           <Route path="/discover/supplements" element={
             <AuthGuard allowGuest>
               <Supplements />
+            </AuthGuard>
+          } />
+          <Route path="/discover/category/:subcategory" element={
+            <AuthGuard allowGuest>
+              <CategoryProducts />
             </AuthGuard>
           } />
           <Route path="/discover/wellness-services" element={
@@ -1165,10 +1174,30 @@ const App = () => {
               <Messages />
             </AuthGuard>
           } />
+          {/* Reaction notification deep-links: same path-based forms as above
+              plus a trailing /msg/:messageId segment so the conversation
+              scrolls to and highlights the reacted-to message. Kept as a
+              path segment (not a query string) for the same Appilix reason
+              documented above. */}
+          <Route path="/inbox/u/:recipientId/msg/:messageId" element={
+            <AuthGuard>
+              <Messages />
+            </AuthGuard>
+          } />
+          <Route path="/inbox/t/:threadId/msg/:messageId" element={
+            <AuthGuard>
+              <Messages />
+            </AuthGuard>
+          } />
           {/* VTID-03089: group chat — deep-link from push notifications
               (gateway notification url is /inbox/g/<groupId>). Standalone
               page; main /inbox list integration is a separate follow-up. */}
           <Route path="/inbox/g/:groupId" element={
+            <AuthGuard>
+              <GroupChat />
+            </AuthGuard>
+          } />
+          <Route path="/inbox/g/:groupId/msg/:messageId" element={
             <AuthGuard>
               <GroupChat />
             </AuthGuard>

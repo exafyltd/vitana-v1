@@ -19,6 +19,7 @@ import { type MarketplaceProduct } from '@/hooks/useMarketplace';
 import { CategoryShopSections } from '@/components/discover/CategoryShopSections';
 import { FeaturedProductCard, CompactProductCard } from '@/components/discover/PremiumProductCard';
 import { getPersonalizedReason, hasPersonalizationSignal } from '@/lib/discover-reason';
+import { VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 import { t } from '@/lib/i18n-toast';
 
 interface AIRecommendation {
@@ -81,7 +82,13 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
         {/* Section header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-violet-500" />
+            <img
+              src={VITANA_BOT_AVATAR_URL}
+              alt={t('screens.vitanaIdentity.orbAlt')}
+              width={20}
+              height={20}
+              className="rounded-full shrink-0"
+            />
             <h2 className="text-base font-semibold">{translate('discover.recommendedForYou')}</h2>
           </div>
           <Button
@@ -114,7 +121,7 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
               <div className="h-[1px] flex-1 bg-border/50" />
             </div>
 
-            <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory px-0.5 pb-1 -mx-0.5">
+            <div className="flex items-stretch gap-3 overflow-x-auto snap-x snap-mandatory px-0.5 pb-1 -mx-0.5">
               {rest.map((rec) => (
                 <CompactProductCard
                   key={rec.id}
@@ -130,6 +137,8 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
 
         {/* Thematic collections — Longevity, Adaptogens, Sleep & Recovery, etc. */}
         <CategoryShopSections />
+
+        <CategoryShopSections category="skincare" title={translate('discover.skincareCosmetics')} />
       </div>
     );
   }
@@ -155,6 +164,8 @@ export function MobileDiscoverView({ aiRecommendations, activeTab = 'suggested' 
         </div>
 
         <CategoryShopSections />
+
+        <CategoryShopSections category="skincare" title={translate('discover.skincareCosmetics')} />
 
         {/* Non-product categories (services & experts) stay reachable as compact chips */}
         <div className="flex flex-wrap gap-2 pt-2">

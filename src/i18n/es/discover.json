@@ -19,6 +19,7 @@
     "seeAll": "Ver todo",
     "suggestedForYou": "Sugerido para ti",
     "browseCategories": "Explorar Categorías",
+    "skincareCosmetics": "Cuidado de la Piel y Cosméticos",
     "all": "Todo",
     "shareAndEarn": "Comparte y Gana",
     "shareAndEarnDesc": "Recomienda productos, gana comisiones",
@@ -34,6 +35,15 @@
     "viewProduct": "Ver producto",
     "noResults": "No se encontraron resultados",
     "noResultsDesc": "Prueba diferentes términos de búsqueda o explora categorías.",
+    "back": "Atrás",
+    "productsFound": "{count} productos",
+    "recommendProduct": "Recomendar",
+    "recommendAndEarn": "Recomendar y ganar",
+    "recommendShareTitle": "Mira esto: {product}",
+    "recommendLinkCopied": "Enlace de recomendación copiado",
+    "recommendFailed": "No se pudo recomendar. Inténtalo de nuevo.",
+    "recommendAdded": "Añadido a tus recomendaciones",
+    "alreadyRecommended": "Recomendado",
     "categories": {
       "sleep": "Sueño",
       "nutrition": "Nutrición",
@@ -52,7 +62,13 @@
       "beauty": "Belleza",
       "nootropics": "Nootrópicos",
       "performance": "Rendimiento",
-      "antioxidants": "Antioxidantes"
+      "antioxidants": "Antioxidantes",
+      "faceCare": "Cuidado Facial",
+      "makeup": "Maquillaje",
+      "hairCare": "Cuidado del Cabello",
+      "bodyCare": "Cuidado Corporal",
+      "fragrance": "Fragancia",
+      "sunCare": "Protección Solar"
     },
     "quickActions": {
       "title": "Acciones Rápidas",

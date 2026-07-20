@@ -20,7 +20,11 @@ export function useNativeShare({ contentId, contentType }: UseNativeShareOptions
 
   const share = useCallback(
     async (payload: NativeSharePayload): Promise<"shared" | "cancelled" | "failed"> => {
-      if (!isAvailable) return "failed";
+      // Availability is re-checked at CALL time, not via the mount-time memo:
+      // the Appilix shell injects its APIs after the initial page load (see
+      // waitForAppilixBridge in lib/appilix.ts), so navigator.share may only
+      // appear once the user actually taps a share button.
+      if (typeof navigator === "undefined" || !("share" in navigator)) return "failed";
 
       try {
         await navigator.share({
@@ -37,7 +41,7 @@ export function useNativeShare({ contentId, contentType }: UseNativeShareOptions
         return "failed";
       }
     },
-    [isAvailable, contentId, contentType]
+    [contentId, contentType]
   );
 
   return { isAvailable, share };

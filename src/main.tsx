@@ -76,6 +76,9 @@ const PERSIST_KEYS = [
   // Added (VTID-03255): warm the first authenticated screens across refreshes.
   'global-threads', 'my-journey', 'autopilot-onboarding',
   'longevity-news', 'community-news',
+  // chat_groups rows share the inbox list with global-threads; without this
+  // they were the only part of the list that reloaded from empty on refresh.
+  'chat-groups',
 ];
 
 // Restore cache from localStorage on startup

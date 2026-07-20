@@ -6,6 +6,10 @@
  *   - FeaturedProductCard — large hero, full width
  *   - CompactProductCard  — narrow card for horizontal-scroll collections
  *
+ * A third variant, ProductListRow (see ./ProductListRow.tsx), reuses the
+ * exported bookmarkItem/cardKeyDown helpers for a dense vertical-list layout
+ * (the "See all" destination screens).
+ *
  * Badge/reason text is computed by the caller (see `@/lib/discover-reason`)
  * and passed in, so these stay presentational.
  */
@@ -15,6 +19,7 @@ import { Sparkles, ExternalLink } from "lucide-react";
 import { t } from "@/lib/i18n-toast";
 import { ProductImage } from "@/components/discover/ProductImage";
 import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
+import { RecommendButton } from "@/components/discover/RecommendButton";
 import {
   formatPrice,
   getRedirectUrl,
@@ -28,7 +33,7 @@ interface PremiumCardProps {
   onClick?: () => void;
 }
 
-function bookmarkItem(product: MarketplaceProduct) {
+export function bookmarkItem(product: MarketplaceProduct) {
   return {
     item_type: "supplement" as const,
     item_id: product.id,
@@ -38,7 +43,7 @@ function bookmarkItem(product: MarketplaceProduct) {
   };
 }
 
-function cardKeyDown(e: KeyboardEvent, onClick?: () => void) {
+export function cardKeyDown(e: KeyboardEvent, onClick?: () => void) {
   // Only act when the card itself is focused — Enter/Space from a nested
   // interactive child (bookmark, view-product link) must activate that
   // control, not bubble up into card navigation.
@@ -72,6 +77,10 @@ export function FeaturedProductCard({ product, badgeText, reasonText, onClick }:
         </span>
         <BookmarkButton
           item={bookmarkItem(product)}
+          className="bg-white/70 dark:bg-black/40 backdrop-blur hover:bg-white/90 dark:hover:bg-black/60"
+        />
+        <RecommendButton
+          productId={product.id}
           className="bg-white/70 dark:bg-black/40 backdrop-blur hover:bg-white/90 dark:hover:bg-black/60"
         />
       </div>
@@ -116,9 +125,9 @@ export function CompactProductCard({ product, badgeText, reasonText, onClick }: 
       aria-label={product.title}
       onClick={onClick}
       onKeyDown={(e) => cardKeyDown(e, onClick)}
-      className="snap-start shrink-0 w-[168px] rounded-2xl bg-card border border-border/40 shadow-sm cursor-pointer overflow-hidden active:scale-[0.97] transition-transform"
+      className="snap-start shrink-0 w-[168px] flex flex-col rounded-2xl bg-card border border-border/40 shadow-sm cursor-pointer overflow-hidden active:scale-[0.97] transition-transform"
     >
-      <div className="relative h-[124px]">
+      <div className="relative h-[124px] shrink-0">
         <ProductImage
           src={product.images?.[0]}
           alt={product.title}
@@ -130,9 +139,17 @@ export function CompactProductCard({ product, badgeText, reasonText, onClick }: 
           item={bookmarkItem(product)}
           className="h-7 w-7 bg-white/70 dark:bg-black/40 backdrop-blur hover:bg-white/90 dark:hover:bg-black/60"
         />
+        <RecommendButton
+          productId={product.id}
+          className="h-7 w-7 bg-white/70 dark:bg-black/40 backdrop-blur hover:bg-white/90 dark:hover:bg-black/60"
+        />
       </div>
 
-      <div className="p-2.5 space-y-1.5">
+      {/* flex-1 + mt-auto on the price row: cards in the same horizontal-scroll
+          row stretch to equal height (default flex align-items: stretch), and
+          this keeps every price/CTA row flush with the bottom regardless of
+          how many text lines (brand present/absent, reason length) sit above it. */}
+      <div className="flex flex-col flex-1 p-2.5 space-y-1.5">
         <span className="inline-flex items-center gap-1 rounded-full bg-violet-50 dark:bg-violet-500/10 px-2 py-0.5 text-[10px] font-semibold text-violet-700 dark:text-violet-300">
           <Sparkles className="h-2.5 w-2.5" /> {badgeText}
         </span>
@@ -141,7 +158,7 @@ export function CompactProductCard({ product, badgeText, reasonText, onClick }: 
           <p className="text-[11px] text-muted-foreground/80 line-clamp-1">{product.brand}</p>
         )}
         <p className="text-xs text-muted-foreground line-clamp-1">{reasonText}</p>
-        <div className="flex items-center justify-between gap-1 pt-0.5">
+        <div className="flex items-center justify-between gap-1 pt-0.5 mt-auto">
           <span className="text-sm font-semibold">{formatPrice(product.price_cents, product.currency)}</span>
           <a
             href={getRedirectUrl(product.id, "feed")}

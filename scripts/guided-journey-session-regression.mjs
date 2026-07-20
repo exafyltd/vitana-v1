@@ -79,6 +79,22 @@ assert(
   'desktop guided ring exposes fitted label/number classes for non-overlapping CTA text',
 );
 
+// Regression guard for the "0 of 0" flash: the guided hero renders
+// independently of `goal` (a user can have a Life Compass goal AND be in
+// Guided Mode), so the loading-skeleton gate must treat guided-not-ready as
+// its own trigger — not bundled behind a `!goal` requirement that lets any
+// user with an existing goal skip the spinner and fall through to zeros.
+for (const [name, src] of [['DreamNorthStar', dreamHero], ['GoalNorthStar', goalHero]]) {
+  assert(
+    hasPattern(src, /const guidedNotReady = guided && \(!guidedProgress \|\| guidedProgress\.totalSessions === 0\);/),
+    `${name} derives guidedNotReady independently of the goal-loading state`,
+  );
+  assert(
+    hasPattern(src, /if \(loading && \(guidedNotReady \|\| !goal\)\) \{/),
+    `${name}'s loading-skeleton gate triggers on guidedNotReady even when a goal is already set`,
+  );
+}
+
 if (!process.exitCode) {
   console.log('[guided-journey-session-regression] OK: guided session completion and CTA layout contracts hold.');
 }

@@ -25,7 +25,8 @@ import { useAutoSave } from "@/hooks/useAutoSave";
 import { useState, useCallback } from "react";
 import { shouldShowField } from "@/lib/profileScope";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { MobileIdCardSwitcher } from "../mobile/MobileIdCardSwitcher";
+import { MobileIdCardSwitcher, getActiveCardSide } from "../mobile/MobileIdCardSwitcher";
+import { DesktopCardSide } from "../desktop/DesktopIdCardSwitcher";
 import { MobileProfileStats } from "../mobile/MobileProfileStats";
 import { MobileProfileTabs, MobileProfileTab } from "../mobile/MobileProfileTabs";
 import { MobileAutopilotBanner } from "../mobile/MobileAutopilotBanner";
@@ -47,7 +48,7 @@ import { useHybridMessages } from "@/hooks/useHybridMessages";
 import { useAuth } from "@/context/AuthProvider";
 import { resolveProfileUserId } from "@/lib/resolveProfileUserId";
 import { useToast } from '@/hooks/use-toast';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { MessageComposeModal } from "./MessageComposeModal";
 import { useCommunityLogger } from "@/hooks/useCommunityLogger";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
@@ -152,6 +153,13 @@ export function ProfileLayout({
   const [messageModalOpen, setMessageModalOpen] = useState(false);
   const [isCreatingThread, setIsCreatingThread] = useState(false);
 
+  // VTID-02950 round 2: gate the Posts/About/Media/Groups tab system off of
+  // which ID-card segment is active, so it disappears under Business.
+  const [searchParams] = useSearchParams();
+  const isBusinessTab = getActiveCardSide(searchParams) === "business";
+  const [activeDesktopSide, setActiveDesktopSide] = useState<DesktopCardSide>("identity");
+  const isDesktopBusinessTab = activeDesktopSide === "business";
+
   const handleFollowClick = async () => {
     if (isFollowing) {
       await unfollowUser();
@@ -205,22 +213,27 @@ export function ProfileLayout({
           onMessage={!isOwner ? handleMessageClick : undefined}
           isFollowing={isFollowing}
           followLoading={followLoading}
-        />
-        
-        {/* Compact Stats Strip */}
-        <MobileProfileStats
-          userId={profileUserId}
-          profileId={profile.id}
           followersCount={followersCount}
           followingCount={followingCount}
         />
-        
+
+        {/* Compact Stats Strip + Posts/About/Media/Groups tab system —
+            hidden on the Business segment (VTID-02950 round 2), which
+            shows only its own recommendations list via MobileIdCardSwitcher
+            above. */}
+        {!isBusinessTab && (
+        <>
+        <MobileProfileStats
+          userId={profileUserId}
+          profileId={profile.id}
+        />
+
         {/* Sticky Tab Bar for content below ID card */}
         <MobileProfileTabs
           activeTab={mobileActiveTab}
           onTabChange={setMobileActiveTab}
         />
-        
+
         {/* Tab Content */}
         <div className="flex-1">
           {mobileActiveTab === "posts" && effectiveEditMode && (
@@ -286,6 +299,8 @@ export function ProfileLayout({
             <MobileGroupsTabContent userId={profileUserId} />
           )}
         </div>
+        </>
+        )}
 
         {/* Share sheet — native share + QR, mirroring event-share pattern */}
         <ShareProfileSheet
@@ -351,9 +366,16 @@ export function ProfileLayout({
               onEditIdentity={onEditIdentity}
               onEditSocial={onEditAbout}
               onEditAccount={onEditAccount}
+              activeSide={activeDesktopSide}
+              onActiveSideChange={setActiveDesktopSide}
             />
           </div>
 
+          {/* Stats + tab triggers — hidden on the Business segment
+              (VTID-02950 round 2), which shows only its own recommendations
+              list below instead of the Posts/About/Media/Groups system. */}
+          {!isDesktopBusinessTab && (
+          <>
           <div>
             <ProfileStats profile={profile} profileUserId={profileUserId} followersCount={followersCount} followingCount={followingCount} />
           </div>
@@ -367,11 +389,17 @@ export function ProfileLayout({
               <ProfileSplitNavigationTriggers profile={profile} scope={scope} />
             </div>
           </div>
+          </>
+          )}
         </div>
 
         {/* Tab content — below the fold */}
         <div className="px-6 pt-3">
           <div className="max-w-7xl mx-auto flex flex-col gap-y-3">
+            {isDesktopBusinessTab ? (
+              <DesktopBusinessCard />
+            ) : (
+            <>
             <ProfileSplitNavigationContent
               profile={profile}
               scope={scope}
@@ -401,7 +429,7 @@ export function ProfileLayout({
                 </p>
               </div>
             )}
-            
+
             {/* Autopilot Suggestions - Positioned after Showcase */}
             {effectiveEditMode && (
               <AutopilotSuggestions
@@ -410,6 +438,8 @@ export function ProfileLayout({
                   console.log('Autopilot suggestion clicked:', suggestion);
                 }}
               />
+            )}
+            </>
             )}
           </div>
         </div>

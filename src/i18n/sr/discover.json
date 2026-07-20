@@ -19,6 +19,7 @@
     "seeAll": "Prikaži sve",
     "suggestedForYou": "Predloženo za tebe",
     "browseCategories": "Pregledaj kategorije",
+    "skincareCosmetics": "Nega kože i kozmetika",
     "all": "Sve",
     "shareAndEarn": "Podeli i zaradi",
     "shareAndEarnDesc": "Preporuči proizvode, zaradi proviziju",
@@ -34,6 +35,15 @@
     "viewProduct": "Pogledaj proizvod",
     "noResults": "Nema rezultata",
     "noResultsDesc": "Probaj druge pojmove za pretragu ili pregledaj kategorije.",
+    "back": "Nazad",
+    "productsFound": "{count} proizvoda",
+    "recommendProduct": "Preporuči",
+    "recommendAndEarn": "Preporuči i zaradi",
+    "recommendShareTitle": "Pogledaj ovo: {product}",
+    "recommendLinkCopied": "Link za preporuku kopiran",
+    "recommendFailed": "Preporuka nije uspela. Pokušaj ponovo.",
+    "recommendAdded": "Dodato u tvoje preporuke",
+    "alreadyRecommended": "Preporučeno",
     "categories": {
       "sleep": "Spavanje",
       "nutrition": "Ishrana",
@@ -52,7 +62,13 @@
       "beauty": "Lepota",
       "nootropics": "Nootropici",
       "performance": "Performanse",
-      "antioxidants": "Antioksidansi"
+      "antioxidants": "Antioksidansi",
+      "faceCare": "Nega lica",
+      "makeup": "Šminka",
+      "hairCare": "Nega kose",
+      "bodyCare": "Nega tela",
+      "fragrance": "Parfemi",
+      "sunCare": "Zaštita od sunca"
     },
     "quickActions": {
       "title": "Brze radnje",
