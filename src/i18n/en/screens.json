@@ -8792,6 +8792,8 @@
       "showingValue0": "Showing: {value0}",
       "lengthTransactionValue1": "{length}transaction{value1}",
       "addFundsBalance": "Add Funds to {currency} Balance",
+      "continueToSecureCheckout": "Continue to secure checkout",
+      "cardPaymentViaStripe": "Card payment, processed securely by Stripe",
       "currentBalanceLabel": "Current {currency} Balance",
       "amountAddCurrency": "Amount to Add ({currency})"
     },

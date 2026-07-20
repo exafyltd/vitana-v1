@@ -994,6 +994,8 @@
       "pleaseEnterValidAmountAdd": "Unesite važeći iznos za dodavanje",
       "fundsAddedSuccessfully": "✅ Sredstva uspešno dodata!",
       "transactionFailed": "❌ Transakcija neuspešna",
+      "depositCanceled": "Uplata otkazana",
+      "redirectingToCheckout": "Preusmeravanje na bezbednu naplatu …",
       "insufficientUsdBalance": "❌ Nedovoljno USD stanje",
       "youDonTHaveEnoughUsd": "Nemate dovoljno USD za kupovinu ovih kredita",
       "creditsPurchasedSuccessfully": "✅ Krediti uspešno kupljeni!",

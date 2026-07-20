@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
@@ -9,16 +9,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { DollarSign, Euro, CreditCard, Banknote, Loader2, Shield } from "lucide-react";
+import { DollarSign, Euro, Loader2, Shield } from "lucide-react";
 import { useWallet } from '@/hooks/useWallet';
-import { useToast } from '@/hooks/use-toast';
+import { useCreateDeposit } from '@/hooks/useWalletGateway';
 import { isIAPRestricted } from '@/lib/appilix';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 import { useDisplayCurrency } from '@/hooks/useDisplayCurrency';
 import { useEurUsdRate } from '@/hooks/useEurUsdRate';
 import { convertFromUsd, convertToUsd, getCurrencySymbol } from '@/lib/exchangeRates';
+import { toMinorUnits } from '@/lib/format-money';
 
 import { fmtNumber } from '@/lib/locale-format';
 interface AddFundsPopupProps {
@@ -27,12 +27,11 @@ interface AddFundsPopupProps {
 }
 
 export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
-  const { getBalance, updateBalance } = useWallet();
+  const { getBalance } = useWallet();
   const { displayCurrency } = useDisplayCurrency();
   const { eurPerUsd } = useEurUsdRate();
-  const { toast } = useToast();
+  const { createDeposit, isCreating } = useCreateDeposit();
   const [fundAmount, setFundAmount] = useState('');
-  const [loading, setLoading] = useState(false);
 
   if (isIAPRestricted()) return null;
 
@@ -42,32 +41,22 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
   const currentBalance = convertFromUsd(getBalance('USD') || 0, displayCurrency, eurPerUsd);
   const CurrencyIcon = displayCurrency === 'EUR' ? Euro : DollarSign;
   const quickAmounts = [25, 50, 100, 200, 500];
-  const paymentMethods = [
-    { id: 'card', name: 'Credit/Debit Card', icon: CreditCard, fee: '2.9%' },
-    { id: 'bank', name: 'Bank Transfer', icon: Banknote, fee: 'Free' },
-    { id: 'paypal', name: 'PayPal', icon: DollarSign, fee: '3.4%' }
-  ];
 
-  const handleAddFunds = async (paymentMethod: string) => {
+  const handleContinue = async () => {
     if (!fundAmount || parseFloat(fundAmount) <= 0) {
       notifyError('toasts.wallet.invalidAmount2', 'toasts.wallet.pleaseEnterValidAmountAdd');
       return;
     }
 
-    setLoading(true);
-
     try {
+      // The wallet balance is stored in USD regardless of display currency, so
+      // the real Stripe deposit is always created in USD; the browser is then
+      // redirected to Stripe Checkout by useCreateDeposit on success.
       const usdAmount = convertToUsd(parseFloat(fundAmount), displayCurrency, eurPerUsd);
-      await updateBalance('USD', usdAmount, 'add');
-
-      notify('toasts.wallet.fundsAddedSuccessfully');
-
-      onOpenChange(false);
-      setFundAmount('');
+      notify('toasts.wallet.redirectingToCheckout');
+      await createDeposit({ amount_minor: toMinorUnits(usdAmount), currency: 'USD' });
     } catch (error) {
       notifyError('toasts.wallet.transactionFailed');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -117,35 +106,20 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
 
           <Separator />
 
-          {/* Payment Methods */}
-          <div className="space-y-3">
-            <h4 className="text-sm font-medium text-muted-foreground">{t('screens.wallet.choosePaymentMethod')}</h4>
-            {paymentMethods.map((method) => (
-              <Button
-                key={method.id}
-                variant="outline"
-                className="justify-between h-auto p-4 w-full"
-                onClick={() => handleAddFunds(method.id)}
-                disabled={loading || !fundAmount}
-              >
-                <div className="flex items-center gap-3">
-                  {loading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <method.icon className="h-4 w-4 text-green-600" />
-                  )}
-                  <div className="text-left">
-                    <div className="font-medium">{method.name}</div>
-                    <div className="text-xs text-muted-foreground">{t('screens.wallet.processingFeeFee', { fee: method.fee })}</div>
-                  </div>
-                </div>
-                {method.fee === 'Free' && (
-                  <Badge variant="secondary" className="bg-green-100 text-green-700">{t('screens.wallet.recommended')}
-                  </Badge>
-                )}
-              </Button>
-            ))}
-          </div>
+          <Button
+            className="w-full h-12"
+            onClick={handleContinue}
+            disabled={isCreating || !fundAmount}
+          >
+            {isCreating ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                {t('screens.wallet.processing')}
+              </>
+            ) : (
+              t('screens.wallet.continueToSecureCheckout')
+            )}
+          </Button>
 
           {/* Security Info */}
           <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
@@ -154,9 +128,9 @@ export function AddFundsPopup({ open, onOpenChange }: AddFundsPopupProps) {
               <span className="text-sm font-medium text-blue-700">{t('screens.wallet.secureTransaction')}</span>
             </div>
             <ul className="text-xs text-blue-600 space-y-1">
+              <li>{t('screens.wallet.cardPaymentViaStripe')}</li>
               <li>{t('screens.wallet.text256bitSslEncryption')}</li>
               <li>{t('screens.wallet.pciDssCompliantProcessing')}</li>
-              <li>{t('screens.wallet.instantAvailabilityAfterConfirmation')}</li>
             </ul>
           </div>
         </ResponsiveDialogBody>

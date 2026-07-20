@@ -8198,6 +8198,8 @@
       "showingValue0": "Mostrando: {value0}",
       "lengthTransactionValue1": "{length} transacción{value1}",
       "addFundsBalance": "Añadir fondos al saldo en {currency}",
+      "continueToSecureCheckout": "Continuar al pago seguro",
+      "cardPaymentViaStripe": "Pago con tarjeta, procesado de forma segura por Stripe",
       "currentBalanceLabel": "Saldo actual en {currency}",
       "amountAddCurrency": "Importe a añadir ({currency})"
     },

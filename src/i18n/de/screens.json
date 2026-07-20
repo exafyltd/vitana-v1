@@ -8792,6 +8792,8 @@
       "showingValue0": "Zeige: {value0}",
       "lengthTransactionValue1": "{length} Transaktion{value1}",
       "addFundsBalance": "Geld zu {currency}-Guthaben hinzufügen",
+      "continueToSecureCheckout": "Weiter zur sicheren Kasse",
+      "cardPaymentViaStripe": "Kartenzahlung, sicher abgewickelt über Stripe",
       "currentBalanceLabel": "Aktueller {currency}-Kontostand",
       "amountAddCurrency": "Hinzuzufügender Betrag ({currency})"
     },

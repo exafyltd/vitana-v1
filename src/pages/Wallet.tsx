@@ -46,7 +46,8 @@ import { MobileWalletTransactionList } from "@/components/wallet/mobile/MobileWa
 import { MobileWalletQuickActions } from "@/components/wallet/mobile/MobileWalletQuickActions";
 import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
-import { t } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { useDeposit } from "@/hooks/useWalletGateway";
 import { useDisplayCurrency } from "@/hooks/useDisplayCurrency";
 import { useEurUsdRate } from "@/hooks/useEurUsdRate";
 import { CurrencyToggle } from "@/components/wallet/CurrencyToggle";
@@ -141,10 +142,50 @@ export default function Wallet() {
     if (t === "balances" || t === "activity" || t === "actions") setMobileWalletMode(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
-  const { balances, transactions, loading, error, getBalance, isLoaded } = useWallet();
+  const { balances, transactions, loading, error, getBalance, isLoaded, refreshData } = useWallet();
   const { displayCurrency, setDisplayCurrency } = useDisplayCurrency();
   const { eurPerUsd } = useEurUsdRate();
   const { user } = useAuth();
+
+  // Return leg of the real Stripe deposit flow (AddFundsPopup / gateway wallet
+  // rail): poll the deposit to a terminal state, surface the outcome, refresh
+  // the legacy USD balance the wallet UI reads, then clear the query params.
+  const depositId = searchParams.get("depositId");
+  const depositResult = searchParams.get("depositResult");
+  const { isTerminal: depositIsTerminal, deposit: pendingDeposit } = useDeposit(
+    depositResult === "success" ? depositId : null,
+    { pollUntilTerminal: true },
+  );
+
+  useEffect(() => {
+    if (depositResult === "canceled" && depositId) {
+      notifyError('toasts.wallet.depositCanceled');
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete("depositId");
+        next.delete("depositResult");
+        return next;
+      }, { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [depositResult, depositId]);
+
+  useEffect(() => {
+    if (depositResult !== "success" || !depositId || !depositIsTerminal) return;
+    if (pendingDeposit?.status === 'succeeded') {
+      notify('toasts.wallet.fundsAddedSuccessfully');
+    } else {
+      notifyError('toasts.wallet.transactionFailed');
+    }
+    refreshData();
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.delete("depositId");
+      next.delete("depositResult");
+      return next;
+    }, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [depositResult, depositId, depositIsTerminal, pendingDeposit?.status]);
 
   // Cash balances are stored in USD; render them in the user's chosen display
   // currency (USD ↔ EUR), converting EUR via the live EUR/USD market rate.
