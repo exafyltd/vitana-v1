@@ -62,6 +62,8 @@ All colors MUST be HSL.
     /* System / Utility */
     --sys-vitana-accent: 199 36% 48%;
     --sys-vitana-tint: 199 36% 96%;
+    --sys-vitana-card: 235 100% 98%;
+    --sys-vitana-card-border: 235 45% 90%;
     --sys-autopilot-accent: 8 85% 56%;
     --sys-autopilot-tint: 8 100% 96%;
     --sys-ai-accent: 14 88% 54%;
@@ -212,6 +214,8 @@ All colors MUST be HSL.
     /* System / Utility */
     --sys-vitana-accent: 199 36% 52%;
     --sys-vitana-tint: 199 36% 8%;
+    --sys-vitana-card: 235 25% 16%;
+    --sys-vitana-card-border: 235 25% 28%;
     --sys-autopilot-accent: 8 85% 66%;
     --sys-autopilot-tint: 8 100% 8%;
     --sys-ai-accent: 14 88% 64%;

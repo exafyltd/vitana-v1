@@ -193,6 +193,43 @@ export function markSessionListenedInJourneyState(
   });
 }
 
+/**
+ * Shared query function so the hook and the prefetch registry hit the exact
+ * same request and can't drift (same pattern as fetchJourneyChecklist).
+ */
+export async function fetchJourneyState(userId: string | null): Promise<JourneyStateProgress> {
+  const resp = await communityFetch('/api/v1/journey/state');
+  const json = await resp.json();
+  if (resp.ok && json?.ok && json.state) {
+    const rawState = json.state as Record<string, unknown>;
+    return {
+      completedTopicIds: stringArray(rawState.completedTopicIds),
+      completedListenedTopicIds: [
+        ...stringArray(rawState.completedListenedTopicIds),
+        ...stringArray(rawState.listenedTopicIds),
+        ...stringArray(rawState.sessionListenedTopicIds),
+      ],
+      completedSessionNumbers: [
+        ...numberArray(rawState.completedSessionNumbers),
+        ...numberArray(rawState.completedSessions),
+        ...numberArray(rawState.listenedSessions),
+        ...numberArray(rawState.listenedSessionNumbers),
+        ...readStoredListenedSessions(userId),
+      ],
+      completedPracticeCount:
+        typeof rawState.completedPracticeCount === 'number'
+          ? rawState.completedPracticeCount
+          : 0,
+    };
+  }
+  return {
+    completedTopicIds: [],
+    completedListenedTopicIds: [],
+    completedSessionNumbers: readStoredListenedSessions(userId),
+    completedPracticeCount: 0,
+  };
+}
+
 export function useGuidedJourneyProgress(): GuidedJourneyProgress {
   const { user } = useAuth();
   const userId = user?.id ?? null;
@@ -200,38 +237,7 @@ export function useGuidedJourneyProgress(): GuidedJourneyProgress {
 
   const { data: state, isLoading: stateLoading } = useQuery({
     queryKey: JOURNEY_STATE_QUERY_KEY,
-    queryFn: async (): Promise<JourneyStateProgress> => {
-      const resp = await communityFetch('/api/v1/journey/state');
-      const json = await resp.json();
-      if (resp.ok && json?.ok && json.state) {
-        const rawState = json.state as Record<string, unknown>;
-        return {
-          completedTopicIds: stringArray(rawState.completedTopicIds),
-          completedListenedTopicIds: [
-            ...stringArray(rawState.completedListenedTopicIds),
-            ...stringArray(rawState.listenedTopicIds),
-            ...stringArray(rawState.sessionListenedTopicIds),
-          ],
-          completedSessionNumbers: [
-            ...numberArray(rawState.completedSessionNumbers),
-            ...numberArray(rawState.completedSessions),
-            ...numberArray(rawState.listenedSessions),
-            ...numberArray(rawState.listenedSessionNumbers),
-            ...readStoredListenedSessions(userId),
-          ],
-          completedPracticeCount:
-            typeof rawState.completedPracticeCount === 'number'
-              ? rawState.completedPracticeCount
-              : 0,
-        };
-      }
-      return {
-        completedTopicIds: [],
-        completedListenedTopicIds: [],
-        completedSessionNumbers: readStoredListenedSessions(userId),
-        completedPracticeCount: 0,
-      };
-    },
+    queryFn: () => fetchJourneyState(userId),
     staleTime: 60 * 1000,
     enabled: !!user,
   });

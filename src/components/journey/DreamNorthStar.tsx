@@ -1,7 +1,7 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plane, Compass, Sparkles, CalendarClock, Check, Medal } from "lucide-react";
+import { Plane, Compass, Sparkles, CalendarClock, Check, Medal, Loader2 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { t } from "@/lib/i18n-toast";
 import { localizeGoal } from "@/lib/goalLabel";
@@ -269,6 +269,28 @@ export function DreamNorthStar({
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+
+  // Loading: never paint the hero with placeholder zeros ("session 0 of 0")
+  // while the journey/checklist queries resolve — loading must look like
+  // loading. The guided card renders independently of `goal` (a user can have
+  // a Life Compass goal AND be in Guided Mode), so guided-not-ready must gate
+  // on its own — requiring `!goal` here let any user with an existing goal
+  // skip this spinner entirely and fall through to the zero-data render below.
+  const guidedNotReady = guided && (!guidedProgress || guidedProgress.totalSessions === 0);
+  if (loading && (guidedNotReady || !goal)) {
+    return (
+      <Card className="rounded-[28px] border border-violet-200/50 shadow-lg bg-white/80">
+        <div
+          className="p-8 flex min-h-[320px] flex-col items-center justify-center gap-3"
+          role="status"
+          aria-live="polite"
+        >
+          <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" aria-hidden="true" />
+          <span className="sr-only">{t("common.loading")}</span>
+        </div>
+      </Card>
+    );
+  }
 
   // Error: don't pretend "no goal", offer a retry.
   if (!loading && error && !goal) {

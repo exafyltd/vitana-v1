@@ -354,7 +354,7 @@ function DiscoverInner() {
               {isMobile && (
                 <MobileModePill
                   modes={[
-                    { value: "suggested", label: "AI Picks", icon: "💡" },
+                    { value: "suggested", label: translate('discover.vitanaPicksLabel'), icon: "💡" },
                     { value: "categories", label: "Categories", icon: "📂" },
                     { value: "share", label: "Share & Earn", icon: "💰" },
                   ]}

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { UserProfile, ViewAsMode } from "@/types/profile";
@@ -26,7 +26,7 @@ import { useAuth } from "@/context/AuthProvider";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useAutopilotComplete } from "@/hooks/useAutopilotComplete";
-import { MobileIdCardSwitcher } from "@/components/profile/mobile/MobileIdCardSwitcher";
+import { MobileIdCardSwitcher, getActiveCardSide } from "@/components/profile/mobile/MobileIdCardSwitcher";
 import { MobileProfileStats } from "@/components/profile/mobile/MobileProfileStats";
 import { MobileProfileTabs, MobileProfileTab } from "@/components/profile/mobile/MobileProfileTabs";
 import { MobileAutopilotBanner } from "@/components/profile/mobile/MobileAutopilotBanner";
@@ -386,6 +386,8 @@ export default function EditProfilePage() {
   }, [viewAs, hasUnsavedChanges]);
 
   const isMobile = useIsMobile();
+  const [searchParams] = useSearchParams();
+  const isBusinessTab = getActiveCardSide(searchParams) === "business";
   const [mobileActiveTab, setMobileActiveTab] = useState<MobileProfileTab>("posts");
   const [showAutopilotPopup, setShowAutopilotPopup] = useState(false);
   const [showCreatePost, setShowCreatePost] = useState(false);
@@ -428,17 +430,22 @@ export default function EditProfilePage() {
             onShare={shareHook.openShare}
           />
           
-          {/* Compact Stats Strip */}
+          {/* Compact Stats Strip + Posts/About/Media/Groups tab system —
+              hidden on the Business segment (VTID-02950 round 2), which
+              shows only its own recommendations list via
+              MobileIdCardSwitcher above. */}
+          {!isBusinessTab && (
+          <>
           <MobileProfileStats
             userId={user?.id}
           />
-          
+
           {/* Sticky Tab Bar for content below ID card */}
           <MobileProfileTabs
             activeTab={mobileActiveTab}
             onTabChange={setMobileActiveTab}
           />
-          
+
           {/* Tab Content */}
           <div className="flex-1">
             {mobileActiveTab === "posts" && (
@@ -527,6 +534,8 @@ export default function EditProfilePage() {
               <MobileGroupsTabContent userId={user?.id} />
             )}
           </div>
+          </>
+          )}
         </div>
 
         {/* Drawers - same on mobile */}

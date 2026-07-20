@@ -12,7 +12,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
-import { RefreshCw, Loader2, Plus } from "lucide-react";
+import { RefreshCw, Loader2, Plus, UserPlus } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
@@ -31,9 +31,11 @@ import {
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
 import { CreateContentPopup } from "@/components/CreateContentPopup";
 import { MobileCreatePostSheet } from "@/components/profile/mobile/MobileCreatePostSheet";
-import { WelcomeBackBanner } from "@/components/home/WelcomeBackBanner";
+import { VitanaIndexCard } from "@/components/home/VitanaIndexCard";
 import { DidYouKnowCard } from "@/components/proactive/DidYouKnowCard";
-import { PriorityOfDayBanner } from "@/components/PriorityOfDayBanner";
+import { LongevityJourneyCard } from "@/components/home/LongevityJourneyCard";
+import { InviteFriendCard } from "@/components/home/InviteFriendCard";
+import { useInviteFriendShare } from "@/hooks/useInviteFriendShare";
 import { useNewsFeedPreferencesStore } from "@/stores/newsFeedPreferencesStore";
 import {
   useLongevityNewsFeed,
@@ -85,6 +87,7 @@ export default function Home() {
   const [createPostOpen, setCreatePostOpen] = useState(false);
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const { shareInvite } = useInviteFriendShare();
 
   const {
     data: longevityData, fetchNextPage, hasNextPage, isFetchingNextPage,
@@ -213,6 +216,51 @@ export default function Home() {
     });
   };
 
+  // First impression of the feed: weave the 3 promo cards into the opening
+  // posts as post, card, post, card, post, card instead of front-loading
+  // them all before any real content. One-time only — after the 3rd slot the
+  // rest of the ranked feed (with its existing article interleave) continues
+  // unchanged. A slot with no content (e.g. no live match candidate) is just
+  // skipped, so the pattern never leaves a visible gap.
+  const renderInterleavedFeedItems = (): JSX.Element[] => {
+    const matchIndex = feedItems.findIndex((item) => item.kind === "match" || item.kind === "performer");
+    const matchItem = matchIndex >= 0 ? feedItems[matchIndex] : null;
+    const streamItems = matchIndex >= 0 ? feedItems.filter((_, i) => i !== matchIndex) : feedItems;
+
+    const cardSlots: { key: string; node: JSX.Element }[] = [
+      { key: "card-vitana-index", node: <VitanaIndexCard /> },
+      { key: "card-guided-journey", node: <LongevityJourneyCard /> },
+      { key: "card-invite-friend", node: <InviteFriendCard /> },
+    ];
+    if (matchItem) {
+      cardSlots.push({
+        key: `card-find-a-match-${matchItem.id}`,
+        node: (
+          <NewsFeedItemCard
+            item={matchItem}
+            onArticleClick={handleFeedArticleClick}
+            onOpen={handleFeedItemOpen}
+          />
+        ),
+      });
+    }
+
+    const nodes: JSX.Element[] = [];
+    streamItems.forEach((item, index) => {
+      nodes.push(
+        <NewsFeedItemCard
+          key={item.id}
+          item={item}
+          onArticleClick={handleFeedArticleClick}
+          onOpen={handleFeedItemOpen}
+        />,
+      );
+      const slot = cardSlots[index];
+      if (slot) nodes.push(<div key={slot.key}>{slot.node}</div>);
+    });
+    return nodes;
+  };
+
   const renderV2Feed = () => (
     <>
       {isLoadingFeedV2 && feedItems.length === 0 && (
@@ -232,14 +280,7 @@ export default function Home() {
       )}
       {feedItems.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5 mt-2 md:mt-5">
-          {feedItems.map((item) => (
-            <NewsFeedItemCard
-              key={item.id}
-              item={item}
-              onArticleClick={handleFeedArticleClick}
-              onOpen={handleFeedItemOpen}
-            />
-          ))}
+          {renderInterleavedFeedItems()}
         </div>
       )}
       {/* Endless-scroll sentinel: loads the next news page as it nears the viewport. */}
@@ -377,6 +418,16 @@ export default function Home() {
             <div className="flex items-center gap-1 min-w-max">
               <ExpandableSearchButton compact placeholder={isMobile ? t('screens.home.searchShort') : t('screens.home.searchNewsTopicsSources')} onSearch={(query) => setSearchQuery(query)} />
               {isMobile && <MobileModePill className="px-2" modes={FILTER_MODES} activeMode={activeTab} onModeChange={(v) => setActiveTab(v as FilterTab)} />}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full shrink-0"
+                onClick={() => void shareInvite()}
+                title={t('screens.downloadFlyer.inviteCardCta')}
+                aria-label={t('screens.downloadFlyer.inviteCardCta')}
+              >
+                <UserPlus className="h-4 w-4" />
+              </Button>
               <UniversalCalendarButton showText={!isMobile} className="!px-2" />
               <Button
                 onClick={() => setCreatePostOpen(true)}
@@ -389,10 +440,8 @@ export default function Home() {
               </Button>
             </div>
           </UtilityActionButton>
-          <div className="mt-3 space-y-2">
-            <WelcomeBackBanner />
+          <div className="mt-3">
             <DidYouKnowCard />
-            <PriorityOfDayBanner />
           </div>
           {!isMobile && (
             <div className="mt-5">

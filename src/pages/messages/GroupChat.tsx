@@ -77,7 +77,7 @@ function toBubbleMessage(msg: ChatGroupMessage, groupId: string): BubbleMessage 
 }
 
 export default function GroupChat() {
-  const { groupId } = useParams<{ groupId: string }>();
+  const { groupId, messageId: initialScrollMessageId } = useParams<{ groupId: string; messageId?: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { translate } = useTranslation();
@@ -159,9 +159,25 @@ export default function GroupChat() {
     return () => clearInterval(id);
   }, [reload]);
 
+  const hasScrolledToTargetRef = useRef(false);
+
   useEffect(() => {
+    if (initialScrollMessageId) return; // reaction-notification deep-link wins instead
     streamEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages.length]);
+  }, [messages.length, initialScrollMessageId]);
+
+  // Reaction-notification deep-link: scroll to and highlight the reacted-to
+  // message once it's rendered, instead of the default scroll-to-bottom.
+  useEffect(() => {
+    if (!initialScrollMessageId || hasScrolledToTargetRef.current || messages.length === 0) return;
+    const el = document.getElementById(`msg-${initialScrollMessageId}`);
+    if (!el) return; // not rendered yet — retry on next messages update
+    hasScrolledToTargetRef.current = true;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    el.classList.add("message-highlight");
+    const timer = setTimeout(() => el.classList.remove("message-highlight"), 1500);
+    return () => clearTimeout(timer);
+  }, [initialScrollMessageId, messages]);
 
   // MessageInput.onSendMessage matches the DM signature so all of its
   // code paths (text, attachment, voice) plug into the chat_groups endpoint
@@ -309,23 +325,24 @@ export default function GroupChat() {
               const isOwn = msg.sender_id === userId;
               const sender = memberById.get(msg.sender_id);
               return (
-                <MessageBubble
-                  key={msg.id}
-                  message={{
-                    ...toBubbleMessage(msg, group.id),
-                    sender: sender
-                      ? {
-                          user_id: sender.user_id,
-                          display_name: sender.display_name,
-                          avatar_url: sender.avatar_url,
-                        }
-                      : null,
-                  }}
-                  isOwnMessage={isOwn}
-                  showAvatar={!isOwn}
-                  onUpdateMessage={handleUpdateMessage}
-                  onDeleteMessage={handleDeleteMessage}
-                />
+                <div key={msg.id} id={`msg-${msg.id}`} className="transition-colors duration-500">
+                  <MessageBubble
+                    message={{
+                      ...toBubbleMessage(msg, group.id),
+                      sender: sender
+                        ? {
+                            user_id: sender.user_id,
+                            display_name: sender.display_name,
+                            avatar_url: sender.avatar_url,
+                          }
+                        : null,
+                    }}
+                    isOwnMessage={isOwn}
+                    showAvatar={!isOwn}
+                    onUpdateMessage={handleUpdateMessage}
+                    onDeleteMessage={handleDeleteMessage}
+                  />
+                </div>
               );
             })}
           </div>

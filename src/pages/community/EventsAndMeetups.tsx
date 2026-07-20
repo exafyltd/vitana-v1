@@ -6,11 +6,6 @@ import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
 import { Button } from "@/components/ui/button";
-import { CreateEventPopup } from '@/components/CreateEventPopup';
-import { CreateMeetupPopup } from '@/components/CreateMeetupPopup';
-import { CreateSelectionDialog } from '@/components/CreateSelectionDialog';
-import { EditMeetupPopup } from '@/components/EditMeetupPopup';
-import { CampaignDialog } from '@/components/sharing/CampaignDialog';
 import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { communityNavigation } from "@/config/navigation";
 import { MotivationalBanner } from '@/components/MotivationalBanner';
@@ -18,7 +13,7 @@ import { NewsCard } from '@/components/crossover/NewsCard';
 import { SplitBar, SplitBarList, SplitBarTrigger, SplitBarContent } from '@/components/ui/split-bar';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { ChevronDown } from 'lucide-react';
-import { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback, lazy, Suspense } from "react";
 import { useSearchParams } from "react-router-dom";
 import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 import { useEventSelection } from "@/context/EventSelectionContext";
@@ -31,7 +26,6 @@ import { cn } from "@/lib/utils";
 import { Plus, Calendar as CalendarIcon, Brain, Users, Megaphone, Plane } from 'lucide-react';
 import { EventKebabMenu } from '@/components/events/EventKebabMenu';
 import SocialShareButton from "@/components/sharing/SocialShareButton";
-import { UniversalShareDialog } from "@/components/sharing/UniversalShareDialog";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { generateEventCampaignData } from "@/lib/eventPromotion";
 import { getShareUrl } from "@/lib/shareUrl";
@@ -39,7 +33,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileEventCarousel } from "@/components/community/MobileEventCarousel";
 import { EventCardSkeleton } from "@/components/events/EventCardSkeleton";
 import { useAutopilot } from "@/hooks/use-autopilot";
-import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -47,6 +40,27 @@ import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog"
 import { notifyError, t } from '@/lib/i18n-toast';
 
 import { fmtDate, fmtTime } from '@/lib/locale-format';
+
+// Interaction-only surfaces (create/edit/share/promote dialogs) are code-split
+// out of the route chunk: they only matter after a user action, yet statically
+// importing them made the Events screen download + parse all of them before
+// the list could paint. Mount conditions are unchanged — only the code loads
+// lazily (each render site is wrapped in <Suspense fallback={null}>).
+const CreateEventPopup = lazy(() =>
+  import('@/components/CreateEventPopup').then((m) => ({ default: m.CreateEventPopup })));
+const CreateMeetupPopup = lazy(() =>
+  import('@/components/CreateMeetupPopup').then((m) => ({ default: m.CreateMeetupPopup })));
+const CreateSelectionDialog = lazy(() =>
+  import('@/components/CreateSelectionDialog').then((m) => ({ default: m.CreateSelectionDialog })));
+const EditMeetupPopup = lazy(() =>
+  import('@/components/EditMeetupPopup').then((m) => ({ default: m.EditMeetupPopup })));
+const CampaignDialog = lazy(() =>
+  import('@/components/sharing/CampaignDialog').then((m) => ({ default: m.CampaignDialog })));
+const UniversalShareDialog = lazy(() =>
+  import('@/components/sharing/UniversalShareDialog').then((m) => ({ default: m.UniversalShareDialog })));
+const AutopilotPopup = lazy(() =>
+  import('@/components/AutopilotPopup').then((m) => ({ default: m.AutopilotPopup })));
+
 // Helper functions
 const formatEventTime = (dateString: string) => {
   const date = new Date(dateString);
@@ -1146,45 +1160,53 @@ const EventsAndMeetups = () => {
       </AppLayout>
 
       {/* Create Selection Dialog */}
-      <CreateSelectionDialog
-        open={createSelectionOpen}
-        onOpenChange={setCreateSelectionOpen}
-        onSelectEvent={() => {
-          setCreateSelectionOpen(false);
-          setCreateEventOpen(true);
-        }}
-        onSelectMeetup={() => {
-          setCreateSelectionOpen(false);
-          setCreateMeetupOpen(true);
-        }}
-      />
+      <Suspense fallback={null}>
+        <CreateSelectionDialog
+          open={createSelectionOpen}
+          onOpenChange={setCreateSelectionOpen}
+          onSelectEvent={() => {
+            setCreateSelectionOpen(false);
+            setCreateEventOpen(true);
+          }}
+          onSelectMeetup={() => {
+            setCreateSelectionOpen(false);
+            setCreateMeetupOpen(true);
+          }}
+        />
+      </Suspense>
 
       {/* Create Event Popup */}
-      <CreateEventPopup 
-        isOpen={createEventOpen} 
-        onClose={() => setCreateEventOpen(false)}
-        eventContext="community"
-        onEventCreated={handleEventCreated}
-      />
+      <Suspense fallback={null}>
+        <CreateEventPopup
+          isOpen={createEventOpen}
+          onClose={() => setCreateEventOpen(false)}
+          eventContext="community"
+          onEventCreated={handleEventCreated}
+        />
+      </Suspense>
 
       {/* Create MeetUp Popup */}
-      <CreateMeetupPopup
-        isOpen={createMeetupOpen}
-        onClose={() => setCreateMeetupOpen(false)}
-        onEventCreated={handleEventCreated}
-      />
+      <Suspense fallback={null}>
+        <CreateMeetupPopup
+          isOpen={createMeetupOpen}
+          onClose={() => setCreateMeetupOpen(false)}
+          onEventCreated={handleEventCreated}
+        />
+      </Suspense>
 
       {/* Edit MeetUp Popup */}
       {selectedEvent && (
-        <EditMeetupPopup
-          isOpen={editMeetupOpen}
-          onClose={() => {
-            setEditMeetupOpen(false);
-            setSelectedEvent(null);
-          }}
-          event={selectedEvent}
-          onUpdated={fetchEvents}
-        />
+        <Suspense fallback={null}>
+          <EditMeetupPopup
+            isOpen={editMeetupOpen}
+            onClose={() => {
+              setEditMeetupOpen(false);
+              setSelectedEvent(null);
+            }}
+            event={selectedEvent}
+            onUpdated={fetchEvents}
+          />
+        </Suspense>
       )}
 
       {/* Event/MeetUp Details Drawer */}
@@ -1212,6 +1234,7 @@ const EventsAndMeetups = () => {
 
       {/* Share Dialog - Rendered at root level to avoid z-index conflicts */}
       {eventToShare && (
+        <Suspense fallback={null}>
         <UniversalShareDialog
           open={shareDialogOpen}
           onOpenChange={setShareDialogOpen}
@@ -1224,10 +1247,12 @@ const EventsAndMeetups = () => {
             url: getShareUrl('event', eventToShare.id, { slug: eventToShare.slug })
           }}
         />
+        </Suspense>
       )}
 
       {/* Promote Campaign Dialog */}
       {eventToPromote && (
+        <Suspense fallback={null}>
         <CampaignDialog
           open={promoteCampaignOpen}
           onOpenChange={setPromoteCampaignOpen}
@@ -1251,16 +1276,19 @@ const EventsAndMeetups = () => {
             },
           }}
         />
+        </Suspense>
       )}
 
       {/* Profile Preview Dialog - Rendered at root level to avoid focus-trap conflicts with Sheet */}
       <ProfilePreviewDialog />
 
       {/* Autopilot Popup (mobile) */}
-      <AutopilotPopup 
-        open={autopilotOpen} 
-        onOpenChange={setAutopilotOpen}
-      />
+      <Suspense fallback={null}>
+        <AutopilotPopup
+          open={autopilotOpen}
+          onOpenChange={setAutopilotOpen}
+        />
+      </Suspense>
 
       {/* Mobile filter bottom sheet — triggered from search button filter chip */}
       <Sheet open={filterSheetOpen} onOpenChange={setFilterSheetOpen}>

@@ -10,6 +10,7 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/lib/i18n-toast";
 
 const GATEWAY_URL =
   import.meta.env.VITE_GATEWAY_URL ||
@@ -248,7 +249,7 @@ export async function fetchCommunityNews(
 
             for (const p of posts) {
               const author = authorMap.get(p.user_id);
-              const name = author?.display_name || "Community Member";
+              const name = author?.display_name || t("screens.home.communityMember");
               const content = (p.content || "").trim();
               articles.push({
                 id: `post-${p.id}`,

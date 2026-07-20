@@ -8,9 +8,9 @@
  *   - match / performer / post author → /u/:user_id
  *   - article                         → /news/:id (existing detail route)
  */
-import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UserPlus } from "lucide-react";
+import { ArrowRight, Heart, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
 import { CommunityPostCard } from "@/components/home/CommunityPostCard";
@@ -19,21 +19,7 @@ import { formatDistanceToNow } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 import { matchCategoryLabel } from "@/lib/matchReason";
 import { reasonKeyFor, type FeedItem, type ArticleFeedItem } from "@/lib/news-feed-ranker";
-import { VitanaRecommendationHeader, type VitanaRecommendationLabel } from "@/components/vitana/VitanaRecommendationHeader";
-import { cn } from "@/lib/utils";
-
-/** Sunburst tick marks for the match dial — 12 evenly spaced rays around the score. */
-const MATCH_RAYS = Array.from({ length: 12 }, (_, i) => {
-  const a = (i * Math.PI) / 6; // 30° steps
-  const cos = Math.cos(a);
-  const sin = Math.sin(a);
-  return {
-    x1: 32 + 23 * cos,
-    y1: 32 + 23 * sin,
-    x2: 32 + 31 * cos,
-    y2: 32 + 31 * sin,
-  };
-});
+import { VitanaRecommendationCard } from "@/components/vitana/VitanaRecommendationCard";
 
 function timeAgo(iso: string): string {
   try {
@@ -42,51 +28,6 @@ function timeAgo(iso: string): string {
     return "";
   }
 }
-
-/**
- * Vitana identity + "why you're seeing this" pill shown atop every
- * algorithmically-surfaced card (match, spotlight performer) — never on
- * community posts or public articles, which come from a real person/source,
- * not Vitana. The reason text lives in the trailing pill (not its own line)
- * to keep these cards the same height as the top News banners.
- */
-function WhyLabel({
-  item,
-  label,
-  pillClassName,
-}: {
-  item: FeedItem;
-  label: VitanaRecommendationLabel;
-  pillClassName: string;
-}) {
-  return (
-    <VitanaRecommendationHeader
-      label={label}
-      className="mb-3"
-      trailing={
-        <span className={cn(
-          "inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold flex-shrink-0 whitespace-nowrap",
-          pillClassName,
-        )}>
-          {t(reasonKeyFor(item))}
-        </span>
-      }
-    />
-  );
-}
-
-const baseCardShell =
-  "group relative cursor-pointer overflow-hidden rounded-2xl border " +
-  "shadow-[0_4px_16px_rgba(0,0,0,0.06)] transition-all duration-300 " +
-  "hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] " +
-  "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2";
-
-// Match/performer cards are Vitana-branded, so — like the top News banners —
-// they get a happy tinted background instead of the plain card surface.
-const matchCardShell = cn(baseCardShell, "border-sky-300/30 bg-gradient-to-r from-sky-500/10 via-blue-500/10 to-sky-500/10");
-const performerCardShell = cn(baseCardShell, "border-emerald-300/30 bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-emerald-500/10");
-const matchPillClassName = "bg-blue-100 dark:bg-blue-500/15 text-blue-700 dark:text-blue-300";
-const performerPillClassName = "bg-emerald-100 dark:bg-emerald-500/15 text-emerald-700 dark:text-emerald-300";
 
 export function NewsFeedItemCard({
   item,
@@ -98,6 +39,7 @@ export function NewsFeedItemCard({
   onOpen?: (item: FeedItem) => void;
 }) {
   const navigate = useNavigate();
+  const [dismissed, setDismissed] = useState(false);
 
   const openProfile = (userId: string) => {
     onOpen?.(item);
@@ -124,105 +66,85 @@ export function NewsFeedItemCard({
   }
 
   if (item.kind === "match") {
+    if (dismissed) return null;
     return (
-      <Card
-        className={matchCardShell}
-        role="button"
-        tabIndex={0}
-        onClick={() => openProfile(item.user_id)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            openProfile(item.user_id);
-          }
-        }}
+      <VitanaRecommendationCard
+        feature="find-a-match"
+        eyebrow={t("screens.home.findAMatchEyebrow")}
+        onOpen={() => openProfile(item.user_id)}
+        onDismiss={() => setDismissed(true)}
+        dismissLabel={t('screens.vitanaIdentity.dismissCard')}
+        widget={
+          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center">
+            <Heart className="absolute inset-0 h-10 w-10 text-pink-400 fill-pink-400" aria-hidden="true" />
+            <Sparkles className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 text-pink-200" aria-hidden="true" />
+            <div className="relative flex flex-col items-center">
+              <span className="text-[10px] font-bold leading-none text-white">
+                {t("screens.home.matchPercent", { score: item.compatibility_score })}
+              </span>
+              <span className="mt-0.5 text-[6px] font-semibold leading-none text-white/90">
+                {t("screens.home.matchLabel")}
+              </span>
+            </div>
+          </div>
+        }
       >
-        <CardContent className="p-4">
-          <WhyLabel item={item} label="empfiehlt" pillClassName={matchPillClassName} />
-          <div className="flex items-center gap-3">
-            <Avatar className="h-12 w-12 shrink-0">
-              {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
-              <AvatarFallback>{(item.display_name || "?").charAt(0).toUpperCase()}</AvatarFallback>
-            </Avatar>
-            <div className="min-w-0 flex-1">
-              <p className="truncate font-semibold text-foreground">{item.display_name}</p>
-              <p className="truncate text-sm text-muted-foreground">
-                {matchCategoryLabel(item.match_reason)}
-              </p>
-            </div>
-            <div className="relative flex h-16 w-16 shrink-0 items-center justify-center text-amber-500">
-              <svg
-                viewBox="0 0 64 64"
-                className="absolute inset-0 h-full w-full"
-                aria-hidden="true"
-              >
-                {MATCH_RAYS.map((r, i) => (
-                  <line
-                    key={i}
-                    x1={r.x1}
-                    y1={r.y1}
-                    x2={r.x2}
-                    y2={r.y2}
-                    stroke="currentColor"
-                    strokeWidth={3}
-                    strokeLinecap="round"
-                  />
-                ))}
-              </svg>
-              <div className="flex h-11 w-11 flex-col items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-amber-300 shadow-sm">
-                <span className="text-xs font-bold leading-none text-amber-800">
-                  {t("screens.home.matchPercent", { score: item.compatibility_score })}
-                </span>
-                <span className="mt-0.5 text-[8px] font-semibold leading-none text-amber-700">
-                  {t("screens.home.matchLabel")}
-                </span>
-              </div>
-            </div>
+        <div className="flex items-center gap-1.5">
+          <Avatar className="h-7 w-7 shrink-0">
+            {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
+            <AvatarFallback>{(item.display_name || "?").charAt(0).toUpperCase()}</AvatarFallback>
+          </Avatar>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-foreground leading-tight">{item.display_name}</p>
+            <p className="truncate text-xs text-muted-foreground leading-tight">
+              {matchCategoryLabel(item.match_reason)}
+            </p>
           </div>
-          <div className="mt-3 flex items-center gap-1.5 text-sm font-medium text-primary">
-            <UserPlus className="h-4 w-4" />
-            {t("screens.home.viewProfile")}
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{t("screens.home.findAMatchSubtext")}</p>
+        <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
+          <span className="truncate">{t("screens.vitanaIdentity.viewMatch")}</span>
+          <ArrowRight className="w-3 h-3 shrink-0" />
+        </span>
+      </VitanaRecommendationCard>
     );
   }
 
   if (item.kind === "performer") {
+    if (dismissed) return null;
     return (
-      <Card
-        className={performerCardShell}
-        role="button"
-        tabIndex={0}
-        onClick={() => openProfile(item.user_id)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            openProfile(item.user_id);
-          }
-        }}
-      >
-        <CardContent className="p-4">
-          <WhyLabel item={item} label="pick" pillClassName={performerPillClassName} />
-          <div className="flex items-center gap-3">
-            <Avatar className="h-12 w-12 shrink-0">
-              {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
-              <AvatarFallback>{(item.display_name || "?").charAt(0).toUpperCase()}</AvatarFallback>
-            </Avatar>
-            <div className="min-w-0 flex-1">
-              <p className="truncate font-semibold text-foreground">{item.display_name}</p>
-              <p className="truncate text-sm text-muted-foreground">
-                {t("screens.home.mostImproved")}
-              </p>
-            </div>
-            {item.improvement > 0 && (
-              <span className="shrink-0 rounded-full bg-green-500/10 px-2.5 py-1 text-xs font-bold text-green-600">
-                {t("screens.home.improvementPts", { pts: item.improvement })}
-              </span>
-            )}
+      <VitanaRecommendationCard
+        feature="find-a-match"
+        eyebrow={t("screens.home.findAMatchEyebrow")}
+        onOpen={() => openProfile(item.user_id)}
+        onDismiss={() => setDismissed(true)}
+        dismissLabel={t('screens.vitanaIdentity.dismissCard')}
+        widget={
+          <div className="flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded-full bg-gradient-to-br from-emerald-200 to-teal-300 shadow-sm">
+            <span className="text-[10px] font-bold leading-none text-emerald-900">
+              {item.improvement > 0 ? t("screens.home.improvementPts", { pts: item.improvement }) : "—"}
+            </span>
           </div>
-        </CardContent>
-      </Card>
+        }
+      >
+        <div className="flex items-center gap-1.5">
+          <Avatar className="h-7 w-7 shrink-0">
+            {item.avatar_url && <AvatarImage src={item.avatar_url} alt="" />}
+            <AvatarFallback>{(item.display_name || "?").charAt(0).toUpperCase()}</AvatarFallback>
+          </Avatar>
+          <div className="min-w-0">
+            <p className="truncate text-sm font-semibold text-foreground leading-tight">{item.display_name}</p>
+            <p className="truncate text-xs text-muted-foreground leading-tight">
+              {t("screens.home.mostImproved")}
+            </p>
+          </div>
+        </div>
+        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{t("screens.home.findAMatchSubtext")}</p>
+        <span className="mt-1 inline-flex max-w-full items-center gap-1.5 text-xs font-semibold text-primary group-hover:text-primary/80 transition-colors">
+          <span className="truncate">{t("screens.vitanaIdentity.viewMatch")}</span>
+          <ArrowRight className="w-3 h-3 shrink-0" />
+        </span>
+      </VitanaRecommendationCard>
     );
   }
 

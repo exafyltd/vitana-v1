@@ -12,11 +12,12 @@
  * user's hide/mute/"show less" preferences) is applied in a useMemo so toggling
  * a preference re-ranks instantly without a refetch.
  */
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/lib/i18n-toast";
 import { useRealMatches } from "@/hooks/useRealMatches";
 import { useNewsFeedPreferencesStore } from "@/stores/newsFeedPreferencesStore";
 import { useLongevityNewsFeed } from "@/hooks/useNewsFeed";
@@ -185,7 +186,7 @@ async function loadCandidates(
       source: "post",
       post_id: p.id,
       user_id: p.user_id,
-      author_name: author?.display_name || "Community Member",
+      author_name: author?.display_name || t("screens.home.communityMember"),
       author_avatar: author?.avatar_url ?? null,
       content: p.content ?? "",
       image_url: p.image_url ?? null,
@@ -213,7 +214,7 @@ async function loadCandidates(
       source: "media",
       post_id: m.id,
       user_id: m.user_id,
-      author_name: author?.display_name || "Community Member",
+      author_name: author?.display_name || t("screens.home.communityMember"),
       author_avatar: author?.avatar_url ?? null,
       content: m.title || m.description || "",
       image_url: m.thumbnail_url ?? null,
@@ -286,6 +287,34 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
   const mutedSources = useNewsFeedPreferencesStore((s) => s.mutedSources);
   const downrankedTags = useNewsFeedPreferencesStore((s) => s.downrankedTags);
 
+  // Gate the FIRST paint on the two CONTENT sources only (candidates +
+  // longevity news). The single-fetch longevity-news query usually resolves
+  // before the multi-round-trip candidates (user posts) query; painting
+  // articles alone and re-ranking when posts arrived visibly shoved the
+  // already-rendered feed around.
+  //
+  // Deliberately EXCLUDES matchesQuery: it's a single optional decorative
+  // card (backed by a slow/flaky generate-daily-matches edge-function call)
+  // that can legitimately re-enter isLoading on a remount without ever
+  // having cached data. Including it here previously blanked the ENTIRE
+  // feed (candidates + articles the user had already seen) back to a full
+  // spinner on every revisit — a regression this fix introduced. Matches
+  // always degraded gracefully by simply being absent from the rank before
+  // this change; that's restored by leaving it out of the hold-gate.
+  //
+  // Cached revisits are unaffected: isLoading is false when data exists.
+  const anySourcePending = candidatesQuery.isLoading || newsQuery.isLoading;
+  const [firstPaintTimedOut, setFirstPaintTimedOut] = useState(false);
+  useEffect(() => {
+    if (!anySourcePending) {
+      setFirstPaintTimedOut(false);
+      return;
+    }
+    const id = window.setTimeout(() => setFirstPaintTimedOut(true), 6000);
+    return () => window.clearTimeout(id);
+  }, [anySourcePending]);
+  const holdFirstPaint = anySourcePending && !firstPaintTimedOut;
+
   const items = useMemo<FeedItem[]>(() => {
     const candidates = candidatesQuery.data;
     const matchItems: MatchFeedItem[] = (matchesQuery.data || []).map((m) => ({
@@ -333,8 +362,10 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
   }, [candidatesQuery.data, matchesQuery.data, newsQuery.data, hiddenArticleIds, mutedSources, downrankedTags]);
 
   return {
-    items,
-    isLoading: candidatesQuery.isLoading || matchesQuery.isLoading,
+    // While the first paint is held back, expose an empty list + loading so
+    // the consumer renders its spinner once, then the complete ranked feed.
+    items: holdFirstPaint ? [] : items,
+    isLoading: holdFirstPaint || candidatesQuery.isLoading || matchesQuery.isLoading,
     isError: candidatesQuery.isError,
     // Endless scroll: drive these from the consumer's intersection observer.
     fetchNextPage: newsQuery.fetchNextPage,

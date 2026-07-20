@@ -755,6 +755,78 @@ export async function buildGlobalThreadsQueryFn(
   return merged;
 }
 
+/**
+ * Message-history fetcher for one direct/group thread, extracted so the
+ * prefetch registry can warm conversations with the EXACT code path the hook
+ * uses (same gateway-first + chat_messages + legacy fallbacks). Any drift
+ * between prefetch and live fetch re-creates the empty-inbox class of bug
+ * documented on buildGlobalThreadsQueryFn.
+ */
+export async function buildGlobalMessagesQueryFn(
+  userId: string,
+  activeThreadId: string,
+  queryClient: QueryClient
+): Promise<GlobalMessage[]> {
+  // Check if active thread is a group thread
+  const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", userId]) || [];
+  const activeThread = cachedThreads.find((t) => t.id === activeThreadId);
+  const isGroupThread = activeThread?.type === "group";
+
+  // Group threads: always load from global_messages directly (thread UUID = thread_id)
+  if (isGroupThread) {
+    return fetchLegacyMessages(activeThreadId);
+  }
+
+  // Direct threads: activeThreadId is the peer's user ID — try gateway first
+  let gatewayMessages: GlobalMessage[] = [];
+  try {
+    const rawMessages = await fetchConversation(activeThreadId);
+    const sorted = [...rawMessages].sort((a, b) =>
+      new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    );
+    const senderIds = Array.from(
+      new Set(sorted.map((m) => m.sender_id).filter(Boolean))
+    );
+    const profileMap = await enrichProfiles(senderIds);
+    gatewayMessages = sorted.map((m) =>
+      toGlobalMessage(m, activeThreadId, profileMap)
+    );
+  } catch (err) {
+    console.warn("Gateway fetchConversation failed, trying legacy:", (err as Error).message);
+  }
+
+  // If gateway returned messages, use them
+  if (gatewayMessages.length > 0) return gatewayMessages;
+
+  // Fallback 1: read directly from chat_messages table (direct DMs live here)
+  try {
+    const { data: dmRows, error: dmErr } = await supabase
+      .from("chat_messages")
+      .select("*")
+      .or(`and(sender_id.eq.${userId},receiver_id.eq.${activeThreadId}),and(sender_id.eq.${activeThreadId},receiver_id.eq.${userId})`)
+      .order("created_at", { ascending: true })
+      .limit(100) as any;
+
+    if (!dmErr && dmRows && dmRows.length > 0) {
+      const senderIds = Array.from(new Set(dmRows.map((m: any) => m.sender_id).filter(Boolean)));
+      const profileMap = await enrichProfiles(senderIds as string[]);
+      return dmRows.map((m: any) => toGlobalMessage(m, activeThreadId, profileMap));
+    }
+  } catch (err) {
+    console.warn("[chat] chat_messages fallback failed:", (err as Error).message);
+  }
+
+  // Fallback 2: legacy global_messages (for old threads that used global_message_threads)
+  const legacyThread = cachedThreads.find((t) => t.id === activeThreadId && (t as any)._legacyThreadId);
+  const legacyThreadId = (legacyThread as any)?._legacyThreadId;
+
+  if (legacyThreadId) {
+    return fetchLegacyMessages(legacyThreadId);
+  }
+
+  return fetchLegacyMessages(activeThreadId);
+}
+
 // ── Hook ─────────────────────────────────────────────────────────────
 
 export function useGlobalMessages(
@@ -822,65 +894,7 @@ export function useGlobalMessages(
     queryKey: ["global-messages", activeThreadId],
     queryFn: async (): Promise<GlobalMessage[]> => {
       if (!user || !isGlobalContext || !activeThreadId) return [];
-
-      // Check if active thread is a group thread
-      const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", user.id]) || [];
-      const activeThread = cachedThreads.find((t) => t.id === activeThreadId);
-      const isGroupThread = activeThread?.type === "group";
-
-      // Group threads: always load from global_messages directly (thread UUID = thread_id)
-      if (isGroupThread) {
-        return fetchLegacyMessages(activeThreadId);
-      }
-
-      // Direct threads: activeThreadId is the peer's user ID — try gateway first
-      let gatewayMessages: GlobalMessage[] = [];
-      try {
-        const rawMessages = await fetchConversation(activeThreadId);
-    const sorted = [...rawMessages].sort((a, b) =>
-      new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-    );
-        const senderIds = Array.from(
-          new Set(sorted.map((m) => m.sender_id).filter(Boolean))
-        );
-        const profileMap = await enrichProfiles(senderIds);
-        gatewayMessages = sorted.map((m) =>
-          toGlobalMessage(m, activeThreadId, profileMap)
-        );
-      } catch (err) {
-        console.warn("Gateway fetchConversation failed, trying legacy:", (err as Error).message);
-      }
-
-      // If gateway returned messages, use them
-      if (gatewayMessages.length > 0) return gatewayMessages;
-
-      // Fallback 1: read directly from chat_messages table (direct DMs live here)
-      try {
-        const { data: dmRows, error: dmErr } = await supabase
-          .from("chat_messages")
-          .select("*")
-          .or(`and(sender_id.eq.${user.id},receiver_id.eq.${activeThreadId}),and(sender_id.eq.${activeThreadId},receiver_id.eq.${user.id})`)
-          .order("created_at", { ascending: true })
-          .limit(100) as any;
-
-        if (!dmErr && dmRows && dmRows.length > 0) {
-          const senderIds = Array.from(new Set(dmRows.map((m: any) => m.sender_id).filter(Boolean)));
-          const profileMap = await enrichProfiles(senderIds as string[]);
-          return dmRows.map((m: any) => toGlobalMessage(m, activeThreadId, profileMap));
-        }
-      } catch (err) {
-        console.warn("[chat] chat_messages fallback failed:", (err as Error).message);
-      }
-
-      // Fallback 2: legacy global_messages (for old threads that used global_message_threads)
-      const legacyThread = cachedThreads.find((t) => t.id === activeThreadId && (t as any)._legacyThreadId);
-      const legacyThreadId = (legacyThread as any)?._legacyThreadId;
-
-      if (legacyThreadId) {
-        return fetchLegacyMessages(legacyThreadId);
-      }
-
-      return fetchLegacyMessages(activeThreadId);
+      return buildGlobalMessagesQueryFn(user.id, activeThreadId, queryClient);
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
     staleTime: MESSAGES_STALE_TIME,

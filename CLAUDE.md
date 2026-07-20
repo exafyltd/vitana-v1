@@ -84,6 +84,24 @@ auto-deploy yet, so it is freeze-only on the auto path post-cutover; ship via
 manual dispatch). `STAGE-DEPLOY-FRONTEND.yml` is **not** gated — staging deploys
 always run. The backend half of the cutover lives in `exafyltd/vitana-platform`.
 
+### Per-PR preview deploys
+
+Every open PR that touches frontend files gets its **own** Cloud Run service
+(`community-app-pr-<number>`), independent of `community-app-staging`:
+
+- `.github/workflows/PREVIEW-DEPLOY-FRONTEND.yml` auto-deploys on every push
+  to the PR and posts/updates a PR comment with the preview URL.
+- `.github/workflows/PREVIEW-TEARDOWN-FRONTEND.yml` deletes the service when
+  the PR closes (merged or not).
+
+**Do not manually `workflow_dispatch` `STAGE-DEPLOY-FRONTEND.yml` against a
+feature branch.** That deploys the *shared* `community-app-staging` /
+`preview.vitanaland.com` service — if two branches do this back-to-back,
+each overwrites the other's verification (this happened and reverted a
+merged fix on staging). Use the PR's own preview URL instead; it can't be
+clobbered by other branches. `STAGE-DEPLOY-FRONTEND.yml` should only ever
+run via its normal push-to-`main` trigger.
+
 ## Project Structure
 
 ```
