@@ -1,10 +1,8 @@
 {
   "verdicts": {
     "authPage.welcomeTitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "English is gender-neutral, but Spanish translation uses masculine singular. For a friendly app, a gender-neutral welcome is more appropriate.",
-      "suggested": "¡Te damos la bienvenida a VITANA!",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "authPage.subtitle": {
@@ -78,5 +76,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:25.448Z"
+  "generatedAt": "2026-07-20T06:30:12.439Z"
 }
