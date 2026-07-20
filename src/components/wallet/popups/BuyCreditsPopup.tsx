@@ -18,14 +18,14 @@ import { isIAPRestricted } from '@/lib/appilix';
 import { getExchangeRate } from '@/lib/exchangeRates';
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
-import { fmtDateTime, fmtNumber } from '@/lib/locale-format';
+import { fmtNumber } from '@/lib/locale-format';
 interface BuyCreditsPopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
 export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
-  const { getBalance, updateBalance } = useWallet();
+  const { getBalance, updateBalance, exchangeCurrency } = useWallet();
   const { toast } = useToast();
   const [creditAmount, setCreditAmount] = useState('');
   const [loading, setLoading] = useState(false);
@@ -38,6 +38,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
   // Get actual exchange rate: 1 USD = 100 Credits, so 1 Credit = $0.01
   const exchangeRate = getExchangeRate('CREDITS', 'USD');
   const creditPriceInUSD = exchangeRate?.rate || 0.01; // Fallback to $0.01 per Credit
+  const usdToCreditsRate = getExchangeRate('USD', 'CREDITS')?.rate || 100;
 
   // Credit packages at the canonical market rate (matches BuyTokensPopup/VTNA)
   const creditPackages = [
@@ -54,14 +55,20 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
     }
 
     setLoading(true);
-    
+
     try {
-      // Deduct USD and add credits (including bonus)
-      await updateBalance('USD', cost, 'subtract');
-      await updateBalance('CREDITS', credits + bonus, 'add');
-      
+      // Atomic USD -> CREDITS exchange for the paid amount (single RPC call,
+      // can't leave USD debited with no credits granted). The promotional
+      // bonus isn't paid for, so it's a separate reward credit -- worst case
+      // if this second step fails, the user still got exactly what they paid
+      // for and just missed the bonus, not a money-loss failure.
+      await exchangeCurrency('USD', 'CREDITS', cost, usdToCreditsRate);
+      if (bonus > 0) {
+        await updateBalance('CREDITS', bonus, 'add', 'reward', 'Bonus credits from package purchase');
+      }
+
       notify('toasts.wallet.creditsPurchasedSuccessfully');
-      
+
       onOpenChange(false);
     } catch (error) {
       notifyError('toasts.wallet.purchaseFailed');
@@ -85,13 +92,12 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
     }
 
     setLoading(true);
-    
+
     try {
-      await updateBalance('USD', cost, 'subtract');
-      await updateBalance('CREDITS', credits, 'add');
-      
+      await exchangeCurrency('USD', 'CREDITS', cost, usdToCreditsRate);
+
       notify('toasts.wallet.creditsPurchasedSuccessfully');
-      
+
       onOpenChange(false);
       setCreditAmount('');
     } catch (error) {
@@ -116,7 +122,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
           <div className="grid grid-cols-2 gap-3">
             <div className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
               <div className="text-xs text-muted-foreground">{t('screens.wallet.currentCredits')}</div>
-              <div className="font-semibold text-blue-700">{fmtDateTime(currentCredits)}</div>
+              <div className="font-semibold text-blue-700">{fmtNumber(currentCredits)}</div>
             </div>
             <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-100">
               <div className="text-xs text-muted-foreground">{t('screens.wallet.usdBalance')}</div>
@@ -142,7 +148,7 @@ export function BuyCreditsPopup({ open, onOpenChange }: BuyCreditsPopupProps) {
                     <CreditCard className="h-4 w-4 text-blue-600" />
                   )}
                   <div className="text-left">
-                    <div className="font-medium">{t('screens.wallet.value0Credits', { value0: fmtDateTime(pkg.credits) })}
+                    <div className="font-medium">{t('screens.wallet.value0Credits', { value0: fmtNumber(pkg.credits) })}
                       {pkg.bonus > 0 && (
                         <span className="text-green-600 ml-1">{t('screens.wallet.bonusBonus', { bonus: pkg.bonus })}</span>
                       )}

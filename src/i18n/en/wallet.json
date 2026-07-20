@@ -19,7 +19,9 @@
       "exchanges": "Exchanges",
       "rewards": "Rewards",
       "purchases": "Purchases",
-      "pending": "Pending Payouts"
+      "pending": "Pending Payouts",
+      "withdrawals": "Withdrawals",
+      "stakes": "Staking"
     },
     "noActivity": "No activity yet",
     "noActivityDesc": "Your transactions will appear here.",

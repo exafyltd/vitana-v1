@@ -54,7 +54,7 @@ export function StakeTokensPopup({ open, onOpenChange }: StakeTokensPopupProps) 
     
     try {
       // Simulate staking by deducting from balance
-      await updateBalance('VTNA', parseFloat(stakeAmount), 'subtract');
+      await updateBalance('VTNA', parseFloat(stakeAmount), 'subtract', 'stake', `Staked for ${period} at ${apy} APY`);
       
       notify('toasts.wallet.tokensStakedSuccessfully');
       

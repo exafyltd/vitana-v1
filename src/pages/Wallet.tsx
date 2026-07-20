@@ -239,6 +239,10 @@ export default function Wallet() {
         return translate('wallet.filters.rewards');
       case "purchase":
         return translate('wallet.filters.purchases');
+      case "withdrawal":
+        return translate('wallet.filters.withdrawals');
+      case "stake":
+        return translate('wallet.filters.stakes');
       case "pending":
         return translate('wallet.filters.pending');
       default:

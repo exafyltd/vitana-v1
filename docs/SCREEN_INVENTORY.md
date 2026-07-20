@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 279
-- **Distinct i18n keys consumed:** 4268
+- **Distinct i18n keys consumed:** 4270
 - **Namespaces in use:** 43
 - **Hardcoded string suspects (regex heuristic):** 66
 
@@ -418,14 +418,14 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/Wallet.tsx
 
-**Status:** ✅ clean — keys consumed: 36, namespaces: 4
+**Status:** ✅ clean — keys consumed: 38, namespaces: 4
 
 **i18n namespaces:**
 
 - `common` — used: 2, total in shard: 36
 - `screens` — used: 14, total in shard: 9859
 - `toasts` — used: 3, total in shard: 1257
-- `wallet` — used: 17, total in shard: 20
+- `wallet` — used: 19, total in shard: 22
 
 ## admin/
 

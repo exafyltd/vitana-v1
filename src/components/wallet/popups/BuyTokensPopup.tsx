@@ -25,7 +25,7 @@ interface BuyTokensPopupProps {
 }
 
 export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
-  const { getBalance, updateBalance } = useWallet();
+  const { getBalance, updateBalance, exchangeCurrency } = useWallet();
   const { toast } = useToast();
   const [tokenAmount, setTokenAmount] = useState('');
   const [loading, setLoading] = useState(false);
@@ -34,10 +34,11 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
 
   const currentTokens = getBalance('VTNA') || 0;
   const usdBalance = getBalance('USD') || 0;
-  
+
   // Get actual exchange rate: 1 USD = 100 VTNA, so 1 VTNA = $0.01
   const exchangeRate = getExchangeRate('VTNA', 'USD');
   const vtnPriceInUSD = exchangeRate?.rate || 0.01; // Fallback to $0.01 per VTNA
+  const usdToVtnaRate = getExchangeRate('USD', 'VTNA')?.rate || 100;
   
   // VTNA token packages with correct market rate
   const tokenPackages = [
@@ -54,14 +55,17 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
     }
 
     setLoading(true);
-    
+
     try {
-      // Deduct USD and add VTNA tokens (including bonus)
-      await updateBalance('USD', cost, 'subtract');
-      await updateBalance('VTNA', tokens + bonus, 'add');
-      
+      // Atomic USD -> VTNA exchange for the paid amount; bonus is a separate
+      // reward credit (not paid for), same reasoning as BuyCreditsPopup.
+      await exchangeCurrency('USD', 'VTNA', cost, usdToVtnaRate);
+      if (bonus > 0) {
+        await updateBalance('VTNA', bonus, 'add', 'reward', 'Bonus VTNA from package purchase');
+      }
+
       notify('toasts.wallet.vtnaTokensPurchasedSuccessfully');
-      
+
       onOpenChange(false);
     } catch (error) {
       notifyError('toasts.wallet.purchaseFailed');
@@ -85,13 +89,12 @@ export function BuyTokensPopup({ open, onOpenChange }: BuyTokensPopupProps) {
     }
 
     setLoading(true);
-    
+
     try {
-      await updateBalance('USD', cost, 'subtract');
-      await updateBalance('VTNA', tokens, 'add');
-      
+      await exchangeCurrency('USD', 'VTNA', cost, usdToVtnaRate);
+
       notify('toasts.wallet.vtnaTokensPurchasedSuccessfully');
-      
+
       onOpenChange(false);
       setTokenAmount('');
     } catch (error) {

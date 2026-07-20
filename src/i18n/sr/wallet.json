@@ -19,7 +19,9 @@
       "exchanges": "Razmene",
       "rewards": "Nagrade",
       "purchases": "Kupovine",
-      "pending": "Isplate na čekanju"
+      "pending": "Isplate na čekanju",
+      "withdrawals": "Isplate",
+      "stakes": "Staking"
     },
     "noActivity": "Još uvek nema aktivnosti",
     "noActivityDesc": "Tvoje transakcije će se pojaviti ovde.",

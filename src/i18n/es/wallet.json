@@ -19,7 +19,9 @@
       "exchanges": "Intercambios",
       "rewards": "Recompensas",
       "purchases": "Compras",
-      "pending": "Pagos Pendientes"
+      "pending": "Pagos Pendientes",
+      "withdrawals": "Retiros",
+      "stakes": "Staking"
     },
     "noActivity": "Sin actividad aún",
     "noActivityDesc": "Tus transacciones aparecerán aquí.",

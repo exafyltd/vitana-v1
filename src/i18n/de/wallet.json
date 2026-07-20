@@ -19,7 +19,9 @@
       "exchanges": "Umtausch",
       "rewards": "Belohnungen",
       "purchases": "Käufe",
-      "pending": "Ausstehende Auszahlungen"
+      "pending": "Ausstehende Auszahlungen",
+      "withdrawals": "Auszahlungen",
+      "stakes": "Staking"
     },
     "noActivity": "Noch keine Aktivitäten",
     "noActivityDesc": "Deine Transaktionen werden hier erscheinen.",

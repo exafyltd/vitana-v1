@@ -94,7 +94,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Update balance (subtract the total cost including fees)
-      await updateBalance('USD', totalCost, 'subtract');
+      await updateBalance('USD', totalCost, 'subtract', 'withdrawal', `Withdrawal via ${method?.name ?? selectedMethod}`);
       
       notify('toasts.wallet.withdrawalInitiated2');
       
