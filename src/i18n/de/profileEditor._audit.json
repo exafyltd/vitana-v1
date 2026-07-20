@@ -16,10 +16,8 @@
       "phase": "identical"
     },
     "profileEditor.editAbout": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Translation is too broad; 'Profil' means 'Profile', not 'Edit About'.",
-      "suggested": "Über mich bearbeiten",
       "phase": "llm"
     },
     "profileEditor.aboutTitle": {
@@ -28,17 +26,14 @@
       "phase": "llm"
     },
     "profileEditor.aboutDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du' form.",
-      "suggested": "Teile mehr über dich. Du kannst steuern, wer jedes Feld sehen kann.",
       "phase": "llm"
     },
     "profileEditor.bioPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du' form.",
-      "suggested": "Teile deine Wellness-Reise, Leidenschaften und was dich einzigartig macht...\n\nBeispiele:\n• 'Wellness-Enthusiast mit Leidenschaft für achtsames Leben und Community-Building 🌱'\n• 'Zertifizierter Ernährungsberater, der anderen hilft, ihr gesündestes Selbst zu entdecken'\n• 'Marathonläufer, Meditationslehrer und Fürsprecher für ausgewogenes Leben'",
+      "verdict": "OK",
+      "confidence": 0.9,
+      "issue": "Examples use masculine forms (Ernährungsberater, Marathonläufer, Meditationslehrer, Fürsprecher) which are not gender-neutral like the English source. However, as fixed example strings, this is often accepted as a default.",
       "phase": "llm"
     },
     "profileEditor.location": {
@@ -62,10 +57,8 @@
       "phase": "llm"
     },
     "profileEditor.linkUrlPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihre' instead of informal 'deine' form.",
-      "suggested": "https://deine-website.com oder @benutzername",
       "phase": "llm"
     },
     "profileEditor.languages": {
@@ -164,10 +157,8 @@
       "phase": "llm"
     },
     "profileEditor.cancel": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Löschen' means 'Delete'. 'Cancel' (e.g., an action or dialog) should be 'Abbrechen'.",
-      "suggested": "Abbrechen",
       "phase": "llm"
     },
     "profileEditor.save": {
@@ -186,10 +177,8 @@
       "phase": "llm"
     },
     "profileEditor.profileUpdatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses Sie-form; 'about' context is lost. 'Angaben' is more appropriate for 'about information' in this context.",
-      "suggested": "Deine Angaben wurden erfolgreich gespeichert.",
       "phase": "llm"
     },
     "profileEditor.saveFailed": {
@@ -238,10 +227,8 @@
       "phase": "llm"
     },
     "profileEditor.identity.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses Sie-form ('Verwalten Sie', 'Ihren').",
-      "suggested": "Verwalte deinen Anzeigenamen, Handle und Profilbilder.",
       "phase": "llm"
     },
     "profileEditor.identity.profilePicture": {
@@ -255,24 +242,18 @@
       "phase": "llm"
     },
     "profileEditor.identity.displayNamePlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses Sie-form ('Ihr').",
-      "suggested": "Dein Anzeigename",
       "phase": "llm"
     },
     "profileEditor.identity.handlePlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses Sie-form possessive ('ihrhandle').",
-      "suggested": "deinhandle",
       "phase": "llm"
     },
     "profileEditor.identity.handleDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses Sie-form ('Ihr', 'Ihrer').",
-      "suggested": "Dein Handle wird in deiner öffentlichen Profil-URL verwendet: /u/@{handle}",
       "phase": "llm"
     },
     "profileEditor.identity.personalityDescriptor": {
@@ -281,17 +262,13 @@
       "phase": "llm"
     },
     "profileEditor.identity.personalityDescriptorPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Mistranslation of 'The Zen Warrior'. 'Der Achtsame Bewegte' means 'The Mindful Mover'.",
-      "suggested": "z.B. The Mindful Mover, Der Zen-Krieger",
       "phase": "llm"
     },
     "profileEditor.identity.personalityDescriptorDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses Sie-form ('Ihren').",
-      "suggested": "Eine kurze Beschreibung, die deinen Wellness-Stil charakterisiert",
       "phase": "llm"
     },
     "profileEditor.identity.upload": {
@@ -315,10 +292,8 @@
       "phase": "llm"
     },
     "profileEditor.identity.avatarUploadedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses Sie-form ('Ihr').",
-      "suggested": "Dein Profilbild wurde aktualisiert.",
       "phase": "llm"
     },
     "profileEditor.identity.uploadFailed": {
@@ -337,10 +312,8 @@
       "phase": "llm"
     },
     "profileEditor.identity.identityUpdatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses Sie-form ('Ihre').",
-      "suggested": "Deine Identitätsinformationen wurden erfolgreich gespeichert.",
       "phase": "llm"
     },
     "profileEditor.coverLibrary.title": {
@@ -354,10 +327,8 @@
       "phase": "llm"
     },
     "profileEditor.coverLibrary.tileSubtitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incorrect verb for 'upload'. 'Anlegen' implies creating, not uploading.",
-      "suggested": "Lade deine eigenen Fotos für „Find a Match“-Posts hoch",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "profileEditor.coverLibrary.drawerTitle": {
@@ -471,5 +442,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:19:07.650Z"
+  "generatedAt": "2026-07-20T06:38:33.229Z"
 }
