@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { Plus, CreditCard, Coins, ArrowUpRight, Eye, DollarSign, Euro, Shield, Send, ArrowUpDown, X, Sparkles, Plane } from "lucide-react";
+import { Plus, CreditCard, ArrowUpRight, Eye, DollarSign, Euro, Shield, Send, ArrowUpDown, X, Sparkles, Plane } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
@@ -15,10 +15,8 @@ import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivational
 import { WalletMasterActionPopup } from "@/components/wallet/WalletMasterActionPopup";
 import { PopupCoordinationWrapper } from "@/components/payment/PopupCoordinationWrapper";
 import { usePopupCoordination } from "@/hooks/usePopupCoordination";
-import { StakeTokensPopup } from "@/components/wallet/popups/StakeTokensPopup";
 import { AddFundsPopup } from "@/components/wallet/popups/AddFundsPopup";
 import { BuyCreditsPopup } from "@/components/wallet/popups/BuyCreditsPopup";
-import { BuyTokensPopup } from "@/components/wallet/popups/BuyTokensPopup";
 import { WithdrawPopup } from "@/components/wallet/popups/WithdrawPopup";
 import { SpendCreditsPopup } from "@/components/wallet/popups/SpendCreditsPopup";
 import PaymentRequestPopup from "@/components/payment/PaymentRequestPopup";
@@ -109,10 +107,8 @@ export default function Wallet() {
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [exchangeStep, setExchangeStep] = useState<'menu' | 'exchange'>('menu');
   const [selectedCurrencyForExchange, setSelectedCurrencyForExchange] = useState<'USD' | 'VTNA' | 'CREDITS' | undefined>();
-  const [stakeTokensOpen, setStakeTokensOpen] = useState(false);
   const [addFundsOpen, setAddFundsOpen] = useState(false);
   const [buyCreditsOpen, setBuyCreditsOpen] = useState(false);
-  const [buyTokensOpen, setBuyTokensOpen] = useState(false);
   const [withdrawOpen, setWithdrawOpen] = useState(false);
   const [spendCreditsOpen, setSpendCreditsOpen] = useState(false);
   const [paymentRequestOpen, setPaymentRequestOpen] = useState(false);
@@ -253,17 +249,11 @@ export default function Wallet() {
   // Handle opening specific wallet actions
   const handleWalletAction = async (actionType: string, currency?: string) => {
     switch (actionType) {
-      case 'stake-tokens':
-        setStakeTokensOpen(true);
-        break;
       case 'add-funds':
         setAddFundsOpen(true);
         break;
       case 'buy-credits':
         setBuyCreditsOpen(true);
-        break;
-      case 'buy-tokens':
-        setBuyTokensOpen(true);
         break;
       case 'withdraw':
         setWithdrawOpen(true);
@@ -334,27 +324,17 @@ export default function Wallet() {
         />
       </PopupCoordinationWrapper>
 
-      <StakeTokensPopup 
-        open={stakeTokensOpen}
-        onOpenChange={setStakeTokensOpen}
-      />
-
-      <AddFundsPopup 
+      <AddFundsPopup
         open={addFundsOpen}
         onOpenChange={setAddFundsOpen}
       />
 
-      <BuyCreditsPopup 
+      <BuyCreditsPopup
         open={buyCreditsOpen}
         onOpenChange={setBuyCreditsOpen}
       />
 
-      <BuyTokensPopup 
-        open={buyTokensOpen}
-        onOpenChange={setBuyTokensOpen}
-      />
-
-      <WithdrawPopup 
+      <WithdrawPopup
         open={withdrawOpen}
         onOpenChange={setWithdrawOpen}
       />
@@ -467,23 +447,12 @@ export default function Wallet() {
                     <MobileWalletBalanceCard
                       type="credits"
                       title={translate('wallet.creditsBalance')}
-                      balance={getBalance('CREDITS') !== null ? `${fmtNumber(getBalance('CREDITS')!)} Credits` : translate('common.loading')}
+                      balance={getBalance('CREDITS') !== null ? `${fmtNumber(getBalance('CREDITS')!)} VTNA Credits` : translate('common.loading')}
                       subBalance={`${translate('wallet.available')}: 100%`}
                       change="+12.1%"
                       changeType="increase"
                       isLoading={!isLoaded}
                       onPress={() => handleWalletAction('buy-credits')}
-                    />
-
-                    <MobileWalletBalanceCard
-                      type="tokens"
-                      title={translate('wallet.vtnaTokens')}
-                      balance={getBalance('VTNA') !== null ? `${fmtNumber(getBalance('VTNA')!)} VTNA` : translate('common.loading')}
-                      subBalance={`${translate('wallet.staked')}: 25%`}
-                      change="+5.7%"
-                      changeType="increase"
-                      isLoading={!isLoaded}
-                      onPress={() => handleWalletAction('stake-tokens')}
                     />
 
                     <MobileWalletQuickActions
@@ -492,7 +461,6 @@ export default function Wallet() {
                       onExchange={() => handleWalletAction('exchange', 'USD')}
                       onWithdraw={() => handleWalletAction('withdraw')}
                       onBuyCredits={() => handleWalletAction('buy-credits')}
-                      onStakeTokens={() => handleWalletAction('stake-tokens')}
                       className="mt-4"
                     />
                   </>
@@ -580,49 +548,7 @@ export default function Wallet() {
               {/* Row 1: All Account Balance Cards — hidden on iOS (prototype features) */}
               {!isIAPRestricted() && (
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                <div className="col-span-4">
-                  <WalletBalanceCard
-                    type="tokens"
-                    title={t('screens.wallet.vtnaTokens')}
-                    balance={getBalance('VTNA') !== null ? `${fmtNumber(getBalance('VTNA')!)} VTNA` : "Loading..."}
-                    subBalance="Staked: 25%"
-                    change="+5.7%"
-                    changeType="increase"
-                    status="Growing"
-                    description="Vitana Network Tokens for governance and staking rewards"
-                    className="h-full"
-                    isLoading={!isLoaded}
-                    primaryAction={isIAPRestricted() ? undefined : {
-                      label: "Stake Tokens",
-                      onClick: () => handleWalletAction('stake-tokens'),
-                      icon: Coins,
-                      variant: "default"
-                    }}
-                    secondaryActions={[
-                      ...(isIAPRestricted() ? [] : [{
-                        label: "Buy Tokens",
-                        onClick: () => handleWalletAction('buy-tokens', 'VTNA'),
-                        icon: Coins
-                      }]),
-                      {
-                        label: "Send",
-                        onClick: () => handleWalletAction('send', 'VTNA'),
-                        icon: Send
-                      },
-                      {
-                        label: "Request",
-                        onClick: () => handleWalletAction('request', 'VTNA'),
-                        icon: CreditCard
-                      },
-                      {
-                        label: "Exchange",
-                        onClick: () => handleWalletAction('exchange', 'VTNA'),
-                        icon: ArrowUpDown
-                      }
-                    ]}
-                  />
-                </div>
-                <div className="col-span-4">
+                <div className="col-span-6">
                   <WalletBalanceCard
                     type="cash"
                     title={t('screens.wallet.usdBalance')}
@@ -671,16 +597,16 @@ export default function Wallet() {
                     ]}
                   />
                 </div>
-                <div className="col-span-4">
+                <div className="col-span-6">
                   <WalletBalanceCard
                     type="credits"
                     title={t('screens.wallet.creditsBalance')}
-                    balance={getBalance('CREDITS') !== null ? `${fmtNumber(getBalance('CREDITS')!)} Credits` : "Loading..."}
+                    balance={getBalance('CREDITS') !== null ? `${fmtNumber(getBalance('CREDITS')!)} VTNA Credits` : "Loading..."}
                     subBalance="Available: 100%"
                     change="+12.1%"
                     changeType="increase"
                     status="Active"
-                    description="Platform credits for seamless transactions, rewards and premium features"
+                    description="VTNA Credits for seamless transactions, rewards and premium features"
                     className="h-full"
                     isLoading={!isLoaded}
                     primaryAction={isIAPRestricted() ? undefined : {

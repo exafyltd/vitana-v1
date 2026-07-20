@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Send, ArrowUpDown, ArrowUpRight, CreditCard, Coins } from "lucide-react";
+import { Plus, Send, ArrowUpDown, ArrowUpRight, CreditCard } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
 
@@ -18,7 +18,6 @@ interface MobileWalletQuickActionsProps {
   onExchange: () => void;
   onWithdraw: () => void;
   onBuyCredits: () => void;
-  onStakeTokens: () => void;
   className?: string;
 }
 
@@ -28,12 +27,11 @@ export function MobileWalletQuickActions({
   onExchange,
   onWithdraw,
   onBuyCredits,
-  onStakeTokens,
   className = ""
 }: MobileWalletQuickActionsProps) {
   const { translate } = useTranslation();
   const restricted = isIAPRestricted();
-  const restrictedIds = ['add-funds', 'buy-credits', 'buy-tokens', 'exchange', 'withdraw', 'stake-tokens'];
+  const restrictedIds = ['add-funds', 'buy-credits', 'exchange', 'withdraw'];
   
   const allActions: QuickAction[] = [
     {
@@ -69,12 +67,6 @@ export function MobileWalletQuickActions({
       label: translate('walletActions.buyCredits'),
       icon: <CreditCard className="h-4 w-4" />,
       onClick: onBuyCredits
-    },
-    {
-      id: 'stake-tokens',
-      label: translate('walletActions.stakeTokens'),
-      icon: <Coins className="h-4 w-4" />,
-      onClick: onStakeTokens
     }
   ];
 
