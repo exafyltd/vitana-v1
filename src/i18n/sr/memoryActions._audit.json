@@ -1,10 +1,8 @@
 {
   "verdicts": {
     "memoryActions.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Too literal and slightly formal. 'Radnje' can sound like 'procedures'.",
-      "suggested": "Akcije za pamćenje",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "memoryActions.items.recordVoiceDiary.title": {
@@ -19,9 +17,9 @@
     },
     "memoryActions.items.addMemoryNote.title": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Literal translation, awkward phrasing. 'Beleška pamćenja' is less natural than 'beleška o pamćenju'.",
-      "suggested": "Dodaj belešku o pamćenju",
+      "confidence": 0.8,
+      "issue": "The phrase 'o pamćenju' (about memory/the faculty of memory) is too abstract. 'O sećanju' (about a recollection/memory) or 'za pamćenje' (for remembering/as a memory aid) would be more natural for a user-facing feature.",
+      "suggested": "Dodaj belešku o sećanju",
       "phase": "llm"
     },
     "memoryActions.items.addMemoryNote.description": {
@@ -70,5 +68,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:04:53.261Z"
+  "generatedAt": "2026-07-21T06:13:10.253Z"
 }
