@@ -11,6 +11,18 @@
 -- Builds on 20260721120000_add_longevity_archetype_to_public_profile_rpc.sql
 -- (same DROP-then-CREATE requirement — Postgres won't let CREATE OR REPLACE
 -- change a RETURNS TABLE function's OUT-parameter row type).
+--
+-- Correction (PR review): account_type/verification_status were being
+-- returned unconditionally to every caller (including anon), ignoring the
+-- owner's own profiles.account_visibility JSONB preference — a real leak if
+-- an owner ever sets either field away from the 'public' default.
+-- PublicProfilePage.tsx always assigns the static DEFAULT_ACCOUNT_VISIBILITY
+-- client-side, so the RPC is the only place that can actually enforce this.
+-- This RPC has no viewer-relationship context (no caller/viewer id param),
+-- so it can't distinguish "connections" from "stranger" — fail closed: only
+-- an explicit 'public' setting is returned, anything else (including
+-- 'connections', absent from this endpoint's scope) comes back NULL, same
+-- as this flow already treats every other non-public-default field.
 
 DROP FUNCTION IF EXISTS public.get_user_profile_by_identifier(text);
 
@@ -34,7 +46,9 @@ BEGIN
       p.youtube_url, p.youtube_description, p.youtube_subscribers_count, p.youtube_synced_at, p.youtube_content_categories,
       p.facebook_url, p.facebook_bio, p.facebook_synced_at, p.facebook_interests,
       p.x_url, p.x_bio, p.x_followers_count, p.x_synced_at, p.x_topics,
-      p.longevity_archetype, p.account_type, p.verification_status
+      p.longevity_archetype,
+      CASE WHEN COALESCE(p.account_visibility->>'accountType', 'public') = 'public' THEN p.account_type ELSE NULL END,
+      CASE WHEN COALESCE(p.account_visibility->>'verificationStatus', 'public') = 'public' THEN p.verification_status ELSE NULL END
     FROM public.profiles p
     LEFT JOIN public.global_community_profiles gcp ON gcp.user_id = p.user_id
     WHERE p.handle = ident
@@ -54,7 +68,9 @@ BEGIN
       p.youtube_url, p.youtube_description, p.youtube_subscribers_count, p.youtube_synced_at, p.youtube_content_categories,
       p.facebook_url, p.facebook_bio, p.facebook_synced_at, p.facebook_interests,
       p.x_url, p.x_bio, p.x_followers_count, p.x_synced_at, p.x_topics,
-      p.longevity_archetype, p.account_type, p.verification_status
+      p.longevity_archetype,
+      CASE WHEN COALESCE(p.account_visibility->>'accountType', 'public') = 'public' THEN p.account_type ELSE NULL END,
+      CASE WHEN COALESCE(p.account_visibility->>'verificationStatus', 'public') = 'public' THEN p.verification_status ELSE NULL END
     FROM public.profiles p
     LEFT JOIN public.global_community_profiles gcp ON gcp.user_id = p.user_id
     WHERE p.vitana_id = ident
@@ -76,7 +92,9 @@ BEGIN
       p.youtube_url, p.youtube_description, p.youtube_subscribers_count, p.youtube_synced_at, p.youtube_content_categories,
       p.facebook_url, p.facebook_bio, p.facebook_synced_at, p.facebook_interests,
       p.x_url, p.x_bio, p.x_followers_count, p.x_synced_at, p.x_topics,
-      p.longevity_archetype, p.account_type, p.verification_status
+      p.longevity_archetype,
+      CASE WHEN COALESCE(p.account_visibility->>'accountType', 'public') = 'public' THEN p.account_type ELSE NULL END,
+      CASE WHEN COALESCE(p.account_visibility->>'verificationStatus', 'public') = 'public' THEN p.verification_status ELSE NULL END
     FROM public.profiles p
     LEFT JOIN public.global_community_profiles gcp ON gcp.user_id = p.user_id
     WHERE p.user_id = identifier::uuid
