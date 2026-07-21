@@ -215,6 +215,64 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
   return result;
 }
 
+/**
+ * Client-side heuristic rules mapping a post's caption to a motivational-note
+ * i18n key. Ordered — the first match wins. Deliberately simple (keyword
+ * matching, DE + EN) since `profile_posts` carries no category/mood/topic
+ * column to classify against (see news-feed-ranker regression tests). The
+ * eventual replacement is server-side classification from the post's image,
+ * text, topic, and the viewer's relationship with the author.
+ */
+const MOTIVATION_RULES: Array<{ key: string; test: (text: string) => boolean }> = [
+  { key: "motivationQuestion", test: (t) => t.trim().endsWith("?") },
+  { key: "motivationChallenge", test: (t) => /challenge|herausforderung/i.test(t) },
+  {
+    key: "motivationAchievement",
+    test: (t) => /geschafft|erfolg|stolz|erreicht|meilenstein|abgenommen|gewonnen|achievement/i.test(t),
+  },
+  {
+    key: "motivationProgress",
+    test: (t) => /fortschritt|\btag \d+\b|\bwoche \d+\b|dran geblieben|durchgehalten|progress/i.test(t),
+  },
+  { key: "motivationDance", test: (t) => /tanz|dance/i.test(t) },
+  {
+    key: "motivationWorkout",
+    test: (t) => /workout|training|\bsport\b|fitness|joggen|laufen|\bgym\b|yoga|pilates|krafttraining|hiit/i.test(t),
+  },
+  {
+    key: "motivationMeal",
+    test: (t) => /rezept|ernährung|kochen|smoothie|frühstück|mittagessen|abendessen|gesundes essen|healthy meal/i.test(t),
+  },
+  { key: "motivationRelax", test: (t) => /entspann|\bruhe\b|\bpause\b|meditation|erholung|auszeit|relax/i.test(t) },
+  {
+    key: "motivationTravelNature",
+    test: (t) =>
+      /sonnenuntergang|sunset|\breise\b|urlaub|strand|\bbeach\b|\bmeer\b|berge|\bnatur\b|landschaft|ferien|wandern/i.test(
+        t,
+      ),
+  },
+  { key: "motivationEvent", test: (t) => /\bevent\b|veranstaltung|\btreffen\b|meetup|konzert|\bfeier\b/i.test(t) },
+  { key: "motivationEducational", test: (t) => /wusstest du|studie zeigt|tipp des tages|neu gelernt/i.test(t) },
+  { key: "motivationEmotional", test: (t) => /verlust|trauer|schwer gefallen|kämpf|dankbar für/i.test(t) },
+];
+
+/**
+ * Personalized motivational-impulse key for a community post — replaces the
+ * old "from the community" / "from someone you follow" provenance label,
+ * which described where the post came from instead of inviting the viewer
+ * to do something with it.
+ */
+export function motivationKeyFor(item: PostFeedItem): string {
+  const text = item.content ?? "";
+  for (const rule of MOTIVATION_RULES) {
+    if (rule.test(text)) return `screens.home.${rule.key}`;
+  }
+  if (item.followed) return "screens.home.motivationFollowed";
+  if (item.image_url) return "screens.home.motivationGreeting";
+  if (item.video_url) return "screens.home.motivationWorkout";
+  return "screens.home.motivationDefault";
+}
+
 /** The "why you're seeing this" reason key for a feed item (i18n lookup key). */
 export function reasonKeyFor(item: FeedItem): string {
   switch (item.kind) {
@@ -223,7 +281,7 @@ export function reasonKeyFor(item: FeedItem): string {
     case "performer":
       return "screens.home.whySpotlight";
     case "post":
-      return item.followed ? "screens.home.whyFollowed" : "screens.home.whyCommunity";
+      return motivationKeyFor(item);
     case "article":
       return "screens.home.whyPublic";
   }
