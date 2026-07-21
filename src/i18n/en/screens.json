@@ -2151,6 +2151,7 @@
       "devicePreviewDesc": "Preview the mobile app on staging inside a device frame — a fast UI check without DevTools.",
       "devicePreviewEnvironment": "Environment",
       "devicePreviewEnvStaging": "Staging (preview)",
+      "devicePreviewEnvStagingAws": "Staging (AWS)",
       "devicePreviewEnvProduction": "Production (live)",
       "devicePreviewEnvCustom": "Custom URL",
       "devicePreviewCustomUrlPlaceholder": "https://…",
