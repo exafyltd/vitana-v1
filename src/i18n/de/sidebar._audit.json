@@ -61,9 +61,10 @@
       "phase": "llm"
     },
     "sidebar.memory": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "Ambiguous English term 'Memory'. 'Speicher' usually refers to data storage. If it means cognitive memory, 'Gedächtnis' is better. If it means recollections/journal entries, 'Erinnerungen' is better.",
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Wrong meaning in context; 'Memory' in a wellness app refers to cognitive function, not computer storage.",
+      "suggested": "Gedächtnis",
       "phase": "llm"
     },
     "sidebar.settings": {
@@ -207,24 +208,31 @@
       "phase": "llm"
     },
     "sidebar.clinicalOps": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Ops' is an awkward abbreviation in German UI; 'Operationen' is more standard.",
-      "suggested": "Klinische Operationen",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "The English 'Ops' is ambiguous. If it refers to 'operations' as in processes/management, 'Klinische Operationen' is not ideal. If it refers to surgical operations, it's correct. Without further context, it's hard to be certain.",
       "phase": "llm"
     },
     "sidebar.monitoring": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Überwachung' can sound formal or have a slightly negative connotation; 'Monitoring' is a common and often preferred loanword in this context.",
-      "suggested": "Monitoring",
-      "phase": "llm"
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
     },
     "sidebar.logout": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "sidebar.connectors": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "sidebar.support": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:31:45.656Z"
+  "generatedAt": "2026-07-21T06:32:58.853Z"
 }
