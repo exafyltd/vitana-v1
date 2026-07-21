@@ -141,94 +141,151 @@ export function MobileIdCardBack({
             </p>
           </div>
 
-          {/* Connected Platforms Grid */}
-          {connectedPlatforms.length > 0 && (
-            <div className="grid grid-cols-3 gap-3 mb-4">
-              {connectedPlatforms.map((platform) => {
-                const url = platform.getUrl(profile);
-                return (
-                  <button
-                    key={platform.id}
-                    onClick={() => url && handleOpenProfile(url)}
-                    className="flex flex-col items-center p-3 rounded-xl border transition-all duration-200 active:scale-95"
-                    style={{
-                      backgroundColor: `${platform.color}10`,
-                      borderColor: `${platform.color}30`
-                    }}
-                  >
-                    {/* Icon with check */}
-                    <div className="relative mb-2">
-                      <div style={{ color: platform.color }}>
+          {isOwner ? (
+            <>
+              {/* Connected Platforms Grid */}
+              {connectedPlatforms.length > 0 && (
+                <div className="grid grid-cols-3 gap-3 mb-4">
+                  {connectedPlatforms.map((platform) => {
+                    const url = platform.getUrl(profile);
+                    return (
+                      <button
+                        key={platform.id}
+                        onClick={() => url && handleOpenProfile(url)}
+                        className="flex flex-col items-center p-3 rounded-xl border transition-all duration-200 active:scale-95"
+                        style={{
+                          backgroundColor: `${platform.color}10`,
+                          borderColor: `${platform.color}30`
+                        }}
+                      >
+                        {/* Icon with check */}
+                        <div className="relative mb-2">
+                          <div style={{ color: platform.color }}>
+                            {platform.icon}
+                          </div>
+                          <div
+                            className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-green-500 flex items-center justify-center"
+                            style={{ boxShadow: "0 2px 6px rgba(34,197,94,0.4)" }}
+                          >
+                            <Check className="h-2 w-2 text-white" strokeWidth={3} />
+                          </div>
+                        </div>
+
+                        {/* Name */}
+                        <span
+                          className="text-[10px] font-semibold"
+                          style={{ color: platform.color }}
+                        >
+                          {platform.name}
+                        </span>
+
+                        {/* External link hint */}
+                        <ExternalLink className="h-2.5 w-2.5 text-slate-500 mt-1" />
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Unconnected Platforms - Compact row */}
+              {unconnectedPlatforms.length > 0 && editMode && (
+                <>
+                  <div className="h-px bg-black/5 my-4" />
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="text-[11px] text-slate-600 mr-2">{translate('socialImport.connect', 'Connect:')}</span>
+                    {unconnectedPlatforms.map((platform) => (
+                      <button
+                        key={platform.id}
+                        onClick={() => handleConnect(platform)}
+                        className="flex items-center justify-center w-8 h-8 rounded-full border border-black/10 bg-white/60 transition-colors hover:bg-white/80"
+                      >
+                        <div className="opacity-40 grayscale">
+                          {platform.icon}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {/* Empty state when no platforms connected */}
+              {connectedPlatforms.length === 0 && (
+                <div className="text-center py-6">
+                  <div className="w-12 h-12 rounded-full bg-white/60 flex items-center justify-center mx-auto mb-3">
+                    <Plus className="h-5 w-5 text-slate-600" />
+                  </div>
+                  <p className="text-sm text-slate-600 mb-3">{translate('socialImport.noAccountsConnected', 'No social accounts connected')}</p>
+                </div>
+              )}
+
+              {/* Subtle footer note */}
+              {connectedPlatforms.length > 0 && (
+                <p className="text-[11px] text-slate-500 text-center mt-4 italic">
+                  {translate('socialImport.tapToVisit', 'Tap to visit profile')}
+                </p>
+              )}
+            </>
+          ) : (
+            <>
+              {/* Visitor view: every platform shown as connected/not-linked —
+                  never a "+" or any connect affordance, which would wrongly
+                  imply the viewer can link accounts to someone else's
+                  profile. Mirrors the desktop ProfileIdCardBack.tsx pattern. */}
+              <div className="grid grid-cols-3 gap-3">
+                {platforms.map((platform) => {
+                  const url = platform.getUrl(profile);
+                  const connected = !!url;
+                  return connected ? (
+                    <button
+                      key={platform.id}
+                      onClick={() => handleOpenProfile(url)}
+                      className="flex flex-col items-center p-3 rounded-xl border transition-all duration-200 active:scale-95"
+                      style={{
+                        backgroundColor: `${platform.color}10`,
+                        borderColor: `${platform.color}30`
+                      }}
+                    >
+                      <div className="relative mb-2">
+                        <div style={{ color: platform.color }}>
+                          {platform.icon}
+                        </div>
+                        <div
+                          className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-green-500 flex items-center justify-center"
+                          style={{ boxShadow: "0 2px 6px rgba(34,197,94,0.4)" }}
+                        >
+                          <Check className="h-2 w-2 text-white" strokeWidth={3} />
+                        </div>
+                      </div>
+                      <span className="text-[10px] font-semibold" style={{ color: platform.color }}>
+                        {platform.name}
+                      </span>
+                      <ExternalLink className="h-2.5 w-2.5 text-slate-500 mt-1" />
+                    </button>
+                  ) : (
+                    <div
+                      key={platform.id}
+                      className="flex flex-col items-center p-3 rounded-xl border border-black/5 bg-white/30"
+                    >
+                      <div className="mb-2 opacity-40 grayscale">
                         {platform.icon}
                       </div>
-                      <div 
-                        className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-green-500 flex items-center justify-center"
-                        style={{ boxShadow: "0 2px 6px rgba(34,197,94,0.4)" }}
-                      >
-                        <Check className="h-2 w-2 text-white" strokeWidth={3} />
-                      </div>
+                      <span className="text-[10px] font-semibold text-slate-400">
+                        {platform.name}
+                      </span>
+                      <span className="text-[9px] text-slate-400 mt-1">
+                        {translate('screens.profile.notLinked', 'Not linked')}
+                      </span>
                     </div>
-                    
-                    {/* Name */}
-                    <span 
-                      className="text-[10px] font-semibold"
-                      style={{ color: platform.color }}
-                    >
-                      {platform.name}
-                    </span>
-                    
-                    {/* External link hint */}
-                    <ExternalLink className="h-2.5 w-2.5 text-slate-500 mt-1" />
-                  </button>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Unconnected Platforms - Compact row */}
-          {unconnectedPlatforms.length > 0 && editMode && isOwner && (
-            <>
-              <div className="h-px bg-black/5 my-4" />
-              <div className="flex items-center justify-center gap-2">
-                <span className="text-[11px] text-slate-600 mr-2">{translate('socialImport.connect', 'Connect:')}</span>
-                {unconnectedPlatforms.map((platform) => (
-                  <button
-                    key={platform.id}
-                    onClick={() => handleConnect(platform)}
-                    className="flex items-center justify-center w-8 h-8 rounded-full border border-black/10 bg-white/60 transition-colors hover:bg-white/80"
-                  >
-                    <div className="opacity-40 grayscale">
-                      {platform.icon}
-                    </div>
-                  </button>
-                ))}
+                  );
+                })}
               </div>
+
+              {connectedPlatforms.length > 0 && (
+                <p className="text-[11px] text-slate-500 text-center mt-4 italic">
+                  {translate('socialImport.tapToVisit', 'Tap to visit profile')}
+                </p>
+              )}
             </>
-          )}
-
-          {/* Empty state when no platforms connected */}
-          {connectedPlatforms.length === 0 && isOwner && (
-            <div className="text-center py-6">
-              <div className="w-12 h-12 rounded-full bg-white/60 flex items-center justify-center mx-auto mb-3">
-                <Plus className="h-5 w-5 text-slate-600" />
-              </div>
-              <p className="text-sm text-slate-600 mb-3">{translate('socialImport.noAccountsConnected', 'No social accounts connected')}</p>
-            </div>
-          )}
-          {connectedPlatforms.length === 0 && !isOwner && (
-            <div className="text-center py-6">
-              <div className="w-12 h-12 rounded-full bg-white/40 flex items-center justify-center mx-auto mb-3">
-                <Plus className="h-5 w-5 text-slate-400" />
-              </div>
-              <p className="text-sm text-slate-500 mb-3">{translate('socialImport.noAccountsConnectedOtherUser', "This user hasn't connected any social accounts yet")}</p>
-            </div>
-          )}
-
-          {/* Subtle footer note */}
-          {connectedPlatforms.length > 0 && (
-            <p className="text-[11px] text-slate-500 text-center mt-4 italic">
-              {translate('socialImport.tapToVisit', 'Tap to visit profile')}
-            </p>
           )}
         </div>
       </div>

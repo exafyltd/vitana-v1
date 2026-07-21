@@ -8,8 +8,16 @@
 -- match, UUID match) of get_user_profile_by_identifier. No visibility change —
 -- longevityArchetype's default field visibility is already 'public'
 -- (DEFAULT_ACCOUNT_VISIBILITY in src/types/profile.ts).
+--
+-- Correction: Postgres refuses `CREATE OR REPLACE FUNCTION` when it would
+-- change the OUT-parameter row type of a RETURNS TABLE function ("cannot
+-- change return type of existing function" / 42P13) — this was caught when
+-- applying this migration, before it had ever run anywhere. DROP FUNCTION
+-- first so the new signature can be created.
 
-CREATE OR REPLACE FUNCTION public.get_user_profile_by_identifier(identifier text)
+DROP FUNCTION IF EXISTS public.get_user_profile_by_identifier(text);
+
+CREATE FUNCTION public.get_user_profile_by_identifier(identifier text)
  RETURNS TABLE(user_id uuid, display_name text, full_name text, handle text, avatar_url text, cover_url text, bio text, email text, location text, created_at timestamp with time zone, linkedin_url text, linkedin_headline text, linkedin_summary text, linkedin_synced_at timestamp with time zone, instagram_url text, instagram_bio text, instagram_followers_count integer, instagram_synced_at timestamp with time zone, instagram_interests text[], tiktok_url text, tiktok_bio text, tiktok_followers_count integer, tiktok_synced_at timestamp with time zone, tiktok_content_themes text[], youtube_url text, youtube_description text, youtube_subscribers_count integer, youtube_synced_at timestamp with time zone, youtube_content_categories text[], facebook_url text, facebook_bio text, facebook_synced_at timestamp with time zone, facebook_interests text[], x_url text, x_bio text, x_followers_count integer, x_synced_at timestamp with time zone, x_topics text[], longevity_archetype text)
  LANGUAGE plpgsql
  SECURITY DEFINER

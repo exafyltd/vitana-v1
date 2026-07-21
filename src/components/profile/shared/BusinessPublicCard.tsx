@@ -27,10 +27,7 @@ interface BusinessPublicCardProps {
 export function BusinessPublicCard({ vitanaId, className }: BusinessPublicCardProps) {
   const { data, isLoading } = usePublicRecommendations(vitanaId);
   const items = data?.items ?? [];
-
-  // Silent — no error toast for a stranger who simply has nothing to show,
-  // matches ServiceOfferingsPublicSection's cross-user precedent.
-  if (!isLoading && items.length === 0) return null;
+  const isEmpty = !isLoading && items.length === 0;
 
   return (
     <div className={`rounded-2xl bg-card border border-border/40 shadow-sm p-4 space-y-1 ${className ?? ""}`}>
@@ -42,6 +39,14 @@ export function BusinessPublicCard({ vitanaId, className }: BusinessPublicCardPr
           {Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className="h-16 rounded-xl bg-muted/40 animate-pulse" />
           ))}
+        </div>
+      ) : isEmpty ? (
+        // A visitor landing on this tab with zero recommendations still needs
+        // to see *something* — a silently blank card below the tab bar reads
+        // as broken, not "nothing here yet".
+        <div className="text-center py-10 space-y-2">
+          <Briefcase className="h-8 w-8 mx-auto text-muted-foreground/50" />
+          <p className="text-sm font-medium">{t("profile.business.publicEmpty")}</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -73,7 +78,7 @@ export function BusinessPublicCard({ vitanaId, className }: BusinessPublicCardPr
         </div>
       )}
 
-      <AffiliateDisclosure compact className="mt-3" />
+      {!isEmpty && !isLoading && <AffiliateDisclosure compact className="mt-3" />}
     </div>
   );
 }
