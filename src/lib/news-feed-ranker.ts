@@ -223,9 +223,21 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
  * eventual replacement is server-side classification from the post's image,
  * text, topic, and the viewer's relationship with the author.
  */
+// A positive achievement/progress stem doesn't mean the post is a success —
+// "nicht geschafft", "kein Fortschritt", "erfolglos" describe a setback and
+// should read as an invitation to lend support, not a celebration prompt.
+const POSITIVE_STEM_RE =
+  /geschafft|erfolg|stolz|erreicht|meilenstein|abgenommen|gewonnen|achievement|fortschritt|dran geblieben|durchgehalten|progress/i;
+const NEGATION_RE = /\b(nicht|kein|keine|keinen|keinem|keiner|nie|niemals)\b/i;
+
 const MOTIVATION_RULES: Array<{ key: string; test: (text: string) => boolean }> = [
   { key: "motivationQuestion", test: (t) => t.trim().endsWith("?") },
   { key: "motivationChallenge", test: (t) => /challenge|herausforderung/i.test(t) },
+  {
+    key: "motivationEmotional",
+    test: (t) =>
+      (POSITIVE_STEM_RE.test(t) && NEGATION_RE.test(t)) || /erfolglos|gescheitert|misslungen|vergeblich/i.test(t),
+  },
   {
     key: "motivationAchievement",
     test: (t) => /geschafft|erfolg|stolz|erreicht|meilenstein|abgenommen|gewonnen|achievement/i.test(t),

@@ -260,6 +260,19 @@ const { rankFeed, reasonKeyFor } = await loadRanker();
     reasonKeyFor(post("x", { content: "Tolles Event gestern Abend" })) === "screens.home.motivationEvent",
     "§10 event keyword",
   );
+  assert(
+    reasonKeyFor(post("x", { content: "Ich habe es nicht geschafft und kämpfe weiter" })) ===
+      "screens.home.motivationEmotional",
+    "§10 a negated achievement stem reads as a setback, not a celebration",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Mein Ziel nicht erreicht" })) === "screens.home.motivationEmotional",
+    "§10 negated 'erreicht' reads as a setback",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Leider nur erfolglos trainiert" })) === "screens.home.motivationEmotional",
+    "§10 'erfolglos' isn't just a substring match on 'erfolg'",
+  );
 }
 
 // §11 — motivationKeyFor fallbacks when no keyword matches.
