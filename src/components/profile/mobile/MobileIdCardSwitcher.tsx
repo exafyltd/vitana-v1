@@ -138,6 +138,7 @@ export function MobileIdCardSwitcher({
               <MobileIdCardBack
                 profile={profile}
                 editMode={editMode}
+                isOwner={isOwner}
                 onEdit={onEditSocial}
                 onRefreshProfile={onRefreshProfile}
               />

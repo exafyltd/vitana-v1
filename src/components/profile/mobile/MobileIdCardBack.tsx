@@ -17,6 +17,7 @@ import { SocialMediaImportDialog } from "@/components/profile/dialogs/SocialMedi
 interface MobileIdCardBackProps {
   profile: UserProfile;
   editMode?: boolean;
+  isOwner?: boolean;
   onEdit?: () => void;
   onRefreshProfile?: () => void;
   className?: string;
@@ -80,6 +81,7 @@ const platforms: PlatformConfig[] = [
 export function MobileIdCardBack({
   profile,
   editMode = false,
+  isOwner = true,
   onEdit,
   onRefreshProfile,
   className
@@ -184,7 +186,7 @@ export function MobileIdCardBack({
           )}
 
           {/* Unconnected Platforms - Compact row */}
-          {unconnectedPlatforms.length > 0 && editMode && (
+          {unconnectedPlatforms.length > 0 && editMode && isOwner && (
             <>
               <div className="h-px bg-black/5 my-4" />
               <div className="flex items-center justify-center gap-2">
@@ -205,12 +207,20 @@ export function MobileIdCardBack({
           )}
 
           {/* Empty state when no platforms connected */}
-          {connectedPlatforms.length === 0 && (
+          {connectedPlatforms.length === 0 && isOwner && (
             <div className="text-center py-6">
               <div className="w-12 h-12 rounded-full bg-white/60 flex items-center justify-center mx-auto mb-3">
                 <Plus className="h-5 w-5 text-slate-600" />
               </div>
               <p className="text-sm text-slate-600 mb-3">{translate('socialImport.noAccountsConnected', 'No social accounts connected')}</p>
+            </div>
+          )}
+          {connectedPlatforms.length === 0 && !isOwner && (
+            <div className="text-center py-6">
+              <div className="w-12 h-12 rounded-full bg-white/40 flex items-center justify-center mx-auto mb-3">
+                <Plus className="h-5 w-5 text-slate-400" />
+              </div>
+              <p className="text-sm text-slate-500 mb-3">{translate('socialImport.noAccountsConnectedOtherUser', "This user hasn't connected any social accounts yet")}</p>
             </div>
           )}
 

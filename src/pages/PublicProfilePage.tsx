@@ -14,7 +14,7 @@ import { PublicProfileLanding } from "@/components/profile/public/PublicProfileL
 // VTID-02754 — "How we searched" card when arriving via find_community_member voice tool
 import { WhyThisMatchCard } from "@/components/community/WhyThisMatchCard";
 import { getScope } from "@/lib/profileScope";
-import { UserProfile } from "@/types/profile";
+import { UserProfile, DEFAULT_ACCOUNT_VISIBILITY } from "@/types/profile";
 import { useAuth } from "@/context/AuthProvider";
 import { Milestone } from "@/hooks/useProfileMilestones";
 import { GalleryPhoto } from "@/hooks/useProfileGallery";
@@ -59,6 +59,7 @@ interface DatabaseProfile {
   x_followers_count: number;
   x_synced_at: string;
   x_topics: string[];
+  longevity_archetype: string;
 }
 
 export default function PublicProfilePage() {
@@ -213,6 +214,7 @@ export default function PublicProfilePage() {
           languages: ['English'],
           vitanaIndex: vitanaScore ?? undefined,
           vitanaPercentile: vitanaScore ? Math.min(99, Math.floor((vitanaScore / 999) * 100)) : undefined,
+          longevityArchetype: dbProfile.longevity_archetype || undefined,
           // LinkedIn
           linkedin_url: dbProfile.linkedin_url || undefined,
           linkedin_headline: dbProfile.linkedin_headline || undefined,
@@ -247,6 +249,16 @@ export default function PublicProfilePage() {
           x_followers_count: dbProfile.x_followers_count || undefined,
           x_synced_at: dbProfile.x_synced_at || undefined,
           x_topics: dbProfile.x_topics || undefined,
+          // Mirrors the subset of Account-tab fields ("Public profile —
+          // Shown on Identity") that are already visible on this same
+          // Identity card above, so non-owner viewers don't see "—" for
+          // data they can already see one tab over.
+          account: {
+            avatarUrl: dbProfile.avatar_url || undefined,
+            handle: dbProfile.handle || undefined,
+            longevityArchetype: dbProfile.longevity_archetype || undefined,
+            visibility: DEFAULT_ACCOUNT_VISIBILITY,
+          },
           stats: {
             posts: 0,
             followers: 0,
