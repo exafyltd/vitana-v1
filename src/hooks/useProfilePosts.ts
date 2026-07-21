@@ -44,16 +44,19 @@ export function useProfilePosts(userId?: string) {
   const createPost = useMutation({
     mutationFn: async ({ content, imageUrl, videoUrl, isPublic, backgroundStyle, mentions }: { content: string; imageUrl?: string; videoUrl?: string; isPublic?: boolean; backgroundStyle?: string | null; mentions?: PostMention[] }) => {
       if (!user?.id) throw new Error('Not authenticated');
-      // Bare insert — no `.select().single()` read-back. The read-back's
-      // response leg could intermittently fail (flaky mobile network) even
-      // after the insert already committed, which surfaced as a false
-      // "something went wrong" toast while the post was actually already
-      // live (and visible via the independent realtime feed subscription in
-      // useAllNewsFeed.ts). No caller reads the resolved post, so dropping
-      // the read-back is safe.
+      // Bare insert (no `.select().single()` read-back) with a client-generated
+      // id doubling as an idempotency key. Even a minimal-response insert is
+      // still one HTTP request/response — if the connection drops after the
+      // server commits but before the response reaches the client, we still
+      // see an error here despite the post being live. Rather than surface a
+      // false "something went wrong" toast (or let a naive retry create a
+      // duplicate), reconcile: check whether our own row actually landed
+      // before treating the request as failed.
+      const id = crypto.randomUUID();
       const { error } = await supabase
         .from('profile_posts' as never)
         .insert({
+          id,
           user_id: user.id,
           content,
           image_url: imageUrl || null,
@@ -66,7 +69,15 @@ export function useProfilePosts(userId?: string) {
           // visibility control (public/friends/groups) onto this flag.
           ...(isPublic === undefined ? {} : { is_public: isPublic }),
         } as never);
-      if (error) throw error;
+      if (error) {
+        const { data: existing } = await supabase
+          .from('profile_posts' as never)
+          .select('id')
+          .eq('id', id)
+          .maybeSingle();
+        if (!existing) throw error;
+        // Row landed despite the transport error — treat as success.
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile-posts', targetUserId] });
