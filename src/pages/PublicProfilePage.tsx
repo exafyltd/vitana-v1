@@ -14,7 +14,7 @@ import { PublicProfileLanding } from "@/components/profile/public/PublicProfileL
 // VTID-02754 — "How we searched" card when arriving via find_community_member voice tool
 import { WhyThisMatchCard } from "@/components/community/WhyThisMatchCard";
 import { getScope } from "@/lib/profileScope";
-import { UserProfile, DEFAULT_ACCOUNT_VISIBILITY } from "@/types/profile";
+import { UserProfile, DEFAULT_ACCOUNT_VISIBILITY, AccountVerificationStatus } from "@/types/profile";
 import { useAuth } from "@/context/AuthProvider";
 import { Milestone } from "@/hooks/useProfileMilestones";
 import { GalleryPhoto } from "@/hooks/useProfileGallery";
@@ -60,6 +60,8 @@ interface DatabaseProfile {
   x_synced_at: string;
   x_topics: string[];
   longevity_archetype: string;
+  account_type: string;
+  verification_status: string;
 }
 
 export default function PublicProfilePage() {
@@ -257,6 +259,9 @@ export default function PublicProfilePage() {
             avatarUrl: dbProfile.avatar_url || undefined,
             handle: dbProfile.handle || undefined,
             longevityArchetype: dbProfile.longevity_archetype || undefined,
+            memberSince: dbProfile.created_at || undefined,
+            accountType: dbProfile.account_type || undefined,
+            verificationStatus: (dbProfile.verification_status as AccountVerificationStatus) || undefined,
             visibility: DEFAULT_ACCOUNT_VISIBILITY,
           },
           stats: {
