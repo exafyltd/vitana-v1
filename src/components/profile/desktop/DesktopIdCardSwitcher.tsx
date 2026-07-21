@@ -10,6 +10,7 @@ import { ProfileIdCardBack } from "../shared/ProfileIdCardBack";
 import { ProfileIdSegmentedControl } from "../shared/ProfileIdSegmentedControl";
 import { DesktopAccountCard } from "./DesktopAccountCard";
 import { DesktopBusinessCard } from "./DesktopBusinessCard";
+import { BusinessPublicCard } from "../shared/BusinessPublicCard";
 import { t } from "@/lib/i18n-toast";
 
 export type DesktopCardSide = "identity" | "social" | "account" | "business";
@@ -58,15 +59,17 @@ export function DesktopIdCardSwitcher({
     exit: { opacity: 0, x: -24 * direction },
   });
 
-  // Business (Recommend & Earn stats, VTID-02950) is owner-only — recomputed
-  // per render (not module-scope) so the new "business" label reacts to
-  // language changes; the other 3 stay hardcoded English pre-existing tech
+  // Business (Recommend & Earn, VTID-02950) is now shown to every viewer —
+  // owner gets the private stats dashboard, visitors get a read-only
+  // storefront of the owner's recommendations (BOOTSTRAP-PUBLIC-BUSINESS-PROFILE).
+  // Recomputed per render (not module-scope) so the "business" label reacts
+  // to language changes; the other 3 stay hardcoded English pre-existing tech
   // debt, out of scope for this feature.
   const segments: readonly { id: DesktopCardSide; label: string }[] = [
     { id: "identity", label: "Identity" },
     { id: "social", label: "Social" },
     { id: "account", label: "Account" },
-    ...(isOwner ? [{ id: "business" as const, label: t("profile.tabs.business") }] : []),
+    { id: "business" as const, label: t("profile.tabs.business") },
   ];
 
   return (
@@ -121,13 +124,13 @@ export function DesktopIdCardSwitcher({
                 />
               </motion.div>
             )}
-            {activeSide === "business" && isOwner && (
+            {activeSide === "business" && (
               <motion.div
                 key="business"
                 {...slotAnim(1)}
                 transition={{ duration: 0.25, ease: "easeInOut" }}
               >
-                <DesktopBusinessCard />
+                {isOwner ? <DesktopBusinessCard /> : <BusinessPublicCard vitanaId={profile.handle} />}
               </motion.div>
             )}
           </AnimatePresence>

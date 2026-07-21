@@ -284,3 +284,35 @@ export function useMyRecommendations(opts: { enabled?: boolean } = {}) {
     refetchOnWindowFocus: false,
   });
 }
+
+// Public storefront view of ANOTHER user's recommendations (Business tab,
+// visitor view) — deliberately excludes click_count/conversion_count/
+// commission_earned_minor/currency/status, which are private to the owner.
+export interface PublicRecommendationItem {
+  recommendation_id: string;
+  product_id: string;
+  product_title: string | null;
+  product_thumbnail_url: string | null;
+  created_at: string;
+}
+
+export function usePublicRecommendations(vitanaId: string | undefined, opts: { enabled?: boolean } = {}) {
+  return useQuery<{ ok: boolean; items: PublicRecommendationItem[] }>({
+    queryKey: ["public-recommendations", vitanaId],
+    queryFn: async () => {
+      if (!GATEWAY_URL) throw new Error("GATEWAY_URL not configured");
+      if (!vitanaId) throw new Error("missing vitanaId");
+      const headers = await authHeaders();
+      const resp = await fetch(
+        `${GATEWAY_URL}/api/v1/discover/recommendations/${encodeURIComponent(vitanaId)}`,
+        { headers }
+      );
+      if (resp.status === 404) return { ok: false, items: [] };
+      if (!resp.ok) throw new Error(`Public recommendations failed: ${resp.status}`);
+      return resp.json();
+    },
+    enabled: !!vitanaId && opts.enabled !== false,
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
+  });
+}
