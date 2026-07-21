@@ -98,7 +98,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `actionBar` — used: 1, total in shard: 5
-- `discover` — used: 8, total in shard: 96
+- `discover` — used: 8, total in shard: 106
 - `screens` — used: 15, total in shard: 9857
 - `toasts` — used: 2, total in shard: 1255
 
@@ -117,7 +117,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `editProfile` — used: 11, total in shard: 17
-- `profile` — used: 1, total in shard: 55
+- `profile` — used: 1, total in shard: 59
 - `profileEditor` — used: 2, total in shard: 88
 - `screens` — used: 1, total in shard: 9857
 
@@ -1975,7 +1975,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `discover` — used: 16, total in shard: 96
+- `discover` — used: 16, total in shard: 106
 - `screens` — used: 1, total in shard: 9857
 
 ### src/pages/discover/CategoryProducts.tsx
@@ -1984,7 +1984,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `discover` — used: 4, total in shard: 96, **MISSING:** discover.subcategories.${meta.i18nKey}
+- `discover` — used: 4, total in shard: 106, **MISSING:** discover.subcategories.${meta.i18nKey}
 
 ### src/pages/discover/DealsOffers.tsx
 

@@ -20,6 +20,7 @@
     "suggestedForYou": "Suggested For You",
     "browseCategories": "Browse Categories",
     "skincareCosmetics": "Skincare & Cosmetics",
+    "healthTests": "Health Tests",
     "all": "All",
     "shareAndEarn": "Share & Earn",
     "shareAndEarnDesc": "Recommend products, earn commissions",
@@ -68,7 +69,16 @@
       "hairCare": "Hair Care",
       "bodyCare": "Body Care",
       "fragrance": "Fragrance",
-      "sunCare": "Sun Care"
+      "sunCare": "Sun Care",
+      "nutrientsVitamins": "Nutrients & Vitamins",
+      "hormones": "Hormones",
+      "cardio": "Heart & Circulation",
+      "longevityFitness": "Longevity & Fitness",
+      "womensHealth": "Women's Health",
+      "sexualHealth": "Sexual Health",
+      "prevention": "Prevention & Early Detection",
+      "generalHealth": "General Health",
+      "dnaAnalysis": "DNA Analysis"
     },
     "quickActions": {
       "title": "Quick Actions",
