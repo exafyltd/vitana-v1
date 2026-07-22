@@ -9330,6 +9330,11 @@
     "logout": {
       "signingOut": "Signing out..."
     },
+    "maxinaAppRedirect": {
+      "seoTitle": "MAXINA – Redirecting to the App Store",
+      "redirecting": "Taking you to the app store…",
+      "fallbackBody": "Get MAXINA — choose your store:"
+    },
     "mobilesettings": {
       "pushNotifications": "Push Notifications",
       "quietHours": "Quiet Hours",
