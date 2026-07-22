@@ -9327,6 +9327,11 @@
     "logout": {
       "signingOut": "Abmelden..."
     },
+    "maxinaAppRedirect": {
+      "seoTitle": "MAXINA – Weiterleitung zum App Store",
+      "redirecting": "Wir bringen dich gleich in den App Store …",
+      "fallbackBody": "Hol dir MAXINA – wähle deinen Store:"
+    },
     "mobilesettings": {
       "pushNotifications": "Push-Benachrichtigungen",
       "quietHours": "Ruhezeiten",
