@@ -3,8 +3,7 @@
     "title": "Wallet",
     "description": "Your balance, credits, and rewards",
     "usdBalance": "EUR / USD Balance",
-    "creditsBalance": "Credits Balance",
-    "vtnaTokens": "VTNA Tokens",
+    "creditsBalance": "VTNA Credits Balance",
     "available": "Available",
     "staked": "Staked",
     "searchWallet": "Search wallet...",
@@ -19,7 +18,9 @@
       "exchanges": "Exchanges",
       "rewards": "Rewards",
       "purchases": "Purchases",
-      "pending": "Pending Payouts"
+      "pending": "Pending Payouts",
+      "withdrawals": "Withdrawals",
+      "stakes": "Staking"
     },
     "noActivity": "No activity yet",
     "noActivityDesc": "Your transactions will appear here.",

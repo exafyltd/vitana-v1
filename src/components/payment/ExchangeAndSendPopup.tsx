@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
-import { ArrowRight, ArrowUpDown, Send, Zap, DollarSign, Coins, CreditCard } from "lucide-react";
+import { ArrowRight, ArrowUpDown, Send, Zap, DollarSign, Coins } from "lucide-react";
 import { calculateExchange, formatCurrency, getCurrencySymbol } from "@/lib/exchangeRates";
 import { useActivityLogger } from "@/hooks/useActivityLogger";
 import { isIAPRestricted } from "@/lib/appilix";
@@ -36,7 +36,7 @@ export default function ExchangeAndSendPopup({
   recipient,
   initialAmount = "",
   initialFromCurrency = "USD",
-  initialToCurrency = "VTNA"
+  initialToCurrency = "CREDITS"
 }: ExchangeAndSendPopupProps) {
   // Hide exchange-and-send on iOS — prototype feature only
   if (isIAPRestricted()) return null;
@@ -51,14 +51,12 @@ export default function ExchangeAndSendPopup({
 
   const currencies = [
     { value: 'USD', label: 'US Dollars', icon: DollarSign },
-    { value: 'VTNA', label: 'VTNA Tokens', icon: CreditCard },
     { value: 'CREDITS', label: 'Credits', icon: Coins }
   ];
 
   // Mock user balance
   const userBalance = {
     USD: 2847.32,
-    VTNA: 892,
     CREDITS: 1547
   };
 
@@ -190,10 +188,6 @@ export default function ExchangeAndSendPopup({
                     {fmtNumber(userBalance.USD)}
                   </span>
                   <span className="flex items-center gap-1">
-                    <CreditCard className="w-3 h-3" />
-                    {userBalance.VTNA}
-                  </span>
-                  <span className="flex items-center gap-1">
                     <Coins className="w-3 h-3" />
                     {userBalance.CREDITS}
                   </span>
@@ -287,12 +281,6 @@ export default function ExchangeAndSendPopup({
                 </div>
                 
                 <div className="text-xs text-center text-muted-foreground">{t('screens.payment.rate1FromcurrencyValue1TocurrencyFee', { fromCurrency, value1: calculation.rate.toFixed(3), toCurrency, value3: formatCurrency(calculation.fees, fromCurrency) })}</div>
-                
-                {fromCurrency === 'VTNA' && toCurrency === 'CREDITS' && (
-                  <Badge variant="secondary" className="w-full mt-2 bg-green-100 text-green-700">
-                    {t('screens.payment.text5BonusApplied')}
-                  </Badge>
-                )}
               </CardContent>
             </Card>
           )}

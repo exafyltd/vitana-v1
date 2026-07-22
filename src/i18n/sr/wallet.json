@@ -3,8 +3,7 @@
     "title": "Novčanik",
     "description": "Tvoj balans, krediti i nagrade",
     "usdBalance": "EUR / USD balans",
-    "creditsBalance": "Kreditni balans",
-    "vtnaTokens": "VTNA tokeni",
+    "creditsBalance": "VTNA Credits balans",
     "available": "Dostupno",
     "staked": "Uloženo",
     "searchWallet": "Pretraži novčanik...",
@@ -19,7 +18,9 @@
       "exchanges": "Razmene",
       "rewards": "Nagrade",
       "purchases": "Kupovine",
-      "pending": "Isplate na čekanju"
+      "pending": "Isplate na čekanju",
+      "withdrawals": "Isplate",
+      "stakes": "Staking"
     },
     "noActivity": "Još uvek nema aktivnosti",
     "noActivityDesc": "Tvoje transakcije će se pojaviti ovde.",

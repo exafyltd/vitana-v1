@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { Plus, CreditCard, Coins, ArrowUpRight, Eye, DollarSign, Euro, Shield, Send, ArrowUpDown, X, Sparkles, Plane } from "lucide-react";
+import { Plus, CreditCard, ArrowUpRight, Eye, DollarSign, Euro, Shield, Send, ArrowUpDown, X, Sparkles, Plane } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import SubNavigation from "@/components/SubNavigation";
@@ -15,10 +15,8 @@ import { WalletMotivationalBanner } from "@/components/wallet/WalletMotivational
 import { WalletMasterActionPopup } from "@/components/wallet/WalletMasterActionPopup";
 import { PopupCoordinationWrapper } from "@/components/payment/PopupCoordinationWrapper";
 import { usePopupCoordination } from "@/hooks/usePopupCoordination";
-import { StakeTokensPopup } from "@/components/wallet/popups/StakeTokensPopup";
 import { AddFundsPopup } from "@/components/wallet/popups/AddFundsPopup";
 import { BuyCreditsPopup } from "@/components/wallet/popups/BuyCreditsPopup";
-import { BuyTokensPopup } from "@/components/wallet/popups/BuyTokensPopup";
 import { WithdrawPopup } from "@/components/wallet/popups/WithdrawPopup";
 import { SpendCreditsPopup } from "@/components/wallet/popups/SpendCreditsPopup";
 import PaymentRequestPopup from "@/components/payment/PaymentRequestPopup";
@@ -46,7 +44,8 @@ import { MobileWalletTransactionList } from "@/components/wallet/mobile/MobileWa
 import { MobileWalletQuickActions } from "@/components/wallet/mobile/MobileWalletQuickActions";
 import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
-import { t } from '@/lib/i18n-toast';
+import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { useDeposit } from "@/hooks/useWalletGateway";
 import { useDisplayCurrency } from "@/hooks/useDisplayCurrency";
 import { useEurUsdRate } from "@/hooks/useEurUsdRate";
 import { CurrencyToggle } from "@/components/wallet/CurrencyToggle";
@@ -108,10 +107,8 @@ export default function Wallet() {
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [exchangeStep, setExchangeStep] = useState<'menu' | 'exchange'>('menu');
   const [selectedCurrencyForExchange, setSelectedCurrencyForExchange] = useState<'USD' | 'VTNA' | 'CREDITS' | undefined>();
-  const [stakeTokensOpen, setStakeTokensOpen] = useState(false);
   const [addFundsOpen, setAddFundsOpen] = useState(false);
   const [buyCreditsOpen, setBuyCreditsOpen] = useState(false);
-  const [buyTokensOpen, setBuyTokensOpen] = useState(false);
   const [withdrawOpen, setWithdrawOpen] = useState(false);
   const [spendCreditsOpen, setSpendCreditsOpen] = useState(false);
   const [paymentRequestOpen, setPaymentRequestOpen] = useState(false);
@@ -141,10 +138,50 @@ export default function Wallet() {
     if (t === "balances" || t === "activity" || t === "actions") setMobileWalletMode(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
-  const { balances, transactions, loading, error, getBalance, isLoaded } = useWallet();
+  const { balances, transactions, loading, error, getBalance, isLoaded, refreshData } = useWallet();
   const { displayCurrency, setDisplayCurrency } = useDisplayCurrency();
   const { eurPerUsd } = useEurUsdRate();
   const { user } = useAuth();
+
+  // Return leg of the real Stripe deposit flow (AddFundsPopup / gateway wallet
+  // rail): poll the deposit to a terminal state, surface the outcome, refresh
+  // the legacy USD balance the wallet UI reads, then clear the query params.
+  const depositId = searchParams.get("depositId");
+  const depositResult = searchParams.get("depositResult");
+  const { isTerminal: depositIsTerminal, deposit: pendingDeposit } = useDeposit(
+    depositResult === "success" ? depositId : null,
+    { pollUntilTerminal: true },
+  );
+
+  useEffect(() => {
+    if (depositResult === "canceled" && depositId) {
+      notifyError('toasts.wallet.depositCanceled');
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete("depositId");
+        next.delete("depositResult");
+        return next;
+      }, { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [depositResult, depositId]);
+
+  useEffect(() => {
+    if (depositResult !== "success" || !depositId || !depositIsTerminal) return;
+    if (pendingDeposit?.status === 'succeeded') {
+      notify('toasts.wallet.fundsAddedSuccessfully');
+    } else {
+      notifyError('toasts.wallet.transactionFailed');
+    }
+    refreshData();
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.delete("depositId");
+      next.delete("depositResult");
+      return next;
+    }, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [depositResult, depositId, depositIsTerminal, pendingDeposit?.status]);
 
   // Cash balances are stored in USD; render them in the user's chosen display
   // currency (USD ↔ EUR), converting EUR via the live EUR/USD market rate.
@@ -198,6 +235,10 @@ export default function Wallet() {
         return translate('wallet.filters.rewards');
       case "purchase":
         return translate('wallet.filters.purchases');
+      case "withdrawal":
+        return translate('wallet.filters.withdrawals');
+      case "stake":
+        return translate('wallet.filters.stakes');
       case "pending":
         return translate('wallet.filters.pending');
       default:
@@ -208,17 +249,11 @@ export default function Wallet() {
   // Handle opening specific wallet actions
   const handleWalletAction = async (actionType: string, currency?: string) => {
     switch (actionType) {
-      case 'stake-tokens':
-        setStakeTokensOpen(true);
-        break;
       case 'add-funds':
         setAddFundsOpen(true);
         break;
       case 'buy-credits':
         setBuyCreditsOpen(true);
-        break;
-      case 'buy-tokens':
-        setBuyTokensOpen(true);
         break;
       case 'withdraw':
         setWithdrawOpen(true);
@@ -289,27 +324,17 @@ export default function Wallet() {
         />
       </PopupCoordinationWrapper>
 
-      <StakeTokensPopup 
-        open={stakeTokensOpen}
-        onOpenChange={setStakeTokensOpen}
-      />
-
-      <AddFundsPopup 
+      <AddFundsPopup
         open={addFundsOpen}
         onOpenChange={setAddFundsOpen}
       />
 
-      <BuyCreditsPopup 
+      <BuyCreditsPopup
         open={buyCreditsOpen}
         onOpenChange={setBuyCreditsOpen}
       />
 
-      <BuyTokensPopup 
-        open={buyTokensOpen}
-        onOpenChange={setBuyTokensOpen}
-      />
-
-      <WithdrawPopup 
+      <WithdrawPopup
         open={withdrawOpen}
         onOpenChange={setWithdrawOpen}
       />
@@ -422,23 +447,12 @@ export default function Wallet() {
                     <MobileWalletBalanceCard
                       type="credits"
                       title={translate('wallet.creditsBalance')}
-                      balance={getBalance('CREDITS') !== null ? `${fmtNumber(getBalance('CREDITS')!)} Credits` : translate('common.loading')}
+                      balance={getBalance('CREDITS') !== null ? `${fmtNumber(getBalance('CREDITS')!)} VTNA Credits` : translate('common.loading')}
                       subBalance={`${translate('wallet.available')}: 100%`}
                       change="+12.1%"
                       changeType="increase"
                       isLoading={!isLoaded}
                       onPress={() => handleWalletAction('buy-credits')}
-                    />
-
-                    <MobileWalletBalanceCard
-                      type="tokens"
-                      title={translate('wallet.vtnaTokens')}
-                      balance={getBalance('VTNA') !== null ? `${fmtNumber(getBalance('VTNA')!)} VTNA` : translate('common.loading')}
-                      subBalance={`${translate('wallet.staked')}: 25%`}
-                      change="+5.7%"
-                      changeType="increase"
-                      isLoading={!isLoaded}
-                      onPress={() => handleWalletAction('stake-tokens')}
                     />
 
                     <MobileWalletQuickActions
@@ -447,7 +461,6 @@ export default function Wallet() {
                       onExchange={() => handleWalletAction('exchange', 'USD')}
                       onWithdraw={() => handleWalletAction('withdraw')}
                       onBuyCredits={() => handleWalletAction('buy-credits')}
-                      onStakeTokens={() => handleWalletAction('stake-tokens')}
                       className="mt-4"
                     />
                   </>
@@ -535,49 +548,7 @@ export default function Wallet() {
               {/* Row 1: All Account Balance Cards — hidden on iOS (prototype features) */}
               {!isIAPRestricted() && (
               <div className="grid grid-cols-12 gap-4 mb-8" style={{ minHeight: '280px' }}>
-                <div className="col-span-4">
-                  <WalletBalanceCard
-                    type="tokens"
-                    title={t('screens.wallet.vtnaTokens')}
-                    balance={getBalance('VTNA') !== null ? `${fmtNumber(getBalance('VTNA')!)} VTNA` : "Loading..."}
-                    subBalance="Staked: 25%"
-                    change="+5.7%"
-                    changeType="increase"
-                    status="Growing"
-                    description="Vitana Network Tokens for governance and staking rewards"
-                    className="h-full"
-                    isLoading={!isLoaded}
-                    primaryAction={isIAPRestricted() ? undefined : {
-                      label: "Stake Tokens",
-                      onClick: () => handleWalletAction('stake-tokens'),
-                      icon: Coins,
-                      variant: "default"
-                    }}
-                    secondaryActions={[
-                      ...(isIAPRestricted() ? [] : [{
-                        label: "Buy Tokens",
-                        onClick: () => handleWalletAction('buy-tokens', 'VTNA'),
-                        icon: Coins
-                      }]),
-                      {
-                        label: "Send",
-                        onClick: () => handleWalletAction('send', 'VTNA'),
-                        icon: Send
-                      },
-                      {
-                        label: "Request",
-                        onClick: () => handleWalletAction('request', 'VTNA'),
-                        icon: CreditCard
-                      },
-                      {
-                        label: "Exchange",
-                        onClick: () => handleWalletAction('exchange', 'VTNA'),
-                        icon: ArrowUpDown
-                      }
-                    ]}
-                  />
-                </div>
-                <div className="col-span-4">
+                <div className="col-span-6">
                   <WalletBalanceCard
                     type="cash"
                     title={t('screens.wallet.usdBalance')}
@@ -626,16 +597,16 @@ export default function Wallet() {
                     ]}
                   />
                 </div>
-                <div className="col-span-4">
+                <div className="col-span-6">
                   <WalletBalanceCard
                     type="credits"
                     title={t('screens.wallet.creditsBalance')}
-                    balance={getBalance('CREDITS') !== null ? `${fmtNumber(getBalance('CREDITS')!)} Credits` : "Loading..."}
+                    balance={getBalance('CREDITS') !== null ? `${fmtNumber(getBalance('CREDITS')!)} VTNA Credits` : "Loading..."}
                     subBalance="Available: 100%"
                     change="+12.1%"
                     changeType="increase"
                     status="Active"
-                    description="Platform credits for seamless transactions, rewards and premium features"
+                    description="VTNA Credits for seamless transactions, rewards and premium features"
                     className="h-full"
                     isLoading={!isLoaded}
                     primaryAction={isIAPRestricted() ? undefined : {
