@@ -28,6 +28,50 @@ interface MentionTextareaProps {
   maxLength?: number;
 }
 
+// Computed style properties that affect text layout/wrapping — copied onto the
+// mirror element so its line breaks (and therefore the caret's line position)
+// match the real textarea exactly.
+const MIRROR_STYLE_PROPS = [
+  "boxSizing", "width", "paddingTop", "paddingRight", "paddingBottom", "paddingLeft",
+  "borderTopWidth", "borderRightWidth", "borderBottomWidth", "borderLeftWidth",
+  "fontFamily", "fontSize", "fontWeight", "fontStyle", "letterSpacing", "lineHeight",
+  "textAlign", "textTransform", "textIndent", "wordSpacing",
+] as const;
+
+/**
+ * Pixel offset (top) of the line containing `caret`, measured relative to the
+ * textarea's own box, plus that line's height. `top-full` positions the
+ * popover below the *entire* textarea (which has a tall min-height even when
+ * mostly empty) rather than below the line the user is actually typing on —
+ * this mirror-div measurement gets the real line position so the popover can
+ * sit right under the cursor instead.
+ */
+function getCaretLineMetrics(el: HTMLTextAreaElement, caret: number): { top: number; lineHeight: number } {
+  const style = window.getComputedStyle(el);
+  const mirror = document.createElement("div");
+  mirror.style.position = "absolute";
+  mirror.style.visibility = "hidden";
+  mirror.style.top = "0";
+  mirror.style.left = "-9999px";
+  mirror.style.height = "auto";
+  mirror.style.whiteSpace = "pre-wrap";
+  mirror.style.wordWrap = "break-word";
+  for (const prop of MIRROR_STYLE_PROPS) {
+    mirror.style[prop] = style[prop];
+  }
+
+  mirror.textContent = el.value.slice(0, caret);
+  const marker = document.createElement("span");
+  marker.textContent = "​"; // zero-width space so the marker is always a measurable node
+  mirror.appendChild(marker);
+
+  document.body.appendChild(mirror);
+  const top = marker.offsetTop;
+  const lineHeight = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.2;
+  document.body.removeChild(mirror);
+  return { top, lineHeight };
+}
+
 /** Find the active "@token" immediately before the caret (token has no spaces). */
 function activeToken(text: string, caret: number): { query: string; start: number } | null {
   let i = caret - 1;
@@ -61,13 +105,20 @@ export function MentionTextarea({
 }: MentionTextareaProps) {
   const ref = useRef<HTMLTextAreaElement>(null);
   const [token, setToken] = useState<{ query: string; start: number } | null>(null);
+  const [popoverTop, setPopoverTop] = useState(0);
   const { data: candidates = [], isLoading } = useMentionCandidates(token?.query ?? "");
   const open = token !== null && token.query.length >= 1;
 
   const syncToken = () => {
     const el = ref.current;
     if (!el) return;
-    setToken(activeToken(el.value, el.selectionStart ?? el.value.length));
+    const caret = el.selectionStart ?? el.value.length;
+    const nextToken = activeToken(el.value, caret);
+    setToken(nextToken);
+    if (nextToken) {
+      const { top, lineHeight } = getCaretLineMetrics(el, caret);
+      setPopoverTop(top + lineHeight);
+    }
   };
 
   const handleSelect = (c: MentionCandidate) => {
@@ -125,7 +176,10 @@ export function MentionTextarea({
       />
 
       {open && (
-        <div className="absolute left-2 right-2 top-full z-50 mt-1 max-h-56 overflow-y-auto rounded-xl border bg-popover p-1 shadow-lg">
+        <div
+          className="absolute left-2 right-2 z-50 mt-1 max-h-56 overflow-y-auto rounded-xl border bg-popover p-1 shadow-lg"
+          style={{ top: popoverTop }}
+        >
           {isLoading ? (
             <p className="px-3 py-2 text-sm text-muted-foreground">{t("profilePosts.searchingPeople")}</p>
           ) : candidates.length === 0 ? (
