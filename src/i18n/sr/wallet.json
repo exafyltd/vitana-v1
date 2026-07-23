@@ -4,6 +4,7 @@
     "description": "Tvoj balans, krediti i nagrade",
     "usdBalance": "EUR / USD balans",
     "creditsBalance": "VTNA Credits balans",
+    "creditsLabel": "VTNA Credits",
     "available": "Dostupno",
     "staked": "Uloženo",
     "searchWallet": "Pretraži novčanik...",

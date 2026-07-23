@@ -430,8 +430,8 @@ export default function Wallet() {
                       type="cash"
                       title={translate('wallet.usdBalance')}
                       balance={formatCashBalance()}
-                      subBalance="Available: 100%"
-                      change="+2.3%"
+                      subBalance={`${translate('wallet.available')}: 100%`}
+                      change={`+${fmtNumber(2.3)}%`}
                       changeType="increase"
                       isLoading={!isLoaded}
                       onPress={() => handleWalletAction('add-funds')}
@@ -446,10 +446,10 @@ export default function Wallet() {
 
                     <MobileWalletBalanceCard
                       type="credits"
-                      title={translate('wallet.creditsBalance')}
-                      balance={getBalance('CREDITS') !== null ? `${fmtNumber(getBalance('CREDITS')!)} VTNA Credits` : translate('common.loading')}
+                      title={translate('wallet.creditsLabel')}
+                      balance={getBalance('CREDITS') !== null ? t('screens.wallet.vtnaCreditsAmount', { value0: fmtNumber(getBalance('CREDITS')!) }) : translate('common.loading')}
                       subBalance={`${translate('wallet.available')}: 100%`}
-                      change="+12.1%"
+                      change={`+${fmtNumber(12.1)}%`}
                       changeType="increase"
                       isLoading={!isLoaded}
                       onPress={() => handleWalletAction('buy-credits')}

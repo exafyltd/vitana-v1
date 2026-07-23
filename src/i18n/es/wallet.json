@@ -4,6 +4,7 @@
     "description": "Tu saldo, créditos y recompensas",
     "usdBalance": "Saldo en EUR / USD",
     "creditsBalance": "Saldo de VTNA Credits",
+    "creditsLabel": "VTNA Credits",
     "available": "Disponible",
     "staked": "En staking",
     "searchWallet": "Buscar en billetera...",
