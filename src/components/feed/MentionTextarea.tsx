@@ -35,7 +35,11 @@ function activeToken(text: string, caret: number): { query: string; start: numbe
     const ch = text[i];
     if (ch === "@") {
       const prev = text[i - 1];
-      if (i === 0 || /\s/.test(prev)) return { query: text.slice(i + 1, caret), start: i };
+      // Trigger on any non-word boundary (space, emoji, punctuation, start of
+      // string) — only reject when @ is glued to a letter/digit/underscore,
+      // which is the actual "email/handle" case (e.g. user@example.com) this
+      // guard exists to avoid. A plain `\s` check missed emoji and punctuation.
+      if (i === 0 || !/[\p{L}\p{N}_]/u.test(prev)) return { query: text.slice(i + 1, caret), start: i };
       return null;
     }
     if (/\s/.test(ch)) return null;
