@@ -7904,6 +7904,7 @@
       "vitanaWallet": "Vitana Wallet",
       "searchTransactionsRewardsBenefits": "Buscar transacciones, recompensas o beneficios...",
       "creditsBalance": "Saldo de VTNA Credits",
+      "vtnaCreditsAmount": "{value0} VTNA",
       "creditsAccount": "💳 Cuenta de Créditos",
       "tokensAccount": "🪙 Cuenta de Tokens",
       "membershipBenefits": "⭐ Beneficios de Membresía",
