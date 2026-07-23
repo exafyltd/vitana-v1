@@ -30,6 +30,7 @@ import {
   type ArticleFeedItem,
   type PerformerFeedItem,
   type MatchFeedItem,
+  type FeatureAnnouncementFeedItem,
 } from "@/lib/news-feed-ranker";
 
 const GATEWAY_URL =
@@ -347,8 +348,24 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
       }
     }
 
+    // TEMP DEMO — awaiting sign-off before real "system posting" exists.
+    // Hardcoded so the Brand-New-Feature card (@mention tagging launch) can be
+    // reviewed live, with a working "Try it yourself" CTA, on this PR's
+    // preview deploy. Remove once approved and replaced by a real
+    // backend-driven feature_announcement source (see PR description).
+    const demoFeatureAnnouncement: FeatureAnnouncementFeedItem = {
+      id: "feature-announcement-demo-tag-members",
+      kind: "feature_announcement",
+      variant: "brand-new-feature",
+      feature_title: t("featureAnnouncementCard.demoTagMembers.title"),
+      description: t("featureAnnouncementCard.demoTagMembers.description"),
+      deep_link: "/home?compose=1",
+      published_at: new Date().toISOString(),
+    };
+
     const all: FeedItem[] = [
       ...matchItems,
+      demoFeatureAnnouncement,
       ...(candidates?.performer ? [candidates.performer] : []),
       ...(candidates?.posts || []),
       ...articles,

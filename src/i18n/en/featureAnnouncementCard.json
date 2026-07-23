@@ -11,6 +11,10 @@
       "eyebrow": "Did you know?",
       "intro": "You can:",
       "cta": "Try it now"
+    },
+    "demoTagMembers": {
+      "title": "Tag Members in Posts",
+      "description": "You can now tag other members when you write a post — mention them and they'll get notified right away."
     }
   }
 }
