@@ -1,235 +1,170 @@
 {
   "verdicts": {
-    "sidebar.admin": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "sidebar.home": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.news": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.community": {
+    "videoShop.feed.end": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.discover": {
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.inbox": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.health": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.wallet": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.sharing": {
+    "videoShop.feed.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.memory": {
-      "verdict": "OK",
-      "confidence": 0.9,
-      "phase": "llm"
-    },
-    "sidebar.settings": {
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.businessHub": {
+    "videoShop.feed.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.aiAssistant": {
+    "videoShop.feed.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.dashboard": {
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.myHealth": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.appointments": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.testResults": {
+    "videoShop.feed.linkCopied": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.careTeam": {
+    "videoShop.drawer.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.healthGoals": {
+    "videoShop.drawer.productFallback": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.insurance": {
+    "videoShop.drawer.addToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.notifications": {
+    "videoShop.drawer.adding": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.myPatients": {
+    "videoShop.drawer.addedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.schedule": {
+    "videoShop.drawer.addedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.clinicalTools": {
+    "videoShop.drawer.addFailed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.referrals": {
+    "videoShop.drawer.goToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.billing": {
+    "videoShop.drawer.moreDetails": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.professionalProfile": {
+    "videoShop.drawer.notifyMe": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.education": {
+    "videoShop.drawer.outOfStock": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.patientQueue": {
+    "videoShop.drawer.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.dailyTasks": {
+    "videoShop.drawer.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.reports": {
+    "videoShop.drawer.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.communications": {
+    "videoShop.drawer.unavailableTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.staffTools": {
+    "videoShop.drawer.unavailableBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.timeTracking": {
+    "videoShop.drawer.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.userManagement": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "sidebar.communitySupervision": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "sidebar.mediaManagement": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "sidebar.automation": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "sidebar.liveStream": {
-      "verdict": "OK",
-      "confidence": 0.9,
-      "phase": "llm"
-    },
-    "sidebar.tenantManagement": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "sidebar.systemAdmin": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "sidebar.clinicalOps": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "sidebar.monitoring": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "sidebar.logout": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "sidebar.connectors": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "sidebar.support": {
+    "videoShop.drawer.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-07-23T06:18:48.608Z"
+  "generatedAt": "2026-07-23T06:19:19.816Z"
 }
