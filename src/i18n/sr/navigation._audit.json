@@ -1,10 +1,8 @@
 {
   "verdicts": {
     "navigation.navigatingTo": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly technical, could be friendlier for a wellness app. Implies redirection rather than guiding the user.",
-      "suggested": "Vodi te na",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "navigation.hydrationTracker": {
@@ -98,5 +96,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:05:06.183Z"
+  "generatedAt": "2026-07-23T06:17:24.478Z"
 }
