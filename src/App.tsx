@@ -840,6 +840,18 @@ const App = () => {
               </ProtectedRoute>
             </AuthGuard>
           } />
+          {/* Feature-announcement push notification tap target — same feed as
+              /home, but deliberately NOT in useOrbFrontDoor's MAXINA_LANDING_ROUTES
+              set. Appilix notification taps are full page loads (fresh React
+              tree mount), which would otherwise auto-open the Orb front-door
+              overlay on top of the card the notification is about. */}
+          <Route path="/home/notif" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <Home />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
 
           {/* News article detail — full-screen reader */}
           <Route path="/news/:id" element={
