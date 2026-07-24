@@ -52,7 +52,7 @@ export default function GlobalPaymentRequest({
   );
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<UserSearchResult[]>([]);
-  const [currency, setCurrency] = useState('VTNA');
+  const [currency, setCurrency] = useState('CREDITS');
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -235,7 +235,6 @@ export default function GlobalPaymentRequest({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="VTNA">{t('screens.payment.vtnaTokens')}</SelectItem>
                 <SelectItem value="USD">{t('screens.payment.usd')}</SelectItem>
                 <SelectItem value="CREDITS">{t('screens.payment.credits')}</SelectItem>
               </SelectContent>

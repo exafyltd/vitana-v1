@@ -170,6 +170,7 @@ const BusinessListings = lazy(() => import("./pages/BusinessListings"));
 const PublicEventLanding = lazy(() => import("./pages/PublicEventLanding"));
 const PublicCampaignLanding = lazy(() => import("./pages/PublicCampaignLanding"));
 const DownloadFlyer = lazy(() => import("./pages/DownloadFlyer"));
+const MaxinaAppRedirect = lazy(() => import("./pages/MaxinaAppRedirect"));
 const Apply = lazy(() => import("./pages/Apply"));
 const AutopilotDashboard = lazy(() => import("./pages/AutopilotDashboard"));
 const MatchesPage = lazy(() => import("./pages/MatchesPage"));
@@ -741,6 +742,11 @@ const App = () => {
           <Route path="/pub/campaigns/:id" element={<PublicCampaignLanding />} />
           {/* Download flyer — shared via "Invite a friend"; recipients are logged out */}
           <Route path="/download" element={<DownloadFlyer />} />
+          {/* QR-code app-store redirect — printed on physical merchandise; detects
+              iOS/Android and sends the visitor straight to the matching store
+              listing. Distinct from /maxina (portal login) and /download
+              (manual-choice invite flyer). */}
+          <Route path="/maxina/app" element={<MaxinaAppRedirect />} />
           <Route path="/apply" element={<Apply />} />
           
           {/* Portal Routes */}

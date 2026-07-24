@@ -1013,6 +1013,8 @@
       "pleaseEnterValidAmountAdd": "Please enter a valid amount to add",
       "fundsAddedSuccessfully": "✅ Funds Added Successfully!",
       "transactionFailed": "❌ Transaction Failed",
+      "depositCanceled": "Deposit canceled",
+      "redirectingToCheckout": "Redirecting to secure checkout …",
       "insufficientUsdBalance": "❌ Insufficient USD Balance",
       "youDonTHaveEnoughUsd": "You don't have enough USD to purchase these credits",
       "creditsPurchasedSuccessfully": "✅ Credits Purchased Successfully!",

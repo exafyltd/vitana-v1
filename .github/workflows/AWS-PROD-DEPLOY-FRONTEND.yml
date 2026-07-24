@@ -1,51 +1,57 @@
-# AWS-STAGE-DEPLOY-FRONTEND — build the community app with the AWS staging
-# gateway baked in, push to ECR, and roll the ECS service.
+# AWS-PROD-DEPLOY-FRONTEND — build the community app with the CANONICAL
+# GCP production gateway baked in, push to ECR, and roll the AWS
+# Production (DR) ECS service (VTID-03409).
 #
-# This is the AWS twin of STAGE-DEPLOY-FRONTEND.yml (which deploys the GCP
-# community-app-staging via Cloud Run). Same build mechanism: write
-# .env.production BEFORE the image build so Vite bakes the STAGING gateway
-# URL into the bundle — without it the bundle points at prod
-# (gateway.vitanaland.com) and the AWS "staging" frontend silently talks to
-# the GCP production stack (exactly the defect the AWS parity validation
-# found; see vitana-platform docs/AWS-STAGING-VALIDATION.md and PR #2888).
+# AWS twin of AWS-STAGE-DEPLOY-FRONTEND.yml, but for the parallel/DR
+# production stack (vitana-community-app-awsdr), not AWS staging
+# (vitana-community-app). GCP Cloud Run remains the canonical production
+# for the frontend too — this workflow ships an AWS-hosted copy of the
+# SAME production app, pointed at the SAME canonical gateway
+# (gateway.vitanaland.com), matching how AWS-DR gateway (VTID-03398)
+# shares GCP prod's Supabase project rather than diverging.
 #
-# Required repository secrets:
+# Design choices:
+# - workflow_dispatch ONLY, with a REQUIRED `reason` input — mirrors
+#   AWS-PROD-DEPLOY-GATEWAY.yml (VTID-03398) and CLAUDE.md's staging-first
+#   model: auto-deploy is for staging, prod is a deliberate action.
+# - Vite bakes VITE_GATEWAY_BASE at BUILD time (this is a static SPA
+#   served by nginx — there is no runtime env var to flip later), so the
+#   .env.production write step is the one place that determines which
+#   backend the shipped bundle talks to. Getting this wrong is exactly
+#   the defect AWS-STAGE-DEPLOY-FRONTEND.yml's own header comment warns
+#   about, just in the other direction (prod bundle should NEVER bake a
+#   staging/preview URL).
+# - Post-deploy verification asserts the LIVE bundle contains
+#   "gateway.vitanaland.com" (the prod host) and explicitly checks it does
+#   NOT contain "preview-aws-gateway.vitanaland.com" (the AWS staging
+#   host) — the failure mode this guards against is a copy-paste of the
+#   staging workflow's default shipping to prod silently.
+#
+# Required repository secrets (inherited from the existing AWS staging
+# pipeline for now — same IAM user, same account/region already scoped to
+# this repo; see AWS-STAGE-DEPLOY-FRONTEND.yml. A dedicated GitHub-OIDC
+# deploy role, like the one built for gateway under VTID-03398, is the
+# natural hardening follow-up so prod frontend deploys don't share
+# credentials with staging deploys — not done here to avoid a second
+# round of IAM-admin-elevation for this pass):
 #   AWS_STAGING_ACCESS_KEY_ID / AWS_STAGING_SECRET_ACCESS_KEY
-#   (IAM user claude-staging-validation — needs ECR push + ECS update)
-#
-# Dispatch-only for now. Post-verify checks the LIVE hostname serves a
-# bundle that bakes the requested gateway URL — the deploy fails loudly if
-# the wiring didn't take.
 
-name: AWS Stage Deploy Community App (ECS)
+name: AWS Prod Deploy Frontend (ECS, DR)
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'src/**'
-      - 'public/**'
-      - 'index.html'
-      - 'Dockerfile'
-      - 'nginx.conf'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'bun.lock'
-      - '.github/workflows/AWS-STAGE-DEPLOY-FRONTEND.yml'
   workflow_dispatch:
     inputs:
       reason:
-        description: 'Reason for this AWS staging deploy'
-        required: false
-        default: 'manual deploy'
+        description: 'Reason for this AWS production (DR) frontend deploy — required'
+        required: true
       gateway_url:
-        description: 'Gateway base URL to bake into the bundle'
+        description: 'Gateway base URL to bake into the bundle (canonical GCP prod by default)'
         required: false
-        default: 'https://preview-aws-gateway.vitanaland.com'
+        default: 'https://gateway.vitanaland.com'
       frontend_url:
         description: 'Public frontend URL used for post-deploy verification'
         required: false
-        default: 'https://preview-aws.vitanaland.com'
+        default: 'https://dr-app.vitanaland.com'
       aws_region:
         description: 'AWS region'
         required: false
@@ -61,42 +67,33 @@ on:
       ecs_service:
         description: 'ECS service name'
         required: false
-        default: 'vitana-community-app'
+        default: 'vitana-community-app-awsdr'
 
 permissions:
   contents: read
 
 concurrency:
-  group: aws-stage-deploy-community-app
+  group: aws-prod-deploy-frontend
   cancel-in-progress: false
 
 jobs:
   build-push-deploy:
     runs-on: ubuntu-latest
-    # On push events the dispatch inputs are empty — resolve every target
-    # here with the staging defaults so auto-deploys and manual dispatches
-    # share one code path. Paths above mirror STAGE-DEPLOY-FRONTEND.yml so
-    # both stagings (GCP + AWS) always run identical code.
     env:
-      GATEWAY_URL: ${{ inputs.gateway_url || 'https://preview-aws-gateway.vitanaland.com' }}
-      FRONTEND_URL: ${{ inputs.frontend_url || 'https://preview-aws.vitanaland.com' }}
-      TARGET_AWS_REGION: ${{ inputs.aws_region || 'eu-central-1' }}
-      ECR_REPOSITORY: ${{ inputs.ecr_repository || 'vitana/community-app' }}
-      ECS_CLUSTER: ${{ inputs.ecs_cluster || 'Vitana-ECS-Cluster' }}
-      ECS_SERVICE: ${{ inputs.ecs_service || 'vitana-community-app' }}
-      DEPLOY_REASON: ${{ inputs.reason || 'auto-deploy on push to main' }}
+      GATEWAY_URL: ${{ inputs.gateway_url }}
+      FRONTEND_URL: ${{ inputs.frontend_url }}
+      TARGET_AWS_REGION: ${{ inputs.aws_region }}
+      ECR_REPOSITORY: ${{ inputs.ecr_repository }}
+      ECS_CLUSTER: ${{ inputs.ecs_cluster }}
+      ECS_SERVICE: ${{ inputs.ecs_service }}
+      DEPLOY_REASON: ${{ inputs.reason }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Write .env.production with AWS staging gateway URL
+      - name: Write .env.production with the canonical prod gateway URL
         run: |
-          # Vite (production mode) lets .env.production OVERRIDE .env.
-          # Only the gateway is overridden; Supabase inherits the prod
-          # project from .env — REQUIRED, because the staging gateway
-          # authenticates against the prod Supabase project (see
-          # BOOTSTRAP-ORB-STAGING-SUPABASE-ALIGN in vitana-platform).
           cat > .env.production <<EOF
-          # Generated by AWS-STAGE-DEPLOY-FRONTEND.yml — do not commit.
+          # Generated by AWS-PROD-DEPLOY-FRONTEND.yml — do not commit.
           VITE_GATEWAY_BASE=${{ env.GATEWAY_URL }}
           VITE_GATEWAY_URL=${{ env.GATEWAY_URL }}/api/v1
           EOF
@@ -113,18 +110,20 @@ jobs:
         id: ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Preflight — verify ECR repo + ECS service exist
+      - name: Preflight — verify ECR repo + ECS service exist, and target is NOT staging
         run: |
           set -e
+          if [ "${{ env.ECS_SERVICE }}" = "vitana-community-app" ]; then
+            echo "::error::Refusing to deploy — 'vitana-community-app' is the AWS STAGING service. This workflow targets 'vitana-community-app-awsdr' (prod DR) only."
+            exit 1
+          fi
           if ! aws ecr describe-repositories --repository-names "${{ env.ECR_REPOSITORY }}" >/dev/null 2>&1; then
-            echo "::error::ECR repository '${{ env.ECR_REPOSITORY }}' not found. Available repositories:"
-            aws ecr describe-repositories --query 'repositories[].repositoryName' --output table
+            echo "::error::ECR repository '${{ env.ECR_REPOSITORY }}' not found."
             exit 1
           fi
           if ! aws ecs describe-services --cluster "${{ env.ECS_CLUSTER }}" --services "${{ env.ECS_SERVICE }}" \
                --query 'services[0].status' --output text 2>/dev/null | grep -q ACTIVE; then
-            echo "::error::ECS service '${{ env.ECS_SERVICE }}' not ACTIVE in cluster '${{ env.ECS_CLUSTER }}'. Services:"
-            aws ecs list-services --cluster "${{ env.ECS_CLUSTER }}" --output table
+            echo "::error::ECS service '${{ env.ECS_SERVICE }}' not ACTIVE in cluster '${{ env.ECS_CLUSTER }}'."
             exit 1
           fi
 
@@ -135,10 +134,10 @@ jobs:
         run: |
           set -e
           SHORT_SHA="${GITHUB_SHA::12}"
-          IMAGE="$REGISTRY/${{ env.ECR_REPOSITORY }}:$SHORT_SHA"
-          docker build -t "$IMAGE" -t "$REGISTRY/${{ env.ECR_REPOSITORY }}:staging-latest" .
+          IMAGE="$REGISTRY/${{ env.ECR_REPOSITORY }}:awsdr-$SHORT_SHA"
+          docker build -t "$IMAGE" -t "$REGISTRY/${{ env.ECR_REPOSITORY }}:awsdr-latest" .
           docker push "$IMAGE"
-          docker push "$REGISTRY/${{ env.ECR_REPOSITORY }}:staging-latest"
+          docker push "$REGISTRY/${{ env.ECR_REPOSITORY }}:awsdr-latest"
           echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
           echo "Pushed $IMAGE"
 
@@ -163,7 +162,7 @@ jobs:
           aws ecs wait services-stable --cluster "${{ env.ECS_CLUSTER }}" --services "${{ env.ECS_SERVICE }}"
           echo "Service stable on $NEW_ARN"
 
-      - name: Post-deploy verify — live bundle must bake the staging gateway
+      - name: Post-deploy verify — live bundle must bake the PROD gateway, never staging
         run: |
           set -e
           FRONTEND="${{ env.FRONTEND_URL }}"
@@ -177,19 +176,20 @@ jobs:
           BUNDLE=$(grep -oE 'src="[^"]+\.js"' /tmp/index.html | head -1 | sed 's/src="//;s/"//')
           [ -n "$BUNDLE" ] || { echo "::error::no JS bundle reference found in index.html"; exit 1; }
           curl -s "$FRONTEND$BUNDLE" -o /tmp/bundle.js
-          if grep -q "$GATEWAY_HOST" /tmp/bundle.js; then
-            echo "✓ Live bundle bakes $GATEWAY_HOST"
-          else
+          if ! grep -q "$GATEWAY_HOST" /tmp/bundle.js; then
             echo "::error::Live bundle does NOT contain $GATEWAY_HOST — the frontend is still pointing elsewhere. Check ALB host rule / CDN cache / task rollout."
             exit 1
           fi
-          if grep -q "gateway.vitanaland.com" /tmp/bundle.js; then
-            echo "::warning::Bundle still references gateway.vitanaland.com (prod). Verify no code path calls it directly."
+          if grep -q "preview-aws-gateway.vitanaland.com" /tmp/bundle.js; then
+            echo "::error::Live PROD bundle bakes the AWS STAGING gateway URL — wrong build shipped to prod. Aborting (deploy already happened; investigate immediately)."
+            exit 1
           fi
+          echo "✓ Live bundle bakes $GATEWAY_HOST (prod), no staging URL present"
           {
-            echo "## AWS staging frontend deploy"
+            echo "## AWS Production (DR) frontend deploy"
             echo "- Image: \`${{ steps.build.outputs.image }}\`"
             echo "- Gateway baked in: \`${{ env.GATEWAY_URL }}\`"
             echo "- Verified live at: $FRONTEND"
             echo "- Reason: ${{ env.DEPLOY_REASON }}"
+            echo "- VTID: VTID-03409"
           } >> "$GITHUB_STEP_SUMMARY"

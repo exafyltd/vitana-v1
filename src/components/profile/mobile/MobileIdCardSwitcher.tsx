@@ -6,6 +6,7 @@ import { MobileIdentityCard } from "./MobileIdentityCard";
 import { MobileIdCardBack } from "./MobileIdCardBack";
 import { MobileAccountCard } from "./MobileAccountCard";
 import { MobileBusinessCard } from "./MobileBusinessCard";
+import { BusinessPublicCard } from "../shared/BusinessPublicCard";
 import { MobileSubscriptionSummary } from "./MobileSubscriptionSummary";
 import { ProfileIdSegmentedControl } from "../shared/ProfileIdSegmentedControl";
 import { UserProfile } from "@/types/profile";
@@ -63,12 +64,14 @@ export function MobileIdCardSwitcher({
 }: MobileIdCardSwitcherProps) {
   // Resolved at render so the labels follow the user's chosen language.
   const { translate } = useTranslation();
-  // Business (Recommend & Earn stats, VTID-02950) is owner-only.
+  // Business (Recommend & Earn, VTID-02950) is now shown to every viewer —
+  // owner gets the private stats dashboard, visitors get a read-only
+  // storefront of the owner's recommendations (BOOTSTRAP-PUBLIC-BUSINESS-PROFILE).
   const segments: readonly { id: CardSide; label: string }[] = [
     { id: "front", label: translate('profile.tabs.identity', 'Identity') },
     { id: "back", label: translate('profile.tabs.social', 'Social') },
     { id: "account", label: translate('profile.tabs.account', 'Account') },
-    ...(isOwner ? [{ id: "business" as const, label: translate('profile.tabs.business', 'Business') }] : []),
+    { id: "business" as const, label: translate('profile.tabs.business', 'Business') },
   ];
   // Persist the active segment in the URL (?card=front|back|account) so
   // navigating away (e.g. into /profile/subscriptions) and back returns the
@@ -138,6 +141,7 @@ export function MobileIdCardSwitcher({
               <MobileIdCardBack
                 profile={profile}
                 editMode={editMode}
+                isOwner={isOwner}
                 onEdit={onEditSocial}
                 onRefreshProfile={onRefreshProfile}
               />
@@ -159,9 +163,9 @@ export function MobileIdCardSwitcher({
               )}
             </motion.div>
           )}
-          {activeSide === "business" && isOwner && (
+          {activeSide === "business" && (
             <motion.div key="business" {...slotAnim(1)} transition={{ duration: 0.25, ease: "easeInOut" }}>
-              <MobileBusinessCard />
+              {isOwner ? <MobileBusinessCard /> : <BusinessPublicCard vitanaId={profile.handle} />}
             </motion.div>
           )}
         </AnimatePresence>

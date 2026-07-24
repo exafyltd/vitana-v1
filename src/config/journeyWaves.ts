@@ -30,8 +30,16 @@ export interface JourneyStage {
   totalProgress: number;
 }
 
-export function getJourneyStage(registrationDate: Date): JourneyStage | null {
-  const dayNumber = Math.floor((Date.now() - registrationDate.getTime()) / 86400000);
+/**
+ * Resolve the active wave for a given journey day number.
+ *
+ * `dayNumber` should be the canonical `day_in_journey` from
+ * `/api/v1/my-journey` (same value the ORB greeting and My Journey ring
+ * use) — NOT re-derived from `user.created_at` here, so this never drifts
+ * from what the rest of the app shows for "what day is it". Callers without
+ * canonical data yet may pass a raw-date-derived fallback.
+ */
+export function getJourneyStage(dayNumber: number): JourneyStage | null {
   if (dayNumber < 0 || dayNumber > JOURNEY_TOTAL_DAYS) return null;
 
   // Find the most advanced active wave (last match for overlapping timelines)
