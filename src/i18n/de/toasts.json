@@ -1013,6 +1013,8 @@
       "pleaseEnterValidAmountAdd": "Bitte gib einen gültigen Betrag zum Hinzufügen ein",
       "fundsAddedSuccessfully": "✅ Guthaben erfolgreich hinzugefügt!",
       "transactionFailed": "❌ Transaktion fehlgeschlagen",
+      "depositCanceled": "Einzahlung abgebrochen",
+      "redirectingToCheckout": "Weiterleitung zur sicheren Kasse …",
       "insufficientUsdBalance": "❌ Nicht genügend USD-Guthaben",
       "youDonTHaveEnoughUsd": "Du hast nicht genug USD, um diese Credits zu kaufen",
       "creditsPurchasedSuccessfully": "✅ Credits erfolgreich gekauft!",

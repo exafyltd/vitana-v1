@@ -8455,6 +8455,7 @@
       "creditPackages": "Credit-Pakete",
       "customAmount": "Eigener Betrag",
       "rate025PerCredit": "Kurs: 0,25 $ pro Credit",
+      "rateValue0PerCredit": "Kurs: ${value0} pro Credit",
       "creditUsage": "Credit-Nutzung",
       "accessPremiumFeaturesServices": "• Zugriff auf Premium-Funktionen und -Dienste",
       "purchaseInappItemsUpgrades": "• In-App-Käufe und Upgrades tätigen",
@@ -8510,7 +8511,8 @@
       "vitanaWalletVitana": "Vitana Wallet | VITANA",
       "vitanaWallet": "Vitana Wallet",
       "searchTransactionsRewardsBenefits": "Transaktionen, Prämien oder Vorteile durchsuchen...",
-      "creditsBalance": "Credits-Guthaben",
+      "creditsBalance": "VTNA Credits-Guthaben",
+      "vtnaCreditsAmount": "{value0} VTNA",
       "creditsAccount": "💳 Credits-Konto",
       "tokensAccount": "🪙 Token-Konto",
       "membershipBenefits": "⭐ Mitgliedervorteile",
@@ -8805,6 +8807,8 @@
       "showingValue0": "Zeige: {value0}",
       "lengthTransactionValue1": "{length} Transaktion{value1}",
       "addFundsBalance": "Geld zu {currency}-Guthaben hinzufügen",
+      "continueToSecureCheckout": "Weiter zur sicheren Kasse",
+      "cardPaymentViaStripe": "Kartenzahlung, sicher abgewickelt über Stripe",
       "currentBalanceLabel": "Aktueller {currency}-Kontostand",
       "amountAddCurrency": "Hinzuzufügender Betrag ({currency})"
     },
@@ -9326,6 +9330,11 @@
     },
     "logout": {
       "signingOut": "Abmelden..."
+    },
+    "maxinaAppRedirect": {
+      "seoTitle": "MAXINA – Weiterleitung zum App Store",
+      "redirecting": "Wir bringen dich gleich in den App Store …",
+      "fallbackBody": "Hol dir MAXINA – wähle deinen Store:"
     },
     "mobilesettings": {
       "pushNotifications": "Push-Benachrichtigungen",
