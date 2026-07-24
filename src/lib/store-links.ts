@@ -21,3 +21,11 @@ export const PLAY_STORE_MARKET_URL = 'market://details?id=com.vitanaland.app';
  * regardless of which deploy (staging, PR preview) the sender was on.
  */
 export const DOWNLOAD_FLYER_URL = 'https://vitanaland.com/download';
+
+/**
+ * Smart app-store redirect page (detects iOS/Android, sends the visitor
+ * straight to the matching store). Same URL printed on the Team MAXINA
+ * merch QR code — reused here so members can pull up an identical QR
+ * in-app to show someone in person.
+ */
+export const MAXINA_APP_QR_URL = 'https://vitanaland.com/maxina/app';
