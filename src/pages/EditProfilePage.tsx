@@ -392,6 +392,7 @@ export default function EditProfilePage() {
   const [showAutopilotPopup, setShowAutopilotPopup] = useState(false);
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [showQRScreen, setShowQRScreen] = useState(false);
+  const [qrInitialMode, setQrInitialMode] = useState<"profile" | "invite">("profile");
 
   // Milestones hook
   const { milestones, isOwner: milestoneIsOwner, addMilestone, updateMilestone, deleteMilestone, isLoading: milestonesLoading } = useProfileMilestones(user?.id);
@@ -428,6 +429,10 @@ export default function EditProfilePage() {
             onEditAccount={handleEditAccount}
             onRefreshProfile={refetchProfile}
             onShare={shareHook.openShare}
+            onGetMaxina={() => {
+              setQrInitialMode("invite");
+              setShowQRScreen(true);
+            }}
           />
           
           {/* Compact Stats Strip + Posts/About/Media/Groups tab system —
@@ -615,13 +620,17 @@ export default function EditProfilePage() {
           onOpenChange={shareHook.setIsShareOpen}
           profile={profile}
           shareUrl={shareHook.getShareUrl()}
-          onShowQR={() => setShowQRScreen(true)}
+          onShowQR={() => {
+            setQrInitialMode("profile");
+            setShowQRScreen(true);
+          }}
         />
 
         {/* Instagram-style QR Share Screen */}
         <MobileQRShareScreen
           isOpen={showQRScreen}
           onClose={() => setShowQRScreen(false)}
+          initialMode={qrInitialMode}
           profileUrl={shareHook.getShareUrl()}
           profileName={profile.name}
           profileHandle={profile.handle}

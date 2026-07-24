@@ -36,6 +36,7 @@ interface MobileIdCardSwitcherProps {
   onEditAccount?: () => void;
   onRefreshProfile?: () => void;
   onShare?: () => void;
+  onGetMaxina?: () => void;
   onFollow?: () => void;
   onMessage?: () => void;
   isFollowing?: boolean;
@@ -54,6 +55,7 @@ export function MobileIdCardSwitcher({
   onEditAccount,
   onRefreshProfile,
   onShare,
+  onGetMaxina,
   onFollow,
   onMessage,
   isFollowing = false,
@@ -125,6 +127,7 @@ export function MobileIdCardSwitcher({
                 vitanaPercentile={profile.vitanaPercentile}
                 isOwner={isOwner}
                 onShare={onShare}
+                onGetMaxina={onGetMaxina}
                 onFollow={onFollow}
                 onMessage={onMessage}
                 isFollowing={isFollowing}
