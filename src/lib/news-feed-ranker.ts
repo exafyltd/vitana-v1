@@ -22,7 +22,7 @@
 
 import type { MatchReason } from "@/lib/matchReason";
 
-export type FeedItemKind = "match" | "performer" | "post" | "article";
+export type FeedItemKind = "match" | "performer" | "post" | "article" | "feature_announcement";
 
 /** A member tagged in a post body via an inline @mention. */
 export interface PostMention {
@@ -89,7 +89,27 @@ export interface ArticleFeedItem extends FeedItemBase {
   tags: string[];
 }
 
-export type FeedItem = MatchFeedItem | PerformerFeedItem | PostFeedItem | ArticleFeedItem;
+/**
+ * A system-authored "product discovery" post — either a brand-new-feature
+ * launch announcement or a daily "did you know" tip. Rendered by
+ * FeatureAnnouncementCard (src/components/home/FeatureAnnouncementCard.tsx).
+ * `feature_title`/`description` are already resolved to the viewer's locale
+ * by whichever source supplies these items.
+ */
+export interface FeatureAnnouncementFeedItem extends FeedItemBase {
+  kind: "feature_announcement";
+  variant: "brand-new-feature" | "did-you-know-feature";
+  feature_title: string;
+  description: string;
+  deep_link: string;
+}
+
+export type FeedItem =
+  | MatchFeedItem
+  | PerformerFeedItem
+  | PostFeedItem
+  | ArticleFeedItem
+  | FeatureAnnouncementFeedItem;
 
 export interface RankOptions {
   /** Item ids the user explicitly hid. */
@@ -104,6 +124,8 @@ export interface RankOptions {
   articleInterleave?: number;
   /** Max matches pinned to the top (default 1, to avoid match spam). */
   maxPinnedMatches?: number;
+  /** Max feature-announcement cards pinned to the top (default 1 — one per day). */
+  maxPinnedFeatureAnnouncements?: number;
 }
 
 function ts(iso: string): number {
@@ -129,11 +151,13 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
   const downranked = options.downrankedTags ?? {};
   const interleave = Math.max(1, options.articleInterleave ?? 4);
   const maxPinnedMatches = Math.max(0, options.maxPinnedMatches ?? 1);
+  const maxPinnedFeatureAnnouncements = Math.max(0, options.maxPinnedFeatureAnnouncements ?? 1);
 
   const matches: MatchFeedItem[] = [];
   const performers: PerformerFeedItem[] = [];
   const posts: PostFeedItem[] = [];
   const articles: ArticleFeedItem[] = [];
+  const featureAnnouncements: FeatureAnnouncementFeedItem[] = [];
 
   for (const item of items) {
     if (hidden.has(item.id)) continue;
@@ -150,6 +174,9 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
       case "article":
         if (muted.has(item.source_name)) continue;
         articles.push(item);
+        break;
+      case "feature_announcement":
+        featureAnnouncements.push(item);
         break;
     }
   }
@@ -173,6 +200,13 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
       (a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
   );
   const pinnedPerformer = performers.slice(0, 1);
+
+  // System-authored feature-discovery cards — newest first, stable id;
+  // capped so a backlog of tips never crowds out the community/news mix.
+  featureAnnouncements.sort(
+    (a, b) => ts(b.published_at) - ts(a.published_at) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
+  );
+  const pinnedFeatureAnnouncements = featureAnnouncements.slice(0, maxPinnedFeatureAnnouncements);
 
   // 3. Posts — "show less" penalty, then newest regardless of follow status or
   //    media format, then engagement, then stable id.
@@ -202,7 +236,7 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
 
   // Compose: pinned community items first, then interleave the post stream with
   // public news at the configured cadence so neither side is starved.
-  const result: FeedItem[] = [...pinnedMatches, ...pinnedPerformer];
+  const result: FeedItem[] = [...pinnedMatches, ...pinnedPerformer, ...pinnedFeatureAnnouncements];
   let ai = 0;
   for (let i = 0; i < posts.length; i++) {
     result.push(posts[i]);
@@ -296,5 +330,9 @@ export function reasonKeyFor(item: FeedItem): string {
       return motivationKeyFor(item);
     case "article":
       return "screens.home.whyPublic";
+    case "feature_announcement":
+      return item.variant === "brand-new-feature"
+        ? "featureAnnouncementCard.brandNew.eyebrow"
+        : "featureAnnouncementCard.didYouKnow.eyebrow";
   }
 }

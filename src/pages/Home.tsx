@@ -85,6 +85,17 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [createPostOpen, setCreatePostOpen] = useState(false);
+  // Deep-link support for "?compose=1" (e.g. the Brand-New-Feature card's CTA)
+  // so a feed card can open the composer directly instead of only the header
+  // button. Strips the param right after opening so back/refresh doesn't
+  // reopen it.
+  useEffect(() => {
+    if (searchParams.get("compose") !== "1") return;
+    setCreatePostOpen(true);
+    const next = new URLSearchParams(searchParams);
+    next.delete("compose");
+    setSearchParams(next, { replace: true });
+  }, [searchParams, setSearchParams]);
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { shareInvite } = useInviteFriendShare();

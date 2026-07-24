@@ -30,6 +30,7 @@ import {
   type ArticleFeedItem,
   type PerformerFeedItem,
   type MatchFeedItem,
+  type FeatureAnnouncementFeedItem,
 } from "@/lib/news-feed-ranker";
 
 const GATEWAY_URL =
@@ -39,6 +40,16 @@ const GATEWAY_URL =
 interface RawCandidates {
   posts: PostFeedItem[];
   performer: PerformerFeedItem | null;
+  featureAnnouncements: RawFeatureAnnouncementRow[];
+}
+
+interface RawFeatureAnnouncementRow {
+  id: string;
+  variant: "brand-new-feature" | "did-you-know-feature";
+  feature_title: Record<string, string>;
+  description: Record<string, string>;
+  deep_link: string;
+  created_at: string;
 }
 
 interface RawPostRow {
@@ -137,7 +148,7 @@ async function loadCandidates(
       for (const r of (blockedRes.value.data as { author_id: string }[]) || []) suppressedAuthorIds.add(r.author_id);
   }
 
-  const [postsRes, mediaRes, performer] = await Promise.allSettled([
+  const [postsRes, mediaRes, performer, featureAnnouncementsRes] = await Promise.allSettled([
     // Public member posts.
     supabase
       .from("profile_posts" as never)
@@ -157,12 +168,25 @@ async function loadCandidates(
       .limit(20),
     // Consent-gated spotlight (gateway).
     fetchTopPerformer(token),
+    // Admin-published "Brand New Feature" / "Did You Know" cards (RLS-scoped
+    // to the caller's own tenant via user_tenants — see DATABASE_SCHEMA.md
+    // BOOTSTRAP-FEATURE-ANNOUNCEMENTS). Never fails the whole feed if absent.
+    supabase
+      .from("feature_announcements" as never)
+      .select("id, variant, feature_title, description, deep_link, created_at")
+      .eq("is_active", true)
+      .order("created_at", { ascending: false })
+      .limit(5),
   ]);
 
   const postRows: RawPostRow[] =
     postsRes.status === "fulfilled" ? ((postsRes.value.data as unknown as RawPostRow[]) || []) : [];
   const mediaRows: RawMediaRow[] =
     mediaRes.status === "fulfilled" ? ((mediaRes.value.data as unknown as RawMediaRow[]) || []) : [];
+  const featureAnnouncementRows: RawFeatureAnnouncementRow[] =
+    featureAnnouncementsRes.status === "fulfilled"
+      ? ((featureAnnouncementsRes.value.data as unknown as RawFeatureAnnouncementRow[]) || [])
+      : [];
 
   // Resolve authors for both posts and videos in one query.
   const authorIds = [
@@ -232,6 +256,7 @@ async function loadCandidates(
   return {
     posts,
     performer: performer.status === "fulfilled" ? performer.value : null,
+    featureAnnouncements: featureAnnouncementRows,
   };
 }
 
@@ -347,8 +372,26 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
       }
     }
 
+    // Admin-published "Brand New Feature" / "Did You Know" cards — real rows
+    // from feature_announcements (RLS-scoped to the caller's tenant, and
+    // further to specific recipients when the admin targeted a test send —
+    // see BOOTSTRAP-FEATURE-ANNOUNCEMENTS). Picks the viewer's language,
+    // falling back to English if a translation is missing.
+    const featureAnnouncements: FeatureAnnouncementFeedItem[] = (candidates?.featureAnnouncements || []).map(
+      (row) => ({
+        id: `feature-announcement-${row.id}`,
+        kind: "feature_announcement",
+        variant: row.variant,
+        feature_title: row.feature_title[language] ?? row.feature_title.en,
+        description: row.description[language] ?? row.description.en,
+        deep_link: row.deep_link,
+        published_at: row.created_at,
+      }),
+    );
+
     const all: FeedItem[] = [
       ...matchItems,
+      ...featureAnnouncements,
       ...(candidates?.performer ? [candidates.performer] : []),
       ...(candidates?.posts || []),
       ...articles,
@@ -359,7 +402,7 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
       mutedSources,
       downrankedTags,
     });
-  }, [candidatesQuery.data, matchesQuery.data, newsQuery.data, hiddenArticleIds, mutedSources, downrankedTags]);
+  }, [candidatesQuery.data, matchesQuery.data, newsQuery.data, hiddenArticleIds, mutedSources, downrankedTags, language]);
 
   return {
     // While the first paint is held back, expose an empty list + loading so
