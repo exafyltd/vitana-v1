@@ -142,6 +142,7 @@ export function ProfileLayout({
     isPublic: profile.visibility?.indexPublic !== false,
   });
   const [showQRScreen, setShowQRScreen] = useState(false);
+  const [qrInitialMode, setQrInitialMode] = useState<"profile" | "invite">("profile");
 
   // Follow & Message hooks for mobile visitor view
   const isOwner = scope === 'owner' || isOwnProfile;
@@ -209,6 +210,10 @@ export function ProfileLayout({
           onEditAccount={onEditAccount}
           onRefreshProfile={onRefreshProfile}
           onShare={shareHook.openShare}
+          onGetMaxina={isOwner ? () => {
+            setQrInitialMode("invite");
+            setShowQRScreen(true);
+          } : undefined}
           onFollow={!isOwner ? handleFollowClick : undefined}
           onMessage={!isOwner ? handleMessageClick : undefined}
           isFollowing={isFollowing}
@@ -308,13 +313,17 @@ export function ProfileLayout({
           onOpenChange={shareHook.setIsShareOpen}
           profile={profile}
           shareUrl={shareHook.getShareUrl()}
-          onShowQR={() => setShowQRScreen(true)}
+          onShowQR={() => {
+            setQrInitialMode("profile");
+            setShowQRScreen(true);
+          }}
         />
 
         {/* QR Share Screen */}
         <MobileQRShareScreen
           isOpen={showQRScreen}
           onClose={() => setShowQRScreen(false)}
+          initialMode={qrInitialMode}
           profileUrl={shareHook.getShareUrl()}
           profileName={profile.name}
           profileHandle={profile.handle}

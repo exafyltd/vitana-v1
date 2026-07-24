@@ -6,10 +6,12 @@ import { avatarPositionStyle } from "@/lib/avatarPosition";
 import { getAutoAvatarUrl } from "@/lib/autoAvatar";
 import { QRCodeSVG } from "qrcode.react";
 import { useTranslation } from "@/hooks/useTranslation";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { toast } from "@/hooks/use-toast";
 import { notify, notifyError } from '@/lib/i18n-toast';
 import { MAXINA_APP_QR_URL } from "@/lib/store-links";
+
+type QrMode = "profile" | "invite";
 
 interface MobileQRShareScreenProps {
   isOpen: boolean;
@@ -20,9 +22,11 @@ interface MobileQRShareScreenProps {
   avatarUrl?: string | null;
   avatarOffsetX?: number;
   avatarOffsetY?: number;
+  /** Which mode to show when the screen opens. Defaults to "profile" (the
+   * original behavior). Callers that jump straight here from a dedicated
+   * "Get MAXINA" quick action pass "invite" to skip the extra toggle tap. */
+  initialMode?: QrMode;
 }
-
-type QrMode = "profile" | "invite";
 
 export function MobileQRShareScreen({
   isOpen,
@@ -33,6 +37,7 @@ export function MobileQRShareScreen({
   avatarOffsetX,
   avatarOffsetY,
   avatarUrl,
+  initialMode = "profile",
 }: MobileQRShareScreenProps) {
   const { translate } = useTranslation();
   const [copied, setCopied] = useState(false);
@@ -40,7 +45,16 @@ export function MobileQRShareScreen({
   // "invite" shows the same QR printed on team merch — vitanaland.com/maxina/app
   // — so a member can pull this up mid-conversation and let someone scan
   // their way straight to the app store, no link-sharing required.
-  const [mode, setMode] = useState<QrMode>("profile");
+  const [mode, setMode] = useState<QrMode>(initialMode);
+
+  // Re-sync to the caller's requested mode every time the screen re-opens —
+  // the component instance stays mounted between opens (only the overlay's
+  // visibility toggles), so without this a QR opened via the dedicated
+  // "Get MAXINA" button would still show "invite" the next time someone
+  // opens it via the ordinary Share > Show QR Code path, and vice versa.
+  useEffect(() => {
+    if (isOpen) setMode(initialMode);
+  }, [isOpen, initialMode]);
 
   const isInvite = mode === "invite";
   const qrValue = isInvite ? MAXINA_APP_QR_URL : profileUrl;
