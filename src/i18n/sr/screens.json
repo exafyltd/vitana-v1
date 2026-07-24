@@ -7904,6 +7904,7 @@
       "vitanaWallet": "Vitana Wallet",
       "searchTransactionsRewardsBenefits": "Pretraži transakcije, nagrade ili beneficije...",
       "creditsBalance": "VTNA Credits stanje",
+      "vtnaCreditsAmount": "{value0} VTNA",
       "creditsAccount": "💳 Kreditni račun",
       "tokensAccount": "🪙 Račun tokena",
       "membershipBenefits": "⭐ Članske pogodnosti",

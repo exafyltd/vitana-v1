@@ -4,6 +4,7 @@
     "description": "Your balance, credits, and rewards",
     "usdBalance": "EUR / USD Balance",
     "creditsBalance": "VTNA Credits Balance",
+    "creditsLabel": "VTNA Credits",
     "available": "Available",
     "staked": "Staked",
     "searchWallet": "Search wallet...",

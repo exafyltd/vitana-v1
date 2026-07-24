@@ -1,11 +1,11 @@
 {
   "walletActions": {
     "title": "Acciones rápidas",
-    "addFunds": "Agregar fondos",
+    "addFunds": "Depositar",
     "send": "Enviar",
-    "exchange": "Intercambiar",
+    "exchange": "Cambiar",
     "withdraw": "Retirar",
-    "buyCredits": "Comprar créditos",
+    "buyCredits": "Comprar VTNA Credits",
     "stakeTokens": "Hacer staking de tokens"
   }
 }

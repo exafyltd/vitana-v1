@@ -8512,6 +8512,7 @@
       "vitanaWallet": "Vitana Wallet",
       "searchTransactionsRewardsBenefits": "Transaktionen, Prämien oder Vorteile durchsuchen...",
       "creditsBalance": "VTNA Credits-Guthaben",
+      "vtnaCreditsAmount": "{value0} VTNA",
       "creditsAccount": "💳 Credits-Konto",
       "tokensAccount": "🪙 Token-Konto",
       "membershipBenefits": "⭐ Mitgliedervorteile",

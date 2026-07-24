@@ -4,6 +4,7 @@
     "description": "Dein Guthaben, Credits und Belohnungen",
     "usdBalance": "EUR / USD-Guthaben",
     "creditsBalance": "VTNA Credits-Guthaben",
+    "creditsLabel": "VTNA Credits",
     "available": "Verfügbar",
     "staked": "Gesperrt",
     "searchWallet": "Wallet durchsuchen...",
