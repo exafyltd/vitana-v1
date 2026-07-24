@@ -124,7 +124,12 @@ export interface RankOptions {
   articleInterleave?: number;
   /** Max matches pinned to the top (default 1, to avoid match spam). */
   maxPinnedMatches?: number;
-  /** Max feature-announcement cards pinned to the top (default 1 — one per day). */
+  /**
+   * Max feature-announcement cards eligible to appear at all (default 1 —
+   * one per day). NOT pinned to the top — the eligible ones are merged into
+   * the chronological post stream by their own publish time, so they get
+   * pushed down naturally as newer posts arrive.
+   */
   maxPinnedFeatureAnnouncements?: number;
 }
 
@@ -155,7 +160,7 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
 
   const matches: MatchFeedItem[] = [];
   const performers: PerformerFeedItem[] = [];
-  const posts: PostFeedItem[] = [];
+  const postsOnly: PostFeedItem[] = [];
   const articles: ArticleFeedItem[] = [];
   const featureAnnouncements: FeatureAnnouncementFeedItem[] = [];
 
@@ -169,7 +174,7 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
         performers.push(item);
         break;
       case "post":
-        posts.push(item);
+        postsOnly.push(item);
         break;
       case "article":
         if (muted.has(item.source_name)) continue;
@@ -201,24 +206,36 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
   );
   const pinnedPerformer = performers.slice(0, 1);
 
-  // System-authored feature-discovery cards — newest first, stable id;
-  // capped so a backlog of tips never crowds out the community/news mix.
+  // System-authored feature-discovery cards are NOT pinned — they're a
+  // "classic part of the feed": ranked by their own publish time, merged
+  // into the same chronological stream as community posts, and naturally
+  // pushed down as newer posts arrive. (Previously always prepended to the
+  // very top with no decay, which meant a card could sit there for weeks —
+  // confirmed as unwanted behavior.) `maxPinnedFeatureAnnouncements` caps how
+  // many recent ones are eligible to appear at all, so a backlog of tips
+  // doesn't flood the feed once several exist.
   featureAnnouncements.sort(
     (a, b) => ts(b.published_at) - ts(a.published_at) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
   );
-  const pinnedFeatureAnnouncements = featureAnnouncements.slice(0, maxPinnedFeatureAnnouncements);
+  const eligibleFeatureAnnouncements = featureAnnouncements.slice(0, maxPinnedFeatureAnnouncements);
 
   // 3. Posts — "show less" penalty, then newest regardless of follow status or
-  //    media format, then engagement, then stable id.
+  //    media format, then engagement, then stable id. Feature-announcement
+  //    cards are merged in here (0 engagement, no downrank penalty) so they
+  //    sort purely by recency alongside everything else.
+  const posts: (PostFeedItem | FeatureAnnouncementFeedItem)[] = [
+    ...postsOnly,
+    ...eligibleFeatureAnnouncements,
+  ];
   posts.sort((a, b) => {
-    const pa = downrankPenalty(a.tags, downranked);
-    const pb = downrankPenalty(b.tags, downranked);
+    const pa = a.kind === "post" ? downrankPenalty(a.tags, downranked) : 0;
+    const pb = b.kind === "post" ? downrankPenalty(b.tags, downranked) : 0;
     if (pa !== pb) return pa - pb;
     const ta = ts(a.published_at);
     const tb = ts(b.published_at);
     if (ta !== tb) return tb - ta;
-    const ea = a.likes_count + a.comments_count;
-    const eb = b.likes_count + b.comments_count;
+    const ea = a.kind === "post" ? a.likes_count + a.comments_count : 0;
+    const eb = b.kind === "post" ? b.likes_count + b.comments_count : 0;
     if (ea !== eb) return eb - ea;
     return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
   });
@@ -236,7 +253,8 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
 
   // Compose: pinned community items first, then interleave the post stream with
   // public news at the configured cadence so neither side is starved.
-  const result: FeedItem[] = [...pinnedMatches, ...pinnedPerformer, ...pinnedFeatureAnnouncements];
+  // Feature-announcement cards are NOT pinned here — see the sort above.
+  const result: FeedItem[] = [...pinnedMatches, ...pinnedPerformer];
   let ai = 0;
   for (let i = 0; i < posts.length; i++) {
     result.push(posts[i]);
