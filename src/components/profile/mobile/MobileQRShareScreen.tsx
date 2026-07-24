@@ -176,16 +176,16 @@ export function MobileQRShareScreen({
 
             {isInvite ? (
               <>
-                {/* MAXINA mark — logo PNG has an opaque white background, so it
-                    sits inside a matching white medallion (same footprint as
-                    the profile Avatar above) rather than floating on the dark
-                    gradient. */}
-                <div className="h-20 w-20 rounded-full bg-white shadow-xl mb-4 flex items-center justify-center p-3">
+                {/* MAXINA mark — cropped tight to the icon+wordmark and
+                    pre-padded to a square (maxina-logo-avatar.png) so it
+                    fills the circle edge-to-edge like the profile Avatar,
+                    instead of floating with visible square corners. */}
+                <div className="h-20 w-20 rounded-full bg-white shadow-xl mb-4 overflow-hidden">
                   <img
-                    src="/images/maxina-logo.png"
+                    src="/images/maxina-logo-avatar.png"
                     alt=""
                     aria-hidden="true"
-                    className="h-full w-full object-contain"
+                    className="h-full w-full object-cover"
                   />
                 </div>
                 <h2 className="text-xl font-bold text-white mb-1">
