@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Send, ArrowUpDown, ArrowUpRight, CreditCard, Coins } from "lucide-react";
+import { PlusCircle, Send, ArrowUpDown, ArrowUpRight, CreditCard } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
 
@@ -9,8 +9,15 @@ interface QuickAction {
   label: string;
   icon: React.ReactNode;
   onClick: () => void;
-  variant?: 'default' | 'primary';
 }
+
+// Distinct pastel tile per action, matching the wallet redesign mock.
+const TILE_STYLES: Record<string, string> = {
+  'add-funds': 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400',
+  'send': 'bg-slate-100 dark:bg-slate-800/60 text-slate-700 dark:text-slate-300',
+  'exchange': 'bg-purple-50 dark:bg-purple-950/30 text-purple-700 dark:text-purple-400',
+  'withdraw': 'bg-sky-50 dark:bg-sky-950/30 text-sky-700 dark:text-sky-400',
+};
 
 interface MobileWalletQuickActionsProps {
   onAddFunds: () => void;
@@ -18,7 +25,6 @@ interface MobileWalletQuickActionsProps {
   onExchange: () => void;
   onWithdraw: () => void;
   onBuyCredits: () => void;
-  onStakeTokens: () => void;
   className?: string;
 }
 
@@ -28,37 +34,35 @@ export function MobileWalletQuickActions({
   onExchange,
   onWithdraw,
   onBuyCredits,
-  onStakeTokens,
   className = ""
 }: MobileWalletQuickActionsProps) {
   const { translate } = useTranslation();
   const restricted = isIAPRestricted();
-  const restrictedIds = ['add-funds', 'buy-credits', 'buy-tokens', 'exchange', 'withdraw', 'stake-tokens'];
+  const restrictedIds = ['add-funds', 'buy-credits', 'exchange', 'withdraw'];
   
   const allActions: QuickAction[] = [
     {
       id: 'add-funds',
       label: translate('walletActions.addFunds'),
-      icon: <Plus className="h-5 w-5" />,
-      onClick: onAddFunds,
-      variant: 'primary'
+      icon: <PlusCircle className="h-6 w-6" />,
+      onClick: onAddFunds
     },
     {
       id: 'send',
       label: translate('walletActions.send'),
-      icon: <Send className="h-5 w-5" />,
+      icon: <Send className="h-6 w-6" />,
       onClick: onSend
     },
     {
       id: 'exchange',
       label: translate('walletActions.exchange'),
-      icon: <ArrowUpDown className="h-5 w-5" />,
+      icon: <ArrowUpDown className="h-6 w-6" />,
       onClick: onExchange
     },
     {
       id: 'withdraw',
       label: translate('walletActions.withdraw'),
-      icon: <ArrowUpRight className="h-5 w-5" />,
+      icon: <ArrowUpRight className="h-6 w-6" />,
       onClick: onWithdraw
     }
   ];
@@ -69,12 +73,6 @@ export function MobileWalletQuickActions({
       label: translate('walletActions.buyCredits'),
       icon: <CreditCard className="h-4 w-4" />,
       onClick: onBuyCredits
-    },
-    {
-      id: 'stake-tokens',
-      label: translate('walletActions.stakeTokens'),
-      icon: <Coins className="h-4 w-4" />,
-      onClick: onStakeTokens
     }
   ];
 
@@ -94,32 +92,28 @@ export function MobileWalletQuickActions({
               key={action.id}
               onClick={action.onClick}
               className={`
-                flex flex-col items-center justify-center gap-1.5 p-3 rounded-xl
+                flex flex-col items-center justify-center gap-2 py-4 px-2 rounded-2xl
                 transition-all active:scale-95
-                ${action.variant === 'primary' 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'bg-muted/60 hover:bg-muted text-foreground'
-                }
+                ${TILE_STYLES[action.id] ?? 'bg-muted/60 hover:bg-muted text-foreground'}
               `}
             >
               {action.icon}
-              <span className="text-xs font-medium">{action.label}</span>
+              <span className="text-sm font-semibold text-foreground">{action.label}</span>
             </button>
           ))}
         </div>
-        
-        {/* Secondary Actions - Horizontal Pills */}
-        <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+
+        {/* Secondary Actions - Full-width outlined buttons */}
+        <div className="space-y-2">
           {secondaryActions.map((action) => (
             <Button
               key={action.id}
               variant="outline"
-              size="sm"
               onClick={action.onClick}
-              className="h-9 px-3 rounded-full gap-1.5 shrink-0"
+              className="w-full h-12 rounded-xl gap-2 border-2 border-primary text-primary hover:bg-primary/5"
             >
               {action.icon}
-              <span className="text-sm">{action.label}</span>
+              <span className="text-sm font-semibold">{action.label}</span>
             </Button>
           ))}
         </div>

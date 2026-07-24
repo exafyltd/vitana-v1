@@ -1,5 +1,7 @@
 // Exchange rate utilities and mock data
 export interface ExchangeRate {
+  // 'VTNA' kept in the union for historical transaction rows written before
+  // the VTNA/Credits merge — no live rate pair uses it below.
   from: 'USD' | 'VTNA' | 'CREDITS';
   to: 'USD' | 'VTNA' | 'CREDITS';
   rate: number;
@@ -18,54 +20,25 @@ export interface ExchangeCalculation {
   toCurrency: string;
 }
 
-// Vitana System exchange rates - VTNA tokens are growing with system adoption
+// Vitana System exchange rates. VTNA Credits is a closed-loop, non-withdrawable
+// utility balance — fixed 1:1-with-USD-cents parity, no appreciation/trend
+// narrative (that framing previously triggered an Apple 3.1.5(iii) rejection
+// for looking like a speculative token; see DATABASE_SCHEMA.md wallet section).
 export const getCurrentExchangeRates = (): ExchangeRate[] => [
   {
     from: 'USD',
-    to: 'VTNA', 
-    rate: 100, // 1 USD = 100 VTNA
-    trend: 'up',
-    change24h: 2.5, // VTNA growing due to system adoption
-    lastUpdated: new Date()
-  },
-  {
-    from: 'VTNA',
-    to: 'USD',
-    rate: 0.01, // 1 VTNA = 0.01 USD
-    trend: 'up', 
-    change24h: 2.5, // VTNA appreciating
-    lastUpdated: new Date()
-  },
-  {
-    from: 'VTNA',
     to: 'CREDITS',
-    rate: 1.0, // 1 VTNA = 1 Credit (perfect parity)
-    trend: 'up',
-    change24h: 1.8, // VTNA trending up
-    lastUpdated: new Date()
-  },
-  {
-    from: 'CREDITS',
-    to: 'VTNA', 
-    rate: 1.0, // 1 Credit = 1 VTNA (perfect parity)
-    trend: 'up',
-    change24h: 1.8, // Following VTNA growth
-    lastUpdated: new Date()
-  },
-  {
-    from: 'USD',
-    to: 'CREDITS',
-    rate: 100, // 1 USD = 100 Credits
-    trend: 'up',
-    change24h: 2.2, // Credits growing with USD/VTN
+    rate: 100, // 1 USD = 100 VTNA Credits
+    trend: 'stable',
+    change24h: 0,
     lastUpdated: new Date()
   },
   {
     from: 'CREDITS',
     to: 'USD',
-    rate: 0.01, // 1 Credit = 0.01 USD
-    trend: 'up',
-    change24h: 2.2,
+    rate: 0.01, // 1 VTNA Credit = 0.01 USD
+    trend: 'stable',
+    change24h: 0,
     lastUpdated: new Date()
   }
 ];
@@ -109,10 +82,10 @@ export const formatCurrency = (amount: number, currency: string): string => {
       return `$${amount.toFixed(2)}`;
     case 'EUR':
       return `€${amount.toFixed(2)}`;
+    // Legacy VTNA transaction rows display the same way as VTNA Credits.
     case 'VTNA':
-      return `${amount.toFixed(0)} VTNA`; // Vitana Tokens
     case 'CREDITS':
-      return `${amount.toFixed(0)} Credits`;
+      return `${amount.toFixed(0)} VTNA Credits`;
     default:
       return `${amount}`;
   }
@@ -122,8 +95,8 @@ export const getCurrencySymbol = (currency: string): string => {
   switch (currency.toUpperCase()) {
     case 'USD': return '$';
     case 'EUR': return '€';
-    case 'VTNA': return 'VTNA'; // Vitana Tokens
-    case 'CREDITS': return 'Credits';
+    case 'VTNA':
+    case 'CREDITS': return 'VTNA Credits';
     default: return currency;
   }
 };

@@ -68,7 +68,7 @@ const mockTimingRecommendations: OptimalTiming[] = [
     id: "1",
     action: "Withdraw Pending Commissions",
     timing: "Wait 5 days",
-    reason: "VTNA conversion rates expected to improve 12%",
+    reason: "Payout batching reduces processing fees on larger withdrawals",
     impact: 85,
     urgency: "medium"
   },

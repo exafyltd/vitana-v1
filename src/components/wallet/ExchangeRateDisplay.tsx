@@ -16,10 +16,9 @@ export function ExchangeRateDisplay({ compact = false, className }: ExchangeRate
   if (isIAPRestricted()) return null;
   const rates = getCurrentExchangeRates();
   
-  // Show key rates: USD->VTNA and VTNA->Credits
-  const keyRates = rates.filter(rate => 
-    (rate.from === 'USD' && rate.to === 'VTNA') ||
-    (rate.from === 'VTNA' && rate.to === 'CREDITS')
+  // Show the key rate: USD->Credits (VTNA merged into Credits, no separate token rate)
+  const keyRates = rates.filter(rate =>
+    rate.from === 'USD' && rate.to === 'CREDITS'
   );
 
   const getTrendIcon = (trend: string, change: number) => {
@@ -80,12 +79,6 @@ export function ExchangeRateDisplay({ compact = false, className }: ExchangeRate
               <div className="text-sm font-semibold">
                 1 {rate.from} = {rate.rate.toFixed(2)} {rate.to}
               </div>
-              
-              {rate.from === 'VTNA' && rate.to === 'CREDITS' && (
-                <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
-                  {t('screens.wallet.text5Bonus')}
-                </Badge>
-              )}
             </div>
           ))}
         </div>

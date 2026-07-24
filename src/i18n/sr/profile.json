@@ -71,7 +71,11 @@
       "conversions": "{count} kupovina",
       "totalEarned": "Ukupno zarađeno",
       "statusActive": "Aktivna",
-      "shareRow": "Podeli link za preporuku"
+      "shareRow": "Podeli link za preporuku",
+      "publicTitle": "Preporuke",
+      "publicSubtitle": "Proizvodi koje preporučuje ovaj profil",
+      "publicEmpty": "Još nema preporuka",
+      "viewProduct": "Pogledaj"
     }
   }
 }

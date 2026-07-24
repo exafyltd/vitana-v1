@@ -20,6 +20,7 @@
     "suggestedForYou": "Predloženo za tebe",
     "browseCategories": "Pregledaj kategorije",
     "skincareCosmetics": "Nega kože i kozmetika",
+    "healthTests": "Zdravstveni testovi",
     "all": "Sve",
     "shareAndEarn": "Podeli i zaradi",
     "shareAndEarnDesc": "Preporuči proizvode, zaradi proviziju",
@@ -68,7 +69,16 @@
       "hairCare": "Nega kose",
       "bodyCare": "Nega tela",
       "fragrance": "Parfemi",
-      "sunCare": "Zaštita od sunca"
+      "sunCare": "Zaštita od sunca",
+      "nutrientsVitamins": "Nutrijenti i vitamini",
+      "hormones": "Hormoni",
+      "cardio": "Srce i krvotok",
+      "longevityFitness": "Dugovečnost i fitnes",
+      "womensHealth": "Zdravlje žena",
+      "sexualHealth": "Seksualno zdravlje",
+      "prevention": "Prevencija i rano otkrivanje",
+      "generalHealth": "Opšte zdravlje",
+      "dnaAnalysis": "DNK analize"
     },
     "quickActions": {
       "title": "Brze radnje",
