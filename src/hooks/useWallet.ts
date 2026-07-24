@@ -18,7 +18,7 @@ export interface UserBalance {
 
 export interface TransactionData {
   id: string;
-  transaction_type: 'transfer' | 'exchange' | 'reward' | 'purchase' | 'reseller_commission';
+  transaction_type: 'transfer' | 'exchange' | 'reward' | 'purchase' | 'withdrawal' | 'stake' | 'reseller_commission';
   from_currency?: string;
   to_currency?: string;
   amount: number;
@@ -189,11 +189,16 @@ export function useWallet() {
     return Number.isFinite(num) ? num : null;
   };
 
-  // Update balance for specific currency
+  // Update balance for specific currency. transactionType/description are
+  // optional but should be passed by every real caller so the action shows
+  // up in the user's transaction history -- update_user_balance only writes
+  // a wallet_transactions row when a transactionType is given.
   const updateBalance = async (
     currency: 'USD' | 'VTNA' | 'CREDITS',
     amount: number,
-    operation: 'add' | 'subtract' = 'add'
+    operation: 'add' | 'subtract' = 'add',
+    transactionType?: 'transfer' | 'exchange' | 'reward' | 'purchase' | 'withdrawal' | 'stake',
+    description?: string
   ): Promise<number> => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -206,14 +211,16 @@ export function useWallet() {
         user_id_param: user.id,
         currency_param: normalizedCurrency,
         amount_param: amount,
-        operation: operation
+        operation: operation,
+        p_transaction_type: transactionType ?? null,
+        p_description: description ?? null
       });
 
       if (error) throw error;
 
-      // Refresh balances
-      await fetchBalances();
-      
+      // Refresh balances and, if this was logged, the transaction history too
+      await Promise.all([fetchBalances(), transactionType ? fetchTransactions() : Promise.resolve()]);
+
       return data;
     } catch (err) {
       console.error('Error updating balance:', err);

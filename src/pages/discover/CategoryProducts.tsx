@@ -11,12 +11,21 @@ import {
   Leaf,
   Droplet,
   Shield,
+  ShieldCheck,
   Gem,
   Sparkles,
   Brain,
   Zap,
   Clock,
   Package,
+  FlaskConical,
+  Activity,
+  HeartPulse,
+  Dumbbell,
+  Flower2,
+  Stethoscope,
+  Microscope,
+  Dna,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import AppLayout from "@/components/AppLayout";
@@ -52,6 +61,15 @@ const SECTION_META: Record<string, SectionMeta> = {
   "body-care": { icon: Shield, gradient: "from-teal-500 to-cyan-600", i18nKey: "bodyCare", category: "skincare" },
   fragrance: { icon: Gem, gradient: "from-purple-500 to-violet-600", i18nKey: "fragrance", category: "skincare" },
   "sun-care": { icon: Zap, gradient: "from-yellow-500 to-amber-600", i18nKey: "sunCare", category: "skincare" },
+  "nutrients-vitamins": { icon: FlaskConical, gradient: "from-sky-500 to-blue-600", i18nKey: "nutrientsVitamins", category: "health-tests" },
+  hormones: { icon: Activity, gradient: "from-fuchsia-500 to-purple-600", i18nKey: "hormones", category: "health-tests" },
+  cardio: { icon: HeartPulse, gradient: "from-red-500 to-rose-600", i18nKey: "cardio", category: "health-tests" },
+  "longevity-fitness": { icon: Dumbbell, gradient: "from-violet-500 to-indigo-600", i18nKey: "longevityFitness", category: "health-tests" },
+  "womens-health": { icon: Flower2, gradient: "from-pink-500 to-rose-500", i18nKey: "womensHealth", category: "health-tests" },
+  "sexual-health": { icon: ShieldCheck, gradient: "from-teal-500 to-cyan-600", i18nKey: "sexualHealth", category: "health-tests" },
+  prevention: { icon: Stethoscope, gradient: "from-emerald-500 to-teal-600", i18nKey: "prevention", category: "health-tests" },
+  "general-health": { icon: Microscope, gradient: "from-blue-500 to-indigo-600", i18nKey: "generalHealth", category: "health-tests" },
+  "dna-analysis": { icon: Dna, gradient: "from-amber-500 to-orange-600", i18nKey: "dnaAnalysis", category: "health-tests" },
 };
 
 export default function CategoryProducts() {

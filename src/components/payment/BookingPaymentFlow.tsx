@@ -52,8 +52,11 @@ interface BookingPaymentFlowProps {
   };
   userBalance?: {
     credits: number;
-    vtna: number;
     usd: number;
+    // Some legacy callers still pass `vtna` in this object literal; kept
+    // optional so those call sites (out of scope for this change) still
+    // type-check. No longer read internally — VTNA is not a payment option.
+    vtna?: number;
   };
   onBookingComplete?: (bookingDetails: any) => Promise<void>;
 }
@@ -65,7 +68,7 @@ export default function BookingPaymentFlow({
   userBalance,
   onBookingComplete
 }: BookingPaymentFlowProps) {
-  const [paymentMethod, setPaymentMethod] = useState<'credits' | 'vtna' | 'usd' | 'cash'>('credits');
+  const [paymentMethod, setPaymentMethod] = useState<'credits' | 'usd' | 'cash'>('credits');
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<string | undefined>(undefined);
@@ -84,32 +87,30 @@ export default function BookingPaymentFlow({
   };
 
   // Calculate how much of each currency is needed for the booking (always priced in USD)
-  const getRequiredAmount = (currency: 'CREDITS' | 'VTNA' | 'USD') => {
+  const getRequiredAmount = (currency: 'CREDITS' | 'USD') => {
     const bookingPriceUSD = booking.price;
-    
+
     if (currency === 'USD') {
       return bookingPriceUSD;
     }
-    
-    // Both Credits and VTNA convert at 100:1 to USD
+
+    // Credits convert at 100:1 to USD
     const rate = getExchangeRate(currency, 'USD');
     if (!rate) return bookingPriceUSD * 100;
-    
-    return bookingPriceUSD / rate.rate; // e.g., $150 / 0.01 = 15,000 Credits/VTNA
+
+    return bookingPriceUSD / rate.rate; // e.g., $150 / 0.01 = 15,000 Credits
   };
 
   const canAfford = () => {
     if (!userBalance) return false;
-    
+
     if (paymentMethod === 'cash') return true; // Stripe handles validation
-    
-    const required = getRequiredAmount(paymentMethod.toUpperCase() as 'CREDITS' | 'VTNA' | 'USD');
-    
+
+    const required = getRequiredAmount(paymentMethod.toUpperCase() as 'CREDITS' | 'USD');
+
     switch (paymentMethod) {
       case 'credits':
         return userBalance.credits >= required;
-      case 'vtna':
-        return userBalance.vtna >= required;
       case 'usd':
         return userBalance.usd >= required;
       default:
@@ -185,15 +186,15 @@ export default function BookingPaymentFlow({
         setIsProcessing(false);
         onClose();
       } else {
-        // Process wallet payment (Credits, VTNA, or USD)
+        // Process wallet payment (Credits or USD)
         const bookingPriceUSD = booking.price;
-        const currencyUsed = paymentMethod.toUpperCase() as 'CREDITS' | 'VTNA' | 'USD';
-        
+        const currencyUsed = paymentMethod.toUpperCase() as 'CREDITS' | 'USD';
+
         if (paymentMethod === 'usd') {
           // Direct USD payment
           await updateBalance('USD', bookingPriceUSD, 'subtract');
         } else {
-          // Exchange Credits or VTNA to USD
+          // Exchange Credits to USD
           const rate = getExchangeRate(currencyUsed, 'USD');
           if (!rate) throw new Error("Exchange rate not available");
           
@@ -378,28 +379,6 @@ export default function BookingPaymentFlow({
                 </div>
               </div>
 
-              {/* VTNA Tokens Option */}
-              <div 
-                className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                  paymentMethod === 'vtna' ? 'border-primary bg-primary/5' : 'border-border'
-                }`}
-                onClick={() => setPaymentMethod('vtna')}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Coins className="w-5 h-5 text-blue-500" />
-                    <div>
-                      <p className="font-medium">{t('screens.payment.vtnaTokens')}</p>
-                      <p className="text-sm text-muted-foreground">{t('screens.payment.balanceValue0', { value0: formatCurrency(userBalance?.vtna || 0, 'VTNA') })}</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-medium">{formatCurrency(getRequiredAmount('VTNA'), 'VTNA')}</p>
-                    <p className="text-xs text-muted-foreground">≈ ${booking.price.toFixed(2)}</p>
-                  </div>
-                </div>
-              </div>
-
               {/* USD Wallet Option */}
               <div 
                 className={`p-3 border rounded-lg cursor-pointer transition-colors ${
@@ -470,7 +449,7 @@ export default function BookingPaymentFlow({
                   {paymentMethod === 'cash' 
                     ? `$${booking.price.toFixed(2)}`
                     : formatCurrency(
-                        getRequiredAmount(paymentMethod.toUpperCase() as 'CREDITS' | 'VTNA' | 'USD'), 
+                        getRequiredAmount(paymentMethod.toUpperCase() as 'CREDITS' | 'USD'),
                         paymentMethod.toUpperCase()
                       )
                   }

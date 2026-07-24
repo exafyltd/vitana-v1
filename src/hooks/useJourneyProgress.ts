@@ -1,7 +1,13 @@
 import { useMemo } from 'react';
 import { useAuth } from '@/context/AuthProvider';
+import { useMyJourney } from '@/hooks/useMyJourney';
 import { getJourneyStage, JourneyWave, JOURNEY_WAVES } from '@/config/journeyWaves';
 import { CalendarEvent } from '@/hooks/useCalendarEvents';
+
+/** Fallback only, used until /api/v1/my-journey resolves. */
+function daysSinceCreated(createdAt: string): number {
+  return Math.floor((Date.now() - new Date(createdAt).getTime()) / 86400000);
+}
 
 export interface JourneyProgress {
   dayNumber: number;
@@ -13,12 +19,20 @@ export interface JourneyProgress {
 
 export function useJourneyProgress(events?: CalendarEvent[]): JourneyProgress | null {
   const { user } = useAuth();
+  const { data: myJourney } = useMyJourney();
 
   return useMemo(() => {
-    // Try computing from registration date first
-    if (user?.created_at) {
-      const registrationDate = new Date(user.created_at);
-      const stage = getJourneyStage(registrationDate);
+    // Canonical day-in-journey (same value the ORB greeting and My Journey
+    // ring use) — falls back to raw signup-date math only while
+    // /api/v1/my-journey hasn't resolved yet.
+    const canonicalDay = myJourney?.journey?.day_in_journey;
+    const dayNumber = typeof canonicalDay === 'number'
+      ? canonicalDay
+      : user?.created_at
+        ? daysSinceCreated(user.created_at)
+        : null;
+    if (dayNumber !== null) {
+      const stage = getJourneyStage(dayNumber);
       if (stage) return { ...stage, isActive: true };
     }
 
@@ -40,7 +54,7 @@ export function useJourneyProgress(events?: CalendarEvent[]): JourneyProgress | 
     }
 
     return null;
-  }, [user?.created_at, events]);
+  }, [user?.created_at, myJourney?.journey?.day_in_journey, events]);
 }
 
 export function bundleOnboardingPlan(todayEvents: CalendarEvent[]): {

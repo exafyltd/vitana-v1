@@ -71,7 +71,11 @@
       "conversions": "{count} Käufe",
       "totalEarned": "Insgesamt verdient",
       "statusActive": "Aktiv",
-      "shareRow": "Empfehlungslink teilen"
+      "shareRow": "Empfehlungslink teilen",
+      "publicTitle": "Empfehlungen",
+      "publicSubtitle": "Produkte, die dieses Profil empfiehlt",
+      "publicEmpty": "Noch keine Empfehlungen",
+      "viewProduct": "Ansehen"
     }
   }
 }

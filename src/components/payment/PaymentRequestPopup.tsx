@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState } from "react";
 import { useToast } from '@/hooks/use-toast';
 import { useMessages } from "@/hooks/useMessages";
-import { CreditCard, Coins, DollarSign, Users, Send } from "lucide-react";
+import { Coins, DollarSign, Users, Send } from "lucide-react";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
 
 interface PaymentRequestPopupProps {
@@ -96,7 +96,6 @@ export default function PaymentRequestPopup({
     switch (currency.toUpperCase()) {
       case 'CREDITS': return <Coins className="w-4 h-4" />;
       case 'USD': return <DollarSign className="w-4 h-4" />;
-      case 'VTNA': return <CreditCard className="w-4 h-4" />;
       default: return <Coins className="w-4 h-4" />;
     }
   };
@@ -155,12 +154,6 @@ export default function PaymentRequestPopup({
                     <div className="flex items-center gap-2">
                       <DollarSign className="w-4 h-4" />
                       {t('screens.payment.usd')}
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="VTNA">
-                    <div className="flex items-center gap-2">
-                      <CreditCard className="w-4 h-4" />
-                      {t('screens.payment.vtna')}
                     </div>
                   </SelectItem>
                 </SelectContent>

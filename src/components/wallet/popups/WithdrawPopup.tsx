@@ -1,12 +1,13 @@
 import { useState } from "react";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  ResponsiveDialog,
+  ResponsiveDialogContent,
+  ResponsiveDialogDescription,
+  ResponsiveDialogFooter,
+  ResponsiveDialogHeader,
+  ResponsiveDialogBody,
+  ResponsiveDialogTitle,
+} from "@/components/ui/responsive-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -93,7 +94,7 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Update balance (subtract the total cost including fees)
-      await updateBalance('USD', totalCost, 'subtract');
+      await updateBalance('USD', totalCost, 'subtract', 'withdrawal', `Withdrawal via ${method?.name ?? selectedMethod}`);
       
       notify('toasts.wallet.withdrawalInitiated2');
       
@@ -113,18 +114,18 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
   const totalCost = withdrawAmountNum + (selectedMethodData?.fee || 0);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+    <ResponsiveDialog open={open} onOpenChange={onOpenChange}>
+      <ResponsiveDialogContent className="sm:max-w-md" fullscreenOnMobile>
+        <ResponsiveDialogHeader>
+          <ResponsiveDialogTitle className="flex items-center gap-2">
             <ArrowDown className="h-5 w-5 text-blue-600" />
             {t('screens.wallet.withdrawFunds')}
-          </DialogTitle>
-          <DialogDescription>{t('screens.wallet.transferMoneyFromYourVitanaWallet')}
-          </DialogDescription>
-        </DialogHeader>
+          </ResponsiveDialogTitle>
+          <ResponsiveDialogDescription>{t('screens.wallet.transferMoneyFromYourVitanaWallet')}
+          </ResponsiveDialogDescription>
+        </ResponsiveDialogHeader>
 
-        <div className="space-y-6">
+        <ResponsiveDialogBody className="space-y-6">
           {/* Available Balance */}
           <div className="bg-muted/50 p-4 rounded-lg">
             <div className="flex items-center justify-between">
@@ -226,13 +227,13 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
               </div>
             </>
           )}
-        </div>
+        </ResponsiveDialogBody>
 
-        <DialogFooter className="gap-2 sm:gap-0">
+        <ResponsiveDialogFooter className="gap-2 sm:gap-0">
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             {t('screens.wallet.cancel')}
           </Button>
-          <Button 
+          <Button
             onClick={handleWithdraw}
             disabled={!withdrawAmount || !selectedMethod || isProcessing || totalCost > usdBalance}
           >
@@ -245,8 +246,8 @@ export function WithdrawPopup({ open, onOpenChange }: WithdrawPopupProps) {
                 <ArrowDown className="h-4 w-4 mr-2" />{t('screens.wallet.withdrawValue0', { value0: withdrawAmountNum.toFixed(2) })}</>
             )}
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </ResponsiveDialogFooter>
+      </ResponsiveDialogContent>
+    </ResponsiveDialog>
   );
 }
