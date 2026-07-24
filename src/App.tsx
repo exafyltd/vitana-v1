@@ -829,6 +829,17 @@ const App = () => {
           <Route path="/home/actions" element={<Navigate to="/home" replace />} />
           <Route path="/home/matches" element={<Navigate to="/home" replace />} />
           <Route path="/home/aifeed" element={<Navigate to="/home" replace />} />
+          {/* Path-based (not query-string) compose deep-link — renders Home directly
+              so Appilix's Android WebView can open it from a push notification tap;
+              query strings silently fail there on cold notification-tap launches
+              (see 20260625000000_post_notification_deeplink.sql). */}
+          <Route path="/home/compose" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <Home />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
 
           {/* News article detail — full-screen reader */}
           <Route path="/news/:id" element={

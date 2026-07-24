@@ -48,7 +48,7 @@ import { NewsFeedItemCard } from "@/components/home/NewsFeedItemCard";
 import { track } from "@/lib/product-analytics/client";
 import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { t } from '@/lib/i18n-toast';
 
@@ -97,6 +97,17 @@ export default function Home() {
     setSearchParams(next, { replace: true });
   }, [searchParams, setSearchParams]);
   const navigate = useNavigate();
+  const location = useLocation();
+  // Path-based twin of "?compose=1" — Appilix's Android WebView silently
+  // drops query-string deep links when opening a push notification tap (see
+  // 20260625000000_post_notification_deeplink.sql), so the CTA's push payload
+  // points here instead of the query-string form. Normalizes back to /home
+  // right after opening, same as the query-string path above.
+  useEffect(() => {
+    if (location.pathname !== "/home/compose") return;
+    setCreatePostOpen(true);
+    navigate("/home", { replace: true });
+  }, [location.pathname, navigate]);
   const isMobile = useIsMobile();
   const { shareInvite } = useInviteFriendShare();
 
