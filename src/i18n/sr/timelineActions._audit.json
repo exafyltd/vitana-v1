@@ -38,8 +38,8 @@
     "timelineActions.items.addPhotoMemory.title": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Slightly awkward phrasing; 'fotografiju uspomene' implies a photo *of* a memory, rather than a photo *as* a memory or *for* a memory, which is more common for 'Photo Memory' in app contexts.",
-      "suggested": "Dodaj fotografiju za uspomenu",
+      "issue": "The phrase 'za uspomenu' (for a memory) is less direct than 'kao uspomenu' (as a memory) or treating 'photo memory' as a single concept. It implies the photo is intended for a memory, rather than being a memory itself.",
+      "suggested": "Dodaj fotografiju kao uspomenu",
       "phase": "llm"
     },
     "timelineActions.items.addPhotoMemory.description": {
@@ -88,5 +88,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:29:56.705Z"
+  "generatedAt": "2026-07-25T06:18:28.600Z"
 }

@@ -1,215 +1,174 @@
 {
   "verdicts": {
-    "subNav.aiFeed": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "subNav.overview": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.context": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.actions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.matches": {
-      "verdict": "OK",
+    "videoShop.feed.end": {
+      "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
+      "issue": "Not gender-neutral; assumes male user. For a general audience, a gender-neutral phrasing is preferred in UI.",
+      "suggested": "Ovo je kraj.",
       "phase": "llm"
     },
-    "subNav.insights": {
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.recommendations": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.dailySummary": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.companion": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.eventsMeetups": {
+    "videoShop.feed.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.liveRooms": {
+    "videoShop.feed.retry": {
       "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.roleBlockedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.roleBlockedBody": {
+      "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
+      "issue": "Not gender-neutral; assumes male user ('koristio'). Should be gender-inclusive or neutral.",
+      "suggested": "Video prodavnica je funkcija zajednice. Pređi na ulogu zajednice da bi je koristio/la.",
       "phase": "llm"
     },
-    "subNav.mediaHub": {
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.services": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.sellEarn": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.clients": {
+    "videoShop.feed.linkCopied": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.analytics": {
+    "videoShop.drawer.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.supplements": {
+    "videoShop.drawer.productFallback": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.wellnessServices": {
+    "videoShop.drawer.addToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.doctorsCoaches": {
+    "videoShop.drawer.adding": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.dealsOffers": {
+    "videoShop.drawer.addedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.orders": {
+    "videoShop.drawer.addedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.reminder": {
+    "videoShop.drawer.addFailed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.inspiration": {
+    "videoShop.drawer.goToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.archived": {
+    "videoShop.drawer.moreDetails": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.servicesHub": {
+    "videoShop.drawer.notifyMe": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.myBiology": {
+    "videoShop.drawer.outOfStock": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.plans": {
+    "videoShop.drawer.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.educationScience": {
+    "videoShop.drawer.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.balance": {
+    "videoShop.drawer.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.subscriptions": {
+    "videoShop.drawer.unavailableTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.rewards": {
+    "videoShop.drawer.unavailableBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.campaigns": {
+    "videoShop.drawer.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.distribution": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.dataConsent": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.timeline": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.diary": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.recall": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.permissions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.preferences": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.privacy": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.connectedApps": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.support": {
+    "videoShop.drawer.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-07-25T06:18:20.128Z"
+  "generatedAt": "2026-07-25T06:20:19.508Z"
 }
