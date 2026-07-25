@@ -22,11 +22,11 @@
     },
     "profileStats.following": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'Ich folge' is a first-person statement, not a typical UI label for 'Following' (e.g., a list of people you follow or a count). It sounds like a sentence fragment rather than a concise label.",
-      "suggested": "Folge ich",
+      "confidence": 1,
+      "issue": "Grammatically incorrect; 'Folge ich' is a question. As a status or active button, it should be a statement.",
+      "suggested": "Ich folge",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:19:25.503Z"
+  "generatedAt": "2026-07-25T06:08:20.531Z"
 }
