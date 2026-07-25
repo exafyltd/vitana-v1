@@ -102,6 +102,11 @@ async function fetchTopPerformer(token: string | null): Promise<PerformerFeedIte
   try {
     const res = await fetch(`${GATEWAY_URL}/news-feed/top-performer`, {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
+      // The whole candidates load waits on this group, so an unbounded fetch
+      // here means one slow/hanging gateway response holds the ENTIRE feed
+      // pending — for a single optional card. The abort lands in the catch
+      // below and yields null, which is exactly the documented degradation.
+      signal: AbortSignal.timeout(5000),
     });
     if (!res.ok) return null;
     const json = await res.json();
