@@ -62,6 +62,9 @@ const FILTER_MODES = [
 ];
 
 
+/** Last scroll offset per feed tab, kept across unmounts of this route. */
+const feedScrollMemory = new Map<FilterTab, number>();
+
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const tabFromUrl = searchParams.get("tab") as FilterTab | null;
@@ -207,6 +210,39 @@ export default function Home() {
     observer.observe(el);
     return () => observer.disconnect();
   }, [handleV2Observer]);
+
+  // Restore the reader's place in the feed.
+  //
+  // The data now survives navigation (see useNewsFeedKeepAlive), but the route
+  // component itself is still unmounted and remounted, so without this the user
+  // was thrown back to the top of the feed every time they came back from
+  // Messenger — which reads as "it reloaded" even when nothing was refetched.
+  // Module-scope so it survives the unmount; per-session only, deliberately not
+  // persisted.
+  useEffect(() => {
+    const saved = feedScrollMemory.get(activeTab);
+    if (saved == null) return;
+    // Two frames: the first lets the restored feed commit, the second lets the
+    // browser lay it out, so the target offset actually exists to scroll to.
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => window.scrollTo(0, saved));
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+    // Restore once per tab activation, not on every feed update.
+  }, [activeTab]);
+
+  useEffect(() => {
+    const remember = () => feedScrollMemory.set(activeTab, window.scrollY);
+    window.addEventListener("scroll", remember, { passive: true });
+    return () => {
+      remember();
+      window.removeEventListener("scroll", remember);
+    };
+  }, [activeTab]);
 
   const handleArticleClick = (article: NewsArticle) => {
     navigate(`/news/${article.id}`, { state: { article } });

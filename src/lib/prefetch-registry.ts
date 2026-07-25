@@ -23,6 +23,13 @@ import {
   longevityNewsKey,
   fetchLongevityNews,
 } from '@/hooks/useNewsFeed';
+import {
+  allNewsFeedKey,
+  fetchNewsFeedCandidates,
+  FEED_CANDIDATES_STALE_TIME,
+  FEED_CANDIDATES_GC_TIME,
+} from '@/hooks/useAllNewsFeed';
+import { isFeedV2Enabled } from '@/lib/feature-flags';
 import { journeyChecklistQueryKey, fetchJourneyChecklist } from '@/hooks/useJourneyChecklist';
 import { JOURNEY_STATE_QUERY_KEY, fetchJourneyState } from '@/hooks/useGuidedJourneyProgress';
 
@@ -130,6 +137,18 @@ export async function prefetchForPath(
         queryFn: () => fetchCommunityNews(15, viewerId),
         staleTime: newsStale,
       }),
+      // The unified "All" feed candidates — the DEFAULT tab under feed v2.
+      // Previously this warmup hydrated only the two LEGACY news queries, so
+      // the screen the user actually lands on still had to run its whole
+      // multi-request load on first arrival. Warm the key the screen reads.
+      isFeedV2Enabled()
+        ? queryClient.prefetchQuery({
+            queryKey: allNewsFeedKey(viewerId, lang),
+            queryFn: () => fetchNewsFeedCandidates(viewerId, token),
+            staleTime: FEED_CANDIDATES_STALE_TIME,
+            gcTime: FEED_CANDIDATES_GC_TIME,
+          })
+        : Promise.resolve(),
     ]);
   }
 
