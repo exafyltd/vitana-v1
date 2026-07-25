@@ -1,0 +1,25 @@
+{
+  "verdicts": {
+    "auth.notAuthorized": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "auth.noPermission": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "auth.contactAdmin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "auth.backHome": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-07-25T05:59:44.927Z"
+}
