@@ -1,330 +1,308 @@
 {
   "verdicts": {
-    "orders.filters.events": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "orders.filters.services": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "orders.detailSheet.code": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "orders.myOrders": {
+    "universalCart.page.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.title": {
+    "universalCart.page.subtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.description": {
+    "universalCart.page.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.trackDescription": {
+    "universalCart.page.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.searchPlaceholder": {
+    "universalCart.page.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.tabs.active": {
+    "universalCart.page.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.tabs.history": {
+    "universalCart.page.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.tabs.all": {
+    "universalCart.page.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.tabs.completed": {
+    "universalCart.page.errorBody": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "universalCart.page.removeAction": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.tabs.cancelled": {
+    "universalCart.page.quantityLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.filters.all": {
+    "universalCart.page.completeAction": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.filters.products": {
+    "universalCart.page.alreadyCompleted": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.filters.vouchers": {
+    "universalCart.page.linkToDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.filters.refunds": {
+    "universalCart.page.close": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.previewNotice": {
+    "universalCart.tabs.cart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.sampleData": {
+    "universalCart.tabs.saved": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.emptyActive.title": {
+    "universalCart.saved.moveToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.emptyActive.description": {
+    "universalCart.saved.saveForLater": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.emptyHistory.title": {
+    "universalCart.saved.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.emptyHistory.description": {
+    "universalCart.saved.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.noOrders": {
+    "universalCart.item.viewProduct": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.noOrdersDesc": {
+    "universalCart.agent.promptLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.browseProducts": {
+    "universalCart.agent.promptPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.findEvents": {
+    "universalCart.agent.proposeCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.startShopping": {
+    "universalCart.agent.proposing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.noFilter": {
+    "universalCart.agent.sectionTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.noFilterDesc": {
+    "universalCart.agent.sectionSubtitle": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "universalCart.agent.rationaleLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.orderDate": {
+    "universalCart.agent.safetyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.orderNumber": {
+    "universalCart.agent.confidenceLabel": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The translation 'Vertrauen' (trust) is not the most accurate for 'Confidence' when referring to a numerical value or system's certainty. 'Sicherheit' (certainty/security) or 'Zuverlässigkeit' (reliability) would be more appropriate.",
+      "suggested": "Sicherheit: {value}",
+      "phase": "llm"
+    },
+    "universalCart.agent.keep": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.viewDetails": {
+    "universalCart.agent.remove": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.trackOrder": {
+    "universalCart.agent.unavailable": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "'in einem Moment' is grammatically correct but can sound a bit clunky or ambiguous in this context. 'Gleich' or 'in Kürze' are more natural for 'in a moment' meaning 'shortly'.",
+      "suggested": "Vitana ist gerade nicht verfügbar. Bitte versuche es gleich noch einmal.",
+      "phase": "llm"
+    },
+    "universalCart.agent.roleBlocked": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.reorder": {
+    "universalCart.agent.empty": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "universalCart.agent.reviewNote": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.title": {
+    "universalCart.agent.reorderCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.orderInfo": {
+    "universalCart.agent.reorderLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.orderReference": {
+    "universalCart.agent.reorderSectionTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.purchaseDate": {
+    "universalCart.agent.reorderSectionSubtitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "The phrasing 'kaufen tust du erst' is grammatically correct but slightly awkward and less natural than a more direct construction for informal speech.",
+      "suggested": "Schon einmal gekaufte Produkte liegen in deinem Warenkorb. Prüfe sie, behalte oder entferne – du kaufst erst mit „Prüfen & Bezahlen“.",
+      "phase": "llm"
+    },
+    "universalCart.agent.reordering": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.eventDate": {
+    "universalCart.agent.overCapAdvisory": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.location": {
+    "universalCart.agent.nearCapAdvisory": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.quantity": {
+    "universalCart.agent.error": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.tickets": {
+    "universalCart.budget.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.yourTicket": {
+    "universalCart.budget.spentOfCap": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.giftVoucher": {
+    "universalCart.budget.statusUnder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.sendToRecipient": {
+    "universalCart.budget.statusNear": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.recipientEmail": {
+    "universalCart.budget.statusOver": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.recipientName": {
+    "universalCart.budget.noCapHint": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.personalMessage": {
+    "universalCart.addButton.label": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.cancel": {
+    "universalCart.addButton.added": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.send": {
+    "universalCart.addButton.addAria": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.detailSheet.downloadPdf": {
+    "universalCart.addButton.addedAria": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.status.upcoming": {
+    "universalCart.addButton.signRequired": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.status.attended": {
+    "universalCart.addButton.roleBlocked": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "orders.status.expired": {
-      "verdict": "OK",
-      "confidence": 1,
+    "universalCart.addButton.failed": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The translation 'In den Warenkorb legen fehlgeschlagen' is a very literal translation and not idiomatic. A passive construction is more natural for error messages.",
+      "suggested": "Konnte nicht in den Warenkorb gelegt werden.",
       "phase": "llm"
     },
-    "orders.status.completed": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "orders.status.delivered": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "orders.status.cancelled": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "orders.status.refunded": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "orders.status.shipped": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "orders.status.confirmed": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "orders.status.pending": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "orders.status.processing": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "orders.status.paid": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "orders.status.active": {
+    "universalCart.addButton.success": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-07-26T06:26:02.881Z"
+  "generatedAt": "2026-07-26T06:44:32.831Z"
 }

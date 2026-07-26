@@ -1,45 +1,45 @@
 {
   "verdicts": {
-    "home.inspiration": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "home.title": {
+    "featureAnnouncementCard.brandNew.eyebrow": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "home.welcomeBack": {
+    "featureAnnouncementCard.brandNew.badge": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "home.todaysSchedule": {
+    "featureAnnouncementCard.brandNew.intro": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "home.mediaContent": {
+    "featureAnnouncementCard.brandNew.cta": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.closing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "home.eventsAndMeetups": {
+    "featureAnnouncementCard.didYouKnow.eyebrow": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "home.communityNews": {
+    "featureAnnouncementCard.didYouKnow.intro": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "home.dailyMatches": {
+    "featureAnnouncementCard.didYouKnow.cta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-07-26T06:24:03.736Z"
+  "generatedAt": "2026-07-26T06:23:35.169Z"
 }

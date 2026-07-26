@@ -11,17 +11,13 @@
       "phase": "llm"
     },
     "inbox.subtitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Bleib mit deiner Community verbunden!",
       "phase": "llm"
     },
     "inbox.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'deine').",
-      "suggested": "Deine Unterhaltungen, Updates und Benachrichtigungen",
       "phase": "llm"
     },
     "inbox.desktopTitle": {
@@ -30,10 +26,8 @@
       "phase": "llm"
     },
     "inbox.desktopDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Verbinde dich mit deiner Community und deinem Netzwerk",
       "phase": "llm"
     },
     "inbox.tabs.all": {
@@ -182,10 +176,8 @@
       "phase": "llm"
     },
     "inbox.newConversation.noResults": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Keine Nutzer gefunden. Versuch einen anderen Suchbegriff.",
       "phase": "llm"
     },
     "inbox.newConversation.add": {
@@ -249,10 +241,8 @@
       "phase": "llm"
     },
     "inbox.createGroup.groupNameRequiredDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Bitte gib einen Namen für deine Gruppe ein.",
       "phase": "llm"
     },
     "inbox.createGroup.addMembersRequired": {
@@ -261,10 +251,8 @@
       "phase": "llm"
     },
     "inbox.createGroup.addMembersRequiredDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Bitte füge mindestens ein Mitglied hinzu.",
       "phase": "llm"
     },
     "inbox.createGroup.groupExists": {
@@ -293,10 +281,8 @@
       "phase": "llm"
     },
     "inbox.createGroup.failedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Bitte versuch es erneut.",
       "phase": "llm"
     },
     "inbox.toast.success": {
@@ -340,10 +326,8 @@
       "phase": "llm"
     },
     "inbox.toast.pleaseLogin": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing part of the English phrase and uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Bitte melde dich an, um Unterhaltungen zu starten.",
       "phase": "llm"
     },
     "inbox.toast.groupRecipientsRequired": {
@@ -352,10 +336,8 @@
       "phase": "llm"
     },
     "inbox.toast.singleRecipientRequired": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing the nuance of 'exactly' and uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Wähle genau einen Empfänger für Direktnachrichten.",
       "phase": "llm"
     },
     "inbox.toast.groupCreated": {
@@ -384,10 +366,8 @@
       "phase": "llm"
     },
     "inbox.noGroupsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihnen' instead of informal 'dir'.",
-      "suggested": "Gruppen helfen dir, mit mehreren Personen gleichzeitig zusammenzuarbeiten.",
       "phase": "llm"
     },
     "inbox.createFirstGroup": {
@@ -416,10 +396,8 @@
       "phase": "llm"
     },
     "inbox.noMessagesDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Starte eine Unterhaltung, um loszulegen.",
       "phase": "llm"
     },
     "inbox.startConversation": {
@@ -428,24 +406,18 @@
       "phase": "llm"
     },
     "inbox.emptyState.title": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihr' instead of informal 'dein'. 'Leer' is a good translation for 'quiet' in this context.",
-      "suggested": "Dein Postfach ist noch leer.",
       "phase": "llm"
     },
     "inbox.emptyState.globalDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Starte eine Unterhaltung oder tritt einer Community bei, um dich mit anderen zu verbinden.",
       "phase": "llm"
     },
     "inbox.emptyState.tenantDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Sie' and 'Ihrem' instead of informal 'du' and 'deinem'.",
-      "suggested": "Verbinde dich mit Kollegen und Teammitgliedern in deinem professionellen Netzwerk.",
       "phase": "llm"
     },
     "inbox.emptyState.startConversation": {
@@ -457,7 +429,72 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "inbox.actions.markAllRead": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.actions.menu": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.allMarkedRead": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.markAllReadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.cantOpen": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.backToInbox": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.back": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.memberOne": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.memberOther": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.officialBadge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.composerPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:13:55.969Z"
+  "generatedAt": "2026-07-26T06:24:14.146Z"
 }

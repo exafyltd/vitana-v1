@@ -169,7 +169,19 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "common.follow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.getMaxina": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Less direct and idiomatic for an imperative call to action in a friendly, du-form register.",
+      "suggested": "Hol dir MAXINA",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:06:56.655Z"
+  "generatedAt": "2026-07-26T06:21:48.441Z"
 }
