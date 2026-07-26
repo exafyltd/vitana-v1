@@ -30,9 +30,13 @@ interface DailyMatchRow {
  * batch and re-read → resolve each match to its real profile. Returns `[]` when
  * the community genuinely has no matches yet, so callers can show an empty state.
  */
-export function useRealMatches(limit = 6) {
+export function useRealMatches(limit = 6, options?: { enabled?: boolean }) {
   return useQuery<RealMatch[]>({
     queryKey: ["real-matches", limit],
+    // Callers that only render this as an optional decorative card must be able
+    // to switch it off — the queryFn can fall through to the slow
+    // generate-daily-matches edge function plus one profile RPC per match.
+    enabled: options?.enabled !== false,
     staleTime: 5 * 60 * 1000,
     queryFn: async () => {
       const {
