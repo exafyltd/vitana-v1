@@ -28,8 +28,8 @@
     "businessHub.tabs.insights": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Translation is too generic, misses the nuance of 'deeper understanding' or 'valuable observations' implied by 'Insights'.",
-      "suggested": "Perspectivas",
+      "issue": "\"Perspectivas\" means \"perspectives,\" which doesn't fully capture the \"key learnings\" or \"discoveries\" implied by \"Insights\" in a data-driven app context.",
+      "suggested": "Análisis",
       "phase": "llm"
     },
     "businessHub.recentActivity": {
@@ -88,5 +88,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:46.296Z"
+  "generatedAt": "2026-07-27T06:47:40.140Z"
 }

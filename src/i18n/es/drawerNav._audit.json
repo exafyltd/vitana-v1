@@ -56,10 +56,8 @@
       "phase": "llm"
     },
     "drawerNav.diary": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Redundant and awkward phrasing; 'Diario Diario' literally means 'Daily Daily' or 'Diary Diary'.",
-      "suggested": "Diario personal",
       "phase": "llm"
     },
     "drawerNav.connectors": {
@@ -81,7 +79,12 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "drawerNav.support": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:30.330Z"
+  "generatedAt": "2026-07-27T06:48:14.106Z"
 }
