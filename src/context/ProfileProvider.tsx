@@ -75,12 +75,17 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
       setLoading(true);
       console.log('Fetching profile for user ID:', userId);
       
-      // Fetch profile data from Supabase
+      // Fetch profile data from Supabase. abortSignal bounds the request —
+      // without it, a stalled connection (e.g. a WebView socket suspended by
+      // backgrounding/foregrounding, common when switching tabs on mobile)
+      // leaves this await pending forever, so `finally` never runs and
+      // `loading` never clears: an infinite "Profil wird geladen…" spinner.
       const { data: profileData, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', userId)
-        .maybeSingle();
+        .maybeSingle()
+        .abortSignal(AbortSignal.timeout(10000));
 
       if (error) {
         console.error('Error fetching profile:', error);
