@@ -210,9 +210,10 @@ export default function DevicePreview() {
                   src={src}
                   title={t("screens.admin.devicePreview")}
                   // Allow the framed app's Fullscreen API (feed media fullscreen
-                  // button) — without this the browser blocks the in-iframe
-                  // request and snaps straight back out of fullscreen.
-                  allow="fullscreen"
+                  // button) and microphone access (ORB voice) — without these
+                  // the browser blocks the in-iframe request; for the mic this
+                  // fails silently as a "Mikrofon-Problem" disconnect in ORB.
+                  allow="fullscreen; microphone"
                   allowFullScreen
                   className="h-full w-full rounded-[1.6rem] bg-white"
                 />

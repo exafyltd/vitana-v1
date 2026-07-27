@@ -47,6 +47,7 @@ import ReminderInterruptOverlay from "./components/reminders/ReminderInterruptOv
 import { DelayedLoader } from "./components/ui/DelayedLoader";
 import RouteTransitionOverlay from "./components/RouteTransitionOverlay";
 import { usePostLoginWarmup } from "@/hooks/usePostLoginWarmup";
+import { useNewsFeedKeepAlive } from "@/hooks/useNewsFeedKeepAlive";
 
 // Route loading fallback — a full-screen clean background + delayed spinner so a
 // lazy chunk that loads instantly never flashes a placeholder, and a slow one
@@ -170,6 +171,7 @@ const BusinessListings = lazy(() => import("./pages/BusinessListings"));
 const PublicEventLanding = lazy(() => import("./pages/PublicEventLanding"));
 const PublicCampaignLanding = lazy(() => import("./pages/PublicCampaignLanding"));
 const DownloadFlyer = lazy(() => import("./pages/DownloadFlyer"));
+const MaxinaAppRedirect = lazy(() => import("./pages/MaxinaAppRedirect"));
 const Apply = lazy(() => import("./pages/Apply"));
 const AutopilotDashboard = lazy(() => import("./pages/AutopilotDashboard"));
 const MatchesPage = lazy(() => import("./pages/MatchesPage"));
@@ -408,6 +410,9 @@ const AppHooksInitializer = () => {
   // Warm route chunks + React Query data for the first authenticated screens as
   // soon as auth + tenant settle — earlier than AppLayout's own prefetch.
   usePostLoginWarmup();
+  // Holds the News Feed's queries active for the whole session so switching to
+  // Messenger/Events and back is a cache read, not a reload. See the hook.
+  useNewsFeedKeepAlive();
   const { user, session } = useAuth();
   const navigate = useNavigate();
 
@@ -748,6 +753,11 @@ const App = () => {
           <Route path="/pub/campaigns/:id" element={<PublicCampaignLanding />} />
           {/* Download flyer — shared via "Invite a friend"; recipients are logged out */}
           <Route path="/download" element={<DownloadFlyer />} />
+          {/* QR-code app-store redirect — printed on physical merchandise; detects
+              iOS/Android and sends the visitor straight to the matching store
+              listing. Distinct from /maxina (portal login) and /download
+              (manual-choice invite flyer). */}
+          <Route path="/maxina/app" element={<MaxinaAppRedirect />} />
           <Route path="/apply" element={<Apply />} />
           
           {/* Portal Routes */}
@@ -830,6 +840,29 @@ const App = () => {
           <Route path="/home/actions" element={<Navigate to="/home" replace />} />
           <Route path="/home/matches" element={<Navigate to="/home" replace />} />
           <Route path="/home/aifeed" element={<Navigate to="/home" replace />} />
+          {/* Path-based (not query-string) compose deep-link — renders Home directly
+              so Appilix's Android WebView can open it from a push notification tap;
+              query strings silently fail there on cold notification-tap launches
+              (see 20260625000000_post_notification_deeplink.sql). */}
+          <Route path="/home/compose" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <Home />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          {/* Feature-announcement push notification tap target — same feed as
+              /home, but deliberately NOT in useOrbFrontDoor's MAXINA_LANDING_ROUTES
+              set. Appilix notification taps are full page loads (fresh React
+              tree mount), which would otherwise auto-open the Orb front-door
+              overlay on top of the card the notification is about. */}
+          <Route path="/home/notif" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <Home />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
 
           {/* News article detail — full-screen reader */}
           <Route path="/news/:id" element={

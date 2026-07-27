@@ -76,6 +76,12 @@ const PERSIST_KEYS = [
   // Added (VTID-03255): warm the first authenticated screens across refreshes.
   'global-threads', 'my-journey', 'autopilot-onboarding',
   'longevity-news', 'community-news',
+  // The unified "All" feed (feed v2) — the DEFAULT tab of the News screen, and
+  // until now the one news query that was NOT persisted, so a hard refresh
+  // always dropped the user back to a cold, spinner-first feed even though the
+  // legacy news queries beside it restored instantly. User-scoped (the key
+  // embeds the viewer id), same as the other private keys above.
+  'all-news-feed',
   // chat_groups rows share the inbox list with global-threads; without this
   // they were the only part of the list that reloaded from empty on refresh.
   'chat-groups',

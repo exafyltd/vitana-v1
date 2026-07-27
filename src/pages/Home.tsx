@@ -48,7 +48,7 @@ import { NewsFeedItemCard } from "@/components/home/NewsFeedItemCard";
 import { track } from "@/lib/product-analytics/client";
 import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { t } from '@/lib/i18n-toast';
 
@@ -61,6 +61,9 @@ const FILTER_MODES = [
   { value: "community", label: "Community", icon: "👥" },
 ];
 
+
+/** Last scroll offset per feed tab, kept across unmounts of this route. */
+const feedScrollMemory = new Map<FilterTab, number>();
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -85,7 +88,29 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [createPostOpen, setCreatePostOpen] = useState(false);
+  // Deep-link support for "?compose=1" (e.g. the Brand-New-Feature card's CTA)
+  // so a feed card can open the composer directly instead of only the header
+  // button. Strips the param right after opening so back/refresh doesn't
+  // reopen it.
+  useEffect(() => {
+    if (searchParams.get("compose") !== "1") return;
+    setCreatePostOpen(true);
+    const next = new URLSearchParams(searchParams);
+    next.delete("compose");
+    setSearchParams(next, { replace: true });
+  }, [searchParams, setSearchParams]);
   const navigate = useNavigate();
+  const location = useLocation();
+  // Path-based twin of "?compose=1" — Appilix's Android WebView silently
+  // drops query-string deep links when opening a push notification tap (see
+  // 20260625000000_post_notification_deeplink.sql), so the CTA's push payload
+  // points here instead of the query-string form. Normalizes back to /home
+  // right after opening, same as the query-string path above.
+  useEffect(() => {
+    if (location.pathname !== "/home/compose") return;
+    setCreatePostOpen(true);
+    navigate("/home", { replace: true });
+  }, [location.pathname, navigate]);
   const isMobile = useIsMobile();
   const { shareInvite } = useInviteFriendShare();
 
@@ -185,6 +210,39 @@ export default function Home() {
     observer.observe(el);
     return () => observer.disconnect();
   }, [handleV2Observer]);
+
+  // Restore the reader's place in the feed.
+  //
+  // The data now survives navigation (see useNewsFeedKeepAlive), but the route
+  // component itself is still unmounted and remounted, so without this the user
+  // was thrown back to the top of the feed every time they came back from
+  // Messenger — which reads as "it reloaded" even when nothing was refetched.
+  // Module-scope so it survives the unmount; per-session only, deliberately not
+  // persisted.
+  useEffect(() => {
+    const saved = feedScrollMemory.get(activeTab);
+    if (saved == null) return;
+    // Two frames: the first lets the restored feed commit, the second lets the
+    // browser lay it out, so the target offset actually exists to scroll to.
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => window.scrollTo(0, saved));
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+    // Restore once per tab activation, not on every feed update.
+  }, [activeTab]);
+
+  useEffect(() => {
+    const remember = () => feedScrollMemory.set(activeTab, window.scrollY);
+    window.addEventListener("scroll", remember, { passive: true });
+    return () => {
+      remember();
+      window.removeEventListener("scroll", remember);
+    };
+  }, [activeTab]);
 
   const handleArticleClick = (article: NewsArticle) => {
     navigate(`/news/${article.id}`, { state: { article } });

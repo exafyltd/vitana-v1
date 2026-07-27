@@ -1,0 +1,16 @@
+{
+  "featureAnnouncementCard": {
+    "brandNew": {
+      "eyebrow": "Neues Feature",
+      "badge": "Neu",
+      "intro": "Ab sofort kannst du:",
+      "cta": "Jetzt ausprobieren",
+      "closing": "Viel Spaß beim Testen 🥳"
+    },
+    "didYouKnow": {
+      "eyebrow": "Wusstest du schon?",
+      "intro": "Du kannst:",
+      "cta": "Jetzt testen"
+    }
+  }
+}
