@@ -1360,6 +1360,9 @@
     "dailyGoal": {
       "title": "Glückwunsch! Heutiges Ziel erreicht 🎉",
       "body": "Mach einfach weiter."
+    },
+    "communityMarketplace": {
+      "contactSellerFailed": "Verkäufer konnte nicht kontaktiert werden. Bitte versuche es erneut."
     }
   }
 }
