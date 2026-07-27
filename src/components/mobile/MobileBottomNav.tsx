@@ -9,18 +9,7 @@ import { useChatUnreadCount } from "@/hooks/useChatUnreadCount";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/context/AuthProvider";
 import { useTenantSafe } from "@/hooks/useTenant";
-import { prefetchForPath } from "@/lib/prefetch-registry";
-
-// Lazy-route chunk importers per destination — fired on tap-intent
-// (pointerdown / touchstart) so the chunk's network fetch starts ~100-300ms
-// before navigation commits, turning a blank Suspense flash into an instant
-// paint. Each importer matches the lazy import in App.tsx.
-const ROUTE_CHUNK_IMPORTERS: Record<string, () => Promise<unknown>> = {
-  '/home': () => import('@/pages/Home'),
-  '/inbox': () => import('@/pages/Messages'),
-  '/autopilot': () => import('@/pages/AutopilotDashboard'),
-  '/comm/events-meetups': () => import('@/pages/community/EventsAndMeetups'),
-};
+import { prefetchForPath, ROUTE_CHUNK_IMPORTERS } from "@/lib/prefetch-registry";
 
 // Single bottom nav — identical in both Full App and Guided Journey modes:
 // News, Inbox, ORB (center spacer), Journey, Events. Live moved to the App Bar.
