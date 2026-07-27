@@ -197,6 +197,9 @@ const DiscoverMarketplace = lazy(() => import("./pages/discover/Marketplace"));
 // the commercial-intent board above — listings, not matched buy/sell intents)
 const CommunityMarketplace = lazy(() => import("./pages/discover/CommunityMarketplace"));
 const CommunityMarketplaceDetail = lazy(() => import("./pages/discover/CommunityMarketplaceDetail"));
+const CommunityMarketplaceNew = lazy(() => import("./pages/discover/CommunityMarketplaceNew"));
+const CommunityMarketplaceEdit = lazy(() => import("./pages/discover/CommunityMarketplaceEdit"));
+const CommunityMarketplaceMine = lazy(() => import("./pages/discover/CommunityMarketplaceMine"));
 
 // Health sub-pages
 const PillarsOfHealth = lazy(() => import("./pages/health/PillarsOfHealth"));
@@ -879,9 +882,24 @@ const App = () => {
               <CommunityMarketplace />
             </AuthGuard>
           } />
+          <Route path="/discover/community-marketplace/new" element={
+            <AuthGuard>
+              <CommunityMarketplaceNew />
+            </AuthGuard>
+          } />
+          <Route path="/discover/community-marketplace/mine" element={
+            <AuthGuard>
+              <CommunityMarketplaceMine />
+            </AuthGuard>
+          } />
           <Route path="/discover/community-marketplace/:id" element={
             <AuthGuard>
               <CommunityMarketplaceDetail />
+            </AuthGuard>
+          } />
+          <Route path="/discover/community-marketplace/:id/edit" element={
+            <AuthGuard>
+              <CommunityMarketplaceEdit />
             </AuthGuard>
           } />
           <Route path="/discover/supplements" element={

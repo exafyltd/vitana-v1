@@ -97,6 +97,24 @@ async function fetchJson<T>(path: string): Promise<T> {
   return resp.json();
 }
 
+async function sendJson<T>(path: string, method: "POST" | "PATCH" | "DELETE", body?: unknown): Promise<T> {
+  if (!GATEWAY_URL) throw new Error("GATEWAY_URL not configured");
+  const headers = await authHeaders();
+  const resp = await fetch(`${GATEWAY_URL}${path}`, {
+    method,
+    headers,
+    body: body !== undefined ? JSON.stringify(body) : undefined,
+  });
+  const data = await resp.json();
+  if (!resp.ok || !data.ok) {
+    const err = new Error(data.error || `Request failed: ${resp.status}`) as Error & { code?: string; details?: unknown };
+    err.code = data.error;
+    err.details = data.details;
+    throw err;
+  }
+  return data;
+}
+
 // ==================== Categories ====================
 
 export function useCommunityListingCategories(listingKind?: "product" | "service") {
@@ -161,6 +179,53 @@ export function useCommunityListing(id: string | null | undefined, opts: { enabl
     staleTime: 30_000,
     refetchOnWindowFocus: false,
   });
+}
+
+// ==================== My listings (seller dashboard) ====================
+
+export function useMyCommunityListings(params: { status?: ListingStatus; limit?: number; offset?: number } = {}, opts: { enabled?: boolean } = {}) {
+  return useQuery<ListingsResponse>({
+    queryKey: ["community-marketplace-my-listings", params],
+    queryFn: () => {
+      const qs = new URLSearchParams();
+      if (params.status) qs.set("status", params.status);
+      if (params.limit) qs.set("limit", String(params.limit));
+      if (params.offset) qs.set("offset", String(params.offset));
+      return fetchJson<ListingsResponse>(`/api/v1/community-marketplace/my/listings?${qs.toString()}`);
+    },
+    enabled: opts.enabled !== false,
+    staleTime: 10_000,
+    refetchOnWindowFocus: false,
+  });
+}
+
+// ==================== Create / edit (Chunk 4) ====================
+
+export interface CommunityListingInput {
+  listing_kind: ListingKind;
+  condition?: ListingCondition;
+  category: string;
+  subcategory?: string;
+  title: string;
+  description: string;
+  images: string[];
+  price_cents?: number;
+  currency?: string;
+  price_on_request: boolean;
+  location_text?: string;
+  is_remote_service: boolean;
+  delivery_method: DeliveryMethod;
+}
+
+export async function createCommunityListing(input: CommunityListingInput): Promise<{ ok: boolean; listing: CommunityListing }> {
+  return sendJson("/api/v1/community-marketplace/listings", "POST", input);
+}
+
+export async function updateCommunityListing(
+  id: string,
+  input: Partial<Omit<CommunityListingInput, "listing_kind">>
+): Promise<{ ok: boolean; listing: CommunityListing }> {
+  return sendJson(`/api/v1/community-marketplace/listings/${id}`, "PATCH", input);
 }
 
 // ==================== Contact-click (analytics; full messaging CTA is a later chunk) ====================

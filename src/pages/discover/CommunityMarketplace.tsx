@@ -6,8 +6,8 @@
  * from /discover/marketplace (commercial buy/sell *intents*, matched by the
  * matchmaker) and from the curated affiliate catalog under /discover.
  *
- * Read-only browse + detail in this chunk. Posting a listing (Chunk 4) and
- * the full "Contact Seller" messaging flow (Chunk 5) land separately.
+ * The full in-app "Contact Seller" messaging flow (Chunk 5) and lifecycle
+ * action buttons (pause/mark sold/renew/remove, Chunk 9) land separately.
  */
 
 import { useState, useCallback, useMemo } from "react";
@@ -20,7 +20,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Loader2, ShoppingBag } from "lucide-react";
+import { Loader2, Plus, ShoppingBag } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
   useCommunityListingCategories,
@@ -89,6 +89,16 @@ export default function CommunityMarketplace() {
           title={t("screens.communityMarketplace.title")}
           description={t("screens.communityMarketplace.subtitle")}
         />
+
+        <div className="flex items-center justify-end gap-2 mt-2">
+          <Button variant="outline" size="sm" onClick={() => navigate("/discover/community-marketplace/mine")}>
+            {t("screens.communityMarketplace.myListings")}
+          </Button>
+          <Button size="sm" onClick={() => navigate("/discover/community-marketplace/new")}>
+            <Plus className="h-4 w-4 mr-1.5" />
+            {t("screens.communityMarketplace.postListing")}
+          </Button>
+        </div>
 
         <div className="flex items-center gap-2 mt-2">
           <UtilityActionButton className="min-w-0 flex-1" compact={isMobile}>

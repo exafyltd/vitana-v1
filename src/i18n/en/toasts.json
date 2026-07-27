@@ -1362,7 +1362,13 @@
       "body": "Just keep going."
     },
     "communityMarketplace": {
-      "contactSellerFailed": "Couldn't contact the seller. Please try again."
+      "contactSellerFailed": "Couldn't contact the seller. Please try again.",
+      "tooManyImages": "10 photos maximum per listing.",
+      "imageUploadFailed": "One or more photos couldn't be uploaded.",
+      "listingCreated": "Listing published",
+      "listingCreatedFailed": "Couldn't publish the listing.",
+      "listingUpdated": "Listing updated",
+      "listingUpdatedFailed": "Couldn't update the listing."
     }
   }
 }

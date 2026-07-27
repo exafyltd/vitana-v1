@@ -93,6 +93,10 @@ export default function CommunityMarketplaceDetail() {
   const listing = data.listing;
   const priceText = formatListingPrice(listing);
   const seller = listing.seller;
+  // Owner-only fields (see serializeListing() in the gateway route) are only
+  // ever present in the response when the caller is the seller — no extra
+  // auth lookup needed to tell them apart from a buyer viewing the listing.
+  const isOwner = listing.requires_admin_review !== undefined;
 
   const handleContactSeller = async () => {
     if (!id) return;
@@ -207,15 +211,23 @@ export default function CommunityMarketplaceDetail() {
                       </Link>
                     )}
 
-                    <Button
-                      onClick={handleContactSeller}
-                      disabled={contacting || listing.status === "sold"}
-                      size="lg"
-                      className="w-full"
-                    >
-                      {contacting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
-                      {t("screens.communityMarketplace.contactSeller")}
-                    </Button>
+                    {isOwner ? (
+                      <Button asChild size="lg" className="w-full">
+                        <Link to={`/discover/community-marketplace/${listing.id}/edit`}>
+                          {t("screens.communityMarketplace.editButton")}
+                        </Link>
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={handleContactSeller}
+                        disabled={contacting || listing.status === "sold"}
+                        size="lg"
+                        className="w-full"
+                      >
+                        {contacting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                        {t("screens.communityMarketplace.contactSeller")}
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>

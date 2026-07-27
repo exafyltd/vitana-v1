@@ -1362,7 +1362,13 @@
       "body": "Mach einfach weiter."
     },
     "communityMarketplace": {
-      "contactSellerFailed": "Verkäufer konnte nicht kontaktiert werden. Bitte versuche es erneut."
+      "contactSellerFailed": "Verkäufer konnte nicht kontaktiert werden. Bitte versuche es erneut.",
+      "tooManyImages": "Maximal 10 Fotos pro Anzeige.",
+      "imageUploadFailed": "Ein oder mehrere Fotos konnten nicht hochgeladen werden.",
+      "listingCreated": "Anzeige veröffentlicht",
+      "listingCreatedFailed": "Anzeige konnte nicht veröffentlicht werden.",
+      "listingUpdated": "Anzeige aktualisiert",
+      "listingUpdatedFailed": "Anzeige konnte nicht aktualisiert werden."
     }
   }
 }
