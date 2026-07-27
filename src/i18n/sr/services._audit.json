@@ -6,10 +6,8 @@
       "phase": "llm"
     },
     "services.subtitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register: formal 'Vi' form used instead of informal 'du' form for the imperative verb.",
-      "suggested": "Pristupi sveobuhvatnim zdravstvenim i wellness uslugama",
       "phase": "llm"
     },
     "services.categories.preventive": {
@@ -103,5 +101,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:29:31.268Z"
+  "generatedAt": "2026-07-27T07:09:53.550Z"
 }

@@ -1,162 +1,174 @@
 {
   "verdicts": {
-    "settings.status.premium": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "settings.title": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "settings.description": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "settings.searchPlaceholder": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.quickSetup": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.tabs.overview": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.tabs.notifications": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.tabs.quickActions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.categories.privacy": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.categories.privacyDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.categories.notifications": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.categories.notificationsDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.categories.preferences": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.categories.preferencesDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.categories.connectedApps": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.categories.connectedAppsDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.categories.tenantRole": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.categories.tenantRoleDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.categories.billing": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.categories.billingDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.categories.support": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.categories.supportDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.status.privacyStatus": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.status.subscription": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.status.protected": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.status.notificationsActive": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.status.connectedAppsCount": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.status.types": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.status.apps": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "settings.vitanaOpenedSection": {
+    "videoShop.feed.end": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "target is not a string",
-      "phase": "static"
+      "issue": "Gender-specific participle 'Stigao si' for a potentially gender-neutral user. For a friendly app, it's better to be inclusive.",
+      "suggested": "Stigao/la si do kraja.",
+      "phase": "llm"
     },
-    "settings.vitanaUpdated": {
+    "videoShop.feed.emptyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.emptyBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.browseDiscover": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.errorTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.errorBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.retry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.roleBlockedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.roleBlockedBody": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "target is not a string",
-      "phase": "static"
+      "issue": "Gender-specific participle 'koristio' for a potentially gender-neutral user. For a friendly app, it's better to be inclusive.",
+      "suggested": "Video prodavnica je funkcija zajednice. Pređi na ulogu zajednice da bi je koristio/la.",
+      "phase": "llm"
+    },
+    "videoShop.feed.mute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.unmute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.share": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.productFallback": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.adding": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addedBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.goToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.moreDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.notifyMe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.outOfStock": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.retry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.errorTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.errorBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.roleBlockedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.roleBlockedBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-07-27T07:09:53.550Z"
+  "generatedAt": "2026-07-27T07:13:25.952Z"
 }
