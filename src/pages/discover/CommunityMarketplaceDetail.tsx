@@ -2,11 +2,11 @@
  * BOOTSTRAP-COMMUNITY-MARKETPLACE — listing detail page at
  * /discover/community-marketplace/:id.
  *
- * Read-only viewing + a "Contact Seller" action that records a
- * contact-click and hands off to the seller's public profile — the full
- * in-app messaging CTA (compose modal referencing the listing, etc.) is a
- * separate later chunk; this is the safe interim per the same scoping used
- * elsewhere in this feature.
+ * "Contact Seller" records a contact-click, sends a prefilled first message
+ * to the seller via the existing direct-chat endpoint (content_data carries
+ * the listing so the seller's push notification reads as listing interest,
+ * not a generic chat message — see chat.ts's cta_source branch), then hands
+ * off to that chat thread so buyer and seller can continue the conversation.
  */
 
 import { useState } from "react";
@@ -27,8 +27,8 @@ import {
 } from "@/hooks/useCommunityMarketplace";
 import { categoryLabel } from "@/lib/community-marketplace-categories";
 import { formatDistanceToNow } from "@/lib/locale-format";
-import { notifyError } from "@/lib/i18n-toast";
-import { t } from "@/lib/i18n-toast";
+import { notify, notifyError, t } from "@/lib/i18n-toast";
+import { sendChatMessage } from "@/hooks/useChatApi";
 
 const CONDITION_LABEL_KEYS: Record<string, string> = {
   new: "screens.communityMarketplace.conditionNew",
@@ -103,9 +103,25 @@ export default function CommunityMarketplaceDetail() {
     setContacting(true);
     try {
       const res = await contactCommunityListingSeller(id);
-      if (res.seller?.vitana_id) {
-        navigate(`/u/${res.seller.vitana_id}`);
-      }
+      if (!res.seller?.user_id) throw new Error("seller_not_found");
+
+      const prefillKey = listing.listing_kind === "service"
+        ? "screens.communityMarketplace.messagePrefillService"
+        : "screens.communityMarketplace.messagePrefillProduct";
+      const prefillMessage = t(prefillKey, { title: listing.title });
+
+      await sendChatMessage(res.seller.user_id, prefillMessage, {
+        contentData: {
+          listing_id: listing.id,
+          listing_title: listing.title,
+          listing_thumbnail_url: listing.images?.[0] ?? null,
+          listing_kind: listing.listing_kind,
+          cta_source: "community_marketplace",
+        },
+      });
+
+      notify("toasts.communityMarketplace.messageSent");
+      navigate(`/inbox/u/${res.seller.user_id}`);
     } catch {
       notifyError("toasts.communityMarketplace.contactSellerFailed");
     } finally {

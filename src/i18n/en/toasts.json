@@ -1364,6 +1364,7 @@
       "body": "Just keep going."
     },
     "communityMarketplace": {
+      "messageSent": "Message sent",
       "contactSellerFailed": "Couldn't contact the seller. Please try again.",
       "tooManyImages": "10 photos maximum per listing.",
       "imageUploadFailed": "One or more photos couldn't be uploaded.",

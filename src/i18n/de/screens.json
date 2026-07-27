@@ -4519,6 +4519,8 @@
       "browseMarketplace": "Zum Marktplatz",
       "postedBy": "Angeboten von",
       "contactSeller": "Verkäufer kontaktieren",
+      "messagePrefillProduct": "Hallo! Ich interessiere mich für dein Angebot „{title}\".",
+      "messagePrefillService": "Hallo! Ich interessiere mich für deine Dienstleistung „{title}\".",
       "remoteService": "Remote möglich",
       "deliveryPickup": "Abholung",
       "deliveryShipping": "Versand",

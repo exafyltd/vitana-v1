@@ -1364,6 +1364,7 @@
       "body": "Mach einfach weiter."
     },
     "communityMarketplace": {
+      "messageSent": "Nachricht gesendet",
       "contactSellerFailed": "Verkäufer konnte nicht kontaktiert werden. Bitte versuche es erneut.",
       "tooManyImages": "Maximal 10 Fotos pro Anzeige.",
       "imageUploadFailed": "Ein oder mehrere Fotos konnten nicht hochgeladen werden.",
