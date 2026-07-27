@@ -6,12 +6,10 @@
       "phase": "llm"
     },
     "follow.noFollowing": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incorrect person/subject. The German is 3rd person singular, but should address the user directly in du-form.",
-      "suggested": "Du folgst noch niemandem",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:11:32.039Z"
+  "generatedAt": "2026-07-27T06:51:57.511Z"
 }

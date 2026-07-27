@@ -169,7 +169,19 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "common.follow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.getMaxina": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Less idiomatic for obtaining a digital product/service; 'holen' implies a more physical act. A direct imperative is more common for calls to action.",
+      "suggested": "Hol dir MAXINA",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:06:56.655Z"
+  "generatedAt": "2026-07-27T06:50:09.405Z"
 }

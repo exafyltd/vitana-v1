@@ -1,40 +1,45 @@
 {
   "verdicts": {
-    "loading.default": {
+    "featureAnnouncementCard.brandNew.eyebrow": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "loading.groups": {
+    "featureAnnouncementCard.brandNew.badge": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "loading.messages": {
+    "featureAnnouncementCard.brandNew.intro": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "loading.uploading": {
+    "featureAnnouncementCard.brandNew.cta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "loading.uploadingProgress": {
+    "featureAnnouncementCard.brandNew.closing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "loading.processing": {
+    "featureAnnouncementCard.didYouKnow.eyebrow": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "loading.saving": {
+    "featureAnnouncementCard.didYouKnow.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.didYouKnow.cta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-07-27T06:53:00.209Z"
+  "generatedAt": "2026-07-27T06:51:56.003Z"
 }

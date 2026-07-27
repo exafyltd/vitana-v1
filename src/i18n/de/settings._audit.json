@@ -16,10 +16,8 @@
       "phase": "llm"
     },
     "settings.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form) and missing possessive pronouns for 'Datenschutz' and 'Präferenzen' in du-form context.",
-      "suggested": "Verwalte deine Kontoeinstellungen, deinen Datenschutz und deine Präferenzen",
       "phase": "llm"
     },
     "settings.searchPlaceholder": {
@@ -53,10 +51,8 @@
       "phase": "llm"
     },
     "settings.categories.privacyDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form) and possessive pronouns.",
-      "suggested": "Steuere, wer dein Profil und deine Aktivitäten sieht",
       "phase": "llm"
     },
     "settings.categories.notifications": {
@@ -65,10 +61,8 @@
       "phase": "llm"
     },
     "settings.categories.notificationsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form) and possessive pronoun.",
-      "suggested": "Verwalte deine Benachrichtigungseinstellungen",
       "phase": "llm"
     },
     "settings.categories.preferences": {
@@ -87,10 +81,8 @@
       "phase": "llm"
     },
     "settings.categories.connectedAppsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form).",
-      "suggested": "Verwalte Integrationen und Berechtigungen",
       "phase": "llm"
     },
     "settings.categories.tenantRole": {
@@ -99,10 +91,8 @@
       "phase": "llm"
     },
     "settings.categories.tenantRoleDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form).",
-      "suggested": "Wechsle zwischen Rollen und Mandanten",
       "phase": "llm"
     },
     "settings.categories.billing": {
@@ -154,7 +144,17 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "settings.vitanaOpenedSection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.vitanaUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:31:19.642Z"
+  "generatedAt": "2026-07-27T07:14:45.263Z"
 }
