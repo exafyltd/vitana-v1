@@ -71,10 +71,20 @@ export function MobileBottomNav() {
   }
   
   return (
+    // Opacity-only entrance (no `y` transform): AppLayout isn't a persistent
+    // route layout — every page mounts its own <AppLayout>/<MobileBottomNav>,
+    // so this remounts on every navigation, not just cold start. A transform
+    // slide-up left the bar's hit-zone at its off-screen `y: 100` start
+    // position for ~0.2-0.6s after each tap, during which a second/impatient
+    // tap in that screen region fell through to whatever page content sits
+    // there instead (e.g. a News Feed card linking to a profile) — the
+    // reported "tapping News sometimes opens a profile" bug. Opacity doesn't
+    // move the hit-box, so the bar is immediately tappable at its correct
+    // position even while still fading in.
     <motion.nav
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
       className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-50 md:hidden"
     >
       <div className="relative grid grid-cols-5 items-end bg-background/95 backdrop-blur-3xl border-t border-foreground/8 pb-safe pt-2 px-4 shadow-[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">
