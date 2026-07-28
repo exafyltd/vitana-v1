@@ -1050,6 +1050,15 @@ const App = () => {
               <Reminders />
             </AuthGuard>
           } />
+          {/* Path-based reminder-fire push deep-link (BOOTSTRAP-NOTIF-MESSENGER-DIAG
+              follow-up) — /reminders?fire=<id> silently failed to launch in
+              Appilix's Android in-app browser because it's a query string.
+              Reminders.tsx / ReminderInterruptOverlay.tsx accept both forms. */}
+          <Route path="/reminders/fire/:fireId" element={
+            <AuthGuard>
+              <Reminders />
+            </AuthGuard>
+          } />
           <Route path="/inbox/reminder" element={<Navigate to="/reminders" replace />} />
           <Route path="/messages/reminder" element={<Navigate to="/reminders" replace />} />
 
