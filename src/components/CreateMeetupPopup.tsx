@@ -13,6 +13,7 @@ import { useCommunityEvents } from "@/hooks/useCommunityEvents";
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from "@/integrations/supabase/client";
 import { notify, notifyError, t } from '@/lib/i18n-toast';
+import { resizeImageFile } from '@/lib/resizeImage';
 
 interface CreateMeetupPopupProps {
   isOpen: boolean;
@@ -183,13 +184,21 @@ const generateImageUrl = (title: string, description: string) => {
       let uploadedImageUrl: string | undefined;
       if (selectedImage) {
         try {
+          // Downscale/compress phone photos before upload — full-size originals
+          // were what made the events list take seconds to paint covers.
+          let processed = selectedImage;
+          try {
+            processed = await resizeImageFile(selectedImage, { maxEdge: 1920, quality: 0.85 });
+          } catch (e) {
+            console.warn('[CreateMeetupPopup] Image resize failed, using original:', e);
+          }
           const { data: { user } } = await supabase.auth.getUser();
-          const ext = selectedImage.name.split('.').pop() || 'jpg';
+          const ext = processed.name.split('.').pop() || 'jpg';
           const fileName = `${Date.now()}.${ext}`;
           const filePath = `${(user?.id ?? 'public')}/${fileName}`;
-          const { error: uploadError } = await supabase.storage.from('covers').upload(filePath, selectedImage, {
+          const { error: uploadError } = await supabase.storage.from('covers').upload(filePath, processed, {
             upsert: true,
-            contentType: selectedImage.type,
+            contentType: processed.type,
           });
           if (uploadError) throw uploadError;
           const { data: pub } = supabase.storage.from('covers').getPublicUrl(filePath);

@@ -430,7 +430,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 **i18n namespaces:**
 
-- `common` — used: 2, total in shard: 36
+- `common` — used: 2, total in shard: 37
 - `screens` — used: 14, total in shard: 9877
 - `toasts` — used: 3, total in shard: 1257
 - `wallet` — used: 17, total in shard: 22

@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { CalendarIcon } from 'lucide-react';
 import { EventKebabMenu } from '@/components/events/EventKebabMenu';
 import { t } from '@/lib/i18n-toast';
+import { resolveEventCover } from '@/lib/eventCoverImage';
 
 import { fmtDate, fmtTime } from '@/lib/locale-format';
 const formatEventTime = (dateString: string) => {
@@ -11,49 +12,6 @@ const formatEventTime = (dateString: string) => {
   const time = fmtTime(date, { hour: '2-digit', minute: '2-digit', hour12: false });
   const day = fmtDate(date, { weekday: 'short', month: 'short', day: 'numeric' });
   return `${day} · ${time}`;
-};
-
-const sanitizeUrl = (url?: string): string | undefined => {
-  if (!url) return undefined;
-  const s = String(url).trim();
-  if (!s) return undefined;
-  const lower = s.toLowerCase();
-  
-  if (
-    lower.startsWith('javascript:') ||
-    lower.startsWith('about:') ||
-    lower.includes('undefined') ||
-    s.startsWith('/api/placeholder')
-  ) {
-    return undefined;
-  }
-  
-  const isHttp = /^https?:\/\//i.test(s);
-  const isAsset = s.startsWith('/assets/');
-  const isSupabaseStorage = lower.includes('.supabase.co/storage/');
-  const isDataImage = lower.startsWith('data:image/');
-  const isBlob = lower.startsWith('blob:');
-  
-  if (isHttp || isAsset || isSupabaseStorage || isDataImage || isBlob) {
-    // Cache-bust Supabase storage URLs to pick up replaced images
-    if (isSupabaseStorage && !s.includes('_cb=')) {
-      const cb = new Date().toISOString().slice(0, 10);
-      return s + (s.includes('?') ? '&' : '?') + '_cb=' + cb;
-    }
-    return s;
-  }
-  
-  return undefined;
-};
-
-const generateImageUrl = (title: string, description?: string): string => {
-  const images = [
-    'https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=800&h=600&fit=crop',
-  ];
-  const hash = (title + (description || '')).split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
-  return images[Math.abs(hash) % images.length];
 };
 
 interface MobileEventCarouselProps {
@@ -143,14 +101,13 @@ export function MobileEventCarousel({
 
 
   // Transform event to NewsCard props
-  const transformEventToCard = (event: any) => {
+  const transformEventToCard = (event: any, index: number) => {
     const authorName = event.creator_display_name || event.author?.name || 'Community Host';
     const authorAvatar = event.creator_avatar_url || event.author?.avatar || '';
-    
-    const rawImage = event.image_url || event.imageUrl || event.metadata?.image_url || event.metadata?.cover_image_url;
-    const safeImage = sanitizeUrl(rawImage);
-    const imageUrl = safeImage ?? generateImageUrl(event.title, event.description);
-    
+
+    // CDN-resized cover with the untransformed URL as onError fallback
+    const cover = resolveEventCover(event);
+
     const hasTickets = event.metadata?.has_tickets === true;
     const isPaidEvent = event.metadata?.is_paid === true;
     const canEdit = !!currentUserId && 
@@ -161,7 +118,10 @@ export function MobileEventCarousel({
       title: event.title,
       subtitle: event.metadata?.subtitle,
       description: event.description,
-      imageUrl: imageUrl,
+      imageUrl: cover.src,
+      fallbackImageUrl: cover.fallbackSrc,
+      // First two slides are (near-)visible on entry; the rest stay lazy
+      imagePriority: index < 2,
       category: 'event' as const,
       pillar: event.event_type === 'event' ? 'EVENT' : 'MEETUP',
       author: { name: authorName, avatar: authorAvatar },
@@ -239,7 +199,7 @@ export function MobileEventCarousel({
             aria-label={`Event ${index + 1} of ${events.length}: ${event.title}`}
           >
             <NewsCard
-              {...transformEventToCard(event)}
+              {...transformEventToCard(event, index)}
               className="h-full rounded-[26px] ring-1 ring-black/5 shadow-[0_18px_45px_rgba(0,0,0,0.18)]"
             />
           </div>
