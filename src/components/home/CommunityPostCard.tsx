@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthProvider";
 import { useFeedPostInteractions } from "@/hooks/useFeedPostInteractions";
 import { NewsPostModerationMenu } from "@/components/home/NewsPostModerationMenu";
+import { PostLikersDialog } from "@/components/home/PostLikersDialog";
 import { FeedMedia } from "@/components/media/FeedMedia";
 import { renderMentions } from "@/components/feed/MentionText";
 import { getPostBackground } from "@/lib/post-backgrounds";
@@ -57,6 +58,7 @@ export function CommunityPostCard({
   } = useFeedPostInteractions(item.source, item.post_id);
 
   const [showComments, setShowComments] = useState(false);
+  const [showLikers, setShowLikers] = useState(false);
   const [commentText, setCommentText] = useState("");
   // Optimistic local counts — avoids re-ranking the whole feed on every action.
   // The trigger-maintained canonical counts reconcile via the feed's refetch.
@@ -159,19 +161,37 @@ export function CommunityPostCard({
           </div>
 
           <div className="flex items-center gap-3 shrink-0">
-            <button
-              type="button"
-              onClick={handleLike}
-              aria-label={t("screens.profile.likePost")}
-              aria-pressed={isLiked}
+            <div
               className={cn(
                 "flex items-center gap-1 text-xs transition-colors",
-                isLiked ? "text-pink-500" : "text-muted-foreground hover:text-pink-500",
+                isLiked ? "text-pink-500" : "text-muted-foreground",
               )}
             >
-              <Heart className={cn("h-3.5 w-3.5", isLiked && "fill-current")} />
-              {likeCount}
-            </button>
+              <button
+                type="button"
+                onClick={handleLike}
+                aria-label={t("screens.profile.likePost")}
+                aria-pressed={isLiked}
+                className={cn("flex items-center", !isLiked && "hover:text-pink-500")}
+              >
+                <Heart className={cn("h-3.5 w-3.5", isLiked && "fill-current")} />
+              </button>
+              {likeCount > 0 ? (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    stop(e);
+                    setShowLikers(true);
+                  }}
+                  aria-label={t("screens.home.viewLikes")}
+                  className={cn(!isLiked && "hover:text-pink-500")}
+                >
+                  {likeCount}
+                </button>
+              ) : (
+                <span>{likeCount}</span>
+              )}
+            </div>
             <button
               type="button"
               onClick={(e) => {
@@ -273,6 +293,13 @@ export function CommunityPostCard({
           </div>
         )}
       </CardContent>
+
+      <PostLikersDialog
+        source={item.source}
+        postId={item.post_id}
+        open={showLikers}
+        onOpenChange={setShowLikers}
+      />
     </Card>
   );
 }
