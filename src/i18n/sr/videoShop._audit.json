@@ -1,185 +1,170 @@
 {
   "verdicts": {
-    "connectedApps.title": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.description": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.searchPlaceholder": {
+    "videoShop.feed.end": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.addApp": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.connected": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.syncing": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.sections.social": {
+    "videoShop.feed.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.sections.fitness": {
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.sections.health": {
+    "videoShop.feed.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.sections.other": {
+    "videoShop.feed.roleBlockedBody": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.status.connected": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.status.notConnected": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.status.comingSoon": {
+    "videoShop.feed.linkCopied": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.status.soon": {
+    "videoShop.drawer.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.actions.connect": {
+    "videoShop.drawer.productFallback": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.actions.disconnect": {
+    "videoShop.drawer.addToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.actions.configure": {
+    "videoShop.drawer.adding": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.actions.manage": {
+    "videoShop.drawer.addedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.lastSync": {
+    "videoShop.drawer.addedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.dataSync": {
+    "videoShop.drawer.addFailed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.comingSoonMessage": {
+    "videoShop.drawer.goToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.title": {
+    "videoShop.drawer.moreDetails": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.searchPlaceholder": {
+    "videoShop.drawer.notifyMe": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.categories.all": {
+    "videoShop.drawer.outOfStock": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.categories.health": {
+    "videoShop.drawer.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.categories.social": {
+    "videoShop.drawer.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.availableApps": {
+    "videoShop.drawer.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.verified": {
+    "videoShop.drawer.unavailableTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.connected": {
+    "videoShop.drawer.unavailableBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.settings": {
+    "videoShop.drawer.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "connectedApps.popup.disconnect": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "connectedApps.popup.connect": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "connectedApps.popup.done": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "connectedApps.popup.noResults": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "connectedApps.popup.connectionSuccess": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "connectedApps.popup.connectionPlaceholder": {
+    "videoShop.drawer.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-07-28T06:07:46.996Z"
+  "generatedAt": "2026-07-28T06:32:31.452Z"
 }

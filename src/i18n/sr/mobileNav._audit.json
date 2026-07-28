@@ -19,7 +19,25 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "mobileNav.myJourney": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mobileNav.news": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.inbox": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "While 'Sanduče' can mean 'mailbox', 'Pristiglo' or 'Pristigla pošta' are more common and appropriate for a digital 'Inbox' in an app context.",
+      "suggested": "Pristiglo",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:04:55.826Z"
+  "generatedAt": "2026-07-28T06:10:04.361Z"
 }
