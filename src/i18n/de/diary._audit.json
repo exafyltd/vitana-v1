@@ -11,10 +11,8 @@
       "phase": "llm"
     },
     "diary.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Verfolge deine Wellness-Reise und hilf uns, besser zu werden",
       "phase": "llm"
     },
     "diary.healthTab": {
@@ -48,5 +46,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:08:45.372Z"
+  "generatedAt": "2026-07-29T06:15:46.475Z"
 }

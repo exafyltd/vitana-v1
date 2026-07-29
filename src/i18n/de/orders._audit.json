@@ -26,17 +26,13 @@
       "phase": "llm"
     },
     "orders.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre')",
-      "suggested": "Deine Bestellhistorie und aktive Abonnements",
       "phase": "llm"
     },
     "orders.trackDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' and 'Ihre')",
-      "suggested": "Verfolge deine Produktbestellungen und Event-Tickets",
       "phase": "llm"
     },
     "orders.searchPlaceholder": {
@@ -90,10 +86,8 @@
       "phase": "llm"
     },
     "orders.previewNotice": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre')",
-      "suggested": "Dies sind Vorschau-Bestellungen. Deine tatsächlichen Bestellungen erscheinen hier.",
       "phase": "llm"
     },
     "orders.sampleData": {
@@ -107,10 +101,8 @@
       "phase": "llm"
     },
     "orders.emptyActive.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie')",
-      "suggested": "Du hast keine aktiven Bestellungen oder anstehenden Events.",
       "phase": "llm"
     },
     "orders.emptyHistory.title": {
@@ -119,10 +111,8 @@
       "phase": "llm"
     },
     "orders.emptyHistory.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre')",
-      "suggested": "Deine abgeschlossenen Bestellungen und vergangenen Events erscheinen hier.",
       "phase": "llm"
     },
     "orders.noOrders": {
@@ -131,10 +121,8 @@
       "phase": "llm"
     },
     "orders.noOrdersDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre', 'Sie'); slightly clunky phrasing",
-      "suggested": "Deine Bestellungen erscheinen hier, sobald du etwas kaufst.",
       "phase": "llm"
     },
     "orders.browseProducts": {
@@ -158,10 +146,8 @@
       "phase": "llm"
     },
     "orders.noFilterDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihrem')",
-      "suggested": "Keine {filter} in deinem Verlauf gefunden.",
       "phase": "llm"
     },
     "orders.orderDate": {
@@ -230,10 +216,8 @@
       "phase": "llm"
     },
     "orders.detailSheet.yourTicket": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihr' instead of informal 'Dein').",
-      "suggested": "Dein Ticket",
       "phase": "llm"
     },
     "orders.detailSheet.giftVoucher": {
@@ -342,5 +326,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:17:27.402Z"
+  "generatedAt": "2026-07-29T06:20:00.069Z"
 }
