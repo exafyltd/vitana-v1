@@ -1132,9 +1132,9 @@ export default withScreenId(function Community() {
     imageUrl: event.image_url || "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
     category: "event" as const,
     pillar: event.event_type === 'fitness' ? 'Exercise' : event.event_type === 'workshop' ? 'Nutrition' : 'Mental',
-    author: { 
-      name: event.creator_display_name || "Community Member", 
-      avatar: event.creator_avatar_url || "/lovable-uploads/design-team-avatar.jpg" 
+    author: {
+      name: event.creator_display_name || t("screens.home.communityMember"),
+      avatar: event.creator_avatar_url || "/lovable-uploads/design-team-avatar.jpg"
     },
     location: event.location || "Virtual",
     attendees: event.participant_count,
@@ -1154,9 +1154,9 @@ export default withScreenId(function Community() {
     imageUrl: event.image_url || "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
     category: "event" as const,
     pillar: event.event_type === 'fitness' ? 'Exercise' : event.event_type === 'workshop' ? 'Nutrition' : 'Mental',
-    author: { 
-      name: event.creator_display_name || "Community Member", 
-      avatar: event.creator_avatar_url || "/lovable-uploads/design-team-avatar.jpg" 
+    author: {
+      name: event.creator_display_name || t("screens.home.communityMember"),
+      avatar: event.creator_avatar_url || "/lovable-uploads/design-team-avatar.jpg"
     },
     location: event.location || "Virtual",
     attendees: event.participant_count,
