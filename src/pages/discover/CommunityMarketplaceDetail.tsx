@@ -16,13 +16,26 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ArrowLeft, MapPin, Eye, BadgeCheck, Loader2, Truck, Store } from "lucide-react";
+import { ArrowLeft, MapPin, Eye, BadgeCheck, Loader2, Truck, Store, Flag, Ban } from "lucide-react";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { CommunityListingImage } from "@/components/discover/CommunityListingImage";
+import { ReportListingDialog } from "@/components/discover/ReportListingDialog";
+import { KebabMenu, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu-kebab";
+import {
+  ResponsiveConfirmDialog,
+  ResponsiveConfirmDialogAction,
+  ResponsiveConfirmDialogCancel,
+  ResponsiveConfirmDialogContent,
+  ResponsiveConfirmDialogDescription,
+  ResponsiveConfirmDialogFooter,
+  ResponsiveConfirmDialogHeader,
+  ResponsiveConfirmDialogTitle,
+} from "@/components/ui/responsive-confirm-dialog";
 import {
   useCommunityListing,
   contactCommunityListingSeller,
+  blockCommunityListingSeller,
   formatListingPrice,
 } from "@/hooks/useCommunityMarketplace";
 import { categoryLabel } from "@/lib/community-marketplace-categories";
@@ -49,6 +62,9 @@ export default function CommunityMarketplaceDetail() {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading, error } = useCommunityListing(id);
   const [contacting, setContacting] = useState(false);
+  const [reportDialogOpen, setReportDialogOpen] = useState(false);
+  const [blockConfirmOpen, setBlockConfirmOpen] = useState(false);
+  const [blocking, setBlocking] = useState(false);
 
   if (isLoading) {
     return (
@@ -129,6 +145,24 @@ export default function CommunityMarketplaceDetail() {
     }
   };
 
+  const handleBlockSeller = async () => {
+    if (!seller) return;
+    setBlocking(true);
+    try {
+      await blockCommunityListingSeller(seller.user_id);
+      notify("toasts.communityMarketplace.sellerBlocked");
+      setBlockConfirmOpen(false);
+      // The backend's browse/search query excludes blocked sellers for the
+      // viewer — this specific listing is no longer something this viewer
+      // should keep looking at, so send them back to the marketplace.
+      navigate("/discover/community-marketplace");
+    } catch {
+      notifyError("toasts.communityMarketplace.sellerBlockFailed");
+    } finally {
+      setBlocking(false);
+    }
+  };
+
   return (
     <AppLayout>
       <SEO
@@ -140,10 +174,25 @@ export default function CommunityMarketplaceDetail() {
 
       <div className="p-4 md:p-6 min-h-screen">
         <div className="max-w-3xl mx-auto space-y-6">
-          <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="-ml-2">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            {t("screens.communityMarketplace.back")}
-          </Button>
+          <div className="flex items-center justify-between">
+            <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="-ml-2">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              {t("screens.communityMarketplace.back")}
+            </Button>
+            {!isOwner && seller && (
+              <KebabMenu>
+                <DropdownMenuItem onClick={() => setReportDialogOpen(true)}>
+                  <Flag className="h-4 w-4 mr-2" />
+                  {t("screens.communityMarketplace.reportListing")}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setBlockConfirmOpen(true)} className="text-destructive">
+                  <Ban className="h-4 w-4 mr-2" />
+                  {t("screens.communityMarketplace.blockSeller")}
+                </DropdownMenuItem>
+              </KebabMenu>
+            )}
+          </div>
 
           <Card>
             <CardContent className="p-0">
@@ -267,6 +316,39 @@ export default function CommunityMarketplaceDetail() {
           </p>
         </div>
       </div>
+
+      {seller && (
+        <>
+          <ReportListingDialog
+            listingId={listing.id}
+            open={reportDialogOpen}
+            onOpenChange={setReportDialogOpen}
+          />
+
+          <ResponsiveConfirmDialog open={blockConfirmOpen} onOpenChange={setBlockConfirmOpen}>
+            <ResponsiveConfirmDialogContent>
+              <ResponsiveConfirmDialogHeader>
+                <ResponsiveConfirmDialogTitle>
+                  {t("screens.communityMarketplace.blockSellerConfirmTitle")}
+                </ResponsiveConfirmDialogTitle>
+                <ResponsiveConfirmDialogDescription>
+                  {t("screens.communityMarketplace.blockSellerConfirmBody", {
+                    name: seller.display_name ?? seller.vitana_id ?? "",
+                  })}
+                </ResponsiveConfirmDialogDescription>
+              </ResponsiveConfirmDialogHeader>
+              <ResponsiveConfirmDialogFooter>
+                <ResponsiveConfirmDialogCancel disabled={blocking}>
+                  {t("screens.communityMarketplace.blockSellerCancel")}
+                </ResponsiveConfirmDialogCancel>
+                <ResponsiveConfirmDialogAction onClick={handleBlockSeller} disabled={blocking}>
+                  {t("screens.communityMarketplace.blockSellerConfirm")}
+                </ResponsiveConfirmDialogAction>
+              </ResponsiveConfirmDialogFooter>
+            </ResponsiveConfirmDialogContent>
+          </ResponsiveConfirmDialog>
+        </>
+      )}
     </AppLayout>
   );
 }

@@ -1366,6 +1366,11 @@
     "communityMarketplace": {
       "messageSent": "Nachricht gesendet",
       "contactSellerFailed": "Verkäufer konnte nicht kontaktiert werden. Bitte versuche es erneut.",
+      "reportSubmitted": "Anzeige gemeldet. Danke für dein Feedback.",
+      "reportAlreadySubmitted": "Du hast diese Anzeige bereits gemeldet.",
+      "reportFailed": "Anzeige konnte nicht gemeldet werden.",
+      "sellerBlocked": "Verkäufer blockiert.",
+      "sellerBlockFailed": "Verkäufer konnte nicht blockiert werden.",
       "tooManyImages": "Maximal 10 Fotos pro Anzeige.",
       "imageUploadFailed": "Ein oder mehrere Fotos konnten nicht hochgeladen werden.",
       "listingCreated": "Anzeige veröffentlicht",

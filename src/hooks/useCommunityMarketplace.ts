@@ -247,6 +247,58 @@ export async function contactCommunityListingSeller(id: string): Promise<Contact
   return data;
 }
 
+// ==================== Reports (Chunk 6) ====================
+
+export type ListingReportReason =
+  | "prohibited_item"
+  | "misleading"
+  | "counterfeit"
+  | "spam"
+  | "offensive"
+  | "scam"
+  | "other";
+
+export async function reportCommunityListing(
+  id: string,
+  input: { report_reason: ListingReportReason; report_note?: string }
+): Promise<{ ok: boolean; report_id: string }> {
+  return sendJson(`/api/v1/community-marketplace/listings/${id}/reports`, "POST", input);
+}
+
+// ==================== Seller blocks (Chunk 6) ====================
+
+export interface CommunitySellerBlock {
+  id: string;
+  blocked_seller_id: string;
+  blocked_seller_display_name: string | null;
+  blocked_seller_vitana_id: string | null;
+  reason: string | null;
+  created_at: string;
+}
+
+export function useCommunitySellerBlocks(opts: { enabled?: boolean } = {}) {
+  return useQuery<{ ok: boolean; blocks: CommunitySellerBlock[] }>({
+    queryKey: ["community-marketplace-seller-blocks"],
+    queryFn: () => fetchJson("/api/v1/community-marketplace/seller-blocks"),
+    enabled: opts.enabled !== false,
+    staleTime: 30_000,
+  });
+}
+
+export async function blockCommunityListingSeller(
+  blockedSellerId: string,
+  reason?: string
+): Promise<{ ok: boolean; block_id: string }> {
+  return sendJson("/api/v1/community-marketplace/seller-blocks", "POST", {
+    blocked_seller_id: blockedSellerId,
+    reason,
+  });
+}
+
+export async function unblockCommunityListingSeller(blockedSellerId: string): Promise<{ ok: boolean }> {
+  return sendJson(`/api/v1/community-marketplace/seller-blocks/${blockedSellerId}`, "DELETE");
+}
+
 // ==================== Formatting ====================
 
 /** Returns null for price-on-request listings — caller renders its own localized fallback text. */
