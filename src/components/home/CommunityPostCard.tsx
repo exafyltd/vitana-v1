@@ -4,11 +4,13 @@
  * Split out of NewsFeedItemCard so the like/comment hook can be called
  * unconditionally (it is only mounted for kind === "post"). The card body still
  * navigates to the author's profile; the heart and the comment affordance are
- * inline — tapping the heart toggles a like, tapping the comment count expands
- * an inline list of comments plus an input to post a new one. Every interactive
- * control stops propagation so it never triggers the card's navigation.
+ * inline — tapping the heart toggles a like, long-pressing it opens the "who
+ * liked this" list (mirrors Instagram's long-press-to-see-likers gesture),
+ * tapping the comment count expands an inline list of comments plus an input
+ * to post a new one. Every interactive control stops propagation so it never
+ * triggers the card's navigation.
  */
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Send, Trash2 } from "lucide-react";
@@ -19,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthProvider";
 import { useFeedPostInteractions } from "@/hooks/useFeedPostInteractions";
 import { NewsPostModerationMenu } from "@/components/home/NewsPostModerationMenu";
+import { PostLikersDialog } from "@/components/home/PostLikersDialog";
 import { FeedMedia } from "@/components/media/FeedMedia";
 import { renderMentions } from "@/components/feed/MentionText";
 import { getPostBackground } from "@/lib/post-backgrounds";
@@ -57,6 +60,7 @@ export function CommunityPostCard({
   } = useFeedPostInteractions(item.source, item.post_id);
 
   const [showComments, setShowComments] = useState(false);
+  const [showLikers, setShowLikers] = useState(false);
   const [commentText, setCommentText] = useState("");
   // Optimistic local counts — avoids re-ranking the whole feed on every action.
   // The trigger-maintained canonical counts reconcile via the feed's refetch.
@@ -68,8 +72,42 @@ export function CommunityPostCard({
     navigate(`/u/${item.user_id}`);
   };
 
+  // Long-press-to-see-likers: a press held past LONG_PRESS_MS opens the
+  // "who liked this" list instead of toggling the like on release.
+  const LONG_PRESS_MS = 500;
+  const longPressTimer = useRef<number | null>(null);
+  const longPressTriggered = useRef(false);
+
+  const clearLongPressTimer = () => {
+    if (longPressTimer.current !== null) {
+      window.clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
+  };
+  useEffect(() => clearLongPressTimer, []);
+
+  const handleLikePointerDown = (e: React.PointerEvent) => {
+    e.stopPropagation();
+    longPressTriggered.current = false;
+    clearLongPressTimer();
+    longPressTimer.current = window.setTimeout(() => {
+      longPressTriggered.current = true;
+      setShowLikers(true);
+    }, LONG_PRESS_MS);
+  };
+
+  const handleLikePointerRelease = (e: React.PointerEvent) => {
+    e.stopPropagation();
+    clearLongPressTimer();
+  };
+
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (longPressTriggered.current) {
+      // The long press already opened the likers list — don't also toggle.
+      longPressTriggered.current = false;
+      return;
+    }
     if (!user) {
       notify("screens.home.signInToInteract");
       return;
@@ -162,10 +200,15 @@ export function CommunityPostCard({
             <button
               type="button"
               onClick={handleLike}
+              onPointerDown={handleLikePointerDown}
+              onPointerUp={handleLikePointerRelease}
+              onPointerLeave={handleLikePointerRelease}
+              onPointerCancel={handleLikePointerRelease}
+              onContextMenu={(e) => e.preventDefault()}
               aria-label={t("screens.profile.likePost")}
               aria-pressed={isLiked}
               className={cn(
-                "flex items-center gap-1 text-xs transition-colors",
+                "flex select-none items-center gap-1 text-xs transition-colors touch-manipulation",
                 isLiked ? "text-pink-500" : "text-muted-foreground hover:text-pink-500",
               )}
             >
@@ -273,6 +316,13 @@ export function CommunityPostCard({
           </div>
         )}
       </CardContent>
+
+      <PostLikersDialog
+        source={item.source}
+        postId={item.post_id}
+        open={showLikers}
+        onOpenChange={setShowLikers}
+      />
     </Card>
   );
 }

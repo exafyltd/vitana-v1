@@ -17,6 +17,7 @@ import { useResellerProfile } from "@/hooks/useResellerProfile";
 import { useAuth } from "@/context/AuthProvider";
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
+import { resizeImageFile } from '@/lib/resizeImage';
 
 interface CreateEventPopupProps {
   isOpen: boolean;
@@ -201,14 +202,22 @@ export function CreateEventPopup({
       
       if (selectedImage) {
         try {
+          // Downscale/compress phone photos before upload — full-size originals
+          // were what made the events list take seconds to paint covers.
+          let processed = selectedImage;
+          try {
+            processed = await resizeImageFile(selectedImage, { maxEdge: 1920, quality: 0.85 });
+          } catch (e) {
+            console.warn('[CreateEventPopup] Image resize failed, using original:', e);
+          }
           const { data: { user } } = await supabase.auth.getUser();
-          const ext = selectedImage.name.split('.').pop() || 'jpg';
+          const ext = processed.name.split('.').pop() || 'jpg';
           const fileName = `event-${Date.now()}.${ext}`;
           const filePath = `${user?.id ?? 'public'}/${fileName}`;
-          
+
           const { error: uploadError } = await supabase.storage
             .from('covers')
-            .upload(filePath, selectedImage, { upsert: true, contentType: selectedImage.type });
+            .upload(filePath, processed, { upsert: true, contentType: processed.type });
             
           if (uploadError) throw uploadError;
           

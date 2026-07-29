@@ -31,6 +31,8 @@ import {
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
 import { CreateContentPopup } from "@/components/CreateContentPopup";
 import { MobileCreatePostSheet } from "@/components/profile/mobile/MobileCreatePostSheet";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { useAutopilot } from "@/hooks/use-autopilot";
 import { VitanaIndexCard } from "@/components/home/VitanaIndexCard";
 import { DidYouKnowCard } from "@/components/proactive/DidYouKnowCard";
 import { LongevityJourneyCard } from "@/components/home/LongevityJourneyCard";
@@ -87,6 +89,7 @@ export default function Home() {
   }, [searchParams]);
   const [searchQuery, setSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const { pendingCount } = useAutopilot();
   const [createPostOpen, setCreatePostOpen] = useState(false);
   // Deep-link support for "?compose=1" (e.g. the Brand-New-Feature card's CTA)
   // so a feed card can open the composer directly instead of only the header
@@ -466,7 +469,7 @@ export default function Home() {
         <div className={isMobile ? "" : "max-w-7xl mx-auto"}>
           <StandardHeader title={t('screens.home.news')} description="Longevity science & community updates" emoji="📰" />
           <UtilityActionButton className="min-w-0" compact={isMobile}
-            afterGiftVoucherChildren={isMobile ? (<><VitanaIndexChip /><AutopilotChip pendingCount={0} onClick={() => setAutopilotOpen(true)} /></>) : undefined}
+            afterGiftVoucherChildren={isMobile ? (<><VitanaIndexChip /><AutopilotChip pendingCount={pendingCount} onClick={() => setAutopilotOpen(true)} /></>) : undefined}
             trailingElement={!isMobile ? (
               <Button variant="ghost" size="icon" className="rounded-full" onClick={handleRefresh} title={t('screens.home.refreshNews')} disabled={isLoading}>
                 <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
@@ -521,6 +524,7 @@ export default function Home() {
       ) : (
         <CreateContentPopup isOpen={createPostOpen} onClose={() => setCreatePostOpen(false)} />
       )}
+      <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
     </AppLayout>
   );
 }
