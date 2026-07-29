@@ -161,37 +161,19 @@ export function CommunityPostCard({
           </div>
 
           <div className="flex items-center gap-3 shrink-0">
-            <div
+            <button
+              type="button"
+              onClick={handleLike}
+              aria-label={t("screens.profile.likePost")}
+              aria-pressed={isLiked}
               className={cn(
                 "flex items-center gap-1 text-xs transition-colors",
-                isLiked ? "text-pink-500" : "text-muted-foreground",
+                isLiked ? "text-pink-500" : "text-muted-foreground hover:text-pink-500",
               )}
             >
-              <button
-                type="button"
-                onClick={handleLike}
-                aria-label={t("screens.profile.likePost")}
-                aria-pressed={isLiked}
-                className={cn("flex items-center", !isLiked && "hover:text-pink-500")}
-              >
-                <Heart className={cn("h-3.5 w-3.5", isLiked && "fill-current")} />
-              </button>
-              {likeCount > 0 ? (
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    stop(e);
-                    setShowLikers(true);
-                  }}
-                  aria-label={t("screens.home.viewLikes")}
-                  className={cn(!isLiked && "hover:text-pink-500")}
-                >
-                  {likeCount}
-                </button>
-              ) : (
-                <span>{likeCount}</span>
-              )}
-            </div>
+              <Heart className={cn("h-3.5 w-3.5", isLiked && "fill-current")} />
+              {likeCount}
+            </button>
             <button
               type="button"
               onClick={(e) => {
@@ -218,6 +200,19 @@ export function CommunityPostCard({
             )}
           </div>
         </div>
+
+        {likeCount > 0 && (
+          <button
+            type="button"
+            onClick={(e) => {
+              stop(e);
+              setShowLikers(true);
+            }}
+            className="mt-1.5 block py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {t("screens.home.likesCount", { count: likeCount })}
+          </button>
+        )}
 
         {showComments && (
           <div className="mt-3 space-y-3 border-t border-border/40 pt-3" onClick={stop}>

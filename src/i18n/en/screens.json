@@ -5196,7 +5196,7 @@
       "likesTitle": "Likes",
       "noLikesYet": "No likes yet",
       "loadingLikes": "Loading likes…",
-      "viewLikes": "View likes",
+      "likesCount": "{count} Likes",
       "whyPublic": "Longevity news",
       "matchScore": "{score}% match",
       "matchPercent": "{score}%",
