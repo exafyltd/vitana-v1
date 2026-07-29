@@ -169,6 +169,14 @@ export const adminMarketplaceOperationsNavigation = [
   { id: "moderation", name: "Moderation", path: "/admin/marketplace/moderation" },
 ];
 
+// BOOTSTRAP-COMMUNITY-MARKETPLACE (Chunk 7): admin review queue for the
+// peer-to-peer classifieds feature — distinct from the curated-catalog
+// adminMarketplace* sections above.
+export const adminCommunityMarketplaceNavigation = [
+  { id: "listings", name: "Listings", path: "/admin/community-marketplace/listings" },
+  { id: "reports", name: "Reports", path: "/admin/community-marketplace/reports" },
+];
+
 // VTID-NAV-02: Vitana Navigator admin (catalog + coverage + telemetry + history)
 export const adminNavigatorNavigation = [
   { id: "catalog", name: "Catalog", path: "/admin/navigator" },

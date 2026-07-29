@@ -278,6 +278,9 @@ const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
 // VTID-02000: Marketplace admin (Maxina)
 const AdminMarketplaceOverview = lazy(() => import("./pages/admin/marketplace/Overview"));
 const AdminMarketplaceProducts = lazy(() => import("./pages/admin/marketplace/Products"));
+// BOOTSTRAP-COMMUNITY-MARKETPLACE (Chunk 7): admin review queue
+const AdminCommunityMarketplaceListings = lazy(() => import("./pages/admin/community-marketplace/Listings"));
+const AdminCommunityMarketplaceReports = lazy(() => import("./pages/admin/community-marketplace/Reports"));
 // Overview Dashboard (replaces legacy dashboard)
 const OverviewDashboard = lazy(() => import("./pages/admin/overview/Dashboard"));
 const OverviewActivity = lazy(() => import("./pages/admin/overview/Activity"));
@@ -1703,6 +1706,14 @@ const App = () => {
           } />
           <Route path="/admin/marketplace/products" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminMarketplaceProducts /></ProtectedRoute></AuthGuard>
+          } />
+
+          {/* BOOTSTRAP-COMMUNITY-MARKETPLACE (Chunk 7): admin review queue */}
+          <Route path="/admin/community-marketplace/listings" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminCommunityMarketplaceListings /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/community-marketplace/reports" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminCommunityMarketplaceReports /></ProtectedRoute></AuthGuard>
           } />
 
           {/* 2. Users & Growth Section (legacy — redirects to new Members section) */}
