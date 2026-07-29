@@ -47,6 +47,7 @@ import ReminderInterruptOverlay from "./components/reminders/ReminderInterruptOv
 import { DelayedLoader } from "./components/ui/DelayedLoader";
 import RouteTransitionOverlay from "./components/RouteTransitionOverlay";
 import { usePostLoginWarmup } from "@/hooks/usePostLoginWarmup";
+import { useNewsFeedKeepAlive } from "@/hooks/useNewsFeedKeepAlive";
 
 // Route loading fallback — a full-screen clean background + delayed spinner so a
 // lazy chunk that loads instantly never flashes a placeholder, and a slow one
@@ -402,6 +403,9 @@ const AppHooksInitializer = () => {
   // Warm route chunks + React Query data for the first authenticated screens as
   // soon as auth + tenant settle — earlier than AppLayout's own prefetch.
   usePostLoginWarmup();
+  // Holds the News Feed's queries active for the whole session so switching to
+  // Messenger/Events and back is a cache read, not a reload. See the hook.
+  useNewsFeedKeepAlive();
   const { user, session } = useAuth();
   const navigate = useNavigate();
 
@@ -829,6 +833,29 @@ const App = () => {
           <Route path="/home/actions" element={<Navigate to="/home" replace />} />
           <Route path="/home/matches" element={<Navigate to="/home" replace />} />
           <Route path="/home/aifeed" element={<Navigate to="/home" replace />} />
+          {/* Path-based (not query-string) compose deep-link — renders Home directly
+              so Appilix's Android WebView can open it from a push notification tap;
+              query strings silently fail there on cold notification-tap launches
+              (see 20260625000000_post_notification_deeplink.sql). */}
+          <Route path="/home/compose" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <Home />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          {/* Feature-announcement push notification tap target — same feed as
+              /home, but deliberately NOT in useOrbFrontDoor's MAXINA_LANDING_ROUTES
+              set. Appilix notification taps are full page loads (fresh React
+              tree mount), which would otherwise auto-open the Orb front-door
+              overlay on top of the card the notification is about. */}
+          <Route path="/home/notif" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <Home />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
 
           {/* News article detail — full-screen reader */}
           <Route path="/news/:id" element={
@@ -1019,6 +1046,15 @@ const App = () => {
 
           {/* VTID-02601 Reminders */}
           <Route path="/reminders" element={
+            <AuthGuard>
+              <Reminders />
+            </AuthGuard>
+          } />
+          {/* Path-based reminder-fire push deep-link (BOOTSTRAP-NOTIF-MESSENGER-DIAG
+              follow-up) — /reminders?fire=<id> silently failed to launch in
+              Appilix's Android in-app browser because it's a query string.
+              Reminders.tsx / ReminderInterruptOverlay.tsx accept both forms. */}
+          <Route path="/reminders/fire/:fireId" element={
             <AuthGuard>
               <Reminders />
             </AuthGuard>

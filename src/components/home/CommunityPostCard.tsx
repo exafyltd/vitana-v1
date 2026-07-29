@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthProvider";
 import { useFeedPostInteractions } from "@/hooks/useFeedPostInteractions";
 import { NewsPostModerationMenu } from "@/components/home/NewsPostModerationMenu";
+import { PostLikersDialog } from "@/components/home/PostLikersDialog";
 import { FeedMedia } from "@/components/media/FeedMedia";
 import { renderMentions } from "@/components/feed/MentionText";
 import { getPostBackground } from "@/lib/post-backgrounds";
@@ -57,6 +58,7 @@ export function CommunityPostCard({
   } = useFeedPostInteractions(item.source, item.post_id);
 
   const [showComments, setShowComments] = useState(false);
+  const [showLikers, setShowLikers] = useState(false);
   const [commentText, setCommentText] = useState("");
   // Optimistic local counts — avoids re-ranking the whole feed on every action.
   // The trigger-maintained canonical counts reconcile via the feed's refetch.
@@ -199,6 +201,19 @@ export function CommunityPostCard({
           </div>
         </div>
 
+        {likeCount > 0 && (
+          <button
+            type="button"
+            onClick={(e) => {
+              stop(e);
+              setShowLikers(true);
+            }}
+            className="mt-1.5 block py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {t("screens.home.likesCount", { count: likeCount })}
+          </button>
+        )}
+
         {showComments && (
           <div className="mt-3 space-y-3 border-t border-border/40 pt-3" onClick={stop}>
             {commentsLoading ? (
@@ -273,6 +288,13 @@ export function CommunityPostCard({
           </div>
         )}
       </CardContent>
+
+      <PostLikersDialog
+        source={item.source}
+        postId={item.post_id}
+        open={showLikers}
+        onOpenChange={setShowLikers}
+      />
     </Card>
   );
 }

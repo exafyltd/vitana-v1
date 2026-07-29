@@ -119,6 +119,20 @@ export default {
 					ai: {
 						accent: 'hsl(var(--sys-ai-accent))',
 						tint: 'hsl(var(--sys-ai-tint))'
+					},
+					feature: {
+						new: {
+							accent: 'hsl(var(--sys-feature-new-accent))',
+							tint: 'hsl(var(--sys-feature-new-tint))',
+							card: 'hsl(var(--sys-feature-new-card))',
+							'card-border': 'hsl(var(--sys-feature-new-card-border))'
+						},
+						tip: {
+							accent: 'hsl(var(--sys-feature-tip-accent))',
+							tint: 'hsl(var(--sys-feature-tip-tint))',
+							card: 'hsl(var(--sys-feature-tip-card))',
+							'card-border': 'hsl(var(--sys-feature-tip-card-border))'
+						}
 					}
 				},
 				util: {

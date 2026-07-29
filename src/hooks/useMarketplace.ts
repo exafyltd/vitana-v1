@@ -108,6 +108,27 @@ export interface MarketplaceSearchResponse {
 
 // ==================== Feed hook ====================
 
+// Exported so the background prefetch registry (src/lib/prefetch-registry.ts)
+// can warm this exact query — same queryFn, so the cache entry it produces is
+// picked up by useMarketplaceFeed on arrival instead of triggering a second,
+// redundant cold fetch.
+export async function fetchMarketplaceFeed(opts: {
+  category?: string;
+  limit?: number;
+} = {}): Promise<MarketplaceFeedResponse> {
+  if (!GATEWAY_URL) throw new Error("GATEWAY_URL not configured");
+  const params = new URLSearchParams();
+  if (opts.category) params.set("category", opts.category);
+  if (opts.limit) params.set("limit", String(opts.limit));
+  const headers = await authHeaders();
+  const resp = await fetch(
+    `${GATEWAY_URL}/api/v1/discover/feed?${params.toString()}`,
+    { headers }
+  );
+  if (!resp.ok) throw new Error(`Feed failed: ${resp.status}`);
+  return resp.json();
+}
+
 export function useMarketplaceFeed(opts: {
   category?: string;
   limit?: number;
@@ -115,19 +136,7 @@ export function useMarketplaceFeed(opts: {
 } = {}) {
   return useQuery<MarketplaceFeedResponse>({
     queryKey: ["marketplace-feed", opts.category, opts.limit],
-    queryFn: async () => {
-      if (!GATEWAY_URL) throw new Error("GATEWAY_URL not configured");
-      const params = new URLSearchParams();
-      if (opts.category) params.set("category", opts.category);
-      if (opts.limit) params.set("limit", String(opts.limit));
-      const headers = await authHeaders();
-      const resp = await fetch(
-        `${GATEWAY_URL}/api/v1/discover/feed?${params.toString()}`,
-        { headers }
-      );
-      if (!resp.ok) throw new Error(`Feed failed: ${resp.status}`);
-      return resp.json();
-    },
+    queryFn: () => fetchMarketplaceFeed(opts),
     enabled: opts.enabled !== false,
     staleTime: 60_000,
     refetchOnWindowFocus: false,

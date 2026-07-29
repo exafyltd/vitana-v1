@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart, Music2, Volume2, VolumeX } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -24,6 +25,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { isIAPRestricted } from '@/lib/appilix';
 import { useSoundscape } from '@/context/SoundscapeContext';
 import { t } from '@/lib/i18n-toast';
+import { prefetchForPath, ROUTE_CHUNK_IMPORTERS } from '@/lib/prefetch-registry';
 
 interface SideDrawerNavProps {
   open: boolean;
@@ -34,9 +36,13 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { translate } = useTranslation();
-  const { tenant, isExafyAdmin } = useTenant();
-  const { signOut } = useAuth();
+  const { tenant, isExafyAdmin, activeTenantId } = useTenant();
+  const { signOut, user } = useAuth();
   const { profile } = useProfile();
+  const queryClient = useQueryClient();
+  // De-dupe tap-intent warming per item, per drawer-open — avoids firing twice
+  // for the pointerdown + touchstart pair some browsers send for one tap.
+  const warmedItemsRef = useRef<Set<string>>(new Set());
   // Use unforced DB role: useRole() pins currentRole to "community" on mobile
   // for permissioning, but the drawer subtitle should reflect the real role.
   const { dbRole } = useRole();
@@ -129,6 +135,20 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     }, 300);
     return () => clearTimeout(timeout);
   }, [searchQuery]);
+
+  // Mirrors MobileBottomNav's tap-intent warming (pointerdown/touchstart fires
+  // before the click commits): the drawer previously navigated cold on every
+  // tap, since only the bottom nav had this. Warms both the route's JS chunk
+  // and its data query so Events/Discover/etc. paint from cache when opened
+  // from here, not just from the bottom nav.
+  const handleTapIntent = (item: (typeof drawerNavItems)[number]) => {
+    if (item.id === 'logout' || warmedItemsRef.current.has(item.id)) return;
+    warmedItemsRef.current.add(item.id);
+    ROUTE_CHUNK_IMPORTERS[item.route]?.().catch(() => {});
+    if (user?.id) {
+      void prefetchForPath(queryClient, item.route, user.id, activeTenantId ?? undefined).catch(() => {});
+    }
+  };
 
   const handleItemClick = async (item: (typeof drawerNavItems)[number]) => {
     onClose();
@@ -379,6 +399,8 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   <button
                     key={item.id}
                     onClick={() => handleItemClick(item)}
+                    onPointerDown={() => handleTapIntent(item)}
+                    onTouchStart={() => handleTapIntent(item)}
                     className={`
                       relative w-full flex items-center gap-3 rounded-xl px-3 py-2.5 mb-0.5
                       text-sm font-medium transition-all duration-150
