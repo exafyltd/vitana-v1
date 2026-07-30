@@ -530,10 +530,20 @@ const AppHooksInitializer = () => {
       if (document.hidden) return;
       clearRetries();
       checkPendingNotification();
-      // Two short retries cover the race where the row hasn't propagated to the
-      // read replica yet. Both stay inside the 5s grace window above.
+      // Retries cover the race where the row hasn't propagated to the read
+      // replica yet. Front-loaded and more frequent than before (was just
+      // 1200ms/3500ms) — on Android, where the notification tap doesn't
+      // land the WebView on the target chat directly, this poll is the ONLY
+      // thing that gets the user there, so its latency is fully visible as
+      // "wrong screen, then a jump to chat a couple seconds later." Checking
+      // every ~300-450ms instead cuts that visible delay down to whatever
+      // the replica actually needs, typically well under a second. All stay
+      // inside the 5s grace window above.
+      retryTimers.push(setTimeout(checkPendingNotification, 300));
+      retryTimers.push(setTimeout(checkPendingNotification, 700));
       retryTimers.push(setTimeout(checkPendingNotification, 1200));
-      retryTimers.push(setTimeout(checkPendingNotification, 3500));
+      retryTimers.push(setTimeout(checkPendingNotification, 2000));
+      retryTimers.push(setTimeout(checkPendingNotification, 3200));
     };
 
     const onForeground = () => {
