@@ -96,17 +96,13 @@
       "phase": "llm"
     },
     "validation.pleaseSelect": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Imperative verb is in 'vi' (plural/formal singular) form, not 'ti' (informal singular) form, which is required for 'du-form' register. 'Molimo' is also slightly more formal than 'Molim te'.",
-      "suggested": "Molim te izaberi opciju",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "validation.pleaseEnter": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Imperative verb is in 'vi' (plural/formal singular) form, not 'ti' (informal singular) form, which is required for 'du-form' register. 'Molimo' is also slightly more formal than 'Molim te'.",
-      "suggested": "Molim te unesi vrednost",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "validation.charactersRemaining": {
@@ -130,5 +126,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:33:39.793Z"
+  "generatedAt": "2026-07-30T06:27:27.320Z"
 }
