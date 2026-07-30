@@ -1,40 +1,45 @@
 {
   "verdicts": {
-    "walletActions.title": {
+    "featureAnnouncementCard.brandNew.eyebrow": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "walletActions.addFunds": {
+    "featureAnnouncementCard.brandNew.badge": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "walletActions.send": {
+    "featureAnnouncementCard.brandNew.intro": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "walletActions.exchange": {
+    "featureAnnouncementCard.brandNew.cta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "walletActions.withdraw": {
+    "featureAnnouncementCard.brandNew.closing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "walletActions.buyCredits": {
+    "featureAnnouncementCard.didYouKnow.eyebrow": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "walletActions.stakeTokens": {
+    "featureAnnouncementCard.didYouKnow.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.didYouKnow.cta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-07-30T06:31:54.163Z"
+  "generatedAt": "2026-07-30T06:09:05.655Z"
 }
