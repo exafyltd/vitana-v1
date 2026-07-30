@@ -215,6 +215,28 @@ export default function Messages() {
     }
   }, [threads, pendingRecipient]);
 
+  // Safety net: a deep-link recipient that never matches a loaded thread
+  // (e.g. the conversation genuinely isn't in `threads` for some reason)
+  // would otherwise leave `resolvingDeepLink` below stuck true forever,
+  // showing a loading state with no way out. Give resolution a bounded
+  // window, then fall through to the normal list render.
+  useEffect(() => {
+    if (!pendingRecipient) return;
+    const timer = setTimeout(() => {
+      console.warn('[Messages] Deep-link recipient never resolved to a thread, showing list instead:', pendingRecipient);
+      setPendingRecipient(null);
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [pendingRecipient]);
+
+  // True for the render(s) between "threads finished loading" and "the
+  // resolve effect above actually set selectedThreadId" — without this,
+  // that one-render gap falls through to the full conversation LIST below
+  // (selectedThreadId is still null), which is briefly visible before the
+  // effect fires and swaps to the conversation. That's the "list flashes,
+  // then jumps to the chat" jank reported from a notification tap.
+  const resolvingDeepLink = pendingRecipient !== null && selectedThreadId === null;
+
   // Track optimistic unread updates (threadId -> 0)
   const [optimisticUnreadUpdates, setOptimisticUnreadUpdates] = useState<Record<string, number>>({});
 
@@ -443,8 +465,11 @@ export default function Messages() {
     }
   }, [isMobile, selectedThreadId]);
 
-  // Show skeleton when loading/fetching AND no cached data
-  if ((isLoading || isFetching) && threads.length === 0) {
+  // Show skeleton when loading/fetching AND no cached data, OR when a
+  // notification deep-link's recipient hasn't resolved to a thread yet
+  // (resolvingDeepLink) — otherwise the list renders for one frame in
+  // between, which is the flash reported from a chat notification tap.
+  if (((isLoading || isFetching) && threads.length === 0) || resolvingDeepLink) {
     // Mobile loading state
     if (isMobile) {
       return (
