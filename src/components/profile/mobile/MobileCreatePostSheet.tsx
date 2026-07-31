@@ -41,6 +41,24 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
   const { translate } = useTranslation();
   const { createPost } = useProfilePosts();
 
+  // VTID-03467: one submit at a time, covering the WHOLE of handlePost.
+  //
+  // The Post button's guard was `createPost.isPending || isCompressing`, and
+  // neither is true during the storage upload (lines below): isCompressing is
+  // reset in its own `finally` before the upload begins and is never set at all
+  // for images, while createPost.isPending only flips once the upload has
+  // already finished. On a slow mobile connection that leaves the button live
+  // for the entire upload, and a second tap runs handlePost again end-to-end —
+  // a real duplicate post, with its own UUID and its own `Date.now()` filename,
+  // which is exactly why such pairs survive content/image dedupe.
+  //
+  // The ref (not the state) is what closes the race: state updates are async and
+  // batched, so two taps in the same tick both read the stale value. The ref is
+  // assigned synchronously, so the second call returns immediately.
+  const postInFlight = useRef(false);
+  const [isPosting, setIsPosting] = useState(false);
+  const isBusy = isPosting || createPost.isPending || isCompressing;
+
   const handleMediaSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -89,6 +107,10 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
 
   const handlePost = async () => {
     if (!content.trim() && !mediaFile) return;
+    // VTID-03467: synchronous re-entry guard — see `postInFlight` above.
+    if (postInFlight.current) return;
+    postInFlight.current = true;
+    setIsPosting(true);
     try {
       let imageUrl: string | undefined;
       let videoUrl: string | undefined;
@@ -155,6 +177,12 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
       console.error('[PostUpload] error:', err);
       const description = err instanceof Error ? err.message : '';
       toast({ title: translate('profilePosts.error', 'Something went wrong'), description, variant: 'destructive' });
+    } finally {
+      // Released on failure too (including the early `return` on a failed video
+      // compression above, which this `finally` still covers), so a genuinely
+      // failed post can be retried.
+      postInFlight.current = false;
+      setIsPosting(false);
     }
   };
 
@@ -182,13 +210,13 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
 
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b">
-          <Button variant="ghost" size="icon" onClick={handleClose} disabled={isCompressing || createPost.isPending}>
+          <Button variant="ghost" size="icon" onClick={handleClose} disabled={isBusy}>
             <X className="h-5 w-5" />
           </Button>
           <h2 className="text-base font-semibold">{translate('profilePosts.createPost', 'Create Post')}</h2>
           <Button
             size="sm"
-            disabled={(!content.trim() && !mediaFile) || content.length > MAX_CHARS || createPost.isPending || isCompressing}
+            disabled={(!content.trim() && !mediaFile) || content.length > MAX_CHARS || isBusy}
             onClick={handlePost}
             className="rounded-full"
           >
@@ -197,7 +225,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
                 <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
                 <span className="text-xs">{t('screens.profile.compressingVideoPct', { pct: compressProgress })}</span>
               </>
-            ) : createPost.isPending ? (
+            ) : isBusy ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <>
@@ -261,7 +289,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
             variant="outline"
             size="sm"
             onClick={() => fileInputRef.current?.click()}
-            disabled={isCompressing || createPost.isPending}
+            disabled={isBusy}
             className="rounded-full border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 gap-1.5 px-4"
           >
             <ImagePlus className="h-5 w-5" />

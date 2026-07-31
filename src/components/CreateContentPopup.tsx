@@ -54,8 +54,27 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
   const [compressProgress, setCompressProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // VTID-03467: one submit at a time, for the WHOLE submit — compression,
+  // storage upload AND insert.
+  //
+  // The guard used to be `createPost.isPending || isCompressing`, which leaves
+  // the Share button live for the entire media upload: handleSubmit awaits
+  // uploadMedia() before it ever calls createPost.mutateAsync(), and
+  // isCompressing is reset in uploadMedia's `finally` BEFORE the storage
+  // upload starts (and is never set at all for images). On a slow mobile
+  // connection that is a multi-second window in which a second tap runs
+  // handleSubmit again end-to-end — producing a genuine duplicate post with
+  // its own UUID and its own `Date.now()` filename. That is why such duplicates
+  // are invisible to content/image dedupe: neither row is byte-identical.
+  //
+  // The ref is what actually closes the race. `disabled` alone cannot: state
+  // updates are async and batched, so two taps dispatched in the same tick both
+  // observe the old value and both proceed. The ref is set synchronously on the
+  // first call, so the second returns immediately.
+  const submitInFlight = useRef(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { createPost } = useProfilePosts();
-  const isBusy = createPost.isPending || isCompressing;
+  const isBusy = isSubmitting || createPost.isPending || isCompressing;
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags(prev =>
@@ -161,6 +180,10 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
     const content = buildContent();
     // Require something to publish: text, or media on the media tab.
     if (!content && !mediaFile) return;
+    // VTID-03467: synchronous re-entry guard — see `submitInFlight` above.
+    if (submitInFlight.current) return;
+    submitInFlight.current = true;
+    setIsSubmitting(true);
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -183,6 +206,10 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
       onClose();
     } catch {
       notifyError("toasts.common.contentCreateFailed");
+    } finally {
+      // Released on failure too, so a genuinely failed post can be retried.
+      submitInFlight.current = false;
+      setIsSubmitting(false);
     }
   };
 
