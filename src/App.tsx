@@ -488,7 +488,17 @@ const AppHooksInitializer = () => {
       const targetUrl = (row.data as any)?.url;
       if (!targetUrl || typeof targetUrl !== 'string') return false;
       const currentPath = window.location.pathname + window.location.search;
-      if (currentPath === targetUrl) return false;
+      if (currentPath === targetUrl) {
+        // Already there — Appilix's native open_link_url landed the WebView
+        // on the target directly, so there's nothing to navigate. Still mark
+        // this row processed: Messages.tsx immediately strips the deep-link
+        // segment back to bare /inbox once it resolves the thread, which
+        // would otherwise make currentPath !== targetUrl again on the very
+        // next retry poll (300-3200ms later) and re-trigger navigate(),
+        // remounting the same chat a second/third time for no reason.
+        processedIds.add(row.id);
+        return false;
+      }
 
       processedIds.add(row.id);
       console.log('[DeepLink] Navigating to chat notification:', targetUrl, 'from', currentPath);
