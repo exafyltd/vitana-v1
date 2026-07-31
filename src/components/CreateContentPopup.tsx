@@ -52,10 +52,15 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
   const [mediaKind, setMediaKind] = useState<MediaKind | null>(null);
   const [isCompressing, setIsCompressing] = useState(false);
   const [compressProgress, setCompressProgress] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const submittingRef = useRef(false);
+  const uploadPathRef = useRef<string | null>(null);
 
   const { createPost } = useProfilePosts();
-  const isBusy = createPost.isPending || isCompressing;
+  // `isSubmitting` covers the media upload too — `createPost.isPending` only
+  // flips once the insert starts, leaving the button live for the whole upload.
+  const isBusy = isSubmitting || createPost.isPending || isCompressing;
 
   const handleTagToggle = (tag: string) => {
     setSelectedTags(prev =>
@@ -98,6 +103,7 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
 
   const removeMedia = () => {
     if (mediaPreview) URL.revokeObjectURL(mediaPreview);
+    uploadPathRef.current = null;
     setMediaFile(null);
     setMediaPreview(null);
     setMediaKind(null);
@@ -131,12 +137,28 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
       }
     }
 
-    const fileExt = fileToUpload.name.split(".").pop();
-    const path = `${userId}/posts/${Date.now()}.${fileExt}`;
+    // Path generated once per attachment so a retry overwrites its own object
+    // instead of orphaning another copy of the same file in the bucket.
+    if (!uploadPathRef.current) {
+      const fileExt = fileToUpload.name.split(".").pop();
+      uploadPathRef.current = `${userId}/posts/${Date.now()}.${fileExt}`;
+    }
+    const path = uploadPathRef.current;
     const { error: uploadError } = await supabase.storage
       .from("media-uploads")
-      .upload(path, fileToUpload, { contentType: fileToUpload.type, upsert: false });
-    if (uploadError) throw uploadError;
+      .upload(path, fileToUpload, { contentType: fileToUpload.type, upsert: true });
+    if (uploadError) {
+      // Storage can commit the object while the response is lost in transit
+      // (WebKit surfaces that as TypeError "Load failed"). Only treat this as a
+      // failure if the object genuinely is not there — otherwise the author gets
+      // an error on a post that actually went through.
+      const slash = path.lastIndexOf("/");
+      const { data: found } = await supabase.storage
+        .from("media-uploads")
+        .list(path.slice(0, slash), { search: path.slice(slash + 1), limit: 100 });
+      if (!found?.some((o) => o.name === path.slice(slash + 1))) throw uploadError;
+      console.warn("[CreateContent] upload response lost but object landed, continuing:", uploadError);
+    }
 
     const { data: { publicUrl } } = supabase.storage.from("media-uploads").getPublicUrl(path);
     return mediaKind === "video" ? { videoUrl: publicUrl } : { imageUrl: publicUrl };
@@ -162,6 +184,12 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
     // Require something to publish: text, or media on the media tab.
     if (!content && !mediaFile) return;
 
+    // Synchronous re-entrancy lock — `isSubmitting` is React state and only
+    // settles on the next render, so a burst of clicks can slip past it and
+    // fire several concurrent uploads of the same file.
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+    setIsSubmitting(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
@@ -183,6 +211,9 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
       onClose();
     } catch {
       notifyError("toasts.common.contentCreateFailed");
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
     }
   };
 
@@ -437,7 +468,7 @@ export function CreateContentPopup({ isOpen, onClose }: CreateContentPopupProps)
           <Button onClick={handleSubmit} className="flex-1" disabled={isBusy || !canSubmit}>
             {isCompressing ? (
               <><Loader2 className="h-4 w-4 mr-2 animate-spin" />{t('screens.profile.compressingVideoPct', { pct: compressProgress })}</>
-            ) : createPost.isPending ? (
+            ) : isSubmitting || createPost.isPending ? (
               <><Loader2 className="h-4 w-4 mr-2 animate-spin" />{t('screens.common.posting')}</>
             ) : (
               submitLabel
