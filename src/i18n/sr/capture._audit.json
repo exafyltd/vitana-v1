@@ -26,10 +26,8 @@
       "phase": "llm"
     },
     "capture.liveTranscription": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Meaning inaccurate. 'Prenos uživo' means 'Live Broadcast/Stream', not 'Live Transcription'.",
-      "suggested": "Transkripcija uživo",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "capture.yourVoiceEntry": {
@@ -208,12 +206,10 @@
       "phase": "llm"
     },
     "capture.recognitionErrorDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Register inconsistency. 'Pokušajte' is formal singular/informal plural; 'Pokušaj' is informal singular (du-form).",
-      "suggested": "Došlo je do greške u prepoznavanju govora. Pokušaj ponovo.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:00.535Z"
+  "generatedAt": "2026-07-31T06:28:30.312Z"
 }
