@@ -42,9 +42,9 @@
     },
     "milestones.titlePlaceholder": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The example is gender-specific ('Graduado' is masculine) and slightly formal for a friendly app. Using the infinitive is more neutral and common for general examples.",
-      "suggested": "p. ej., Graduarse de la universidad",
+      "confidence": 0.8,
+      "issue": "Infinitive 'Graduarse' doesn't match past participle 'Graduated'; suggests an action rather than a completed event. A past tense form is more appropriate for an example of a completed achievement.",
+      "suggested": "p. ej., Te graduaste de la universidad",
       "phase": "llm"
     },
     "milestones.descPlaceholder": {
@@ -68,5 +68,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:33.845Z"
+  "generatedAt": "2026-07-31T06:29:13.857Z"
 }
