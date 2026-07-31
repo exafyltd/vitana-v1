@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { Briefcase } from "lucide-react";
 import { usePublicRecommendations, PublicRecommendationItem } from "@/hooks/useMarketplace";
 import { AffiliateDisclosure } from "@/components/discover/AffiliateDisclosure";
+import { BusinessListingsSection } from "./BusinessListingsSection";
 import { t } from "@/lib/i18n-toast";
 
 interface BusinessPublicCardProps {
@@ -79,6 +80,8 @@ export function BusinessPublicCard({ vitanaId, className }: BusinessPublicCardPr
       )}
 
       {!isEmpty && !isLoading && <AffiliateDisclosure compact className="mt-3" />}
+
+      <BusinessListingsSection variant="visitor" vitanaId={vitanaId} className="mt-4 pt-4 border-t border-border/40" />
     </div>
   );
 }

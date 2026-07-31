@@ -75,7 +75,10 @@
       "publicTitle": "Recommendations",
       "publicSubtitle": "Products recommended by this profile",
       "publicEmpty": "No recommendations yet",
-      "viewProduct": "View"
+      "viewProduct": "View",
+      "marketplaceTitle": "My Listings",
+      "marketplaceManage": "Manage",
+      "marketplaceEmpty": "Post your first marketplace listing"
     }
   }
 }

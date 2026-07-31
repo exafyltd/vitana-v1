@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { useMyRecommendations, formatPrice, MyRecommendationItem } from "@/hooks/useMarketplace";
 import { useNativeShare } from "@/hooks/useNativeShare";
 import { t, notifySuccess, notifyError } from "@/lib/i18n-toast";
+import { BusinessListingsSection } from "../shared/BusinessListingsSection";
 
 interface DesktopBusinessCardProps {
   className?: string;
@@ -96,6 +97,8 @@ export function DesktopBusinessCard({ className }: DesktopBusinessCardProps) {
           ))}
         </div>
       )}
+
+      <BusinessListingsSection variant="owner" className="mt-6 pt-6 border-t border-border/40" />
     </div>
   );
 }

@@ -199,6 +199,19 @@ export function useMyCommunityListings(params: { status?: ListingStatus; limit?:
   });
 }
 
+// ==================== By seller (profile Business tab, Chunk 8) ====================
+
+/** Another seller's active listings, for the visitor view of their profile's Business tab. */
+export function useCommunityListingsBySeller(vitanaId: string | null | undefined, opts: { enabled?: boolean } = {}) {
+  return useQuery<ListingsResponse>({
+    queryKey: ["community-marketplace-listings-by-seller", vitanaId],
+    queryFn: () => fetchJson<ListingsResponse>(`/api/v1/community-marketplace/listings/by-seller/${vitanaId}`),
+    enabled: !!vitanaId && opts.enabled !== false,
+    staleTime: 30_000,
+    refetchOnWindowFocus: false,
+  });
+}
+
 // ==================== Create / edit (Chunk 4) ====================
 
 export interface CommunityListingInput {
