@@ -1,0 +1,27 @@
+{
+  "verdicts": {
+    "auth.notAuthorized": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "auth.noPermission": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "auth.contactAdmin": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Missing 'your' in 'your administrator'.",
+      "suggested": "يرجى الاتصال بمديرك للحصول على الوصول",
+      "phase": "llm"
+    },
+    "auth.backHome": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-07-31T06:27:56.774Z"
+}
