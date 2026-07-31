@@ -498,7 +498,17 @@ const AppHooksInitializer = () => {
       const targetUrl = (row.data as any)?.url;
       if (!targetUrl || typeof targetUrl !== 'string') return false;
       const currentPath = window.location.pathname + window.location.search;
-      if (currentPath === targetUrl) return false;
+      if (currentPath === targetUrl) {
+        // Already there — Appilix's native open_link_url landed the WebView
+        // on the target directly, so there's nothing to navigate. Still mark
+        // this row processed: Messages.tsx immediately strips the deep-link
+        // segment back to bare /inbox once it resolves the thread, which
+        // would otherwise make currentPath !== targetUrl again on the very
+        // next retry poll (300-3200ms later) and re-trigger navigate(),
+        // remounting the same chat a second/third time for no reason.
+        processedIds.add(row.id);
+        return false;
+      }
 
       processedIds.add(row.id);
       console.log('[DeepLink] Navigating to chat notification:', targetUrl, 'from', currentPath);
@@ -540,10 +550,20 @@ const AppHooksInitializer = () => {
       if (document.hidden) return;
       clearRetries();
       checkPendingNotification();
-      // Two short retries cover the race where the row hasn't propagated to the
-      // read replica yet. Both stay inside the 5s grace window above.
+      // Retries cover the race where the row hasn't propagated to the read
+      // replica yet. Front-loaded and more frequent than before (was just
+      // 1200ms/3500ms) — on Android, where the notification tap doesn't
+      // land the WebView on the target chat directly, this poll is the ONLY
+      // thing that gets the user there, so its latency is fully visible as
+      // "wrong screen, then a jump to chat a couple seconds later." Checking
+      // every ~300-450ms instead cuts that visible delay down to whatever
+      // the replica actually needs, typically well under a second. All stay
+      // inside the 5s grace window above.
+      retryTimers.push(setTimeout(checkPendingNotification, 300));
+      retryTimers.push(setTimeout(checkPendingNotification, 700));
       retryTimers.push(setTimeout(checkPendingNotification, 1200));
-      retryTimers.push(setTimeout(checkPendingNotification, 3500));
+      retryTimers.push(setTimeout(checkPendingNotification, 2000));
+      retryTimers.push(setTimeout(checkPendingNotification, 3200));
     };
 
     const onForeground = () => {
