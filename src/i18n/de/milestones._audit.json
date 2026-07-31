@@ -2,9 +2,9 @@
   "verdicts": {
     "milestones.title": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation 'Magic Moments' does not accurately convey 'Life Milestones'. It's a creative reinterpretation, but not a direct translation of significant life events. Also inconsistent with 'Moment' used for singular 'Milestone' later.",
-      "suggested": "Besondere Momente",
+      "confidence": 1,
+      "issue": "Translation of 'Milestones' as 'Momente' is too general; 'Meilensteine' is more accurate for significant life events.",
+      "suggested": "Lebensmeilensteine",
       "phase": "llm"
     },
     "milestones.add": {
@@ -19,16 +19,16 @@
     },
     "milestones.empty": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Inconsistent with 'Moment' used for singular 'Milestone' in other entries. If 'Milestone' is 'Moment', then the plural should be 'Momente'.",
-      "suggested": "Noch keine Momente",
+      "confidence": 1,
+      "issue": "Inconsistent translation of 'milestones'; should use 'Meilensteine' for accuracy.",
+      "suggested": "Noch keine Meilensteine",
       "phase": "llm"
     },
     "milestones.addFirst": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Inconsistent with 'Moment' used for singular 'Milestone' in other entries. 'Magic' is an unnecessary addition. 'Your' is also missing.",
-      "suggested": "Deinen ersten Moment hinzufügen",
+      "confidence": 1,
+      "issue": "Inconsistent translation of 'milestone'; should use 'Meilenstein' for accuracy.",
+      "suggested": "Deinen ersten Meilenstein hinzufügen",
       "phase": "llm"
     },
     "milestones.date": {
@@ -72,5 +72,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:16:15.741Z"
+  "generatedAt": "2026-07-31T06:34:16.819Z"
 }

@@ -79,7 +79,12 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "drawerNav.support": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
     }
   },
-  "generatedAt": "2026-05-20T07:09:54.995Z"
+  "generatedAt": "2026-07-31T06:31:55.067Z"
 }
