@@ -37,27 +37,18 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
   const [mediaKind, setMediaKind] = useState<MediaKind | null>(null);
   const [isCompressing, setIsCompressing] = useState(false);
   const [compressProgress, setCompressProgress] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // Synchronous re-entrancy lock. `isSubmitting` / `createPost.isPending` are
+  // React state and only settle on the next render, so a burst of taps can slip
+  // past them entirely — see handlePost for why that is the whole bug.
+  const submittingRef = useRef(false);
+  // Object path for the current attachment, generated once and reused across
+  // retries so a retry overwrites its own object instead of orphaning another
+  // copy of the same file in the bucket.
+  const uploadPathRef = useRef<string | null>(null);
   const { translate } = useTranslation();
   const { createPost } = useProfilePosts();
-
-  // VTID-03467: one submit at a time, covering the WHOLE of handlePost.
-  //
-  // The Post button's guard was `createPost.isPending || isCompressing`, and
-  // neither is true during the storage upload (lines below): isCompressing is
-  // reset in its own `finally` before the upload begins and is never set at all
-  // for images, while createPost.isPending only flips once the upload has
-  // already finished. On a slow mobile connection that leaves the button live
-  // for the entire upload, and a second tap runs handlePost again end-to-end —
-  // a real duplicate post, with its own UUID and its own `Date.now()` filename,
-  // which is exactly why such pairs survive content/image dedupe.
-  //
-  // The ref (not the state) is what closes the race: state updates are async and
-  // batched, so two taps in the same tick both read the stale value. The ref is
-  // assigned synchronously, so the second call returns immediately.
-  const postInFlight = useRef(false);
-  const [isPosting, setIsPosting] = useState(false);
-  const isBusy = isPosting || createPost.isPending || isCompressing;
 
   const handleMediaSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -89,6 +80,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
       console.log('[PostUpload] File materialized:', materializedFile.size, materializedFile.type);
       // Revoke any previous preview before replacing it
       if (mediaPreview) URL.revokeObjectURL(mediaPreview);
+      uploadPathRef.current = null;
       setMediaFile(materializedFile);
       setMediaPreview(URL.createObjectURL(materializedFile));
       setMediaKind(isVideo ? 'video' : 'image');
@@ -100,17 +92,42 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
 
   const removeMedia = () => {
     if (mediaPreview) URL.revokeObjectURL(mediaPreview);
+    uploadPathRef.current = null;
     setMediaFile(null);
     setMediaPreview(null);
     setMediaKind(null);
   };
 
+  /**
+   * Did the object actually land in the bucket? Used to tell a genuinely failed
+   * upload apart from one whose *response* was lost in transit — the bucket is
+   * publicly readable, so this list() works for any signed-in author.
+   */
+  const uploadedObjectExists = async (path: string) => {
+    const slash = path.lastIndexOf('/');
+    const dir = path.slice(0, slash);
+    const name = path.slice(slash + 1);
+    const { data, error } = await supabase.storage
+      .from('media-uploads')
+      .list(dir, { search: name, limit: 100 });
+    if (error) return false;
+    return (data ?? []).some((o) => o.name === name);
+  };
+
   const handlePost = async () => {
     if (!content.trim() && !mediaFile) return;
-    // VTID-03467: synchronous re-entry guard — see `postInFlight` above.
-    if (postInFlight.current) return;
-    postInFlight.current = true;
-    setIsPosting(true);
+    // The button's `disabled` prop cannot carry this on its own: it was gated on
+    // `createPost.isPending`, which only flips once the *insert* starts — i.e.
+    // after the upload has already finished. For the whole multi-second upload
+    // the button stayed live and gave no feedback, so users re-tapped it. Each
+    // tap fired another full upload of the same file, and N concurrent uploads
+    // saturating a phone's uplink is exactly what makes WebKit abort the
+    // in-flight ones with TypeError "Load failed" — after the bytes already
+    // landed. One attempt would still complete the post, so the author saw an
+    // error toast on a post that went through (and sometimes a duplicate post).
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+    setIsSubmitting(true);
     try {
       let imageUrl: string | undefined;
       let videoUrl: string | undefined;
@@ -140,16 +157,32 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) throw new Error('Not authenticated');
 
-        const fileExt = fileToUpload.name.split('.').pop();
-        const path = `${user.id}/posts/${Date.now()}.${fileExt}`;
+        if (!uploadPathRef.current) {
+          const fileExt = fileToUpload.name.split('.').pop();
+          uploadPathRef.current = `${user.id}/posts/${Date.now()}.${fileExt}`;
+        }
+        const path = uploadPathRef.current;
 
         console.log('[PostUpload] uploading...', { size: fileToUpload.size, type: fileToUpload.type, path, kind: mediaKind });
         const { error: uploadError } = await supabase.storage
           .from('media-uploads')
-          .upload(path, fileToUpload, { contentType: fileToUpload.type, upsert: false });
+          // upsert so retrying after a failure reuses this attempt's own path
+          // rather than leaving another orphaned copy behind.
+          .upload(path, fileToUpload, { contentType: fileToUpload.type, upsert: true });
         if (uploadError) {
-          console.error('[PostUpload] upload failed:', uploadError);
-          throw new Error(`Upload failed: ${uploadError.message}`);
+          // Same transport-drop shape the insert leg already reconciles (see
+          // useProfilePosts.createPost): storage can commit the object while the
+          // response never makes it back, which WebKit reports as "Load failed".
+          // Check whether it landed before calling this a failure.
+          if (await uploadedObjectExists(path)) {
+            console.warn('[PostUpload] upload response lost but object landed, continuing:', uploadError);
+          } else {
+            console.error('[PostUpload] upload failed:', uploadError);
+            // Keep the sheet open with the text and attachment intact so the
+            // author can retry without retyping.
+            notifyError('toasts.profile.uploadFailed');
+            return;
+          }
         }
 
         console.log('[PostUpload] getting public URL...');
@@ -178,11 +211,8 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
       const description = err instanceof Error ? err.message : '';
       toast({ title: translate('profilePosts.error', 'Something went wrong'), description, variant: 'destructive' });
     } finally {
-      // Released on failure too (including the early `return` on a failed video
-      // compression above, which this `finally` still covers), so a genuinely
-      // failed post can be retried.
-      postInFlight.current = false;
-      setIsPosting(false);
+      submittingRef.current = false;
+      setIsSubmitting(false);
     }
   };
 
@@ -210,13 +240,13 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
 
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b">
-          <Button variant="ghost" size="icon" onClick={handleClose} disabled={isBusy}>
+          <Button variant="ghost" size="icon" onClick={handleClose} disabled={isCompressing || isSubmitting}>
             <X className="h-5 w-5" />
           </Button>
           <h2 className="text-base font-semibold">{translate('profilePosts.createPost', 'Create Post')}</h2>
           <Button
             size="sm"
-            disabled={(!content.trim() && !mediaFile) || content.length > MAX_CHARS || isBusy}
+            disabled={(!content.trim() && !mediaFile) || content.length > MAX_CHARS || isSubmitting || isCompressing}
             onClick={handlePost}
             className="rounded-full"
           >
@@ -225,7 +255,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
                 <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
                 <span className="text-xs">{t('screens.profile.compressingVideoPct', { pct: compressProgress })}</span>
               </>
-            ) : isBusy ? (
+            ) : isSubmitting ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <>
@@ -289,7 +319,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
             variant="outline"
             size="sm"
             onClick={() => fileInputRef.current?.click()}
-            disabled={isBusy}
+            disabled={isCompressing || isSubmitting}
             className="rounded-full border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 gap-1.5 px-4"
           >
             <ImagePlus className="h-5 w-5" />
