@@ -111,6 +111,27 @@ export async function sendChatMessage(
   return json.data;
 }
 
+/**
+ * Ask Vitana to generate + write her reply to the last message sent to her,
+ * and wait for it (VTID-03470). Call this right after a successful
+ * sendChatMessage() to the Vitana bot — the reply used to be generated
+ * fire-and-forget as a side effect of /send itself, which could silently
+ * lose the reply under the gateway's serverless CPU throttling. This is a
+ * separate, explicitly-awaited call so completion is deterministic; the
+ * reply still lands in chat_messages and is picked up by the existing
+ * Realtime subscription like any other message, so no rendering change is
+ * needed beyond calling this after send. Errors are non-fatal to the send
+ * itself — the user's message already went through — so callers should
+ * catch and log/toast rather than treat this as blocking.
+ */
+export async function requestVitanaReply(content: string): Promise<string | null> {
+  const json = await gatewayFetch("/vitana-reply", {
+    method: "POST",
+    body: JSON.stringify({ content }),
+  });
+  return json.reply ?? null;
+}
+
 /** Mark all messages from a peer as read. */
 export async function markChatRead(peerId: string): Promise<void> {
   await gatewayFetch("/read", {
