@@ -16,6 +16,7 @@ import {
   fetchConversations,
   fetchConversation,
   sendChatMessage,
+  requestVitanaReply,
   markChatRead,
   markAllChatRead,
   type ChatMessage,
@@ -1036,6 +1037,24 @@ export function useGlobalMessages(
             // even if the gateway response shape changes.
             realMsg.content_data = (created as any).metadata || { attachments: _contentData.attachments };
             realMsg.message_type = effectiveType;
+          }
+
+          // VTID-03470: /send no longer triggers Vitana's reply itself (see
+          // chat.ts) — ask for it explicitly via a separate, awaited fetch.
+          // Not awaited HERE: this send call should still resolve instantly
+          // like any other message send, exactly as before. Because this is
+          // a real browser fetch (not server-side fire-and-forget), the
+          // browser keeps it alive independent of this function returning —
+          // unlike the old in-process background promise on the gateway,
+          // which Cloud Run could freeze the instant /send responded. The
+          // reply lands in chat_messages and arrives via the existing
+          // Realtime subscription like any other message; failures here
+          // are logged only, since the user's own message already sent
+          // successfully regardless of whether Vitana's reply comes back.
+          if (isVitanaBot(threadId) && effectiveType === "text" && body.trim().length > 0) {
+            requestVitanaReply(body).catch((err) => {
+              console.warn("[chat] Vitana reply request failed:", err);
+            });
           }
         }
 
