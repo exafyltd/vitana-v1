@@ -38,6 +38,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "@/hooks/useTranslation";
 import { ProfilePreviewDialog } from "@/components/profile/ProfilePreviewDialog";
 import { notifyError, t } from '@/lib/i18n-toast';
+import { resolveEventCover, generateCoverUrl } from '@/lib/eventCoverImage';
 
 import { fmtDate, fmtTime } from '@/lib/locale-format';
 
@@ -69,64 +70,14 @@ const formatEventTime = (dateString: string) => {
   return `${day} · ${time}`;
 };
 
-// Sanitize and validate image URLs
-const sanitizeUrl = (url?: string): string | undefined => {
-  if (!url) return undefined;
-  const s = String(url).trim();
-  if (!s) return undefined;
-  const lower = s.toLowerCase();
-  
-  // Reject unsafe schemes and known bad placeholders
-  if (
-    lower.startsWith('javascript:') ||
-    lower.startsWith('about:') ||
-    lower.includes('undefined') ||
-    s.startsWith('/api/placeholder')
-  ) {
-    return undefined;
-  }
-  
-  const isHttp = /^https?:\/\//i.test(s);
-  const isAsset = s.startsWith('/assets/');
-  const isSupabaseStorage = lower.includes('.supabase.co/storage/');
-  const isDataImage = lower.startsWith('data:image/');
-  const isBlob = lower.startsWith('blob:');
-  
-  if (isHttp || isAsset || isSupabaseStorage || isDataImage || isBlob) {
-    // Cache-bust Supabase storage URLs to pick up replaced images
-    if (isSupabaseStorage && !s.includes('_cb=')) {
-      const cb = new Date().toISOString().slice(0, 10);
-      return s + (s.includes('?') ? '&' : '?') + '_cb=' + cb;
-    }
-    return s;
-  }
-  
-  return undefined;
-};
-
-// Generate fallback image URL based on event details
-const generateImageUrl = (title: string, description?: string): string => {
-  const images = [
-    'https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=600&fit=crop',
-    'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=800&h=600&fit=crop',
-  ];
-  const hash = (title + (description || '')).split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
-  return images[Math.abs(hash) % images.length];
-};
-
-
-
-const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void, currentUserId?: string, onDeleteEvent?: (eventId: string) => void, onShareEvent?: (event: any) => void) => {
+const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, canEdit = false, onEdit?: () => void, currentUserId?: string, onDeleteEvent?: (eventId: string) => void, onShareEvent?: (event: any) => void, imagePriority = false) => {
   // Construct author object with proper fallback chain
   const authorName = event.creator_display_name || event.author?.name || 'Community Host';
   const authorAvatar = event.creator_avatar_url || event.author?.avatar || '';
-  
-  // Handle image URL with sanitization and fallback
-  const rawImage = event.image_url || event.imageUrl || event.metadata?.image_url || event.metadata?.cover_image_url;
-  const safeImage = sanitizeUrl(rawImage);
-  const imageUrl = safeImage ?? generateImageUrl(event.title, event.description);
-  
+
+  // CDN-resized cover with the untransformed URL as onError fallback
+  const cover = resolveEventCover(event);
+
   // Check if event has ticket sales enabled
   const hasTickets = event.metadata?.has_tickets === true;
   const isPaidEvent = event.metadata?.is_paid === true;
@@ -135,7 +86,9 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
     title: event.title,
     subtitle: event.metadata?.subtitle,
     description: event.description,
-    imageUrl: imageUrl,
+    imageUrl: cover.src,
+    fallbackImageUrl: cover.fallbackSrc,
+    imagePriority,
     category: 'event' as const,
     pillar: event.event_type === 'event' ? 'EVENT' : 'MEETUP',
     author: { 
@@ -172,7 +125,7 @@ const transformEventToNewsCard = (event: any, onClick?: (event: any) => void, ca
           id: event.id,
           title: event.title,
           description: event.description,
-          image_url: imageUrl,
+          image_url: cover.originalSrc,
           start_time: event.start_time,
           end_time: event.end_time,
           location: event.location,
@@ -214,6 +167,8 @@ const renderEventGrid = (
   },
   onDeleteEvent?: (eventId: string) => void,
   onShareEvent?: (event: any) => void,
+  // How many leading cards should eager-load their cover (above-the-fold row)
+  priorityCount = 0,
 ) => {
   if (events.length === 0) {
     const defaultConfig: {
@@ -268,7 +223,7 @@ const renderEventGrid = (
     const rowEvents = events.slice(i, i + 3);
     const isEvenRow = Math.floor(i / 3) % 2 === 0;
     
-    const mkProps = (ev: any) => transformEventToNewsCard(ev, onClick, false, () => onEdit?.(ev), currentUserId, onDeleteEvent, onShareEvent);
+    const mkProps = (ev: any, cardIdx: number) => transformEventToNewsCard(ev, onClick, false, () => onEdit?.(ev), currentUserId, onDeleteEvent, onShareEvent, i + cardIdx < priorityCount);
 
     rows.push(
       <div key={i} className="grid grid-cols-12 gap-6 mb-6" style={{ minHeight: '280px' }}>
@@ -277,7 +232,7 @@ const renderEventGrid = (
             <div className="col-span-6">
               <NewsCard
                 key={`${i}-0`}
-                {...mkProps(rowEvents[0])}
+                {...mkProps(rowEvents[0], 0)}
                 className={cn(
                   "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
                   onClick && "hover:ring-2 hover:ring-primary"
@@ -288,7 +243,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...mkProps(rowEvents[1])}
+                  {...mkProps(rowEvents[1], 1)}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -300,7 +255,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-2`}
-                  {...mkProps(rowEvents[2])}
+                  {...mkProps(rowEvents[2], 2)}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -315,7 +270,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-0`}
-                  {...mkProps(rowEvents[0])}
+                  {...mkProps(rowEvents[0], 0)}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -327,7 +282,7 @@ const renderEventGrid = (
               <div className="col-span-3">
                 <NewsCard
                   key={`${i}-1`}
-                  {...mkProps(rowEvents[1])}
+                  {...mkProps(rowEvents[1], 1)}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[280px]",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -339,7 +294,7 @@ const renderEventGrid = (
               <div className="col-span-6">
                 <NewsCard
                   key={`${i}-2`}
-                  {...mkProps(rowEvents[2])}
+                  {...mkProps(rowEvents[2], 2)}
                   className={cn(
                     "h-full transition-all duration-200 cursor-pointer min-h-[320px] md:min-h-[360px]",
                     onClick && "hover:ring-2 hover:ring-primary"
@@ -728,7 +683,7 @@ const EventsAndMeetups = () => {
   const eventSEO = selectedEventData ? {
     title: selectedEventData.title,
     description: selectedEventData.description || `Join us ${selectedEventData.start_time ? `on ${fmtDate(new Date(selectedEventData.start_time))}` : ''} ${selectedEventData.location ? `at ${selectedEventData.location}` : ''}`,
-    image: selectedEventData.image_url || generateImageUrl(selectedEventData.title, selectedEventData.description),
+    image: selectedEventData.image_url || generateCoverUrl(selectedEventData.title, selectedEventData.description),
     url: `${window.location.origin}/comm/events-meetups?event=${selectedEventData.id}`,
     type: 'event' as const,
   } : null;
@@ -917,7 +872,7 @@ const EventsAndMeetups = () => {
                       <>
                         {chunkEvents(filteredTodayEvents).map((chunk, chunkIndex) => (
                           <div key={`today-chunk-${chunkIndex}`}>
-                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent)}
+                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent, chunkIndex === 0 ? 3 : 0)}
                             {chunkIndex < chunkEvents(filteredTodayEvents).length - 1 && (
                               <div className="px-6 mb-8 mt-8">
                                 <MotivationalBanner variant="encouragement" />
@@ -987,7 +942,7 @@ const EventsAndMeetups = () => {
                       <>
                         {chunkEvents(filteredUpcomingEvents).map((chunk, chunkIndex) => (
                           <div key={`upcoming-chunk-${chunkIndex}`}>
-                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent)}
+                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent, chunkIndex === 0 ? 3 : 0)}
                             {chunkIndex < chunkEvents(filteredUpcomingEvents).length - 1 && (
                               <div className="px-6 mb-8 mt-8">
                                 <MotivationalBanner variant="achievement" />
@@ -1083,7 +1038,7 @@ const EventsAndMeetups = () => {
                       <>
                         {chunkEvents(followedEvents).map((chunk, chunkIndex) => (
                           <div key={`following-chunk-${chunkIndex}`}>
-                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent)}
+                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent, chunkIndex === 0 ? 3 : 0)}
                           </div>
                         ))}
                       </>
@@ -1138,7 +1093,7 @@ const EventsAndMeetups = () => {
                       <>
                         {chunkEvents(maxinaEvents).map((chunk, chunkIndex) => (
                           <div key={`recommended-chunk-${chunkIndex}`}>
-                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent)}
+                            {renderEventGrid(chunk, handleCardClick, user?.id, handleEditEvent, undefined, handleDeleteEvent, handleShareEvent, chunkIndex === 0 ? 3 : 0)}
                             {chunkIndex < chunkEvents(maxinaEvents).length - 1 && (
                               <div className="px-6 mb-8 mt-8">
                                 <MotivationalBanner variant="encouragement" />

@@ -23,8 +23,16 @@ import {
   longevityNewsKey,
   fetchLongevityNews,
 } from '@/hooks/useNewsFeed';
+import {
+  allNewsFeedKey,
+  fetchNewsFeedCandidates,
+  FEED_CANDIDATES_STALE_TIME,
+  FEED_CANDIDATES_GC_TIME,
+} from '@/hooks/useAllNewsFeed';
+import { isFeedV2Enabled } from '@/lib/feature-flags';
 import { journeyChecklistQueryKey, fetchJourneyChecklist } from '@/hooks/useJourneyChecklist';
 import { JOURNEY_STATE_QUERY_KEY, fetchJourneyState } from '@/hooks/useGuidedJourneyProgress';
+import { fetchMarketplaceFeed } from '@/hooks/useMarketplace';
 
 /**
  * Map of adjacent pillars to prefetch when on a given route
@@ -40,6 +48,21 @@ export const ADJACENT_PILLARS: Record<string, string[]> = {
   '/wallet': ['/home', '/business'],
   '/calendar': ['/home', '/health'],
   '/inbox': ['/home', '/comm'],
+};
+
+/**
+ * Lazy-route chunk importers per destination — fired on tap-intent
+ * (pointerdown / touchstart) so the chunk's network fetch starts ~100-300ms
+ * before navigation commits, turning a blank Suspense flash into an instant
+ * paint. Each importer matches the lazy import in App.tsx. Shared between
+ * MobileBottomNav and SideDrawerNav so both nav surfaces warm the same set.
+ */
+export const ROUTE_CHUNK_IMPORTERS: Record<string, () => Promise<unknown>> = {
+  '/home': () => import('@/pages/Home'),
+  '/inbox': () => import('@/pages/Messages'),
+  '/autopilot': () => import('@/pages/AutopilotDashboard'),
+  '/comm/events-meetups': () => import('@/pages/community/EventsAndMeetups'),
+  '/discover': () => import('@/pages/Discover'),
 };
 
 /**
@@ -130,6 +153,18 @@ export async function prefetchForPath(
         queryFn: () => fetchCommunityNews(15, viewerId),
         staleTime: newsStale,
       }),
+      // The unified "All" feed candidates — the DEFAULT tab under feed v2.
+      // Previously this warmup hydrated only the two LEGACY news queries, so
+      // the screen the user actually lands on still had to run its whole
+      // multi-request load on first arrival. Warm the key the screen reads.
+      isFeedV2Enabled()
+        ? queryClient.prefetchQuery({
+            queryKey: allNewsFeedKey(viewerId, lang),
+            queryFn: () => fetchNewsFeedCandidates(viewerId, token),
+            staleTime: FEED_CANDIDATES_STALE_TIME,
+            gcTime: FEED_CANDIDATES_GC_TIME,
+          })
+        : Promise.resolve(),
     ]);
   }
 
@@ -231,9 +266,14 @@ export async function prefetchForPath(
   }
 
   if (path.startsWith('/discover')) {
+    // Matches useMarketplaceFeed({ limit: 12 }) in Discover.tsx exactly — key
+    // AND queryFn — so this warms the query Discover actually reads. It used
+    // to warm `eventsKey` (the community-events query, already covered by the
+    // /comm branch above), which meant Discover's real content never had a
+    // warm cache and was a cold network round trip on every visit.
     await queryClient.prefetchQuery({
-      queryKey: eventsKey,
-      queryFn: fetchCommunityEventsQueryFn,
+      queryKey: ['marketplace-feed', undefined, 12],
+      queryFn: () => fetchMarketplaceFeed({ limit: 12 }),
       staleTime,
     });
   }

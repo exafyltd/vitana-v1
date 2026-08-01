@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Share2, TrendingUp, UserPlus, UserCheck, MessageSquare } from "lucide-react";
+import { ChevronRight, Share2, TrendingUp, UserPlus, UserCheck, MessageSquare, QrCode } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -27,6 +27,10 @@ interface MobileIdentityCardProps {
   isOwner?: boolean;
   onEdit?: () => void;
   onShare?: () => void;
+  /** Opens the QR share screen directly in "Get MAXINA" (app-invite) mode —
+   * a one-tap shortcut so a member can hand their phone to someone and let
+   * them scan straight to the app store, without going through Share. */
+  onGetMaxina?: () => void;
   onFollow?: () => void;
   onMessage?: () => void;
   isFollowing?: boolean;
@@ -54,6 +58,7 @@ export function MobileIdentityCard({
   isOwner = true,
   onEdit,
   onShare,
+  onGetMaxina,
   onFollow,
   onMessage,
   isFollowing = false,
@@ -133,6 +138,24 @@ export function MobileIdentityCard({
           >
             <Share2 className="h-3.5 w-3.5" />
             {translate('common.share', 'Share')}
+          </Button>
+        )}
+
+        {/* Get MAXINA — top right (owner view only), mirrors the Share
+            button. One tap straight to the app-invite QR, no Share sheet
+            or in-screen mode toggle in between. */}
+        {isOwner && onGetMaxina && (
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={translate('common.getMaxina', 'Get MAXINA')}
+            className="absolute top-3 right-3 h-8 w-8 rounded-full bg-gradient-to-b from-white/95 to-white/75 backdrop-blur-sm border border-white/80 hover:from-white hover:to-white/80 text-teal-800 hover:text-teal-900 z-10 shadow-sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              onGetMaxina();
+            }}
+          >
+            <QrCode className="h-3.5 w-3.5" />
           </Button>
         )}
 

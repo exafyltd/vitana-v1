@@ -449,6 +449,12 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
     icon: '📰', label: 'Weekly Summary', category: 'system',
     channel: 'push_and_inapp', priority: 'p2',
   },
+  // resolveNotificationRoute() honors data.url before falling back to this
+  // registry — the gateway always sets data.url to the announcement's deep_link.
+  feature_announcement: {
+    icon: '🎉', label: 'New Feature', category: 'system',
+    channel: 'push_and_inapp', priority: 'p2',
+  },
 
   // ═══════════════════════════════════════════════════════════
   // 16. REMINDERS (4)

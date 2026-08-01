@@ -20,6 +20,7 @@ import { t } from "@/lib/i18n-toast";
 import { matchCategoryLabel } from "@/lib/matchReason";
 import { reasonKeyFor, type FeedItem, type ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { VitanaRecommendationCard } from "@/components/vitana/VitanaRecommendationCard";
+import { FeatureAnnouncementCard } from "@/components/home/FeatureAnnouncementCard";
 
 function timeAgo(iso: string): string {
   try {
@@ -61,6 +62,18 @@ export function NewsFeedItemCard({
         link={item.link}
         tags={item.tags}
         onClick={() => onArticleClick(item)}
+      />
+    );
+  }
+
+  if (item.kind === "feature_announcement") {
+    return (
+      <FeatureAnnouncementCard
+        variant={item.variant}
+        featureTitle={item.feature_title}
+        description={item.description}
+        deepLink={item.deep_link}
+        onOpen={() => onOpen?.(item)}
       />
     );
   }

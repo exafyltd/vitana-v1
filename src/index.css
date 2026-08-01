@@ -68,6 +68,15 @@ All colors MUST be HSL.
     --sys-autopilot-tint: 8 100% 96%;
     --sys-ai-accent: 14 88% 54%;
     --sys-ai-tint: 14 100% 96%;
+    /* Feature-discovery post cards (News Feed) */
+    --sys-feature-new-accent: 262 83% 58%;
+    --sys-feature-new-tint: 262 60% 96%;
+    --sys-feature-new-card: 262 65% 94%;
+    --sys-feature-new-card-border: 262 50% 86%;
+    --sys-feature-tip-accent: 38 92% 42%;
+    --sys-feature-tip-tint: 42 90% 95%;
+    --sys-feature-tip-card: 42 45% 98%;
+    --sys-feature-tip-card-border: 42 40% 89%;
     --util-calendar-accent: 215 16% 60%;
     --util-calendar-tint: 215 25% 97%;
     --util-settings-accent: 215 16% 60%;
@@ -220,6 +229,15 @@ All colors MUST be HSL.
     --sys-autopilot-tint: 8 100% 8%;
     --sys-ai-accent: 14 88% 64%;
     --sys-ai-tint: 14 100% 8%;
+    /* Feature-discovery post cards (News Feed) - Dark Mode */
+    --sys-feature-new-accent: 262 83% 74%;
+    --sys-feature-new-tint: 262 45% 10%;
+    --sys-feature-new-card: 262 28% 15%;
+    --sys-feature-new-card-border: 262 28% 27%;
+    --sys-feature-tip-accent: 42 90% 65%;
+    --sys-feature-tip-tint: 42 55% 9%;
+    --sys-feature-tip-card: 42 22% 15%;
+    --sys-feature-tip-card-border: 42 22% 27%;
     --util-calendar-accent: 215 16% 70%;
     --util-calendar-tint: 215 25% 10%;
     --util-settings-accent: 215 16% 70%;
