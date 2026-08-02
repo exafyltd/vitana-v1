@@ -81,17 +81,15 @@
       "phase": "llm"
     },
     "eventCta.processing": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "First-person singular verb 'Obrađujem...' (I am processing) is incorrect for a system message. Should be passive or noun form.",
-      "suggested": "Obrađuje se...",
       "phase": "llm"
     },
     "eventCta.joining": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "First-person singular verb 'Pridružujem se...' (I am joining) is incorrect for a system message. Should be passive or noun form, or 'connecting'.",
-      "suggested": "Povezivanje...",
+      "confidence": 0.9,
+      "issue": "The current translation is a noun (gerund) meaning 'connection' or 'linking'. 'Joining...' as a loading state implies an ongoing action, often in the sense of becoming part of something (e.g., a session, a group). 'Pridružuje se...' (It is joining/associating) or 'Povezuje se...' (It is connecting) would be more appropriate verb forms.",
+      "suggested": "Pridružuje se...",
       "phase": "llm"
     },
     "eventCta.getTickets": {
@@ -105,5 +103,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:03:39.854Z"
+  "generatedAt": "2026-08-02T06:18:30.850Z"
 }
