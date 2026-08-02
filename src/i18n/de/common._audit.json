@@ -169,7 +169,19 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "common.follow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.getMaxina": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation is too literal and not idiomatic for an app context; 'holen' sounds like fetching. 'Hol dir' is more appropriate for informal call to action.",
+      "suggested": "Hol dir MAXINA",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:06:56.655Z"
+  "generatedAt": "2026-08-02T06:20:07.784Z"
 }
