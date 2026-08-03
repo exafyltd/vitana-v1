@@ -9347,7 +9347,9 @@
       "iosBlockedStep": "Tippe oben rechts auf „…“ und dann auf „Im Browser öffnen“.",
       "copyLink": "Link kopieren",
       "linkCopied": "Link kopiert – füge ihn in Safari ein",
-      "copyFailed": "Kopieren hat nicht geklappt"
+      "copyFailed": "Kopieren hat nicht geklappt",
+      "openInBrowser": "Im Browser öffnen",
+      "openFailed": "Instagram lässt das nicht zu. Tippe oben rechts auf „…“ und dann auf „Im Browser öffnen“."
     },
     "mobilesettings": {
       "pushNotifications": "Push-Benachrichtigungen",
