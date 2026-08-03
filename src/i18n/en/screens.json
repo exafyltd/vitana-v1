@@ -9337,7 +9337,11 @@
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Redirecting to the App Store",
       "redirecting": "Taking you to the app store…",
-      "fallbackBody": "Get MAXINA — choose your store:"
+      "fallbackBody": "Get MAXINA — choose your store:",
+      "tapToDownload": "Tap below to get MAXINA:",
+      "ctaAppStore": "Open the App Store",
+      "ctaPlayStore": "Open Google Play",
+      "inAppHint": "Store not opening? Tap “…” at the top right and choose “Open in browser”."
     },
     "mobilesettings": {
       "pushNotifications": "Push Notifications",
