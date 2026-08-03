@@ -9342,14 +9342,9 @@
       "ctaAppStore": "Zum App Store",
       "ctaPlayStore": "Zu Google Play",
       "inAppHint": "Öffnet sich der Store nicht? Tippe oben rechts auf „…“ und wähle „Im Browser öffnen“.",
-      "iosBlockedTitle": "Noch ein Schritt zum App Store",
-      "iosBlockedBody": "Instagram darf den App Store nicht direkt öffnen. In Safari klappt es sofort.",
-      "iosBlockedStep": "Tippe oben rechts auf „…“ und dann auf „Im Browser öffnen“.",
       "copyLink": "Link kopieren",
       "linkCopied": "Link kopiert – füge ihn in Safari ein",
-      "copyFailed": "Kopieren hat nicht geklappt",
-      "openInBrowser": "Im Browser öffnen",
-      "openFailed": "Instagram lässt das nicht zu. Tippe oben rechts auf „…“ und dann auf „Im Browser öffnen“."
+      "copyFailed": "Kopieren hat nicht geklappt"
     },
     "mobilesettings": {
       "pushNotifications": "Push-Benachrichtigungen",
