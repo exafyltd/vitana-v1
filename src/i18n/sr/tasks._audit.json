@@ -7,9 +7,9 @@
     },
     "tasks.confirmCancelTask": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'vi' instead of informal 'ti').",
-      "suggested": "Da li si siguran da želiš da otkažeš ovaj zadatak?",
+      "confidence": 0.9,
+      "issue": "The English phrase 'Are you sure' is gender-neutral, but the Serbian 'Da li si siguran' is masculine. For a friendly app addressing a general user, this should ideally be gender-adaptive (siguran/sigurna) or rephrased to be gender-neutral if possible. As a single string, it's only accurate for male users.",
+      "suggested": "Da li si siguran/sigurna da želiš da otkažeš ovaj zadatak?",
       "phase": "llm"
     },
     "tasks.postponeComingSoon": {
@@ -18,10 +18,8 @@
       "phase": "llm"
     },
     "tasks.addNotePrompt": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'vi' instead of informal 'ti').",
-      "suggested": "Dodaj belešku ovom zadatku:",
       "phase": "llm"
     },
     "tasks.noteAdded": {
@@ -80,5 +78,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:29:45.662Z"
+  "generatedAt": "2026-08-03T07:05:38.388Z"
 }
