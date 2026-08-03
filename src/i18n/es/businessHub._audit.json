@@ -26,10 +26,8 @@
       "phase": "llm"
     },
     "businessHub.tabs.insights": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "Translation is too generic, misses the nuance of 'deeper understanding' or 'valuable observations' implied by 'Insights'.",
-      "suggested": "Perspectivas",
       "phase": "llm"
     },
     "businessHub.recentActivity": {
@@ -88,5 +86,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:46.296Z"
+  "generatedAt": "2026-08-03T06:42:31.895Z"
 }

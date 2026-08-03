@@ -94,7 +94,27 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "wallet.creditsLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "wallet.filters.stakes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "wallet.filters.withdrawals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.displayCurrency": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:09:09.058Z"
+  "generatedAt": "2026-08-03T06:47:00.375Z"
 }
