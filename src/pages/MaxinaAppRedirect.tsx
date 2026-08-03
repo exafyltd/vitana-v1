@@ -52,6 +52,8 @@ function detectPlatform(): Platform {
 export default function MaxinaAppRedirect() {
   const [platform] = useState<Platform>(detectPlatform);
   const [inApp] = useState<InAppBrowser | null>(() => detectInAppBrowser());
+  // Set only after an "open in browser" attempt demonstrably did nothing.
+  const [openFailed, setOpenFailed] = useState(false);
 
   // The combination Apple's own redirect makes unreachable — see file header.
   const iosWebviewBlocked = platform === 'ios' && inApp !== null;
@@ -91,6 +93,34 @@ export default function MaxinaAppRedirect() {
     } catch {
       notifyError('screens.maxinaAppRedirect.copyFailed');
     }
+  }, []);
+
+  /**
+   * Hand this page to Safari, where the ordinary store redirect works.
+   *
+   * `x-safari-https://` is iOS's "open this URL in Safari" scheme. It is
+   * worth attempting even though apps.apple.com's own redirect is refused,
+   * because the two are NOT the same path: that failure is a *server 301*
+   * into a custom scheme, which webviews block hardest, whereas this is a
+   * scheme opened from a direct user tap. Some webviews pass those to the
+   * OS.
+   *
+   * Some, however, swallow it — and there is no way to feature-detect a
+   * scheme handler up front. So this never assumes it worked: if the
+   * document is still visible shortly after, nothing happened, and we say
+   * so and surface the manual route. A button that silently does nothing is
+   * the exact defect VTID-03478 removed; it must not come back through this
+   * door.
+   */
+  const openInBrowser = useCallback(() => {
+    setOpenFailed(false);
+    window.location.href = MAXINA_APP_QR_URL.replace(
+      /^https:/,
+      'x-safari-https:',
+    );
+    window.setTimeout(() => {
+      if (!document.hidden) setOpenFailed(true);
+    }, 1200);
   }, []);
 
   const primaryStoreUrl =
@@ -134,13 +164,33 @@ export default function MaxinaAppRedirect() {
           that reliably reaches the App Store, so it leads. */}
       {iosWebviewBlocked && (
         <>
-          <p className="max-w-xs rounded-xl bg-muted px-4 py-3 text-sm font-medium text-foreground">
-            {t('screens.maxinaAppRedirect.iosBlockedStep')}
+          <button
+            type="button"
+            onClick={openInBrowser}
+            className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground shadow-lg"
+          >
+            {t('screens.maxinaAppRedirect.openInBrowser')}
+          </button>
+
+          {/* Before any attempt: the manual route, stated quietly. After an
+              attempt that did nothing: the same route, stated loudly and
+              named as a failure, so the tap never just evaporates. */}
+          <p
+            className={
+              openFailed
+                ? 'max-w-xs rounded-xl bg-destructive/10 px-4 py-3 text-sm font-medium text-foreground'
+                : 'max-w-xs rounded-xl bg-muted px-4 py-3 text-sm font-medium text-foreground'
+            }
+          >
+            {openFailed
+              ? t('screens.maxinaAppRedirect.openFailed')
+              : t('screens.maxinaAppRedirect.iosBlockedStep')}
           </p>
+
           <button
             type="button"
             onClick={copyLink}
-            className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground shadow-lg"
+            className="text-sm font-medium text-muted-foreground underline"
           >
             {t('screens.maxinaAppRedirect.copyLink')}
           </button>

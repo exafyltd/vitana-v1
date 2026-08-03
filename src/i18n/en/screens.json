@@ -9347,7 +9347,9 @@
       "iosBlockedStep": "Tap “…” at the top right, then “Open in browser”.",
       "copyLink": "Copy link",
       "linkCopied": "Link copied — paste it into Safari",
-      "copyFailed": "Couldn't copy the link"
+      "copyFailed": "Couldn't copy the link",
+      "openInBrowser": "Open in browser",
+      "openFailed": "Instagram won't allow that. Tap “…” at the top right, then “Open in browser”."
     },
     "mobilesettings": {
       "pushNotifications": "Push Notifications",
