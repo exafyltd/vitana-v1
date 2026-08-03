@@ -147,42 +147,46 @@ export default function MaxinaAppRedirect() {
         </>
       )}
 
-      {/* Primary platform-matched CTA. Demoted to secondary styling on the
-          iOS webview path, where it is a best-effort attempt rather than the
-          recommended route. */}
-      {primaryStoreUrl && (
-        <a
-          href={primaryStoreUrl}
-          className={
-            iosWebviewBlocked
-              ? 'text-sm font-medium text-muted-foreground underline'
-              : 'inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground shadow-lg'
-          }
-        >
-          {platform === 'ios'
-            ? t('screens.maxinaAppRedirect.ctaAppStore')
-            : t('screens.maxinaAppRedirect.ctaPlayStore')}
-        </a>
-      )}
+      {/* Everything below is a link to a store listing, and on the iOS
+          webview path EVERY such link is dead: apps.apple.com 301s to
+          itms-appss://, which the webview refuses. Rendering a store badge
+          or CTA there puts a control on screen that cannot do anything when
+          tapped — worse than showing nothing, because it invites the tap and
+          silently fails. So on that path we render only the copy-link button
+          and the Safari instruction above, which do work. */}
+      {!iosWebviewBlocked && (
+        <>
+          {primaryStoreUrl && (
+            <a
+              href={primaryStoreUrl}
+              className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground shadow-lg"
+            >
+              {platform === 'ios'
+                ? t('screens.maxinaAppRedirect.ctaAppStore')
+                : t('screens.maxinaAppRedirect.ctaPlayStore')}
+            </a>
+          )}
 
-      {/* Both badges stay available regardless of platform, so a wrong or
-          unrecognised UA can never dead-end the visitor. */}
-      <div className="flex flex-wrap items-center justify-center gap-4">
-        <a href={APP_STORE_URL} rel="noopener">
-          <img
-            src="/images/badges/app-store-badge.svg"
-            alt={t('screens.downloadFlyer.badgeAppStoreAlt')}
-            className="h-14 w-auto"
-          />
-        </a>
-        <a href={PLAY_STORE_URL} rel="noopener">
-          <img
-            src="/images/badges/google-play-badge.svg"
-            alt={t('screens.downloadFlyer.badgeGooglePlayAlt')}
-            className="h-14 w-auto"
-          />
-        </a>
-      </div>
+          {/* Both badges stay available on every other path, so a wrong or
+              unrecognised UA can never dead-end the visitor. */}
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <a href={APP_STORE_URL} rel="noopener">
+              <img
+                src="/images/badges/app-store-badge.svg"
+                alt={t('screens.downloadFlyer.badgeAppStoreAlt')}
+                className="h-14 w-auto"
+              />
+            </a>
+            <a href={PLAY_STORE_URL} rel="noopener">
+              <img
+                src="/images/badges/google-play-badge.svg"
+                alt={t('screens.downloadFlyer.badgeGooglePlayAlt')}
+                className="h-14 w-auto"
+              />
+            </a>
+          </div>
+        </>
+      )}
 
       {inApp && !iosWebviewBlocked && (
         <p className="max-w-xs text-xs text-muted-foreground">
