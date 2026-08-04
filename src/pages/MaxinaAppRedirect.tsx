@@ -8,6 +8,7 @@ import {
   PLAY_STORE_URL,
   PLAY_STORE_MARKET_URL,
   MAXINA_APP_QR_URL,
+  IOS_WEBVIEW_ESCAPE_URL,
 } from '@/lib/store-links';
 
 /**
@@ -162,11 +163,29 @@ export default function MaxinaAppRedirect() {
         </a>
       )}
 
-      {/* iOS webview: the browser menu is the only route that works, so it
-          is the instruction rather than a footnote under a button that
-          cannot deliver. */}
+      {/* iOS webview. If an escape service is configured, offer it as the
+          primary action — it is an ordinary https link to an HTML page,
+          the one cross-origin navigation this webview reliably allows, so
+          it cannot blank the page the way the in-house attempts did. The
+          browser-menu instruction stays visible underneath either way,
+          because the service is a third party that can also fail. */}
+      {iosInWebview && IOS_WEBVIEW_ESCAPE_URL !== '' && (
+        <a
+          href={IOS_WEBVIEW_ESCAPE_URL}
+          className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground shadow-lg"
+        >
+          {t('screens.maxinaAppRedirect.ctaAppStore')}
+        </a>
+      )}
+
       {iosInWebview && (
-        <p className="max-w-xs rounded-xl bg-muted px-4 py-3 text-sm font-medium text-foreground">
+        <p
+          className={
+            IOS_WEBVIEW_ESCAPE_URL !== ''
+              ? 'max-w-xs text-xs text-muted-foreground'
+              : 'max-w-xs rounded-xl bg-muted px-4 py-3 text-sm font-medium text-foreground'
+          }
+        >
           {t('screens.maxinaAppRedirect.iosOpenInBrowser')}
         </p>
       )}
