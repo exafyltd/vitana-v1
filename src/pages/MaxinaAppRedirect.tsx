@@ -89,6 +89,25 @@ export default function MaxinaAppRedirect() {
     }
   }, []);
 
+  /**
+   * Hand the App Store listing to Safari, where Apple's redirect resolves
+   * normally.
+   *
+   * `window.open` is load-bearing and NOT interchangeable with
+   * `window.location.href` here. inappdebugger.com's per-platform matrix
+   * (Mar 2026) records the Safari scheme as working in Instagram iOS
+   * "only via window.open" — the assignment form is swallowed silently.
+   * An earlier attempt used the assignment form and did nothing at all,
+   * which is the entire reason the button appeared dead. If you refactor
+   * this, keep window.open.
+   *
+   * Must stay inside the click handler: a popup-style open outside a user
+   * gesture is blocked on its own merits, regardless of the scheme.
+   */
+  const openStoreViaSafari = useCallback(() => {
+    window.open(APP_STORE_URL.replace(/^https:/, 'x-safari-https:'), '_blank');
+  }, []);
+
   const primaryStoreUrl =
     platform === 'ios'
       ? APP_STORE_URL
@@ -122,33 +141,52 @@ export default function MaxinaAppRedirect() {
 
       <p className="max-w-xs text-sm text-muted-foreground">{statusLabel}</p>
 
-      {primaryStoreUrl && (
-        <a
-          href={primaryStoreUrl}
+      {/* On iOS inside a webview an <a> to the App Store is dead — confirmed
+          on a real iPhone in Instagram, while the Play Store link on Android
+          works. Apple 301s every iOS user agent into itms-appss://, which the
+          webview refuses, so the CTA escapes to Safari instead of linking. */}
+      {iosInWebview ? (
+        <button
+          type="button"
+          onClick={openStoreViaSafari}
           className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground shadow-lg"
         >
-          {platform === 'ios'
-            ? t('screens.maxinaAppRedirect.ctaAppStore')
-            : t('screens.maxinaAppRedirect.ctaPlayStore')}
-        </a>
+          {t('screens.maxinaAppRedirect.ctaAppStore')}
+        </button>
+      ) : (
+        primaryStoreUrl && (
+          <a
+            href={primaryStoreUrl}
+            className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground shadow-lg"
+          >
+            {platform === 'ios'
+              ? t('screens.maxinaAppRedirect.ctaAppStore')
+              : t('screens.maxinaAppRedirect.ctaPlayStore')}
+          </a>
+        )
       )}
 
-      <div className="flex flex-wrap items-center justify-center gap-4">
-        <a href={APP_STORE_URL} rel="noopener">
-          <img
-            src="/images/badges/app-store-badge.svg"
-            alt={t('screens.downloadFlyer.badgeAppStoreAlt')}
-            className="h-14 w-auto"
-          />
-        </a>
-        <a href={PLAY_STORE_URL} rel="noopener">
-          <img
-            src="/images/badges/google-play-badge.svg"
-            alt={t('screens.downloadFlyer.badgeGooglePlayAlt')}
-            className="h-14 w-auto"
-          />
-        </a>
-      </div>
+      {/* Not rendered on the iOS webview path: the App Store badge is dead
+          there for the reason above, and a Play Store badge is nothing an
+          iPhone owner can act on. */}
+      {!iosInWebview && (
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <a href={APP_STORE_URL} rel="noopener">
+            <img
+              src="/images/badges/app-store-badge.svg"
+              alt={t('screens.downloadFlyer.badgeAppStoreAlt')}
+              className="h-14 w-auto"
+            />
+          </a>
+          <a href={PLAY_STORE_URL} rel="noopener">
+            <img
+              src="/images/badges/google-play-badge.svg"
+              alt={t('screens.downloadFlyer.badgeGooglePlayAlt')}
+              className="h-14 w-auto"
+            />
+          </a>
+        </div>
+      )}
 
       {/* Quiet, neutral, and only inside a webview. Phrased as a tip rather
           than a warning — this page's job is to look like a safe download
