@@ -9344,7 +9344,8 @@
       "inAppHint": "Store not opening? Tap “…” at the top right and choose “Open in browser”.",
       "copyLink": "Copy link",
       "linkCopied": "Link copied — paste it into Safari",
-      "copyFailed": "Couldn't copy the link"
+      "copyFailed": "Couldn't copy the link",
+      "iosOpenInBrowser": "Tap “…” at the top right, then “Open in browser” — the App Store opens right away there."
     },
     "mobilesettings": {
       "pushNotifications": "Push Notifications",

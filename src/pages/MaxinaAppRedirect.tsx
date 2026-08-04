@@ -89,24 +89,30 @@ export default function MaxinaAppRedirect() {
     }
   }, []);
 
-  /**
-   * Hand the App Store listing to Safari, where Apple's redirect resolves
-   * normally.
+  /*
+   * DO NOT add a "go to the App Store" action to the iOS webview path.
    *
-   * `window.open` is load-bearing and NOT interchangeable with
-   * `window.location.href` here. inappdebugger.com's per-platform matrix
-   * (Mar 2026) records the Safari scheme as working in Instagram iOS
-   * "only via window.open" — the assignment form is swallowed silently.
-   * An earlier attempt used the assignment form and did nothing at all,
-   * which is the entire reason the button appeared dead. If you refactor
-   * this, keep window.open.
+   * Four attempts have now been tried on a real iPhone in Instagram and
+   * every one failed, three of them in ways that were worse than doing
+   * nothing:
    *
-   * Must stay inside the click handler: a popup-style open outside a user
-   * gesture is blocked on its own merits, regardless of the scheme.
+   *   1. window.location.href = <apps.apple.com>   → Apple 301s every iOS
+   *      user agent into itms-appss://, which the webview refuses. Dead.
+   *   2. A tapped <a> to the same URL               → same redirect, same
+   *      refusal. This is the "Apple badge does nothing" report.
+   *   3. window.location.href = 'x-safari-https://…' → swallowed silently.
+   *   4. window.open('x-safari-https://…')          → WORSE: opens a new
+   *      Instagram tab that never resolves the scheme, leaving the visitor
+   *      on a blank white page with no way back except the X button.
+   *
+   * inappdebugger.com lists (4) as working for Instagram iOS. On a current
+   * build it does not. Treat that matrix as a lead, not as evidence.
+   *
+   * What is left is the browser menu, which is Instagram's own escape and
+   * cannot be triggered from JS, plus copy-link. Both are rendered below.
+   * Anything more ambitious needs a maintained redirect service that
+   * tracks Meta's changes — it is not solvable from inside this file.
    */
-  const openStoreViaSafari = useCallback(() => {
-    window.open(APP_STORE_URL.replace(/^https:/, 'x-safari-https:'), '_blank');
-  }, []);
 
   const primaryStoreUrl =
     platform === 'ios'
@@ -145,25 +151,24 @@ export default function MaxinaAppRedirect() {
           on a real iPhone in Instagram, while the Play Store link on Android
           works. Apple 301s every iOS user agent into itms-appss://, which the
           webview refuses, so the CTA escapes to Safari instead of linking. */}
-      {iosInWebview ? (
-        <button
-          type="button"
-          onClick={openStoreViaSafari}
+      {!iosInWebview && primaryStoreUrl && (
+        <a
+          href={primaryStoreUrl}
           className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground shadow-lg"
         >
-          {t('screens.maxinaAppRedirect.ctaAppStore')}
-        </button>
-      ) : (
-        primaryStoreUrl && (
-          <a
-            href={primaryStoreUrl}
-            className="inline-flex min-h-12 items-center justify-center rounded-full bg-primary px-8 text-base font-semibold text-primary-foreground shadow-lg"
-          >
-            {platform === 'ios'
-              ? t('screens.maxinaAppRedirect.ctaAppStore')
-              : t('screens.maxinaAppRedirect.ctaPlayStore')}
-          </a>
-        )
+          {platform === 'ios'
+            ? t('screens.maxinaAppRedirect.ctaAppStore')
+            : t('screens.maxinaAppRedirect.ctaPlayStore')}
+        </a>
+      )}
+
+      {/* iOS webview: the browser menu is the only route that works, so it
+          is the instruction rather than a footnote under a button that
+          cannot deliver. */}
+      {iosInWebview && (
+        <p className="max-w-xs rounded-xl bg-muted px-4 py-3 text-sm font-medium text-foreground">
+          {t('screens.maxinaAppRedirect.iosOpenInBrowser')}
+        </p>
       )}
 
       {/* Not rendered on the iOS webview path: the App Store badge is dead
@@ -193,9 +198,14 @@ export default function MaxinaAppRedirect() {
           page, not to raise an alarm about the browser the visitor is in. */}
       {inApp && (
         <>
-          <p className="max-w-xs text-xs text-muted-foreground">
-            {t('screens.maxinaAppRedirect.inAppHint')}
-          </p>
+          {/* Android keeps the soft tip — its store link works, so this is
+              only for the rare case it doesn't. iOS already carries the
+              instruction above as its primary content, so no duplicate. */}
+          {!iosInWebview && (
+            <p className="max-w-xs text-xs text-muted-foreground">
+              {t('screens.maxinaAppRedirect.inAppHint')}
+            </p>
+          )}
           <button
             type="button"
             onClick={copyLink}
