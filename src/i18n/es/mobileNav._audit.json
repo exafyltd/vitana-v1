@@ -19,7 +19,23 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "mobileNav.myJourney": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mobileNav.news": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.inbox": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:33.846Z"
+  "generatedAt": "2026-08-04T06:09:58.657Z"
 }
