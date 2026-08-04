@@ -6,10 +6,8 @@
       "phase": "identical"
     },
     "businessHub.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Baue dein Wellness-Geschäft aus",
       "phase": "llm"
     },
     "businessHub.tabs.snapshot": {
@@ -43,10 +41,8 @@
       "phase": "llm"
     },
     "businessHub.analytics": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Analytik' refers more to the field of study; 'Analysen' is more common for data/reports in a UI context.",
-      "suggested": "Analysen",
       "phase": "llm"
     },
     "businessHub.searchBusiness": {
@@ -60,10 +56,8 @@
       "phase": "llm"
     },
     "businessHub.noServicesDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Erstelle deinen ersten Dienst, um Kunden zu gewinnen.",
       "phase": "llm"
     },
     "businessHub.createService": {
@@ -79,8 +73,8 @@
     "businessHub.noClientsDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'deine').",
-      "suggested": "Deine Kunden werden hier erscheinen.",
+      "issue": "Using 'erscheinen' for UI list items is less idiomatic than 'angezeigt'.",
+      "suggested": "Deine Kunden werden hier angezeigt.",
       "phase": "llm"
     },
     "businessHub.noSales": {
@@ -91,10 +85,10 @@
     "businessHub.noSalesDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'deine').",
-      "suggested": "Deine Verkaufshistorie wird hier erscheinen.",
+      "issue": "Using 'erscheinen' for UI list items is less idiomatic than 'angezeigt'.",
+      "suggested": "Deine Verkaufshistorie wird hier angezeigt.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:04:30.811Z"
+  "generatedAt": "2026-08-04T06:11:18.609Z"
 }

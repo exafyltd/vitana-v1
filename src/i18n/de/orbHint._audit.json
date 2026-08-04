@@ -1,10 +1,10 @@
 {
   "verdicts": {
-    "challenges.searchPlaceholder": {
+    "orbHint.tapToTalk": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-04T06:11:51.920Z"
+  "generatedAt": "2026-08-04T06:16:34.379Z"
 }

@@ -1,10 +1,8 @@
 {
   "verdicts": {
     "empty.noAppsFound": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Formal register ('Ihrer') instead of informal ('deiner').",
-      "suggested": "Keine Apps gefunden, die deiner Suche entsprechen.",
       "phase": "llm"
     },
     "empty.noEventsFound": {
@@ -48,17 +46,13 @@
       "phase": "llm"
     },
     "empty.noEventsYet": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Formal register ('Erstellen Sie') instead of informal ('Erstelle').",
-      "suggested": "Noch keine Veranstaltungen. Erstelle zuerst eine Veranstaltung.",
       "phase": "llm"
     },
     "empty.tryAdjustingFilters": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Formal register ('Versuchen Sie', 'Ihre') instead of informal ('Versuche', 'deine').",
-      "suggested": "Versuche, deine Filter oder Suchanfrage anzupassen.",
       "phase": "llm"
     },
     "empty.noData": {
@@ -122,5 +116,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:10:19.509Z"
+  "generatedAt": "2026-08-04T06:13:18.716Z"
 }
