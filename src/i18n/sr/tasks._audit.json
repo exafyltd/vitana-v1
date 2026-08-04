@@ -7,9 +7,9 @@
     },
     "tasks.confirmCancelTask": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'vi' instead of informal 'ti').",
-      "suggested": "Da li si siguran da želiš da otkažeš ovaj zadatak?",
+      "confidence": 0.9,
+      "issue": "Gender-specific adjective 'siguran' (masculine) is used when addressing a user whose gender might be unknown or female. A wellness app should ideally be gender-neutral or adapt.",
+      "suggested": "Da li zaista želiš da otkažeš ovaj zadatak?",
       "phase": "llm"
     },
     "tasks.postponeComingSoon": {
@@ -18,10 +18,8 @@
       "phase": "llm"
     },
     "tasks.addNotePrompt": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (formal 'vi' instead of informal 'ti').",
-      "suggested": "Dodaj belešku ovom zadatku:",
       "phase": "llm"
     },
     "tasks.noteAdded": {
@@ -80,5 +78,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:29:45.662Z"
+  "generatedAt": "2026-08-04T06:29:19.876Z"
 }

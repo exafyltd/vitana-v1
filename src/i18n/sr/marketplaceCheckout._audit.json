@@ -1,0 +1,250 @@
+{
+  "verdicts": {
+    "marketplaceCheckout.balance.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.balance.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.balance.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.balance.addMoney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.checkout.button": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.checkout.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.checkout.successTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.checkout.successBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.checkout.duplicateTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.checkout.duplicateBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.checkout.affiliateTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.checkout.affiliateBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.checkout.affiliateLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.checkout.affiliateOpened": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.amountLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.amountPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.currencyLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.currencyEur": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.currencyUsd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.continue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.invalidAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.deposit.checkingTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.deposit.checkingBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.deposit.succeededTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.deposit.succeededBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.deposit.failedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.deposit.failedBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.deposit.amountLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.deposit.backToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.invalid_request": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.CART_EMPTY": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.PRODUCT_UNAVAILABLE": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.PRICE_UNAVAILABLE": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.MIXED_CURRENCY": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.UNSUPPORTED_WALLET_CURRENCY": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.WALLET_ACCOUNT_MISSING": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.WALLET_ACCOUNT_INACTIVE": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.INSUFFICIENT_BALANCE": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.TENANT_REQUIRED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.WALLET_DEBIT_FAILED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.CART_READ_FAILED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.ORDER_WRITE_FAILED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.WALLET_READ_FAILED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.GATEWAY_MISCONFIGURED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.errors.unknown": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    }
+  },
+  "generatedAt": "2026-08-04T06:10:54.134Z"
+}
