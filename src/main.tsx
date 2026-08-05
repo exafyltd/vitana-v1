@@ -19,6 +19,7 @@ import { ProfileProvider } from './context/ProfileProvider'
 import { LanguageProvider } from './contexts/LanguageContext'
 import { OfflineProvider } from './context/OfflineProvider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { restoreQueryCache, startQueryCachePersistence } from './lib/query-persist'
 import { ThemeProvider } from 'next-themes'
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -60,82 +61,14 @@ const queryClient = new QueryClient({
 
 /**
  * Persistent Cache via localStorage
- * 
- * Simple persistence for stable data - survives page refresh
+ *
+ * Simple persistence for stable data - survives page refresh. The key list,
+ * the restore rules and the write loop live in @/lib/query-persist so a
+ * mutation that just changed persisted data can flush it immediately
+ * (persistQueryCacheNow) rather than waiting up to 30s for the interval.
  */
-const PERSIST_KEY = 'vitana-query-cache';
-// Private query keys (global-threads, my-journey, autopilot-onboarding) are
-// user-scoped — their queryKey embeds the user id — so persisting them to
-// localStorage can't leak one account's data into another's session: a
-// different user's query (with a different id) simply won't read the stored
-// entry. News + live streams are public.
-const PERSIST_KEYS = [
-  'profiles', 'tenant', 'user_preferences', 'health-plans', 'life-compass',
-  'global-community-events', 'live-streams', 'profile-stats-count',
-  'follow-counts', 'follow-status', 'fx-rate',
-  // Added (VTID-03255): warm the first authenticated screens across refreshes.
-  'global-threads', 'my-journey', 'autopilot-onboarding',
-  'longevity-news', 'community-news',
-  // The unified "All" feed (feed v2) — the DEFAULT tab of the News screen, and
-  // until now the one news query that was NOT persisted, so a hard refresh
-  // always dropped the user back to a cold, spinner-first feed even though the
-  // legacy news queries beside it restored instantly. User-scoped (the key
-  // embeds the viewer id), same as the other private keys above.
-  'all-news-feed',
-  // chat_groups rows share the inbox list with global-threads; without this
-  // they were the only part of the list that reloaded from empty on refresh.
-  'chat-groups',
-];
-
-// Restore cache from localStorage on startup
-try {
-  const cached = localStorage.getItem(PERSIST_KEY);
-  if (cached) {
-    const parsed = JSON.parse(cached);
-    const now = Date.now();
-    
-    // Restore each cached query if not expired (24 hours).
-    //
-    // CRITICAL: restore with the ORIGINAL `updatedAt` timestamp. Without it,
-    // setQueryData stamps dataUpdatedAt=now, so a day-old snapshot looks "fresh"
-    // for the full staleTime (2m) and refetchOnMount SKIPS the background refetch
-    // — the screen is pinned to stale persisted data. This is why a host who just
-    // scheduled a Live Room (and thus has a very recent persisted scheduled-list
-    // snapshot that predates her own room) never saw it: her list restored as
-    // "fresh" and never refetched, while everyone else fetched on mount and saw it.
-    // Passing updatedAt makes truly-stale snapshots refetch immediately on mount
-    // (proper stale-while-revalidate: render cache instantly, refresh in background).
-    Object.entries(parsed).forEach(([key, value]: [string, any]) => {
-      if (value && value.data && (now - value.timestamp) < 24 * 60 * 60 * 1000) {
-        queryClient.setQueryData(JSON.parse(key), value.data, { updatedAt: value.timestamp });
-      }
-    });
-  }
-} catch (e) {
-  console.debug('[Cache] Failed to restore cache:', e);
-}
-
-// Persist cache to localStorage periodically
-setInterval(() => {
-  try {
-    const cache: Record<string, any> = {};
-    const queryCache = queryClient.getQueryCache();
-    
-    queryCache.getAll().forEach(query => {
-      const keyStr = String(query.queryKey[0]);
-      if (PERSIST_KEYS.some(k => keyStr.includes(k)) && query.state.data !== undefined) {
-        cache[JSON.stringify(query.queryKey)] = {
-          data: query.state.data,
-          timestamp: query.state.dataUpdatedAt,
-        };
-      }
-    });
-    
-    localStorage.setItem(PERSIST_KEY, JSON.stringify(cache));
-  } catch (e) {
-    console.debug('[Cache] Failed to persist cache:', e);
-  }
-}, 30_000); // Every 30 seconds
+restoreQueryCache(queryClient);
+startQueryCachePersistence(queryClient);
 
 // Initialize axe-core for accessibility testing in development
 if (process.env.NODE_ENV === 'development') {
