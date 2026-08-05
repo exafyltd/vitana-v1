@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { clearChatCache } from "@/hooks/chatPersistCache";
 import { stopAndReset as stopSoundscape } from "@/audio/SoundscapeAudioManager";
+import { releaseDeviceOnSignOut } from "@/lib/pushNotifications";
 import { QueryClient } from "@tanstack/react-query";
 import { AuthContext } from "./AuthContext";
 import type { AuthContextValue } from "./AuthContext";
@@ -397,6 +398,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       stopSoundscape();
       clearChatCache();
       clearOrbSessionState();
+
+      // Release this device's push claim while the JWT is still valid
+      // (VTID-03481). Without this the signed-out account stays registered as
+      // an owner of the phone, and the next account to sign in ADDS a claim
+      // instead of replacing one — so every fan-out notification arrives once
+      // per account, each in that account's own language. Awaited but never
+      // throws, so it cannot block or slow-fail sign-out.
+      await releaseDeviceOnSignOut();
 
       // ORB widget lifecycle is now managed solely by useOrbVoiceWidget hook
 

@@ -21,16 +21,42 @@ npm run build     # Production build → dist/
 npm run preview   # Preview production build
 ```
 
-## Deployment (Dual — Parallel)
+## Deployment — production is AWS, not Cloud Run
 
-This app currently deploys to **two** hosts simultaneously:
+**`vitanaland.com` and `www` are served by the AWS ECS service
+`vitana-community-app-awsdr`.** Cloud Run's `community-app` is a rollback
+target that no user reaches. This moved at the VTID-03419 cutover.
 
-| Host | URL | Trigger | Status |
-|------|-----|---------|--------|
-| **Cloud Run** | `community-app` service in `lovable-vitana-vers1` | `.github/workflows/DEPLOY.yml` on push to `main` | New (being verified) |
-| **Lovable CDN** | `vitana-lovable-vers1.lovable.app` | Auto-deploy on push to `main` | Legacy (fallback) |
+| Host | Serves | Role |
+|------|--------|------|
+| **AWS ECS** `vitana-community-app-awsdr` | `vitanaland.com`, `www`, `dr-app.vitanaland.com` | **Production — what users get** |
+| Cloud Run `community-app` | its own `*.run.app` URL | Rollback target, kept in sync |
+| Lovable CDN | `vitana-lovable-vers1.lovable.app` | Legacy, being decommissioned |
 
-Once Cloud Run is verified working, Lovable will be decommissioned.
+`DEPLOY.yml` deploys **both** — its `aws_prod` job calls
+`AWS-PROD-DEPLOY-FRONTEND.yml` with the same pinned commit (VTID-03483).
+Before that job existed, running `DEPLOY.yml` deployed Cloud Run, reported
+success everywhere, and left every visitor on the previous build; shipping
+anything required a second, separate, undocumented dispatch of the AWS
+workflow. **If you edit `DEPLOY.yml`, keep `aws_prod`.**
+
+### Verifying a frontend deploy actually shipped
+
+A green workflow is not evidence. Check the bytes production serves, and
+sample repeatedly — an ECS rolling deploy serves the old and new build
+side by side for a minute or two, so a single request can report either:
+
+```bash
+for i in $(seq 1 20); do
+  curl -s "https://vitanaland.com/<page>?s=$i" \
+    | grep -o 'assets/index-[A-Za-z0-9_-]*\.js' | head -1
+done | sort | uniq -c
+```
+
+Only when all samples agree on the new chunk is the deploy live. Then grep
+that chunk for a string unique to your change. Cloudflare fronts the apex
+but sends `cf-cache-status: DYNAMIC` with `no-store` for the SPA shell, so
+a stale response means the rollout is still in flight, not a cache.
 
 ### Staging-first cutover (effective Mon 8 Jun 2026, 10:00 Europe/Berlin)
 

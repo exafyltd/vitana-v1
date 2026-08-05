@@ -20,6 +20,13 @@ declare global {
     };
     /** Native FCM token injected by Appilix before page load */
     appilix_fcm_token?: string;
+    /**
+     * Supabase user id the Appilix shell maps this device to for
+     * user_identity push targeting. Read by the shell at PAGE LOAD, so it must
+     * be cleared on sign-out — a device left claimed by a signed-out account
+     * keeps receiving that account's notifications (VTID-03481).
+     */
+    appilix_push_notification_user_identity?: string;
   }
 }
 
