@@ -6,10 +6,8 @@
       "phase": "llm"
     },
     "campaigns.delete.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Phrasing is a bit formal and clunky for a friendly app. 'wird entfernen' is less common than simple present tense for immediate consequences in UI. 'Diese Aktion kann nicht rückgängig gemacht werden' is correct but 'Das kann nicht rückgängig gemacht werden' is more idiomatic and informal.",
-      "suggested": "Das Löschen von \"{name}\" entfernt alle zugehörigen Entwürfe und Analysen dauerhaft. Das kann nicht rückgängig gemacht werden.",
       "phase": "llm"
     },
     "campaigns.delete.dontAskAgain": {
@@ -33,10 +31,8 @@
       "phase": "llm"
     },
     "campaigns.creation.yourCampaigns": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihre' instead of informal 'Deine' (du-form).",
-      "suggested": "Deine Kampagnen",
       "phase": "llm"
     },
     "campaigns.creation.drafts": {
@@ -55,17 +51,13 @@
       "phase": "llm"
     },
     "campaigns.creation.tips.1": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihnen' instead of informal 'dir' (du-form).",
-      "suggested": "Klare Namen helfen dir, Kampagnen später zu finden",
       "phase": "llm"
     },
     "campaigns.creation.tips.2": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal imperative 'Verbinden Sie' instead of informal 'Verbinde' (du-form).",
-      "suggested": "Verbinde Kanäle jetzt für sofortige Planung",
       "phase": "llm"
     },
     "campaigns.creation.tips.3": {
@@ -74,12 +66,10 @@
       "phase": "llm"
     },
     "campaigns.creation.tips.4": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Ihre' instead of informal 'deine' (du-form).",
-      "suggested": "Intelligente Planung verwendet deine bisherigen Engagement-Daten",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:06:19.320Z"
+  "generatedAt": "2026-08-05T06:08:11.680Z"
 }
