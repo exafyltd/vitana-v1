@@ -514,6 +514,11 @@ async function fetchDirectFromChatMessages(userId: string, directUnreadMap: Reco
       .from("chat_messages")
       .select("*")
       .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
+      // DM rows only — mirrors the gateway RPC. Group messages share this
+      // table with receiver_id NULL + group_id set; without this they dedup
+      // to an undefined peer and surface as a peerless inbox entry.
+      .not("receiver_id", "is", null)
+      .is("group_id", null)
       .order("created_at", { ascending: false })
       .limit(2000) as any;
 
@@ -961,12 +966,19 @@ export function useGlobalMessages(
     !exhaustedThreads[activeThreadId] &&
     mergedMessages.length >= MESSAGE_PAGE_SIZE;
 
-  const loadOlderMessages = useCallback(async () => {
-    if (!user || !activeThreadId || !isGlobalContext) return;
-    if (isLoadingOlder || exhaustedThreads[activeThreadId]) return;
+  /**
+   * Fetch one page of older history. Returns how many NEW messages were
+   * actually prepended — callers use that to tell a real prepend apart from a
+   * no-op (empty page, duplicate page, or a failed request), which matters
+   * because the consumer's scroll-anchor restore only runs when the rendered
+   * count changes.
+   */
+  const loadOlderMessages = useCallback(async (): Promise<number> => {
+    if (!user || !activeThreadId || !isGlobalContext) return 0;
+    if (isLoadingOlder || exhaustedThreads[activeThreadId]) return 0;
 
     const oldest = mergedMessages[0];
-    if (!oldest) return;
+    if (!oldest) return 0;
 
     setIsLoadingOlder(true);
     try {
@@ -979,17 +991,23 @@ export function useGlobalMessages(
       if (older.length < MESSAGE_PAGE_SIZE) {
         setExhaustedThreads((prev) => ({ ...prev, [activeThreadId]: true }));
       }
-      if (older.length === 0) return;
+      if (older.length === 0) return 0;
+
+      const known = new Set(mergedMessages.map((m) => m.id));
+      const fresh = older.filter((m) => !known.has(m.id));
+      if (fresh.length === 0) return 0;
 
       setOlderByThread((prev) => {
         const existing = prev[activeThreadId] || [];
         const seen = new Set(existing.map((m) => m.id));
-        const fresh = older.filter((m) => !seen.has(m.id));
-        if (fresh.length === 0) return prev;
-        return { ...prev, [activeThreadId]: [...fresh, ...existing] };
+        const add = fresh.filter((m) => !seen.has(m.id));
+        if (add.length === 0) return prev;
+        return { ...prev, [activeThreadId]: [...add, ...existing] };
       });
+      return fresh.length;
     } catch (err) {
       console.warn("[chat] loadOlderMessages failed:", (err as Error).message);
+      return 0;
     } finally {
       setIsLoadingOlder(false);
     }
@@ -1002,6 +1020,37 @@ export function useGlobalMessages(
     mergedMessages,
     queryClient,
   ]);
+
+  // Keep scrollback continuous across a base-page refetch.
+  //
+  // `messages` only ever holds the NEWEST page. When realtime invalidation or
+  // a visibility-change refetch replaces it, any rows that were in the old
+  // base page but fall outside the new one were never copied into
+  // `olderByThread` — so once enough new messages arrive to push a full page
+  // out, the merged view would jump from the loaded prefix straight to the
+  // new page, leaving a permanent hole in the middle. Absorb the displaced
+  // rows instead. Only does anything once the user has actually paged back;
+  // otherwise dropping them is correct and keeps memory flat.
+  const lastBaseRef = useRef<Record<string, GlobalMessage[]>>({});
+  useEffect(() => {
+    if (!activeThreadId) return;
+    const prevBase = lastBaseRef.current[activeThreadId] || [];
+    lastBaseRef.current[activeThreadId] = messages;
+    if (prevBase.length === 0 || messages.length === 0) return;
+
+    const baseIds = new Set(messages.map((m) => m.id));
+    const displaced = prevBase.filter((m) => !baseIds.has(m.id));
+    if (displaced.length === 0) return;
+
+    setOlderByThread((prev) => {
+      const existing = prev[activeThreadId];
+      if (!existing || existing.length === 0) return prev;
+      const seen = new Set(existing.map((m) => m.id));
+      const add = displaced.filter((m) => !seen.has(m.id));
+      if (add.length === 0) return prev;
+      return { ...prev, [activeThreadId]: [...existing, ...add] };
+    });
+  }, [activeThreadId, messages]);
 
   // ── Optimistic cache helpers ──────────────────────────────────────
 

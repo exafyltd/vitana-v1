@@ -9,7 +9,8 @@ import { messageCache } from "./messageCache";
 import type { MessageKind, SendMessageArgs } from './useHybridMessages';
 
 // Stable identity so consumers memoizing on it never see a changed reference.
-const NO_OLDER_MESSAGES = async (): Promise<void> => {};
+// Returns 0 = "nothing prepended", matching useGlobalMessages' contract.
+const NO_OLDER_MESSAGES = async (): Promise<number> => 0;
 
 export interface TenantMessage {
   id: string;

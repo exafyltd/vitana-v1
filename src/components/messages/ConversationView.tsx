@@ -239,6 +239,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     if (threadId !== previousThreadId.current) {
       setIsThreadDataLoaded(false);
       hasInitialScrolledRef.current = null;
+      // New thread opens at its newest message again.
+      hasPagedBackRef.current = false;
+      scrollAnchorRef.current = null;
       previousThreadId.current = threadId;
       setIsThreadSwitching(false);
     }
@@ -252,12 +255,24 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   // distance from the bottom before the fetch, then restore it once the new
   // messages have laid out (see the useLayoutEffect below).
   const scrollAnchorRef = useRef<number | null>(null);
+  // Set once the user pages back in this thread; suppresses the entry-time
+  // scroll-to-newest retries so they can't undo the restore. Reset per thread.
+  const hasPagedBackRef = useRef(false);
 
   const handleScrollToTop = useCallback(() => {
     if (!threadId || !hasOlderMessages || isLoadingOlder) return;
+    hasPagedBackRef.current = true;
     const el = scrollRef.current;
     scrollAnchorRef.current = el ? el.scrollHeight - el.scrollTop : null;
-    void loadOlderMessages();
+    // A load that prepends nothing — an empty page (history that happens to be
+    // an exact multiple of the page size), a duplicate page, or a failed
+    // request — leaves the rendered count unchanged, so the restore effect
+    // below never fires to consume the anchor. Left set, it would be applied
+    // to the NEXT unrelated message arrival and yank the viewport away from
+    // wherever the user had scrolled. Clear it ourselves.
+    void Promise.resolve(loadOlderMessages())
+      .then((added) => { if (!added) scrollAnchorRef.current = null; })
+      .catch(() => { scrollAnchorRef.current = null; });
   }, [threadId, hasOlderMessages, isLoadingOlder, loadOlderMessages]);
 
   // Track scroll position and trigger top pagination — throttled via rAF, no state updates
@@ -393,6 +408,14 @@ const ConversationView: React.FC<ConversationViewProps> = ({
 
   // Keep the reading position steady after a page of older history is
   // prepended. Runs before paint so the user never sees the jump.
+  //
+  // Keyed on the id of the TOP message, not on messages.length: only a
+  // prepend changes what sits at the top. Keying on length let an unrelated
+  // count change that landed first — a base-page refetch appending new
+  // messages at the bottom, which is common on mobile where the thread
+  // bootstraps twice — consume the anchor, so the real prepend then went
+  // unanchored and the viewport slid.
+  const topMessageId = messages.length > 0 ? messages[0].id : null;
   useLayoutEffect(() => {
     const anchor = scrollAnchorRef.current;
     if (anchor == null) return;
@@ -400,7 +423,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     const el = scrollRef.current;
     if (!el) return;
     el.scrollTop = el.scrollHeight - anchor;
-  }, [messages.length]);
+  }, [topMessageId]);
 
 
   // Scroll to latest messages instantly when entering a conversation (WhatsApp-style)
@@ -413,6 +436,12 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       hasInitialScrolledRef.current = threadId;
 
       const scrollToEnd = () => {
+        // Never fight scrollback. These retries are fired from timers whose
+        // queued requestAnimationFrame survives this effect's cleanup, so one
+        // can land AFTER a prepend has already restored the reading position
+        // and slam the user back to the newest message. Reproduced on mobile
+        // by scrolling up within ~300ms of opening a thread.
+        if (hasPagedBackRef.current || scrollAnchorRef.current != null) return;
         const el = scrollRef.current;
         if (el) {
           el.scrollTop = el.scrollHeight - el.clientHeight;
