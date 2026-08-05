@@ -14,7 +14,6 @@ import { SwipeableMessage } from './SwipeableMessage';
 import TypingIndicator from './TypingIndicator';
 import VirtualizedList from '@/components/ui/virtualized-list';
 import { useHybridMessages } from '@/hooks/useHybridMessages';
-import { usePaginatedMessages } from '@/hooks/usePaginatedMessages';
 import { useAuth } from "@/context/AuthProvider";
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { useToast } from '@/hooks/use-toast';
@@ -91,13 +90,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   const { user } = useAuth();
   const isMobile = useIsMobile();
   
-  // Use paginated messages for performance
-  const paginatedMessages = usePaginatedMessages({
-    pageSize: 50,
-    paginationThreshold: 50,
-    virtualizationThreshold: 200,
-  });
-
   // CRITICAL: Only pass real threadId, never recipientId (prevents wrong cache key)
   const {
     threads,
@@ -112,6 +104,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     context: messageContext,
     isMessagesLoading,
     isMessagesFetching,
+    loadOlderMessages,
+    hasOlderMessages,
+    isLoadingOlder,
   } = useHybridMessages(context, threadId);
 
 
@@ -250,16 +245,20 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   }, [threadId]);
 
 
-  // Handle scroll to top for loading older messages
+  // Handle scroll to top for loading older messages.
+  //
+  // Prepending history grows the container ABOVE the viewport, which would
+  // otherwise shove the user's reading position down the page. Record the
+  // distance from the bottom before the fetch, then restore it once the new
+  // messages have laid out (see the useLayoutEffect below).
+  const scrollAnchorRef = useRef<number | null>(null);
+
   const handleScrollToTop = useCallback(() => {
-    if (threadId && paginatedMessages.hasOlder && !paginatedMessages.isLoadingOlder) {
-      paginatedMessages.loadOlderMessages(
-        threadId,
-        messageContext,
-        messageContext === 'tenant' ? undefined : undefined // Add tenant ID if needed
-      );
-    }
-  }, [threadId, messageContext, paginatedMessages]);
+    if (!threadId || !hasOlderMessages || isLoadingOlder) return;
+    const el = scrollRef.current;
+    scrollAnchorRef.current = el ? el.scrollHeight - el.scrollTop : null;
+    void loadOlderMessages();
+  }, [threadId, hasOlderMessages, isLoadingOlder, loadOlderMessages]);
 
   // Track scroll position and trigger top pagination — throttled via rAF, no state updates
   const handleScroll = useCallback(() => {
@@ -392,6 +391,17 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     prevMessageCountRef.current = messages.length;
   }, [messages.length, scrollToBottom]);
 
+  // Keep the reading position steady after a page of older history is
+  // prepended. Runs before paint so the user never sees the jump.
+  useLayoutEffect(() => {
+    const anchor = scrollAnchorRef.current;
+    if (anchor == null) return;
+    scrollAnchorRef.current = null;
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight - anchor;
+  }, [messages.length]);
+
 
   // Scroll to latest messages instantly when entering a conversation (WhatsApp-style)
   // Use useLayoutEffect to run before browser paint for smoother UX
@@ -477,34 +487,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         console.error('No thread ID available for sending message');
         setSendError('Thread not found');
         return;
-      }
-
-      // Create optimistic message for instant feedback
-      const optimisticMessage = {
-        id: `temp-${Date.now()}`,
-        body: content,
-        message_type: messageType || 'text',
-        content_data: contentData,
-        sender_id: user?.id,
-        thread_id: threadId,
-        created_at: new Date().toISOString(),
-        parent_message_id: parentMessageId,
-        action_buttons: actionButtons,
-        sent_at: new Date().toISOString(),
-        delivered_at: null,
-        read_at: null,
-        updated_at: new Date().toISOString(),
-        optimistic: true,
-        sender: {
-          user_id: user?.id || '',
-          display_name: user?.email || 'You',
-          avatar_url: null 
-        }
-      };
-
-      // Add optimistic message immediately for instant feedback
-      if (paginatedMessages.shouldUsePagination) {
-        paginatedMessages.addNewMessage(optimisticMessage);
       }
 
       // Scroll to show new message immediately
@@ -598,17 +580,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       }
 
       setReplyingTo(null);
-
-      if (paginatedMessages.shouldUsePagination && newMessage) {
-        paginatedMessages.addNewMessage({
-          ...newMessage,
-          sender: { 
-            user_id: user?.id || '',
-            display_name: user?.email || 'You',
-            avatar_url: null 
-          }
-        });
-      }
     } catch (error) {
       // Extract meaningful error message from various error types
       const extractMessage = (e: unknown): string => {
@@ -660,13 +631,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     
     try {
       setLoadError(null);
-      if (paginatedMessages.shouldUsePagination) {
-        await paginatedMessages.fetchInitialMessages(
-          threadId, 
-          messageContext, 
-          messageContext === 'tenant' ? undefined : undefined
-        );
-      }
+      await fetchMessages(threadId);
     } catch (error) {
       console.error('Error loading messages:', error);
       setLoadError('Failed to load messages. Please try again.');
@@ -1020,6 +985,19 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           ) : (
 
             <div ref={contentRef}>
+              {isLoadingOlder && (
+                <div className="flex items-center justify-center gap-2 py-3">
+                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">
+                    {t('screens.messages.loadingOlderMessages')}
+                  </span>
+                </div>
+              )}
+              {!isLoadingOlder && !hasOlderMessages && messages.length > 0 && (
+                <p className="py-3 text-center text-xs text-muted-foreground">
+                  {t('screens.messages.conversationStart')}
+                </p>
+              )}
               {(() => {
                 // Build message lookup map for O(1) parent resolution
                 const messageMap = new Map<string, any>(messages.map(m => [m.id, m] as [string, any]));

@@ -8,6 +8,9 @@ import { useCalendarEvents } from "./useCalendarEvents";
 import { messageCache } from "./messageCache";
 import type { MessageKind, SendMessageArgs } from './useHybridMessages';
 
+// Stable identity so consumers memoizing on it never see a changed reference.
+const NO_OLDER_MESSAGES = async (): Promise<void> => {};
+
 export interface TenantMessage {
   id: string;
   thread_id?: string;
@@ -846,5 +849,12 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
     startTyping,
     stopTyping,
     isTenantContext,
+    // Scrollback parity with useGlobalMessages. The tenant messages query
+    // above is unbounded — it already returns the whole thread — so there is
+    // never an older page to fetch. Present so ConversationView can call the
+    // same API in either context without branching.
+    loadOlderMessages: NO_OLDER_MESSAGES,
+    hasOlderMessages: false,
+    isLoadingOlder: false,
   };
 }
