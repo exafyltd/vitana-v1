@@ -128,6 +128,31 @@ This is the **frontend** repo. The backend is in `exafyltd/vitana-platform`:
 **Test user UUID:** `a27552a3-0257-4305-8ed0-351a80fd3701`
 Use this user when an authenticated user is needed for testing (e.g., Playwright screenshots, API calls, profile checks).
 
+### Never write as the test user against production (VTID-03506)
+
+Sign the test account in **only** against a PR preview (`community-app-pr-<number>`)
+or staging (`preview.vitanaland.com`). **Never** against `vitanaland.com`,
+`www`, or `dr-app.vitanaland.com`. Reading prod as the test user is fine;
+**writing** to it is not, and "just one post to check the feed" is exactly the
+write that caused this rule.
+
+On 2026-08-05 a session reproducing VTID-03503 created 5 public posts as this
+account on production between 14:54 and 15:00 UTC. `trg_notify_community_post`
+fans out to every member of the author's tenant, so those 5 inserts became **960
+notifications and 600 delivered pushes** — real members' lock screens filled with
+"E2E Test User shared a new post". Deleting the posts afterwards fixed nothing:
+a push is unrecallable the moment it is sent.
+
+The account is a full member of the production tenant, which is what makes a
+"harmless" test write indistinguishable from a real member posting. Two guards
+now exist (migration `20260805160000`): `_notif_is_test_actor()` plus a BEFORE
+INSERT sink guard on `user_notifications` that drops any notification whose
+actor is a registered or `e2e-%`/`@vitanatest.exafy.io` account. **Treat them as
+the seatbelt, not the permission slip** — they stop notifications, not the posts,
+comments, likes, or chat messages themselves, which still land in the real feed
+in front of real people. Register any new test account in
+`notification_test_actors`.
+
 ## Key Patterns
 
 - **Mobile-first:** `useIsMobile()` hook, MobileAppShell wrapper
