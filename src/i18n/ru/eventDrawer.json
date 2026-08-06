@@ -2,9 +2,9 @@
   "eventDrawer": {
     "host": "Хост",
     "follow": "Подписаться",
-    "following": "Вы подписаны",
+    "following": "Ты подписан",
     "followingLoading": "Подписка…",
-    "unfollowed": "Вы отписались",
+    "unfollowed": "Ты отписался",
     "followingToast": "Подписано!",
     "communityHost": "Хост сообщества",
     "community": "Сообщество",

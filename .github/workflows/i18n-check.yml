@@ -48,6 +48,13 @@ jobs:
       - name: Locale registry parity (picker ↔ supported_locales)
         run: node scripts/check-locale-registry.mjs
 
+      # Brand voice is informal in every language. Each locale has its OWN
+      # rule cross-checked against another language, because a pattern tuned
+      # on one language does not transfer — see the script header for the
+      # measured false-positive rates that forced that design.
+      - name: Formal-register guard (du / tu / ti / ты / ty)
+        run: node scripts/i18n-register-check.mjs --all
+
       - name: Long-word guard (DE compound-word overflow)
         # Fails the build if any DE catalog value contains a word >= 22
         # chars. Auto-fix via the i18n-long-words workflow (Gemini-driven
