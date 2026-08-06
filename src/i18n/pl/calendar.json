@@ -29,14 +29,16 @@
       "title": "Twoje zarezerwowane wydarzenia",
       "todayLabel": "Dziś",
       "nextUp": "Następne",
-      "noEventsToday": "Brak wydarzeń dzisiaj"
+      "noEventsToday": "Brak wydarzeń dzisiaj",
+      "_pending_review": {}
     },
     "filters": {
       "personal": "Osobiste",
       "community": "Społeczność",
       "work": "Praca",
       "health": "Zdrowie",
-      "workout": "Trening"
+      "workout": "Trening",
+      "_pending_review": {}
     },
     "categories": {
       "community": "Społeczność",
@@ -45,19 +47,22 @@
       "nutrition": "Odżywianie",
       "professional": "Praca",
       "personal": "Osobiste",
-      "training": "Trening"
+      "training": "Trening",
+      "_pending_review": {}
     },
     "bookingStatus": {
       "booked": "Zarezerwowane",
       "rsvp": "Potwierdź",
       "ticket": "Bilet",
-      "reserved": "Zarezerwowane"
+      "reserved": "Zarezerwowane",
+      "_pending_review": {}
     },
     "timeGroups": {
       "today": "Dzisiaj",
       "tomorrow": "Jutro",
       "thisWeek": "W tym tygodniu",
-      "later": "Później"
+      "later": "Później",
+      "_pending_review": {}
     },
     "autopilot": {
       "suggestions": "Sugestie Autopilota",
@@ -77,7 +82,8 @@
       "reminderLaterToday": "Przypomnienie ustawione na dziś później",
       "reminderTomorrow": "Przypomnienie ustawione na jutro",
       "recommendFocus": "Polecany blok skupienia",
-      "focusBlockDesc": "Masz dostępny 90-minutowy slot czasowy. Idealny do skupionej pracy."
+      "focusBlockDesc": "Masz dostępny 90-minutowy slot czasowy. Idealny do skupionej pracy.",
+      "_pending_review": {}
     },
     "toasts": {
       "eventCreated": "Wydarzenie utworzone",
@@ -94,22 +100,26 @@
       "featureComingSoon": "Funkcja wkrótce dostępna",
       "inviteFollowers": "Zaproś obserwujących",
       "rescheduleEvent": "Przełóż wydarzenie",
-      "shareToGroup": "Udostępnij grupie"
+      "shareToGroup": "Udostępnij grupie",
+      "_pending_review": {}
     },
     "error": {
-      "failedToCreate": "Nie udało się utworzyć wydarzenia"
+      "failedToCreate": "Nie udało się utworzyć wydarzenia",
+      "_pending_review": {}
     },
     "allDay": "Cały dzień",
     "milestoneToday": "Kamień milowy",
     "focus": {
       "todaysFocus": "Dzisiejsze skupienie",
       "lightDay": "Lekki dzień — odkryj aktywności lub nadrób zaległości w dzienniku",
-      "moreSteps": "więcej kroków"
+      "moreSteps": "więcej kroków",
+      "_pending_review": {}
     },
     "badge": {
       "guidedStep": "Krok z przewodnikiem",
       "milestone": "Kamień milowy",
-      "wellness": "Wellness"
+      "wellness": "Wellness",
+      "_pending_review": {}
     },
     "action": {
       "start": "Rozpocznij",
@@ -118,11 +128,13 @@
       "details": "Szczegóły",
       "viewPlan": "Zobacz plan",
       "open": "Otwórz",
-      "done": "Gotowe"
+      "done": "Gotowe",
+      "_pending_review": {}
     },
     "group": {
       "stepsRemaining": "pozostałe kroki",
-      "min": "min"
+      "min": "min",
+      "_pending_review": {}
     },
     "journey": {
       "dayOf": "Dzień {day} z {total}",
@@ -140,8 +152,12 @@
         "wave-3": "Pogłębianie połączeń",
         "wave-4": "Inteligencja zdrowotna",
         "wave-5": "Chwile wglądu",
-        "wave-6": "Rekomendacje i odkrycia"
-      }
-    }
-  }
+        "wave-6": "Rekomendacje i odkrycia",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

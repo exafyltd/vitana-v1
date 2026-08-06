@@ -51,7 +51,8 @@
       "movement": "Ruch",
       "mind": "Umysł",
       "supplements": "Suplementy",
-      "experts": "Eksperci"
+      "experts": "Eksperci",
+      "_pending_review": {}
     },
     "subcategories": {
       "longevity": "Długowieczność",
@@ -78,7 +79,8 @@
       "sexualHealth": "Zdrowie seksualne",
       "prevention": "Zapobieganie i wczesne wykrywanie",
       "generalHealth": "Ogólne zdrowie",
-      "dnaAnalysis": "Analiza DNA"
+      "dnaAnalysis": "Analiza DNA",
+      "_pending_review": {}
     },
     "quickActions": {
       "title": "Szybkie działania",
@@ -89,7 +91,8 @@
       "reorderPrevious": "Zamów ponownie",
       "managePayment": "Zarządzaj płatnościami",
       "findServicesNearMe": "Znajdź usługi w pobliżu",
-      "viewSavedItems": "Zobacz zapisane przedmioty"
+      "viewSavedItems": "Zobacz zapisane przedmioty",
+      "_pending_review": {}
     },
     "aiPicks": {
       "title": "Rekomendacje AI dla Ciebie",
@@ -101,24 +104,30 @@
       "recommendationsFound": "{count} rekomendacji znaleziono",
       "noRecommendations": "Nie znaleziono rekomendacji",
       "noRecommendationsDesc": "Wybierz inny filtr, aby zobaczyć więcej rekomendacji.",
-      "viewAllPicks": "Zobacz wszystkie propozycje"
+      "viewAllPicks": "Zobacz wszystkie propozycje",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Wszystkie",
       "services": "Usługi",
       "supplements": "Suplementy",
       "experts": "Eksperci",
-      "deals": "Oferty"
+      "deals": "Oferty",
+      "_pending_review": {}
     },
     "toast": {
       "actionSelected": "Wybrano akcję",
-      "comingSoon": "Funkcja {action} już wkrótce!"
+      "comingSoon": "Funkcja {action} już wkrótce!",
+      "_pending_review": {}
     },
     "guest": {
       "bannerTitle": "Zaloguj się, aby zdobywać nagrody Vitana przy każdym zakupie",
       "bannerSubtitle": "Przeglądaj swobodnie — zaloguj się (to nic nie kosztuje), aby kupować i zacząć zdobywać nagrody.",
       "bannerCta": "Zaloguj się",
-      "signIn": "Zaloguj się"
-    }
-  }
+      "signIn": "Zaloguj się",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

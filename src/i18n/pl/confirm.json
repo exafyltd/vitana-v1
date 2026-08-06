@@ -15,6 +15,8 @@
     "disconnect": "Czy na pewno chcesz rozłączyć to połączenie?",
     "disconnectDesc": "Możesz połączyć się ponownie później.",
     "proceed": "Czy chcesz kontynuować?",
-    "proceedDesc": "Ta czynność zostanie wykonana."
-  }
+    "proceedDesc": "Ta czynność zostanie wykonana.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

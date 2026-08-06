@@ -24,6 +24,8 @@
     "charactersRemaining": "Pozostało {count} znaków",
     "fileTooBig": "Plik jest za duży (maks. {max})",
     "invalidFileType": "Nieprawidłowy typ pliku",
-    "uploadLimit": "Maksymalnie {max} plików"
-  }
+    "uploadLimit": "Maksymalnie {max} plików",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

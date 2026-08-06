@@ -7,6 +7,8 @@
     "posts": "Posty",
     "followers": "Obserwujący",
     "following": "Obserwowani",
-    "groups": "Grupy"
-  }
+    "groups": "Grupy",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

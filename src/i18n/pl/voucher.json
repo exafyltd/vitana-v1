@@ -4,7 +4,8 @@
       "title": "Podaruj voucher Maxina",
       "subtitle": "Podaruj dobre samopoczucie i połączenie ze społecznością.",
       "buyVoucher": "Kup voucher",
-      "openingCheckout": "Otwieranie bezpiecznej płatności..."
+      "openingCheckout": "Otwieranie bezpiecznej płatności...",
+      "_pending_review": {}
     },
     "tiers": {
       "test": {
@@ -13,7 +14,8 @@
           "Tylko do testu płatności",
           "To nie jest prawdziwy voucher",
           "Do testów deweloperskich"
-        ]
+        ],
+        "_pending_review": {}
       },
       "experience": {
         "name": "Doświadczenie",
@@ -22,7 +24,8 @@
           "Spersonalizowana konsultacja wellness",
           "30-dniowy okres próbny Vitana+ w zestawie",
           "Pięknie zaprojektowany e-voucher"
-        ]
+        ],
+        "_pending_review": {}
       },
       "exclusive": {
         "name": "Wyjątkowy",
@@ -31,8 +34,10 @@
           "Indywidualna sesja coachingowa z ekspertem",
           "90-dniowa subskrypcja Vitana+",
           "Priorytetowa rezerwacja + korzyści VIP"
-        ]
-      }
+        ],
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "success": {
       "title": "Voucher zakupiony!",
@@ -40,7 +45,8 @@
       "download": "Pobierz voucher",
       "sendEmail": "Wyślij do odbiorcy e-mailem",
       "viewOrders": "Zobacz w zamówieniach",
-      "done": "Gotowe"
+      "done": "Gotowe",
+      "_pending_review": {}
     },
     "email": {
       "title": "Wyślij voucher e-mailem",
@@ -50,7 +56,8 @@
       "personalMessage": "Wiadomość osobista (opcjonalnie)",
       "messagePlaceholder": "Wszystkiego najlepszego! Ciesz się tą dobrostanową przyjemnością...",
       "back": "Wstecz",
-      "send": "Wyślij voucher"
+      "send": "Wyślij voucher",
+      "_pending_review": {}
     },
     "preview": {
       "title": "Twój voucher",
@@ -64,7 +71,8 @@
       "copyLink": "Kopiuj link",
       "share": "Zapisz / Udostępnij",
       "shareHint": "Zapisz do Plików, na Dysk lub wyślij komuś",
-      "downloadHint": "Jeśli pobieranie otworzy się puste, dotknij Otwórz w przeglądarce."
+      "downloadHint": "Jeśli pobieranie otworzy się puste, dotknij Otwórz w przeglądarce.",
+      "_pending_review": {}
     },
     "toast": {
       "downloadStarted": "Pobieranie rozpoczęte!",
@@ -81,7 +89,10 @@
       "pdfNotAvailable": "Pobieranie PDF niedostępne dla tego typu zamówienia",
       "enterRecipientEmail": "Wprowadź adres e-mail odbiorcy.",
       "emailOnlyForVouchers": "Wysyłanie e-maili dostępne tylko dla voucherów",
-      "sendingVoucherEmail": "Wysyłanie e-maila z voucherem..."
-    }
-  }
+      "sendingVoucherEmail": "Wysyłanie e-maila z voucherem...",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

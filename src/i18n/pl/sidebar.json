@@ -45,6 +45,8 @@
     "monitoring": "Monitorowanie",
     "logout": "Wyloguj",
     "connectors": "Łączniki",
-    "support": "Wsparcie"
-  }
+    "support": "Wsparcie",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

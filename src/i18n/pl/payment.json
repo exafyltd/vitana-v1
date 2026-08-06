@@ -18,6 +18,8 @@
     "balanceRefreshedDesc": "Saldo portfela zostało zaktualizowane",
     "refreshFailed": "Odświeżanie nieudane",
     "refreshFailedDesc": "Saldo nie mogło zostać zaktualizowane. Spróbuj ponownie.",
-    "error": "Błąd"
-  }
+    "error": "Błąd",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

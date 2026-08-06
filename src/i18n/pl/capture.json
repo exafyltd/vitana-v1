@@ -41,6 +41,8 @@
     "sendFailed": "Wysłanie nieudane",
     "sendFailedDesc": "Twoja opinia nie mogła zostać wysłana. Spróbuj ponownie.",
     "recognitionError": "Błąd rozpoznawania",
-    "recognitionErrorDesc": "Rozpoznawanie mowy napotkało błąd. Spróbuj ponownie."
-  }
+    "recognitionErrorDesc": "Rozpoznawanie mowy napotkało błąd. Spróbuj ponownie.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

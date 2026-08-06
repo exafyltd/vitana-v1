@@ -1,7 +1,7 @@
 {
   "discount": {
     "welcomeTitle": "Twój prezent powitalny",
-    "welcomeMessage": "Użyj tego kodu, aby otrzymać 10% zniżki na pierwsze wydarzenie.",
+    "welcomeMessage": "Użyj tego kodu na 10% zniżki na swoje pierwsze wydarzenie",
     "validFor": "Ważny przez 90 dni",
     "applyCode": "Zastosuj kod zniżkowy",
     "applied": "Zniżka zastosowana!",
@@ -26,9 +26,6 @@
     "email": "E-mail",
     "ticketEmailNote": "Twój bilet i potwierdzenie zostaną wysłane na ten adres e-mail.",
     "left": "Pozostało {count}",
-    "loadFailed": "Nie udało się załadować biletów",
-    "_pending_review": {
-      "welcomeMessage": true
-    }
+    "loadFailed": "Nie udało się załadować biletów"
   }
 }

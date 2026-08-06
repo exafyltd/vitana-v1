@@ -22,6 +22,8 @@
     "healthEmpty": "Zaloguj swój pierwszy wpis, aby uruchomić swój Indeks.",
     "noActionsMatchedYet": "Brak dopasowanych działań — Autopilot kształtuje sugestie.",
     "actionsPendingOne": "{count} oczekujące działanie",
-    "actionsPendingOther": "{count} oczekujących działań"
-  }
+    "actionsPendingOther": "{count} oczekujących działań",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

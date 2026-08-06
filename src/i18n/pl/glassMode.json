@@ -14,6 +14,8 @@
     "textInputReady": "Wprowadzanie Tekstu Gotowe",
     "typeMessage": "Możesz teraz wpisać swoją wiadomość.",
     "actionFailed": "Akcja Nieudana",
-    "couldNotExecute": "Nie udało się wykonać {action}"
-  }
+    "couldNotExecute": "Nie udało się wykonać {action}",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

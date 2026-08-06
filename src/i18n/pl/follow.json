@@ -1,6 +1,8 @@
 {
   "follow": {
     "noFollowers": "Brak obserwujących",
-    "noFollowing": "Nie obserwujesz jeszcze nikogo"
-  }
+    "noFollowing": "Nie obserwujesz jeszcze nikogo",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

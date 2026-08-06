@@ -4,36 +4,47 @@
     "items": {
       "privacySettings": {
         "title": "Ustawienia prywatności",
-        "description": "Skonfiguruj ustawienia prywatności i udostępniania"
+        "description": "Skonfiguruj ustawienia prywatności i udostępniania",
+        "_pending_review": {}
       },
       "manageAccess": {
         "title": "Zarządzaj dostępem",
-        "description": "Kontroluj, kto może przeglądać Twoje wspomnienia zdrowotne"
+        "description": "Kontroluj, kto może przeglądać Twoje wspomnienia zdrowotne",
+        "_pending_review": {}
       },
       "securitySettings": {
         "title": "Ustawienia bezpieczeństwa",
-        "description": "Zaktualizuj ustawienia uwierzytelniania i bezpieczeństwa"
+        "description": "Zaktualizuj ustawienia uwierzytelniania i bezpieczeństwa",
+        "_pending_review": {}
       },
       "apiKeysAccess": {
         "title": "Klucze API i Dostęp",
-        "description": "Zarządzaj integracjami aplikacji stron trzecich i dostępem do API"
+        "description": "Zarządzaj integracjami aplikacji stron trzecich i dostępem do API",
+        "_pending_review": {}
       },
       "dataRights": {
         "title": "Prawa do danych",
-        "description": "Skorzystaj ze swoich praw do przenoszenia i usuwania danych"
+        "description": "Skorzystaj ze swoich praw do przenoszenia i usuwania danych",
+        "_pending_review": {}
       },
       "auditLogs": {
         "title": "Logi audytu",
-        "description": "Przejrzyj historię dostępu i ścieżkę audytu bezpieczeństwa"
+        "description": "Przejrzyj historię dostępu i ścieżkę audytu bezpieczeństwa",
+        "_pending_review": {}
       },
       "permissionSettings": {
         "title": "Ustawienia uprawnień",
-        "description": "Dostosuj szczegółowe uprawnienia dla różnych funkcji"
+        "description": "Dostosuj szczegółowe uprawnienia dla różnych funkcji",
+        "_pending_review": {}
       },
       "exportData": {
         "title": "Eksportuj dane",
-        "description": "Pobierz bezpiecznie swoje wspomnienia i dane zdrowotne"
-      }
-    }
-  }
+        "description": "Pobierz bezpiecznie swoje wspomnienia i dane zdrowotne",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

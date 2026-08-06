@@ -20,7 +20,8 @@
     "visibility": {
       "public": "Publiczne",
       "followers": "Obserwujący",
-      "private": "Prywatne"
+      "private": "Prywatne",
+      "_pending_review": {}
     },
     "languageOptions": {
       "english": "Angielski",
@@ -32,7 +33,8 @@
       "russian": "Rosyjski",
       "arabic": "Arabski",
       "chinese": "Chiński",
-      "japanese": "Japoński"
+      "japanese": "Japoński",
+      "_pending_review": {}
     },
     "cancel": "Anuluj",
     "save": "Zapisz zmiany",
@@ -46,7 +48,8 @@
       "makeShorter": "Skróć",
       "moreProfessional": "Bardziej profesjonalnie",
       "moreInspirational": "Bardziej inspirująco",
-      "suggestion": "Sugestia Autopilota"
+      "suggestion": "Sugestia Autopilota",
+      "_pending_review": {}
     },
     "identity": {
       "editIdentity": "Edytuj tożsamość",
@@ -69,7 +72,8 @@
       "uploadFailed": "Przesyłanie nie powiodło się",
       "uploadFailedDesc": "Nie udało się przesłać zdjęcia. Spróbuj ponownie.",
       "identityUpdated": "Tożsamość zaktualizowana",
-      "identityUpdatedDesc": "Twoje dane tożsamości zostały pomyślnie zapisane."
+      "identityUpdatedDesc": "Twoje dane tożsamości zostały pomyślnie zapisane.",
+      "_pending_review": {}
     },
     "coverLibrary": {
       "title": "Biblioteka okładek",
@@ -96,7 +100,10 @@
       "universalRemoved": "Uniwersalne zdjęcie okładkowe usunięte",
       "uploadFailed": "Przesyłanie nieudane",
       "categoryRequired": "Najpierw wybierz kategorię dla tego zdjęcia.",
-      "saveError": "Nie udało się zapisać — spróbuj ponownie."
-    }
-  }
+      "saveError": "Nie udało się zapisać — spróbuj ponownie.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

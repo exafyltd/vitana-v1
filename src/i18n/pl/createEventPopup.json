@@ -68,7 +68,8 @@
       "volunteer": "❤️ Wolontariat i Pomoc",
       "support": "🫂 Grupa Wsparcia",
       "entertainment": "🎭 Rozrywka",
-      "other": "✨ Inne"
+      "other": "✨ Inne",
+      "_pending_review": {}
     },
     "durations": {
       "30min": "30 minut",
@@ -81,7 +82,8 @@
       "8hour": "8 godzin",
       "half-day": "Pół dnia",
       "full-day": "Cały dzień",
-      "custom": "Niestandardowy czas trwania..."
+      "custom": "Niestandardowy czas trwania...",
+      "_pending_review": {}
     },
     "toasts": {
       "invalidFileType": "Nieprawidłowy typ pliku",
@@ -113,7 +115,10 @@
       "personalEventCreated": "Wydarzenie utworzone!",
       "personalEventCreatedDesc": "Wydarzenie zostało dodane do Twojego kalendarza.",
       "error": "Błąd",
-      "errorDesc": "Nie udało się utworzyć wydarzenia. Spróbuj ponownie."
-    }
-  }
+      "errorDesc": "Nie udało się utworzyć wydarzenia. Spróbuj ponownie.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

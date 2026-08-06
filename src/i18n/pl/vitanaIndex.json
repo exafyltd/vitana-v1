@@ -21,7 +21,8 @@
       "building": "Rozwijający się",
       "strong": "Silny",
       "reallyGood": "Naprawdę dobrze",
-      "elite": "Elita"
+      "elite": "Elita",
+      "_pending_review": {}
     },
     "framings": {
       "starting": "Dopiero zaczynasz",
@@ -29,7 +30,10 @@
       "building": "Nawyki się kształtują",
       "strong": "90-dniowy kamień milowy",
       "reallyGood": "Rozkwitasz",
-      "elite": "Elita"
-    }
-  }
+      "elite": "Elita",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
