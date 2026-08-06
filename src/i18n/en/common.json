@@ -35,6 +35,7 @@
     "download": "Download",
     "upload": "Upload",
     "refresh": "Refresh",
-    "retry": "Retry"
+    "retry": "Retry",
+    "uploading": "Uploading..."
   }
 }

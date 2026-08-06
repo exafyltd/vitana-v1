@@ -21,7 +21,7 @@
 //     - LOW_CONFIDENCE = the auditor itself is uncertain
 //
 // Output:
-//   - src/i18n/<locale>/_audit.json    (machine-readable per-shard)
+//   - i18n-audit/<locale>/<shard>.json  (machine-readable per-shard)
 //   - docs/i18n-audit-<locale>.md      (human-readable summary)
 //   - stdout: counts (OK / EDIT_SUGGESTED / LOW_CONFIDENCE)
 //
@@ -41,7 +41,7 @@
 //   --shard=screens           (limit to one shard)
 //   --batch=30                (keys per LLM call)
 //   --threshold=10            (pct EDIT_SUGGESTED+LOW_CONF that fails the run)
-//   --resume                  (skip keys already in _audit.json with verdict OK)
+//   --resume                  (skip keys already audited with verdict OK)
 //   --dry-run                 (count only, no LLM calls)
 
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'node:fs';
@@ -82,6 +82,12 @@ const TARGET_LANG_NAME = ({
 }[TARGET_LOCALE] || TARGET_LOCALE);
 
 const TARGET_DIR = join(I18N_DIR, TARGET_LOCALE);
+// Audit reports are generated artifacts, NOT translations. They live outside
+// src/i18n/ because src/i18n/<locale>/*.json is consumed by an import.meta.glob
+// in src/i18n/index.ts — leaving them inside baked ~1.5 MB of audit JSON per
+// locale into the shipped bundle (VTID-03509).
+const AUDIT_DIR = join(ROOT, 'i18n-audit', TARGET_LOCALE);
+mkdirSync(AUDIT_DIR, { recursive: true });
 const SRC_DIR = join(I18N_DIR, 'en');
 if (!existsSync(TARGET_DIR) || !existsSync(SRC_DIR)) {
   console.error(`[audit] missing locale dir: ${TARGET_DIR} or ${SRC_DIR}`);
@@ -332,7 +338,7 @@ for (const shardName of shards) {
   }
   const tgtShard = JSON.parse(readFileSync(tgtShardPath, 'utf8'));
   const enLeaves = flattenLeaves(enShard);
-  const auditPath = join(TARGET_DIR, shardName.replace(/\.json$/, '._audit.json'));
+  const auditPath = join(AUDIT_DIR, shardName);
   const prevAudit = RESUME && existsSync(auditPath) ? JSON.parse(readFileSync(auditPath, 'utf8')) : { verdicts: {} };
 
   const verdicts = { ...prevAudit.verdicts };
@@ -445,7 +451,7 @@ lines.push('## Sample of flagged keys');
 lines.push('');
 let printed = 0;
 for (const shardName of shards) {
-  const auditPath = join(TARGET_DIR, shardName.replace(/\.json$/, '._audit.json'));
+  const auditPath = join(AUDIT_DIR, shardName);
   if (!existsSync(auditPath)) continue;
   const a = JSON.parse(readFileSync(auditPath, 'utf8'));
   for (const [path, v] of Object.entries(a.verdicts)) {
@@ -466,7 +472,7 @@ console.log(`LOW_CONFIDENCE:  ${totalLowConf}`);
 console.log(`Pass rate:       ${total === 0 ? 0 : ((100 * totalOK) / total).toFixed(1)}%`);
 console.log(`Flagged:         ${editPct.toFixed(1)}% (threshold ${THRESHOLD_PCT}%)`);
 console.log(`Report:          ${reportPath}`);
-console.log(`Per-shard:       src/i18n/${TARGET_LOCALE}/<shard>._audit.json`);
+console.log(`Per-shard:       i18n-audit/${TARGET_LOCALE}/<shard>.json`);
 
 if (editPct > THRESHOLD_PCT) {
   console.error(`[audit] FAIL: ${editPct.toFixed(1)}% flagged > ${THRESHOLD_PCT}% threshold`);

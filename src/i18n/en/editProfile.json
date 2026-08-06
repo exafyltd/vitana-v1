@@ -12,6 +12,10 @@
     "manage": "Manage",
     "about": "About",
     "addBio": "Add a bio...",
-    "tapToEdit": "Tap to edit"
+    "tapToEdit": "Tap to edit",
+    "title": "Title",
+    "titlePlaceholder": "Video title",
+    "description": "Description",
+    "descriptionPlaceholder": "Optional description..."
   }
 }

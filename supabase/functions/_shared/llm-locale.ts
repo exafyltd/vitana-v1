@@ -38,11 +38,20 @@ const LANGUAGE_NAMES: Record<EdgeLocale, string> = {
   ar: 'Arabic (العربية)',
 };
 
+// The brand voice is informal in EVERY language (VTID-03509). A locale missing
+// from this map gets no register directive at all, and LLMs default to the
+// formal register for most European languages — so a new locale that is merely
+// "translated" still reads as a bank letter next to the German original.
 const REGISTER_HINTS: Partial<Record<EdgeLocale, string>> = {
   de: 'Use du-form (informal "du"), NOT Sie-form. The brand voice is informal and friendly.',
   sr: 'Use ti-form (informal), NOT Vi-form. Friendly, casual register.',
   es: 'Use tú-form (informal), NOT usted. Friendly tone.',
   fr: 'Use tu-form (tutoyer), NOT vous. Friendly tone.',
+  pt: 'Use tu-form (European Portuguese informal), NOT você or o/a senhor(a). Friendly tone.',
+  ru: 'Use ты-form (informal), NOT вы-form. Friendly, casual register.',
+  pl: 'Use ty-form (informal), NOT Pan/Pani. Friendly, casual register.',
+  // ar/zh are deferred past the 18 Aug release; zh has no T-V distinction to
+  // encode, and ar register guidance waits for the RTL work.
 };
 
 const COMPOUND_RULE: Partial<Record<EdgeLocale, string>> = {
@@ -52,28 +61,64 @@ const COMPOUND_RULE: Partial<Record<EdgeLocale, string>> = {
 /**
  * Resolve the user's preferred locale for LLM output.
  *
- * Sources, in priority order:
- *   1. profiles.preferred_language
- *   2. profiles.stt_language (voice setting, often the canonical choice)
+ * Sources, in priority order (mirrors the gateway's i18n/server-locale.ts so
+ * both planes resolve the same user to the same language):
+ *   1. app_users.locale                 (canonical profile column)
+ *   2. user_preferences.stt_language    (what the language picker actually writes)
  *   3. EDGE_DEFAULT_LOCALE ('de')
+ *
+ * VTID-03509 — this used to read `profiles.preferred_language` and
+ * `profiles.stt_language`. NEITHER COLUMN HAS EVER EXISTED: the language
+ * picker writes `user_preferences.stt_language`, and the canonical column is
+ * `app_users.locale`. PostgREST rejected the select with 42703, the catch
+ * below swallowed it, and every edge-function LLM call fell back to German for
+ * every user regardless of their setting. It failed identically for German
+ * users (who were already getting German) which is why it survived — the
+ * default masked the bug for the majority of the user base.
+ *
+ * Because both reads are best-effort, a failure must be LOUD but non-fatal:
+ * returning 'de' for a Spanish user is a visible product bug, not a no-op, so
+ * it gets an error log rather than the silent fallback it had before.
  */
 export async function getUserLocale(
   supabase: SupabaseClient,
   userId: string,
 ): Promise<EdgeLocale> {
   if (!userId) return EDGE_DEFAULT_LOCALE;
+
+  // 1. Canonical column.
   try {
-    const { data } = await supabase
-      .from('profiles')
-      .select('preferred_language, stt_language')
+    const { data, error } = await supabase
+      .from('app_users')
+      .select('locale')
       .eq('user_id', userId)
       .maybeSingle();
-    const raw = data?.preferred_language || data?.stt_language || null;
-    return normalizeLocale(raw);
+    if (error) {
+      console.error('[llm-locale] app_users.locale query failed:', error.message);
+    } else if (data?.locale) {
+      return normalizeLocale(data.locale);
+    }
   } catch (e) {
-    console.warn('[llm-locale] getUserLocale fallback:', (e as Error).message);
-    return EDGE_DEFAULT_LOCALE;
+    console.error('[llm-locale] app_users.locale threw:', (e as Error).message);
   }
+
+  // 2. What the frontend language picker writes (BCP-47, e.g. 'es-ES').
+  try {
+    const { data, error } = await supabase
+      .from('user_preferences')
+      .select('stt_language')
+      .eq('user_id', userId)
+      .maybeSingle();
+    if (error) {
+      console.error('[llm-locale] user_preferences.stt_language query failed:', error.message);
+    } else if (data?.stt_language) {
+      return normalizeLocale(data.stt_language);
+    }
+  } catch (e) {
+    console.error('[llm-locale] user_preferences.stt_language threw:', (e as Error).message);
+  }
+
+  return EDGE_DEFAULT_LOCALE;
 }
 
 export function normalizeLocale(raw: string | null | undefined): EdgeLocale {
