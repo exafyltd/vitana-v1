@@ -42,7 +42,17 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: i18n-translate-${{ github.ref }}
+  # Keyed by LOCALE as well as ref (VTID-03509). Keying on the ref alone
+  # serializes every locale on a branch, and GitHub keeps only ONE pending run
+  # per group: dispatching fr/pt/ru/pl back-to-back left fr running, pl pending,
+  # and SILENTLY CANCELLED pt and ru. `cancel-in-progress: false` does not
+  # prevent that — it only protects the run that is already executing.
+  #
+  # Two runs for different locales never touch the same files (each writes only
+  # src/i18n/<locale>/), and the push step below already rebases with retries,
+  # so letting them run concurrently is safe and turns a multi-locale expansion
+  # from hours of queueing into one pass.
+  group: i18n-translate-${{ github.ref }}-${{ inputs.locale }}
   cancel-in-progress: false
 
 jobs:
