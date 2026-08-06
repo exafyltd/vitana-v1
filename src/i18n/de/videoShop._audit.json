@@ -1,215 +1,178 @@
 {
   "verdicts": {
-    "subNav.matches": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "subNav.liveRooms": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "subNav.inspiration": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "subNav.support": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "subNav.overview": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.context": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.actions": {
+    "videoShop.feed.end": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.aiFeed": {
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.insights": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.recommendations": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.dailySummary": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.companion": {
+    "videoShop.feed.errorBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "\"in einem Moment\" is slightly awkward for \"in a moment\" (meaning \"after a short while\").",
+      "suggested": "Bitte versuche es in einem Augenblick noch einmal.",
+      "phase": "llm"
+    },
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.eventsMeetups": {
+    "videoShop.feed.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.mediaHub": {
+    "videoShop.feed.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.services": {
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.sellEarn": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.clients": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.analytics": {
+    "videoShop.feed.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.productFallback": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.adding": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addedBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.goToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.moreDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.notifyMe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.outOfStock": {
       "verdict": "OK",
       "confidence": 0.9,
       "phase": "llm"
     },
-    "subNav.supplements": {
+    "videoShop.drawer.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.wellnessServices": {
+    "videoShop.drawer.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.doctorsCoaches": {
+    "videoShop.drawer.errorBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "\"in einem Moment\" is slightly awkward for \"in a moment\" (meaning \"after a short while\").",
+      "suggested": "Bitte versuche es in einem Augenblick noch einmal.",
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "subNav.dealsOffers": {
-      "verdict": "OK",
-      "confidence": 1,
+    "videoShop.drawer.unavailableBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The word 'gerade' adds a nuance of 'currently' or 'just now' that is not present in the general 'no longer available'.",
+      "suggested": "Dieses Produkt ist nicht mehr erhältlich.",
       "phase": "llm"
     },
-    "subNav.orders": {
-      "verdict": "OK",
-      "confidence": 1,
+    "videoShop.drawer.roleBlockedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The German phrasing is grammatically correct but sounds very terse and unnatural for a user-facing message.",
+      "suggested": "Kaufen ist hier nicht möglich.",
       "phase": "llm"
     },
-    "subNav.reminder": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.archived": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.servicesHub": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.myBiology": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.plans": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.educationScience": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.balance": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.subscriptions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.rewards": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.campaigns": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.distribution": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.dataConsent": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.timeline": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.diary": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.recall": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.permissions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.preferences": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.privacy": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "subNav.connectedApps": {
+    "videoShop.drawer.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-06T06:33:06.309Z"
+  "generatedAt": "2026-08-06T06:35:24.708Z"
 }

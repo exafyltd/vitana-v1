@@ -36,7 +36,24 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "intro.taglineMain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.taglineSub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.goToLogin": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The German adds 'Direkt' (directly) which is not present in the English. 'Zum Login' is more concise and accurate for a UI element.",
+      "suggested": "Zum Login",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:14:00.374Z"
+  "generatedAt": "2026-08-06T06:14:14.745Z"
 }
