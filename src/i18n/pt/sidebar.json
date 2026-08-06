@@ -45,6 +45,8 @@
     "monitoring": "Monitoramento",
     "logout": "Sair",
     "connectors": "Conectores",
-    "support": "Suporte"
-  }
+    "support": "Suporte",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

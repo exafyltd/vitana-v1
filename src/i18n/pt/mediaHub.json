@@ -7,21 +7,24 @@
       "music": "Música",
       "podcasts": "Podcasts",
       "shorts": "Shorts",
-      "videos": "Vídeos"
+      "videos": "Vídeos",
+      "_pending_review": {}
     },
     "sections": {
       "trendingShorts": "Shorts em Alta",
       "trendingMusic": "Música em Alta",
       "musicPlaylists": "Playlists de Música",
       "latestEpisodes": "Últimos Episódios",
-      "popularShows": "Programas Populares"
+      "popularShows": "Programas Populares",
+      "_pending_review": {}
     },
     "actions": {
       "upload": "Carregar",
       "watchShorts": "Assistir Shorts",
       "viewAllShorts": "Ver todos os {count} shorts",
       "playPlaylist": "Reproduzir Playlist",
-      "clearFilters": "Limpar filtros"
+      "clearFilters": "Limpar filtros",
+      "_pending_review": {}
     },
     "searchPlaceholder": "Pesquisar Mídia...",
     "shortsAvailable": "{count} shorts disponíveis",
@@ -46,7 +49,8 @@
       "singleUpload": "Carregar Único",
       "bulkUpload": "Carregar em Massa",
       "addToPlaylist": "Adicionar à Playlist",
-      "viewArtist": "Ver Artista"
+      "viewArtist": "Ver Artista",
+      "_pending_review": {}
     },
     "toast": {
       "linkCopied": "Link copiado",
@@ -64,7 +68,8 @@
       "deleteError": "Erro",
       "deleteErrorDesc": "A eliminação falhou. Por favor, tenta novamente.",
       "commentError": "Erro",
-      "commentErrorDesc": "Falha ao publicar comentário. Por favor, tente novamente."
+      "commentErrorDesc": "Falha ao publicar comentário. Por favor, tente novamente.",
+      "_pending_review": {}
     },
     "comments": {
       "title": "Comentários",
@@ -77,19 +82,22 @@
       "reply": "Responder",
       "replyingTo": "Respondendo a {name}",
       "cancelReply": "Cancelar resposta",
-      "like": "Curtir comentário"
+      "like": "Curtir comentário",
+      "_pending_review": {}
     },
     "deletePodcast": {
       "title": "Excluir Podcast",
       "description": "Tem certeza de que deseja excluir este podcast? Esta ação não pode ser desfeita.",
       "cancel": "Cancelar",
-      "confirm": "Excluir"
+      "confirm": "Excluir",
+      "_pending_review": {}
     },
     "deleteVideo": {
       "title": "Excluir Vídeo",
       "description": "Tem certeza de que deseja excluir este vídeo? Esta ação não pode ser desfeita e removerá o vídeo do armazenamento.",
       "cancel": "Cancelar",
-      "confirm": "Excluir"
+      "confirm": "Excluir",
+      "_pending_review": {}
     },
     "noMusic": "Nenhuma música carregada ainda",
     "noMusicDesc": "Sê o primeiro a partilhar música com a comunidade!",
@@ -146,8 +154,12 @@
         "mentalHealth": "Saúde Mental",
         "wellness": "Bem-estar",
         "education": "Educação",
-        "lifestyle": "Estilo de Vida"
-      }
-    }
-  }
+        "lifestyle": "Estilo de Vida",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

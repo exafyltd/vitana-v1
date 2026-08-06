@@ -26,18 +26,21 @@
     "trend": {
       "improving": "Melhorando",
       "declining": "Piorando",
-      "stable": "Estável"
+      "stable": "Estável",
+      "_pending_review": {}
     },
     "suggestions": {
       "uploadBloodTestResults": "Carregar resultados de exames de sangue",
-      "startFitnessChallenge": "Começar Desafio Fitness de 30 Dias"
+      "startFitnessChallenge": "Começar Desafio Fitness de 30 Dias",
+      "_pending_review": {}
     },
     "pillars": {
       "sleep": "Sono",
       "exercise": "Exercício",
       "nutrition": "Nutrição",
       "hydration": "Hidratação",
-      "mental": "Mental"
+      "mental": "Mental",
+      "_pending_review": {}
     },
     "emptyStates": {
       "noSleepPlan": "Nenhum Plano de Sono Ainda",
@@ -51,7 +54,8 @@
       "noMentalPlan": "Nenhum Plano Mental Ainda",
       "noMentalPlanDesc": "Gera o teu plano de bem-estar mental personalizado, para monitorizar o stress, foco e equilíbrio emocional com suporte de IA.",
       "generatePlan": "Gerar Plano",
-      "generating": "A Gerar..."
+      "generating": "A Gerar...",
+      "_pending_review": {}
     },
     "noSupplements": "Ainda sem suplementos",
     "noSupplementsDesc": "Rastreia tuas vitaminas, minerais e suplementos diários. Adiciona teu primeiro suplemento para começar.",
@@ -80,15 +84,20 @@
         "hydration": "Hidratação",
         "exercise": "Exercício",
         "sleep": "Sono",
-        "mental": "Saúde Mental"
+        "mental": "Saúde Mental",
+        "_pending_review": {}
       },
       "economyAxes": {
         "find_match": "Encontrar um Par",
         "marketplace": "Mercado",
         "income_generation": "Geração de renda",
-        "business_formation": "Formação de negócios"
+        "business_formation": "Formação de negócios",
+        "_pending_review": {}
       },
-      "contractLink": "Ver o contrato do Objetivo Final"
-    }
-  }
+      "contractLink": "Ver o contrato do Objetivo Final",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -68,7 +68,8 @@
       "volunteer": "❤️ Voluntariado e Serviço",
       "support": "🫂 Grupo de Apoio",
       "entertainment": "🎭 Entretenimento",
-      "other": "✨ Outros"
+      "other": "✨ Outros",
+      "_pending_review": {}
     },
     "durations": {
       "30min": "30 minutos",
@@ -81,7 +82,8 @@
       "8hour": "8 horas",
       "half-day": "Meio dia",
       "full-day": "Dia inteiro",
-      "custom": "Duração personalizada..."
+      "custom": "Duração personalizada...",
+      "_pending_review": {}
     },
     "toasts": {
       "invalidFileType": "Tipo de Ficheiro Inválido",
@@ -113,7 +115,10 @@
       "personalEventCreated": "Evento Criado!",
       "personalEventCreatedDesc": "O evento foi adicionado ao teu calendário.",
       "error": "Erro",
-      "errorDesc": "O evento não pôde ser criado. Por favor, tenta novamente."
-    }
-  }
+      "errorDesc": "O evento não pôde ser criado. Por favor, tenta novamente.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

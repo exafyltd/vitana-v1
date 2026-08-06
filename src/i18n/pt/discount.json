@@ -26,6 +26,8 @@
     "email": "Email",
     "ticketEmailNote": "O teu bilhete e confirmação serão enviados para este email.",
     "left": "{count} restantes",
-    "loadFailed": "Falha ao carregar bilhetes"
-  }
+    "loadFailed": "Falha ao carregar bilhetes",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

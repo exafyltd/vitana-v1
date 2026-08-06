@@ -4,36 +4,47 @@
     "items": {
       "askAiQuestion": {
         "title": "Perguntar à IA",
-        "description": "Consulta tuas memórias com pesquisa de IA em linguagem natural"
+        "description": "Consulta tuas memórias com pesquisa de IA em linguagem natural",
+        "_pending_review": {}
       },
       "advancedSearch": {
         "title": "Pesquisa Avançada",
-        "description": "Usa filtros, tags e intervalos de datas para encontrar memórias"
+        "description": "Usa filtros, tags e intervalos de datas para encontrar memórias",
+        "_pending_review": {}
       },
       "patternAnalysis": {
         "title": "Análise de Padrões",
-        "description": "Descobre tendências e padrões nos teus dados de bem-estar"
+        "description": "Descobre tendências e padrões nos teus dados de bem-estar",
+        "_pending_review": {}
       },
       "memoryInsights": {
         "title": "Insights de Memória",
-        "description": "Obtém insights impulsionados por IA da tua jornada de saúde"
+        "description": "Obtém insights impulsionados por IA da tua jornada de saúde",
+        "_pending_review": {}
       },
       "searchByDate": {
         "title": "Pesquisar por Data",
-        "description": "Navega pelas memórias de períodos de tempo específicos"
+        "description": "Navega pelas memórias de períodos de tempo específicos",
+        "_pending_review": {}
       },
       "locationMemories": {
         "title": "Memórias de Localização",
-        "description": "Encontra entradas por lugares e locais visitados"
+        "description": "Encontra entradas por lugares e locais visitados",
+        "_pending_review": {}
       },
       "filterByCategory": {
         "title": "Filtrar por Categoria",
-        "description": "Navega pelas memórias por pilares de bem-estar e categorias"
+        "description": "Navega pelas memórias por pilares de bem-estar e categorias",
+        "_pending_review": {}
       },
       "quickRecalls": {
         "title": "Recuperações Rápidas",
-        "description": "Acessa memórias e consultas pesquisadas com frequência"
-      }
-    }
-  }
+        "description": "Acessa memórias e consultas pesquisadas com frequência",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

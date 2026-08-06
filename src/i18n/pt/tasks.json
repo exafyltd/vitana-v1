@@ -14,6 +14,8 @@
     "postpone": "Adiar",
     "addNote": "Adicionar Nota",
     "openContext": "Abrir Contexto",
-    "assignee": "Responsável"
-  }
+    "assignee": "Responsável",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

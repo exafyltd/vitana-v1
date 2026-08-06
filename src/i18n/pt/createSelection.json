@@ -5,6 +5,8 @@
     "event": "Evento",
     "eventDescription": "Encontros formais com horários e programas estruturados",
     "meetup": "Encontro",
-    "meetupDescription": "Encontros casuais para networking e construção de comunidade"
-  }
+    "meetupDescription": "Encontros casuais para networking e construção de comunidade",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

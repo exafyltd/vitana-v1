@@ -21,7 +21,8 @@
       "building": "A desenvolver",
       "strong": "Forte",
       "reallyGood": "Muito bom",
-      "elite": "Elite"
+      "elite": "Elite",
+      "_pending_review": {}
     },
     "framings": {
       "starting": "Apenas começando",
@@ -29,7 +30,10 @@
       "building": "Hábitos se formando",
       "strong": "Marco de 90 dias",
       "reallyGood": "Prosperando",
-      "elite": "Elite"
-    }
-  }
+      "elite": "Elite",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

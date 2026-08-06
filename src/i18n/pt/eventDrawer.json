@@ -58,6 +58,8 @@
     "googleCal": "Google Calendário",
     "outlook": "Outlook",
     "appleCal": "Apple Calendário",
-    "downloadIcs": "Descarregar ICS"
-  }
+    "downloadIcs": "Descarregar ICS",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

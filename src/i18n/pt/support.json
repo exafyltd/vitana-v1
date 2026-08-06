@@ -10,55 +10,70 @@
         "account": "Conta e Perfil",
         "events": "Eventos e Encontros",
         "payments": "Pagamentos e Cobrança",
-        "technical": "Ajuda Técnica"
+        "technical": "Ajuda Técnica",
+        "_pending_review": {}
       },
       "faq": {
         "title": "Perguntas Frequentes",
         "createAccount": {
           "question": "Como crias uma conta Maxina?",
-          "answer": "Descarrega a app Maxina ou visita o nosso portal em vitanaland.com/maxina. Toca em 'Registar' e insere o teu endereço de e-mail. Irás receber um e-mail de confirmação para verificar a tua conta. Após a confirmação, completa o teu perfil para descobrires eventos de bem-estar e funcionalidades da comunidade."
+          "answer": "Descarrega a app Maxina ou visita o nosso portal em vitanaland.com/maxina. Toca em 'Registar' e insere o teu endereço de e-mail. Irás receber um e-mail de confirmação para verificar a tua conta. Após a confirmação, completa o teu perfil para descobrires eventos de bem-estar e funcionalidades da comunidade.",
+          "_pending_review": {}
         },
         "resetPassword": {
           "question": "Como reponho a minha palavra-passe?",
-          "answer": "No ecrã de início de sessão, toca em 'Esqueci-me da Palavra-passe' e insere o teu endereço de e-mail registado. Irás receber um link de redefinição de palavra-passe dentro de alguns minutos. Verifica a tua pasta de spam se não vires o e-mail. Por razões de segurança, o link expira após 24 horas."
+          "answer": "No ecrã de início de sessão, toca em 'Esqueci-me da Palavra-passe' e insere o teu endereço de e-mail registado. Irás receber um link de redefinição de palavra-passe dentro de alguns minutos. Verifica a tua pasta de spam se não vires o e-mail. Por razões de segurança, o link expira após 24 horas.",
+          "_pending_review": {}
         },
         "joinEvents": {
           "question": "Como faço para participar de eventos e encontros?",
-          "answer": "Procura eventos disponíveis na secção Eventos & Encontros. Toca num evento para veres detalhes como data, local e preço. Para eventos gratuitos, basta tocares em 'Participar' ou 'RSVP'. Para eventos pagos, podes comprar bilhetes de forma segura através do nosso sistema de pagamento integrado."
+          "answer": "Procura eventos disponíveis na secção Eventos & Encontros. Toca num evento para veres detalhes como data, local e preço. Para eventos gratuitos, basta tocares em 'Participar' ou 'RSVP'. Para eventos pagos, podes comprar bilhetes de forma segura através do nosso sistema de pagamento integrado.",
+          "_pending_review": {}
         },
         "updateProfile": {
           "question": "Como atualizo as informações do meu perfil?",
-          "answer": "Vai ao teu separador Perfil e toca no ícone Editar ou em 'Editar Perfil'. Podes atualizar o teu nome de exibição, biografia, foto de perfil e interesses de bem-estar. As alterações são guardadas automaticamente. O teu perfil ajuda-nos a personalizar recomendações de eventos para ti."
+          "answer": "Vai ao teu separador Perfil e toca no ícone Editar ou em 'Editar Perfil'. Podes atualizar o teu nome de exibição, biografia, foto de perfil e interesses de bem-estar. As alterações são guardadas automaticamente. O teu perfil ajuda-nos a personalizar recomendações de eventos para ti.",
+          "_pending_review": {}
         },
         "deleteAccount": {
           "question": "Como posso apagar a minha conta?",
-          "answer": "Para eliminar a tua conta Maxina e dados associados, por favor, envia um e-mail para support@exafy.io com o assunto 'Eliminação de Conta – Maxina'. Fornece o endereço de e-mail associado à tua conta. Processamos os pedidos de eliminação no prazo de 30 dias."
+          "answer": "Para eliminar a tua conta Maxina e dados associados, por favor, envia um e-mail para support@exafy.io com o assunto 'Eliminação de Conta – Maxina'. Fornece o endereço de e-mail associado à tua conta. Processamos os pedidos de eliminação no prazo de 30 dias.",
+          "_pending_review": {}
         },
         "paymentMethods": {
           "question": "Que métodos de pagamento são aceites?",
-          "answer": "Aceitamos os principais cartões de crédito e débito (Visa, Mastercard, American Express) através da nossa integração segura de pagamento Stripe. Apple Pay e Google Pay também estão disponíveis em dispositivos compatíveis. Todas as transações são encriptadas e compatíveis com PCI-DSS."
+          "answer": "Aceitamos os principais cartões de crédito e débito (Visa, Mastercard, American Express) através da nossa integração segura de pagamento Stripe. Apple Pay e Google Pay também estão disponíveis em dispositivos compatíveis. Todas as transações são encriptadas e compatíveis com PCI-DSS.",
+          "_pending_review": {}
         },
         "contactOrganizers": {
           "question": "Como contacto os organizadores de eventos?",
-          "answer": "Em cada página de evento, encontrarás o perfil do organizador. Toca no nome para veres o perfil e acederes às opções de mensagens. Para perguntas sobre eventos específicos, usa a secção de Perguntas e Respostas do evento ou contacta o organizador diretamente através de mensagens na app."
+          "answer": "Em cada página de evento, encontrarás o perfil do organizador. Toca no nome para veres o perfil e acederes às opções de mensagens. Para perguntas sobre eventos específicos, usa a secção de Perguntas e Respostas do evento ou contacta o organizador diretamente através de mensagens na app.",
+          "_pending_review": {}
         },
         "dataSecure": {
           "question": "Os meus dados pessoais estão seguros?",
-          "answer": "Sim, a tua privacidade e segurança são a nossa principal prioridade. Usamos encriptação padrão da indústria, autenticação segura e cumprimos as diretrizes do RGPD. Nunca partilhamos os teus dados pessoais com terceiros sem o teu consentimento. Lê a nossa política de privacidade completa para mais detalhes."
-        }
+          "answer": "Sim, a tua privacidade e segurança são a nossa principal prioridade. Usamos encriptação padrão da indústria, autenticação segura e cumprimos as diretrizes do RGPD. Nunca partilhamos os teus dados pessoais com terceiros sem o teu consentimento. Lê a nossa política de privacidade completa para mais detalhes.",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "contact": {
         "title": "Contactar Suporte",
         "email": "Envia-nos um e-mail",
-        "responseTime": "Normalmente respondemos em 24 horas"
+        "responseTime": "Normalmente respondemos em 24 horas",
+        "_pending_review": {}
       },
       "usefulLinks": {
         "title": "Links Úteis",
         "privacy": "Política de Privacidade",
         "deleteAccount": "Apagar Conta",
-        "portal": "Voltar ao Portal Maxina"
+        "portal": "Voltar ao Portal Maxina",
+        "_pending_review": {}
       },
-      "footer": "Todos os direitos reservados."
-    }
-  }
+      "footer": "Todos os direitos reservados.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
