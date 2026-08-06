@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "somethingWentWrong": "Une erreur est survenue",
+    "tryAgain": "Réessaie",
+    "pageNotFound": "Page introuvable",
+    "pageNotFoundDesc": "La page demandée n'existe pas.",
+    "serverError": "Erreur serveur",
+    "serverErrorDesc": "Une erreur inattendue est survenue.",
+    "networkError": "Erreur réseau",
+    "networkErrorDesc": "Vérifie ta connexion internet.",
+    "unauthorized": "Non autorisé",
+    "unauthorizedDesc": "Connecte-toi pour continuer.",
+    "forbidden": "Accès refusé",
+    "forbiddenDesc": "Tu n'as pas la permission pour cette action.",
+    "notFound": "Introuvable",
+    "notFoundDesc": "L'élément demandé n'a pas été trouvé."
+  }
+}

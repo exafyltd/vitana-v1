@@ -1,0 +1,39 @@
+{
+  "timelineActions": {
+    "title": "Actions de la chronologie",
+    "items": {
+      "logHealthEvent": {
+        "title": "Enregistrer un événement de santé",
+        "description": "Enregistre les étapes importantes de ta santé"
+      },
+      "markAchievement": {
+        "title": "Marquer un accomplissement",
+        "description": "Célèbre les objectifs de bien-être atteints"
+      },
+      "recordLifeMoment": {
+        "title": "Enregistrer un moment de vie",
+        "description": "Capture des expériences significatives"
+      },
+      "addPhotoMemory": {
+        "title": "Ajouter un souvenir photo",
+        "description": "Chronologie visuelle avec photos de santé"
+      },
+      "voiceTimelineEntry": {
+        "title": "Entrée vocale de la chronologie",
+        "description": "Mises à jour audio rapides sur ta santé"
+      },
+      "trackProgress": {
+        "title": "Suivre tes progrès",
+        "description": "Enregistre les métriques et tendances de bien-être"
+      },
+      "activityCheckIn": {
+        "title": "Enregistrement d'activité",
+        "description": "Enregistre tes entraînements et activités"
+      },
+      "setTimelineGoal": {
+        "title": "Définir un objectif de chronologie",
+        "description": "Crée de futurs objectifs de santé"
+      }
+    }
+  }
+}

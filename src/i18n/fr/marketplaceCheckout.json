@@ -1,0 +1,63 @@
+{
+  "marketplaceCheckout": {
+    "balance": {
+      "title": "Ton solde",
+      "loading": "Chargement du solde…",
+      "empty": "Pas encore de solde",
+      "addMoney": "Ajouter de l'argent"
+    },
+    "checkout": {
+      "button": "Paiement",
+      "processing": "Traitement en cours…",
+      "successTitle": "Commande passée",
+      "successBody": "Ton solde a été débité et ta commande a été créée.",
+      "duplicateTitle": "Commande déjà passée",
+      "duplicateBody": "Cette commande a déjà été traitée.",
+      "affiliateTitle": "Finalise l'achat chez le marchand",
+      "affiliateBody": "Certains articles sont achetés directement chez le marchand. Ouvre les liens ci-dessous pour finaliser l'achat.",
+      "affiliateLink": "Finalise l'achat chez le marchand",
+      "affiliateOpened": "Liens marchands ouverts dans de nouveaux onglets."
+    },
+    "addMoney": {
+      "title": "Ajouter de l'argent",
+      "description": "Recharge ton solde par carte via Stripe.",
+      "amountLabel": "Montant",
+      "amountPlaceholder": "0,00",
+      "currencyLabel": "Devise",
+      "currencyEur": "EUR",
+      "currencyUsd": "USD",
+      "continue": "Continuer vers le paiement",
+      "processing": "Préparation en cours…",
+      "invalidAmount": "Merci de saisir un montant valide.",
+      "failed": "Impossible de démarrer la recharge."
+    },
+    "deposit": {
+      "checkingTitle": "Confirmation du paiement",
+      "checkingBody": "Nous attendons la confirmation de ton paiement. Cela peut prendre un instant.",
+      "succeededTitle": "Solde rechargé",
+      "succeededBody": "Ton solde a été rechargé avec succès.",
+      "failedTitle": "Échec de la recharge",
+      "failedBody": "Ton rechargement n'a pas pu être effectué. Rien n'a été facturé.",
+      "amountLabel": "Montant",
+      "backToCart": "Retour au panier"
+    },
+    "errors": {
+      "invalid_request": "Ta demande n'était pas valide. Vérifie ton panier.",
+      "CART_EMPTY": "Ton panier est vide.",
+      "PRODUCT_UNAVAILABLE": "Un produit dans ton panier n'est plus disponible.",
+      "PRICE_UNAVAILABLE": "Un prix est actuellement indisponible pour un produit.",
+      "MIXED_CURRENCY": "Ton panier contient des articles dans différentes devises. Sépare-les.",
+      "UNSUPPORTED_WALLET_CURRENCY": "Cette devise n'est pas prise en charge par ton solde.",
+      "WALLET_ACCOUNT_MISSING": "Aucun compte de solde n'a été configuré pour cette devise.",
+      "WALLET_ACCOUNT_INACTIVE": "Ton compte de solde est actuellement inactif.",
+      "INSUFFICIENT_BALANCE": "Ton solde n'est pas suffisant pour cet achat. Ajoute de l'argent.",
+      "TENANT_REQUIRED": "Cette opération nécessite un espace de travail actif.",
+      "WALLET_DEBIT_FAILED": "Le rechargement de ton solde a échoué. Réessaye.",
+      "CART_READ_FAILED": "Nous n'avons pas pu lire ton panier. Réessaye.",
+      "ORDER_WRITE_FAILED": "Ta commande n'a pas pu être enregistrée. Réessaye.",
+      "WALLET_READ_FAILED": "Nous n'avons pas pu lire ton solde. Réessaye.",
+      "GATEWAY_MISCONFIGURED": "Le service de paiement est actuellement indisponible. Réessaye plus tard.",
+      "unknown": "Une erreur est survenue lors du paiement. Réessaye."
+    }
+  }
+}

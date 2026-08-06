@@ -1,0 +1,123 @@
+{
+  "inbox": {
+    "title": "Boîte de réception",
+    "subtitle": "Reste connecté avec ta communauté !",
+    "description": "Tes conversations, mises à jour et notifications",
+    "desktopTitle": "Messages",
+    "desktopDescription": "Connecte-toi avec ta communauté et ton réseau",
+    "tabs": {
+      "all": "Tout",
+      "groups": "Groupes",
+      "direct": "Directs",
+      "contacts": "Contacts",
+      "notifications": "Notifications",
+      "archived": "Archivés"
+    },
+    "contextTabs": {
+      "community": "Communauté",
+      "network": "Réseau"
+    },
+    "actions": {
+      "new": "Nouveau",
+      "newMessage": "Nouveau message",
+      "createGroup": "Créer un groupe",
+      "markAllRead": "Marquer tout comme lu",
+      "menu": "Plus"
+    },
+    "composer": {
+      "placeholder": "Tape ton message...",
+      "send": "Envoyer",
+      "attachments": "Pièces jointes",
+      "recipients": "À :",
+      "add": "Ajouter"
+    },
+    "states": {
+      "empty": "Aucun message pour l'instant",
+      "loading": "Chargement des messages...",
+      "error": "Échec du chargement des messages"
+    },
+    "newConversation": {
+      "title": "Démarrer une nouvelle conversation",
+      "titleGroup": "Créer un chat de groupe",
+      "groupName": "Nom du groupe",
+      "groupNamePlaceholder": "Saisis le nom du groupe...",
+      "members": "Membres",
+      "recipient": "Destinataire",
+      "addMore": "Ajouter d'autres personnes",
+      "searchPeople": "Rechercher des personnes",
+      "searchPlaceholder": "Saisis un nom ou un e-mail pour rechercher...",
+      "searchMinChars": "Saisis au moins 2 caractères pour rechercher",
+      "searchResults": "Résultats de recherche",
+      "noResults": "Aucun utilisateur trouvé. Essaie un autre terme de recherche.",
+      "add": "Ajouter",
+      "added": "Ajouté",
+      "cancel": "Annuler",
+      "startChat": "Démarrer le chat",
+      "createGroup": "Créer un groupe",
+      "creating": "Création en cours..."
+    },
+    "createGroup": {
+      "title": "Créer un groupe",
+      "avatarSoon": "Le téléchargement d'avatar sera bientôt disponible.",
+      "groupName": "Nom du groupe",
+      "addMembers": "Ajouter des membres",
+      "searchPlaceholder": "Rechercher des utilisateurs...",
+      "groupNameRequired": "Nom du groupe requis",
+      "groupNameRequiredDesc": "Veuillez saisir un nom pour ton groupe.",
+      "addMembersRequired": "Ajouter des membres",
+      "addMembersRequiredDesc": "Veuillez ajouter au moins un membre au groupe.",
+      "groupExists": "Le groupe existe déjà",
+      "groupExistsDesc": "Un groupe avec ces membres a été créé récemment.",
+      "created": "Groupe créé",
+      "createdDesc": "\"{name}\" a été créé avec succès.",
+      "failed": "Échec de la création du groupe",
+      "failedDesc": "Veuillez réessayer."
+    },
+    "toast": {
+      "success": "Succès",
+      "error": "Erreur",
+      "conversationStarted": "Conversation démarrée !",
+      "authRequired": "Authentification requise",
+      "noTenantContext": "Aucun contexte de locataire disponible",
+      "searchFailed": "Échec de la recherche",
+      "accessDenied": "Accès refusé",
+      "communityOnly": "Seuls les utilisateurs de la communauté peuvent créer des conversations globales",
+      "pleaseLogin": "Veuillez te connecter pour démarrer des conversations",
+      "groupRecipientsRequired": "Le nom du groupe et les destinataires sont requis",
+      "singleRecipientRequired": "Sélectionne exactement un destinataire pour un message direct",
+      "groupCreated": "Le groupe \"{name}\" a été créé avec succès !",
+      "groupFailed": "Échec de la création du groupe",
+      "allMarkedRead": "Tous les messages marqués comme lus",
+      "markAllReadFailed": "Impossible de tout marquer comme lu. Veuillez réessayer."
+    },
+    "createGroupAction": "Créer un nouveau groupe",
+    "newConversationAction": "Nouvelle conversation",
+    "noGroups": "Pas encore de groupes",
+    "noGroupsDesc": "Les groupes t'aident à collaborer avec plusieurs personnes à la fois.",
+    "createFirstGroup": "Crée ton premier groupe",
+    "loading": "Chargement des messages...",
+    "searchConversations": "Rechercher des conversations...",
+    "searchPlaceholder": "Rechercher...",
+    "noMessages": "Pas encore de messages",
+    "noMessagesDesc": "Lance une conversation pour commencer.",
+    "startConversation": "Démarrer une conversation",
+    "emptyState": {
+      "title": "Ta boîte de réception est calme pour l'instant",
+      "globalDescription": "Démarre une conversation ou rejoins une communauté pour te connecter avec d'autres.",
+      "tenantDescription": "Connecte-toi avec tes collègues et membres d'équipe dans ton réseau professionnel.",
+      "startConversation": "Démarrer une conversation",
+      "discoverPeople": "Découvrir des personnes"
+    },
+    "group": {
+      "loading": "Chargement du groupe…",
+      "cantOpen": "Impossible d'ouvrir le groupe",
+      "backToInbox": "Retour à la boîte de réception",
+      "back": "Retour",
+      "memberOne": "membre",
+      "memberOther": "membres",
+      "officialBadge": "groupe officiel",
+      "empty": "Aucun message pour l'instant.",
+      "composerPlaceholder": "Message…"
+    }
+  }
+}

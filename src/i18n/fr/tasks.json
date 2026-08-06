@@ -1,0 +1,19 @@
+{
+  "tasks": {
+    "noOpenTasks": "Aucune tâche ouverte",
+    "confirmCancelTask": "Es-tu sûr de vouloir annuler cette tâche ?",
+    "postponeComingSoon": "Fonction de report bientôt disponible",
+    "addNotePrompt": "Ajouter une note à cette tâche :",
+    "noteAdded": "Note ajoutée : {note}",
+    "navigateTo": "Naviguer vers : {url}",
+    "openVtid": "Ouvrir VTID : {vtid}",
+    "description": "Description",
+    "activityLog": "Journal d'activité",
+    "relatedLinks": "Liens associés",
+    "complete": "Terminer",
+    "postpone": "Reporter",
+    "addNote": "Ajouter une note",
+    "openContext": "Ouvrir le contexte",
+    "assignee": "Responsable"
+  }
+}

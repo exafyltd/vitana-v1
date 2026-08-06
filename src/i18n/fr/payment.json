@@ -1,0 +1,23 @@
+{
+  "payment": {
+    "completed": "Paiement effectué ! ✅",
+    "sentSuccess": "{amount} envoyé avec succès",
+    "alreadyProcessed": "Déjà traité",
+    "requestIs": "Cette demande est {status}.",
+    "alreadyAccepted": "Cette demande de paiement a déjà été acceptée.",
+    "declined": "Paiement refusé",
+    "declinedDesc": "La demande de paiement a été refusée",
+    "exchangeSuccess": "Échange et envoi réussi ! ✨",
+    "exchangeSuccessDesc": "Converti et envoyé {amount}",
+    "insufficientBalance": "Solde insuffisant",
+    "insufficientBalanceDesc": "Tu n'as pas assez de {currency} pour cet échange",
+    "transactionFailed": "Transaction échouée",
+    "paymentFailed": "Paiement échoué",
+    "paymentFailedDesc": "Échec du traitement du paiement. Réessaie.",
+    "balanceRefreshed": "Solde actualisé",
+    "balanceRefreshedDesc": "Le solde du portefeuille a été mis à jour",
+    "refreshFailed": "Actualisation échouée",
+    "refreshFailedDesc": "Impossible d'actualiser le solde. Réessaie.",
+    "error": "Erreur"
+  }
+}

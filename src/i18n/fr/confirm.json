@@ -1,0 +1,20 @@
+{
+  "confirm": {
+    "delete": "Es-tu sûr(e) de vouloir supprimer ceci ?",
+    "deleteDesc": "Cette action ne peut pas être annulée.",
+    "cancel": "Es-tu sûr(e) de vouloir annuler ?",
+    "cancelDesc": "Tes modifications seront perdues.",
+    "unsavedChanges": "Tu as des modifications non enregistrées.",
+    "unsavedChangesDesc": "Veux-tu vraiment partir ? Tes modifications seront perdues.",
+    "leave": "Veux-tu vraiment quitter cette page ?",
+    "leaveDesc": "Les modifications non enregistrées seront perdues.",
+    "logout": "Es-tu sûr(e) de vouloir te déconnecter ?",
+    "logoutDesc": "Tu devras te reconnecter.",
+    "remove": "Veux-tu vraiment supprimer cet élément ?",
+    "removeDesc": "L'élément sera retiré de la liste.",
+    "disconnect": "Veux-tu vraiment te déconnecter ?",
+    "disconnectDesc": "Tu pourras te reconnecter plus tard.",
+    "proceed": "Veux-tu continuer ?",
+    "proceedDesc": "Cette action sera exécutée."
+  }
+}

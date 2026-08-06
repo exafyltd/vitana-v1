@@ -1,0 +1,39 @@
+{
+  "diaryActions": {
+    "title": "Actions d'entrée de journal",
+    "items": {
+      "recordVoiceEntry": {
+        "title": "Enregistrer une entrée vocale",
+        "description": "Capture tes pensées et réflexions par enregistrement vocal"
+      },
+      "addPhotoEntry": {
+        "title": "Ajouter une entrée photo",
+        "description": "Télécharge des images pour documenter ton parcours bien-être"
+      },
+      "writeTextEntry": {
+        "title": "Écrire une entrée texte",
+        "description": "Crée des réflexions et notes écrites détaillées"
+      },
+      "quickNote": {
+        "title": "Note rapide",
+        "description": "Note rapidement tes pensées ou observations"
+      },
+      "videoDiary": {
+        "title": "Journal vidéo",
+        "description": "Enregistre des réflexions vidéo et des mises à jour de progrès"
+      },
+      "scheduleEntry": {
+        "title": "Programmer une entrée",
+        "description": "Planifie tes futures entrées de journal et rappels"
+      },
+      "tagMemories": {
+        "title": "Étiqueter des souvenirs",
+        "description": "Organise tes entrées existantes avec des étiquettes et catégories"
+      },
+      "importFiles": {
+        "title": "Importer des fichiers",
+        "description": "Télécharge des documents, images ou autres fichiers bien-être"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "admin": {
+    "media": {
+      "updateSuccess": "Statut mis à jour avec succès",
+      "updateFailed": "Échec de la mise à jour du statut",
+      "deleteSuccess": "Supprimé avec succès",
+      "deleteFailed": "Échec de la suppression",
+      "podcastStatus": "Podcast {status}",
+      "podcastDeleted": "Podcast supprimé",
+      "musicDeleted": "Musique supprimée",
+      "videoDeleted": "Vidéo supprimée",
+      "searchPodcasts": "Rechercher des podcasts...",
+      "searchMusic": "Rechercher de la musique...",
+      "searchVideos": "Rechercher des vidéos...",
+      "filterByStatus": "Filtrer par statut",
+      "allStatus": "Tous les statuts",
+      "pending": "En attente",
+      "approved": "Approuvé",
+      "rejected": "Rejeté",
+      "flagged": "Signalé",
+      "podcastManagement": "Gestion des podcasts",
+      "podcastManagementDesc": "Examiner et modérer les téléchargements de podcasts"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "milestones": {
+    "title": "Étapes de vie",
+    "add": "Ajouter une étape",
+    "edit": "Modifier une étape",
+    "empty": "Aucune étape pour l'instant",
+    "addFirst": "Ajoute ta première étape",
+    "date": "Date",
+    "description": "Que s'est-il passé ?",
+    "titleLabel": "Titre",
+    "titlePlaceholder": "ex: Diplômé de l'université",
+    "descPlaceholder": "Décris ce moment...",
+    "icon": "Icône",
+    "publicLabel": "Visible par tous",
+    "private": "Privé"
+  }
+}

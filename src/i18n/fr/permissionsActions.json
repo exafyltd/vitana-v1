@@ -1,0 +1,39 @@
+{
+  "permissionsActions": {
+    "title": "Actions de confidentialité et permissions",
+    "items": {
+      "privacySettings": {
+        "title": "Paramètres de confidentialité",
+        "description": "Configure tes préférences de confidentialité et de partage des données"
+      },
+      "manageAccess": {
+        "title": "Gérer l'accès",
+        "description": "Contrôle qui peut voir tes souvenirs de santé"
+      },
+      "securitySettings": {
+        "title": "Paramètres de sécurité",
+        "description": "Mets à jour tes préférences d'authentification et de sécurité"
+      },
+      "apiKeysAccess": {
+        "title": "Clés API et Accès",
+        "description": "Gérer les intégrations d'applications tierces et l'accès API"
+      },
+      "dataRights": {
+        "title": "Droits des données",
+        "description": "Exerce tes droits à la portabilité et à la suppression des données"
+      },
+      "auditLogs": {
+        "title": "Journaux d'audit",
+        "description": "Consulte l'historique d'accès et la piste d'audit de sécurité"
+      },
+      "permissionSettings": {
+        "title": "Paramètres de permissions",
+        "description": "Ajuste les permissions granulaires pour différentes fonctionnalités"
+      },
+      "exportData": {
+        "title": "Exporter les données",
+        "description": "Télécharge tes souvenirs et tes données de santé en toute sécurité"
+      }
+    }
+  }
+}

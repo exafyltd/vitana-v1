@@ -1,0 +1,147 @@
+{
+  "calendar": {
+    "smartCalendar": "Calendrier intelligent",
+    "myCalendar": "Mon calendrier",
+    "bookedActivities": "Tes activités réservées dans VITANA",
+    "addEvent": "Ajouter un événement",
+    "synced": "Synchronisé",
+    "syncing": "Synchronisation",
+    "today": "Aujourd'hui",
+    "week": "Semaine",
+    "month": "Mois",
+    "agenda": "Agenda",
+    "nothingScheduled": "Rien de prévu",
+    "tryQuickAdd": "Essaie l'ajout rapide ou laisse l'Autopilot planifier ta journée",
+    "clickSlotHint": "Clique sur un créneau pour créer un événement • Fais glisser pour replanifier",
+    "noEventsOnDate": "Aucun événement à cette date",
+    "lastSynced": "Dernière synchronisation",
+    "justNow": "à l'instant",
+    "now": "Maintenant",
+    "untitledEvent": "Événement sans titre",
+    "newEvent": "Nouvel événement",
+    "close": "Fermer",
+    "noBookingsToday": "Pas de réservations aujourd'hui",
+    "noBookingsYet": "Pas encore de réservations",
+    "nextUpcoming": "À venir",
+    "exploreActivities": "Explore des activités à ajouter à ton calendrier",
+    "browseActivities": "Parcourir les activités",
+    "bookedEvents": {
+      "title": "Tes événements réservés",
+      "todayLabel": "Aujourd'hui",
+      "nextUp": "Prochainement",
+      "noEventsToday": "Pas d'événements aujourd'hui"
+    },
+    "filters": {
+      "personal": "Personnel",
+      "community": "Communauté",
+      "work": "Travail",
+      "health": "Santé",
+      "workout": "Entraînement"
+    },
+    "categories": {
+      "community": "Communauté",
+      "fitness": "Fitness",
+      "health": "Santé",
+      "nutrition": "Nutrition",
+      "professional": "Travail",
+      "personal": "Personnel",
+      "training": "Entraînement"
+    },
+    "bookingStatus": {
+      "booked": "Réservé",
+      "rsvp": "Confirmer",
+      "ticket": "Billet",
+      "reserved": "Réservé"
+    },
+    "timeGroups": {
+      "today": "Aujourd'hui",
+      "tomorrow": "Demain",
+      "thisWeek": "Cette semaine",
+      "later": "Plus tard"
+    },
+    "autopilot": {
+      "suggestions": "Suggestions Autopilot",
+      "badge": "Autopilot",
+      "accept": "Accepter",
+      "snooze": "Reporter",
+      "dismiss": "Ignorer",
+      "undo": "Annuler",
+      "laterToday": "Plus tard aujourd'hui",
+      "tomorrow": "Demain",
+      "conflictsWith": "Conflits avec :",
+      "suggestionAccepted": "Suggestion acceptée",
+      "calendarUpdated": "Autopilot a mis à jour ton calendrier",
+      "suggestionUndone": "Suggestion annulée",
+      "changesReverted": "Les changements ont été annulés",
+      "suggestionSnoozed": "Suggestion reportée",
+      "reminderLaterToday": "Rappel défini pour plus tard aujourd'hui",
+      "reminderTomorrow": "Rappel défini pour demain",
+      "recommendFocus": "Recommander un bloc de concentration",
+      "focusBlockDesc": "Tu as une fenêtre de 90 minutes disponible. Parfait pour le travail profond."
+    },
+    "toasts": {
+      "eventCreated": "Événement créé",
+      "eventCreatedDesc": "Ton événement a été ajouté au calendrier",
+      "eventDeleted": "Événement supprimé",
+      "eventDeletedDesc": "L'événement a été retiré de ton calendrier",
+      "syncingTitle": "Synchronisation...",
+      "syncingDesc": "Synchronisation avec les calendriers externes",
+      "syncedTitle": "Synchronisé",
+      "syncedDesc": "Le calendrier est à jour",
+      "joiningEvent": "Rejoindre l'événement",
+      "openingVideoCall": "Ouverture de l'appel vidéo...",
+      "messageAttendees": "Envoyer un message aux participants",
+      "featureComingSoon": "Fonctionnalité bientôt disponible",
+      "inviteFollowers": "Inviter des abonnés",
+      "rescheduleEvent": "Reporter l'événement",
+      "shareToGroup": "Partager au groupe"
+    },
+    "error": {
+      "failedToCreate": "Échec de la création de l'événement"
+    },
+    "allDay": "Toute la journée",
+    "milestoneToday": "Jalon",
+    "focus": {
+      "todaysFocus": "Objectif du jour",
+      "lightDay": "Journée légère — explore des activités ou rattrape ton journal",
+      "moreSteps": "plus de pas"
+    },
+    "badge": {
+      "guidedStep": "Étape guidée",
+      "milestone": "Jalon",
+      "wellness": "Bien-être"
+    },
+    "action": {
+      "start": "Démarrer",
+      "continue": "Continuer",
+      "join": "Rejoindre",
+      "details": "Détails",
+      "viewPlan": "Voir le plan",
+      "open": "Ouvrir",
+      "done": "Terminé"
+    },
+    "group": {
+      "stepsRemaining": "étapes restantes",
+      "min": "min"
+    },
+    "journey": {
+      "dayOf": "Jour {day} sur {total}",
+      "yourJourney": "Ton parcours",
+      "nextMilestone": "Prochaine étape",
+      "showFullAgenda": "Afficher l'agenda complet",
+      "moreEvents": "plus d'événements",
+      "onboardingPlan": "Ton plan d'intégration d'aujourd'hui",
+      "estimatedTime": "~{minutes} min",
+      "startPlan": "Démarrer le plan",
+      "tasksCompleted": "{completed}/{total} terminé",
+      "waveNames": {
+        "wave-1": "Premiers pas",
+        "wave-2": "Ancres quotidiennes",
+        "wave-3": "Approfondir les liens",
+        "wave-4": "Intelligence santé",
+        "wave-5": "Moments de perspicacité",
+        "wave-6": "Recommandations et découverte"
+      }
+    }
+  }
+}

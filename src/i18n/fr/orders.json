@@ -1,0 +1,81 @@
+{
+  "orders": {
+    "myOrders": "Mes commandes",
+    "title": "Commandes",
+    "description": "Ton historique de commandes et tes abonnements actifs",
+    "trackDescription": "Suis tes commandes de produits et tes billets d'événements",
+    "searchPlaceholder": "Chercher des commandes...",
+    "tabs": {
+      "active": "Actif",
+      "history": "Historique",
+      "all": "Tout",
+      "completed": "Terminées",
+      "cancelled": "Annulées"
+    },
+    "filters": {
+      "all": "Tout",
+      "events": "Événements",
+      "products": "Produits",
+      "vouchers": "Bons",
+      "services": "Services",
+      "refunds": "Remboursements"
+    },
+    "previewNotice": "Ce sont des commandes d'aperçu. Tes commandes réelles apparaîtront ici.",
+    "sampleData": "Données d'exemple",
+    "emptyActive": {
+      "title": "Aucune commande active",
+      "description": "Tu n'as aucune commande active ni événement à venir."
+    },
+    "emptyHistory": {
+      "title": "Aucun historique de commandes",
+      "description": "Tes commandes terminées et événements passés apparaîtront ici."
+    },
+    "noOrders": "Aucune commande pour l'instant",
+    "noOrdersDesc": "Tes commandes apparaîtront ici une fois que tu auras effectué un achat.",
+    "browseProducts": "Parcourir les produits",
+    "findEvents": "Trouver des événements",
+    "startShopping": "Commencer à acheter",
+    "noFilter": "Aucun {filter}",
+    "noFilterDesc": "Aucun {filter} trouvé dans ton historique.",
+    "orderDate": "Date de commande",
+    "orderNumber": "Numéro de commande",
+    "viewDetails": "Voir les détails",
+    "trackOrder": "Suivre la commande",
+    "reorder": "Recommander",
+    "detailSheet": {
+      "title": "Détails de la commande",
+      "orderInfo": "Infos commande",
+      "orderReference": "Référence de commande",
+      "purchaseDate": "Date d'achat",
+      "eventDate": "Date de l'événement",
+      "location": "Lieu",
+      "quantity": "Quantité",
+      "tickets": "billets",
+      "yourTicket": "Ton billet",
+      "giftVoucher": "Bon cadeau",
+      "code": "Code",
+      "sendToRecipient": "Envoyer au destinataire",
+      "recipientEmail": "E-mail du destinataire *",
+      "recipientName": "Nom du destinataire",
+      "personalMessage": "Message personnel",
+      "cancel": "Annuler",
+      "send": "Envoyer",
+      "downloadPdf": "Télécharger le PDF"
+    },
+    "status": {
+      "upcoming": "À venir",
+      "attended": "Participé",
+      "expired": "Expiré",
+      "completed": "Terminé",
+      "delivered": "Livré",
+      "cancelled": "Annulé",
+      "refunded": "Remboursé",
+      "shipped": "En transit",
+      "confirmed": "Confirmé",
+      "pending": "En attente",
+      "processing": "Traitement en cours",
+      "paid": "Actif",
+      "active": "Actif"
+    }
+  }
+}

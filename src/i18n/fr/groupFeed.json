@@ -1,0 +1,15 @@
+{
+  "groupFeed": {
+    "placeholder": "Partage quelque chose avec le groupe...",
+    "post": "Publier",
+    "noMessages": "Pas encore de messages",
+    "beFirst": "Sois le premier à publier dans ce groupe !",
+    "joinToPost": "Rejoins le groupe pour commencer à publier.",
+    "messageSent": "Message envoyé",
+    "deleteConfirm": "Supprimer ce message ?",
+    "messageDeleted": "Message supprimé",
+    "error": "Erreur",
+    "errorSend": "Impossible d'envoyer le message",
+    "errorDelete": "Impossible de supprimer le message"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "packages": {
+    "confirmDelete": "Es-tu sûr(e) de vouloir supprimer ce forfait ?",
+    "types": {
+      "bundle": "Lot",
+      "subscription": "Abonnement",
+      "program": "Programme"
+    },
+    "status": {
+      "draft": "Brouillon",
+      "published": "En ligne",
+      "archived": "Archivé"
+    },
+    "item": "article",
+    "items": "articles",
+    "total": "total",
+    "validDays": "Valide {days} jours",
+    "save": "Économise {percent}%",
+    "unpublish": "Dépublier",
+    "publish": "Publier"
+  }
+}

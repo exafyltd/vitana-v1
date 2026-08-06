@@ -1,0 +1,31 @@
+{
+  "memoryActions": {
+    "title": "Actions souvenirs",
+    "items": {
+      "recordVoiceDiary": {
+        "title": "Enregistrer ton journal vocal",
+        "description": "Capture tes pensées et réflexions avec ta voix"
+      },
+      "addMemoryNote": {
+        "title": "Ajouter une note souvenir",
+        "description": "Note les moments importants de ta santé"
+      },
+      "viewTimeline": {
+        "title": "Voir la chronologie",
+        "description": "Vois ton parcours bien-être complet"
+      },
+      "searchMemories": {
+        "title": "Rechercher des souvenirs",
+        "description": "Trouve des moments et des aperçus spécifiques"
+      },
+      "photoMemory": {
+        "title": "Souvenir photo",
+        "description": "Ajoute des souvenirs visuels à ton parcours"
+      },
+      "aiMemoryAnalysis": {
+        "title": "Analyse de mémoire IA",
+        "description": "Obtiens des aperçus de tes schémas de mémoire"
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "campaigns": {
+    "delete": {
+      "title": "Supprimer la campagne ?",
+      "description": "La suppression de \"{name}\" supprimera définitivement tous les brouillons et analyses associés. Cette action ne peut pas être annulée.",
+      "dontAskAgain": "Ne me demande plus pour les campagnes brouillon",
+      "deletePermanently": "Supprimer définitivement"
+    },
+    "creation": {
+      "title": "Créer une campagne",
+      "stepOf": "Étape {current} sur {total}",
+      "yourCampaigns": "Tes campagnes",
+      "drafts": "brouillons",
+      "live": "actives",
+      "proTip": "Conseil de pro",
+      "tips": {
+        "1": "Des noms clairs t'aident à retrouver tes campagnes plus tard",
+        "2": "Connecte les canaux maintenant pour une planification instantanée",
+        "3": "Le modèle de lancement fonctionne pour la plupart des annonces",
+        "4": "La planification intelligente utilise tes données d'engagement passées"
+      }
+    }
+  }
+}

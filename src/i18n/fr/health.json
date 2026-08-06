@@ -1,0 +1,94 @@
+{
+  "health": {
+    "title": "Santé",
+    "description": "Ton tableau de bord santé personnel",
+    "overview": "Aperçu",
+    "overviewDesc": "Ton tableau de bord santé complet et aperçu bien-être",
+    "servicesHub": "Centre de services",
+    "servicesHubDesc": "Réserve des médecins, du coaching, des programmes et des dépistages",
+    "biomarkers": "Biomarqueurs",
+    "biomarkersDesc": "Consulte tes derniers résultats de tests et biomarqueurs",
+    "healthTracker": "Mon Suivi Santé",
+    "healthTrackerDesc": "Suis ta nutrition, ton sommeil, ton exercice quotidiens",
+    "education": "Éducation et Science",
+    "educationDesc": "Apprends sur les sujets de santé et accède aux ressources bien-être",
+    "priorityFocus": "Focus prioritaire",
+    "priorityFocusExplanation": "Ce domaine a actuellement le plus grand impact sur ta durée de vie en bonne santé à long terme.",
+    "autopilotGuidance": "Guidage Autopilote",
+    "autopilotSuggests": "L'Autopilote Suggère",
+    "takeAction": "Passe à l'action",
+    "uploadBloodTest": "Télécharge un test sanguin",
+    "orderBloodTest": "Commande un test sanguin",
+    "viewPlans": "Voir les plans",
+    "vitanaIndex": "Index Vitana",
+    "healthSnapshot": "Ton aperçu santé",
+    "topPercentile": "Top {percent}%",
+    "trend": {
+      "improving": "S'améliore",
+      "declining": "Décline",
+      "stable": "Stable"
+    },
+    "suggestions": {
+      "uploadBloodTestResults": "Télécharge tes résultats d'analyse sanguine",
+      "startFitnessChallenge": "Commence ton défi fitness de 30 jours"
+    },
+    "pillars": {
+      "sleep": "Sommeil",
+      "exercise": "Exercice",
+      "nutrition": "Nutrition",
+      "hydration": "Hydratation",
+      "mental": "Mental"
+    },
+    "emptyStates": {
+      "noSleepPlan": "Pas encore de plan de sommeil",
+      "noSleepPlanDesc": "Génère ton plan de sommeil personnalisé avec des objectifs optimisés par l'IA, adaptés à ton rythme circadien, tes besoins de récupération et tes performances quotidiennes.",
+      "noExercisePlan": "Pas encore de plan d'exercice",
+      "noExercisePlanDesc": "Génère ton plan d'entraînement personnalisé avec des exercices optimisés par l'IA, adaptés à ton niveau de forme, tes objectifs et tes besoins de récupération.",
+      "noNutritionPlan": "Pas encore de plan de nutrition",
+      "noNutritionPlanDesc": "Génère ton plan de repas personnalisé avec des recettes délicieuses et équilibrées, adaptées à tes objectifs et préférences alimentaires.",
+      "noHydrationPlan": "Pas encore de plan d'hydratation",
+      "noHydrationPlanDesc": "Génère ton plan d'hydratation personnalisé avec des objectifs quotidiens optimisés par l'IA, adaptés à ton niveau d'activité, ton environnement et tes besoins de récupération.",
+      "noMentalPlan": "Pas encore de plan mental",
+      "noMentalPlanDesc": "Génère ton plan de bien-être mental personnalisé pour suivre le stress, la concentration et l'équilibre émotionnel avec l'aide de l'IA.",
+      "generatePlan": "Générer le plan",
+      "generating": "Génération en cours..."
+    },
+    "noSupplements": "Aucun supplément pour l'instant",
+    "noSupplementsDesc": "Suis tes vitamines, minéraux et suppléments quotidiens. Ajoute ton premier supplément pour commencer.",
+    "noReports": "Aucun rapport de santé pour l'instant",
+    "noReportsDesc": "Télécharge tes tests sanguins, résultats de laboratoire et rapports médicaux pour débloquer des informations de santé personnalisées.",
+    "medical": "Médical",
+    "supplements": "Suppléments",
+    "uploadDescription": "Tests sanguins, imagerie, résultats de laboratoire",
+    "unknownProvider": "Fournisseur inconnu",
+    "addSupplement": "Ajouter un supplément",
+    "uploadFirstReport": "Télécharge ton premier rapport",
+    "missionAlignment": {
+      "title": "Alignement de la mission",
+      "subtitle": "Comment tes recommandations font progresser les cinq piliers et l'économie de la longévité",
+      "loading": "Chargement des données de mission…",
+      "error": "Impossible de charger les données de mission",
+      "noRecs": "Pas encore de recommandations dans ta file d'attente.",
+      "summaryServed": "{pct}% de tes recommandations font avancer la mission",
+      "summaryServedCount": "{served} sur {total} recommandations alignées",
+      "pillarHeading": "Piliers servis",
+      "economyHeading": "Économie de la longévité",
+      "noPillar": "Non aligné aux piliers",
+      "noEconomy": "Non aligné à l'économie",
+      "pillars": {
+        "nutrition": "Nutrition",
+        "hydration": "Hydratation",
+        "exercise": "Exercice",
+        "sleep": "Sommeil",
+        "mental": "Santé Mentale"
+      },
+      "economyAxes": {
+        "find_match": "Trouver une correspondance",
+        "marketplace": "Marché",
+        "income_generation": "Génération de revenus",
+        "business_formation": "Création d'entreprise"
+      },
+      "contractLink": "Voir le contrat de l'Objectif Ultime"
+    }
+  }
+}

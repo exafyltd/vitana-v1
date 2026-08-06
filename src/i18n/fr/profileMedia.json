@@ -1,0 +1,9 @@
+{
+  "profileMedia": {
+    "emptyTitle": "Aucun média pour l'instant",
+    "emptyDescription": "Partage ton parcours bien-être",
+    "uploadCta": "Importer des médias",
+    "viewAllCta": "Voir tous les médias",
+    "thumbnailAlt": "Médias"
+  }
+}

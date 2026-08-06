@@ -1,0 +1,70 @@
+{
+  "voucher": {
+    "modal": {
+      "title": "Offrir un bon Maxina",
+      "subtitle": "Offre le cadeau du bien-être et de la connexion à la communauté",
+      "buyVoucher": "Acheter un bon",
+      "openingCheckout": "Ouverture du paiement sécurisé..."
+    },
+    "tiers": {
+      "test": {
+        "name": "Test"
+      },
+      "experience": {
+        "name": "Expérience"
+      },
+      "exclusive": {
+        "name": "Exclusif"
+      }
+    },
+    "success": {
+      "title": "Bon acheté !",
+      "ready": "Ton bon {tier} est prêt",
+      "download": "Télécharger le bon",
+      "sendEmail": "Envoyer au destinataire par e-mail",
+      "viewOrders": "Voir dans les commandes",
+      "done": "Terminé"
+    },
+    "email": {
+      "title": "Envoyer le bon par e-mail",
+      "subtitle": "On enverra un e-mail magnifiquement conçu avec le bon",
+      "recipientEmail": "E-mail du destinataire *",
+      "recipientName": "Nom du destinataire (facultatif)",
+      "personalMessage": "Message personnel (facultatif)",
+      "messagePlaceholder": "Joyeux anniversaire ! Profite de ce moment de bien-être...",
+      "back": "Retour",
+      "send": "Envoyer le bon"
+    },
+    "preview": {
+      "title": "Ton bon",
+      "giftVoucher": "Bon cadeau",
+      "validUntil": "Valable jusqu'au {date}",
+      "voucherCode": "Code du bon",
+      "whatsIncluded": "Inclus",
+      "downloadPdf": "Télécharger le PDF",
+      "downloadDirect": "Télécharger directement",
+      "openInBrowser": "Ouvrir dans le navigateur",
+      "copyLink": "Copier le lien",
+      "share": "Enregistrer / Partager",
+      "shareHint": "Enregistrer dans Fichiers, Drive, ou envoyer à quelqu'un",
+      "downloadHint": "Si le téléchargement s'ouvre vide, touche Ouvrir dans le navigateur"
+    },
+    "toast": {
+      "downloadStarted": "Téléchargement démarré !",
+      "downloadFailed": "Échec du téléchargement",
+      "linkCopied": "Lien copié !",
+      "linkCopiedDesc": "Colle dans le navigateur pour télécharger.",
+      "voucherSent": "Bon envoyé à {email} !",
+      "voucherShared": "Bon partagé avec succès !",
+      "checkoutFailed": "Échec du démarrage du paiement. Réessaye, s'il te plaît.",
+      "generatingVoucher": "Génération du bon...",
+      "failedToLoadVoucher": "Échec du chargement des données du bon",
+      "downloadFailedCopyLink": "Échec du téléchargement. Essaie de copier le lien.",
+      "useTicketView": "Utilise la vue du billet pour imprimer ou enregistrer ton billet",
+      "pdfNotAvailable": "Téléchargement PDF non disponible pour ce type de commande",
+      "enterRecipientEmail": "Entre l'e-mail du destinataire",
+      "emailOnlyForVouchers": "Envoi d'e-mail uniquement disponible pour les bons",
+      "sendingVoucherEmail": "Envoi de l'e-mail du bon..."
+    }
+  }
+}

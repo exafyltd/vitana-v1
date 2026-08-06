@@ -1,0 +1,77 @@
+{
+  "universalCart": {
+    "page": {
+      "title": "Panier",
+      "subtitle": "Produits, forfaits et recommandations de Discover — tout en un seul endroit.",
+      "emptyTitle": "Ton panier est vide",
+      "emptyBody": "Appuie sur « Ajouter au panier » sur n'importe quel article Discover pour l'ajouter ici.",
+      "loading": "Chargement de ton panier…",
+      "roleBlockedTitle": "Le panier n'est pas disponible pour ce rôle",
+      "roleBlockedBody": "Le panier est une fonctionnalité communautaire. Passe à ton rôle communautaire pour l'utiliser.",
+      "errorTitle": "Nous n'avons pas pu charger ton panier",
+      "errorBody": "Réessaie dans un instant.",
+      "removeAction": "Supprimer",
+      "quantityLabel": "Quantité",
+      "completeAction": "Marquer comme terminé",
+      "alreadyCompleted": "Déjà terminé",
+      "linkToDiscover": "Parcourir Discover",
+      "close": "Fermer"
+    },
+    "tabs": {
+      "cart": "Panier",
+      "saved": "Enregistré"
+    },
+    "saved": {
+      "moveToCart": "Ajouter au panier",
+      "saveForLater": "Enregistrer pour plus tard",
+      "emptyTitle": "Rien n'est encore enregistré",
+      "emptyBody": "Enregistre des produits pour plus tard en appuyant sur « Enregistrer pour plus tard » dans ton panier."
+    },
+    "item": {
+      "viewProduct": "Voir le produit"
+    },
+    "agent": {
+      "promptLabel": "Que cherches-tu ?",
+      "promptPlaceholder": "Décris ce que tu cherches — par ex. « plus d'énergie le matin »",
+      "proposeCta": "Demander à Vitana",
+      "proposing": "Vitana cherche des produits correspondants…",
+      "sectionTitle": "Vitana suggère",
+      "sectionSubtitle": "Les suggestions sont dans ton panier. Examine-les, garde-les ou supprime-les — tu n'achètes qu'avec « Approuver et payer ».",
+      "rationaleLabel": "Pourquoi Vitana suggère ceci",
+      "safetyTitle": "Note de sécurité — merci de lire",
+      "confidenceLabel": "Confiance : {value}",
+      "keep": "Garder",
+      "remove": "Supprimer",
+      "unavailable": "Vitana est temporairement indisponible. Réessaye dans un instant.",
+      "roleBlocked": "Les suggestions Vitana ne sont disponibles que dans ton rôle de communauté.",
+      "empty": "Pas encore de suggestions. Dis à Vitana ci-dessus ce que tu cherches.",
+      "reviewNote": "Consulte les notes : certaines suggestions ont des notes de sécurité. Vérifie-les avant de continuer.",
+      "reorderCta": "Racheter",
+      "reorderLabel": "Déjà acheté",
+      "reorderSectionTitle": "Racheter",
+      "reorderSectionSubtitle": "Les articles que tu as déjà achetés sont dans ton panier. Examine-les, garde-les ou supprime-les — tu n'achètes qu'avec « Approuver et Payer ».",
+      "reordering": "Vitana ajoute tes articles de nouveau…",
+      "overCapAdvisory": "Ces articles te font dépasser ton budget mensuel.",
+      "nearCapAdvisory": "Ces articles te rapprochent de ton budget mensuel.",
+      "error": "Quelque chose a mal tourné. Réessaye."
+    },
+    "budget": {
+      "title": "Budget ce mois-ci",
+      "spentOfCap": "{spent} sur {cap} ce mois-ci",
+      "statusUnder": "Dans le budget",
+      "statusNear": "Presque au budget",
+      "statusOver": "Hors budget",
+      "noCapHint": "Fixe un budget mensuel pour surveiller tes dépenses."
+    },
+    "addButton": {
+      "label": "Ajouter au panier",
+      "added": "Dans le panier",
+      "addAria": "Ajouter au panier",
+      "addedAria": "Déjà dans le panier",
+      "signRequired": "Connecte-toi pour ajouter à ton panier.",
+      "roleBlocked": "Le panier n'est disponible que dans ton rôle de communauté.",
+      "failed": "Impossible d'ajouter au panier",
+      "success": "Ajouté au panier"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "businessHub": {
+    "title": "Hub d'affaires",
+    "description": "Développe ton entreprise de bien-être",
+    "tabs": {
+      "snapshot": "Aperçu",
+      "services": "Services",
+      "sales": "Ventes",
+      "insights": "Perspectives"
+    },
+    "recentActivity": "Activité récente",
+    "clients": "Clients",
+    "analytics": "Analyses",
+    "searchBusiness": "Chercher une entreprise...",
+    "noServices": "Aucun service pour l'instant",
+    "noServicesDesc": "Crée ton premier service pour attirer des clients.",
+    "createService": "Créer un service",
+    "noClients": "Aucun client pour l'instant",
+    "noClientsDesc": "Tes clients apparaîtront ici.",
+    "noSales": "Aucune vente pour l'instant",
+    "noSalesDesc": "Ton historique des ventes apparaîtra ici."
+  }
+}
