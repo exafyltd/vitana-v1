@@ -277,8 +277,13 @@ for (const locale of allLocales.sort()) {
       const want = placeholdersOf(source);
       const got = placeholdersOf(value);
       if (want !== got) {
+        // ERROR for ga, WARN for beta — same severity split coverage already
+        // uses. `beta` means "offered but explicitly not guaranteed", and a
+        // locale mid-translation will legitimately carry these until its run
+        // drains; failing CI for the whole branch on that would train people to
+        // ignore the check. A ga locale has no such excuse.
         recordIssue(
-          'error',
+          status === 'ga' ? 'error' : 'warn',
           locale,
           `${shardName}: "${path}" placeholder mismatch — de{${want}} vs ${locale}{${got}}. ` +
             `The user sees a literal {token}. Value: ${JSON.stringify(String(value).slice(0, 60))}`,

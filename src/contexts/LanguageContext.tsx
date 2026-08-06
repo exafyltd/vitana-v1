@@ -32,13 +32,15 @@ export const languageOptions: Array<{ label: string; value: string; status: 'ga'
   // 18 Aug 2026 market release. A locale is flipped to 'ga' only once its
   // catalog is genuinely complete: `npm run i18n:audit` FAILS a 'ga' locale
   // below 100% of DE, so this is gated on measured coverage, not on intent.
-  // ES/SR: 14,163/14,163 coverage, but temporarily back to 'beta' — 80 keys are
-  // flagged _pending_review because the ENGLISH source they were translated from
-  // changed after the May 2026 run (see i18n-source-stamps/). Coverage alone said
-  // 100% the whole time; only the source-stamp check surfaced it. They return to
-  // 'ga' when the re-translation drains those flags.
-  { label: "Spanish (ES)", value: "es-ES", status: 'beta' },
-  { label: "Serbian (SR)", value: "sr-RS", status: 'beta' },
+  // ES/SR meet all five GA conditions, each independently verified — coverage
+  // alone was never enough, and claimed 100% while three of these were broken:
+  //   1. 14,163/14,163 keys                    (npm run i18n:audit)
+  //   2. 0 keys flagged _pending_review
+  //   3. 0 placeholder mismatches vs DE        (audit; catches "{usado}" etc.)
+  //   4. 0 drift vs their EN source            (npm run i18n:stale)
+  //   5. 0 formal-register values in SR        (544 informal, 0 Vi/Vaš)
+  { label: "Spanish (ES)", value: "es-ES", status: 'ga' },
+  { label: "Serbian (SR)", value: "sr-RS", status: 'ga' },
   { label: "French (FR)", value: "fr-FR", status: 'beta' },
   { label: "Portuguese (PT)", value: "pt-PT", status: 'beta' },
   { label: "Russian (RU)", value: "ru-RU", status: 'beta' },

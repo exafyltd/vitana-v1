@@ -8,13 +8,30 @@
     },
     "tiers": {
       "test": {
-        "name": "Test"
+        "name": "Test",
+        "benefits": [
+          "Test de paiement uniquement",
+          "Pas un vrai bon",
+          "Pour les tests de développement"
+        ]
       },
       "experience": {
-        "name": "Expérience"
+        "name": "Expérience",
+        "benefits": [
+          "Accès à 1 événement premium de la communauté",
+          "Conseil bien-être personnalisé",
+          "Essai Vitana+ de 30 jours inclus",
+          "Bon électronique au design soigné"
+        ]
       },
       "exclusive": {
-        "name": "Exclusif"
+        "name": "Exclusif",
+        "benefits": [
+          "3 événements premium de la communauté",
+          "Séance de coaching individuel avec un expert",
+          "Abonnement Vitana+ de 90 jours",
+          "Réservation prioritaire + avantages VIP"
+        ]
       }
     },
     "success": {
