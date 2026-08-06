@@ -2377,9 +2377,9 @@
       "platformDefaultValue0": "По умолчанию для платформы: {value0}",
       "kbScopesFromYourTenantThat": "Области знаний из твоего клиента, из которых {display_name} получает информацию. Добавь ключ области (например, {value1}",
       "topicKeyLike": ", или ключ темы, например",
-      "tenantspecificPhrasesThatRouteUserDisplay_name": "Фразы для клиента, которые направляют пользователя к {display_name} (помимо стандартных настроек платформы). Примеры: корпоративный жаргон, внутренние аббревиатуры, ваши термины из предметной области.",
+      "tenantspecificPhrasesThatRouteUserDisplay_name": "Фразы арендатора, которые направляют тебя к {display_name} (в дополнение к стандартным настройкам платформы). Примеры: корпоративный жаргон, внутренние аббревиатуры, твои доменно-специфичные термины.",
       "extraFieldsDisplay_nameShouldAskFor": "Дополнительные поля, которые {display_name} должен запрашивать во время голосового ввода (объект JSON). Например, для Atlas в клиенте с большим объемом финансовых данных:",
-      "tenantscopedConnectionsYourStripeYourAuth0": "Соединения в рамках клиента (ваш Stripe, ваш Auth0 и т.д.). Добавление новых соединений поддерживается через API сегодня; функция добавления через UI появится позже.",
+      "tenantscopedConnectionsYourStripeYourAuth0": "Подключения арендатора (твой Stripe, твой Auth0 и т.д.). Добавление новых подключений сегодня поддерживается через API; поток добавления через UI появится в следующем обновлении.",
       "addedValue0": "добавлено {value0}",
       "waitingForExecutorTickClaimRun": "— Ожидание сигнала от исполнителя для запуска выполнения (≤30 с).",
       "prValue0": "PR #{value0}",
@@ -2559,11 +2559,7 @@
       "paAssistantUsageDesc": "Реальное использование Ассистента: разговоры, качество, темы и надежность инструментов.",
       "paJourneysDesc": "Как пользователи перемещаются по приложению: входы, пути и отвалы.",
       "paFeaturesDesc": "Освоение функции: открытия, завершения и повторное использование.",
-      "paInterestsDesc": "Какие темы волнуют пользователей — из Ассистента, карточек и контента.",
-      "_pending_review": {
-        "tenantspecificPhrasesThatRouteUserDisplay_name": true,
-        "tenantscopedConnectionsYourStripeYourAuth0": true
-      }
+      "paInterestsDesc": "Какие темы волнуют пользователей — из Ассистента, карточек и контента."
     },
     "ai-feed": {
       "noEventsFound": "Событий не найдено",
@@ -8876,7 +8872,7 @@
       "insightDesc_expandingNetwork": "Расширяющаяся сеть поддержки",
       "insightDesc_aiDiscoveredPattern": "AI-обнаруженный поведенческий паттерн",
       "insightTitle_newFollowers": "{n} новых подписчиков на этой неделе",
-      "insightTitle_newGroups": "Вы присоединились к {n} новым велнес-группам",
+      "insightTitle_newGroups": "Ты присоединился к {n} новым велнес-группам.",
       "actionLabel_optimize": "Оптимизировать",
       "actionLabel_connect": "Подключиться",
       "actionLabel_exploreGroups": "Изучить группы",
@@ -8988,10 +8984,7 @@
       "impactImpact": "Влияние: {impact}",
       "defineHowYourAiAgentShould": "Определи, как твой ИИ агент должен себя вести, на чем он должен сосредоточиться и как он должен с тобой общаться...",
       "thisReadonlyPlaceholderForAgentPrompt": "Это заглушка только для чтения для Центра промптов агента. Будущие фазы позволят полную настройку ИИ агента и тестирование в реальном времени.",
-      "thisReadonlyPlaceholderForPersonalAi": "Это заглушка только для чтения для Персональной ИИ Хроники. Будущие фазы подключатся к реальным данным активности ИИ и предоставят интерактивные инсайты.",
-      "_pending_review": {
-        "insightTitle_newGroups": true
-      }
+      "thisReadonlyPlaceholderForPersonalAi": "Это заглушка только для чтения для Персональной ИИ Хроники. Будущие фазы подключатся к реальным данным активности ИИ и предоставят интерактивные инсайты."
     },
     "authpages": {
       "fullName": "Полное имя",
