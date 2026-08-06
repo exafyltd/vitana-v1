@@ -20,23 +20,30 @@
         "community": "Comunidad",
         "patient": "Paciente",
         "professional": "Pro",
-        "admin": "Admin"
-      }
+        "admin": "Admin",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "alkalma": {
       "joinAlkalma": "Únete a AlKalma",
       "welcomeBack": "¡Qué bueno verte de nuevo en AlKalma!",
-      "continueJourney": "Inicia sesión para continuar."
+      "continueJourney": "Inicia sesión para continuar.",
+      "_pending_review": {}
     },
     "earthlinks": {
       "joinEarthlinks": "Únete a Earthlinks",
       "welcomeBack": "¡Qué bueno verte de nuevo en Earthlinks!",
-      "continueJourney": "Inicia sesión para continuar."
+      "continueJourney": "Inicia sesión para continuar.",
+      "_pending_review": {}
     },
     "community": {
       "joinCommunity": "Únete a la Comunidad",
       "welcomeBack": "¡Qué bueno verte de nuevo!",
-      "continueJourney": "Inicia sesión para continuar."
-    }
-  }
+      "continueJourney": "Inicia sesión para continuar.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

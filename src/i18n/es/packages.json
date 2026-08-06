@@ -4,12 +4,14 @@
     "types": {
       "bundle": "Paquete",
       "subscription": "Suscripción",
-      "program": "Programa"
+      "program": "Programa",
+      "_pending_review": {}
     },
     "status": {
       "draft": "Borrador",
       "published": "En vivo",
-      "archived": "Archivado"
+      "archived": "Archivado",
+      "_pending_review": {}
     },
     "item": "artículo",
     "items": "artículos",
@@ -17,6 +19,8 @@
     "validDays": "Válido {days} días",
     "save": "Ahorra {percent}%",
     "unpublish": "Despublicar",
-    "publish": "Publicar"
-  }
+    "publish": "Publicar",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -74,6 +74,8 @@
     "errorNoAudio": "No captamos ningún audio. Por favor, inténtalo de nuevo.",
     "errorTranscription": "La transcripción falló. Por favor, inténtalo de nuevo.",
     "transcribing": "Transcribiendo tu grabación…",
-    "backendRecordingHint": "Tu transcripción aparecerá después de que toques Detener."
-  }
+    "backendRecordingHint": "Tu transcripción aparecerá después de que toques Detener.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

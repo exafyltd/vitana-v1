@@ -4,7 +4,8 @@
       "title": "Tu saldo",
       "loading": "Cargando saldo…",
       "empty": "Sin saldo aún",
-      "addMoney": "Añadir dinero"
+      "addMoney": "Añadir dinero",
+      "_pending_review": {}
     },
     "checkout": {
       "button": "Pagar",
@@ -16,7 +17,8 @@
       "affiliateTitle": "Completa la compra en el comercio",
       "affiliateBody": "Algunos artículos se compran directamente en el comercio. Abre los enlaces a continuación para completar la compra.",
       "affiliateLink": "Completa la compra en el comercio",
-      "affiliateOpened": "Enlaces del comercio abiertos en nuevas pestañas."
+      "affiliateOpened": "Enlaces del comercio abiertos en nuevas pestañas.",
+      "_pending_review": {}
     },
     "addMoney": {
       "title": "Añadir dinero",
@@ -29,7 +31,8 @@
       "continue": "Continuar al pago",
       "processing": "Preparando…",
       "invalidAmount": "Por favor, introduce una cantidad válida.",
-      "failed": "No se pudo iniciar la recarga."
+      "failed": "No se pudo iniciar la recarga.",
+      "_pending_review": {}
     },
     "deposit": {
       "checkingTitle": "Confirmando pago",
@@ -39,7 +42,8 @@
       "failedTitle": "Recarga fallida",
       "failedBody": "Tu recarga no pudo completarse. No se te cobró nada.",
       "amountLabel": "Monto",
-      "backToCart": "Volver al carrito"
+      "backToCart": "Volver al carrito",
+      "_pending_review": {}
     },
     "errors": {
       "invalid_request": "La solicitud no es válida. Por favor, revisa tu carrito.",
@@ -57,7 +61,10 @@
       "ORDER_WRITE_FAILED": "Tu pedido no pudo guardarse. Por favor, inténtalo de nuevo.",
       "WALLET_READ_FAILED": "No pudimos leer tu saldo. Por favor, inténtalo de nuevo.",
       "GATEWAY_MISCONFIGURED": "El servicio de pago no está disponible actualmente. Por favor, inténtalo de nuevo más tarde.",
-      "unknown": "Algo salió mal al finalizar la compra. Por favor, inténtalo de nuevo."
-    }
-  }
+      "unknown": "Algo salió mal al finalizar la compra. Por favor, inténtalo de nuevo.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

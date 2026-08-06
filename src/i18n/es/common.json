@@ -36,6 +36,8 @@
     "retry": "Reintentar",
     "follow": "Seguir",
     "getMaxina": "Conseguir MAXINA",
-    "uploading": "Subiendo..."
-  }
+    "uploading": "Subiendo...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
