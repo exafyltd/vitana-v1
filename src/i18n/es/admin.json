@@ -19,7 +19,10 @@
       "rejected": "Rechazado",
       "flagged": "Marcado",
       "podcastManagement": "Gestión de Podcasts",
-      "podcastManagementDesc": "Revisa y modera las subidas de podcasts"
-    }
-  }
+      "podcastManagementDesc": "Revisa y modera las subidas de podcasts",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
