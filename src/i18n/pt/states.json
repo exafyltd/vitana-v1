@@ -1,0 +1,24 @@
+{
+  "states": {
+    "loading": "Carregando...",
+    "saving": "Salvando...",
+    "sending": "Enviando...",
+    "uploading": "Carregando...",
+    "downloading": "Baixando...",
+    "processing": "Processando...",
+    "signingIn": "Entrando...",
+    "signingOut": "Saindo...",
+    "signingUp": "Registrando...",
+    "importing": "Importando...",
+    "exporting": "Exportando...",
+    "syncing": "Sincronizando...",
+    "generating": "Gerando...",
+    "connecting": "Conectando...",
+    "disconnecting": "Desconectando...",
+    "refreshing": "Atualizando...",
+    "searching": "Buscando...",
+    "deleting": "Excluindo...",
+    "creating": "Criando...",
+    "updating": "Atualizando..."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "milestones": {
+    "title": "Marcos de Vida",
+    "add": "Adicionar Marco",
+    "edit": "Editar Marco",
+    "empty": "Nenhum marco ainda",
+    "addFirst": "Adiciona o teu primeiro marco",
+    "date": "Data",
+    "description": "O que aconteceu?",
+    "titleLabel": "Título",
+    "titlePlaceholder": "ex: Formaste-te na Universidade",
+    "descPlaceholder": "Descreve este momento...",
+    "icon": "Ícone",
+    "publicLabel": "Visível para todos",
+    "private": "Privado"
+  }
+}

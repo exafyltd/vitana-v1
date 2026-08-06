@@ -1,0 +1,21 @@
+{
+  "editProfile": {
+    "unsavedChanges": "Você tem alterações não salvas. Tem certeza de que quer sair?",
+    "notAuthenticated": "Não autenticado",
+    "notAuthenticatedDesc": "Por favor, faça login para salvar seu perfil.",
+    "profileUpdated": "Perfil atualizado com sucesso!",
+    "profileUpdatedDesc": "Suas alterações estão ativas. Seu perfil VITANA está incrível.",
+    "error": "Erro",
+    "refreshFailed": "Falha ao atualizar dados do perfil.",
+    "showcaseHint": "Selecione publicações e conteúdo para destacar no topo do seu perfil",
+    "showcaseTitle": "Destaques",
+    "manage": "Gerenciar",
+    "about": "Sobre",
+    "addBio": "Adicionar biografia...",
+    "tapToEdit": "Toque para editar",
+    "title": "Título",
+    "titlePlaceholder": "Título do vídeo",
+    "description": "Descrição",
+    "descriptionPlaceholder": "Descrição opcional..."
+  }
+}

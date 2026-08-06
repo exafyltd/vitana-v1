@@ -1,0 +1,30 @@
+{
+  "services": {
+    "title": "Hub de Serviços",
+    "subtitle": "Acessa serviços de saúde e bem-estar abrangentes",
+    "categories": {
+      "preventive": "Rastreios Preventivos",
+      "labTests": "Exames de Laboratório",
+      "coaching": "Coaching e Treino Pessoal",
+      "groupPrograms": "Programas em Grupo e Desafios"
+    },
+    "actions": {
+      "book": "Agendar",
+      "addToPlan": "Adiciona ao Plano",
+      "askAI": "Pergunta à IA",
+      "joinRoom": "Entrar na Sala",
+      "setReminder": "Definir Lembrete"
+    },
+    "details": {
+      "duration": "Duração",
+      "price": "Preço",
+      "location": "Local",
+      "nextAvailable": "Próximo disponível",
+      "whatsIncluded": "O que está incluído",
+      "healthBenefits": "Benefícios de Saúde",
+      "availableProviders": "Profissionais Disponíveis",
+      "requirements": "Requisitos e Preparação",
+      "tags": "Etiquetas"
+    }
+  }
+}

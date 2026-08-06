@@ -1,0 +1,63 @@
+{
+  "marketplaceCheckout": {
+    "balance": {
+      "title": "Teu saldo",
+      "loading": "A carregar saldo…",
+      "empty": "Ainda sem saldo",
+      "addMoney": "Adicionar dinheiro"
+    },
+    "checkout": {
+      "button": "Finalizar compra",
+      "processing": "A processar…",
+      "successTitle": "Encomenda feita",
+      "successBody": "O teu saldo foi debitado e a tua encomenda foi criada.",
+      "duplicateTitle": "Encomenda já feita",
+      "duplicateBody": "Esta encomenda já foi processada.",
+      "affiliateTitle": "Concluir compra no comerciante",
+      "affiliateBody": "Alguns itens são comprados diretamente no comerciante. Abre os links abaixo para concluir a compra.",
+      "affiliateLink": "Concluir compra no comerciante",
+      "affiliateOpened": "Links do comerciante abertos em novos separadores."
+    },
+    "addMoney": {
+      "title": "Adicionar dinheiro",
+      "description": "Carrega o teu saldo com cartão via Stripe.",
+      "amountLabel": "Valor",
+      "amountPlaceholder": "0,00",
+      "currencyLabel": "Moeda",
+      "currencyEur": "EUR",
+      "currencyUsd": "USD",
+      "continue": "Continuar para pagamento",
+      "processing": "A preparar…",
+      "invalidAmount": "Por favor, insere um valor válido.",
+      "failed": "Não foi possível iniciar o carregamento."
+    },
+    "deposit": {
+      "checkingTitle": "A confirmar pagamento",
+      "checkingBody": "Estamos à espera que o teu pagamento seja confirmado. Isto pode demorar um momento.",
+      "succeededTitle": "Saldo carregado",
+      "succeededBody": "O teu saldo foi carregado com sucesso.",
+      "failedTitle": "Carregamento falhou",
+      "failedBody": "O teu carregamento não pôde ser concluído. Nada foi cobrado.",
+      "amountLabel": "Valor",
+      "backToCart": "Voltar ao carrinho"
+    },
+    "errors": {
+      "invalid_request": "A solicitação é inválida. Por favor, verifica o teu carrinho.",
+      "CART_EMPTY": "O teu carrinho está vazio.",
+      "PRODUCT_UNAVAILABLE": "Um produto no teu carrinho não está mais disponível.",
+      "PRICE_UNAVAILABLE": "Um preço está atualmente indisponível para um produto.",
+      "MIXED_CURRENCY": "O teu carrinho contém itens em moedas diferentes. Por favor, separa-os.",
+      "UNSUPPORTED_WALLET_CURRENCY": "Esta moeda não é suportada pelo teu saldo.",
+      "WALLET_ACCOUNT_MISSING": "Nenhuma conta de saldo foi configurada para esta moeda ainda.",
+      "WALLET_ACCOUNT_INACTIVE": "A tua conta de saldo está atualmente inativa.",
+      "INSUFFICIENT_BALANCE": "O teu saldo não é suficiente para esta compra. Por favor, adiciona dinheiro.",
+      "TENANT_REQUIRED": "Esta operação requer um espaço de trabalho ativo.",
+      "WALLET_DEBIT_FAILED": "O carregamento do teu saldo falhou. Por favor, tenta novamente.",
+      "CART_READ_FAILED": "Não conseguimos ler o teu carrinho. Por favor, tenta novamente.",
+      "ORDER_WRITE_FAILED": "O teu pedido não pôde ser guardado. Por favor, tenta novamente.",
+      "WALLET_READ_FAILED": "Não conseguimos ler o teu saldo. Por favor, tenta novamente.",
+      "GATEWAY_MISCONFIGURED": "O serviço de pagamento está atualmente indisponível. Por favor, tenta novamente mais tarde.",
+      "unknown": "Algo correu mal no checkout. Por favor, tenta novamente."
+    }
+  }
+}

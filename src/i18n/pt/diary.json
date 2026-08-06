@@ -1,0 +1,13 @@
+{
+  "diary": {
+    "title": "Diário do Dia",
+    "description": "Acompanha a tua jornada de bem-estar e ajuda-nos a melhorar",
+    "healthTab": "Diário de Saúde",
+    "bugTab": "Relatórios de Bugs",
+    "text": "Texto",
+    "photo": "Foto",
+    "textEntry": "✍️ Entrada de Texto",
+    "photoEntry": "📸 Entrada de Foto",
+    "searchPlaceholder": "Pesquisar diário..."
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "socialImport": {
+    "dialogTitle": "Importar Perfil {platform}",
+    "dialogDescription": "Conecta teu perfil {platform} para enriquecer tua identidade Vitana com insights de IA.",
+    "profileUrl": "URL do Perfil {platform}",
+    "bioLabel": "Bio / Seção Sobre",
+    "bioOptional": "(Opcional)",
+    "cancel": "Cancelar",
+    "importProfile": "Importar Perfil",
+    "importing": "Importando...",
+    "urlRequired": "URL Obrigatória",
+    "urlRequiredDesc": "Por favor, insere a URL do teu perfil {platform}",
+    "importSuccess": "Importação Bem-sucedida",
+    "importSuccessDesc": "Teu perfil {platform} foi importado e enriquecido com insights de IA.",
+    "importFailed": "Importação Falhou",
+    "connect": "Conectar:",
+    "socialPresence": "Presença Social",
+    "verifiedConnections": "Conexões verificadas em tua vida digital",
+    "tapToVisit": "Toca para visitar o perfil",
+    "noAccountsConnected": "Nenhuma conta social conectada",
+    "connectAccounts": "Conectar Contas",
+    "platformHelp": {
+      "linkedin": "Usaremos IA para extrair teu título, resumo e habilidades profissionais.",
+      "instagram": "Analisaremos tua bio para entender teus interesses e temas de estilo de vida.",
+      "tiktok": "Extrairemos teus temas de conteúdo e personalidade criativa da tua bio.",
+      "youtube": "Identificaremos tuas categorias de conteúdo e áreas de especialização da tua descrição.",
+      "facebook": "Extrairemos teus interesses e envolvimento comunitário da tua bio.",
+      "x": "Analisaremos tua bio para entender teus tópicos de interesse e estilo de comunicação."
+    }
+  }
+}

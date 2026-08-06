@@ -1,0 +1,123 @@
+{
+  "inbox": {
+    "title": "Caixa de entrada",
+    "subtitle": "Fica conectado com a tua comunidade!",
+    "description": "As tuas conversas, atualizações e notificações",
+    "desktopTitle": "Mensagens",
+    "desktopDescription": "Conecta-te com a tua comunidade e rede",
+    "tabs": {
+      "all": "Tudo",
+      "groups": "Grupos",
+      "direct": "Diretas",
+      "contacts": "Contactos",
+      "notifications": "Notificações",
+      "archived": "Arquivadas"
+    },
+    "contextTabs": {
+      "community": "Comunidade",
+      "network": "Rede"
+    },
+    "actions": {
+      "new": "Novo",
+      "newMessage": "Nova Mensagem",
+      "createGroup": "Criar Grupo",
+      "markAllRead": "Marcar tudo como lido",
+      "menu": "Mais"
+    },
+    "composer": {
+      "placeholder": "Escreve a tua mensagem...",
+      "send": "Enviar",
+      "attachments": "Anexos",
+      "recipients": "Para:",
+      "add": "Adicionar"
+    },
+    "states": {
+      "empty": "Nenhuma mensagem ainda",
+      "loading": "Carregando mensagens...",
+      "error": "Falha ao carregar mensagens"
+    },
+    "newConversation": {
+      "title": "Iniciar Nova Conversa",
+      "titleGroup": "Criar Chat em Grupo",
+      "groupName": "Nome do Grupo",
+      "groupNamePlaceholder": "Insere o nome do grupo...",
+      "members": "Membros",
+      "recipient": "Destinatário",
+      "addMore": "Adicionar mais pessoas",
+      "searchPeople": "Procurar pessoas",
+      "searchPlaceholder": "Insere nome ou e-mail para procurar...",
+      "searchMinChars": "Digita pelo menos 2 caracteres para procurar",
+      "searchResults": "Resultados da Pesquisa",
+      "noResults": "Nenhum utilizador encontrado. Tenta um termo de pesquisa diferente.",
+      "add": "Adicionar",
+      "added": "Adicionado",
+      "cancel": "Cancelar",
+      "startChat": "Iniciar Chat",
+      "createGroup": "Criar Grupo",
+      "creating": "A criar..."
+    },
+    "createGroup": {
+      "title": "Criar Grupo",
+      "avatarSoon": "O upload de avatar estará disponível em breve.",
+      "groupName": "Nome do Grupo",
+      "addMembers": "Adicionar Membros",
+      "searchPlaceholder": "Procurar utilizadores...",
+      "groupNameRequired": "Nome do grupo é obrigatório",
+      "groupNameRequiredDesc": "Por favor, insere um nome para o teu grupo.",
+      "addMembersRequired": "Adicionar membros",
+      "addMembersRequiredDesc": "Por favor, adiciona pelo menos um membro ao grupo.",
+      "groupExists": "Grupo já existe",
+      "groupExistsDesc": "Um grupo com estes membros foi criado recentemente.",
+      "created": "Grupo criado",
+      "createdDesc": "\"{name}\" foi criado com sucesso.",
+      "failed": "Falha ao criar grupo",
+      "failedDesc": "Por favor, tenta novamente."
+    },
+    "toast": {
+      "success": "Sucesso",
+      "error": "Erro",
+      "conversationStarted": "Conversa iniciada!",
+      "authRequired": "Autenticação necessária",
+      "noTenantContext": "Nenhum contexto de inquilino disponível",
+      "searchFailed": "Pesquisa falhou",
+      "accessDenied": "Acesso negado",
+      "communityOnly": "Apenas utilizadores da comunidade podem criar conversas globais",
+      "pleaseLogin": "Por favor, inicia sessão para começar conversas",
+      "groupRecipientsRequired": "Nome do grupo e destinatários são obrigatórios",
+      "singleRecipientRequired": "Seleciona exatamente um destinatário para mensagem direta",
+      "groupCreated": "Grupo \"{name}\" criado com sucesso!",
+      "groupFailed": "Falha ao criar grupo",
+      "allMarkedRead": "Todas as mensagens marcadas como lidas",
+      "markAllReadFailed": "Não foi possível marcar todas como lidas. Por favor, tenta novamente."
+    },
+    "createGroupAction": "Criar Novo Grupo",
+    "newConversationAction": "Nova Conversa",
+    "noGroups": "Ainda sem grupos",
+    "noGroupsDesc": "Os grupos ajudam-te a colaborar com várias pessoas ao mesmo tempo.",
+    "createFirstGroup": "Cria o primeiro grupo",
+    "loading": "A carregar mensagens...",
+    "searchConversations": "Pesquisar conversas...",
+    "searchPlaceholder": "Pesquisar...",
+    "noMessages": "Ainda sem mensagens",
+    "noMessagesDesc": "Inicia uma conversa para começar.",
+    "startConversation": "Iniciar Conversa",
+    "emptyState": {
+      "title": "A tua caixa de entrada está calma por agora",
+      "globalDescription": "Inicia uma conversa ou junta-te a uma comunidade para te conectares com outros.",
+      "tenantDescription": "Conecta-te com colegas e membros da equipa na tua rede profissional.",
+      "startConversation": "Iniciar uma conversa",
+      "discoverPeople": "Descobrir pessoas"
+    },
+    "group": {
+      "loading": "A carregar grupo…",
+      "cantOpen": "Não foi possível abrir grupo",
+      "backToInbox": "Voltar para a Caixa de Entrada",
+      "back": "Voltar",
+      "memberOne": "membro",
+      "memberOther": "membros",
+      "officialBadge": "grupo oficial",
+      "empty": "Ainda não há mensagens.",
+      "composerPlaceholder": "Mensagem…"
+    }
+  }
+}

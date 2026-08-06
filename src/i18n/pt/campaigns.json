@@ -1,0 +1,24 @@
+{
+  "campaigns": {
+    "delete": {
+      "title": "Excluir Campanha?",
+      "description": "Excluir \"{name}\" removerá permanentemente todos os rascunhos e análises relacionados. Esta ação não pode ser desfeita.",
+      "dontAskAgain": "Não me perguntes novamente sobre campanhas de rascunho",
+      "deletePermanently": "Excluir Permanentemente"
+    },
+    "creation": {
+      "title": "Criar Campanha",
+      "stepOf": "Passo {current} de {total}",
+      "yourCampaigns": "Tuas Campanhas",
+      "drafts": "rascunhos",
+      "live": "ativas",
+      "proTip": "Dica Pro",
+      "tips": {
+        "1": "Nomes claros ajudam-te a encontrar campanhas mais tarde",
+        "2": "Conecta canais agora para agendamento instantâneo",
+        "3": "O modelo de lançamento funciona para a maioria dos anúncios",
+        "4": "Agendamento inteligente usa os teus dados de engajamento anteriores"
+      }
+    }
+  }
+}

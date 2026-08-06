@@ -1,0 +1,35 @@
+{
+  "vitanaIndex": {
+    "title": "Índice de Saúde Vitana",
+    "subtitle": "Equilíbrio geral de bem-estar em todos os pilares da saúde",
+    "veryPoor": "Muito Ruim",
+    "poor": "Ruim",
+    "fair": "Razoável",
+    "improving": "Melhorando",
+    "good": "Bom",
+    "excellent": "Excelente",
+    "sleep": "Sono",
+    "exercise": "Exercício",
+    "nutrition": "Nutrição",
+    "hydration": "Hidratação",
+    "mental": "Mental",
+    "viewFullReport": "Ver Relatório Completo",
+    "trackToday": "Acompanhar Hoje",
+    "tiers": {
+      "starting": "Começando",
+      "early": "Inicial",
+      "building": "Construindo",
+      "strong": "Forte",
+      "reallyGood": "Muito bom",
+      "elite": "Elite"
+    },
+    "framings": {
+      "starting": "Apenas começando",
+      "early": "Linha de base estabelecida",
+      "building": "Hábitos se formando",
+      "strong": "Marco de 90 dias",
+      "reallyGood": "Prosperando",
+      "elite": "Elite"
+    }
+  }
+}

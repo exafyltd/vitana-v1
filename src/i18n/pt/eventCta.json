@@ -1,0 +1,24 @@
+{
+  "eventCta": {
+    "buyTicket": "Comprar Bilhete",
+    "buyTicketWithPrice": "Comprar Bilhete · {price}",
+    "getFreeTicket": "Obter Bilhete Grátis",
+    "reserveSpot": "Reservar Lugar",
+    "reserveMySpot": "Reservar Meu Lugar",
+    "viewTicket": "Ver Bilhete",
+    "soldOut": "Esgotado",
+    "joinMeetup": "Participar do MeetUp",
+    "leaveMeetup": "Sair do MeetUp",
+    "cancelReservation": "Cancelar Reserva",
+    "viewEvent": "Ver Evento",
+    "yourTicket": "O teu bilhete",
+    "getYourTicket": "Pega o teu bilhete",
+    "joinThisEvent": "Participa neste evento",
+    "selectTickets": "Selecionar Bilhetes",
+    "buyTicketsTotal": "Comprar Bilhetes – {total}",
+    "processing": "A processar...",
+    "joining": "A aderir...",
+    "getTickets": "Obter Bilhetes",
+    "promoteEvent": "Promover evento"
+  }
+}

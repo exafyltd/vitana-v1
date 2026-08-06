@@ -1,0 +1,21 @@
+{
+  "drawerNav": {
+    "journey": "Minha Jornada",
+    "news": "Notícias",
+    "events": "Eventos & Encontros",
+    "findPartner": "Encontrar um Par",
+    "live": "Salas ao Vivo",
+    "media": "HUB de Mídia",
+    "business": "HUB de Negócios",
+    "discover": "Descobrir",
+    "orders": "Pedidos",
+    "wallet": "Carteira",
+    "health": "Saúde",
+    "diary": "Diário",
+    "connectors": "Conectores",
+    "inbox": "Caixa de Entrada",
+    "support": "Suporte",
+    "settings": "Configurações",
+    "logout": "Sair"
+  }
+}

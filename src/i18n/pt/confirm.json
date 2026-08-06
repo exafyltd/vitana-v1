@@ -1,0 +1,20 @@
+{
+  "confirm": {
+    "delete": "Tens certeza de que queres apagar isto?",
+    "deleteDesc": "Esta ação não pode ser desfeita.",
+    "cancel": "Tens certeza de que queres cancelar?",
+    "cancelDesc": "As tuas alterações serão perdidas.",
+    "unsavedChanges": "Tens alterações não guardadas.",
+    "unsavedChangesDesc": "Queres mesmo sair? As tuas alterações serão perdidas.",
+    "leave": "Queres mesmo sair desta página?",
+    "leaveDesc": "Alterações não guardadas serão perdidas.",
+    "logout": "Tens certeza de que queres sair?",
+    "logoutDesc": "Terás de iniciar sessão novamente.",
+    "remove": "Queres mesmo remover este item?",
+    "removeDesc": "O item será removido da lista.",
+    "disconnect": "Queres mesmo desconectar?",
+    "disconnectDesc": "Podes reconectar mais tarde.",
+    "proceed": "Queres continuar?",
+    "proceedDesc": "Esta ação será executada."
+  }
+}

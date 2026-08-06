@@ -1,0 +1,147 @@
+{
+  "calendar": {
+    "smartCalendar": "Calendário Inteligente",
+    "myCalendar": "Meu Calendário",
+    "bookedActivities": "Tuas atividades agendadas na VITANA",
+    "addEvent": "Adicionar Evento",
+    "synced": "Sincronizado",
+    "syncing": "Sincronizando",
+    "today": "Hoje",
+    "week": "Semana",
+    "month": "Mês",
+    "agenda": "Agenda",
+    "nothingScheduled": "Nada agendado",
+    "tryQuickAdd": "Experimenta a Adição Rápida ou deixa o Piloto Automático planear o teu dia",
+    "clickSlotHint": "Clica em qualquer espaço para criar um evento • Arrastar para reagendar",
+    "noEventsOnDate": "Nenhum evento nesta data",
+    "lastSynced": "Última sincronização",
+    "justNow": "agora mesmo",
+    "now": "Agora",
+    "untitledEvent": "Evento Sem Título",
+    "newEvent": "Novo Evento",
+    "close": "Fechar",
+    "noBookingsToday": "Nenhum agendamento hoje",
+    "noBookingsYet": "Nenhum agendamento ainda",
+    "nextUpcoming": "Próximo a seguir",
+    "exploreActivities": "Explora atividades para adicionar ao teu calendário",
+    "browseActivities": "Explorar Atividades",
+    "bookedEvents": {
+      "title": "Teus Eventos Agendados",
+      "todayLabel": "Hoje",
+      "nextUp": "A seguir",
+      "noEventsToday": "Nenhum evento hoje"
+    },
+    "filters": {
+      "personal": "Pessoal",
+      "community": "Comunidade",
+      "work": "Trabalho",
+      "health": "Saúde",
+      "workout": "Treino"
+    },
+    "categories": {
+      "community": "Comunidade",
+      "fitness": "Fitness",
+      "health": "Saúde",
+      "nutrition": "Nutrição",
+      "professional": "Trabalho",
+      "personal": "Pessoal",
+      "training": "Treino"
+    },
+    "bookingStatus": {
+      "booked": "Reservado",
+      "rsvp": "Confirmar presença",
+      "ticket": "Bilhete",
+      "reserved": "Reservado"
+    },
+    "timeGroups": {
+      "today": "Hoje",
+      "tomorrow": "Amanhã",
+      "thisWeek": "Esta Semana",
+      "later": "Mais tarde"
+    },
+    "autopilot": {
+      "suggestions": "Sugestões do Piloto Automático",
+      "badge": "Piloto Automático",
+      "accept": "Aceitar",
+      "snooze": "Adiar",
+      "dismiss": "Ignorar",
+      "undo": "Desfazer",
+      "laterToday": "Mais tarde hoje",
+      "tomorrow": "Amanhã",
+      "conflictsWith": "Conflitos com:",
+      "suggestionAccepted": "Sugestão aceita",
+      "calendarUpdated": "O Piloto Automático atualizou o teu calendário",
+      "suggestionUndone": "Sugestão desfeita",
+      "changesReverted": "As alterações foram revertidas",
+      "suggestionSnoozed": "Sugestão adiada",
+      "reminderLaterToday": "Lembrete definido para mais tarde hoje",
+      "reminderTomorrow": "Lembrete definido para amanhã",
+      "recommendFocus": "Recomendar bloco de foco",
+      "focusBlockDesc": "Tens uma janela de 90 minutos disponível. Perfeito para trabalho profundo."
+    },
+    "toasts": {
+      "eventCreated": "Evento criado",
+      "eventCreatedDesc": "O teu evento foi adicionado ao calendário",
+      "eventDeleted": "Evento eliminado",
+      "eventDeletedDesc": "O evento foi removido do teu calendário",
+      "syncingTitle": "A sincronizar...",
+      "syncingDesc": "A sincronizar com calendários externos",
+      "syncedTitle": "Sincronizado",
+      "syncedDesc": "O calendário está atualizado",
+      "joiningEvent": "A entrar no evento",
+      "openingVideoCall": "A abrir chamada de vídeo...",
+      "messageAttendees": "Enviar mensagem aos participantes",
+      "featureComingSoon": "Funcionalidade em breve",
+      "inviteFollowers": "Convidar seguidores",
+      "rescheduleEvent": "Reagendar evento",
+      "shareToGroup": "Partilhar com o grupo"
+    },
+    "error": {
+      "failedToCreate": "Falha ao criar evento"
+    },
+    "allDay": "O dia todo",
+    "milestoneToday": "Marco",
+    "focus": {
+      "todaysFocus": "Foco de hoje",
+      "lightDay": "Dia leve — explora atividades ou põe o teu diário em dia",
+      "moreSteps": "mais passos"
+    },
+    "badge": {
+      "guidedStep": "Passo guiado",
+      "milestone": "Marco",
+      "wellness": "Bem-estar"
+    },
+    "action": {
+      "start": "Começar",
+      "continue": "Continuar",
+      "join": "Entrar",
+      "details": "Detalhes",
+      "viewPlan": "Ver plano",
+      "open": "Abrir",
+      "done": "Feito"
+    },
+    "group": {
+      "stepsRemaining": "passos restantes",
+      "min": "min"
+    },
+    "journey": {
+      "dayOf": "Dia {day} de {total}",
+      "yourJourney": "Tua jornada",
+      "nextMilestone": "Próximo marco",
+      "showFullAgenda": "Mostrar agenda completa",
+      "moreEvents": "mais eventos",
+      "onboardingPlan": "Plano de integração de hoje",
+      "estimatedTime": "~{minutes} min",
+      "startPlan": "Começar plano",
+      "tasksCompleted": "{completed}/{total} feito",
+      "waveNames": {
+        "wave-1": "Começando",
+        "wave-2": "Âncoras Diárias",
+        "wave-3": "Aprofundando Conexões",
+        "wave-4": "Inteligência em Saúde",
+        "wave-5": "Momentos de Insight",
+        "wave-6": "Recomendações e Descoberta"
+      }
+    }
+  }
+}

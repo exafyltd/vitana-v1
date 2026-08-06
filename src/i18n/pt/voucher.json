@@ -1,0 +1,70 @@
+{
+  "voucher": {
+    "modal": {
+      "title": "Oferece um Voucher Maxina",
+      "subtitle": "Oferece o presente de bem-estar e conexão com a comunidade",
+      "buyVoucher": "Comprar Voucher",
+      "openingCheckout": "A abrir pagamento seguro..."
+    },
+    "tiers": {
+      "test": {
+        "name": "Teste"
+      },
+      "experience": {
+        "name": "Experiência"
+      },
+      "exclusive": {
+        "name": "Exclusivo"
+      }
+    },
+    "success": {
+      "title": "Voucher Comprado!",
+      "ready": "O teu voucher {tier} está pronto",
+      "download": "Descarregar Voucher",
+      "sendEmail": "Enviar ao Destinatário por E-mail",
+      "viewOrders": "Ver nas Encomendas",
+      "done": "Feito"
+    },
+    "email": {
+      "title": "Enviar Voucher por E-mail",
+      "subtitle": "Vamos enviar um e-mail com um design bonito com o voucher",
+      "recipientEmail": "E-mail do Destinatário *",
+      "recipientName": "Nome do Destinatário (opcional)",
+      "personalMessage": "Mensagem Pessoal (opcional)",
+      "messagePlaceholder": "Feliz Aniversário! Desfruta deste mimo de bem-estar...",
+      "back": "Voltar",
+      "send": "Enviar Voucher"
+    },
+    "preview": {
+      "title": "O teu Voucher",
+      "giftVoucher": "Voucher Presente",
+      "validUntil": "Válido até {date}",
+      "voucherCode": "Código do Voucher",
+      "whatsIncluded": "O que está incluído",
+      "downloadPdf": "Descarregar PDF",
+      "downloadDirect": "Descarregar Direto",
+      "openInBrowser": "Abrir no Navegador",
+      "copyLink": "Copiar Link",
+      "share": "Salvar / Compartilhar",
+      "shareHint": "Salvar em Arquivos, Drive ou enviar para alguém",
+      "downloadHint": "Se o download abrir em branco, toque em Abrir no Navegador"
+    },
+    "toast": {
+      "downloadStarted": "Download iniciado!",
+      "downloadFailed": "Download falhou",
+      "linkCopied": "Link copiado!",
+      "linkCopiedDesc": "Cole no navegador para baixar.",
+      "voucherSent": "Voucher enviado para {email}!",
+      "voucherShared": "Voucher compartilhado com sucesso!",
+      "checkoutFailed": "Falha ao iniciar o pagamento. Por favor, tente novamente.",
+      "generatingVoucher": "Gerando voucher...",
+      "failedToLoadVoucher": "Falha ao carregar dados do voucher",
+      "downloadFailedCopyLink": "Download falhou. Tente copiar o link.",
+      "useTicketView": "Use a visualização do ingresso para imprimir ou salvar seu ingresso",
+      "pdfNotAvailable": "Download de PDF não disponível para este tipo de pedido",
+      "enterRecipientEmail": "Por favor, insere o e-mail do destinatário",
+      "emailOnlyForVouchers": "Envio de e-mail disponível apenas para vouchers",
+      "sendingVoucherEmail": "Enviando e-mail do voucher..."
+    }
+  }
+}

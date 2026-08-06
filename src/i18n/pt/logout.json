@@ -1,0 +1,7 @@
+{
+  "logout": {
+    "signingOut": "Saindo...",
+    "signedOut": "Saíste com sucesso",
+    "redirecting": "Redirecionando..."
+  }
+}

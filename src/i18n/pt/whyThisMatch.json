@@ -1,0 +1,18 @@
+{
+  "whyThisMatch": {
+    "title": "Por que este membro?",
+    "interpretedAs": "Vitana entendeu:",
+    "consideredSignals": "Sinais considerados:",
+    "showSomeoneElse": "Mostra-me outra pessoa",
+    "dismiss": "Descartar",
+    "ethicsNote": "Vitana não classifica membros por aparência ou riqueza — mas aqui está alguém cuja jornada brilha agora.",
+    "loadingRecipe": "Carregando detalhes da pesquisa…",
+    "recipeUnavailable": "Esses detalhes da pesquisa não estão mais disponíveis.",
+    "tierLabel": {
+      "1": "Correspondência exata",
+      "2": "Índice Vitana",
+      "3": "Correspondência mais próxima",
+      "4": "Redirecionamento por justiça"
+    }
+  }
+}

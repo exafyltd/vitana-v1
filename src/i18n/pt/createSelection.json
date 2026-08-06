@@ -1,0 +1,10 @@
+{
+  "createSelection": {
+    "title": "Criar Novo",
+    "description": "Escolhe o tipo de encontro que queres criar",
+    "event": "Evento",
+    "eventDescription": "Encontros formais com horários e programas estruturados",
+    "meetup": "MeetUp",
+    "meetupDescription": "Encontros casuais para networking e construção de comunidade"
+  }
+}

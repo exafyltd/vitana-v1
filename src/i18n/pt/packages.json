@@ -1,0 +1,22 @@
+{
+  "packages": {
+    "confirmDelete": "Tens certeza que queres eliminar este pacote?",
+    "types": {
+      "bundle": "Pacote",
+      "subscription": "Subscrição",
+      "program": "Programa"
+    },
+    "status": {
+      "draft": "Rascunho",
+      "published": "Ativo",
+      "archived": "Arquivado"
+    },
+    "item": "item",
+    "items": "itens",
+    "total": "total",
+    "validDays": "Válido por {days} dias",
+    "save": "Poupa {percent}%",
+    "unpublish": "Despublicar",
+    "publish": "Publicar"
+  }
+}
