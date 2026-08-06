@@ -68,7 +68,14 @@ jobs:
         with:
           node-version: 20
 
+      # continue-on-error so a PARTIAL failure still reaches the commit step.
+      # translate-keys.mjs exits 1 if ANY key failed, and the script persists
+      # after every batch — so without this, a run that translated 14,068 of
+      # 14,160 keys discarded all 14,068 because the commit step never ran.
+      # That is exactly what happened on the first fr/pt/ru/pl dispatch.
       - name: Run translator
+        id: translate
+        continue-on-error: true
         env:
           GOOGLE_GEMINI_API_KEY: ${{ secrets.GOOGLE_GEMINI_API_KEY }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -83,7 +90,12 @@ jobs:
           echo "Running: node scripts/translate-keys.mjs $ARGS"
           node scripts/translate-keys.mjs $ARGS
 
+      # always() so partial progress is committed even when the translator
+      # reported failures. The script is idempotent and resumable — keys that
+      # succeeded are written and cleared of _pending_review, so a re-run picks
+      # up only what is left instead of paying for the whole locale again.
       - name: Commit and push
+        if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -107,4 +119,15 @@ jobs:
             sleep $((5 * i))
           done
           echo "push failed after 5 attempts"
+          exit 1
+
+      # Report the translator's own verdict last, so a partial run is visibly
+      # red (there is still work to do) without having cost us the work that
+      # did succeed. Re-dispatch the same locale to drain the remainder.
+      - name: Fail if the translator reported unfinished keys
+        if: always() && steps.translate.outcome == 'failure'
+        run: |
+          echo "The translator exited non-zero: some keys were not translated."
+          echo "Whatever succeeded has been committed and pushed above."
+          echo "Re-dispatch this workflow for the same locale to drain the rest."
           exit 1
