@@ -94,7 +94,29 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "wallet.creditsLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "wallet.filters.stakes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "wallet.filters.withdrawals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.displayCurrency": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "Awkward and not idiomatic; 'visualización' is too literal/technical for 'display' in this context.",
+      "suggested": "Moneda mostrada",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:09:09.058Z"
+  "generatedAt": "2026-08-06T06:13:28.451Z"
 }
