@@ -888,7 +888,10 @@
         "pasteSentenceUserMightSayRouter": true,
         "eGIHaveQuestionHow": true,
         "confidenceValue0": true,
-        "deepEngagementAnalyticsComingSoonSession": true
+        "deepEngagementAnalyticsComingSoonSession": true,
+        "averageAnalysisCompletesValue0SValue1": true,
+        "lengthResultValue1ForActivequery": true,
+        "lengthTopicValue1AcrossLength2Document": true
       },
       "usingDefaults": "Par défaut",
       "extra_config": "Configuration supplémentaire",
@@ -3544,7 +3547,10 @@
       "goalActivity": "Compagnon d'activité",
       "goalWeightLoss": "Perte de poids",
       "goalMentalWellness": "Bien-être mental",
-      "goalValues": "Valeurs alignées"
+      "goalValues": "Valeurs alignées",
+      "_pending_review": {
+        "activeuploadsActiveUploadValue1": true
+      }
     },
     "contacts": {
       "addContact": "Ajouter un contact",
@@ -3782,7 +3788,11 @@
       "matchCatFitness": "Fitness",
       "matchCatLongevity": "Étape de longévité",
       "matchCatCommunity": "Communauté",
-      "matchCatWellness": "Bien-être partagé"
+      "matchCatWellness": "Bien-être partagé",
+      "_pending_review": {
+        "newinvitesNewInviteValue1": true,
+        "lengthReportValue1ReadyShare": true
+      }
     },
     "debug": {
       "presenceDebug": "Débogage de présence",
@@ -4175,7 +4185,11 @@
       "briefDescriptionDocument": "Brève description du document",
       "whatSNewThisFrontpageVersion": "Quoi de neuf dans cette version de la page d'accueil ?",
       "tryAdjustingYourFiltersWaitFor": "Essaie d'ajuster tes filtres ou attends l'arrivée de nouveaux événements.",
-      "statusLastcode": "Statut : {lastCode}"
+      "statusLastcode": "Statut : {lastCode}",
+      "_pending_review": {
+        "readyExecuteLengthDevActionValue1": true,
+        "activecountConnectionValue1Detected": true
+      }
     },
     "diary": {
       "startRecordingYourWellnessJourney": "Commence à enregistrer ton parcours bien-être",
@@ -5147,7 +5161,12 @@
       "fromWearablesLogs": "des objets connectés et des journaux,\n                et un",
       "forConsistencyWeSumFivePillars": "pour la cohérence. Nous additionnons les cinq piliers, appliquons un",
       "itDampensWhenOnePillarFar": "(il s'atténue lorsqu'un pilier est bien en avance sur un autre),\n                et plafonnons à 999.",
-      "markAnyJourneyEventCompletePillar": "Marque tout événement de parcours comme terminé → le pilier ciblé augmente. Continue jour après jour →\n                le bonus de série s'active. Connecte un objet connecté → la barre de données connectées se remplit.\n                Équilibre les cinq → le facteur d'équilibre reste à 1,0× et chaque point compte entièrement."
+      "markAnyJourneyEventCompletePillar": "Marque tout événement de parcours comme terminé → le pilier ciblé augmente. Continue jour après jour →\n                le bonus de série s'active. Connecte un objet connecté → la barre de données connectées se remplit.\n                Équilibre les cinq → le facteur d'équilibre reste à 1,0× et chaque point compte entièrement.",
+      "_pending_review": {
+        "completeLengthActionValue1AutopilotSuggests": true,
+        "completeLengthActionValue1AutopilotSuggests2": true,
+        "lengthTestValue1Available": true
+      }
     },
     "home": {
       "priorityOfTheDay": "Priorité du jour :",
@@ -5961,7 +5980,10 @@
       "participantcountMembers": "{participantCount} membres",
       "value0Participants": "{value0} participants",
       "value0Members": "{value0} membres",
-      "chooseConversationFromLeftStartMessaging": "Choisis une conversation à gauche pour commencer à discuter"
+      "chooseConversationFromLeftStartMessaging": "Choisis une conversation à gauche pour commencer à discuter",
+      "_pending_review": {
+        "totalresponsesResponseValue1Received": true
+      }
     },
     "mobile": {
       "searching": "Recherche…",
@@ -8158,7 +8180,11 @@
       "imageSpecsHashtagStrategyPostingTimes": "Spécifications d'image, stratégie de hashtags, heures de publication",
       "canvaFigmaDirectlyInapp": "Canva, Figma, ou directement dans l'app",
       "copypasteCustomizeForYourNeeds": "Copier-coller ou personnalise pour tes besoins",
-      "createCustomDataPackageBySelecting": "Crée un paquet de données personnalisé en sélectionnant des métriques de santé spécifiques, des plages de dates et des types de données adaptés aux besoins de ton professionnel de santé ou aux exigences de participation à la recherche."
+      "createCustomDataPackageBySelecting": "Crée un paquet de données personnalisé en sélectionnant des métriques de santé spécifiques, des plages de dates et des types de données adaptés aux besoins de ton professionnel de santé ou aux exigences de participation à la recherche.",
+      "_pending_review": {
+        "selectedcountCampaignValue1Selected": true,
+        "value0MoreChannelValue1": true
+      }
     },
     "supplements": {
       "supplementName": "Nom du supplément*",
@@ -9511,7 +9537,10 @@
       "browseWhatOthersLookingFor": "Découvre ce que les autres recherchent :",
       "lengthOpenUpPer_kind_slot_capPerCategory": "{length} ouvert{value1} · jusqu'à {PER_KIND_SLOT_CAP} par catégorie",
       "lengthPer_kind_slot_capSlotsUsed": "{length} sur {PER_KIND_SLOT_CAP} places utilisées",
-      "capReachedCloseOnePostNew": "— limite atteinte, ferme-en un pour en publier un nouveau"
+      "capReachedCloseOnePostNew": "— limite atteinte, ferme-en un pour en publier un nouveau",
+      "_pending_review": {
+        "lengthOpenUpPer_kind_slot_capPerCategory": true
+      }
     },
     "mytickets": {
       "myTickets": "Mes billets",
@@ -9523,7 +9552,10 @@
       "upcomingLength": "À venir ({length})",
       "pastLength": "Passés ({length})",
       "noUpcomingEvents": "Pas d'événements à venir",
-      "noPastEvents": "Pas d'événements passés"
+      "noPastEvents": "Pas d'événements passés",
+      "_pending_review": {
+        "lengthTicketValue1Purchased": true
+      }
     },
     "notauthorized": {
       "accessDenied": "Accès refusé",

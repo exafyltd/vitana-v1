@@ -80,7 +80,7 @@
       "yes": "Sim",
       "no": "–",
       "fairUse": "Uso justo",
-      "used": "{usado} / {limite} {unidade}",
+      "used": "{used} / {limit} {unit}",
       "resetIn": "Reinicia em {duration}",
       "comparisonTitle": "O que está incluído em cada plano"
     },
@@ -241,7 +241,7 @@
     "ctaUpgrade": "Desbloquear Premium",
     "ctaCredits": "Usar {credits} créditos",
     "ctaLater": "Talvez mais tarde",
-    "remainingCounter": "{restantes} / {limite}",
+    "remainingCounter": "{remaining} / {limit}",
     "resetsIn": "Redefine em {date}",
     "creditsInsufficient": "Créditos insuficientes. Carrega primeiro."
   }

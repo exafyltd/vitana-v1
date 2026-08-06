@@ -80,7 +80,7 @@
       "yes": "Oui",
       "no": "–",
       "fairUse": "Utilisation équitable",
-      "used": "{utilisé} / {limite} {unité}",
+      "used": "{used} / {limit} {unit}",
       "resetIn": "Réinitialisation dans {duration}",
       "comparisonTitle": "Ce qui est inclus dans chaque plan"
     },
@@ -241,7 +241,7 @@
     "ctaUpgrade": "Débloque Premium",
     "ctaCredits": "Utilise {credits} crédits",
     "ctaLater": "Peut-être plus tard",
-    "remainingCounter": "{restant} / {limite}",
+    "remainingCounter": "{remaining} / {limit}",
     "resetsIn": "Réinitialisation le {date}",
     "creditsInsufficient": "Pas assez de crédits. Recharge d'abord."
   }

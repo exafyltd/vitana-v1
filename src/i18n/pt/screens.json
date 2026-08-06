@@ -23,7 +23,7 @@
       "sessionN": "Sessão {n}",
       "statusReady": "Pronto",
       "statusDone": "Concluído",
-      "sessionProgress": "{concluído}/{total}",
+      "sessionProgress": "{done}/{total}",
       "sessionComplete": "Sessão concluída",
       "whatItIs": "O que é",
       "userBenefit": "Seu benefício",
@@ -888,7 +888,12 @@
         "pasteSentenceUserMightSayRouter": true,
         "eGIHaveQuestionHow": true,
         "confidenceValue0": true,
-        "deepEngagementAnalyticsComingSoonSession": true
+        "deepEngagementAnalyticsComingSoonSession": true,
+        "lengthToolValue1AvailableServerurl": true,
+        "averageAnalysisCompletesValue0SValue1": true,
+        "lengthResultValue1ForActivequery": true,
+        "lengthTopicValue1AcrossLength2Document": true,
+        "pending_invitationsPendingInvitationValue1": true
       },
       "usingDefaults": "Usando padrões",
       "extra_config": "extra_config",
@@ -3544,7 +3549,10 @@
       "goalActivity": "Companheiro de atividade",
       "goalWeightLoss": "Perda de peso",
       "goalMentalWellness": "Bem-estar mental",
-      "goalValues": "Valores alinhados"
+      "goalValues": "Valores alinhados",
+      "_pending_review": {
+        "activeuploadsActiveUploadValue1": true
+      }
     },
     "contacts": {
       "addContact": "Adicionar Contato",
@@ -4207,7 +4215,11 @@
       "briefDescriptionDocument": "Breve descrição do documento",
       "whatSNewThisFrontpageVersion": "O que há de novo nesta versão da página inicial?",
       "tryAdjustingYourFiltersWaitFor": "Tenta ajustar os teus filtros ou espera por novos eventos.",
-      "statusLastcode": "Status: {lastCode}"
+      "statusLastcode": "Status: {lastCode}",
+      "_pending_review": {
+        "readyExecuteLengthDevActionValue1": true,
+        "activecountConnectionValue1Detected": true
+      }
     },
     "diary": {
       "startRecordingYourWellnessJourney": "Começa a registrar a tua jornada de bem-estar",
@@ -4671,7 +4683,10 @@
         "focus": true,
         "recommendedAction": true,
         "openIndexDetailLogDataComplete": true,
-        "balanceAcrossAllFivePillarsSmall": true
+        "balanceAcrossAllFivePillarsSmall": true,
+        "completeLengthActionValue1AutopilotSuggests": true,
+        "completeLengthActionValue1AutopilotSuggests2": true,
+        "lengthTestValue1Available": true
       },
       "pillar_hydration_title": "Hidratação",
       "pillar_hydration_desc": "Dicas, artigos e links de serviço para uma hidratação ideal",
@@ -6025,7 +6040,10 @@
       "participantcountMembers": "{participantCount} membros",
       "value0Participants": "{value0} participantes",
       "value0Members": "{value0} membros",
-      "chooseConversationFromLeftStartMessaging": "Escolhe uma conversa à esquerda para começar a enviar mensagens"
+      "chooseConversationFromLeftStartMessaging": "Escolhe uma conversa à esquerda para começar a enviar mensagens",
+      "_pending_review": {
+        "totalresponsesResponseValue1Received": true
+      }
     },
     "mobile": {
       "searching": "A pesquisar…",
@@ -8188,7 +8206,10 @@
       "imageSpecsHashtagStrategyPostingTimes": "Especificações de imagem, estratégia de hashtag, horários de publicação",
       "canvaFigmaDirectlyInapp": "Canva, Figma, ou diretamente na app",
       "copypasteCustomizeForYourNeeds": "Copia e cola ou personaliza para as tuas necessidades",
-      "createCustomDataPackageBySelecting": "Cria um pacote de dados personalizado selecionando métricas de saúde específicas, intervalos de datas e tipos de dados \n                        adaptados às necessidades do teu prestador de cuidados de saúde ou aos requisitos de participação em pesquisa."
+      "createCustomDataPackageBySelecting": "Cria um pacote de dados personalizado selecionando métricas de saúde específicas, intervalos de datas e tipos de dados \n                        adaptados às necessidades do teu prestador de cuidados de saúde ou aos requisitos de participação em pesquisa.",
+      "_pending_review": {
+        "selectedcountCampaignValue1Selected": true
+      }
     },
     "supplements": {
       "supplementName": "Nome do Suplemento*",
@@ -9553,7 +9574,10 @@
       "upcomingLength": "Próximos ({length})",
       "pastLength": "Passado ({length})",
       "noUpcomingEvents": "Nenhum evento futuro",
-      "noPastEvents": "Nenhum evento passado"
+      "noPastEvents": "Nenhum evento passado",
+      "_pending_review": {
+        "lengthTicketValue1Purchased": true
+      }
     },
     "notauthorized": {
       "accessDenied": "Acesso Negado",
