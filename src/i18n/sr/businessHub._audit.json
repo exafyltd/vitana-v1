@@ -6,10 +6,8 @@
       "phase": "llm"
     },
     "businessHub.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'du').",
-      "suggested": "Razvijaj svoj wellness biznis",
       "phase": "llm"
     },
     "businessHub.tabs.snapshot": {
@@ -59,9 +57,9 @@
     },
     "businessHub.noServicesDesc": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'du').",
-      "suggested": "Kreiraj prvu uslugu da bi počeo da privlačiš klijente.",
+      "confidence": 0.9,
+      "issue": "The phrase 'da bi počeo' is gender-specific (masculine) and less idiomatic than a gender-neutral alternative for 'to start' in this context. 'Da počneš' is more natural and gender-neutral.",
+      "suggested": "Kreiraj prvu uslugu da počneš da privlačiš klijente.",
       "phase": "llm"
     },
     "businessHub.createService": {
@@ -75,10 +73,8 @@
       "phase": "llm"
     },
     "businessHub.noClientsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'du').",
-      "suggested": "Tvoji klijenti će se pojaviti ovde.",
       "phase": "llm"
     },
     "businessHub.noSales": {
@@ -88,11 +84,11 @@
     },
     "businessHub.noSalesDesc": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'du').",
-      "suggested": "Tvoja istorija prodaja će se pojaviti ovde.",
+      "confidence": 0.9,
+      "issue": "'Istorija prodaja' (history of sales, genitive plural) is grammatically correct but 'istorija prodaje' (history of selling/the sale, genitive singular) is a more common and natural phrasing for 'sales history' in Serbian.",
+      "suggested": "Tvoja istorija prodaje će se pojaviti ovde.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:43.475Z"
+  "generatedAt": "2026-08-06T06:09:10.155Z"
 }

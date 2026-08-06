@@ -21,10 +21,8 @@
       "phase": "llm"
     },
     "profileEditor.bioPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward preposition for 'passionate about'. 'Strastven u' should be 'strastven za' or 'strastven prema'.",
-      "suggested": "Podeli svoje wellness putovanje, strasti i ono što te čini jedinstvenim...\n\nPrimeri:\n• 'Wellness entuzijasta strastven za svesni život i izgradnju zajednice 🌱'\n• 'Sertifikovani nutricionista koji pomaže drugima da otkriju svoje najzdravije ja'\n• 'Maratonac, učitelj meditacije i zagovornik uravnoteženog života'",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "profileEditor.location": {
@@ -268,10 +266,8 @@
       "phase": "llm"
     },
     "profileEditor.identity.personalityDescriptorDescription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Wellness style' translated too narrowly as 'exercise style'. 'Wellness' is a broader concept.",
-      "suggested": "Kratka fraza koja opisuje tvoj wellness stil",
       "phase": "llm"
     },
     "profileEditor.identity.upload": {
@@ -345,10 +341,8 @@
       "phase": "llm"
     },
     "profileEditor.coverLibrary.universalDescription": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Portret tebe' is grammatically correct but less idiomatic than 'tvoj portret'.",
-      "suggested": "Koristi se kada nijedna od tvojih fotografija specifičnih za aktivnost ne odgovara kategoriji objave — umesto AI-generisane slike. Obično tvoj portret.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "profileEditor.coverLibrary.universalAdd": {
@@ -437,19 +431,15 @@
       "phase": "llm"
     },
     "profileEditor.coverLibrary.categoryRequired": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Vi' form ('Molimo vas', 'izaberite') instead of informal 'du' form.",
-      "suggested": "Molim te prvo izaberi kategoriju za ovu fotografiju.",
       "phase": "llm"
     },
     "profileEditor.coverLibrary.saveError": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Uses formal 'Vi' form ('pokušajte') instead of informal 'du' form.",
-      "suggested": "Nije moguće sačuvati — pokušaj ponovo.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:06:11.545Z"
+  "generatedAt": "2026-08-06T06:12:18.073Z"
 }

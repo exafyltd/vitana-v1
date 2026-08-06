@@ -7,9 +7,9 @@
     },
     "packages.confirmDelete": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register mismatch: uses formal 'vi' instead of informal 'ti'.",
-      "suggested": "Jesi li siguran da želiš da obrišeš ovaj paket?",
+      "confidence": 0.9,
+      "issue": "Gender specificity. 'Siguran' is masculine. For a friendly app addressing a user of unknown gender, it's better to be gender-inclusive.",
+      "suggested": "Jesi li siguran/sigurna da želiš da obrišeš ovaj paket?",
       "phase": "llm"
     },
     "packages.types.bundle": {
@@ -28,10 +28,8 @@
       "phase": "llm"
     },
     "packages.status.published": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Meaning mismatch: 'Aktivno' means 'Active', but 'Live' (as in real-time/broadcast) is usually 'Uživo'.",
-      "suggested": "Uživo",
       "phase": "llm"
     },
     "packages.status.archived": {
@@ -60,17 +58,13 @@
       "phase": "llm"
     },
     "packages.save": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: uses formal 'vi' instead of informal 'ti'.",
-      "suggested": "Uštedi {percent}%",
       "phase": "llm"
     },
     "packages.unpublish": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Opposite meaning: 'Objavi' means 'Publish', not 'Unpublish'.",
-      "suggested": "Poništi objavu",
       "phase": "llm"
     },
     "packages.publish": {
@@ -79,5 +73,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:05:36.727Z"
+  "generatedAt": "2026-08-06T06:11:32.209Z"
 }
