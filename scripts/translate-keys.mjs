@@ -74,6 +74,29 @@ if (!existsSync(SRC_DIR)) {
 // in the target shard.
 if (INIT) {
   const { mkdirSync } = await import('node:fs');
+
+  // Keys already covered by a translation pass, per i18n-source-stamps/.
+  //
+  // Without this, --init re-flags every value that legitimately EQUALS its
+  // English source — brand and product names ("Vitana", "MAXINA", "iPhone",
+  // "Autopilot"), place names ("Mallorca"), phone numbers. 384 such keys in es
+  // and 338 in sr. Its "has this been translated?" test is `target === source`,
+  // which cannot distinguish "never translated" from "correctly translated to
+  // the same string".
+  //
+  // The cost is not just wasted API budget on every run: each pass gives the
+  // model another chance to "translate" a brand name, so `Autopilot` surviving
+  // is a coin flip repeated indefinitely.
+  //
+  // A stamp means a translation pass has already decided this key. Staleness is
+  // a separate question, owned by scripts/i18n-stamp-source.mjs --check/--flag.
+  const stampPath = join(ROOT, 'i18n-source-stamps', `${TARGET_LOCALE}.json`);
+  const alreadyTranslated = existsSync(stampPath)
+    ? new Set(Object.keys(JSON.parse(readFileSync(stampPath, 'utf8'))))
+    : new Set();
+  if (alreadyTranslated.size) {
+    console.log(`[translate] --init: ${alreadyTranslated.size} key(s) have source stamps; not re-flagging those`);
+  }
   if (!existsSync(TARGET_DIR)) {
     mkdirSync(TARGET_DIR, { recursive: true });
     console.log(`[translate] --init: created ${TARGET_DIR}`);
@@ -87,8 +110,9 @@ if (INIT) {
     const tgtPath = join(TARGET_DIR, name);
     const srcCat = JSON.parse(readFileSync(srcPath, 'utf8'));
     const tgtCat = existsSync(tgtPath) ? JSON.parse(readFileSync(tgtPath, 'utf8')) : {};
+    const shardKey = name.replace(/\.json$/, '');
     // For every leaf in src, ensure tgt has a placeholder + _pending_review flag.
-    function walk(srcNode, tgtNode, parentPending) {
+    function walk(srcNode, tgtNode, parentPending, trail = []) {
       if (!srcNode || typeof srcNode !== 'object') return;
       if (!parentPending) {
         if (!tgtNode._pending_review || typeof tgtNode._pending_review !== 'object') {
@@ -100,7 +124,7 @@ if (INIT) {
         if (k.startsWith('_')) continue;
         if (v && typeof v === 'object' && !Array.isArray(v)) {
           if (!tgtNode[k] || typeof tgtNode[k] !== 'object') tgtNode[k] = {};
-          walk(v, tgtNode[k], null);
+          walk(v, tgtNode[k], null, [...trail, k]);
         } else if (typeof v === 'string') {
           if (tgtNode[k] === undefined) {
             tgtNode[k] = v; // placeholder = source value
@@ -108,13 +132,17 @@ if (INIT) {
           // Only flag if not already a real translation (i.e. tgt still
           // equals source, meaning it hasn't been translated yet).
           if (tgtNode[k] === v && !parentPending[k]) {
+            // Stamped => a translation pass already covered this key, and the
+            // match is a legitimate identical translation (brand name, etc).
+            const dotted = [shardKey, ...trail, k].join('.');
+            if (alreadyTranslated.has(dotted)) continue;
             parentPending[k] = true;
             flagged++;
           }
         }
       }
     }
-    walk(srcCat, tgtCat, null);
+    walk(srcCat, tgtCat, null, []);
     if (existsSync(tgtPath)) merged++; else created++;
     writeFileSync(tgtPath, JSON.stringify(tgtCat, null, 2) + '\n', 'utf8');
   }
@@ -340,9 +368,50 @@ for (const shardName of shards) {
     try {
       translations = await translateBatch(batch);
     } catch (err) {
-      console.error(`  batch ${i}-${i + batch.length} failed: ${err.message}`);
-      totalFailed += batch.length;
-      continue;
+      // A batch that fails every retry with the SAME error is not transient.
+      // The observed cause is output truncation: a batch containing long legal
+      // / privacy paragraphs produces a JSON response that exceeds the model's
+      // output limit, so it is cut off mid-string and never parses. Retrying —
+      // or re-dispatching the workflow — reproduces it exactly, forever. A
+      // smaller --batch does not help either once a SINGLE item is long enough.
+      //
+      // Splitting is the fix that actually terminates: halve the batch and
+      // retry, down to one item per request. One paragraph always fits, so the
+      // recursion bottoms out on a real translation rather than a stuck key.
+      if (batch.length > 1) {
+        console.error(
+          `  batch ${i}-${i + batch.length} failed (${err.message.slice(0, 60)}…) — splitting`,
+        );
+        const half = Math.ceil(batch.length / 2);
+        const recovered = new Map();
+        for (const part of [batch.slice(0, half), batch.slice(half)]) {
+          try {
+            for (const [k, v] of await translateBatch(part)) recovered.set(k, v);
+          } catch (inner) {
+            if (part.length === 1) {
+              console.error(`  key ${part[0].key} failed alone: ${inner.message.slice(0, 80)}`);
+              continue;
+            }
+            const q = Math.ceil(part.length / 2);
+            for (const sub of [part.slice(0, q), part.slice(q)]) {
+              try {
+                for (const [k, v] of await translateBatch(sub)) recovered.set(k, v);
+              } catch (e2) {
+                console.error(`  sub-batch of ${sub.length} failed: ${e2.message.slice(0, 60)}`);
+              }
+            }
+          }
+        }
+        translations = recovered;
+        if (recovered.size === 0) {
+          totalFailed += batch.length;
+          continue;
+        }
+      } else {
+        console.error(`  key ${batch[0].key} failed: ${err.message.slice(0, 80)}`);
+        totalFailed += batch.length;
+        continue;
+      }
     }
     for (const it of batch) {
       const tx = translations.get(it.key);
