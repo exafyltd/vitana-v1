@@ -41,7 +41,7 @@ export const languageOptions: Array<{ label: string; value: string; status: 'ga'
   //   5. 0 formal-register values in SR        (544 informal, 0 Vi/Vaš)
   { label: "Spanish (ES)", value: "es-ES", status: 'ga' },
   { label: "Serbian (SR)", value: "sr-RS", status: 'ga' },
-  { label: "French (FR)", value: "fr-FR", status: 'beta' },
+  { label: "French (FR)", value: "fr-FR", status: 'ga' },
   { label: "Portuguese (PT)", value: "pt-PT", status: 'beta' },
   { label: "Russian (RU)", value: "ru-RU", status: 'beta' },
   { label: "Polish (PL)", value: "pl-PL", status: 'beta' },

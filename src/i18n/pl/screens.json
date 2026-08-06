@@ -855,7 +855,10 @@
       "mental": "Mentalne",
       "next3": "Następne 3 dni",
       "month": "30 dni",
-      "future": "Przyszłość"
+      "future": "Przyszłość",
+      "_pending_review": {
+        "value0ParticipantValue1Room": true
+      }
     },
     "admin": {
       "_pending_review": {
@@ -1008,7 +1011,8 @@
         "analyticsPrivacyNote": true,
         "analyticsMetadataNote": true,
         "paConversations": true,
-        "paAssistantUsers": true
+        "paAssistantUsers": true,
+        "averageAnalysisCompletesValue0SValue1": true
       },
       "usingDefaults": "Używanie domyślnych",
       "extra_config": "Dodatkowa konfiguracja",
@@ -3762,7 +3766,10 @@
       "tipUseValue0IncludeYourPersonal": "Wskazówka: Użyj {value0}, aby dołączyć swój osobisty link z zaproszeniem.",
       "sendInvites": "Wyślij zaproszenia",
       "weFoundTotalimportedContactsMatchedThem": "Znaleźliśmy {totalImported} kontaktów i dopasowaliśmy je do VITANA.",
-      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound} Twoich znajomych jest już na VITANA!"
+      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound} Twoich znajomych jest już na VITANA!",
+      "_pending_review": {
+        "inviteLengthFriendValue1": true
+      }
     },
     "context": {
       "aiSpotlight": "AI w centrum uwagi 🔮",
@@ -5331,7 +5338,12 @@
       "fromWearablesLogs": "z gadżetów noszonych i dzienników,\n i",
       "forConsistencyWeSumFivePillars": "za konsekwencję. Sumujemy pięć filarów, stosujemy",
       "itDampensWhenOnePillarFar": "(osłabia się, gdy jeden filar jest znacznie przed innym),\n i ograniczamy do 999.",
-      "markAnyJourneyEventCompletePillar": "Oznacz dowolne wydarzenie w podróży jako ukończone → filar, którego dotyczy, wzrasta. Kontynuuj dzień po dniu →\n włącza się bonus za serię. Podłącz gadżet noszony → pasek połączonych danych się zapełnia.\n Równowaga we wszystkich pięciu → współczynnik równowagi pozostaje na poziomie 1.0×, a każdy punkt liczy się w pełni."
+      "markAnyJourneyEventCompletePillar": "Oznacz dowolne wydarzenie w podróży jako ukończone → filar, którego dotyczy, wzrasta. Kontynuuj dzień po dniu →\n włącza się bonus za serię. Podłącz gadżet noszony → pasek połączonych danych się zapełnia.\n Równowaga we wszystkich pięciu → współczynnik równowagi pozostaje na poziomie 1.0×, a każdy punkt liczy się w pełni.",
+      "_pending_review": {
+        "completeLengthActionValue1AutopilotSuggests": true,
+        "completeLengthActionValue1AutopilotSuggests2": true,
+        "lengthTestValue1Available": true
+      }
     },
     "home": {
       "priorityOfTheDay": "Priorytet dnia:",
@@ -9673,7 +9685,10 @@
       "upcomingLength": "Nadchodzące ({length})",
       "pastLength": "Minione ({length})",
       "noUpcomingEvents": "Brak nadchodzących wydarzeń",
-      "noPastEvents": "Brak minionych wydarzeń"
+      "noPastEvents": "Brak minionych wydarzeń",
+      "_pending_review": {
+        "lengthTicketValue1Purchased": true
+      }
     },
     "notauthorized": {
       "accessDenied": "Odmowa dostępu",

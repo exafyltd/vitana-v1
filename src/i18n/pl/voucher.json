@@ -8,13 +8,30 @@
     },
     "tiers": {
       "test": {
-        "name": "Test"
+        "name": "Test",
+        "benefits": [
+          "Tylko do testu płatności",
+          "To nie jest prawdziwy voucher",
+          "Do testów deweloperskich"
+        ]
       },
       "experience": {
-        "name": "Doświadczenie"
+        "name": "Doświadczenie",
+        "benefits": [
+          "Wstęp na 1 wydarzenie premium społeczności",
+          "Spersonalizowana konsultacja wellness",
+          "30-dniowy okres próbny Vitana+ w zestawie",
+          "Pięknie zaprojektowany e-voucher"
+        ]
       },
       "exclusive": {
-        "name": "Wyjątkowy"
+        "name": "Wyjątkowy",
+        "benefits": [
+          "3 wydarzenia premium społeczności",
+          "Indywidualna sesja coachingowa z ekspertem",
+          "90-dniowa subskrypcja Vitana+",
+          "Priorytetowa rezerwacja + korzyści VIP"
+        ]
       }
     },
     "success": {

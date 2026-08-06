@@ -241,7 +241,7 @@
     "ctaUpgrade": "Odblokuj Premium",
     "ctaCredits": "Użyj {credits} kredytów",
     "ctaLater": "Może później",
-    "remainingCounter": "{pozostało} / {limit}",
+    "remainingCounter": "{remaining} / {limit}",
     "resetsIn": "Zresetuje się {date}",
     "creditsInsufficient": "Za mało kredytów. Doładuj najpierw."
   }
