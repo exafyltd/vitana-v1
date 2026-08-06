@@ -6,6 +6,8 @@
     "exchange": "Zameni",
     "withdraw": "Povuci",
     "buyCredits": "Kupi VTNA Kredite",
-    "stakeTokens": "Uloži tokene"
-  }
+    "stakeTokens": "Uloži tokene",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

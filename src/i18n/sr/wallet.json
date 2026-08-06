@@ -11,7 +11,8 @@
     "tabs": {
       "balances": "Balansi",
       "activity": "Aktivnost",
-      "actions": "Akcije"
+      "actions": "Akcije",
+      "_pending_review": {}
     },
     "filters": {
       "commissions": "Prodaj i zaradi proviziju",
@@ -21,10 +22,13 @@
       "purchases": "Kupovine",
       "pending": "Isplate na čekanju",
       "withdrawals": "Isplate",
-      "stakes": "Ulaganje"
+      "stakes": "Ulaganje",
+      "_pending_review": {}
     },
     "noActivity": "Još uvek nema aktivnosti",
     "noActivityDesc": "Tvoje transakcije će se pojaviti ovde.",
-    "displayCurrency": "Valuta prikaza"
-  }
+    "displayCurrency": "Valuta prikaza",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
