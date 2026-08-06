@@ -1,0 +1,22 @@
+{
+  "packages": {
+    "confirmDelete": "Czy na pewno chcesz usunąć ten pakiet?",
+    "types": {
+      "bundle": "Pakiet",
+      "subscription": "Subskrypcja",
+      "program": "Program"
+    },
+    "status": {
+      "draft": "Szkic",
+      "published": "Aktywny",
+      "archived": "Zarchiwizowane"
+    },
+    "item": "pozycja",
+    "items": "pozycje",
+    "total": "łącznie",
+    "validDays": "Ważne {days} dni",
+    "save": "Oszczędź {percent}%",
+    "unpublish": "Wycofaj publikację",
+    "publish": "Opublikuj"
+  }
+}

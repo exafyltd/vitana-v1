@@ -1,0 +1,28 @@
+{
+  "events": {
+    "title": "Wydarzenia i Spotkania",
+    "description": "Odkryj lokalne spotkania wellness",
+    "searchPlaceholder": "Szukaj wydarzeń i spotkań...",
+    "tabs": {
+      "today": "Dziś",
+      "upcoming": "Nadchodzące",
+      "following": "Obserwowane",
+      "recommended": "Polecane"
+    },
+    "noEvents": "Brak zaplanowanych wydarzeń",
+    "checkBack": "Sprawdź wkrótce, aby zobaczyć nadchodzące wydarzenia społeczności!",
+    "emptyStates": {
+      "noEventsToday": "Brak wydarzeń dziś",
+      "noEventsTodayDesc": "Brak zaplanowanych wydarzeń na dziś. Sprawdź nadchodzące wydarzenia lub stwórz własne!",
+      "createEvent": "Utwórz wydarzenie",
+      "viewUpcoming": "Zobacz nadchodzące wydarzenia",
+      "followingTitle": "Posty od osób, które obserwujesz",
+      "followingDesc": "Treści od osób i grup, które obserwujesz, pojawią się tutaj",
+      "findPeople": "Znajdź osoby do obserwowania",
+      "noPostsFromFollowing": "Brak postów",
+      "noPostsFromFollowingDesc": "Osoby, które obserwujesz, nie utworzyły jeszcze żadnych wydarzeń ani spotkań.",
+      "youFollow": "Obserwujesz",
+      "loadingFollowing": "Ładowanie postów…"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "recallActions": {
+    "title": "Wyszukiwanie wspomnień i akcje przywoływania",
+    "items": {
+      "askAiQuestion": {
+        "title": "Zapytaj AI",
+        "description": "Przeszukuj swoje wspomnienia za pomocą wyszukiwania AI w języku naturalnym"
+      },
+      "advancedSearch": {
+        "title": "Zaawansowane wyszukiwanie",
+        "description": "Użyj filtrów, tagów i zakresów dat, aby znaleźć wspomnienia"
+      },
+      "patternAnalysis": {
+        "title": "Analiza wzorców",
+        "description": "Odkryj trendy i wzorce w swoich danych dotyczących dobrego samopoczucia"
+      },
+      "memoryInsights": {
+        "title": "Spostrzeżenia ze wspomnień",
+        "description": "Uzyskaj spostrzeżenia oparte na AI z Twojej podróży zdrowotnej"
+      },
+      "searchByDate": {
+        "title": "Szukaj według daty",
+        "description": "Przeglądaj wspomnienia z określonych okresów czasu"
+      },
+      "locationMemories": {
+        "title": "Wspomnienia z miejsc",
+        "description": "Znajdź wpisy według odwiedzonych miejsc i lokalizacji"
+      },
+      "filterByCategory": {
+        "title": "Filtruj według kategorii",
+        "description": "Przeglądaj wspomnienia według filarów dobrego samopoczucia i kategorii"
+      },
+      "quickRecalls": {
+        "_pending_review": {
+          "description": true
+        },
+        "title": "Szybkie przywoływanie",
+        "description": "Access frequently searched memories and queries"
+      }
+    }
+  }
+}

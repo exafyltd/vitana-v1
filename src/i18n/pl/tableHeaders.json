@@ -1,0 +1,15 @@
+{
+  "tableHeaders": {
+    "groupName": "Nazwa grupy",
+    "category": "Kategoria",
+    "members": "Członkowie",
+    "privacy": "Prywatność",
+    "status": "Status",
+    "actions": "Działania",
+    "name": "Imię",
+    "role": "Rola",
+    "email": "E-mail",
+    "date": "Data",
+    "amount": "Kwota"
+  }
+}

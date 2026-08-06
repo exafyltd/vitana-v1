@@ -1,0 +1,31 @@
+{
+  "memoryActions": {
+    "title": "Akcje Wspomnień",
+    "items": {
+      "recordVoiceDiary": {
+        "title": "Nagraj Dziennik Głosowy",
+        "description": "Uchwyć myśli i refleksje głosem"
+      },
+      "addMemoryNote": {
+        "title": "Dodaj Notatkę Wspomnienia",
+        "description": "Zapisz ważne momenty zdrowotne"
+      },
+      "viewTimeline": {
+        "title": "Zobacz Oś Czasu",
+        "description": "Zobacz swoją pełną podróż wellness"
+      },
+      "searchMemories": {
+        "title": "Szukaj Wspomnień",
+        "description": "Znajdź konkretne momenty i spostrzeżenia"
+      },
+      "photoMemory": {
+        "title": "Wspomnienie Fotograficzne",
+        "description": "Dodaj wizualne wspomnienia do swojej podróży"
+      },
+      "aiMemoryAnalysis": {
+        "title": "Analiza Wspomnień AI",
+        "description": "Odkryj spostrzeżenia na podstawie wzorców wspomnień"
+      }
+    }
+  }
+}

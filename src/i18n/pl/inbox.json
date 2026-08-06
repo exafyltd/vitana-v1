@@ -1,0 +1,123 @@
+{
+  "inbox": {
+    "title": "Skrzynka odbiorcza",
+    "subtitle": "Pozostań w kontakcie ze swoją społecznością!",
+    "description": "Twoje rozmowy, aktualizacje i powiadomienia",
+    "desktopTitle": "Wiadomości",
+    "desktopDescription": "Połącz się ze swoją społecznością i siecią",
+    "tabs": {
+      "all": "Wszystkie",
+      "groups": "Grupy",
+      "direct": "Bezpośrednie",
+      "contacts": "Kontakty",
+      "notifications": "Powiadomienia",
+      "archived": "Zarchiwizowane"
+    },
+    "contextTabs": {
+      "community": "Społeczność",
+      "network": "Sieć"
+    },
+    "actions": {
+      "new": "Nowe",
+      "newMessage": "Nowa wiadomość",
+      "createGroup": "Utwórz grupę",
+      "markAllRead": "Oznacz wszystkie jako przeczytane",
+      "menu": "Więcej"
+    },
+    "composer": {
+      "placeholder": "Wpisz wiadomość...",
+      "send": "Wyślij",
+      "attachments": "Załączniki",
+      "recipients": "Do:",
+      "add": "Dodaj"
+    },
+    "states": {
+      "empty": "Brak wiadomości",
+      "loading": "Ładowanie wiadomości...",
+      "error": "Nie udało się załadować wiadomości"
+    },
+    "newConversation": {
+      "title": "Rozpocznij nową rozmowę",
+      "titleGroup": "Utwórz czat grupowy",
+      "groupName": "Nazwa grupy",
+      "groupNamePlaceholder": "Wpisz nazwę grupy...",
+      "members": "Członkowie",
+      "recipient": "Odbiorca",
+      "addMore": "Dodaj więcej osób",
+      "searchPeople": "Szukaj osób",
+      "searchPlaceholder": "Wpisz imię lub e-mail, aby wyszukać...",
+      "searchMinChars": "Wpisz co najmniej 2 znaki, aby wyszukać",
+      "searchResults": "Wyniki wyszukiwania",
+      "noResults": "Nie znaleziono użytkowników. Spróbuj innej frazy.",
+      "add": "Dodaj",
+      "added": "Dodano",
+      "cancel": "Anuluj",
+      "startChat": "Rozpocznij czat",
+      "createGroup": "Utwórz grupę",
+      "creating": "Tworzenie..."
+    },
+    "createGroup": {
+      "title": "Utwórz grupę",
+      "avatarSoon": "Przesyłanie awatara będzie dostępne wkrótce.",
+      "groupName": "Nazwa grupy",
+      "addMembers": "Dodaj członków",
+      "searchPlaceholder": "Szukaj użytkowników...",
+      "groupNameRequired": "Wymagana nazwa grupy",
+      "groupNameRequiredDesc": "Wprowadź nazwę dla swojej grupy.",
+      "addMembersRequired": "Dodaj członków",
+      "addMembersRequiredDesc": "Dodaj co najmniej jednego członka do grupy.",
+      "groupExists": "Grupa już istnieje",
+      "groupExistsDesc": "Grupa z tymi członkami została niedawno utworzona.",
+      "created": "Grupa utworzona",
+      "createdDesc": "Grupa „{name}” została pomyślnie utworzona.",
+      "failed": "Nie udało się utworzyć grupy",
+      "failedDesc": "Spróbuj ponownie."
+    },
+    "toast": {
+      "success": "Sukces",
+      "error": "Błąd",
+      "conversationStarted": "Rozmowa rozpoczęta!",
+      "authRequired": "Wymagane uwierzytelnienie",
+      "noTenantContext": "Brak dostępnego kontekstu dzierżawcy",
+      "searchFailed": "Wyszukiwanie nie powiodło się",
+      "accessDenied": "Dostęp zabroniony",
+      "communityOnly": "Tylko użytkownicy społeczności mogą tworzyć globalne rozmowy",
+      "pleaseLogin": "Zaloguj się, aby rozpocząć rozmowy",
+      "groupRecipientsRequired": "Nazwa grupy i odbiorcy są wymagani",
+      "singleRecipientRequired": "Wybierz dokładnie jednego odbiorcę dla wiadomości bezpośredniej",
+      "groupCreated": "Grupa „{name}” została pomyślnie utworzona!",
+      "groupFailed": "Nie udało się utworzyć grupy",
+      "allMarkedRead": "Wszystkie wiadomości oznaczone jako przeczytane",
+      "markAllReadFailed": "Nie udało się oznaczyć wszystkich jako przeczytane. Spróbuj ponownie."
+    },
+    "createGroupAction": "Utwórz nową grupę",
+    "newConversationAction": "Nowa rozmowa",
+    "noGroups": "Brak grup",
+    "noGroupsDesc": "Grupy pomagają współpracować z wieloma osobami naraz.",
+    "createFirstGroup": "Utwórz pierwszą grupę",
+    "loading": "Ładowanie wiadomości...",
+    "searchConversations": "Szukaj rozmów...",
+    "searchPlaceholder": "Szukaj...",
+    "noMessages": "Brak wiadomości",
+    "noMessagesDesc": "Rozpocznij rozmowę, aby zacząć.",
+    "startConversation": "Rozpocznij rozmowę",
+    "emptyState": {
+      "title": "Twoja skrzynka odbiorcza jest teraz cicha",
+      "globalDescription": "Rozpocznij rozmowę lub dołącz do społeczności, aby połączyć się z innymi.",
+      "tenantDescription": "Połącz się z kolegami i członkami zespołu w swojej sieci zawodowej.",
+      "startConversation": "Rozpocznij rozmowę",
+      "discoverPeople": "Odkryj ludzi"
+    },
+    "group": {
+      "loading": "Ładowanie grupy…",
+      "cantOpen": "Nie udało się otworzyć grupy",
+      "backToInbox": "Wróć do Skrzynki",
+      "back": "Wróć",
+      "memberOne": "członek",
+      "memberOther": "członków",
+      "officialBadge": "oficjalna grupa",
+      "empty": "Brak wiadomości.",
+      "composerPlaceholder": "Wiadomość…"
+    }
+  }
+}

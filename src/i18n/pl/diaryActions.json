@@ -1,0 +1,39 @@
+{
+  "diaryActions": {
+    "title": "Akcje wpisu do dziennika",
+    "items": {
+      "recordVoiceEntry": {
+        "title": "Nagraj wpis głosowy",
+        "description": "Uchwyć myśli i refleksje nagraniem głosowym"
+      },
+      "addPhotoEntry": {
+        "title": "Dodaj wpis ze zdjęciem",
+        "description": "Prześlij zdjęcia, aby udokumentować swoją podróż wellness"
+      },
+      "writeTextEntry": {
+        "title": "Napisz wpis tekstowy",
+        "description": "Twórz szczegółowe pisemne refleksje i notatki"
+      },
+      "quickNote": {
+        "title": "Szybka notatka",
+        "description": "Zapisz krótkie myśli lub obserwacje"
+      },
+      "videoDiary": {
+        "title": "Dziennik wideo",
+        "description": "Nagraj wideo-refleksje i aktualizacje postępów"
+      },
+      "scheduleEntry": {
+        "title": "Zaplanuj wpis",
+        "description": "Zaplanuj przyszłe wpisy do dziennika i przypomnienia"
+      },
+      "tagMemories": {
+        "title": "Otaguj wspomnienia",
+        "description": "Organizuj istniejące wpisy za pomocą tagów i kategorii"
+      },
+      "importFiles": {
+        "title": "Importuj pliki",
+        "description": "Prześlij dokumenty, obrazy lub inne pliki wellness"
+      }
+    }
+  }
+}

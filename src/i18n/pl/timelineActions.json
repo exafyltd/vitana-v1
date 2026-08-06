@@ -1,0 +1,39 @@
+{
+  "timelineActions": {
+    "title": "Działania na osi czasu",
+    "items": {
+      "logHealthEvent": {
+        "title": "Zapisz wydarzenie zdrowotne",
+        "description": "Zapisuj ważne momenty zdrowia"
+      },
+      "markAchievement": {
+        "title": "Zaznacz osiągnięcie",
+        "description": "Świętuj osiągnięte cele wellness"
+      },
+      "recordLifeMoment": {
+        "title": "Zapisz chwilę życia",
+        "description": "Uchwyć znaczące doświadczenia"
+      },
+      "addPhotoMemory": {
+        "title": "Dodaj wspomnienie ze zdjęciem",
+        "description": "Wizualna oś czasu ze zdjęciami zdrowotnymi"
+      },
+      "voiceTimelineEntry": {
+        "title": "Wpis głosowy na osi czasu",
+        "description": "Szybkie głosowe aktualizacje zdrowia"
+      },
+      "trackProgress": {
+        "title": "Śledź postępy",
+        "description": "Zapisuj wskaźniki i trendy wellness"
+      },
+      "activityCheckIn": {
+        "title": "Zapisz aktywność",
+        "description": "Rejestruj treningi i aktywności"
+      },
+      "setTimelineGoal": {
+        "title": "Ustaw cel na osi czasu",
+        "description": "Twórz przyszłe cele zdrowotne"
+      }
+    }
+  }
+}

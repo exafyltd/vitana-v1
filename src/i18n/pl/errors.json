@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "somethingWentWrong": "Coś poszło nie tak",
+    "tryAgain": "Spróbuj ponownie",
+    "pageNotFound": "Strona nie znaleziona",
+    "pageNotFoundDesc": "Żądana strona nie istnieje.",
+    "serverError": "Błąd serwera",
+    "serverErrorDesc": "Wystąpił nieoczekiwany błąd.",
+    "networkError": "Błąd sieci",
+    "networkErrorDesc": "Sprawdź swoje połączenie z internetem.",
+    "unauthorized": "Brak autoryzacji",
+    "unauthorizedDesc": "Zaloguj się, aby kontynuować.",
+    "forbidden": "Odmowa dostępu",
+    "forbiddenDesc": "Nie masz uprawnień do tej akcji.",
+    "notFound": "Nie znaleziono",
+    "notFoundDesc": "Żądany element nie został znaleziony."
+  }
+}

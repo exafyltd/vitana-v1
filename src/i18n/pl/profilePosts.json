@@ -1,0 +1,19 @@
+{
+  "profilePosts": {
+    "createPost": "Utwórz post",
+    "placeholder": "O czym myślisz?",
+    "shareCta": "Udostępnij coś społeczności",
+    "post": "Opublikuj",
+    "posted": "Opublikowano!",
+    "deleted": "Post usunięty",
+    "emptyTitle": "Brak postów",
+    "emptyDescription": "Udostępnij swoją pierwszą aktualizację społeczności",
+    "deleteConfirm": "Usunąć ten post?",
+    "error": "Coś poszło nie tak",
+    "mentionPlaceholder": "O czym myślisz? Wpisz @, aby oznaczyć kogoś",
+    "background": "Tło",
+    "noBackground": "Brak tła",
+    "searchingPeople": "Szukam osób…",
+    "noPeopleFound": "Nie znaleziono nikogo"
+  }
+}

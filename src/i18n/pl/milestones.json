@@ -1,0 +1,17 @@
+{
+  "milestones": {
+    "title": "Kamienie milowe życia",
+    "add": "Dodaj kamień milowy",
+    "edit": "Edytuj kamień milowy",
+    "empty": "Brak kamieni milowych",
+    "addFirst": "Dodaj swój pierwszy kamień milowy",
+    "date": "Data",
+    "description": "Co się stało?",
+    "titleLabel": "Tytuł",
+    "titlePlaceholder": "Np. Ukończyłeś/aś studia",
+    "descPlaceholder": "Opisz tę chwilę...",
+    "icon": "Ikona",
+    "publicLabel": "Widoczne dla wszystkich",
+    "private": "Prywatne"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "campaigns": {
+    "delete": {
+      "title": "Usunąć kampanię?",
+      "description": "Usunięcie „{name}” trwale usunie wszystkie powiązane wersje robocze i analizy. Tej czynności nie można cofnąć.",
+      "dontAskAgain": "Nie pytaj mnie ponownie o kampanie robocze",
+      "deletePermanently": "Usuń trwale"
+    },
+    "creation": {
+      "title": "Utwórz kampanię",
+      "stepOf": "Krok {current} z {total}",
+      "yourCampaigns": "Twoje kampanie",
+      "drafts": "wersje robocze",
+      "live": "aktywne",
+      "proTip": "Wskazówka pro",
+      "tips": {
+        "1": "Jasne nazwy pomagają ci znaleźć kampanie później",
+        "2": "Połącz kanały teraz, aby natychmiast planować",
+        "3": "Szablon startowy działa dla większości ogłoszeń",
+        "4": "Inteligentne planowanie wykorzystuje twoje dane o wcześniejszym zaangażowaniu"
+      }
+    }
+  }
+}

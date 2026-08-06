@@ -1,0 +1,94 @@
+{
+  "health": {
+    "title": "Zdrowie",
+    "description": "Twój osobisty panel zdrowia",
+    "overview": "Przegląd",
+    "overviewDesc": "Twój kompleksowy panel zdrowia i przegląd samopoczucia",
+    "servicesHub": "Centrum Usług",
+    "servicesHubDesc": "Rezerwuj lekarzy, coaching, programy i badania przesiewowe",
+    "biomarkers": "Biomarkery",
+    "biomarkersDesc": "Zobacz swoje najnowsze wyniki badań i biomarkery",
+    "healthTracker": "Mój Monitor Zdrowia",
+    "healthTrackerDesc": "Śledź swoją codzienną dietę, sen, ćwiczenia",
+    "education": "Edukacja i Nauka",
+    "educationDesc": "Dowiedz się o tematach zdrowotnych i uzyskaj dostęp do zasobów wellness",
+    "priorityFocus": "Priorytetowy Obszar",
+    "priorityFocusExplanation": "Ten obszar ma obecnie największy wpływ na długość Twojego zdrowego życia.",
+    "autopilotGuidance": "Wskazówki Autopilota",
+    "autopilotSuggests": "Autopilot Sugeruje",
+    "takeAction": "Działaj",
+    "uploadBloodTest": "Prześlij Badanie Krwi",
+    "orderBloodTest": "Zamów Badanie Krwi",
+    "viewPlans": "Zobacz Plany",
+    "vitanaIndex": "Vitana Index",
+    "healthSnapshot": "Twój Przegląd Zdrowia",
+    "topPercentile": "Najlepsze {percent}%",
+    "trend": {
+      "improving": "Poprawia się",
+      "declining": "Pogarsza się",
+      "stable": "Stabilnie"
+    },
+    "suggestions": {
+      "uploadBloodTestResults": "Prześlij wyniki badań krwi",
+      "startFitnessChallenge": "Rozpocznij 30-dniowe Wyzwanie Fitness"
+    },
+    "pillars": {
+      "sleep": "Sen",
+      "exercise": "Ćwiczenia",
+      "nutrition": "Odżywianie",
+      "hydration": "Nawodnienie",
+      "mental": "Samopoczucie"
+    },
+    "emptyStates": {
+      "noSleepPlan": "Brak Planu Snu",
+      "noSleepPlanDesc": "Wygeneruj swój spersonalizowany plan snu z celami zoptymalizowanymi przez AI, dostosowanymi do Twojego rytmu okołodobowego, potrzeb regeneracji i codziennej wydajności.",
+      "noExercisePlan": "Brak Planu Ćwiczeń",
+      "noExercisePlanDesc": "Wygeneruj swój spersonalizowany plan treningowy z ćwiczeniami zoptymalizowanymi przez AI, dostosowanymi do Twojego poziomu sprawności, celów i potrzeb regeneracji.",
+      "noNutritionPlan": "Brak Planu Odżywiania",
+      "noNutritionPlanDesc": "Wygeneruj swój spersonalizowany plan posiłków z pysznymi, zbilansowanymi przepisami, dostosowanymi do Twoich celów i preferencji żywieniowych.",
+      "noHydrationPlan": "Brak Planu Nawodnienia",
+      "noHydrationPlanDesc": "Wygeneruj swój spersonalizowany plan nawodnienia z celami dziennymi zoptymalizowanymi przez AI, dostosowanymi do Twojego poziomu aktywności, środowiska i potrzeb regeneracji.",
+      "noMentalPlan": "Brak Planu Samopoczucia",
+      "noMentalPlanDesc": "Wygeneruj swój spersonalizowany plan dobrego samopoczucia, aby śledzić stres, skupienie i równowagę emocjonalną z pomocą AI.",
+      "generatePlan": "Wygeneruj Plan",
+      "generating": "Generowanie..."
+    },
+    "noSupplements": "Jeszcze Brak Suplementów",
+    "noSupplementsDesc": "Śledź swoje codzienne witaminy, minerały i suplementy. Dodaj swój pierwszy suplement, aby zacząć.",
+    "noReports": "Jeszcze Brak Raportów Zdrowotnych",
+    "noReportsDesc": "Prześlij swoje badania krwi, wyniki laboratoryjne i raporty medyczne, aby odblokować spersonalizowane wglądy zdrowotne.",
+    "medical": "Medyczne",
+    "supplements": "Suplementy",
+    "uploadDescription": "Badania krwi, obrazowanie, wyniki laboratoryjne",
+    "unknownProvider": "Nieznany dostawca",
+    "addSupplement": "Dodaj Suplement",
+    "uploadFirstReport": "Prześlij Pierwszy Raport",
+    "missionAlignment": {
+      "title": "Zgodność z Misją",
+      "subtitle": "Jak Twoje rekomendacje wspierają pięć filarów i gospodarkę długowieczności",
+      "loading": "Ładowanie danych misji…",
+      "error": "Nie udało się załadować danych misji",
+      "noRecs": "Brak rekomendacji w Twojej kolejce.",
+      "summaryServed": "{pct}% Twoich rekomendacji wspiera misję",
+      "summaryServedCount": "{served} z {total} rekomendacji zgodnych",
+      "pillarHeading": "Wspierane filary",
+      "economyHeading": "Gospodarka długowieczności",
+      "noPillar": "Niezgodne z filarem",
+      "noEconomy": "Niezgodne z gospodarką",
+      "pillars": {
+        "nutrition": "Odżywianie",
+        "hydration": "Nawodnienie",
+        "exercise": "Ćwiczenia",
+        "sleep": "Sen",
+        "mental": "Zdrowie psychiczne"
+      },
+      "economyAxes": {
+        "find_match": "Znajdź dopasowanie",
+        "marketplace": "Rynek",
+        "income_generation": "Generowanie dochodu",
+        "business_formation": "Zakładanie firmy"
+      },
+      "contractLink": "Zobacz umowę Celu Ostatecznego"
+    }
+  }
+}

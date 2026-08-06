@@ -1,0 +1,39 @@
+{
+  "permissionsActions": {
+    "title": "Prywatność i Akcje uprawnień",
+    "items": {
+      "privacySettings": {
+        "title": "Ustawienia prywatności",
+        "description": "Skonfiguruj prywatność danych i preferencje udostępniania"
+      },
+      "manageAccess": {
+        "title": "Zarządzaj dostępem",
+        "description": "Kontroluj, kto może przeglądać Twoje wspomnienia zdrowotne"
+      },
+      "securitySettings": {
+        "title": "Ustawienia bezpieczeństwa",
+        "description": "Zaktualizuj preferencje uwierzytelniania i bezpieczeństwa"
+      },
+      "apiKeysAccess": {
+        "title": "Klucze API i Dostęp",
+        "description": "Zarządzaj integracjami aplikacji stron trzecich i dostępem do API"
+      },
+      "dataRights": {
+        "title": "Prawa do danych",
+        "description": "Skorzystaj ze swoich praw do przenoszenia i usuwania danych"
+      },
+      "auditLogs": {
+        "title": "Logi audytu",
+        "description": "Przejrzyj historię dostępu i ścieżkę audytu bezpieczeństwa"
+      },
+      "permissionSettings": {
+        "title": "Ustawienia uprawnień",
+        "description": "Dostosuj szczegółowe uprawnienia dla różnych funkcji"
+      },
+      "exportData": {
+        "title": "Eksportuj dane",
+        "description": "Pobierz bezpiecznie swoje wspomnienia i dane zdrowotne"
+      }
+    }
+  }
+}

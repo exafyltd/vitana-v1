@@ -1,0 +1,30 @@
+{
+  "services": {
+    "title": "Centrum Usług",
+    "subtitle": "Uzyskaj dostęp do kompleksowych usług zdrowotnych i wellness",
+    "categories": {
+      "preventive": "Profilaktyczne badania przesiewowe",
+      "labTests": "Badania laboratoryjne",
+      "coaching": "Coaching i Trening Personalny",
+      "groupPrograms": "Programy grupowe i Wyzwania"
+    },
+    "actions": {
+      "book": "Zarezerwuj",
+      "addToPlan": "Dodaj do Planu",
+      "askAI": "Zapytaj AI",
+      "joinRoom": "Dołącz do Pokoju",
+      "setReminder": "Ustaw Przypomnienie"
+    },
+    "details": {
+      "duration": "Czas trwania",
+      "price": "Cena",
+      "location": "Lokalizacja",
+      "nextAvailable": "Następny dostępny",
+      "whatsIncluded": "Co zawiera",
+      "healthBenefits": "Korzyści zdrowotne",
+      "availableProviders": "Dostępni Usługodawcy",
+      "requirements": "Wymagania i Przygotowanie",
+      "tags": "Tagi"
+    }
+  }
+}

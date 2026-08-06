@@ -1,0 +1,21 @@
+{
+  "calendarPopup": {
+    "title": "Kalendarz",
+    "nextEvents": "Następne {count} wydarzenia",
+    "conflicts": "{count} Konfliktów",
+    "upcomingSchedule": "Twój nadchodzący harmonogram i wydarzenia",
+    "addNewEvent": "Dodaj nowe wydarzenie",
+    "noUpcomingEvents": "Brak nadchodzących wydarzeń",
+    "createFirstEvent": "Utwórz swoje pierwsze wydarzenie",
+    "aiSuggestions": "Sugestie AI",
+    "findBetterSlot": "Znajdź lepszy termin",
+    "prepareBrief": "Przygotuj brief",
+    "shareAvailability": "Udostępnij dostępność",
+    "syncExternal": "Synchronizuj zewnętrzne",
+    "addEvent": "Dodaj wydarzenie",
+    "quickAdd": "Szybkie dodawanie",
+    "eventFormComingSoon": "Formularz tworzenia wydarzeń już wkrótce",
+    "externalSync": "Zewnętrzna synchronizacja",
+    "connectingCalendars": "Łączenie z zewnętrznymi kalendarzami..."
+  }
+}

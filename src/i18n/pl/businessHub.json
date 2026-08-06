@@ -1,0 +1,23 @@
+{
+  "businessHub": {
+    "title": "Centrum Biznesowe",
+    "description": "Rozwijaj swój biznes wellness",
+    "tabs": {
+      "snapshot": "Podsumowanie",
+      "services": "Usługi",
+      "sales": "Sprzedaż",
+      "insights": "Wnioski"
+    },
+    "recentActivity": "Ostatnia aktywność",
+    "clients": "Klienci",
+    "analytics": "Analityka",
+    "searchBusiness": "Szukaj firmy...",
+    "noServices": "Brak usług",
+    "noServicesDesc": "Utwórz swoją pierwszą usługę, aby zacząć przyciągać klientów.",
+    "createService": "Utwórz usługę",
+    "noClients": "Brak klientów",
+    "noClientsDesc": "Twoi klienci pojawią się tutaj.",
+    "noSales": "Brak sprzedaży",
+    "noSalesDesc": "Twoja historia sprzedaży pojawi się tutaj."
+  }
+}

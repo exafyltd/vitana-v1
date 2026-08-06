@@ -1,0 +1,19 @@
+{
+  "tasks": {
+    "noOpenTasks": "Brak otwartych zadań",
+    "confirmCancelTask": "Czy na pewno chcesz anulować to zadanie?",
+    "postponeComingSoon": "Funkcja odłóż już wkrótce",
+    "addNotePrompt": "Dodaj notatkę do tego zadania:",
+    "noteAdded": "Notatka dodana: {note}",
+    "navigateTo": "Przejdź do: {url}",
+    "openVtid": "Otwórz VTID: {vtid}",
+    "description": "Opis",
+    "activityLog": "Dziennik aktywności",
+    "relatedLinks": "Powiązane linki",
+    "complete": "Ukończ",
+    "postpone": "Odłóż",
+    "addNote": "Dodaj notatkę",
+    "openContext": "Otwórz kontekst",
+    "assignee": "Przypisany"
+  }
+}

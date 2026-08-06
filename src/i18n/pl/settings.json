@@ -1,0 +1,41 @@
+{
+  "settings": {
+    "title": "Ustawienia",
+    "description": "Zarządzaj ustawieniami konta, prywatnością i preferencjami",
+    "searchPlaceholder": "Szukaj ustawień, kontroli prywatności, integracji...",
+    "quickSetup": "Szybka konfiguracja",
+    "tabs": {
+      "overview": "Przegląd",
+      "notifications": "Powiadomienia",
+      "quickActions": "Szybkie działania"
+    },
+    "categories": {
+      "privacy": "Prywatność",
+      "privacyDesc": "Kontroluj, kto widzi Twój profil i aktywności",
+      "notifications": "Powiadomienia",
+      "notificationsDesc": "Zarządzaj preferencjami powiadomień",
+      "preferences": "Preferencje",
+      "preferencesDesc": "Opcje języka, motywu i wyświetlania",
+      "connectedApps": "Połączone aplikacje",
+      "connectedAppsDesc": "Zarządzaj integracjami i uprawnieniami",
+      "tenantRole": "Najemca i rola",
+      "tenantRoleDesc": "Przełączaj się między rolami i najemcami",
+      "billing": "Rozliczenia",
+      "billingDesc": "Informacje o subskrypcji i płatnościach",
+      "support": "Wsparcie",
+      "supportDesc": "Pomoc, FAQ i opcje kontaktu"
+    },
+    "status": {
+      "privacyStatus": "Status prywatności",
+      "subscription": "Subskrypcja",
+      "protected": "Chronione",
+      "premium": "Premium",
+      "notificationsActive": "Powiadomienia aktywne",
+      "connectedAppsCount": "Połączone aplikacje",
+      "types": "typy",
+      "apps": "aplikacje"
+    },
+    "vitanaOpenedSection": "Vitana otworzyła {section}",
+    "vitanaUpdated": "Vitana zaktualizowała Twoje ustawienie"
+  }
+}

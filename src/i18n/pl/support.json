@@ -1,0 +1,118 @@
+{
+  "support": {
+    "maxina": {
+      "_pending_review": {
+        "title": true,
+        "subtitle": true,
+        "description": true,
+        "categoriesTitle": true,
+        "footer": true
+      },
+      "title": "Maxina Support",
+      "subtitle": "How can we help you today?",
+      "description": "Find answers to common questions or contact our support team.",
+      "categoriesTitle": "Browse Help Topics",
+      "categories": {
+        "_pending_review": {
+          "gettingStarted": true,
+          "account": true,
+          "events": true,
+          "payments": true,
+          "technical": true
+        },
+        "gettingStarted": "Getting Started",
+        "account": "Account & Profile",
+        "events": "Events & MeetUps",
+        "payments": "Payments & Billing",
+        "technical": "Technical Help"
+      },
+      "faq": {
+        "_pending_review": {
+          "title": true
+        },
+        "title": "Frequently Asked Questions",
+        "createAccount": {
+          "_pending_review": {
+            "question": true,
+            "answer": true
+          },
+          "question": "How do I create a Maxina account?",
+          "answer": "Download the Maxina app or visit our portal at vitanaland.com/maxina. Tap 'Sign Up' and enter your email address. You'll receive a confirmation email to verify your account. Once confirmed, complete your profile to start exploring wellness events and community features."
+        },
+        "resetPassword": {
+          "_pending_review": {
+            "question": true,
+            "answer": true
+          },
+          "question": "How do I reset my password?",
+          "answer": "On the login screen, tap 'Forgot Password' and enter your registered email address. You'll receive a password reset link within a few minutes. Check your spam folder if you don't see it. The link expires after 24 hours for security reasons."
+        },
+        "joinEvents": {
+          "_pending_review": {
+            "question": true,
+            "answer": true
+          },
+          "question": "How do I join events and meetups?",
+          "answer": "Browse available events in the Events & MeetUps section. Tap on any event to view details including date, location, and pricing. For free events, simply tap 'Join' or 'RSVP'. For paid events, you can securely purchase tickets through our integrated payment system."
+        },
+        "updateProfile": {
+          "_pending_review": {
+            "question": true,
+            "answer": true
+          },
+          "question": "How do I update my profile information?",
+          "answer": "Go to your Profile tab and tap the edit icon or 'Edit Profile'. You can update your display name, bio, profile picture, and wellness interests. Changes are saved automatically. Your profile helps us personalize event recommendations for you."
+        },
+        "deleteAccount": {
+          "_pending_review": {
+            "question": true,
+            "answer": true
+          },
+          "question": "How can I delete my account?",
+          "answer": "To delete your Maxina account and associated data, please email support@exafy.io with the subject line 'Account Deletion Request – Maxina'. Include the email address linked to your account. We process deletion requests within 30 days."
+        },
+        "paymentMethods": {
+          "_pending_review": {
+            "question": true,
+            "answer": true
+          },
+          "question": "What payment methods are accepted?",
+          "answer": "We accept major credit and debit cards (Visa, Mastercard, American Express) through our secure Stripe payment integration. Apple Pay and Google Pay are also available on supported devices. All transactions are encrypted and PCI-DSS compliant."
+        },
+        "contactOrganizers": {
+          "_pending_review": {
+            "question": true,
+            "answer": true
+          },
+          "question": "How do I contact event organizers?",
+          "answer": "On any event page, you can find the organizer's profile. Tap their name to view their profile and access messaging options. For questions about specific events, use the event's Q&A section or contact the organizer directly through in-app messaging."
+        },
+        "dataSecure": {
+          "_pending_review": {
+            "question": true,
+            "answer": true
+          },
+          "question": "Is my personal data secure?",
+          "answer": "Yes, your privacy and security are our top priorities. We use industry-standard encryption, secure authentication, and follow GDPR guidelines. We never share your personal information with third parties without your consent. Read our full Privacy Policy for more details."
+        }
+      },
+      "contact": {
+        "_pending_review": {
+          "title": true,
+          "email": true,
+          "responseTime": true
+        },
+        "title": "Contact Support",
+        "email": "Email Us",
+        "responseTime": "We typically respond within 24 hours"
+      },
+      "usefulLinks": {
+        "title": "Przydatne linki",
+        "privacy": "Polityka prywatności",
+        "deleteAccount": "Usuń konto",
+        "portal": "Wróć do portalu Maxina"
+      },
+      "footer": "All rights reserved."
+    }
+  }
+}

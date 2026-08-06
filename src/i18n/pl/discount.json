@@ -1,0 +1,31 @@
+{
+  "discount": {
+    "welcomeTitle": "Twój Prezent Powitalny",
+    "welcomeMessage": "Użyj tego kodu, aby otrzymać 10% zniżki na pierwsze wydarzenie.",
+    "validFor": "Ważny przez 90 dni",
+    "applyCode": "Zastosuj kod zniżkowy",
+    "applied": "Zniżka zastosowana!",
+    "expired": "Ten kod wygasł",
+    "invalid": "Nieprawidłowy kod zniżkowy",
+    "bannerAvailable": "Dostępna zniżka powitalna",
+    "tapToApply": "Zastosuj",
+    "discountAppliedAmount": "Zniżka {percent}% zastosowana",
+    "remove": "Usuń",
+    "ticketsComing": "Bilety wkrótce dostępne",
+    "contactOrganizer": "Skontaktuj się z organizatorem wydarzenia w sprawie biletów.",
+    "contactOrganizerPrice": "To wydarzenie kosztuje ${price}. Skontaktuj się z organizatorem w sprawie dostępności biletów.",
+    "soldOut": "Wyprzedane",
+    "salesEnded": "Sprzedaż zakończona",
+    "salesStart": "Sprzedaż rozpoczyna się {date}",
+    "free": "Bezpłatnie",
+    "ticketsSelected": "Wybrano {count} bilet(y)",
+    "useAccountEmail": "Użyj mojego e-maila z konta",
+    "buyAsGuest": "Kup jako gość (bez konta)",
+    "guestDetails": "Wprowadź swoje dane, aby otrzymać bilet. Konto nie jest wymagane.",
+    "fullName": "Imię i nazwisko",
+    "email": "E-mail",
+    "ticketEmailNote": "Twój bilet i potwierdzenie zostaną wysłane na ten adres e-mail.",
+    "left": "Pozostało {count}",
+    "loadFailed": "Nie udało się załadować biletów"
+  }
+}

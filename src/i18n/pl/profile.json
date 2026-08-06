@@ -1,0 +1,81 @@
+{
+  "profile": {
+    "defaultBio": "Pasjonat wellness z pasją do zdrowia holistycznego i budowania społeczności. 🌱",
+    "autopilot": {
+      "polishBio": "Dopracuj swoje bio, archetyp i wyróżnienia",
+      "editHighlights": "Edytuj wyróżnienia",
+      "saveHighlights": "Zapisz wyróżnienia",
+      "highlightsDesc": "Wybierz swoje najlepsze posty i media, aby wyróżnić je na górze swojego profilu. Wyróżnione treści pojawiają się w sekcji wyróżnień i przyciągają więcej obserwujących.",
+      "try": "Wypróbuj"
+    },
+    "identity": {
+      "vitanaIndex": "Indeks Vitana",
+      "basedOnActivity": "Na podstawie aktywności, zaangażowania w zdrowie i wkładu",
+      "viewLongevityId": "Zobacz moje ID Długowieczności",
+      "follow": "Obserwuj",
+      "followingState": "Obserwujesz",
+      "understandIndex": "Zrozum indeks",
+      "brandFooter": "MAXINA × VITANA"
+    },
+    "tabs": {
+      "identity": "Tożsamość",
+      "social": "Społeczność",
+      "account": "Konto",
+      "business": "Biznes"
+    },
+    "account": {
+      "notSet": "Nie ustawiono",
+      "editField": "Edytuj {field}",
+      "visibilityToggle": "Widoczność: {label}. Dotknij, aby zmienić.",
+      "visibility": {
+        "private": "Prywatne",
+        "connections": "Połączenia",
+        "public": "Publiczne"
+      },
+      "sections": {
+        "publicProfile": "Profil publiczny",
+        "publicProfileSubtitle": "Wyświetlane w Tożsamości",
+        "basicInfo": "Podstawowe informacje osobiste",
+        "basicInfoSubtitle": "Stałe dane tożsamości",
+        "contactInfo": "Informacje kontaktowe",
+        "accountDetails": "Szczegóły konta"
+      },
+      "fields": {
+        "avatar": "Awatar",
+        "handle": "Nazwa użytkownika",
+        "longevityArchetype": "Archetyp długowieczności",
+        "firstName": "Imię",
+        "lastName": "Nazwisko",
+        "dateOfBirth": "Data urodzenia",
+        "gender": "Płeć",
+        "maritalStatus": "Stan cywilny",
+        "email": "E-mail",
+        "phone": "Telefon",
+        "address": "Adres",
+        "country": "Kraj",
+        "city": "Miasto",
+        "memberSince": "Członek od",
+        "accountType": "Typ konta",
+        "verificationStatus": "Status weryfikacji"
+      },
+      "values": {
+        "uploaded": "Przesłano"
+      }
+    },
+    "business": {
+      "title": "Moje rekomendacje",
+      "subtitle": "Polecone produkty i Twoje zarobki",
+      "empty": "Brak rekomendacji",
+      "emptyDesc": "Poleć produkt z Odkryj, aby zobaczyć tutaj swoje kliknięcia, zakupy i prowizje.",
+      "clicks": "{count} kliknięć",
+      "conversions": "{count} zakupów",
+      "totalEarned": "Łącznie zarobiono",
+      "statusActive": "Aktywne",
+      "shareRow": "Udostępnij link do rekomendacji",
+      "publicTitle": "Rekomendacje",
+      "publicSubtitle": "Produkty polecone przez ten profil",
+      "publicEmpty": "Brak rekomendacji",
+      "viewProduct": "Zobacz"
+    }
+  }
+}

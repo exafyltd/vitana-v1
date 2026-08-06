@@ -1,0 +1,20 @@
+{
+  "confirm": {
+    "delete": "Czy na pewno chcesz to usunąć?",
+    "deleteDesc": "Tej czynności nie można cofnąć.",
+    "cancel": "Czy na pewno chcesz anulować?",
+    "cancelDesc": "Twoje zmiany zostaną utracone.",
+    "unsavedChanges": "Masz niezapisane zmiany.",
+    "unsavedChangesDesc": "Czy na pewno chcesz wyjść? Twoje zmiany zostaną utracone.",
+    "leave": "Czy na pewno chcesz opuścić tę stronę?",
+    "leaveDesc": "Niezapisane zmiany zostaną utracone.",
+    "logout": "Czy na pewno chcesz się wylogować?",
+    "logoutDesc": "Musisz zalogować się ponownie.",
+    "remove": "Czy na pewno chcesz usunąć ten element?",
+    "removeDesc": "Element zostanie usunięty z listy.",
+    "disconnect": "Czy na pewno chcesz się rozłączyć?",
+    "disconnectDesc": "Możesz połączyć się ponownie później.",
+    "proceed": "Czy chcesz kontynuować?",
+    "proceedDesc": "Ta czynność zostanie wykonana."
+  }
+}

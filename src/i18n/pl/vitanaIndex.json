@@ -1,0 +1,35 @@
+{
+  "vitanaIndex": {
+    "title": "Vitana Indeks Zdrowia",
+    "subtitle": "Ogólna równowaga dobrego samopoczucia we wszystkich filarach zdrowia",
+    "veryPoor": "Bardzo słaby",
+    "poor": "Słaby",
+    "fair": "Umiarkowany",
+    "improving": "Poprawia się",
+    "good": "Dobry",
+    "excellent": "Doskonały",
+    "sleep": "Sen",
+    "exercise": "Ćwiczenia",
+    "nutrition": "Odżywianie",
+    "hydration": "Nawodnienie",
+    "mental": "Mentalny",
+    "viewFullReport": "Zobacz pełny raport",
+    "trackToday": "Śledź dzisiaj",
+    "tiers": {
+      "starting": "Zaczynasz",
+      "early": "Wcześnie",
+      "building": "Budujesz",
+      "strong": "Silny",
+      "reallyGood": "Naprawdę dobrze",
+      "elite": "Elita"
+    },
+    "framings": {
+      "starting": "Dopiero zaczynasz",
+      "early": "Podstawa ustalona",
+      "building": "Nawyki się kształtują",
+      "strong": "90-dniowy kamień milowy",
+      "reallyGood": "Rozkwitasz",
+      "elite": "Elita"
+    }
+  }
+}

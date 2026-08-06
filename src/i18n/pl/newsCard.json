@@ -1,0 +1,39 @@
+{
+  "newsCard": {
+    "menu": {
+      "share": "Udostępnij",
+      "save": "Zapisz",
+      "saved": "Zapisano",
+      "summarize": "Podsumuj z Vitana",
+      "copyLink": "Kopiuj link",
+      "openInBrowser": "Otwórz w przeglądarce",
+      "hide": "Ukryj ten artykuł",
+      "showLess": "Pokazuj mniej takich",
+      "muteSource": "Wycisz to źródło",
+      "linkCopied": "Link skopiowany",
+      "savedToast": "Zapisano na później",
+      "unsavedToast": "Usunięto z zapisanych",
+      "summarizeToast": "Dodano do kolejki Vitana",
+      "hiddenToast": "Artykuł ukryty",
+      "showLessToast": "Będziemy pokazywać mniej takich",
+      "mutedToast": "Źródło wyciszone",
+      "undo": "Cofnij",
+      "unmute": "Wyłącz wyciszenie"
+    },
+    "detail": {
+      "back": "Wróć",
+      "continueReading": "Czytaj dalej na",
+      "openInBrowser": "Otwórz w przeglądarce",
+      "couldNotLoad": "Tego artykułu nie można wyświetlić bezpośrednio",
+      "readOn": "Czytaj dalej"
+    },
+    "pillars": {
+      "all": "Wszystkie",
+      "nutrition": "Odżywianie",
+      "hydration": "Nawodnienie",
+      "sleep": "Sen",
+      "exercise": "Ćwiczenia",
+      "mental": "Psychika"
+    }
+  }
+}
