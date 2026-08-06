@@ -36,6 +36,18 @@ jobs:
       - name: Catalog audit (DE↔EN parity, _pending_review check)
         run: node scripts/i18n-audit.mjs --report-only
 
+      # VTID-03519. The other checks here can only see FILES. This one covers
+      # the surface none of them can: DB-backed content. A locale that is `ga`
+      # in the picker but absent from `supported_locales` is not merely
+      # untranslated — it is unseedable (the FK rejects the rows), so the
+      # Navigator and My Journey render German inside an otherwise translated
+      # UI. es/sr/fr were all in exactly that state when this was added.
+      #
+      # No secrets: `supported_locales` is world-readable by design, and the
+      # publishable key lives in the tracked .env.
+      - name: Locale registry parity (picker ↔ supported_locales)
+        run: node scripts/check-locale-registry.mjs
+
       - name: Long-word guard (DE compound-word overflow)
         # Fails the build if any DE catalog value contains a word >= 22
         # chars. Auto-fix via the i18n-long-words workflow (Gemini-driven
