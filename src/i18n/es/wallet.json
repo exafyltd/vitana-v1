@@ -2,8 +2,8 @@
   "wallet": {
     "title": "Billetera",
     "description": "Tu saldo, créditos y recompensas",
-    "usdBalance": "Saldo en EUR / USD",
-    "creditsBalance": "Saldo de VTNA Credits",
+    "usdBalance": "Saldo EUR / USD",
+    "creditsBalance": "Saldo de Créditos VTNA",
     "creditsLabel": "Créditos VTNA",
     "available": "Disponible",
     "staked": "En staking",
@@ -25,10 +25,6 @@
     },
     "noActivity": "Sin actividad aún",
     "noActivityDesc": "Tus transacciones aparecerán aquí.",
-    "displayCurrency": "Moneda de visualización",
-    "_pending_review": {
-      "usdBalance": true,
-      "creditsBalance": true
-    }
+    "displayCurrency": "Moneda de visualización"
   }
 }

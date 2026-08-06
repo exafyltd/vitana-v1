@@ -49,7 +49,7 @@
       "coverLabel": "Imagen de Portada / Miniatura",
       "coverAlt": "Portada de la transmisión",
       "coverUploadCta": "Haz clic para subir una imagen personalizada",
-      "coverUploadHint": "PNG, JPG hasta 2MB",
+      "coverUploadHint": "Cualquier imagen – redimensionada automáticamente",
       "aiAutoGenerateLabel": "Autogenerar con IA",
       "aiAutoGenerateHint": "Generar imagen si no se subió ninguna",
       "generatingAiImage": "Generando imagen con IA…",
@@ -129,9 +129,6 @@
         "youAreLiveDesc": "Uniéndote a la sala de transmisión…",
         "aiImageHintTitle": "Generación de imagen con IA",
         "aiImageHintDesc": "La imagen se generará cuando comience la transmisión."
-      },
-      "_pending_review": {
-        "coverUploadHint": true
       }
     },
     "editSession": {

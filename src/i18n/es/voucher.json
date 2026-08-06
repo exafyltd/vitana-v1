@@ -14,7 +14,8 @@
           "Solo para probar el pago",
           "No es un vale real",
           "Para pruebas de desarrollo"
-        ]
+        ],
+        "_pending_review": {}
       },
       "experience": {
         "name": "Experiencia",
@@ -23,7 +24,8 @@
           "Asesoramiento de bienestar personalizado",
           "Prueba de Vitana+ de 30 días incluida",
           "Vale electrónico con un diseño precioso"
-        ]
+        ],
+        "_pending_review": {}
       },
       "exclusive": {
         "name": "Exclusivo",
@@ -32,7 +34,8 @@
           "Sesión de coaching individual con un experto",
           "Suscripción a Vitana+ de 90 días",
           "Reserva prioritaria + ventajas VIP"
-        ]
+        ],
+        "_pending_review": {}
       },
       "_pending_review": {}
     },

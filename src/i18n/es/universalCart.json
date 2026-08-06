@@ -15,20 +15,24 @@
       "completeAction": "Marcar como completado",
       "alreadyCompleted": "Ya completado",
       "linkToDiscover": "Explorar Discover",
-      "close": "Cerrar"
+      "close": "Cerrar",
+      "_pending_review": {}
     },
     "tabs": {
       "cart": "Carrito",
-      "saved": "Guardado"
+      "saved": "Guardado",
+      "_pending_review": {}
     },
     "saved": {
       "moveToCart": "Añadir al carrito",
       "saveForLater": "Guardar para más tarde",
       "emptyTitle": "Nada guardado aún",
-      "emptyBody": "Guarda productos para más tarde tocando «Guardar para más tarde» en tu carrito."
+      "emptyBody": "Guarda productos para más tarde tocando «Guardar para más tarde» en tu carrito.",
+      "_pending_review": {}
     },
     "item": {
-      "viewProduct": "Ver producto"
+      "viewProduct": "Ver producto",
+      "_pending_review": {}
     },
     "agent": {
       "promptLabel": "¿Qué estás buscando?",
@@ -53,7 +57,8 @@
       "reordering": "Vitana está añadiendo tus artículos de nuevo…",
       "overCapAdvisory": "Estos artículos te hacen superar tu presupuesto mensual.",
       "nearCapAdvisory": "Estos artículos te acercan a tu presupuesto mensual.",
-      "error": "Algo salió mal. Por favor, inténtalo de nuevo."
+      "error": "Algo salió mal. Por favor, inténtalo de nuevo.",
+      "_pending_review": {}
     },
     "budget": {
       "title": "Presupuesto de este mes",
@@ -61,7 +66,8 @@
       "statusUnder": "Dentro del presupuesto",
       "statusNear": "Casi en el presupuesto",
       "statusOver": "Fuera de presupuesto",
-      "noCapHint": "Establece un presupuesto mensual para controlar tus gastos."
+      "noCapHint": "Establece un presupuesto mensual para controlar tus gastos.",
+      "_pending_review": {}
     },
     "addButton": {
       "label": "Añadir al carrito",
@@ -71,7 +77,10 @@
       "signRequired": "Inicia sesión para añadir a tu carrito.",
       "roleBlocked": "El carrito solo está disponible en tu rol de comunidad.",
       "failed": "No se pudo añadir al carrito",
-      "success": "Añadido al carrito"
-    }
-  }
+      "success": "Añadido al carrito",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

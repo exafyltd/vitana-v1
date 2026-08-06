@@ -5,7 +5,7 @@
       "updateFailed": "Error al actualizar el estado",
       "deleteSuccess": "¡Eliminado con éxito!",
       "deleteFailed": "Error al eliminar",
-      "podcastStatus": "Podcast {status}",
+      "podcastStatus": "Pódcast {status}",
       "podcastDeleted": "Podcast eliminado",
       "musicDeleted": "Música eliminada",
       "videoDeleted": "Video eliminado",

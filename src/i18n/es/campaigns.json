@@ -4,7 +4,8 @@
       "title": "¿Eliminar campaña?",
       "description": "Eliminar \"{name}\" eliminará permanentemente todos los borradores y análisis relacionados. Esta acción no se puede deshacer.",
       "dontAskAgain": "No me preguntes de nuevo por campañas en borrador",
-      "deletePermanently": "Eliminar permanentemente"
+      "deletePermanently": "Eliminar permanentemente",
+      "_pending_review": {}
     },
     "creation": {
       "title": "Crear campaña",
@@ -17,8 +18,12 @@
         "1": "Los nombres claros te ayudan a encontrar campañas después",
         "2": "Conecta canales ahora para programar al instante",
         "3": "La plantilla de lanzamiento funciona para la mayoría de anuncios",
-        "4": "La programación inteligente usa tus datos de engagement pasados"
-      }
-    }
-  }
+        "4": "La programación inteligente usa tus datos de engagement pasados",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
