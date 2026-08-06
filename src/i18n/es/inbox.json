@@ -11,35 +11,30 @@
       "direct": "Directo",
       "contacts": "Contactos",
       "notifications": "Notificaciones",
-      "archived": "Archivado",
-      "_pending_review": {}
+      "archived": "Archivado"
     },
     "contextTabs": {
       "community": "Comunidad",
-      "network": "Red",
-      "_pending_review": {}
+      "network": "Red"
     },
     "actions": {
       "new": "Nuevo",
       "newMessage": "Nuevo mensaje",
       "createGroup": "Crear grupo",
       "markAllRead": "Marcar todo como leído",
-      "menu": "Más",
-      "_pending_review": {}
+      "menu": "Más"
     },
     "composer": {
       "placeholder": "Escribe tu mensaje...",
       "send": "Enviar",
       "attachments": "Archivos adjuntos",
       "recipients": "Para:",
-      "add": "Agregar",
-      "_pending_review": {}
+      "add": "Agregar"
     },
     "states": {
       "empty": "Aún no hay mensajes",
       "loading": "Cargando mensajes...",
-      "error": "Error al cargar mensajes",
-      "_pending_review": {}
+      "error": "Error al cargar mensajes"
     },
     "newConversation": {
       "title": "Iniciar nueva conversación",
@@ -59,8 +54,7 @@
       "cancel": "Cancelar",
       "startChat": "Iniciar chat",
       "createGroup": "Crear grupo",
-      "creating": "Creando...",
-      "_pending_review": {}
+      "creating": "Creando..."
     },
     "createGroup": {
       "title": "Crear grupo",
@@ -71,16 +65,13 @@
       "groupNameRequired": "Nombre del grupo requerido",
       "groupNameRequiredDesc": "Por favor, ingresa un nombre para tu grupo.",
       "addMembersRequired": "Agregar miembros",
-      "addMembersRequiredDesc": "Por favor, agrega al menos un miembro al grupo.",
+      "addMembersRequiredDesc": "Por favor, añade al menos un miembro.",
       "groupExists": "El grupo ya existe",
       "groupExistsDesc": "Se creó un grupo con estos miembros recientemente.",
       "created": "Grupo creado",
       "createdDesc": "\"{name}\" se ha creado correctamente.",
       "failed": "Error al crear el grupo",
-      "failedDesc": "Por favor, inténtalo de nuevo.",
-      "_pending_review": {
-        "addMembersRequiredDesc": true
-      }
+      "failedDesc": "Por favor, inténtalo de nuevo."
     },
     "toast": {
       "success": "Éxito",
@@ -91,17 +82,13 @@
       "searchFailed": "Error en la búsqueda",
       "accessDenied": "Acceso denegado",
       "communityOnly": "Solo los usuarios de la comunidad pueden crear conversaciones globales",
-      "pleaseLogin": "Inicia sesión para iniciar conversaciones",
+      "pleaseLogin": "Por favor, inicia sesión para empezar conversaciones.",
       "groupRecipientsRequired": "Se requieren nombre del grupo y destinatarios",
-      "singleRecipientRequired": "Selecciona exactamente un destinatario para mensaje directo",
+      "singleRecipientRequired": "Selecciona exactamente un destinatario para mensajes directos.",
       "groupCreated": "¡Grupo \"{name}\" creado correctamente!",
       "groupFailed": "Error al crear el grupo",
       "allMarkedRead": "Todos los mensajes marcados como leídos",
-      "markAllReadFailed": "No se pudo marcar todo como leído. Por favor, inténtalo de nuevo.",
-      "_pending_review": {
-        "pleaseLogin": true,
-        "singleRecipientRequired": true
-      }
+      "markAllReadFailed": "No se pudo marcar todo como leído. Por favor, inténtalo de nuevo."
     },
     "createGroupAction": "Crear nuevo grupo",
     "newConversationAction": "Nueva conversación",
@@ -115,14 +102,11 @@
     "noMessagesDesc": "Inicia una conversación para empezar.",
     "startConversation": "Iniciar conversación",
     "emptyState": {
-      "title": "Tu bandeja de entrada está tranquila por ahora",
+      "title": "Tu bandeja de entrada todavía está vacía.",
       "globalDescription": "Inicia una conversación o únete a una comunidad para conectar con otros.",
       "tenantDescription": "Conéctate con colegas y miembros del equipo en tu red profesional.",
       "startConversation": "Iniciar una conversación",
-      "discoverPeople": "Descubrir personas",
-      "_pending_review": {
-        "title": true
-      }
+      "discoverPeople": "Descubrir personas"
     },
     "group": {
       "loading": "Cargando grupo…",
@@ -133,12 +117,7 @@
       "memberOther": "miembros",
       "officialBadge": "grupo oficial",
       "empty": "Aún no hay mensajes.",
-      "composerPlaceholder": "Mensaje…",
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "noMessagesDesc": true
+      "composerPlaceholder": "Mensaje…"
     }
-  },
-  "_pending_review": {}
+  }
 }

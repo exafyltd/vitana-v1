@@ -1,10 +1,10 @@
 {
   "milestones": {
-    "title": "Hitos de la vida",
+    "title": "Momentos Especiales",
     "add": "Añadir hito",
     "edit": "Editar hito",
-    "empty": "Aún no hay hitos",
-    "addFirst": "Añade tu primer hito",
+    "empty": "Aún no hay Momentos",
+    "addFirst": "Añade tu Primer Momento",
     "date": "Fecha",
     "description": "¿Qué pasó?",
     "titleLabel": "Título",
@@ -12,12 +12,6 @@
     "descPlaceholder": "Describe este momento...",
     "icon": "Icono",
     "publicLabel": "Visible para todos",
-    "private": "Privado",
-    "_pending_review": {
-      "title": true,
-      "empty": true,
-      "addFirst": true
-    }
-  },
-  "_pending_review": {}
+    "private": "Privado"
+  }
 }

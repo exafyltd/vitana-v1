@@ -3,14 +3,10 @@
     "viewFull": "Ver perfil completo",
     "sendMessage": "Mensaje",
     "follow": "Seguir",
-    "milestones": "Hitos de vida",
+    "milestones": "Hitos de la vida",
     "posts": "Publicaciones",
     "followers": "Seguidores",
     "following": "Siguiendo",
-    "groups": "Grupos",
-    "_pending_review": {
-      "milestones": true
-    }
-  },
-  "_pending_review": {}
+    "groups": "Grupos"
+  }
 }

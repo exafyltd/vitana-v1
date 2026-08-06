@@ -1,7 +1,7 @@
 {
   "authPage": {
     "welcomeTitle": "¡Te damos la bienvenida a VITANA!",
-    "subtitle": "Tu plataforma de inteligencia de salud personalizada",
+    "subtitle": "Tu Plataforma de Inteligencia de Salud personalizada",
     "signIn": "Iniciar sesión",
     "signUp": "Registrarse",
     "email": "Correo electrónico",
@@ -14,10 +14,6 @@
     "createAccount": "Crear cuenta",
     "orContinueWith": "O continúa con",
     "backToPortals": "Volver a todos los portales",
-    "keepLoggedIn": "Mantener sesión iniciada",
-    "_pending_review": {
-      "subtitle": true
-    }
-  },
-  "_pending_review": {}
+    "keepLoggedIn": "Mantener sesión iniciada"
+  }
 }

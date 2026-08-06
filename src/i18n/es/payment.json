@@ -13,16 +13,11 @@
     "insufficientBalanceDesc": "No tienes suficiente {currency} para este intercambio",
     "transactionFailed": "Transacción fallida",
     "paymentFailed": "Pago fallido",
-    "paymentFailedDesc": "Error al procesar el pago. Intenta de nuevo.",
+    "paymentFailedDesc": "No se pudo procesar el pago. Por favor, inténtalo de nuevo.",
     "balanceRefreshed": "Saldo actualizado",
     "balanceRefreshedDesc": "El saldo de la billetera se ha actualizado",
     "refreshFailed": "Actualización fallida",
-    "refreshFailedDesc": "No se pudo actualizar el saldo. Intenta de nuevo.",
-    "error": "Error",
-    "_pending_review": {
-      "paymentFailedDesc": true,
-      "refreshFailedDesc": true
-    }
-  },
-  "_pending_review": {}
+    "refreshFailedDesc": "No se pudo actualizar el saldo. Por favor, inténtalo de nuevo.",
+    "error": "Error"
+  }
 }

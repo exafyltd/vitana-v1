@@ -4,55 +4,36 @@
     "items": {
       "privacySettings": {
         "title": "Configuración de Privacidad",
-        "description": "Configura la privacidad de datos y preferencias de uso compartido",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Configura Ajustes de Privacidad y Uso Compartido"
       },
       "manageAccess": {
         "title": "Gestionar Acceso",
-        "description": "Controla quién puede ver tus recuerdos de salud",
-        "_pending_review": {}
+        "description": "Controla quién puede ver tus recuerdos de salud"
       },
       "securitySettings": {
         "title": "Configuración de Seguridad",
-        "description": "Actualiza autenticación y preferencias de seguridad",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Actualiza Ajustes de Autenticación y Seguridad"
       },
       "apiKeysAccess": {
         "title": "Claves API y Acceso",
-        "description": "Gestiona integraciones de apps de terceros y acceso API",
-        "_pending_review": {}
+        "description": "Gestiona integraciones de apps de terceros y acceso API"
       },
       "dataRights": {
         "title": "Derechos de Datos",
-        "description": "Ejerce tus derechos de portabilidad y eliminación de datos",
-        "_pending_review": {}
+        "description": "Ejerce tus derechos de portabilidad y eliminación de datos"
       },
       "auditLogs": {
         "title": "Registros de Auditoría",
-        "description": "Revisa el historial de acceso y el registro de auditoría de seguridad",
-        "_pending_review": {}
+        "description": "Revisa el historial de acceso y el registro de auditoría de seguridad"
       },
       "permissionSettings": {
-        "title": "Configuración de Permisos",
-        "description": "Ajusta permisos detallados para diferentes funciones",
-        "_pending_review": {
-          "title": true
-        }
+        "title": "Ajustes de Permisos",
+        "description": "Ajusta permisos detallados para diferentes funciones"
       },
       "exportData": {
         "title": "Exportar Datos",
-        "description": "Descarga tus recuerdos y datos de salud de forma segura",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "title": true
+        "description": "Descarga tus recuerdos y datos de salud de forma segura"
+      }
     }
-  },
-  "_pending_review": {}
+  }
 }

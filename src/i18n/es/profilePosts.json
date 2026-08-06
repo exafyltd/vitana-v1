@@ -1,7 +1,7 @@
 {
   "profilePosts": {
     "createPost": "Crear publicación",
-    "placeholder": "¿Qué tienes en mente?",
+    "placeholder": "¿Qué tienes en mente ahora mismo?",
     "shareCta": "Comparte algo con la comunidad",
     "post": "Publicar",
     "posted": "¡Publicado!",
@@ -14,10 +14,6 @@
     "background": "Fondo",
     "noBackground": "Sin fondo",
     "searchingPeople": "Buscando personas…",
-    "noPeopleFound": "Nadie encontrado",
-    "_pending_review": {
-      "placeholder": true
-    }
-  },
-  "_pending_review": {}
+    "noPeopleFound": "Nadie encontrado"
+  }
 }

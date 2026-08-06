@@ -7,10 +7,6 @@
     "eventsAndMeetups": "Eventos y reuniones",
     "communityNews": "Noticias de la comunidad",
     "inspiration": "Inspiración",
-    "dailyMatches": "Coincidencias diarias",
-    "_pending_review": {
-      "mediaContent": true
-    }
-  },
-  "_pending_review": {}
+    "dailyMatches": "Coincidencias diarias"
+  }
 }

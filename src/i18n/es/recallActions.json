@@ -1,52 +1,39 @@
 {
   "recallActions": {
-    "title": "Acciones de búsqueda y recuperación de recuerdos",
+    "title": "Acciones de búsqueda y recuperación de recordatorios",
     "items": {
       "askAiQuestion": {
         "title": "Preguntar a la IA",
-        "description": "Consulta tus recuerdos con búsqueda por lenguaje natural de IA",
-        "_pending_review": {}
+        "description": "Consulta tus recuerdos con búsqueda por lenguaje natural de IA"
       },
       "advancedSearch": {
         "title": "Búsqueda avanzada",
-        "description": "Usa filtros, etiquetas y rangos de fechas para encontrar recuerdos",
-        "_pending_review": {}
+        "description": "Usa filtros, etiquetas y rangos de fechas para encontrar recuerdos"
       },
       "patternAnalysis": {
         "title": "Análisis de patrones",
-        "description": "Descubre tendencias y patrones en tus datos de bienestar",
-        "_pending_review": {}
+        "description": "Descubre tendencias y patrones en tus datos de bienestar"
       },
       "memoryInsights": {
         "title": "Perspectivas de recuerdos",
-        "description": "Obtén perspectivas impulsadas por IA de tu viaje de salud",
-        "_pending_review": {}
+        "description": "Obtén perspectivas impulsadas por IA de tu viaje de salud"
       },
       "searchByDate": {
         "title": "Buscar por fecha",
-        "description": "Explora recuerdos de períodos de tiempo específicos",
-        "_pending_review": {}
+        "description": "Explora recuerdos de períodos de tiempo específicos"
       },
       "locationMemories": {
         "title": "Recuerdos de ubicaciones",
-        "description": "Encuentra entradas por lugares y ubicaciones visitadas",
-        "_pending_review": {}
+        "description": "Encuentra entradas por lugares y ubicaciones visitadas"
       },
       "filterByCategory": {
         "title": "Filtrar por categoría",
-        "description": "Explora recuerdos por pilares y categorías de bienestar",
-        "_pending_review": {}
+        "description": "Explora recuerdos por pilares y categorías de bienestar"
       },
       "quickRecalls": {
         "title": "Recuerdos rápidos",
-        "description": "Accede a recuerdos y consultas buscados con frecuencia",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "title": true
+        "description": "Accede a recuerdos y consultas buscados con frecuencia"
+      }
     }
-  },
-  "_pending_review": {}
+  }
 }

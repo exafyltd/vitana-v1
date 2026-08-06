@@ -2,12 +2,9 @@
   "campaigns": {
     "delete": {
       "title": "¿Eliminar campaña?",
-      "description": "Eliminar \"{name}\" eliminará permanentemente todos los borradores y análisis relacionados. Esta acción no se puede deshacer.",
+      "description": "Eliminar \"{name}\" elimina permanentemente todos los borradores y análisis asociados. Esto no se puede deshacer.",
       "dontAskAgain": "No me preguntes de nuevo por campañas en borrador",
-      "deletePermanently": "Eliminar permanentemente",
-      "_pending_review": {
-        "description": true
-      }
+      "deletePermanently": "Eliminar permanentemente"
     },
     "creation": {
       "title": "Crear campaña",
@@ -18,17 +15,10 @@
       "proTip": "Consejo pro",
       "tips": {
         "1": "Los nombres claros te ayudan a encontrar campañas después",
-        "2": "Conecta canales ahora para programar al instante",
+        "2": "Conecta tus canales ahora para una planificación instantánea",
         "3": "La plantilla de lanzamiento funciona para la mayoría de anuncios",
-        "4": "La programación inteligente usa tus datos de engagement pasados",
-        "_pending_review": {
-          "2": true,
-          "4": true
-        }
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "4": "La planificación inteligente usa tus datos de interacción pasados"
+      }
+    }
+  }
 }

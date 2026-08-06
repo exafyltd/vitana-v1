@@ -12,7 +12,7 @@
     "advancedSearchDesc": "Filtrar por rango de fechas, categoría, palabras clave",
     "bulkActions": "Acciones masivas",
     "bulkActionsDesc": "Selecciona y gestiona varios elementos a la vez",
-    "archiveSettings": "Configuración de archivado",
+    "archiveSettings": "Ajustes de archivo",
     "archiveSettingsDesc": "Configurar archivado automático para elementos antiguos",
     "manageCategories": "Gestionar categorías",
     "manageCategoriesDesc": "Personalizar etiquetas y filtros de categorías",
@@ -26,30 +26,20 @@
     "clearing": "Limpiando...",
     "deleting": "Eliminando...",
     "exportComplete": "Exportación completa",
-    "exportCompleteDesc": "Tu historial se ha exportado correctamente.",
+    "exportCompleteDesc": "Tu historial se exportó con éxito.",
     "exportFailed": "Error al exportar",
-    "exportFailedDesc": "Hubo un error al exportar tu historial.",
+    "exportFailedDesc": "Ocurrió un error al exportar tu historial.",
     "historyCleared": "Historial limpiado",
     "historyClearedDesc": "Los elementos antiguos del historial se han eliminado.",
     "clearFailed": "Error al limpiar",
     "clearFailedDesc": "Hubo un error al limpiar el historial antiguo.",
     "allHistoryDeleted": "Todo el historial eliminado",
-    "allHistoryDeletedDesc": "Todo tu historial se ha eliminado permanentemente.",
+    "allHistoryDeletedDesc": "Se eliminó permanentemente todo tu historial.",
     "deleteFailed": "Error al eliminar",
-    "deleteFailedDesc": "Hubo un error al eliminar tu historial.",
-    "confirmClearOld": "¿Estás seguro de que quieres limpiar el historial con más de 90 días?",
+    "deleteFailedDesc": "Ocurrió un error al eliminar tu historial.",
+    "confirmClearOld": "¿Estás seguro de que quieres eliminar el historial de más de 90 días?",
     "confirmDeleteAll": "⚠️ ADVERTENCIA: Esto eliminará permanentemente TODO tu historial. Esta acción no se puede deshacer. ¿Estás absolutamente seguro?",
     "beta": "Beta",
-    "danger": "Peligro",
-    "_pending_review": {
-      "archiveSettings": true,
-      "exportCompleteDesc": true,
-      "exportFailedDesc": true,
-      "allHistoryDeletedDesc": true,
-      "deleteFailedDesc": true,
-      "confirmClearOld": true,
-      "confirmDeleteAll": true
-    }
-  },
-  "_pending_review": {}
+    "danger": "Peligro"
+  }
 }

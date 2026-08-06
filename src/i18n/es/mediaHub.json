@@ -7,29 +7,26 @@
       "music": "Música",
       "podcasts": "Pódcasts",
       "shorts": "Cortos",
-      "videos": "Videos",
-      "_pending_review": {}
+      "videos": "Videos"
     },
     "sections": {
       "trendingShorts": "Shorts populares",
       "trendingMusic": "Música popular",
       "musicPlaylists": "Listas de reproducción de música",
       "latestEpisodes": "Últimos episodios",
-      "popularShows": "Programas populares",
-      "_pending_review": {}
+      "popularShows": "Programas populares"
     },
     "actions": {
       "upload": "Subir",
       "watchShorts": "Ver Cortos",
       "viewAllShorts": "Ver todos los {count} cortos",
       "playPlaylist": "Reproducir lista",
-      "clearFilters": "Limpiar filtros",
-      "_pending_review": {}
+      "clearFilters": "Limpiar filtros"
     },
     "searchPlaceholder": "Buscar medios...",
     "shortsAvailable": "{count} shorts disponibles",
     "filteredBy": "Filtrado por:",
-    "noMatchingShorts": "Ningún short coincide con tus intereses",
+    "noMatchingShorts": "Ningún video corto coincide con tus intereses.",
     "viewAllShorts": "Ver todos los shorts",
     "tracks": "pistas",
     "min": "min",
@@ -49,8 +46,7 @@
       "singleUpload": "Subir uno",
       "bulkUpload": "Subir varios",
       "addToPlaylist": "Agregar a lista",
-      "viewArtist": "Ver artista",
-      "_pending_review": {}
+      "viewArtist": "Ver artista"
     },
     "toast": {
       "linkCopied": "Enlace copiado",
@@ -58,36 +54,29 @@
       "filtersCleared": "Filtros borrados",
       "filtersClearedDesc": "Mostrando todos los cortos",
       "podcastDeleted": "Podcast eliminado",
-      "podcastDeletedDesc": "Tu podcast se ha eliminado correctamente.",
+      "podcastDeletedDesc": "Tu pódcast se eliminó correctamente.",
       "videoDeleted": "Video eliminado",
-      "videoDeletedDesc": "Tu video se ha eliminado correctamente.",
+      "videoDeletedDesc": "Tu video se eliminó correctamente.",
       "videoUpdated": "Éxito",
       "videoUpdatedDesc": "Video actualizado correctamente",
       "uploadSuccess": "¡Éxito!",
       "uploadSuccessDesc": "Tu {type} ya está disponible en la comunidad.",
       "deleteError": "Error",
-      "deleteErrorDesc": "No se pudo eliminar. Intenta de nuevo.",
+      "deleteErrorDesc": "Error al eliminar. Inténtalo de nuevo.",
       "commentError": "Error",
-      "commentErrorDesc": "No se pudo publicar el comentario. Inténtalo de nuevo.",
-      "_pending_review": {
-        "podcastDeletedDesc": true,
-        "videoDeletedDesc": true,
-        "deleteErrorDesc": true
-      }
+      "commentErrorDesc": "No se pudo publicar el comentario. Inténtalo de nuevo."
     },
     "deletePodcast": {
       "title": "Eliminar podcast",
       "description": "¿Seguro que quieres eliminar este podcast? Esta acción no se puede deshacer.",
       "cancel": "Cancelar",
-      "confirm": "Eliminar",
-      "_pending_review": {}
+      "confirm": "Eliminar"
     },
     "deleteVideo": {
       "title": "Eliminar video",
       "description": "¿Seguro que quieres eliminar este video? Esta acción no se puede deshacer y eliminará el video del almacenamiento.",
       "cancel": "Cancelar",
-      "confirm": "Eliminar",
-      "_pending_review": {}
+      "confirm": "Eliminar"
     },
     "noMusic": "Aún no se ha subido música",
     "noMusicDesc": "¡Sé el primero en compartir música con la comunidad!",
@@ -144,10 +133,8 @@
         "mentalHealth": "Salud mental",
         "wellness": "Bienestar",
         "education": "Educación",
-        "lifestyle": "Estilo de vida",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "lifestyle": "Estilo de vida"
+      }
     },
     "comments": {
       "title": "Comentarios",
@@ -160,12 +147,7 @@
       "reply": "Responder",
       "replyingTo": "Respondiendo a {name}",
       "cancelReply": "Cancelar respuesta",
-      "like": "Me gusta el comentario",
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "noMatchingShorts": true
+      "like": "Me gusta el comentario"
     }
-  },
-  "_pending_review": {}
+  }
 }

@@ -1,20 +1,19 @@
 {
   "settings": {
     "title": "Configuración",
-    "description": "Gestiona la configuración de tu cuenta, privacidad y preferencias",
+    "description": "Gestiona la configuración de tu cuenta, tu privacidad y tus preferencias",
     "searchPlaceholder": "Buscar configuración, controles de privacidad, integraciones...",
     "quickSetup": "Configuración rápida",
     "tabs": {
       "overview": "Resumen",
       "notifications": "Notificaciones",
-      "quickActions": "Acciones rápidas",
-      "_pending_review": {}
+      "quickActions": "Acciones rápidas"
     },
     "categories": {
       "privacy": "Privacidad",
-      "privacyDesc": "Controla quién ve tu perfil y actividades",
+      "privacyDesc": "Controla quién ve tu perfil y tus actividades",
       "notifications": "Notificaciones",
-      "notificationsDesc": "Gestiona tus preferencias de notificaciones",
+      "notificationsDesc": "Gestiona la configuración de tus notificaciones",
       "preferences": "Preferencias",
       "preferencesDesc": "Opciones de idioma, tema y pantalla",
       "connectedApps": "Apps conectadas",
@@ -24,11 +23,7 @@
       "billing": "Facturación",
       "billingDesc": "Información de suscripción y pago",
       "support": "Soporte",
-      "supportDesc": "Ayuda, preguntas frecuentes y opciones de contacto",
-      "_pending_review": {
-        "privacyDesc": true,
-        "notificationsDesc": true
-      }
+      "supportDesc": "Ayuda, preguntas frecuentes y opciones de contacto"
     },
     "status": {
       "privacyStatus": "Estado de privacidad",
@@ -38,14 +33,9 @@
       "notificationsActive": "Notificaciones activas",
       "connectedAppsCount": "Apps conectadas",
       "types": "tipos",
-      "apps": "aplicaciones",
-      "_pending_review": {}
+      "apps": "aplicaciones"
     },
     "vitanaOpenedSection": "Vitana abrió {section}",
-    "vitanaUpdated": "Vitana actualizó tu configuración",
-    "_pending_review": {
-      "description": true
-    }
-  },
-  "_pending_review": {}
+    "vitanaUpdated": "Vitana actualizó tu configuración"
+  }
 }

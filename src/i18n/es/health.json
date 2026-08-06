@@ -12,11 +12,11 @@
     "healthTrackerDesc": "Registra tu nutrición, sueño y ejercicio diarios",
     "education": "Educación y Ciencia",
     "educationDesc": "Aprende sobre temas de salud y accede a recursos de bienestar",
-    "priorityFocus": "Enfoque Prioritario",
-    "priorityFocusExplanation": "Esta área tiene el mayor impacto en tu salud a largo plazo.",
+    "priorityFocus": "Tu área de enfoque",
+    "priorityFocusExplanation": "Esta área tiene actualmente el mayor impacto en tu esperanza de vida saludable a largo plazo.",
     "autopilotGuidance": "Guía Automática",
     "autopilotSuggests": "Sugerencias Automáticas",
-    "takeAction": "Tomar Acción",
+    "takeAction": "Acción",
     "uploadBloodTest": "Subir Análisis de Sangre",
     "orderBloodTest": "Pedir Análisis de Sangre",
     "viewPlans": "Ver Planes",
@@ -25,50 +25,38 @@
     "topPercentile": "El {percent}% superior",
     "trend": {
       "improving": "Mejorando",
-      "declining": "Disminuyendo",
-      "stable": "Estable",
-      "_pending_review": {
-        "declining": true
-      }
+      "declining": "Empeorando",
+      "stable": "Estable"
     },
     "suggestions": {
       "uploadBloodTestResults": "Subir resultados de análisis de sangre",
-      "startFitnessChallenge": "Iniciar Desafío de Fitness de 30 Días",
-      "_pending_review": {}
+      "startFitnessChallenge": "Iniciar Desafío de Fitness de 30 Días"
     },
     "pillars": {
       "sleep": "Sueño",
       "exercise": "Ejercicio",
       "nutrition": "Nutrición",
       "hydration": "Hidratación",
-      "mental": "Mental",
-      "_pending_review": {}
+      "mental": "Mental"
     },
     "emptyStates": {
       "noSleepPlan": "Aún no hay plan de sueño",
-      "noSleepPlanDesc": "Genera tu plan de sueño personalizado con objetivos optimizados por IA ajustados a tu ritmo circadiano, necesidades de recuperación y rendimiento diario.",
+      "noSleepPlanDesc": "Genera tu plan de sueño personalizado con objetivos optimizados por IA, adaptado a tu biorritmo, necesidades de recuperación y rendimiento diario.",
       "noExercisePlan": "Aún no hay plan de ejercicio",
-      "noExercisePlanDesc": "Genera tu plan de entrenamiento personalizado con ejercicios optimizados por IA adaptados a tu nivel de condición física, metas y necesidades de recuperación.",
+      "noExercisePlanDesc": "Genera tu plan de entrenamiento personalizado con ejercicios optimizados por IA, adaptado a tu nivel de forma física, objetivos y necesidades de recuperación.",
       "noNutritionPlan": "Aún no hay plan de nutrición",
-      "noNutritionPlanDesc": "Genera tu plan de comidas personalizado con recetas deliciosas y equilibradas adaptadas a tus metas y preferencias dietéticas.",
+      "noNutritionPlanDesc": "Genera tu plan de nutrición personalizado con recetas deliciosas y equilibradas, adaptado a tus objetivos y preferencias dietéticas.",
       "noHydrationPlan": "Aún no hay plan de hidratación",
-      "noHydrationPlanDesc": "Genera tu plan de hidratación personalizado con objetivos diarios optimizados por IA adaptados a tu nivel de actividad, entorno y necesidades de recuperación.",
+      "noHydrationPlanDesc": "Genera tu plan de hidratación personalizado con objetivos diarios optimizados por IA, adaptado a tu nivel de actividad, entorno y necesidades de recuperación.",
       "noMentalPlan": "Aún no hay plan mental",
-      "noMentalPlanDesc": "Genera tu plan de bienestar mental personalizado para rastrear estrés, enfoque y equilibrio emocional con guía de IA.",
+      "noMentalPlanDesc": "Genera tu plan de bienestar mental personalizado, para seguir el estrés, el enfoque y el equilibrio emocional con soporte de IA.",
       "generatePlan": "Generar plan",
-      "generating": "Generando...",
-      "_pending_review": {
-        "noSleepPlanDesc": true,
-        "noExercisePlanDesc": true,
-        "noNutritionPlanDesc": true,
-        "noHydrationPlanDesc": true,
-        "noMentalPlanDesc": true
-      }
+      "generating": "Generando..."
     },
     "noSupplements": "Aún no hay suplementos",
     "noSupplementsDesc": "Registra tus vitaminas, minerales y suplementos diarios. Añade tu primer suplemento para empezar.",
     "noReports": "Aún no hay informes de salud",
-    "noReportsDesc": "Sube tus análisis de sangre, resultados de laboratorio e informes médicos para desbloquear información personalizada de salud.",
+    "noReportsDesc": "Sube tus análisis de sangre, resultados de laboratorio e informes médicos para obtener información de salud personalizada.",
     "medical": "Médico",
     "supplements": "Suplementos",
     "uploadDescription": "Análisis de sangre, imágenes, resultados de laboratorio",
@@ -77,7 +65,7 @@
     "uploadFirstReport": "Subir Primer Informe",
     "missionAlignment": {
       "title": "Alineación de la misión",
-      "subtitle": "Cómo tus recomendaciones avanzan los cinco pilares y la economía de la longevidad",
+      "subtitle": "Cómo tus recomendaciones apoyan los cinco pilares y la economía de la longevidad",
       "loading": "Cargando datos de la misión...",
       "error": "No se pudieron cargar los datos de la misión",
       "noRecs": "Aún no tienes recomendaciones en tu cola.",
@@ -85,38 +73,22 @@
       "summaryServedCount": "{served} de {total} recomendaciones alineadas",
       "pillarHeading": "Pilares atendidos",
       "economyHeading": "Economía de la longevidad",
-      "noPillar": "No alineado con pilares",
-      "noEconomy": "No alineado con economía",
+      "noPillar": "No alineado con los pilares",
+      "noEconomy": "No alineado con la economía",
       "pillars": {
         "nutrition": "Nutrición",
         "hydration": "Hidratación",
         "exercise": "Ejercicio",
         "sleep": "Sueño",
-        "mental": "Salud Mental",
-        "_pending_review": {}
+        "mental": "Salud Mental"
       },
       "economyAxes": {
         "find_match": "Encontrar un match",
         "marketplace": "Mercado",
         "income_generation": "Generación de ingresos",
-        "business_formation": "Formación de negocios",
-        "_pending_review": {}
+        "business_formation": "Formación de negocios"
       },
-      "contractLink": "Ver el contrato del Objetivo Final",
-      "_pending_review": {
-        "subtitle": true,
-        "economyHeading": true,
-        "noPillar": true,
-        "noEconomy": true
-      }
-    },
-    "_pending_review": {
-      "priorityFocus": true,
-      "priorityFocusExplanation": true,
-      "takeAction": true,
-      "noSupplements": true,
-      "noReportsDesc": true
+      "contractLink": "Ver el contrato del Objetivo Final"
     }
-  },
-  "_pending_review": {}
+  }
 }

@@ -10,7 +10,7 @@
     "community": "Comunidad",
     "meetup": "Encuentro",
     "accessible": "Accesible",
-    "followersGoing": "Personas que sigues asistirán",
+    "followersGoing": "Las personas que sigues están participando",
     "followBack": "Seguir de vuelta",
     "whenWhere": "Cuándo y dónde",
     "local": "Local",
@@ -42,31 +42,22 @@
     "requirements": "Requisitos",
     "cancellation": "Cancelación",
     "authRequired": "Autenticación requerida",
-    "signInToMessage": "Inicia sesión para enviar un mensaje al anfitrión",
-    "cannotMessageHost": "No se puede enviar mensaje al anfitrión",
+    "signInToMessage": "Por favor, inicia sesión para enviar un mensaje al anfitrión",
+    "cannotMessageHost": "No se puede enviar un mensaje al anfitrión",
     "hostNotAvailable": "Información del anfitrión no disponible",
     "cannotMessageSelf": "No puedes enviarte un mensaje a ti mismo",
     "youAreHost": "Eres el anfitrión de este evento",
     "messageSent": "¡Mensaje enviado! 📨",
-    "messageSentDesc": "Tu mensaje ha sido enviado a {name}",
+    "messageSentDesc": "Tu mensaje fue enviado a {name}",
     "leftMeetup": "Saliste del MeetUp",
     "reservationCancelled": "Reserva cancelada",
-    "removedFromEvent": "Has sido eliminado de este evento.",
+    "removedFromEvent": "Has sido removido de este evento.",
     "error": "Error",
-    "leaveError": "No se pudo salir del evento. Inténtalo de nuevo.",
+    "leaveError": "No pudiste salir del evento. Por favor, inténtalo de nuevo.",
     "addToCalendar": "Añadir al calendario",
     "googleCal": "Calendario de Google",
     "outlook": "Outlook",
     "appleCal": "Calendario de Apple",
-    "downloadIcs": "Descargar ICS",
-    "_pending_review": {
-      "followersGoing": true,
-      "signInToMessage": true,
-      "cannotMessageHost": true,
-      "messageSentDesc": true,
-      "removedFromEvent": true,
-      "leaveError": true
-    }
-  },
-  "_pending_review": {}
+    "downloadIcs": "Descargar ICS"
+  }
 }

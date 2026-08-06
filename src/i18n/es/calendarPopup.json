@@ -3,10 +3,10 @@
     "title": "Calendario",
     "nextEvents": "Próximos {count} eventos",
     "conflicts": "{count} conflictos",
-    "upcomingSchedule": "Tu horario y eventos próximos",
+    "upcomingSchedule": "Tu agenda próxima y citas",
     "addNewEvent": "Agregar nuevo evento",
     "noUpcomingEvents": "No hay eventos próximos",
-    "createFirstEvent": "Crea tu primer evento",
+    "createFirstEvent": "Crea tu primera cita",
     "aiSuggestions": "Sugerencias de IA",
     "findBetterSlot": "Encontrar mejor horario",
     "prepareBrief": "Preparar resumen",
@@ -16,12 +16,6 @@
     "quickAdd": "Agregado rápido",
     "eventFormComingSoon": "Formulario de creación de evento próximamente",
     "externalSync": "Sincronización externa",
-    "connectingCalendars": "Conectando con calendarios externos...",
-    "_pending_review": {
-      "upcomingSchedule": true,
-      "createFirstEvent": true,
-      "connectingCalendars": true
-    }
-  },
-  "_pending_review": {}
+    "connectingCalendars": "Conecta con calendarios externos..."
+  }
 }
