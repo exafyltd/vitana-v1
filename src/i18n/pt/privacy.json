@@ -1,6 +1,8 @@
 {
   "privacy": {
     "public": "Público",
-    "private": "Privado"
-  }
+    "private": "Privado",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

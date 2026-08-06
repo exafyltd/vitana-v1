@@ -19,6 +19,8 @@
     "searching": "Buscando...",
     "deleting": "Excluindo...",
     "creating": "Criando...",
-    "updating": "Atualizando..."
-  }
+    "updating": "Atualizando...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

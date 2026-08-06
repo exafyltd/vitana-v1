@@ -55,9 +55,9 @@
     "error": "Erro",
     "leaveError": "Falha ao sair do evento. Por favor, tenta novamente.",
     "addToCalendar": "Adicionar ao calendário",
-    "googleCal": "Google Calendar",
+    "googleCal": "Google Calendário",
     "outlook": "Outlook",
-    "appleCal": "Apple Calendar",
+    "appleCal": "Apple Calendário",
     "downloadIcs": "Descarregar ICS"
   }
 }

@@ -1,5 +1,7 @@
 {
   "archives": {
-    "searchPlaceholder": "Pesquisar arquivos..."
-  }
+    "searchPlaceholder": "Pesquisar arquivos...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

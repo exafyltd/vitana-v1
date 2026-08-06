@@ -6,6 +6,8 @@
     "exchange": "Trocar",
     "withdraw": "Retirar",
     "buyCredits": "Comprar Créditos VTNA",
-    "stakeTokens": "Apostar Tokens"
-  }
+    "stakeTokens": "Apostar Tokens",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

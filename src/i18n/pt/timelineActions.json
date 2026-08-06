@@ -4,36 +4,47 @@
     "items": {
       "logHealthEvent": {
         "title": "Registrar Evento de Saúde",
-        "description": "Registre marcos importantes de saúde"
+        "description": "Registre marcos importantes de saúde",
+        "_pending_review": {}
       },
       "markAchievement": {
         "title": "Marcar Conquista",
-        "description": "Celebre metas de bem-estar alcançadas"
+        "description": "Celebre metas de bem-estar alcançadas",
+        "_pending_review": {}
       },
       "recordLifeMoment": {
         "title": "Registrar Momento de Vida",
-        "description": "Capture experiências significativas"
+        "description": "Capture experiências significativas",
+        "_pending_review": {}
       },
       "addPhotoMemory": {
         "title": "Adicionar Memória de Foto",
-        "description": "Linha do tempo visual com fotos de saúde"
+        "description": "Linha do tempo visual com fotos de saúde",
+        "_pending_review": {}
       },
       "voiceTimelineEntry": {
         "title": "Entrada de Voz na Linha do Tempo",
-        "description": "Atualizações rápidas de áudio de saúde"
+        "description": "Atualizações rápidas de áudio de saúde",
+        "_pending_review": {}
       },
       "trackProgress": {
         "title": "Acompanhar Progresso",
-        "description": "Registre métricas e tendências de bem-estar"
+        "description": "Registre métricas e tendências de bem-estar",
+        "_pending_review": {}
       },
       "activityCheckIn": {
         "title": "Check-in de Atividade",
-        "description": "Registre treinos e atividades"
+        "description": "Registre treinos e atividades",
+        "_pending_review": {}
       },
       "setTimelineGoal": {
         "title": "Definir Meta da Linha do Tempo",
-        "description": "Crie metas futuras de saúde"
-      }
-    }
-  }
+        "description": "Crie metas futuras de saúde",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

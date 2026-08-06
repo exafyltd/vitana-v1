@@ -5,13 +5,17 @@
       "pending": "Pendente",
       "approved": "Aprovado",
       "flagged": "Sinalizado",
-      "rejected": "Rejeitado"
+      "rejected": "Rejeitado",
+      "_pending_review": {}
     },
     "rooms": {
       "active": "Salas Ativas",
       "scheduled": "Agendado",
       "analytics": "Análises",
-      "moderation": "Moderação"
-    }
-  }
+      "moderation": "Moderação",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

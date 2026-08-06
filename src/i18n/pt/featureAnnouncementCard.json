@@ -5,12 +5,16 @@
       "badge": "Novidade",
       "intro": "A partir de agora, tu podes:",
       "cta": "Experimenta tu mesmo",
-      "closing": "Bons testes 🥳"
+      "closing": "Bons testes 🥳",
+      "_pending_review": {}
     },
     "didYouKnow": {
       "eyebrow": "Sabias que?",
       "intro": "Tu podes:",
-      "cta": "Experimenta agora"
-    }
-  }
+      "cta": "Experimenta agora",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

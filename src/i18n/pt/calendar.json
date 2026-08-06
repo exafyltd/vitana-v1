@@ -131,7 +131,7 @@
       "showFullAgenda": "Mostrar agenda completa",
       "moreEvents": "mais eventos",
       "onboardingPlan": "Plano de integração de hoje",
-      "estimatedTime": "~{minutes} min",
+      "estimatedTime": "Aprox. {minutes} min",
       "startPlan": "Começar plano",
       "tasksCompleted": "{completed}/{total} feito",
       "waveNames": {

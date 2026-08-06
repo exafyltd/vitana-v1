@@ -10,6 +10,8 @@
     "messageDeleted": "Mensagem apagada",
     "error": "Erro",
     "errorSend": "Falha ao enviar mensagem",
-    "errorDelete": "Falha ao apagar mensagem"
-  }
+    "errorDelete": "Falha ao apagar mensagem",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -14,6 +14,8 @@
     "createAccount": "Criar Conta",
     "orContinueWith": "Ou continua com",
     "backToPortals": "Voltar a todos os portais",
-    "keepLoggedIn": "Mantém-me conectado(a)"
-  }
+    "keepLoggedIn": "Mantém-me conectado(a)",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

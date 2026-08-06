@@ -23,7 +23,10 @@
       "handleAvailable": "Nome de usuário disponível!",
       "handleMinLength": "Pelo menos 3 caracteres",
       "saving": "Configurando...",
-      "submit": "Vamos começar!"
-    }
-  }
+      "submit": "Vamos começar!",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -31,11 +31,8 @@
         "description": "Navega pelas memórias por pilares de bem-estar e categorias"
       },
       "quickRecalls": {
-        "_pending_review": {
-          "description": true
-        },
         "title": "Recuperações Rápidas",
-        "description": "Access frequently searched memories and queries"
+        "description": "Acessa memórias e consultas pesquisadas com frequência"
       }
     }
   }

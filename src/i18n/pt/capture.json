@@ -41,6 +41,8 @@
     "sendFailed": "Falha ao Enviar",
     "sendFailedDesc": "Não foi possível enviar o teu feedback. Por favor, tenta novamente.",
     "recognitionError": "Erro de Reconhecimento",
-    "recognitionErrorDesc": "O reconhecimento de fala encontrou um erro. Por favor, tenta novamente."
-  }
+    "recognitionErrorDesc": "O reconhecimento de fala encontrou um erro. Por favor, tenta novamente.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
