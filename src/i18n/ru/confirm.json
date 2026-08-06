@@ -15,6 +15,12 @@
     "disconnect": "Ты действительно хочешь отключиться?",
     "disconnectDesc": "Ты сможешь подключиться позже.",
     "proceed": "Ты хочешь продолжить?",
-    "proceedDesc": "Это действие будет выполнено."
+    "proceedDesc": "Это действие будет выполнено.",
+    "_pending_review": {
+      "logout": true,
+      "logoutDesc": true,
+      "disconnect": true,
+      "proceed": true
+    }
   }
 }

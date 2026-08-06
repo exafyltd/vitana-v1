@@ -15,7 +15,9 @@
     "orContinueWith": "Ou continua com",
     "backToPortals": "Voltar a todos os portais",
     "keepLoggedIn": "Mantém-me conectado(a)",
-    "_pending_review": {}
+    "_pending_review": {
+      "subtitle": true
+    }
   },
   "_pending_review": {}
 }

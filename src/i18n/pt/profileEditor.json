@@ -69,7 +69,16 @@
       "uploadFailed": "Falha no carregamento",
       "uploadFailedDesc": "Falha ao carregar imagem. Por favor, tenta novamente.",
       "identityUpdated": "Identidade atualizada",
-      "identityUpdatedDesc": "As tuas informações de identidade foram guardadas com sucesso."
+      "identityUpdatedDesc": "As tuas informações de identidade foram guardadas com sucesso.",
+      "_pending_review": {
+        "description": true,
+        "displayNamePlaceholder": true,
+        "handleDescription": true,
+        "personalityDescriptor": true,
+        "personalityDescriptorPlaceholder": true,
+        "personalityDescriptorDescription": true,
+        "identityUpdatedDesc": true
+      }
     },
     "coverLibrary": {
       "title": "Biblioteca de Capas",
@@ -96,7 +105,16 @@
       "universalRemoved": "Foto de capa universal removida",
       "uploadFailed": "Falha no carregamento",
       "categoryRequired": "Por favor, escolhe primeiro uma categoria para esta foto.",
-      "saveError": "Não foi possível guardar — por favor, tenta novamente."
+      "saveError": "Não foi possível guardar — por favor, tenta novamente.",
+      "_pending_review": {
+        "tileSubtitle": true,
+        "universalDescription": true
+      }
+    },
+    "_pending_review": {
+      "editAbout": true,
+      "bioPlaceholder": true,
+      "profileUpdatedDesc": true
     }
   }
 }

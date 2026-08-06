@@ -27,7 +27,9 @@
       "openInBrowser": "Abrir en navegador",
       "couldNotLoad": "Este artículo no se puede mostrar aquí",
       "readOn": "Leer en",
-      "_pending_review": {}
+      "_pending_review": {
+        "readOn": true
+      }
     },
     "pillars": {
       "all": "Todo",

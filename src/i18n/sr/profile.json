@@ -7,7 +7,10 @@
       "saveHighlights": "Sačuvaj istaknute sadržaje",
       "highlightsDesc": "Izaberi svoje najbolje objave i medije da se istaknu na vrhu profila. Istaknuti sadržaj se pojavljuje u sekciji istaknutih sadržaja i privlači više pratilaca.",
       "try": "Probaj",
-      "_pending_review": {}
+      "_pending_review": {
+        "polishBio": true,
+        "highlightsDesc": true
+      }
     },
     "identity": {
       "vitanaIndex": "Vitana indeks",

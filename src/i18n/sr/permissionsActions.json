@@ -5,7 +5,9 @@
       "privacySettings": {
         "title": "Podešavanja privatnosti",
         "description": "Konfiguriši privatnost podataka i podešavanja deljenja",
-        "_pending_review": {}
+        "_pending_review": {
+          "description": true
+        }
       },
       "manageAccess": {
         "title": "Upravljaj pristupom",
@@ -15,7 +17,9 @@
       "securitySettings": {
         "title": "Sigurnosna podešavanja",
         "description": "Ažuriraj autentifikaciju i sigurnosna podešavanja",
-        "_pending_review": {}
+        "_pending_review": {
+          "description": true
+        }
       },
       "apiKeysAccess": {
         "title": "API ključevi i pristup",
@@ -35,7 +39,9 @@
       "permissionSettings": {
         "title": "Podešavanja dozvola",
         "description": "Fino podesi dozvole za različite funkcije",
-        "_pending_review": {}
+        "_pending_review": {
+          "title": true
+        }
       },
       "exportData": {
         "title": "Izvezi podatke",
@@ -44,7 +50,9 @@
       },
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "title": true
+    }
   },
   "_pending_review": {}
 }

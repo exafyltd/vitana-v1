@@ -16,7 +16,11 @@
       "updateArchetype": "Обновить архетип",
       "profileSectionTitle": "Автопилот может улучшить твой профиль ✨",
       "profileSectionDesc": "Получи рекомендации ИИ для твоей биографии, архетипа и основных моментов.",
-      "tryAutopilot": "Попробуй Автопилот"
+      "tryAutopilot": "Попробуй Автопилот",
+      "_pending_review": {
+        "showcaseDesc": true,
+        "archetypeDesc": true
+      }
     },
     "preview": "Предпросмотр Автопилота",
     "viewAll": "Посмотреть все",
@@ -41,7 +45,11 @@
       "toastExecutedTitle": "Действия выполнены",
       "toastExecutedDesc": "{success}/{total} действий выполнено успешно",
       "toastFailedTitle": "Ошибка выполнения",
-      "toastFailedDesc": "Что-то пошло не так. Попробуй ещё раз."
+      "toastFailedDesc": "Что-то пошло не так. Попробуй ещё раз.",
+      "_pending_review": {
+        "readyToExecute": true,
+        "executingDesc": true
+      }
     },
     "priorities": {
       "high": "Высокий",
@@ -56,7 +64,12 @@
       "allOptimized": "Всё оптимизировано! 🎯",
       "enableToSee": "Включи Автопилот, чтобы увидеть предложения",
       "completeForRewards": "Выполни предложения Автопилота для наград",
-      "enableForCredits": "Включи Автопилот для кредитов"
+      "enableForCredits": "Включи Автопилот для кредитов",
+      "_pending_review": {
+        "enableToSee": true,
+        "completeForRewards": true,
+        "enableForCredits": true
+      }
     },
     "insightBanner": {
       "title": "Обзор состояния Автопилота",
@@ -64,7 +77,10 @@
       "synergyIndex": "Индекс синергии",
       "statusBalanced": "Сбалансировано",
       "statusNeedsAttention": "Требует внимания",
-      "statusImproving": "Улучшается"
+      "statusImproving": "Улучшается",
+      "_pending_review": {
+        "description": true
+      }
     },
     "profilePopup": {
       "title": "Позволь Автопилоту отполировать твой профиль ✨",
@@ -87,7 +103,13 @@
       "acceptAll": "Принять все",
       "applied": "Изменения сохранены!",
       "error": "Что-то пошло не так",
-      "comingSoon": "Скоро"
+      "comingSoon": "Скоро",
+      "_pending_review": {
+        "title": true,
+        "polishBio": true,
+        "refreshArchetype": true,
+        "highlightShowcase": true
+      }
     },
     "actions": {
       "action1Title": "Присоединиться к Танцевальной группе долголетия сегодня вечером?",
@@ -103,7 +125,13 @@
       "action6Title": "Магия осознанного утра",
       "action6Reason": "Твоя душа зовет к этим антистрессовым техникам",
       "newActionTitle": "Новое предложение ИИ",
-      "newActionReason": "На основе недавних моделей активности"
+      "newActionReason": "На основе недавних моделей активности",
+      "_pending_review": {
+        "action1Reason": true,
+        "action2Reason": true,
+        "action5Title": true,
+        "action5Reason": true
+      }
     }
   }
 }

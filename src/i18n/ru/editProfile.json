@@ -16,6 +16,11 @@
     "title": "Заголовок",
     "titlePlaceholder": "Название видео",
     "description": "Описание",
-    "descriptionPlaceholder": "Необязательное описание..."
+    "descriptionPlaceholder": "Необязательное описание...",
+    "_pending_review": {
+      "notAuthenticatedDesc": true,
+      "profileUpdatedDesc": true,
+      "showcaseHint": true
+    }
   }
 }

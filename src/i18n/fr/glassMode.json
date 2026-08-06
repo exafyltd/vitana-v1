@@ -15,7 +15,10 @@
     "typeMessage": "Tu peux maintenant taper ton message",
     "actionFailed": "Action échouée",
     "couldNotExecute": "Impossible d'exécuter {action}",
-    "_pending_review": {}
+    "_pending_review": {
+      "screenSharingDesc": true,
+      "typeMessage": true
+    }
   },
   "_pending_review": {}
 }

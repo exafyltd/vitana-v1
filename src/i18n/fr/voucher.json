@@ -4,7 +4,10 @@
       "title": "Offrir un bon Maxina",
       "subtitle": "Offre le cadeau du bien-être et de la connexion à la communauté",
       "buyVoucher": "Acheter un bon",
-      "openingCheckout": "Ouverture du paiement sécurisé..."
+      "openingCheckout": "Ouverture du paiement sécurisé...",
+      "_pending_review": {
+        "subtitle": true
+      }
     },
     "tiers": {
       "test": {
@@ -64,7 +67,10 @@
       "copyLink": "Copier le lien",
       "share": "Enregistrer / Partager",
       "shareHint": "Enregistrer dans Fichiers, Drive, ou envoyer à quelqu'un",
-      "downloadHint": "Si le téléchargement s'ouvre vide, touche Ouvrir dans le navigateur"
+      "downloadHint": "Si le téléchargement s'ouvre vide, touche Ouvrir dans le navigateur",
+      "_pending_review": {
+        "downloadHint": true
+      }
     },
     "toast": {
       "downloadStarted": "Téléchargement démarré !",
@@ -81,7 +87,13 @@
       "pdfNotAvailable": "Téléchargement PDF non disponible pour ce type de commande",
       "enterRecipientEmail": "Entre l'e-mail du destinataire",
       "emailOnlyForVouchers": "Envoi d'e-mail uniquement disponible pour les bons",
-      "sendingVoucherEmail": "Envoi de l'e-mail du bon..."
+      "sendingVoucherEmail": "Envoi de l'e-mail du bon...",
+      "_pending_review": {
+        "linkCopiedDesc": true,
+        "checkoutFailed": true,
+        "useTicketView": true,
+        "enterRecipientEmail": true
+      }
     }
   }
 }

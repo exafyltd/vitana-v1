@@ -6,7 +6,10 @@
       "live": "En direct maintenant",
       "scheduled": "Programmé",
       "all": "Tous les salons",
-      "past": "Passés"
+      "past": "Passés",
+      "_pending_review": {
+        "live": true
+      }
     },
     "goLive": "Passe en direct",
     "joinRoom": "Rejoins le salon",
@@ -128,7 +131,15 @@
         "youAreLiveTitle": "Tu es en direct ! 🎙️",
         "youAreLiveDesc": "Rejoindre ta salle de flux…",
         "aiImageHintTitle": "Génération d'images IA",
-        "aiImageHintDesc": "L'image sera générée au démarrage du flux."
+        "aiImageHintDesc": "L'image sera générée au démarrage du flux.",
+        "_pending_review": {
+          "streamUpdatedDesc": true,
+          "youAreLiveTitle": true
+        }
+      },
+      "_pending_review": {
+        "descriptionPlaceholder": true,
+        "coverUploadHint": true
       }
     },
     "editSession": {
@@ -136,6 +147,9 @@
       "saving": "Enregistrement…",
       "changeCover": "Changer l'image de couverture",
       "noChanges": "Aucun changement à enregistrer"
+    },
+    "_pending_review": {
+      "noRooms": true
     }
   },
   "goLivePopup": {

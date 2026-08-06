@@ -851,7 +851,42 @@
       "mental": "Mentalno",
       "next3": "Sledeća 3 dana",
       "month": "30 dana",
-      "future": "Budućnost"
+      "future": "Budućnost",
+      "_pending_review": {
+        "careTeam": true,
+        "healthRemindersAlerts": true,
+        "clockInoutTimesheetManagement": true,
+        "allCaughtUp": true,
+        "customizeYourBusinessManagementViewWith": true,
+        "chooseHowShareYourConsentPackage": true,
+        "sendDirectlyHealthcareProviderResearchTeam": true,
+        "chargeParticipantsJoin": true,
+        "meetupImage": true,
+        "healthcareProviderOnly": true,
+        "tenantOnly": true,
+        "resultsTime": true,
+        "releaseDate": true,
+        "overallPrivacyHealth": true,
+        "muteWellness7Days": true,
+        "snoozeNudges1Day": true,
+        "muteBiomarkers3Days": true,
+        "snoozeCommunity2Hours": true,
+        "discoverConnectWithHealthcarePlatformsResearch": true,
+        "operations": true,
+        "educational": true,
+        "manageConsentSettings": true,
+        "privacySettings": true,
+        "snoozeAll": true,
+        "yourPrivacySettingsMostlySecureBut": true,
+        "getNotifiedAboutImportantUpdatesHealth": true,
+        "notificationPreferences": true,
+        "resetDataSharingVisibilitySecurityPreferences": true,
+        "comprehensiveViewDataSharingActivityCompliance": true,
+        "yourHealthDataRewardsDigitalAssets": true,
+        "healthcareProviderResearcherOrganizationName": true,
+        "closeErrorNotification": true,
+        "forceReregister": true
+      }
     },
     "admin": {
       "usingDefaults": "Koriste se podrazumevane vrednosti",
@@ -2555,7 +2590,64 @@
       "devicePreviewOpenNewTab": "Otvori u novoj kartici",
       "devicePreviewEnterUrl": "Izaberi okruženje ili unesi URL da započneš pregled.",
       "devicePreviewShellNote": "Samo UI pregled — izvorna Appilix ljuska (push obaveštenja, izvorni bezbedni okviri, ponašanje WebView-a) nije reprodukovana. Koristi Appilix testnu verziju za to.",
-      "devicePreviewFrameBlockedNote": "Okvir se ne učitava? Neke stranice blokiraju ugrađivanje — umesto toga koristi \"Otvori u novoj kartici\"."
+      "devicePreviewFrameBlockedNote": "Okvir se ne učitava? Neke stranice blokiraju ugrađivanje — umesto toga koristi \"Otvori u novoj kartici\".",
+      "_pending_review": {
+        "notificationTitle": true,
+        "liveTestResultsStatusUpdates": true,
+        "allDataEncryptedAtRestTransit": true,
+        "recentSystemStateTransitions": true,
+        "checkinKioskManagementPatientSelfserviceOptions": true,
+        "userEngagementMetrics": true,
+        "systemHealthMonitoringPerformanceMetrics": true,
+        "realtimeAvailabilityTrackingTimeoffManagement": true,
+        "staffDirectoryScheduling": true,
+        "voiceActivityDetection": true,
+        "requireRecordingConsent": true,
+        "smtpNotificationSettings": true,
+        "dailyBreakdownAiAssistantActivities": true,
+        "loadingSpeeches": true,
+        "noSpeechesConfigured": true,
+        "assistantSpeeches": true,
+        "noAccessLogEntries": true,
+        "loadingSpecialist": true,
+        "processThisTicket": true,
+        "noMemoryItemsYet": true,
+        "editing": true,
+        "anonymousSafeCanRecommendedUnauthenticatedSessions": true,
+        "mappedNotificationTypes": true,
+        "fullNotificationComposer": true,
+        "notificationPreferences": true,
+        "dndActive": true,
+        "noBillingInformation": true,
+        "checkBrowserConsoleForDetails": true,
+        "realtimeNotificationMonitor": true,
+        "securelyManageApiKeysTokensAuthentication": true,
+        "storeAuthenticationCredentialsSecurelyUsingEncrypt": true,
+        "integrationManagementComingSoon": true,
+        "clickAnalyzeForPatternsStartDiscovering": true,
+        "autorefreshesEvery30SecondsAdditionalServices": true,
+        "appliesAllNonoptedoutTenants": true,
+        "optOutThisBaselineDocFor": true,
+        "whenVisit": true,
+        "noUsersHaveConfiguredPreferencesYet": true,
+        "customizeBaseGreetingTemplatesForDifferent": true,
+        "usesLovableAiUnderstandSituationsGenerate": true,
+        "buildPowerfulAutomationRulesWithTriggers": true,
+        "viewManageAllActiveAutomationWorkflows": true,
+        "currentTiersVeryPoor099Poor": true,
+        "averageAnalysisCompletesValue0SValue1": true,
+        "thisPageShowsPlaceholderServiceStatuses": true,
+        "receptionist": true,
+        "waitingForExecutorTickClaimRun": true,
+        "deepEngagementAnalyticsComingSoonSession": true,
+        "thisDocumentPartVitanaSystemKnowledge": true,
+        "lengthResultValue1ForActivequery": true,
+        "lengthTopicValue1AcrossLength2Document": true,
+        "thisWillDeactivateCategoryUsersWill": true,
+        "composeNew": true,
+        "value0UserSHavePushNotifications": true,
+        "breakdownUserRolesAcrossPlatformTotalusers": true
+      }
     },
     "ai-feed": {
       "noEventsFound": "Nema pronađenih događaja",
@@ -2609,7 +2701,10 @@
       "explore": "Istraži →",
       "viewSchedule": "Prikaži raspored →",
       "findCoaches": "Pronađi trenere →",
-      "match_scoreMatch": "{match_score}% podudaranje"
+      "match_scoreMatch": "{match_score}% podudaranje",
+      "_pending_review": {
+        "yourCompatibilityOverview": true
+      }
     },
     "assistant": {
       "aiModelPreferences": "AI podešavanja modela",
@@ -2698,7 +2793,12 @@
       "voiceProviderHint_googleSpeech": "Google Speech API pruža visokokvalitetnu sintezu govora",
       "voiceProviderHint_geminiChirp": "Gemini Chirp 3 HD glasovi pružaju vrhunski, prirodan govor sa emocionalnom rezonancijom",
       "voiceProviderHint_noVoicesAvailable": "Nema dostupnih glasova za {lang}. Instaliraj glas u podešavanjima OS-a/pregledača.",
-      "voiceProviderHint_browserVoices": "Korišćenje glasova zasnovanih na pregledaču"
+      "voiceProviderHint_browserVoices": "Korišćenje glasova zasnovanih na pregledaču",
+      "_pending_review": {
+        "highMediumOnly": true,
+        "voiceOutputSettings": true,
+        "languageSettingControlsWhatLanguageText": true
+      }
     },
     "audio": {
       "volume": "Jačina",
@@ -2755,7 +2855,10 @@
       "resendAvailableCooldownS": "Ponovo slanje dostupno za {cooldown}s",
       "ifYouArenTSentBack": "Ako ne budeš automatski vraćen/a, tapni ispod — ili samo pređi na Vitana aplikaciju i ona će se sinhronizovati za nekoliko sekundi.",
       "updating": "Ažuriranje…",
-      "sendResetLink": "Pošalji link za resetovanje"
+      "sendResetLink": "Pošalji link za resetovanje",
+      "_pending_review": {
+        "ifYouArenTSentBack": true
+      }
     },
     "billing": {
       "from": "Od:",
@@ -2933,7 +3036,13 @@
       "eGLongevitySleepSupplements": "npr. dugovečnost, san, suplementi",
       "autopilotHasLengthReferralDraftValue1": "Autopilot ima {length} nacrt preporuke {value1} za tebe",
       "scoreValue0": "ocena {value0}",
-      "viewSource": "Pogledaj izvor"
+      "viewSource": "Pogledaj izvor",
+      "_pending_review": {
+        "resellerCommission": true,
+        "noTicketedEventsYet": true,
+        "ownProductsRankAboveVettedPartners": true,
+        "channelsAutopilotListensForReferralOpportunities": true
+      }
     },
     "calendar": {
       "noUpcomingEvents": "Nema predstojećih događaja",
@@ -2991,7 +3100,10 @@
       "suggestedValue0": "Predlog: {value0}",
       "todaySIndexPulseCompletingYour": "Današnji Index puls: završetak {totalCount} stub-označenog događaja\n                              {value1} će pomeriti tvoj Index.",
       "urgent": "hitno",
-      "highPriority": "visok prioritet"
+      "highPriority": "visok prioritet",
+      "_pending_review": {
+        "todaySEvents": true
+      }
     },
     "cart": {
       "yourCart": "Tvoja korpa",
@@ -3044,7 +3156,11 @@
       "fromSessions_from": "od €{sessions_from}",
       "bookSession": "Zakaži sesiju",
       "member_countMembers": "{member_count} članova",
-      "participant_countAttending": "{participant_count} prisutnih"
+      "participant_countAttending": "{participant_count} prisutnih",
+      "_pending_review": {
+        "topMatchFactors": true,
+        "expertHelpers": true
+      }
     },
     "community": {
       "generatingThumbnails": "Generišem minijature...",
@@ -3508,7 +3624,12 @@
       "goalActivity": "Partner za aktivnost",
       "goalWeightLoss": "Mršavljenje",
       "goalMentalWellness": "Mentalno blagostanje",
-      "goalValues": "Usklađene vrednosti"
+      "goalValues": "Usklađene vrednosti",
+      "_pending_review": {
+        "alltime": true,
+        "pastSessionsWillAppearHereOnce": true,
+        "activeuploadsActiveUploadValue1": true
+      }
     },
     "contacts": {
       "addContact": "Dodaj kontakt",
@@ -3574,7 +3695,12 @@
       "tipUseValue0IncludeYourPersonal": "Savet: Koristi {value0} da uključiš svoj lični link za poziv",
       "sendInvites": "Pošalji pozivnice",
       "weFoundTotalimportedContactsMatchedThem": "Pronašli smo {totalImported} kontakata i uparili ih sa VITANA",
-      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound} tvojih prijatelja je već na VITANA!"
+      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound} tvojih prijatelja je već na VITANA!",
+      "_pending_review": {
+        "securelyMatchingYourContacts": true,
+        "addContactsEasilyFindMessageThem": true,
+        "smsTextMessage": true
+      }
     },
     "context": {
       "aiSpotlight": "AI Reflektor 🔮",
@@ -3613,7 +3739,10 @@
       "notEnabled": "Nije omogućeno",
       "completeYourPaymentSetupStartReceiving": "Završi podešavanje plaćanja da bi počeo da primaš zaradu od plaćenih Live soba.",
       "enablePaymentsCreatePaidLiveRooms": "Omogući plaćanja da bi kreirao plaćene Live sobe i primao 90% prihoda. Brzo podešavanje od 2 minuta putem Stripe Connect.",
-      "checkingStatus": "Provera statusa..."
+      "checkingStatus": "Provera statusa...",
+      "_pending_review": {
+        "roomPricePrice": true
+      }
     },
     "crossover": {
       "keyFactors": "Ključni faktori:",
@@ -3746,7 +3875,14 @@
       "matchReasonMutualConnectionsOne": "{count} zajednička veza",
       "matchReasonMutualConnectionsOther": "{count} zajedničkih veza",
       "matchReasonSameLocation": "Takođe u {location}",
-      "matchReasonActiveMember": "Aktivan član zajednice dugovečnosti"
+      "matchReasonActiveMember": "Aktivan član zajednice dugovečnosti",
+      "_pending_review": {
+        "topMatchFactors": true,
+        "dayStreak": true,
+        "progressTracking": true,
+        "newinvitesNewInviteValue1": true,
+        "lengthReportValue1ReadyShare": true
+      }
     },
     "debug": {
       "presenceDebug": "Prisutnost Debug",
@@ -4139,7 +4275,20 @@
       "briefDescriptionDocument": "Kratak opis dokumenta",
       "whatSNewThisFrontpageVersion": "Šta je novo u ovoj verziji početne stranice?",
       "tryAdjustingYourFiltersWaitFor": "Pokušajte da prilagodite filtere ili sačekajte nove događaje.",
-      "statusLastcode": "Status: {lastCode}"
+      "statusLastcode": "Status: {lastCode}",
+      "_pending_review": {
+        "documentationCategories": true,
+        "scheduleTime": true,
+        "successOnly": true,
+        "failedOnly": true,
+        "fileUpload": true,
+        "user": true,
+        "thisWillDisplayTableSimilarExecution": true,
+        "tryReconnectingLiveStream": true,
+        "forceCloseAll": true,
+        "readyExecuteLengthDevActionValue1": true,
+        "activecountConnectionValue1Detected": true
+      }
     },
     "diary": {
       "startRecordingYourWellnessJourney": "Započni beleženje svog wellness putovanja",
@@ -4488,7 +4637,16 @@
       "providerAbout_luna": "Velnes centar sa kompletnom uslugom, nudi masaže, tretmane za oporavak i terapije za podmlađivanje.",
       "providerAbout_peak": "Najsavremeniji objekat specijalizovan za optimizaciju čoveka kroz napredne biohaking protokole.",
       "providerAbout_maya": "Integrativni pristup velnesu, kombinuje koučing, ishranu i prakse svesnosti.",
-      "providerAbout_michael": "Sertifikovani specijalista za spavanje, pomaže klijentima da optimizuju san za dugovečnost i performanse."
+      "providerAbout_michael": "Sertifikovani specijalista za spavanje, pomaže klijentima da optimizuju san za dugovečnost i performanse.",
+      "_pending_review": {
+        "quickBookActions": true,
+        "travelAvailable": true,
+        "noSupplementsFoundMatchingYourCriteria": true,
+        "thisProductCardInformationalAlwaysConsult": true,
+        "exploreSupplementsWellnessServicesLabTests": true,
+        "thisProductCardInformationalAlwaysConsult2": true,
+        "bookmarkedValue0": true
+      }
     },
     "discovery": {
       "filters": "Filteri:",
@@ -4520,7 +4678,10 @@
       "value0NewTodayViewedcountTotalcount": "{value0}novo danas · pregledano {viewedCount}/{totalCount}",
       "clearFilters": "Obriši filtere",
       "checkBackTomorrowFor10New": "Vrati se sutra za 10 novih svežih parova ✨",
-      "vitanaIndexVitana_index": "Vitana indeks: {vitana_index}"
+      "vitanaIndexVitana_index": "Vitana indeks: {vitana_index}",
+      "_pending_review": {
+        "checkBackTomorrowFor10New": true
+      }
     },
     "events": {
       "searchByNameEmail": "Pretraži po imenu ili e-pošti...",
@@ -5111,7 +5272,23 @@
       "trajectoryAria": "Putanja Vitana Indeksa — danas {today}.",
       "insightUp": "U porastu! +{delta} poena u poslednjih 7 dana — samo napred.",
       "insightDown": "−{delta} poena u poslednjih 7 dana. Jedna mala akcija danas je važna.",
-      "insightFlat": "Stabilno u poslednjih 7 dana. Doslednost pobeđuje nagle skokove."
+      "insightFlat": "Stabilno u poslednjih 7 dana. Doslednost pobeđuje nagle skokove.",
+      "_pending_review": {
+        "sustainedPracticePast90DayArc": true,
+        "sustainingEliteKeepAllPillars": true,
+        "text90dayJourneyWaves": true,
+        "searchBiomarkersTestsSupplements": true,
+        "fivePillarsHowEachOneClimbs": true,
+        "completions": true,
+        "atThisPaceYouLandAround": true,
+        "smartHydrationGuidanceTailoredYourLifestyle": true,
+        "trackingYourAverageMentalBalanceFocus": true,
+        "previous": true,
+        "aioptimizedMealGuidanceTailoredYourPreferences": true,
+        "logActivityLiftName": true,
+        "yourVitanaIndexTrajectoryWillAppear": true,
+        "length5RanToday": true
+      }
     },
     "home": {
       "matchPercent": "{score} %",
@@ -5404,7 +5581,10 @@
       "kindOptionActivitySeek": "Partner za aktivnosti",
       "kindOptionSocialSeek": "Kafe ćaskanje / mentorstvo",
       "kindOptionMutualAid": "Pozajmljujem / uzimam / dajem",
-      "kindOptionPartnerSeek": "Životni partner"
+      "kindOptionPartnerSeek": "Životni partner",
+      "_pending_review": {
+        "mutualReveal": true
+      }
     },
     "layout": {
       "contentRequiresConsent": "Sadržaj zahteva saglasnost",
@@ -5741,7 +5921,18 @@
       "memorySubnav_diary": "Dnevni dnevnik",
       "memorySubnav_recall": "Podseti se i pretraži",
       "memorySubnav_permissions": "Dozvole",
-      "wellnessDiaryMultimediaDescription": "Zabeleži i pregledaj svoje putovanje ka blagostanju kroz multimedijalne unose."
+      "wellnessDiaryMultimediaDescription": "Zabeleži i pregledaj svoje putovanje ka blagostanju kroz multimedijalne unose.",
+      "_pending_review": {
+        "manageWhoCanAccessYourHealth": true,
+        "healthcareProviders": true,
+        "memoryPermissionsVitanaMemory": true,
+        "memoryPermissions": true,
+        "searchPrivacySecuritySettings": true,
+        "privacyControls": true,
+        "yourPrivacySettingsEncryptedCanModified": true,
+        "clickBelowUploadPhotoMemory": true,
+        "accessPermissionsAuditedRegularlyYouCan": true
+      }
     },
     "messages": {
       "sendCalendarInvite": "Pošalji poziv za sastanak",
@@ -5925,7 +6116,16 @@
       "inspirationTpl_celebrate2": "Tako ponosan/na na tvoju posvećenost zdravstvenim ciljevima! 👏",
       "inspirationTpl_celebrate3": "Tvoj napredak je inspirativan – nastavi sa fantastičnim radom! 🌟",
       "loadingOlderMessages": "Učitavanje starijih poruka…",
-      "conversationStart": "Početak razgovora"
+      "conversationStart": "Početak razgovora",
+      "_pending_review": {
+        "totalArchived": true,
+        "autoarchiveAfter30Days": true,
+        "meetingDescription": true,
+        "totalresponsesResponseValue1Received": true,
+        "messageComposer": true,
+        "replyingSendername": true,
+        "chooseConversationFromLeftStartMessaging": true
+      }
     },
     "mobile": {
       "searching": "Pretražujem…",
@@ -5944,7 +6144,10 @@
       "openSearch": "Otvori pretragu",
       "openCalendar": "Otvori kalendar",
       "openAutopilot": "Otvori autopilot",
-      "closeSearch": "Zatvori pretragu"
+      "closeSearch": "Zatvori pretragu",
+      "_pending_review": {
+        "alerts": true
+      }
     },
     "notifications": {
       "markAllAsRead": "Označi sve kao pročitano",
@@ -5978,7 +6181,10 @@
       "typeYourOwnName": "Ili upiši svoje ime",
       "eGAlex": "npr. alex",
       "welcomeMaxina": "Dobrodošao u Maxinu",
-      "yourLongevityJourneyBeginsNow": "Tvoje putovanje ka dugovečnosti počinje sada"
+      "yourLongevityJourneyBeginsNow": "Tvoje putovanje ka dugovečnosti počinje sada",
+      "_pending_review": {
+        "namePart28CharactersLowercase": true
+      }
     },
     "orders": {
       "friendExampleCom": "prijatelj@primer.com",
@@ -6083,7 +6289,13 @@
       "conversationspecificPaymentActionWith": "Radnja plaćanja specifična za razgovor sa",
       "alreadyActivePleaseCompleteCloseThat": "je već aktivna. \n                    Molimo dovrši ili zatvori tu radnju prvo.",
       "anotherWalletActionCurrentlyProgressPlease": "Druga radnja novčanika je trenutno u toku. \n                    Molimo dovrši ili zatvori tu radnju prvo.",
-      "paymenttypePaymentRequest": "{paymentType}Zahtev za uplatu"
+      "paymenttypePaymentRequest": "{paymentType}Zahtev za uplatu",
+      "_pending_review": {
+        "theyReceive": true,
+        "theyReceive2": true,
+        "sending": true,
+        "searchingUsers": true
+      }
     },
     "proactive": {
       "proTip": "Profesionalni savet:",
@@ -6511,7 +6723,13 @@
       "licensedVerifiedHealthcareProvider": "Licencirani i verifikovani zdravstveni radnik",
       "media": "Mediji",
       "events": "Događaji",
-      "health": "Zdravlje"
+      "health": "Zdravlje",
+      "_pending_review": {
+        "prefersSimpleFlowsOverComplexSettings": true,
+        "peopleLikeYouAlsoConnectedWith": true,
+        "thisPreviewModeWillReflectYour": true,
+        "licensedVerifiedHealthcareProvider": true
+      }
     },
     "reminders": {
       "reminder": "Podsetnik",
@@ -6563,7 +6781,10 @@
       "noCompleted": "Još nema završenih podsetnika.",
       "noMissed": "Nema propuštenih podsetnika — sve si stigao/la.",
       "creating": "Kreiram…",
-      "createReminder": "Kreiraj podsetnik"
+      "createReminder": "Kreiraj podsetnik",
+      "_pending_review": {
+        "recent": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "Nema događaja u tvom inventaru",
@@ -7278,7 +7499,32 @@
       "settingsSubnav_support": "Podrška",
       "settingsSubnav_limitations": "Ograničenja",
       "settingsSubnav_socialAccounts": "Društveni nalozi",
-      "settingsSubnav_connectedAppsAndIntegrations": "Povezane aplikacije & Integracije"
+      "settingsSubnav_connectedAppsAndIntegrations": "Povezane aplikacije & Integracije",
+      "_pending_review": {
+        "notificationPreferencesSaved": true,
+        "advancedAiInsightsUnlimitedStoragePriority": true,
+        "log8GlassesWater": true,
+        "goalCrusher": true,
+        "totalSyncedApps": true,
+        "dataSynced": true,
+        "someSupplementsContraindicatedDuringPregnancyNursi": true,
+        "preferencesForFormFactorUsability": true,
+        "englishUs": true,
+        "advancedAppearanceSettings": true,
+        "viewAllDataSharingActivities": true,
+        "privacySettingsUpdated": true,
+        "profileVisibilityControls": true,
+        "getHelpFromOtherUsersShare": true,
+        "contactSupportOptions": true,
+        "apply5CreditYourNextBilling": true,
+        "apply10CreditYourNextBilling": true,
+        "dietaryRestrictions": true,
+        "savePregnancyStatus": true,
+        "popularSearchesGettingStartedSyncIssues": true,
+        "noOrganizationMembershipsFound": true,
+        "connectingLabel": true,
+        "weUseThisAvoidRecommendingSupplements": true
+      }
     },
     "sharing": {
       "activateCampaign": "Aktiviraj kampanju",
@@ -8088,7 +8334,48 @@
       "imageSpecsHashtagStrategyPostingTimes": "Specifikacije slika, strategija hashtagova, vreme objavljivanja",
       "canvaFigmaDirectlyInapp": "Canva, Figma ili direktno u aplikaciji",
       "copypasteCustomizeForYourNeeds": "Kopiraj ili prilagodi svojim potrebama",
-      "createCustomDataPackageBySelecting": "Kreiraj prilagođeni paket podataka odabirom specifičnih zdravstvenih metrika, datuma i tipova podataka prilagođenih potrebama tvog zdravstvenog radnika ili zahtevima za učešće u istraživanju."
+      "createCustomDataPackageBySelecting": "Kreiraj prilagođeni paket podataka odabirom specifičnih zdravstvenih metrika, datuma i tipova podataka prilagođenih potrebama tvog zdravstvenog radnika ili zahtevima za učešće u istraživanju.",
+      "_pending_review": {
+        "channelPerformance": true,
+        "packageCover": true,
+        "eG5sessionWellnessBundle": true,
+        "fromPhoneNumber": true,
+        "privacySettings": true,
+        "addCustomMessageYourShare": true,
+        "dataConsentControl": true,
+        "dataConsentManagementVitana": true,
+        "launchDayHeroAnnouncementEmailBlast": true,
+        "urgencyTactics": true,
+        "distributionSettings": true,
+        "platformSpecs": true,
+        "text6SignatureSignoffs": true,
+        "searchAutomationRulesTemplates": true,
+        "recentDataSharingActivity": true,
+        "healthcarePlatforms": true,
+        "populationHealth": true,
+        "integrationMarketplaceSharing": true,
+        "integrationMarketplace": true,
+        "searchIntegrationsResearchStudiesHealthcarePlatfor": true,
+        "premiumHealthcareIntegrations": true,
+        "integrationCategories": true,
+        "matchAccuracyRate": true,
+        "collaborativeTemplatesWithHealthcareProviders": true,
+        "eGDrSmithAtMayo": true,
+        "helpsAutopilotOptimizeYourPostingStrategy": true,
+        "configureGlobalPrivacyControlsDataHandling": true,
+        "automationRules": true,
+        "buildPersonalizedDataPackageWithSpecific": true,
+        "value0MoreChannelValue1": true,
+        "addUpMaxcontactsContactsManually": true,
+        "lengthMaxcontactsContactsAddedValue2": true,
+        "defaultPermissionModelForNewAccess": true,
+        "eGProductLaunchPost": true,
+        "lengthSelected": true,
+        "granteddateExpirydate": true,
+        "requesteddateExpirydate": true,
+        "copypasteCustomizeForYourNeeds": true,
+        "createCustomDataPackageBySelecting": true
+      }
     },
     "supplements": {
       "supplementName": "Naziv suplementa*",
@@ -8773,7 +9060,22 @@
       "continueToSecureCheckout": "Nastavi na bezbednu naplatu",
       "cardPaymentViaStripe": "Plaćanje karticom, bezbedno obrađeno preko Stripe-a",
       "currentBalanceLabel": "Trenutni {currency} saldo",
-      "amountAddCurrency": "Iznos za dodavanje ({currency})"
+      "amountAddCurrency": "Iznos za dodavanje ({currency})",
+      "_pending_review": {
+        "nftHealthCertificates": true,
+        "firstKnow": true,
+        "vtnEarned": true,
+        "latestCompleteBloodPanel": true,
+        "avgRating": true,
+        "amountAddUsd": true,
+        "usdBalance": true,
+        "smartActions": true,
+        "creditsBalance": true,
+        "crossplatformIntelligence": true,
+        "combineAllThreeInsightsForPotential": true,
+        "nextBestActions": true,
+        "feeFee": true
+      }
     },
     "ai": {
       "rescheduledMeeting": "Ponovo zakazan sastanak",
@@ -8942,7 +9244,11 @@
       "unit_glasses": "čaša",
       "unit_minutes": "minuta",
       "unit_hours": "sati",
-      "unit_moments": "trenutaka"
+      "unit_moments": "trenutaka",
+      "_pending_review": {
+        "behindDailyWaterIntakeGoal": true,
+        "healthRecommendations": true
+      }
     },
     "authpages": {
       "fullName": "Ime i prezime",
@@ -9097,6 +9403,9 @@
         "masterNewSkills": "Savladaj nove veštine",
         "spiritualLife": "Duhovni život",
         "earnFromRecommendations": "Zaradi od preporuka"
+      },
+      "_pending_review": {
+        "myJourney": true
       }
     },
     "businesshub": {
@@ -9117,7 +9426,10 @@
       "businessHub": "Poslovni Centar 💼",
       "growYourWellnessBusinessManageClients": "Razvijaj svoj wellness biznis i upravljaj klijentima bez napora",
       "business": "Posao",
-      "value0MoreActions": "+{value0} još akcija"
+      "value0MoreActions": "+{value0} još akcija",
+      "_pending_review": {
+        "earningsBreakdownComingSoon": true
+      }
     },
     "businesslistings": {
       "myListings": "Moji oglasi",
@@ -9127,7 +9439,12 @@
       "backBusinessHub": "Nazad na Poslovni Centar",
       "listingsAvailableForProAccounts": "Oglasi su dostupni za Pro naloge.",
       "noListingsYetClick": "Još uvek nema oglasa. Klikni",
-      "addOneOpenOrbJustSay": "da dodaš jedan — ili otvori ORB i samo reci"
+      "addOneOpenOrbJustSay": "da dodaš jedan — ili otvori ORB i samo reci",
+      "_pending_review": {
+        "listingsAvailableForProAccounts": true,
+        "noListingsYetClick": true,
+        "addOneOpenOrbJustSay": true
+      }
     },
     "businessopportunities": {
       "myListings": "Moji oglasi",
@@ -9135,7 +9452,10 @@
       "opportunitiesAvailableForProAccountsUpgrade": "Prilike su dostupne za Pro naloge. Nadogradi da bi pristupio dolaznim potencijalnim klijentima.",
       "opportunities": "Prilike",
       "incomingLeadsMatchingYourOfferingsExpress": "Dolazni potencijalni klijenti koji odgovaraju tvojoj ponudi. Izrazi interesovanje da započneš razgovor.",
-      "noLeadsYetWeLlNotify": "Još uvek nema potencijalnih klijenata. Obavestićemo te kada se pojavi odgovarajuća potražnja. Uveri se da imaš bar jedan komercijalni oglas objavljen pod"
+      "noLeadsYetWeLlNotify": "Još uvek nema potencijalnih klijenata. Obavestićemo te kada se pojavi odgovarajuća potražnja. Uveri se da imaš bar jedan komercijalni oglas objavljen pod",
+      "_pending_review": {
+        "noLeadsYetWeLlNotify": true
+      }
     },
     "checkoutsuccess": {
       "whatSNext": "Šta je sledeće?",
@@ -9174,7 +9494,12 @@
       "createYourFirstPaidRoom": "Kreirajte svoju prvu plaćenu sobu",
       "viewPaymentSettings": "Pogledaj podešavanja plaćanja",
       "value0PaymentSetupComplete": "{value0}Podešavanje plaćanja završeno!",
-      "youReAllSetStartEarning": "Spremni ste da počnete da zarađujete od svojih Live soba"
+      "youReAllSetStartEarning": "Spremni ste da počnete da zarađujete od svojih Live soba",
+      "_pending_review": {
+        "checkingYourPaymentStatus": true,
+        "earn90EveryPaidLiveRoom": true,
+        "value0PaymentSetupComplete": true
+      }
     },
     "editprofilepage": {
       "editProfileVitana": "Izmeni profil – VITANA"
@@ -9247,7 +9572,10 @@
       "secureAccessForExafyAdministratorsManage": "Bezbedan pristup za Exafy administratore za upravljanje okruženjima zakupaca.",
       "operateVitanaPlatformObserveEventsIssue": "Upravljaj Vitana platformom: posmatraj događaje, izdaj komande i pregledaj aktivnosti agenata uz VTID upravljanje.",
       "vitanaDev": "Vitana DEV",
-      "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA je sveobuhvatna digitalna zdravstvena platforma koja nudi više specijalizovanih okruženja za različite wellness zajednice i profesionalno upravljanje zdravstvom."
+      "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA je sveobuhvatna digitalna zdravstvena platforma koja nudi više specijalizovanih okruženja za različite wellness zajednice i profesionalno upravljanje zdravstvom.",
+      "_pending_review": {
+        "sustainableEcofriendlyWellness": true
+      }
     },
     "intentboard": {
       "communityBoard": "Zajednička tabla",
@@ -9379,7 +9707,12 @@
       "modeBillingPlan": "Trenutni plan",
       "modeBillingPayment": "Način plaćanja",
       "modeBillingInvoices": "Fakture i računi",
-      "modeBillingCreator": "Isplate kreatorima"
+      "modeBillingCreator": "Isplate kreatorima",
+      "_pending_review": {
+        "allowPersonalDataSentThirdpartyAi": true,
+        "voiceAiLanguage": true,
+        "popularGettingStartedSyncIssuesPrivacy": true
+      }
     },
     "myintents": {
       "myIntents": "Moje namere",
@@ -9410,7 +9743,10 @@
       "youDonTHavePermissionAccess": "Nemaš dozvolu za pristup ovom resursu. Ovo područje je ograničeno samo na ovlašćeno osoblje.",
       "error403Forbidden": "Greška 403: Zabranjeno",
       "returnDashboard": "Vrati se na kontrolnu tablu",
-      "contactSupport": "Kontaktiraj podršku"
+      "contactSupport": "Kontaktiraj podršku",
+      "_pending_review": {
+        "youDonTHavePermissionAccess": true
+      }
     },
     "notfound": {
       "oopsPageNotFound": "Ups! Stranica nije pronađena",
@@ -9430,7 +9766,11 @@
       "viewMyOrders": "Pogledaj moje porudžbine",
       "redeemNow": "Iskoristi odmah",
       "viewOrders": "Pogledaj porudžbine",
-      "confirmationHasSent": "Potvrda je poslata na"
+      "confirmationHasSent": "Potvrda je poslata na",
+      "_pending_review": {
+        "confirmingYourPurchase": true,
+        "confirmingPurchaseVitana": true
+      }
     },
     "privacysettings": {
       "privacyVisibility": "Privatnost i vidljivost",
@@ -9438,7 +9778,11 @@
       "pleaseSignManageYourPrivacySettings": "Prijavi se da bi upravljao svojim podešavanjima privatnosti.",
       "serverEnforcesTheseTiersEveryCrossuser": "Server primenjuje ove nivoe na svaki međukorisnički zahtev — tvoj prekidač je obavezujući, a ne savetodavni.",
       "back": "Nazad",
-      "tapAnyTierBadgeCyclePrivate": "Dodirni bilo koju oznaku nivoa da cikliraš Privatno → Veze → Javno.\n          Podrazumevano se čuva privatnost — ti odlučuješ šta deliš."
+      "tapAnyTierBadgeCyclePrivate": "Dodirni bilo koju oznaku nivoa da cikliraš Privatno → Veze → Javno.\n          Podrazumevano se čuva privatnost — ti odlučuješ šta deliš.",
+      "_pending_review": {
+        "pleaseSignManageYourPrivacySettings": true,
+        "serverEnforcesTheseTiersEveryCrossuser": true
+      }
     },
     "publiccampaignlanding": {
       "campaignNotFound": "Kampanja nije pronađena",
@@ -9471,7 +9815,10 @@
       "fromPricelabel": "Od {priceLabel}",
       "youLlSignCreateAccountNext": "Prijavićeš se ili napraviti nalog u sledećem koraku.",
       "YourLongevityCommunity": "- Tvoja zajednica za dugovečnost",
-      "getTicketsForTitle": "Nabavi karte za {title}"
+      "getTicketsForTitle": "Nabavi karte za {title}",
+      "_pending_review": {
+        "eventNotFound": true
+      }
     },
     "publicprofilepage": {
       "loadingProfile": "Učitavanje profila...",
@@ -9538,7 +9885,10 @@
       "paymentSuccessful": "Uplata uspešna!",
       "viewAllMyTickets": "Pogledaj sve moje karte",
       "discoverMoreEvents": "Otkrij još događaja",
-      "yourTicketHasConfirmedConfirmationEmail": "Tvoja karta je potvrđena. Potvrdni email je poslat na {value0}"
+      "yourTicketHasConfirmedConfirmationEmail": "Tvoja karta je potvrđena. Potvrdni email je poslat na {value0}",
+      "_pending_review": {
+        "confirmingYourPurchase": true
+      }
     },
     "legal": {
       "deleteAccount": "Obriši nalog",
@@ -9746,7 +10096,80 @@
       "legalRetentionObligations": "zakonske obaveze čuvanja;",
       "securityFraudPreventionReasons": "razlozi bezbednosti, sprečavanja prevara i zaštite od zloupotrebe;",
       "legalClaimsDefense": "potreba za uspostavljanjem, ostvarivanjem ili odbranom pravnih zahteva.",
-      "retentionAnonymizeDelete": "Kada lični podaci više nisu potrebni, brišemo ih ili anonimizujemo, osim ako zakonske obaveze čuvanja ne zahtevaju drugačije."
+      "retentionAnonymizeDelete": "Kada lični podaci više nisu potrebni, brišemo ih ili anonimizujemo, osim ako zakonske obaveze čuvanja ne zahtevaju drugačije.",
+      "_pending_review": {
+        "bookmarksSupplementsHealthData": true,
+        "deletingYourAccount": true,
+        "privacyPolicy": true,
+        "text13Compliance": true,
+        "weAdhereEuGeneralDataProtection": true,
+        "uaeRegulations": true,
+        "weFollowAppleAppStoreGoogle": true,
+        "nameEmailAddressPhoneNumberOther": true,
+        "userProfilePicturesUsernamesOtherDetails": true,
+        "ifYouCommunicateWithUsWe": true,
+        "informationAboutHowYouInteractWith": true,
+        "throughUseCookiesLogDataDevice": true,
+        "weMayReceivePersonalDataFrom": true,
+        "weUseYourDataEnableCore": true,
+        "helpUsOperateMaintainImproveApp": true,
+        "powerInappAiAssistantRelatedAi": true,
+        "weMayShareDataWithSubsidiaries": true,
+        "weMayDiscloseDataIfRequired": true,
+        "businessTransfers": true,
+        "eventMergerAcquisitionSaleAssetsPersonal": true,
+        "durationYourRelationshipWithUsE": true,
+        "youCanRequestAccessPersonalData": true,
+        "youCanRequestCorrectionIncompleteInaccurate": true,
+        "rightErasureRightForgotten": true,
+        "youCanRequestDeletionYourData": true,
+        "youCanObjectCertainProcessingActivities": true,
+        "ifWeRelyConsentProcessYour": true,
+        "privacyPolicyMaxinaMobileApplication": true,
+        "weMaySuspendTerminateAccountsFor": true,
+        "participantRequirementsMinimumAge16Under18s": true,
+        "liabilityWaiverByAttendingYouAcknowledge": true,
+        "text61Rules": true,
+        "text62Licence": true,
+        "arbitration": true,
+        "text2DataWeCollect": true,
+        "text3HowWeCollectYourData": true,
+        "weCollectPersonalDataFollowingWays": true,
+        "weProcessYourPersonalDataFor": true,
+        "weDoNotSellRentYour": true,
+        "text9YourRightsUnderGdprIf": true,
+        "ifYouLocatedEuropeanUnionYou": true,
+        "text12ChangesThisPrivacyPolicy": true,
+        "weWillDoOurBestAddress": true,
+        "alKhatemTower15thFloorAdgm": true,
+        "serviceIntendedForIndividuals16Years": true,
+        "text6CommunityAmpUsergeneratedContentUgc": true,
+        "text7HealthAmpWellnessDisclaimer": true,
+        "text8IntellectualProperty": true,
+        "text9ProhibitedConduct": true,
+        "text10DisclaimersAmpLimitationLiability": true,
+        "text11GoverningLawAmpDisputeResolution": true,
+        "text12Termination": true,
+        "text13ChangesTerms": true,
+        "thankYouForChoosingUseMaxina": true,
+        "byDownloadingAccessingUsingMaxinaMobile": true,
+        "exafyLtdIncorporatedAbuDhabiUae": true,
+        "thisPrivacyPolicyAppliesAllUsers": true,
+        "ifYouPermitUsAccessLocation": true,
+        "weMayUseCookiesSimilarTracking": true,
+        "givenThatExafyLtdOperatesUae": true,
+        "weWillOnlyRetainYourPersonal": true,
+        "weCommittedProtectingYourPersonalData": true,
+        "exerciseAnyTheseRightsPleaseContact": true,
+        "maxinaMobileNotIntendedForUse": true,
+        "maxinaMobileMayContainLinksThirdparty": true,
+        "weMayUpdateThisPrivacyPolicy": true,
+        "ifYouHaveAnyQuestionsConcerns": true,
+        "byUsingMaxinaMobileApplicationYou": true,
+        "theseTermsTermsFormLegallyBinding": true,
+        "weReserveRightButHaveNo": true,
+        "serviceProvidedAsisAsavailableWithoutWarranties": true
+      }
     },
     "patient": {
       "myAppointments": "Moji pregledi",
@@ -9817,7 +10240,10 @@
       "activity": "Aktivnost",
       "progress": "Napredak",
       "trend": "Trend",
-      "text5FromLastMonth": "+5 u odnosu na prošli mesec"
+      "text5FromLastMonth": "+5 u odnosu na prošli mesec",
+      "_pending_review": {
+        "improving": true
+      }
     },
     "portals": {
       "confirmationError": "Greška pri potvrdi",
@@ -10010,7 +10436,10 @@
       "esc": "Esc",
       "press": "Pritisni",
       "play": "za reprodukciju •",
-      "skip": "da preskočiš"
+      "skip": "da preskočiš",
+      "_pending_review": {
+        "space": true
+      }
     },
     "groups": {
       "match_scoreMatch": "{match_score}% Poklapanje",

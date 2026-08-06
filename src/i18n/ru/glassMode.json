@@ -14,6 +14,10 @@
     "textInputReady": "Ввод текста готов",
     "typeMessage": "Теперь ты можешь ввести свое сообщение",
     "actionFailed": "Действие не удалось",
-    "couldNotExecute": "Не удалось выполнить {action}"
+    "couldNotExecute": "Не удалось выполнить {action}",
+    "_pending_review": {
+      "screenSharingDesc": true,
+      "typeMessage": true
+    }
   }
 }

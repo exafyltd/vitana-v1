@@ -78,7 +78,9 @@
       "createdDesc": "\"{name}\" je uspešno napravljena.",
       "failed": "Neuspešno pravljenje grupe",
       "failedDesc": "Molimo pokušaj ponovo.",
-      "_pending_review": {}
+      "_pending_review": {
+        "addMembersRequiredDesc": true
+      }
     },
     "toast": {
       "success": "Uspeh",
@@ -96,7 +98,10 @@
       "groupFailed": "Neuspešno kreiranje grupe",
       "allMarkedRead": "Sve poruke označene kao pročitane",
       "markAllReadFailed": "Nije bilo moguće označiti sve kao pročitano. Molimo pokušaj ponovo.",
-      "_pending_review": {}
+      "_pending_review": {
+        "pleaseLogin": true,
+        "singleRecipientRequired": true
+      }
     },
     "createGroupAction": "Kreiraj novu grupu",
     "newConversationAction": "Novi razgovor",
@@ -115,7 +120,9 @@
       "tenantDescription": "Poveži se sa kolegama i članovima tima u svojoj profesionalnoj mreži.",
       "startConversation": "Započni razgovor",
       "discoverPeople": "Otkrij ljude",
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true
+      }
     },
     "group": {
       "loading": "Učitavam grupu…",
@@ -129,7 +136,9 @@
       "composerPlaceholder": "Poruka…",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "noMessagesDesc": true
+    }
   },
   "_pending_review": {}
 }

@@ -42,7 +42,10 @@
     "privacy": "Privatnost",
     "connectedApps": "Povezane aplikacije i integracije",
     "support": "Podrška",
-    "_pending_review": {}
+    "_pending_review": {
+      "timeline": true,
+      "preferences": true
+    }
   },
   "_pending_review": {}
 }

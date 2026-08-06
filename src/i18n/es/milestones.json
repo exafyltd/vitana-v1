@@ -13,7 +13,11 @@
     "icon": "Icono",
     "publicLabel": "Visible para todos",
     "private": "Privado",
-    "_pending_review": {}
+    "_pending_review": {
+      "title": true,
+      "empty": true,
+      "addFirst": true
+    }
   },
   "_pending_review": {}
 }

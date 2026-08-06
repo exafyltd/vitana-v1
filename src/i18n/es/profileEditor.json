@@ -73,7 +73,15 @@
       "uploadFailedDesc": "No se pudo subir la imagen. Intenta de nuevo.",
       "identityUpdated": "Identidad actualizada",
       "identityUpdatedDesc": "Tu información de identidad se ha guardado correctamente.",
-      "_pending_review": {}
+      "_pending_review": {
+        "description": true,
+        "displayNamePlaceholder": true,
+        "handleDescription": true,
+        "personalityDescriptor": true,
+        "personalityDescriptorPlaceholder": true,
+        "personalityDescriptorDescription": true,
+        "identityUpdatedDesc": true
+      }
     },
     "coverLibrary": {
       "title": "Biblioteca de portadas",
@@ -101,9 +109,16 @@
       "uploadFailed": "Error al subir",
       "categoryRequired": "Primero elige una categoría para esta foto.",
       "saveError": "No se pudo guardar. Inténtalo de nuevo.",
-      "_pending_review": {}
+      "_pending_review": {
+        "tileSubtitle": true,
+        "universalDescription": true
+      }
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "editAbout": true,
+      "bioPlaceholder": true,
+      "profileUpdatedDesc": true
+    }
   },
   "_pending_review": {}
 }

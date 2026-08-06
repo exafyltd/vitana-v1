@@ -855,7 +855,42 @@
       "mental": "Ментальное",
       "next3": "Следующие 3 дня",
       "month": "30 дней",
-      "future": "Будущее"
+      "future": "Будущее",
+      "_pending_review": {
+        "careTeam": true,
+        "healthRemindersAlerts": true,
+        "clockInoutTimesheetManagement": true,
+        "allCaughtUp": true,
+        "customizeYourBusinessManagementViewWith": true,
+        "chooseHowShareYourConsentPackage": true,
+        "sendDirectlyHealthcareProviderResearchTeam": true,
+        "chargeParticipantsJoin": true,
+        "meetupImage": true,
+        "healthcareProviderOnly": true,
+        "tenantOnly": true,
+        "resultsTime": true,
+        "releaseDate": true,
+        "overallPrivacyHealth": true,
+        "muteWellness7Days": true,
+        "snoozeNudges1Day": true,
+        "muteBiomarkers3Days": true,
+        "snoozeCommunity2Hours": true,
+        "discoverConnectWithHealthcarePlatformsResearch": true,
+        "operations": true,
+        "educational": true,
+        "manageConsentSettings": true,
+        "privacySettings": true,
+        "snoozeAll": true,
+        "yourPrivacySettingsMostlySecureBut": true,
+        "getNotifiedAboutImportantUpdatesHealth": true,
+        "notificationPreferences": true,
+        "resetDataSharingVisibilitySecurityPreferences": true,
+        "comprehensiveViewDataSharingActivityCompliance": true,
+        "yourHealthDataRewardsDigitalAssets": true,
+        "healthcareProviderResearcherOrganizationName": true,
+        "closeErrorNotification": true,
+        "forceReregister": true
+      }
     },
     "admin": {
       "_pending_review": {
@@ -921,7 +956,57 @@
         "deepEngagementAnalyticsComingSoonSession": true,
         "averageAnalysisCompletesValue0SValue1": true,
         "lengthResultValue1ForActivequery": true,
-        "lengthTopicValue1AcrossLength2Document": true
+        "lengthTopicValue1AcrossLength2Document": true,
+        "notificationTitle": true,
+        "liveTestResultsStatusUpdates": true,
+        "allDataEncryptedAtRestTransit": true,
+        "recentSystemStateTransitions": true,
+        "checkinKioskManagementPatientSelfserviceOptions": true,
+        "userEngagementMetrics": true,
+        "systemHealthMonitoringPerformanceMetrics": true,
+        "realtimeAvailabilityTrackingTimeoffManagement": true,
+        "staffDirectoryScheduling": true,
+        "voiceActivityDetection": true,
+        "requireRecordingConsent": true,
+        "smtpNotificationSettings": true,
+        "dailyBreakdownAiAssistantActivities": true,
+        "loadingSpeeches": true,
+        "noSpeechesConfigured": true,
+        "assistantSpeeches": true,
+        "noAccessLogEntries": true,
+        "loadingSpecialist": true,
+        "processThisTicket": true,
+        "noMemoryItemsYet": true,
+        "editing": true,
+        "anonymousSafeCanRecommendedUnauthenticatedSessions": true,
+        "mappedNotificationTypes": true,
+        "fullNotificationComposer": true,
+        "notificationPreferences": true,
+        "dndActive": true,
+        "noBillingInformation": true,
+        "checkBrowserConsoleForDetails": true,
+        "realtimeNotificationMonitor": true,
+        "securelyManageApiKeysTokensAuthentication": true,
+        "storeAuthenticationCredentialsSecurelyUsingEncrypt": true,
+        "integrationManagementComingSoon": true,
+        "clickAnalyzeForPatternsStartDiscovering": true,
+        "autorefreshesEvery30SecondsAdditionalServices": true,
+        "appliesAllNonoptedoutTenants": true,
+        "optOutThisBaselineDocFor": true,
+        "whenVisit": true,
+        "noUsersHaveConfiguredPreferencesYet": true,
+        "customizeBaseGreetingTemplatesForDifferent": true,
+        "usesLovableAiUnderstandSituationsGenerate": true,
+        "buildPowerfulAutomationRulesWithTriggers": true,
+        "viewManageAllActiveAutomationWorkflows": true,
+        "currentTiersVeryPoor099Poor": true,
+        "thisPageShowsPlaceholderServiceStatuses": true,
+        "receptionist": true,
+        "thisDocumentPartVitanaSystemKnowledge": true,
+        "thisWillDeactivateCategoryUsersWill": true,
+        "composeNew": true,
+        "value0UserSHavePushNotifications": true,
+        "breakdownUserRolesAcrossPlatformTotalusers": true
       },
       "usingDefaults": "По умолчанию",
       "extra_config": "Дополнительная конфигурация",
@@ -2678,7 +2763,10 @@
       "explore": "Изучить →",
       "viewSchedule": "Посмотреть расписание →",
       "findCoaches": "Найти тренеров →",
-      "match_scoreMatch": "{match_score}% совпадение"
+      "match_scoreMatch": "{match_score}% совпадение",
+      "_pending_review": {
+        "yourCompatibilityOverview": true
+      }
     },
     "assistant": {
       "voiceProviderHint_googleSpeech": "Google Speech API обеспечивает высококачественный синтез речи",
@@ -2767,7 +2855,12 @@
       "proactive": "Проактивный",
       "referrals": "Рефералы",
       "creativityValue0": "Креативность: {value0}",
-      "languageSettingControlsWhatLanguageText": "Настройка «Язык» контролирует, на каком языке генерируется текст. Настройка «Голос» контролирует, какой голос преобразования текста в речь его озвучивает. Они автоматически синхронизируются для удобства."
+      "languageSettingControlsWhatLanguageText": "Настройка «Язык» контролирует, на каком языке генерируется текст. Настройка «Голос» контролирует, какой голос преобразования текста в речь его озвучивает. Они автоматически синхронизируются для удобства.",
+      "_pending_review": {
+        "highMediumOnly": true,
+        "voiceOutputSettings": true,
+        "languageSettingControlsWhatLanguageText": true
+      }
     },
     "audio": {
       "volume": "Громкость",
@@ -2824,7 +2917,10 @@
       "sendResetLink": "Отправить ссылку для сброса",
       "resendAvailableCooldownS": "Повторная отправка доступна через {cooldown}с",
       "ifYouArenTSentBack": "Если тебя не перенаправит автоматически, нажми ниже — или просто переключись на приложение Vitana, и оно\n              обновится через несколько секунд.",
-      "updating": "Обновление…"
+      "updating": "Обновление…",
+      "_pending_review": {
+        "ifYouArenTSentBack": true
+      }
     },
     "billing": {
       "from": "От:",
@@ -3002,7 +3098,13 @@
       "eGLongevitySleepSupplements": "напр. долголетие, сон, добавки",
       "autopilotHasLengthReferralDraftValue1": "У Автопилота есть {length} черновик рекомендации{value1} для тебя",
       "scoreValue0": "балл {value0}",
-      "viewSource": "Посмотреть источник"
+      "viewSource": "Посмотреть источник",
+      "_pending_review": {
+        "resellerCommission": true,
+        "noTicketedEventsYet": true,
+        "ownProductsRankAboveVettedPartners": true,
+        "channelsAutopilotListensForReferralOpportunities": true
+      }
     },
     "calendar": {
       "noUpcomingEvents": "Нет предстоящих событий",
@@ -3060,7 +3162,10 @@
       "suggestedValue0": "Предложено: {value0}",
       "todaySIndexPulseCompletingYour": "Сегодняшний пульс Индекса: завершение твоего события, отмеченного {totalCount}столпами, {value1}изменит твой Индекс.",
       "urgent": "Срочно",
-      "highPriority": "Высокий приоритет"
+      "highPriority": "Высокий приоритет",
+      "_pending_review": {
+        "todaySEvents": true
+      }
     },
     "cart": {
       "yourCart": "Твоя корзина",
@@ -3113,7 +3218,11 @@
       "fromSessions_from": "от €{sessions_from}",
       "bookSession": "Забронировать сессию",
       "member_countMembers": "{member_count} участников",
-      "participant_countAttending": "{participant_count} участвуют"
+      "participant_countAttending": "{participant_count} участвуют",
+      "_pending_review": {
+        "topMatchFactors": true,
+        "expertHelpers": true
+      }
     },
     "community": {
       "openAsksKind_commercialBuy": "Покупка",
@@ -3577,7 +3686,12 @@
       "goalActivity": "Напарник по активности",
       "goalWeightLoss": "Похудение",
       "goalMentalWellness": "Ментальное благополучие",
-      "goalValues": "Ценности совпадают"
+      "goalValues": "Ценности совпадают",
+      "_pending_review": {
+        "alltime": true,
+        "pastSessionsWillAppearHereOnce": true,
+        "activeuploadsActiveUploadValue1": true
+      }
     },
     "contacts": {
       "addContact": "Добавить контакт",
@@ -3643,7 +3757,12 @@
       "tipUseValue0IncludeYourPersonal": "Совет: Используй {value0}, чтобы добавить свою личную ссылку-приглашение",
       "sendInvites": "Отправить приглашения",
       "weFoundTotalimportedContactsMatchedThem": "Мы нашли {totalImported} контактов и сопоставили их с VITANA",
-      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound} из твоих друзей уже в VITANA!"
+      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound} из твоих друзей уже в VITANA!",
+      "_pending_review": {
+        "securelyMatchingYourContacts": true,
+        "addContactsEasilyFindMessageThem": true,
+        "smsTextMessage": true
+      }
     },
     "context": {
       "aiSpotlight": "AI-Фокус 🔮",
@@ -3682,7 +3801,10 @@
       "notEnabled": "Не включено",
       "completeYourPaymentSetupStartReceiving": "Заверши настройку платежей, чтобы начать получать доход от платных Live Rooms.",
       "enablePaymentsCreatePaidLiveRooms": "Включи платежи, чтобы создавать платные Live Rooms и получать 90% дохода. Быстрая 2-минутная настройка со Stripe Connect.",
-      "checkingStatus": "Проверка статуса..."
+      "checkingStatus": "Проверка статуса...",
+      "_pending_review": {
+        "roomPricePrice": true
+      }
     },
     "crossover": {
       "_pending_review": {
@@ -3715,7 +3837,10 @@
         "matchReasonNearby": true,
         "matchReasonJourneyStage": true,
         "matchReasonSharedPillar": true,
-        "matchReasonPillarSleep": true
+        "matchReasonPillarSleep": true,
+        "topMatchFactors": true,
+        "dayStreak": true,
+        "progressTracking": true
       },
       "keyFactors": "Ключевые факторы:",
       "whyItMatters": "Почему это важно 🔍",
@@ -3891,7 +4016,16 @@
         "eventratesRate": true,
         "showingLengthLoadedTotalloadedMore": true,
         "focusLeft": true,
-        "activecountConnectionValue1Detected": true
+        "activecountConnectionValue1Detected": true,
+        "documentationCategories": true,
+        "scheduleTime": true,
+        "successOnly": true,
+        "failedOnly": true,
+        "fileUpload": true,
+        "user": true,
+        "thisWillDisplayTableSimilarExecution": true,
+        "tryReconnectingLiveStream": true,
+        "forceCloseAll": true
       },
       "currentStep": "Текущий шаг",
       "noVtidSelected": "VTID не выбран",
@@ -4622,7 +4756,16 @@
       "bookmarkedValue0": "🔖 Добавлено в закладки {value0}",
       "exploreName": "Исследуй {name}",
       "exploreItem_name": "Исследуй {item_name}",
-      "value0Services": "{value0} Услуг"
+      "value0Services": "{value0} Услуг",
+      "_pending_review": {
+        "quickBookActions": true,
+        "travelAvailable": true,
+        "noSupplementsFoundMatchingYourCriteria": true,
+        "thisProductCardInformationalAlwaysConsult": true,
+        "exploreSupplementsWellnessServicesLabTests": true,
+        "thisProductCardInformationalAlwaysConsult2": true,
+        "bookmarkedValue0": true
+      }
     },
     "discovery": {
       "filters": "Фильтры:",
@@ -4654,7 +4797,10 @@
       "value0NewTodayViewedcountTotalcount": "{value0} новых сегодня · {viewedCount}/{totalCount} просмотрено",
       "clearFilters": "Очистить фильтры",
       "checkBackTomorrowFor10New": "Загляни завтра за 10 новыми свежими совпадениями ✨",
-      "vitanaIndexVitana_index": "Индекс Vitana: {vitana_index}"
+      "vitanaIndexVitana_index": "Индекс Vitana: {vitana_index}",
+      "_pending_review": {
+        "checkBackTomorrowFor10New": true
+      }
     },
     "events": {
       "searchByNameEmail": "Искать по имени или почте...",
@@ -5249,7 +5395,21 @@
       "_pending_review": {
         "completeLengthActionValue1AutopilotSuggests": true,
         "completeLengthActionValue1AutopilotSuggests2": true,
-        "lengthTestValue1Available": true
+        "lengthTestValue1Available": true,
+        "sustainedPracticePast90DayArc": true,
+        "sustainingEliteKeepAllPillars": true,
+        "text90dayJourneyWaves": true,
+        "searchBiomarkersTestsSupplements": true,
+        "fivePillarsHowEachOneClimbs": true,
+        "completions": true,
+        "atThisPaceYouLandAround": true,
+        "smartHydrationGuidanceTailoredYourLifestyle": true,
+        "trackingYourAverageMentalBalanceFocus": true,
+        "previous": true,
+        "aioptimizedMealGuidanceTailoredYourPreferences": true,
+        "logActivityLiftName": true,
+        "yourVitanaIndexTrajectoryWillAppear": true,
+        "length5RanToday": true
       }
     },
     "home": {
@@ -5496,7 +5656,8 @@
         "noCoverYetBannerTitle": true,
         "noCoverYetBannerBody": true,
         "uploadCoverNow": true,
-        "setUniversalCover": true
+        "setUniversalCover": true,
+        "mutualReveal": true
       },
       "kindFilter_all": "Все (с учетом компаса)",
       "kindFilter_dance": "💃 Танец",
@@ -5912,7 +6073,18 @@
       "memorySubnav_diary": "Дневник",
       "memorySubnav_recall": "Вспомнить и найти",
       "memorySubnav_permissions": "Разрешения",
-      "wellnessDiaryMultimediaDescription": "Записывай и просматривай свой путь к благополучию с помощью мультимедийных записей."
+      "wellnessDiaryMultimediaDescription": "Записывай и просматривай свой путь к благополучию с помощью мультимедийных записей.",
+      "_pending_review": {
+        "manageWhoCanAccessYourHealth": true,
+        "healthcareProviders": true,
+        "memoryPermissionsVitanaMemory": true,
+        "memoryPermissions": true,
+        "searchPrivacySecuritySettings": true,
+        "privacyControls": true,
+        "yourPrivacySettingsEncryptedCanModified": true,
+        "clickBelowUploadPhotoMemory": true,
+        "accessPermissionsAuditedRegularlyYouCan": true
+      }
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Утренняя мотивация",
@@ -6096,7 +6268,16 @@
       "participantcountMembers": "{participantCount} участников",
       "value0Participants": "{value0} участников",
       "value0Members": "{value0} участников",
-      "chooseConversationFromLeftStartMessaging": "Выбери беседу слева, чтобы начать переписку"
+      "chooseConversationFromLeftStartMessaging": "Выбери беседу слева, чтобы начать переписку",
+      "_pending_review": {
+        "totalArchived": true,
+        "autoarchiveAfter30Days": true,
+        "meetingDescription": true,
+        "totalresponsesResponseValue1Received": true,
+        "messageComposer": true,
+        "replyingSendername": true,
+        "chooseConversationFromLeftStartMessaging": true
+      }
     },
     "mobile": {
       "searching": "Поиск…",
@@ -6115,7 +6296,10 @@
       "openSearch": "Открыть поиск",
       "openCalendar": "Открыть календарь",
       "openAutopilot": "Открыть автопилот",
-      "closeSearch": "Закрыть поиск"
+      "closeSearch": "Закрыть поиск",
+      "_pending_review": {
+        "alerts": true
+      }
     },
     "notifications": {
       "markAllAsRead": "Отметить все как прочитанное",
@@ -6149,7 +6333,10 @@
       "typeYourOwnName": "Или введи свое имя",
       "eGAlex": "напр. alex",
       "welcomeMaxina": "Добро пожаловать в Maxina",
-      "yourLongevityJourneyBeginsNow": "Твой путь к долголетию начинается сейчас"
+      "yourLongevityJourneyBeginsNow": "Твой путь к долголетию начинается сейчас",
+      "_pending_review": {
+        "namePart28CharactersLowercase": true
+      }
     },
     "orders": {
       "friendExampleCom": "друг@example.com",
@@ -6254,7 +6441,13 @@
       "conversationspecificPaymentActionWith": "Действие по оплате, специфичное для беседы, с",
       "alreadyActivePleaseCompleteCloseThat": "уже активно. \n                    Пожалуйста, сначала заверши или закрой это действие.",
       "anotherWalletActionCurrentlyProgressPlease": "Другое действие с кошельком уже выполняется. \n                    Пожалуйста, сначала заверши или закрой это действие.",
-      "paymenttypePaymentRequest": "{paymentType}Запрос на оплату"
+      "paymenttypePaymentRequest": "{paymentType}Запрос на оплату",
+      "_pending_review": {
+        "theyReceive": true,
+        "theyReceive2": true,
+        "sending": true,
+        "searchingUsers": true
+      }
     },
     "proactive": {
       "proTip": "Совет профи:",
@@ -6317,7 +6510,11 @@
         "youReAveraging75Hours": true,
         "considerAddingMoreLeafyGreensBoost": true,
         "topValue0Wellness": true,
-        "showMoreValue0MoreValue1": true
+        "showMoreValue0MoreValue1": true,
+        "prefersSimpleFlowsOverComplexSettings": true,
+        "peopleLikeYouAlsoConnectedWith": true,
+        "thisPreviewModeWillReflectYour": true,
+        "licensedVerifiedHealthcareProvider": true
       },
       "adminAccess": "Доступ администратора",
       "unableLoadProfile": "Не удалось загрузить профиль",
@@ -6766,7 +6963,10 @@
       "noCompleted": "Пока нет выполненных напоминаний.",
       "noMissed": "Нет пропущенных напоминаний — ты все успел(а).",
       "creating": "Создание…",
-      "createReminder": "Создать напоминание"
+      "createReminder": "Создать напоминание",
+      "_pending_review": {
+        "recent": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "В твоем инвентаре нет событий",
@@ -7481,7 +7681,32 @@
       "youExafySuperAdministratorYouCan": "Ты — суперадминистратор Exafy. Ты можешь переключаться между организациями и управлять всеми арендаторами.",
       "roleValue0": "Роль: {value0}",
       "refreshBrowserVoices": "Обновить голоса браузера",
-      "creativityValue0": "Креативность: {value0}"
+      "creativityValue0": "Креативность: {value0}",
+      "_pending_review": {
+        "notificationPreferencesSaved": true,
+        "advancedAiInsightsUnlimitedStoragePriority": true,
+        "log8GlassesWater": true,
+        "goalCrusher": true,
+        "totalSyncedApps": true,
+        "dataSynced": true,
+        "someSupplementsContraindicatedDuringPregnancyNursi": true,
+        "preferencesForFormFactorUsability": true,
+        "englishUs": true,
+        "advancedAppearanceSettings": true,
+        "viewAllDataSharingActivities": true,
+        "privacySettingsUpdated": true,
+        "profileVisibilityControls": true,
+        "getHelpFromOtherUsersShare": true,
+        "contactSupportOptions": true,
+        "apply5CreditYourNextBilling": true,
+        "apply10CreditYourNextBilling": true,
+        "dietaryRestrictions": true,
+        "savePregnancyStatus": true,
+        "popularSearchesGettingStartedSyncIssues": true,
+        "noOrganizationMembershipsFound": true,
+        "connectingLabel": true,
+        "weUseThisAvoidRecommendingSupplements": true
+      }
     },
     "sharing": {
       "_pending_review": {
@@ -7515,7 +7740,46 @@
         "enterYourFullNameProfileUrl": true,
         "testEmailConfiguration": true,
         "getYourCredentialsFromTwilioConsole": true,
-        "selectedcountCampaignValue1Selected": true
+        "selectedcountCampaignValue1Selected": true,
+        "channelPerformance": true,
+        "packageCover": true,
+        "eG5sessionWellnessBundle": true,
+        "fromPhoneNumber": true,
+        "privacySettings": true,
+        "addCustomMessageYourShare": true,
+        "dataConsentControl": true,
+        "dataConsentManagementVitana": true,
+        "launchDayHeroAnnouncementEmailBlast": true,
+        "urgencyTactics": true,
+        "distributionSettings": true,
+        "platformSpecs": true,
+        "text6SignatureSignoffs": true,
+        "searchAutomationRulesTemplates": true,
+        "recentDataSharingActivity": true,
+        "healthcarePlatforms": true,
+        "populationHealth": true,
+        "integrationMarketplaceSharing": true,
+        "integrationMarketplace": true,
+        "searchIntegrationsResearchStudiesHealthcarePlatfor": true,
+        "premiumHealthcareIntegrations": true,
+        "integrationCategories": true,
+        "matchAccuracyRate": true,
+        "collaborativeTemplatesWithHealthcareProviders": true,
+        "eGDrSmithAtMayo": true,
+        "helpsAutopilotOptimizeYourPostingStrategy": true,
+        "configureGlobalPrivacyControlsDataHandling": true,
+        "automationRules": true,
+        "buildPersonalizedDataPackageWithSpecific": true,
+        "value0MoreChannelValue1": true,
+        "addUpMaxcontactsContactsManually": true,
+        "lengthMaxcontactsContactsAddedValue2": true,
+        "defaultPermissionModelForNewAccess": true,
+        "eGProductLaunchPost": true,
+        "lengthSelected": true,
+        "granteddateExpirydate": true,
+        "requesteddateExpirydate": true,
+        "copypasteCustomizeForYourNeeds": true,
+        "createCustomDataPackageBySelecting": true
       },
       "activateCampaign": "Активировать кампанию",
       "totalPosts": "Всего постов",
@@ -9047,7 +9311,22 @@
       "continueToSecureCheckout": "Продолжить безопасную оплату",
       "cardPaymentViaStripe": "Оплата картой, безопасно обработано Stripe",
       "currentBalanceLabel": "Текущий баланс {currency}",
-      "amountAddCurrency": "Сумма для добавления ({currency})"
+      "amountAddCurrency": "Сумма для добавления ({currency})",
+      "_pending_review": {
+        "nftHealthCertificates": true,
+        "firstKnow": true,
+        "vtnEarned": true,
+        "latestCompleteBloodPanel": true,
+        "avgRating": true,
+        "amountAddUsd": true,
+        "usdBalance": true,
+        "smartActions": true,
+        "creditsBalance": true,
+        "crossplatformIntelligence": true,
+        "combineAllThreeInsightsForPotential": true,
+        "nextBestActions": true,
+        "feeFee": true
+      }
     },
     "ai": {
       "_pending_review": {
@@ -9080,7 +9359,9 @@
         "actionLabel_optimize": true,
         "actionLabel_connect": true,
         "actionLabel_exploreGroups": true,
-        "actionLabel_completeTask": true
+        "actionLabel_completeTask": true,
+        "behindDailyWaterIntakeGoal": true,
+        "healthRecommendations": true
       },
       "subtitle_priorityActions": "Задачи, подобранные ИИ, для максимального влияния на твое самочувствие",
       "button_viewAllTasks": "Посмотреть все задачи",
@@ -9403,6 +9684,9 @@
         "masterNewSkills": "Освой новые навыки",
         "spiritualLife": "Духовная жизнь",
         "earnFromRecommendations": "Зарабатывай на рекомендациях"
+      },
+      "_pending_review": {
+        "myJourney": true
       }
     },
     "businesshub": {
@@ -9423,7 +9707,10 @@
       "businessHub": "Бизнес-центр 💼",
       "growYourWellnessBusinessManageClients": "Развивай свой велнес-бизнес и легко управляй клиентами",
       "business": "Бизнес",
-      "value0MoreActions": "+{value0} других действий"
+      "value0MoreActions": "+{value0} других действий",
+      "_pending_review": {
+        "earningsBreakdownComingSoon": true
+      }
     },
     "businesslistings": {
       "myListings": "Мои объявления",
@@ -9433,7 +9720,12 @@
       "backBusinessHub": "Назад в Бизнес-центр",
       "listingsAvailableForProAccounts": "Объявления доступны для Pro-аккаунтов.",
       "noListingsYetClick": "Объявлений пока нет. Нажми",
-      "addOneOpenOrbJustSay": "чтобы добавить — или открой ORB и просто скажи"
+      "addOneOpenOrbJustSay": "чтобы добавить — или открой ORB и просто скажи",
+      "_pending_review": {
+        "listingsAvailableForProAccounts": true,
+        "noListingsYetClick": true,
+        "addOneOpenOrbJustSay": true
+      }
     },
     "businessopportunities": {
       "myListings": "Мои объявления",
@@ -9441,7 +9733,10 @@
       "opportunitiesAvailableForProAccountsUpgrade": "Возможности доступны для Pro-аккаунтов. Обновись, чтобы получить доступ к входящим заявкам.",
       "opportunities": "Возможности",
       "incomingLeadsMatchingYourOfferingsExpress": "Входящие заявки, соответствующие твоим предложениям. Прояви интерес, чтобы начать разговор.",
-      "noLeadsYetWeLlNotify": "Заявок пока нет. Мы уведомим тебя, когда появится подходящий спрос. Убедись, что у тебя есть хотя бы одно объявление commercial_sell, размещенное в разделе"
+      "noLeadsYetWeLlNotify": "Заявок пока нет. Мы уведомим тебя, когда появится подходящий спрос. Убедись, что у тебя есть хотя бы одно объявление commercial_sell, размещенное в разделе",
+      "_pending_review": {
+        "noLeadsYetWeLlNotify": true
+      }
     },
     "checkoutsuccess": {
       "whatSNext": "Что дальше?",
@@ -9480,7 +9775,12 @@
       "createYourFirstPaidRoom": "Создай свою первую платную комнату",
       "viewPaymentSettings": "Посмотреть настройки платежей",
       "value0PaymentSetupComplete": "{value0}Настройка платежей завершена!",
-      "youReAllSetStartEarning": "Ты готов(а) начать зарабатывать на своих Live Rooms"
+      "youReAllSetStartEarning": "Ты готов(а) начать зарабатывать на своих Live Rooms",
+      "_pending_review": {
+        "checkingYourPaymentStatus": true,
+        "earn90EveryPaidLiveRoom": true,
+        "value0PaymentSetupComplete": true
+      }
     },
     "editprofilepage": {
       "editProfileVitana": "Редактировать профиль – VITANA"
@@ -9553,7 +9853,10 @@
       "secureAccessForExafyAdministratorsManage": "Безопасный доступ для администраторов Exafy для управления средами клиентов.",
       "operateVitanaPlatformObserveEventsIssue": "Управляй платформой Vitana: наблюдай за событиями, отдавай команды и просматривай активность агентов с управлением VTID.",
       "vitanaDev": "Vitana DEV",
-      "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA — это комплексная цифровая платформа здоровья, предлагающая несколько специализированных сред для различных велнес-сообществ и профессионального управления здравоохранением."
+      "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA — это комплексная цифровая платформа здоровья, предлагающая несколько специализированных сред для различных велнес-сообществ и профессионального управления здравоохранением.",
+      "_pending_review": {
+        "sustainableEcofriendlyWellness": true
+      }
     },
     "intentboard": {
       "communityBoard": "Доска сообщества",
@@ -9698,7 +10001,12 @@
       "modeBillingPlan": "Текущий план",
       "modeBillingPayment": "Способ оплаты",
       "modeBillingInvoices": "Счета и квитанции",
-      "modeBillingCreator": "Выплаты авторам"
+      "modeBillingCreator": "Выплаты авторам",
+      "_pending_review": {
+        "allowPersonalDataSentThirdpartyAi": true,
+        "voiceAiLanguage": true,
+        "popularGettingStartedSyncIssuesPrivacy": true
+      }
     },
     "myintents": {
       "myIntents": "Мои запросы",
@@ -9729,7 +10037,10 @@
       "youDonTHavePermissionAccess": "У тебя нет разрешения для доступа к этому ресурсу. Эта область ограничена только для уполномоченного персонала.",
       "error403Forbidden": "Ошибка 403: Запрещено",
       "returnDashboard": "Вернуться к Панели управления",
-      "contactSupport": "Связаться с поддержкой"
+      "contactSupport": "Связаться с поддержкой",
+      "_pending_review": {
+        "youDonTHavePermissionAccess": true
+      }
     },
     "notfound": {
       "oopsPageNotFound": "Ой! Страница не найдена",
@@ -9749,7 +10060,11 @@
       "viewMyOrders": "Посмотреть мои заказы",
       "redeemNow": "Активировать сейчас",
       "viewOrders": "Посмотреть заказы",
-      "confirmationHasSent": "Подтверждение было отправлено на"
+      "confirmationHasSent": "Подтверждение было отправлено на",
+      "_pending_review": {
+        "confirmingYourPurchase": true,
+        "confirmingPurchaseVitana": true
+      }
     },
     "privacysettings": {
       "privacyVisibility": "Конфиденциальность & Видимость",
@@ -9757,7 +10072,11 @@
       "pleaseSignManageYourPrivacySettings": "Пожалуйста, войди, чтобы управлять твоими настройками конфиденциальности.",
       "serverEnforcesTheseTiersEveryCrossuser": "Сервер применяет эти уровни при каждом межпользовательском запросе — твой переключатель обязателен, а не рекомендателен.",
       "back": "Назад",
-      "tapAnyTierBadgeCyclePrivate": "Нажми на любой значок уровня, чтобы переключить Приватный → Связи → Публичный. По умолчанию предпочтение отдается конфиденциальности — ты решаешь, чем делиться."
+      "tapAnyTierBadgeCyclePrivate": "Нажми на любой значок уровня, чтобы переключить Приватный → Связи → Публичный. По умолчанию предпочтение отдается конфиденциальности — ты решаешь, чем делиться.",
+      "_pending_review": {
+        "pleaseSignManageYourPrivacySettings": true,
+        "serverEnforcesTheseTiersEveryCrossuser": true
+      }
     },
     "publiccampaignlanding": {
       "campaignNotFound": "Кампания не найдена",
@@ -9790,7 +10109,10 @@
       "fromPricelabel": "От {priceLabel}",
       "youLlSignCreateAccountNext": "Ты войдешь или создашь аккаунт на следующем шаге.",
       "YourLongevityCommunity": "- Твое сообщество долголетия",
-      "getTicketsForTitle": "Получить билеты на {title}"
+      "getTicketsForTitle": "Получить билеты на {title}",
+      "_pending_review": {
+        "eventNotFound": true
+      }
     },
     "publicprofilepage": {
       "loadingProfile": "Загрузка профиля...",
@@ -9857,7 +10179,10 @@
       "paymentSuccessful": "Оплата прошла успешно!",
       "viewAllMyTickets": "Посмотреть все мои билеты",
       "discoverMoreEvents": "Открой для себя больше событий",
-      "yourTicketHasConfirmedConfirmationEmail": "Твой билет подтвержден. Письмо с подтверждением отправлено на {value0}"
+      "yourTicketHasConfirmedConfirmationEmail": "Твой билет подтвержден. Письмо с подтверждением отправлено на {value0}",
+      "_pending_review": {
+        "confirmingYourPurchase": true
+      }
     },
     "legal": {
       "_pending_review": {
@@ -9973,7 +10298,35 @@
         "legalRetentionObligations": true,
         "securityFraudPreventionReasons": true,
         "legalClaimsDefense": true,
-        "retentionAnonymizeDelete": true
+        "retentionAnonymizeDelete": true,
+        "bookmarksSupplementsHealthData": true,
+        "deletingYourAccount": true,
+        "privacyPolicy": true,
+        "text13Compliance": true,
+        "weAdhereEuGeneralDataProtection": true,
+        "uaeRegulations": true,
+        "weFollowAppleAppStoreGoogle": true,
+        "nameEmailAddressPhoneNumberOther": true,
+        "userProfilePicturesUsernamesOtherDetails": true,
+        "text62Licence": true,
+        "arbitration": true,
+        "text2DataWeCollect": true,
+        "text3HowWeCollectYourData": true,
+        "weCollectPersonalDataFollowingWays": true,
+        "weProcessYourPersonalDataFor": true,
+        "weDoNotSellRentYour": true,
+        "text9YourRightsUnderGdprIf": true,
+        "ifYouLocatedEuropeanUnionYou": true,
+        "text12ChangesThisPrivacyPolicy": true,
+        "weWillDoOurBestAddress": true,
+        "alKhatemTower15thFloorAdgm": true,
+        "serviceIntendedForIndividuals16Years": true,
+        "text6CommunityAmpUsergeneratedContentUgc": true,
+        "text7HealthAmpWellnessDisclaimer": true,
+        "text8IntellectualProperty": true,
+        "text9ProhibitedConduct": true,
+        "text10DisclaimersAmpLimitationLiability": true,
+        "text11GoverningLawAmpDisputeResolution": true
       },
       "deleteAccount": "Удалить аккаунт",
       "signRequired": "Требуется вход",
@@ -10190,7 +10543,8 @@
         "medicalCenterRoom205": true,
         "nextWeekFriday1000Am": true,
         "cardiologyWingRoom301": true,
-        "lastWeekMonday300Pm": true
+        "lastWeekMonday300Pm": true,
+        "improving": true
       },
       "myAppointments": "My Appointments",
       "generalMedicine": "General Medicine",
@@ -10453,7 +10807,10 @@
       "esc": "Esc",
       "press": "Нажми",
       "play": "чтобы играть •",
-      "skip": "чтобы пропустить"
+      "skip": "чтобы пропустить",
+      "_pending_review": {
+        "space": true
+      }
     },
     "groups": {
       "match_scoreMatch": "{match_score}% Совпадение",

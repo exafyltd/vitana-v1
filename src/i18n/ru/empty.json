@@ -22,6 +22,9 @@
     "healthEmpty": "Запиши свою первую запись, чтобы начать свой Индекс.",
     "noActionsMatchedYet": "Пока нет подходящих действий — Автопилот формирует предложения.",
     "actionsPendingOne": "{count} действие в ожидании",
-    "actionsPendingOther": "{count} действий в ожидании"
+    "actionsPendingOther": "{count} действий в ожидании",
+    "_pending_review": {
+      "tryAdjustingFilters": true
+    }
   }
 }

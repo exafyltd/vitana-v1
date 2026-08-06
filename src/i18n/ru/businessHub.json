@@ -18,6 +18,10 @@
     "noClients": "Пока нет клиентов",
     "noClientsDesc": "Твои клиенты появятся здесь.",
     "noSales": "Пока нет продаж",
-    "noSalesDesc": "Твоя история продаж появится здесь."
+    "noSalesDesc": "Твоя история продаж появится здесь.",
+    "_pending_review": {
+      "noServicesDesc": true,
+      "noClientsDesc": true
+    }
   }
 }

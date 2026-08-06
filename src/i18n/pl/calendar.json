@@ -29,7 +29,10 @@
       "title": "Twoje Zarezerwowane Wydarzenia",
       "todayLabel": "Dziś",
       "nextUp": "Następne",
-      "noEventsToday": "Brak wydarzeń dzisiaj"
+      "noEventsToday": "Brak wydarzeń dzisiaj",
+      "_pending_review": {
+        "title": true
+      }
     },
     "filters": {
       "personal": "Osobiste",
@@ -77,7 +80,12 @@
       "reminderLaterToday": "Przypomnienie ustawione na dziś później",
       "reminderTomorrow": "Przypomnienie ustawione na jutro",
       "recommendFocus": "Polecany blok skupienia",
-      "focusBlockDesc": "Masz dostępne 90 minut. Idealne na głęboką pracę."
+      "focusBlockDesc": "Masz dostępne 90 minut. Idealne na głęboką pracę.",
+      "_pending_review": {
+        "snooze": true,
+        "suggestionSnoozed": true,
+        "focusBlockDesc": true
+      }
     },
     "toasts": {
       "eventCreated": "Wydarzenie utworzone",
@@ -94,7 +102,13 @@
       "featureComingSoon": "Funkcja wkrótce dostępna",
       "inviteFollowers": "Zaproś obserwujących",
       "rescheduleEvent": "Przełóż wydarzenie",
-      "shareToGroup": "Udostępnij grupie"
+      "shareToGroup": "Udostępnij grupie",
+      "_pending_review": {
+        "eventCreatedDesc": true,
+        "eventDeletedDesc": true,
+        "syncingTitle": true,
+        "syncingDesc": true
+      }
     },
     "error": {
       "failedToCreate": "Nie udało się utworzyć wydarzenia"
@@ -142,6 +156,10 @@
         "wave-5": "Chwile wglądu",
         "wave-6": "Rekomendacje i odkrycia"
       }
+    },
+    "_pending_review": {
+      "clickSlotHint": true,
+      "exploreActivities": true
     }
   }
 }

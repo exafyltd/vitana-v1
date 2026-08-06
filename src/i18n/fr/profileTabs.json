@@ -8,6 +8,9 @@
     "health": "Santé",
     "services": "Services",
     "insight": "Aperçu",
-    "milestones": "Étapes"
+    "milestones": "Étapes",
+    "_pending_review": {
+      "about": true
+    }
   }
 }

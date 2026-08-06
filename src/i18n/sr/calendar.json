@@ -30,7 +30,9 @@
       "todayLabel": "Danas",
       "nextUp": "Sledeće",
       "noEventsToday": "Nema događaja danas",
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true
+      }
     },
     "filters": {
       "personal": "Lično",
@@ -83,7 +85,11 @@
       "reminderTomorrow": "Podsetnik postavljen za sutra",
       "recommendFocus": "Preporuči blok fokusa",
       "focusBlockDesc": "Imaš slobodan prozor od 90 minuta. Savršeno za duboki rad.",
-      "_pending_review": {}
+      "_pending_review": {
+        "snooze": true,
+        "suggestionSnoozed": true,
+        "focusBlockDesc": true
+      }
     },
     "toasts": {
       "eventCreated": "Događaj kreiran",
@@ -101,7 +107,12 @@
       "inviteFollowers": "Pozovi pratioce",
       "rescheduleEvent": "Promeni termin događaja",
       "shareToGroup": "Podeli sa grupom",
-      "_pending_review": {}
+      "_pending_review": {
+        "eventCreatedDesc": true,
+        "eventDeletedDesc": true,
+        "syncingTitle": true,
+        "syncingDesc": true
+      }
     },
     "error": {
       "failedToCreate": "Neuspešno kreiranje događaja",
@@ -157,7 +168,10 @@
       },
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "clickSlotHint": true,
+      "exploreActivities": true
+    }
   },
   "_pending_review": {}
 }

@@ -64,7 +64,12 @@
       "deleteError": "Erro",
       "deleteErrorDesc": "Falha ao excluir. Por favor, tente novamente.",
       "commentError": "Erro",
-      "commentErrorDesc": "Falha ao publicar comentário. Por favor, tente novamente."
+      "commentErrorDesc": "Falha ao publicar comentário. Por favor, tente novamente.",
+      "_pending_review": {
+        "podcastDeletedDesc": true,
+        "videoDeletedDesc": true,
+        "deleteErrorDesc": true
+      }
     },
     "comments": {
       "title": "Comentários",
@@ -148,6 +153,9 @@
         "education": "Educação",
         "lifestyle": "Estilo de Vida"
       }
+    },
+    "_pending_review": {
+      "noMatchingShorts": true
     }
   }
 }

@@ -40,6 +40,15 @@
     "confirmClearOld": "Czy na pewno chcesz wyczyścić historię starszą niż 90 dni?",
     "confirmDeleteAll": "⚠️ OSTRZEŻENIE: Spowoduje to trwałe usunięcie CAŁEJ Twojej historii. Tej czynności nie można cofnąć. Czy jesteś absolutnie pewien?",
     "beta": "Beta",
-    "danger": "Niebezpieczeństwo"
+    "danger": "Niebezpieczeństwo",
+    "_pending_review": {
+      "archiveSettings": true,
+      "exportCompleteDesc": true,
+      "exportFailedDesc": true,
+      "allHistoryDeletedDesc": true,
+      "deleteFailedDesc": true,
+      "confirmClearOld": true,
+      "confirmDeleteAll": true
+    }
   }
 }

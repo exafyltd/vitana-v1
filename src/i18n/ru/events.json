@@ -22,7 +22,12 @@
       "noPostsFromFollowing": "Пока нет публикаций",
       "noPostsFromFollowingDesc": "Люди, на которых ты подписан(а), еще не создали событий или встреч.",
       "youFollow": "Ты подписан(а)",
-      "loadingFollowing": "Загрузка публикаций…"
+      "loadingFollowing": "Загрузка публикаций…",
+      "_pending_review": {
+        "noEventsTodayDesc": true,
+        "followingTitle": true,
+        "followingDesc": true
+      }
     }
   }
 }

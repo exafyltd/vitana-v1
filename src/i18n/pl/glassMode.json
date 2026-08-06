@@ -15,7 +15,10 @@
     "typeMessage": "Możesz teraz wpisać swoją wiadomość",
     "actionFailed": "Akcja Nieudana",
     "couldNotExecute": "Nie udało się wykonać {action}",
-    "_pending_review": {}
+    "_pending_review": {
+      "screenSharingDesc": true,
+      "typeMessage": true
+    }
   },
   "_pending_review": {}
 }

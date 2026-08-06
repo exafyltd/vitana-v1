@@ -7,6 +7,9 @@
     "posts": "Посты",
     "followers": "Подписчики",
     "following": "Подписки",
-    "groups": "Группы"
+    "groups": "Группы",
+    "_pending_review": {
+      "milestones": true
+    }
   }
 }

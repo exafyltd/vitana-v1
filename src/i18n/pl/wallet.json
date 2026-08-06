@@ -23,12 +23,16 @@
       "pending": "Oczekujące wypłaty",
       "withdrawals": "Wypłaty",
       "stakes": "Stakowanie",
-      "_pending_review": {}
+      "_pending_review": {
+        "commissions": true
+      }
     },
     "noActivity": "Brak aktywności",
     "noActivityDesc": "Twoje transakcje pojawią się tutaj.",
     "displayCurrency": "Wyświetl walutę",
-    "_pending_review": {}
+    "_pending_review": {
+      "description": true
+    }
   },
   "_pending_review": {}
 }

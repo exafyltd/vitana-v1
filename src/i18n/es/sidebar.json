@@ -46,7 +46,9 @@
     "logout": "Cerrar sesión",
     "connectors": "Conectores",
     "support": "Soporte",
-    "_pending_review": {}
+    "_pending_review": {
+      "clinicalOps": true
+    }
   },
   "_pending_review": {}
 }

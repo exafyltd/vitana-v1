@@ -23,7 +23,11 @@
       "billing": "Оплата",
       "billingDesc": "Информация о подписке и платежах",
       "support": "Поддержка",
-      "supportDesc": "Помощь, FAQ и контакты"
+      "supportDesc": "Помощь, FAQ и контакты",
+      "_pending_review": {
+        "privacyDesc": true,
+        "notificationsDesc": true
+      }
     },
     "status": {
       "privacyStatus": "Статус конфиденциальности",
@@ -36,6 +40,9 @@
       "apps": "Приложения"
     },
     "vitanaOpenedSection": "Vitana открыла {section}",
-    "vitanaUpdated": "Vitana обновила твою настройку"
+    "vitanaUpdated": "Vitana обновила твою настройку",
+    "_pending_review": {
+      "description": true
+    }
   }
 }

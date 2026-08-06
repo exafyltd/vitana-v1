@@ -4,7 +4,10 @@
     "items": {
       "privacySettings": {
         "title": "Настройки конфиденциальности",
-        "description": "Настрой конфиденциальность данных и параметры обмена"
+        "description": "Настрой конфиденциальность данных и параметры обмена",
+        "_pending_review": {
+          "description": true
+        }
       },
       "manageAccess": {
         "title": "Управляй доступом",
@@ -12,7 +15,10 @@
       },
       "securitySettings": {
         "title": "Настройки безопасности",
-        "description": "Обнови аутентификацию и параметры безопасности"
+        "description": "Обнови аутентификацию и параметры безопасности",
+        "_pending_review": {
+          "description": true
+        }
       },
       "apiKeysAccess": {
         "title": "Ключи API и доступ",
@@ -28,12 +34,18 @@
       },
       "permissionSettings": {
         "title": "Настройки разрешений",
-        "description": "Настрой детальные разрешения для разных функций"
+        "description": "Настрой детальные разрешения для разных функций",
+        "_pending_review": {
+          "title": true
+        }
       },
       "exportData": {
         "title": "Экспортируй данные",
         "description": "Загрузи свои воспоминания и данные о здоровье безопасно"
       }
+    },
+    "_pending_review": {
+      "title": true
     }
   }
 }

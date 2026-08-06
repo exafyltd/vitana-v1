@@ -14,7 +14,9 @@
     "forbiddenDesc": "Nie masz uprawnień do tej akcji.",
     "notFound": "Nie znaleziono",
     "notFoundDesc": "Żądany element nie został znaleziony.",
-    "_pending_review": {}
+    "_pending_review": {
+      "unauthorizedDesc": true
+    }
   },
   "_pending_review": {}
 }

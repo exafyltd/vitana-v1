@@ -17,7 +17,11 @@
     "eventFormComingSoon": "Forma za kreiranje događaja uskoro",
     "externalSync": "Spoljna sinhronizacija",
     "connectingCalendars": "Povezivanje sa spoljnim kalendarima...",
-    "_pending_review": {}
+    "_pending_review": {
+      "upcomingSchedule": true,
+      "createFirstEvent": true,
+      "connectingCalendars": true
+    }
   },
   "_pending_review": {}
 }

@@ -116,9 +116,25 @@
       "personalEventCreatedDesc": "El evento se ha añadido a tu calendario.",
       "error": "Error",
       "errorDesc": "No se pudo crear el evento. Inténtalo de nuevo.",
-      "_pending_review": {}
+      "_pending_review": {
+        "errorCreatingDesc": true,
+        "generatingImageDesc": true,
+        "imageGeneratedDesc": true,
+        "rateLimitDesc": true,
+        "creditsDesc": true,
+        "permissionDeniedDesc": true,
+        "imageGenFailedDesc": true,
+        "communityEventCreatedDesc": true,
+        "personalEventCreatedDesc": true,
+        "errorDesc": true
+      }
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "descriptionPlaceholder": true,
+      "detailedDescriptionPlaceholder": true,
+      "detailedDescriptionHint": true,
+      "displayPriceHint": true
+    }
   },
   "_pending_review": {}
 }

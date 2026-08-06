@@ -65,7 +65,9 @@
       "cancel": "Otkaži",
       "send": "Pošalji",
       "downloadPdf": "Preuzmi PDF",
-      "_pending_review": {}
+      "_pending_review": {
+        "yourTicket": true
+      }
     },
     "status": {
       "upcoming": "Predstojeće",
@@ -83,7 +85,9 @@
       "active": "Aktivno",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "noOrdersDesc": true
+    }
   },
   "_pending_review": {}
 }

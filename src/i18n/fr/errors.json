@@ -14,7 +14,9 @@
     "forbiddenDesc": "Tu n'as pas la permission pour cette action.",
     "notFound": "Introuvable",
     "notFoundDesc": "L'élément demandé n'a pas été trouvé.",
-    "_pending_review": {}
+    "_pending_review": {
+      "unauthorizedDesc": true
+    }
   },
   "_pending_review": {}
 }

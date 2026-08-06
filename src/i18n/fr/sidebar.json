@@ -45,6 +45,9 @@
     "monitoring": "Surveillance",
     "logout": "Déconnexion",
     "connectors": "Connecteurs",
-    "support": "Assistance"
+    "support": "Assistance",
+    "_pending_review": {
+      "clinicalOps": true
+    }
   }
 }

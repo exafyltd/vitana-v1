@@ -5,7 +5,9 @@
       "description": "La suppression de \"{name}\" supprimera définitivement tous les brouillons et analyses associés. Cette action ne peut pas être annulée.",
       "dontAskAgain": "Ne me demande plus pour les campagnes brouillon",
       "deletePermanently": "Supprimer définitivement",
-      "_pending_review": {}
+      "_pending_review": {
+        "description": true
+      }
     },
     "creation": {
       "title": "Créer une campagne",
@@ -19,7 +21,10 @@
         "2": "Connecte les canaux maintenant pour une planification instantanée",
         "3": "Le modèle de lancement fonctionne pour la plupart des annonces",
         "4": "La planification intelligente utilise tes données d'engagement passées",
-        "_pending_review": {}
+        "_pending_review": {
+          "2": true,
+          "4": true
+        }
       },
       "_pending_review": {}
     },

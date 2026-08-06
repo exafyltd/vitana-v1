@@ -18,7 +18,11 @@
       "resellAndEarn": "Odsprzedawaj i zarabiaj",
       "offerBookings": "Oferuj rezerwacje",
       "boostVisibility": "Zwiększ widoczność",
-      "_pending_review": {}
+      "_pending_review": {
+        "howToEarn": true,
+        "pickOne": true,
+        "createServiceDesc": true
+      }
     },
     "history": {
       "all": "Wszystkie",
@@ -40,7 +44,12 @@
       "details": "Szczegóły",
       "earningsActivity": "Aktywność zarobków",
       "noEarningsStartSelling": "Brak zarobków. Zacznij sprzedawać, aby zobaczyć tutaj aktywność.",
-      "_pending_review": {}
+      "_pending_review": {
+        "noEarningsYet": true,
+        "startSellingToSee": true,
+        "youEarned": true,
+        "allTime": true
+      }
     },
     "kpi": {
       "totalEarnings": "Całkowite zarobki",
@@ -64,7 +73,10 @@
       "goToSellEarn": "Przejdź do Sprzedawaj i Zarabiaj",
       "totalEarned": "Całkowicie zarobione",
       "earningsBySource": "Zarobki według źródła",
-      "_pending_review": {}
+      "_pending_review": {
+        "goToSellEarn": true,
+        "totalEarned": true
+      }
     },
     "reseller": {
       "upcomingEvents": "Nadchodzące wydarzenia",
@@ -88,7 +100,11 @@
       "attributedSales": "Sprzedaż przypisana do wydarzenia",
       "noSalesMatchFilter": "Brak sprzedaży pasującej do bieżących filtrów",
       "mockDataActive": "Dane testowe aktywne",
-      "_pending_review": {}
+      "_pending_review": {
+        "shareLinkToStart": true,
+        "shareLinkOrPromotion": true,
+        "pickEventForLink": true
+      }
     },
     "transfer": {
       "title": "Przelej do Portfela",
@@ -98,7 +114,9 @@
       "instantCredit": "Spowoduje to natychmiastowe dodanie Twoich zarobków do salda portfela.",
       "transferring": "Przelewanie...",
       "transfer": "Przelej",
-      "_pending_review": {}
+      "_pending_review": {
+        "instantCredit": true
+      }
     },
     "typeSelector": {
       "title": "Rozpocznij Biznes",
@@ -112,7 +130,9 @@
       "badgeActive": "Aktywne",
       "alreadyReseller": "Jesteś już sprzedawcą! Sprawdź zakładkę Sprzedawaj i Zarabiaj.",
       "cancel": "Anuluj",
-      "_pending_review": {}
+      "_pending_review": {
+        "alreadyReseller": true
+      }
     },
     "missionOpportunities": {
       "title": "Możliwości Misji",
@@ -128,7 +148,9 @@
         "business_formation": "Tworzenie biznesu",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {
+        "subtitle": true
+      }
     },
     "_pending_review": {}
   },

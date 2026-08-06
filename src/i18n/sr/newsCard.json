@@ -27,7 +27,9 @@
       "openInBrowser": "Otvori u pregledaču",
       "couldNotLoad": "Ovaj članak se ne može prikazati u okviru",
       "readOn": "Čitaj na",
-      "_pending_review": {}
+      "_pending_review": {
+        "readOn": true
+      }
     },
     "pillars": {
       "all": "Sve",

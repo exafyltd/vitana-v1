@@ -29,7 +29,10 @@
       "title": "Твои забронированные события",
       "todayLabel": "Сегодня",
       "nextUp": "Далее",
-      "noEventsToday": "Сегодня нет событий"
+      "noEventsToday": "Сегодня нет событий",
+      "_pending_review": {
+        "title": true
+      }
     },
     "filters": {
       "personal": "Личное",
@@ -77,7 +80,12 @@
       "reminderLaterToday": "Напоминание установлено на сегодня",
       "reminderTomorrow": "Напоминание установлено на завтра",
       "recommendFocus": "Рекомендуем блок для фокуса",
-      "focusBlockDesc": "У тебя есть 90-минутное окно. Идеально для глубокой работы."
+      "focusBlockDesc": "У тебя есть 90-минутное окно. Идеально для глубокой работы.",
+      "_pending_review": {
+        "snooze": true,
+        "suggestionSnoozed": true,
+        "focusBlockDesc": true
+      }
     },
     "toasts": {
       "eventCreated": "Событие создано",
@@ -94,7 +102,13 @@
       "featureComingSoon": "Функция скоро появится",
       "inviteFollowers": "Пригласить подписчиков",
       "rescheduleEvent": "Перенести событие",
-      "shareToGroup": "Поделиться в группе"
+      "shareToGroup": "Поделиться в группе",
+      "_pending_review": {
+        "eventCreatedDesc": true,
+        "eventDeletedDesc": true,
+        "syncingTitle": true,
+        "syncingDesc": true
+      }
     },
     "error": {
       "failedToCreate": "Не удалось создать событие"
@@ -142,6 +156,10 @@
         "wave-5": "Моменты озарения",
         "wave-6": "Рекомендации и Открытия"
       }
+    },
+    "_pending_review": {
+      "clickSlotHint": true,
+      "exploreActivities": true
     }
   }
 }

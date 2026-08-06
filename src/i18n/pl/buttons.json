@@ -54,6 +54,9 @@
     "no": "Nie",
     "ok": "OK",
     "generate": "Generuj",
-    "generating": "Generowanie..."
+    "generating": "Generowanie...",
+    "_pending_review": {
+      "previous": true
+    }
   }
 }

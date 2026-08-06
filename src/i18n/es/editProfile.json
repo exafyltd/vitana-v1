@@ -17,7 +17,11 @@
     "titlePlaceholder": "Título del video",
     "description": "Descripción",
     "descriptionPlaceholder": "Descripción opcional...",
-    "_pending_review": {}
+    "_pending_review": {
+      "notAuthenticatedDesc": true,
+      "profileUpdatedDesc": true,
+      "showcaseHint": true
+    }
   },
   "_pending_review": {}
 }

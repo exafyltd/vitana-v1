@@ -24,7 +24,11 @@
       "noPostsFromFollowingDesc": "Ljudi koje pratiš još nisu kreirali događaje ili okupljanja.",
       "youFollow": "Pratiš",
       "loadingFollowing": "Učitavanje objava...",
-      "_pending_review": {}
+      "_pending_review": {
+        "noEventsTodayDesc": true,
+        "followingTitle": true,
+        "followingDesc": true
+      }
     },
     "_pending_review": {}
   },

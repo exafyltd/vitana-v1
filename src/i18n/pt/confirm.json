@@ -16,7 +16,12 @@
     "disconnectDesc": "Podes reconectar mais tarde.",
     "proceed": "Queres continuar?",
     "proceedDesc": "Esta ação será executada.",
-    "_pending_review": {}
+    "_pending_review": {
+      "logout": true,
+      "logoutDesc": true,
+      "disconnect": true,
+      "proceed": true
+    }
   },
   "_pending_review": {}
 }

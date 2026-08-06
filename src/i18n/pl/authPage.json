@@ -15,7 +15,9 @@
     "orContinueWith": "Lub kontynuuj z",
     "backToPortals": "Wróć do wszystkich portali",
     "keepLoggedIn": "Pozostań zalogowany",
-    "_pending_review": {}
+    "_pending_review": {
+      "subtitle": true
+    }
   },
   "_pending_review": {}
 }

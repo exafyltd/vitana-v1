@@ -8,7 +8,9 @@
     "communityNews": "Notícias da Comunidade",
     "inspiration": "Inspiração",
     "dailyMatches": "Combinações Diárias",
-    "_pending_review": {}
+    "_pending_review": {
+      "mediaContent": true
+    }
   },
   "_pending_review": {}
 }

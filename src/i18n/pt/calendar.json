@@ -29,7 +29,10 @@
       "title": "Teus Eventos Agendados",
       "todayLabel": "Hoje",
       "nextUp": "A seguir",
-      "noEventsToday": "Nenhum evento hoje"
+      "noEventsToday": "Nenhum evento hoje",
+      "_pending_review": {
+        "title": true
+      }
     },
     "filters": {
       "personal": "Pessoal",
@@ -77,7 +80,12 @@
       "reminderLaterToday": "Lembrete definido para mais tarde hoje",
       "reminderTomorrow": "Lembrete definido para amanhã",
       "recommendFocus": "Recomendar bloco de foco",
-      "focusBlockDesc": "Tens uma janela de 90 minutos disponível. Perfeito para trabalho profundo."
+      "focusBlockDesc": "Tens uma janela de 90 minutos disponível. Perfeito para trabalho profundo.",
+      "_pending_review": {
+        "snooze": true,
+        "suggestionSnoozed": true,
+        "focusBlockDesc": true
+      }
     },
     "toasts": {
       "eventCreated": "Evento criado",
@@ -94,7 +102,13 @@
       "featureComingSoon": "Funcionalidade em breve",
       "inviteFollowers": "Convidar seguidores",
       "rescheduleEvent": "Reagendar evento",
-      "shareToGroup": "Partilhar com o grupo"
+      "shareToGroup": "Partilhar com o grupo",
+      "_pending_review": {
+        "eventCreatedDesc": true,
+        "eventDeletedDesc": true,
+        "syncingTitle": true,
+        "syncingDesc": true
+      }
     },
     "error": {
       "failedToCreate": "Falha ao criar evento"
@@ -142,6 +156,10 @@
         "wave-5": "Momentos de Insight",
         "wave-6": "Recomendações e Descoberta"
       }
+    },
+    "_pending_review": {
+      "clickSlotHint": true,
+      "exploreActivities": true
     }
   }
 }

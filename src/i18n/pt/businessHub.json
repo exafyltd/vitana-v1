@@ -20,7 +20,10 @@
     "noClientsDesc": "Os teus clientes aparecerão aqui.",
     "noSales": "Sem vendas ainda",
     "noSalesDesc": "O teu histórico de vendas aparecerá aqui.",
-    "_pending_review": {}
+    "_pending_review": {
+      "noServicesDesc": true,
+      "noClientsDesc": true
+    }
   },
   "_pending_review": {}
 }

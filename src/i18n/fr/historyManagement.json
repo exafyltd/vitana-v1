@@ -40,6 +40,15 @@
     "confirmClearOld": "Es-tu sûr(e) de vouloir effacer l'historique de plus de 90 jours ?",
     "confirmDeleteAll": "⚠️ ATTENTION : Cela supprimera définitivement TOUT ton historique. Cette action ne peut pas être annulée. Es-tu absolument sûr(e) ?",
     "beta": "Bêta",
-    "danger": "Danger"
+    "danger": "Danger",
+    "_pending_review": {
+      "archiveSettings": true,
+      "exportCompleteDesc": true,
+      "exportFailedDesc": true,
+      "allHistoryDeletedDesc": true,
+      "deleteFailedDesc": true,
+      "confirmClearOld": true,
+      "confirmDeleteAll": true
+    }
   }
 }

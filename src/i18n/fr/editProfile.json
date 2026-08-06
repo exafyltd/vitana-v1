@@ -16,6 +16,11 @@
     "title": "Titre",
     "titlePlaceholder": "Titre de la vidéo",
     "description": "Description",
-    "descriptionPlaceholder": "Description facultative..."
+    "descriptionPlaceholder": "Description facultative...",
+    "_pending_review": {
+      "notAuthenticatedDesc": true,
+      "profileUpdatedDesc": true,
+      "showcaseHint": true
+    }
   }
 }

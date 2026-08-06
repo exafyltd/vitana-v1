@@ -42,7 +42,18 @@
     "sendFailedDesc": "No se pudo enviar tu opinión. Inténtalo de nuevo.",
     "recognitionError": "Error de reconocimiento",
     "recognitionErrorDesc": "El reconocimiento de voz tuvo un error. Inténtalo de nuevo.",
-    "_pending_review": {}
+    "_pending_review": {
+      "tapToDescribe": true,
+      "yourVoiceEntry": true,
+      "yourFeedback": true,
+      "reportSentDesc": true,
+      "recordingStartedDesc": true,
+      "noContentDesc": true,
+      "noContentBugDesc": true,
+      "entrySavedDesc": true,
+      "saveFailedDesc": true,
+      "sendFailedDesc": true
+    }
   },
   "_pending_review": {}
 }

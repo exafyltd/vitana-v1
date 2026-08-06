@@ -7,7 +7,10 @@
       "saveHighlights": "Guardar Destacados",
       "highlightsDesc": "Elige tus mejores publicaciones y medios para destacar en la parte superior de tu perfil. El contenido destacado aparece en una sección de destacados y atrae más seguidores.",
       "try": "Probar",
-      "_pending_review": {}
+      "_pending_review": {
+        "polishBio": true,
+        "highlightsDesc": true
+      }
     },
     "identity": {
       "vitanaIndex": "Índice Vitana",

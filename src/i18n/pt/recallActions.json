@@ -34,6 +34,9 @@
         "title": "Recuperações Rápidas",
         "description": "Acessa memórias e consultas pesquisadas com frequência"
       }
+    },
+    "_pending_review": {
+      "title": true
     }
   }
 }

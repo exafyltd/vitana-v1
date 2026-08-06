@@ -15,7 +15,9 @@
     "noBackground": "Brak tła",
     "searchingPeople": "Szukam osób…",
     "noPeopleFound": "Nie znaleziono nikogo",
-    "_pending_review": {}
+    "_pending_review": {
+      "placeholder": true
+    }
   },
   "_pending_review": {}
 }

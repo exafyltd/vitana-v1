@@ -64,7 +64,12 @@
       "deleteError": "Błąd",
       "deleteErrorDesc": "Nie udało się usunąć. Spróbuj ponownie.",
       "commentError": "Błąd",
-      "commentErrorDesc": "Nie udało się opublikować komentarza. Spróbuj ponownie."
+      "commentErrorDesc": "Nie udało się opublikować komentarza. Spróbuj ponownie.",
+      "_pending_review": {
+        "podcastDeletedDesc": true,
+        "videoDeletedDesc": true,
+        "deleteErrorDesc": true
+      }
     },
     "comments": {
       "title": "Komentarze",
@@ -148,6 +153,9 @@
         "education": "Edukacja",
         "lifestyle": "Styl życia"
       }
+    },
+    "_pending_review": {
+      "noMatchingShorts": true
     }
   }
 }

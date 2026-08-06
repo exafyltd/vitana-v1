@@ -5,7 +5,9 @@
       "description": "Brisanje \"{name}\" će trajno ukloniti sve povezane nacrte i analitiku. Ova radnja se ne može poništiti.",
       "dontAskAgain": "Ne pitaj me ponovo za nacrte kampanja",
       "deletePermanently": "Trajno obriši",
-      "_pending_review": {}
+      "_pending_review": {
+        "description": true
+      }
     },
     "creation": {
       "title": "Kreiraj kampanju",
@@ -19,7 +21,10 @@
         "2": "Poveži kanale sada za trenutno zakazivanje",
         "3": "Šablon za pokretanje radi za većinu najava",
         "4": "Pametno zakazivanje koristi tvoje prethodne podatke o angažovanju",
-        "_pending_review": {}
+        "_pending_review": {
+          "2": true,
+          "4": true
+        }
       },
       "_pending_review": {}
     },

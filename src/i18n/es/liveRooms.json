@@ -7,7 +7,9 @@
       "scheduled": "Programado",
       "all": "Todas las Salas",
       "past": "Pasado",
-      "_pending_review": {}
+      "_pending_review": {
+        "live": true
+      }
     },
     "goLive": "Ir en Vivo",
     "joinRoom": "Unirse a la Sala",
@@ -139,9 +141,15 @@
         "youAreLiveDesc": "Uniéndote a la sala de transmisión…",
         "aiImageHintTitle": "Generación de imagen con IA",
         "aiImageHintDesc": "La imagen se generará cuando comience la transmisión.",
-        "_pending_review": {}
+        "_pending_review": {
+          "streamUpdatedDesc": true,
+          "youAreLiveTitle": true
+        }
       },
-      "_pending_review": {}
+      "_pending_review": {
+        "descriptionPlaceholder": true,
+        "coverUploadHint": true
+      }
     },
     "editSession": {
       "title": "Editar sesión",
@@ -150,7 +158,9 @@
       "noChanges": "No hay cambios para guardar",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "noRooms": true
+    }
   },
   "goLivePopup": {
     "durationLabel": "Duración",

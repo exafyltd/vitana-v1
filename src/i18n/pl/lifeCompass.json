@@ -34,7 +34,9 @@
       "health": {
         "title": "Przekształć Zdrowie",
         "description": "Osiągnij optymalne zdrowie fizyczne i psychiczne",
-        "_pending_review": {}
+        "_pending_review": {
+          "title": true
+        }
       },
       "career": {
         "title": "Rozwiń Karierę",

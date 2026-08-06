@@ -55,7 +55,9 @@
     "ok": "Vale",
     "generate": "Generar",
     "generating": "Generando...",
-    "_pending_review": {}
+    "_pending_review": {
+      "previous": true
+    }
   },
   "_pending_review": {}
 }

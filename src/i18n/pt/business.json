@@ -18,7 +18,11 @@
       "resellAndEarn": "Revende e ganha",
       "offerBookings": "Oferece reservas",
       "boostVisibility": "Aumenta a visibilidade",
-      "_pending_review": {}
+      "_pending_review": {
+        "howToEarn": true,
+        "pickOne": true,
+        "createServiceDesc": true
+      }
     },
     "history": {
       "all": "Tudo",
@@ -40,7 +44,12 @@
       "details": "Detalhes",
       "earningsActivity": "Atividade de Ganhos",
       "noEarningsStartSelling": "Ainda não tens ganhos. Começa a vender para veres a atividade aqui.",
-      "_pending_review": {}
+      "_pending_review": {
+        "noEarningsYet": true,
+        "startSellingToSee": true,
+        "youEarned": true,
+        "allTime": true
+      }
     },
     "kpi": {
       "totalEarnings": "Ganhos Totais",
@@ -64,7 +73,10 @@
       "goToSellEarn": "Vai para Vender e Ganhar",
       "totalEarned": "Total Ganho",
       "earningsBySource": "Ganhos por Origem",
-      "_pending_review": {}
+      "_pending_review": {
+        "goToSellEarn": true,
+        "totalEarned": true
+      }
     },
     "reseller": {
       "upcomingEvents": "Próximos Eventos",
@@ -88,7 +100,11 @@
       "attributedSales": "Vendas Atribuídas por Evento",
       "noSalesMatchFilter": "Nenhuma venda corresponde aos filtros atuais",
       "mockDataActive": "Dados de teste ativos",
-      "_pending_review": {}
+      "_pending_review": {
+        "shareLinkToStart": true,
+        "shareLinkOrPromotion": true,
+        "pickEventForLink": true
+      }
     },
     "transfer": {
       "title": "Transferir para a Carteira",
@@ -98,7 +114,9 @@
       "instantCredit": "Isso creditará seus ganhos instantaneamente ao saldo da sua carteira.",
       "transferring": "Transferindo...",
       "transfer": "Transferir",
-      "_pending_review": {}
+      "_pending_review": {
+        "instantCredit": true
+      }
     },
     "typeSelector": {
       "title": "Começar um Negócio",
@@ -112,7 +130,9 @@
       "badgeActive": "Ativo",
       "alreadyReseller": "Você já é um revendedor! Verifique a aba Vender e Ganhar.",
       "cancel": "Cancelar",
-      "_pending_review": {}
+      "_pending_review": {
+        "alreadyReseller": true
+      }
     },
     "missionOpportunities": {
       "title": "Oportunidades de Missão",
@@ -128,7 +148,9 @@
         "business_formation": "Formação de negócios",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {
+        "subtitle": true
+      }
     },
     "_pending_review": {}
   },

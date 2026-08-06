@@ -5,7 +5,9 @@
       "subtitle": "Pokloni dobrobit i povezanost sa zajednicom",
       "buyVoucher": "Kupi vaučer",
       "openingCheckout": "Otvaranje sigurnog checkout-a...",
-      "_pending_review": {}
+      "_pending_review": {
+        "subtitle": true
+      }
     },
     "tiers": {
       "test": {
@@ -72,7 +74,9 @@
       "share": "Sačuvaj / Podeli",
       "shareHint": "Sačuvaj u Fajlove, Drive ili pošalji nekome",
       "downloadHint": "Ako se preuzimanje otvori prazno, tapni Otvori u pregledaču",
-      "_pending_review": {}
+      "_pending_review": {
+        "downloadHint": true
+      }
     },
     "toast": {
       "downloadStarted": "Preuzimanje započeto!",
@@ -90,7 +94,12 @@
       "enterRecipientEmail": "Unesi e-mail primaoca",
       "emailOnlyForVouchers": "Slanje e-maila je dostupno samo za vaučere",
       "sendingVoucherEmail": "Šaljem e-mail sa vaučerom...",
-      "_pending_review": {}
+      "_pending_review": {
+        "linkCopiedDesc": true,
+        "checkoutFailed": true,
+        "useTicketView": true,
+        "enterRecipientEmail": true
+      }
     },
     "_pending_review": {}
   },

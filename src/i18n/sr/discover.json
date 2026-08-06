@@ -105,7 +105,12 @@
       "noRecommendations": "Nema pronađenih preporuka",
       "noRecommendationsDesc": "Probaj da izabereš drugi filter da vidiš više preporuka",
       "viewAllPicks": "Pogledaj sve odabire",
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true,
+        "backToDiscover": true,
+        "unavailableDesc": true,
+        "noRecommendationsDesc": true
+      }
     },
     "filters": {
       "all": "Sve",
@@ -127,7 +132,15 @@
       "signIn": "Prijavi se",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "title": true,
+      "description": true,
+      "communityGroupsDesc": true,
+      "aiPicksForYou": true,
+      "recommendedForYou": true,
+      "suggestedForYou": true,
+      "noResultsDesc": true
+    }
   },
   "_pending_review": {}
 }

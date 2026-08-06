@@ -23,12 +23,16 @@
       "pending": "Isplate na čekanju",
       "withdrawals": "Isplate",
       "stakes": "Ulaganje",
-      "_pending_review": {}
+      "_pending_review": {
+        "commissions": true
+      }
     },
     "noActivity": "Još uvek nema aktivnosti",
     "noActivityDesc": "Tvoje transakcije će se pojaviti ovde.",
     "displayCurrency": "Valuta prikaza",
-    "_pending_review": {}
+    "_pending_review": {
+      "description": true
+    }
   },
   "_pending_review": {}
 }

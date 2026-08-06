@@ -23,7 +23,11 @@
       "billing": "Facturation",
       "billingDesc": "Informations d'abonnement et de paiement",
       "support": "Assistance",
-      "supportDesc": "Aide, FAQ et options de contact"
+      "supportDesc": "Aide, FAQ et options de contact",
+      "_pending_review": {
+        "privacyDesc": true,
+        "notificationsDesc": true
+      }
     },
     "status": {
       "privacyStatus": "Statut de confidentialité",
@@ -36,6 +40,9 @@
       "apps": "applis"
     },
     "vitanaOpenedSection": "Vitana a ouvert {section}",
-    "vitanaUpdated": "Vitana a mis à jour ton paramètre"
+    "vitanaUpdated": "Vitana a mis à jour ton paramètre",
+    "_pending_review": {
+      "description": true
+    }
   }
 }

@@ -69,7 +69,16 @@
       "uploadFailed": "Échec de l'importation",
       "uploadFailedDesc": "Échec du téléchargement de l'image. Réessaie.",
       "identityUpdated": "Identité mise à jour",
-      "identityUpdatedDesc": "Tes informations d'identité ont été enregistrées avec succès."
+      "identityUpdatedDesc": "Tes informations d'identité ont été enregistrées avec succès.",
+      "_pending_review": {
+        "description": true,
+        "displayNamePlaceholder": true,
+        "handleDescription": true,
+        "personalityDescriptor": true,
+        "personalityDescriptorPlaceholder": true,
+        "personalityDescriptorDescription": true,
+        "identityUpdatedDesc": true
+      }
     },
     "coverLibrary": {
       "title": "Bibliothèque de couvertures",
@@ -96,7 +105,16 @@
       "universalRemoved": "Photo de couverture universelle supprimée",
       "uploadFailed": "Échec du téléchargement",
       "categoryRequired": "Choisis d'abord une catégorie pour cette photo.",
-      "saveError": "Impossible d'enregistrer — réessaie."
+      "saveError": "Impossible d'enregistrer — réessaie.",
+      "_pending_review": {
+        "tileSubtitle": true,
+        "universalDescription": true
+      }
+    },
+    "_pending_review": {
+      "editAbout": true,
+      "bioPlaceholder": true,
+      "profileUpdatedDesc": true
     }
   }
 }

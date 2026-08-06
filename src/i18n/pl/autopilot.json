@@ -16,7 +16,11 @@
       "updateArchetype": "Zaktualizuj archetyp",
       "profileSectionTitle": "Autopilot może dopracować Twój profil ✨",
       "profileSectionDesc": "Otrzymuj sugestie oparte na AI dotyczące Twojego bio, archetypu i wyróżnień.",
-      "tryAutopilot": "Wypróbuj Autopilota"
+      "tryAutopilot": "Wypróbuj Autopilota",
+      "_pending_review": {
+        "showcaseDesc": true,
+        "archetypeDesc": true
+      }
     },
     "preview": "Podgląd Autopilota",
     "viewAll": "Zobacz wszystko",
@@ -41,7 +45,11 @@
       "toastExecutedTitle": "Działania wykonane",
       "toastExecutedDesc": "{success}/{total} działań ukończono pomyślnie",
       "toastFailedTitle": "Wykonanie nie powiodło się",
-      "toastFailedDesc": "Coś poszło nie tak. Spróbuj ponownie."
+      "toastFailedDesc": "Coś poszło nie tak. Spróbuj ponownie.",
+      "_pending_review": {
+        "readyToExecute": true,
+        "executingDesc": true
+      }
     },
     "priorities": {
       "high": "Wysoki",
@@ -56,7 +64,12 @@
       "allOptimized": "Wszystko zoptymalizowane! 🎯",
       "enableToSee": "Włącz Autopilota, aby zobaczyć sugestie",
       "completeForRewards": "Ukończ sugestie Autopilota, aby otrzymać nagrody",
-      "enableForCredits": "Włącz Autopilota, aby otrzymać kredyty"
+      "enableForCredits": "Włącz Autopilota, aby otrzymać kredyty",
+      "_pending_review": {
+        "enableToSee": true,
+        "completeForRewards": true,
+        "enableForCredits": true
+      }
     },
     "insightBanner": {
       "title": "Przegląd kondycji Autopilota",
@@ -64,7 +77,10 @@
       "synergyIndex": "Indeks synergii",
       "statusBalanced": "Zrównoważony",
       "statusNeedsAttention": "Wymaga uwagi",
-      "statusImproving": "Poprawia się"
+      "statusImproving": "Poprawia się",
+      "_pending_review": {
+        "description": true
+      }
     },
     "profilePopup": {
       "title": "Pozwól Autopilotowi dopracować Twój profil ✨",
@@ -87,7 +103,13 @@
       "acceptAll": "Akceptuj wszystko",
       "applied": "Zmiany zapisane!",
       "error": "Coś poszło nie tak",
-      "comingSoon": "Wkrótce"
+      "comingSoon": "Wkrótce",
+      "_pending_review": {
+        "title": true,
+        "polishBio": true,
+        "refreshArchetype": true,
+        "highlightShowcase": true
+      }
     },
     "actions": {
       "action1Title": "Dołącz do Grupy Tańca Długowieczności Dziś wieczorem?",
@@ -103,7 +125,13 @@
       "action6Title": "Magia Uważnego Poranka",
       "action6Reason": "Twoja dusza woła o te techniki topiące stres",
       "newActionTitle": "Nowa sugestia AI",
-      "newActionReason": "Na podstawie ostatnich wzorców aktywności"
+      "newActionReason": "Na podstawie ostatnich wzorców aktywności",
+      "_pending_review": {
+        "action1Reason": true,
+        "action2Reason": true,
+        "action5Title": true,
+        "action5Reason": true
+      }
     }
   }
 }

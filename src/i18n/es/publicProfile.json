@@ -8,7 +8,9 @@
     "followers": "Seguidores",
     "following": "Siguiendo",
     "groups": "Grupos",
-    "_pending_review": {}
+    "_pending_review": {
+      "milestones": true
+    }
   },
   "_pending_review": {}
 }

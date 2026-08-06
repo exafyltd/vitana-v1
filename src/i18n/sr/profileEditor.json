@@ -73,7 +73,15 @@
       "uploadFailedDesc": "Otpremanje slike nije uspelo. Pokušaj ponovo.",
       "identityUpdated": "Identitet ažuriran",
       "identityUpdatedDesc": "Tvoji podaci o identitetu su uspešno sačuvani.",
-      "_pending_review": {}
+      "_pending_review": {
+        "description": true,
+        "displayNamePlaceholder": true,
+        "handleDescription": true,
+        "personalityDescriptor": true,
+        "personalityDescriptorPlaceholder": true,
+        "personalityDescriptorDescription": true,
+        "identityUpdatedDesc": true
+      }
     },
     "coverLibrary": {
       "title": "Biblioteka naslovnica",
@@ -101,9 +109,16 @@
       "uploadFailed": "Otpremanje nije uspelo",
       "categoryRequired": "Molim te prvo izaberi kategoriju za ovu fotografiju.",
       "saveError": "Nije moguće sačuvati — pokušaj ponovo.",
-      "_pending_review": {}
+      "_pending_review": {
+        "tileSubtitle": true,
+        "universalDescription": true
+      }
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "editAbout": true,
+      "bioPlaceholder": true,
+      "profileUpdatedDesc": true
+    }
   },
   "_pending_review": {}
 }

@@ -41,6 +41,10 @@
     "preferences": "Préférences",
     "privacy": "Confidentialité",
     "connectedApps": "Applications Connectées & Intégrations",
-    "support": "Assistance"
+    "support": "Assistance",
+    "_pending_review": {
+      "timeline": true,
+      "preferences": true
+    }
   }
 }

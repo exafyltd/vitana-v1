@@ -13,7 +13,10 @@
       "2": "Vitana indeks",
       "3": "Najbliže podudaranje",
       "4": "Preusmeravanje radi pravičnosti",
-      "_pending_review": {}
+      "_pending_review": {
+        "3": true,
+        "4": true
+      }
     },
     "_pending_review": {}
   },

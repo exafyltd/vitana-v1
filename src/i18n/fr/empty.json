@@ -23,7 +23,9 @@
     "noActionsMatchedYet": "Aucune action encore trouvée — Autopilot est en train de façonner des suggestions.",
     "actionsPendingOne": "{count} action en attente",
     "actionsPendingOther": "{count} actions en attente",
-    "_pending_review": {}
+    "_pending_review": {
+      "tryAdjustingFilters": true
+    }
   },
   "_pending_review": {}
 }

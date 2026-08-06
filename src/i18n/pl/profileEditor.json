@@ -69,7 +69,16 @@
       "uploadFailed": "Przesyłanie nie powiodło się",
       "uploadFailedDesc": "Nie udało się przesłać zdjęcia. Spróbuj ponownie.",
       "identityUpdated": "Tożsamość zaktualizowana",
-      "identityUpdatedDesc": "Twoje dane tożsamości zostały pomyślnie zapisane."
+      "identityUpdatedDesc": "Twoje dane tożsamości zostały pomyślnie zapisane.",
+      "_pending_review": {
+        "description": true,
+        "displayNamePlaceholder": true,
+        "handleDescription": true,
+        "personalityDescriptor": true,
+        "personalityDescriptorPlaceholder": true,
+        "personalityDescriptorDescription": true,
+        "identityUpdatedDesc": true
+      }
     },
     "coverLibrary": {
       "title": "Biblioteka okładek",
@@ -96,7 +105,16 @@
       "universalRemoved": "Uniwersalne zdjęcie okładkowe usunięte",
       "uploadFailed": "Przesyłanie nieudane",
       "categoryRequired": "Najpierw wybierz kategorię dla tego zdjęcia.",
-      "saveError": "Nie udało się zapisać — spróbuj ponownie."
+      "saveError": "Nie udało się zapisać — spróbuj ponownie.",
+      "_pending_review": {
+        "tileSubtitle": true,
+        "universalDescription": true
+      }
+    },
+    "_pending_review": {
+      "editAbout": true,
+      "bioPlaceholder": true,
+      "profileUpdatedDesc": true
     }
   }
 }

@@ -23,25 +23,34 @@
         "admin": "Administrator",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {
+        "continueJourney": true,
+        "createAccount": true
+      }
     },
     "alkalma": {
       "joinAlkalma": "Dołącz do AlKalma",
       "welcomeBack": "Witaj ponownie w AlKalma.",
       "continueJourney": "Zaloguj się, aby kontynuować.",
-      "_pending_review": {}
+      "_pending_review": {
+        "continueJourney": true
+      }
     },
     "earthlinks": {
       "joinEarthlinks": "Dołącz do Earthlinks",
       "welcomeBack": "Witaj ponownie w Earthlinks.",
       "continueJourney": "Zaloguj się, aby kontynuować.",
-      "_pending_review": {}
+      "_pending_review": {
+        "continueJourney": true
+      }
     },
     "community": {
       "joinCommunity": "Dołącz do Społeczności",
       "welcomeBack": "Witaj ponownie.",
       "continueJourney": "Zaloguj się, aby kontynuować.",
-      "_pending_review": {}
+      "_pending_review": {
+        "continueJourney": true
+      }
     },
     "_pending_review": {}
   },

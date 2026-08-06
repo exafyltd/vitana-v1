@@ -23,12 +23,16 @@
       "pending": "Pagos Pendientes",
       "withdrawals": "Retiros",
       "stakes": "Participación",
-      "_pending_review": {}
+      "_pending_review": {
+        "commissions": true
+      }
     },
     "noActivity": "Sin actividad aún",
     "noActivityDesc": "Tus transacciones aparecerán aquí.",
     "displayCurrency": "Moneda de visualización",
-    "_pending_review": {}
+    "_pending_review": {
+      "description": true
+    }
   },
   "_pending_review": {}
 }

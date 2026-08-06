@@ -41,7 +41,15 @@
     "confirmDeleteAll": "⚠️ UPOZORENJE: Ovo će trajno obrisati SVE tvoje podatke. Ova radnja se ne može poništiti. Jesi li apsolutno siguran/na?",
     "beta": "Beta",
     "danger": "Opasnost",
-    "_pending_review": {}
+    "_pending_review": {
+      "archiveSettings": true,
+      "exportCompleteDesc": true,
+      "exportFailedDesc": true,
+      "allHistoryDeletedDesc": true,
+      "deleteFailedDesc": true,
+      "confirmClearOld": true,
+      "confirmDeleteAll": true
+    }
   },
   "_pending_review": {}
 }

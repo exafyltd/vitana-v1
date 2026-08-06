@@ -1,6 +1,9 @@
 {
   "follow": {
     "noFollowers": "Пока нет подписчиков",
-    "noFollowing": "Пока ни на кого не подписан"
+    "noFollowing": "Пока ни на кого не подписан",
+    "_pending_review": {
+      "noFollowing": true
+    }
   }
 }

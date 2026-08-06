@@ -18,27 +18,37 @@
         "createAccount": {
           "question": "Kako da kreiram Maxina nalog?",
           "answer": "Preuzmi Maxina aplikaciju ili poseti naš portal na vitanaland.com/maxina. Dodirni 'Prijavi se' i unesi svoju e-adresu. Dobićeš potvrdni e-mail za verifikaciju naloga. Kada potvrdiš, popuni profil i počni da istražuješ wellness događaje i funkcije zajednice.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "resetPassword": {
           "question": "Kako da resetujem lozinku?",
           "answer": "Na ekranu za prijavu dodirni 'Zaboravljena lozinka' i unesi svoju registrovanu e-adresu. Dobićeš link za resetovanje lozinke u roku od nekoliko minuta. Proveri spam folder ako ga ne vidiš. Link ističe nakon 24 sata iz sigurnosnih razloga.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "joinEvents": {
           "question": "Kako da se pridružim događajima i meetupovima?",
           "answer": "Pregledaj dostupne događaje u odeljku Događaji i MeetUpovi. Dodirni bilo koji događaj da vidiš detalje uključujući datum, lokaciju i cenu. Za besplatne događaje, samo dodirni 'Pridruži se' ili 'RSVP'. Za plaćene događaje, možeš bezbedno kupiti karte kroz naš integrisani sistem plaćanja.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "updateProfile": {
           "question": "Kako da ažuriram informacije na profilu?",
           "answer": "Idi na karticu Profil i dodirni ikonicu za uređivanje ili 'Uredi profil'. Možeš da ažuriraš svoje ime, biografiju, profilnu sliku i wellness interesovanja. Promene se čuvaju automatski. Tvoj profil nam pomaže da personalizujemo preporuke događaja za tebe.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "deleteAccount": {
           "question": "Kako mogu da obrišem svoj nalog?",
           "answer": "Da obrišeš svoj Maxina nalog i povezane podatke, pošalji e-mail na support@exafy.io sa naslovom 'Zahtev za brisanje naloga – Maxina'. Uključi e-adresu povezanu sa tvojim nalogom. Zahteve za brisanje obrađujemo u roku od 30 dana.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "paymentMethods": {
           "question": "Koji načini plaćanja su prihvaćeni?",
@@ -48,12 +58,16 @@
         "contactOrganizers": {
           "question": "Kako da kontaktiram organizatore događaja?",
           "answer": "Na stranici bilo kog događaja možeš pronaći profil organizatora. Dodirni njegovo ime da vidiš profil i pristupiš opcijama za poruke. Za pitanja o konkretnim događajima, koristi Q&A sekciju događaja ili kontaktiraj organizatora direktno putem poruka u aplikaciji.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "dataSecure": {
           "question": "Da li su moji lični podaci sigurni?",
           "answer": "Da, tvoja privatnost i sigurnost su nam na prvom mestu. Koristimo enkripciju industrijskog standarda, sigurnu autentifikaciju i pratimo GDPR smernice. Nikada ne delimo tvoje lične podatke sa trećim stranama bez tvog pristanka. Pročitaj našu celokupnu Politiku privatnosti za više detalja.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "_pending_review": {}
       },
@@ -71,7 +85,9 @@
         "_pending_review": {}
       },
       "footer": "Sva prava zadržana.",
-      "_pending_review": {}
+      "_pending_review": {
+        "description": true
+      }
     },
     "_pending_review": {}
   },

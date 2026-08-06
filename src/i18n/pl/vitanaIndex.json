@@ -22,7 +22,10 @@
       "strong": "Silny",
       "reallyGood": "Naprawdę dobrze",
       "elite": "Elita",
-      "_pending_review": {}
+      "_pending_review": {
+        "starting": true,
+        "building": true
+      }
     },
     "framings": {
       "starting": "Dopiero zaczynasz",
@@ -33,7 +36,9 @@
       "elite": "Elita",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "subtitle": true
+    }
   },
   "_pending_review": {}
 }

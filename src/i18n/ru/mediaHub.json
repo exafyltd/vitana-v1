@@ -64,7 +64,12 @@
       "deleteError": "Ошибка",
       "deleteErrorDesc": "Не удалось удалить. Пожалуйста, попробуй еще раз.",
       "commentError": "Ошибка",
-      "commentErrorDesc": "Не удалось опубликовать комментарий. Пожалуйста, попробуй еще раз."
+      "commentErrorDesc": "Не удалось опубликовать комментарий. Пожалуйста, попробуй еще раз.",
+      "_pending_review": {
+        "podcastDeletedDesc": true,
+        "videoDeletedDesc": true,
+        "deleteErrorDesc": true
+      }
     },
     "comments": {
       "title": "Комментарии",
@@ -148,6 +153,9 @@
         "education": "Образование",
         "lifestyle": "Образ жизни"
       }
+    },
+    "_pending_review": {
+      "noMatchingShorts": true
     }
   }
 }

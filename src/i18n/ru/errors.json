@@ -13,6 +13,9 @@
     "forbidden": "Доступ запрещён",
     "forbiddenDesc": "У тебя нет разрешения на это действие.",
     "notFound": "Не найдено",
-    "notFoundDesc": "Запрошенный элемент не найден."
+    "notFoundDesc": "Запрошенный элемент не найден.",
+    "_pending_review": {
+      "unauthorizedDesc": true
+    }
   }
 }

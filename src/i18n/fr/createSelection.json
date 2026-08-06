@@ -5,6 +5,9 @@
     "event": "Événement",
     "eventDescription": "Rassemblements formels avec des horaires et des programmes structurés",
     "meetup": "Rendez-vous",
-    "meetupDescription": "Rassemblements informels pour le réseautage et la création de communauté"
+    "meetupDescription": "Rassemblements informels pour le réseautage et la création de communauté",
+    "_pending_review": {
+      "description": true
+    }
   }
 }

@@ -13,7 +13,10 @@
       "2": "Índice Vitana",
       "3": "Correspondência mais próxima",
       "4": "Redirecionamento por justiça",
-      "_pending_review": {}
+      "_pending_review": {
+        "3": true,
+        "4": true
+      }
     },
     "_pending_review": {}
   },

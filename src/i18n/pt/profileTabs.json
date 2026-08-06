@@ -9,7 +9,9 @@
     "services": "Serviços",
     "insight": "Percepção",
     "milestones": "Marcos",
-    "_pending_review": {}
+    "_pending_review": {
+      "about": true
+    }
   },
   "_pending_review": {}
 }

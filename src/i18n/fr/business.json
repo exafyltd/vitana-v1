@@ -17,7 +17,12 @@
       "hostAndSell": "Organise et vends des billets",
       "resellAndEarn": "Revends et gagne",
       "offerBookings": "Propose des réservations",
-      "boostVisibility": "Augmente la visibilité"
+      "boostVisibility": "Augmente la visibilité",
+      "_pending_review": {
+        "howToEarn": true,
+        "pickOne": true,
+        "createServiceDesc": true
+      }
     },
     "history": {
       "all": "Tout",
@@ -38,7 +43,13 @@
       "allTime": "Depuis toujours",
       "details": "Détails",
       "earningsActivity": "Activité des gains",
-      "noEarningsStartSelling": "Pas encore de gains. Commence à vendre pour voir l'activité ici."
+      "noEarningsStartSelling": "Pas encore de gains. Commence à vendre pour voir l'activité ici.",
+      "_pending_review": {
+        "noEarningsYet": true,
+        "startSellingToSee": true,
+        "youEarned": true,
+        "allTime": true
+      }
     },
     "kpi": {
       "totalEarnings": "Gains totaux",
@@ -61,7 +72,11 @@
       "resellerCommissions": "Commissions de revendeur",
       "goToSellEarn": "Va à Vendre et Gagner",
       "totalEarned": "Total gagné",
-      "earningsBySource": "Gains par source"
+      "earningsBySource": "Gains par source",
+      "_pending_review": {
+        "goToSellEarn": true,
+        "totalEarned": true
+      }
     },
     "reseller": {
       "upcomingEvents": "Événements à venir",
@@ -84,7 +99,12 @@
       "noPayoutsYet": "Aucun versement pour l'instant",
       "attributedSales": "Ventes attribuées par événement",
       "noSalesMatchFilter": "Aucune vente ne correspond aux filtres actuels",
-      "mockDataActive": "Données de test actives"
+      "mockDataActive": "Données de test actives",
+      "_pending_review": {
+        "shareLinkToStart": true,
+        "shareLinkOrPromotion": true,
+        "pickEventForLink": true
+      }
     },
     "transfer": {
       "title": "Transférer vers le portefeuille",
@@ -93,7 +113,10 @@
       "wallet": "Portefeuille",
       "instantCredit": "Cela créditera instantanément tes gains à ton solde de portefeuille.",
       "transferring": "Transfert en cours...",
-      "transfer": "Transférer"
+      "transfer": "Transférer",
+      "_pending_review": {
+        "instantCredit": true
+      }
     },
     "typeSelector": {
       "title": "Lance une entreprise",
@@ -106,7 +129,10 @@
       "badgeNew": "Nouveau",
       "badgeActive": "Actif",
       "alreadyReseller": "Tu es déjà un revendeur ! Consulte l'onglet Vendre et Gagner.",
-      "cancel": "Annuler"
+      "cancel": "Annuler",
+      "_pending_review": {
+        "alreadyReseller": true
+      }
     },
     "missionOpportunities": {
       "title": "Opportunités de mission",
@@ -120,6 +146,9 @@
         "marketplace": "Marché",
         "income_generation": "Génération de revenus",
         "business_formation": "Création d'entreprise"
+      },
+      "_pending_review": {
+        "subtitle": true
       }
     }
   }

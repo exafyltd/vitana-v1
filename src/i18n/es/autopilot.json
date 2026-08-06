@@ -17,7 +17,10 @@
       "profileSectionTitle": "El piloto automático puede pulir tu perfil ✨",
       "profileSectionDesc": "Obtén sugerencias con IA para tu biografía, arquetipo y destacados.",
       "tryAutopilot": "Probar piloto automático",
-      "_pending_review": {}
+      "_pending_review": {
+        "showcaseDesc": true,
+        "archetypeDesc": true
+      }
     },
     "preview": "Vista previa del piloto automático",
     "viewAll": "Ver todo",
@@ -43,7 +46,10 @@
       "toastExecutedDesc": "{success}/{total} acciones completadas con éxito",
       "toastFailedTitle": "Ejecución fallida",
       "toastFailedDesc": "Algo salió mal. Inténtalo de nuevo.",
-      "_pending_review": {}
+      "_pending_review": {
+        "readyToExecute": true,
+        "executingDesc": true
+      }
     },
     "priorities": {
       "high": "Alta",
@@ -60,7 +66,11 @@
       "enableToSee": "Activa el piloto automático para ver sugerencias",
       "completeForRewards": "Completa las sugerencias del piloto automático para obtener recompensas",
       "enableForCredits": "Activa el piloto automático para obtener créditos",
-      "_pending_review": {}
+      "_pending_review": {
+        "enableToSee": true,
+        "completeForRewards": true,
+        "enableForCredits": true
+      }
     },
     "insightBanner": {
       "title": "Resumen de salud del piloto automático",
@@ -69,7 +79,9 @@
       "statusBalanced": "Equilibrado",
       "statusNeedsAttention": "Necesita atención",
       "statusImproving": "Mejorando",
-      "_pending_review": {}
+      "_pending_review": {
+        "description": true
+      }
     },
     "profilePopup": {
       "title": "Deja que el piloto automático pula tu perfil ✨",
@@ -93,7 +105,12 @@
       "applied": "¡Cambios guardados!",
       "error": "Algo salió mal",
       "comingSoon": "Próximamente",
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true,
+        "polishBio": true,
+        "refreshArchetype": true,
+        "highlightShowcase": true
+      }
     },
     "actions": {
       "action1Title": "¿Unirte al grupo de baile de longevidad esta noche?",
@@ -110,7 +127,12 @@
       "action6Reason": "Tu alma te llama a estas técnicas para derretir el estrés",
       "newActionTitle": "Nueva sugerencia de IA",
       "newActionReason": "Basado en patrones de actividad recientes",
-      "_pending_review": {}
+      "_pending_review": {
+        "action1Reason": true,
+        "action2Reason": true,
+        "action5Title": true,
+        "action5Reason": true
+      }
     },
     "_pending_review": {}
   },

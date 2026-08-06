@@ -113,7 +113,25 @@
       "personalEventCreated": "Событие создано!",
       "personalEventCreatedDesc": "Событие добавлено в твой календарь.",
       "error": "Ошибка",
-      "errorDesc": "Не удалось создать событие. Пожалуйста, попробуй еще раз."
+      "errorDesc": "Не удалось создать событие. Пожалуйста, попробуй еще раз.",
+      "_pending_review": {
+        "errorCreatingDesc": true,
+        "generatingImageDesc": true,
+        "imageGeneratedDesc": true,
+        "rateLimitDesc": true,
+        "creditsDesc": true,
+        "permissionDeniedDesc": true,
+        "imageGenFailedDesc": true,
+        "communityEventCreatedDesc": true,
+        "personalEventCreatedDesc": true,
+        "errorDesc": true
+      }
+    },
+    "_pending_review": {
+      "descriptionPlaceholder": true,
+      "detailedDescriptionPlaceholder": true,
+      "detailedDescriptionHint": true,
+      "displayPriceHint": true
     }
   }
 }

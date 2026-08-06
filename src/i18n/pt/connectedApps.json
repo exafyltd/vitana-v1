@@ -45,6 +45,11 @@
       "noResults": "Nenhum aplicativo encontrado",
       "connectionSuccess": "Conexão bem-sucedida",
       "connectionPlaceholder": "Conexão {appName} em breve"
+    },
+    "_pending_review": {
+      "syncing": true,
+      "lastSync": true,
+      "dataSync": true
     }
   }
 }

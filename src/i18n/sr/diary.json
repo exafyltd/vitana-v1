@@ -9,7 +9,9 @@
     "textEntry": "✍️ Unos teksta",
     "photoEntry": "📸 Unos fotografije",
     "searchPlaceholder": "Pretraži dnevnik...",
-    "_pending_review": {}
+    "_pending_review": {
+      "description": true
+    }
   },
   "_pending_review": {}
 }

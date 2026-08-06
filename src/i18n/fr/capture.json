@@ -42,7 +42,18 @@
     "sendFailedDesc": "Impossible d'envoyer ton feedback. Réessaye.",
     "recognitionError": "Erreur de reconnaissance",
     "recognitionErrorDesc": "La reconnaissance vocale a rencontré une erreur. Réessaye.",
-    "_pending_review": {}
+    "_pending_review": {
+      "tapToDescribe": true,
+      "yourVoiceEntry": true,
+      "yourFeedback": true,
+      "reportSentDesc": true,
+      "recordingStartedDesc": true,
+      "noContentDesc": true,
+      "noContentBugDesc": true,
+      "entrySavedDesc": true,
+      "saveFailedDesc": true,
+      "sendFailedDesc": true
+    }
   },
   "_pending_review": {}
 }

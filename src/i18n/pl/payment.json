@@ -19,7 +19,10 @@
     "refreshFailed": "Odświeżanie nieudane",
     "refreshFailedDesc": "Nie udało się odświeżyć salda. Spróbuj ponownie.",
     "error": "Błąd",
-    "_pending_review": {}
+    "_pending_review": {
+      "paymentFailedDesc": true,
+      "refreshFailedDesc": true
+    }
   },
   "_pending_review": {}
 }

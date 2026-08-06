@@ -25,7 +25,10 @@
     "fileTooBig": "O arquivo é muito grande (máx. {max})",
     "invalidFileType": "Tipo de arquivo inválido",
     "uploadLimit": "Máximo de {max} arquivos permitidos",
-    "_pending_review": {}
+    "_pending_review": {
+      "pleaseSelect": true,
+      "pleaseEnter": true
+    }
   },
   "_pending_review": {}
 }

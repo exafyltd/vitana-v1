@@ -15,7 +15,10 @@
     "typeMessage": "Agora podes digitar tua mensagem",
     "actionFailed": "Ação Falhou",
     "couldNotExecute": "Não foi possível executar {action}",
-    "_pending_review": {}
+    "_pending_review": {
+      "screenSharingDesc": true,
+      "typeMessage": true
+    }
   },
   "_pending_review": {}
 }

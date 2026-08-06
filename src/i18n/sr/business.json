@@ -18,7 +18,11 @@
       "resellAndEarn": "Preprodaj i zaradi",
       "offerBookings": "Ponudi rezervacije",
       "boostVisibility": "Povećaj vidljivost",
-      "_pending_review": {}
+      "_pending_review": {
+        "howToEarn": true,
+        "pickOne": true,
+        "createServiceDesc": true
+      }
     },
     "history": {
       "all": "Sve",
@@ -40,7 +44,12 @@
       "details": "Detalji",
       "earningsActivity": "Aktivnost zarade",
       "noEarningsStartSelling": "Još uvek nema zarade. Počni sa prodajom da bi video/la aktivnost ovde.",
-      "_pending_review": {}
+      "_pending_review": {
+        "noEarningsYet": true,
+        "startSellingToSee": true,
+        "youEarned": true,
+        "allTime": true
+      }
     },
     "kpi": {
       "totalEarnings": "Ukupna zarada",
@@ -64,7 +73,10 @@
       "goToSellEarn": "Idi na Prodaja i zarada",
       "totalEarned": "Ukupno zarađeno",
       "earningsBySource": "Zarada po izvoru",
-      "_pending_review": {}
+      "_pending_review": {
+        "goToSellEarn": true,
+        "totalEarned": true
+      }
     },
     "reseller": {
       "upcomingEvents": "Predstojeći događaji",
@@ -88,7 +100,11 @@
       "attributedSales": "Pripisana prodaja po događaju",
       "noSalesMatchFilter": "Nema prodaje koja odgovara trenutnim filterima",
       "mockDataActive": "Lažni podaci aktivni",
-      "_pending_review": {}
+      "_pending_review": {
+        "shareLinkToStart": true,
+        "shareLinkOrPromotion": true,
+        "pickEventForLink": true
+      }
     },
     "transfer": {
       "title": "Prenesi u novčanik",
@@ -98,7 +114,9 @@
       "instantCredit": "Ovo će odmah uplatiti tvoju zaradu na stanje novčanika.",
       "transferring": "Prenosim...",
       "transfer": "Prenesi",
-      "_pending_review": {}
+      "_pending_review": {
+        "instantCredit": true
+      }
     },
     "typeSelector": {
       "title": "Pokreni biznis",
@@ -112,7 +130,9 @@
       "badgeActive": "Aktivno",
       "alreadyReseller": "Već si preprodavac! Pogledaj karticu Prodaj i zaradi.",
       "cancel": "Otkaži",
-      "_pending_review": {}
+      "_pending_review": {
+        "alreadyReseller": true
+      }
     },
     "missionOpportunities": {
       "title": "Prilike za misije",
@@ -128,7 +148,9 @@
         "business_formation": "Osnivanje biznisa",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {
+        "subtitle": true
+      }
     },
     "_pending_review": {}
   },

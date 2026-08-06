@@ -13,7 +13,11 @@
     "icon": "Ikona",
     "publicLabel": "Vidljivo svima",
     "private": "Privatno",
-    "_pending_review": {}
+    "_pending_review": {
+      "title": true,
+      "empty": true,
+      "addFirst": true
+    }
   },
   "_pending_review": {}
 }

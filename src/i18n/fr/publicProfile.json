@@ -7,6 +7,9 @@
     "posts": "Publications",
     "followers": "Abonnés",
     "following": "Abonnements",
-    "groups": "Groupes"
+    "groups": "Groupes",
+    "_pending_review": {
+      "milestones": true
+    }
   }
 }

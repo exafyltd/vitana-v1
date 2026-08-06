@@ -26,9 +26,19 @@
       "youtube": "Zidentyfikujemy Twoje kategorie treści i obszary ekspertyzy z Twojego opisu.",
       "facebook": "Wyodrębnimy Twoje zainteresowania i zaangażowanie w społeczność z Twojego bio.",
       "x": "Przeanalizujemy Twoje bio, aby zrozumieć Twoje tematy zainteresowań i styl komunikacji.",
-      "_pending_review": {}
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "tiktok": true,
+        "youtube": true,
+        "facebook": true,
+        "x": true
+      }
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "dialogTitle": true,
+      "verifiedConnections": true
+    }
   },
   "_pending_review": {}
 }

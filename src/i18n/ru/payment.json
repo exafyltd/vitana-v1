@@ -18,6 +18,10 @@
     "balanceRefreshedDesc": "Баланс кошелька обновлен",
     "refreshFailed": "Обновление не удалось",
     "refreshFailedDesc": "Не удалось обновить баланс. Пожалуйста, попробуй еще раз.",
-    "error": "Ошибка"
+    "error": "Ошибка",
+    "_pending_review": {
+      "paymentFailedDesc": true,
+      "refreshFailedDesc": true
+    }
   }
 }

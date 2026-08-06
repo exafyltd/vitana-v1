@@ -16,7 +16,12 @@
     "disconnectDesc": "Možeš se ponovo povezati kasnije.",
     "proceed": "Želiš li da nastaviš?",
     "proceedDesc": "Ova radnja će biti izvršena.",
-    "_pending_review": {}
+    "_pending_review": {
+      "logout": true,
+      "logoutDesc": true,
+      "disconnect": true,
+      "proceed": true
+    }
   },
   "_pending_review": {}
 }

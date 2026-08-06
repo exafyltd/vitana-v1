@@ -15,7 +15,9 @@
     "orContinueWith": "Ili nastavi sa",
     "backToPortals": "Nazad na sve portale",
     "keepLoggedIn": "Ostani prijavljen/a",
-    "_pending_review": {}
+    "_pending_review": {
+      "subtitle": true
+    }
   },
   "_pending_review": {}
 }

@@ -21,10 +21,16 @@
       "purchases": "Achats",
       "pending": "Paiements en attente",
       "withdrawals": "Retraits",
-      "stakes": "Mise en jeu"
+      "stakes": "Mise en jeu",
+      "_pending_review": {
+        "commissions": true
+      }
     },
     "noActivity": "Aucune activité pour l'instant",
     "noActivityDesc": "Tes transactions apparaîtront ici.",
-    "displayCurrency": "Devise d'affichage"
+    "displayCurrency": "Devise d'affichage",
+    "_pending_review": {
+      "description": true
+    }
   }
 }

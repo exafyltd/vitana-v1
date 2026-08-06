@@ -26,9 +26,19 @@
       "youtube": "Identifikovaćemo tvoje kategorije sadržaja i oblasti stručnosti iz tvog opisa.",
       "facebook": "Izvlačimo tvoja interesovanja i učešće u zajednici iz tvog bio-a.",
       "x": "Analiziraćemo tvoj bio da razumemo teme koje te zanimaju i stil komunikacije.",
-      "_pending_review": {}
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "tiktok": true,
+        "youtube": true,
+        "facebook": true,
+        "x": true
+      }
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "dialogTitle": true,
+      "verifiedConnections": true
+    }
   },
   "_pending_review": {}
 }

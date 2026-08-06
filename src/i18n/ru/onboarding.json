@@ -24,6 +24,10 @@
       "handleMinLength": "Минимум 3 символа",
       "saving": "Настройка...",
       "submit": "Давай начнем!"
+    },
+    "_pending_review": {
+      "connectAppsDesc": true,
+      "setGoalsDesc": true
     }
   }
 }

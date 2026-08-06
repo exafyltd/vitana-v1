@@ -58,6 +58,14 @@
     "googleCal": "Kalendarz Google",
     "outlook": "Outlook",
     "appleCal": "Kalendarz Apple",
-    "downloadIcs": "Pobierz ICS"
+    "downloadIcs": "Pobierz ICS",
+    "_pending_review": {
+      "followersGoing": true,
+      "signInToMessage": true,
+      "cannotMessageHost": true,
+      "messageSentDesc": true,
+      "removedFromEvent": true,
+      "leaveError": true
+    }
   }
 }

@@ -20,7 +20,9 @@
     "joining": "Povezivanje...",
     "getTickets": "Uzmi karte",
     "promoteEvent": "Promoviši događaj",
-    "_pending_review": {}
+    "_pending_review": {
+      "getFreeTicket": true
+    }
   },
   "_pending_review": {}
 }

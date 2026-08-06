@@ -71,7 +71,10 @@
       "created": "Группа создана",
       "createdDesc": "\"{name}\" успешно создана.",
       "failed": "Не удалось создать группу",
-      "failedDesc": "Пожалуйста, попробуй еще раз."
+      "failedDesc": "Пожалуйста, попробуй еще раз.",
+      "_pending_review": {
+        "addMembersRequiredDesc": true
+      }
     },
     "toast": {
       "success": "Успех",
@@ -88,7 +91,11 @@
       "groupCreated": "Группа \"{name}\" успешно создана!",
       "groupFailed": "Не удалось создать группу",
       "allMarkedRead": "Все сообщения помечены как прочитанные",
-      "markAllReadFailed": "Не удалось пометить все как прочитанные. Пожалуйста, попробуй еще раз."
+      "markAllReadFailed": "Не удалось пометить все как прочитанные. Пожалуйста, попробуй еще раз.",
+      "_pending_review": {
+        "pleaseLogin": true,
+        "singleRecipientRequired": true
+      }
     },
     "createGroupAction": "Создать новую группу",
     "newConversationAction": "Новая беседа",
@@ -106,7 +113,10 @@
       "globalDescription": "Начни разговор или присоединись к сообществу, чтобы общаться с другими.",
       "tenantDescription": "Общайся с коллегами и членами команды в своей профессиональной сети.",
       "startConversation": "Начать разговор",
-      "discoverPeople": "Найти людей"
+      "discoverPeople": "Найти людей",
+      "_pending_review": {
+        "title": true
+      }
     },
     "group": {
       "loading": "Загрузка группы…",
@@ -118,6 +128,9 @@
       "officialBadge": "официальная группа",
       "empty": "Пока нет сообщений.",
       "composerPlaceholder": "Сообщение…"
+    },
+    "_pending_review": {
+      "noMessagesDesc": true
     }
   }
 }

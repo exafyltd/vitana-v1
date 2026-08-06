@@ -5,7 +5,9 @@
       "description": "Usunięcie „{name}” trwale usunie wszystkie powiązane wersje robocze i analizy. Tej czynności nie można cofnąć.",
       "dontAskAgain": "Nie pytaj mnie ponownie o kampanie robocze",
       "deletePermanently": "Usuń trwale",
-      "_pending_review": {}
+      "_pending_review": {
+        "description": true
+      }
     },
     "creation": {
       "title": "Utwórz kampanię",
@@ -19,7 +21,10 @@
         "2": "Połącz kanały teraz, aby natychmiast planować",
         "3": "Szablon startowy działa dla większości ogłoszeń",
         "4": "Inteligentne planowanie wykorzystuje twoje dane o wcześniejszym zaangażowaniu",
-        "_pending_review": {}
+        "_pending_review": {
+          "2": true,
+          "4": true
+        }
       },
       "_pending_review": {}
     },

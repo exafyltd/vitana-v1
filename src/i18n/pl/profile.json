@@ -6,7 +6,11 @@
       "editHighlights": "Edytuj wyróżnienia",
       "saveHighlights": "Zapisz wyróżnienia",
       "highlightsDesc": "Wybierz swoje najlepsze posty i media, aby wyróżnić je na górze swojego profilu. Wyróżnione treści pojawiają się w sekcji wyróżnień i przyciągają więcej obserwujących.",
-      "try": "Wypróbuj"
+      "try": "Wypróbuj",
+      "_pending_review": {
+        "polishBio": true,
+        "highlightsDesc": true
+      }
     },
     "identity": {
       "vitanaIndex": "Indeks Vitana",

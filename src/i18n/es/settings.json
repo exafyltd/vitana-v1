@@ -25,7 +25,10 @@
       "billingDesc": "Información de suscripción y pago",
       "support": "Soporte",
       "supportDesc": "Ayuda, preguntas frecuentes y opciones de contacto",
-      "_pending_review": {}
+      "_pending_review": {
+        "privacyDesc": true,
+        "notificationsDesc": true
+      }
     },
     "status": {
       "privacyStatus": "Estado de privacidad",
@@ -40,7 +43,9 @@
     },
     "vitanaOpenedSection": "Vitana abrió {section}",
     "vitanaUpdated": "Vitana actualizó tu configuración",
-    "_pending_review": {}
+    "_pending_review": {
+      "description": true
+    }
   },
   "_pending_review": {}
 }

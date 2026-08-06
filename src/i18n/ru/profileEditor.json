@@ -69,7 +69,16 @@
       "uploadFailed": "Загрузка не удалась",
       "uploadFailedDesc": "Не удалось загрузить изображение. Пожалуйста, попробуй еще раз.",
       "identityUpdated": "Данные обновлены",
-      "identityUpdatedDesc": "Твои данные успешно сохранены."
+      "identityUpdatedDesc": "Твои данные успешно сохранены.",
+      "_pending_review": {
+        "description": true,
+        "displayNamePlaceholder": true,
+        "handleDescription": true,
+        "personalityDescriptor": true,
+        "personalityDescriptorPlaceholder": true,
+        "personalityDescriptorDescription": true,
+        "identityUpdatedDesc": true
+      }
     },
     "coverLibrary": {
       "title": "Библиотека обложек",
@@ -96,7 +105,16 @@
       "universalRemoved": "Универсальное фото обложки удалено",
       "uploadFailed": "Загрузка не удалась",
       "categoryRequired": "Пожалуйста, выбери категорию для этого фото сначала.",
-      "saveError": "Не удалось сохранить — пожалуйста, попробуй еще раз."
+      "saveError": "Не удалось сохранить — пожалуйста, попробуй еще раз.",
+      "_pending_review": {
+        "tileSubtitle": true,
+        "universalDescription": true
+      }
+    },
+    "_pending_review": {
+      "editAbout": true,
+      "bioPlaceholder": true,
+      "profileUpdatedDesc": true
     }
   }
 }

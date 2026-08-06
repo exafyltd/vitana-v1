@@ -5,7 +5,9 @@
       "privacySettings": {
         "title": "Configurações de Privacidade",
         "description": "Configura as preferências de privacidade e partilha de dados",
-        "_pending_review": {}
+        "_pending_review": {
+          "description": true
+        }
       },
       "manageAccess": {
         "title": "Gerir Acesso",
@@ -15,7 +17,9 @@
       "securitySettings": {
         "title": "Configurações de Segurança",
         "description": "Atualiza as preferências de autenticação e segurança",
-        "_pending_review": {}
+        "_pending_review": {
+          "description": true
+        }
       },
       "apiKeysAccess": {
         "title": "Chaves de API e Acesso",
@@ -35,7 +39,9 @@
       "permissionSettings": {
         "title": "Configurações de Permissão",
         "description": "Ajusta as permissões granulares para diferentes funcionalidades",
-        "_pending_review": {}
+        "_pending_review": {
+          "title": true
+        }
       },
       "exportData": {
         "title": "Exportar Dados",
@@ -44,7 +50,9 @@
       },
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "title": true
+    }
   },
   "_pending_review": {}
 }

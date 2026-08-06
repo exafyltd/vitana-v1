@@ -5,7 +5,9 @@
       "description": "Excluir \"{name}\" removerá permanentemente todos os rascunhos e análises relacionados. Esta ação não pode ser desfeita.",
       "dontAskAgain": "Não me perguntes novamente sobre campanhas de rascunho",
       "deletePermanently": "Excluir Permanentemente",
-      "_pending_review": {}
+      "_pending_review": {
+        "description": true
+      }
     },
     "creation": {
       "title": "Criar Campanha",
@@ -19,7 +21,10 @@
         "2": "Conecta canais agora para agendamento instantâneo",
         "3": "O modelo de lançamento funciona para a maioria dos anúncios",
         "4": "Agendamento inteligente usa os teus dados de engajamento anteriores",
-        "_pending_review": {}
+        "_pending_review": {
+          "2": true,
+          "4": true
+        }
       },
       "_pending_review": {}
     },

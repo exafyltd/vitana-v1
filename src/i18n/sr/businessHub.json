@@ -20,7 +20,10 @@
     "noClientsDesc": "Tvoji klijenti će se pojaviti ovde.",
     "noSales": "Još uvek nema prodaja",
     "noSalesDesc": "Tvoja istorija prodaja će se pojaviti ovde.",
-    "_pending_review": {}
+    "_pending_review": {
+      "noServicesDesc": true,
+      "noClientsDesc": true
+    }
   },
   "_pending_review": {}
 }

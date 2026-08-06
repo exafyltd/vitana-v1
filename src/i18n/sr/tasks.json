@@ -15,7 +15,10 @@
     "addNote": "Dodaj belešku",
     "openContext": "Otvori kontekst",
     "assignee": "Zaduženi",
-    "_pending_review": {}
+    "_pending_review": {
+      "postponeComingSoon": true,
+      "navigateTo": true
+    }
   },
   "_pending_review": {}
 }

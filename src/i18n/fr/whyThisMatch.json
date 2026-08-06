@@ -12,7 +12,11 @@
       "1": "Correspondance exacte",
       "2": "Vitana Index",
       "3": "Meilleure correspondance",
-      "4": "Réacheminement équitable"
+      "4": "Réacheminement équitable",
+      "_pending_review": {
+        "3": true,
+        "4": true
+      }
     }
   }
 }

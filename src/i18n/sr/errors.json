@@ -14,7 +14,9 @@
     "forbiddenDesc": "Nemaš dozvolu za ovu radnju.",
     "notFound": "Nije pronađeno",
     "notFoundDesc": "Tražena stavka nije pronađena.",
-    "_pending_review": {}
+    "_pending_review": {
+      "unauthorizedDesc": true
+    }
   },
   "_pending_review": {}
 }

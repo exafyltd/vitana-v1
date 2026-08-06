@@ -8,7 +8,9 @@
     "communityNews": "Novosti iz zajednice",
     "inspiration": "Inspiracija",
     "dailyMatches": "Dnevni mečevi",
-    "_pending_review": {}
+    "_pending_review": {
+      "mediaContent": true
+    }
   },
   "_pending_review": {}
 }

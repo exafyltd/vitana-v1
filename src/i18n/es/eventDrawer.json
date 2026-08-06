@@ -59,7 +59,14 @@
     "outlook": "Outlook",
     "appleCal": "Calendario de Apple",
     "downloadIcs": "Descargar ICS",
-    "_pending_review": {}
+    "_pending_review": {
+      "followersGoing": true,
+      "signInToMessage": true,
+      "cannotMessageHost": true,
+      "messageSentDesc": true,
+      "removedFromEvent": true,
+      "leaveError": true
+    }
   },
   "_pending_review": {}
 }

@@ -45,6 +45,11 @@
       "noResults": "Приложения не найдены",
       "connectionSuccess": "Подключение успешно",
       "connectionPlaceholder": "Подключение {appName} скоро"
+    },
+    "_pending_review": {
+      "syncing": true,
+      "lastSync": true,
+      "dataSync": true
     }
   }
 }

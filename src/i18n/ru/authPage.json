@@ -14,6 +14,9 @@
     "createAccount": "Создать аккаунт",
     "orContinueWith": "Или продолжить с",
     "backToPortals": "Назад ко всем порталам",
-    "keepLoggedIn": "Запомнить меня"
+    "keepLoggedIn": "Запомнить меня",
+    "_pending_review": {
+      "subtitle": true
+    }
   }
 }

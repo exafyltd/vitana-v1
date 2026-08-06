@@ -4,7 +4,10 @@
       "title": "Podaruj voucher Maxina",
       "subtitle": "Podaruj dobrostan i połączenie ze społecznością",
       "buyVoucher": "Kup voucher",
-      "openingCheckout": "Otwieranie bezpiecznej płatności..."
+      "openingCheckout": "Otwieranie bezpiecznej płatności...",
+      "_pending_review": {
+        "subtitle": true
+      }
     },
     "tiers": {
       "test": {
@@ -64,7 +67,10 @@
       "copyLink": "Kopiuj link",
       "share": "Zapisz / Udostępnij",
       "shareHint": "Zapisz do Plików, na Dysk lub wyślij komuś",
-      "downloadHint": "Jeśli pobieranie otworzy się puste, stuknij Otwórz w przeglądarce"
+      "downloadHint": "Jeśli pobieranie otworzy się puste, stuknij Otwórz w przeglądarce",
+      "_pending_review": {
+        "downloadHint": true
+      }
     },
     "toast": {
       "downloadStarted": "Pobieranie rozpoczęte!",
@@ -81,7 +87,13 @@
       "pdfNotAvailable": "Pobieranie PDF niedostępne dla tego typu zamówienia",
       "enterRecipientEmail": "Wprowadź adres e-mail odbiorcy",
       "emailOnlyForVouchers": "Wysyłanie e-maili dostępne tylko dla voucherów",
-      "sendingVoucherEmail": "Wysyłanie e-maila z voucherem..."
+      "sendingVoucherEmail": "Wysyłanie e-maila z voucherem...",
+      "_pending_review": {
+        "linkCopiedDesc": true,
+        "checkoutFailed": true,
+        "useTicketView": true,
+        "enterRecipientEmail": true
+      }
     }
   }
 }

@@ -24,7 +24,11 @@
       "noPostsFromFollowingDesc": "Osoby, które obserwujesz, nie utworzyły jeszcze żadnych wydarzeń ani spotkań.",
       "youFollow": "Obserwujesz",
       "loadingFollowing": "Ładowanie postów…",
-      "_pending_review": {}
+      "_pending_review": {
+        "noEventsTodayDesc": true,
+        "followingTitle": true,
+        "followingDesc": true
+      }
     },
     "_pending_review": {}
   },

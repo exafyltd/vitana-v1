@@ -9,7 +9,9 @@
     "textEntry": "✍️ Wpis tekstowy",
     "photoEntry": "📸 Wpis zdjęciowy",
     "searchPlaceholder": "Szukaj w dzienniku...",
-    "_pending_review": {}
+    "_pending_review": {
+      "description": true
+    }
   },
   "_pending_review": {}
 }

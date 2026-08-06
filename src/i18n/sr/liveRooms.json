@@ -7,7 +7,9 @@
       "scheduled": "Zakazano",
       "all": "Sve sobe",
       "past": "Prošlo",
-      "_pending_review": {}
+      "_pending_review": {
+        "live": true
+      }
     },
     "goLive": "Kreni uživo",
     "joinRoom": "Pridruži se sobi",
@@ -139,9 +141,15 @@
         "youAreLiveDesc": "Pridružujem se tvojoj strim sobi…",
         "aiImageHintTitle": "AI generisanje slike",
         "aiImageHintDesc": "Slika će biti generisana kada strim počne.",
-        "_pending_review": {}
+        "_pending_review": {
+          "streamUpdatedDesc": true,
+          "youAreLiveTitle": true
+        }
       },
-      "_pending_review": {}
+      "_pending_review": {
+        "descriptionPlaceholder": true,
+        "coverUploadHint": true
+      }
     },
     "editSession": {
       "title": "Uredi sesiju",
@@ -150,7 +158,9 @@
       "noChanges": "Nema izmena za čuvanje",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "noRooms": true
+    }
   },
   "goLivePopup": {
     "durationLabel": "Trajanje",

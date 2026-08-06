@@ -26,7 +26,10 @@
     "trend": {
       "improving": "Улучшается",
       "declining": "Ухудшается",
-      "stable": "Стабильно"
+      "stable": "Стабильно",
+      "_pending_review": {
+        "declining": true
+      }
     },
     "suggestions": {
       "uploadBloodTestResults": "Загрузить результаты анализа крови",
@@ -51,7 +54,14 @@
       "noMentalPlan": "Пока нет ментального плана",
       "noMentalPlanDesc": "Создай свой персонализированный план ментального благополучия для отслеживания стресса, фокуса и эмоционального баланса с ИИ-поддержкой.",
       "generatePlan": "Создать план",
-      "generating": "Создается..."
+      "generating": "Создается...",
+      "_pending_review": {
+        "noSleepPlanDesc": true,
+        "noExercisePlanDesc": true,
+        "noNutritionPlanDesc": true,
+        "noHydrationPlanDesc": true,
+        "noMentalPlanDesc": true
+      }
     },
     "noSupplements": "Пока нет добавок",
     "noSupplementsDesc": "Отслеживай свои ежедневные витамины, минералы и добавки. Добавь свою первую добавку, чтобы начать.",
@@ -88,7 +98,20 @@
         "income_generation": "Генерация дохода",
         "business_formation": "Создание бизнеса"
       },
-      "contractLink": "Посмотреть контракт Конечной Цели"
+      "contractLink": "Посмотреть контракт Конечной Цели",
+      "_pending_review": {
+        "subtitle": true,
+        "economyHeading": true,
+        "noPillar": true,
+        "noEconomy": true
+      }
+    },
+    "_pending_review": {
+      "priorityFocus": true,
+      "priorityFocusExplanation": true,
+      "takeAction": true,
+      "noSupplements": true,
+      "noReportsDesc": true
     }
   }
 }

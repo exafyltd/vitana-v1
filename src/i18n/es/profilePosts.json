@@ -15,7 +15,9 @@
     "noBackground": "Sin fondo",
     "searchingPeople": "Buscando personas…",
     "noPeopleFound": "Nadie encontrado",
-    "_pending_review": {}
+    "_pending_review": {
+      "placeholder": true
+    }
   },
   "_pending_review": {}
 }

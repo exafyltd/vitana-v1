@@ -6,7 +6,10 @@
       "live": "Teraz na żywo",
       "scheduled": "Zaplanowane",
       "all": "Wszystkie pokoje",
-      "past": "Minione"
+      "past": "Minione",
+      "_pending_review": {
+        "live": true
+      }
     },
     "goLive": "Przejdź na żywo",
     "joinRoom": "Dołącz do pokoju",
@@ -128,7 +131,15 @@
         "youAreLiveTitle": "Jesteś na żywo! 🎙️",
         "youAreLiveDesc": "Dołączanie do Twojego pokoju strumienia…",
         "aiImageHintTitle": "Generowanie obrazu AI",
-        "aiImageHintDesc": "Obraz zostanie wygenerowany po rozpoczęciu strumienia."
+        "aiImageHintDesc": "Obraz zostanie wygenerowany po rozpoczęciu strumienia.",
+        "_pending_review": {
+          "streamUpdatedDesc": true,
+          "youAreLiveTitle": true
+        }
+      },
+      "_pending_review": {
+        "descriptionPlaceholder": true,
+        "coverUploadHint": true
       }
     },
     "editSession": {
@@ -136,6 +147,9 @@
       "saving": "Zapisywanie…",
       "changeCover": "Zmień obraz okładki",
       "noChanges": "Brak zmian do zapisania"
+    },
+    "_pending_review": {
+      "noRooms": true
     }
   },
   "goLivePopup": {

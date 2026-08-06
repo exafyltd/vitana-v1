@@ -78,7 +78,9 @@
       "createdDesc": "\"{name}\" foi criado com sucesso.",
       "failed": "Falha ao criar grupo",
       "failedDesc": "Por favor, tenta novamente.",
-      "_pending_review": {}
+      "_pending_review": {
+        "addMembersRequiredDesc": true
+      }
     },
     "toast": {
       "success": "Sucesso",
@@ -96,7 +98,10 @@
       "groupFailed": "Falha ao criar grupo",
       "allMarkedRead": "Todas as mensagens marcadas como lidas",
       "markAllReadFailed": "Não foi possível marcar todas como lidas. Por favor, tenta novamente.",
-      "_pending_review": {}
+      "_pending_review": {
+        "pleaseLogin": true,
+        "singleRecipientRequired": true
+      }
     },
     "createGroupAction": "Criar Novo Grupo",
     "newConversationAction": "Nova Conversa",
@@ -115,7 +120,9 @@
       "tenantDescription": "Conecta-te com colegas e membros da equipa na tua rede profissional.",
       "startConversation": "Iniciar uma conversa",
       "discoverPeople": "Descobrir pessoas",
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true
+      }
     },
     "group": {
       "loading": "A carregar grupo…",
@@ -129,7 +136,9 @@
       "composerPlaceholder": "Mensagem…",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "noMessagesDesc": true
+    }
   },
   "_pending_review": {}
 }

@@ -65,7 +65,9 @@
       "cancel": "Cancelar",
       "send": "Enviar",
       "downloadPdf": "Descargar PDF",
-      "_pending_review": {}
+      "_pending_review": {
+        "yourTicket": true
+      }
     },
     "status": {
       "upcoming": "Próximos",
@@ -83,7 +85,9 @@
       "active": "Activo",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "noOrdersDesc": true
+    }
   },
   "_pending_review": {}
 }

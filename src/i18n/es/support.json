@@ -18,27 +18,37 @@
         "createAccount": {
           "question": "¿Cómo creo una cuenta en Maxina?",
           "answer": "Descarga la app de Maxina o visita nuestro portal en vitanaland.com/maxina. Toca 'Registrarse' e ingresa tu correo electrónico. Recibirás un correo de confirmación para verificar tu cuenta. Una vez confirmada, completa tu perfil para empezar a explorar eventos de bienestar y funciones comunitarias.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "resetPassword": {
           "question": "¿Cómo restablezco mi contraseña?",
           "answer": "En la pantalla de inicio de sesión, toca 'Olvidé mi contraseña' e ingresa tu correo electrónico registrado. Recibirás un enlace para restablecer la contraseña en unos minutos. Revisa tu carpeta de spam si no lo ves. El enlace caduca después de 24 horas por razones de seguridad.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "joinEvents": {
           "question": "¿Cómo me uno a eventos y reuniones?",
           "answer": "Explora los eventos disponibles en la sección Eventos y reuniones. Toca cualquier evento para ver detalles como fecha, ubicación y precio. Para eventos gratuitos, simplemente toca 'Unirse' o 'Confirmar asistencia'. Para eventos de pago, puedes comprar boletos de forma segura a través de nuestro sistema de pago integrado.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "updateProfile": {
           "question": "¿Cómo actualizo la información de mi perfil?",
           "answer": "Ve a tu pestaña de Perfil y toca el ícono de editar o 'Editar perfil'. Puedes actualizar tu nombre de usuario, biografía, foto de perfil e intereses de bienestar. Los cambios se guardan automáticamente. Tu perfil nos ayuda a personalizar las recomendaciones de eventos para ti.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "deleteAccount": {
           "question": "¿Cómo puedo eliminar mi cuenta?",
           "answer": "Para eliminar tu cuenta de Maxina y los datos asociados, envía un correo a support@exafy.io con el asunto 'Solicitud de eliminación de cuenta – Maxina'. Incluye la dirección de correo electrónico vinculada a tu cuenta. Procesamos las solicitudes de eliminación dentro de 30 días.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "paymentMethods": {
           "question": "¿Qué métodos de pago se aceptan?",
@@ -48,12 +58,16 @@
         "contactOrganizers": {
           "question": "¿Cómo contacto a los organizadores de eventos?",
           "answer": "En cualquier página de evento, puedes encontrar el perfil del organizador. Toca su nombre para ver su perfil y acceder a opciones de mensajería. Para preguntas sobre eventos específicos, usa la sección de preguntas y respuestas del evento o contacta al organizador directamente a través de mensajes en la app.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "dataSecure": {
           "question": "¿Mis datos personales están seguros?",
           "answer": "Sí, tu privacidad y seguridad son nuestras principales prioridades. Usamos encriptación de nivel industrial, autenticación segura y seguimos las pautas del GDPR. Nunca compartimos tu información personal con terceros sin tu consentimiento. Lee nuestra Política de privacidad completa para más detalles.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "_pending_review": {}
       },
@@ -71,7 +85,9 @@
         "_pending_review": {}
       },
       "footer": "Todos los derechos reservados.",
-      "_pending_review": {}
+      "_pending_review": {
+        "description": true
+      }
     },
     "_pending_review": {}
   },

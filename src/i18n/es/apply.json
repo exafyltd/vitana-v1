@@ -76,7 +76,11 @@
     "benefitEvents": "Acceso de primera ola a los 12 eventos de verano en Mallorca",
     "benefitVitana": "Guía personal de Vitana AI desde el primer día",
     "benefitSeat": "Un asiento fundador en la mesa mientras Vitanaland evoluciona",
-    "_pending_review": {}
+    "_pending_review": {
+      "subheadlineTicket": true,
+      "aboutEyebrow": true,
+      "benefitSeat": true
+    }
   },
   "_pending_review": {}
 }

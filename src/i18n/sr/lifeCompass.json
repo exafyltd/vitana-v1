@@ -34,7 +34,9 @@
       "health": {
         "title": "Transformiši zdravlje",
         "description": "Postigni optimalno fizičko i mentalno blagostanje",
-        "_pending_review": {}
+        "_pending_review": {
+          "title": true
+        }
       },
       "career": {
         "title": "Unapredi karijeru",

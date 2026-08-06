@@ -8,7 +8,9 @@
     "followers": "Pratioci",
     "following": "Pratiš",
     "groups": "Grupe",
-    "_pending_review": {}
+    "_pending_review": {
+      "milestones": true
+    }
   },
   "_pending_review": {}
 }

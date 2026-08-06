@@ -75,6 +75,11 @@
     "benefitTicket": "1 billet gratuit d'une valeur de 99 EUR pour un événement MAXINA Experience.",
     "benefitEvents": "Accès à la première vague à l'ensemble des 12 événements estivaux de Majorque.",
     "benefitVitana": "Un accompagnement Vitana IA personnalisé dès le premier jour.",
-    "benefitSeat": "Une place de membre fondateur à mesure que Vitanaland évolue."
+    "benefitSeat": "Une place de membre fondateur à mesure que Vitanaland évolue.",
+    "_pending_review": {
+      "subheadlineTicket": true,
+      "aboutEyebrow": true,
+      "benefitSeat": true
+    }
   }
 }

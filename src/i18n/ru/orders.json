@@ -60,7 +60,10 @@
       "personalMessage": "Личное сообщение",
       "cancel": "Отменить",
       "send": "Отправить",
-      "downloadPdf": "Скачать PDF"
+      "downloadPdf": "Скачать PDF",
+      "_pending_review": {
+        "yourTicket": true
+      }
     },
     "status": {
       "upcoming": "Предстоящие",
@@ -76,6 +79,9 @@
       "processing": "Обработка",
       "paid": "Активно",
       "active": "Активно"
+    },
+    "_pending_review": {
+      "noOrdersDesc": true
     }
   }
 }

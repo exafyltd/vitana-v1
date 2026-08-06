@@ -23,7 +23,11 @@
       "billing": "Rozliczenia",
       "billingDesc": "Informacje o subskrypcji i płatnościach",
       "support": "Wsparcie",
-      "supportDesc": "Pomoc, FAQ i opcje kontaktu"
+      "supportDesc": "Pomoc, FAQ i opcje kontaktu",
+      "_pending_review": {
+        "privacyDesc": true,
+        "notificationsDesc": true
+      }
     },
     "status": {
       "privacyStatus": "Status prywatności",
@@ -36,6 +40,9 @@
       "apps": "aplikacje"
     },
     "vitanaOpenedSection": "Vitana otworzyła {section}",
-    "vitanaUpdated": "Vitana zaktualizowała Twoje ustawienie"
+    "vitanaUpdated": "Vitana zaktualizowała Twoje ustawienie",
+    "_pending_review": {
+      "description": true
+    }
   }
 }

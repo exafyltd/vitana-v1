@@ -3,7 +3,9 @@
     "listening": "Slušam...",
     "processing": "Trenutak...",
     "connectionError": "Problem sa vezom. Pokušaj ponovo.",
-    "_pending_review": {}
+    "_pending_review": {
+      "connectionError": true
+    }
   },
   "_pending_review": {}
 }

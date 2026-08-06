@@ -27,7 +27,13 @@
     "ticketEmailNote": "Tvoja karta i potvrda će biti poslate na ovu email adresu.",
     "left": "{count} preostalo",
     "loadFailed": "Nije uspelo učitavanje ulaznica",
-    "_pending_review": {}
+    "_pending_review": {
+      "welcomeTitle": true,
+      "welcomeMessage": true,
+      "discountAppliedAmount": true,
+      "contactOrganizer": true,
+      "guestDetails": true
+    }
   },
   "_pending_review": {}
 }

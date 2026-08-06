@@ -6,7 +6,11 @@
       "editHighlights": "Modifier les coups de cœur",
       "saveHighlights": "Enregistrer les coups de cœur",
       "highlightsDesc": "Choisis tes meilleurs posts et médias à afficher en haut de ton profil. Le contenu mis en avant apparaît dans une section de coups de cœur et attire plus d'abonnés.",
-      "try": "Essayer"
+      "try": "Essayer",
+      "_pending_review": {
+        "polishBio": true,
+        "highlightsDesc": true
+      }
     },
     "identity": {
       "vitanaIndex": "Index Vitana",

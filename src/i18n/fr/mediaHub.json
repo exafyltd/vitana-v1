@@ -64,7 +64,12 @@
       "deleteError": "Erreur",
       "deleteErrorDesc": "Échec de la suppression. Réessaye.",
       "commentError": "Erreur",
-      "commentErrorDesc": "Échec de la publication du commentaire. Réessaye."
+      "commentErrorDesc": "Échec de la publication du commentaire. Réessaye.",
+      "_pending_review": {
+        "podcastDeletedDesc": true,
+        "videoDeletedDesc": true,
+        "deleteErrorDesc": true
+      }
     },
     "comments": {
       "title": "Commentaires",
@@ -148,6 +153,9 @@
         "education": "Éducation",
         "lifestyle": "Style de vie"
       }
+    },
+    "_pending_review": {
+      "noMatchingShorts": true
     }
   }
 }

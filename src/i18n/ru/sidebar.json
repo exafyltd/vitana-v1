@@ -45,6 +45,9 @@
     "monitoring": "Мониторинг",
     "logout": "Выйти",
     "connectors": "Коннекторы",
-    "support": "Поддержка"
+    "support": "Поддержка",
+    "_pending_review": {
+      "clinicalOps": true
+    }
   }
 }

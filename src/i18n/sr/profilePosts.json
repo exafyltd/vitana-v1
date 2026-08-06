@@ -15,7 +15,9 @@
     "noBackground": "Nema pozadine",
     "searchingPeople": "Tražim ljude …",
     "noPeopleFound": "Niko nije pronađen.",
-    "_pending_review": {}
+    "_pending_review": {
+      "placeholder": true
+    }
   },
   "_pending_review": {}
 }

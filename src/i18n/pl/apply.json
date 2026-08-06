@@ -75,6 +75,11 @@
     "benefitTicket": "1 darmowy bilet o wartości 99 EUR na wydarzenie MAXINA Doświadczenia",
     "benefitEvents": "Dostęp do pierwszej fali wszystkich 12 letnich wydarzeń na Majorce",
     "benefitVitana": "Osobiste wskazówki AI Vitana od pierwszego dnia",
-    "benefitSeat": "Miejsce w gronie założycieli w miarę rozwoju Vitanaland"
+    "benefitSeat": "Miejsce w gronie założycieli w miarę rozwoju Vitanaland",
+    "_pending_review": {
+      "subheadlineTicket": true,
+      "aboutEyebrow": true,
+      "benefitSeat": true
+    }
   }
 }

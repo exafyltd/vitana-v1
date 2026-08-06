@@ -41,6 +41,10 @@
     "preferences": "Preferências",
     "privacy": "Privacidade",
     "connectedApps": "Aplicativos Conectados e Integrações",
-    "support": "Suporte"
+    "support": "Suporte",
+    "_pending_review": {
+      "timeline": true,
+      "preferences": true
+    }
   }
 }

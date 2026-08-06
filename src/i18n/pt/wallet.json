@@ -21,10 +21,16 @@
       "purchases": "Compras",
       "pending": "Pagamentos Pendentes",
       "withdrawals": "Levantamentos",
-      "stakes": "Aposta"
+      "stakes": "Aposta",
+      "_pending_review": {
+        "commissions": true
+      }
     },
     "noActivity": "Nenhuma atividade ainda",
     "noActivityDesc": "Tuas transações aparecerão aqui.",
-    "displayCurrency": "Moeda de exibição"
+    "displayCurrency": "Moeda de exibição",
+    "_pending_review": {
+      "description": true
+    }
   }
 }

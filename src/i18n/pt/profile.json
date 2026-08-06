@@ -6,7 +6,11 @@
       "editHighlights": "Editar Destaques",
       "saveHighlights": "Salvar Destaques",
       "highlightsDesc": "Escolhe tuas melhores publicações e mídias para destacar no topo do teu perfil. Conteúdo destacado aparece numa seção de destaques e atrai mais seguidores.",
-      "try": "Experimenta"
+      "try": "Experimenta",
+      "_pending_review": {
+        "polishBio": true,
+        "highlightsDesc": true
+      }
     },
     "identity": {
       "vitanaIndex": "Índice Vitana",

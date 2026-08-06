@@ -51,7 +51,11 @@
       "connectionPlaceholder": "Połączenie z {appName} wkrótce",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "syncing": true,
+      "lastSync": true,
+      "dataSync": true
+    }
   },
   "_pending_review": {}
 }

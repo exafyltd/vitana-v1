@@ -101,7 +101,13 @@
       "recommendationsFound": "{count} рекомендаций найдено",
       "noRecommendations": "Рекомендаций не найдено",
       "noRecommendationsDesc": "Попробуй выбрать другой фильтр, чтобы увидеть больше рекомендаций",
-      "viewAllPicks": "Посмотреть все подборки"
+      "viewAllPicks": "Посмотреть все подборки",
+      "_pending_review": {
+        "title": true,
+        "backToDiscover": true,
+        "unavailableDesc": true,
+        "noRecommendationsDesc": true
+      }
     },
     "filters": {
       "all": "Все",
@@ -119,6 +125,15 @@
       "bannerSubtitle": "Просматривай свободно — войди (это бесплатно), чтобы покупать и начать получать бонусы.",
       "bannerCta": "Войти",
       "signIn": "Войти"
+    },
+    "_pending_review": {
+      "title": true,
+      "description": true,
+      "communityGroupsDesc": true,
+      "aiPicksForYou": true,
+      "recommendedForYou": true,
+      "suggestedForYou": true,
+      "noResultsDesc": true
     }
   }
 }

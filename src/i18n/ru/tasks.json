@@ -14,6 +14,10 @@
     "postpone": "Отложить",
     "addNote": "Добавить заметку",
     "openContext": "Открыть контекст",
-    "assignee": "Исполнитель"
+    "assignee": "Исполнитель",
+    "_pending_review": {
+      "postponeComingSoon": true,
+      "navigateTo": true
+    }
   }
 }

@@ -34,6 +34,9 @@
         "title": "Rappels rapides",
         "description": "Accède aux souvenirs et requêtes fréquemment recherchés"
       }
+    },
+    "_pending_review": {
+      "title": true
     }
   }
 }

@@ -19,7 +19,10 @@
     "refreshFailed": "Osvežavanje neuspešno",
     "refreshFailedDesc": "Osvežavanje stanja nije uspelo. Pokušaj ponovo.",
     "error": "Greška",
-    "_pending_review": {}
+    "_pending_review": {
+      "paymentFailedDesc": true,
+      "refreshFailedDesc": true
+    }
   },
   "_pending_review": {}
 }

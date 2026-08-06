@@ -8,6 +8,9 @@
     "health": "Zdrowie",
     "services": "Usługi",
     "insight": "Wgląd",
-    "milestones": "Kamienie milowe"
+    "milestones": "Kamienie milowe",
+    "_pending_review": {
+      "about": true
+    }
   }
 }

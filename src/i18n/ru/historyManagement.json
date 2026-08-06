@@ -40,6 +40,15 @@
     "confirmClearOld": "Ты уверен(-а), что хочешь удалить историю старше 90 дней?",
     "confirmDeleteAll": "⚠️ ВНИМАНИЕ: Это безвозвратно удалит ВСЮ твою историю. Это действие нельзя отменить. Ты абсолютно уверен(-а)?",
     "beta": "Бета",
-    "danger": "Опасно"
+    "danger": "Опасно",
+    "_pending_review": {
+      "archiveSettings": true,
+      "exportCompleteDesc": true,
+      "exportFailedDesc": true,
+      "allHistoryDeletedDesc": true,
+      "deleteFailedDesc": true,
+      "confirmClearOld": true,
+      "confirmDeleteAll": true
+    }
   }
 }

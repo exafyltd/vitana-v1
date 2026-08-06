@@ -5,7 +5,9 @@
       "subtitle": "Oferece o presente de bem-estar e conexão com a comunidade",
       "buyVoucher": "Comprar Voucher",
       "openingCheckout": "A abrir pagamento seguro...",
-      "_pending_review": {}
+      "_pending_review": {
+        "subtitle": true
+      }
     },
     "tiers": {
       "test": {
@@ -72,7 +74,9 @@
       "share": "Salvar / Compartilhar",
       "shareHint": "Salvar em Arquivos, Drive ou enviar para alguém",
       "downloadHint": "Se o download abrir em branco, toque em Abrir no Navegador",
-      "_pending_review": {}
+      "_pending_review": {
+        "downloadHint": true
+      }
     },
     "toast": {
       "downloadStarted": "Download iniciado!",
@@ -90,7 +94,12 @@
       "enterRecipientEmail": "Por favor, insere o e-mail do destinatário",
       "emailOnlyForVouchers": "Envio de e-mail disponível apenas para vouchers",
       "sendingVoucherEmail": "Enviando e-mail do voucher...",
-      "_pending_review": {}
+      "_pending_review": {
+        "linkCopiedDesc": true,
+        "checkoutFailed": true,
+        "useTicketView": true,
+        "enterRecipientEmail": true
+      }
     },
     "_pending_review": {}
   },

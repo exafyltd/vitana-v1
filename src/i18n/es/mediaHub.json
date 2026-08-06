@@ -69,7 +69,11 @@
       "deleteErrorDesc": "No se pudo eliminar. Intenta de nuevo.",
       "commentError": "Error",
       "commentErrorDesc": "No se pudo publicar el comentario. Inténtalo de nuevo.",
-      "_pending_review": {}
+      "_pending_review": {
+        "podcastDeletedDesc": true,
+        "videoDeletedDesc": true,
+        "deleteErrorDesc": true
+      }
     },
     "deletePodcast": {
       "title": "Eliminar podcast",
@@ -159,7 +163,9 @@
       "like": "Me gusta el comentario",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "noMatchingShorts": true
+    }
   },
   "_pending_review": {}
 }

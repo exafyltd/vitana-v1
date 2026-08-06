@@ -16,6 +16,11 @@
     "quickAdd": "Быстрое добавление",
     "eventFormComingSoon": "Форма создания события скоро появится",
     "externalSync": "Внешняя синхронизация",
-    "connectingCalendars": "Подключение к внешним календарям..."
+    "connectingCalendars": "Подключение к внешним календарям...",
+    "_pending_review": {
+      "upcomingSchedule": true,
+      "createFirstEvent": true,
+      "connectingCalendars": true
+    }
   }
 }

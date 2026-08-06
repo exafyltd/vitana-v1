@@ -9,7 +9,9 @@
     "textEntry": "✍️ Entrada de Texto",
     "photoEntry": "📸 Entrada de Foto",
     "searchPlaceholder": "Buscar en el diario...",
-    "_pending_review": {}
+    "_pending_review": {
+      "description": true
+    }
   },
   "_pending_review": {}
 }

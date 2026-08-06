@@ -15,7 +15,10 @@
     "typeMessage": "Sada možeš da ukucaš svoju poruku",
     "actionFailed": "Radnja neuspešna",
     "couldNotExecute": "Nije moguće izvršiti {action}",
-    "_pending_review": {}
+    "_pending_review": {
+      "screenSharingDesc": true,
+      "typeMessage": true
+    }
   },
   "_pending_review": {}
 }

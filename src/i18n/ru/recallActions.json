@@ -37,6 +37,9 @@
         "title": "Быстрые вызовы",
         "description": "Access frequently searched memories and queries"
       }
+    },
+    "_pending_review": {
+      "title": true
     }
   }
 }

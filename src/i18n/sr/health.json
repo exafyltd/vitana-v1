@@ -27,7 +27,9 @@
       "improving": "Poboljšanje",
       "declining": "Opadanje",
       "stable": "Stabilno",
-      "_pending_review": {}
+      "_pending_review": {
+        "declining": true
+      }
     },
     "suggestions": {
       "uploadBloodTestResults": "Otpremi rezultate krvnih testova",
@@ -55,7 +57,13 @@
       "noMentalPlanDesc": "Kreiraj svoj personalizovani plan mentalnog blagostanja za praćenje stresa, fokusa i emocionalne ravnoteže uz AI vodič.",
       "generatePlan": "Kreiraj plan",
       "generating": "Kreiram...",
-      "_pending_review": {}
+      "_pending_review": {
+        "noSleepPlanDesc": true,
+        "noExercisePlanDesc": true,
+        "noNutritionPlanDesc": true,
+        "noHydrationPlanDesc": true,
+        "noMentalPlanDesc": true
+      }
     },
     "noSupplements": "Još nema suplemenata",
     "noSupplementsDesc": "Prati svoje dnevne vitamine, minerale i suplemente. Dodaj svoj prvi suplement da počneš.",
@@ -95,9 +103,20 @@
         "_pending_review": {}
       },
       "contractLink": "Pogledaj ugovor o krajnjem cilju",
-      "_pending_review": {}
+      "_pending_review": {
+        "subtitle": true,
+        "economyHeading": true,
+        "noPillar": true,
+        "noEconomy": true
+      }
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "priorityFocus": true,
+      "priorityFocusExplanation": true,
+      "takeAction": true,
+      "noSupplements": true,
+      "noReportsDesc": true
+    }
   },
   "_pending_review": {}
 }

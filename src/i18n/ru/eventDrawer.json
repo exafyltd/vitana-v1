@@ -58,6 +58,14 @@
     "googleCal": "Google Календарь",
     "outlook": "Outlook",
     "appleCal": "Apple Календарь",
-    "downloadIcs": "Скачать ICS"
+    "downloadIcs": "Скачать ICS",
+    "_pending_review": {
+      "followersGoing": true,
+      "signInToMessage": true,
+      "cannotMessageHost": true,
+      "messageSentDesc": true,
+      "removedFromEvent": true,
+      "leaveError": true
+    }
   }
 }

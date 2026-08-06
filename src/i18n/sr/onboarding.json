@@ -26,7 +26,10 @@
       "submit": "Hajde da počnemo!",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "connectAppsDesc": true,
+      "setGoalsDesc": true
+    }
   },
   "_pending_review": {}
 }

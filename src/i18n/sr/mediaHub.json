@@ -69,7 +69,11 @@
       "deleteErrorDesc": "Brisanje nije uspelo. Pokušaj ponovo.",
       "commentError": "Greška",
       "commentErrorDesc": "Nije uspelo objavljivanje komentara. Molimo pokušaj ponovo.",
-      "_pending_review": {}
+      "_pending_review": {
+        "podcastDeletedDesc": true,
+        "videoDeletedDesc": true,
+        "deleteErrorDesc": true
+      }
     },
     "deletePodcast": {
       "title": "Obriši podkast",
@@ -159,7 +163,9 @@
       "like": "Lajkuj komentar",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "noMatchingShorts": true
+    }
   },
   "_pending_review": {}
 }

@@ -78,7 +78,9 @@
       "createdDesc": "Grupa „{name}” została pomyślnie utworzona.",
       "failed": "Nie udało się utworzyć grupy",
       "failedDesc": "Spróbuj ponownie.",
-      "_pending_review": {}
+      "_pending_review": {
+        "addMembersRequiredDesc": true
+      }
     },
     "toast": {
       "success": "Sukces",
@@ -96,7 +98,10 @@
       "groupFailed": "Nie udało się utworzyć grupy",
       "allMarkedRead": "Wszystkie wiadomości oznaczone jako przeczytane",
       "markAllReadFailed": "Nie udało się oznaczyć wszystkich jako przeczytane. Spróbuj ponownie.",
-      "_pending_review": {}
+      "_pending_review": {
+        "pleaseLogin": true,
+        "singleRecipientRequired": true
+      }
     },
     "createGroupAction": "Utwórz nową grupę",
     "newConversationAction": "Nowa rozmowa",
@@ -115,7 +120,9 @@
       "tenantDescription": "Połącz się z kolegami i członkami zespołu w swojej sieci zawodowej.",
       "startConversation": "Rozpocznij rozmowę",
       "discoverPeople": "Odkryj ludzi",
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true
+      }
     },
     "group": {
       "loading": "Ładowanie grupy…",
@@ -129,7 +136,9 @@
       "composerPlaceholder": "Wiadomość…",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "noMessagesDesc": true
+    }
   },
   "_pending_review": {}
 }

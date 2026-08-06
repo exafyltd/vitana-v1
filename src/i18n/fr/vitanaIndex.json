@@ -21,7 +21,11 @@
       "building": "En construction",
       "strong": "Fort",
       "reallyGood": "Très bon",
-      "elite": "Élite"
+      "elite": "Élite",
+      "_pending_review": {
+        "starting": true,
+        "building": true
+      }
     },
     "framings": {
       "starting": "Tu commences juste",
@@ -30,6 +34,9 @@
       "strong": "Jalon de 90 jours",
       "reallyGood": "Prospère",
       "elite": "Élite"
+    },
+    "_pending_review": {
+      "subtitle": true
     }
   }
 }

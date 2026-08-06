@@ -26,7 +26,10 @@
     "trend": {
       "improving": "S'améliore",
       "declining": "Décline",
-      "stable": "Stable"
+      "stable": "Stable",
+      "_pending_review": {
+        "declining": true
+      }
     },
     "suggestions": {
       "uploadBloodTestResults": "Télécharge tes résultats d'analyse sanguine",
@@ -51,7 +54,14 @@
       "noMentalPlan": "Pas encore de plan mental",
       "noMentalPlanDesc": "Génère ton plan de bien-être mental personnalisé pour suivre le stress, la concentration et l'équilibre émotionnel avec l'aide de l'IA.",
       "generatePlan": "Générer le plan",
-      "generating": "Génération en cours..."
+      "generating": "Génération en cours...",
+      "_pending_review": {
+        "noSleepPlanDesc": true,
+        "noExercisePlanDesc": true,
+        "noNutritionPlanDesc": true,
+        "noHydrationPlanDesc": true,
+        "noMentalPlanDesc": true
+      }
     },
     "noSupplements": "Aucun supplément pour l'instant",
     "noSupplementsDesc": "Suis tes vitamines, minéraux et suppléments quotidiens. Ajoute ton premier supplément pour commencer.",
@@ -88,7 +98,20 @@
         "income_generation": "Génération de revenus",
         "business_formation": "Création d'entreprise"
       },
-      "contractLink": "Voir le contrat de l'Objectif Ultime"
+      "contractLink": "Voir le contrat de l'Objectif Ultime",
+      "_pending_review": {
+        "subtitle": true,
+        "economyHeading": true,
+        "noPillar": true,
+        "noEconomy": true
+      }
+    },
+    "_pending_review": {
+      "priorityFocus": true,
+      "priorityFocusExplanation": true,
+      "takeAction": true,
+      "noSupplements": true,
+      "noReportsDesc": true
     }
   }
 }

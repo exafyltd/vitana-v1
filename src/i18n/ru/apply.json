@@ -75,6 +75,11 @@
     "benefitTicket": "1 бесплатный билет стоимостью 99 EUR на событие MAXINA Experience.",
     "benefitEvents": "Доступ к первой волне ко всем 12 летним событиям на Майорке.",
     "benefitVitana": "Персональное ИИ-сопровождение Vitana с первого дня.",
-    "benefitSeat": "Место основателя за столом по мере развития Vitanaland."
+    "benefitSeat": "Место основателя за столом по мере развития Vitanaland.",
+    "_pending_review": {
+      "subheadlineTicket": true,
+      "aboutEyebrow": true,
+      "benefitSeat": true
+    }
   }
 }

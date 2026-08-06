@@ -17,7 +17,10 @@
       "profileSectionTitle": "Le Pilote automatique peut peaufiner ton profil ✨",
       "profileSectionDesc": "Obtiens des suggestions basées sur l'IA pour ta bio, ton archétype et tes faits marquants.",
       "tryAutopilot": "Essayer le Pilote automatique",
-      "_pending_review": {}
+      "_pending_review": {
+        "showcaseDesc": true,
+        "archetypeDesc": true
+      }
     },
     "preview": "Aperçu Pilote automatique",
     "viewAll": "Voir tout",
@@ -43,7 +46,10 @@
       "toastExecutedDesc": "{success}/{total} actions terminées avec succès",
       "toastFailedTitle": "Exécution échouée",
       "toastFailedDesc": "Quelque chose s'est mal passé. Réessaie.",
-      "_pending_review": {}
+      "_pending_review": {
+        "readyToExecute": true,
+        "executingDesc": true
+      }
     },
     "priorities": {
       "high": "Élevé",
@@ -60,7 +66,11 @@
       "enableToSee": "Active le Pilote automatique pour voir les suggestions",
       "completeForRewards": "Termine les suggestions du Pilote automatique pour des récompenses",
       "enableForCredits": "Active le Pilote automatique pour des crédits",
-      "_pending_review": {}
+      "_pending_review": {
+        "enableToSee": true,
+        "completeForRewards": true,
+        "enableForCredits": true
+      }
     },
     "insightBanner": {
       "title": "Aperçu de la santé du Pilote automatique",
@@ -69,7 +79,9 @@
       "statusBalanced": "Équilibré",
       "statusNeedsAttention": "À surveiller",
       "statusImproving": "S'améliore",
-      "_pending_review": {}
+      "_pending_review": {
+        "description": true
+      }
     },
     "profilePopup": {
       "title": "Laisse le Pilote automatique peaufiner ton profil ✨",
@@ -93,7 +105,12 @@
       "applied": "Modifications enregistrées !",
       "error": "Quelque chose s'est mal passé",
       "comingSoon": "Bientôt disponible",
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true,
+        "polishBio": true,
+        "refreshArchetype": true,
+        "highlightShowcase": true
+      }
     },
     "actions": {
       "action1Title": "Rejoins le Groupe de danse Longévité ce soir ?",
@@ -110,7 +127,12 @@
       "action6Reason": "Ton âme réclame ces techniques anti-stress",
       "newActionTitle": "Nouvelle suggestion IA",
       "newActionReason": "Basé sur tes modèles d'activité récente",
-      "_pending_review": {}
+      "_pending_review": {
+        "action1Reason": true,
+        "action2Reason": true,
+        "action5Title": true,
+        "action5Reason": true
+      }
     },
     "_pending_review": {}
   },

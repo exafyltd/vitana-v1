@@ -15,7 +15,10 @@
     "addNote": "Adicionar Nota",
     "openContext": "Abrir Contexto",
     "assignee": "Responsável",
-    "_pending_review": {}
+    "_pending_review": {
+      "postponeComingSoon": true,
+      "navigateTo": true
+    }
   },
   "_pending_review": {}
 }

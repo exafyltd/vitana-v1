@@ -17,7 +17,11 @@
     "eventFormComingSoon": "Formulario de creación de evento próximamente",
     "externalSync": "Sincronización externa",
     "connectingCalendars": "Conectando con calendarios externos...",
-    "_pending_review": {}
+    "_pending_review": {
+      "upcomingSchedule": true,
+      "createFirstEvent": true,
+      "connectingCalendars": true
+    }
   },
   "_pending_review": {}
 }

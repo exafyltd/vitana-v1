@@ -12,6 +12,11 @@
     "descPlaceholder": "Décris ce moment...",
     "icon": "Icône",
     "publicLabel": "Visible par tous",
-    "private": "Privé"
+    "private": "Privé",
+    "_pending_review": {
+      "title": true,
+      "empty": true,
+      "addFirst": true
+    }
   }
 }

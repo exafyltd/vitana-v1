@@ -23,25 +23,34 @@
         "admin": "Administrator",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {
+        "continueJourney": true,
+        "createAccount": true
+      }
     },
     "alkalma": {
       "joinAlkalma": "Pridruži se AlKalmi",
       "welcomeBack": "Dobrodošao/la nazad u AlKalmu.",
       "continueJourney": "Prijavi se da nastaviš.",
-      "_pending_review": {}
+      "_pending_review": {
+        "continueJourney": true
+      }
     },
     "earthlinks": {
       "joinEarthlinks": "Pridruži se Earthlinksu",
       "welcomeBack": "Dobrodošao/la nazad u Earthlinks.",
       "continueJourney": "Prijavi se da nastaviš.",
-      "_pending_review": {}
+      "_pending_review": {
+        "continueJourney": true
+      }
     },
     "community": {
       "joinCommunity": "Pridruži se zajednici",
       "welcomeBack": "Dobrodošao/la nazad.",
       "continueJourney": "Prijavi se da nastaviš.",
-      "_pending_review": {}
+      "_pending_review": {
+        "continueJourney": true
+      }
     },
     "_pending_review": {}
   },

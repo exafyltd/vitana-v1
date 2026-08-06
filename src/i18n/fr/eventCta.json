@@ -20,7 +20,9 @@
     "joining": "Rejoindre...",
     "getTickets": "Obtenir des billets",
     "promoteEvent": "Promouvoir l'événement",
-    "_pending_review": {}
+    "_pending_review": {
+      "getFreeTicket": true
+    }
   },
   "_pending_review": {}
 }

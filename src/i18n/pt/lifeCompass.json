@@ -34,7 +34,9 @@
       "health": {
         "title": "Transformar Saúde",
         "description": "Alcançar bem-estar físico e mental ideal",
-        "_pending_review": {}
+        "_pending_review": {
+          "title": true
+        }
       },
       "career": {
         "title": "Avançar na Carreira",

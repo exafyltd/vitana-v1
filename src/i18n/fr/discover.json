@@ -101,7 +101,13 @@
       "recommendationsFound": "{count} recommandations trouvées",
       "noRecommendations": "Aucune recommandation trouvée",
       "noRecommendationsDesc": "Essaie de sélectionner un filtre différent pour voir plus de recommandations",
-      "viewAllPicks": "Voir toutes les sélections"
+      "viewAllPicks": "Voir toutes les sélections",
+      "_pending_review": {
+        "title": true,
+        "backToDiscover": true,
+        "unavailableDesc": true,
+        "noRecommendationsDesc": true
+      }
     },
     "filters": {
       "all": "Tout",
@@ -119,6 +125,15 @@
       "bannerSubtitle": "Navigue librement — connecte-toi (c'est gratuit) pour acheter et commencer à gagner des récompenses.",
       "bannerCta": "Se connecter",
       "signIn": "Se connecter"
+    },
+    "_pending_review": {
+      "title": true,
+      "description": true,
+      "communityGroupsDesc": true,
+      "aiPicksForYou": true,
+      "recommendedForYou": true,
+      "suggestedForYou": true,
+      "noResultsDesc": true
     }
   }
 }

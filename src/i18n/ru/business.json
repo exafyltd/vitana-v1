@@ -17,7 +17,12 @@
       "hostAndSell": "Проводи и продавай билеты",
       "resellAndEarn": "Перепродавай и зарабатывай",
       "offerBookings": "Предлагай бронирования",
-      "boostVisibility": "Повысь видимость"
+      "boostVisibility": "Повысь видимость",
+      "_pending_review": {
+        "howToEarn": true,
+        "pickOne": true,
+        "createServiceDesc": true
+      }
     },
     "history": {
       "all": "Все",
@@ -38,7 +43,13 @@
       "allTime": "За всё время",
       "details": "Подробнее",
       "earningsActivity": "Активность заработка",
-      "noEarningsStartSelling": "Пока нет заработка. Начни продавать, чтобы увидеть активность здесь."
+      "noEarningsStartSelling": "Пока нет заработка. Начни продавать, чтобы увидеть активность здесь.",
+      "_pending_review": {
+        "noEarningsYet": true,
+        "startSellingToSee": true,
+        "youEarned": true,
+        "allTime": true
+      }
     },
     "kpi": {
       "totalEarnings": "Общий заработок",
@@ -61,7 +72,11 @@
       "resellerCommissions": "Комиссии реселлера",
       "goToSellEarn": "Перейти к Продавай и Зарабатывай",
       "totalEarned": "Всего заработано",
-      "earningsBySource": "Заработок по источникам"
+      "earningsBySource": "Заработок по источникам",
+      "_pending_review": {
+        "goToSellEarn": true,
+        "totalEarned": true
+      }
     },
     "reseller": {
       "upcomingEvents": "Предстоящие мероприятия",
@@ -84,7 +99,12 @@
       "noPayoutsYet": "Пока нет выплат",
       "attributedSales": "Приписанные продажи по событию",
       "noSalesMatchFilter": "Нет продаж, соответствующих текущим фильтрам",
-      "mockDataActive": "Тестовые данные активны"
+      "mockDataActive": "Тестовые данные активны",
+      "_pending_review": {
+        "shareLinkToStart": true,
+        "shareLinkOrPromotion": true,
+        "pickEventForLink": true
+      }
     },
     "transfer": {
       "title": "Перевести в кошелек",
@@ -93,7 +113,10 @@
       "wallet": "Кошелек",
       "instantCredit": "Это зачислит твои заработки мгновенно на баланс твоего кошелька.",
       "transferring": "Перевод...",
-      "transfer": "Перевести"
+      "transfer": "Перевести",
+      "_pending_review": {
+        "instantCredit": true
+      }
     },
     "typeSelector": {
       "title": "Начать бизнес",
@@ -106,7 +129,10 @@
       "badgeNew": "Новое",
       "badgeActive": "Активно",
       "alreadyReseller": "Ты уже реселлер! Проверь вкладку «Продавай и Зарабатывай».",
-      "cancel": "Отмена"
+      "cancel": "Отмена",
+      "_pending_review": {
+        "alreadyReseller": true
+      }
     },
     "missionOpportunities": {
       "title": "Возможности для миссий",
@@ -120,6 +146,9 @@
         "marketplace": "Маркетплейс",
         "income_generation": "Получение дохода",
         "business_formation": "Создание бизнеса"
+      },
+      "_pending_review": {
+        "subtitle": true
       }
     }
   }

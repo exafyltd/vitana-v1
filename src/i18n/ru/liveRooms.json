@@ -6,7 +6,10 @@
       "live": "В эфире сейчас",
       "scheduled": "Запланировано",
       "all": "Все комнаты",
-      "past": "Прошедшие"
+      "past": "Прошедшие",
+      "_pending_review": {
+        "live": true
+      }
     },
     "goLive": "Выйти в эфир",
     "joinRoom": "Присоединиться к комнате",
@@ -128,7 +131,15 @@
         "youAreLiveTitle": "Ты в эфире! 🎙️",
         "youAreLiveDesc": "Вход в твою комнату трансляции…",
         "aiImageHintTitle": "Генерация ИИ-изображения",
-        "aiImageHintDesc": "Изображение будет сгенерировано при начале трансляции."
+        "aiImageHintDesc": "Изображение будет сгенерировано при начале трансляции.",
+        "_pending_review": {
+          "streamUpdatedDesc": true,
+          "youAreLiveTitle": true
+        }
+      },
+      "_pending_review": {
+        "descriptionPlaceholder": true,
+        "coverUploadHint": true
       }
     },
     "editSession": {
@@ -136,6 +147,9 @@
       "saving": "Сохранение…",
       "changeCover": "Изменить обложку",
       "noChanges": "Нет изменений для сохранения"
+    },
+    "_pending_review": {
+      "noRooms": true
     }
   },
   "goLivePopup": {

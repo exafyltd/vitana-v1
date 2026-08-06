@@ -6,7 +6,10 @@
       "live": "Ao Vivo Agora",
       "scheduled": "Agendado",
       "all": "Todas as Salas",
-      "past": "Anteriores"
+      "past": "Anteriores",
+      "_pending_review": {
+        "live": true
+      }
     },
     "goLive": "Entrar Ao Vivo",
     "joinRoom": "Entrar na Sala",
@@ -128,7 +131,15 @@
         "youAreLiveTitle": "Estás ao Vivo! 🎙️",
         "youAreLiveDesc": "A entrar na tua sala de stream…",
         "aiImageHintTitle": "Geração de Imagem por IA",
-        "aiImageHintDesc": "A imagem será gerada quando o stream começar."
+        "aiImageHintDesc": "A imagem será gerada quando o stream começar.",
+        "_pending_review": {
+          "streamUpdatedDesc": true,
+          "youAreLiveTitle": true
+        }
+      },
+      "_pending_review": {
+        "descriptionPlaceholder": true,
+        "coverUploadHint": true
       }
     },
     "editSession": {
@@ -136,6 +147,9 @@
       "saving": "A guardar…",
       "changeCover": "Alterar imagem de capa",
       "noChanges": "Nenhuma alteração para guardar"
+    },
+    "_pending_review": {
+      "noRooms": true
     }
   },
   "goLivePopup": {

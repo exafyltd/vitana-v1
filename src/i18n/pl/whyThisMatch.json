@@ -13,7 +13,10 @@
       "2": "Vitana Indeks",
       "3": "Najbliższe dopasowanie",
       "4": "Sprawiedliwe przekierowanie",
-      "_pending_review": {}
+      "_pending_review": {
+        "3": true,
+        "4": true
+      }
     },
     "_pending_review": {}
   },

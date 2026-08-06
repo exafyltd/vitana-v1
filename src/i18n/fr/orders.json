@@ -60,7 +60,10 @@
       "personalMessage": "Message personnel",
       "cancel": "Annuler",
       "send": "Envoyer",
-      "downloadPdf": "Télécharger le PDF"
+      "downloadPdf": "Télécharger le PDF",
+      "_pending_review": {
+        "yourTicket": true
+      }
     },
     "status": {
       "upcoming": "À venir",
@@ -76,6 +79,9 @@
       "processing": "Traitement en cours",
       "paid": "Actif",
       "active": "Actif"
+    },
+    "_pending_review": {
+      "noOrdersDesc": true
     }
   }
 }

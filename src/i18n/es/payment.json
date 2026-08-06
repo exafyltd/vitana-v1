@@ -19,7 +19,10 @@
     "refreshFailed": "Actualización fallida",
     "refreshFailedDesc": "No se pudo actualizar el saldo. Intenta de nuevo.",
     "error": "Error",
-    "_pending_review": {}
+    "_pending_review": {
+      "paymentFailedDesc": true,
+      "refreshFailedDesc": true
+    }
   },
   "_pending_review": {}
 }

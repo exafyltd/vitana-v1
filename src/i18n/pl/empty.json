@@ -23,7 +23,9 @@
     "noActionsMatchedYet": "Brak dopasowanych działań — Autopilot kształtuje sugestie.",
     "actionsPendingOne": "{count} oczekujące działanie",
     "actionsPendingOther": "{count} oczekujących działań",
-    "_pending_review": {}
+    "_pending_review": {
+      "tryAdjustingFilters": true
+    }
   },
   "_pending_review": {}
 }

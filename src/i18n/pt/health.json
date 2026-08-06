@@ -26,7 +26,10 @@
     "trend": {
       "improving": "Melhorando",
       "declining": "Declinando",
-      "stable": "Estável"
+      "stable": "Estável",
+      "_pending_review": {
+        "declining": true
+      }
     },
     "suggestions": {
       "uploadBloodTestResults": "Carregar resultados de exames de sangue",
@@ -51,7 +54,14 @@
       "noMentalPlan": "Nenhum Plano Mental Ainda",
       "noMentalPlanDesc": "Gera o teu plano de bem-estar mental personalizado para monitorizar o stress, o foco e o equilíbrio emocional com orientação de IA.",
       "generatePlan": "Gerar Plano",
-      "generating": "A Gerar..."
+      "generating": "A Gerar...",
+      "_pending_review": {
+        "noSleepPlanDesc": true,
+        "noExercisePlanDesc": true,
+        "noNutritionPlanDesc": true,
+        "noHydrationPlanDesc": true,
+        "noMentalPlanDesc": true
+      }
     },
     "noSupplements": "Ainda Sem Suplementos",
     "noSupplementsDesc": "Rastreia tuas vitaminas, minerais e suplementos diários. Adiciona teu primeiro suplemento para começar.",
@@ -88,7 +98,20 @@
         "income_generation": "Geração de renda",
         "business_formation": "Formação de negócios"
       },
-      "contractLink": "Ver o contrato do Objetivo Final"
+      "contractLink": "Ver o contrato do Objetivo Final",
+      "_pending_review": {
+        "subtitle": true,
+        "economyHeading": true,
+        "noPillar": true,
+        "noEconomy": true
+      }
+    },
+    "_pending_review": {
+      "priorityFocus": true,
+      "priorityFocusExplanation": true,
+      "takeAction": true,
+      "noSupplements": true,
+      "noReportsDesc": true
     }
   }
 }

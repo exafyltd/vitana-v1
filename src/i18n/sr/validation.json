@@ -25,7 +25,10 @@
     "fileTooBig": "Fajl je prevelik (maksimum {max})",
     "invalidFileType": "Neispravan tip fajla",
     "uploadLimit": "Maksimum {max} fajlova je dozvoljeno",
-    "_pending_review": {}
+    "_pending_review": {
+      "pleaseSelect": true,
+      "pleaseEnter": true
+    }
   },
   "_pending_review": {}
 }

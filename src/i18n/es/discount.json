@@ -27,7 +27,13 @@
     "ticketEmailNote": "Tu entrada y confirmación se enviarán a este correo.",
     "left": "{count} restantes",
     "loadFailed": "Error al cargar las entradas",
-    "_pending_review": {}
+    "_pending_review": {
+      "welcomeTitle": true,
+      "welcomeMessage": true,
+      "discountAppliedAmount": true,
+      "contactOrganizer": true,
+      "guestDetails": true
+    }
   },
   "_pending_review": {}
 }

@@ -105,7 +105,12 @@
       "noRecommendations": "No se encontraron recomendaciones",
       "noRecommendationsDesc": "Prueba seleccionando un filtro diferente para ver más recomendaciones",
       "viewAllPicks": "Ver Todas las Selecciones",
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true,
+        "backToDiscover": true,
+        "unavailableDesc": true,
+        "noRecommendationsDesc": true
+      }
     },
     "filters": {
       "all": "Todo",
@@ -127,7 +132,15 @@
       "signIn": "Iniciar sesión",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "title": true,
+      "description": true,
+      "communityGroupsDesc": true,
+      "aiPicksForYou": true,
+      "recommendedForYou": true,
+      "suggestedForYou": true,
+      "noResultsDesc": true
+    }
   },
   "_pending_review": {}
 }

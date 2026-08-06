@@ -3,7 +3,11 @@
   "toasts": {
     "_pending_review": {},
     "success": {
-      "_pending_review": {},
+      "_pending_review": {
+        "subscribedDesc": true,
+        "unsubscribedDesc": true,
+        "bulkEnabledDesc": true
+      },
       "saved": "Успешно сохранено",
       "savedDesc": "Твои изменения сохранены.",
       "created": "Успешно создано",
@@ -48,7 +52,11 @@
       "bulkEnabledDesc": "Выбери элементы из своей ленты для массовых действий."
     },
     "error": {
-      "_pending_review": {},
+      "_pending_review": {
+        "notAuthenticatedDesc": true,
+        "validationFailedDesc": true,
+        "sessionExpiredDesc": true
+      },
       "generic": "Что-то пошло не так",
       "genericDesc": "Пожалуйста, попробуй еще раз.",
       "network": "Ошибка сети",
@@ -94,7 +102,9 @@
       "syncingDesc": "Данные синхронизируются."
     },
     "warning": {
-      "_pending_review": {},
+      "_pending_review": {
+        "limitReachedDesc": true
+      },
       "unsavedChanges": "Несохраненные изменения",
       "unsavedChangesDesc": "У тебя есть несохраненные изменения. Хочешь продолжить?",
       "limitReached": "Лимит достигнут",
@@ -103,7 +113,9 @@
       "slowConnectionDesc": "Твоё интернет-соединение кажется медленным."
     },
     "common": {
-      "_pending_review": {},
+      "_pending_review": {
+        "redemptionOptionsOpeningSoon": true
+      },
       "couldNotCompleteTask": "Не удалось выполнить задачу",
       "incomingCall": "Входящий звонок",
       "contentCreated": "Контент создан! 🎉",
@@ -183,7 +195,16 @@
       "donTBreakStreakOneSmall": "🔥 Не прерывай серию — одно маленькое действие сегодня"
     },
     "admin": {
-      "_pending_review": {},
+      "_pending_review": {
+        "appointmentReminderFunctionHasExecuted": true,
+        "invalidRequestBody": true,
+        "bodyMustValidJson": true,
+        "systemPersonalitySettingsHaveSavedSuccessfully": true,
+        "aiHasGeneratedAutomationSuggestionsFor": true,
+        "automationPrefilledFromDiscoveredPattern": true,
+        "approveAllFailed": true,
+        "generateSpecFailed": true
+      },
       "companionOverridesSavedVoiceCacheRefreshes": "Настройки компаньона сохранены — голосовой кэш обновится в течение 30 секунд.",
       "manualTriggerSuccessful": "✅ Ручной запуск успешен",
       "appointmentReminderFunctionHasExecuted": "Функция напоминания о встрече выполнена",
@@ -358,7 +379,9 @@
       "paymentSuccessful": "Платеж успешно выполнен!"
     },
     "business": {
-      "_pending_review": {},
+      "_pending_review": {
+        "refundFunctionalityWillAvailableSoon": true
+      },
       "noAttendeesExport": "Нет участников для экспорта",
       "attendeeListExported": "Список участников экспортирован!",
       "printTickets": "Распечатать билеты",
@@ -418,7 +441,8 @@
         "vitanaWillFollowUp": true,
         "couldnTReopen": true,
         "demoRoom": true,
-        "thisExampleRoomCreateYourOwn": true
+        "thisExampleRoomCreateYourOwn": true,
+        "previewNewThumbnailBelow": true
       },
       "thumbnailCaptured": "Миниатюра захвачена",
       "previewNewThumbnailBelow": "Предварительный просмотр новой миниатюры ниже.",
