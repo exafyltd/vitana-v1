@@ -166,6 +166,18 @@ Not covered by any catalog and not filled by the translation workflow.
 | `goal_plan_i18n` / `goal_plan_step_i18n` | on demand | DE/EN only | No — translate-on-view, self-populates |
 | `content_i18n` | on demand | 3 DE rows | No — `catalog-localizer` cache |
 
+**Checked for the same staleness problem — and they are clean.** Unlike the
+frontend catalog, `journey_checklist_translations` carries a `source_version_id`
+and all 590 rows point at the **currently published** version
+(`v2-2026-06-09T19:43:17.298Z`, `is_current = true`). The working draft was
+compared field-by-field against that published snapshot: **254 topics, 0
+differing labels, 0 differing descriptions.** So the existing EN/ES/SR rows are
+valid against what the app actually serves; the gap is coverage (SR 94/254, the
+four new locales zero), not drift.
+
+That column is also the pattern the frontend catalog was missing — it is exactly
+what `i18n-source-stamps/` now provides for `src/i18n/`.
+
 The last two use view-time translation with a cache (VTID-03152b), so they fill
 themselves on first view in a new language. The first two are **pre-seeded** and
 will silently serve German until rows exist.
