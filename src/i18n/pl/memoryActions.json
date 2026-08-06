@@ -4,28 +4,37 @@
     "items": {
       "recordVoiceDiary": {
         "title": "Nagraj Dziennik Głosowy",
-        "description": "Uchwyć myśli i refleksje głosem"
+        "description": "Uchwyć myśli i refleksje głosem",
+        "_pending_review": {}
       },
       "addMemoryNote": {
         "title": "Dodaj Notatkę Wspomnienia",
-        "description": "Zapisz ważne momenty zdrowotne"
+        "description": "Zapisz ważne momenty zdrowotne",
+        "_pending_review": {}
       },
       "viewTimeline": {
         "title": "Zobacz Oś Czasu",
-        "description": "Zobacz swoją pełną podróż wellness"
+        "description": "Zobacz swoją pełną podróż wellness",
+        "_pending_review": {}
       },
       "searchMemories": {
         "title": "Szukaj Wspomnień",
-        "description": "Znajdź konkretne momenty i spostrzeżenia"
+        "description": "Znajdź konkretne momenty i spostrzeżenia",
+        "_pending_review": {}
       },
       "photoMemory": {
         "title": "Wspomnienie Fotograficzne",
-        "description": "Dodaj wizualne wspomnienia do swojej podróży"
+        "description": "Dodaj wizualne wspomnienia do swojej podróży",
+        "_pending_review": {}
       },
       "aiMemoryAnalysis": {
         "title": "Analiza Wspomnień AI",
-        "description": "Odkryj spostrzeżenia na podstawie wzorców wspomnień"
-      }
-    }
-  }
+        "description": "Odkryj spostrzeżenia na podstawie wzorców wspomnień",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

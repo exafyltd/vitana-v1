@@ -2,6 +2,8 @@
   "logout": {
     "signingOut": "Wylogowywanie...",
     "signedOut": "Wylogowano pomyślnie",
-    "redirecting": "Przekierowywanie..."
-  }
+    "redirecting": "Przekierowywanie...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

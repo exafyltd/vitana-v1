@@ -5,13 +5,17 @@
       "pending": "Oczekujące",
       "approved": "Zatwierdzone",
       "flagged": "Oznaczone",
-      "rejected": "Odrzucone"
+      "rejected": "Odrzucone",
+      "_pending_review": {}
     },
     "rooms": {
       "active": "Aktywne Pokoje",
       "scheduled": "Zaplanowane",
       "analytics": "Analityka",
-      "moderation": "Moderacja"
-    }
-  }
+      "moderation": "Moderacja",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

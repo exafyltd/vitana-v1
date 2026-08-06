@@ -4,36 +4,47 @@
     "items": {
       "recordVoiceEntry": {
         "title": "Nagraj wpis głosowy",
-        "description": "Uchwyć myśli i refleksje nagraniem głosowym"
+        "description": "Uchwyć myśli i refleksje nagraniem głosowym",
+        "_pending_review": {}
       },
       "addPhotoEntry": {
         "title": "Dodaj wpis ze zdjęciem",
-        "description": "Prześlij zdjęcia, aby udokumentować swoją podróż wellness"
+        "description": "Prześlij zdjęcia, aby udokumentować swoją podróż wellness",
+        "_pending_review": {}
       },
       "writeTextEntry": {
         "title": "Napisz wpis tekstowy",
-        "description": "Twórz szczegółowe pisemne refleksje i notatki"
+        "description": "Twórz szczegółowe pisemne refleksje i notatki",
+        "_pending_review": {}
       },
       "quickNote": {
         "title": "Szybka notatka",
-        "description": "Zapisz krótkie myśli lub obserwacje"
+        "description": "Zapisz krótkie myśli lub obserwacje",
+        "_pending_review": {}
       },
       "videoDiary": {
         "title": "Dziennik wideo",
-        "description": "Nagraj wideo-refleksje i aktualizacje postępów"
+        "description": "Nagraj wideo-refleksje i aktualizacje postępów",
+        "_pending_review": {}
       },
       "scheduleEntry": {
         "title": "Zaplanuj wpis",
-        "description": "Zaplanuj przyszłe wpisy do dziennika i przypomnienia"
+        "description": "Zaplanuj przyszłe wpisy do dziennika i przypomnienia",
+        "_pending_review": {}
       },
       "tagMemories": {
         "title": "Otaguj wspomnienia",
-        "description": "Organizuj istniejące wpisy za pomocą tagów i kategorii"
+        "description": "Organizuj istniejące wpisy za pomocą tagów i kategorii",
+        "_pending_review": {}
       },
       "importFiles": {
         "title": "Importuj pliki",
-        "description": "Prześlij dokumenty, obrazy lub inne pliki wellness"
-      }
-    }
-  }
+        "description": "Prześlij dokumenty, obrazy lub inne pliki wellness",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

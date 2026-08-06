@@ -31,11 +31,8 @@
         "description": "Przeglądaj wspomnienia według filarów dobrego samopoczucia i kategorii"
       },
       "quickRecalls": {
-        "_pending_review": {
-          "description": true
-        },
         "title": "Szybkie przywoływanie",
-        "description": "Access frequently searched memories and queries"
+        "description": "Uzyskaj dostęp do często wyszukiwanych wspomnień i zapytań."
       }
     }
   }

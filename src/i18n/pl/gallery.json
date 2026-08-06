@@ -16,6 +16,8 @@
     "invalidFormat": "Nieprawidłowy format",
     "fileTooLarge": "Plik za duży",
     "maxSize": "Maksymalny rozmiar pliku: 500 MB",
-    "maxSizeHint": "Maks. 500 MB"
-  }
+    "maxSizeHint": "Maks. 500 MB",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -4,7 +4,7 @@
     "description": "Wybierz typ spotkania, które chcesz utworzyć",
     "event": "Wydarzenie",
     "eventDescription": "Formalne spotkania z ustalonymi godzinami i ustrukturyzowanymi programami",
-    "meetup": "MeetUp",
+    "meetup": "Spotkanie",
     "meetupDescription": "Nieformalne spotkania do networkingu i budowania społeczności"
   }
 }

@@ -6,14 +6,16 @@
       "preventive": "Profilaktyczne badania przesiewowe",
       "labTests": "Badania laboratoryjne",
       "coaching": "Coaching i Trening Personalny",
-      "groupPrograms": "Programy grupowe i Wyzwania"
+      "groupPrograms": "Programy grupowe i Wyzwania",
+      "_pending_review": {}
     },
     "actions": {
       "book": "Zarezerwuj",
       "addToPlan": "Dodaj do Planu",
       "askAI": "Zapytaj AI",
       "joinRoom": "Dołącz do Pokoju",
-      "setReminder": "Ustaw Przypomnienie"
+      "setReminder": "Ustaw Przypomnienie",
+      "_pending_review": {}
     },
     "details": {
       "duration": "Czas trwania",
@@ -24,7 +26,10 @@
       "healthBenefits": "Korzyści zdrowotne",
       "availableProviders": "Dostępni Usługodawcy",
       "requirements": "Wymagania i Przygotowanie",
-      "tags": "Tagi"
-    }
-  }
+      "tags": "Tagi",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

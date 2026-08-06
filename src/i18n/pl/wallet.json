@@ -11,7 +11,8 @@
     "tabs": {
       "balances": "Salda",
       "activity": "Aktywność",
-      "actions": "Akcje"
+      "actions": "Akcje",
+      "_pending_review": {}
     },
     "filters": {
       "commissions": "Sprzedawaj i zarabiaj prowizje",
@@ -21,10 +22,13 @@
       "purchases": "Zakupy",
       "pending": "Oczekujące wypłaty",
       "withdrawals": "Wypłaty",
-      "stakes": "Stakowanie"
+      "stakes": "Stakowanie",
+      "_pending_review": {}
     },
     "noActivity": "Brak aktywności",
     "noActivityDesc": "Twoje transakcje pojawią się tutaj.",
-    "displayCurrency": "Wyświetl walutę"
-  }
+    "displayCurrency": "Wyświetl walutę",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -10,19 +10,22 @@
       "social": "Społecznościowe i Udostępnianie",
       "fitness": "Fitness i Urządzenia noszone",
       "health": "Zdrowie i Laboratoria",
-      "other": "Inne"
+      "other": "Inne",
+      "_pending_review": {}
     },
     "status": {
       "connected": "Połączone",
       "notConnected": "Niepołączone",
       "comingSoon": "Wkrótce",
-      "soon": "Wkrótce"
+      "soon": "Wkrótce",
+      "_pending_review": {}
     },
     "actions": {
       "connect": "Połącz",
       "disconnect": "Rozłącz",
       "configure": "Skonfiguruj Synchronizację",
-      "manage": "Zarządzaj"
+      "manage": "Zarządzaj",
+      "_pending_review": {}
     },
     "lastSync": "Ostatnia synchronizacja",
     "dataSync": "Synchronizowanie danych",
@@ -33,7 +36,8 @@
       "categories": {
         "all": "Wszystkie aplikacje",
         "health": "Zdrowie i kondycja",
-        "social": "Społecznościowe"
+        "social": "Społecznościowe",
+        "_pending_review": {}
       },
       "availableApps": "Dostępne Aplikacje",
       "verified": "Zweryfikowano",
@@ -44,7 +48,10 @@
       "done": "Gotowe",
       "noResults": "Nie znaleziono aplikacji",
       "connectionSuccess": "Połączono pomyślnie",
-      "connectionPlaceholder": "Połączenie z {appName} wkrótce"
-    }
-  }
+      "connectionPlaceholder": "Połączenie z {appName} wkrótce",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

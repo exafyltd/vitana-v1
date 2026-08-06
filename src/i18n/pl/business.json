@@ -17,7 +17,8 @@
       "hostAndSell": "Organizuj i sprzedawaj bilety",
       "resellAndEarn": "Odsprzedawaj i zarabiaj",
       "offerBookings": "Oferuj rezerwacje",
-      "boostVisibility": "Zwiększ widoczność"
+      "boostVisibility": "Zwiększ widoczność",
+      "_pending_review": {}
     },
     "history": {
       "all": "Wszystkie",
@@ -38,7 +39,8 @@
       "allTime": "Cały czas",
       "details": "Szczegóły",
       "earningsActivity": "Aktywność zarobków",
-      "noEarningsStartSelling": "Brak zarobków. Zacznij sprzedawać, aby zobaczyć tutaj aktywność."
+      "noEarningsStartSelling": "Brak zarobków. Zacznij sprzedawać, aby zobaczyć tutaj aktywność.",
+      "_pending_review": {}
     },
     "kpi": {
       "totalEarnings": "Całkowite zarobki",
@@ -61,7 +63,8 @@
       "resellerCommissions": "Prowizje odsprzedawcy",
       "goToSellEarn": "Przejdź do Sprzedawaj i Zarabiaj",
       "totalEarned": "Całkowicie zarobione",
-      "earningsBySource": "Zarobki według źródła"
+      "earningsBySource": "Zarobki według źródła",
+      "_pending_review": {}
     },
     "reseller": {
       "upcomingEvents": "Nadchodzące wydarzenia",
@@ -84,7 +87,8 @@
       "noPayoutsYet": "Brak wypłat",
       "attributedSales": "Sprzedaż przypisana do wydarzenia",
       "noSalesMatchFilter": "Brak sprzedaży pasującej do bieżących filtrów",
-      "mockDataActive": "Dane testowe aktywne"
+      "mockDataActive": "Dane testowe aktywne",
+      "_pending_review": {}
     },
     "transfer": {
       "title": "Przelej do Portfela",
@@ -93,7 +97,8 @@
       "wallet": "Portfel",
       "instantCredit": "Spowoduje to natychmiastowe dodanie Twoich zarobków do salda portfela.",
       "transferring": "Przelewanie...",
-      "transfer": "Przelej"
+      "transfer": "Przelej",
+      "_pending_review": {}
     },
     "typeSelector": {
       "title": "Rozpocznij Biznes",
@@ -106,7 +111,8 @@
       "badgeNew": "Nowe",
       "badgeActive": "Aktywne",
       "alreadyReseller": "Jesteś już sprzedawcą! Sprawdź zakładkę Sprzedawaj i Zarabiaj.",
-      "cancel": "Anuluj"
+      "cancel": "Anuluj",
+      "_pending_review": {}
     },
     "missionOpportunities": {
       "title": "Możliwości Misji",
@@ -119,8 +125,12 @@
         "find_match": "Znajdź Parę",
         "marketplace": "Rynek",
         "income_generation": "Generowanie dochodu",
-        "business_formation": "Tworzenie biznesu"
-      }
-    }
-  }
+        "business_formation": "Tworzenie biznesu",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -10,6 +10,8 @@
     "messageDeleted": "Wiadomość usunięta",
     "error": "Błąd",
     "errorSend": "Nie udało się wysłać wiadomości",
-    "errorDelete": "Nie udało się usunąć wiadomości"
-  }
+    "errorDelete": "Nie udało się usunąć wiadomości",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

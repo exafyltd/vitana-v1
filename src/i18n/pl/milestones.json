@@ -12,6 +12,8 @@
     "descPlaceholder": "Opisz tę chwilę...",
     "icon": "Ikona",
     "publicLabel": "Widoczne dla wszystkich",
-    "private": "Prywatne"
-  }
+    "private": "Prywatne",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

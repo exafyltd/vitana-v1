@@ -5,6 +5,8 @@
     "left": "Opuszczono grupę",
     "leftDesc": "Opuściłeś tę grupę.",
     "errorJoin": "Nie udało się dołączyć do grupy. Spróbuj ponownie.",
-    "errorLeave": "Nie udało się opuścić grupy. Spróbuj ponownie."
-  }
+    "errorLeave": "Nie udało się opuścić grupy. Spróbuj ponownie.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

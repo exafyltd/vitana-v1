@@ -4,36 +4,47 @@
     "items": {
       "logHealthEvent": {
         "title": "Zapisz wydarzenie zdrowotne",
-        "description": "Zapisuj ważne momenty zdrowia"
+        "description": "Zapisuj ważne momenty zdrowia",
+        "_pending_review": {}
       },
       "markAchievement": {
         "title": "Zaznacz osiągnięcie",
-        "description": "Świętuj osiągnięte cele wellness"
+        "description": "Świętuj osiągnięte cele wellness",
+        "_pending_review": {}
       },
       "recordLifeMoment": {
         "title": "Zapisz chwilę życia",
-        "description": "Uchwyć znaczące doświadczenia"
+        "description": "Uchwyć znaczące doświadczenia",
+        "_pending_review": {}
       },
       "addPhotoMemory": {
         "title": "Dodaj wspomnienie ze zdjęciem",
-        "description": "Wizualna oś czasu ze zdjęciami zdrowotnymi"
+        "description": "Wizualna oś czasu ze zdjęciami zdrowotnymi",
+        "_pending_review": {}
       },
       "voiceTimelineEntry": {
         "title": "Wpis głosowy na osi czasu",
-        "description": "Szybkie głosowe aktualizacje zdrowia"
+        "description": "Szybkie głosowe aktualizacje zdrowia",
+        "_pending_review": {}
       },
       "trackProgress": {
         "title": "Śledź postępy",
-        "description": "Zapisuj wskaźniki i trendy wellness"
+        "description": "Zapisuj wskaźniki i trendy wellness",
+        "_pending_review": {}
       },
       "activityCheckIn": {
         "title": "Zapisz aktywność",
-        "description": "Rejestruj treningi i aktywności"
+        "description": "Rejestruj treningi i aktywności",
+        "_pending_review": {}
       },
       "setTimelineGoal": {
         "title": "Ustaw cel na osi czasu",
-        "description": "Twórz przyszłe cele zdrowotne"
-      }
-    }
-  }
+        "description": "Twórz przyszłe cele zdrowotne",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
