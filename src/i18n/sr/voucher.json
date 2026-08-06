@@ -8,13 +8,30 @@
     },
     "tiers": {
       "test": {
-        "name": "Test"
+        "name": "Test",
+        "benefits": [
+          "Samo za testiranje plaćanja",
+          "Nije pravi vaučer",
+          "Za razvojna testiranja"
+        ]
       },
       "experience": {
-        "name": "Iskustvo"
+        "name": "Iskustvo",
+        "benefits": [
+          "Pristup za 1 premium događaj zajednice",
+          "Personalizovano savetovanje o dobrobiti",
+          "Uključena 30-dnevna proba Vitana+",
+          "Prelepo dizajniran e-vaučer"
+        ]
       },
       "exclusive": {
-        "name": "Ekskluzivno"
+        "name": "Ekskluzivno",
+        "benefits": [
+          "3 premium događaja zajednice",
+          "Individualni koučing sa stručnjakom",
+          "90-dnevna pretplata na Vitana+",
+          "Prioritetna rezervacija + VIP pogodnosti"
+        ]
       }
     },
     "success": {

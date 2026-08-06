@@ -10,15 +10,29 @@
     "tiers": {
       "test": {
         "name": "Prueba",
-        "_pending_review": {}
+        "benefits": [
+          "Solo para probar el pago",
+          "No es un vale real",
+          "Para pruebas de desarrollo"
+        ]
       },
       "experience": {
         "name": "Experiencia",
-        "_pending_review": {}
+        "benefits": [
+          "Acceso a 1 evento premium de la comunidad",
+          "Asesoramiento de bienestar personalizado",
+          "Prueba de Vitana+ de 30 días incluida",
+          "Vale electrónico con un diseño precioso"
+        ]
       },
       "exclusive": {
         "name": "Exclusivo",
-        "_pending_review": {}
+        "benefits": [
+          "3 eventos premium de la comunidad",
+          "Sesión de coaching individual con un experto",
+          "Suscripción a Vitana+ de 90 días",
+          "Reserva prioritaria + ventajas VIP"
+        ]
       },
       "_pending_review": {}
     },

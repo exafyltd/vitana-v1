@@ -163,6 +163,26 @@ for (const shardName of deShards) {
   }
 }
 
+// Array-valued keys (e.g. voucher.tiers.*.benefits) are leaves for coverage
+// purposes, but scripts/translate-keys.mjs does NOT translate them — its leaf
+// collector skips arrays, so `--init` creates the parent object without them
+// and they stay missing after a full translation run. There are only 3 in DE
+// today (11 strings, all in voucher.json); they are hand-translated. Surfaced
+// here so a fourth one added later is noticed rather than silently absent from
+// every non-DE locale.
+const deArrayKeys = [];
+for (const shardName of deShards) {
+  const walk = (obj, prefix) => {
+    for (const [k, v] of Object.entries(obj)) {
+      if (k.startsWith('_')) continue;
+      const path = prefix ? `${prefix}.${k}` : k;
+      if (Array.isArray(v)) deArrayKeys.push(`${shardName}.${path}`);
+      else if (v && typeof v === 'object') walk(v, path);
+    }
+  };
+  walk(loadShard(join(I18N_DIR, 'de'), shardName), '');
+}
+
 const coverage = [];
 for (const locale of allLocales.sort()) {
   if (locale === 'de') continue;
@@ -175,7 +195,12 @@ for (const locale of allLocales.sort()) {
     }
   }
   const missing = [...deAllKeys].filter((k) => !keys.has(k));
-  const pct = deAllKeys.size === 0 ? 100 : ((deAllKeys.size - missing.length) / deAllKeys.size) * 100;
+  // Floor to one decimal, and never print 100.0% while a key is missing.
+  // 14160/14163 rounds to "100.0%" — a locale reporting complete while three
+  // keys fall back to German is precisely the misleading signal this check
+  // exists to remove.
+  const raw = deAllKeys.size === 0 ? 100 : ((deAllKeys.size - missing.length) / deAllKeys.size) * 100;
+  const pct = missing.length === 0 ? 100 : Math.min(raw, 99.9);
   coverage.push({ locale, status, pct, missing: missing.length, total: deAllKeys.size });
 
   if (status === 'ga' && missing.length > 0) {
@@ -197,7 +222,14 @@ for (const c of coverage) {
       `(${c.total - c.missing}/${c.total})${flag}`,
   );
 }
-console.log('');
+if (deArrayKeys.length > 0) {
+  console.log(
+    `[i18n-audit] ${deArrayKeys.length} array-valued key(s) — translate-keys.mjs does NOT\n` +
+      `             translate these; they must be filled by hand per locale:`,
+  );
+  for (const k of deArrayKeys) console.log(`  ${k}`);
+  console.log('');
+}
 
 // Report
 const errors = issues.filter((i) => i.level === 'error');
