@@ -122,7 +122,10 @@
       "youEarned": "Vitana ajudou você a ganhar (Venda e Ganhe)",
       "net": "Líquido",
       "withdraw": "Retirar",
-      "empty": "Nenhum ganho ainda"
+      "empty": "Nenhum ganho ainda",
+      "_pending_review": {
+        "youEarned": true
+      }
     },
     "founding": {
       "bannerTitle": "🏆 Seja um dos primeiros {max}",
@@ -133,7 +136,10 @@
       "title": "🎁 Boas-vindas — Premium por nossa conta",
       "body": "Você recebeu 12 meses de Vitana Premium como agradecimento por estar aqui desde o início. Ativo até {endsAt}.",
       "noAction": "Nenhuma ação necessária. Aproveite.",
-      "dismissAria": "Fechar banner"
+      "dismissAria": "Fechar banner",
+      "_pending_review": {
+        "body": true
+      }
     },
     "mobileBilling": {
       "rootIntro": "Gerencie seu plano, método de pagamento e pagamentos de criadores.",
@@ -149,7 +155,10 @@
       "paymentNoneBody": "Adicione um cartão quando você iniciar um plano Premium.",
       "invoicesTitle": "Faturas e Recibos",
       "invoicesBody": "Todas as faturas e recibos estão disponíveis no portal de cobrança da Stripe.",
-      "summaryRenewsOn": "Seu plano renova em {date}"
+      "summaryRenewsOn": "Seu plano renova em {date}",
+      "_pending_review": {
+        "paymentNoneBody": true
+      }
     },
     "state": {
       "freeStatus": "Você está no Vitana Grátis",
@@ -165,7 +174,10 @@
       "upgrade": "Atualizar",
       "trialEndsAt": "O teste termina em {date}",
       "trialingBadge": "Em teste",
-      "activeBadge": "Ativo"
+      "activeBadge": "Ativo",
+      "_pending_review": {
+        "freeStatus": true
+      }
     },
     "subscriptionsPage": {
       "title": "Subscrições",
@@ -244,11 +256,5 @@
     "remainingCounter": "{remaining} / {limit}",
     "resetsIn": "Redefine em {date}",
     "creditsInsufficient": "Créditos insuficientes. Carrega primeiro."
-  },
-  "_pending_review": {
-    "billing.earnings.youEarned": true,
-    "billing.launchGrant.body": true,
-    "billing.mobileBilling.paymentNoneBody": true,
-    "billing.state.freeStatus": true
   }
 }

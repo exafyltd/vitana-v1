@@ -15,7 +15,11 @@
       "mute": "Silenciar",
       "unmute": "Ativar som",
       "share": "Compartilhar",
-      "linkCopied": "Link copiado"
+      "linkCopied": "Link copiado",
+      "_pending_review": {
+        "end": true,
+        "roleBlockedTitle": true
+      }
     },
     "drawer": {
       "loading": "Carregando produto …",
@@ -37,9 +41,5 @@
       "roleBlockedTitle": "Comprar não está disponível aqui.",
       "roleBlockedBody": "Comprar é um recurso da comunidade. Mude para a função de comunidade para continuar."
     }
-  },
-  "_pending_review": {
-    "videoShop.feed.end": true,
-    "videoShop.feed.roleBlockedTitle": true
   }
 }

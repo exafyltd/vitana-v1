@@ -118,7 +118,10 @@
         "imageUploadFailedDesc": "Manteremos a imagem existente.",
         "genericTitle": "Erro",
         "genericDesc": "Falha ao criar stream. Por favor, tenta novamente.",
-        "genericDescWithReason": "Falha ao criar stream: {reason}. Por favor, tenta novamente."
+        "genericDescWithReason": "Falha ao criar stream: {reason}. Por favor, tenta novamente.",
+        "_pending_review": {
+          "notLoggedInDesc": true
+        }
       },
       "success": {
         "streamUpdatedTitle": "Stream Atualizado! ✨",
@@ -147,8 +150,5 @@
     "duration90": "1,5 horas",
     "duration120": "2 horas",
     "durationHint": "A sala fecha automaticamente após este tempo se não a terminares manualmente."
-  },
-  "_pending_review": {
-    "liveRooms.goLivePopup.errors.notLoggedInDesc": true
   }
 }

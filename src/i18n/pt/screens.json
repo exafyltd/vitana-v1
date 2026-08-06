@@ -44,7 +44,10 @@
       "markDone": "Marcar como concluído",
       "skip": "Ignorar por agora",
       "doneToast": "Prática concluída!",
-      "doneError": "Não foi possível guardar."
+      "doneError": "Não foi possível guardar.",
+      "_pending_review": {
+        "howItWorksCatalogBody": true
+      }
     },
     "common": {
       "languageToggleAriaLabel": "Idioma",
@@ -855,7 +858,10 @@
       "mental": "Mental",
       "next3": "Próximos 3 dias",
       "month": "30 dias",
-      "future": "Futuro"
+      "future": "Futuro",
+      "_pending_review": {
+        "allCaughtUp": true
+      }
     },
     "admin": {
       "usingDefaults": "Usando padrões",
@@ -2559,7 +2565,12 @@
       "paAssistantUsageDesc": "Uso real do Assistente: conversas, qualidade, tópicos e confiabilidade da ferramenta.",
       "paJourneysDesc": "Como os membros se movem pelo aplicativo: entradas, caminhos e desistências.",
       "paFeaturesDesc": "Adoção de recursos: aberturas, conclusões e uso repetido.",
-      "paInterestsDesc": "Quais tópicos os membros se importam — do Assistente, cartões e conteúdo."
+      "paInterestsDesc": "Quais tópicos os membros se importam — do Assistente, cartões e conteúdo.",
+      "_pending_review": {
+        "youHelpfulAiAssistant": true,
+        "youMustExafyAdministratorAccessBootstrap": true,
+        "autoresolvedByDevAutopilotYouCan": true
+      }
     },
     "ai-feed": {
       "noEventsFound": "Nenhum evento encontrado",
@@ -2937,7 +2948,10 @@
       "eGLongevitySleepSupplements": "ex: longevidade, sono, suplementos",
       "autopilotHasLengthReferralDraftValue1": "O Autopilot tem {length}rascunho de indicação{value1}para você",
       "scoreValue0": "pontuação {value0}",
-      "viewSource": "Ver fonte"
+      "viewSource": "Ver fonte",
+      "_pending_review": {
+        "autopilotHasLengthReferralDraftValue1": true
+      }
     },
     "calendar": {
       "noUpcomingEvents": "Nenhum evento futuro",
@@ -2995,7 +3009,10 @@
       "suggestedValue0": "Sugerido: {value0}",
       "todaySIndexPulseCompletingYour": "Pulso do Índice de hoje: completar o teu evento com {totalCount}pilares\n                              {value1} irá mover o teu Índice.",
       "urgent": "urgente",
-      "highPriority": "alta prioridade"
+      "highPriority": "alta prioridade",
+      "_pending_review": {
+        "includingYou": true
+      }
     },
     "cart": {
       "yourCart": "O Teu Carrinho",
@@ -3512,7 +3529,11 @@
       "goalActivity": "Companheiro de atividade",
       "goalWeightLoss": "Perda de peso",
       "goalMentalWellness": "Bem-estar mental",
-      "goalValues": "Valores alinhados"
+      "goalValues": "Valores alinhados",
+      "_pending_review": {
+        "aiRecommendedForYou": true,
+        "describeWhatHappenedWhatYouTried": true
+      }
     },
     "contacts": {
       "addContact": "Adicionar Contato",
@@ -3617,7 +3638,11 @@
       "notEnabled": "Não Ativado",
       "completeYourPaymentSetupStartReceiving": "Conclua sua configuração de pagamento para começar a receber ganhos de Salas Ao Vivo pagas.",
       "enablePaymentsCreatePaidLiveRooms": "Ative os pagamentos para criar Salas Ao Vivo pagas e receber 90% da receita. Configuração rápida de 2 minutos com Stripe Connect.",
-      "checkingStatus": "Verificando status..."
+      "checkingStatus": "Verificando status...",
+      "_pending_review": {
+        "youCanNowCreatePaidLive": true,
+        "youCreator": true
+      }
     },
     "crossover": {
       "keyFactors": "Fatores Chave:",
@@ -4492,7 +4517,12 @@
       "bookmarkedValue0": "🔖 {value0} Marcadores",
       "exploreName": "Explora {name}",
       "exploreItem_name": "Explora {item_name}",
-      "value0Services": "{value0}Serviços"
+      "value0Services": "{value0}Serviços",
+      "_pending_review": {
+        "providerBadge_nearYou": true,
+        "whatYouLookingForEG": true,
+        "whyThisForYou": true
+      }
     },
     "discovery": {
       "filters": "Filtros:",
@@ -5745,7 +5775,10 @@
       "memorySubnav_diary": "Diário do Dia",
       "memorySubnav_recall": "Recordar e Pesquisar",
       "memorySubnav_permissions": "Permissões",
-      "wellnessDiaryMultimediaDescription": "Regista e revê a tua jornada de bem-estar através de entradas multimédia."
+      "wellnessDiaryMultimediaDescription": "Regista e revê a tua jornada de bem-estar através de entradas multimédia.",
+      "_pending_review": {
+        "yourTranscriptionWillAppearHereAs": true
+      }
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Motivação Matinal",
@@ -6515,7 +6548,14 @@
       "licensedVerifiedHealthcareProvider": "Prestador de serviços de saúde licenciado e verificado",
       "media": "Mídia",
       "events": "Eventos",
-      "health": "Saúde"
+      "health": "Saúde",
+      "_pending_review": {
+        "onlyYouCanViewYourProfile": true,
+        "youReNotAnyCommunitiesYet": true,
+        "somePersonalInformationUsedPersonalizeYour": true,
+        "youVeReachedMaximumNumberFeatured": true,
+        "byEnablingThisYourVitanaIndex": true
+      }
     },
     "reminders": {
       "subtitleDefault": "O que a Vitana está agendando para você. Fale com o ORB para adicionar naturalmente.",
@@ -6567,7 +6607,12 @@
       "noCompleted": "Nenhum lembrete concluído ainda.",
       "noMissed": "Nenhum lembrete perdido — estás em dia.",
       "creating": "A criar…",
-      "createReminder": "Criar lembrete"
+      "createReminder": "Criar lembrete",
+      "_pending_review": {
+        "subtitleDefault": true,
+        "scheduledByYou": true,
+        "remindersOnlyFireWhileYouHave": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "Nenhum evento no teu inventário",
@@ -8227,7 +8272,10 @@
       "recording": "Gravando...",
       "aiSpeaking": "IA Falando...",
       "you": "Você",
-      "transcriptWillAppearHere": "A transcrição aparecerá aqui..."
+      "transcriptWillAppearHere": "A transcrição aparecerá aqui...",
+      "_pending_review": {
+        "you": true
+      }
     },
     "vitanaland": {
       "enterVitanalandK": "Entrar em Vitanaland (⌘K)",
@@ -8815,7 +8863,11 @@
       "continueToSecureCheckout": "Continuar para o checkout seguro",
       "cardPaymentViaStripe": "Pagamento com cartão, processado de forma segura pela Stripe",
       "currentBalanceLabel": "Teu Saldo Atual de {currency}",
-      "amountAddCurrency": "Valor a Adicionar ({currency})"
+      "amountAddCurrency": "Valor a Adicionar ({currency})",
+      "_pending_review": {
+        "youSend": true,
+        "youReceive": true
+      }
     },
     "ai": {
       "subtitle_priorityActions": "Tarefas selecionadas por IA para máximo impacto no bem-estar",
@@ -9169,7 +9221,10 @@
       "backBusinessHub": "Voltar para a Central de Negócios",
       "listingsAvailableForProAccounts": "Ofertas disponíveis para contas Pro.",
       "noListingsYetClick": "Nenhuma oferta ainda. Clica",
-      "addOneOpenOrbJustSay": "para adicionar uma – ou abre o ORB e apenas diz"
+      "addOneOpenOrbJustSay": "para adicionar uma – ou abre o ORB e apenas diz",
+      "_pending_review": {
+        "servicesProductsYouReOfferingMatches": true
+      }
     },
     "businessopportunities": {
       "myListings": "Meus Anúncios",
@@ -9193,7 +9248,11 @@
       "continueShopping": "Continuar Comprando",
       "ifYouHaveAnyQuestionsAbout": "Se tiveres alguma pergunta sobre o teu pedido, a nossa equipa de suporte está aqui para ajudar.",
       "contactSupport": "Contactar Suporte",
-      "viewMyOrders": "Ver os Meus Pedidos"
+      "viewMyOrders": "Ver os Meus Pedidos",
+      "_pending_review": {
+        "youLlReceiveTrackingInformationWithin": true,
+        "youLlReceiveConfirmationEmailWith": true
+      }
     },
     "creatoronboarded": {
       "checkingYourPaymentStatus": "O teu estado de pagamento está a ser revisto...",
@@ -9347,7 +9406,10 @@
       "copyLink": "Copiar link",
       "linkCopied": "Link copiado — cole-o no Safari",
       "copyFailed": "Não foi possível copiar o link",
-      "iosOpenInBrowser": "Toque em “…” no canto superior direito, depois em “Abrir no navegador” — a App Store abre imediatamente lá."
+      "iosOpenInBrowser": "Toque em “…” no canto superior direito, depois em “Abrir no navegador” — a App Store abre imediatamente lá.",
+      "_pending_review": {
+        "redirecting": true
+      }
     },
     "mobilesettings": {
       "pushNotifications": "Notificações Push",
@@ -9801,7 +9863,14 @@
       "legalRetentionObligations": "obrigações de retenção estatutárias;",
       "securityFraudPreventionReasons": "razões de segurança, prevenção de fraude e proteção contra abuso;",
       "legalClaimsDefense": "a necessidade de estabelecer, exercer ou defender reivindicações legais.",
-      "retentionAnonymizeDelete": "Quando dados pessoais não são mais necessários, nós os excluímos ou anonimizamos, a menos que obrigações de retenção estatutárias exijam o contrário."
+      "retentionAnonymizeDelete": "Quando dados pessoais não são mais necessários, nós os excluímos ou anonimizamos, a menos que obrigações de retenção estatutárias exijam o contrário.",
+      "_pending_review": {
+        "whenYouDeleteYourAccountWe": true,
+        "directlyFromYou": true,
+        "whenYouRegisterAccountEnterInformation": true,
+        "youMayAdditionallySubmitDisputesVia": true,
+        "youNeedSignYourAccountBefore": true
+      }
     },
     "patient": {
       "myAppointments": "Minhas Consultas",
@@ -9943,7 +10012,10 @@
       "useDifferentEmail": "← Usar outro e-mail",
       "creatingAccount": "Criando Conta...",
       "tryAppleSigninAgain": "Tentar entrar com Apple novamente",
-      "backLogin": "Voltar ao login"
+      "backLogin": "Voltar ao login",
+      "_pending_review": {
+        "youLlRedirectedYourDashboardFew": true
+      }
     },
     "professional": {
       "professionalDashboard": "Painel Profissional",
@@ -10090,43 +10162,5 @@
       "notFound": "Publicação não encontrada",
       "back": "Voltar"
     }
-  },
-  "_pending_review": {
-    "screens.guidedCatalog.howItWorksCatalogBody": true,
-    "screens.common.allCaughtUp": true,
-    "screens.admin.youHelpfulAiAssistant": true,
-    "screens.admin.youMustExafyAdministratorAccessBootstrap": true,
-    "screens.admin.autoresolvedByDevAutopilotYouCan": true,
-    "screens.business.autopilotHasLengthReferralDraftValue1": true,
-    "screens.calendar.includingYou": true,
-    "screens.community.aiRecommendedForYou": true,
-    "screens.community.describeWhatHappenedWhatYouTried": true,
-    "screens.creator.youCanNowCreatePaidLive": true,
-    "screens.creator.youCreator": true,
-    "screens.discover.providerBadge_nearYou": true,
-    "screens.discover.whatYouLookingForEG": true,
-    "screens.discover.whyThisForYou": true,
-    "screens.memory.yourTranscriptionWillAppearHereAs": true,
-    "screens.profile.onlyYouCanViewYourProfile": true,
-    "screens.profile.youReNotAnyCommunitiesYet": true,
-    "screens.profile.somePersonalInformationUsedPersonalizeYour": true,
-    "screens.profile.youVeReachedMaximumNumberFeatured": true,
-    "screens.profile.byEnablingThisYourVitanaIndex": true,
-    "screens.reminders.subtitleDefault": true,
-    "screens.reminders.scheduledByYou": true,
-    "screens.reminders.remindersOnlyFireWhileYouHave": true,
-    "screens.vertex.you": true,
-    "screens.wallet.youSend": true,
-    "screens.wallet.youReceive": true,
-    "screens.businesslistings.servicesProductsYouReOfferingMatches": true,
-    "screens.checkoutsuccess.youLlReceiveTrackingInformationWithin": true,
-    "screens.checkoutsuccess.youLlReceiveConfirmationEmailWith": true,
-    "screens.maxinaAppRedirect.redirecting": true,
-    "screens.legal.whenYouDeleteYourAccountWe": true,
-    "screens.legal.directlyFromYou": true,
-    "screens.legal.whenYouRegisterAccountEnterInformation": true,
-    "screens.legal.youMayAdditionallySubmitDisputesVia": true,
-    "screens.legal.youNeedSignYourAccountBefore": true,
-    "screens.portals.youLlRedirectedYourDashboardFew": true
   }
 }
