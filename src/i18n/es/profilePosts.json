@@ -9,6 +9,11 @@
     "emptyTitle": "Aún no hay publicaciones",
     "emptyDescription": "Comparte tu primera actualización con la comunidad",
     "deleteConfirm": "¿Eliminar esta publicación?",
-    "error": "Algo salió mal"
+    "error": "Algo salió mal",
+    "mentionPlaceholder": "¿Qué tienes en mente? Escribe @ para etiquetar a alguien",
+    "background": "Fondo",
+    "noBackground": "Sin fondo",
+    "searchingPeople": "Buscando personas…",
+    "noPeopleFound": "Nadie encontrado"
   }
 }

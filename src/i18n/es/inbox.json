@@ -20,7 +20,9 @@
     "actions": {
       "new": "Nuevo",
       "newMessage": "Nuevo mensaje",
-      "createGroup": "Crear grupo"
+      "createGroup": "Crear grupo",
+      "markAllRead": "Marcar todo como leído",
+      "menu": "Más"
     },
     "composer": {
       "placeholder": "Escribe tu mensaje...",
@@ -84,7 +86,9 @@
       "groupRecipientsRequired": "Se requieren nombre del grupo y destinatarios",
       "singleRecipientRequired": "Selecciona exactamente un destinatario para mensaje directo",
       "groupCreated": "¡Grupo \"{name}\" creado correctamente!",
-      "groupFailed": "Error al crear el grupo"
+      "groupFailed": "Error al crear el grupo",
+      "allMarkedRead": "Todos los mensajes marcados como leídos",
+      "markAllReadFailed": "No se pudo marcar todo como leído. Por favor, inténtalo de nuevo."
     },
     "createGroupAction": "Crear nuevo grupo",
     "newConversationAction": "Nueva conversación",
@@ -103,6 +107,17 @@
       "tenantDescription": "Conéctate con colegas y miembros del equipo en tu red profesional.",
       "startConversation": "Iniciar una conversación",
       "discoverPeople": "Descubrir personas"
+    },
+    "group": {
+      "loading": "Cargando grupo…",
+      "cantOpen": "No se pudo abrir el grupo",
+      "backToInbox": "Volver a la bandeja de entrada",
+      "back": "Atrás",
+      "memberOne": "miembro",
+      "memberOther": "miembros",
+      "officialBadge": "grupo oficial",
+      "empty": "Aún no hay mensajes.",
+      "composerPlaceholder": "Mensaje…"
     }
   }
 }

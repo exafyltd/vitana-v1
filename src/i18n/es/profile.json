@@ -42,7 +42,7 @@
       },
       "fields": {
         "avatar": "Avatar",
-        "handle": "Handle",
+        "handle": "Usuario",
         "longevityArchetype": "Arquetipo de longevidad",
         "firstName": "Nombre",
         "lastName": "Apellido",

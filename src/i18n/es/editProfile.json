@@ -12,6 +12,10 @@
     "manage": "Gestionar",
     "about": "Acerca de",
     "addBio": "Añade una biografía...",
-    "tapToEdit": "Toca para editar"
+    "tapToEdit": "Toca para editar",
+    "title": "Título",
+    "titlePlaceholder": "Título del video",
+    "description": "Descripción",
+    "descriptionPlaceholder": "Descripción opcional..."
   }
 }

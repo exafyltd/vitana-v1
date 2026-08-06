@@ -12,6 +12,10 @@
     "videos": "Galería de videos",
     "uploadVideo": "Subir video",
     "noVideos": "Aún no hay videos",
-    "addFirstVideo": "Añade tu primer video"
+    "addFirstVideo": "Añade tu primer video",
+    "invalidFormat": "Formato inválido",
+    "fileTooLarge": "Archivo demasiado grande",
+    "maxSize": "Tamaño máximo del archivo: 500 MB",
+    "maxSizeHint": "Máx. 500 MB"
   }
 }

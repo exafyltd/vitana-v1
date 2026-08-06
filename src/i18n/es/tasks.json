@@ -14,6 +14,8 @@
     "postpone": "Posponer",
     "addNote": "Añadir nota",
     "openContext": "Abrir contexto",
-    "assignee": "Asignado"
-  }
+    "assignee": "Asignado",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

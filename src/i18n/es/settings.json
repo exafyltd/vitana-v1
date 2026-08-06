@@ -33,7 +33,9 @@
       "notificationsActive": "Notificaciones activas",
       "connectedAppsCount": "Apps conectadas",
       "types": "tipos",
-      "apps": "apps"
-    }
+      "apps": "aplicaciones"
+    },
+    "vitanaOpenedSection": "Vitana abrió {section}",
+    "vitanaUpdated": "Vitana actualizó tu configuración"
   }
 }

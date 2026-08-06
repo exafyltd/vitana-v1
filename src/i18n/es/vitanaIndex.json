@@ -22,6 +22,14 @@
       "strong": "Fuerte",
       "reallyGood": "Muy Bueno",
       "elite": "Élite"
+    },
+    "framings": {
+      "starting": "Recién empezando",
+      "early": "Línea base establecida",
+      "building": "Hábitos en formación",
+      "strong": "Hito de 90 días",
+      "reallyGood": "Prosperando",
+      "elite": "Élite"
     }
   }
 }

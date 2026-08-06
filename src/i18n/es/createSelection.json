@@ -4,7 +4,7 @@
     "description": "Elige el tipo de reunión que quieres crear",
     "event": "Evento",
     "eventDescription": "Reuniones formales con horarios programados y programas estructurados",
-    "meetup": "MeetUp",
+    "meetup": "Quedada",
     "meetupDescription": "Reuniones informales para networking y construcción de comunidad"
   }
 }

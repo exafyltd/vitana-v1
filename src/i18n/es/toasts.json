@@ -172,7 +172,8 @@
       "weLlAnalyzeUpdateSuggestionsShortly": "Analizaremos y actualizaremos las sugerencias en breve.",
       "activityHidden": "Actividad oculta",
       "success": "¡Éxito! 🎉",
-      "donTBreakStreakOneSmall": "🔥 No rompas la racha — una pequeña acción hoy"
+      "donTBreakStreakOneSmall": "🔥 No rompas la racha — una pequeña acción hoy",
+      "contentCreateFailed": "No se pudo crear el contenido"
     },
     "admin": {
       "companionOverridesSavedVoiceCacheRefreshes": "Anulaciones de compañero guardadas — la caché de voz se actualiza en 30s.",
@@ -609,7 +610,21 @@
       "share": "Compartir",
       "calendarExport": "Exportar calendario",
       "icsFileWillDownloaded": "El archivo ICS se descargará",
-      "openingCalendar": "Abriendo calendario"
+      "openingCalendar": "Abriendo calendario",
+      "notifyOnTitle": "Recordatorio establecido",
+      "notifyOnDesc": "Te recordaremos antes de que empiece",
+      "notifyOffTitle": "Recordatorio eliminado",
+      "notifyOffDesc": "Ya no recibirás recordatorios",
+      "notifyError": "No se pudo actualizar el recordatorio",
+      "reminderActionText": "El directo \"{title}\" empieza pronto",
+      "savedTitle": "¡Guardado!",
+      "savedDesc": "Sala guardada para más tarde",
+      "unsavedTitle": "Eliminado de guardados",
+      "unsavedDesc": "Sala eliminada de tu lista de guardados",
+      "followedTitle": "¡Siguiendo!",
+      "followedDesc": "Ahora sigues a {name}",
+      "unfollowedTitle": "Dejaste de seguir",
+      "unfollowedDesc": "Dejaste de seguir a {name}"
     },
     "meetups": {
       "signRequired": "Inicio de sesión requerido",
@@ -848,7 +863,11 @@
       "invalidTime": "Hora inválida",
       "reminderCreated": "Recordatorio creado",
       "reminderDeleted": "Recordatorio eliminado",
-      "markedDone": "Marcado como hecho"
+      "markedDone": "Marcado como hecho",
+      "failedToCreate": "Fallo al crear recordatorio",
+      "failedToDelete": "Fallo al eliminar recordatorio",
+      "failedToMarkDone": "No se pudo marcar como hecho",
+      "remindersDeleted": "{count} recordatorios eliminados"
     },
     "reseller": {
       "activatingYourResellerProfile": "Activando tu perfil de revendedor...",
@@ -1286,7 +1305,8 @@
       "exchangeSendSuccessful": "¡Intercambio y envío exitoso! ✨",
       "exchangeSendFailed": "Intercambio y envío fallido",
       "linkAvailable": "Enlace disponible",
-      "errorUpdatingPreferences": "Error al actualizar preferencias"
+      "errorUpdatingPreferences": "Error al actualizar preferencias",
+      "failedPurchaseTicket": "No se pudo comprar el boleto"
     },
     "businesslistings": {
       "couldNotLoadListings": "No se pudieron cargar los listados"
@@ -1338,6 +1358,10 @@
     },
     "index": {
       "vitanaDevGatewayUrlNotConfigured": "URL de Vitana Dev Gateway no configurada"
+    },
+    "dailyGoal": {
+      "title": "¡Felicidades! Meta de hoy lograda 🎉",
+      "body": "Sigue adelante."
     }
   }
 }

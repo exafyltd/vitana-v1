@@ -22,7 +22,7 @@
     "viewPlans": "Ver Planes",
     "vitanaIndex": "Índice Vitana",
     "healthSnapshot": "Tu Resumen de Salud",
-    "topPercentile": "Top {percent}%",
+    "topPercentile": "El {percent}% superior",
     "trend": {
       "improving": "Mejorando",
       "declining": "Disminuyendo",
@@ -84,7 +84,7 @@
       },
       "economyAxes": {
         "find_match": "Encontrar un match",
-        "marketplace": "Marketplace",
+        "marketplace": "Mercado",
         "income_generation": "Generación de ingresos",
         "business_formation": "Formación de negocios"
       },

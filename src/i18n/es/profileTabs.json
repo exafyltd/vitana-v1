@@ -8,6 +8,8 @@
     "health": "Salud",
     "services": "Servicios",
     "insight": "Perspectiva",
-    "milestones": "Hitos"
-  }
+    "milestones": "Hitos",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

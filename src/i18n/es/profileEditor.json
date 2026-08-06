@@ -20,7 +20,8 @@
     "visibility": {
       "public": "Público",
       "followers": "Seguidores",
-      "private": "Privado"
+      "private": "Privado",
+      "_pending_review": {}
     },
     "languageOptions": {
       "english": "Inglés",
@@ -32,7 +33,8 @@
       "russian": "Ruso",
       "arabic": "Árabe",
       "chinese": "Chino",
-      "japanese": "Japonés"
+      "japanese": "Japonés",
+      "_pending_review": {}
     },
     "cancel": "Cancelar",
     "save": "Guardar cambios",
@@ -46,7 +48,8 @@
       "makeShorter": "Hacer más corto",
       "moreProfessional": "Más profesional",
       "moreInspirational": "Más inspirador",
-      "suggestion": "Sugerencia de piloto automático"
+      "suggestion": "Sugerencia de piloto automático",
+      "_pending_review": {}
     },
     "identity": {
       "editIdentity": "Editar identidad",
@@ -69,7 +72,8 @@
       "uploadFailed": "Error al subir",
       "uploadFailedDesc": "No se pudo subir la imagen. Intenta de nuevo.",
       "identityUpdated": "Identidad actualizada",
-      "identityUpdatedDesc": "Tu información de identidad se ha guardado correctamente."
+      "identityUpdatedDesc": "Tu información de identidad se ha guardado correctamente.",
+      "_pending_review": {}
     },
     "coverLibrary": {
       "title": "Biblioteca de portadas",
@@ -96,7 +100,10 @@
       "universalRemoved": "Foto de portada universal eliminada",
       "uploadFailed": "Error al subir",
       "categoryRequired": "Primero elige una categoría para esta foto.",
-      "saveError": "No se pudo guardar. Inténtalo de nuevo."
-    }
-  }
+      "saveError": "No se pudo guardar. Inténtalo de nuevo.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -4,18 +4,23 @@
       "title": "Regala un Vale de Maxina",
       "subtitle": "Regala bienestar y conexión comunitaria",
       "buyVoucher": "Comprar Vale",
-      "openingCheckout": "Abriendo pago seguro..."
+      "openingCheckout": "Abriendo pago seguro...",
+      "_pending_review": {}
     },
     "tiers": {
       "test": {
-        "name": "Prueba"
+        "name": "Prueba",
+        "_pending_review": {}
       },
       "experience": {
-        "name": "Experiencia"
+        "name": "Experiencia",
+        "_pending_review": {}
       },
       "exclusive": {
-        "name": "Exclusivo"
-      }
+        "name": "Exclusivo",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "success": {
       "title": "¡Vale Comprado!",
@@ -23,7 +28,8 @@
       "download": "Descargar Vale",
       "sendEmail": "Enviar al Destinatario por Correo",
       "viewOrders": "Ver en Pedidos",
-      "done": "Listo"
+      "done": "Listo",
+      "_pending_review": {}
     },
     "email": {
       "title": "Enviar Vale por Correo",
@@ -33,7 +39,8 @@
       "personalMessage": "Mensaje Personal (opcional)",
       "messagePlaceholder": "¡Feliz Cumpleaños! Disfruta este capricho de bienestar...",
       "back": "Atrás",
-      "send": "Enviar Vale"
+      "send": "Enviar Vale",
+      "_pending_review": {}
     },
     "preview": {
       "title": "Tu Vale",
@@ -47,7 +54,8 @@
       "copyLink": "Copiar Enlace",
       "share": "Guardar / Compartir",
       "shareHint": "Guardar en Archivos, Drive o enviar a alguien",
-      "downloadHint": "Si la descarga se abre en blanco, toca Abrir en el Navegador"
+      "downloadHint": "Si la descarga se abre en blanco, toca Abrir en el Navegador",
+      "_pending_review": {}
     },
     "toast": {
       "downloadStarted": "¡Descarga iniciada!",
@@ -64,7 +72,10 @@
       "pdfNotAvailable": "Descarga de PDF no disponible para este tipo de pedido",
       "enterRecipientEmail": "Por favor, ingresa el correo del destinatario",
       "emailOnlyForVouchers": "Envío por correo solo disponible para vales",
-      "sendingVoucherEmail": "Enviando correo del vale..."
-    }
-  }
+      "sendingVoucherEmail": "Enviando correo del vale...",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

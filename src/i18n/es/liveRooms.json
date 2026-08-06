@@ -130,16 +130,22 @@
         "aiImageHintTitle": "Generación de imagen con IA",
         "aiImageHintDesc": "La imagen se generará cuando comience la transmisión."
       }
+    },
+    "editSession": {
+      "title": "Editar sesión",
+      "saving": "Guardando…",
+      "changeCover": "Cambiar imagen de portada",
+      "noChanges": "No hay cambios para guardar"
     }
   },
   "goLivePopup": {
-    "durationLabel": "Duration",
-    "duration15": "15 minutes",
-    "duration30": "30 minutes",
-    "duration45": "45 minutes",
-    "duration60": "1 hour",
-    "duration90": "1.5 hours",
-    "duration120": "2 hours",
-    "durationHint": "The room closes automatically after this time if you don’t end it manually."
+    "durationLabel": "Duración",
+    "duration15": "15 minutos",
+    "duration30": "30 minutos",
+    "duration45": "45 minutos",
+    "duration60": "1 hora",
+    "duration90": "1,5 horas",
+    "duration120": "2 horas",
+    "durationHint": "La sala se cierra automáticamente después de este tiempo si no la terminas manualmente."
   }
 }

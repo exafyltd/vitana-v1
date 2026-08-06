@@ -16,7 +16,8 @@
       "updateArchetype": "Actualizar arquetipo",
       "profileSectionTitle": "El piloto automático puede pulir tu perfil ✨",
       "profileSectionDesc": "Obtén sugerencias con IA para tu biografía, arquetipo y destacados.",
-      "tryAutopilot": "Probar piloto automático"
+      "tryAutopilot": "Probar piloto automático",
+      "_pending_review": {}
     },
     "preview": "Vista previa del piloto automático",
     "viewAll": "Ver todo",
@@ -41,12 +42,14 @@
       "toastExecutedTitle": "Acciones ejecutadas",
       "toastExecutedDesc": "{success}/{total} acciones completadas con éxito",
       "toastFailedTitle": "Ejecución fallida",
-      "toastFailedDesc": "Algo salió mal. Inténtalo de nuevo."
+      "toastFailedDesc": "Algo salió mal. Inténtalo de nuevo.",
+      "_pending_review": {}
     },
     "priorities": {
       "high": "Alta",
       "medium": "Medio",
-      "low": "Bajo"
+      "low": "Bajo",
+      "_pending_review": {}
     },
     "widget": {
       "title": "Piloto automático ⚡",
@@ -56,7 +59,8 @@
       "allOptimized": "¡Todo optimizado! 🎯",
       "enableToSee": "Activa el piloto automático para ver sugerencias",
       "completeForRewards": "Completa las sugerencias del piloto automático para obtener recompensas",
-      "enableForCredits": "Activa el piloto automático para obtener créditos"
+      "enableForCredits": "Activa el piloto automático para obtener créditos",
+      "_pending_review": {}
     },
     "insightBanner": {
       "title": "Resumen de salud del piloto automático",
@@ -64,7 +68,8 @@
       "synergyIndex": "Índice de sinergia",
       "statusBalanced": "Equilibrado",
       "statusNeedsAttention": "Necesita atención",
-      "statusImproving": "Mejorando"
+      "statusImproving": "Mejorando",
+      "_pending_review": {}
     },
     "profilePopup": {
       "title": "Deja que el piloto automático pula tu perfil ✨",
@@ -87,7 +92,8 @@
       "acceptAll": "Aceptar todo",
       "applied": "¡Cambios guardados!",
       "error": "Algo salió mal",
-      "comingSoon": "Próximamente"
+      "comingSoon": "Próximamente",
+      "_pending_review": {}
     },
     "actions": {
       "action1Title": "¿Unirte al grupo de baile de longevidad esta noche?",
@@ -103,7 +109,10 @@
       "action6Title": "Magia matutina consciente",
       "action6Reason": "Tu alma te llama a estas técnicas para derretir el estrés",
       "newActionTitle": "Nueva sugerencia de IA",
-      "newActionReason": "Basado en patrones de actividad recientes"
-    }
-  }
+      "newActionReason": "Basado en patrones de actividad recientes",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

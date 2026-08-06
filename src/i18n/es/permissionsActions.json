@@ -4,36 +4,47 @@
     "items": {
       "privacySettings": {
         "title": "Configuración de Privacidad",
-        "description": "Configura la privacidad de datos y preferencias de uso compartido"
+        "description": "Configura la privacidad de datos y preferencias de uso compartido",
+        "_pending_review": {}
       },
       "manageAccess": {
         "title": "Gestionar Acceso",
-        "description": "Controla quién puede ver tus recuerdos de salud"
+        "description": "Controla quién puede ver tus recuerdos de salud",
+        "_pending_review": {}
       },
       "securitySettings": {
         "title": "Configuración de Seguridad",
-        "description": "Actualiza autenticación y preferencias de seguridad"
+        "description": "Actualiza autenticación y preferencias de seguridad",
+        "_pending_review": {}
       },
       "apiKeysAccess": {
         "title": "Claves API y Acceso",
-        "description": "Gestiona integraciones de apps de terceros y acceso API"
+        "description": "Gestiona integraciones de apps de terceros y acceso API",
+        "_pending_review": {}
       },
       "dataRights": {
         "title": "Derechos de Datos",
-        "description": "Ejerce tus derechos de portabilidad y eliminación de datos"
+        "description": "Ejerce tus derechos de portabilidad y eliminación de datos",
+        "_pending_review": {}
       },
       "auditLogs": {
         "title": "Registros de Auditoría",
-        "description": "Revisa el historial de acceso y el registro de auditoría de seguridad"
+        "description": "Revisa el historial de acceso y el registro de auditoría de seguridad",
+        "_pending_review": {}
       },
       "permissionSettings": {
         "title": "Configuración de Permisos",
-        "description": "Ajusta permisos detallados para diferentes funciones"
+        "description": "Ajusta permisos detallados para diferentes funciones",
+        "_pending_review": {}
       },
       "exportData": {
         "title": "Exportar Datos",
-        "description": "Descarga tus recuerdos y datos de salud de forma segura"
-      }
-    }
-  }
+        "description": "Descarga tus recuerdos y datos de salud de forma segura",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -33,6 +33,9 @@
     "download": "Descargar",
     "upload": "Subir",
     "refresh": "Actualizar",
-    "retry": "Reintentar"
+    "retry": "Reintentar",
+    "follow": "Seguir",
+    "getMaxina": "Conseguir MAXINA",
+    "uploading": "Subiendo..."
   }
 }
