@@ -26,18 +26,21 @@
     "trend": {
       "improving": "Улучшается",
       "declining": "Ухудшение",
-      "stable": "Стабильно"
+      "stable": "Стабильно",
+      "_pending_review": {}
     },
     "suggestions": {
       "uploadBloodTestResults": "Загрузить результаты анализа крови",
-      "startFitnessChallenge": "Начать 30-дневный фитнес-челлендж"
+      "startFitnessChallenge": "Начать 30-дневный фитнес-челлендж",
+      "_pending_review": {}
     },
     "pillars": {
       "sleep": "Сон",
       "exercise": "Упражнения",
       "nutrition": "Питание",
       "hydration": "Гидратация",
-      "mental": "Ментальное"
+      "mental": "Ментальное",
+      "_pending_review": {}
     },
     "emptyStates": {
       "noSleepPlan": "Пока нет плана сна",
@@ -51,7 +54,8 @@
       "noMentalPlan": "Пока нет ментального плана",
       "noMentalPlanDesc": "Сгенерируй свой персонализированный план ментального благополучия, чтобы отслеживать стресс, фокус и эмоциональный баланс с поддержкой ИИ.",
       "generatePlan": "Создать план",
-      "generating": "Создается..."
+      "generating": "Создается...",
+      "_pending_review": {}
     },
     "noSupplements": "Добавок пока нет",
     "noSupplementsDesc": "Отслеживай свои ежедневные витамины, минералы и добавки. Добавь свою первую добавку, чтобы начать.",
@@ -80,15 +84,20 @@
         "hydration": "Гидратация",
         "exercise": "Упражнения",
         "sleep": "Сон",
-        "mental": "Ментальное здоровье"
+        "mental": "Ментальное здоровье",
+        "_pending_review": {}
       },
       "economyAxes": {
         "find_match": "Найти пару",
         "marketplace": "Маркетплейс",
         "income_generation": "Генерация дохода",
-        "business_formation": "Создание бизнеса"
+        "business_formation": "Создание бизнеса",
+        "_pending_review": {}
       },
-      "contractLink": "Посмотреть контракт Конечной Цели"
-    }
-  }
+      "contractLink": "Посмотреть контракт Конечной Цели",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

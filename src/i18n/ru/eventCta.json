@@ -19,6 +19,8 @@
     "processing": "Обработка...",
     "joining": "Присоединение...",
     "getTickets": "Получить билеты",
-    "promoteEvent": "Продвигать событие"
-  }
+    "promoteEvent": "Продвигать событие",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

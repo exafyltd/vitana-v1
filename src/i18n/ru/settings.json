@@ -7,7 +7,8 @@
     "tabs": {
       "overview": "Обзор",
       "notifications": "Уведомления",
-      "quickActions": "Быстрые действия"
+      "quickActions": "Быстрые действия",
+      "_pending_review": {}
     },
     "categories": {
       "privacy": "Конфиденциальность",
@@ -23,7 +24,8 @@
       "billing": "Оплата",
       "billingDesc": "Информация о подписке и платежах",
       "support": "Поддержка",
-      "supportDesc": "Помощь, FAQ и контакты"
+      "supportDesc": "Помощь, FAQ и контакты",
+      "_pending_review": {}
     },
     "status": {
       "privacyStatus": "Статус конфиденциальности",
@@ -33,9 +35,12 @@
       "notificationsActive": "Уведомления активны",
       "connectedAppsCount": "Подключенные приложения",
       "types": "типы",
-      "apps": "Приложения"
+      "apps": "Приложения",
+      "_pending_review": {}
     },
     "vitanaOpenedSection": "Vitana открыла {section}",
-    "vitanaUpdated": "Vitana обновила твою настройку"
-  }
+    "vitanaUpdated": "Vitana обновила твою настройку",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

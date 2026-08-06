@@ -6,7 +6,8 @@
       "editHighlights": "Редактировать избранное",
       "saveHighlights": "Сохранить избранное",
       "highlightsDesc": "Выбери свои лучшие посты и медиа для отображения вверху твоего профиля. Избранный контент появляется в разделе Избранное и привлекает больше подписчиков.",
-      "try": "Попробовать"
+      "try": "Попробовать",
+      "_pending_review": {}
     },
     "identity": {
       "vitanaIndex": "Индекс Vitana",
@@ -15,13 +16,15 @@
       "follow": "Подписаться",
       "followingState": "Ты подписан",
       "understandIndex": "Понять индекс",
-      "brandFooter": "MAXINA × VITANA"
+      "brandFooter": "MAXINA × VITANA",
+      "_pending_review": {}
     },
     "tabs": {
       "identity": "Идентичность",
       "social": "Социальное",
       "account": "Аккаунт",
-      "business": "Бизнес"
+      "business": "Бизнес",
+      "_pending_review": {}
     },
     "account": {
       "notSet": "Не установлено",
@@ -30,7 +33,8 @@
       "visibility": {
         "private": "Приватный",
         "connections": "Связи",
-        "public": "Публичный"
+        "public": "Публичный",
+        "_pending_review": {}
       },
       "sections": {
         "publicProfile": "Публичный профиль",
@@ -38,7 +42,8 @@
         "basicInfo": "Основная личная информация",
         "basicInfoSubtitle": "Неизменяемые данные идентичности",
         "contactInfo": "Контактная информация",
-        "accountDetails": "Детали аккаунта"
+        "accountDetails": "Детали аккаунта",
+        "_pending_review": {}
       },
       "fields": {
         "avatar": "Аватар",
@@ -56,11 +61,14 @@
         "city": "Город",
         "memberSince": "Участник с",
         "accountType": "Тип аккаунта",
-        "verificationStatus": "Статус верификации"
+        "verificationStatus": "Статус верификации",
+        "_pending_review": {}
       },
       "values": {
-        "uploaded": "Загружено"
-      }
+        "uploaded": "Загружено",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "business": {
       "title": "Мои рекомендации",
@@ -75,7 +83,10 @@
       "publicTitle": "Рекомендации",
       "publicSubtitle": "Продукты, рекомендованные этим профилем",
       "publicEmpty": "Пока нет рекомендаций",
-      "viewProduct": "Посмотреть"
-    }
-  }
+      "viewProduct": "Посмотреть",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

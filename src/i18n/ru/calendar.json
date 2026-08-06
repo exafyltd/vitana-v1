@@ -29,14 +29,16 @@
       "title": "Твои запланированные события",
       "todayLabel": "Сегодня",
       "nextUp": "Далее",
-      "noEventsToday": "Сегодня нет событий"
+      "noEventsToday": "Сегодня нет событий",
+      "_pending_review": {}
     },
     "filters": {
       "personal": "Личное",
       "community": "Сообщество",
       "work": "Работа",
       "health": "Здоровье",
-      "workout": "Тренировка"
+      "workout": "Тренировка",
+      "_pending_review": {}
     },
     "categories": {
       "community": "Сообщество",
@@ -45,19 +47,22 @@
       "nutrition": "Питание",
       "professional": "Работа",
       "personal": "Личное",
-      "training": "Тренировка"
+      "training": "Тренировка",
+      "_pending_review": {}
     },
     "bookingStatus": {
       "booked": "Забронировано",
       "rsvp": "Ответить",
       "ticket": "Билет",
-      "reserved": "Зарезервировано"
+      "reserved": "Зарезервировано",
+      "_pending_review": {}
     },
     "timeGroups": {
       "today": "Сегодня",
       "tomorrow": "Завтра",
       "thisWeek": "На этой неделе",
-      "later": "Позже"
+      "later": "Позже",
+      "_pending_review": {}
     },
     "autopilot": {
       "suggestions": "Предложения Автопилота",
@@ -77,7 +82,8 @@
       "reminderLaterToday": "Напоминание установлено на сегодня",
       "reminderTomorrow": "Напоминание установлено на завтра",
       "recommendFocus": "Рекомендуем блок для фокуса",
-      "focusBlockDesc": "У тебя есть доступный 90-минутный слот. Идеально для сфокусированной работы."
+      "focusBlockDesc": "У тебя есть доступный 90-минутный слот. Идеально для сфокусированной работы.",
+      "_pending_review": {}
     },
     "toasts": {
       "eventCreated": "Событие создано",
@@ -94,22 +100,26 @@
       "featureComingSoon": "Функция скоро появится",
       "inviteFollowers": "Пригласить подписчиков",
       "rescheduleEvent": "Перенести событие",
-      "shareToGroup": "Поделиться в группе"
+      "shareToGroup": "Поделиться в группе",
+      "_pending_review": {}
     },
     "error": {
-      "failedToCreate": "Не удалось создать событие"
+      "failedToCreate": "Не удалось создать событие",
+      "_pending_review": {}
     },
     "allDay": "Весь день",
     "milestoneToday": "Веха",
     "focus": {
       "todaysFocus": "Фокус на сегодня",
       "lightDay": "Легкий день — исследуй активности или наверстай упущенное в дневнике",
-      "moreSteps": "больше шагов"
+      "moreSteps": "больше шагов",
+      "_pending_review": {}
     },
     "badge": {
       "guidedStep": "Шаг с подсказкой",
       "milestone": "Веха",
-      "wellness": "Велнес"
+      "wellness": "Велнес",
+      "_pending_review": {}
     },
     "action": {
       "start": "Начать",
@@ -118,11 +128,13 @@
       "details": "Подробнее",
       "viewPlan": "Посмотреть план",
       "open": "Открыть",
-      "done": "Готово"
+      "done": "Готово",
+      "_pending_review": {}
     },
     "group": {
       "stepsRemaining": "шагов осталось",
-      "min": "мин."
+      "min": "мин.",
+      "_pending_review": {}
     },
     "journey": {
       "dayOf": "День {day} из {total}",
@@ -140,8 +152,12 @@
         "wave-3": "Углубление связей",
         "wave-4": "Интеллект здоровья",
         "wave-5": "Моменты озарения",
-        "wave-6": "Рекомендации и Открытия"
-      }
-    }
-  }
+        "wave-6": "Рекомендации и Открытия",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

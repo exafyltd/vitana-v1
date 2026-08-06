@@ -6,6 +6,8 @@
     "exchange": "Обменять",
     "withdraw": "Вывести",
     "buyCredits": "Купить VTNA Кредиты",
-    "stakeTokens": "Застейкать токены"
-  }
+    "stakeTokens": "Застейкать токены",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

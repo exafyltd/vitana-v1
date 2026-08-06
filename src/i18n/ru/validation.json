@@ -24,6 +24,8 @@
     "charactersRemaining": "Осталось {count} символов",
     "fileTooBig": "Файл слишком большой (макс. {max})",
     "invalidFileType": "Неверный тип файла",
-    "uploadLimit": "Разрешено максимум {max} файлов"
-  }
+    "uploadLimit": "Разрешено максимум {max} файлов",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

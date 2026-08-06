@@ -11,7 +11,8 @@
     "tabs": {
       "balances": "Балансы",
       "activity": "Активность",
-      "actions": "Действия"
+      "actions": "Действия",
+      "_pending_review": {}
     },
     "filters": {
       "commissions": "Продавай и зарабатывай комиссии",
@@ -21,10 +22,13 @@
       "purchases": "Покупки",
       "pending": "Ожидаемые выплаты",
       "withdrawals": "Выводы",
-      "stakes": "Стейкинг"
+      "stakes": "Стейкинг",
+      "_pending_review": {}
     },
     "noActivity": "Пока нет активности",
     "noActivityDesc": "Твои транзакции появятся здесь.",
-    "displayCurrency": "Валюта отображения"
-  }
+    "displayCurrency": "Валюта отображения",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

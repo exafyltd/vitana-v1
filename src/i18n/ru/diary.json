@@ -8,6 +8,8 @@
     "photo": "Фото",
     "textEntry": "✍️ Текстовая запись",
     "photoEntry": "📸 Фотозапись",
-    "searchPlaceholder": "Поиск по дневнику..."
-  }
+    "searchPlaceholder": "Поиск по дневнику...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

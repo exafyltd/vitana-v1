@@ -20,7 +20,8 @@
     "visibility": {
       "public": "Публичный",
       "followers": "Подписчики",
-      "private": "Приватный"
+      "private": "Приватный",
+      "_pending_review": {}
     },
     "languageOptions": {
       "english": "Английский",
@@ -32,7 +33,8 @@
       "russian": "Русский",
       "arabic": "Арабский",
       "chinese": "Китайский",
-      "japanese": "Японский"
+      "japanese": "Японский",
+      "_pending_review": {}
     },
     "cancel": "Отмена",
     "save": "Сохранить изменения",
@@ -46,7 +48,8 @@
       "makeShorter": "Сделать короче",
       "moreProfessional": "Более профессионально",
       "moreInspirational": "Более вдохновляюще",
-      "suggestion": "Предложение Автопилота"
+      "suggestion": "Предложение Автопилота",
+      "_pending_review": {}
     },
     "identity": {
       "editIdentity": "Редактировать идентичность",
@@ -69,7 +72,8 @@
       "uploadFailed": "Загрузка не удалась",
       "uploadFailedDesc": "Не удалось загрузить изображение. Пожалуйста, попробуй еще раз.",
       "identityUpdated": "Данные обновлены",
-      "identityUpdatedDesc": "Твои данные личности успешно сохранены."
+      "identityUpdatedDesc": "Твои данные личности успешно сохранены.",
+      "_pending_review": {}
     },
     "coverLibrary": {
       "title": "Библиотека обложек",
@@ -96,7 +100,10 @@
       "universalRemoved": "Универсальное фото обложки удалено",
       "uploadFailed": "Загрузка не удалась",
       "categoryRequired": "Пожалуйста, выбери категорию для этого фото сначала.",
-      "saveError": "Не удалось сохранить — пожалуйста, попробуй еще раз."
-    }
-  }
+      "saveError": "Не удалось сохранить — пожалуйста, попробуй еще раз.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

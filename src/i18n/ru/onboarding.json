@@ -23,7 +23,10 @@
       "handleAvailable": "Имя пользователя доступно!",
       "handleMinLength": "Минимум 3 символа",
       "saving": "Настройка...",
-      "submit": "Давай начнем!"
-    }
-  }
+      "submit": "Давай начнем!",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

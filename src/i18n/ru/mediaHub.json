@@ -7,21 +7,24 @@
       "music": "Музыка",
       "podcasts": "Подкасты",
       "shorts": "Шорты",
-      "videos": "Видео"
+      "videos": "Видео",
+      "_pending_review": {}
     },
     "sections": {
       "trendingShorts": "Популярные шорты",
       "trendingMusic": "Популярная музыка",
       "musicPlaylists": "Музыкальные плейлисты",
       "latestEpisodes": "Последние эпизоды",
-      "popularShows": "Популярные шоу"
+      "popularShows": "Популярные шоу",
+      "_pending_review": {}
     },
     "actions": {
       "upload": "Загрузить",
       "watchShorts": "Смотреть шорты",
       "viewAllShorts": "Посмотреть все {count} шорты",
       "playPlaylist": "Воспроизвести плейлист",
-      "clearFilters": "Очистить фильтры"
+      "clearFilters": "Очистить фильтры",
+      "_pending_review": {}
     },
     "searchPlaceholder": "Поиск медиа...",
     "shortsAvailable": "Доступно {count} коротких видео",
@@ -46,7 +49,8 @@
       "singleUpload": "Единичная загрузка",
       "bulkUpload": "Массовая загрузка",
       "addToPlaylist": "Добавить в плейлист",
-      "viewArtist": "Посмотреть исполнителя"
+      "viewArtist": "Посмотреть исполнителя",
+      "_pending_review": {}
     },
     "toast": {
       "linkCopied": "Ссылка скопирована",
@@ -64,7 +68,8 @@
       "deleteError": "Ошибка",
       "deleteErrorDesc": "Удаление не удалось. Пожалуйста, попробуй ещё раз.",
       "commentError": "Ошибка",
-      "commentErrorDesc": "Не удалось опубликовать комментарий. Пожалуйста, попробуй еще раз."
+      "commentErrorDesc": "Не удалось опубликовать комментарий. Пожалуйста, попробуй еще раз.",
+      "_pending_review": {}
     },
     "comments": {
       "title": "Комментарии",
@@ -77,19 +82,22 @@
       "reply": "Ответить",
       "replyingTo": "Ответ для {name}",
       "cancelReply": "Отменить ответ",
-      "like": "Нравится комментарий"
+      "like": "Нравится комментарий",
+      "_pending_review": {}
     },
     "deletePodcast": {
       "title": "Удалить подкаст",
       "description": "Ты уверен(а), что хочешь удалить этот подкаст? Это действие нельзя отменить.",
       "cancel": "Отмена",
-      "confirm": "Удалить"
+      "confirm": "Удалить",
+      "_pending_review": {}
     },
     "deleteVideo": {
       "title": "Удалить видео",
       "description": "Ты уверен(а), что хочешь удалить это видео? Это действие нельзя отменить, и оно удалит видео из хранилища.",
       "cancel": "Отмена",
-      "confirm": "Удалить"
+      "confirm": "Удалить",
+      "_pending_review": {}
     },
     "noMusic": "Музыка еще не загружена",
     "noMusicDesc": "Будь первым, кто поделится музыкой с сообществом!",
@@ -146,8 +154,12 @@
         "mentalHealth": "Психическое здоровье",
         "wellness": "Благополучие",
         "education": "Образование",
-        "lifestyle": "Образ жизни"
-      }
-    }
-  }
+        "lifestyle": "Образ жизни",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

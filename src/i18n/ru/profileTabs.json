@@ -8,6 +8,8 @@
     "health": "Здоровье",
     "services": "Услуги",
     "insight": "Инсайты",
-    "milestones": "Достижения"
-  }
+    "milestones": "Достижения",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

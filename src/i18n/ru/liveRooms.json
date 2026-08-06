@@ -6,7 +6,8 @@
       "live": "В эфире",
       "scheduled": "Запланировано",
       "all": "Все комнаты",
-      "past": "Прошедшие"
+      "past": "Прошедшие",
+      "_pending_review": {}
     },
     "goLive": "Выйти в эфир",
     "joinRoom": "Присоединиться к комнате",
@@ -17,7 +18,8 @@
     "search": {
       "placeholder": "Искать комнаты, темы или ведущих...",
       "category": "Категория",
-      "allCategories": "Все категории"
+      "allCategories": "Все категории",
+      "_pending_review": {}
     },
     "room": {
       "join": "Присоединиться",
@@ -25,7 +27,8 @@
       "duration": "Длительность",
       "host": "Ведущий",
       "premium": "Премиум",
-      "live": "В ЭФИРЕ"
+      "live": "В ЭФИРЕ",
+      "_pending_review": {}
     },
     "viewer": {
       "leave": "Выйти",
@@ -33,7 +36,8 @@
       "video": "Видео",
       "raiseHand": "Поднять руку",
       "chat": "Чат",
-      "reactions": "Реакции"
+      "reactions": "Реакции",
+      "_pending_review": {}
     },
     "goLivePopup": {
       "titleCreate": "Выйти в эфир",
@@ -65,7 +69,8 @@
         "sleep": "Сон",
         "motivation": "Мотивация",
         "education": "Образование",
-        "lifestyle": "Образ жизни"
+        "lifestyle": "Образ жизни",
+        "_pending_review": {}
       },
       "advancedTitle": "Расширенные настройки",
       "cohostLabel": "Соведущий / Приглашение гостя",
@@ -74,16 +79,20 @@
       "access": {
         "public": {
           "label": "Публичный",
-          "desc": "Любой может присоединиться"
+          "desc": "Любой может присоединиться",
+          "_pending_review": {}
         },
         "followers": {
           "label": "Только подписчики",
-          "desc": "Только твои подписчики"
+          "desc": "Только твои подписчики",
+          "_pending_review": {}
         },
         "group": {
           "label": "Группа/VIP",
-          "desc": "Только приглашенные участники"
-        }
+          "desc": "Только приглашенные участники",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "scheduleLabel": "Запланировать на потом",
       "goLiveNow": "Выйти в эфир сейчас",
@@ -118,7 +127,8 @@
         "imageUploadFailedDesc": "Мы сохраним текущее изображение.",
         "genericTitle": "Ошибка",
         "genericDesc": "Не удалось создать трансляцию. Пожалуйста, попробуй еще раз.",
-        "genericDescWithReason": "Не удалось создать трансляцию: {reason}. Пожалуйста, попробуй еще раз."
+        "genericDescWithReason": "Не удалось создать трансляцию: {reason}. Пожалуйста, попробуй еще раз.",
+        "_pending_review": {}
       },
       "success": {
         "streamUpdatedTitle": "Трансляция обновлена! ✨",
@@ -128,15 +138,19 @@
         "youAreLiveTitle": "Ты в эфире! 🎙️",
         "youAreLiveDesc": "Вход в твою комнату трансляции…",
         "aiImageHintTitle": "Генерация ИИ-изображения",
-        "aiImageHintDesc": "Изображение будет сгенерировано при начале трансляции."
-      }
+        "aiImageHintDesc": "Изображение будет сгенерировано при начале трансляции.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "editSession": {
       "title": "Редактировать сессию",
       "saving": "Сохранение…",
       "changeCover": "Изменить обложку",
-      "noChanges": "Нет изменений для сохранения"
-    }
+      "noChanges": "Нет изменений для сохранения",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
   },
   "goLivePopup": {
     "durationLabel": "Длительность",
@@ -146,6 +160,8 @@
     "duration60": "1 час",
     "duration90": "1,5 часа",
     "duration120": "2 часа",
-    "durationHint": "Комната закроется автоматически по истечении этого времени, если ты не завершишь ее вручную."
-  }
+    "durationHint": "Комната закроется автоматически по истечении этого времени, если ты не завершишь ее вручную.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -21,7 +21,8 @@
       "building": "Набираешь обороты",
       "strong": "Сильный",
       "reallyGood": "Очень хорошо",
-      "elite": "Элита"
+      "elite": "Элита",
+      "_pending_review": {}
     },
     "framings": {
       "starting": "Только начинаешь",
@@ -29,7 +30,10 @@
       "building": "Привычки формируются",
       "strong": "90-дневный рубеж",
       "reallyGood": "Процветаешь",
-      "elite": "Элита"
-    }
-  }
+      "elite": "Элита",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -20,23 +20,30 @@
         "community": "Сообщество",
         "patient": "Пациент",
         "professional": "Про",
-        "admin": "Админ"
-      }
+        "admin": "Админ",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "alkalma": {
       "joinAlkalma": "Присоединяйся к AlKalma",
       "welcomeBack": "С возвращением в AlKalma.",
-      "continueJourney": "Войди, чтобы продолжить."
+      "continueJourney": "Войди, чтобы продолжить.",
+      "_pending_review": {}
     },
     "earthlinks": {
       "joinEarthlinks": "Присоединяйся к Earthlinks",
       "welcomeBack": "С возвращением в Earthlinks.",
-      "continueJourney": "Войди, чтобы продолжить."
+      "continueJourney": "Войди, чтобы продолжить.",
+      "_pending_review": {}
     },
     "community": {
       "joinCommunity": "Присоединяйся к сообществу",
       "welcomeBack": "С возвращением.",
-      "continueJourney": "Войди, чтобы продолжить."
-    }
-  }
+      "continueJourney": "Войди, чтобы продолжить.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -18,14 +18,16 @@
       "showLessToast": "Будем показывать меньше такого",
       "mutedToast": "Источник отключен",
       "undo": "Отменить",
-      "unmute": "Включить"
+      "unmute": "Включить",
+      "_pending_review": {}
     },
     "detail": {
       "back": "Назад",
       "continueReading": "Продолжить чтение на",
       "openInBrowser": "Открыть в браузере",
       "couldNotLoad": "Эту статью нельзя отобразить здесь",
-      "readOn": "Подробнее"
+      "readOn": "Подробнее",
+      "_pending_review": {}
     },
     "pillars": {
       "all": "Все",
@@ -33,7 +35,10 @@
       "hydration": "Гидратация",
       "sleep": "Сон",
       "exercise": "Упражнения",
-      "mental": "Ментальное здоровье"
-    }
-  }
+      "mental": "Ментальное здоровье",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

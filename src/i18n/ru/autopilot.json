@@ -16,7 +16,8 @@
       "updateArchetype": "Обновить архетип",
       "profileSectionTitle": "Автопилот может улучшить твой профиль ✨",
       "profileSectionDesc": "Получи рекомендации ИИ для твоей биографии, архетипа и основных моментов.",
-      "tryAutopilot": "Попробуй Автопилот"
+      "tryAutopilot": "Попробуй Автопилот",
+      "_pending_review": {}
     },
     "preview": "Предпросмотр Автопилота",
     "viewAll": "Посмотреть все",
@@ -41,12 +42,14 @@
       "toastExecutedTitle": "Действия выполнены",
       "toastExecutedDesc": "{success}/{total} действий выполнено успешно",
       "toastFailedTitle": "Ошибка выполнения",
-      "toastFailedDesc": "Что-то пошло не так. Попробуй ещё раз."
+      "toastFailedDesc": "Что-то пошло не так. Попробуй ещё раз.",
+      "_pending_review": {}
     },
     "priorities": {
       "high": "Высокий",
       "medium": "Средний",
-      "low": "Низкий"
+      "low": "Низкий",
+      "_pending_review": {}
     },
     "widget": {
       "title": "Автопилот ⚡",
@@ -56,7 +59,8 @@
       "allOptimized": "Всё оптимизировано! 🎯",
       "enableToSee": "Активируй Автопилот, чтобы увидеть предложения.",
       "completeForRewards": "Выполни предложения Автопилота, чтобы получить награды.",
-      "enableForCredits": "Активируй Автопилот за кредиты."
+      "enableForCredits": "Активируй Автопилот за кредиты.",
+      "_pending_review": {}
     },
     "insightBanner": {
       "title": "Обзор состояния Автопилота",
@@ -64,7 +68,8 @@
       "synergyIndex": "Индекс синергии",
       "statusBalanced": "Сбалансировано",
       "statusNeedsAttention": "Требует внимания",
-      "statusImproving": "Улучшается"
+      "statusImproving": "Улучшается",
+      "_pending_review": {}
     },
     "profilePopup": {
       "title": "Позволь Автопилоту оптимизировать твой профиль ✨",
@@ -87,7 +92,8 @@
       "acceptAll": "Принять все",
       "applied": "Изменения сохранены!",
       "error": "Что-то пошло не так",
-      "comingSoon": "Скоро"
+      "comingSoon": "Скоро",
+      "_pending_review": {}
     },
     "actions": {
       "action1Title": "Присоединиться к Танцевальной группе долголетия сегодня вечером?",
@@ -103,7 +109,10 @@
       "action6Title": "Магия осознанного утра",
       "action6Reason": "Твоя душа зовет к этим антистрессовым техникам",
       "newActionTitle": "Новое предложение ИИ",
-      "newActionReason": "На основе недавних моделей активности"
-    }
-  }
+      "newActionReason": "На основе недавних моделей активности",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

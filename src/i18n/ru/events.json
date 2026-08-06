@@ -7,7 +7,8 @@
       "today": "Сегодня",
       "upcoming": "Предстоящие",
       "following": "Подписки",
-      "recommended": "Рекомендуемые"
+      "recommended": "Рекомендуемые",
+      "_pending_review": {}
     },
     "noEvents": "Событий нет",
     "checkBack": "Загляни позже, чтобы узнать о предстоящих событиях сообщества!",
@@ -22,7 +23,10 @@
       "noPostsFromFollowing": "Пока нет публикаций",
       "noPostsFromFollowingDesc": "Люди, на которых ты подписан(а), еще не создали событий или встреч.",
       "youFollow": "Ты подписан(а)",
-      "loadingFollowing": "Загрузка публикаций…"
-    }
-  }
+      "loadingFollowing": "Загрузка публикаций…",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

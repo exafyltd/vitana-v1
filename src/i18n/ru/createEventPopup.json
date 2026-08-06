@@ -68,7 +68,8 @@
       "volunteer": "❤️ Волонтерство и Помощь",
       "support": "🫂 Группа поддержки",
       "entertainment": "🎭 Развлечения",
-      "other": "✨ Другое"
+      "other": "✨ Другое",
+      "_pending_review": {}
     },
     "durations": {
       "30min": "30 минут",
@@ -81,7 +82,8 @@
       "8hour": "8 часов",
       "half-day": "Пол-дня",
       "full-day": "Целый день",
-      "custom": "Другая длительность..."
+      "custom": "Другая длительность...",
+      "_pending_review": {}
     },
     "toasts": {
       "invalidFileType": "Недопустимый тип файла",
@@ -113,7 +115,10 @@
       "personalEventCreated": "Событие создано!",
       "personalEventCreatedDesc": "Мероприятие было добавлено в твой календарь.",
       "error": "Ошибка",
-      "errorDesc": "Мероприятие не удалось создать. Пожалуйста, попробуй еще раз."
-    }
-  }
+      "errorDesc": "Мероприятие не удалось создать. Пожалуйста, попробуй еще раз.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -12,6 +12,8 @@
     "descPlaceholder": "Опиши этот момент...",
     "icon": "Иконка",
     "publicLabel": "Видно всем",
-    "private": "Приватно"
-  }
+    "private": "Приватно",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -51,7 +51,8 @@
       "movement": "Движение",
       "mind": "Разум",
       "supplements": "Добавки",
-      "experts": "Эксперты"
+      "experts": "Эксперты",
+      "_pending_review": {}
     },
     "subcategories": {
       "longevity": "Долголетие",
@@ -78,7 +79,8 @@
       "sexualHealth": "Сексуальное здоровье",
       "prevention": "Профилактика и раннее выявление",
       "generalHealth": "Общее здоровье",
-      "dnaAnalysis": "ДНК-анализ"
+      "dnaAnalysis": "ДНК-анализ",
+      "_pending_review": {}
     },
     "quickActions": {
       "title": "Быстрые действия",
@@ -89,7 +91,8 @@
       "reorderPrevious": "Повторить заказ",
       "managePayment": "Управление платежами",
       "findServicesNearMe": "Найти услуги рядом",
-      "viewSavedItems": "Посмотреть сохраненное"
+      "viewSavedItems": "Посмотреть сохраненное",
+      "_pending_review": {}
     },
     "aiPicks": {
       "title": "Рекомендации ИИ для тебя",
@@ -101,24 +104,30 @@
       "recommendationsFound": "{count} рекомендаций найдено",
       "noRecommendations": "Рекомендаций не найдено",
       "noRecommendationsDesc": "Выбери другой фильтр, чтобы увидеть больше рекомендаций.",
-      "viewAllPicks": "Посмотреть все подборки"
+      "viewAllPicks": "Посмотреть все подборки",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Все",
       "services": "Услуги",
       "supplements": "Добавки",
       "experts": "Эксперты",
-      "deals": "Скидки"
+      "deals": "Скидки",
+      "_pending_review": {}
     },
     "toast": {
       "actionSelected": "Действие выбрано",
-      "comingSoon": "Функция {action} скоро появится!"
+      "comingSoon": "Функция {action} скоро появится!",
+      "_pending_review": {}
     },
     "guest": {
       "bannerTitle": "Войди, чтобы получать бонусы Vitana с каждой покупкой",
       "bannerSubtitle": "Просматривай свободно — войди (это бесплатно), чтобы покупать и начать получать бонусы.",
       "bannerCta": "Войти",
-      "signIn": "Войти"
-    }
-  }
+      "signIn": "Войти",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
