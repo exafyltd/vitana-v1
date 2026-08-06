@@ -17,5 +17,8 @@
     "titlePlaceholder": "Título do vídeo",
     "description": "Descrição",
     "descriptionPlaceholder": "Descrição opcional..."
+  },
+  "_pending_review": {
+    "editProfile.unsavedChanges": true
   }
 }

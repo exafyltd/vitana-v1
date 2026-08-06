@@ -41,5 +41,8 @@
     },
     "_pending_review": {}
   },
-  "_pending_review": {}
+  "_pending_review": {
+    "videoShop.feed.end": true,
+    "videoShop.feed.roleBlockedTitle": true
+  }
 }

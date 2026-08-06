@@ -147,5 +147,8 @@
     "duration90": "1,5 horas",
     "duration120": "2 horas",
     "durationHint": "A sala fecha automaticamente após este tempo se não a terminares manualmente."
+  },
+  "_pending_review": {
+    "liveRooms.goLivePopup.errors.notLoggedInDesc": true
   }
 }

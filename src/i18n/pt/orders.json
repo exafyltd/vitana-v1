@@ -77,5 +77,8 @@
       "paid": "Ativo",
       "active": "Ativo"
     }
+  },
+  "_pending_review": {
+    "orders.emptyActive.description": true
   }
 }

@@ -35,6 +35,7 @@
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { hasRegisterRule } from './i18n-register-rules.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -282,6 +283,15 @@ for (const locale of locales) {
       (soft ? `, ${soft.length} grey-area` : ''),
   );
   console.log(`           rule: ${rule.note}`);
+  // VTID-03523: print the instruction the TRANSLATOR was actually given, from
+  // the shared table. The catalog can satisfy `rule` (no hard formal markers)
+  // and still violate this — pt passed the check with 55 Brazilian `você`
+  // strings in a European-Portuguese catalog. Showing both makes the gap
+  // between "what we asked for" and "what we enforce" visible instead of
+  // leaving it to be discovered by a native speaker after release.
+  if (!hasRegisterRule(locale)) {
+    console.log(`           ::warning:: no entry in i18n-register-rules.mjs — translator got the generic fallback`);
+  }
   for (const v of violations.slice(0, MAX_SHOWN)) {
     console.log(`  ✗ ${v.key}\n      ${locale}: ${JSON.stringify(String(v.value).slice(0, 90))}`);
     console.log(`      de: ${JSON.stringify(String(v.source).slice(0, 90))}`);

@@ -15,5 +15,8 @@
     "typeMessage": "Agora você pode digitar sua mensagem.",
     "actionFailed": "Ação Falhou",
     "couldNotExecute": "Não foi possível executar {action}"
+  },
+  "_pending_review": {
+    "glassMode.typeMessage": true
   }
 }

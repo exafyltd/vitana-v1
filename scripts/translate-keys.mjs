@@ -20,6 +20,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { registerInstruction } from './i18n-register-rules.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -291,7 +292,7 @@ function buildPrompt(items) {
 
 Rules:
 - Output ONLY a JSON object: { "<index>": "${TARGET_LANG_NAME} translation", ... }
-- Use du-form (informal) ${TARGET_LANG_NAME} where applicable, friendly tone matching a wellness app.
+- REGISTER (${TARGET_LANG_NAME}): ${registerInstruction(TARGET_LOCALE)} Friendly tone, matching a wellness app.
 - NEVER translate or rename a {placeholder}. {date} stays {date}, NOT {datum}/{fecha}. The
   surrounding words are translated; the token inside the braces is code and must be copied
   byte-for-byte. Translating it makes the app print a literal "{datum}" to the user.

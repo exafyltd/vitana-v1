@@ -1363,5 +1363,11 @@
       "title": "Parabéns! Objetivo de hoje alcançado 🎉",
       "body": "Continua assim."
     }
+  },
+  "_pending_review": {
+    "toasts.success.subscribedDesc": true,
+    "toasts.success.unsubscribedDesc": true,
+    "toasts.warning.limitReachedDesc": true,
+    "toasts.messages.youHaveLeftGroupYouCan": true
   }
 }

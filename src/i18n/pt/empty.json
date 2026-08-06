@@ -23,5 +23,8 @@
     "noActionsMatchedYet": "Nenhuma ação correspondida ainda — o Autopilot está moldando sugestões.",
     "actionsPendingOne": "{count} ação pendente",
     "actionsPendingOther": "{count} ações pendentes"
+  },
+  "_pending_review": {
+    "empty.myJourneyPath": true
   }
 }

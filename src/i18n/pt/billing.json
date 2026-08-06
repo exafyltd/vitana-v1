@@ -279,5 +279,10 @@
     "creditsInsufficient": "Créditos insuficientes. Carrega primeiro.",
     "_pending_review": {}
   },
-  "_pending_review": {}
+  "_pending_review": {
+    "billing.earnings.youEarned": true,
+    "billing.launchGrant.body": true,
+    "billing.mobileBilling.paymentNoneBody": true,
+    "billing.state.freeStatus": true
+  }
 }
