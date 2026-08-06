@@ -405,14 +405,37 @@ for (const shardName of shards) {
   console.log(`[translate] ${shardName}: ${pending.length} pending`);
   if (DRY) continue;
 
-  const items = pending
-    .map(({ pathParts, slug }) => ({
-      pathParts,
-      slug,
-      key: [...pathParts, slug].join('.'),
-      en: getNested(srcCat, [...pathParts, slug]),
-    }))
-    .filter((x) => typeof x.en === 'string' && x.en.length > 0);
+  const resolved = pending.map(({ pathParts, slug }) => ({
+    pathParts,
+    slug,
+    key: [...pathParts, slug].join('.'),
+    en: getNested(srcCat, [...pathParts, slug]),
+  }));
+  const items = resolved.filter((x) => typeof x.en === 'string' && x.en.length > 0);
+
+  // A pending flag whose source string cannot be found used to be dropped
+  // here, silently. That turns a real inconsistency into a no-op that is
+  // indistinguishable from success: the run exits 0 in about a second, the
+  // keys stay flagged forever, and the locale quietly never updates.
+  //
+  // It is exactly how 55 hand-flagged pt keys were lost — they had been
+  // written in the wrong SHAPE (`_pending_review` at the shard root with
+  // dotted paths, rather than beside the leaf keyed by its bare name), so
+  // every lookup missed and the translator reported nothing to do.
+  //
+  // Either way it is a defect worth seeing: the flag points at a key that
+  // does not exist in the source, so it can never be drained by any run.
+  // Counted as failed so the exit code and the workflow both go red.
+  const unresolvable = resolved.filter((x) => typeof x.en !== 'string' || x.en.length === 0);
+  if (unresolvable.length) {
+    console.error(
+      `  ${shardName}: ${unresolvable.length} pending flag(s) have NO source string in ${SRC_LOCALE}/ — ` +
+        `these can never be translated and will stay flagged:`,
+    );
+    for (const u of unresolvable.slice(0, 8)) console.error(`    ✗ ${u.key}`);
+    if (unresolvable.length > 8) console.error(`    ...and ${unresolvable.length - 8} more`);
+    totalFailed += unresolvable.length;
+  }
 
   for (let i = 0; i < items.length; i += BATCH_SIZE) {
     const batch = items.slice(i, i + BATCH_SIZE);
