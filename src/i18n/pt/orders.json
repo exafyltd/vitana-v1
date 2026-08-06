@@ -24,10 +24,7 @@
     "sampleData": "Dados de Exemplo",
     "emptyActive": {
       "title": "Nenhum Pedido Ativo",
-      "description": "Você não tem nenhum pedido ativo ou eventos futuros.",
-      "_pending_review": {
-        "description": true
-      }
+      "description": "Não tens nenhuma encomenda ativa ou próximos eventos."
     },
     "emptyHistory": {
       "title": "Nenhum Histórico de Pedidos",

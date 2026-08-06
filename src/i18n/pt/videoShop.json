@@ -3,23 +3,19 @@
     "feed": {
       "loading": "Carregando Loja de Vídeos …",
       "loadingMore": "Carregando mais vídeos …",
-      "end": "Você chegou ao fim.",
+      "end": "Chegaste ao fim.",
       "emptyTitle": "Nenhum vídeo ainda",
       "emptyBody": "Não há vídeos da loja agora. Volta mais tarde ou explora o Discover.",
       "browseDiscover": "Explora o Discover",
       "errorTitle": "Não conseguimos carregar a Loja de Vídeos",
       "errorBody": "Tenta novamente em um momento.",
       "retry": "Tenta novamente",
-      "roleBlockedTitle": "A Loja de Vídeos não está disponível para você aqui",
+      "roleBlockedTitle": "A Loja de Vídeos não está disponível para ti aqui.",
       "roleBlockedBody": "A Loja de Vídeos é um recurso da comunidade. Muda para o papel de comunidade para usá-la.",
       "mute": "Silenciar",
       "unmute": "Ativar som",
       "share": "Compartilhar",
-      "linkCopied": "Link copiado",
-      "_pending_review": {
-        "end": true,
-        "roleBlockedTitle": true
-      }
+      "linkCopied": "Link copiado"
     },
     "drawer": {
       "loading": "Carregando produto …",

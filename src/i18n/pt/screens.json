@@ -16,7 +16,7 @@
       "howItWorksJourneyTitle": "Jornada guiada",
       "howItWorksJourneyBody": "Sua jornada com a Vitana começa aqui. Ela te conhece e te guia passo a passo.",
       "howItWorksCatalogTitle": "Visão geral da sessão",
-      "howItWorksCatalogBody": "Aqui você encontrará muitos tópicos interessantes. Escolha o que te interessar!",
+      "howItWorksCatalogBody": "Aqui encontrarás muitos tópicos entusiasmantes. Basta escolheres o que te interessa!",
       "clickSessionTitle": "Toque em uma sessão",
       "clickSessionBody": "Basta escolher a sessão que te interessa – é só tocar!",
       "clickSessionPill": "A Vitana te explica, de forma simples e clara.",
@@ -44,10 +44,7 @@
       "markDone": "Marcar como concluído",
       "skip": "Ignorar por agora",
       "doneToast": "Prática concluída!",
-      "doneError": "Não foi possível guardar.",
-      "_pending_review": {
-        "howItWorksCatalogBody": true
-      }
+      "doneError": "Não foi possível guardar."
     },
     "common": {
       "languageToggleAriaLabel": "Idioma",
@@ -110,7 +107,7 @@
       "complete": "Concluído ✓",
       "loadingRecommendations": "A carregar recomendações...",
       "couldNotLoadRecommendations": "Não foi possível carregar as recomendações",
-      "allCaughtUp": "Você está atualizado!",
+      "allCaughtUp": "Estás atualizado!",
       "noNewRecommendationsRightNowCheck": "Nenhuma nova recomendação agora. Volta a verificar mais tarde.",
       "addPayment": "Adicionar Pagamento",
       "upgradePlan": "Atualizar Plano",
@@ -858,10 +855,7 @@
       "mental": "Mental",
       "next3": "Próximos 3 dias",
       "month": "30 dias",
-      "future": "Futuro",
-      "_pending_review": {
-        "allCaughtUp": true
-      }
+      "future": "Futuro"
     },
     "admin": {
       "usingDefaults": "Usando padrões",
@@ -1226,7 +1220,7 @@
       "useContentDeliveryNetworkForStreaming": "Usar rede de entrega de conteúdo para transmissão",
       "streamSettingsAdminVitana": "Configurações de Transmissão | Admin | VITANA",
       "streamSettings": "Configurações de Transmissão",
-      "youHelpfulAiAssistant": "Você é um assistente de IA prestativo...",
+      "youHelpfulAiAssistant": "És um assistente de IA prestável...",
       "liveStreams": "Transmissões Ao Vivo",
       "reportsPending": "Relatórios Pendentes",
       "complianceRate": "Taxa de Conformidade",
@@ -1937,7 +1931,7 @@
       "export": "Exportar",
       "conditions": "Condições",
       "actions": "Ações",
-      "youMustExafyAdministratorAccessBootstrap": "Você deve ser um administrador Exafy para acessar a interface de inicialização.",
+      "youMustExafyAdministratorAccessBootstrap": "Deves ser um administrador da Exafy para aceder à interface de arranque.",
       "addAdminEmails": "Adicionar E-mails de Admin",
       "addEmailAddressesElevateSuperAdministrator": "Adicione endereços de e-mail para elevar ao status de superadministrador.",
       "currentSuperAdmins": "Super Admins Atuais",
@@ -2491,7 +2485,7 @@
       "dataSourcedFrom": ".\nDados provenientes de",
       "breakdownUserRolesAcrossPlatformTotalusers": "Distribuição de funções de utilizador na plataforma ({totalUsers} utilizadores no total).",
       "rollbackAvailable": "Reversão disponível",
-      "autoresolvedByDevAutopilotYouCan": "Resolvido automaticamente pelo piloto-automático de dev. Você pode reverter {value0}",
+      "autoresolvedByDevAutopilotYouCan": "Resolvido automaticamente pelo piloto automático de desenvolvimento. Podes reverter {value0}",
       "value0ForNextRemaininghoursH": "{value0}pelas próximas {remainingHours}h.",
       "thisFix": "esta correção",
       "rolledBack": "Revertido",
@@ -2565,12 +2559,7 @@
       "paAssistantUsageDesc": "Uso real do Assistente: conversas, qualidade, tópicos e confiabilidade da ferramenta.",
       "paJourneysDesc": "Como os membros se movem pelo aplicativo: entradas, caminhos e desistências.",
       "paFeaturesDesc": "Adoção de recursos: aberturas, conclusões e uso repetido.",
-      "paInterestsDesc": "Quais tópicos os membros se importam — do Assistente, cartões e conteúdo.",
-      "_pending_review": {
-        "youHelpfulAiAssistant": true,
-        "youMustExafyAdministratorAccessBootstrap": true,
-        "autoresolvedByDevAutopilotYouCan": true
-      }
+      "paInterestsDesc": "Quais tópicos os membros se importam — do Assistente, cartões e conteúdo."
     },
     "ai-feed": {
       "noEventsFound": "Nenhum evento encontrado",
@@ -2946,16 +2935,13 @@
       "friendlyLabel": "Rótulo amigável",
       "addChannel": "Adicionar canal",
       "eGLongevitySleepSupplements": "ex: longevidade, sono, suplementos",
-      "autopilotHasLengthReferralDraftValue1": "O Autopilot tem {length}rascunho de indicação{value1}para você",
+      "autopilotHasLengthReferralDraftValue1": "O piloto automático tem {length}rascunho de referência{value1} para ti",
       "scoreValue0": "pontuação {value0}",
-      "viewSource": "Ver fonte",
-      "_pending_review": {
-        "autopilotHasLengthReferralDraftValue1": true
-      }
+      "viewSource": "Ver fonte"
     },
     "calendar": {
       "noUpcomingEvents": "Nenhum evento futuro",
-      "includingYou": "Incluindo você",
+      "includingYou": "Incluindo-te",
       "text15MinutesBefore": "• 15 minutos antes",
       "noAttachments": "Nenhum anexo",
       "title": "Título:",
@@ -3009,10 +2995,7 @@
       "suggestedValue0": "Sugerido: {value0}",
       "todaySIndexPulseCompletingYour": "Pulso do Índice de hoje: completar o teu evento com {totalCount}pilares\n                              {value1} irá mover o teu Índice.",
       "urgent": "urgente",
-      "highPriority": "alta prioridade",
-      "_pending_review": {
-        "includingYou": true
-      }
+      "highPriority": "alta prioridade"
     },
     "cart": {
       "yourCart": "O Teu Carrinho",
@@ -3164,7 +3147,7 @@
       "mostInspiring": "Mais Inspirador",
       "sarahMiller": "Sarah Miller",
       "getPersonalizedAiRecommendations": "Obtenha Recomendações de IA Personalizadas",
-      "aiRecommendedForYou": "IA Recomendado Para Você",
+      "aiRecommendedForYou": "Recomendado pela IA para ti",
       "featuredContent": "Conteúdo em Destaque",
       "community": "Comunidade",
       "yourCommunityHub": "Seu Centro da Comunidade",
@@ -3296,7 +3279,7 @@
       "yesFixed": "Sim, corrigido",
       "noStillBroken": "Não, ainda com problema",
       "talkVitana": "Fale com a Vitana",
-      "describeWhatHappenedWhatYouTried": "Descreva o que aconteceu, o que você tentou, o que você esperava…",
+      "describeWhatHappenedWhatYouTried": "Descreve o que aconteceu, o que tentaste, o que esperavas…",
       "thumbnail": "Miniatura",
       "useFrame": "Usar Quadro",
       "uploadCustomImage": "Carregar Imagem Personalizada",
@@ -3529,11 +3512,7 @@
       "goalActivity": "Companheiro de atividade",
       "goalWeightLoss": "Perda de peso",
       "goalMentalWellness": "Bem-estar mental",
-      "goalValues": "Valores alinhados",
-      "_pending_review": {
-        "aiRecommendedForYou": true,
-        "describeWhatHappenedWhatYouTried": true
-      }
+      "goalValues": "Valores alinhados"
     },
     "contacts": {
       "addContact": "Adicionar Contato",
@@ -3630,19 +3609,15 @@
       "creatorPayments": "Pagamentos de Criadores",
       "loadingPaymentStatus": "Carregando status de pagamento...",
       "active": "Ativo",
-      "youCanNowCreatePaidLive": "Agora você pode criar Salas Ao Vivo pagas e receber ganhos diretamente na sua conta bancária.",
+      "youCanNowCreatePaidLive": "Agora podes criar Salas ao Vivo pagas e receber ganhos diretamente na tua conta bancária.",
       "roomPricePrice": "Preço do quarto: ${price}",
-      "youCreator": "Você: ${creator}",
+      "youCreator": "Tu: ${creator}",
       "feePlatform": "Taxa: ${platform}",
       "receive90RevenueFromPaidLive": "Receba 90% da receita de Salas Ao Vivo pagas",
       "notEnabled": "Não Ativado",
       "completeYourPaymentSetupStartReceiving": "Conclua sua configuração de pagamento para começar a receber ganhos de Salas Ao Vivo pagas.",
       "enablePaymentsCreatePaidLiveRooms": "Ative os pagamentos para criar Salas Ao Vivo pagas e receber 90% da receita. Configuração rápida de 2 minutos com Stripe Connect.",
-      "checkingStatus": "Verificando status...",
-      "_pending_review": {
-        "youCanNowCreatePaidLive": true,
-        "youCreator": true
-      }
+      "checkingStatus": "Verificando status..."
     },
     "crossover": {
       "keyFactors": "Fatores Chave:",
@@ -4289,7 +4264,7 @@
       "providerBadge_verified": "Verificado",
       "providerBadge_trending": "Em Tendência",
       "providerBadge_certified": "Certificado",
-      "providerBadge_nearYou": "Perto de Você",
+      "providerBadge_nearYou": "Perto de ti",
       "providerBadge_premium": "Premium",
       "providerBadge_new": "Novo",
       "providerBadge_innovative": "Inovador",
@@ -4369,7 +4344,7 @@
       "verifiedProviders": "Provedores Verificados",
       "serviceCategories": "Categorias de Serviço",
       "communityMembers": "Membros da Comunidade",
-      "whatYouLookingForEG": "O que você procura? (ex: aulas de yoga, médico de longevidade, encontros)",
+      "whatYouLookingForEG": "O que procuras? (ex: aulas de ioga, médico de longevidade, encontros)",
       "chooseView": "Escolha uma visualização",
       "marketplaceVitana": "Marketplace — Vitana",
       "marketplace": "Mercado",
@@ -4380,7 +4355,7 @@
       "productNotFound": "Produto não encontrado",
       "goBack": "Voltar",
       "discoverMore": "Descobrir mais",
-      "whyThisForYou": "Por que isso para você",
+      "whyThisForYou": "Porquê isto para ti",
       "productNotFoundVitana": "Produto não encontrado | VITANA",
       "providerNotFound": "Provedor não encontrado",
       "nextAvailable": "Próximo Disponível",
@@ -4517,12 +4492,7 @@
       "bookmarkedValue0": "🔖 {value0} Marcadores",
       "exploreName": "Explora {name}",
       "exploreItem_name": "Explora {item_name}",
-      "value0Services": "{value0}Serviços",
-      "_pending_review": {
-        "providerBadge_nearYou": true,
-        "whatYouLookingForEG": true,
-        "whyThisForYou": true
-      }
+      "value0Services": "{value0}Serviços"
     },
     "discovery": {
       "filters": "Filtros:",
@@ -5708,7 +5678,7 @@
       "transcribingYourRecording": "Transcrevendo sua gravação…",
       "stop": "Parar",
       "saveEntry": "Salvar Entrada",
-      "yourTranscriptionWillAppearHereAs": "Sua transcrição aparecerá aqui assim que você tocar",
+      "yourTranscriptionWillAppearHereAs": "A tua transcrição aparecerá aqui assim que tocares",
       "editWhatIRemember": "Editar o que eu lembro",
       "pauseProactivity": "Pausar proatividade",
       "newEntry": "Nova Entrada",
@@ -5775,10 +5745,7 @@
       "memorySubnav_diary": "Diário do Dia",
       "memorySubnav_recall": "Recordar e Pesquisar",
       "memorySubnav_permissions": "Permissões",
-      "wellnessDiaryMultimediaDescription": "Regista e revê a tua jornada de bem-estar através de entradas multimédia.",
-      "_pending_review": {
-        "yourTranscriptionWillAppearHereAs": true
-      }
+      "wellnessDiaryMultimediaDescription": "Regista e revê a tua jornada de bem-estar através de entradas multimédia."
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Motivação Matinal",
@@ -6226,7 +6193,7 @@
       "anyoneCanFindViewYourProfile": "Qualquer pessoa pode encontrar e ver seu perfil",
       "followersOnly": "Somente Seguidores",
       "onlyYourFollowersCanViewYour": "Apenas seus seguidores podem ver seu perfil",
-      "onlyYouCanViewYourProfile": "Apenas você pode ver seu perfil",
+      "onlyYouCanViewYourProfile": "Só tu podes ver o teu perfil",
       "fieldVisibility": "Visibilidade do Campo",
       "advancedPrivacySettings": "Configurações Avançadas de Privacidade",
       "openSettings": "Abrir Configurações",
@@ -6272,7 +6239,7 @@
       "showQrCode": "Mostrar código QR",
       "activeCommunities": "Comunidades Ativas",
       "connectCollaborateGrowTogether": "Conecte-se, colabore e cresça junto",
-      "youReNotAnyCommunitiesYet": "Você ainda não está em nenhuma comunidade",
+      "youReNotAnyCommunitiesYet": "Tu não estás em nenhuma comunidade ainda",
       "exploreWellnessCircles": "Explore círculos de bem-estar",
       "overallHealthScore": "Pontuação Geral de Saúde",
       "ageGroup": "Faixa Etária",
@@ -6485,7 +6452,7 @@
       "text3ThisWeek": "↗ +3 esta semana",
       "shareYourSuccessStory": "Compartilhe Sua História de Sucesso",
       "value0Length": "{value0} de {length}",
-      "somePersonalInformationUsedPersonalizeYour": "Algumas informações pessoais são usadas para personalizar sua experiência, melhorar a confiança e apoiar serviços relevantes. Você controla o que é compartilhado publicamente.",
+      "somePersonalInformationUsedPersonalizeYour": "Algumas informações pessoais são usadas para personalizar a tua experiência, melhorar a confiança e apoiar serviços relevantes. Tu controlas o que é partilhado publicamente.",
       "importing": "Importando...",
       "your_handle": "seu_identificador",
       "publicUrluHandle": "URL Pública: /u/{handle}",
@@ -6497,9 +6464,9 @@
       "verified": "Verificado",
       "featuredcountMaxfeaturedItemsSelected": "{featuredCount}/{maxFeatured} itens selecionados",
       "featuredcountFeatured": "{featuredCount} Em Destaque",
-      "youVeReachedMaximumNumberFeatured": "Você atingiu o número máximo de itens em destaque ({maxFeatured}). Desselecione alguns itens para destacar outros.",
+      "youVeReachedMaximumNumberFeatured": "Atingiste o número máximo de itens em destaque ({maxFeatured}). Desseleciona alguns itens para destacar outros.",
       "yourVitanaIndexHealthSnapshotTab": "Sua aba Vitana Index e Health Snapshot agora está visível em seu perfil público.",
-      "byEnablingThisYourVitanaIndex": "Ao ativar isso, sua pontuação do Vitana Index e seus insights de saúde ficarão visíveis em seu perfil público. Você pode desativar isso a qualquer momento.",
+      "byEnablingThisYourVitanaIndex": "Ao ativar isto, a tua pontuação do Índice Vitana e as tuas informações de saúde serão visíveis no teu perfil público. Podes desativar isto a qualquer momento.",
       "typeAlignment": "Alinhamento de {type}",
       "mutualconnectionsMutual": "{mutualConnections} mútuas",
       "value0More": "+{value0} mais",
@@ -6548,21 +6515,14 @@
       "licensedVerifiedHealthcareProvider": "Prestador de serviços de saúde licenciado e verificado",
       "media": "Mídia",
       "events": "Eventos",
-      "health": "Saúde",
-      "_pending_review": {
-        "onlyYouCanViewYourProfile": true,
-        "youReNotAnyCommunitiesYet": true,
-        "somePersonalInformationUsedPersonalizeYour": true,
-        "youVeReachedMaximumNumberFeatured": true,
-        "byEnablingThisYourVitanaIndex": true
-      }
+      "health": "Saúde"
     },
     "reminders": {
-      "subtitleDefault": "O que a Vitana está agendando para você. Fale com o ORB para adicionar naturalmente.",
+      "subtitleDefault": "O que a Vitana está a agendar para ti. Fala com o ORB para adicionar naturalmente.",
       "showingFilteredView": "Mostrando lembretes de {kind}.",
       "reminder": "Lembrete",
       "loading": "Carregando…",
-      "scheduledByYou": "Agendado por você",
+      "scheduledByYou": "Agendado por ti",
       "remindMeAt8pmTakeMy": "\"Lembre-me às 20h de tomar meu magnésio.\"",
       "newReminder": "Novo lembrete",
       "vitanaWillChimeSpeakAtScheduled": "A Vitana vai tocar e falar na hora agendada.",
@@ -6576,7 +6536,7 @@
       "openChrome": "Abrir no Chrome",
       "notNow": "Agora não",
       "notificationsBlocked": "Notificações bloqueadas",
-      "remindersOnlyFireWhileYouHave": "Os lembretes só funcionam enquanto você tem o app aberto.",
+      "remindersOnlyFireWhileYouHave": "Os lembretes só disparam enquanto tens a aplicação aberta.",
       "allow": "Permitir",
       "getRemindedEvenWhenAppClosed": "Receba lembretes mesmo com o app fechado",
       "oneTapVitanaWillChimeSurface": "Um toque — Vitana vai tocar e mostrar o lembrete no teu telefone na hora agendada.",
@@ -6607,12 +6567,7 @@
       "noCompleted": "Nenhum lembrete concluído ainda.",
       "noMissed": "Nenhum lembrete perdido — estás em dia.",
       "creating": "A criar…",
-      "createReminder": "Criar lembrete",
-      "_pending_review": {
-        "subtitleDefault": true,
-        "scheduledByYou": true,
-        "remindersOnlyFireWhileYouHave": true
-      }
+      "createReminder": "Criar lembrete"
     },
     "reseller": {
       "noEventsYourInventory": "Nenhum evento no teu inventário",
@@ -8271,11 +8226,8 @@
       "disconnected": "Desconectado",
       "recording": "Gravando...",
       "aiSpeaking": "IA Falando...",
-      "you": "Você",
-      "transcriptWillAppearHere": "A transcrição aparecerá aqui...",
-      "_pending_review": {
-        "you": true
-      }
+      "you": "Tu",
+      "transcriptWillAppearHere": "A transcrição aparecerá aqui..."
     },
     "vitanaland": {
       "enterVitanalandK": "Entrar em Vitanaland (⌘K)",
@@ -8389,8 +8341,8 @@
       "communityEngagement": "Engajamento da comunidade",
       "text162Vtna": "+162 VTNA",
       "quickAmounts": "Valores rápidos",
-      "youSend": "Você envia",
-      "youReceive": "Você recebe",
+      "youSend": "Tu envias",
+      "youReceive": "Tu recebes",
       "noFeesFreeExchange": "Sem taxas - Troca grátis",
       "shareEarnTogether": "Compartilhe e ganhe junto",
       "nextRewardAt": "Próxima recompensa em",
@@ -8863,11 +8815,7 @@
       "continueToSecureCheckout": "Continuar para o checkout seguro",
       "cardPaymentViaStripe": "Pagamento com cartão, processado de forma segura pela Stripe",
       "currentBalanceLabel": "Teu Saldo Atual de {currency}",
-      "amountAddCurrency": "Valor a Adicionar ({currency})",
-      "_pending_review": {
-        "youSend": true,
-        "youReceive": true
-      }
+      "amountAddCurrency": "Valor a Adicionar ({currency})"
     },
     "ai": {
       "subtitle_priorityActions": "Tarefas selecionadas por IA para máximo impacto no bem-estar",
@@ -9215,16 +9163,13 @@
     },
     "businesslistings": {
       "myListings": "Meus anúncios",
-      "servicesProductsYouReOfferingMatches": "Serviços + produtos que você oferece. As correspondências são enviadas para Oportunidades.",
+      "servicesProductsYouReOfferingMatches": "Serviços + produtos que estás a oferecer. As correspondências são enviadas para Oportunidades.",
       "newListing": "Novo anúncio",
       "iMOfferingX": "Estou oferecendo X",
       "backBusinessHub": "Voltar para a Central de Negócios",
       "listingsAvailableForProAccounts": "Ofertas disponíveis para contas Pro.",
       "noListingsYetClick": "Nenhuma oferta ainda. Clica",
-      "addOneOpenOrbJustSay": "para adicionar uma – ou abre o ORB e apenas diz",
-      "_pending_review": {
-        "servicesProductsYouReOfferingMatches": true
-      }
+      "addOneOpenOrbJustSay": "para adicionar uma – ou abre o ORB e apenas diz"
     },
     "businessopportunities": {
       "myListings": "Meus Anúncios",
@@ -9238,21 +9183,17 @@
       "whatSNext": "O que vem a seguir?",
       "orderConfirmationSentYourEmail": "✓ Confirmação do pedido enviada para seu e-mail",
       "yourItemsWillPreparedForShipment": "✓ Seus itens serão preparados para envio",
-      "youLlReceiveTrackingInformationWithin": "✓ Você receberá informações de rastreamento em 24 horas",
+      "youLlReceiveTrackingInformationWithin": "✓ Receberás informações de seguimento dentro de 24 horas",
       "expectedDelivery35BusinessDays": "✓ Entrega prevista: 3-5 dias úteis",
       "needHelp": "Precisa de Ajuda?",
       "orderConfirmedVitana": "Pedido Confirmado | VITANA",
       "orderConfirmed": "Pedido Confirmado!",
       "yourOrderHasSuccessfullyPlacedProcessed": "Seu pedido foi feito com sucesso e está sendo processado.",
-      "youLlReceiveConfirmationEmailWith": "Você receberá um e-mail de confirmação com os detalhes do seu pedido e informações de rastreamento em breve.",
+      "youLlReceiveConfirmationEmailWith": "Receberás um e-mail de confirmação com os detalhes da tua encomenda e informações de seguimento em breve.",
       "continueShopping": "Continuar Comprando",
       "ifYouHaveAnyQuestionsAbout": "Se tiveres alguma pergunta sobre o teu pedido, a nossa equipa de suporte está aqui para ajudar.",
       "contactSupport": "Contactar Suporte",
-      "viewMyOrders": "Ver os Meus Pedidos",
-      "_pending_review": {
-        "youLlReceiveTrackingInformationWithin": true,
-        "youLlReceiveConfirmationEmailWith": true
-      }
+      "viewMyOrders": "Ver os Meus Pedidos"
     },
     "creatoronboarded": {
       "checkingYourPaymentStatus": "O teu estado de pagamento está a ser revisto...",
@@ -9397,7 +9338,7 @@
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Redirecionando para a App Store",
-      "redirecting": "Levando você para a loja de apps…",
+      "redirecting": "A levar-te para a loja de aplicações…",
       "fallbackBody": "Obtenha MAXINA — escolha sua loja:",
       "tapToDownload": "Toque abaixo para obter MAXINA:",
       "ctaAppStore": "Abrir a App Store",
@@ -9406,10 +9347,7 @@
       "copyLink": "Copiar link",
       "linkCopied": "Link copiado — cole-o no Safari",
       "copyFailed": "Não foi possível copiar o link",
-      "iosOpenInBrowser": "Toque em “…” no canto superior direito, depois em “Abrir no navegador” — a App Store abre imediatamente lá.",
-      "_pending_review": {
-        "redirecting": true
-      }
+      "iosOpenInBrowser": "Toque em “…” no canto superior direito, depois em “Abrir no navegador” — a App Store abre imediatamente lá."
     },
     "mobilesettings": {
       "pushNotifications": "Notificações Push",
@@ -9661,7 +9599,7 @@
       "deleteAccount": "Apagar Conta",
       "signRequired": "Início de sessão necessário",
       "deleteYourAccount": "Apaga a Tua Conta",
-      "whenYouDeleteYourAccountWe": "Quando você exclui sua conta, removemos permanentemente:",
+      "whenYouDeleteYourAccountWe": "Quando eliminas a tua conta, removemos permanentemente:",
       "yourProfilePreferencesPersonalData": "Seu perfil, preferências e dados pessoais",
       "chatMessagesAiConversationsDiaryEntries": "Mensagens de chat, conversas com IA e entradas de diário",
       "uploadedPhotosVideosFiles": "Fotos, vídeos e arquivos carregados",
@@ -9700,8 +9638,8 @@
       "informationAboutHowYouInteractWith": "Informações sobre como interages com a aplicação, como o uso de funcionalidades, registos de data e hora e percursos de navegação.",
       "text23LocationDataIfApplicable": "2.3 Dados de localização",
       "text24CookiesSimilarTechnologies": "2.4 Cookies e tecnologias semelhantes",
-      "directlyFromYou": "Diretamente de você:",
-      "whenYouRegisterAccountEnterInformation": "Quando você registra uma conta, insere informações no aplicativo ou se comunica conosco.",
+      "directlyFromYou": "Diretamente de ti:",
+      "whenYouRegisterAccountEnterInformation": "Quando registas uma conta, introduzes informações na app ou comunicas connosco.",
       "automatically": "Automaticamente:",
       "throughUseCookiesLogDataDevice": "Através de cookies, dados de registo e identificadores de dispositivo enquanto usas e navegas na Maxina Mobile.",
       "fromThirdParties": "De terceiros:",
@@ -9762,9 +9700,9 @@
       "arbitration": "Arbitragem:",
       "anyDisputeNotResolvedAmicablyWithin": "Qualquer disputa não resolvida amigavelmente em 30 dias será finalmente resolvida por arbitragem sob as regras do Centro de Arbitragem do ADGM; a sede, idioma e local serão Abu Dhabi.",
       "euConsumers": "Consumidores da UE:",
-      "youMayAdditionallySubmitDisputesVia": "Você pode adicionalmente enviar disputas através da plataforma de Resolução de Disputas Online (ODR) da UE, que aceitamos.",
+      "youMayAdditionallySubmitDisputesVia": "Podes, adicionalmente, submeter disputas através da plataforma de Resolução de Litígios Online (ODR) da UE, que aceitamos.",
       "termsUseMaxina": "Termos de Uso | Maxina",
-      "youNeedSignYourAccountBefore": "Você precisa fazer login na sua conta antes de poder solicitar a exclusão.",
+      "youNeedSignYourAccountBefore": "Precisas de iniciar sessão na tua conta antes de poderes pedir a eliminação.",
       "sign": "Entrar",
       "thisActionPermanentCannotUndone": "Esta ação é permanente e não pode ser desfeita.",
       "deleteMyAccount": "Excluir Minha Conta",
@@ -9863,14 +9801,7 @@
       "legalRetentionObligations": "obrigações de retenção estatutárias;",
       "securityFraudPreventionReasons": "razões de segurança, prevenção de fraude e proteção contra abuso;",
       "legalClaimsDefense": "a necessidade de estabelecer, exercer ou defender reivindicações legais.",
-      "retentionAnonymizeDelete": "Quando dados pessoais não são mais necessários, nós os excluímos ou anonimizamos, a menos que obrigações de retenção estatutárias exijam o contrário.",
-      "_pending_review": {
-        "whenYouDeleteYourAccountWe": true,
-        "directlyFromYou": true,
-        "whenYouRegisterAccountEnterInformation": true,
-        "youMayAdditionallySubmitDisputesVia": true,
-        "youNeedSignYourAccountBefore": true
-      }
+      "retentionAnonymizeDelete": "Quando dados pessoais não são mais necessários, nós os excluímos ou anonimizamos, a menos que obrigações de retenção estatutárias exijam o contrário."
     },
     "patient": {
       "myAppointments": "Minhas Consultas",
@@ -9989,7 +9920,7 @@
       "welcomeEarthlinks": "Bem-vindo(a) ao Earthlinks!",
       "yourEmailHasSuccessfullyConfirmed": "Seu e-mail foi confirmado com sucesso.",
       "yourSustainableWellnessJourneyBeginsNow": "Sua jornada de bem-estar sustentável começa agora",
-      "youLlRedirectedYourDashboardFew": "Você será redirecionado(a) para o seu painel em alguns segundos...",
+      "youLlRedirectedYourDashboardFew": "Serás redirecionado para o teu painel de controlo em alguns segundos...",
       "connectingHealthWithEnvironmentalSustainability": "Conectando saúde com sustentabilidade ambiental",
       "continueDashboard": "Continuar para o Painel",
       "earthlinks": "Earthlinks",
@@ -10012,10 +9943,7 @@
       "useDifferentEmail": "← Usar outro e-mail",
       "creatingAccount": "Criando Conta...",
       "tryAppleSigninAgain": "Tentar entrar com Apple novamente",
-      "backLogin": "Voltar ao login",
-      "_pending_review": {
-        "youLlRedirectedYourDashboardFew": true
-      }
+      "backLogin": "Voltar ao login"
     },
     "professional": {
       "professionalDashboard": "Painel Profissional",

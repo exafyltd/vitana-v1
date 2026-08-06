@@ -119,13 +119,10 @@
     "earnings": {
       "title": "Teus ganhos (este ano)",
       "youPaid": "Pagaste à Vitana",
-      "youEarned": "Vitana ajudou você a ganhar (Venda e Ganhe)",
+      "youEarned": "A Vitana ajudou-te a ganhar (Vende e Ganha)",
       "net": "Líquido",
       "withdraw": "Retirar",
-      "empty": "Nenhum ganho ainda",
-      "_pending_review": {
-        "youEarned": true
-      }
+      "empty": "Nenhum ganho ainda"
     },
     "founding": {
       "bannerTitle": "🏆 Seja um dos primeiros {max}",
@@ -134,12 +131,9 @@
     },
     "launchGrant": {
       "title": "🎁 Boas-vindas — Premium por nossa conta",
-      "body": "Você recebeu 12 meses de Vitana Premium como agradecimento por estar aqui desde o início. Ativo até {endsAt}.",
+      "body": "Recebeste 12 meses de Vitana Premium como agradecimento por estares aqui desde o início. Ativo até {endsAt}.",
       "noAction": "Nenhuma ação necessária. Aproveite.",
-      "dismissAria": "Fechar banner",
-      "_pending_review": {
-        "body": true
-      }
+      "dismissAria": "Fechar banner"
     },
     "mobileBilling": {
       "rootIntro": "Gerencie seu plano, método de pagamento e pagamentos de criadores.",
@@ -152,16 +146,13 @@
       "paymentTitle": "Método de Pagamento",
       "paymentBody": "Seu cartão salvo e detalhes de cobrança são gerenciados pela Stripe.",
       "paymentNoneTitle": "Nenhum método de pagamento registrado",
-      "paymentNoneBody": "Adicione um cartão quando você iniciar um plano Premium.",
+      "paymentNoneBody": "Adiciona um cartão quando iniciares um plano Premium.",
       "invoicesTitle": "Faturas e Recibos",
       "invoicesBody": "Todas as faturas e recibos estão disponíveis no portal de cobrança da Stripe.",
-      "summaryRenewsOn": "Seu plano renova em {date}",
-      "_pending_review": {
-        "paymentNoneBody": true
-      }
+      "summaryRenewsOn": "Seu plano renova em {date}"
     },
     "state": {
-      "freeStatus": "Você está no Vitana Grátis",
+      "freeStatus": "Estás no Vitana Free",
       "freeBody": "Experimente Premium grátis por 14 dias.",
       "premiumActive": "Vitana Premium",
       "renewsAt": "Renova em {date}",
@@ -174,10 +165,7 @@
       "upgrade": "Atualizar",
       "trialEndsAt": "O teste termina em {date}",
       "trialingBadge": "Em teste",
-      "activeBadge": "Ativo",
-      "_pending_review": {
-        "freeStatus": true
-      }
+      "activeBadge": "Ativo"
     },
     "subscriptionsPage": {
       "title": "Subscrições",

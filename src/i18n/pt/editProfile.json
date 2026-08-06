@@ -1,6 +1,6 @@
 {
   "editProfile": {
-    "unsavedChanges": "Você tem alterações não salvas. Tem certeza de que quer sair?",
+    "unsavedChanges": "Tens alterações não guardadas. Tens a certeza de que queres sair?",
     "notAuthenticated": "Não autenticado",
     "notAuthenticatedDesc": "Por favor, faça login para salvar seu perfil.",
     "profileUpdated": "Perfil atualizado com sucesso!",
@@ -16,9 +16,6 @@
     "title": "Título",
     "titlePlaceholder": "Título do vídeo",
     "description": "Descrição",
-    "descriptionPlaceholder": "Descrição opcional...",
-    "_pending_review": {
-      "unsavedChanges": true
-    }
+    "descriptionPlaceholder": "Descrição opcional..."
   }
 }

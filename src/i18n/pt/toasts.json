@@ -22,9 +22,9 @@
       "loggedOut": "Logout bem-sucedido",
       "loggedOutDesc": "Adeus!",
       "subscribed": "Assinatura bem-sucedida",
-      "subscribedDesc": "Você está recebendo atualizações agora.",
+      "subscribedDesc": "Estás agora a receber atualizações.",
       "unsubscribed": "Desassinatura bem-sucedida",
-      "unsubscribedDesc": "Você não está mais recebendo atualizações.",
+      "unsubscribedDesc": "Já não estás a receber atualizações.",
       "added": "Adicionado com sucesso",
       "addedDesc": "O item foi adicionado.",
       "removed": "Removido com sucesso",
@@ -42,11 +42,7 @@
       "planGenerated": "Plano gerado",
       "planGeneratedDesc": "O teu plano personalizado foi criado.",
       "bulkEnabled": "Seleção em massa ativada",
-      "bulkEnabledDesc": "Escolha itens da sua linha do tempo para ações em massa.",
-      "_pending_review": {
-        "subscribedDesc": true,
-        "unsubscribedDesc": true
-      }
+      "bulkEnabledDesc": "Escolha itens da sua linha do tempo para ações em massa."
     },
     "error": {
       "generic": "Algo deu errado",
@@ -96,12 +92,9 @@
       "unsavedChanges": "Alterações não guardadas",
       "unsavedChangesDesc": "Tens alterações não guardadas. Queres continuar?",
       "limitReached": "Limite atingido",
-      "limitReachedDesc": "Você atingiu o máximo.",
+      "limitReachedDesc": "Atingiste o máximo.",
       "slowConnection": "Conexão lenta",
-      "slowConnectionDesc": "A tua conexão à internet parece lenta.",
-      "_pending_review": {
-        "limitReachedDesc": true
-      }
+      "slowConnectionDesc": "A tua conexão à internet parece lenta."
     },
     "common": {
       "couldNotCompleteTask": "Não foi possível concluir a tarefa",
@@ -724,7 +717,7 @@
       "memberRemoved": "Membro removido",
       "failedRemoveMember": "Falha ao remover membro",
       "leftGroup": "Saiu do grupo",
-      "youHaveLeftGroupYouCan": "Você saiu do grupo. Você ainda pode ver o histórico de mensagens.",
+      "youHaveLeftGroupYouCan": "Saíste do grupo. Ainda podes ver o histórico de mensagens.",
       "failedLeaveGroup": "Falha ao sair do grupo",
       "messageFailed": "Mensagem falhou",
       "fileNotAllowed": "Arquivo não permitido",
@@ -732,10 +725,7 @@
       "selectOpenConversationBeforeAttachingFiles": "Selecione ou abra uma conversa antes de anexar arquivos.",
       "uploadFailed": "Falha no upload",
       "failedSendVoiceMessage": "Falha ao enviar mensagem de voz",
-      "thereErrorSendingYourVoiceMessage": "Ocorreu um erro ao enviar sua mensagem de voz",
-      "_pending_review": {
-        "youHaveLeftGroupYouCan": true
-      }
+      "thereErrorSendingYourVoiceMessage": "Ocorreu um erro ao enviar sua mensagem de voz"
     },
     "notifications": {
       "bookingConfirmed": "Reserva Confirmada! 🎉",

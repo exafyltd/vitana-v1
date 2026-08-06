@@ -109,7 +109,7 @@
         "selectStreamTypeTitle": "Selecionar Tipo de Transmissão",
         "selectStreamTypeDesc": "Por favor, selecione Áudio ou Vídeo",
         "notLoggedInTitle": "Erro",
-        "notLoggedInDesc": "Você precisa estar logado para entrar ao vivo",
+        "notLoggedInDesc": "Tens de estar com sessão iniciada para entrar em direto",
         "invalidFileTypeTitle": "Tipo de Arquivo Inválido",
         "invalidFileTypeDesc": "Por favor, seleciona um arquivo de imagem (JPEG, PNG, WebP)",
         "fileTooLargeTitle": "Arquivo Muito Grande",
@@ -118,10 +118,7 @@
         "imageUploadFailedDesc": "Manteremos a imagem existente.",
         "genericTitle": "Erro",
         "genericDesc": "Falha ao criar stream. Por favor, tenta novamente.",
-        "genericDescWithReason": "Falha ao criar stream: {reason}. Por favor, tenta novamente.",
-        "_pending_review": {
-          "notLoggedInDesc": true
-        }
+        "genericDescWithReason": "Falha ao criar stream: {reason}. Por favor, tenta novamente."
       },
       "success": {
         "streamUpdatedTitle": "Stream Atualizado! ✨",
