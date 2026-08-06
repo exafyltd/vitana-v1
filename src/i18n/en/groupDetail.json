@@ -11,6 +11,8 @@
     "notFound": "Group not found",
     "notFoundDesc": "This group may have been removed or doesn't exist.",
     "browseGroups": "Browse Groups",
-    "support": "Support"
-  }
+    "support": "Support",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

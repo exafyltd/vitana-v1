@@ -6,7 +6,7 @@
     "headlineLine2": "MAXINA Test User",
     "tagline": "…and Everybody is Dancing!!",
     "subheadline": "We're inviting you to become a MAXINA app test user and help us improve the app's performance before its official launch on 18 June 2026.",
-    "subheadlineTicket": "🎟️ Every verified test user receives 1 free ticket worth 99 EUR for one of our 12 summer events — filled with rhythm, movement, connection, and joy.",
+    "subheadlineTicket": "🎟️ All verified Test Users receive 1 free ticket worth 99 EUR for one of our 12 summer events — full of rhythm, movement, connection, and joy.",
     "subheadlineCommunity": "As a MAXINA test user, you don't just explore the app early — you become part of the community and the energy that the MAXINA Experience is all about.",
     "chipEvents": "12 Summer Events",
     "chipLocation": "Mallorca",
@@ -56,7 +56,7 @@
     "footerPrivacy": "Privacy",
     "footerTerms": "Terms",
     "ariaApplyForm": "Application form",
-    "aboutEyebrow": "What you're joining",
+    "aboutEyebrow": "What it's about",
     "aboutTitle": "More than an app",
     "aboutVitanalandLabel": "Vitanaland",
     "aboutVitanalandTag": "Destination",
@@ -75,11 +75,6 @@
     "benefitTicket": "1 free ticket worth 99 EUR to a MAXINA Experience event",
     "benefitEvents": "First-wave access to all 12 Mallorca summer events",
     "benefitVitana": "Personal Vitana AI guidance from day one",
-    "benefitSeat": "A founding seat at the table as Vitanaland evolves",
-    "_pending_review": {
-      "subheadlineTicket": true,
-      "aboutEyebrow": true,
-      "benefitSeat": true
-    }
+    "benefitSeat": "As a founding member, help shape the development of Vitanaland"
   }
 }

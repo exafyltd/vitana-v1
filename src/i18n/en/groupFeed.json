@@ -10,9 +10,6 @@
     "messageDeleted": "Message deleted",
     "error": "Error",
     "errorSend": "Failed to send message",
-    "errorDelete": "Failed to delete message",
-    "_pending_review": {
-      "placeholder": true
-    }
+    "errorDelete": "Failed to delete message"
   }
 }

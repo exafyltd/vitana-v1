@@ -6,14 +6,16 @@
       "preventive": "Preventive Screenings",
       "labTests": "Lab Tests",
       "coaching": "Coaching & Personal Training",
-      "groupPrograms": "Group Programs & Challenges"
+      "groupPrograms": "Group Programs & Challenges",
+      "_pending_review": {}
     },
     "actions": {
       "book": "Book",
       "addToPlan": "Add to Plan",
       "askAI": "Ask AI",
       "joinRoom": "Join Room",
-      "setReminder": "Set Reminder"
+      "setReminder": "Set Reminder",
+      "_pending_review": {}
     },
     "details": {
       "duration": "Duration",
@@ -24,7 +26,10 @@
       "healthBenefits": "Health Benefits",
       "availableProviders": "Available Providers",
       "requirements": "Requirements & Preparation",
-      "tags": "Tags"
-    }
-  }
+      "tags": "Tags",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -2,15 +2,11 @@
   "profile": {
     "defaultBio": "Wellness enthusiast passionate about holistic health and community building. 🌱",
     "autopilot": {
-      "polishBio": "Polish your bio, archetype & highlights",
+      "polishBio": "Polish your Bio, Archetype & Highlights",
       "editHighlights": "Edit Highlights",
       "saveHighlights": "Save Highlights",
-      "highlightsDesc": "Choose your best posts and media to feature at the top of your profile. Featured content appears in a highlights section and attracts more followers.",
-      "try": "Try",
-      "_pending_review": {
-        "polishBio": true,
-        "highlightsDesc": true
-      }
+      "highlightsDesc": "Choose your best posts and media to display at the top of your profile. Highlighted content appears in the Highlights section and attracts more followers.",
+      "try": "Try"
     },
     "identity": {
       "vitanaIndex": "Vitana Index",

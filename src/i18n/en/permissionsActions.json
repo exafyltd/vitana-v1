@@ -1,14 +1,10 @@
 {
   "permissionsActions": {
-    "title": "Privacy & Permission Actions",
+    "title": "Privacy & Permissions Actions",
     "items": {
       "privacySettings": {
         "title": "Privacy Settings",
-        "description": "Configure data privacy and sharing preferences",
-        "_pending_review": {
-          "title": true,
-          "description": true
-        }
+        "description": "Configure Privacy and Sharing Settings"
       },
       "manageAccess": {
         "title": "Manage Access",
@@ -16,11 +12,7 @@
       },
       "securitySettings": {
         "title": "Security Settings",
-        "description": "Update authentication and security preferences",
-        "_pending_review": {
-          "title": true,
-          "description": true
-        }
+        "description": "Update Authentication and Security Settings"
       },
       "apiKeysAccess": {
         "title": "API Keys & Access",
@@ -35,19 +27,13 @@
         "description": "Review access history and security audit trail"
       },
       "permissionSettings": {
-        "title": "Permission Settings",
-        "description": "Fine-tune granular permissions for different features",
-        "_pending_review": {
-          "title": true
-        }
+        "title": "Permissions Settings",
+        "description": "Fine-tune granular permissions for different features"
       },
       "exportData": {
         "title": "Export Data",
         "description": "Download your memories and health data securely"
       }
-    },
-    "_pending_review": {
-      "title": true
     }
   }
 }

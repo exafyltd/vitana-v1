@@ -54,10 +54,7 @@
       "cancel": "Cancel",
       "startChat": "Start Chat",
       "createGroup": "Create Group",
-      "creating": "Creating...",
-      "_pending_review": {
-        "noResults": true
-      }
+      "creating": "Creating..."
     },
     "createGroup": {
       "title": "Create Group",
@@ -68,18 +65,13 @@
       "groupNameRequired": "Group name required",
       "groupNameRequiredDesc": "Please enter a name for your group.",
       "addMembersRequired": "Add members",
-      "addMembersRequiredDesc": "Please add at least one member to the group.",
+      "addMembersRequiredDesc": "Please add at least one member.",
       "groupExists": "Group already exists",
       "groupExistsDesc": "A group with these members was created recently.",
       "created": "Group created",
       "createdDesc": "\"{name}\" has been created successfully.",
       "failed": "Failed to create group",
-      "failedDesc": "Please try again.",
-      "_pending_review": {
-        "groupNameRequiredDesc": true,
-        "addMembersRequiredDesc": true,
-        "failedDesc": true
-      }
+      "failedDesc": "Please try again."
     },
     "toast": {
       "success": "Success",
@@ -90,17 +82,13 @@
       "searchFailed": "Search failed",
       "accessDenied": "Access denied",
       "communityOnly": "Only community users can create global conversations",
-      "pleaseLogin": "Please log in to start conversations",
+      "pleaseLogin": "Please sign in to start conversations.",
       "groupRecipientsRequired": "Group name and recipients are required",
-      "singleRecipientRequired": "Select exactly one recipient for direct message",
+      "singleRecipientRequired": "Select exactly one recipient for direct messages.",
       "groupCreated": "Group \"{name}\" created successfully!",
       "groupFailed": "Failed to create group",
       "allMarkedRead": "All messages marked as read",
-      "markAllReadFailed": "Couldn't mark all as read. Please try again.",
-      "_pending_review": {
-        "pleaseLogin": true,
-        "singleRecipientRequired": true
-      }
+      "markAllReadFailed": "Couldn't mark all as read. Please try again."
     },
     "createGroupAction": "Create New Group",
     "newConversationAction": "New Conversation",
@@ -111,19 +99,14 @@
     "searchConversations": "Search conversations...",
     "searchPlaceholder": "Search...",
     "noMessages": "No messages yet",
-    "noMessagesDesc": "Start a conversation to get going.",
+    "noMessagesDesc": "Start a conversation to get started.",
     "startConversation": "Start Conversation",
     "emptyState": {
-      "title": "Your inbox is quiet for now",
+      "title": "Your inbox is still empty.",
       "globalDescription": "Start a conversation or join a community to connect with others.",
       "tenantDescription": "Connect with colleagues and team members in your professional network.",
       "startConversation": "Start a conversation",
-      "discoverPeople": "Discover people",
-      "_pending_review": {
-        "title": true,
-        "globalDescription": true,
-        "tenantDescription": true
-      }
+      "discoverPeople": "Discover people"
     },
     "group": {
       "loading": "Loading group…",
@@ -135,13 +118,6 @@
       "officialBadge": "official group",
       "empty": "No messages yet.",
       "composerPlaceholder": "Message…"
-    },
-    "_pending_review": {
-      "subtitle": true,
-      "description": true,
-      "desktopDescription": true,
-      "noGroupsDesc": true,
-      "noMessagesDesc": true
     }
   }
 }

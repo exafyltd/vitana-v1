@@ -5,7 +5,7 @@
     "searchPlaceholder": "Search apps...",
     "addApp": "Add App",
     "connected": "connected",
-    "syncing": "syncing",
+    "syncing": "Syncing",
     "sections": {
       "social": "Social & Sharing",
       "fitness": "Fitness & Wearables",
@@ -24,8 +24,8 @@
       "configure": "Configure Sync",
       "manage": "Manage"
     },
-    "lastSync": "Last sync",
-    "dataSync": "Data syncing",
+    "lastSync": "Last Sync",
+    "dataSync": "Data Syncing",
     "comingSoonMessage": "{appName} integration coming soon",
     "popup": {
       "title": "Connect Apps & Services",
@@ -45,12 +45,6 @@
       "noResults": "No apps found",
       "connectionSuccess": "Connection successful",
       "connectionPlaceholder": "{appName} connection coming soon"
-    },
-    "_pending_review": {
-      "description": true,
-      "syncing": true,
-      "lastSync": true,
-      "dataSync": true
     }
   }
 }

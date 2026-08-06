@@ -1,16 +1,13 @@
 {
   "diary": {
     "title": "Daily Diary",
-    "description": "Track your wellness journey and help us improve",
+    "description": "Track your wellness journey and help us to get better",
     "healthTab": "Health Diary",
     "bugTab": "Bug Reports",
     "text": "Text",
     "photo": "Photo",
     "textEntry": "✍️ Text Entry",
     "photoEntry": "📸 Photo Entry",
-    "searchPlaceholder": "Search diary...",
-    "_pending_review": {
-      "description": true
-    }
+    "searchPlaceholder": "Search diary..."
   }
 }

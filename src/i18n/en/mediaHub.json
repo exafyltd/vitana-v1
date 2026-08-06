@@ -26,7 +26,7 @@
     "searchPlaceholder": "Search Media...",
     "shortsAvailable": "{count} shorts available",
     "filteredBy": "Filtered by:",
-    "noMatchingShorts": "No shorts match your interests",
+    "noMatchingShorts": "No short videos match your interests.",
     "viewAllShorts": "View all shorts",
     "tracks": "tracks",
     "min": "min",
@@ -46,10 +46,7 @@
       "singleUpload": "Single Upload",
       "bulkUpload": "Bulk Upload",
       "addToPlaylist": "Add to Playlist",
-      "viewArtist": "View Artist",
-      "_pending_review": {
-        "singleUpload": true
-      }
+      "viewArtist": "View Artist"
     },
     "toast": {
       "linkCopied": "Link copied",
@@ -57,23 +54,17 @@
       "filtersCleared": "Filters cleared",
       "filtersClearedDesc": "Showing all shorts",
       "podcastDeleted": "Podcast deleted",
-      "podcastDeletedDesc": "Your podcast has been successfully deleted.",
+      "podcastDeletedDesc": "Your podcast was successfully deleted.",
       "videoDeleted": "Video deleted",
-      "videoDeletedDesc": "Your video has been successfully deleted.",
+      "videoDeletedDesc": "Your video was successfully deleted.",
       "videoUpdated": "Success",
       "videoUpdatedDesc": "Video updated successfully",
       "uploadSuccess": "Success!",
       "uploadSuccessDesc": "Your {type} is now live in the community.",
       "deleteError": "Error",
-      "deleteErrorDesc": "Failed to delete. Please try again.",
+      "deleteErrorDesc": "Deletion failed. Please try again.",
       "commentError": "Error",
-      "commentErrorDesc": "Failed to post comment. Please try again.",
-      "_pending_review": {
-        "podcastDeletedDesc": true,
-        "videoDeletedDesc": true,
-        "uploadSuccessDesc": true,
-        "deleteErrorDesc": true
-      }
+      "commentErrorDesc": "Failed to post comment. Please try again."
     },
     "comments": {
       "title": "Comments",
@@ -92,19 +83,13 @@
       "title": "Delete Podcast",
       "description": "Are you sure you want to delete this podcast? This action cannot be undone.",
       "cancel": "Cancel",
-      "confirm": "Delete",
-      "_pending_review": {
-        "description": true
-      }
+      "confirm": "Delete"
     },
     "deleteVideo": {
       "title": "Delete Video",
       "description": "Are you sure you want to delete this video? This action cannot be undone and will remove the video from storage.",
       "cancel": "Cancel",
-      "confirm": "Delete",
-      "_pending_review": {
-        "description": true
-      }
+      "confirm": "Delete"
     },
     "noMusic": "No music uploaded yet",
     "noMusicDesc": "Be the first to share music with the community!",
@@ -163,13 +148,6 @@
         "education": "Education",
         "lifestyle": "Lifestyle"
       }
-    },
-    "_pending_review": {
-      "discoverContent": true,
-      "noMatchingShorts": true,
-      "noPodcastsDesc": true,
-      "noShortsDesc": true,
-      "noVideosDesc": true
     }
   }
 }

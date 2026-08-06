@@ -16,9 +16,6 @@
     "invalidFormat": "Invalid format",
     "fileTooLarge": "File too large",
     "maxSize": "Maximum file size: 500 MB",
-    "maxSizeHint": "Max. 500 MB",
-    "_pending_review": {
-      "dropzone": true
-    }
+    "maxSizeHint": "Max. 500 MB"
   }
 }

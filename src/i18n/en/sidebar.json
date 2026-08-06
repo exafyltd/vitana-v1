@@ -41,15 +41,10 @@
     "liveStream": "Live & Stream",
     "tenantManagement": "Tenant Management",
     "systemAdmin": "System Admin",
-    "clinicalOps": "Clinical Ops",
+    "clinicalOps": "Clinical Operations",
     "monitoring": "Monitoring",
     "logout": "Logout",
     "connectors": "Connectors",
-    "support": "Support",
-    "_pending_review": {
-      "patientQueue": true,
-      "clinicalOps": true,
-      "monitoring": true
-    }
+    "support": "Support"
   }
 }

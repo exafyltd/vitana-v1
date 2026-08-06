@@ -12,7 +12,7 @@
     "agenda": "Agenda",
     "nothingScheduled": "Nothing scheduled",
     "tryQuickAdd": "Try Quick Add or let Autopilot plan your day",
-    "clickSlotHint": "Click any slot to create an event • Drag to reschedule",
+    "clickSlotHint": "Click on a slot to create an event • Drag to move",
     "noEventsOnDate": "No events on this date",
     "lastSynced": "Last synced",
     "justNow": "just now",
@@ -23,16 +23,13 @@
     "noBookingsToday": "No bookings today",
     "noBookingsYet": "No bookings yet",
     "nextUpcoming": "Next upcoming",
-    "exploreActivities": "Explore activities to add to your calendar",
+    "exploreActivities": "Discover activities for your calendar",
     "browseActivities": "Browse Activities",
     "bookedEvents": {
-      "title": "Your Booked Events",
+      "title": "Your booked events",
       "todayLabel": "Today",
       "nextUp": "Next up",
-      "noEventsToday": "No events today",
-      "_pending_review": {
-        "title": true
-      }
+      "noEventsToday": "No events today"
     },
     "filters": {
       "personal": "Personal",
@@ -66,7 +63,7 @@
       "suggestions": "Autopilot Suggestions",
       "badge": "Autopilot",
       "accept": "Accept",
-      "snooze": "Snooze",
+      "snooze": "Remind later",
       "dismiss": "Dismiss",
       "undo": "Undo",
       "laterToday": "Later today",
@@ -76,25 +73,19 @@
       "calendarUpdated": "Autopilot has updated your calendar",
       "suggestionUndone": "Suggestion undone",
       "changesReverted": "Changes have been reverted",
-      "suggestionSnoozed": "Suggestion snoozed",
+      "suggestionSnoozed": "Suggestion postponed",
       "reminderLaterToday": "Reminder set for later today",
       "reminderTomorrow": "Reminder set for tomorrow",
       "recommendFocus": "Recommend focus block",
-      "focusBlockDesc": "You have a 90-minute window available. Perfect for deep work.",
-      "_pending_review": {
-        "snooze": true,
-        "calendarUpdated": true,
-        "suggestionSnoozed": true,
-        "focusBlockDesc": true
-      }
+      "focusBlockDesc": "You have a 90-minute time slot available. Perfect for focused work."
     },
     "toasts": {
       "eventCreated": "Event created",
-      "eventCreatedDesc": "Your event has been added to the calendar",
+      "eventCreatedDesc": "Your event was added to the calendar",
       "eventDeleted": "Event deleted",
-      "eventDeletedDesc": "The event has been removed from your calendar",
-      "syncingTitle": "Syncing...",
-      "syncingDesc": "Syncing with external calendars",
+      "eventDeletedDesc": "The event was removed from your calendar",
+      "syncingTitle": "Synchronizing...",
+      "syncingDesc": "Synchronizing with external calendars",
       "syncedTitle": "Synced",
       "syncedDesc": "Calendar is up to date",
       "joiningEvent": "Joining event",
@@ -103,13 +94,7 @@
       "featureComingSoon": "Feature coming soon",
       "inviteFollowers": "Invite followers",
       "rescheduleEvent": "Reschedule event",
-      "shareToGroup": "Share to group",
-      "_pending_review": {
-        "eventCreatedDesc": true,
-        "eventDeletedDesc": true,
-        "syncingTitle": true,
-        "syncingDesc": true
-      }
+      "shareToGroup": "Share to group"
     },
     "error": {
       "failedToCreate": "Failed to create event"
@@ -155,18 +140,8 @@
         "wave-3": "Deepening Connections",
         "wave-4": "Health Intelligence",
         "wave-5": "Insight Moments",
-        "wave-6": "Recommendations & Discovery",
-        "_pending_review": {
-          "wave-4": true
-        }
+        "wave-6": "Recommendations & Discovery"
       }
-    },
-    "_pending_review": {
-      "bookedActivities": true,
-      "agenda": true,
-      "tryQuickAdd": true,
-      "clickSlotHint": true,
-      "exploreActivities": true
     }
   }
 }

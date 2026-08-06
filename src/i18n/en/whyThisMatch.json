@@ -11,15 +11,8 @@
     "tierLabel": {
       "1": "Exact match",
       "2": "Vitana Index",
-      "3": "Closest match",
-      "4": "Fairness re-route",
-      "_pending_review": {
-        "3": true,
-        "4": true
-      }
-    },
-    "_pending_review": {
-      "showSomeoneElse": true
+      "3": "Best match",
+      "4": "Fairness Reroute"
     }
   }
 }

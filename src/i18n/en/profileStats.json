@@ -4,9 +4,6 @@
     "media": "Media",
     "groups": "Groups",
     "followers": "Followers",
-    "following": "Following",
-    "_pending_review": {
-      "following": true
-    }
+    "following": "Following"
   }
 }

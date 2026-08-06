@@ -15,7 +15,8 @@
       "mute": "Mute",
       "unmute": "Unmute",
       "share": "Share",
-      "linkCopied": "Link copied"
+      "linkCopied": "Link copied",
+      "_pending_review": {}
     },
     "drawer": {
       "loading": "Loading product …",
@@ -35,7 +36,10 @@
       "unavailableTitle": "No longer available",
       "unavailableBody": "This product is no longer available.",
       "roleBlockedTitle": "Buying isn't available here",
-      "roleBlockedBody": "Buying is a community feature. Switch to the community role to continue."
-    }
-  }
+      "roleBlockedBody": "Buying is a community feature. Switch to the community role to continue.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

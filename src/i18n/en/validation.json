@@ -19,15 +19,11 @@
     "alreadyExists": "Already exists",
     "notFound": "Not found",
     "invalidSelection": "Invalid selection",
-    "pleaseSelect": "Please select an option",
-    "pleaseEnter": "Please enter a value",
+    "pleaseSelect": "Please choose an option.",
+    "pleaseEnter": "Please enter a value.",
     "charactersRemaining": "{count} characters remaining",
     "fileTooBig": "File is too large (max {max})",
     "invalidFileType": "Invalid file type",
-    "uploadLimit": "Maximum {max} files allowed",
-    "_pending_review": {
-      "pleaseSelect": true,
-      "pleaseEnter": true
-    }
+    "uploadLimit": "Maximum {max} files allowed"
   }
 }

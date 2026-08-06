@@ -36,6 +36,8 @@
     "upload": "Upload",
     "refresh": "Refresh",
     "retry": "Retry",
-    "uploading": "Uploading..."
-  }
+    "uploading": "Uploading...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

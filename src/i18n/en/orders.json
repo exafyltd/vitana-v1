@@ -24,20 +24,14 @@
     "sampleData": "Sample Data",
     "emptyActive": {
       "title": "No Active Orders",
-      "description": "You don't have any active orders or upcoming events.",
-      "_pending_review": {
-        "description": true
-      }
+      "description": "You don't have any active orders or upcoming events."
     },
     "emptyHistory": {
       "title": "No Order History",
-      "description": "Your completed orders and past events will appear here.",
-      "_pending_review": {
-        "description": true
-      }
+      "description": "Your completed orders and past events will appear here."
     },
     "noOrders": "No orders yet",
-    "noOrdersDesc": "Your orders will appear here once you make a purchase.",
+    "noOrdersDesc": "Your orders will appear here once you buy something.",
     "browseProducts": "Browse Products",
     "findEvents": "Find Events",
     "startShopping": "Start Shopping",
@@ -57,7 +51,7 @@
       "location": "Location",
       "quantity": "Quantity",
       "tickets": "tickets",
-      "yourTicket": "Your Ticket",
+      "yourTicket": "Your ticket",
       "giftVoucher": "Gift Voucher",
       "code": "Code",
       "sendToRecipient": "Send to Recipient",
@@ -66,10 +60,7 @@
       "personalMessage": "Personal Message",
       "cancel": "Cancel",
       "send": "Send",
-      "downloadPdf": "Download PDF",
-      "_pending_review": {
-        "yourTicket": true
-      }
+      "downloadPdf": "Download PDF"
     },
     "status": {
       "upcoming": "Upcoming",
@@ -85,13 +76,6 @@
       "processing": "Processing",
       "paid": "Active",
       "active": "Active"
-    },
-    "_pending_review": {
-      "description": true,
-      "trackDescription": true,
-      "previewNotice": true,
-      "noOrdersDesc": true,
-      "noFilterDesc": true
     }
   }
 }

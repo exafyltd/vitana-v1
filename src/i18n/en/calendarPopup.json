@@ -3,10 +3,10 @@
     "title": "Calendar",
     "nextEvents": "Next {count} Events",
     "conflicts": "{count} Conflicts",
-    "upcomingSchedule": "Your upcoming schedule and events",
+    "upcomingSchedule": "Your upcoming schedule and appointments",
     "addNewEvent": "Add New Event",
     "noUpcomingEvents": "No upcoming events",
-    "createFirstEvent": "Create Your First Event",
+    "createFirstEvent": "Create your first appointment",
     "aiSuggestions": "AI Suggestions",
     "findBetterSlot": "Find better slot",
     "prepareBrief": "Prepare brief",
@@ -16,11 +16,6 @@
     "quickAdd": "Quick Add",
     "eventFormComingSoon": "Event creation form coming soon",
     "externalSync": "External Sync",
-    "connectingCalendars": "Connecting to external calendars...",
-    "_pending_review": {
-      "upcomingSchedule": true,
-      "createFirstEvent": true,
-      "connectingCalendars": true
-    }
+    "connectingCalendars": "Connect with external calendars..."
   }
 }

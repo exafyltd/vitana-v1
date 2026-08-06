@@ -3,17 +3,14 @@
     "title": "Live Rooms",
     "description": "Join live audio and video discussions",
     "tabs": {
-      "live": "Live Now",
+      "live": "Live now",
       "scheduled": "Scheduled",
       "all": "All Rooms",
-      "past": "Past",
-      "_pending_review": {
-        "live": true
-      }
+      "past": "Past"
     },
     "goLive": "Go Live",
     "joinRoom": "Join Room",
-    "noRooms": "No live rooms at the moment",
+    "noRooms": "No live rooms currently",
     "beFirst": "Be the first to go live",
     "demoRoom": "Demo Room",
     "demoRoomDesc": "This is an example room. Create your own to go live!",
@@ -36,10 +33,7 @@
       "video": "Video",
       "raiseHand": "Raise Hand",
       "chat": "Chat",
-      "reactions": "Reactions",
-      "_pending_review": {
-        "mute": true
-      }
+      "reactions": "Reactions"
     },
     "goLivePopup": {
       "titleCreate": "Go Live",
@@ -47,7 +41,7 @@
       "streamTitleLabel": "Stream Title",
       "streamTitlePlaceholder": "Live with {name}",
       "descriptionLabel": "Description / Bio (Optional)",
-      "descriptionPlaceholder": "Tell your audience what this stream is about…",
+      "descriptionPlaceholder": "Briefly describe what this stream is about…",
       "charactersCount": "{count}/500 characters",
       "streamTypeLabel": "Stream Type",
       "streamTypeAudio": "Audio",
@@ -55,7 +49,7 @@
       "coverLabel": "Cover Image / Thumbnail",
       "coverAlt": "Stream cover",
       "coverUploadCta": "Click to upload custom image",
-      "coverUploadHint": "Any image – automatically resized",
+      "coverUploadHint": "Any image – auto-adjusts",
       "aiAutoGenerateLabel": "Auto-generate with AI",
       "aiAutoGenerateHint": "Generate image if none uploaded",
       "generatingAiImage": "Generating AI image…",
@@ -84,10 +78,7 @@
         },
         "followers": {
           "label": "Followers Only",
-          "desc": "Only your followers",
-          "_pending_review": {
-            "desc": true
-          }
+          "desc": "Only your followers"
         },
         "group": {
           "label": "Group/VIP",
@@ -127,30 +118,17 @@
         "imageUploadFailedDesc": "We'll keep the existing image.",
         "genericTitle": "Error",
         "genericDesc": "Failed to create stream. Please try again.",
-        "genericDescWithReason": "Failed to create stream: {reason}. Please try again.",
-        "_pending_review": {
-          "notLoggedInDesc": true
-        }
+        "genericDescWithReason": "Failed to create stream: {reason}. Please try again."
       },
       "success": {
         "streamUpdatedTitle": "Stream Updated! ✨",
-        "streamUpdatedDesc": "Your stream has been updated successfully",
+        "streamUpdatedDesc": "Your stream was successfully updated",
         "streamScheduledTitle": "Stream Scheduled! 📅",
         "streamScheduledDesc": "Your stream is scheduled for {date} at {time}",
-        "youAreLiveTitle": "You're Live! 🎙️",
+        "youAreLiveTitle": "You're live! 🎙️",
         "youAreLiveDesc": "Joining your stream room…",
         "aiImageHintTitle": "AI Image Generation",
-        "aiImageHintDesc": "Image will be generated when stream starts.",
-        "_pending_review": {
-          "streamUpdatedDesc": true,
-          "streamScheduledDesc": true,
-          "youAreLiveTitle": true,
-          "youAreLiveDesc": true
-        }
-      },
-      "_pending_review": {
-        "descriptionPlaceholder": true,
-        "coverUploadHint": true
+        "aiImageHintDesc": "Image will be generated when stream starts."
       }
     },
     "editSession": {
@@ -158,10 +136,6 @@
       "saving": "Saving …",
       "changeCover": "Change cover image",
       "noChanges": "No changes to save"
-    },
-    "_pending_review": {
-      "noRooms": true,
-      "demoRoomDesc": true
     }
   },
   "goLivePopup": {

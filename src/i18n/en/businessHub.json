@@ -13,18 +13,11 @@
     "analytics": "Analytics",
     "searchBusiness": "Search business...",
     "noServices": "No services yet",
-    "noServicesDesc": "Create your first service to start attracting clients.",
+    "noServicesDesc": "Create your first service to attract customers.",
     "createService": "Create Service",
     "noClients": "No clients yet",
-    "noClientsDesc": "Your clients will appear here.",
+    "noClientsDesc": "Your customers will appear here.",
     "noSales": "No sales yet",
-    "noSalesDesc": "Your sales history will appear here.",
-    "_pending_review": {
-      "description": true,
-      "analytics": true,
-      "noServicesDesc": true,
-      "noClientsDesc": true,
-      "noSalesDesc": true
-    }
+    "noSalesDesc": "Your sales history will appear here."
   }
 }

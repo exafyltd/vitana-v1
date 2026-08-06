@@ -2,12 +2,9 @@
   "campaigns": {
     "delete": {
       "title": "Delete Campaign?",
-      "description": "Deleting \"{name}\" will permanently remove all related drafts and analytics. This action can't be undone.",
+      "description": "Deleting \"{name}\" permanently removes all associated drafts and analyses. This cannot be undone.",
       "dontAskAgain": "Don't ask me again for draft campaigns",
-      "deletePermanently": "Delete Permanently",
-      "_pending_review": {
-        "description": true
-      }
+      "deletePermanently": "Delete Permanently"
     },
     "creation": {
       "title": "Create Campaign",
@@ -18,17 +15,9 @@
       "proTip": "Pro Tip",
       "tips": {
         "1": "Clear names help you find campaigns later",
-        "2": "Connect channels now for instant scheduling",
+        "2": "Connect channels now for instant planning",
         "3": "Launch template works for most announcements",
-        "4": "Smart scheduling uses your past engagement data",
-        "_pending_review": {
-          "1": true,
-          "2": true,
-          "4": true
-        }
-      },
-      "_pending_review": {
-        "yourCampaigns": true
+        "4": "Smart planning uses your past engagement data"
       }
     }
   }

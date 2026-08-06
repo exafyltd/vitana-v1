@@ -22,9 +22,9 @@
       "loggedOut": "Logged out successfully",
       "loggedOutDesc": "Goodbye!",
       "subscribed": "Successfully subscribed",
-      "subscribedDesc": "You will now receive updates.",
+      "subscribedDesc": "You're now getting updates.",
       "unsubscribed": "Successfully unsubscribed",
-      "unsubscribedDesc": "You will no longer receive updates.",
+      "unsubscribedDesc": "You're no longer getting updates.",
       "added": "Successfully added",
       "addedDesc": "The item has been added.",
       "removed": "Successfully removed",
@@ -42,21 +42,7 @@
       "planGenerated": "Plan generated",
       "planGeneratedDesc": "Your personalized plan has been created.",
       "bulkEnabled": "Bulk selection enabled",
-      "bulkEnabledDesc": "Select items from your timeline for bulk actions.",
-      "_pending_review": {
-        "savedDesc": true,
-        "copiedDesc": true,
-        "sentDesc": true,
-        "uploadedDesc": true,
-        "profileUpdatedDesc": true,
-        "settingsSavedDesc": true,
-        "subscribedDesc": true,
-        "unsubscribedDesc": true,
-        "importedDesc": true,
-        "exportedDesc": true,
-        "planGeneratedDesc": true,
-        "bulkEnabledDesc": true
-      }
+      "bulkEnabledDesc": "Choose items from your timeline for bulk actions."
     },
     "error": {
       "generic": "Something went wrong",
@@ -64,7 +50,7 @@
       "network": "Network error",
       "networkDesc": "Please check your internet connection.",
       "notAuthenticated": "Not logged in",
-      "notAuthenticatedDesc": "Please sign in to continue.",
+      "notAuthenticatedDesc": "Please log in to continue.",
       "notAuthorized": "Not authorized",
       "notAuthorizedDesc": "You don't have permission for this action.",
       "saveFailed": "Save failed",
@@ -80,9 +66,9 @@
       "connectionFailed": "Connection failed",
       "connectionFailedDesc": "The connection could not be established.",
       "validationFailed": "Validation failed",
-      "validationFailedDesc": "Please check your inputs.",
+      "validationFailedDesc": "Please check your input.",
       "sessionExpired": "Session expired",
-      "sessionExpiredDesc": "Please sign in again.",
+      "sessionExpiredDesc": "Please log in again.",
       "serverError": "Server error",
       "serverErrorDesc": "Please try again later.",
       "notFound": "Not found",
@@ -90,18 +76,7 @@
       "importFailed": "Import failed",
       "importFailedDesc": "The data could not be imported.",
       "exportFailed": "Export failed",
-      "exportFailedDesc": "The data could not be exported.",
-      "_pending_review": {
-        "genericDesc": true,
-        "networkDesc": true,
-        "notAuthenticatedDesc": true,
-        "notAuthorizedDesc": true,
-        "saveFailedDesc": true,
-        "sendFailedDesc": true,
-        "validationFailedDesc": true,
-        "sessionExpiredDesc": true,
-        "serverErrorDesc": true
-      }
+      "exportFailedDesc": "The data could not be exported."
     },
     "info": {
       "processing": "Processing...",
@@ -111,23 +86,15 @@
       "loading": "Loading...",
       "loadingDesc": "Data is being retrieved.",
       "syncing": "Syncing...",
-      "syncingDesc": "Data is being synchronized.",
-      "_pending_review": {
-        "processingDesc": true
-      }
+      "syncingDesc": "Data is being synchronized."
     },
     "warning": {
       "unsavedChanges": "Unsaved changes",
       "unsavedChangesDesc": "You have unsaved changes. Do you want to continue?",
       "limitReached": "Limit reached",
-      "limitReachedDesc": "You have reached the maximum limit.",
+      "limitReachedDesc": "You've reached the maximum.",
       "slowConnection": "Slow connection",
-      "slowConnectionDesc": "Your internet connection seems slow.",
-      "_pending_review": {
-        "unsavedChangesDesc": true,
-        "limitReachedDesc": true,
-        "slowConnectionDesc": true
-      }
+      "slowConnectionDesc": "Your internet connection seems slow."
     },
     "common": {
       "couldNotCompleteTask": "Could not complete task",
@@ -197,7 +164,7 @@
       "connectionError": "Connection Error",
       "pushNotificationsReinitialized": "Push notifications re-initialized",
       "redeemPoints": "Redeem Points",
-      "redemptionOptionsOpeningSoon": "Redemption options opening soon",
+      "redemptionOptionsOpeningSoon": "Redeem options are coming soon.",
       "exportData": "Export Data",
       "preparingYourDataExport": "Preparing your data export...",
       "activitySavedMemory": "Activity saved to Memory",
@@ -206,16 +173,12 @@
       "weLlAnalyzeUpdateSuggestionsShortly": "We’ll analyze and update suggestions shortly.",
       "activityHidden": "Activity hidden",
       "success": "Success! 🎉",
-      "donTBreakStreakOneSmall": "🔥 Don't break the streak — one small action today",
-      "_pending_review": {
-        "calling": true,
-        "redemptionOptionsOpeningSoon": true
-      }
+      "donTBreakStreakOneSmall": "🔥 Don't break the streak — one small action today"
     },
     "admin": {
       "companionOverridesSavedVoiceCacheRefreshes": "Companion overrides saved — voice cache refreshes within 30s.",
       "manualTriggerSuccessful": "✅ Manual trigger successful",
-      "appointmentReminderFunctionHasExecuted": "Appointment reminder function has been executed",
+      "appointmentReminderFunctionHasExecuted": "Appointment reminder function triggered.",
       "triggerFailed": "❌ Trigger failed",
       "failedExecuteReminderFunction": "Failed to execute reminder function",
       "copied": "Copied",
@@ -230,8 +193,8 @@
       "failedTestApiKey": "Failed to test API key",
       "invalidHeaders": "Invalid headers",
       "headersMustValidJson": "Headers must be valid JSON",
-      "invalidRequestBody": "Invalid request body",
-      "bodyMustValidJson": "Body must be valid JSON",
+      "invalidRequestBody": "Invalid request body.",
+      "bodyMustValidJson": "The text must be valid JSON.",
       "requestFailed": "Request failed",
       "responseCopiedClipboard": "Response copied to clipboard",
       "missingFields": "Missing fields",
@@ -251,7 +214,7 @@
       "templatesUpdated": "Templates Updated",
       "greetingTemplatesHaveSavedSuccessfully": "Greeting templates have been saved successfully.",
       "settingsUpdated": "Settings Updated",
-      "systemPersonalitySettingsHaveSavedSuccessfully": "System personality settings have been saved successfully.",
+      "systemPersonalitySettingsHaveSavedSuccessfully": "System Personality Settings were successfully saved.",
       "discoveringIntegrations": "Discovering integrations",
       "scanningSystemForApisEdgeFunctions": "Scanning system for APIs and edge functions...",
       "discoveryCompletedWithErrors": "Discovery completed with errors",
@@ -296,14 +259,14 @@
       "creditsRequired": "Credits Required",
       "pleaseAddCreditsYourLovableAi": "Please add credits to your Lovable AI workspace to continue.",
       "analysisComplete": "Analysis Complete",
-      "aiHasGeneratedAutomationSuggestionsFor": "AI has generated automation suggestions for your situation",
+      "aiHasGeneratedAutomationSuggestionsFor": "AI has generated automation suggestions for your situation.",
       "analysisFailed": "Analysis Failed",
       "automationDeployed": "Automation Deployed",
       "automationHasCreatedDisabledYouCan": "The automation has been created (disabled). You can enable it from the builder.",
       "deploymentFailed": "Deployment Failed",
       "voiceConfigurationSaved": "Voice configuration saved",
       "patternLoaded": "Pattern Loaded",
-      "automationPrefilledFromDiscoveredPattern": "Automation pre-filled from discovered pattern",
+      "automationPrefilledFromDiscoveredPattern": "Automation pre-filled from a discovered pattern.",
       "failedLoadPatternData": "Failed to load pattern data",
       "nameRequired": "Name Required",
       "pleaseEnterNameForThisAutomation": "Please enter a name for this automation",
@@ -320,7 +283,7 @@
       "failedModerateGroup": "Failed to moderate group",
       "failedLoadReports": "Failed to load reports",
       "failedResolveReport": "Failed to resolve report",
-      "approveAllFailed": "Approve all failed",
+      "approveAllFailed": "All approvals failed.",
       "toggleFailed": "Toggle failed",
       "intakeSchemaMustValidJson": "Intake schema must be valid JSON",
       "saved": "Saved",
@@ -328,7 +291,7 @@
       "kbBindingsSaved": "KB bindings saved",
       "routingKeywordsSaved": "Routing keywords saved",
       "reclassifyFailed": "Reclassify failed",
-      "generateSpecFailed": "Generate spec failed",
+      "generateSpecFailed": "Specification generation failed.",
       "activateFailed": "Activate failed",
       "rejectFailed": "Reject failed",
       "forwardTriggersSaved": "Forward triggers saved",
@@ -365,17 +328,7 @@
       "removedFromActiveList": "Removed from the active list.",
       "rollbackFailed": "Rollback failed",
       "ticketRejected": "{ticketNumber} rejected",
-      "ticketRemovedActiveList": "Removed from the active list.",
-      "_pending_review": {
-        "appointmentReminderFunctionHasExecuted": true,
-        "invalidRequestBody": true,
-        "bodyMustValidJson": true,
-        "systemPersonalitySettingsHaveSavedSuccessfully": true,
-        "aiHasGeneratedAutomationSuggestionsFor": true,
-        "automationPrefilledFromDiscoveredPattern": true,
-        "approveAllFailed": true,
-        "generateSpecFailed": true
-      }
+      "ticketRemovedActiveList": "Removed from the active list."
     },
     "audio": {
       "cameraStopped": "Camera stopped",
@@ -400,10 +353,7 @@
       "ticketPrintingWillAvailableSoon": "Ticket printing will be available soon.",
       "confirmationSent": "Confirmation Sent",
       "refund": "Refund",
-      "refundFunctionalityWillAvailableSoon": "Refund functionality will be available soon.",
-      "_pending_review": {
-        "refundFunctionalityWillAvailableSoon": true
-      }
+      "refundFunctionalityWillAvailableSoon": "Refund feature will be available soon."
     },
     "calendar": {
       "calendarUpdated": "Calendar Updated"
@@ -423,7 +373,7 @@
     },
     "community": {
       "thumbnailCaptured": "Thumbnail captured",
-      "previewNewThumbnailBelow": "Preview the new thumbnail below.",
+      "previewNewThumbnailBelow": "Check out the preview of the new thumbnail below.",
       "captureFailed": "Capture failed",
       "couldNotCaptureThumbnailFromVideo": "Could not capture thumbnail from video. Try uploading a custom image instead.",
       "validationError": "Validation error",
@@ -468,10 +418,7 @@
       "vitanaWillFollowUp": "Vitana will follow up.",
       "couldnTReopen": "Couldn't reopen",
       "demoRoom": "Demo Room",
-      "thisExampleRoomCreateYourOwn": "This is an example room. Create your own to go live!",
-      "_pending_review": {
-        "previewNewThumbnailBelow": true
-      }
+      "thisExampleRoomCreateYourOwn": "This is an example room. Create your own to go live!"
     },
     "crossover": {
       "bookingStarted": "📅 Booking started",
@@ -515,21 +462,17 @@
       "taskCreatedSuccessfully": "Task created successfully",
       "pleaseSelectDateRange": "Please select a date range",
       "screenListImported": "Screen list imported",
-      "screenDefinitionsHaveImportedSuccessfully": "Screen definitions have been imported successfully.",
+      "screenDefinitionsHaveImportedSuccessfully": "Screen definitions were successfully imported.",
       "catalogEntryCreated": "Catalog entry created",
       "sessionNotFound": "Session not found",
       "sessionRestoredSuccessfully": "Session restored successfully",
-      "restoringSession": "Restoring session...",
+      "restoringSession": "Session is being restored...",
       "allSessionsCleared": "All sessions cleared",
       "autopilotRunTriggeredSuccessfully": "Autopilot run triggered successfully",
       "documentUploaded": "Document uploaded",
       "frontpageUploaded": "Frontpage uploaded",
       "diagnosticsCopiedClipboard": "Diagnostics copied to clipboard",
-      "error": "Error",
-      "_pending_review": {
-        "screenDefinitionsHaveImportedSuccessfully": true,
-        "restoringSession": true
-      }
+      "error": "Error"
     },
     "diary": {
       "notSupported": "Not Supported",
@@ -611,7 +554,7 @@
       "couldNotSave": "Could not save",
       "workoutStarted": "Workout started! 💪",
       "workoutCompletedGreatJob": "Workout completed! Great job! 🎉",
-      "reminderSettingsOpened": "Reminder settings opened",
+      "reminderSettingsOpened": "Reminder settings opened.",
       "waterIntakeLogged": "Water intake logged! 💧",
       "fileTooLarge": "File too large",
       "maximumFileSize20mb": "Maximum file size is 20MB",
@@ -627,10 +570,7 @@
       "noFileAvailable": "No file available",
       "couldNotLoadFile": "Could not load file",
       "recalibrationStarted": "🔄 Recalibration Started",
-      "reportGeneration": "📊 Report Generation",
-      "_pending_review": {
-        "reminderSettingsOpened": true
-      }
+      "reportGeneration": "📊 Report Generation"
     },
     "intents": {
       "moreDetailNeeded": "More detail needed",
@@ -646,7 +586,7 @@
       "couldNotPost": "Could not post",
       "couldNotPostReason": "Server: {reason}",
       "interestRecorded": "Interest recorded",
-      "ifTheyReInterestedTooWe": "If they're interested too, we'll connect you.",
+      "ifTheyReInterestedTooWe": "If they are also interested, we will connect you.",
       "couldNotRecordInterest": "Could not record interest",
       "declined": "Declined",
       "couldNotDecline": "Could not decline",
@@ -654,20 +594,15 @@
       "networkError": "Network error",
       "linkCopied": "Link copied",
       "couldNotCopy": "Could not copy",
-      "passedForNow": "Passed for now",
-      "couldNotPass": "Could not pass",
+      "passedForNow": "Skipped for now.",
+      "couldNotPass": "Could not skip.",
       "uploadFailed": "Upload failed",
       "heicheifFormatNotSupportedByBrowsers": "HEIC/HEIF format is not supported by browsers. Please convert to JPG or PNG first.",
       "coverPhotoUploaded": "Cover photo uploaded",
       "themedCoverReady": "Themed cover ready",
       "youCanReplaceItAnyTime": "You can replace it any time.",
       "coverPhotoRequired": "Cover photo required",
-      "uploadOneTapGenerateForMe": "Upload one, or tap ✨ Generate for me.",
-      "_pending_review": {
-        "ifTheyReInterestedTooWe": true,
-        "passedForNow": true,
-        "couldNotPass": true
-      }
+      "uploadOneTapGenerateForMe": "Upload one, or tap ✨ Generate for me."
     },
     "liverooms": {
       "linkCopied": "Link copied",
@@ -704,16 +639,13 @@
       "failedSendMessage": "Failed to send message",
       "pleaseTryAgainLater": "Please try again later",
       "addedSmartCalendar": "Added to Smart Calendar ✓",
-      "eventSavedWeLlRemindYou": "Event saved. We'll remind you before it starts.",
-      "_pending_review": {
-        "pleaseTryAgainCheckYourCalendar": true
-      }
+      "eventSavedWeLlRemindYou": "Event saved. We'll remind you before it starts."
     },
     "memory": {
       "voiceRecorded": "Voice Recorded",
       "invalidFile": "Invalid File",
       "pleaseSelectImageFile": "Please select an image file",
-      "emptyMemory": "Empty Memory",
+      "emptyMemory": "Reminder empty.",
       "pleaseAddSomeContentYourMemory": "Please add some content to your memory",
       "memorySaved": "Memory Saved",
       "yourMemoryHasAddedYourKnowledge": "Your memory has been added to your knowledge base",
@@ -733,8 +665,8 @@
       "linkCopiedClipboard": "Link copied to clipboard",
       "editFunctionalityComingSoon": "Edit functionality coming soon",
       "photoDeleted": "Photo deleted",
-      "privacySettingsSaved": "Privacy Settings Saved",
-      "yourPrivacyPreferencesHaveUpdated": "Your privacy preferences have been updated.",
+      "privacySettingsSaved": "Privacy settings saved.",
+      "yourPrivacyPreferencesHaveUpdated": "Your privacy settings have been updated.",
       "notSupported": "Not Supported",
       "microphoneRecordingNotSupportedThisDevice": "Microphone recording is not supported on this device.",
       "recordingStarted": "Recording Started",
@@ -753,16 +685,10 @@
       "reviewEditYourTranscriptionBeforeSaving": "Review and edit your transcription before saving.",
       "transcriptionFailed": "Transcription Failed",
       "noContent": "No Content",
-      "pleaseRecordEnterSomeContentBefore": "Please record or enter some content before saving.",
+      "pleaseRecordEnterSomeContentBefore": "Please record something or enter some content before saving.",
       "entrySaved": "Entry Saved",
       "yourDiaryEntryHasAddedYour": "Your diary entry has been added to your memory timeline.",
-      "couldNotSaveYourDiaryEntry": "Could not save your diary entry. Please try again.",
-      "_pending_review": {
-        "emptyMemory": true,
-        "privacySettingsSaved": true,
-        "yourPrivacyPreferencesHaveUpdated": true,
-        "pleaseRecordEnterSomeContentBefore": true
-      }
+      "couldNotSaveYourDiaryEntry": "Could not save your diary entry. Please try again."
     },
     "messages": {
       "newResponse": "🎉 New Response!",
@@ -773,7 +699,7 @@
       "eventWillAddedYourCalendarShortly": "Event will be added to your calendar shortly",
       "inviteSent": "Invite Sent",
       "signAddEventYourCalendar": "Sign in to add the event to your calendar.",
-      "pleaseWait": "Please wait",
+      "pleaseWait": "Please wait.",
       "stillSyncingThisMessageTryAgain": "Still syncing this message. Try again in a moment.",
       "responseSent": "Response Sent",
       "calendarInviteError": "Calendar Invite Error",
@@ -799,10 +725,7 @@
       "selectOpenConversationBeforeAttachingFiles": "Select or open a conversation before attaching files.",
       "uploadFailed": "Upload failed",
       "failedSendVoiceMessage": "Failed to send voice message",
-      "thereErrorSendingYourVoiceMessage": "There was an error sending your voice message",
-      "_pending_review": {
-        "pleaseWait": true
-      }
+      "thereErrorSendingYourVoiceMessage": "There was an error sending your voice message"
     },
     "notifications": {
       "bookingConfirmed": "Booking Confirmed! 🎉",
@@ -889,7 +812,7 @@
       "partnerPreferencesSaved": "Partner preferences saved",
       "saveFailed": "Save failed",
       "couldNotLoadOfferings": "Could not load offerings",
-      "serviceOfferingsSaved": "Service offerings saved",
+      "serviceOfferingsSaved": "Service offers saved.",
       "uploadFailed": "Upload failed",
       "heicheifFormatNotSupportedByBrowsers": "HEIC/HEIF format is not supported by browsers. Please convert to JPG or PNG first.",
       "avatarUploaded": "Avatar uploaded",
@@ -928,10 +851,7 @@
       "universalCoverRemoved": "Universal cover photo removed",
       "libraryPhotoUploaded": "Photo added to library",
       "libraryPhotoRemoved": "Photo removed",
-      "categoryRequired": "Please pick a category first.",
-      "_pending_review": {
-        "serviceOfferingsSaved": true
-      }
+      "categoryRequired": "Please pick a category first."
     },
     "reminders": {
       "notificationsArenTSupportedThisBrowser": "Notifications aren't supported in this browser.",
@@ -962,7 +882,7 @@
       "couldnTStartGoogleSignin": "Couldn't start Google sign-in",
       "couldnTStartYoutubeSignin": "Couldn't start YouTube sign-in",
       "settingsUpdated": "✅ Settings updated",
-      "yourNotificationPreferencesHaveSaved": "Your notification preferences have been saved.",
+      "yourNotificationPreferencesHaveSaved": "Your notification settings have been saved.",
       "error": "Error",
       "failedUpdateSettings": "Failed to update settings",
       "yourQuietHoursHaveSaved": "Your quiet hours have been saved.",
@@ -972,19 +892,14 @@
       "saved": "Saved",
       "saveFailed": "Save failed",
       "settingsUpdated2": "Settings updated",
-      "yourNotificationPreferencesHaveSaved2": "Your notification preferences have been saved",
+      "yourNotificationPreferencesHaveSaved2": "Your notification settings have been saved",
       "yourQuietHoursHaveUpdated": "Your quiet hours have been updated",
       "roleSwitched": "Role switched",
       "errorSwitchingRole": "Error switching role",
       "failedSwitchRolePleaseTryAgain": "Failed to switch role. Please try again.",
       "organizationSwitched": "Organization switched",
       "errorSwitchingOrganization": "Error switching organization",
-      "failedSwitchOrganizationPleaseTryAgain": "Failed to switch organization. Please try again.",
-      "_pending_review": {
-        "yourNotificationPreferencesHaveSaved": true,
-        "yourNotificationPreferencesHaveSaved2": true,
-        "failedSwitchOrganizationPleaseTryAgain": true
-      }
+      "failedSwitchOrganizationPleaseTryAgain": "Could not change organization. Please try again."
     },
     "sharing": {
       "channelNotConnected": "Channel not connected",
@@ -1042,8 +957,8 @@
       "openingMessagingApp": "Opening messaging app...",
       "messageCopiedPasteItIntoViber": "Message copied – paste it into Viber",
       "linkCopiedClipboard": "Link copied to clipboard",
-      "privacySettingsUpdated": "Privacy settings updated",
-      "yourGlobalPrivacyControlsHaveSaved": "Your global privacy controls have been saved.",
+      "privacySettingsUpdated": "Privacy settings updated.",
+      "yourGlobalPrivacyControlsHaveSaved": "Your global privacy settings have been saved.",
       "openingMessenger": "Opening Messenger...",
       "shareViaVitanaMessenger": "Share via Vitana Messenger",
       "shareOpened": "Share opened",
@@ -1062,11 +977,7 @@
       "postPublished": "Post published!",
       "campaignsExportedCsv": "Campaigns exported to CSV",
       "smartrescheduleFeatureComingSoon": "Smart-Reschedule feature coming soon!",
-      "viberNotDetectedLinkCopiedClipboard": "Viber not detected. Link copied to clipboard!",
-      "_pending_review": {
-        "privacySettingsUpdated": true,
-        "yourGlobalPrivacyControlsHaveSaved": true
-      }
+      "viberNotDetectedLinkCopiedClipboard": "Viber not detected. Link copied to clipboard!"
     },
     "tickets": {
       "ticketDownloaded": "Ticket downloaded!",
@@ -1116,7 +1027,7 @@
       "pleaseEnterValidAmount": "Please enter a valid amount",
       "insufficientCreditsBalance": "Insufficient credits balance",
       "success": "Success",
-      "failedProcessSpendingPleaseTryAgain": "Failed to process spending. Please try again.",
+      "failedProcessSpendingPleaseTryAgain": "Your output could not be processed. Please try again.",
       "pleaseEnterValidStakingAmount": "Please enter a valid staking amount",
       "insufficientBalance": "❌ Insufficient Balance",
       "youDonTHaveEnoughVtna": "You don't have enough VTNA tokens to stake",
@@ -1130,11 +1041,7 @@
       "withdrawalFailed": "Withdrawal Failed",
       "somethingWentWrongPleaseTryAgain": "Something went wrong. Please try again.",
       "pleaseSelectRecipientEnterAmount": "Please select a recipient and enter an amount",
-      "exchangeSendComplete": "✅ Exchange & Send Complete!",
-      "_pending_review": {
-        "failedProcessSpendingPleaseTryAgain": true,
-        "exchangeSendComplete": true
-      }
+      "exchangeSendComplete": "✅ Exchange & Send completed!"
     },
     "hooks": {
       "error": "Error",
@@ -1193,12 +1100,12 @@
       "campaignDistributionStartedSuccessfully": "Campaign distribution started successfully",
       "pleaseSignAddItemsCart": "Please sign in to add items to cart",
       "addedCart": "Added to cart",
-      "failedAddCart": "Failed to add to cart",
-      "failedUpdateQuantity": "Failed to update quantity",
+      "failedAddCart": "Add to cart failed.",
+      "failedUpdateQuantity": "Quantity could not be updated.",
       "removedFromCart": "Removed from cart",
-      "failedRemoveFromCart": "Failed to remove from cart",
+      "failedRemoveFromCart": "Remove from cart failed.",
       "cartCleared": "Cart cleared",
-      "failedClearCart": "Failed to clear cart",
+      "failedClearCart": "Failed to empty cart",
       "pleaseSignCheckout": "Please sign in to checkout",
       "yourCartEmpty": "Your cart is empty",
       "failedStartCheckout": "Failed to start checkout",
@@ -1346,7 +1253,7 @@
       "cannotSharePrivateProfile": "Cannot share private profile",
       "profileMustPublicShare": "Profile must be public to share",
       "profileLinkCopied": "Profile link copied",
-      "shareLinkHasCopiedClipboard": "Share link has been copied to clipboard",
+      "shareLinkHasCopiedClipboard": "Share link copied to clipboard",
       "failedCopy": "Failed to copy",
       "pleaseTryAgain": "Please try again",
       "linkCopied": "Link copied!",
@@ -1357,7 +1264,7 @@
       "pleaseTryAnotherSharingMethod": "Please try another sharing method",
       "failedRequestPayout": "Failed to request payout",
       "commissionCreditedWallet": "Commission credited to wallet!",
-      "failedCreditPayoutWallet": "Failed to credit payout to wallet",
+      "failedCreditPayoutWallet": "Payout credit to wallet failed",
       "failedTransferWallet": "Failed to transfer to wallet",
       "postScheduledSuccessfully": "Post scheduled successfully",
       "scheduledPostCancelled": "Scheduled post cancelled",
@@ -1375,9 +1282,9 @@
       "supplementAddedSuccessfully": "Supplement added successfully",
       "failedAddSupplement": "Failed to add supplement",
       "supplementUpdatedSuccessfully": "Supplement updated successfully",
-      "failedUpdateSupplement": "Failed to update supplement",
+      "failedUpdateSupplement": "Supplement update failed",
       "supplementDeletedSuccessfully": "Supplement deleted successfully",
-      "failedDeleteSupplement": "Failed to delete supplement",
+      "failedDeleteSupplement": "Supplement deletion failed",
       "screenSharingStarted": "Screen sharing started",
       "yourScreenContextNowAnalyzed": "Your screen context is now being analyzed",
       "screenSharingFailed": "Screen sharing failed",
@@ -1399,20 +1306,7 @@
       "exchangeSendSuccessful": "Exchange & Send Successful! ✨",
       "exchangeSendFailed": "Exchange & Send Failed",
       "linkAvailable": "Link available",
-      "errorUpdatingPreferences": "Error updating preferences",
-      "_pending_review": {
-        "failedAddCart": true,
-        "failedUpdateQuantity": true,
-        "failedRemoveFromCart": true,
-        "failedClearCart": true,
-        "failedStartCheckout": true,
-        "failedFollowUser": true,
-        "shareLinkHasCopiedClipboard": true,
-        "pleaseTryAnotherSharingMethod": true,
-        "failedCreditPayoutWallet": true,
-        "failedUpdateSupplement": true,
-        "failedDeleteSupplement": true
-      }
+      "errorUpdatingPreferences": "Error updating preferences"
     },
     "businesslistings": {
       "couldNotLoadListings": "Could not load listings"
@@ -1429,11 +1323,8 @@
     },
     "intentmatchdetail": {
       "couldNotLoadMatchDetail": "Could not load match detail",
-      "intentClosed": "Intent closed",
-      "couldNotClose": "Could not close",
-      "_pending_review": {
-        "intentClosed": true
-      }
+      "intentClosed": "Intent completed",
+      "couldNotClose": "Could not close"
     },
     "introexperience": {
       "audioPlaybackFailed": "Audio playback failed",
@@ -1446,10 +1337,7 @@
       "failedSendInvites": "Failed to send invites"
     },
     "myintents": {
-      "couldNotLoadIntents": "Could not load intents",
-      "_pending_review": {
-        "couldNotLoadIntents": true
-      }
+      "couldNotLoadIntents": "Failed to load intents"
     },
     "packagepurchasesuccess": {
       "paymentConfirmed": "Payment Confirmed!",
@@ -1459,18 +1347,14 @@
       "couldNotSave": "Could not save"
     },
     "home": {
-      "removedFromMemory": "Removed from Memory",
+      "removedFromMemory": "Removed from storage",
       "activityHasRemovedFromYourKnowledge": "Activity has been removed from your knowledge base.",
-      "savedMemory": "Saved to Memory",
+      "savedMemory": "Saved in storage",
       "activityHasSavedYourKnowledgeBase": "Activity has been saved to your knowledge base.",
       "actionExecuted": "Action Executed",
       "yourActionHasCompletedSuccessfully": "Your action has been completed successfully.",
       "actionDismissed": "Action Dismissed",
-      "thisActionHasRemovedFromYour": "This action has been removed from your list.",
-      "_pending_review": {
-        "removedFromMemory": true,
-        "savedMemory": true
-      }
+      "thisActionHasRemovedFromYour": "This action has been removed from your list."
     },
     "index": {
       "vitanaDevGatewayUrlNotConfigured": "Vitana Dev Gateway URL not configured"

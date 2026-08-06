@@ -1,7 +1,7 @@
 {
   "wallet": {
     "title": "Wallet",
-    "description": "Your balance, credits, and rewards",
+    "description": "Your Balance, Credits, and Rewards",
     "usdBalance": "EUR / USD Balance",
     "creditsBalance": "VTNA Credits Balance",
     "creditsLabel": "VTNA Credits",
@@ -14,26 +14,17 @@
       "actions": "Actions"
     },
     "filters": {
-      "commissions": "Sell & Earn Commissions",
+      "commissions": "Sell & earn commissions",
       "transfers": "Transfers",
       "exchanges": "Exchanges",
       "rewards": "Rewards",
       "purchases": "Purchases",
       "pending": "Pending Payouts",
       "withdrawals": "Withdrawals",
-      "stakes": "Staking",
-      "_pending_review": {
-        "commissions": true
-      }
+      "stakes": "Staking"
     },
     "noActivity": "No activity yet",
     "noActivityDesc": "Your transactions will appear here.",
-    "displayCurrency": "Display currency",
-    "_pending_review": {
-      "description": true,
-      "usdBalance": true,
-      "creditsBalance": true,
-      "noActivityDesc": true
-    }
+    "displayCurrency": "Display currency"
   }
 }

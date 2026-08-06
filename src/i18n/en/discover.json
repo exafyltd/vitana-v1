@@ -1,23 +1,23 @@
 {
   "discover": {
-    "title": "Discover your Longevity Marketplace",
+    "title": "Discover your marketplace for longevity",
     "mobileTitle": "Discover",
     "mobileDescription": "Explore experiences, people, and wellness",
-    "description": "Find doctors, wellness services, and community groups perfectly matched to your healthy aging journey.",
+    "description": "Find doctors, wellness services, and community groups that perfectly fit your journey to healthy aging.",
     "searchPlaceholder": "What are you looking for? (e.g., yoga classes, longevity doctor, meetups)",
     "doctorsCoaches": "Doctors & Coaches",
     "doctorsCoachesDesc": "Find longevity specialists, health coaches, and medical experts",
     "wellnessServices": "Wellness Services",
     "wellnessServicesDesc": "Discover yoga, massage, dance, therapy, and recovery services",
     "communityGroups": "Community Groups",
-    "communityGroupsDesc": "Join meetups, groups, and connect with like-minded people",
+    "communityGroupsDesc": "Join meetups and groups and connect with like-minded people",
     "explore": "Explore",
-    "aiPicksForYou": "AI Picks for You",
+    "aiPicksForYou": "AI recommendations for you",
     "vitanaPicksLabel": "Vitana Picks",
-    "recommendedForYou": "Vitana recommends",
+    "recommendedForYou": "Recommended for you",
     "moreToExplore": "More to explore",
     "seeAll": "See all",
-    "suggestedForYou": "Suggested For You",
+    "suggestedForYou": "Recommended for you",
     "browseCategories": "Browse Categories",
     "skincareCosmetics": "Skincare & Cosmetics",
     "healthTests": "Health Tests",
@@ -35,7 +35,7 @@
     "reasonGeneric": "Matches your Journey",
     "viewProduct": "View product",
     "noResults": "No results found",
-    "noResultsDesc": "Try different search terms or browse categories.",
+    "noResultsDesc": "Try other search terms or browse the categories.",
     "back": "Back",
     "productsFound": "{count} products",
     "recommendProduct": "Recommend",
@@ -92,23 +92,16 @@
       "viewSavedItems": "View Saved Items"
     },
     "aiPicks": {
-      "title": "AI Picks for You",
+      "title": "AI recommendations for you",
       "description": "Personalized recommendations based on your Vitana Index, biomarkers, and health goals",
-      "backToDiscover": "Back to Discover",
+      "backToDiscover": "Back to discovery",
       "loading": "Loading AI recommendations...",
       "unavailable": "AI Picks unavailable",
-      "unavailableDesc": "We couldn't load your personalized recommendations right now",
+      "unavailableDesc": "We couldn't load your personalized recommendations at the moment",
       "recommendationsFound": "{count} recommendations found",
       "noRecommendations": "No recommendations found",
-      "noRecommendationsDesc": "Try selecting a different filter to see more recommendations",
-      "viewAllPicks": "View All Picks",
-      "_pending_review": {
-        "title": true,
-        "description": true,
-        "backToDiscover": true,
-        "unavailableDesc": true,
-        "noRecommendationsDesc": true
-      }
+      "noRecommendationsDesc": "Choose a different filter to see more recommendations",
+      "viewAllPicks": "View All Picks"
     },
     "filters": {
       "all": "All",
@@ -126,21 +119,6 @@
       "bannerSubtitle": "Browse freely — sign in (it's free) to buy and start earning rewards.",
       "bannerCta": "Sign in",
       "signIn": "Sign in"
-    },
-    "_pending_review": {
-      "title": true,
-      "mobileTitle": true,
-      "mobileDescription": true,
-      "description": true,
-      "searchPlaceholder": true,
-      "doctorsCoachesDesc": true,
-      "wellnessServicesDesc": true,
-      "communityGroupsDesc": true,
-      "explore": true,
-      "aiPicksForYou": true,
-      "recommendedForYou": true,
-      "suggestedForYou": true,
-      "noResultsDesc": true
     }
   }
 }

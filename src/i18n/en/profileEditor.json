@@ -1,10 +1,10 @@
 {
   "profileEditor": {
-    "editAbout": "Edit About",
+    "editAbout": "Edit About Me",
     "aboutTitle": "About",
     "aboutDescription": "Share more about yourself. You can control who sees each field.",
     "bio": "Bio",
-    "bioPlaceholder": "Share your wellness journey, passions, and what makes you unique...\n\nExamples:\n• 'Wellness enthusiast passionate about mindful living and community building 🌱'\n• 'Certified nutritionist helping others discover their healthiest selves'\n• 'Marathon runner, meditation teacher, and advocate for balanced living'",
+    "bioPlaceholder": "Share your wellness journey, passions, and what makes you unique...\n\nExamples:\n• 'Wellness enthusiast with a passion for mindful living and community building 🌱'\n• 'Certified nutritionist helping others discover their healthiest self'\n• 'Marathon runner, meditation teacher, and advocate for balanced living'",
     "location": "Location",
     "locationPlaceholder": "e.g., San Francisco, CA • London, UK • Remote",
     "links": "Links",
@@ -38,7 +38,7 @@
     "save": "Save Changes",
     "saving": "Saving...",
     "profileUpdated": "Profile updated",
-    "profileUpdatedDesc": "Your about information has been saved successfully.",
+    "profileUpdatedDesc": "Your information has been successfully saved.",
     "saveFailed": "Save failed",
     "saveFailedDesc": "Failed to save profile. Please try again.",
     "autopilot": {
@@ -51,16 +51,16 @@
     "identity": {
       "editIdentity": "Edit Identity",
       "title": "Identity",
-      "description": "Manage your display name, handle, and profile images.",
+      "description": "Manage your display name, handle, and profile pictures.",
       "profilePicture": "Profile Picture",
       "displayName": "Display Name",
-      "displayNamePlaceholder": "Your display name",
+      "displayNamePlaceholder": "Your Display Name",
       "handle": "Handle",
       "handlePlaceholder": "yourhandle",
-      "handleDescription": "Your handle will be used in your public profile URL: /u/@{handle}",
-      "personalityDescriptor": "Personality Descriptor",
-      "personalityDescriptorPlaceholder": "e.g., The Mindful Mover, The Zen Warrior",
-      "personalityDescriptorDescription": "A short phrase that characterizes your wellness style",
+      "handleDescription": "Your handle is used in your public profile URL: /u/@{handle}",
+      "personalityDescriptor": "Personality Description",
+      "personalityDescriptorPlaceholder": "e.g. The Mindful Mover, The Zen Warrior",
+      "personalityDescriptorDescription": "A short description that characterizes your wellness style",
       "upload": "Upload",
       "uploading": "Uploading...",
       "remove": "Remove",
@@ -69,26 +69,15 @@
       "uploadFailed": "Upload failed",
       "uploadFailedDesc": "Failed to upload image. Please try again.",
       "identityUpdated": "Identity updated",
-      "identityUpdatedDesc": "Your identity information has been saved successfully.",
-      "_pending_review": {
-        "description": true,
-        "displayNamePlaceholder": true,
-        "handlePlaceholder": true,
-        "handleDescription": true,
-        "personalityDescriptor": true,
-        "personalityDescriptorPlaceholder": true,
-        "personalityDescriptorDescription": true,
-        "avatarUploadedDesc": true,
-        "identityUpdatedDesc": true
-      }
+      "identityUpdatedDesc": "Your identity information has been successfully saved."
     },
     "coverLibrary": {
       "title": "Cover Library",
       "tileTitle": "Cover Library",
-      "tileSubtitle": "Upload your own photos for Find-a-Match posts",
+      "tileSubtitle": "Upload your own photos for 'Find a Match' posts",
       "drawerTitle": "Cover photos for your posts",
       "universalSection": "Universal cover photo",
-      "universalDescription": "Used when none of your activity-specific photos match a post's category — and instead of an AI-generated image. Typically a portrait of yourself.",
+      "universalDescription": "Used when none of your activity-specific photos match a post's category — and instead of an AI-generated image. Typically a portrait of you.",
       "universalAdd": "Add universal photo",
       "universalReplace": "Replace photo",
       "universalRemove": "Remove",
@@ -107,20 +96,7 @@
       "universalRemoved": "Universal cover photo removed",
       "uploadFailed": "Upload failed",
       "categoryRequired": "Please pick a category for this photo first.",
-      "saveError": "Couldn't save — please try again.",
-      "_pending_review": {
-        "tileSubtitle": true,
-        "universalDescription": true,
-        "libraryEmpty": true
-      }
-    },
-    "_pending_review": {
-      "editAbout": true,
-      "aboutDescription": true,
-      "bioPlaceholder": true,
-      "linkUrlPlaceholder": true,
-      "cancel": true,
-      "profileUpdatedDesc": true
+      "saveError": "Couldn't save — please try again."
     }
   }
 }

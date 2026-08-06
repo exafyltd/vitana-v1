@@ -10,7 +10,7 @@
     "noUsersFound": "No users found",
     "noTransactionsFound": "No transactions found",
     "noEventsYet": "No events yet. Create an event first.",
-    "tryAdjustingFilters": "Try adjusting your filters or search query",
+    "tryAdjustingFilters": "Try adjusting your filters or search query.",
     "noData": "No data available",
     "noMessages": "No messages",
     "noNotifications": "No notifications",
@@ -22,11 +22,6 @@
     "healthEmpty": "Log your first entry to start your Index.",
     "noActionsMatchedYet": "No actions matched yet — Autopilot is shaping suggestions.",
     "actionsPendingOne": "{count} action pending",
-    "actionsPendingOther": "{count} actions pending",
-    "_pending_review": {
-      "noAppsFound": true,
-      "noEventsYet": true,
-      "tryAdjustingFilters": true
-    }
+    "actionsPendingOther": "{count} actions pending"
   }
 }

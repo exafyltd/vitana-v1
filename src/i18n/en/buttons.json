@@ -10,7 +10,7 @@
     "submit": "Submit",
     "next": "Next",
     "back": "Back",
-    "previous": "Previous",
+    "previous": "Back",
     "retry": "Retry",
     "refresh": "Refresh",
     "viewAll": "View All",
@@ -54,10 +54,6 @@
     "no": "No",
     "ok": "OK",
     "generate": "Generate",
-    "generating": "Generating...",
-    "_pending_review": {
-      "previous": true,
-      "clear": true
-    }
+    "generating": "Generating..."
   }
 }
