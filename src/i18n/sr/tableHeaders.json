@@ -10,6 +10,8 @@
     "role": "Uloga",
     "email": "Imejl",
     "date": "Datum",
-    "amount": "Iznos"
-  }
+    "amount": "Iznos",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

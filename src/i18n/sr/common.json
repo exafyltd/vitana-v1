@@ -36,6 +36,8 @@
     "retry": "Pokušaj ponovo",
     "follow": "Prati",
     "getMaxina": "Nabavi MAXINA",
-    "uploading": "Otpremam..."
-  }
+    "uploading": "Otpremam...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -4,12 +4,14 @@
     "types": {
       "bundle": "Paket",
       "subscription": "Pretplata",
-      "program": "Program"
+      "program": "Program",
+      "_pending_review": {}
     },
     "status": {
       "draft": "Nacrt",
       "published": "Uživo",
-      "archived": "Arhivirano"
+      "archived": "Arhivirano",
+      "_pending_review": {}
     },
     "item": "stavka",
     "items": "stavke",
@@ -17,6 +19,8 @@
     "validDays": "Važi {days} dana",
     "save": "Uštedi {percent}%",
     "unpublish": "Poništi objavu",
-    "publish": "Objavi"
-  }
+    "publish": "Objavi",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

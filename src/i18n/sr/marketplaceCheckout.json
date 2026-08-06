@@ -4,7 +4,8 @@
       "title": "Tvoje stanje",
       "loading": "Učitavanje stanja …",
       "empty": "Još nema stanja",
-      "addMoney": "Dodaj novac"
+      "addMoney": "Dodaj novac",
+      "_pending_review": {}
     },
     "checkout": {
       "button": "Plaćanje",
@@ -16,7 +17,8 @@
       "affiliateTitle": "Dovrši kupovinu kod trgovca",
       "affiliateBody": "Neke stavke se kupuju direktno kod trgovca. Otvori linkove ispod da dovršiš kupovinu.",
       "affiliateLink": "Dovrši kupovinu kod trgovca",
-      "affiliateOpened": "Linkovi trgovca su otvoreni u novim karticama."
+      "affiliateOpened": "Linkovi trgovca su otvoreni u novim karticama.",
+      "_pending_review": {}
     },
     "addMoney": {
       "title": "Dodaj novac",
@@ -29,7 +31,8 @@
       "continue": "Nastavi na plaćanje",
       "processing": "U pripremi …",
       "invalidAmount": "Molimo te, unesi validan iznos.",
-      "failed": "Nije bilo moguće započeti dopunu."
+      "failed": "Nije bilo moguće započeti dopunu.",
+      "_pending_review": {}
     },
     "deposit": {
       "checkingTitle": "Potvrda plaćanja",
@@ -39,7 +42,8 @@
       "failedTitle": "Dopuna neuspešna.",
       "failedBody": "Tvoja dopuna nije mogla biti završena. Ništa nije naplaćeno.",
       "amountLabel": "Iznos",
-      "backToCart": "Nazad u korpu"
+      "backToCart": "Nazad u korpu",
+      "_pending_review": {}
     },
     "errors": {
       "invalid_request": "Zahtev je bio nevažeći. Molimo proveri svoju korpu.",
@@ -57,7 +61,10 @@
       "ORDER_WRITE_FAILED": "Tvoja porudžbina nije mogla biti sačuvana. Molimo te da pokušaš ponovo.",
       "WALLET_READ_FAILED": "Nismo mogli da pročitamo tvoje stanje. Molimo te da pokušaš ponovo.",
       "GATEWAY_MISCONFIGURED": "Usluga plaćanja trenutno nije dostupna. Molimo te da pokušaš kasnije.",
-      "unknown": "Nešto je pošlo naopako prilikom plaćanja. Molimo te da pokušaš ponovo."
-    }
-  }
+      "unknown": "Nešto je pošlo naopako prilikom plaćanja. Molimo te da pokušaš ponovo.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -40,6 +40,8 @@
     "confirmClearOld": "Da li si siguran/na da želiš da obrišeš istoriju stariju od 90 dana?",
     "confirmDeleteAll": "⚠️ UPOZORENJE: Ovo će trajno obrisati SVE tvoje podatke. Ova radnja se ne može poništiti. Jesi li apsolutno siguran/na?",
     "beta": "Beta",
-    "danger": "Opasnost"
-  }
+    "danger": "Opasnost",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

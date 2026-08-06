@@ -74,6 +74,8 @@
     "errorNoAudio": "Nismo uhvatili nikakav zvuk. Molimo te, pokušaj ponovo.",
     "errorTranscription": "Transkripcija nije uspela. Molimo te, pokušaj ponovo.",
     "transcribing": "Prepisujem tvoj snimak…",
-    "backendRecordingHint": "Tvoja transkripcija će se pojaviti nakon što dodirneš Zaustavi."
-  }
+    "backendRecordingHint": "Tvoja transkripcija će se pojaviti nakon što dodirneš Zaustavi.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

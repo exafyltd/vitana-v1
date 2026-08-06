@@ -16,7 +16,8 @@
       "updateArchetype": "Ažuriraj arhetip",
       "profileSectionTitle": "Autopilot može da uglača tvoj profil ✨",
       "profileSectionDesc": "Dobij AI predloge za tvoju biografiju, arhetip i istaknute delove.",
-      "tryAutopilot": "Isprobaj Autopilot"
+      "tryAutopilot": "Isprobaj Autopilot",
+      "_pending_review": {}
     },
     "preview": "Pregled Autopilota",
     "viewAll": "Prikaži sve",
@@ -41,12 +42,14 @@
       "toastExecutedTitle": "Akcije izvršene",
       "toastExecutedDesc": "{success}/{total} akcija uspešno završene",
       "toastFailedTitle": "Izvršenje neuspešno",
-      "toastFailedDesc": "Nešto je pošlo po zlu. Pokušaj ponovo."
+      "toastFailedDesc": "Nešto je pošlo po zlu. Pokušaj ponovo.",
+      "_pending_review": {}
     },
     "priorities": {
       "high": "Visok",
       "medium": "Srednji",
-      "low": "Nizak"
+      "low": "Nizak",
+      "_pending_review": {}
     },
     "widget": {
       "title": "Autopilot ⚡",
@@ -56,7 +59,8 @@
       "allOptimized": "Sve optimizovano! 🎯",
       "enableToSee": "Uključi Autopilot da vidiš predloge",
       "completeForRewards": "Završi predloge Autopilota za nagrade",
-      "enableForCredits": "Uključi autopilot za kredite"
+      "enableForCredits": "Uključi autopilot za kredite",
+      "_pending_review": {}
     },
     "insightBanner": {
       "title": "Pregled zdravlja Autopilota",
@@ -64,7 +68,8 @@
       "synergyIndex": "Indeks sinergije",
       "statusBalanced": "Uravnotežen",
       "statusNeedsAttention": "Zahteva pažnju",
-      "statusImproving": "Poboljšava se"
+      "statusImproving": "Poboljšava se",
+      "_pending_review": {}
     },
     "profilePopup": {
       "title": "Neka Autopilot uglača tvoj profil ✨",
@@ -87,7 +92,8 @@
       "acceptAll": "Prihvati sve",
       "applied": "Promene sačuvane!",
       "error": "Nešto nije u redu",
-      "comingSoon": "Uskoro"
+      "comingSoon": "Uskoro",
+      "_pending_review": {}
     },
     "actions": {
       "action1Title": "Pridruži se Longevity Plesnoj Grupi večeras?",
@@ -103,7 +109,10 @@
       "action6Title": "Svesna jutarnja magija",
       "action6Reason": "Tvoja duša traži ove tehnike za otapanje stresa",
       "newActionTitle": "Nova AI sugestija",
-      "newActionReason": "Na osnovu skorašnjih obrazaca aktivnosti"
-    }
-  }
+      "newActionReason": "Na osnovu skorašnjih obrazaca aktivnosti",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

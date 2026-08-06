@@ -54,6 +54,8 @@
     "no": "Ne",
     "ok": "U redu",
     "generate": "Generiši",
-    "generating": "Generisanje..."
-  }
+    "generating": "Generisanje...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
