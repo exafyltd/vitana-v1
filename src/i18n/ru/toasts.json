@@ -433,7 +433,9 @@
       "couldnTReopen": "Не удалось вновь открыть",
       "demoRoom": "Демо-комната",
       "thisExampleRoomCreateYourOwn": "Это пример комнаты. Создай свою, чтобы выйти в эфир!",
-      "_pending_review": {}
+      "_pending_review": {
+        "yourLiveStreamHasDeleted": true
+      }
     },
     "crossover": {
       "bookingStarted": "📅 Бронирование начато",
@@ -1346,7 +1348,9 @@
       "exchangeSendFailed": "Обмен и отправка не удались",
       "linkAvailable": "Ссылка доступна",
       "errorUpdatingPreferences": "Ошибка при обновлении настроек",
-      "_pending_review": {}
+      "_pending_review": {
+        "yourMediaPendingModeration": true
+      }
     },
     "businesslistings": {
       "couldNotLoadListings": "Не удалось загрузить объявления",
@@ -1405,7 +1409,9 @@
       "yourActionHasCompletedSuccessfully": "Ваше действие успешно завершено.",
       "actionDismissed": "Действие отклонено",
       "thisActionHasRemovedFromYour": "Это действие удалено из вашего списка.",
-      "_pending_review": {}
+      "_pending_review": {
+        "yourActionHasCompletedSuccessfully": true
+      }
     },
     "index": {
       "vitanaDevGatewayUrlNotConfigured": "URL-адрес Vitana Dev Gateway не настроен",
