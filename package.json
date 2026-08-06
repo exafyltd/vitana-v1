@@ -32,7 +32,8 @@
     "test:news-feed-revisit": "node scripts/news-feed-revisit-regression.mjs",
     "test:news-card-features": "node scripts/news-card-feature-badges-regression.mjs",
     "test:maxina-kira-price": "node scripts/maxina-kira-price-regression.mjs",
-    "i18n:register": "node scripts/i18n-register-check.mjs --all"
+    "i18n:register": "node scripts/i18n-register-check.mjs --all",
+    "i18n:gate": "node scripts/i18n-parity-gate.mjs --all"
   },
   "dependencies": {
     "@axe-core/react": "^4.10.2",

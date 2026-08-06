@@ -225,11 +225,51 @@ for (const c of coverage) {
   );
 }
 if (deArrayKeys.length > 0) {
-  console.log(
-    `[i18n-audit] ${deArrayKeys.length} array-valued key(s) — translate-keys.mjs does NOT\n` +
-      `             translate these; they must be filled by hand per locale:`,
-  );
-  for (const k of deArrayKeys) console.log(`  ${k}`);
+  // VTID-03509 — this used to just LIST the array keys with "must be filled by
+  // hand", which reads as "these are missing" and is what made me report them
+  // as an outstanding gap when in fact all seven locales had them translated.
+  // A warning that cannot distinguish done from not-done is worse than none:
+  // it costs attention every run and carries no information. So now it checks.
+  //
+  // The test is "does the target array differ, element-wise, from German?" —
+  // an untranslated array is a verbatim copy of the source, exactly like the
+  // verbatim-echo case the DB-content translator guards against.
+  const readArray = (locale, dotted) => {
+    const [shardName, ...rest] = dotted.split('.');
+    let node = loadShard(join(I18N_DIR, locale), shardName);
+    for (const seg of rest) {
+      if (!node || typeof node !== 'object') return undefined;
+      node = node[seg];
+    }
+    return Array.isArray(node) ? node : undefined;
+  };
+  const arrayGaps = [];
+  for (const locale of allLocales.sort()) {
+    if (locale === 'de') continue;
+    const status = LANGUAGE_STATUS.get(locale) ?? 'unlisted';
+    // draft locales are not expected to be complete.
+    if (status === 'draft' || status === 'unlisted') continue;
+    for (const key of deArrayKeys) {
+      const src = readArray('de', key);
+      const tgt = readArray(locale, key);
+      if (!tgt) arrayGaps.push(`${locale}: ${key} — MISSING`);
+      else if (JSON.stringify(src) === JSON.stringify(tgt)) {
+        arrayGaps.push(`${locale}: ${key} — verbatim copy of DE (untranslated)`);
+      }
+    }
+  }
+  if (arrayGaps.length === 0) {
+    console.log(
+      `[i18n-audit] ${deArrayKeys.length} array-valued key(s) present and translated in every ` +
+        `tracked locale.\n             (translate-keys.mjs cannot maintain these — they are hand-held.)`,
+    );
+  } else {
+    console.log(
+      `[i18n-audit] ${arrayGaps.length} array-value gap(s) — translate-keys.mjs does NOT\n` +
+        `             translate these; fill them by hand:`,
+    );
+    for (const g of arrayGaps) console.log(`  ${g}`);
+  }
   console.log('');
 }
 
