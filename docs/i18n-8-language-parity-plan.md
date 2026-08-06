@@ -33,6 +33,7 @@ voice reply and journey screen is German".
 | Item | Before | After |
 |---|---|---|
 | ES/SR reachable in the app | **0%** — catalogs existed but were unregistered, rendered 100% German | registered + verified shipping as lazy chunks |
+| ES/SR coverage | 90.8% (12,862/14,163) | **100% (14,163/14,163)** — top-up translated, now `ga` |
 | EN catalog | 14,154 / 14,163 | **14,163 / 14,163** |
 | Gateway catalog locales | 4 (ES/SR were `{...EN}`, i.e. English) | **8, all natively translated** |
 | Approved audit fixes applied | 0 of 1,117 pending | **1,117** (628 DE + 121 ES + 368 SR) |
@@ -45,7 +46,7 @@ voice reply and journey screen is German".
 
 | Surface | DE | EN | ES | SR | FR | PT | RU | PL |
 |---|---|---|---|---|---|---|---|---|
-| 1 · UI strings | 100% | 100% | 90.8% | 90.8% | 0%* | 0%* | 0%* | 0%* |
+| 1 · UI strings | 100% | 100% | **100%** | **100%** | 0%* | 0%* | 0%* | 0%* |
 | 2 · Server strings | 100% | 100% | 100% | 100% | 100% | 100% | 100% | 100% |
 | 3 · LLM directive | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | 4 · DB content | source | partial | partial | partial | none | none | none | none |
@@ -58,11 +59,31 @@ voice reply and journey screen is German".
 
 ## 3. Work remaining
 
-### 3.1 UI strings — IN FLIGHT
+### 3.1 UI strings — ES/SR DONE, four IN FLIGHT
 
-`i18n-translate.yml` dispatched against this branch for `fr`, `pt`, `ru`, `pl`
-(full 14,163-key bootstrap) and `es`, `sr` (top-up of 1,301 keys each, added to
-DE/EN after the May bulk translation).
+**ES and SR are complete** (14,163/14,163) and promoted to `ga`.
+
+`i18n-translate.yml` is running for `fr`, `pt`, `ru`, `pl` (full 14,163-key
+bootstrap each).
+
+**Two workflow bugs were fixed to get here — both would recur otherwise:**
+
+1. *Concurrency keyed on `github.ref` alone.* GitHub keeps only ONE pending run
+   per group, so dispatching four locales back-to-back left one running, one
+   pending, and **silently cancelled the other two**. Now keyed by locale.
+2. *All-or-nothing commit.* The first `fr` run translated **14,068 of 14,160
+   keys and discarded all of it** — the translator exits 1 if any key fails,
+   and the commit step had no `if:`, so ~40 minutes of API calls were thrown
+   away because 92 keys (0.6%) hit transient errors. The commit step now runs
+   on `always()` and the job reports the partial failure afterwards, so a
+   re-dispatch drains only the remainder.
+
+**Array-valued keys are not translated by the tooling.** `translate-keys.mjs`
+skips arrays in its leaf collector, so `--init` creates the parent object
+without them and they stay missing after a full run. Only 3 exist in DE
+(`voucher.tiers.*.benefits`, 11 strings); they are hand-filled for ES/SR and
+**must be hand-filled for FR/PT/RU/PL too**. `npm run i18n:audit` now lists
+them on every run.
 
 - **Then, per locale:** `gh workflow run i18n-audit-llm.yml -f locale=<x> -f provider=gemini`
   followed by `node scripts/apply-audit-suggestions.mjs --locale=<x>`.
