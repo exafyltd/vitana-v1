@@ -32,28 +32,49 @@ voice reply and journey screen is German".
 
 | Item | Before | After |
 |---|---|---|
-| ES/SR reachable in the app | **0%** — catalogs existed but were unregistered, rendered 100% German | registered + verified shipping as lazy chunks |
-| ES/SR coverage | 90.8% (12,862/14,163) | **100% (14,163/14,163)** — top-up translated, now `ga` |
+| ES/SR reachable at all | **0%** — translated but unregistered; rendered 100% German | registered; verified shipping as their own lazy chunks |
+| GA locales | DE, EN | **DE, EN, ES, SR, FR** |
 | EN catalog | 14,154 / 14,163 | **14,163 / 14,163** |
-| Gateway catalog locales | 4 (ES/SR were `{...EN}`, i.e. English) | **8, all natively translated** |
+| Gateway catalog locales | 4 (ES/SR were `{...EN}` — literal English) | **8, all natively translated** |
 | Approved audit fixes applied | 0 of 1,117 pending | **1,117** (628 DE + 121 ES + 368 SR) |
-| Entry-chunk audit bloat | 1,545 KB of audit JSON inlined | moved to `i18n-audit/`, verified gone |
-| Edge-function locale resolution | read two columns that **do not exist** → every user forced to German | reads `app_users.locale` → `user_preferences.stt_language` |
+| Entry-chunk audit bloat | 1,545 KB of audit JSON inlined | moved to `i18n-audit/`; verified gone from the deployed chunk |
+| Edge-function locale resolution | queried two columns that **do not exist** → every user forced to German | `app_users.locale` → `user_preferences.stt_language` |
 | Journey checklist API | rejected `?locale=fr` | accepts all 8 |
-| Formatting (surface 6) | already complete for all 10 | ✅ no work needed |
+| Placeholder integrity | unchecked; **30 corrupt values shipped** across ES/SR/FR/PT/PL + 10 in EN | 0; enforced in the translator AND the audit |
+| Translation staleness | undetectable | `npm run i18n:stale`, per-locale source stamps |
+
+### Current state
+
+| Locale | Coverage | Status | Notes |
+|---|---|---|---|
+| DE | source | `ga` | source of truth |
+| EN | 100% | `ga` | **935 keys behind DE** — see §3.5 |
+| ES | 100% | `ga` | 5/5 conditions verified |
+| SR | 100% | `ga` | 5/5; 20 formal-register values converted |
+| FR | 100% | `ga` | 5/5; 2 formal-register values converted |
+| PT | 100% | `beta` | draining re-translation flags |
+| PL | 100% | `beta` | draining re-translation flags |
+| RU | — | `beta` | bootstrapping |
+
+**A locale reaches `ga` only when all five are independently true.** Coverage
+alone read 100% while three of these were broken:
+
+1. 14,163/14,163 keys — `npm run i18n:audit`
+2. 0 keys flagged `_pending_review`
+3. 0 placeholder mismatches vs DE — would render a literal `{token}`
+4. 0 drift vs its EN source — `npm run i18n:stale`
+5. 0 formal-register values — brand voice is informal in every language
 
 ### Remaining, by surface
 
 | Surface | DE | EN | ES | SR | FR | PT | RU | PL |
 |---|---|---|---|---|---|---|---|---|
-| 1 · UI strings | 100% | 100% | **100%** | **100%** | 0%* | 0%* | 0%* | 0%* |
-| 2 · Server strings | 100% | 100% | 100% | 100% | 100% | 100% | 100% | 100% |
+| 1 · UI strings | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ⏳ | ✅ |
+| 2 · Server strings | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | 3 · LLM directive | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | 4 · DB content | source | partial | partial | partial | none | none | none | none |
 | 5 · Voice | ✅ | ✅ | ✅ | TTS only | ✅ | ✅ | ✅ | ✅ |
 | 6 · Formatting | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-
-\* translation runs are in flight — see §3.1.
 
 ---
 
@@ -214,6 +235,27 @@ Budget a verification pass on `preview.vitanaland.com` before publishing.
 | +4d | verify all 8 on `preview.vitanaland.com`: language picker, a push notification, an ORB reply, My Journey, a date |
 | +5d | PUBLISH to production |
 | slack | buffer for audit re-runs and any layout breakage from text expansion |
+
+---
+
+### 3.5 EN lags DE by 935 keys — the pivot problem
+
+`translate-keys.mjs` reads `en/`, so **every non-German locale is translated
+from English, not from the German source of truth.** English is therefore a
+pivot, and `npm run i18n:stale` reports it **935 keys behind DE**.
+
+That is where the "ES/SR are stale" framing turned out to be wrong. ES and SR
+are current with *their* source (0 drift). It is EN that lags, and everything
+downstream inherits the lag.
+
+- ~284 of the 935 removed formal `Sie/Ihr` markers — the DE-wide Sie→du sweep.
+  English has no T‑V distinction, so no EN change is implied.
+- The rest are wording changes, but **not all are EN staleness** — sampling
+  shows DE being aligned *to* the existing English (`"Analytik"` → `"Analytics"`,
+  EN already `"Analytics"`). Separating the two needs the semantic LLM audit.
+
+**Do not bulk-translate EN to close this.** EN is human-quality product copy and
+the audience for it is real; it needs review, not a machine pass.
 
 ---
 
