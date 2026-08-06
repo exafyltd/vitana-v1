@@ -25,6 +25,10 @@
     },
     "noActivity": "Još uvek nema aktivnosti",
     "noActivityDesc": "Tvoje transakcije će se pojaviti ovde.",
-    "displayCurrency": "Valuta prikaza"
+    "displayCurrency": "Valuta prikaza",
+    "_pending_review": {
+      "usdBalance": true,
+      "creditsBalance": true
+    }
   }
 }

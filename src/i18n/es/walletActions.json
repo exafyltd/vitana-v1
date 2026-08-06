@@ -7,7 +7,11 @@
     "withdraw": "Retirar",
     "buyCredits": "Comprar VTNA Credits",
     "stakeTokens": "Hacer staking de tokens",
-    "_pending_review": {}
+    "_pending_review": {
+      "addFunds": true,
+      "exchange": true,
+      "buyCredits": true
+    }
   },
   "_pending_review": {}
 }

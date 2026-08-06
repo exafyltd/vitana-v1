@@ -129,6 +129,9 @@
         "youAreLiveDesc": "Uniéndote a la sala de transmisión…",
         "aiImageHintTitle": "Generación de imagen con IA",
         "aiImageHintDesc": "La imagen se generará cuando comience la transmisión."
+      },
+      "_pending_review": {
+        "coverUploadHint": true
       }
     },
     "editSession": {

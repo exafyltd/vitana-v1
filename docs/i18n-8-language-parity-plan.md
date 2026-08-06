@@ -59,9 +59,67 @@ voice reply and journey screen is German".
 
 ## 3. Work remaining
 
-### 3.1 UI strings — ES/SR DONE, four IN FLIGHT
+### 3.0 ES/SR were 2 months stale in ways coverage cannot see
 
-**ES and SR are complete** (14,163/14,163) and promoted to `ga`.
+The ES/SR catalogs were translated and audited on **2026-05-20**. Between then
+and now the German source moved underneath them:
+
+| | |
+|---|---|
+| keys **added** | 1,657 — coverage caught these |
+| keys **removed** | 26 (no orphans left behind) |
+| **values rewritten** | **933 — every existing check was blind to these** |
+
+Key coverage reported 100% throughout, because the keys were all still present.
+`translate-keys.mjs --init` could not re-flag them either: it only flags a key
+when the target still *equals* the source, so a translated value whose source
+later changed is invisible to it permanently.
+
+**Of the 933:**
+
+- **80** also changed in **English** — ES/SR are stale against their own pivot
+  (the translator works from `en/`, not `de/`). These are now flagged
+  `_pending_review` for re-translation.
+- **284** removed formal `Sie/Ihr` markers — part of a DE-wide Sie→du register
+  conversion. English has no T‑V distinction, so no EN/ES/SR change is implied.
+- **569** are wording changes with no register marker. This bucket is **not**
+  all "EN is stale" — sampling shows DE being aligned *to* the existing English
+  (`de "Analytik" → "Analytics"`, EN already `"Analytics"`). Separating genuine
+  drift from DE catching up needs the semantic LLM audit, not a regex.
+
+**Two classes of user-visible breakage were found and fixed:**
+
+1. **Translated placeholder names.** `de "{used} / {limit} {unit}"` had become
+   `es "{usado} / {límite} {unidad}"` — none of the three substitute, so the
+   string renders raw to the user. Same in SR. Also in `paywall.remainingCounter`.
+2. **Stale placeholders after a rename.** DE `"Tag {n}"` vs ES `"Día {day}"` —
+   the code passes `n`, so Spanish showed a literal `{day}`.
+
+Fixing those surfaced **9 more in the EN catalog itself** (`{length}result{value1}for…`
+— a botched plural extraction that ate the spaces too). EN is GA, so English
+users were seeing literal `{value1}`, **and FR/PT/RU/PL were translating from
+those broken strings.** All fixed; placeholder mismatches are now 0 everywhere.
+
+**Serbian register:** 20 values used formal `Vi/Vaš` where the catalog is
+otherwise 96.3% informal and the German source uses `du` (including in the
+legal text). Converted to `ti/tvoj`.
+
+**Systemic fixes so this is never invisible again:**
+
+- `npm run i18n:audit` now checks **placeholder integrity** on every ga/beta
+  locale — language-independent, so it needs no reviewer who speaks the language.
+- `npm run i18n:stale` (new `scripts/i18n-stamp-source.mjs`) records a hash of
+  the DE source each key was translated from, in `i18n-source-stamps/<loc>.json`,
+  and reports every key whose source has since moved. ES/SR were bootstrapped
+  against the actual May commit rather than stamped "current", so the first run
+  reports the real backlog instead of a false clean slate.
+- After any translation run: `npm run i18n:stamp -- --locale=<x>` to re-baseline.
+
+### 3.1 UI strings — ES/SR at full coverage, four IN FLIGHT
+
+**ES and SR are at 14,163/14,163**, temporarily back to `beta` while the 80
+flagged keys are re-translated — the audit refuses a `ga` locale carrying
+`_pending_review`, which is the rule working as intended.
 
 `i18n-translate.yml` is running for `fr`, `pt`, `ru`, `pl` (full 14,163-key
 bootstrap each).

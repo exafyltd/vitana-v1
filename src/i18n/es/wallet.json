@@ -25,6 +25,10 @@
     },
     "noActivity": "Sin actividad aún",
     "noActivityDesc": "Tus transacciones aparecerán aquí.",
-    "displayCurrency": "Moneda de visualización"
+    "displayCurrency": "Moneda de visualización",
+    "_pending_review": {
+      "usdBalance": true,
+      "creditsBalance": true
+    }
   }
 }

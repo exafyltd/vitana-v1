@@ -80,7 +80,7 @@
       "yes": "Da",
       "no": "–",
       "fairUse": "Fer upotreba",
-      "used": "{iskorišćeno} / {limit} {jedinica}",
+      "used": "{used} / {limit} {unit}",
       "resetIn": "Resetuje se za {duration}",
       "comparisonTitle": "Šta je uključeno u svaki plan"
     },
@@ -241,7 +241,7 @@
     "ctaUpgrade": "Otključaj Premium",
     "ctaCredits": "Iskoristi {credits} kredita",
     "ctaLater": "Možda kasnije",
-    "remainingCounter": "{preostalo} / {limit}",
+    "remainingCounter": "{remaining} / {limit}",
     "resetsIn": "Resetuje se {date}",
     "creditsInsufficient": "Nemaš dovoljno kredita. Dopuni prvo."
   }

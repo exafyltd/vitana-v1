@@ -129,6 +129,9 @@
         "youAreLiveDesc": "Pridružujem se tvojoj strim sobi…",
         "aiImageHintTitle": "AI generisanje slike",
         "aiImageHintDesc": "Slika će biti generisana kada strim počne."
+      },
+      "_pending_review": {
+        "coverUploadHint": true
       }
     },
     "editSession": {

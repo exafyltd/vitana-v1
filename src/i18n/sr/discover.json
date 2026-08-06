@@ -127,7 +127,9 @@
       "signIn": "Prijavi se",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "recommendedForYou": true
+    }
   },
   "_pending_review": {}
 }

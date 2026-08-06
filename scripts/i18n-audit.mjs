@@ -8,6 +8,8 @@
 //   4. Empty values: any leaf string is "" (likely an unfilled stub).
 //   5. Coverage of EVERY locale against DE. A `ga` locale below 100% is an
 //      ERROR; `beta`/`draft` are reported for visibility only. (VTID-03509)
+//   6. PLACEHOLDER INTEGRITY across every locale. (VTID-03509)
+//   7. STALENESS: a translation whose DE source changed after it was written.
 //
 // GA languages ARE now read from src/contexts/LanguageContext.tsx — the header
 // claimed this before, but GA_LOCALES was a hardcoded Set(['en','de']). Adding
@@ -229,6 +231,54 @@ if (deArrayKeys.length > 0) {
   );
   for (const k of deArrayKeys) console.log(`  ${k}`);
   console.log('');
+}
+
+// 5. Placeholder integrity (VTID-03509).
+//
+// Coverage cannot see this class at all: the key is present, so it counts as
+// translated, but the interpolation is broken and the user sees a literal
+// `{token}`. Two real failure modes, both found in the shipped es/sr catalogs:
+//
+//   a) the translator translated the placeholder NAME —
+//      de "{used} / {limit} {unit}" became es "{usado} / {límite} {unidad}",
+//      so none of the three substituted and the whole string rendered raw;
+//   b) a placeholder was RENAMED in DE after the locale was translated —
+//      de "Tag {n}" vs a stale es "Día {day}".
+//
+// (b) is why this check is also the cheapest staleness signal available: it is
+// language-independent, so it needs no reviewer who speaks the language.
+function placeholdersOf(v) {
+  return [...String(v).matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort().join(',');
+}
+
+const deValues = {};
+for (const shardName of deShards) {
+  for (const { path, value } of flatten(loadShard(join(I18N_DIR, 'de'), shardName))) {
+    deValues[`${shardName}.${path}`] = value;
+  }
+}
+
+for (const locale of allLocales.sort()) {
+  if (locale === 'de') continue;
+  const status = LANGUAGE_STATUS.get(locale) ?? 'unlisted';
+  if (status === 'draft') continue; // not offered to users; noise
+  for (const shardName of listShards(join(I18N_DIR, locale))) {
+    for (const { path, value } of flatten(loadShard(join(I18N_DIR, locale), shardName))) {
+      const key = `${shardName}.${path}`;
+      const source = deValues[key];
+      if (source === undefined) continue;
+      const want = placeholdersOf(source);
+      const got = placeholdersOf(value);
+      if (want !== got) {
+        recordIssue(
+          'error',
+          locale,
+          `${shardName}: "${path}" placeholder mismatch — de{${want}} vs ${locale}{${got}}. ` +
+            `The user sees a literal {token}. Value: ${JSON.stringify(String(value).slice(0, 60))}`,
+        );
+      }
+    }
+  }
 }
 
 // Report

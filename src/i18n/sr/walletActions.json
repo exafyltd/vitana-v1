@@ -7,7 +7,11 @@
     "withdraw": "Povuci",
     "buyCredits": "Kupi VTNA Credits",
     "stakeTokens": "Uloži tokene",
-    "_pending_review": {}
+    "_pending_review": {
+      "addFunds": true,
+      "exchange": true,
+      "buyCredits": true
+    }
   },
   "_pending_review": {}
 }
