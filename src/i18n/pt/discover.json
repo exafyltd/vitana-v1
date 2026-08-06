@@ -1,23 +1,23 @@
 {
   "discover": {
-    "title": "Descobre o teu Mercado da Longevidade",
+    "title": "Descobre o teu mercado para a longevidade",
     "mobileTitle": "Descobre",
     "mobileDescription": "Explora experiências, pessoas e bem-estar",
-    "description": "Encontra médicos, serviços de bem-estar e grupos comunitários perfeitamente adequados à tua jornada de envelhecimento saudável.",
+    "description": "Encontra médicos, serviços de bem-estar e grupos comunitários que se encaixam perfeitamente na tua jornada para um envelhecimento saudável.",
     "searchPlaceholder": "O que procuras? (ex: aulas de yoga, médico de longevidade, encontros)",
     "doctorsCoaches": "Médicos e Treinadores",
     "doctorsCoachesDesc": "Encontra especialistas em longevidade, treinadores de saúde e peritos médicos",
     "wellnessServices": "Serviços de Bem-Estar",
     "wellnessServicesDesc": "Descobre serviços de yoga, massagem, dança, terapia e recuperação",
     "communityGroups": "Grupos Comunitários",
-    "communityGroupsDesc": "Junta-te a encontros, grupos e conecta-te com pessoas com interesses semelhantes",
+    "communityGroupsDesc": "Participa em encontros e grupos e conecta-te com pessoas com os mesmos interesses.",
     "explore": "Explora",
-    "aiPicksForYou": "Escolhas de IA para Ti",
+    "aiPicksForYou": "Recomendações de IA para ti",
     "vitanaPicksLabel": "Escolhas Vitana",
-    "recommendedForYou": "Vitana recomenda",
+    "recommendedForYou": "Recomendado para ti",
     "moreToExplore": "Mais para explorar",
     "seeAll": "Ver tudo",
-    "suggestedForYou": "Sugerido para Ti",
+    "suggestedForYou": "Recomendado para ti",
     "browseCategories": "Explorar Categorias",
     "skincareCosmetics": "Cuidados de Pele e Cosméticos",
     "healthTests": "Testes de Saúde",
@@ -35,7 +35,7 @@
     "reasonGeneric": "Corresponde à tua Jornada",
     "viewProduct": "Ver produto",
     "noResults": "Nenhum resultado encontrado",
-    "noResultsDesc": "Tenta outros termos de pesquisa ou navega pelas categorias.",
+    "noResultsDesc": "Experimenta outros termos de pesquisa ou navega pelas categorias.",
     "back": "Voltar",
     "productsFound": "{count} produtos",
     "recommendProduct": "Recomendar",
@@ -92,22 +92,16 @@
       "viewSavedItems": "Ver Itens Guardados"
     },
     "aiPicks": {
-      "title": "Escolhas de IA para Ti",
+      "title": "Recomendações de IA para ti",
       "description": "Recomendações personalizadas com base no teu Vitana Index, biomarcadores e objetivos de saúde",
-      "backToDiscover": "Voltar à Descoberta",
+      "backToDiscover": "Voltar à descoberta",
       "loading": "A carregar recomendações de IA...",
       "unavailable": "Escolhas de IA indisponíveis",
-      "unavailableDesc": "Não conseguimos carregar suas recomendações personalizadas agora",
+      "unavailableDesc": "Não conseguimos carregar as tuas recomendações personalizadas neste momento.",
       "recommendationsFound": "{count} recomendações encontradas",
       "noRecommendations": "Nenhuma recomendação encontrada",
-      "noRecommendationsDesc": "Tente selecionar um filtro diferente para ver mais recomendações",
-      "viewAllPicks": "Ver Todas as Escolhas",
-      "_pending_review": {
-        "title": true,
-        "backToDiscover": true,
-        "unavailableDesc": true,
-        "noRecommendationsDesc": true
-      }
+      "noRecommendationsDesc": "Escolhe um filtro diferente para ver mais recomendações.",
+      "viewAllPicks": "Ver Todas as Escolhas"
     },
     "filters": {
       "all": "Tudo",
@@ -125,15 +119,6 @@
       "bannerSubtitle": "Navegue livremente — faça login (é grátis) para comprar e começar a ganhar recompensas.",
       "bannerCta": "Fazer login",
       "signIn": "Fazer login"
-    },
-    "_pending_review": {
-      "title": true,
-      "description": true,
-      "communityGroupsDesc": true,
-      "aiPicksForYou": true,
-      "recommendedForYou": true,
-      "suggestedForYou": true,
-      "noResultsDesc": true
     }
   }
 }

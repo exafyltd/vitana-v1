@@ -19,7 +19,10 @@
       "rejected": "Rejeitado",
       "flagged": "Sinalizado",
       "podcastManagement": "Gerenciamento de Podcasts",
-      "podcastManagementDesc": "Revisar e moderar uploads de podcasts"
-    }
-  }
+      "podcastManagementDesc": "Revisar e moderar uploads de podcasts",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

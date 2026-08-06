@@ -2,7 +2,7 @@
   "eventCta": {
     "buyTicket": "Comprar Bilhete",
     "buyTicketWithPrice": "Comprar Bilhete · {price}",
-    "getFreeTicket": "Obter Bilhete Grátis",
+    "getFreeTicket": "Pega o teu bilhete grátis",
     "reserveSpot": "Reservar Lugar",
     "reserveMySpot": "Reservar Meu Lugar",
     "viewTicket": "Ver Bilhete",
@@ -19,10 +19,6 @@
     "processing": "A processar...",
     "joining": "A aderir...",
     "getTickets": "Obter Bilhetes",
-    "promoteEvent": "Promover evento",
-    "_pending_review": {
-      "getFreeTicket": true
-    }
-  },
-  "_pending_review": {}
+    "promoteEvent": "Promover evento"
+  }
 }

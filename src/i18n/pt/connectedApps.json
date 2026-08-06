@@ -5,7 +5,7 @@
     "searchPlaceholder": "Buscar apps...",
     "addApp": "Adicionar App",
     "connected": "conectado",
-    "syncing": "sincronizando",
+    "syncing": "Sincronizando",
     "sections": {
       "social": "Social e Compartilhamento",
       "fitness": "Fitness e Wearables",
@@ -24,8 +24,8 @@
       "configure": "Configurar Sincronização",
       "manage": "Gerenciar"
     },
-    "lastSync": "Última sincronização",
-    "dataSync": "Sincronizando dados",
+    "lastSync": "Última Sincronização",
+    "dataSync": "Sincronizando Dados",
     "comingSoonMessage": "Integração do {appName} em breve",
     "popup": {
       "title": "Conectar Apps e Serviços",
@@ -45,11 +45,6 @@
       "noResults": "Nenhum aplicativo encontrado",
       "connectionSuccess": "Conexão bem-sucedida",
       "connectionPlaceholder": "Conexão {appName} em breve"
-    },
-    "_pending_review": {
-      "syncing": true,
-      "lastSync": true,
-      "dataSync": true
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "socialImport": {
-    "dialogTitle": "Importar Perfil {platform}",
+    "dialogTitle": "{platform} Importar Perfil",
     "dialogDescription": "Conecta teu perfil {platform} para enriquecer tua identidade Vitana com insights de IA.",
     "profileUrl": "URL do Perfil {platform}",
     "bioLabel": "Bio / Seção Sobre",
@@ -15,30 +15,17 @@
     "importFailed": "Importação Falhou",
     "connect": "Conectar:",
     "socialPresence": "Presença Social",
-    "verifiedConnections": "Conexões verificadas em tua vida digital",
+    "verifiedConnections": "Conexões verificadas na tua vida digital",
     "tapToVisit": "Toca para visitar o perfil",
     "noAccountsConnected": "Nenhuma conta social conectada",
     "connectAccounts": "Conectar Contas",
     "platformHelp": {
-      "linkedin": "Usaremos IA para extrair teu título, resumo e habilidades profissionais.",
-      "instagram": "Analisaremos tua bio para entender teus interesses e temas de estilo de vida.",
-      "tiktok": "Extrairemos teus temas de conteúdo e personalidade criativa da tua bio.",
-      "youtube": "Identificaremos tuas categorias de conteúdo e áreas de especialização da tua descrição.",
-      "facebook": "Extrairemos teus interesses e envolvimento comunitário da tua bio.",
-      "x": "Analisaremos tua bio para entender teus tópicos de interesse e estilo de comunicação.",
-      "_pending_review": {
-        "linkedin": true,
-        "instagram": true,
-        "tiktok": true,
-        "youtube": true,
-        "facebook": true,
-        "x": true
-      }
-    },
-    "_pending_review": {
-      "dialogTitle": true,
-      "verifiedConnections": true
+      "linkedin": "Usamos IA para extrair o teu título, resumo e habilidades profissionais.",
+      "instagram": "Analisamos a tua biografia para entender os teus interesses e tópicos de estilo de vida.",
+      "tiktok": "Extraímos os teus temas de conteúdo e personalidade criativa da tua biografia.",
+      "youtube": "Identificamos as tuas categorias de conteúdo e áreas de especialização da tua descrição.",
+      "facebook": "Extraímos os teus interesses e envolvimento comunitário da tua biografia.",
+      "x": "Analisamos a tua biografia para entender as tuas áreas de assunto e estilo de comunicação."
     }
-  },
-  "_pending_review": {}
+  }
 }

@@ -34,17 +34,13 @@
     "campaigns": "Campanhas",
     "distribution": "Distribuição",
     "dataConsent": "Dados e Consentimento",
-    "timeline": "Linha do Tempo",
+    "timeline": "Histórico",
     "diary": "Diário",
     "recall": "Lembrar e Pesquisar",
     "permissions": "Permissões",
-    "preferences": "Preferências",
+    "preferences": "Configurações",
     "privacy": "Privacidade",
     "connectedApps": "Aplicativos Conectados e Integrações",
-    "support": "Suporte",
-    "_pending_review": {
-      "timeline": true,
-      "preferences": true
-    }
+    "support": "Suporte"
   }
 }

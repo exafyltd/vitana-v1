@@ -1,6 +1,6 @@
 {
   "discount": {
-    "welcomeTitle": "O teu Presente de Boas-Vindas",
+    "welcomeTitle": "Teu presente de boas-vindas",
     "welcomeMessage": "Usa este código para 10% de desconto no teu primeiro evento",
     "validFor": "Válido por 90 dias",
     "applyCode": "Aplicar código de desconto",
@@ -9,10 +9,10 @@
     "invalid": "Código de desconto inválido",
     "bannerAvailable": "Desconto de boas-vindas disponível",
     "tapToApply": "Aplicar",
-    "discountAppliedAmount": "{percent}% de desconto aplicado",
+    "discountAppliedAmount": "{percent}% Desconto aplicado",
     "remove": "Remover",
     "ticketsComing": "Bilhetes em breve",
-    "contactOrganizer": "Contacta o organizador do evento para informações sobre bilhetes.",
+    "contactOrganizer": "Contacta o organizador para informações sobre bilhetes.",
     "contactOrganizerPrice": "Este evento custa ${price}. Contacta o organizador para saber a disponibilidade de bilhetes.",
     "soldOut": "Esgotado",
     "salesEnded": "Vendas encerradas",
@@ -21,18 +21,11 @@
     "ticketsSelected": "{count} bilhete(s) selecionado(s)",
     "useAccountEmail": "Usa o email da minha conta",
     "buyAsGuest": "Comprar como convidado (sem conta)",
-    "guestDetails": "Insere os teus dados para receberes o teu bilhete. Não é necessária conta.",
+    "guestDetails": "Insere os teus dados para teres o teu bilhete. Não é preciso conta.",
     "fullName": "Nome Completo",
     "email": "Email",
     "ticketEmailNote": "O teu bilhete e confirmação serão enviados para este email.",
     "left": "{count} restantes",
-    "loadFailed": "Falha ao carregar bilhetes",
-    "_pending_review": {
-      "welcomeTitle": true,
-      "welcomeMessage": true,
-      "discountAppliedAmount": true,
-      "contactOrganizer": true,
-      "guestDetails": true
-    }
+    "loadFailed": "Falha ao carregar bilhetes"
   }
 }

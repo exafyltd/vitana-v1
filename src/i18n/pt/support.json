@@ -3,7 +3,7 @@
     "maxina": {
       "title": "Suporte Maxina",
       "subtitle": "Como podemos te ajudar hoje?",
-      "description": "Encontra respostas para perguntas comuns ou entra em contato com nossa equipe de suporte.",
+      "description": "Encontra respostas para perguntas frequentes ou contacta a nossa equipa de suporte.",
       "categoriesTitle": "Explorar Tópicos de Ajuda",
       "categories": {
         "gettingStarted": "Primeiros Passos",
@@ -16,38 +16,23 @@
         "title": "Perguntas Frequentes",
         "createAccount": {
           "question": "Como crias uma conta Maxina?",
-          "answer": "Baixa a app Maxina ou visita o nosso portal em vitanaland.com/maxina. Toca em 'Registar' e insere o teu endereço de e-mail. Receberás um e-mail de confirmação para verificar a tua conta. Assim que confirmada, completa o teu perfil para começar a explorar eventos de bem-estar e funcionalidades da comunidade.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Descarrega a app Maxina ou visita o nosso portal em vitanaland.com/maxina. Toca em 'Registar' e insere o teu endereço de e-mail. Irás receber um e-mail de confirmação para verificar a tua conta. Após a confirmação, completa o teu perfil para descobrires eventos de bem-estar e funcionalidades da comunidade."
         },
         "resetPassword": {
           "question": "Como reponho a minha palavra-passe?",
-          "answer": "No ecrã de início de sessão, toca em 'Esqueci a Palavra-Passe' e insere o teu endereço de e-mail registado. Receberás um link para repor a palavra-passe dentro de alguns minutos. Verifica a tua pasta de spam se não o encontrares. O link expira após 24 horas por razões de segurança.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "No ecrã de início de sessão, toca em 'Esqueci-me da Palavra-passe' e insere o teu endereço de e-mail registado. Irás receber um link de redefinição de palavra-passe dentro de alguns minutos. Verifica a tua pasta de spam se não vires o e-mail. Por razões de segurança, o link expira após 24 horas."
         },
         "joinEvents": {
           "question": "Como faço para participar de eventos e encontros?",
-          "answer": "Navega pelos eventos disponíveis na seção Eventos e Encontros. Toca em qualquer evento para ver detalhes como data, local e preço. Para eventos grátis, basta tocar em 'Participar' ou 'RSVP'. Para eventos pagos, podes comprar bilhetes de forma segura através do nosso sistema de pagamento integrado.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Procura eventos disponíveis na secção Eventos & Encontros. Toca num evento para veres detalhes como data, local e preço. Para eventos gratuitos, basta tocares em 'Participar' ou 'RSVP'. Para eventos pagos, podes comprar bilhetes de forma segura através do nosso sistema de pagamento integrado."
         },
         "updateProfile": {
           "question": "Como atualizo as informações do meu perfil?",
-          "answer": "Vai ao teu separador Perfil e toca no ícone de edição ou em 'Editar Perfil'. Podes atualizar o teu nome de exibição, biografia, foto de perfil e interesses de bem-estar. As alterações são guardadas automaticamente. O teu perfil ajuda-nos a personalizar recomendações de eventos para ti.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Vai ao teu separador Perfil e toca no ícone Editar ou em 'Editar Perfil'. Podes atualizar o teu nome de exibição, biografia, foto de perfil e interesses de bem-estar. As alterações são guardadas automaticamente. O teu perfil ajuda-nos a personalizar recomendações de eventos para ti."
         },
         "deleteAccount": {
           "question": "Como posso apagar a minha conta?",
-          "answer": "Para apagar a tua conta Maxina e dados associados, envia um e-mail para support@exafy.io com o assunto 'Pedido de Eliminação de Conta – Maxina'. Inclui o endereço de e-mail associado à tua conta. Processamos os pedidos de eliminação em 30 dias.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Para eliminar a tua conta Maxina e dados associados, por favor, envia um e-mail para support@exafy.io com o assunto 'Eliminação de Conta – Maxina'. Fornece o endereço de e-mail associado à tua conta. Processamos os pedidos de eliminação no prazo de 30 dias."
         },
         "paymentMethods": {
           "question": "Que métodos de pagamento são aceites?",
@@ -55,17 +40,11 @@
         },
         "contactOrganizers": {
           "question": "Como contacto os organizadores de eventos?",
-          "answer": "Em qualquer página de evento, podes encontrar o perfil do organizador. Toca no nome dele para ver o perfil e aceder às opções de mensagens. Para perguntas sobre eventos específicos, usa a seção de Perguntas e Respostas do evento ou contacta o organizador diretamente através de mensagens na app.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Em cada página de evento, encontrarás o perfil do organizador. Toca no nome para veres o perfil e acederes às opções de mensagens. Para perguntas sobre eventos específicos, usa a secção de Perguntas e Respostas do evento ou contacta o organizador diretamente através de mensagens na app."
         },
         "dataSecure": {
           "question": "Os meus dados pessoais estão seguros?",
-          "answer": "Sim, a tua privacidade e segurança são as nossas principais prioridades. Usamos encriptação padrão da indústria, autenticação segura e seguimos as diretrizes do RGPD. Nunca partilhamos as tuas informações pessoais com terceiros sem o teu consentimento. Lê a nossa Política de Privacidade completa para mais detalhes.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Sim, a tua privacidade e segurança são a nossa principal prioridade. Usamos encriptação padrão da indústria, autenticação segura e cumprimos as diretrizes do RGPD. Nunca partilhamos os teus dados pessoais com terceiros sem o teu consentimento. Lê a nossa política de privacidade completa para mais detalhes."
         }
       },
       "contact": {
@@ -79,10 +58,7 @@
         "deleteAccount": "Apagar Conta",
         "portal": "Voltar ao Portal Maxina"
       },
-      "footer": "Todos os direitos reservados.",
-      "_pending_review": {
-        "description": true
-      }
+      "footer": "Todos os direitos reservados."
     }
   }
 }

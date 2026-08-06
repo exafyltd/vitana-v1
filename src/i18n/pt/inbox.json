@@ -11,35 +11,30 @@
       "direct": "Diretas",
       "contacts": "Contactos",
       "notifications": "Notificações",
-      "archived": "Arquivadas",
-      "_pending_review": {}
+      "archived": "Arquivadas"
     },
     "contextTabs": {
       "community": "Comunidade",
-      "network": "Rede",
-      "_pending_review": {}
+      "network": "Rede"
     },
     "actions": {
       "new": "Novo",
       "newMessage": "Nova Mensagem",
       "createGroup": "Criar Grupo",
       "markAllRead": "Marcar tudo como lido",
-      "menu": "Mais",
-      "_pending_review": {}
+      "menu": "Mais"
     },
     "composer": {
       "placeholder": "Escreve a tua mensagem...",
       "send": "Enviar",
       "attachments": "Anexos",
       "recipients": "Para:",
-      "add": "Adicionar",
-      "_pending_review": {}
+      "add": "Adicionar"
     },
     "states": {
       "empty": "Nenhuma mensagem ainda",
       "loading": "Carregando mensagens...",
-      "error": "Falha ao carregar mensagens",
-      "_pending_review": {}
+      "error": "Falha ao carregar mensagens"
     },
     "newConversation": {
       "title": "Iniciar Nova Conversa",
@@ -59,8 +54,7 @@
       "cancel": "Cancelar",
       "startChat": "Iniciar Chat",
       "createGroup": "Criar Grupo",
-      "creating": "A criar...",
-      "_pending_review": {}
+      "creating": "A criar..."
     },
     "createGroup": {
       "title": "Criar Grupo",
@@ -71,16 +65,13 @@
       "groupNameRequired": "Nome do grupo é obrigatório",
       "groupNameRequiredDesc": "Por favor, insere um nome para o teu grupo.",
       "addMembersRequired": "Adicionar membros",
-      "addMembersRequiredDesc": "Por favor, adiciona pelo menos um membro ao grupo.",
+      "addMembersRequiredDesc": "Por favor, adiciona pelo menos um membro.",
       "groupExists": "Grupo já existe",
       "groupExistsDesc": "Um grupo com estes membros foi criado recentemente.",
       "created": "Grupo criado",
       "createdDesc": "\"{name}\" foi criado com sucesso.",
       "failed": "Falha ao criar grupo",
-      "failedDesc": "Por favor, tenta novamente.",
-      "_pending_review": {
-        "addMembersRequiredDesc": true
-      }
+      "failedDesc": "Por favor, tenta novamente."
     },
     "toast": {
       "success": "Sucesso",
@@ -91,17 +82,13 @@
       "searchFailed": "Pesquisa falhou",
       "accessDenied": "Acesso negado",
       "communityOnly": "Apenas utilizadores da comunidade podem criar conversas globais",
-      "pleaseLogin": "Por favor, inicia sessão para começar conversas",
+      "pleaseLogin": "Por favor, inicia sessão para começar conversas.",
       "groupRecipientsRequired": "Nome do grupo e destinatários são obrigatórios",
-      "singleRecipientRequired": "Seleciona exatamente um destinatário para mensagem direta",
+      "singleRecipientRequired": "Seleciona exatamente um destinatário para mensagens diretas.",
       "groupCreated": "Grupo \"{name}\" criado com sucesso!",
       "groupFailed": "Falha ao criar grupo",
       "allMarkedRead": "Todas as mensagens marcadas como lidas",
-      "markAllReadFailed": "Não foi possível marcar todas como lidas. Por favor, tenta novamente.",
-      "_pending_review": {
-        "pleaseLogin": true,
-        "singleRecipientRequired": true
-      }
+      "markAllReadFailed": "Não foi possível marcar todas como lidas. Por favor, tenta novamente."
     },
     "createGroupAction": "Criar Novo Grupo",
     "newConversationAction": "Nova Conversa",
@@ -112,17 +99,14 @@
     "searchConversations": "Pesquisar conversas...",
     "searchPlaceholder": "Pesquisar...",
     "noMessages": "Ainda sem mensagens",
-    "noMessagesDesc": "Inicia uma conversa para começar.",
+    "noMessagesDesc": "Começa uma conversa para começar.",
     "startConversation": "Iniciar Conversa",
     "emptyState": {
-      "title": "A tua caixa de entrada está calma por agora",
+      "title": "A tua caixa de entrada ainda está vazia.",
       "globalDescription": "Inicia uma conversa ou junta-te a uma comunidade para te conectares com outros.",
       "tenantDescription": "Conecta-te com colegas e membros da equipa na tua rede profissional.",
       "startConversation": "Iniciar uma conversa",
-      "discoverPeople": "Descobrir pessoas",
-      "_pending_review": {
-        "title": true
-      }
+      "discoverPeople": "Descobrir pessoas"
     },
     "group": {
       "loading": "A carregar grupo…",
@@ -133,12 +117,7 @@
       "memberOther": "membros",
       "officialBadge": "grupo oficial",
       "empty": "Ainda não há mensagens.",
-      "composerPlaceholder": "Mensagem…",
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "noMessagesDesc": true
+      "composerPlaceholder": "Mensagem…"
     }
-  },
-  "_pending_review": {}
+  }
 }

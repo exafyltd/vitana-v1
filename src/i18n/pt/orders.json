@@ -31,7 +31,7 @@
       "description": "Seus pedidos concluídos e eventos passados aparecerão aqui."
     },
     "noOrders": "Ainda sem pedidos",
-    "noOrdersDesc": "Teus pedidos aparecerão aqui assim que fizeres uma compra.",
+    "noOrdersDesc": "Teus pedidos aparecerão aqui assim que comprares algo.",
     "browseProducts": "Explorar Produtos",
     "findEvents": "Encontrar Eventos",
     "startShopping": "Começar a Comprar",
@@ -51,7 +51,7 @@
       "location": "Local",
       "quantity": "Quantidade",
       "tickets": "ingressos",
-      "yourTicket": "Seu Ingresso",
+      "yourTicket": "Teu bilhete",
       "giftVoucher": "Vale-Presente",
       "code": "Código",
       "sendToRecipient": "Enviar ao Destinatário",
@@ -60,10 +60,7 @@
       "personalMessage": "Mensagem Pessoal",
       "cancel": "Cancelar",
       "send": "Enviar",
-      "downloadPdf": "Baixar PDF",
-      "_pending_review": {
-        "yourTicket": true
-      }
+      "downloadPdf": "Baixar PDF"
     },
     "status": {
       "upcoming": "Próximos",
@@ -79,9 +76,6 @@
       "processing": "Processando",
       "paid": "Ativo",
       "active": "Ativo"
-    },
-    "_pending_review": {
-      "noOrdersDesc": true
     }
   }
 }

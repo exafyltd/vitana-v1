@@ -1,10 +1,10 @@
 {
   "milestones": {
-    "title": "Marcos de Vida",
+    "title": "Momentos Especiais",
     "add": "Adicionar Marco",
     "edit": "Editar Marco",
-    "empty": "Nenhum marco ainda",
-    "addFirst": "Adiciona o teu primeiro marco",
+    "empty": "Ainda não tens momentos",
+    "addFirst": "Adiciona o teu primeiro momento",
     "date": "Data",
     "description": "O que aconteceu?",
     "titleLabel": "Título",
@@ -12,12 +12,6 @@
     "descPlaceholder": "Descreve este momento...",
     "icon": "Ícone",
     "publicLabel": "Visível para todos",
-    "private": "Privado",
-    "_pending_review": {
-      "title": true,
-      "empty": true,
-      "addFirst": true
-    }
-  },
-  "_pending_review": {}
+    "private": "Privado"
+  }
 }

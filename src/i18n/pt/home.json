@@ -3,14 +3,10 @@
     "title": "Início",
     "welcomeBack": "Bem-vindo(a) de volta",
     "todaysSchedule": "Agenda de Hoje",
-    "mediaContent": "Mídia para Você",
+    "mediaContent": "Mídia para você",
     "eventsAndMeetups": "Eventos e Encontros",
     "communityNews": "Notícias da Comunidade",
     "inspiration": "Inspiração",
-    "dailyMatches": "Combinações Diárias",
-    "_pending_review": {
-      "mediaContent": true
-    }
-  },
-  "_pending_review": {}
+    "dailyMatches": "Combinações Diárias"
+  }
 }

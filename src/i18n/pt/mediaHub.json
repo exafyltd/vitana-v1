@@ -26,7 +26,7 @@
     "searchPlaceholder": "Pesquisar Mídia...",
     "shortsAvailable": "{count} shorts disponíveis",
     "filteredBy": "Filtrado por:",
-    "noMatchingShorts": "Nenhum short corresponde aos teus interesses",
+    "noMatchingShorts": "Nenhum vídeo curto corresponde aos teus interesses.",
     "viewAllShorts": "Ver todos os shorts",
     "tracks": "faixas",
     "min": "min",
@@ -54,22 +54,17 @@
       "filtersCleared": "Filtros limpos",
       "filtersClearedDesc": "Mostrando todos os shorts",
       "podcastDeleted": "Podcast excluído",
-      "podcastDeletedDesc": "Seu podcast foi excluído com sucesso.",
+      "podcastDeletedDesc": "O teu podcast foi eliminado com sucesso.",
       "videoDeleted": "Vídeo excluído",
-      "videoDeletedDesc": "Seu vídeo foi excluído com sucesso.",
+      "videoDeletedDesc": "O teu vídeo foi eliminado com sucesso.",
       "videoUpdated": "Sucesso",
       "videoUpdatedDesc": "Vídeo atualizado com sucesso",
       "uploadSuccess": "Sucesso!",
       "uploadSuccessDesc": "Seu {type} está agora disponível na comunidade.",
       "deleteError": "Erro",
-      "deleteErrorDesc": "Falha ao excluir. Por favor, tente novamente.",
+      "deleteErrorDesc": "A eliminação falhou. Por favor, tenta novamente.",
       "commentError": "Erro",
-      "commentErrorDesc": "Falha ao publicar comentário. Por favor, tente novamente.",
-      "_pending_review": {
-        "podcastDeletedDesc": true,
-        "videoDeletedDesc": true,
-        "deleteErrorDesc": true
-      }
+      "commentErrorDesc": "Falha ao publicar comentário. Por favor, tente novamente."
     },
     "comments": {
       "title": "Comentários",
@@ -153,9 +148,6 @@
         "education": "Educação",
         "lifestyle": "Estilo de Vida"
       }
-    },
-    "_pending_review": {
-      "noMatchingShorts": true
     }
   }
 }

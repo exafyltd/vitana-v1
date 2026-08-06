@@ -2,12 +2,9 @@
   "voucher": {
     "modal": {
       "title": "Oferece um Voucher Maxina",
-      "subtitle": "Oferece o presente de bem-estar e conexão com a comunidade",
+      "subtitle": "Oferece Bem-estar e Conexão com a Comunidade",
       "buyVoucher": "Comprar Voucher",
-      "openingCheckout": "A abrir pagamento seguro...",
-      "_pending_review": {
-        "subtitle": true
-      }
+      "openingCheckout": "A abrir pagamento seguro..."
     },
     "tiers": {
       "test": {
@@ -16,8 +13,7 @@
           "Apenas para testar o pagamento",
           "Não é um voucher real",
           "Para testes de desenvolvimento"
-        ],
-        "_pending_review": {}
+        ]
       },
       "experience": {
         "name": "Experiência",
@@ -26,8 +22,7 @@
           "Aconselhamento de bem-estar personalizado",
           "Teste Vitana+ de 30 dias incluído",
           "Voucher eletrónico com design cuidado"
-        ],
-        "_pending_review": {}
+        ]
       },
       "exclusive": {
         "name": "Exclusivo",
@@ -36,10 +31,8 @@
           "Sessão de coaching individual com um especialista",
           "Subscrição Vitana+ de 90 dias",
           "Reserva prioritária + vantagens VIP"
-        ],
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        ]
+      }
     },
     "success": {
       "title": "Voucher Comprado!",
@@ -47,8 +40,7 @@
       "download": "Descarregar Voucher",
       "sendEmail": "Enviar ao Destinatário por E-mail",
       "viewOrders": "Ver nas Encomendas",
-      "done": "Feito",
-      "_pending_review": {}
+      "done": "Feito"
     },
     "email": {
       "title": "Enviar Voucher por E-mail",
@@ -58,8 +50,7 @@
       "personalMessage": "Mensagem Pessoal (opcional)",
       "messagePlaceholder": "Feliz Aniversário! Desfruta deste mimo de bem-estar...",
       "back": "Voltar",
-      "send": "Enviar Voucher",
-      "_pending_review": {}
+      "send": "Enviar Voucher"
     },
     "preview": {
       "title": "O teu Voucher",
@@ -73,35 +64,24 @@
       "copyLink": "Copiar Link",
       "share": "Salvar / Compartilhar",
       "shareHint": "Salvar em Arquivos, Drive ou enviar para alguém",
-      "downloadHint": "Se o download abrir em branco, toque em Abrir no Navegador",
-      "_pending_review": {
-        "downloadHint": true
-      }
+      "downloadHint": "Se o download abrir em branco, toca em Abrir no Navegador"
     },
     "toast": {
       "downloadStarted": "Download iniciado!",
       "downloadFailed": "Download falhou",
       "linkCopied": "Link copiado!",
-      "linkCopiedDesc": "Cole no navegador para baixar.",
+      "linkCopiedDesc": "Cola no navegador para baixar.",
       "voucherSent": "Voucher enviado para {email}!",
       "voucherShared": "Voucher compartilhado com sucesso!",
-      "checkoutFailed": "Falha ao iniciar o pagamento. Por favor, tente novamente.",
+      "checkoutFailed": "Não foi possível iniciar a compra. Por favor, tenta novamente.",
       "generatingVoucher": "Gerando voucher...",
       "failedToLoadVoucher": "Falha ao carregar dados do voucher",
       "downloadFailedCopyLink": "Download falhou. Tente copiar o link.",
-      "useTicketView": "Use a visualização do ingresso para imprimir ou salvar seu ingresso",
+      "useTicketView": "Usa a visualização do bilhete para imprimir ou guardar.",
       "pdfNotAvailable": "Download de PDF não disponível para este tipo de pedido",
-      "enterRecipientEmail": "Por favor, insere o e-mail do destinatário",
+      "enterRecipientEmail": "Por favor, insere o e-mail do destinatário.",
       "emailOnlyForVouchers": "Envio de e-mail disponível apenas para vouchers",
-      "sendingVoucherEmail": "Enviando e-mail do voucher...",
-      "_pending_review": {
-        "linkCopiedDesc": true,
-        "checkoutFailed": true,
-        "useTicketView": true,
-        "enterRecipientEmail": true
-      }
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "sendingVoucherEmail": "Enviando e-mail do voucher..."
+    }
+  }
 }

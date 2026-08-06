@@ -12,11 +12,11 @@
     "healthTrackerDesc": "Rastreia tua nutrição diária, sono, exercício",
     "education": "Educação e Ciência",
     "educationDesc": "Aprende sobre tópicos de saúde e acede a recursos de bem-estar",
-    "priorityFocus": "Foco Prioritário",
-    "priorityFocusExplanation": "Esta área tem atualmente o maior impacto na tua longevidade saudável.",
+    "priorityFocus": "Tua área de foco",
+    "priorityFocusExplanation": "Esta área tem atualmente o maior impacto na tua longevidade a longo prazo.",
     "autopilotGuidance": "Orientação Automática",
     "autopilotSuggests": "Piloto Automático Sugere",
-    "takeAction": "Age Agora",
+    "takeAction": "Ação",
     "uploadBloodTest": "Carrega Exame de Sangue",
     "orderBloodTest": "Pede Exame de Sangue",
     "viewPlans": "Vê Planos",
@@ -25,11 +25,8 @@
     "topPercentile": "Top {percent}%",
     "trend": {
       "improving": "Melhorando",
-      "declining": "Declinando",
-      "stable": "Estável",
-      "_pending_review": {
-        "declining": true
-      }
+      "declining": "Piorando",
+      "stable": "Estável"
     },
     "suggestions": {
       "uploadBloodTestResults": "Carregar resultados de exames de sangue",
@@ -44,29 +41,22 @@
     },
     "emptyStates": {
       "noSleepPlan": "Nenhum Plano de Sono Ainda",
-      "noSleepPlanDesc": "Gera o teu plano de sono personalizado com metas otimizadas por IA, ajustadas ao teu ritmo circadiano, necessidades de recuperação e desempenho diário.",
+      "noSleepPlanDesc": "Gera o teu plano de sono personalizado com metas otimizadas por IA, adaptado ao teu biorritmo, necessidades de recuperação e desempenho diário.",
       "noExercisePlan": "Nenhum Plano de Exercício Ainda",
-      "noExercisePlanDesc": "Gera o teu plano de treino personalizado com exercícios otimizados por IA, adaptados ao teu nível de fitness, objetivos e necessidades de recuperação.",
+      "noExercisePlanDesc": "Gera o teu plano de treino personalizado com exercícios otimizados por IA, adaptado ao teu nível de fitness, objetivos e necessidades de recuperação.",
       "noNutritionPlan": "Nenhum Plano de Nutrição Ainda",
-      "noNutritionPlanDesc": "Gera o teu plano de refeições personalizado com receitas deliciosas e equilibradas, adaptadas aos teus objetivos e preferências alimentares.",
+      "noNutritionPlanDesc": "Gera o teu plano de nutrição personalizado com receitas deliciosas e equilibradas, adaptado aos teus objetivos e preferências alimentares.",
       "noHydrationPlan": "Nenhum Plano de Hidratação Ainda",
-      "noHydrationPlanDesc": "Gera o teu plano de hidratação personalizado com metas diárias otimizadas por IA, adaptadas ao teu nível de atividade, ambiente e necessidades de recuperação.",
+      "noHydrationPlanDesc": "Gera o teu plano de hidratação personalizado com metas diárias otimizadas por IA, adaptado ao teu nível de atividade, ambiente e necessidades de recuperação.",
       "noMentalPlan": "Nenhum Plano Mental Ainda",
-      "noMentalPlanDesc": "Gera o teu plano de bem-estar mental personalizado para monitorizar o stress, o foco e o equilíbrio emocional com orientação de IA.",
+      "noMentalPlanDesc": "Gera o teu plano de bem-estar mental personalizado, para monitorizar o stress, foco e equilíbrio emocional com suporte de IA.",
       "generatePlan": "Gerar Plano",
-      "generating": "A Gerar...",
-      "_pending_review": {
-        "noSleepPlanDesc": true,
-        "noExercisePlanDesc": true,
-        "noNutritionPlanDesc": true,
-        "noHydrationPlanDesc": true,
-        "noMentalPlanDesc": true
-      }
+      "generating": "A Gerar..."
     },
-    "noSupplements": "Ainda Sem Suplementos",
+    "noSupplements": "Ainda sem suplementos",
     "noSupplementsDesc": "Rastreia tuas vitaminas, minerais e suplementos diários. Adiciona teu primeiro suplemento para começar.",
     "noReports": "Ainda Sem Relatórios de Saúde",
-    "noReportsDesc": "Carrega teus exames de sangue, resultados de laboratório e relatórios médicos para desbloquear insights de saúde personalizados.",
+    "noReportsDesc": "Carrega os teus exames de sangue, resultados de laboratório e relatórios médicos para obteres informações de saúde personalizadas.",
     "medical": "Médico",
     "supplements": "Suplementos",
     "uploadDescription": "Exames de sangue, imagens, resultados de laboratório",
@@ -75,16 +65,16 @@
     "uploadFirstReport": "Carregar Primeiro Relatório",
     "missionAlignment": {
       "title": "Alinhamento da Missão",
-      "subtitle": "Como as tuas recomendações impulsionam os cinco pilares e a economia da longevidade",
+      "subtitle": "Como as tuas recomendações apoiam os cinco pilares e a economia da longevidade",
       "loading": "A carregar dados da missão…",
       "error": "Não foi possível carregar os dados da missão",
       "noRecs": "Ainda não tens recomendações na tua fila.",
       "summaryServed": "{pct}% das tuas recomendações avançam a missão",
       "summaryServedCount": "{served} de {total} recomendações alinhadas",
       "pillarHeading": "Pilares atendidos",
-      "economyHeading": "Economia da longevidade",
-      "noPillar": "Não alinhado aos pilares",
-      "noEconomy": "Não alinhado à economia",
+      "economyHeading": "Economia da Longevidade",
+      "noPillar": "Não alinhado com os pilares",
+      "noEconomy": "Não alinhado com a economia",
       "pillars": {
         "nutrition": "Nutrição",
         "hydration": "Hidratação",
@@ -98,20 +88,7 @@
         "income_generation": "Geração de renda",
         "business_formation": "Formação de negócios"
       },
-      "contractLink": "Ver o contrato do Objetivo Final",
-      "_pending_review": {
-        "subtitle": true,
-        "economyHeading": true,
-        "noPillar": true,
-        "noEconomy": true
-      }
-    },
-    "_pending_review": {
-      "priorityFocus": true,
-      "priorityFocusExplanation": true,
-      "takeAction": true,
-      "noSupplements": true,
-      "noReportsDesc": true
+      "contractLink": "Ver o contrato do Objetivo Final"
     }
   }
 }

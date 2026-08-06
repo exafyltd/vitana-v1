@@ -8,20 +8,13 @@
     "unsavedChangesDesc": "Queres mesmo sair? As tuas alterações serão perdidas.",
     "leave": "Queres mesmo sair desta página?",
     "leaveDesc": "Alterações não guardadas serão perdidas.",
-    "logout": "Tens certeza de que queres sair?",
-    "logoutDesc": "Terás de iniciar sessão novamente.",
+    "logout": "Queres mesmo terminar a sessão?",
+    "logoutDesc": "Precisas de iniciar sessão novamente.",
     "remove": "Queres mesmo remover este item?",
     "removeDesc": "O item será removido da lista.",
-    "disconnect": "Queres mesmo desconectar?",
+    "disconnect": "Queres mesmo desligar esta ligação?",
     "disconnectDesc": "Podes reconectar mais tarde.",
     "proceed": "Queres continuar?",
-    "proceedDesc": "Esta ação será executada.",
-    "_pending_review": {
-      "logout": true,
-      "logoutDesc": true,
-      "disconnect": true,
-      "proceed": true
-    }
-  },
-  "_pending_review": {}
+    "proceedDesc": "Esta ação será executada."
+  }
 }

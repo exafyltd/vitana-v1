@@ -1,7 +1,7 @@
 {
   "wallet": {
     "title": "Carteira",
-    "description": "Teu saldo, créditos e recompensas",
+    "description": "Teu Saldo, Créditos e Recompensas",
     "usdBalance": "Saldo EUR / USD",
     "creditsBalance": "Saldo de Créditos VTNA",
     "creditsLabel": "Créditos VTNA",
@@ -14,23 +14,17 @@
       "actions": "Ações"
     },
     "filters": {
-      "commissions": "Vender e Ganhar Comissões",
+      "commissions": "Vende e ganha comissões",
       "transfers": "Transferências",
       "exchanges": "Trocas",
       "rewards": "Recompensas",
       "purchases": "Compras",
       "pending": "Pagamentos Pendentes",
       "withdrawals": "Levantamentos",
-      "stakes": "Aposta",
-      "_pending_review": {
-        "commissions": true
-      }
+      "stakes": "Aposta"
     },
     "noActivity": "Nenhuma atividade ainda",
     "noActivityDesc": "Tuas transações aparecerão aqui.",
-    "displayCurrency": "Moeda de exibição",
-    "_pending_review": {
-      "description": true
-    }
+    "displayCurrency": "Moeda de exibição"
   }
 }

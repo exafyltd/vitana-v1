@@ -36,6 +36,8 @@
     "upload": "Carregar",
     "refresh": "Atualizar",
     "retry": "Tentar novamente",
-    "uploading": "A carregar..."
-  }
+    "uploading": "A carregar...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

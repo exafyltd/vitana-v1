@@ -7,8 +7,8 @@
     "description": "Descrição",
     "descriptionPlaceholder": "Descreve o teu evento, o que os participantes podem esperar...",
     "detailedDescription": "Descrição Detalhada (Opcional)",
-    "detailedDescriptionPlaceholder": "Descreve a agenda, programa, o que está incluído, brindes, patrocinadores...",
-    "detailedDescriptionHint": "Isto será mostrado na gaveta de detalhes do evento. Usa-o para agenda, detalhes do programa, inclusões, etc.",
+    "detailedDescriptionPlaceholder": "Descreve a agenda, o programa, o que está incluído, brindes, patrocinadores...",
+    "detailedDescriptionHint": "Exibido nos detalhes do evento. Usa-o para a agenda, detalhes do programa, serviços incluídos, etc.",
     "eventImage": "Imagem do Evento (Opcional)",
     "clickToUpload": "Clica para carregar imagem do evento",
     "imageFormats": "PNG, JPG, WebP até 5MB",
@@ -39,7 +39,7 @@
     "standardEntry": "Ingresso de entrada padrão",
     "paidEvent": "Este é um evento pago (pagamento externo)",
     "displayPrice": "Preço para Exibir",
-    "displayPriceHint": "Apenas para exibição. Ativa a venda de ingressos acima para pagamentos integrados.",
+    "displayPriceHint": "Apenas para exibição. Ativa a venda de bilhetes acima para pagamentos integrados.",
     "resellerOptions": "Opções de Revendedor",
     "allowResellers": "Permitir que Revendedores Vendam Ingressos",
     "allowResellersDesc": "Permite que revendedores promovam e vendam ingressos para este evento",
@@ -68,8 +68,7 @@
       "volunteer": "❤️ Voluntariado e Serviço",
       "support": "🫂 Grupo de Apoio",
       "entertainment": "🎭 Entretenimento",
-      "other": "✨ Outros",
-      "_pending_review": {}
+      "other": "✨ Outros"
     },
     "durations": {
       "30min": "30 minutos",
@@ -82,8 +81,7 @@
       "8hour": "8 horas",
       "half-day": "Meio dia",
       "full-day": "Dia inteiro",
-      "custom": "Duração personalizada...",
-      "_pending_review": {}
+      "custom": "Duração personalizada..."
     },
     "toasts": {
       "invalidFileType": "Tipo de Ficheiro Inválido",
@@ -97,44 +95,25 @@
       "imageUploadFailed": "Falha no carregamento da imagem",
       "imageUploadFailedDesc": "O evento será criado sem imagem.",
       "errorCreating": "Erro ao Criar Evento",
-      "errorCreatingDesc": "Houve um problema ao criar o teu evento. Por favor, tenta novamente.",
+      "errorCreatingDesc": "Ocorreu um problema ao criar o teu evento. Por favor, tenta novamente.",
       "generatingImage": "A gerar imagem de IA...",
-      "generatingImageDesc": "A criar uma imagem personalizada para o teu evento.",
+      "generatingImageDesc": "Uma imagem personalizada para o teu evento está a ser criada.",
       "imageGenerated": "Imagem Gerada!",
-      "imageGeneratedDesc": "Imagem gerada por IA adicionada ao teu evento.",
+      "imageGeneratedDesc": "Imagem gerada por IA foi adicionada ao teu evento.",
       "rateLimitReached": "Limite de Taxa Atingido",
       "rateLimitDesc": "Demasiados pedidos de geração de imagem. Por favor, tenta novamente em breve.",
       "creditsRequired": "Créditos Necessários",
-      "creditsDesc": "Créditos de geração de imagem de IA esgotados. Por favor, adiciona créditos para continuar.",
+      "creditsDesc": "Créditos de geração de imagem por IA esgotados. Por favor, recarrega os créditos.",
       "permissionDenied": "Permissão Negada",
-      "permissionDeniedDesc": "Não tens permissão para gerar imagens para este evento.",
+      "permissionDeniedDesc": "Não estás autorizado a gerar imagens para este evento.",
       "imageGenFailed": "Falha na Geração da Imagem",
-      "imageGenFailedDesc": "Não foi possível gerar a imagem de IA. O teu evento foi criado com sucesso sem ela.",
+      "imageGenFailedDesc": "A imagem por IA não pôde ser gerada. O teu evento foi criado com sucesso na mesma.",
       "communityEventCreated": "Evento Criado!",
-      "communityEventCreatedDesc": "O teu evento está agora visível para a comunidade e adicionado ao teu calendário.",
+      "communityEventCreatedDesc": "O teu evento está agora visível para a comunidade e foi adicionado ao teu calendário.",
       "personalEventCreated": "Evento Criado!",
       "personalEventCreatedDesc": "O evento foi adicionado ao teu calendário.",
       "error": "Erro",
-      "errorDesc": "Falha ao criar evento. Por favor, tenta novamente.",
-      "_pending_review": {
-        "errorCreatingDesc": true,
-        "generatingImageDesc": true,
-        "imageGeneratedDesc": true,
-        "rateLimitDesc": true,
-        "creditsDesc": true,
-        "permissionDeniedDesc": true,
-        "imageGenFailedDesc": true,
-        "communityEventCreatedDesc": true,
-        "personalEventCreatedDesc": true,
-        "errorDesc": true
-      }
-    },
-    "_pending_review": {
-      "descriptionPlaceholder": true,
-      "detailedDescriptionPlaceholder": true,
-      "detailedDescriptionHint": true,
-      "displayPriceHint": true
+      "errorDesc": "O evento não pôde ser criado. Por favor, tenta novamente."
     }
-  },
-  "_pending_review": {}
+  }
 }

@@ -45,10 +45,6 @@
     "monitoring": "Monitoramento",
     "logout": "Sair",
     "connectors": "Conectores",
-    "support": "Suporte",
-    "_pending_review": {
-      "clinicalOps": true
-    }
-  },
-  "_pending_review": {}
+    "support": "Suporte"
+  }
 }

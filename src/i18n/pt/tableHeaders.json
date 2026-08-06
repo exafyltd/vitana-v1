@@ -10,6 +10,8 @@
     "role": "Função",
     "email": "Email",
     "date": "Data",
-    "amount": "Valor"
-  }
+    "amount": "Valor",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

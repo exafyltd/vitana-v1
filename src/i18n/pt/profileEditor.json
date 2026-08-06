@@ -1,10 +1,10 @@
 {
   "profileEditor": {
-    "editAbout": "Editar Sobre",
+    "editAbout": "Editar Sobre Mim",
     "aboutTitle": "Sobre",
     "aboutDescription": "Compartilha mais sobre ti. Podes controlar quem vê cada campo.",
     "bio": "Bio",
-    "bioPlaceholder": "Compartilha a tua jornada de bem-estar, paixões e o que te torna único...\n\nExemplos:\n• 'Entusiasta do bem-estar, apaixonado por uma vida consciente e construção de comunidade 🌱'\n• 'Nutricionista certificada, ajudando outros a descobrir o seu eu mais saudável'\n• 'Corredor de maratonas, professor de meditação e defensor de uma vida equilibrada'",
+    "bioPlaceholder": "Compartilhe sua jornada de bem-estar, paixões e o que te torna único(a)...\n\nExemplos:\n• 'Entusiasta do bem-estar com paixão por uma vida consciente e construção de comunidade 🌱'\n• 'Nutricionista certificada ajudando outros a descobrir seu eu mais saudável'\n• 'Corredor de maratona, professor de meditação e defensor de uma vida equilibrada'",
     "location": "Localização",
     "locationPlaceholder": "ex: São Francisco, CA • Londres, RU • Remoto",
     "links": "Links",
@@ -38,7 +38,7 @@
     "save": "Guardar Alterações",
     "saving": "A guardar...",
     "profileUpdated": "Perfil atualizado",
-    "profileUpdatedDesc": "A tua informação de perfil foi guardada com sucesso.",
+    "profileUpdatedDesc": "Suas informações foram salvas com sucesso.",
     "saveFailed": "Falha ao guardar",
     "saveFailedDesc": "Falha ao guardar o perfil. Por favor, tenta novamente.",
     "autopilot": {
@@ -51,16 +51,16 @@
     "identity": {
       "editIdentity": "Editar Identidade",
       "title": "Identidade",
-      "description": "Gerencia teu nome de exibição, identificador e imagens de perfil.",
+      "description": "Gerencie seu nome de exibição, identificador e fotos de perfil.",
       "profilePicture": "Foto de Perfil",
       "displayName": "Nome de Exibição",
-      "displayNamePlaceholder": "Teu nome de exibição",
+      "displayNamePlaceholder": "Seu Nome de Exibição",
       "handle": "Identificador",
       "handlePlaceholder": "teuidentificador",
-      "handleDescription": "Teu identificador será usado na URL do teu perfil público: /u/@{handle}",
-      "personalityDescriptor": "Descritor de Personalidade",
-      "personalityDescriptorPlaceholder": "ex.: O Movimentador Consciente, O Guerreiro Zen",
-      "personalityDescriptorDescription": "Uma frase curta que caracteriza teu estilo de bem-estar",
+      "handleDescription": "Seu identificador é usado na URL do seu perfil público: /u/@{handle}",
+      "personalityDescriptor": "Descrição da Personalidade",
+      "personalityDescriptorPlaceholder": "ex: O Movimentador Consciente, O Guerreiro Zen",
+      "personalityDescriptorDescription": "Uma breve descrição que caracteriza seu estilo de bem-estar",
       "upload": "Carregar",
       "uploading": "Carregando...",
       "remove": "Remover",
@@ -69,24 +69,15 @@
       "uploadFailed": "Falha no carregamento",
       "uploadFailedDesc": "Falha ao carregar imagem. Por favor, tenta novamente.",
       "identityUpdated": "Identidade atualizada",
-      "identityUpdatedDesc": "As tuas informações de identidade foram guardadas com sucesso.",
-      "_pending_review": {
-        "description": true,
-        "displayNamePlaceholder": true,
-        "handleDescription": true,
-        "personalityDescriptor": true,
-        "personalityDescriptorPlaceholder": true,
-        "personalityDescriptorDescription": true,
-        "identityUpdatedDesc": true
-      }
+      "identityUpdatedDesc": "Suas informações de identidade foram salvas com sucesso."
     },
     "coverLibrary": {
       "title": "Biblioteca de Capas",
       "tileTitle": "Biblioteca de Capas",
-      "tileSubtitle": "Carrega as tuas próprias fotos para publicações de Encontra-um-Par",
+      "tileSubtitle": "Carregue suas próprias fotos para posts de 'Encontrar um Par'",
       "drawerTitle": "Fotos de capa para as tuas publicações",
       "universalSection": "Foto de capa universal",
-      "universalDescription": "Usada quando nenhuma das tuas fotos específicas de atividade corresponde à categoria de uma publicação — e em vez de uma imagem gerada por IA. Geralmente um retrato teu.",
+      "universalDescription": "Usado quando nenhuma das suas fotos específicas de atividade corresponde à categoria de uma publicação — e em vez de uma imagem gerada por IA. Geralmente um retrato seu.",
       "universalAdd": "Adicionar foto universal",
       "universalReplace": "Substituir foto",
       "universalRemove": "Remover",
@@ -105,16 +96,7 @@
       "universalRemoved": "Foto de capa universal removida",
       "uploadFailed": "Falha no carregamento",
       "categoryRequired": "Por favor, escolhe primeiro uma categoria para esta foto.",
-      "saveError": "Não foi possível guardar — por favor, tenta novamente.",
-      "_pending_review": {
-        "tileSubtitle": true,
-        "universalDescription": true
-      }
-    },
-    "_pending_review": {
-      "editAbout": true,
-      "bioPlaceholder": true,
-      "profileUpdatedDesc": true
+      "saveError": "Não foi possível guardar — por favor, tenta novamente."
     }
   }
 }

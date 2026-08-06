@@ -9,14 +9,10 @@
     "networkError": "Erro de rede",
     "networkErrorDesc": "Verifica a tua conexão com a internet.",
     "unauthorized": "Não autorizado",
-    "unauthorizedDesc": "Inicia sessão para continuar.",
+    "unauthorizedDesc": "Por favor, faça login para continuar.",
     "forbidden": "Acesso negado",
     "forbiddenDesc": "Não tens permissão para esta ação.",
     "notFound": "Não encontrado",
-    "notFoundDesc": "O item solicitado não foi encontrado.",
-    "_pending_review": {
-      "unauthorizedDesc": true
-    }
-  },
-  "_pending_review": {}
+    "notFoundDesc": "O item solicitado não foi encontrado."
+  }
 }

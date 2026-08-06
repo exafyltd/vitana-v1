@@ -6,24 +6,18 @@
       "snapshot": "Resumo",
       "services": "Serviços",
       "sales": "Vendas",
-      "insights": "Informações",
-      "_pending_review": {}
+      "insights": "Informações"
     },
     "recentActivity": "Atividade Recente",
     "clients": "Clientes",
     "analytics": "Análises",
     "searchBusiness": "Pesquisar negócio...",
     "noServices": "Sem serviços ainda",
-    "noServicesDesc": "Cria o teu primeiro serviço para começar a atrair clientes.",
+    "noServicesDesc": "Cria o teu primeiro serviço para atrair clientes.",
     "createService": "Criar Serviço",
     "noClients": "Sem clientes ainda",
-    "noClientsDesc": "Os teus clientes aparecerão aqui.",
+    "noClientsDesc": "Os teus clientes irão aparecer aqui.",
     "noSales": "Sem vendas ainda",
-    "noSalesDesc": "O teu histórico de vendas aparecerá aqui.",
-    "_pending_review": {
-      "noServicesDesc": true,
-      "noClientsDesc": true
-    }
-  },
-  "_pending_review": {}
+    "noSalesDesc": "O teu histórico de vendas aparecerá aqui."
+  }
 }

@@ -2,12 +2,9 @@
   "campaigns": {
     "delete": {
       "title": "Excluir Campanha?",
-      "description": "Excluir \"{name}\" removerá permanentemente todos os rascunhos e análises relacionados. Esta ação não pode ser desfeita.",
+      "description": "Apagar \"{name}\" remove permanentemente todos os rascunhos e análises associados. Isto não pode ser desfeito.",
       "dontAskAgain": "Não me perguntes novamente sobre campanhas de rascunho",
-      "deletePermanently": "Excluir Permanentemente",
-      "_pending_review": {
-        "description": true
-      }
+      "deletePermanently": "Excluir Permanentemente"
     },
     "creation": {
       "title": "Criar Campanha",
@@ -18,17 +15,10 @@
       "proTip": "Dica Pro",
       "tips": {
         "1": "Nomes claros ajudam-te a encontrar campanhas mais tarde",
-        "2": "Conecta canais agora para agendamento instantâneo",
+        "2": "Conecta os canais agora para planeamento instantâneo",
         "3": "O modelo de lançamento funciona para a maioria dos anúncios",
-        "4": "Agendamento inteligente usa os teus dados de engajamento anteriores",
-        "_pending_review": {
-          "2": true,
-          "4": true
-        }
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "4": "Planeamento inteligente usa os teus dados de interação passados"
+      }
+    }
+  }
 }

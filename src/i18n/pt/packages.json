@@ -4,12 +4,14 @@
     "types": {
       "bundle": "Pacote",
       "subscription": "Subscrição",
-      "program": "Programa"
+      "program": "Programa",
+      "_pending_review": {}
     },
     "status": {
       "draft": "Rascunho",
       "published": "Ativo",
-      "archived": "Arquivado"
+      "archived": "Arquivado",
+      "_pending_review": {}
     },
     "item": "item",
     "items": "itens",
@@ -17,6 +19,8 @@
     "validDays": "Válido por {days} dias",
     "save": "Poupa {percent}%",
     "unpublish": "Despublicar",
-    "publish": "Publicar"
-  }
+    "publish": "Publicar",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

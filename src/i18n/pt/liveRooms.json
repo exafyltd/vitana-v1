@@ -3,13 +3,10 @@
     "title": "Salas Ao Vivo",
     "description": "Participe de discussões de áudio e vídeo ao vivo",
     "tabs": {
-      "live": "Ao Vivo Agora",
+      "live": "Ao vivo agora",
       "scheduled": "Agendado",
       "all": "Todas as Salas",
-      "past": "Anteriores",
-      "_pending_review": {
-        "live": true
-      }
+      "past": "Anteriores"
     },
     "goLive": "Entrar Ao Vivo",
     "joinRoom": "Entrar na Sala",
@@ -44,7 +41,7 @@
       "streamTitleLabel": "Título da Transmissão",
       "streamTitlePlaceholder": "Ao vivo com {name}",
       "descriptionLabel": "Descrição / Biografia (Opcional)",
-      "descriptionPlaceholder": "Conta à tua audiência sobre o que é esta transmissão…",
+      "descriptionPlaceholder": "Descreve brevemente sobre o que é esta transmissão…",
       "charactersCount": "{count}/500 caracteres",
       "streamTypeLabel": "Tipo de Transmissão",
       "streamTypeAudio": "Áudio",
@@ -52,7 +49,7 @@
       "coverLabel": "Imagem de Capa / Miniatura",
       "coverAlt": "Capa da transmissão",
       "coverUploadCta": "Clica para carregar imagem personalizada",
-      "coverUploadHint": "Qualquer imagem – redimensionada automaticamente",
+      "coverUploadHint": "Qualquer imagem – ajusta-se automaticamente",
       "aiAutoGenerateLabel": "Gerar automaticamente com IA",
       "aiAutoGenerateHint": "Gerar imagem se nenhuma for carregada",
       "generatingAiImage": "A gerar imagem de IA…",
@@ -125,21 +122,13 @@
       },
       "success": {
         "streamUpdatedTitle": "Stream Atualizado! ✨",
-        "streamUpdatedDesc": "O teu stream foi atualizado com sucesso",
+        "streamUpdatedDesc": "A tua transmissão foi atualizada com sucesso",
         "streamScheduledTitle": "Stream Agendado! 📅",
         "streamScheduledDesc": "O teu stream está agendado para {date} às {time}",
-        "youAreLiveTitle": "Estás ao Vivo! 🎙️",
+        "youAreLiveTitle": "Estás ao vivo! 🎙️",
         "youAreLiveDesc": "A entrar na tua sala de stream…",
         "aiImageHintTitle": "Geração de Imagem por IA",
-        "aiImageHintDesc": "A imagem será gerada quando o stream começar.",
-        "_pending_review": {
-          "streamUpdatedDesc": true,
-          "youAreLiveTitle": true
-        }
-      },
-      "_pending_review": {
-        "descriptionPlaceholder": true,
-        "coverUploadHint": true
+        "aiImageHintDesc": "A imagem será gerada quando o stream começar."
       }
     },
     "editSession": {
@@ -147,9 +136,6 @@
       "saving": "A guardar…",
       "changeCover": "Alterar imagem de capa",
       "noChanges": "Nenhuma alteração para guardar"
-    },
-    "_pending_review": {
-      "noRooms": true
     }
   },
   "goLivePopup": {

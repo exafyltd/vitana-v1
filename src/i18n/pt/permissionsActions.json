@@ -1,58 +1,39 @@
 {
   "permissionsActions": {
-    "title": "Privacidade e Ações de Permissão",
+    "title": "Ações de Privacidade e Permissões",
     "items": {
       "privacySettings": {
         "title": "Configurações de Privacidade",
-        "description": "Configura as preferências de privacidade e partilha de dados",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Configurar Definições de Privacidade e Partilha"
       },
       "manageAccess": {
         "title": "Gerir Acesso",
-        "description": "Controla quem pode ver as tuas memórias de saúde",
-        "_pending_review": {}
+        "description": "Controla quem pode ver as tuas memórias de saúde"
       },
       "securitySettings": {
         "title": "Configurações de Segurança",
-        "description": "Atualiza as preferências de autenticação e segurança",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Atualizar Configurações de Autenticação e Segurança"
       },
       "apiKeysAccess": {
         "title": "Chaves de API e Acesso",
-        "description": "Gere as integrações de apps de terceiros e o acesso à API",
-        "_pending_review": {}
+        "description": "Gere as integrações de apps de terceiros e o acesso à API"
       },
       "dataRights": {
         "title": "Direitos de Dados",
-        "description": "Exerce os teus direitos de portabilidade e eliminação de dados",
-        "_pending_review": {}
+        "description": "Exerce os teus direitos de portabilidade e eliminação de dados"
       },
       "auditLogs": {
         "title": "Registos de Auditoria",
-        "description": "Revisa o histórico de acesso e o rasto de auditoria de segurança",
-        "_pending_review": {}
+        "description": "Revisa o histórico de acesso e o rasto de auditoria de segurança"
       },
       "permissionSettings": {
-        "title": "Configurações de Permissão",
-        "description": "Ajusta as permissões granulares para diferentes funcionalidades",
-        "_pending_review": {
-          "title": true
-        }
+        "title": "Configurações de Permissões",
+        "description": "Ajusta as permissões granulares para diferentes funcionalidades"
       },
       "exportData": {
         "title": "Exportar Dados",
-        "description": "Transfere as tuas memórias e dados de saúde em segurança",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "title": true
+        "description": "Transfere as tuas memórias e dados de saúde em segurança"
+      }
     }
-  },
-  "_pending_review": {}
+  }
 }

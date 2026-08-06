@@ -1,6 +1,6 @@
 {
   "recallActions": {
-    "title": "Pesquisa de Memórias e Ações de Recuperação",
+    "title": "Ações de Pesquisa e Recuperação de Lembretes",
     "items": {
       "askAiQuestion": {
         "title": "Perguntar à IA",
@@ -34,9 +34,6 @@
         "title": "Recuperações Rápidas",
         "description": "Acessa memórias e consultas pesquisadas com frequência"
       }
-    },
-    "_pending_review": {
-      "title": true
     }
   }
 }

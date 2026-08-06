@@ -7,30 +7,22 @@
       "today": "Hoje",
       "upcoming": "Próximos",
       "following": "Seguindo",
-      "recommended": "Recomendados",
-      "_pending_review": {}
+      "recommended": "Recomendados"
     },
     "noEvents": "Nenhum evento agendado",
     "checkBack": "Volta em breve para ver os próximos eventos da comunidade!",
     "emptyStates": {
       "noEventsToday": "Nenhum Evento Hoje",
-      "noEventsTodayDesc": "Não há eventos agendados para hoje. Vê os próximos eventos ou cria o teu próprio!",
+      "noEventsTodayDesc": "Nenhum evento está planejado para hoje. Confere os próximos eventos ou cria o teu próprio!",
       "createEvent": "Criar Evento",
       "viewUpcoming": "Ver Próximos Eventos",
-      "followingTitle": "Publicações de Pessoas que Segues",
-      "followingDesc": "O conteúdo de pessoas e grupos que segues aparecerá aqui",
+      "followingTitle": "Publicações de pessoas que segues",
+      "followingDesc": "Conteúdo de pessoas e grupos que segues aparece aqui",
       "findPeople": "Encontrar Pessoas para Seguir",
       "noPostsFromFollowing": "Sem Publicações Ainda",
       "noPostsFromFollowingDesc": "As pessoas que segues ainda não criaram eventos ou encontros.",
       "youFollow": "Segues",
-      "loadingFollowing": "A carregar publicações…",
-      "_pending_review": {
-        "noEventsTodayDesc": true,
-        "followingTitle": true,
-        "followingDesc": true
-      }
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "loadingFollowing": "A carregar publicações…"
+    }
+  }
 }

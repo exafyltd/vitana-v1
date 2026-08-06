@@ -13,16 +13,11 @@
     "insufficientBalanceDesc": "Não tens {currency} suficiente para esta troca",
     "transactionFailed": "Transação Falhou",
     "paymentFailed": "Pagamento Falhou",
-    "paymentFailedDesc": "Falha ao processar pagamento. Por favor, tenta novamente.",
+    "paymentFailedDesc": "O pagamento não pôde ser processado. Por favor, tenta novamente.",
     "balanceRefreshed": "Saldo Atualizado",
     "balanceRefreshedDesc": "O saldo da carteira foi atualizado",
     "refreshFailed": "Atualização Falhou",
-    "refreshFailedDesc": "Não foi possível atualizar o saldo. Por favor, tenta novamente.",
-    "error": "Erro",
-    "_pending_review": {
-      "paymentFailedDesc": true,
-      "refreshFailedDesc": true
-    }
-  },
-  "_pending_review": {}
+    "refreshFailedDesc": "O saldo não pôde ser atualizado. Por favor, tenta novamente.",
+    "error": "Erro"
+  }
 }

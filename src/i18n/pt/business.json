@@ -5,34 +5,29 @@
       "choosePathGuide": "Escolhe um caminho e vamos guiar-te para a tua primeira fonte de rendimento.",
       "startEarning": "Começa a ganhar",
       "howToEarn": "Como queres ganhar?",
-      "pickOne": "Escolhe um — podes sempre fazer os outros mais tarde.",
+      "pickOne": "Escolhe uma opção — podes explorar as outras mais tarde.",
       "createEvent": "Cria um Evento",
       "createEventDesc": "Organiza o teu próprio evento e vende bilhetes.",
       "addToInventory": "Adiciona Eventos ao Inventário",
       "addToInventoryDesc": "Revende eventos selecionados e ganha comissão.",
       "createService": "Cria um Serviço",
-      "createServiceDesc": "Oferece sessões que as pessoas podem reservar.",
+      "createServiceDesc": "Oferece sessões agendáveis.",
       "createPromotion": "Cria uma Promoção",
       "createPromotionDesc": "Aumenta a visibilidade e partilha nas redes sociais.",
       "hostAndSell": "Organiza e vende bilhetes",
       "resellAndEarn": "Revende e ganha",
       "offerBookings": "Oferece reservas",
-      "boostVisibility": "Aumenta a visibilidade",
-      "_pending_review": {
-        "howToEarn": true,
-        "pickOne": true,
-        "createServiceDesc": true
-      }
+      "boostVisibility": "Aumenta a visibilidade"
     },
     "history": {
       "all": "Tudo",
       "directSales": "Vendas Diretas",
       "reseller": "Revendedor",
-      "noEarningsYet": "Ainda sem histórico de ganhos",
-      "startSellingToSee": "Começa a vender para veres as tuas transações aqui",
+      "noEarningsYet": "Ainda não há histórico de ganhos",
+      "startSellingToSee": "Começa a vender para veres as tuas transações aqui.",
       "ticketsSold": "Bilhetes Vendidos",
       "grossAmount": "Valor Bruto",
-      "youEarned": "Tu Ganhaste",
+      "youEarned": "Ganhaste",
       "paidToWallet": "Pago para a Carteira",
       "pendingPayout": "Pagamento Pendente",
       "transactionId": "ID da Transação",
@@ -40,16 +35,10 @@
       "last7Days": "Últimos 7 Dias",
       "last30Days": "Últimos 30 Dias",
       "last90Days": "Últimos 90 Dias",
-      "allTime": "Todo o tempo",
+      "allTime": "Tempo total",
       "details": "Detalhes",
       "earningsActivity": "Atividade de Ganhos",
-      "noEarningsStartSelling": "Ainda não tens ganhos. Começa a vender para veres a atividade aqui.",
-      "_pending_review": {
-        "noEarningsYet": true,
-        "startSellingToSee": true,
-        "youEarned": true,
-        "allTime": true
-      }
+      "noEarningsStartSelling": "Ainda não tens ganhos. Começa a vender para veres a atividade aqui."
     },
     "kpi": {
       "totalEarnings": "Ganhos Totais",
@@ -70,13 +59,9 @@
       "viewMyEvents": "Ver os Meus Eventos",
       "totalGrossSales": "Vendas Brutas Totais",
       "resellerCommissions": "Comissões de Revendedor",
-      "goToSellEarn": "Vai para Vender e Ganhar",
-      "totalEarned": "Total Ganho",
-      "earningsBySource": "Ganhos por Origem",
-      "_pending_review": {
-        "goToSellEarn": true,
-        "totalEarned": true
-      }
+      "goToSellEarn": "Vende e Ganha",
+      "totalEarned": "Total ganho",
+      "earningsBySource": "Ganhos por Origem"
     },
     "reseller": {
       "upcomingEvents": "Próximos Eventos",
@@ -84,13 +69,13 @@
       "resellerCode": "Código de revendedor",
       "codeCopied": "Código de revendedor copiado!",
       "noSalesYet": "Sem vendas ainda",
-      "shareLinkToStart": "Compartilhe um link para começar a ganhar.",
+      "shareLinkToStart": "Partilha um link para ganhar.",
       "tickets": "ingressos",
       "shareResellerLink": "Compartilhar link de revendedor",
       "createPromotion": "Criar promoção",
-      "shareLinkOrPromotion": "Compartilhe seus links de revendedor ou crie uma promoção para começar a ganhar comissões.",
+      "shareLinkOrPromotion": "Partilha os teus links de revendedor ou cria uma promoção para ganhar comissões.",
       "selectEventToShare": "Selecione um evento para compartilhar",
-      "pickEventForLink": "Escolha um evento para gerar seu link de revendedor",
+      "pickEventForLink": "Escolhe um evento para gerar o teu link de revendedor.",
       "noEventsToSell": "Nenhum evento disponível para vender",
       "commission": "comissão",
       "commissionEarned": "Comissão Ganha",
@@ -99,24 +84,16 @@
       "noPayoutsYet": "Sem pagamentos ainda",
       "attributedSales": "Vendas Atribuídas por Evento",
       "noSalesMatchFilter": "Nenhuma venda corresponde aos filtros atuais",
-      "mockDataActive": "Dados de teste ativos",
-      "_pending_review": {
-        "shareLinkToStart": true,
-        "shareLinkOrPromotion": true,
-        "pickEventForLink": true
-      }
+      "mockDataActive": "Dados de teste ativos"
     },
     "transfer": {
       "title": "Transferir para a Carteira",
       "description": "Transfira suas comissões de revendedor pendentes para sua Carteira VITANA.",
       "pending": "Pendente",
       "wallet": "Carteira",
-      "instantCredit": "Isso creditará seus ganhos instantaneamente ao saldo da sua carteira.",
+      "instantCredit": "Isto irá creditar instantaneamente os teus ganhos no saldo da tua Carteira.",
       "transferring": "Transferindo...",
-      "transfer": "Transferir",
-      "_pending_review": {
-        "instantCredit": true
-      }
+      "transfer": "Transferir"
     },
     "typeSelector": {
       "title": "Começar um Negócio",
@@ -128,15 +105,12 @@
       "sellTicketsDesc": "Promova eventos e ganhe comissões",
       "badgeNew": "Novo",
       "badgeActive": "Ativo",
-      "alreadyReseller": "Você já é um revendedor! Verifique a aba Vender e Ganhar.",
-      "cancel": "Cancelar",
-      "_pending_review": {
-        "alreadyReseller": true
-      }
+      "alreadyReseller": "Já és um revendedor! Vê o separador \"Vende e Ganha\".",
+      "cancel": "Cancelar"
     },
     "missionOpportunities": {
       "title": "Oportunidades de Missão",
-      "subtitle": "Caminhos recomendados pelo Piloto-Automático que impulsionam a economia da longevidade",
+      "subtitle": "Caminhos sugeridos pelo Piloto-Automático que impulsionam a economia da longevidade",
       "loading": "Carregando oportunidades…",
       "error": "Não foi possível carregar oportunidades",
       "empty": "Nenhuma recomendação alinhada à economia ainda. Volte mais tarde.",
@@ -145,14 +119,8 @@
         "find_match": "Encontrar uma Correspondência",
         "marketplace": "Mercado",
         "income_generation": "Geração de renda",
-        "business_formation": "Formação de negócios",
-        "_pending_review": {}
-      },
-      "_pending_review": {
-        "subtitle": true
+        "business_formation": "Formação de negócios"
       }
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    }
+  }
 }

@@ -8,10 +8,6 @@
     "photo": "Foto",
     "textEntry": "✍️ Entrada de Texto",
     "photoEntry": "📸 Entrada de Foto",
-    "searchPlaceholder": "Pesquisar diário...",
-    "_pending_review": {
-      "description": true
-    }
-  },
-  "_pending_review": {}
+    "searchPlaceholder": "Pesquisar diário..."
+  }
 }

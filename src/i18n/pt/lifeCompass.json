@@ -17,50 +17,37 @@
       "career": "carreira",
       "learning": "aprendizagem",
       "spiritual": "espiritual",
-      "longevity": "longevidade",
-      "_pending_review": {}
+      "longevity": "longevidade"
     },
     "goals": {
       "wealth": {
         "title": "Construir Liberdade Financeira",
-        "description": "Alcançar independência financeira e riqueza",
-        "_pending_review": {}
+        "description": "Alcançar independência financeira e riqueza"
       },
       "relationship": {
         "title": "Encontrar Parceiro de Vida",
-        "description": "Construir relacionamentos românticos significativos",
-        "_pending_review": {}
+        "description": "Construir relacionamentos românticos significativos"
       },
       "health": {
-        "title": "Transformar Saúde",
-        "description": "Alcançar bem-estar físico e mental ideal",
-        "_pending_review": {
-          "title": true
-        }
+        "title": "Melhorar Saúde",
+        "description": "Alcançar bem-estar físico e mental ideal"
       },
       "career": {
         "title": "Avançar na Carreira",
-        "description": "Construir uma carreira gratificante e de sucesso",
-        "_pending_review": {}
+        "description": "Construir uma carreira gratificante e de sucesso"
       },
       "learning": {
         "title": "Dominar Novas Habilidades",
-        "description": "Aprender e crescer através do conhecimento",
-        "_pending_review": {}
+        "description": "Aprender e crescer através do conhecimento"
       },
       "spiritual": {
         "title": "Vida Espiritual",
-        "description": "Aprofundar propósito, presença e paz interior",
-        "_pending_review": {}
+        "description": "Aprofundar propósito, presença e paz interior"
       },
       "longevity": {
         "title": "Melhorar a qualidade de vida e prolongar a longevidade",
-        "description": "Foca em saúde-longeva, energia e longevidade — a missão da Vitanaland",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "description": "Foca em saúde-longeva, energia e longevidade — a missão da Vitanaland"
+      }
+    }
+  }
 }

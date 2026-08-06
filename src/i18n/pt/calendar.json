@@ -12,7 +12,7 @@
     "agenda": "Agenda",
     "nothingScheduled": "Nada agendado",
     "tryQuickAdd": "Experimenta a Adição Rápida ou deixa o Piloto Automático planear o teu dia",
-    "clickSlotHint": "Clica em qualquer espaço para criar um evento • Arrastar para reagendar",
+    "clickSlotHint": "Clica num espaço para criar um evento • Arrasta para mover",
     "noEventsOnDate": "Nenhum evento nesta data",
     "lastSynced": "Última sincronização",
     "justNow": "agora mesmo",
@@ -23,16 +23,13 @@
     "noBookingsToday": "Nenhum agendamento hoje",
     "noBookingsYet": "Nenhum agendamento ainda",
     "nextUpcoming": "Próximo a seguir",
-    "exploreActivities": "Explora atividades para adicionar ao teu calendário",
+    "exploreActivities": "Descobre atividades para o teu calendário",
     "browseActivities": "Explorar Atividades",
     "bookedEvents": {
-      "title": "Teus Eventos Agendados",
+      "title": "Os teus eventos agendados",
       "todayLabel": "Hoje",
       "nextUp": "A seguir",
-      "noEventsToday": "Nenhum evento hoje",
-      "_pending_review": {
-        "title": true
-      }
+      "noEventsToday": "Nenhum evento hoje"
     },
     "filters": {
       "personal": "Pessoal",
@@ -66,7 +63,7 @@
       "suggestions": "Sugestões do Piloto Automático",
       "badge": "Piloto Automático",
       "accept": "Aceitar",
-      "snooze": "Adiar",
+      "snooze": "Lembrar mais tarde",
       "dismiss": "Ignorar",
       "undo": "Desfazer",
       "laterToday": "Mais tarde hoje",
@@ -80,12 +77,7 @@
       "reminderLaterToday": "Lembrete definido para mais tarde hoje",
       "reminderTomorrow": "Lembrete definido para amanhã",
       "recommendFocus": "Recomendar bloco de foco",
-      "focusBlockDesc": "Tens uma janela de 90 minutos disponível. Perfeito para trabalho profundo.",
-      "_pending_review": {
-        "snooze": true,
-        "suggestionSnoozed": true,
-        "focusBlockDesc": true
-      }
+      "focusBlockDesc": "Tens um espaço de 90 minutos disponível. Perfeito para trabalho concentrado."
     },
     "toasts": {
       "eventCreated": "Evento criado",
@@ -102,13 +94,7 @@
       "featureComingSoon": "Funcionalidade em breve",
       "inviteFollowers": "Convidar seguidores",
       "rescheduleEvent": "Reagendar evento",
-      "shareToGroup": "Partilhar com o grupo",
-      "_pending_review": {
-        "eventCreatedDesc": true,
-        "eventDeletedDesc": true,
-        "syncingTitle": true,
-        "syncingDesc": true
-      }
+      "shareToGroup": "Partilhar com o grupo"
     },
     "error": {
       "failedToCreate": "Falha ao criar evento"
@@ -156,10 +142,6 @@
         "wave-5": "Momentos de Insight",
         "wave-6": "Recomendações e Descoberta"
       }
-    },
-    "_pending_review": {
-      "clickSlotHint": true,
-      "exploreActivities": true
     }
   }
 }
