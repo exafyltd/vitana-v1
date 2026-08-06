@@ -3,17 +3,14 @@
     "title": "Pokoje na żywo",
     "description": "Dołącz do dyskusji audio i wideo na żywo",
     "tabs": {
-      "live": "Teraz na żywo",
+      "live": "Na żywo",
       "scheduled": "Zaplanowane",
       "all": "Wszystkie pokoje",
-      "past": "Minione",
-      "_pending_review": {
-        "live": true
-      }
+      "past": "Minione"
     },
     "goLive": "Przejdź na żywo",
     "joinRoom": "Dołącz do pokoju",
-    "noRooms": "Brak aktywnych pokoi na żywo w tej chwili",
+    "noRooms": "Brak aktywnych pokoi",
     "beFirst": "Bądź pierwszym, który przejdzie na żywo!",
     "demoRoom": "Pokój demo",
     "demoRoomDesc": "To jest przykładowy pokój. Stwórz własny, aby przejść na żywo!",
@@ -44,7 +41,7 @@
       "streamTitleLabel": "Tytuł transmisji",
       "streamTitlePlaceholder": "Na żywo z {name}",
       "descriptionLabel": "Opis / Bio (Opcjonalnie)",
-      "descriptionPlaceholder": "Powiedz swoim odbiorcom, o czym jest ten stream…",
+      "descriptionPlaceholder": "Krótko opisz, o czym jest ten stream…",
       "charactersCount": "{count}/500 znaków",
       "streamTypeLabel": "Typ streamu",
       "streamTypeAudio": "Audio",
@@ -52,7 +49,7 @@
       "coverLabel": "Obraz okładki / Miniatura",
       "coverAlt": "Okładka streamu",
       "coverUploadCta": "Kliknij, aby przesłać własny obraz",
-      "coverUploadHint": "Dowolny obraz – automatycznie zmieniony rozmiar",
+      "coverUploadHint": "Dowolny obraz – automatycznie się dopasowuje",
       "aiAutoGenerateLabel": "Auto-generuj z AI",
       "aiAutoGenerateHint": "Wygeneruj obraz, jeśli żaden nie został przesłany",
       "generatingAiImage": "Generowanie obrazu AI…",
@@ -125,21 +122,13 @@
       },
       "success": {
         "streamUpdatedTitle": "Strumień zaktualizowany! ✨",
-        "streamUpdatedDesc": "Twój strumień został pomyślnie zaktualizowany",
+        "streamUpdatedDesc": "Stream zaktualizowany!",
         "streamScheduledTitle": "Strumień zaplanowany! 📅",
         "streamScheduledDesc": "Twój strumień jest zaplanowany na {date} o {time}",
         "youAreLiveTitle": "Jesteś na żywo! 🎙️",
         "youAreLiveDesc": "Dołączanie do Twojego pokoju strumienia…",
         "aiImageHintTitle": "Generowanie obrazu AI",
-        "aiImageHintDesc": "Obraz zostanie wygenerowany po rozpoczęciu strumienia.",
-        "_pending_review": {
-          "streamUpdatedDesc": true,
-          "youAreLiveTitle": true
-        }
-      },
-      "_pending_review": {
-        "descriptionPlaceholder": true,
-        "coverUploadHint": true
+        "aiImageHintDesc": "Obraz zostanie wygenerowany po rozpoczęciu strumienia."
       }
     },
     "editSession": {
@@ -147,9 +136,6 @@
       "saving": "Zapisywanie…",
       "changeCover": "Zmień obraz okładki",
       "noChanges": "Brak zmian do zapisania"
-    },
-    "_pending_review": {
-      "noRooms": true
     }
   },
   "goLivePopup": {

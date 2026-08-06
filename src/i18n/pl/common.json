@@ -36,6 +36,8 @@
     "upload": "Prześlij",
     "refresh": "Odśwież",
     "retry": "Spróbuj ponownie",
-    "uploading": "Przesyłanie..."
-  }
+    "uploading": "Przesyłanie...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

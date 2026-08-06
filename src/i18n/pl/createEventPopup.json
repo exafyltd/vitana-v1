@@ -5,10 +5,10 @@
     "eventTitle": "Tytuł wydarzenia *",
     "titlePlaceholder": "np. Poranna sesja jogi, Warsztaty kulinarne",
     "description": "Opis",
-    "descriptionPlaceholder": "Opisz swoje wydarzenie, czego mogą spodziewać się uczestnicy...",
+    "descriptionPlaceholder": "Opisz swoje wydarzenie, czego uczestnicy mogą się spodziewać...",
     "detailedDescription": "Szczegółowy opis (Opcjonalnie)",
-    "detailedDescriptionPlaceholder": "Opisz agendę, program, co jest wliczone, upominki, sponsorów...",
-    "detailedDescriptionHint": "Będzie to widoczne w panelu szczegółów wydarzenia. Użyj tego do agendy, szczegółów programu, wliczonych elementów itp.",
+    "detailedDescriptionPlaceholder": "Opisz agendę, program, co jest wliczone, gratisy, sponsorów...",
+    "detailedDescriptionHint": "Wyświetlane w szczegółach wydarzenia. Użyj tego do agendy, szczegółów programu, wliczonych usług itp.",
     "eventImage": "Obraz wydarzenia (Opcjonalnie)",
     "clickToUpload": "Kliknij, aby przesłać obraz wydarzenia",
     "imageFormats": "PNG, JPG, WebP do 5MB",
@@ -39,7 +39,7 @@
     "standardEntry": "Standardowy bilet wstępu",
     "paidEvent": "To jest wydarzenie płatne (płatność zewnętrzna)",
     "displayPrice": "Wyświetl cenę",
-    "displayPriceHint": "Tylko do wyświetlenia. Włącz sprzedaż biletów powyżej dla zintegrowanych płatności.",
+    "displayPriceHint": "Tylko do wyświetlenia. Aktywuj sprzedaż biletów powyżej dla zintegrowanych płatności.",
     "resellerOptions": "Opcje odsprzedawcy",
     "allowResellers": "Zezwól odsprzedawcom na sprzedaż biletów",
     "allowResellersDesc": "Pozwól odsprzedawcom promować i sprzedawać bilety na to wydarzenie",
@@ -68,8 +68,7 @@
       "volunteer": "❤️ Wolontariat i Pomoc",
       "support": "🫂 Grupa Wsparcia",
       "entertainment": "🎭 Rozrywka",
-      "other": "✨ Inne",
-      "_pending_review": {}
+      "other": "✨ Inne"
     },
     "durations": {
       "30min": "30 minut",
@@ -82,8 +81,7 @@
       "8hour": "8 godzin",
       "half-day": "Pół dnia",
       "full-day": "Cały dzień",
-      "custom": "Niestandardowy czas trwania...",
-      "_pending_review": {}
+      "custom": "Niestandardowy czas trwania..."
     },
     "toasts": {
       "invalidFileType": "Nieprawidłowy typ pliku",
@@ -97,44 +95,25 @@
       "imageUploadFailed": "Przesyłanie obrazu nie powiodło się",
       "imageUploadFailedDesc": "Wydarzenie zostanie utworzone bez obrazu.",
       "errorCreating": "Błąd tworzenia wydarzenia",
-      "errorCreatingDesc": "Wystąpił problem z tworzeniem wydarzenia. Spróbuj ponownie.",
+      "errorCreatingDesc": "Wystąpił problem podczas tworzenia Twojego wydarzenia. Spróbuj ponownie.",
       "generatingImage": "Generowanie obrazu AI...",
       "generatingImageDesc": "Tworzymy niestandardowy obraz dla Twojego wydarzenia.",
       "imageGenerated": "Obraz wygenerowany!",
-      "imageGeneratedDesc": "Obraz AI dodany do Twojego wydarzenia.",
+      "imageGeneratedDesc": "Obraz wygenerowany przez AI został dodany do Twojego wydarzenia.",
       "rateLimitReached": "Osiągnięto limit zapytań",
-      "rateLimitDesc": "Zbyt wiele zapytań o generowanie obrazów. Spróbuj ponownie za chwilę.",
+      "rateLimitDesc": "Zbyt wiele żądań generowania obrazu. Spróbuj ponownie wkrótce.",
       "creditsRequired": "Potrzebne kredyty",
-      "creditsDesc": "Kredyty na generowanie obrazów AI wyczerpane. Dodaj kredyty, aby kontynuować.",
+      "creditsDesc": "Wykorzystano kredyty na generowanie obrazów AI. Uzupełnij kredyty.",
       "permissionDenied": "Odmowa dostępu",
       "permissionDeniedDesc": "Nie masz uprawnień do generowania obrazów dla tego wydarzenia.",
       "imageGenFailed": "Generowanie obrazu nieudane",
-      "imageGenFailedDesc": "Nie udało się wygenerować obrazu AI. Twoje wydarzenie zostało utworzone pomyślnie bez niego.",
+      "imageGenFailedDesc": "Nie udało się wygenerować obrazu AI. Twoje wydarzenie zostało jednak utworzone pomyślnie.",
       "communityEventCreated": "Wydarzenie utworzone!",
-      "communityEventCreatedDesc": "Twoje wydarzenie jest teraz widoczne dla społeczności i dodane do Twojego kalendarza.",
+      "communityEventCreatedDesc": "Twoje wydarzenie jest teraz widoczne dla społeczności i zostało dodane do Twojego kalendarza.",
       "personalEventCreated": "Wydarzenie utworzone!",
       "personalEventCreatedDesc": "Wydarzenie zostało dodane do Twojego kalendarza.",
       "error": "Błąd",
-      "errorDesc": "Nie udało się utworzyć wydarzenia. Spróbuj ponownie.",
-      "_pending_review": {
-        "errorCreatingDesc": true,
-        "generatingImageDesc": true,
-        "imageGeneratedDesc": true,
-        "rateLimitDesc": true,
-        "creditsDesc": true,
-        "permissionDeniedDesc": true,
-        "imageGenFailedDesc": true,
-        "communityEventCreatedDesc": true,
-        "personalEventCreatedDesc": true,
-        "errorDesc": true
-      }
-    },
-    "_pending_review": {
-      "descriptionPlaceholder": true,
-      "detailedDescriptionPlaceholder": true,
-      "detailedDescriptionHint": true,
-      "displayPriceHint": true
+      "errorDesc": "Nie udało się utworzyć wydarzenia. Spróbuj ponownie."
     }
-  },
-  "_pending_review": {}
+  }
 }

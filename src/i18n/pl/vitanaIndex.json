@@ -16,16 +16,12 @@
     "viewFullReport": "Zobacz pełny raport",
     "trackToday": "Śledź dzisiaj",
     "tiers": {
-      "starting": "Zaczynasz",
+      "starting": "Początkujący",
       "early": "Wcześnie",
-      "building": "Budujesz",
+      "building": "Rozwijający się",
       "strong": "Silny",
       "reallyGood": "Naprawdę dobrze",
-      "elite": "Elita",
-      "_pending_review": {
-        "starting": true,
-        "building": true
-      }
+      "elite": "Elita"
     },
     "framings": {
       "starting": "Dopiero zaczynasz",
@@ -33,12 +29,7 @@
       "building": "Nawyki się kształtują",
       "strong": "90-dniowy kamień milowy",
       "reallyGood": "Rozkwitasz",
-      "elite": "Elita",
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "subtitle": true
+      "elite": "Elita"
     }
-  },
-  "_pending_review": {}
+  }
 }

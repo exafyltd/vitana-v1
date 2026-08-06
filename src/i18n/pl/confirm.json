@@ -12,16 +12,9 @@
     "logoutDesc": "Musisz zalogować się ponownie.",
     "remove": "Czy na pewno chcesz usunąć ten element?",
     "removeDesc": "Element zostanie usunięty z listy.",
-    "disconnect": "Czy na pewno chcesz się rozłączyć?",
+    "disconnect": "Czy na pewno chcesz rozłączyć to połączenie?",
     "disconnectDesc": "Możesz połączyć się ponownie później.",
     "proceed": "Czy chcesz kontynuować?",
-    "proceedDesc": "Ta czynność zostanie wykonana.",
-    "_pending_review": {
-      "logout": true,
-      "logoutDesc": true,
-      "disconnect": true,
-      "proceed": true
-    }
-  },
-  "_pending_review": {}
+    "proceedDesc": "Ta czynność zostanie wykonana."
+  }
 }

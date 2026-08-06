@@ -1,7 +1,7 @@
 {
   "profilePosts": {
     "createPost": "Utwórz post",
-    "placeholder": "O czym myślisz?",
+    "placeholder": "O czym teraz myślisz?",
     "shareCta": "Udostępnij coś społeczności",
     "post": "Opublikuj",
     "posted": "Opublikowano!",
@@ -14,10 +14,6 @@
     "background": "Tło",
     "noBackground": "Brak tła",
     "searchingPeople": "Szukam osób…",
-    "noPeopleFound": "Nie znaleziono nikogo",
-    "_pending_review": {
-      "placeholder": true
-    }
-  },
-  "_pending_review": {}
+    "noPeopleFound": "Nie znaleziono nikogo"
+  }
 }

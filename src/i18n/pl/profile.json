@@ -2,15 +2,11 @@
   "profile": {
     "defaultBio": "Pasjonat wellness z pasją do zdrowia holistycznego i budowania społeczności. 🌱",
     "autopilot": {
-      "polishBio": "Dopracuj swoje bio, archetyp i wyróżnienia",
+      "polishBio": "Dopracuj swoje Bio, Archetyp i Wyróżnienia",
       "editHighlights": "Edytuj wyróżnienia",
       "saveHighlights": "Zapisz wyróżnienia",
-      "highlightsDesc": "Wybierz swoje najlepsze posty i media, aby wyróżnić je na górze swojego profilu. Wyróżnione treści pojawiają się w sekcji wyróżnień i przyciągają więcej obserwujących.",
-      "try": "Wypróbuj",
-      "_pending_review": {
-        "polishBio": true,
-        "highlightsDesc": true
-      }
+      "highlightsDesc": "Wybierz swoje najlepsze posty i multimedia do wyświetlenia na górze Twojego profilu. Wyróżniona treść pojawia się w sekcji Wyróżnienia i przyciąga więcej obserwujących.",
+      "try": "Wypróbuj"
     },
     "identity": {
       "vitanaIndex": "Indeks Vitana",

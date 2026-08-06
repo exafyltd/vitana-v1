@@ -10,6 +10,8 @@
     "role": "Rola",
     "email": "E-mail",
     "date": "Data",
-    "amount": "Kwota"
-  }
+    "amount": "Kwota",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

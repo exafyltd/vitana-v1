@@ -2,7 +2,7 @@
   "glassMode": {
     "shareWithAI": "Udostępnić wybór z AI?",
     "screenSharingComingSoon": "🖥️ Udostępnianie Ekranu Wkrótce",
-    "screenSharingDesc": "Udostępnij swój ekran z VITANA, aby uzyskać pomoc kontekstową.",
+    "screenSharingDesc": "Udostępnij swój ekran z VITANA dla wsparcia kontekstowego.",
     "screenSharingStopped": "Udostępnianie Ekranu Zatrzymane",
     "glassModeDisabled": "Tryb szkła wyłączony",
     "cameraModeComingSoon": "📹 Tryb Kamery Wkrótce",
@@ -12,13 +12,8 @@
     "autopilotActivated": "Autopilot Aktywowany",
     "runningAutopilot": "Uruchamianie trybu autopilota",
     "textInputReady": "Wprowadzanie Tekstu Gotowe",
-    "typeMessage": "Możesz teraz wpisać swoją wiadomość",
+    "typeMessage": "Możesz teraz wpisać swoją wiadomość.",
     "actionFailed": "Akcja Nieudana",
-    "couldNotExecute": "Nie udało się wykonać {action}",
-    "_pending_review": {
-      "screenSharingDesc": true,
-      "typeMessage": true
-    }
-  },
-  "_pending_review": {}
+    "couldNotExecute": "Nie udało się wykonać {action}"
+  }
 }

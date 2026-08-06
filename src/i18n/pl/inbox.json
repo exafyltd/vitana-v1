@@ -11,35 +11,30 @@
       "direct": "Bezpośrednie",
       "contacts": "Kontakty",
       "notifications": "Powiadomienia",
-      "archived": "Zarchiwizowane",
-      "_pending_review": {}
+      "archived": "Zarchiwizowane"
     },
     "contextTabs": {
       "community": "Społeczność",
-      "network": "Sieć",
-      "_pending_review": {}
+      "network": "Sieć"
     },
     "actions": {
       "new": "Nowe",
       "newMessage": "Nowa wiadomość",
       "createGroup": "Utwórz grupę",
       "markAllRead": "Oznacz wszystkie jako przeczytane",
-      "menu": "Więcej",
-      "_pending_review": {}
+      "menu": "Więcej"
     },
     "composer": {
       "placeholder": "Wpisz wiadomość...",
       "send": "Wyślij",
       "attachments": "Załączniki",
       "recipients": "Do:",
-      "add": "Dodaj",
-      "_pending_review": {}
+      "add": "Dodaj"
     },
     "states": {
       "empty": "Brak wiadomości",
       "loading": "Ładowanie wiadomości...",
-      "error": "Nie udało się załadować wiadomości",
-      "_pending_review": {}
+      "error": "Nie udało się załadować wiadomości"
     },
     "newConversation": {
       "title": "Rozpocznij nową rozmowę",
@@ -59,8 +54,7 @@
       "cancel": "Anuluj",
       "startChat": "Rozpocznij czat",
       "createGroup": "Utwórz grupę",
-      "creating": "Tworzenie...",
-      "_pending_review": {}
+      "creating": "Tworzenie..."
     },
     "createGroup": {
       "title": "Utwórz grupę",
@@ -71,16 +65,13 @@
       "groupNameRequired": "Wymagana nazwa grupy",
       "groupNameRequiredDesc": "Wprowadź nazwę dla swojej grupy.",
       "addMembersRequired": "Dodaj członków",
-      "addMembersRequiredDesc": "Dodaj co najmniej jednego członka do grupy.",
+      "addMembersRequiredDesc": "Dodaj proszę co najmniej jednego członka.",
       "groupExists": "Grupa już istnieje",
       "groupExistsDesc": "Grupa z tymi członkami została niedawno utworzona.",
       "created": "Grupa utworzona",
       "createdDesc": "Grupa „{name}” została pomyślnie utworzona.",
       "failed": "Nie udało się utworzyć grupy",
-      "failedDesc": "Spróbuj ponownie.",
-      "_pending_review": {
-        "addMembersRequiredDesc": true
-      }
+      "failedDesc": "Spróbuj ponownie."
     },
     "toast": {
       "success": "Sukces",
@@ -91,17 +82,13 @@
       "searchFailed": "Wyszukiwanie nie powiodło się",
       "accessDenied": "Dostęp zabroniony",
       "communityOnly": "Tylko użytkownicy społeczności mogą tworzyć globalne rozmowy",
-      "pleaseLogin": "Zaloguj się, aby rozpocząć rozmowy",
+      "pleaseLogin": "Zaloguj się, aby rozpocząć rozmowy.",
       "groupRecipientsRequired": "Nazwa grupy i odbiorcy są wymagani",
-      "singleRecipientRequired": "Wybierz dokładnie jednego odbiorcę dla wiadomości bezpośredniej",
+      "singleRecipientRequired": "Wybierz dokładnie jednego odbiorcę dla wiadomości bezpośrednich.",
       "groupCreated": "Grupa „{name}” została pomyślnie utworzona!",
       "groupFailed": "Nie udało się utworzyć grupy",
       "allMarkedRead": "Wszystkie wiadomości oznaczone jako przeczytane",
-      "markAllReadFailed": "Nie udało się oznaczyć wszystkich jako przeczytane. Spróbuj ponownie.",
-      "_pending_review": {
-        "pleaseLogin": true,
-        "singleRecipientRequired": true
-      }
+      "markAllReadFailed": "Nie udało się oznaczyć wszystkich jako przeczytane. Spróbuj ponownie."
     },
     "createGroupAction": "Utwórz nową grupę",
     "newConversationAction": "Nowa rozmowa",
@@ -115,14 +102,11 @@
     "noMessagesDesc": "Rozpocznij rozmowę, aby zacząć.",
     "startConversation": "Rozpocznij rozmowę",
     "emptyState": {
-      "title": "Twoja skrzynka odbiorcza jest teraz cicha",
+      "title": "Twoja skrzynka odbiorcza jest nadal pusta.",
       "globalDescription": "Rozpocznij rozmowę lub dołącz do społeczności, aby połączyć się z innymi.",
       "tenantDescription": "Połącz się z kolegami i członkami zespołu w swojej sieci zawodowej.",
       "startConversation": "Rozpocznij rozmowę",
-      "discoverPeople": "Odkryj ludzi",
-      "_pending_review": {
-        "title": true
-      }
+      "discoverPeople": "Odkryj ludzi"
     },
     "group": {
       "loading": "Ładowanie grupy…",
@@ -133,12 +117,7 @@
       "memberOther": "członków",
       "officialBadge": "oficjalna grupa",
       "empty": "Brak wiadomości.",
-      "composerPlaceholder": "Wiadomość…",
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "noMessagesDesc": true
+      "composerPlaceholder": "Wiadomość…"
     }
-  },
-  "_pending_review": {}
+  }
 }

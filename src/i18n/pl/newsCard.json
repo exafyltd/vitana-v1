@@ -18,18 +18,14 @@
       "showLessToast": "Będziemy pokazywać mniej takich",
       "mutedToast": "Źródło wyciszone",
       "undo": "Cofnij",
-      "unmute": "Wyłącz wyciszenie",
-      "_pending_review": {}
+      "unmute": "Wyłącz wyciszenie"
     },
     "detail": {
       "back": "Wróć",
       "continueReading": "Czytaj dalej na",
       "openInBrowser": "Otwórz w przeglądarce",
       "couldNotLoad": "Tego artykułu nie można wyświetlić bezpośrednio",
-      "readOn": "Czytaj dalej",
-      "_pending_review": {
-        "readOn": true
-      }
+      "readOn": "Czytaj więcej"
     },
     "pillars": {
       "all": "Wszystkie",
@@ -37,10 +33,7 @@
       "hydration": "Nawodnienie",
       "sleep": "Sen",
       "exercise": "Ćwiczenia",
-      "mental": "Psychika",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "mental": "Psychika"
+    }
+  }
 }

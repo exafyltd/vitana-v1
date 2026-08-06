@@ -1,7 +1,7 @@
 {
   "wallet": {
     "title": "Portfel",
-    "description": "Twoje saldo, środki i nagrody",
+    "description": "Twoje Saldo, Środki i Nagrody",
     "usdBalance": "Saldo EUR / USD",
     "creditsBalance": "Saldo środków VTNA",
     "creditsLabel": "Środki VTNA",
@@ -11,8 +11,7 @@
     "tabs": {
       "balances": "Salda",
       "activity": "Aktywność",
-      "actions": "Akcje",
-      "_pending_review": {}
+      "actions": "Akcje"
     },
     "filters": {
       "commissions": "Sprzedawaj i zarabiaj prowizje",
@@ -22,17 +21,10 @@
       "purchases": "Zakupy",
       "pending": "Oczekujące wypłaty",
       "withdrawals": "Wypłaty",
-      "stakes": "Stakowanie",
-      "_pending_review": {
-        "commissions": true
-      }
+      "stakes": "Stakowanie"
     },
     "noActivity": "Brak aktywności",
     "noActivityDesc": "Twoje transakcje pojawią się tutaj.",
-    "displayCurrency": "Wyświetl walutę",
-    "_pending_review": {
-      "description": true
-    }
-  },
-  "_pending_review": {}
+    "displayCurrency": "Wyświetl walutę"
+  }
 }

@@ -1,58 +1,39 @@
 {
   "permissionsActions": {
-    "title": "Prywatność i Akcje uprawnień",
+    "title": "Działania dotyczące prywatności i uprawnień",
     "items": {
       "privacySettings": {
         "title": "Ustawienia prywatności",
-        "description": "Skonfiguruj prywatność danych i preferencje udostępniania",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Skonfiguruj ustawienia prywatności i udostępniania"
       },
       "manageAccess": {
         "title": "Zarządzaj dostępem",
-        "description": "Kontroluj, kto może przeglądać Twoje wspomnienia zdrowotne",
-        "_pending_review": {}
+        "description": "Kontroluj, kto może przeglądać Twoje wspomnienia zdrowotne"
       },
       "securitySettings": {
         "title": "Ustawienia bezpieczeństwa",
-        "description": "Zaktualizuj preferencje uwierzytelniania i bezpieczeństwa",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Zaktualizuj ustawienia uwierzytelniania i bezpieczeństwa"
       },
       "apiKeysAccess": {
         "title": "Klucze API i Dostęp",
-        "description": "Zarządzaj integracjami aplikacji stron trzecich i dostępem do API",
-        "_pending_review": {}
+        "description": "Zarządzaj integracjami aplikacji stron trzecich i dostępem do API"
       },
       "dataRights": {
         "title": "Prawa do danych",
-        "description": "Skorzystaj ze swoich praw do przenoszenia i usuwania danych",
-        "_pending_review": {}
+        "description": "Skorzystaj ze swoich praw do przenoszenia i usuwania danych"
       },
       "auditLogs": {
         "title": "Logi audytu",
-        "description": "Przejrzyj historię dostępu i ścieżkę audytu bezpieczeństwa",
-        "_pending_review": {}
+        "description": "Przejrzyj historię dostępu i ścieżkę audytu bezpieczeństwa"
       },
       "permissionSettings": {
         "title": "Ustawienia uprawnień",
-        "description": "Dostosuj szczegółowe uprawnienia dla różnych funkcji",
-        "_pending_review": {
-          "title": true
-        }
+        "description": "Dostosuj szczegółowe uprawnienia dla różnych funkcji"
       },
       "exportData": {
         "title": "Eksportuj dane",
-        "description": "Pobierz bezpiecznie swoje wspomnienia i dane zdrowotne",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "title": true
+        "description": "Pobierz bezpiecznie swoje wspomnienia i dane zdrowotne"
+      }
     }
-  },
-  "_pending_review": {}
+  }
 }

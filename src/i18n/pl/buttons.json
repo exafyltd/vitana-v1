@@ -10,7 +10,7 @@
     "submit": "Wyślij",
     "next": "Dalej",
     "back": "Wstecz",
-    "previous": "Poprzedni",
+    "previous": "Wróć",
     "retry": "Spróbuj ponownie",
     "refresh": "Odśwież",
     "viewAll": "Zobacz wszystko",
@@ -54,9 +54,6 @@
     "no": "Nie",
     "ok": "OK",
     "generate": "Generuj",
-    "generating": "Generowanie...",
-    "_pending_review": {
-      "previous": true
-    }
+    "generating": "Generowanie..."
   }
 }

@@ -10,8 +10,7 @@
       "history": "Historia",
       "all": "Wszystkie",
       "completed": "Zrealizowane",
-      "cancelled": "Anulowane",
-      "_pending_review": {}
+      "cancelled": "Anulowane"
     },
     "filters": {
       "all": "Wszystkie",
@@ -19,23 +18,20 @@
       "products": "Produkty",
       "vouchers": "Vouchery",
       "services": "Usługi",
-      "refunds": "Zwroty",
-      "_pending_review": {}
+      "refunds": "Zwroty"
     },
     "previewNotice": "To są zamówienia podglądowe. Twoje rzeczywiste zamówienia pojawią się tutaj.",
     "sampleData": "Przykładowe Dane",
     "emptyActive": {
       "title": "Brak aktywnych zamówień",
-      "description": "Nie masz żadnych aktywnych zamówień ani nadchodzących wydarzeń.",
-      "_pending_review": {}
+      "description": "Nie masz żadnych aktywnych zamówień ani nadchodzących wydarzeń."
     },
     "emptyHistory": {
       "title": "Brak historii zamówień",
-      "description": "Twoje zrealizowane zamówienia i minione wydarzenia pojawią się tutaj.",
-      "_pending_review": {}
+      "description": "Twoje zrealizowane zamówienia i minione wydarzenia pojawią się tutaj."
     },
     "noOrders": "Brak zamówień",
-    "noOrdersDesc": "Twoje zamówienia pojawią się tutaj po dokonaniu zakupu.",
+    "noOrdersDesc": "Twoje zamówienia pojawią się tutaj, gdy coś kupisz.",
     "browseProducts": "Przeglądaj Produkty",
     "findEvents": "Znajdź Wydarzenia",
     "startShopping": "Rozpocznij Zakupy",
@@ -64,10 +60,7 @@
       "personalMessage": "Wiadomość osobista",
       "cancel": "Anuluj",
       "send": "Wyślij",
-      "downloadPdf": "Pobierz PDF",
-      "_pending_review": {
-        "yourTicket": true
-      }
+      "downloadPdf": "Pobierz PDF"
     },
     "status": {
       "upcoming": "Nadchodzące",
@@ -82,12 +75,7 @@
       "pending": "Oczekujące",
       "processing": "Przetwarzanie",
       "paid": "Aktywne",
-      "active": "Aktywne",
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "noOrdersDesc": true
+      "active": "Aktywne"
     }
-  },
-  "_pending_review": {}
+  }
 }

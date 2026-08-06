@@ -1,17 +1,13 @@
 {
   "diary": {
     "title": "Codzienny dziennik",
-    "description": "Śledź swoją podróż wellness i pomóż nam się rozwijać",
+    "description": "Śledź swoją podróż wellness i pomóż nam się ulepszyć.",
     "healthTab": "Dziennik zdrowia",
     "bugTab": "Zgłoszenia błędów",
     "text": "Tekst",
     "photo": "Zdjęcie",
     "textEntry": "✍️ Wpis tekstowy",
     "photoEntry": "📸 Wpis zdjęciowy",
-    "searchPlaceholder": "Szukaj w dzienniku...",
-    "_pending_review": {
-      "description": true
-    }
-  },
-  "_pending_review": {}
+    "searchPlaceholder": "Szukaj w dzienniku..."
+  }
 }

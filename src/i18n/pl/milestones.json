@@ -1,10 +1,10 @@
 {
   "milestones": {
-    "title": "Kamienie milowe życia",
+    "title": "Wyjątkowe Chwile",
     "add": "Dodaj kamień milowy",
     "edit": "Edytuj kamień milowy",
-    "empty": "Brak kamieni milowych",
-    "addFirst": "Dodaj swój pierwszy kamień milowy",
+    "empty": "Brak Chwil jeszcze",
+    "addFirst": "Dodaj swoją pierwszą chwilę",
     "date": "Data",
     "description": "Co się stało?",
     "titleLabel": "Tytuł",
@@ -12,12 +12,6 @@
     "descPlaceholder": "Opisz tę chwilę...",
     "icon": "Ikona",
     "publicLabel": "Widoczne dla wszystkich",
-    "private": "Prywatne",
-    "_pending_review": {
-      "title": true,
-      "empty": true,
-      "addFirst": true
-    }
-  },
-  "_pending_review": {}
+    "private": "Prywatne"
+  }
 }

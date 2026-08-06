@@ -4,12 +4,14 @@
     "types": {
       "bundle": "Pakiet",
       "subscription": "Subskrypcja",
-      "program": "Program"
+      "program": "Program",
+      "_pending_review": {}
     },
     "status": {
       "draft": "Szkic",
       "published": "Aktywny",
-      "archived": "Zarchiwizowane"
+      "archived": "Zarchiwizowane",
+      "_pending_review": {}
     },
     "item": "pozycja",
     "items": "pozycje",
@@ -17,6 +19,8 @@
     "validDays": "Ważne {days} dni",
     "save": "Oszczędź {percent}%",
     "unpublish": "Wycofaj publikację",
-    "publish": "Opublikuj"
-  }
+    "publish": "Opublikuj",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

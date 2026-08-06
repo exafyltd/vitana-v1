@@ -19,7 +19,10 @@
       "rejected": "Odrzucone",
       "flagged": "Zgłoszone",
       "podcastManagement": "Zarządzanie podcastami",
-      "podcastManagementDesc": "Przeglądaj i moderuj przesłane podcasty"
-    }
-  }
+      "podcastManagementDesc": "Przeglądaj i moderuj przesłane podcasty",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

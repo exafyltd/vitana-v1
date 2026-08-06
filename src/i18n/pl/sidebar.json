@@ -41,13 +41,10 @@
     "liveStream": "Na żywo i transmisje",
     "tenantManagement": "Zarządzanie najemcami",
     "systemAdmin": "Administracja systemem",
-    "clinicalOps": "Operacje kliniczne",
+    "clinicalOps": "Działania kliniczne",
     "monitoring": "Monitorowanie",
     "logout": "Wyloguj",
     "connectors": "Łączniki",
-    "support": "Wsparcie",
-    "_pending_review": {
-      "clinicalOps": true
-    }
+    "support": "Wsparcie"
   }
 }

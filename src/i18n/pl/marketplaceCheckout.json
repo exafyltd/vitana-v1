@@ -4,7 +4,8 @@
       "title": "Twoje saldo",
       "loading": "Ładowanie salda…",
       "empty": "Brak salda",
-      "addMoney": "Doładuj"
+      "addMoney": "Doładuj",
+      "_pending_review": {}
     },
     "checkout": {
       "button": "Kasa",
@@ -16,7 +17,8 @@
       "affiliateTitle": "Dokończ zakup u sprzedawcy",
       "affiliateBody": "Niektóre produkty kupujesz bezpośrednio u sprzedawcy. Otwórz poniższe linki, aby dokończyć zakup.",
       "affiliateLink": "Dokończ zakup u sprzedawcy",
-      "affiliateOpened": "Linki do sprzedawcy otwarte w nowych kartach."
+      "affiliateOpened": "Linki do sprzedawcy otwarte w nowych kartach.",
+      "_pending_review": {}
     },
     "addMoney": {
       "title": "Doładuj",
@@ -29,7 +31,8 @@
       "continue": "Przejdź do płatności",
       "processing": "Przygotowywanie…",
       "invalidAmount": "Wprowadź prawidłową kwotę.",
-      "failed": "Nie udało się rozpocząć doładowania."
+      "failed": "Nie udało się rozpocząć doładowania.",
+      "_pending_review": {}
     },
     "deposit": {
       "checkingTitle": "Potwierdzanie płatności",
@@ -39,7 +42,8 @@
       "failedTitle": "Doładowanie nieudane",
       "failedBody": "Twoje doładowanie nie powiodło się. Nic nie zostało pobrane.",
       "amountLabel": "Kwota",
-      "backToCart": "Wróć do koszyka"
+      "backToCart": "Wróć do koszyka",
+      "_pending_review": {}
     },
     "errors": {
       "invalid_request": "Żądanie było nieprawidłowe. Sprawdź swój koszyk.",
@@ -57,7 +61,10 @@
       "ORDER_WRITE_FAILED": "Nie udało się zapisać Twojego zamówienia. Spróbuj ponownie.",
       "WALLET_READ_FAILED": "Nie udało nam się odczytać Twojego salda. Spróbuj ponownie.",
       "GATEWAY_MISCONFIGURED": "Usługa płatności jest obecnie niedostępna. Spróbuj ponownie później.",
-      "unknown": "Coś poszło nie tak podczas realizacji zamówienia. Spróbuj ponownie."
-    }
-  }
+      "unknown": "Coś poszło nie tak podczas realizacji zamówienia. Spróbuj ponownie.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

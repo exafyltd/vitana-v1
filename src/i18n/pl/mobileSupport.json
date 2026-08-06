@@ -74,6 +74,8 @@
     "errorNoAudio": "Nie wykryliśmy żadnego dźwięku. Spróbuj ponownie.",
     "errorTranscription": "Transkrypcja nie powiodła się. Spróbuj ponownie.",
     "transcribing": "Transkrybuję Twoje nagranie…",
-    "backendRecordingHint": "Twoja transkrypcja pojawi się po dotknięciu przycisku Stop."
-  }
+    "backendRecordingHint": "Twoja transkrypcja pojawi się po dotknięciu przycisku Stop.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

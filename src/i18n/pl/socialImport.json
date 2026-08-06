@@ -1,6 +1,6 @@
 {
   "socialImport": {
-    "dialogTitle": "Importuj profil {platform}",
+    "dialogTitle": "{platform} Importuj Profil",
     "dialogDescription": "Połącz swój profil {platform}, aby wzbogacić swoją tożsamość Vitana o spostrzeżenia oparte na AI.",
     "profileUrl": "URL profilu {platform}",
     "bioLabel": "Bio / Sekcja O mnie",
@@ -15,30 +15,17 @@
     "importFailed": "Import nieudany",
     "connect": "Połącz:",
     "socialPresence": "Obecność społeczna",
-    "verifiedConnections": "Zweryfikowane połączenia w całym Twoim cyfrowym życiu",
+    "verifiedConnections": "Zweryfikowane połączenia w Twoim cyfrowym życiu",
     "tapToVisit": "Dotknij, aby odwiedzić profil",
     "noAccountsConnected": "Brak połączonych kont społecznościowych",
     "connectAccounts": "Połącz konta",
     "platformHelp": {
-      "linkedin": "Użyjemy AI, aby wyodrębnić Twój nagłówek, podsumowanie i umiejętności zawodowe.",
-      "instagram": "Przeanalizujemy Twoje bio, aby zrozumieć Twoje zainteresowania i motywy stylu życia.",
-      "tiktok": "Wyodrębnimy Twoje motywy treści i kreatywną osobowość z Twojego bio.",
-      "youtube": "Zidentyfikujemy Twoje kategorie treści i obszary ekspertyzy z Twojego opisu.",
-      "facebook": "Wyodrębnimy Twoje zainteresowania i zaangażowanie w społeczność z Twojego bio.",
-      "x": "Przeanalizujemy Twoje bio, aby zrozumieć Twoje tematy zainteresowań i styl komunikacji.",
-      "_pending_review": {
-        "linkedin": true,
-        "instagram": true,
-        "tiktok": true,
-        "youtube": true,
-        "facebook": true,
-        "x": true
-      }
-    },
-    "_pending_review": {
-      "dialogTitle": true,
-      "verifiedConnections": true
+      "linkedin": "Używamy AI, aby wyodrębnić Twój nagłówek, podsumowanie i umiejętności zawodowe.",
+      "instagram": "Analizujemy Twoje bio, aby zrozumieć Twoje zainteresowania i tematykę stylu życia.",
+      "tiktok": "Wyodrębniamy Twoje tematy treści i kreatywną osobowość z Twojego bio.",
+      "youtube": "Identyfikujemy Twoje kategorie treści i obszary ekspertyzy z Twojego opisu.",
+      "facebook": "Wyodrębniamy Twoje zainteresowania i zaangażowanie społeczne z Twojego bio.",
+      "x": "Analizujemy Twoje bio, aby zrozumieć Twoje obszary tematyczne i styl komunikacji."
     }
-  },
-  "_pending_review": {}
+  }
 }

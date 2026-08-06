@@ -34,18 +34,13 @@
     "campaigns": "Kampanie",
     "distribution": "Dystrybucja",
     "dataConsent": "Dane i Zgoda",
-    "timeline": "Oś czasu",
+    "timeline": "Historia",
     "diary": "Codzienny Dziennik",
     "recall": "Przywołanie i Wyszukiwanie",
     "permissions": "Uprawnienia",
-    "preferences": "Preferencje",
+    "preferences": "Ustawienia",
     "privacy": "Prywatność",
     "connectedApps": "Połączone Aplikacje i Integracje",
-    "support": "Wsparcie",
-    "_pending_review": {
-      "timeline": true,
-      "preferences": true
-    }
-  },
-  "_pending_review": {}
+    "support": "Wsparcie"
+  }
 }

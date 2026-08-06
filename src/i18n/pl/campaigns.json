@@ -2,12 +2,9 @@
   "campaigns": {
     "delete": {
       "title": "Usunąć kampanię?",
-      "description": "Usunięcie „{name}” trwale usunie wszystkie powiązane wersje robocze i analizy. Tej czynności nie można cofnąć.",
+      "description": "Usunięcie „{name}” trwale usuwa wszystkie powiązane szkice i analizy. Tej operacji nie można cofnąć.",
       "dontAskAgain": "Nie pytaj mnie ponownie o kampanie robocze",
-      "deletePermanently": "Usuń trwale",
-      "_pending_review": {
-        "description": true
-      }
+      "deletePermanently": "Usuń trwale"
     },
     "creation": {
       "title": "Utwórz kampanię",
@@ -18,17 +15,10 @@
       "proTip": "Wskazówka pro",
       "tips": {
         "1": "Jasne nazwy pomagają ci znaleźć kampanie później",
-        "2": "Połącz kanały teraz, aby natychmiast planować",
+        "2": "Połącz kanały teraz, aby natychmiast planować.",
         "3": "Szablon startowy działa dla większości ogłoszeń",
-        "4": "Inteligentne planowanie wykorzystuje twoje dane o wcześniejszym zaangażowaniu",
-        "_pending_review": {
-          "2": true,
-          "4": true
-        }
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "4": "Inteligentne planowanie wykorzystuje Twoje dane o wcześniejszym zaangażowaniu."
+      }
+    }
+  }
 }

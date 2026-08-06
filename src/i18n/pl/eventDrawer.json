@@ -10,7 +10,7 @@
     "community": "Społeczność",
     "meetup": "Spotkanie",
     "accessible": "Dostępne",
-    "followersGoing": "Osoby, które obserwujesz, idą",
+    "followersGoing": "Osoby, które obserwujesz, uczestniczą",
     "followBack": "Zaobserwuj z powrotem",
     "whenWhere": "Kiedy i gdzie",
     "local": "Lokalne",
@@ -51,21 +51,13 @@
     "messageSentDesc": "Twoja wiadomość została wysłana do {name}",
     "leftMeetup": "Opuszczono spotkanie",
     "reservationCancelled": "Rezerwacja anulowana",
-    "removedFromEvent": "Zostałeś usunięty z tego wydarzenia.",
+    "removedFromEvent": "Usunięto Cię z tego wydarzenia.",
     "error": "Błąd",
     "leaveError": "Nie udało się opuścić wydarzenia. Spróbuj ponownie.",
     "addToCalendar": "Dodaj do kalendarza",
     "googleCal": "Kalendarz Google",
     "outlook": "Outlook",
     "appleCal": "Kalendarz Apple",
-    "downloadIcs": "Pobierz ICS",
-    "_pending_review": {
-      "followersGoing": true,
-      "signInToMessage": true,
-      "cannotMessageHost": true,
-      "messageSentDesc": true,
-      "removedFromEvent": true,
-      "leaveError": true
-    }
+    "downloadIcs": "Pobierz ICS"
   }
 }

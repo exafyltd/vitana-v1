@@ -2,12 +2,9 @@
   "voucher": {
     "modal": {
       "title": "Podaruj voucher Maxina",
-      "subtitle": "Podaruj dobrostan i połączenie ze społecznością",
+      "subtitle": "Podaruj dobre samopoczucie i połączenie ze społecznością.",
       "buyVoucher": "Kup voucher",
-      "openingCheckout": "Otwieranie bezpiecznej płatności...",
-      "_pending_review": {
-        "subtitle": true
-      }
+      "openingCheckout": "Otwieranie bezpiecznej płatności..."
     },
     "tiers": {
       "test": {
@@ -67,10 +64,7 @@
       "copyLink": "Kopiuj link",
       "share": "Zapisz / Udostępnij",
       "shareHint": "Zapisz do Plików, na Dysk lub wyślij komuś",
-      "downloadHint": "Jeśli pobieranie otworzy się puste, stuknij Otwórz w przeglądarce",
-      "_pending_review": {
-        "downloadHint": true
-      }
+      "downloadHint": "Jeśli pobieranie otworzy się puste, dotknij Otwórz w przeglądarce."
     },
     "toast": {
       "downloadStarted": "Pobieranie rozpoczęte!",
@@ -83,17 +77,11 @@
       "generatingVoucher": "Generowanie vouchera...",
       "failedToLoadVoucher": "Nie udało się załadować danych vouchera",
       "downloadFailedCopyLink": "Pobieranie nie powiodło się. Spróbuj skopiować link.",
-      "useTicketView": "Użyj widoku biletu, aby wydrukować lub zapisać swój bilet",
+      "useTicketView": "Użyj widoku biletu, aby wydrukować lub zapisać.",
       "pdfNotAvailable": "Pobieranie PDF niedostępne dla tego typu zamówienia",
-      "enterRecipientEmail": "Wprowadź adres e-mail odbiorcy",
+      "enterRecipientEmail": "Wprowadź adres e-mail odbiorcy.",
       "emailOnlyForVouchers": "Wysyłanie e-maili dostępne tylko dla voucherów",
-      "sendingVoucherEmail": "Wysyłanie e-maila z voucherem...",
-      "_pending_review": {
-        "linkCopiedDesc": true,
-        "checkoutFailed": true,
-        "useTicketView": true,
-        "enterRecipientEmail": true
-      }
+      "sendingVoucherEmail": "Wysyłanie e-maila z voucherem..."
     }
   }
 }

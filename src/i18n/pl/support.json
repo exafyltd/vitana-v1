@@ -16,38 +16,23 @@
         "title": "Często Zadawane Pytania",
         "createAccount": {
           "question": "Jak utworzyć konto Maxina? Pobierz aplikację Maxina lub odwiedź nasz portal pod adresem vitanaland.com/maxina. Stuknij 'Zarejestruj się' i wprowadź swój adres e-mail. Otrzymasz e-mail z potwierdzeniem, aby zweryfikować swoje konto. Po potwierdzeniu, uzupełnij swój profil, aby zacząć odkrywać wydarzenia wellness i funkcje społeczności.",
-          "answer": "Pobierz aplikację Maxina lub odwiedź nasz portal pod adresem vitanaland.com/maxina. Stuknij 'Zarejestruj się' i wprowadź swój adres e-mail. Otrzymasz e-mail z potwierdzeniem, aby zweryfikować swoje konto. Po potwierdzeniu, uzupełnij swój profil, aby zacząć odkrywać wydarzenia wellness i funkcje społeczności.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Pobierz aplikację Maxina lub odwiedź nasz portal pod adresem vitanaland.com/maxina. Stuknij 'Zarejestruj się' i wprowadź swój adres e-mail. Otrzymasz e-mail z potwierdzeniem, aby zweryfikować swoje konto. Po potwierdzeniu uzupełnij swój profil, aby odkrywać wydarzenia wellness i funkcje społeczności."
         },
         "resetPassword": {
           "question": "Jak zresetować moje hasło?",
-          "answer": "Na ekranie logowania, stuknij 'Nie pamiętam hasła' i wprowadź swój zarejestrowany adres e-mail. Otrzymasz link do resetowania hasła w ciągu kilku minut. Sprawdź folder ze spamem, jeśli go nie widzisz. Link wygasa po 24 godzinach ze względów bezpieczeństwa.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Na ekranie logowania stuknij 'Nie pamiętam hasła' i wprowadź swój zarejestrowany adres e-mail. Otrzymasz link do resetowania hasła w ciągu kilku minut. Sprawdź folder ze spamem, jeśli nie widzisz e-maila. Ze względów bezpieczeństwa link wygasa po 24 godzinach."
         },
         "joinEvents": {
           "question": "Jak dołączyć do wydarzeń i spotkań?",
-          "answer": "Przeglądaj dostępne wydarzenia w sekcji Wydarzenia i Spotkania. Stuknij w dowolne wydarzenie, aby zobaczyć szczegóły, w tym datę, lokalizację i ceny. W przypadku bezpłatnych wydarzeń po prostu stuknij „Dołącz” lub „RSVP”. W przypadku płatnych wydarzeń możesz bezpiecznie kupić bilety za pośrednictwem naszego zintegrowanego systemu płatności.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Przeglądaj dostępne wydarzenia w sekcji Wydarzenia i Spotkania. Stuknij wydarzenie, aby wyświetlić szczegóły, takie jak data, lokalizacja i cena. W przypadku bezpłatnych wydarzeń po prostu stuknij 'Uczestnicz' lub 'Potwierdź obecność'. W przypadku płatnych wydarzeń możesz bezpiecznie kupić bilety za pośrednictwem naszego zintegrowanego systemu płatności."
         },
         "updateProfile": {
           "question": "Jak zaktualizować informacje o moim profilu?",
-          "answer": "Przejdź do zakładki Profil i stuknij ikonę edycji lub „Edytuj profil”. Możesz zaktualizować swoją nazwę wyświetlaną, biogram, zdjęcie profilowe i zainteresowania wellness. Zmiany są zapisywane automatycznie. Twój profil pomaga nam personalizować rekomendacje wydarzeń dla Ciebie.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Przejdź do zakładki Profil i stuknij ikonę Edytuj lub 'Edytuj Profil'. Możesz zaktualizować swoją nazwę wyświetlaną, biogram, zdjęcie profilowe i zainteresowania wellness. Zmiany są zapisywane automatycznie. Twój profil pomaga nam personalizować rekomendacje wydarzeń dla Ciebie."
         },
         "deleteAccount": {
           "question": "Jak mogę usunąć moje konto?",
-          "answer": "Aby usunąć swoje konto Maxina i powiązane dane, wyślij e-mail na adres support@exafy.io z tematem „Prośba o usunięcie konta – Maxina”. Dołącz adres e-mail powiązany z Twoim kontem. Prośby o usunięcie przetwarzamy w ciągu 30 dni.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Aby usunąć swoje konto Maxina i powiązane dane, wyślij e-mail na adres support@exafy.io z tematem 'Usunięcie konta – Maxina'. Podaj adres e-mail powiązany z Twoim kontem. Prośby o usunięcie przetwarzamy w ciągu 30 dni."
         },
         "paymentMethods": {
           "question": "Jakie metody płatności są akceptowane?",
@@ -55,17 +40,11 @@
         },
         "contactOrganizers": {
           "question": "Jak skontaktować się z organizatorami wydarzeń?",
-          "answer": "Na stronie każdego wydarzenia znajdziesz profil organizatora. Stuknij jego nazwę, aby wyświetlić profil i uzyskać dostęp do opcji wiadomości. W przypadku pytań dotyczących konkretnych wydarzeń skorzystaj z sekcji Q&A wydarzenia lub skontaktuj się z organizatorem bezpośrednio za pośrednictwem wiadomości w aplikacji.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Na każdej stronie wydarzenia znajdziesz profil organizatora. Stuknij nazwę, aby wyświetlić profil i uzyskać dostęp do opcji wiadomości. W przypadku pytań dotyczących konkretnych wydarzeń, skorzystaj z sekcji Q&A wydarzenia lub skontaktuj się z organizatorem bezpośrednio za pośrednictwem wiadomości w aplikacji."
         },
         "dataSecure": {
           "question": "Czy moje dane osobowe są bezpieczne?",
-          "answer": "Tak, Twoja prywatność i bezpieczeństwo są naszymi najwyższymi priorytetami. Stosujemy standardowe w branży szyfrowanie, bezpieczne uwierzytelnianie i przestrzegamy wytycznych RODO. Nigdy nie udostępniamy Twoich danych osobowych stronom trzecim bez Twojej zgody. Przeczytaj naszą pełną Politykę Prywatności, aby uzyskać więcej szczegółów.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Tak, Twoja prywatność i bezpieczeństwo są naszym najwyższym priorytetem. Stosujemy standardowe w branży szyfrowanie, bezpieczne uwierzytelnianie i przestrzegamy wytycznych RODO. Nigdy nie udostępniamy Twoich danych osobowych stronom trzecim bez Twojej zgody. Przeczytaj naszą pełną politykę prywatności, aby uzyskać więcej szczegółów."
         }
       },
       "contact": {
@@ -79,10 +58,7 @@
         "deleteAccount": "Usuń konto",
         "portal": "Wróć do portalu Maxina"
       },
-      "footer": "Wszelkie prawa zastrzeżone.",
-      "_pending_review": {
-        "description": true
-      }
+      "footer": "Wszelkie prawa zastrzeżone."
     }
   }
 }

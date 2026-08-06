@@ -12,11 +12,11 @@
     "healthTrackerDesc": "Śledź swoją codzienną dietę, sen, ćwiczenia",
     "education": "Edukacja i Nauka",
     "educationDesc": "Dowiedz się o tematach zdrowotnych i uzyskaj dostęp do zasobów wellness",
-    "priorityFocus": "Priorytetowy Obszar",
-    "priorityFocusExplanation": "Ten obszar ma obecnie największy wpływ na długość Twojego zdrowego życia.",
+    "priorityFocus": "Twój obszar skupienia",
+    "priorityFocusExplanation": "Ten obszar ma obecnie największy wpływ na Twoją długoterminową długość życia w zdrowiu.",
     "autopilotGuidance": "Wskazówki Autopilota",
     "autopilotSuggests": "Autopilot Sugeruje",
-    "takeAction": "Działaj",
+    "takeAction": "Działanie",
     "uploadBloodTest": "Prześlij Badanie Krwi",
     "orderBloodTest": "Zamów Badanie Krwi",
     "viewPlans": "Zobacz Plany",
@@ -25,11 +25,8 @@
     "topPercentile": "Najlepsze {percent}%",
     "trend": {
       "improving": "Poprawia się",
-      "declining": "Pogarsza się",
-      "stable": "Stabilnie",
-      "_pending_review": {
-        "declining": true
-      }
+      "declining": "Pogorszenie",
+      "stable": "Stabilnie"
     },
     "suggestions": {
       "uploadBloodTestResults": "Prześlij wyniki badań krwi",
@@ -44,29 +41,22 @@
     },
     "emptyStates": {
       "noSleepPlan": "Brak Planu Snu",
-      "noSleepPlanDesc": "Wygeneruj swój spersonalizowany plan snu z celami zoptymalizowanymi przez AI, dostosowanymi do Twojego rytmu okołodobowego, potrzeb regeneracji i codziennej wydajności.",
+      "noSleepPlanDesc": "Wygeneruj swój spersonalizowany plan snu z celami zoptymalizowanymi przez AI, dostosowany do Twojego bioritmu, potrzeb regeneracji i codziennej wydajności.",
       "noExercisePlan": "Brak Planu Ćwiczeń",
-      "noExercisePlanDesc": "Wygeneruj swój spersonalizowany plan treningowy z ćwiczeniami zoptymalizowanymi przez AI, dostosowanymi do Twojego poziomu sprawności, celów i potrzeb regeneracji.",
+      "noExercisePlanDesc": "Wygeneruj swój spersonalizowany plan treningowy z ćwiczeniami zoptymalizowanymi przez AI, dostosowany do Twojego poziomu kondycji, celów i potrzeb regeneracji.",
       "noNutritionPlan": "Brak Planu Odżywiania",
-      "noNutritionPlanDesc": "Wygeneruj swój spersonalizowany plan posiłków z pysznymi, zbilansowanymi przepisami, dostosowanymi do Twoich celów i preferencji żywieniowych.",
+      "noNutritionPlanDesc": "Wygeneruj swój spersonalizowany plan żywieniowy ze smacznymi, zbilansowanymi przepisami, dostosowany do Twoich celów i preferencji żywieniowych.",
       "noHydrationPlan": "Brak Planu Nawodnienia",
-      "noHydrationPlanDesc": "Wygeneruj swój spersonalizowany plan nawodnienia z celami dziennymi zoptymalizowanymi przez AI, dostosowanymi do Twojego poziomu aktywności, środowiska i potrzeb regeneracji.",
+      "noHydrationPlanDesc": "Wygeneruj swój spersonalizowany plan nawodnienia z celami dziennymi zoptymalizowanymi przez AI, dostosowany do Twojego poziomu aktywności, środowiska i potrzeb regeneracji.",
       "noMentalPlan": "Brak Planu Samopoczucia",
-      "noMentalPlanDesc": "Wygeneruj swój spersonalizowany plan dobrego samopoczucia, aby śledzić stres, skupienie i równowagę emocjonalną z pomocą AI.",
+      "noMentalPlanDesc": "Wygeneruj swój spersonalizowany plan dobrego samopoczucia psychicznego, aby śledzić stres, skupienie i równowagę emocjonalną ze wsparciem AI.",
       "generatePlan": "Wygeneruj Plan",
-      "generating": "Generowanie...",
-      "_pending_review": {
-        "noSleepPlanDesc": true,
-        "noExercisePlanDesc": true,
-        "noNutritionPlanDesc": true,
-        "noHydrationPlanDesc": true,
-        "noMentalPlanDesc": true
-      }
+      "generating": "Generowanie..."
     },
-    "noSupplements": "Jeszcze Brak Suplementów",
+    "noSupplements": "Jeszcze brak suplementów",
     "noSupplementsDesc": "Śledź swoje codzienne witaminy, minerały i suplementy. Dodaj swój pierwszy suplement, aby zacząć.",
     "noReports": "Jeszcze Brak Raportów Zdrowotnych",
-    "noReportsDesc": "Prześlij swoje badania krwi, wyniki laboratoryjne i raporty medyczne, aby odblokować spersonalizowane wglądy zdrowotne.",
+    "noReportsDesc": "Prześlij swoje badania krwi, wyniki laboratoryjne i raporty medyczne, aby uzyskać spersonalizowane wskazówki zdrowotne.",
     "medical": "Medyczne",
     "supplements": "Suplementy",
     "uploadDescription": "Badania krwi, obrazowanie, wyniki laboratoryjne",
@@ -83,7 +73,7 @@
       "summaryServedCount": "{served} z {total} rekomendacji zgodnych",
       "pillarHeading": "Wspierane filary",
       "economyHeading": "Gospodarka długowieczności",
-      "noPillar": "Niezgodne z filarem",
+      "noPillar": "Niezgodne z filarami",
       "noEconomy": "Niezgodne z gospodarką",
       "pillars": {
         "nutrition": "Odżywianie",
@@ -98,20 +88,7 @@
         "income_generation": "Generowanie dochodu",
         "business_formation": "Zakładanie firmy"
       },
-      "contractLink": "Zobacz umowę Celu Ostatecznego",
-      "_pending_review": {
-        "subtitle": true,
-        "economyHeading": true,
-        "noPillar": true,
-        "noEconomy": true
-      }
-    },
-    "_pending_review": {
-      "priorityFocus": true,
-      "priorityFocusExplanation": true,
-      "takeAction": true,
-      "noSupplements": true,
-      "noReportsDesc": true
+      "contractLink": "Zobacz umowę Celu Ostatecznego"
     }
   }
 }

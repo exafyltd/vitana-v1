@@ -26,7 +26,7 @@
     "searchPlaceholder": "Szukaj mediów...",
     "shortsAvailable": "{count} krótkich filmów dostępnych",
     "filteredBy": "Filtrowano według:",
-    "noMatchingShorts": "Żadne krótkie filmy nie pasują do Twoich zainteresowań",
+    "noMatchingShorts": "Brak krótkich filmów pasujących do Twoich zainteresowań.",
     "viewAllShorts": "Zobacz wszystkie krótkie filmy",
     "tracks": "utwory",
     "min": "min",
@@ -56,20 +56,15 @@
       "podcastDeleted": "Podcast usunięty",
       "podcastDeletedDesc": "Twój podcast został pomyślnie usunięty.",
       "videoDeleted": "Wideo usunięte",
-      "videoDeletedDesc": "Twoje wideo zostało pomyślnie usunięte.",
+      "videoDeletedDesc": "Twój film został pomyślnie usunięty.",
       "videoUpdated": "Sukces",
       "videoUpdatedDesc": "Wideo zaktualizowane pomyślnie",
       "uploadSuccess": "Sukces!",
       "uploadSuccessDesc": "Twój {type} jest teraz dostępny w społeczności.",
       "deleteError": "Błąd",
-      "deleteErrorDesc": "Nie udało się usunąć. Spróbuj ponownie.",
+      "deleteErrorDesc": "Usunięcie nie powiodło się. Spróbuj ponownie.",
       "commentError": "Błąd",
-      "commentErrorDesc": "Nie udało się opublikować komentarza. Spróbuj ponownie.",
-      "_pending_review": {
-        "podcastDeletedDesc": true,
-        "videoDeletedDesc": true,
-        "deleteErrorDesc": true
-      }
+      "commentErrorDesc": "Nie udało się opublikować komentarza. Spróbuj ponownie."
     },
     "comments": {
       "title": "Komentarze",
@@ -153,9 +148,6 @@
         "education": "Edukacja",
         "lifestyle": "Styl życia"
       }
-    },
-    "_pending_review": {
-      "noMatchingShorts": true
     }
   }
 }

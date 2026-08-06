@@ -28,27 +28,18 @@
     "exportComplete": "Eksport zakończony",
     "exportCompleteDesc": "Twoja historia została pomyślnie wyeksportowana.",
     "exportFailed": "Eksport nie powiódł się",
-    "exportFailedDesc": "Wystąpił błąd podczas eksportowania Twojej historii.",
+    "exportFailedDesc": "Wystąpił błąd podczas eksportowania twojej historii.",
     "historyCleared": "Historia wyczyszczona",
     "historyClearedDesc": "Stare elementy historii zostały usunięte.",
     "clearFailed": "Czyszczenie nie powiodło się.",
     "clearFailedDesc": "Wystąpił błąd podczas czyszczenia starej historii.",
     "allHistoryDeleted": "Cała historia usunięta.",
-    "allHistoryDeletedDesc": "Cała Twoja historia została trwale usunięta.",
+    "allHistoryDeletedDesc": "Cała twoja historia została trwale usunięta.",
     "deleteFailed": "Usuwanie nie powiodło się.",
-    "deleteFailedDesc": "Wystąpił błąd podczas usuwania Twojej historii.",
-    "confirmClearOld": "Czy na pewno chcesz wyczyścić historię starszą niż 90 dni?",
-    "confirmDeleteAll": "⚠️ OSTRZEŻENIE: Spowoduje to trwałe usunięcie CAŁEJ Twojej historii. Tej czynności nie można cofnąć. Czy jesteś absolutnie pewien?",
+    "deleteFailedDesc": "Wystąpił błąd podczas usuwania twojej historii.",
+    "confirmClearOld": "Czy na pewno chcesz usunąć historię starszą niż 90 dni?",
+    "confirmDeleteAll": "⚠️ OSTRZEŻENIE: Spowoduje to trwałe usunięcie CAŁEJ twojej historii. Tej czynności nie można cofnąć. Czy jesteś absolutnie pewien?",
     "beta": "Beta",
-    "danger": "Niebezpieczeństwo",
-    "_pending_review": {
-      "archiveSettings": true,
-      "exportCompleteDesc": true,
-      "exportFailedDesc": true,
-      "allHistoryDeletedDesc": true,
-      "deleteFailedDesc": true,
-      "confirmClearOld": true,
-      "confirmDeleteAll": true
-    }
+    "danger": "Niebezpieczeństwo"
   }
 }

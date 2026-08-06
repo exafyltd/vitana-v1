@@ -19,16 +19,11 @@
     "alreadyExists": "Już istnieje",
     "notFound": "Nie znaleziono",
     "invalidSelection": "Nieprawidłowy wybór",
-    "pleaseSelect": "Proszę wybrać opcję",
-    "pleaseEnter": "Proszę wprowadzić wartość",
+    "pleaseSelect": "Proszę wybrać opcję.",
+    "pleaseEnter": "Proszę wprowadzić wartość.",
     "charactersRemaining": "Pozostało {count} znaków",
     "fileTooBig": "Plik jest za duży (maks. {max})",
     "invalidFileType": "Nieprawidłowy typ pliku",
-    "uploadLimit": "Maksymalnie {max} plików",
-    "_pending_review": {
-      "pleaseSelect": true,
-      "pleaseEnter": true
-    }
-  },
-  "_pending_review": {}
+    "uploadLimit": "Maksymalnie {max} plików"
+  }
 }

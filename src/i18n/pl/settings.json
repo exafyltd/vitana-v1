@@ -1,7 +1,7 @@
 {
   "settings": {
     "title": "Ustawienia",
-    "description": "Zarządzaj ustawieniami konta, prywatnością i preferencjami",
+    "description": "Zarządzaj ustawieniami konta, swoją prywatnością i swoimi preferencjami",
     "searchPlaceholder": "Szukaj ustawień, kontroli prywatności, integracji...",
     "quickSetup": "Szybka konfiguracja",
     "tabs": {
@@ -11,9 +11,9 @@
     },
     "categories": {
       "privacy": "Prywatność",
-      "privacyDesc": "Kontroluj, kto widzi Twój profil i aktywności",
+      "privacyDesc": "Kontroluj, kto widzi Twój profil i Twoje aktywności",
       "notifications": "Powiadomienia",
-      "notificationsDesc": "Zarządzaj preferencjami powiadomień",
+      "notificationsDesc": "Zarządzaj swoimi ustawieniami powiadomień",
       "preferences": "Preferencje",
       "preferencesDesc": "Opcje języka, motywu i wyświetlania",
       "connectedApps": "Połączone aplikacje",
@@ -23,11 +23,7 @@
       "billing": "Rozliczenia",
       "billingDesc": "Informacje o subskrypcji i płatnościach",
       "support": "Wsparcie",
-      "supportDesc": "Pomoc, FAQ i opcje kontaktu",
-      "_pending_review": {
-        "privacyDesc": true,
-        "notificationsDesc": true
-      }
+      "supportDesc": "Pomoc, FAQ i opcje kontaktu"
     },
     "status": {
       "privacyStatus": "Status prywatności",
@@ -40,9 +36,6 @@
       "apps": "aplikacje"
     },
     "vitanaOpenedSection": "Vitana otworzyła {section}",
-    "vitanaUpdated": "Vitana zaktualizowała Twoje ustawienie",
-    "_pending_review": {
-      "description": true
-    }
+    "vitanaUpdated": "Vitana zaktualizowała Twoje ustawienie"
   }
 }

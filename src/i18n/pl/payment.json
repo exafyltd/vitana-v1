@@ -13,16 +13,11 @@
     "insufficientBalanceDesc": "Nie masz wystarczającej ilości {currency} na tę wymianę",
     "transactionFailed": "Transakcja nieudana",
     "paymentFailed": "Płatność nieudana",
-    "paymentFailedDesc": "Nie udało się przetworzyć płatności. Spróbuj ponownie.",
+    "paymentFailedDesc": "Płatność nie mogła zostać przetworzona. Spróbuj ponownie.",
     "balanceRefreshed": "Saldo odświeżone",
     "balanceRefreshedDesc": "Saldo portfela zostało zaktualizowane",
     "refreshFailed": "Odświeżanie nieudane",
-    "refreshFailedDesc": "Nie udało się odświeżyć salda. Spróbuj ponownie.",
-    "error": "Błąd",
-    "_pending_review": {
-      "paymentFailedDesc": true,
-      "refreshFailedDesc": true
-    }
-  },
-  "_pending_review": {}
+    "refreshFailedDesc": "Saldo nie mogło zostać zaktualizowane. Spróbuj ponownie.",
+    "error": "Błąd"
+  }
 }

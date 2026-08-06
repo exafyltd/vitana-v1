@@ -12,7 +12,7 @@
     "agenda": "Plan",
     "nothingScheduled": "Nic nie zaplanowano",
     "tryQuickAdd": "Wypróbuj Szybkie Dodawanie lub pozwól Autopilotowi zaplanować Twój dzień",
-    "clickSlotHint": "Kliknij dowolne miejsce, aby utworzyć wydarzenie • Przeciągnij, aby zmienić termin",
+    "clickSlotHint": "Kliknij na slot, aby utworzyć wydarzenie • Przeciągnij, aby przenieść",
     "noEventsOnDate": "Brak wydarzeń w tym dniu",
     "lastSynced": "Ostatnia synchronizacja",
     "justNow": "przed chwilą",
@@ -23,16 +23,13 @@
     "noBookingsToday": "Brak rezerwacji dziś",
     "noBookingsYet": "Brak rezerwacji jeszcze",
     "nextUpcoming": "Następne nadchodzące",
-    "exploreActivities": "Przeglądaj aktywności, aby dodać do kalendarza",
+    "exploreActivities": "Odkryj aktywności dla swojego kalendarza",
     "browseActivities": "Przeglądaj Aktywności",
     "bookedEvents": {
-      "title": "Twoje Zarezerwowane Wydarzenia",
+      "title": "Twoje zarezerwowane wydarzenia",
       "todayLabel": "Dziś",
       "nextUp": "Następne",
-      "noEventsToday": "Brak wydarzeń dzisiaj",
-      "_pending_review": {
-        "title": true
-      }
+      "noEventsToday": "Brak wydarzeń dzisiaj"
     },
     "filters": {
       "personal": "Osobiste",
@@ -66,7 +63,7 @@
       "suggestions": "Sugestie Autopilota",
       "badge": "Autopilot",
       "accept": "Akceptuj",
-      "snooze": "Odłóż",
+      "snooze": "Przypomnij później",
       "dismiss": "Odrzuć",
       "undo": "Cofnij",
       "laterToday": "Później dzisiaj",
@@ -80,20 +77,15 @@
       "reminderLaterToday": "Przypomnienie ustawione na dziś później",
       "reminderTomorrow": "Przypomnienie ustawione na jutro",
       "recommendFocus": "Polecany blok skupienia",
-      "focusBlockDesc": "Masz dostępne 90 minut. Idealne na głęboką pracę.",
-      "_pending_review": {
-        "snooze": true,
-        "suggestionSnoozed": true,
-        "focusBlockDesc": true
-      }
+      "focusBlockDesc": "Masz dostępny 90-minutowy slot czasowy. Idealny do skupionej pracy."
     },
     "toasts": {
       "eventCreated": "Wydarzenie utworzone",
       "eventCreatedDesc": "Twoje wydarzenie zostało dodane do kalendarza",
       "eventDeleted": "Wydarzenie usunięte",
       "eventDeletedDesc": "Wydarzenie zostało usunięte z Twojego kalendarza",
-      "syncingTitle": "Synchronizowanie...",
-      "syncingDesc": "Synchronizowanie z zewnętrznymi kalendarzami",
+      "syncingTitle": "Synchronizuję...",
+      "syncingDesc": "Synchronizuję z zewnętrznymi kalendarzami",
       "syncedTitle": "Zsynchronizowano",
       "syncedDesc": "Kalendarz jest aktualny",
       "joiningEvent": "Dołączanie do wydarzenia",
@@ -102,13 +94,7 @@
       "featureComingSoon": "Funkcja wkrótce dostępna",
       "inviteFollowers": "Zaproś obserwujących",
       "rescheduleEvent": "Przełóż wydarzenie",
-      "shareToGroup": "Udostępnij grupie",
-      "_pending_review": {
-        "eventCreatedDesc": true,
-        "eventDeletedDesc": true,
-        "syncingTitle": true,
-        "syncingDesc": true
-      }
+      "shareToGroup": "Udostępnij grupie"
     },
     "error": {
       "failedToCreate": "Nie udało się utworzyć wydarzenia"
@@ -156,10 +142,6 @@
         "wave-5": "Chwile wglądu",
         "wave-6": "Rekomendacje i odkrycia"
       }
-    },
-    "_pending_review": {
-      "clickSlotHint": true,
-      "exploreActivities": true
     }
   }
 }

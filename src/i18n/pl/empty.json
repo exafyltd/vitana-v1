@@ -10,7 +10,7 @@
     "noUsersFound": "Nie znaleziono użytkowników.",
     "noTransactionsFound": "Nie znaleziono transakcji.",
     "noEventsYet": "Brak wydarzeń. Utwórz najpierw wydarzenie.",
-    "tryAdjustingFilters": "Spróbuj dostosować filtry lub zapytanie wyszukiwania.",
+    "tryAdjustingFilters": "Spróbuj dostosować swoje filtry lub zapytanie wyszukiwania.",
     "noData": "Brak dostępnych danych.",
     "noMessages": "Brak wiadomości.",
     "noNotifications": "Brak powiadomień.",
@@ -22,10 +22,6 @@
     "healthEmpty": "Zaloguj swój pierwszy wpis, aby uruchomić swój Indeks.",
     "noActionsMatchedYet": "Brak dopasowanych działań — Autopilot kształtuje sugestie.",
     "actionsPendingOne": "{count} oczekujące działanie",
-    "actionsPendingOther": "{count} oczekujących działań",
-    "_pending_review": {
-      "tryAdjustingFilters": true
-    }
-  },
-  "_pending_review": {}
+    "actionsPendingOther": "{count} oczekujących działań"
+  }
 }

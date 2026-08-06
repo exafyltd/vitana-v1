@@ -7,20 +7,16 @@
       "enable": "Włącz",
       "showcaseTitle": "Rekomendacje Autopilota",
       "showcaseBadge": "Inteligentne",
-      "showcaseDesc": "Na podstawie Twojej aktywności, te posty mogą dobrze sprawdzić się jako wyróżniona treść:",
+      "showcaseDesc": "Na podstawie Twojej aktywności, te posty mogłyby dobrze się sprawdzić jako wyróżniona treść:",
       "suggestPopular": "Sugeruj popularne posty",
       "recentHighlights": "Ostatnie wyróżnienia",
       "archetypeTitle": "Wglądy w archetyp",
       "archetypeBadge": "Analiza AI",
-      "archetypeDesc": "Twoje aktywności wellness sugerują, że możesz być „Uważnym Ruchowcem” – chcesz zaktualizować?",
+      "archetypeDesc": "Twoje aktywności wellness sugerują, że możesz być \"Uważnym Ruchowcem\" — czy chcesz zaktualizować?",
       "updateArchetype": "Zaktualizuj archetyp",
       "profileSectionTitle": "Autopilot może dopracować Twój profil ✨",
       "profileSectionDesc": "Otrzymuj sugestie oparte na AI dotyczące Twojego bio, archetypu i wyróżnień.",
-      "tryAutopilot": "Wypróbuj Autopilota",
-      "_pending_review": {
-        "showcaseDesc": true,
-        "archetypeDesc": true
-      }
+      "tryAutopilot": "Wypróbuj Autopilota"
     },
     "preview": "Podgląd Autopilota",
     "viewAll": "Zobacz wszystko",
@@ -33,9 +29,9 @@
     "popup": {
       "title": "Działania Autopilota",
       "selectedOf": "{selected} z {total} wybranych",
-      "readyToExecute": "Gotowe do wykonania {count} akcji przygotowanych przez Twojego asystenta AI.",
+      "readyToExecute": "Gotowe do wykonania {count} akcji, które przygotował Twój asystent AI.",
       "executingTitle": "Wykonywanie akcji...",
-      "executingDesc": "Proszę czekać, podczas gdy AI obsługuje Twoje prośby.",
+      "executingDesc": "Poczekaj, podczas gdy AI przetwarza Twoje prośby.",
       "complete": "{percent}% ukończono",
       "go": "IDŹ ({count})",
       "notNow": "Nie teraz",
@@ -45,11 +41,7 @@
       "toastExecutedTitle": "Działania wykonane",
       "toastExecutedDesc": "{success}/{total} działań ukończono pomyślnie",
       "toastFailedTitle": "Wykonanie nie powiodło się",
-      "toastFailedDesc": "Coś poszło nie tak. Spróbuj ponownie.",
-      "_pending_review": {
-        "readyToExecute": true,
-        "executingDesc": true
-      }
+      "toastFailedDesc": "Coś poszło nie tak. Spróbuj ponownie."
     },
     "priorities": {
       "high": "Wysoki",
@@ -62,33 +54,25 @@
       "paused": "Wstrzymany",
       "doNow": "Zrób teraz",
       "allOptimized": "Wszystko zoptymalizowane! 🎯",
-      "enableToSee": "Włącz Autopilota, aby zobaczyć sugestie",
-      "completeForRewards": "Ukończ sugestie Autopilota, aby otrzymać nagrody",
-      "enableForCredits": "Włącz Autopilota, aby otrzymać kredyty",
-      "_pending_review": {
-        "enableToSee": true,
-        "completeForRewards": true,
-        "enableForCredits": true
-      }
+      "enableToSee": "Aktywuj Autopilota, aby zobaczyć sugestie.",
+      "completeForRewards": "Ukończ sugestie Autopilota, aby otrzymać nagrody.",
+      "enableForCredits": "Aktywuj Autopilota za kredyty."
     },
     "insightBanner": {
       "title": "Przegląd kondycji Autopilota",
-      "description": "Twój Autopilot Vitana przeanalizował obecne plany i spójność.",
+      "description": "Twój Autopilot Vitana przeanalizował ostatnie plany i spójność.",
       "synergyIndex": "Indeks synergii",
       "statusBalanced": "Zrównoważony",
       "statusNeedsAttention": "Wymaga uwagi",
-      "statusImproving": "Poprawia się",
-      "_pending_review": {
-        "description": true
-      }
+      "statusImproving": "Poprawia się"
     },
     "profilePopup": {
-      "title": "Pozwól Autopilotowi dopracować Twój profil ✨",
-      "polishBio": "Dopracuj moje Bio",
+      "title": "Pozwól Autopilotowi zoptymalizować Twój profil ✨",
+      "polishBio": "Zoptymalizuj swoje Bio.",
       "polishBioDesc": "Autopilot może przepisać sekcję „O mnie”, aby była bardziej inspirująca",
-      "refreshArchetype": "Odśwież mój Archetyp",
+      "refreshArchetype": "Zaktualizuj swój Archetyp.",
       "refreshArchetypeDesc": "Zasugeruj aktualizację Archetypu Długowieczności na podstawie aktywności",
-      "highlightShowcase": "Wyróżnij mój Profil",
+      "highlightShowcase": "Wyróżnij swój profil.",
       "highlightShowcaseDesc": "Zasugeruj najlepsze posty lub media do wyróżnionej treści",
       "styleProfile": "Stylizuj mój Profil",
       "styleProfileDesc": "Zasugeruj ulepszenia zdjęcia w tle, ról, zdjęcia profilowego",
@@ -103,35 +87,23 @@
       "acceptAll": "Akceptuj wszystko",
       "applied": "Zmiany zapisane!",
       "error": "Coś poszło nie tak",
-      "comingSoon": "Wkrótce",
-      "_pending_review": {
-        "title": true,
-        "polishBio": true,
-        "refreshArchetype": true,
-        "highlightShowcase": true
-      }
+      "comingSoon": "Wkrótce"
     },
     "actions": {
       "action1Title": "Dołącz do Grupy Tańca Długowieczności Dziś wieczorem?",
-      "action1Reason": "Idealne dopasowanie do Twoich celów ruchowych + wibracje społecznego wellness",
+      "action1Reason": "Idealnie pasujące do Twoich celów ruchowych + społecznych wibracji wellness.",
       "action2Title": "Przełomowa Wskazówka AI Właśnie Wpadła",
-      "action2Reason": "Twój cyfrowy bliźniak odkrył coś fascynującego z Twoich wzorców",
+      "action2Reason": "Twój cyfrowy bliźniak odkrył coś fascynującego w Twoich wzorcach.",
       "action3Title": "Seria Nawodnienia 5 Dni — Status Legendy Czeka",
       "action3Reason": "Jeszcze jeden łyk bliżej do Twojego tygodniowego mistrzostwa w nawodnieniu",
       "action4Title": "Auto-zaproś Ekipę na Epickie Weekendowe Spotkanie",
       "action4Reason": "Sarah, Luna i Marcus to idealne dopasowania do plemienia długowieczności",
-      "action5Title": "Twoja Historia Biomarkerów Czeka",
-      "action5Reason": "Dr Chen rozszyfrował ekscytujące spostrzeżenia z Twojego najnowszego panelu",
+      "action5Title": "Twoja historia biomarkerów czeka.",
+      "action5Reason": "Dr Chen ujawnił ekscytujące spostrzeżenia z Twojego najnowszego panelu.",
       "action6Title": "Magia Uważnego Poranka",
       "action6Reason": "Twoja dusza woła o te techniki topiące stres",
       "newActionTitle": "Nowa sugestia AI",
-      "newActionReason": "Na podstawie ostatnich wzorców aktywności",
-      "_pending_review": {
-        "action1Reason": true,
-        "action2Reason": true,
-        "action5Title": true,
-        "action5Reason": true
-      }
+      "newActionReason": "Na podstawie ostatnich wzorców aktywności"
     }
   }
 }

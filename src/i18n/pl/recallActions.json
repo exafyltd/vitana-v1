@@ -1,6 +1,6 @@
 {
   "recallActions": {
-    "title": "Wyszukiwanie wspomnień i akcje przywoływania",
+    "title": "Działania wyszukiwania i pobierania przypomnień",
     "items": {
       "askAiQuestion": {
         "title": "Zapytaj AI",
@@ -34,9 +34,6 @@
         "title": "Szybkie przywoływanie",
         "description": "Uzyskaj dostęp do często wyszukiwanych wspomnień i zapytań."
       }
-    },
-    "_pending_review": {
-      "title": true
     }
   }
 }

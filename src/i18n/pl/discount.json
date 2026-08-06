@@ -1,6 +1,6 @@
 {
   "discount": {
-    "welcomeTitle": "Twój Prezent Powitalny",
+    "welcomeTitle": "Twój prezent powitalny",
     "welcomeMessage": "Użyj tego kodu, aby otrzymać 10% zniżki na pierwsze wydarzenie.",
     "validFor": "Ważny przez 90 dni",
     "applyCode": "Zastosuj kod zniżkowy",
@@ -12,7 +12,7 @@
     "discountAppliedAmount": "Zniżka {percent}% zastosowana",
     "remove": "Usuń",
     "ticketsComing": "Bilety wkrótce dostępne",
-    "contactOrganizer": "Skontaktuj się z organizatorem wydarzenia w sprawie biletów.",
+    "contactOrganizer": "Skontaktuj się z organizatorem w sprawie informacji o biletach.",
     "contactOrganizerPrice": "To wydarzenie kosztuje ${price}. Skontaktuj się z organizatorem w sprawie dostępności biletów.",
     "soldOut": "Wyprzedane",
     "salesEnded": "Sprzedaż zakończona",
@@ -21,19 +21,14 @@
     "ticketsSelected": "Wybrano {count} bilet(y)",
     "useAccountEmail": "Użyj mojego e-maila z konta",
     "buyAsGuest": "Kup jako gość (bez konta)",
-    "guestDetails": "Wprowadź swoje dane, aby otrzymać bilet. Konto nie jest wymagane.",
+    "guestDetails": "Wprowadź swoje dane, aby otrzymać swój bilet. Nie potrzebujesz konta.",
     "fullName": "Imię i nazwisko",
     "email": "E-mail",
     "ticketEmailNote": "Twój bilet i potwierdzenie zostaną wysłane na ten adres e-mail.",
     "left": "Pozostało {count}",
     "loadFailed": "Nie udało się załadować biletów",
     "_pending_review": {
-      "welcomeTitle": true,
-      "welcomeMessage": true,
-      "discountAppliedAmount": true,
-      "contactOrganizer": true,
-      "guestDetails": true
+      "welcomeMessage": true
     }
-  },
-  "_pending_review": {}
+  }
 }

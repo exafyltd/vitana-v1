@@ -5,34 +5,29 @@
       "choosePathGuide": "Wybierz ścieżkę, a my poprowadzimy Cię do Twojego pierwszego źródła dochodu.",
       "startEarning": "Zacznij zarabiać",
       "howToEarn": "Jak chcesz zarabiać?",
-      "pickOne": "Wybierz jedno — zawsze możesz zrobić pozostałe później.",
+      "pickOne": "Wybierz opcję — inne możesz sprawdzić później.",
       "createEvent": "Utwórz wydarzenie",
       "createEventDesc": "Zorganizuj własne wydarzenie i sprzedawaj bilety.",
       "addToInventory": "Dodaj wydarzenia do oferty",
       "addToInventoryDesc": "Odsprzedawaj wyselekcjonowane wydarzenia i zarabiaj prowizję.",
       "createService": "Utwórz usługę",
-      "createServiceDesc": "Oferuj sesje, które ludzie mogą rezerwować.",
+      "createServiceDesc": "Oferuj sesje do rezerwacji.",
       "createPromotion": "Utwórz promocję",
       "createPromotionDesc": "Zwiększ widoczność i udostępnij w mediach społecznościowych.",
       "hostAndSell": "Organizuj i sprzedawaj bilety",
       "resellAndEarn": "Odsprzedawaj i zarabiaj",
       "offerBookings": "Oferuj rezerwacje",
-      "boostVisibility": "Zwiększ widoczność",
-      "_pending_review": {
-        "howToEarn": true,
-        "pickOne": true,
-        "createServiceDesc": true
-      }
+      "boostVisibility": "Zwiększ widoczność"
     },
     "history": {
       "all": "Wszystkie",
       "directSales": "Sprzedaż bezpośrednia",
       "reseller": "Odsprzedawca",
-      "noEarningsYet": "Brak historii zarobków",
-      "startSellingToSee": "Zacznij sprzedawać, aby zobaczyć swoje transakcje tutaj.",
+      "noEarningsYet": "Brak historii zarobków.",
+      "startSellingToSee": "Zacznij sprzedawać, aby zobaczyć tutaj swoje transakcje.",
       "ticketsSold": "Sprzedane bilety",
       "grossAmount": "Kwota brutto",
-      "youEarned": "Zarobiłeś/aś",
+      "youEarned": "Zarobiłeś",
       "paidToWallet": "Wypłacono do portfela",
       "pendingPayout": "Oczekująca wypłata",
       "transactionId": "ID transakcji",
@@ -40,16 +35,10 @@
       "last7Days": "Ostatnie 7 dni",
       "last30Days": "Ostatnie 30 dni",
       "last90Days": "Ostatnie 90 dni",
-      "allTime": "Cały czas",
+      "allTime": "Całkowity czas",
       "details": "Szczegóły",
       "earningsActivity": "Aktywność zarobków",
-      "noEarningsStartSelling": "Brak zarobków. Zacznij sprzedawać, aby zobaczyć tutaj aktywność.",
-      "_pending_review": {
-        "noEarningsYet": true,
-        "startSellingToSee": true,
-        "youEarned": true,
-        "allTime": true
-      }
+      "noEarningsStartSelling": "Brak zarobków. Zacznij sprzedawać, aby zobaczyć tutaj aktywność."
     },
     "kpi": {
       "totalEarnings": "Całkowite zarobki",
@@ -70,13 +59,9 @@
       "viewMyEvents": "Zobacz moje wydarzenia",
       "totalGrossSales": "Całkowita sprzedaż brutto",
       "resellerCommissions": "Prowizje odsprzedawcy",
-      "goToSellEarn": "Przejdź do Sprzedawaj i Zarabiaj",
-      "totalEarned": "Całkowicie zarobione",
-      "earningsBySource": "Zarobki według źródła",
-      "_pending_review": {
-        "goToSellEarn": true,
-        "totalEarned": true
-      }
+      "goToSellEarn": "Sprzedawaj i zarabiaj",
+      "totalEarned": "Całkowite zarobki",
+      "earningsBySource": "Zarobki według źródła"
     },
     "reseller": {
       "upcomingEvents": "Nadchodzące wydarzenia",
@@ -84,13 +69,13 @@
       "resellerCode": "Kod odsprzedawcy",
       "codeCopied": "Kod sprzedawcy skopiowany!",
       "noSalesYet": "Brak sprzedaży",
-      "shareLinkToStart": "Udostępnij link, aby zacząć zarabiać.",
+      "shareLinkToStart": "Udostępnij link, aby zarabiać.",
       "tickets": "bilety",
       "shareResellerLink": "Udostępnij link sprzedawcy",
       "createPromotion": "Utwórz promocję",
-      "shareLinkOrPromotion": "Udostępnij swoje linki sprzedawcy lub utwórz promocję, aby zacząć zarabiać prowizje.",
+      "shareLinkOrPromotion": "Udostępnij swoje linki sprzedawcy lub utwórz promocję, aby zarabiać prowizje.",
       "selectEventToShare": "Wybierz wydarzenie do udostępnienia",
-      "pickEventForLink": "Wybierz wydarzenie, aby wygenerować swój link sprzedawcy",
+      "pickEventForLink": "Wybierz wydarzenie, aby wygenerować swój link sprzedawcy.",
       "noEventsToSell": "Brak wydarzeń dostępnych do sprzedaży",
       "commission": "prowizja",
       "commissionEarned": "Zarobiona prowizja",
@@ -99,24 +84,16 @@
       "noPayoutsYet": "Brak wypłat",
       "attributedSales": "Sprzedaż przypisana do wydarzenia",
       "noSalesMatchFilter": "Brak sprzedaży pasującej do bieżących filtrów",
-      "mockDataActive": "Dane testowe aktywne",
-      "_pending_review": {
-        "shareLinkToStart": true,
-        "shareLinkOrPromotion": true,
-        "pickEventForLink": true
-      }
+      "mockDataActive": "Dane testowe aktywne"
     },
     "transfer": {
       "title": "Przelej do Portfela",
       "description": "Przelej swoje oczekujące prowizje sprzedawcy do Portfela VITANA.",
       "pending": "Oczekujące",
       "wallet": "Portfel",
-      "instantCredit": "Spowoduje to natychmiastowe dodanie Twoich zarobków do salda portfela.",
+      "instantCredit": "To natychmiastowo zasili Twoje zarobki na saldo Portfela.",
       "transferring": "Przelewanie...",
-      "transfer": "Przelej",
-      "_pending_review": {
-        "instantCredit": true
-      }
+      "transfer": "Przelej"
     },
     "typeSelector": {
       "title": "Rozpocznij Biznes",
@@ -128,15 +105,12 @@
       "sellTicketsDesc": "Promuj wydarzenia i zarabiaj prowizje",
       "badgeNew": "Nowe",
       "badgeActive": "Aktywne",
-      "alreadyReseller": "Jesteś już sprzedawcą! Sprawdź zakładkę Sprzedawaj i Zarabiaj.",
-      "cancel": "Anuluj",
-      "_pending_review": {
-        "alreadyReseller": true
-      }
+      "alreadyReseller": "Jesteś już sprzedawcą! Sprawdź zakładkę „Sprzedawaj i zarabiaj”.",
+      "cancel": "Anuluj"
     },
     "missionOpportunities": {
       "title": "Możliwości Misji",
-      "subtitle": "Ścieżki rekomendowane przez Autopilota, które rozwijają gospodarkę długowieczności",
+      "subtitle": "Sugerowane przez Autopilota ścieżki rozwijające gospodarkę długowieczności",
       "loading": "Ładowanie możliwości…",
       "error": "Nie udało się załadować możliwości",
       "empty": "Brak jeszcze rekomendacji zgodnych z gospodarką. Sprawdź później.",
@@ -145,14 +119,8 @@
         "find_match": "Znajdź Parę",
         "marketplace": "Rynek",
         "income_generation": "Generowanie dochodu",
-        "business_formation": "Tworzenie biznesu",
-        "_pending_review": {}
-      },
-      "_pending_review": {
-        "subtitle": true
+        "business_formation": "Tworzenie biznesu"
       }
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    }
+  }
 }

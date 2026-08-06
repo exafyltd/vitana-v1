@@ -2,7 +2,7 @@
   "tasks": {
     "noOpenTasks": "Brak otwartych zadań",
     "confirmCancelTask": "Czy na pewno chcesz anulować to zadanie?",
-    "postponeComingSoon": "Funkcja odłóż już wkrótce",
+    "postponeComingSoon": "Funkcja zmiany terminu już wkrótce",
     "addNotePrompt": "Dodaj notatkę do tego zadania:",
     "noteAdded": "Notatka dodana: {note}",
     "navigateTo": "Przejdź do: {url}",
@@ -14,11 +14,6 @@
     "postpone": "Odłóż",
     "addNote": "Dodaj notatkę",
     "openContext": "Otwórz kontekst",
-    "assignee": "Przypisany",
-    "_pending_review": {
-      "postponeComingSoon": true,
-      "navigateTo": true
-    }
-  },
-  "_pending_review": {}
+    "assignee": "Przypisany"
+  }
 }

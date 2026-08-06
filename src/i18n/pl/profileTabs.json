@@ -1,16 +1,13 @@
 {
   "profileTabs": {
     "posts": "Posty",
-    "about": "Informacje",
+    "about": "Mój profil",
     "media": "Media",
     "groups": "Grupy",
     "events": "Wydarzenia",
     "health": "Zdrowie",
     "services": "Usługi",
     "insight": "Wgląd",
-    "milestones": "Kamienie milowe",
-    "_pending_review": {
-      "about": true
-    }
+    "milestones": "Kamienie milowe"
   }
 }
