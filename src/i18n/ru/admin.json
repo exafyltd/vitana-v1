@@ -1,0 +1,25 @@
+{
+  "admin": {
+    "media": {
+      "updateSuccess": "Статус успешно обновлен",
+      "updateFailed": "Не удалось обновить статус",
+      "deleteSuccess": "Успешно удалено",
+      "deleteFailed": "Не удалось удалить",
+      "podcastStatus": "Подкаст {status}",
+      "podcastDeleted": "Подкаст удален",
+      "musicDeleted": "Музыка удалена",
+      "videoDeleted": "Видео удалено",
+      "searchPodcasts": "Искать подкасты...",
+      "searchMusic": "Искать музыку...",
+      "searchVideos": "Искать видео...",
+      "filterByStatus": "Фильтровать по статусу",
+      "allStatus": "Все статусы",
+      "pending": "В ожидании",
+      "approved": "Одобрено",
+      "rejected": "Отклонено",
+      "flagged": "Помечено",
+      "podcastManagement": "Управление подкастами",
+      "podcastManagementDesc": "Просмотр и модерация загрузок подкастов"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "tasks": {
+    "noOpenTasks": "Нет открытых задач",
+    "confirmCancelTask": "Ты уверен(а), что хочешь отменить эту задачу?",
+    "postponeComingSoon": "Функция отложить скоро появится",
+    "addNotePrompt": "Добавь заметку к этой задаче:",
+    "noteAdded": "Заметка добавлена: {note}",
+    "navigateTo": "Перейти к: {url}",
+    "openVtid": "Открыть VTID: {vtid}",
+    "description": "Описание",
+    "activityLog": "Журнал активности",
+    "relatedLinks": "Связанные ссылки",
+    "complete": "Завершить",
+    "postpone": "Отложить",
+    "addNote": "Добавить заметку",
+    "openContext": "Открыть контекст",
+    "assignee": "Исполнитель"
+  }
+}

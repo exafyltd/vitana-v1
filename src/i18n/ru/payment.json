@@ -1,0 +1,23 @@
+{
+  "payment": {
+    "completed": "Платеж завершен! ✅",
+    "sentSuccess": "{amount} успешно отправлено",
+    "alreadyProcessed": "Уже обработано",
+    "requestIs": "Этот запрос {status}.",
+    "alreadyAccepted": "Этот запрос на платеж уже принят.",
+    "declined": "Платеж отклонен",
+    "declinedDesc": "Запрос на платеж отклонен",
+    "exchangeSuccess": "Обмен и отправка успешны! ✨",
+    "exchangeSuccessDesc": "Конвертировано и отправлено {amount}",
+    "insufficientBalance": "Недостаточно средств",
+    "insufficientBalanceDesc": "У тебя недостаточно {currency} для этого обмена",
+    "transactionFailed": "Транзакция не удалась",
+    "paymentFailed": "Платеж не удался",
+    "paymentFailedDesc": "Не удалось обработать платеж. Пожалуйста, попробуй еще раз.",
+    "balanceRefreshed": "Баланс обновлен",
+    "balanceRefreshedDesc": "Баланс кошелька обновлен",
+    "refreshFailed": "Обновление не удалось",
+    "refreshFailedDesc": "Не удалось обновить баланс. Пожалуйста, попробуй еще раз.",
+    "error": "Ошибка"
+  }
+}

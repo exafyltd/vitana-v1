@@ -1,0 +1,22 @@
+{
+  "packages": {
+    "confirmDelete": "Ты уверен(а), что хочешь удалить этот пакет?",
+    "types": {
+      "bundle": "Набор",
+      "subscription": "Подписка",
+      "program": "Программа"
+    },
+    "status": {
+      "draft": "Черновик",
+      "published": "Активный",
+      "archived": "Архивировано"
+    },
+    "item": "элемент",
+    "items": "элементы",
+    "total": "всего",
+    "validDays": "Действует {days} дней",
+    "save": "Сэкономь {percent}%",
+    "unpublish": "Снять с публикации",
+    "publish": "Опубликовать"
+  }
+}

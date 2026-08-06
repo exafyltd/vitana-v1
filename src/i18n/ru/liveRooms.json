@@ -1,0 +1,151 @@
+{
+  "liveRooms": {
+    "title": "Прямые комнаты",
+    "description": "Присоединяйся к прямым аудио- и видео-обсуждениям",
+    "tabs": {
+      "live": "В эфире сейчас",
+      "scheduled": "Запланировано",
+      "all": "Все комнаты",
+      "past": "Прошедшие"
+    },
+    "goLive": "Выйти в эфир",
+    "joinRoom": "Присоединиться к комнате",
+    "noRooms": "Пока нет прямых комнат",
+    "beFirst": "Будь первым, кто выйдет в эфир",
+    "demoRoom": "Демо-комната",
+    "demoRoomDesc": "Это пример комнаты. Создай свою, чтобы выйти в эфир!",
+    "search": {
+      "placeholder": "Искать комнаты, темы или ведущих...",
+      "category": "Категория",
+      "allCategories": "Все категории"
+    },
+    "room": {
+      "join": "Присоединиться",
+      "participants": "Участники",
+      "duration": "Длительность",
+      "host": "Ведущий",
+      "premium": "Премиум",
+      "live": "В ЭФИРЕ"
+    },
+    "viewer": {
+      "leave": "Выйти",
+      "mute": "Отключить звук",
+      "video": "Видео",
+      "raiseHand": "Поднять руку",
+      "chat": "Чат",
+      "reactions": "Реакции"
+    },
+    "goLivePopup": {
+      "titleCreate": "Выйти в эфир",
+      "titleEdit": "Редактировать прямой эфир",
+      "streamTitleLabel": "Название эфира",
+      "streamTitlePlaceholder": "В эфире с {name}",
+      "descriptionLabel": "Описание / Биография (Необязательно)",
+      "descriptionPlaceholder": "Расскажи своей аудитории, о чем этот стрим…",
+      "charactersCount": "{count}/500 символов",
+      "streamTypeLabel": "Тип стрима",
+      "streamTypeAudio": "Аудио",
+      "streamTypeVideo": "Видео",
+      "coverLabel": "Обложка / Миниатюра",
+      "coverAlt": "Обложка стрима",
+      "coverUploadCta": "Нажми, чтобы загрузить свое изображение",
+      "coverUploadHint": "Любое изображение – размер изменится автоматически",
+      "aiAutoGenerateLabel": "Автоматически сгенерировать с помощью ИИ",
+      "aiAutoGenerateHint": "Сгенерировать изображение, если не загружено",
+      "generatingAiImage": "Генерируется ИИ-изображение…",
+      "tagsLabel": "Теги / Категория (Выбери 1-3)",
+      "tagsSelected": "{count}/3 выбрано",
+      "tags": {
+        "wellness": "Благополучие",
+        "nutrition": "Питание",
+        "fitness": "Фитнес",
+        "mentalHealth": "Психическое здоровье",
+        "longevity": "Долголетие",
+        "meditation": "Медитация",
+        "sleep": "Сон",
+        "motivation": "Мотивация",
+        "education": "Образование",
+        "lifestyle": "Образ жизни"
+      },
+      "advancedTitle": "Расширенные настройки",
+      "cohostLabel": "Соведущий / Приглашение гостя",
+      "cohostPlaceholder": "Найди и добавь соведущего",
+      "accessLevelLabel": "Уровень доступа",
+      "access": {
+        "public": {
+          "label": "Публичный",
+          "desc": "Любой может присоединиться"
+        },
+        "followers": {
+          "label": "Только подписчики",
+          "desc": "Только твои подписчики"
+        },
+        "group": {
+          "label": "Группа/VIP",
+          "desc": "Только приглашенные участники"
+        }
+      },
+      "scheduleLabel": "Запланировать на потом",
+      "goLiveNow": "Выйти в эфир сейчас",
+      "selectTime": "Выбери время",
+      "clearSchedule": "Отменить расписание (Выйти в эфир сейчас)",
+      "scheduledAt": "{date} в {time}",
+      "dateNeedsTime": "{date} – выбери время",
+      "time": "Время",
+      "engagementLabel": "Чат и вовлеченность",
+      "enableChatTitle": "Включить чат",
+      "enableChatDesc": "Разрешить зрителям общаться в чате",
+      "enablePollsTitle": "Включить опросы",
+      "enablePollsDesc": "Создавай опросы во время трансляции",
+      "recordReplayTitle": "Записать для повтора",
+      "recordReplayDesc": "Сохранить трансляцию для просмотра позже",
+      "cancel": "Отмена",
+      "starting": "Запуск…",
+      "updating": "Обновление…",
+      "updateStream": "Обновить трансляцию",
+      "scheduleSession": "Запланировать прямой эфир",
+      "goLiveNowAction": "Начать прямой эфир",
+      "errors": {
+        "selectStreamTypeTitle": "Выбери тип трансляции",
+        "selectStreamTypeDesc": "Пожалуйста, выбери Аудио или Видео",
+        "notLoggedInTitle": "Ошибка",
+        "notLoggedInDesc": "Ты должен быть авторизован, чтобы начать эфир",
+        "invalidFileTypeTitle": "Недопустимый тип файла",
+        "invalidFileTypeDesc": "Пожалуйста, выбери файл изображения (JPEG, PNG, WebP)",
+        "fileTooLargeTitle": "Файл слишком большой",
+        "fileTooLargeDesc": "Изображение должно быть меньше 2 МБ",
+        "imageUploadFailedTitle": "Не удалось загрузить изображение",
+        "imageUploadFailedDesc": "Мы сохраним текущее изображение.",
+        "genericTitle": "Ошибка",
+        "genericDesc": "Не удалось создать трансляцию. Пожалуйста, попробуй еще раз.",
+        "genericDescWithReason": "Не удалось создать трансляцию: {reason}. Пожалуйста, попробуй еще раз."
+      },
+      "success": {
+        "streamUpdatedTitle": "Трансляция обновлена! ✨",
+        "streamUpdatedDesc": "Твоя трансляция успешно обновлена",
+        "streamScheduledTitle": "Трансляция запланирована! 📅",
+        "streamScheduledDesc": "Твоя трансляция запланирована на {date} в {time}",
+        "youAreLiveTitle": "Ты в эфире! 🎙️",
+        "youAreLiveDesc": "Вход в твою комнату трансляции…",
+        "aiImageHintTitle": "Генерация ИИ-изображения",
+        "aiImageHintDesc": "Изображение будет сгенерировано при начале трансляции."
+      }
+    },
+    "editSession": {
+      "title": "Редактировать сессию",
+      "saving": "Сохранение…",
+      "changeCover": "Изменить обложку",
+      "noChanges": "Нет изменений для сохранения"
+    }
+  },
+  "goLivePopup": {
+    "durationLabel": "Длительность",
+    "duration15": "15 минут",
+    "duration30": "30 минут",
+    "duration45": "45 минут",
+    "duration60": "1 час",
+    "duration90": "1,5 часа",
+    "duration120": "2 часа",
+    "durationHint": "Комната закроется автоматически по истечении этого времени, если ты не завершишь ее вручную."
+  }
+}

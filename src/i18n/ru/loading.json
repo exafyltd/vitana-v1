@@ -1,0 +1,11 @@
+{
+  "loading": {
+    "default": "Загрузка...",
+    "groups": "Загрузка групп...",
+    "messages": "Загрузка сообщений...",
+    "uploading": "Отправка...",
+    "uploadingProgress": "Отправка... {progress}%",
+    "processing": "Обработка...",
+    "saving": "Сохранение..."
+  }
+}

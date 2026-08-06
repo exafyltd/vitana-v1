@@ -1,0 +1,21 @@
+{
+  "calendarPopup": {
+    "title": "Календарь",
+    "nextEvents": "Следующие {count} события",
+    "conflicts": "{count} конфликтов",
+    "upcomingSchedule": "Твое предстоящее расписание и события",
+    "addNewEvent": "Добавить новое событие",
+    "noUpcomingEvents": "Нет предстоящих событий",
+    "createFirstEvent": "Создай свое первое событие",
+    "aiSuggestions": "ИИ-Предложения",
+    "findBetterSlot": "Найти лучшее время",
+    "prepareBrief": "Подготовь краткое описание",
+    "shareAvailability": "Поделись доступностью",
+    "syncExternal": "Синхронизировать внешнее",
+    "addEvent": "Добавить событие",
+    "quickAdd": "Быстрое добавление",
+    "eventFormComingSoon": "Форма создания события скоро появится",
+    "externalSync": "Внешняя синхронизация",
+    "connectingCalendars": "Подключение к внешним календарям..."
+  }
+}

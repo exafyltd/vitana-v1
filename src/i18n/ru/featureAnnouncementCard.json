@@ -1,0 +1,16 @@
+{
+  "featureAnnouncementCard": {
+    "brandNew": {
+      "eyebrow": "Новая функция",
+      "badge": "Новое",
+      "intro": "Теперь ты можешь:",
+      "cta": "Попробуй сам",
+      "closing": "Удачного тестирования 🥳"
+    },
+    "didYouKnow": {
+      "eyebrow": "Знаешь ли ты?",
+      "intro": "Ты можешь:",
+      "cta": "Попробуй сейчас"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "glassMode": {
+    "shareWithAI": "Поделиться выбором с ИИ?",
+    "screenSharingComingSoon": "🖥️ Демонстрация экрана скоро",
+    "screenSharingDesc": "Поделись своим экраном с VITANA для контекстной помощи.",
+    "screenSharingStopped": "Демонстрация экрана остановлена",
+    "glassModeDisabled": "Режим стекла отключен",
+    "cameraModeComingSoon": "📹 Режим камеры скоро",
+    "cameraModeDesc": "Взаимодействия ИИ на основе зрения будут доступны в следующем обновлении.",
+    "diaryReady": "Дневник готов",
+    "openingDiary": "Открытие записи дневника",
+    "autopilotActivated": "Автопилот активирован",
+    "runningAutopilot": "Запущен режим автопилота",
+    "textInputReady": "Ввод текста готов",
+    "typeMessage": "Теперь ты можешь ввести свое сообщение",
+    "actionFailed": "Действие не удалось",
+    "couldNotExecute": "Не удалось выполнить {action}"
+  }
+}

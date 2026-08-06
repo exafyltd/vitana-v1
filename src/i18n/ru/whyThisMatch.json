@@ -1,0 +1,35 @@
+{
+  "_pending_review": {},
+  "whyThisMatch": {
+    "_pending_review": {
+      "title": true,
+      "interpretedAs": true,
+      "consideredSignals": true,
+      "showSomeoneElse": true,
+      "dismiss": true,
+      "ethicsNote": true,
+      "loadingRecipe": true,
+      "recipeUnavailable": true
+    },
+    "title": "Why this member?",
+    "interpretedAs": "Vitana understood:",
+    "consideredSignals": "Signals considered:",
+    "showSomeoneElse": "Show me someone else",
+    "dismiss": "Dismiss",
+    "ethicsNote": "Vitana doesn't rank members on appearance or wealth — but here's someone whose journey shines right now.",
+    "loadingRecipe": "Loading search details…",
+    "recipeUnavailable": "Those search details are no longer available.",
+    "tierLabel": {
+      "1": "Exact match",
+      "2": "Vitana Index",
+      "3": "Closest match",
+      "4": "Fairness re-route",
+      "_pending_review": {
+        "1": true,
+        "2": true,
+        "3": true,
+        "4": true
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "_pending_review": {},
+  "walletActions": {
+    "_pending_review": {
+      "title": true,
+      "addFunds": true,
+      "send": true,
+      "exchange": true,
+      "withdraw": true,
+      "buyCredits": true,
+      "stakeTokens": true
+    },
+    "title": "Quick Actions",
+    "addFunds": "Deposit",
+    "send": "Send",
+    "exchange": "Swap",
+    "withdraw": "Withdraw",
+    "buyCredits": "Buy VTNA Credits",
+    "stakeTokens": "Stake Tokens"
+  }
+}

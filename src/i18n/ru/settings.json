@@ -1,0 +1,41 @@
+{
+  "settings": {
+    "title": "Настройки",
+    "description": "Управляй настройками аккаунта, конфиденциальностью и предпочтениями",
+    "searchPlaceholder": "Поиск настроек, элементов управления конфиденциальностью, интеграций...",
+    "quickSetup": "Быстрая настройка",
+    "tabs": {
+      "overview": "Обзор",
+      "notifications": "Уведомления",
+      "quickActions": "Быстрые действия"
+    },
+    "categories": {
+      "privacy": "Конфиденциальность",
+      "privacyDesc": "Контролируй, кто видит твой профиль и активность",
+      "notifications": "Уведомления",
+      "notificationsDesc": "Управляй настройками уведомлений",
+      "preferences": "Предпочтения",
+      "preferencesDesc": "Язык, тема и параметры отображения",
+      "connectedApps": "Подключенные приложения",
+      "connectedAppsDesc": "Управляй интеграциями и разрешениями",
+      "tenantRole": "Арендатор и роль",
+      "tenantRoleDesc": "Переключайся между ролями и арендаторами",
+      "billing": "Оплата",
+      "billingDesc": "Информация о подписке и платежах",
+      "support": "Поддержка",
+      "supportDesc": "Помощь, FAQ и контакты"
+    },
+    "status": {
+      "privacyStatus": "Статус конфиденциальности",
+      "subscription": "Подписка",
+      "protected": "Защищено",
+      "premium": "Премиум",
+      "notificationsActive": "Уведомления активны",
+      "connectedAppsCount": "Подключенные приложения",
+      "types": "типы",
+      "apps": "Приложения"
+    },
+    "vitanaOpenedSection": "Vitana открыла {section}",
+    "vitanaUpdated": "Vitana обновила твою настройку"
+  }
+}

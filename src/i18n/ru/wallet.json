@@ -1,0 +1,59 @@
+{
+  "_pending_review": {},
+  "wallet": {
+    "_pending_review": {
+      "title": true,
+      "description": true,
+      "usdBalance": true,
+      "creditsBalance": true,
+      "creditsLabel": true,
+      "available": true,
+      "staked": true,
+      "searchWallet": true,
+      "noActivity": true,
+      "noActivityDesc": true,
+      "displayCurrency": true
+    },
+    "title": "Wallet",
+    "description": "Your balance, credits, and rewards",
+    "usdBalance": "EUR / USD Balance",
+    "creditsBalance": "VTNA Credits Balance",
+    "creditsLabel": "VTNA Credits",
+    "available": "Available",
+    "staked": "Staked",
+    "searchWallet": "Search wallet...",
+    "tabs": {
+      "_pending_review": {
+        "balances": true,
+        "activity": true,
+        "actions": true
+      },
+      "balances": "Balances",
+      "activity": "Activity",
+      "actions": "Actions"
+    },
+    "filters": {
+      "_pending_review": {
+        "commissions": true,
+        "transfers": true,
+        "exchanges": true,
+        "rewards": true,
+        "purchases": true,
+        "pending": true,
+        "withdrawals": true,
+        "stakes": true
+      },
+      "commissions": "Sell & Earn Commissions",
+      "transfers": "Transfers",
+      "exchanges": "Exchanges",
+      "rewards": "Rewards",
+      "purchases": "Purchases",
+      "pending": "Pending Payouts",
+      "withdrawals": "Withdrawals",
+      "stakes": "Staking"
+    },
+    "noActivity": "No activity yet",
+    "noActivityDesc": "Your transactions will appear here.",
+    "displayCurrency": "Display currency"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "recallActions": {
+    "title": "Поиск по воспоминаниям и действия по вызову",
+    "items": {
+      "askAiQuestion": {
+        "title": "Задай вопрос ИИ",
+        "description": "Запрашивай свои воспоминания с помощью ИИ-поиска на естественном языке"
+      },
+      "advancedSearch": {
+        "title": "Расширенный поиск",
+        "description": "Используй фильтры, теги и диапазоны дат, чтобы найти воспоминания"
+      },
+      "patternAnalysis": {
+        "title": "Анализ паттернов",
+        "description": "Открой для себя тренды и паттерны в своих данных о благополучии"
+      },
+      "memoryInsights": {
+        "title": "Инсайты из воспоминаний",
+        "description": "Получи ИИ-инсайты из своего пути к здоровью"
+      },
+      "searchByDate": {
+        "title": "Поиск по дате",
+        "description": "Просматривай воспоминания за определенные периоды времени"
+      },
+      "locationMemories": {
+        "title": "Воспоминания по местоположению",
+        "description": "Найди записи по посещенным местам и локациям"
+      },
+      "filterByCategory": {
+        "title": "Фильтр по категории",
+        "description": "Просматривай воспоминания по столпам благополучия и категориям"
+      },
+      "quickRecalls": {
+        "_pending_review": {
+          "description": true
+        },
+        "title": "Быстрые вызовы",
+        "description": "Access frequently searched memories and queries"
+      }
+    }
+  }
+}

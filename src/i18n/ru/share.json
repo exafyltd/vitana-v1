@@ -1,0 +1,12 @@
+{
+  "share": {
+    "shareProfile": "Поделиться профилем",
+    "linkCopied": "Ссылка скопирована!",
+    "copyProfileLink": "Скопировать ссылку профиля",
+    "showQRCode": "Показать QR-код",
+    "downloadQR": "Скачать QR-код",
+    "shareToSocial": "Поделиться в соцсетях",
+    "alsoShareTo": "Также поделиться в",
+    "viewPublicProfile": "Посмотреть публичный профиль"
+  }
+}

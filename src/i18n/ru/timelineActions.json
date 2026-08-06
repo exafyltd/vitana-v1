@@ -1,0 +1,39 @@
+{
+  "timelineActions": {
+    "title": "Действия Ленты",
+    "items": {
+      "logHealthEvent": {
+        "title": "Записать Событие Здоровья",
+        "description": "Записывай важные вехи здоровья"
+      },
+      "markAchievement": {
+        "title": "Отметить Достижение",
+        "description": "Отмечай достигнутые цели благополучия"
+      },
+      "recordLifeMoment": {
+        "title": "Записать Момент Жизни",
+        "description": "Запечатлей значимые моменты"
+      },
+      "addPhotoMemory": {
+        "title": "Добавить Фото-Воспоминание",
+        "description": "Визуальная лента с фото о здоровье"
+      },
+      "voiceTimelineEntry": {
+        "title": "Голосовая Запись в Ленте",
+        "description": "Быстрые аудио-обновления о здоровье"
+      },
+      "trackProgress": {
+        "title": "Отслеживать Прогресс",
+        "description": "Записывай метрики и тенденции благополучия"
+      },
+      "activityCheckIn": {
+        "title": "Отметка Активности",
+        "description": "Записывай тренировки и активности"
+      },
+      "setTimelineGoal": {
+        "title": "Установить Цель в Ленте",
+        "description": "Создавай будущие цели по здоровью"
+      }
+    }
+  }
+}

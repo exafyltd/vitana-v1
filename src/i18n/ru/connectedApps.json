@@ -1,0 +1,50 @@
+{
+  "connectedApps": {
+    "title": "Подключенные приложения",
+    "description": "Управляй своими подключенными устройствами и сервисами",
+    "searchPlaceholder": "Искать приложения...",
+    "addApp": "Добавить приложение",
+    "connected": "подключено",
+    "syncing": "синхронизация",
+    "sections": {
+      "social": "Социальные сети и обмен",
+      "fitness": "Фитнес и носимые устройства",
+      "health": "Здоровье и лаборатории",
+      "other": "Другое"
+    },
+    "status": {
+      "connected": "Подключено",
+      "notConnected": "Не подключено",
+      "comingSoon": "Скоро",
+      "soon": "Скоро"
+    },
+    "actions": {
+      "connect": "Подключить",
+      "disconnect": "Отключить",
+      "configure": "Настроить синхронизацию",
+      "manage": "Управлять"
+    },
+    "lastSync": "Последняя синхронизация",
+    "dataSync": "Синхронизация данных",
+    "comingSoonMessage": "Интеграция {appName} скоро появится",
+    "popup": {
+      "title": "Подключи приложения и сервисы",
+      "searchPlaceholder": "Искать приложения и сервисы...",
+      "categories": {
+        "all": "Все приложения",
+        "health": "Здоровье и фитнес",
+        "social": "Социальные сети"
+      },
+      "availableApps": "Доступные приложения",
+      "verified": "Проверено",
+      "connected": "Подключено",
+      "settings": "Настройки",
+      "disconnect": "Отключить",
+      "connect": "Подключить",
+      "done": "Готово",
+      "noResults": "Приложения не найдены",
+      "connectionSuccess": "Подключение успешно",
+      "connectionPlaceholder": "Подключение {appName} скоро"
+    }
+  }
+}

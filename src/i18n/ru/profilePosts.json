@@ -1,0 +1,19 @@
+{
+  "profilePosts": {
+    "createPost": "Создать пост",
+    "placeholder": "Что у тебя на уме?",
+    "shareCta": "Поделись чем-нибудь с сообществом",
+    "post": "Опубликовать",
+    "posted": "Опубликовано!",
+    "deleted": "Пост удален",
+    "emptyTitle": "Постов пока нет",
+    "emptyDescription": "Поделись своим первым обновлением с сообществом",
+    "deleteConfirm": "Удалить этот пост?",
+    "error": "Что-то пошло не так",
+    "mentionPlaceholder": "Что у тебя на уме? Введи @, чтобы отметить кого-то",
+    "background": "Фон",
+    "noBackground": "Без фона",
+    "searchingPeople": "Ищем людей…",
+    "noPeopleFound": "Никого не найдено"
+  }
+}
