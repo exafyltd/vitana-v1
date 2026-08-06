@@ -3,15 +3,9 @@
     "title": "Brze radnje",
     "addFunds": "Uplati",
     "send": "Pošalji",
-    "exchange": "Razmeni",
+    "exchange": "Zameni",
     "withdraw": "Povuci",
-    "buyCredits": "Kupi VTNA Credits",
-    "stakeTokens": "Uloži tokene",
-    "_pending_review": {
-      "addFunds": true,
-      "exchange": true,
-      "buyCredits": true
-    }
-  },
-  "_pending_review": {}
+    "buyCredits": "Kupi VTNA Kredite",
+    "stakeTokens": "Uloži tokene"
+  }
 }

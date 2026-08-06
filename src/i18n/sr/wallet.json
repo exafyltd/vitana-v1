@@ -2,8 +2,8 @@
   "wallet": {
     "title": "Novčanik",
     "description": "Tvoj balans, krediti i nagrade",
-    "usdBalance": "EUR / USD balans",
-    "creditsBalance": "VTNA Credits balans",
+    "usdBalance": "EUR / USD Stanje",
+    "creditsBalance": "Stanje VTNA kredita",
     "creditsLabel": "VTNA Krediti",
     "available": "Dostupno",
     "staked": "Uloženo",
@@ -25,10 +25,6 @@
     },
     "noActivity": "Još uvek nema aktivnosti",
     "noActivityDesc": "Tvoje transakcije će se pojaviti ovde.",
-    "displayCurrency": "Valuta prikaza",
-    "_pending_review": {
-      "usdBalance": true,
-      "creditsBalance": true
-    }
+    "displayCurrency": "Valuta prikaza"
   }
 }

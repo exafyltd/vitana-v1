@@ -22,7 +22,7 @@
       "title": "Dodaj novac",
       "description": "Dopuni svoje stanje karticom preko Stripe-a.",
       "amountLabel": "Iznos",
-      "amountPlaceholder": "0.00",
+      "amountPlaceholder": "0,00",
       "currencyLabel": "Valuta",
       "currencyEur": "EUR",
       "currencyUsd": "USD",

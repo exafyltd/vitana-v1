@@ -49,7 +49,7 @@
       "coverLabel": "Naslovna slika / Minijatura",
       "coverAlt": "Naslovna strima",
       "coverUploadCta": "Klikni da otpremiš prilagođenu sliku",
-      "coverUploadHint": "PNG, JPG do 2MB",
+      "coverUploadHint": "Bilo koja slika – automatski promenjena veličina",
       "aiAutoGenerateLabel": "Automatski generiši pomoću AI",
       "aiAutoGenerateHint": "Generiši sliku ako nijedna nije otpremljena",
       "generatingAiImage": "Generišem AI sliku…",
@@ -129,9 +129,6 @@
         "youAreLiveDesc": "Pridružujem se tvojoj strim sobi…",
         "aiImageHintTitle": "AI generisanje slike",
         "aiImageHintDesc": "Slika će biti generisana kada strim počne."
-      },
-      "_pending_review": {
-        "coverUploadHint": true
       }
     },
     "editSession": {

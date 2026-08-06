@@ -11,30 +11,35 @@
       "direct": "Direktno",
       "contacts": "Kontakti",
       "notifications": "Obaveštenja",
-      "archived": "Arhivirano"
+      "archived": "Arhivirano",
+      "_pending_review": {}
     },
     "contextTabs": {
       "community": "Zajednica",
-      "network": "Mreža"
+      "network": "Mreža",
+      "_pending_review": {}
     },
     "actions": {
       "new": "Novo",
       "newMessage": "Nova poruka",
       "createGroup": "Kreiraj grupu",
       "markAllRead": "Označi sve kao pročitano",
-      "menu": "Više"
+      "menu": "Više",
+      "_pending_review": {}
     },
     "composer": {
       "placeholder": "Unesi svoju poruku...",
       "send": "Pošalji",
       "attachments": "Prilozi",
       "recipients": "Za:",
-      "add": "Dodaj"
+      "add": "Dodaj",
+      "_pending_review": {}
     },
     "states": {
       "empty": "Još nema poruka",
       "loading": "Učitavanje poruka...",
-      "error": "Neuspešno učitavanje poruka"
+      "error": "Neuspešno učitavanje poruka",
+      "_pending_review": {}
     },
     "newConversation": {
       "title": "Započni novi razgovor",
@@ -54,7 +59,8 @@
       "cancel": "Otkaži",
       "startChat": "Započni čet",
       "createGroup": "Napravi grupu",
-      "creating": "Pravljenje..."
+      "creating": "Pravljenje...",
+      "_pending_review": {}
     },
     "createGroup": {
       "title": "Napravi grupu",
@@ -71,7 +77,8 @@
       "created": "Grupa napravljena",
       "createdDesc": "\"{name}\" je uspešno napravljena.",
       "failed": "Neuspešno pravljenje grupe",
-      "failedDesc": "Molimo pokušaj ponovo."
+      "failedDesc": "Molimo pokušaj ponovo.",
+      "_pending_review": {}
     },
     "toast": {
       "success": "Uspeh",
@@ -88,7 +95,8 @@
       "groupCreated": "Grupa \"{name}\" uspešno napravljena!",
       "groupFailed": "Neuspešno kreiranje grupe",
       "allMarkedRead": "Sve poruke označene kao pročitane",
-      "markAllReadFailed": "Nije bilo moguće označiti sve kao pročitano. Molimo pokušaj ponovo."
+      "markAllReadFailed": "Nije bilo moguće označiti sve kao pročitano. Molimo pokušaj ponovo.",
+      "_pending_review": {}
     },
     "createGroupAction": "Kreiraj novu grupu",
     "newConversationAction": "Novi razgovor",
@@ -106,7 +114,8 @@
       "globalDescription": "Započni razgovor ili se pridruži zajednici da bi se povezao/la sa drugima.",
       "tenantDescription": "Poveži se sa kolegama i članovima tima u svojoj profesionalnoj mreži.",
       "startConversation": "Započni razgovor",
-      "discoverPeople": "Otkrij ljude"
+      "discoverPeople": "Otkrij ljude",
+      "_pending_review": {}
     },
     "group": {
       "loading": "Učitavam grupu…",
@@ -117,7 +126,10 @@
       "memberOther": "članovi",
       "officialBadge": "zvanična grupa",
       "empty": "Još nema poruka.",
-      "composerPlaceholder": "Poruka…"
-    }
-  }
+      "composerPlaceholder": "Poruka…",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

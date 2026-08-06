@@ -15,20 +15,24 @@
       "completeAction": "Označi kao završeno",
       "alreadyCompleted": "Već završeno",
       "linkToDiscover": "Pregledaj Discover",
-      "close": "Zatvori"
+      "close": "Zatvori",
+      "_pending_review": {}
     },
     "tabs": {
       "cart": "Korpa",
-      "saved": "Sačuvano"
+      "saved": "Sačuvano",
+      "_pending_review": {}
     },
     "saved": {
       "moveToCart": "Dodaj u korpu",
       "saveForLater": "Sačuvaj za kasnije",
       "emptyTitle": "Ništa još nije sačuvano",
-      "emptyBody": "Sačuvaj proizvode za kasnije dodirivanjem „Sačuvaj za kasnije“ u tvojoj korpi."
+      "emptyBody": "Sačuvaj proizvode za kasnije dodirivanjem „Sačuvaj za kasnije“ u tvojoj korpi.",
+      "_pending_review": {}
     },
     "item": {
-      "viewProduct": "Pogledaj proizvod"
+      "viewProduct": "Pogledaj proizvod",
+      "_pending_review": {}
     },
     "agent": {
       "promptLabel": "Šta kupuješ?",
@@ -53,7 +57,8 @@
       "reordering": "Vitana vraća tvoje stavke…",
       "overCapAdvisory": "Ove stavke te guraju preko tvog mesečnog budžeta.",
       "nearCapAdvisory": "Ove stavke te približavaju tvom mesečnom budžetu.",
-      "error": "Nešto je pošlo naopako. Molimo te, pokušaj ponovo."
+      "error": "Nešto je pošlo naopako. Molimo te, pokušaj ponovo.",
+      "_pending_review": {}
     },
     "budget": {
       "title": "Budžet za ovaj mesec",
@@ -61,7 +66,8 @@
       "statusUnder": "U okviru budžeta",
       "statusNear": "Blizu budžeta",
       "statusOver": "Preko budžeta",
-      "noCapHint": "Postavi mesečni budžet da bi pratio/la svoju potrošnju."
+      "noCapHint": "Postavi mesečni budžet da bi pratio/la svoju potrošnju.",
+      "_pending_review": {}
     },
     "addButton": {
       "label": "Dodaj u korpu",
@@ -71,7 +77,10 @@
       "signRequired": "Prijavi se da dodaš u svoju korpu.",
       "roleBlocked": "Korpa je dostupna samo u tvojoj ulozi u zajednici.",
       "failed": "Nije dodato u korpu",
-      "success": "Dodato u korpu"
-    }
-  }
+      "success": "Dodato u korpu",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

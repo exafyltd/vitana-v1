@@ -584,7 +584,7 @@
       "minimum20Characters": "Minimum 20 karaktera.",
       "postedCommunity": "Objavljeno u zajednici",
       "couldNotPost": "Nije moguće objaviti",
-      "couldNotPostReason": "Server: {reason}",
+      "couldNotPostReason": "Server: {razlog}",
       "interestRecorded": "Interesovanje zabeleženo",
       "ifTheyReInterestedTooWe": "Ako su i oni zainteresovani, povezaćemo te.",
       "couldNotRecordInterest": "Nije moguće zabeležiti interesovanje",

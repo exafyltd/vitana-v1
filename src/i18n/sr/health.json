@@ -26,18 +26,21 @@
     "trend": {
       "improving": "Poboljšanje",
       "declining": "Opadanje",
-      "stable": "Stabilno"
+      "stable": "Stabilno",
+      "_pending_review": {}
     },
     "suggestions": {
       "uploadBloodTestResults": "Otpremi rezultate krvnih testova",
-      "startFitnessChallenge": "Započni 30-dnevni fitnes izazov"
+      "startFitnessChallenge": "Započni 30-dnevni fitnes izazov",
+      "_pending_review": {}
     },
     "pillars": {
       "sleep": "San",
       "exercise": "Vežbanje",
       "nutrition": "Ishrana",
       "hydration": "Hidratacija",
-      "mental": "Mentalno"
+      "mental": "Mentalno",
+      "_pending_review": {}
     },
     "emptyStates": {
       "noSleepPlan": "Još uvek nema plana spavanja",
@@ -51,7 +54,8 @@
       "noMentalPlan": "Još uvek nema mentalnog plana",
       "noMentalPlanDesc": "Kreiraj svoj personalizovani plan mentalnog blagostanja za praćenje stresa, fokusa i emocionalne ravnoteže uz AI vodič.",
       "generatePlan": "Kreiraj plan",
-      "generating": "Kreiram..."
+      "generating": "Kreiram...",
+      "_pending_review": {}
     },
     "noSupplements": "Još nema suplemenata",
     "noSupplementsDesc": "Prati svoje dnevne vitamine, minerale i suplemente. Dodaj svoj prvi suplement da počneš.",
@@ -80,15 +84,20 @@
         "hydration": "Hidratacija",
         "exercise": "Vežbanje",
         "sleep": "Spavanje",
-        "mental": "Mentalno zdravlje"
+        "mental": "Mentalno zdravlje",
+        "_pending_review": {}
       },
       "economyAxes": {
         "find_match": "Pronađi partnera",
         "marketplace": "Tržište",
         "income_generation": "Generisanje prihoda",
-        "business_formation": "Osnivanje biznisa"
+        "business_formation": "Osnivanje biznisa",
+        "_pending_review": {}
       },
-      "contractLink": "Pogledaj ugovor o krajnjem cilju"
-    }
-  }
+      "contractLink": "Pogledaj ugovor o krajnjem cilju",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

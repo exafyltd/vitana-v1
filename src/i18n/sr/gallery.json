@@ -16,6 +16,8 @@
     "invalidFormat": "Nevažeći format",
     "fileTooLarge": "Prevelik fajl",
     "maxSize": "Maksimalna veličina fajla: 500 MB",
-    "maxSizeHint": "Maks. 500 MB"
-  }
+    "maxSizeHint": "Maks. 500 MB",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

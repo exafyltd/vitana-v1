@@ -17,7 +17,8 @@
       "hostAndSell": "Organizuj i prodaj karte",
       "resellAndEarn": "Preprodaj i zaradi",
       "offerBookings": "Ponudi rezervacije",
-      "boostVisibility": "Povećaj vidljivost"
+      "boostVisibility": "Povećaj vidljivost",
+      "_pending_review": {}
     },
     "history": {
       "all": "Sve",
@@ -38,7 +39,8 @@
       "allTime": "Sve vreme",
       "details": "Detalji",
       "earningsActivity": "Aktivnost zarade",
-      "noEarningsStartSelling": "Još uvek nema zarade. Počni sa prodajom da bi video/la aktivnost ovde."
+      "noEarningsStartSelling": "Još uvek nema zarade. Počni sa prodajom da bi video/la aktivnost ovde.",
+      "_pending_review": {}
     },
     "kpi": {
       "totalEarnings": "Ukupna zarada",
@@ -61,7 +63,8 @@
       "resellerCommissions": "Provizije preprodavaca",
       "goToSellEarn": "Idi na Prodaja i zarada",
       "totalEarned": "Ukupno zarađeno",
-      "earningsBySource": "Zarada po izvoru"
+      "earningsBySource": "Zarada po izvoru",
+      "_pending_review": {}
     },
     "reseller": {
       "upcomingEvents": "Predstojeći događaji",
@@ -84,7 +87,8 @@
       "noPayoutsYet": "Još nema isplata",
       "attributedSales": "Pripisana prodaja po događaju",
       "noSalesMatchFilter": "Nema prodaje koja odgovara trenutnim filterima",
-      "mockDataActive": "Lažni podaci aktivni"
+      "mockDataActive": "Lažni podaci aktivni",
+      "_pending_review": {}
     },
     "transfer": {
       "title": "Prenesi u novčanik",
@@ -93,7 +97,8 @@
       "wallet": "Novčanik",
       "instantCredit": "Ovo će odmah uplatiti tvoju zaradu na stanje novčanika.",
       "transferring": "Prenosim...",
-      "transfer": "Prenesi"
+      "transfer": "Prenesi",
+      "_pending_review": {}
     },
     "typeSelector": {
       "title": "Pokreni biznis",
@@ -106,7 +111,8 @@
       "badgeNew": "Novo",
       "badgeActive": "Aktivno",
       "alreadyReseller": "Već si preprodavac! Pogledaj karticu Prodaj i zaradi.",
-      "cancel": "Otkaži"
+      "cancel": "Otkaži",
+      "_pending_review": {}
     },
     "missionOpportunities": {
       "title": "Prilike za misije",
@@ -119,8 +125,12 @@
         "find_match": "Pronađi spoj",
         "marketplace": "Tržište",
         "income_generation": "Generisanje prihoda",
-        "business_formation": "Osnivanje biznisa"
-      }
-    }
-  }
+        "business_formation": "Osnivanje biznisa",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
