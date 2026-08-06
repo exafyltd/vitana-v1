@@ -90,7 +90,7 @@
       "yes": "Sí",
       "no": "–",
       "fairUse": "Uso justo",
-      "used": "{usado} / {límite} {unidad}",
+      "used": "{used} / {limit} {unit}",
       "resetIn": "Se reinicia en {duration}",
       "comparisonTitle": "¿Qué incluye cada plan?",
       "_pending_review": {}
@@ -274,7 +274,7 @@
     "ctaUpgrade": "Desbloquea Premium",
     "ctaCredits": "Usa {credits} créditos",
     "ctaLater": "Quizás más tarde",
-    "remainingCounter": "{restante} / {límite}",
+    "remainingCounter": "{remaining} / {limit}",
     "resetsIn": "Se restablece el {date}",
     "creditsInsufficient": "Créditos insuficientes. Recarga primero.",
     "_pending_review": {}

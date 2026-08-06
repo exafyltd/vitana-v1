@@ -247,8 +247,15 @@ if (deArrayKeys.length > 0) {
 //
 // (b) is why this check is also the cheapest staleness signal available: it is
 // language-independent, so it needs no reviewer who speaks the language.
+// A placeholder is `{` + an identifier + `}` — the runtime substitutes by key
+// name from a params object (src/lib/i18n-toast.ts). Deliberately NOT \w+:
+// a translated placeholder is usually non-ASCII ("{početak}", "{límite}") and an
+// ASCII-only pattern cannot see it. Equally deliberately NOT [^{}]+: some UI
+// strings embed a literal JSON example (an admin field shows
+// `{ "forbidden_openings": [...] }`), and that is not a placeholder. Excluding
+// whitespace and quotes separates the two without a special case.
 function placeholdersOf(v) {
-  return [...String(v).matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort().join(',');
+  return [...String(v).matchAll(/\{([^{}\s"']+)\}/g)].map((m) => m[1]).sort().join(',');
 }
 
 const deValues = {};

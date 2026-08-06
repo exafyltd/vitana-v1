@@ -39,7 +39,7 @@
       "doneToast": "Vežba završena!",
       "doneError": "Nije moguće sačuvati.",
       "statusDone": "Gotovo",
-      "sessionProgress": "{urađeno}/{ukupno}",
+      "sessionProgress": "{done}/{total}",
       "sessionComplete": "Sesija završena"
     },
     "common": {
@@ -5479,8 +5479,8 @@
         "empty": "Još nema prošlih soba",
         "emptyHint": "Završene sobe se pojavljuju ovde — sa rezimeom, istaknutim delovima i snimkom.",
         "loading": "Učitavanje prošlih soba…",
-        "heldAt": "{datum} · {vreme}",
-        "heldRange": "{datum} · {početak}–{kraj}"
+        "heldAt": "{date} · {time}",
+        "heldRange": "{date} · {start}–{end}"
       },
       "durationMin": "{value0} min",
       "durationHour": "{value0} h",
@@ -5498,7 +5498,7 @@
       "join": "Pridruži se",
       "free": "Besplatno",
       "willJoinCount": "{count} ide",
-      "timeChip": "{vreme}",
+      "timeChip": "{time}",
       "you": "Ti",
       "anonymousHost": "Anonimni domaćin",
       "notifyAriaOn": "Isključi obaveštenja",

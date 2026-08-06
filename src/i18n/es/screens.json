@@ -39,7 +39,7 @@
       "doneToast": "¡Práctica completada!",
       "doneError": "No se pudo guardar.",
       "statusDone": "Listo",
-      "sessionProgress": "{hecho}/{total}",
+      "sessionProgress": "{done}/{total}",
       "sessionComplete": "Sesión completada"
     },
     "common": {

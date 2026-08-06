@@ -72,7 +72,22 @@ const args = Object.fromEntries(
 
 const CHECK = Boolean(args.check) || Boolean(args['check-all']);
 const FLAG = Boolean(args.flag);
-const SOURCE_LOCALE = 'de';
+// A locale's stamp must track the source it was actually TRANSLATED FROM, or
+// it measures the wrong thing. scripts/translate-keys.mjs reads `en/` (its
+// --source default), so es/sr/fr/pt/ru/pl derive from English. `en` itself is
+// the mirror of the German source of truth.
+//
+// Getting this wrong is not academic: stamping es against DE reports drift for
+// every DE-only edit — including the ~284-key Sie→du register sweep, which
+// English has no equivalent for and which therefore implies no Spanish change
+// at all. That is a permanently red signal made of non-problems, and a red
+// signal nobody can act on is one nobody reads.
+//
+// DE→EN drift is a real and separate concern (if EN lags DE, every downstream
+// locale inherits the lag) — which is exactly why `en` is tracked against `de`.
+const PIVOT_LOCALE = 'en';
+const ROOT_SOURCE_LOCALE = 'de';
+const sourceFor = (locale) => (locale === PIVOT_LOCALE ? ROOT_SOURCE_LOCALE : PIVOT_LOCALE);
 
 function flatten(obj, prefix = '') {
   const out = {};
@@ -114,7 +129,7 @@ function trackedLocales() {
   return [...block.matchAll(/value:\s*"([a-z]{2})-[A-Za-z]+",\s*status:\s*'(\w+)'/g)]
     .filter((m) => m[2] === 'ga' || m[2] === 'beta')
     .map((m) => m[1])
-    .filter((code) => code !== SOURCE_LOCALE && existsSync(join(I18N_DIR, code)));
+    .filter((code) => code !== ROOT_SOURCE_LOCALE && existsSync(join(I18N_DIR, code)));
 }
 
 /** DE as of a given git rev — used to bootstrap a previously-translated locale. */
@@ -133,11 +148,20 @@ function loadLocaleAtRev(rev, locale) {
   return out;
 }
 
-const de = loadLocale(SOURCE_LOCALE);
-// The DE the existing translations were actually derived from. Defaults to the
-// current tree; --from-rev points it at history for a bootstrap stamp.
-const deForStamping = args['from-rev'] ? loadLocaleAtRev(args['from-rev'], SOURCE_LOCALE) : de;
 const locales = args['check-all'] ? trackedLocales() : [args.locale ?? 'es'];
+
+// Cache per source locale — check-all mixes en (vs de) with the rest (vs en).
+const sourceCache = new Map();
+const sourceNow = (loc) => {
+  if (!sourceCache.has(loc)) sourceCache.set(loc, loadLocale(loc));
+  return sourceCache.get(loc);
+};
+const histCache = new Map();
+const sourceAtRev = (loc, rev) => {
+  const ck = `${rev}:${loc}`;
+  if (!histCache.has(ck)) histCache.set(ck, loadLocaleAtRev(rev, loc));
+  return histCache.get(ck);
+};
 
 mkdirSync(STAMP_DIR, { recursive: true });
 
@@ -150,6 +174,9 @@ for (const locale of locales) {
     process.exit(2);
   }
   const target = loadLocale(locale);
+  const srcLocale = sourceFor(locale);
+  const src = sourceNow(srcLocale);
+  const srcForStamping = args['from-rev'] ? sourceAtRev(srcLocale, args['from-rev']) : src;
   const stampPath = join(STAMP_DIR, `${locale}.json`);
   const prev = existsSync(stampPath) ? JSON.parse(readFileSync(stampPath, 'utf8')) : null;
 
@@ -160,12 +187,12 @@ for (const locale of locales) {
       // A key present in the historical DE is stamped with THAT value (it is
       // what the translation was made from). A key that did not exist then was
       // translated later, from current DE, so it stamps as current.
-      if (key in deForStamping) { stamps[key] = stampOf(deForStamping[key]); fromHistory++; }
-      else if (key in de) stamps[key] = stampOf(de[key]);
+      if (key in srcForStamping) { stamps[key] = stampOf(srcForStamping[key]); fromHistory++; }
+      else if (key in src) stamps[key] = stampOf(src[key]);
     }
     writeFileSync(stampPath, JSON.stringify(stamps, null, 0) + '\n');
     console.log(
-      `[stamp] ${locale}: wrote ${Object.keys(stamps).length} stamps -> ${stampPath}` +
+      `[stamp] ${locale}: wrote ${Object.keys(stamps).length} stamps (source=${srcLocale}) -> ${stampPath}` +
         (args['from-rev'] ? ` (${fromHistory} against ${args['from-rev']}, rest current)` : ''),
     );
     continue;
@@ -182,8 +209,8 @@ for (const locale of locales) {
   const drifted = [];
   const unstamped = [];
   for (const key of Object.keys(target)) {
-    if (!(key in de)) continue;
-    const now = stampOf(de[key]);
+    if (!(key in src)) continue;
+    const now = stampOf(src[key]);
     if (!(key in prev)) unstamped.push(key);
     else if (prev[key] !== now) drifted.push(key);
   }
@@ -191,11 +218,11 @@ for (const locale of locales) {
   totalDrift += drifted.length;
   const pct = ((drifted.length / Math.max(Object.keys(target).length, 1)) * 100).toFixed(1);
   console.log(
-    `[stamp] ${locale}: ${drifted.length} key(s) whose DE source changed since translation (${pct}%)` +
+    `[stamp] ${locale}: ${drifted.length} key(s) whose ${srcLocale.toUpperCase()} source changed since translation (${pct}%)` +
       (unstamped.length ? `, ${unstamped.length} never stamped` : ''),
   );
   for (const k of drifted.slice(0, 15)) {
-    console.log(`   ${k}\n      DE now: ${JSON.stringify(String(de[k]).slice(0, 70))}`);
+    console.log(`   ${k}\n      ${srcLocale.toUpperCase()} now: ${JSON.stringify(String(src[k]).slice(0, 70))}`);
   }
   if (drifted.length > 15) console.log(`   ...and ${drifted.length - 15} more`);
 

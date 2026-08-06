@@ -292,7 +292,9 @@ function buildPrompt(items) {
 Rules:
 - Output ONLY a JSON object: { "<index>": "${TARGET_LANG_NAME} translation", ... }
 - Use du-form (informal) ${TARGET_LANG_NAME} where applicable, friendly tone matching a wellness app.
-- Keep placeholders intact: {name}, {count}, {date}, etc.
+- NEVER translate or rename a {placeholder}. {date} stays {date}, NOT {datum}/{fecha}. The
+  surrounding words are translated; the token inside the braces is code and must be copied
+  byte-for-byte. Translating it makes the app print a literal "{datum}" to the user.
 - Keep emojis intact.
 - For brand names (Vitana, MAXINA, Lovable, Exafy), do not translate.
 - Match length and tone to short UI labels — these are toast notifications, button labels, error messages.
@@ -301,6 +303,44 @@ Rules:
 
 Strings:
 ${items.map((it, i) => `${i}: ${JSON.stringify(it.en)}`).join('\n')}`;
+}
+
+/**
+ * Placeholder tokens in a string, in order of appearance.
+ *
+ * A placeholder is `{` + an identifier + `}` — the runtime substitutes by key
+ * name from a params object (src/lib/i18n-toast.ts). Deliberately NOT \w+:
+ * a translated placeholder is usually non-ASCII ("{početak}", "{límite}") and an
+ * ASCII-only pattern cannot see it. Equally deliberately NOT [^{}]+: some UI
+ * strings embed a literal JSON example (an admin field shows
+ * `{ "forbidden_openings": [...] }`), and that is not a placeholder. Excluding
+ * whitespace and quotes separates the two without a special case.
+ */
+function placeholderList(v) {
+  return [...String(v).matchAll(/\{([^{}\s"']+)\}/g)].map((m) => m[1]);
+}
+
+/**
+ * Enforce placeholder integrity on a translation. (VTID-03509)
+ *
+ * The prompt already tells the model not to translate {placeholders}; it does
+ * it anyway — an sr run produced "{datum} · {početak}–{kraj}" for
+ * "{date} · {start}–{end}", and es produced "{usado} / {límite} {unidad}".
+ * The app substitutes by NAME, so every one of those renders a literal token
+ * to the user. An instruction is not an guarantee, so this is checked in code.
+ *
+ * When the model kept the right NUMBER of placeholders and merely renamed them,
+ * the mapping back is unambiguous — remap positionally and keep the translation.
+ * Otherwise reject it: the key stays _pending_review, which is recoverable,
+ * whereas a silently corrupted string is not.
+ */
+function repairPlaceholders(source, translated) {
+  const want = placeholderList(source);
+  const got = placeholderList(translated);
+  if (want.join(',') === got.join(',')) return translated;
+  if (want.length !== got.length) return null; // unrecoverable — reject
+  let i = 0;
+  return String(translated).replace(/\{[^{}\s"']+\}/g, () => `{${want[i++]}}`);
 }
 
 async function translateBatch(items) {
@@ -314,7 +354,19 @@ async function translateBatch(items) {
       const out = new Map();
       for (let i = 0; i < items.length; i++) {
         const v = parsed[String(i)];
-        if (typeof v === 'string' && v.trim()) out.set(items[i].key, v.trim());
+        if (typeof v !== 'string' || !v.trim()) continue;
+        const fixed = repairPlaceholders(items[i].en, v.trim());
+        if (fixed === null) {
+          console.warn(
+            `  ${items[i].key}: REJECTED — placeholders {${placeholderList(items[i].en)}} ` +
+              `became {${placeholderList(v)}}; leaving _pending_review`,
+          );
+          continue;
+        }
+        if (fixed !== v.trim()) {
+          console.log(`  ${items[i].key}: repaired renamed placeholder(s)`);
+        }
+        out.set(items[i].key, fixed);
       }
       return out;
     } catch (err) {
