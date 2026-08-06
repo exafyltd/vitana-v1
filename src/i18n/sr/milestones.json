@@ -12,6 +12,8 @@
     "descPlaceholder": "Opiši ovaj trenutak...",
     "icon": "Ikona",
     "publicLabel": "Vidljivo svima",
-    "private": "Privatno"
-  }
+    "private": "Privatno",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

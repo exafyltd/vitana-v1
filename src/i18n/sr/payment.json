@@ -18,6 +18,8 @@
     "balanceRefreshedDesc": "Stanje novčanika je ažurirano",
     "refreshFailed": "Osvežavanje neuspešno",
     "refreshFailedDesc": "Stanje nije moglo biti ažurirano. Molimo pokušaj ponovo.",
-    "error": "Greška"
-  }
+    "error": "Greška",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

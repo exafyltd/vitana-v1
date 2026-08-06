@@ -21,7 +21,8 @@
       "building": "U napretku",
       "strong": "Snažno",
       "reallyGood": "Zaista dobro",
-      "elite": "Elitno"
+      "elite": "Elitno",
+      "_pending_review": {}
     },
     "framings": {
       "starting": "Tek počinješ",
@@ -29,7 +30,10 @@
       "building": "Navike se formiraju",
       "strong": "90-dnevna prekretnica",
       "reallyGood": "Napreduješ",
-      "elite": "Elita"
-    }
-  }
+      "elite": "Elita",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

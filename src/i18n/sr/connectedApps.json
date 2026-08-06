@@ -10,19 +10,22 @@
       "social": "Društvene mreže i deljenje",
       "fitness": "Fitnes i nosivi uređaji",
       "health": "Zdravlje i laboratorije",
-      "other": "Ostalo"
+      "other": "Ostalo",
+      "_pending_review": {}
     },
     "status": {
       "connected": "Povezano",
       "notConnected": "Nije povezano",
       "comingSoon": "Uskoro",
-      "soon": "Uskoro"
+      "soon": "Uskoro",
+      "_pending_review": {}
     },
     "actions": {
       "connect": "Poveži",
       "disconnect": "Prekini vezu",
       "configure": "Podesi sinhronizaciju",
-      "manage": "Upravljaj"
+      "manage": "Upravljaj",
+      "_pending_review": {}
     },
     "lastSync": "Poslednja sinhronizacija",
     "dataSync": "Sinhronizacija podataka",
@@ -33,7 +36,8 @@
       "categories": {
         "all": "Sve aplikacije",
         "health": "Zdravlje i fitnes",
-        "social": "Društvene mreže"
+        "social": "Društvene mreže",
+        "_pending_review": {}
       },
       "availableApps": "Dostupne aplikacije",
       "verified": "Potvrđeno",
@@ -44,7 +48,10 @@
       "done": "Gotovo",
       "noResults": "Nema pronađenih aplikacija",
       "connectionSuccess": "Veza uspešno uspostavljena",
-      "connectionPlaceholder": "Veza sa {appName} uskoro stiže"
-    }
-  }
+      "connectionPlaceholder": "Veza sa {appName} uskoro stiže",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

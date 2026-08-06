@@ -29,14 +29,16 @@
       "title": "Tvoji rezervisani događaji",
       "todayLabel": "Danas",
       "nextUp": "Sledeće",
-      "noEventsToday": "Nema događaja danas"
+      "noEventsToday": "Nema događaja danas",
+      "_pending_review": {}
     },
     "filters": {
       "personal": "Lično",
       "community": "Zajednica",
       "work": "Posao",
       "health": "Zdravlje",
-      "workout": "Trening"
+      "workout": "Trening",
+      "_pending_review": {}
     },
     "categories": {
       "community": "Zajednica",
@@ -45,19 +47,22 @@
       "nutrition": "Ishrana",
       "professional": "Posao",
       "personal": "Lično",
-      "training": "Trening"
+      "training": "Trening",
+      "_pending_review": {}
     },
     "bookingStatus": {
       "booked": "Rezervisano",
       "rsvp": "Potvrdi",
       "ticket": "Karta",
-      "reserved": "Rezervisano"
+      "reserved": "Rezervisano",
+      "_pending_review": {}
     },
     "timeGroups": {
       "today": "Danas",
       "tomorrow": "Sutra",
       "thisWeek": "Ove nedelje",
-      "later": "Kasnije"
+      "later": "Kasnije",
+      "_pending_review": {}
     },
     "autopilot": {
       "suggestions": "Autopilot predlozi",
@@ -77,7 +82,8 @@
       "reminderLaterToday": "Podsetnik postavljen za kasnije danas",
       "reminderTomorrow": "Podsetnik postavljen za sutra",
       "recommendFocus": "Preporuči blok fokusa",
-      "focusBlockDesc": "Imaš dostupan termin od 90 minuta. Savršeno za fokusiran rad."
+      "focusBlockDesc": "Imaš dostupan termin od 90 minuta. Savršeno za fokusiran rad.",
+      "_pending_review": {}
     },
     "toasts": {
       "eventCreated": "Događaj kreiran",
@@ -94,22 +100,26 @@
       "featureComingSoon": "Funkcija uskoro stiže",
       "inviteFollowers": "Pozovi pratioce",
       "rescheduleEvent": "Promeni termin događaja",
-      "shareToGroup": "Podeli sa grupom"
+      "shareToGroup": "Podeli sa grupom",
+      "_pending_review": {}
     },
     "error": {
-      "failedToCreate": "Neuspešno kreiranje događaja"
+      "failedToCreate": "Neuspešno kreiranje događaja",
+      "_pending_review": {}
     },
     "allDay": "Ceo dan",
     "milestoneToday": "Prekretnica",
     "focus": {
       "todaysFocus": "Današnji fokus",
       "lightDay": "Lagan dan — istraži aktivnosti ili dopuni dnevnik",
-      "moreSteps": "još koraka"
+      "moreSteps": "još koraka",
+      "_pending_review": {}
     },
     "badge": {
       "guidedStep": "Vođeni korak",
       "milestone": "Prekretnica",
-      "wellness": "Dobrobit"
+      "wellness": "Dobrobit",
+      "_pending_review": {}
     },
     "action": {
       "start": "Započni",
@@ -118,11 +128,13 @@
       "details": "Detalji",
       "viewPlan": "Pogledaj plan",
       "open": "Otvori",
-      "done": "Gotovo"
+      "done": "Gotovo",
+      "_pending_review": {}
     },
     "group": {
       "stepsRemaining": "preostalih koraka",
-      "min": "min"
+      "min": "min",
+      "_pending_review": {}
     },
     "journey": {
       "dayOf": "Dan {day} od {total}",
@@ -140,8 +152,12 @@
         "wave-3": "Produbljivanje veza",
         "wave-4": "Zdravstvena inteligencija",
         "wave-5": "Trenuci uvida",
-        "wave-6": "Preporuke i otkrića"
-      }
-    }
-  }
+        "wave-6": "Preporuke i otkrića",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -20,23 +20,30 @@
         "community": "Zajednica",
         "patient": "Pacijent",
         "professional": "Profesionalac",
-        "admin": "Administrator"
-      }
+        "admin": "Administrator",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "alkalma": {
       "joinAlkalma": "Pridruži se AlKalmi",
       "welcomeBack": "Dobrodošao/la nazad u AlKalmu.",
-      "continueJourney": "Prijavi se da nastaviš."
+      "continueJourney": "Prijavi se da nastaviš.",
+      "_pending_review": {}
     },
     "earthlinks": {
       "joinEarthlinks": "Pridruži se Earthlinksu",
       "welcomeBack": "Dobrodošao/la nazad u Earthlinks.",
-      "continueJourney": "Prijavi se da nastaviš."
+      "continueJourney": "Prijavi se da nastaviš.",
+      "_pending_review": {}
     },
     "community": {
       "joinCommunity": "Pridruži se zajednici",
       "welcomeBack": "Dobrodošao/la nazad.",
-      "continueJourney": "Prijavi se da nastaviš."
-    }
-  }
+      "continueJourney": "Prijavi se da nastaviš.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

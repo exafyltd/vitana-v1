@@ -20,7 +20,8 @@
     "visibility": {
       "public": "Javno",
       "followers": "Pratioci",
-      "private": "Privatno"
+      "private": "Privatno",
+      "_pending_review": {}
     },
     "languageOptions": {
       "english": "Engleski",
@@ -32,7 +33,8 @@
       "russian": "Ruski",
       "arabic": "Arapski",
       "chinese": "Kineski",
-      "japanese": "Japanski"
+      "japanese": "Japanski",
+      "_pending_review": {}
     },
     "cancel": "Otkaži",
     "save": "Sačuvaj izmene",
@@ -46,7 +48,8 @@
       "makeShorter": "Skrati",
       "moreProfessional": "Profesionalnije",
       "moreInspirational": "Još inspirativnije",
-      "suggestion": "Autopilot sugestija"
+      "suggestion": "Autopilot sugestija",
+      "_pending_review": {}
     },
     "identity": {
       "editIdentity": "Izmeni identitet",
@@ -69,7 +72,8 @@
       "uploadFailed": "Otpremanje neuspešno",
       "uploadFailedDesc": "Otpremanje slike nije uspelo. Pokušaj ponovo.",
       "identityUpdated": "Identitet ažuriran",
-      "identityUpdatedDesc": "Tvoji podaci o identitetu su uspešno sačuvani."
+      "identityUpdatedDesc": "Tvoji podaci o identitetu su uspešno sačuvani.",
+      "_pending_review": {}
     },
     "coverLibrary": {
       "title": "Biblioteka naslovnica",
@@ -96,7 +100,10 @@
       "universalRemoved": "Univerzalna naslovna fotografija uklonjena",
       "uploadFailed": "Otpremanje nije uspelo",
       "categoryRequired": "Molim te prvo izaberi kategoriju za ovu fotografiju.",
-      "saveError": "Nije moguće sačuvati — pokušaj ponovo."
-    }
-  }
+      "saveError": "Nije moguće sačuvati — pokušaj ponovo.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

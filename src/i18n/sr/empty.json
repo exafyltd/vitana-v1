@@ -22,6 +22,8 @@
     "healthEmpty": "Zabeleži svoj prvi unos da bi pokrenuo Indeks.",
     "noActionsMatchedYet": "Još uvek nema podudarnih akcija — Autopilot oblikuje predloge.",
     "actionsPendingOne": "{count} akcija na čekanju",
-    "actionsPendingOther": "{count} akcija na čekanju"
-  }
+    "actionsPendingOther": "{count} akcija na čekanju",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

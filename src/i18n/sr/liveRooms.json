@@ -6,7 +6,8 @@
       "live": "Uživo sada",
       "scheduled": "Zakazano",
       "all": "Sve sobe",
-      "past": "Prošlo"
+      "past": "Prošlo",
+      "_pending_review": {}
     },
     "goLive": "Kreni uživo",
     "joinRoom": "Pridruži se sobi",
@@ -17,7 +18,8 @@
     "search": {
       "placeholder": "Pretraži sobe, teme ili voditelje...",
       "category": "Kategorija",
-      "allCategories": "Sve kategorije"
+      "allCategories": "Sve kategorije",
+      "_pending_review": {}
     },
     "room": {
       "join": "Pridruži se sobi",
@@ -25,7 +27,8 @@
       "duration": "Trajanje",
       "host": "Voditelj",
       "premium": "Premium",
-      "live": "UŽIVO"
+      "live": "UŽIVO",
+      "_pending_review": {}
     },
     "viewer": {
       "leave": "Napusti",
@@ -33,7 +36,8 @@
       "video": "Video",
       "raiseHand": "Podigni ruku",
       "chat": "Ćaskanje",
-      "reactions": "Reakcije"
+      "reactions": "Reakcije",
+      "_pending_review": {}
     },
     "goLivePopup": {
       "titleCreate": "Kreni uživo",
@@ -65,7 +69,8 @@
         "sleep": "San",
         "motivation": "Motivacija",
         "education": "Obrazovanje",
-        "lifestyle": "Životni stil"
+        "lifestyle": "Životni stil",
+        "_pending_review": {}
       },
       "advancedTitle": "Napredne opcije",
       "cohostLabel": "Poziv ko- hosta / gosta",
@@ -74,16 +79,20 @@
       "access": {
         "public": {
           "label": "Javno",
-          "desc": "Svako može da se pridruži"
+          "desc": "Svako može da se pridruži",
+          "_pending_review": {}
         },
         "followers": {
           "label": "Samo pratioci",
-          "desc": "Samo tvoji pratioci"
+          "desc": "Samo tvoji pratioci",
+          "_pending_review": {}
         },
         "group": {
           "label": "Grupa/VIP",
-          "desc": "Samo pozvani članovi"
-        }
+          "desc": "Samo pozvani članovi",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "scheduleLabel": "Zakaži za kasnije",
       "goLiveNow": "Kreni uživo sada",
@@ -118,7 +127,8 @@
         "imageUploadFailedDesc": "Zadržaćemo postojeću sliku.",
         "genericTitle": "Greška",
         "genericDesc": "Kreiranje strima nije uspelo. Pokušaj ponovo.",
-        "genericDescWithReason": "Kreiranje strima nije uspelo: {reason}. Pokušaj ponovo."
+        "genericDescWithReason": "Kreiranje strima nije uspelo: {reason}. Pokušaj ponovo.",
+        "_pending_review": {}
       },
       "success": {
         "streamUpdatedTitle": "Strim ažuriran! ✨",
@@ -128,15 +138,19 @@
         "youAreLiveTitle": "Uživo si! 🎙️",
         "youAreLiveDesc": "Pridružujem se tvojoj strim sobi…",
         "aiImageHintTitle": "AI generisanje slike",
-        "aiImageHintDesc": "Slika će biti generisana kada strim počne."
-      }
+        "aiImageHintDesc": "Slika će biti generisana kada strim počne.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "editSession": {
       "title": "Uredi sesiju",
       "saving": "Čuvanje…",
       "changeCover": "Promeni naslovnu sliku",
-      "noChanges": "Nema izmena za čuvanje"
-    }
+      "noChanges": "Nema izmena za čuvanje",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
   },
   "goLivePopup": {
     "durationLabel": "Trajanje",
@@ -146,6 +160,8 @@
     "duration60": "1 sat",
     "duration90": "1,5 sat",
     "duration120": "2 sata",
-    "durationHint": "Soba se automatski zatvara nakon ovog vremena ako je ne završiš ručno."
-  }
+    "durationHint": "Soba se automatski zatvara nakon ovog vremena ako je ne završiš ručno.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

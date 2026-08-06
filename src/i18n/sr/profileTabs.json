@@ -8,6 +8,8 @@
     "health": "Zdravlje",
     "services": "Usluge",
     "insight": "Uvid",
-    "milestones": "Prekretnice"
-  }
+    "milestones": "Prekretnice",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

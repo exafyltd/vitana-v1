@@ -7,7 +7,8 @@
       "today": "Danas",
       "upcoming": "Predstojeći",
       "following": "Pratiš",
-      "recommended": "Preporučeno"
+      "recommended": "Preporučeno",
+      "_pending_review": {}
     },
     "noEvents": "Nema zakazanih događaja",
     "checkBack": "Vrati se uskoro za nove događaje u zajednici!",
@@ -22,7 +23,10 @@
       "noPostsFromFollowing": "Još nema objava",
       "noPostsFromFollowingDesc": "Ljudi koje pratiš još nisu kreirali događaje ili okupljanja.",
       "youFollow": "Pratiš",
-      "loadingFollowing": "Učitavanje objava..."
-    }
-  }
+      "loadingFollowing": "Učitavanje objava...",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

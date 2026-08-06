@@ -51,7 +51,8 @@
       "movement": "Kretanje",
       "mind": "Um",
       "supplements": "Suplementi",
-      "experts": "Stručnjaci"
+      "experts": "Stručnjaci",
+      "_pending_review": {}
     },
     "subcategories": {
       "longevity": "Dugovečnost",
@@ -78,7 +79,8 @@
       "sexualHealth": "Seksualno zdravlje",
       "prevention": "Prevencija i rano otkrivanje",
       "generalHealth": "Opšte zdravlje",
-      "dnaAnalysis": "DNK analize"
+      "dnaAnalysis": "DNK analize",
+      "_pending_review": {}
     },
     "quickActions": {
       "title": "Brze radnje",
@@ -89,7 +91,8 @@
       "reorderPrevious": "Ponovi prethodno",
       "managePayment": "Upravljanje plaćanjem",
       "findServicesNearMe": "Pronađi usluge u blizini",
-      "viewSavedItems": "Pregledaj sačuvane stavke"
+      "viewSavedItems": "Pregledaj sačuvane stavke",
+      "_pending_review": {}
     },
     "aiPicks": {
       "title": "AI preporuke za tebe",
@@ -101,24 +104,30 @@
       "recommendationsFound": "Pronađeno {count} preporuka",
       "noRecommendations": "Nema pronađenih preporuka",
       "noRecommendationsDesc": "Izaberi drugi filter da vidiš više preporuka",
-      "viewAllPicks": "Pogledaj sve odabire"
+      "viewAllPicks": "Pogledaj sve odabire",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Sve",
       "services": "Usluge",
       "supplements": "Suplementi",
       "experts": "Stručnjaci",
-      "deals": "Ponude"
+      "deals": "Ponude",
+      "_pending_review": {}
     },
     "toast": {
       "actionSelected": "Akcija izabrana",
-      "comingSoon": "{action} funkcija uskoro stiže!"
+      "comingSoon": "{action} funkcija uskoro stiže!",
+      "_pending_review": {}
     },
     "guest": {
       "bannerTitle": "Prijavi se i osvoji Vitana nagrade pri svakoj kupovini",
       "bannerSubtitle": "Slobodno razgledaj — prijavi se (besplatno je) da kupuješ i skupljaš nagrade.",
       "bannerCta": "Prijavi se",
-      "signIn": "Prijavi se"
-    }
-  }
+      "signIn": "Prijavi se",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

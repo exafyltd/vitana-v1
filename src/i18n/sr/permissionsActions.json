@@ -4,36 +4,47 @@
     "items": {
       "privacySettings": {
         "title": "Podešavanja privatnosti",
-        "description": "Podesi podešavanja privatnosti i deljenja"
+        "description": "Podesi podešavanja privatnosti i deljenja",
+        "_pending_review": {}
       },
       "manageAccess": {
         "title": "Upravljaj pristupom",
-        "description": "Kontroliši ko može da vidi tvoje zdravstvene uspomene"
+        "description": "Kontroliši ko može da vidi tvoje zdravstvene uspomene",
+        "_pending_review": {}
       },
       "securitySettings": {
         "title": "Sigurnosna podešavanja",
-        "description": "Ažuriraj podešavanja autentifikacije i bezbednosti"
+        "description": "Ažuriraj podešavanja autentifikacije i bezbednosti",
+        "_pending_review": {}
       },
       "apiKeysAccess": {
         "title": "API ključevi i pristup",
-        "description": "Upravljaj integracijama trećih aplikacija i API pristupom"
+        "description": "Upravljaj integracijama trećih aplikacija i API pristupom",
+        "_pending_review": {}
       },
       "dataRights": {
         "title": "Prava na podatke",
-        "description": "Ostvari svoja prava na prenosivost i brisanje podataka"
+        "description": "Ostvari svoja prava na prenosivost i brisanje podataka",
+        "_pending_review": {}
       },
       "auditLogs": {
         "title": "Revizijski dnevnici",
-        "description": "Pregledaj istoriju pristupa i sigurnosni revizijski trag"
+        "description": "Pregledaj istoriju pristupa i sigurnosni revizijski trag",
+        "_pending_review": {}
       },
       "permissionSettings": {
         "title": "Podešavanja dozvola",
-        "description": "Fino podesi dozvole za različite funkcije"
+        "description": "Fino podesi dozvole za različite funkcije",
+        "_pending_review": {}
       },
       "exportData": {
         "title": "Izvezi podatke",
-        "description": "Bezbedno preuzmi svoje uspomene i zdravstvene podatke"
-      }
-    }
-  }
+        "description": "Bezbedno preuzmi svoje uspomene i zdravstvene podatke",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
