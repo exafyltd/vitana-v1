@@ -21,10 +21,19 @@
       "purchases": "Purchases",
       "pending": "Pending Payouts",
       "withdrawals": "Withdrawals",
-      "stakes": "Staking"
+      "stakes": "Staking",
+      "_pending_review": {
+        "commissions": true
+      }
     },
     "noActivity": "No activity yet",
     "noActivityDesc": "Your transactions will appear here.",
-    "displayCurrency": "Display currency"
+    "displayCurrency": "Display currency",
+    "_pending_review": {
+      "description": true,
+      "usdBalance": true,
+      "creditsBalance": true,
+      "noActivityDesc": true
+    }
   }
 }

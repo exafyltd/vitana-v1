@@ -4,7 +4,10 @@
       "title": "Gift a Maxina Voucher",
       "subtitle": "Give the gift of wellness and community connection",
       "buyVoucher": "Buy Voucher",
-      "openingCheckout": "Opening secure checkout..."
+      "openingCheckout": "Opening secure checkout...",
+      "_pending_review": {
+        "subtitle": true
+      }
     },
     "tiers": {
       "test": {
@@ -40,7 +43,10 @@
       "download": "Download Voucher",
       "sendEmail": "Send to Recipient by Email",
       "viewOrders": "View in Orders",
-      "done": "Done"
+      "done": "Done",
+      "_pending_review": {
+        "ready": true
+      }
     },
     "email": {
       "title": "Send Voucher by Email",
@@ -64,7 +70,11 @@
       "copyLink": "Copy Link",
       "share": "Save / Share",
       "shareHint": "Save to Files, Drive, or send to someone",
-      "downloadHint": "If download opens blank, tap Open in Browser"
+      "downloadHint": "If download opens blank, tap Open in Browser",
+      "_pending_review": {
+        "title": true,
+        "downloadHint": true
+      }
     },
     "toast": {
       "downloadStarted": "Download started!",
@@ -81,7 +91,14 @@
       "pdfNotAvailable": "PDF download not available for this order type",
       "enterRecipientEmail": "Please enter recipient email",
       "emailOnlyForVouchers": "Email sending only available for vouchers",
-      "sendingVoucherEmail": "Sending voucher email..."
+      "sendingVoucherEmail": "Sending voucher email...",
+      "_pending_review": {
+        "linkCopiedDesc": true,
+        "checkoutFailed": true,
+        "downloadFailedCopyLink": true,
+        "useTicketView": true,
+        "enterRecipientEmail": true
+      }
     }
   }
 }

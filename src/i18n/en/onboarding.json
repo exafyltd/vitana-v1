@@ -24,6 +24,12 @@
       "handleMinLength": "At least 3 characters",
       "saving": "Setting up...",
       "submit": "Let's get started!"
+    },
+    "_pending_review": {
+      "subtitle": true,
+      "connectAppsDesc": true,
+      "setGoalsDesc": true,
+      "joinCommunityDesc": true
     }
   }
 }

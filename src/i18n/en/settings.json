@@ -23,7 +23,13 @@
       "billing": "Billing",
       "billingDesc": "Subscription and payment information",
       "support": "Support",
-      "supportDesc": "Help, FAQ, and contact options"
+      "supportDesc": "Help, FAQ, and contact options",
+      "_pending_review": {
+        "privacyDesc": true,
+        "notificationsDesc": true,
+        "connectedAppsDesc": true,
+        "tenantRoleDesc": true
+      }
     },
     "status": {
       "privacyStatus": "Privacy Status",
@@ -36,6 +42,9 @@
       "apps": "apps"
     },
     "vitanaOpenedSection": "Vitana opened {section}",
-    "vitanaUpdated": "Vitana updated your setting"
+    "vitanaUpdated": "Vitana updated your setting",
+    "_pending_review": {
+      "description": true
+    }
   }
 }

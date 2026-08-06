@@ -26,7 +26,11 @@
     "trend": {
       "improving": "Improving",
       "declining": "Declining",
-      "stable": "Stable"
+      "stable": "Stable",
+      "_pending_review": {
+        "improving": true,
+        "declining": true
+      }
     },
     "suggestions": {
       "uploadBloodTestResults": "Upload blood test results",
@@ -51,7 +55,14 @@
       "noMentalPlan": "No Mental Plan Yet",
       "noMentalPlanDesc": "Generate your personalized mental wellness plan to track stress, focus, and emotional balance with AI guidance.",
       "generatePlan": "Generate Plan",
-      "generating": "Generating..."
+      "generating": "Generating...",
+      "_pending_review": {
+        "noSleepPlanDesc": true,
+        "noExercisePlanDesc": true,
+        "noNutritionPlanDesc": true,
+        "noHydrationPlanDesc": true,
+        "noMentalPlanDesc": true
+      }
     },
     "noSupplements": "No Supplements Yet",
     "noSupplementsDesc": "Track your daily vitamins, minerals, and supplements. Add your first supplement to get started.",
@@ -86,9 +97,30 @@
         "find_match": "Find a Match",
         "marketplace": "Marketplace",
         "income_generation": "Income generation",
-        "business_formation": "Business formation"
+        "business_formation": "Business formation",
+        "_pending_review": {
+          "income_generation": true
+        }
       },
-      "contractLink": "View the Ultimate Goal contract"
+      "contractLink": "View the Ultimate Goal contract",
+      "_pending_review": {
+        "subtitle": true,
+        "economyHeading": true,
+        "noPillar": true,
+        "noEconomy": true
+      }
+    },
+    "_pending_review": {
+      "description": true,
+      "overviewDesc": true,
+      "biomarkersDesc": true,
+      "educationDesc": true,
+      "priorityFocus": true,
+      "priorityFocusExplanation": true,
+      "takeAction": true,
+      "noSupplements": true,
+      "noSupplementsDesc": true,
+      "noReportsDesc": true
     }
   }
 }

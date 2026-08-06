@@ -11,7 +11,10 @@
       "active": "Active Rooms",
       "scheduled": "Scheduled",
       "analytics": "Analytics",
-      "moderation": "Moderation"
+      "moderation": "Moderation",
+      "_pending_review": {
+        "analytics": true
+      }
     }
   }
 }

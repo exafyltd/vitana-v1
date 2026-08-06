@@ -30,7 +30,10 @@
       },
       "health": {
         "title": "Transform Health",
-        "description": "Achieve optimal physical and mental wellness"
+        "description": "Achieve optimal physical and mental wellness",
+        "_pending_review": {
+          "title": true
+        }
       },
       "career": {
         "title": "Advance Career",
@@ -48,6 +51,9 @@
         "title": "Improve quality of life and extend lifespan",
         "description": "Focus on healthspan, energy, and longevity — Vitanaland's mission"
       }
+    },
+    "_pending_review": {
+      "confidence": true
     }
   }
 }

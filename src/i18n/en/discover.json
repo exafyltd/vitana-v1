@@ -101,7 +101,14 @@
       "recommendationsFound": "{count} recommendations found",
       "noRecommendations": "No recommendations found",
       "noRecommendationsDesc": "Try selecting a different filter to see more recommendations",
-      "viewAllPicks": "View All Picks"
+      "viewAllPicks": "View All Picks",
+      "_pending_review": {
+        "title": true,
+        "description": true,
+        "backToDiscover": true,
+        "unavailableDesc": true,
+        "noRecommendationsDesc": true
+      }
     },
     "filters": {
       "all": "All",
@@ -119,6 +126,21 @@
       "bannerSubtitle": "Browse freely — sign in (it's free) to buy and start earning rewards.",
       "bannerCta": "Sign in",
       "signIn": "Sign in"
+    },
+    "_pending_review": {
+      "title": true,
+      "mobileTitle": true,
+      "mobileDescription": true,
+      "description": true,
+      "searchPlaceholder": true,
+      "doctorsCoachesDesc": true,
+      "wellnessServicesDesc": true,
+      "communityGroupsDesc": true,
+      "explore": true,
+      "aiPicksForYou": true,
+      "recommendedForYou": true,
+      "suggestedForYou": true,
+      "noResultsDesc": true
     }
   }
 }

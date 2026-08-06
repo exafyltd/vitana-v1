@@ -5,6 +5,9 @@
     "event": "Event",
     "eventDescription": "Formal gatherings with scheduled times and structured programs",
     "meetup": "MeetUp",
-    "meetupDescription": "Casual gatherings for networking and community building"
+    "meetupDescription": "Casual gatherings for networking and community building",
+    "_pending_review": {
+      "description": true
+    }
   }
 }

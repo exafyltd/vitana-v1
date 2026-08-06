@@ -16,6 +16,11 @@
     "quickAdd": "Quick Add",
     "eventFormComingSoon": "Event creation form coming soon",
     "externalSync": "External Sync",
-    "connectingCalendars": "Connecting to external calendars..."
+    "connectingCalendars": "Connecting to external calendars...",
+    "_pending_review": {
+      "upcomingSchedule": true,
+      "createFirstEvent": true,
+      "connectingCalendars": true
+    }
   }
 }

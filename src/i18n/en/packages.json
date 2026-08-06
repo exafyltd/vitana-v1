@@ -17,6 +17,9 @@
     "validDays": "Valid {days} days",
     "save": "Save {percent}%",
     "unpublish": "Unpublish",
-    "publish": "Publish"
+    "publish": "Publish",
+    "_pending_review": {
+      "confirmDelete": true
+    }
   }
 }

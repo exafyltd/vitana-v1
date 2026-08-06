@@ -22,6 +22,11 @@
     "healthEmpty": "Log your first entry to start your Index.",
     "noActionsMatchedYet": "No actions matched yet — Autopilot is shaping suggestions.",
     "actionsPendingOne": "{count} action pending",
-    "actionsPendingOther": "{count} actions pending"
+    "actionsPendingOther": "{count} actions pending",
+    "_pending_review": {
+      "noAppsFound": true,
+      "noEventsYet": true,
+      "tryAdjustingFilters": true
+    }
   }
 }

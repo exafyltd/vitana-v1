@@ -40,6 +40,15 @@
     "confirmClearOld": "Are you sure you want to clear history older than 90 days?",
     "confirmDeleteAll": "⚠️ WARNING: This will permanently delete ALL your history. This action cannot be undone. Are you absolutely sure?",
     "beta": "Beta",
-    "danger": "Danger"
+    "danger": "Danger",
+    "_pending_review": {
+      "archiveSettings": true,
+      "exportCompleteDesc": true,
+      "exportFailedDesc": true,
+      "allHistoryDeletedDesc": true,
+      "deleteFailedDesc": true,
+      "confirmClearOld": true,
+      "confirmDeleteAll": true
+    }
   }
 }

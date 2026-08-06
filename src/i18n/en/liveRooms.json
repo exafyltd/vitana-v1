@@ -6,7 +6,10 @@
       "live": "Live Now",
       "scheduled": "Scheduled",
       "all": "All Rooms",
-      "past": "Past"
+      "past": "Past",
+      "_pending_review": {
+        "live": true
+      }
     },
     "goLive": "Go Live",
     "joinRoom": "Join Room",
@@ -33,7 +36,10 @@
       "video": "Video",
       "raiseHand": "Raise Hand",
       "chat": "Chat",
-      "reactions": "Reactions"
+      "reactions": "Reactions",
+      "_pending_review": {
+        "mute": true
+      }
     },
     "goLivePopup": {
       "titleCreate": "Go Live",
@@ -78,7 +84,10 @@
         },
         "followers": {
           "label": "Followers Only",
-          "desc": "Only your followers"
+          "desc": "Only your followers",
+          "_pending_review": {
+            "desc": true
+          }
         },
         "group": {
           "label": "Group/VIP",
@@ -118,7 +127,10 @@
         "imageUploadFailedDesc": "We'll keep the existing image.",
         "genericTitle": "Error",
         "genericDesc": "Failed to create stream. Please try again.",
-        "genericDescWithReason": "Failed to create stream: {reason}. Please try again."
+        "genericDescWithReason": "Failed to create stream: {reason}. Please try again.",
+        "_pending_review": {
+          "notLoggedInDesc": true
+        }
       },
       "success": {
         "streamUpdatedTitle": "Stream Updated! ✨",
@@ -128,7 +140,17 @@
         "youAreLiveTitle": "You're Live! 🎙️",
         "youAreLiveDesc": "Joining your stream room…",
         "aiImageHintTitle": "AI Image Generation",
-        "aiImageHintDesc": "Image will be generated when stream starts."
+        "aiImageHintDesc": "Image will be generated when stream starts.",
+        "_pending_review": {
+          "streamUpdatedDesc": true,
+          "streamScheduledDesc": true,
+          "youAreLiveTitle": true,
+          "youAreLiveDesc": true
+        }
+      },
+      "_pending_review": {
+        "descriptionPlaceholder": true,
+        "coverUploadHint": true
       }
     },
     "editSession": {
@@ -136,6 +158,10 @@
       "saving": "Saving …",
       "changeCover": "Change cover image",
       "noChanges": "No changes to save"
+    },
+    "_pending_review": {
+      "noRooms": true,
+      "demoRoomDesc": true
     }
   },
   "goLivePopup": {

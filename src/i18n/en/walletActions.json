@@ -6,6 +6,12 @@
     "exchange": "Swap",
     "withdraw": "Withdraw",
     "buyCredits": "Buy VTNA Credits",
-    "stakeTokens": "Stake Tokens"
+    "stakeTokens": "Stake Tokens",
+    "_pending_review": {
+      "addFunds": true,
+      "exchange": true,
+      "withdraw": true,
+      "buyCredits": true
+    }
   }
 }

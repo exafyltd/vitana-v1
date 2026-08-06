@@ -113,7 +113,29 @@
       "personalEventCreated": "Event Created!",
       "personalEventCreatedDesc": "Event has been added to your calendar.",
       "error": "Error",
-      "errorDesc": "Failed to create event. Please try again."
+      "errorDesc": "Failed to create event. Please try again.",
+      "_pending_review": {
+        "invalidFileTypeDesc": true,
+        "missingFieldsDesc": true,
+        "invalidDateDesc": true,
+        "errorCreatingDesc": true,
+        "generatingImageDesc": true,
+        "imageGeneratedDesc": true,
+        "rateLimitDesc": true,
+        "creditsDesc": true,
+        "permissionDeniedDesc": true,
+        "imageGenFailedDesc": true,
+        "communityEventCreatedDesc": true,
+        "personalEventCreatedDesc": true,
+        "errorDesc": true
+      }
+    },
+    "_pending_review": {
+      "descriptionPlaceholder": true,
+      "detailedDescriptionPlaceholder": true,
+      "detailedDescriptionHint": true,
+      "displayPriceHint": true,
+      "allowResellersDesc": true
     }
   }
 }

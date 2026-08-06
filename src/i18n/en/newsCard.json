@@ -25,7 +25,10 @@
       "continueReading": "Continue reading on",
       "openInBrowser": "Open in browser",
       "couldNotLoad": "This article can't be displayed inline",
-      "readOn": "Read on"
+      "readOn": "Read on",
+      "_pending_review": {
+        "readOn": true
+      }
     },
     "pillars": {
       "all": "All",

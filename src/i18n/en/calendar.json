@@ -29,7 +29,10 @@
       "title": "Your Booked Events",
       "todayLabel": "Today",
       "nextUp": "Next up",
-      "noEventsToday": "No events today"
+      "noEventsToday": "No events today",
+      "_pending_review": {
+        "title": true
+      }
     },
     "filters": {
       "personal": "Personal",
@@ -77,7 +80,13 @@
       "reminderLaterToday": "Reminder set for later today",
       "reminderTomorrow": "Reminder set for tomorrow",
       "recommendFocus": "Recommend focus block",
-      "focusBlockDesc": "You have a 90-minute window available. Perfect for deep work."
+      "focusBlockDesc": "You have a 90-minute window available. Perfect for deep work.",
+      "_pending_review": {
+        "snooze": true,
+        "calendarUpdated": true,
+        "suggestionSnoozed": true,
+        "focusBlockDesc": true
+      }
     },
     "toasts": {
       "eventCreated": "Event created",
@@ -94,7 +103,13 @@
       "featureComingSoon": "Feature coming soon",
       "inviteFollowers": "Invite followers",
       "rescheduleEvent": "Reschedule event",
-      "shareToGroup": "Share to group"
+      "shareToGroup": "Share to group",
+      "_pending_review": {
+        "eventCreatedDesc": true,
+        "eventDeletedDesc": true,
+        "syncingTitle": true,
+        "syncingDesc": true
+      }
     },
     "error": {
       "failedToCreate": "Failed to create event"
@@ -140,8 +155,18 @@
         "wave-3": "Deepening Connections",
         "wave-4": "Health Intelligence",
         "wave-5": "Insight Moments",
-        "wave-6": "Recommendations & Discovery"
+        "wave-6": "Recommendations & Discovery",
+        "_pending_review": {
+          "wave-4": true
+        }
       }
+    },
+    "_pending_review": {
+      "bookedActivities": true,
+      "agenda": true,
+      "tryQuickAdd": true,
+      "clickSlotHint": true,
+      "exploreActivities": true
     }
   }
 }

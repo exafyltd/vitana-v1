@@ -16,6 +16,12 @@
     "title": "Title",
     "titlePlaceholder": "Video title",
     "description": "Description",
-    "descriptionPlaceholder": "Optional description..."
+    "descriptionPlaceholder": "Optional description...",
+    "_pending_review": {
+      "unsavedChanges": true,
+      "notAuthenticatedDesc": true,
+      "profileUpdatedDesc": true,
+      "showcaseHint": true
+    }
   }
 }

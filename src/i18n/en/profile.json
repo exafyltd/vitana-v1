@@ -6,7 +6,11 @@
       "editHighlights": "Edit Highlights",
       "saveHighlights": "Save Highlights",
       "highlightsDesc": "Choose your best posts and media to feature at the top of your profile. Featured content appears in a highlights section and attracts more followers.",
-      "try": "Try"
+      "try": "Try",
+      "_pending_review": {
+        "polishBio": true,
+        "highlightsDesc": true
+      }
     },
     "identity": {
       "vitanaIndex": "Vitana Index",

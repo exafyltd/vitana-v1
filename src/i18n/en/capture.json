@@ -41,6 +41,22 @@
     "sendFailed": "Send Failed",
     "sendFailedDesc": "Could not send your feedback. Please try again.",
     "recognitionError": "Recognition Error",
-    "recognitionErrorDesc": "Speech recognition encountered an error. Please try again."
+    "recognitionErrorDesc": "Speech recognition encountered an error. Please try again.",
+    "_pending_review": {
+      "tapToDescribe": true,
+      "yourVoiceEntry": true,
+      "yourFeedback": true,
+      "startSpeaking": true,
+      "editOrType": true,
+      "reportSentDesc": true,
+      "recordingStartedDesc": true,
+      "recordingStoppedDesc": true,
+      "noContentDesc": true,
+      "noContentBugDesc": true,
+      "entrySavedDesc": true,
+      "saveFailedDesc": true,
+      "sendFailedDesc": true,
+      "recognitionErrorDesc": true
+    }
   }
 }

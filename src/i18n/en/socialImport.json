@@ -25,7 +25,22 @@
       "tiktok": "We'll extract your content themes and creative personality from your bio.",
       "youtube": "We'll identify your content categories and expertise areas from your description.",
       "facebook": "We'll extract your interests and community involvement from your bio.",
-      "x": "We'll analyze your bio to understand your topics of interest and communication style."
+      "x": "We'll analyze your bio to understand your topics of interest and communication style.",
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "tiktok": true,
+        "youtube": true,
+        "facebook": true,
+        "x": true
+      }
+    },
+    "_pending_review": {
+      "dialogTitle": true,
+      "dialogDescription": true,
+      "urlRequiredDesc": true,
+      "importSuccessDesc": true,
+      "verifiedConnections": true
     }
   }
 }

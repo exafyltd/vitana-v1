@@ -17,7 +17,14 @@
       "hostAndSell": "Host & sell tickets",
       "resellAndEarn": "Resell & earn",
       "offerBookings": "Offer bookings",
-      "boostVisibility": "Boost visibility"
+      "boostVisibility": "Boost visibility",
+      "_pending_review": {
+        "choosePathGuide": true,
+        "howToEarn": true,
+        "pickOne": true,
+        "createEventDesc": true,
+        "createServiceDesc": true
+      }
     },
     "history": {
       "all": "All",
@@ -38,7 +45,14 @@
       "allTime": "All time",
       "details": "Details",
       "earningsActivity": "Earnings Activity",
-      "noEarningsStartSelling": "No earnings yet. Start selling to see activity here."
+      "noEarningsStartSelling": "No earnings yet. Start selling to see activity here.",
+      "_pending_review": {
+        "noEarningsYet": true,
+        "startSellingToSee": true,
+        "youEarned": true,
+        "allTime": true,
+        "noEarningsStartSelling": true
+      }
     },
     "kpi": {
       "totalEarnings": "Total Earnings",
@@ -61,7 +75,12 @@
       "resellerCommissions": "Reseller Commissions",
       "goToSellEarn": "Go to Sell & Earn",
       "totalEarned": "Total Earned",
-      "earningsBySource": "Earnings by Source"
+      "earningsBySource": "Earnings by Source",
+      "_pending_review": {
+        "createServiceToStart": true,
+        "goToSellEarn": true,
+        "totalEarned": true
+      }
     },
     "reseller": {
       "upcomingEvents": "Upcoming Events",
@@ -84,7 +103,12 @@
       "noPayoutsYet": "No payouts yet",
       "attributedSales": "Attributed Sales by Event",
       "noSalesMatchFilter": "No sales match the current filters",
-      "mockDataActive": "Mock data active"
+      "mockDataActive": "Mock data active",
+      "_pending_review": {
+        "shareLinkToStart": true,
+        "shareLinkOrPromotion": true,
+        "pickEventForLink": true
+      }
     },
     "transfer": {
       "title": "Transfer to Wallet",
@@ -93,7 +117,11 @@
       "wallet": "Wallet",
       "instantCredit": "This will credit your earnings instantly to your wallet balance.",
       "transferring": "Transferring...",
-      "transfer": "Transfer"
+      "transfer": "Transfer",
+      "_pending_review": {
+        "description": true,
+        "instantCredit": true
+      }
     },
     "typeSelector": {
       "title": "Start a Business",
@@ -106,7 +134,10 @@
       "badgeNew": "New",
       "badgeActive": "Active",
       "alreadyReseller": "You're already a reseller! Check the Sell & Earn tab.",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "_pending_review": {
+        "alreadyReseller": true
+      }
     },
     "missionOpportunities": {
       "title": "Mission Opportunities",
@@ -120,6 +151,9 @@
         "marketplace": "Marketplace",
         "income_generation": "Income generation",
         "business_formation": "Business formation"
+      },
+      "_pending_review": {
+        "subtitle": true
       }
     }
   }

@@ -19,6 +19,11 @@
     "processing": "Processing...",
     "joining": "Joining...",
     "getTickets": "Get Tickets",
-    "promoteEvent": "Promote event"
+    "promoteEvent": "Promote event",
+    "_pending_review": {
+      "getFreeTicket": true,
+      "processing": true,
+      "joining": true
+    }
   }
 }

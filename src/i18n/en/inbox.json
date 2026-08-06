@@ -54,7 +54,10 @@
       "cancel": "Cancel",
       "startChat": "Start Chat",
       "createGroup": "Create Group",
-      "creating": "Creating..."
+      "creating": "Creating...",
+      "_pending_review": {
+        "noResults": true
+      }
     },
     "createGroup": {
       "title": "Create Group",
@@ -71,7 +74,12 @@
       "created": "Group created",
       "createdDesc": "\"{name}\" has been created successfully.",
       "failed": "Failed to create group",
-      "failedDesc": "Please try again."
+      "failedDesc": "Please try again.",
+      "_pending_review": {
+        "groupNameRequiredDesc": true,
+        "addMembersRequiredDesc": true,
+        "failedDesc": true
+      }
     },
     "toast": {
       "success": "Success",
@@ -88,7 +96,11 @@
       "groupCreated": "Group \"{name}\" created successfully!",
       "groupFailed": "Failed to create group",
       "allMarkedRead": "All messages marked as read",
-      "markAllReadFailed": "Couldn't mark all as read. Please try again."
+      "markAllReadFailed": "Couldn't mark all as read. Please try again.",
+      "_pending_review": {
+        "pleaseLogin": true,
+        "singleRecipientRequired": true
+      }
     },
     "createGroupAction": "Create New Group",
     "newConversationAction": "New Conversation",
@@ -106,7 +118,12 @@
       "globalDescription": "Start a conversation or join a community to connect with others.",
       "tenantDescription": "Connect with colleagues and team members in your professional network.",
       "startConversation": "Start a conversation",
-      "discoverPeople": "Discover people"
+      "discoverPeople": "Discover people",
+      "_pending_review": {
+        "title": true,
+        "globalDescription": true,
+        "tenantDescription": true
+      }
     },
     "group": {
       "loading": "Loading group…",
@@ -118,6 +135,13 @@
       "officialBadge": "official group",
       "empty": "No messages yet.",
       "composerPlaceholder": "Message…"
+    },
+    "_pending_review": {
+      "subtitle": true,
+      "description": true,
+      "desktopDescription": true,
+      "noGroupsDesc": true,
+      "noMessagesDesc": true
     }
   }
 }

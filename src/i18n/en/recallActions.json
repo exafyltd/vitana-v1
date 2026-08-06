@@ -34,6 +34,9 @@
         "title": "Quick Recalls",
         "description": "Access frequently searched memories and queries"
       }
+    },
+    "_pending_review": {
+      "title": true
     }
   }
 }

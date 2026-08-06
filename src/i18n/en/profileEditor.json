@@ -69,7 +69,18 @@
       "uploadFailed": "Upload failed",
       "uploadFailedDesc": "Failed to upload image. Please try again.",
       "identityUpdated": "Identity updated",
-      "identityUpdatedDesc": "Your identity information has been saved successfully."
+      "identityUpdatedDesc": "Your identity information has been saved successfully.",
+      "_pending_review": {
+        "description": true,
+        "displayNamePlaceholder": true,
+        "handlePlaceholder": true,
+        "handleDescription": true,
+        "personalityDescriptor": true,
+        "personalityDescriptorPlaceholder": true,
+        "personalityDescriptorDescription": true,
+        "avatarUploadedDesc": true,
+        "identityUpdatedDesc": true
+      }
     },
     "coverLibrary": {
       "title": "Cover Library",
@@ -96,7 +107,20 @@
       "universalRemoved": "Universal cover photo removed",
       "uploadFailed": "Upload failed",
       "categoryRequired": "Please pick a category for this photo first.",
-      "saveError": "Couldn't save — please try again."
+      "saveError": "Couldn't save — please try again.",
+      "_pending_review": {
+        "tileSubtitle": true,
+        "universalDescription": true,
+        "libraryEmpty": true
+      }
+    },
+    "_pending_review": {
+      "editAbout": true,
+      "aboutDescription": true,
+      "bioPlaceholder": true,
+      "linkUrlPlaceholder": true,
+      "cancel": true,
+      "profileUpdatedDesc": true
     }
   }
 }

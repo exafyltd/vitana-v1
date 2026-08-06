@@ -45,6 +45,11 @@
     "monitoring": "Monitoring",
     "logout": "Logout",
     "connectors": "Connectors",
-    "support": "Support"
+    "support": "Support",
+    "_pending_review": {
+      "patientQueue": true,
+      "clinicalOps": true,
+      "monitoring": true
+    }
   }
 }

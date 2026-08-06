@@ -7,6 +7,9 @@
     "eventsAndMeetups": "Events & Meetups",
     "communityNews": "Community News",
     "inspiration": "Inspiration",
-    "dailyMatches": "Daily Matches"
+    "dailyMatches": "Daily Matches",
+    "_pending_review": {
+      "mediaContent": true
+    }
   }
 }

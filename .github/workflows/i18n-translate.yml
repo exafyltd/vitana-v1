@@ -28,6 +28,19 @@ on:
         description: 'Target locale (de, sr, ar, es, ru, zh, fr, pt, pl)'
         required: true
         default: 'de'
+      source:
+        # VTID-03509. Every non-German locale is translated from `en` — the
+        # script's default — so this is normally left alone. It exists for the
+        # one case that default cannot express: translating INTO English, whose
+        # source is the German original. With source==target the script's
+        # "has this been translated?" test (target === source) is trivially
+        # true for every key, so an `en` run would silently do nothing.
+        #
+        # EN is the pivot: es/sr/fr/pt/ru/pl all derive from it, so EN lagging
+        # DE quietly caps every downstream locale at the staleness of English.
+        description: 'Source locale to translate FROM (use de when locale=en)'
+        required: false
+        default: 'en'
       shard:
         description: 'Shard name (omit for all)'
         required: false
@@ -83,7 +96,7 @@ jobs:
         run: |
           # --init bootstraps a new locale dir from en/ if missing; idempotent
           # for existing locales (only flags untranslated leaves).
-          ARGS="--init --provider=${{ inputs.provider }} --locale=${{ inputs.locale }} --batch=${{ inputs.batch }}"
+          ARGS="--init --provider=${{ inputs.provider }} --locale=${{ inputs.locale }} --batch=${{ inputs.batch }} --source=${{ inputs.source }}"
           if [ -n "${{ inputs.shard }}" ]; then
             ARGS="$ARGS --shard=${{ inputs.shard }}"
           fi

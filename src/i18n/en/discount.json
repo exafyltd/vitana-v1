@@ -26,6 +26,16 @@
     "email": "Email",
     "ticketEmailNote": "Your ticket and confirmation will be sent to this email.",
     "left": "{count} left",
-    "loadFailed": "Failed to load tickets"
+    "loadFailed": "Failed to load tickets",
+    "_pending_review": {
+      "welcomeTitle": true,
+      "welcomeMessage": true,
+      "applied": true,
+      "discountAppliedAmount": true,
+      "contactOrganizer": true,
+      "contactOrganizerPrice": true,
+      "guestDetails": true,
+      "ticketEmailNote": true
+    }
   }
 }

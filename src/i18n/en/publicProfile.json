@@ -7,6 +7,10 @@
     "posts": "Posts",
     "followers": "Followers",
     "following": "Following",
-    "groups": "Groups"
+    "groups": "Groups",
+    "_pending_review": {
+      "milestones": true,
+      "following": true
+    }
   }
 }
