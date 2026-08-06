@@ -6,10 +6,13 @@
 //   2. Orphan shards: a shard exists in en/ but not de/ (or reverse).
 //   3. _pending_review markers: present in any GA-flagged language.
 //   4. Empty values: any leaf string is "" (likely an unfilled stub).
+//   5. Coverage of EVERY locale against DE. A `ga` locale below 100% is an
+//      ERROR; `beta`/`draft` are reported for visibility only. (VTID-03509)
 //
-// GA languages are read from src/contexts/LanguageContext.tsx by literal match.
-// In Wave 1 only de-DE and en-US are GA; new entries are added in Wave 6 with
-// a `status: 'ga'|'beta'|'draft'` field on languageOptions.
+// GA languages ARE now read from src/contexts/LanguageContext.tsx — the header
+// claimed this before, but GA_LOCALES was a hardcoded Set(['en','de']). Adding
+// a locale to the picker did not extend the audit, which is why es/sr could sit
+// at 90.8% while this reported "all in sync".
 
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -18,7 +21,29 @@ import { dirname, join } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const I18N_DIR = join(__dirname, '..', 'src', 'i18n');
 
-const GA_LOCALES = new Set(['en', 'de']);
+// Parse `languageOptions` out of LanguageContext.tsx so the picker and the
+// audit can never disagree about which languages are GA.
+function readLanguageStatuses() {
+  const src = readFileSync(
+    join(__dirname, '..', 'src', 'contexts', 'LanguageContext.tsx'),
+    'utf8',
+  );
+  const block = src.split('export const languageOptions')[1]?.split('];')[0] ?? '';
+  const out = new Map(); // short code ('de') -> 'ga' | 'beta' | 'draft'
+  for (const m of block.matchAll(/value:\s*"([a-z]{2})-[A-Za-z]+",\s*status:\s*'(\w+)'/g)) {
+    out.set(m[1], m[2]);
+  }
+  if (out.size === 0) {
+    console.error('[i18n-audit] FATAL: could not parse languageOptions from LanguageContext.tsx');
+    process.exit(2);
+  }
+  return out;
+}
+
+const LANGUAGE_STATUS = readLanguageStatuses();
+const GA_LOCALES = new Set(
+  [...LANGUAGE_STATUS.entries()].filter(([, st]) => st === 'ga').map(([code]) => code),
+);
 const STRICT = process.argv.includes('--strict');
 const REPORT_ONLY = process.argv.includes('--report-only'); // exit 0 even on errors (Wave 1 CI)
 
@@ -124,6 +149,55 @@ for (const locale of allLocales) {
     }
   }
 }
+
+// 4. Coverage of every locale against DE (VTID-03509).
+//
+// This is the check that would have caught es/sr sitting at 90.8% while the
+// audit reported everything in sync, and it is what makes flipping a locale to
+// `ga` self-enforcing: a thin catalog fails CI instead of shipping a
+// half-German UI.
+const deAllKeys = new Set();
+for (const shardName of deShards) {
+  for (const { path } of flatten(loadShard(join(I18N_DIR, 'de'), shardName))) {
+    deAllKeys.add(`${shardName}.${path}`);
+  }
+}
+
+const coverage = [];
+for (const locale of allLocales.sort()) {
+  if (locale === 'de') continue;
+  const status = LANGUAGE_STATUS.get(locale) ?? 'unlisted';
+  const shards = listShards(join(I18N_DIR, locale));
+  const keys = new Set();
+  for (const shardName of shards) {
+    for (const { path } of flatten(loadShard(join(I18N_DIR, locale), shardName))) {
+      keys.add(`${shardName}.${path}`);
+    }
+  }
+  const missing = [...deAllKeys].filter((k) => !keys.has(k));
+  const pct = deAllKeys.size === 0 ? 100 : ((deAllKeys.size - missing.length) / deAllKeys.size) * 100;
+  coverage.push({ locale, status, pct, missing: missing.length, total: deAllKeys.size });
+
+  if (status === 'ga' && missing.length > 0) {
+    recordIssue(
+      'error',
+      locale,
+      `marked GA in LanguageContext but only ${pct.toFixed(1)}% of DE keys ` +
+        `(${missing.length} missing, e.g. ${missing.slice(0, 3).join(', ')}). ` +
+        `A GA locale must be complete — users get German for every missing key.`,
+    );
+  }
+}
+
+console.log('\n[i18n-audit] coverage vs DE:');
+for (const c of coverage) {
+  const flag = c.status === 'ga' && c.missing > 0 ? '  <-- GA BUT INCOMPLETE' : '';
+  console.log(
+    `  ${c.locale.padEnd(3)} ${String(c.status).padEnd(6)} ${c.pct.toFixed(1).padStart(5)}%  ` +
+      `(${c.total - c.missing}/${c.total})${flag}`,
+  );
+}
+console.log('');
 
 // Report
 const errors = issues.filter((i) => i.level === 'error');

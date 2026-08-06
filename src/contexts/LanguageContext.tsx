@@ -29,11 +29,13 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export const languageOptions: Array<{ label: string; value: string; status: 'ga' | 'beta' | 'draft' }> = [
   { label: "German (DE)", value: "de-DE", status: 'ga' },     // primary / source of truth
   { label: "English (EN)", value: "en-US", status: 'ga' },    // mirror
-  // 18 Aug 2026 market release — translated + LLM-audited.
-  { label: "Spanish (ES)", value: "es-ES", status: 'ga' },
-  { label: "Serbian (SR)", value: "sr-RS", status: 'ga' },
-  // 18 Aug 2026 market release — catalogs land in the translation run; these
-  // flip to 'ga' in the same commit that lands them, not before.
+  // 18 Aug 2026 market release. All six stay 'beta' until their catalogs are
+  // complete: `npm run i18n:audit` FAILS a 'ga' locale below 100% of DE, so
+  // the flip is gated on real coverage rather than on intent. ES/SR are at
+  // 90.8% (1,301 keys added to DE after the May bulk translation); FR/PT/RU/PL
+  // are bootstrapping. Flip each one in the commit that lands its catalog.
+  { label: "Spanish (ES)", value: "es-ES", status: 'beta' },
+  { label: "Serbian (SR)", value: "sr-RS", status: 'beta' },
   { label: "French (FR)", value: "fr-FR", status: 'beta' },
   { label: "Portuguese (PT)", value: "pt-PT", status: 'beta' },
   { label: "Russian (RU)", value: "ru-RU", status: 'beta' },
