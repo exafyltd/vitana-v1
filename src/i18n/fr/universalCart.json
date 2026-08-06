@@ -15,20 +15,24 @@
       "completeAction": "Marquer comme terminé",
       "alreadyCompleted": "Déjà terminé",
       "linkToDiscover": "Parcourir Discover",
-      "close": "Fermer"
+      "close": "Fermer",
+      "_pending_review": {}
     },
     "tabs": {
       "cart": "Panier",
-      "saved": "Enregistré"
+      "saved": "Enregistré",
+      "_pending_review": {}
     },
     "saved": {
       "moveToCart": "Ajouter au panier",
       "saveForLater": "Enregistrer pour plus tard",
       "emptyTitle": "Rien n'est encore enregistré",
-      "emptyBody": "Enregistre des produits pour plus tard en appuyant sur « Enregistrer pour plus tard » dans ton panier."
+      "emptyBody": "Enregistre des produits pour plus tard en appuyant sur « Enregistrer pour plus tard » dans ton panier.",
+      "_pending_review": {}
     },
     "item": {
-      "viewProduct": "Voir le produit"
+      "viewProduct": "Voir le produit",
+      "_pending_review": {}
     },
     "agent": {
       "promptLabel": "Que cherches-tu ?",
@@ -53,7 +57,8 @@
       "reordering": "Vitana ajoute tes articles de nouveau…",
       "overCapAdvisory": "Ces articles te font dépasser ton budget mensuel.",
       "nearCapAdvisory": "Ces articles te rapprochent de ton budget mensuel.",
-      "error": "Quelque chose a mal tourné. Réessaye."
+      "error": "Quelque chose a mal tourné. Réessaye.",
+      "_pending_review": {}
     },
     "budget": {
       "title": "Budget ce mois-ci",
@@ -61,7 +66,8 @@
       "statusUnder": "Dans le budget",
       "statusNear": "Presque au budget",
       "statusOver": "Hors budget",
-      "noCapHint": "Fixe un budget mensuel pour surveiller tes dépenses."
+      "noCapHint": "Fixe un budget mensuel pour surveiller tes dépenses.",
+      "_pending_review": {}
     },
     "addButton": {
       "label": "Ajouter au panier",
@@ -71,7 +77,10 @@
       "signRequired": "Connecte-toi pour ajouter à ton panier.",
       "roleBlocked": "Le panier n'est disponible que dans ton rôle de communauté.",
       "failed": "Impossible d'ajouter au panier",
-      "success": "Ajouté au panier"
-    }
-  }
+      "success": "Ajouté au panier",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

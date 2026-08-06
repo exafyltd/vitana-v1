@@ -7,6 +7,8 @@
     "playWelcome": "Lancer l'accueil",
     "preparing": "Préparation...",
     "playing": "Lecture",
-    "goToLogin": "Aller à la connexion"
-  }
+    "goToLogin": "Aller à la connexion",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

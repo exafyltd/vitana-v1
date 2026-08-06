@@ -6,6 +6,8 @@
     "uploading": "Téléversement...",
     "uploadingProgress": "Téléversement... {progress}%",
     "processing": "Traitement...",
-    "saving": "Enregistrement..."
-  }
+    "saving": "Enregistrement...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -16,7 +16,8 @@
       "updateArchetype": "Mettre à jour l'archétype",
       "profileSectionTitle": "Le Pilote automatique peut peaufiner ton profil ✨",
       "profileSectionDesc": "Obtiens des suggestions basées sur l'IA pour ta bio, ton archétype et tes faits marquants.",
-      "tryAutopilot": "Essayer le Pilote automatique"
+      "tryAutopilot": "Essayer le Pilote automatique",
+      "_pending_review": {}
     },
     "preview": "Aperçu Pilote automatique",
     "viewAll": "Voir tout",
@@ -41,12 +42,14 @@
       "toastExecutedTitle": "Actions exécutées",
       "toastExecutedDesc": "{success}/{total} actions terminées avec succès",
       "toastFailedTitle": "Exécution échouée",
-      "toastFailedDesc": "Quelque chose s'est mal passé. Réessaie."
+      "toastFailedDesc": "Quelque chose s'est mal passé. Réessaie.",
+      "_pending_review": {}
     },
     "priorities": {
       "high": "Élevé",
       "medium": "Moyen",
-      "low": "Faible"
+      "low": "Faible",
+      "_pending_review": {}
     },
     "widget": {
       "title": "Pilote automatique ⚡",
@@ -56,7 +59,8 @@
       "allOptimized": "Tout est optimisé ! 🎯",
       "enableToSee": "Active le Pilote automatique pour voir les suggestions",
       "completeForRewards": "Termine les suggestions du Pilote automatique pour des récompenses",
-      "enableForCredits": "Active le Pilote automatique pour des crédits"
+      "enableForCredits": "Active le Pilote automatique pour des crédits",
+      "_pending_review": {}
     },
     "insightBanner": {
       "title": "Aperçu de la santé du Pilote automatique",
@@ -64,7 +68,8 @@
       "synergyIndex": "Indice de synergie",
       "statusBalanced": "Équilibré",
       "statusNeedsAttention": "À surveiller",
-      "statusImproving": "S'améliore"
+      "statusImproving": "S'améliore",
+      "_pending_review": {}
     },
     "profilePopup": {
       "title": "Laisse le Pilote automatique peaufiner ton profil ✨",
@@ -87,7 +92,8 @@
       "acceptAll": "Accepter tout",
       "applied": "Modifications enregistrées !",
       "error": "Quelque chose s'est mal passé",
-      "comingSoon": "Bientôt disponible"
+      "comingSoon": "Bientôt disponible",
+      "_pending_review": {}
     },
     "actions": {
       "action1Title": "Rejoins le Groupe de danse Longévité ce soir ?",
@@ -103,7 +109,10 @@
       "action6Title": "Magie matinale consciente",
       "action6Reason": "Ton âme réclame ces techniques anti-stress",
       "newActionTitle": "Nouvelle suggestion IA",
-      "newActionReason": "Basé sur tes modèles d'activité récente"
-    }
-  }
+      "newActionReason": "Basé sur tes modèles d'activité récente",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

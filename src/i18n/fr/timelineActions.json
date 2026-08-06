@@ -4,36 +4,47 @@
     "items": {
       "logHealthEvent": {
         "title": "Enregistrer un événement de santé",
-        "description": "Enregistre les étapes importantes de ta santé"
+        "description": "Enregistre les étapes importantes de ta santé",
+        "_pending_review": {}
       },
       "markAchievement": {
         "title": "Marquer un accomplissement",
-        "description": "Célèbre les objectifs de bien-être atteints"
+        "description": "Célèbre les objectifs de bien-être atteints",
+        "_pending_review": {}
       },
       "recordLifeMoment": {
         "title": "Enregistrer un moment de vie",
-        "description": "Capture des expériences significatives"
+        "description": "Capture des expériences significatives",
+        "_pending_review": {}
       },
       "addPhotoMemory": {
         "title": "Ajouter un souvenir photo",
-        "description": "Chronologie visuelle avec photos de santé"
+        "description": "Chronologie visuelle avec photos de santé",
+        "_pending_review": {}
       },
       "voiceTimelineEntry": {
         "title": "Entrée vocale de la chronologie",
-        "description": "Mises à jour audio rapides sur ta santé"
+        "description": "Mises à jour audio rapides sur ta santé",
+        "_pending_review": {}
       },
       "trackProgress": {
         "title": "Suivre tes progrès",
-        "description": "Enregistre les métriques et tendances de bien-être"
+        "description": "Enregistre les métriques et tendances de bien-être",
+        "_pending_review": {}
       },
       "activityCheckIn": {
         "title": "Enregistrement d'activité",
-        "description": "Enregistre tes entraînements et activités"
+        "description": "Enregistre tes entraînements et activités",
+        "_pending_review": {}
       },
       "setTimelineGoal": {
         "title": "Définir un objectif de chronologie",
-        "description": "Crée de futurs objectifs de santé"
-      }
-    }
-  }
+        "description": "Crée de futurs objectifs de santé",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

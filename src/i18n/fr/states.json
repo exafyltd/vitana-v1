@@ -19,6 +19,8 @@
     "searching": "Recherche...",
     "deleting": "Suppression...",
     "creating": "Création...",
-    "updating": "Mise à jour..."
-  }
+    "updating": "Mise à jour...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -18,6 +18,8 @@
     "balanceRefreshedDesc": "Le solde du portefeuille a été mis à jour",
     "refreshFailed": "Actualisation échouée",
     "refreshFailedDesc": "Impossible d'actualiser le solde. Réessaie.",
-    "error": "Erreur"
-  }
+    "error": "Erreur",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -31,11 +31,8 @@
         "description": "Parcours les souvenirs par piliers de bien-être et catégories"
       },
       "quickRecalls": {
-        "_pending_review": {
-          "description": true
-        },
         "title": "Rappels rapides",
-        "description": "Access frequently searched memories and queries"
+        "description": "Accède aux souvenirs et requêtes fréquemment recherchés"
       }
     }
   }

@@ -4,36 +4,47 @@
     "items": {
       "recordVoiceEntry": {
         "title": "Enregistrer une entrée vocale",
-        "description": "Capture tes pensées et réflexions par enregistrement vocal"
+        "description": "Capture tes pensées et réflexions par enregistrement vocal",
+        "_pending_review": {}
       },
       "addPhotoEntry": {
         "title": "Ajouter une entrée photo",
-        "description": "Télécharge des images pour documenter ton parcours bien-être"
+        "description": "Télécharge des images pour documenter ton parcours bien-être",
+        "_pending_review": {}
       },
       "writeTextEntry": {
         "title": "Écrire une entrée texte",
-        "description": "Crée des réflexions et notes écrites détaillées"
+        "description": "Crée des réflexions et notes écrites détaillées",
+        "_pending_review": {}
       },
       "quickNote": {
         "title": "Note rapide",
-        "description": "Note rapidement tes pensées ou observations"
+        "description": "Note rapidement tes pensées ou observations",
+        "_pending_review": {}
       },
       "videoDiary": {
         "title": "Journal vidéo",
-        "description": "Enregistre des réflexions vidéo et des mises à jour de progrès"
+        "description": "Enregistre des réflexions vidéo et des mises à jour de progrès",
+        "_pending_review": {}
       },
       "scheduleEntry": {
         "title": "Programmer une entrée",
-        "description": "Planifie tes futures entrées de journal et rappels"
+        "description": "Planifie tes futures entrées de journal et rappels",
+        "_pending_review": {}
       },
       "tagMemories": {
         "title": "Étiqueter des souvenirs",
-        "description": "Organise tes entrées existantes avec des étiquettes et catégories"
+        "description": "Organise tes entrées existantes avec des étiquettes et catégories",
+        "_pending_review": {}
       },
       "importFiles": {
         "title": "Importer des fichiers",
-        "description": "Télécharge des documents, images ou autres fichiers bien-être"
-      }
-    }
-  }
+        "description": "Télécharge des documents, images ou autres fichiers bien-être",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

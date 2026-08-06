@@ -2,6 +2,8 @@
   "currencies": {
     "usd": "Dollars US",
     "vtna": "Jetons VTNA",
-    "credits": "Crédits de plateforme"
-  }
+    "credits": "Crédits de plateforme",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

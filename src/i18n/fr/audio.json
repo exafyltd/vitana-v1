@@ -2,6 +2,8 @@
   "audio": {
     "listening": "Je t'écoute...",
     "processing": "Un instant...",
-    "connectionError": "Problème de connexion. Réessaye, s'il te plaît."
-  }
+    "connectionError": "Problème de connexion. Réessaye, s'il te plaît.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

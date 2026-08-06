@@ -25,7 +25,10 @@
       "tiktok": "Nous extrairons tes thèmes de contenu et ta personnalité créative de ta bio.",
       "youtube": "Nous identifierons tes catégories de contenu et tes domaines d'expertise à partir de ta description.",
       "facebook": "Nous extrairons tes centres d'intérêt et ton implication communautaire de ta bio.",
-      "x": "Nous analyserons ta bio pour comprendre tes sujets d'intérêt et ton style de communication."
-    }
-  }
+      "x": "Nous analyserons ta bio pour comprendre tes sujets d'intérêt et ton style de communication.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -14,6 +14,8 @@
     "background": "Arrière-plan",
     "noBackground": "Pas d'arrière-plan",
     "searchingPeople": "Recherche de personnes…",
-    "noPeopleFound": "Aucune personne trouvée"
-  }
+    "noPeopleFound": "Aucune personne trouvée",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

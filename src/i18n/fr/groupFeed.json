@@ -10,6 +10,8 @@
     "messageDeleted": "Message supprimé",
     "error": "Erreur",
     "errorSend": "Impossible d'envoyer le message",
-    "errorDelete": "Impossible de supprimer le message"
-  }
+    "errorDelete": "Impossible de supprimer le message",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

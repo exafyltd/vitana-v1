@@ -15,7 +15,8 @@
       "mute": "Muet",
       "unmute": "Activer le son",
       "share": "Partager",
-      "linkCopied": "Lien copié"
+      "linkCopied": "Lien copié",
+      "_pending_review": {}
     },
     "drawer": {
       "loading": "Chargement du produit…",
@@ -35,7 +36,10 @@
       "unavailableTitle": "Plus disponible",
       "unavailableBody": "Ce produit n'est plus disponible.",
       "roleBlockedTitle": "L'achat n'est pas disponible ici.",
-      "roleBlockedBody": "L'achat est une fonctionnalité communautaire. Passe au rôle de la communauté pour continuer."
-    }
-  }
+      "roleBlockedBody": "L'achat est une fonctionnalité communautaire. Passe au rôle de la communauté pour continuer.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

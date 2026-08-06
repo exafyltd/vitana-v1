@@ -4,7 +4,7 @@
     "description": "Choisis le type de rassemblement que tu veux créer",
     "event": "Événement",
     "eventDescription": "Rassemblements formels avec des horaires et des programmes structurés",
-    "meetup": "MeetUp",
+    "meetup": "Rendez-vous",
     "meetupDescription": "Rassemblements informels pour le réseautage et la création de communauté"
   }
 }

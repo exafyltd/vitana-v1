@@ -4,6 +4,8 @@
     "media": "Médias",
     "groups": "Groupes",
     "followers": "Abonnés",
-    "following": "Abonnements"
-  }
+    "following": "Abonnements",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,5 +1,7 @@
 {
   "orbHint": {
-    "tapToTalk": "Appuie ici pour parler à Vitana"
-  }
+    "tapToTalk": "Appuie ici pour parler à Vitana",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
