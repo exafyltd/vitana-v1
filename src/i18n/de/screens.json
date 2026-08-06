@@ -5774,6 +5774,8 @@
       "attachFile": "Datei anhängen",
       "attach": "Anhängen",
       "loadingMessages": "Nachrichten werden geladen...",
+      "loadingOlderMessages": "Ältere Nachrichten werden geladen...",
+      "conversationStart": "Anfang der Unterhaltung",
       "noMessagesYet": "Noch keine Nachrichten",
       "startConversation": "Starte das Gespräch!",
       "messageFailedSend": "Nachricht konnte nicht gesendet werden",
