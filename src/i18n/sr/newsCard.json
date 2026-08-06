@@ -18,14 +18,16 @@
       "showLessToast": "Prikazivaćemo manje ovakvih",
       "mutedToast": "Izvor utišan",
       "undo": "Poništi",
-      "unmute": "Uključi zvuk"
+      "unmute": "Uključi zvuk",
+      "_pending_review": {}
     },
     "detail": {
       "back": "Nazad",
       "continueReading": "Nastavi čitanje na",
       "openInBrowser": "Otvori u pregledaču",
       "couldNotLoad": "Ovaj članak se ne može prikazati u okviru",
-      "readOn": "Čitaj na"
+      "readOn": "Čitaj na",
+      "_pending_review": {}
     },
     "pillars": {
       "all": "Sve",
@@ -33,7 +35,10 @@
       "hydration": "Hidratacija",
       "sleep": "San",
       "exercise": "Vežbanje",
-      "mental": "Mentalno"
-    }
-  }
+      "mental": "Mentalno",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

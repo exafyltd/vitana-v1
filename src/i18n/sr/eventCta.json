@@ -19,6 +19,8 @@
     "processing": "Obrađuje se...",
     "joining": "Povezivanje...",
     "getTickets": "Uzmi karte",
-    "promoteEvent": "Promoviši događaj"
-  }
+    "promoteEvent": "Promoviši događaj",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

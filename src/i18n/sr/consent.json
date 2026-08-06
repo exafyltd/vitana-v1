@@ -1,5 +1,7 @@
 {
   "consent": {
-    "searchPlaceholder": "Pretraži pakete saglasnosti, organizacije, dozvole..."
-  }
+    "searchPlaceholder": "Pretraži pakete saglasnosti, organizacije, dozvole...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

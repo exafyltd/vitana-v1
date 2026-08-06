@@ -9,6 +9,11 @@
     "emptyTitle": "Još nema objava",
     "emptyDescription": "Podeli svoju prvu objavu sa zajednicom",
     "deleteConfirm": "Obriši ovu objavu?",
-    "error": "Nešto je pošlo po zlu"
+    "error": "Nešto je pošlo po zlu",
+    "mentionPlaceholder": "Šta ti je na umu? Ukucaj @ da označiš nekoga.",
+    "background": "Pozadina",
+    "noBackground": "Nema pozadine",
+    "searchingPeople": "Tražim ljude …",
+    "noPeopleFound": "Niko nije pronađen."
   }
 }

@@ -1,6 +1,6 @@
 {
   "vitanaIndex": {
-    "title": "Vitana Health Index",
+    "title": "Vitana Zdravstveni indeks",
     "subtitle": "Ukupni balans zdravlja kroz sve stubove zdravlja",
     "veryPoor": "Veoma loše",
     "poor": "Loše",
@@ -22,6 +22,14 @@
       "strong": "Snažno",
       "reallyGood": "Zaista dobro",
       "elite": "Elitno"
+    },
+    "framings": {
+      "starting": "Tek počinješ",
+      "early": "Osnovna linija uspostavljena",
+      "building": "Navike se formiraju",
+      "strong": "90-dnevna prekretnica",
+      "reallyGood": "Napreduješ",
+      "elite": "Elita"
     }
   }
 }

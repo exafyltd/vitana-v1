@@ -68,7 +68,8 @@
       "volunteer": "❤️ Volontiranje & Služenje",
       "support": "🫂 Grupa podrške",
       "entertainment": "🎭 Zabava",
-      "other": "✨ Ostalo"
+      "other": "✨ Ostalo",
+      "_pending_review": {}
     },
     "durations": {
       "30min": "30 minuta",
@@ -81,7 +82,8 @@
       "8hour": "8 sati",
       "half-day": "Pola dana",
       "full-day": "Ceo dan",
-      "custom": "Prilagođeno trajanje..."
+      "custom": "Prilagođeno trajanje...",
+      "_pending_review": {}
     },
     "toasts": {
       "invalidFileType": "Nevažeći tip datoteke",
@@ -113,7 +115,10 @@
       "personalEventCreated": "Događaj kreiran!",
       "personalEventCreatedDesc": "Događaj je dodat u vaš kalendar.",
       "error": "Greška",
-      "errorDesc": "Kreiranje događaja nije uspelo. Molimo pokušajte ponovo."
-    }
-  }
+      "errorDesc": "Kreiranje događaja nije uspelo. Molimo pokušajte ponovo.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

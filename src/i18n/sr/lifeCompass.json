@@ -17,37 +17,48 @@
       "career": "karijera",
       "learning": "učenje",
       "spiritual": "duhovnost",
-      "longevity": "dugovečnost"
+      "longevity": "dugovečnost",
+      "_pending_review": {}
     },
     "goals": {
       "wealth": {
         "title": "Izgradi finansijsku slobodu",
-        "description": "Postigni finansijsku nezavisnost i bogatstvo"
+        "description": "Postigni finansijsku nezavisnost i bogatstvo",
+        "_pending_review": {}
       },
       "relationship": {
         "title": "Pronađi životnog partnera",
-        "description": "Izgradi smislene romantične veze"
+        "description": "Izgradi smislene romantične veze",
+        "_pending_review": {}
       },
       "health": {
         "title": "Transformiši zdravlje",
-        "description": "Postigni optimalno fizičko i mentalno blagostanje"
+        "description": "Postigni optimalno fizičko i mentalno blagostanje",
+        "_pending_review": {}
       },
       "career": {
         "title": "Unapredi karijeru",
-        "description": "Izgradi ispunjenu i uspešnu karijeru"
+        "description": "Izgradi ispunjenu i uspešnu karijeru",
+        "_pending_review": {}
       },
       "learning": {
         "title": "Savladaj nove veštine",
-        "description": "Uči i rasti kroz znanje"
+        "description": "Uči i rasti kroz znanje",
+        "_pending_review": {}
       },
       "spiritual": {
         "title": "Duhovni život",
-        "description": "Produbi svrhu, prisutnost i unutrašnji mir"
+        "description": "Produbi svrhu, prisutnost i unutrašnji mir",
+        "_pending_review": {}
       },
       "longevity": {
         "title": "Poboljšaj kvalitet života i produži životni vek",
-        "description": "Fokus na zdravstveni vek, energiju i dugovečnost — misija Vitanalanda"
-      }
-    }
-  }
+        "description": "Fokus na zdravstveni vek, energiju i dugovečnost — misija Vitanalanda",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

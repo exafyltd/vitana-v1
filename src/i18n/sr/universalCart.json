@@ -1,0 +1,77 @@
+{
+  "universalCart": {
+    "page": {
+      "title": "Korpa",
+      "subtitle": "Proizvodi, paketi i preporuke sa Discovera — sve na jednom mestu.",
+      "emptyTitle": "Tvoja korpa je prazna",
+      "emptyBody": "Dodirni „Dodaj u korpu“ na bilo kojoj Discover stavci da je dodaš ovde.",
+      "loading": "Učitavam tvoju korpu…",
+      "roleBlockedTitle": "Korpa nije dostupna za ovu ulogu",
+      "roleBlockedBody": "Korpa je funkcija zajednice. Prebaci se na svoju ulogu u zajednici da je koristiš.",
+      "errorTitle": "Nismo mogli da učitamo tvoju korpu",
+      "errorBody": "Pokušaj ponovo za trenutak.",
+      "removeAction": "Ukloni",
+      "quantityLabel": "Količina",
+      "completeAction": "Označi kao završeno",
+      "alreadyCompleted": "Već završeno",
+      "linkToDiscover": "Pregledaj Discover",
+      "close": "Zatvori"
+    },
+    "tabs": {
+      "cart": "Korpa",
+      "saved": "Sačuvano"
+    },
+    "saved": {
+      "moveToCart": "Dodaj u korpu",
+      "saveForLater": "Sačuvaj za kasnije",
+      "emptyTitle": "Ništa još nije sačuvano",
+      "emptyBody": "Sačuvaj proizvode za kasnije dodirivanjem „Sačuvaj za kasnije“ u tvojoj korpi."
+    },
+    "item": {
+      "viewProduct": "Pogledaj proizvod"
+    },
+    "agent": {
+      "promptLabel": "Šta kupuješ?",
+      "promptPlaceholder": "Opiši šta kupuješ — npr. „više energije ujutru“",
+      "proposeCta": "Pitaj Vitanu",
+      "proposing": "Vitana pronalazi odgovarajuće proizvode…",
+      "sectionTitle": "Vitana predlaže",
+      "sectionSubtitle": "Predlozi su u tvojoj korpi. Pregledaj ih, zadrži ili ukloni — kupuješ samo sa „Odobri i plati“.",
+      "rationaleLabel": "Zašto Vitana ovo predlaže",
+      "safetyTitle": "Bezbednosna napomena — molimo te pročitaj",
+      "confidenceLabel": "Pouzdanost: {value}",
+      "keep": "Zadrži",
+      "remove": "Ukloni",
+      "unavailable": "Vitana je privremeno nedostupna. Molimo te, pokušaj ponovo za trenutak.",
+      "roleBlocked": "Vitanini predlozi su dostupni samo u tvojoj ulozi u zajednici.",
+      "empty": "Još nema predloga. Reci Vitani iznad šta kupuješ.",
+      "reviewNote": "Molimo te, pregledaj napomene: neki predlozi imaju bezbednosne napomene. Proveri ih pre nego što nastaviš.",
+      "reorderCta": "Kupi ponovo",
+      "reorderLabel": "Kupljeno ranije",
+      "reorderSectionTitle": "Kupi ponovo",
+      "reorderSectionSubtitle": "Stavke koje si ranije kupio/la su u tvojoj korpi. Pregledaj ih, zadrži ili ukloni — kupuješ samo sa \"Odobri i plati\".",
+      "reordering": "Vitana vraća tvoje stavke…",
+      "overCapAdvisory": "Ove stavke te guraju preko tvog mesečnog budžeta.",
+      "nearCapAdvisory": "Ove stavke te približavaju tvom mesečnom budžetu.",
+      "error": "Nešto je pošlo naopako. Molimo te, pokušaj ponovo."
+    },
+    "budget": {
+      "title": "Budžet za ovaj mesec",
+      "spentOfCap": "{spent} od {cap} ovog meseca",
+      "statusUnder": "U okviru budžeta",
+      "statusNear": "Blizu budžeta",
+      "statusOver": "Preko budžeta",
+      "noCapHint": "Postavi mesečni budžet da bi pratio/la svoju potrošnju."
+    },
+    "addButton": {
+      "label": "Dodaj u korpu",
+      "added": "U korpi",
+      "addAria": "Dodaj u korpu",
+      "addedAria": "Već u korpi",
+      "signRequired": "Prijavi se da dodaš u svoju korpu.",
+      "roleBlocked": "Korpa je dostupna samo u tvojoj ulozi u zajednici.",
+      "failed": "Nije dodato u korpu",
+      "success": "Dodato u korpu"
+    }
+  }
+}

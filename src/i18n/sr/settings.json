@@ -34,6 +34,8 @@
       "connectedAppsCount": "Povezane aplikacije",
       "types": "tipovi",
       "apps": "aplikacije"
-    }
+    },
+    "vitanaOpenedSection": "Vitana je otvorila {section}",
+    "vitanaUpdated": "Vitana je ažurirala tvoje podešavanje"
   }
 }

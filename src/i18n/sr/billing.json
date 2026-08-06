@@ -1,0 +1,248 @@
+{
+  "billing": {
+    "promises": {
+      "anchorHeading": "Privatno po dizajnu.",
+      "subheading": "Četiri obećanja, uz svaki plan — besplatan ili plaćen.",
+      "owned": {
+        "title": "Ti poseduješ ono što deliš.",
+        "body": "Memorija, profil, preporuke — sve vidljivo, izvozivo, obrisivo u bilo kom trenutku."
+      },
+      "noSell": {
+        "title": "Nikada ne prodajemo tvoje podatke.",
+        "body": "Ni mrežama za oglase, ni brokerima podataka, ni partnerima. Primenjeno u kodu."
+      },
+      "earn": {
+        "title": "Tvoje preporuke mogu zaraditi za tebe.",
+        "body": "Kada tvoja preporuka zaključi prodaju putem Sell and Earn, ili kada si domaćin plaćene Live Room sobe, prihod je tvoj — transparentno objavljen."
+      },
+      "control": {
+        "title": "Ti odlučuješ šta Sell and Earn radi za tebe.",
+        "body": "Tri prekidača u tvojim Connect podešavanjima daju ti potpunu kontrolu."
+      }
+    },
+    "plans": {
+      "needMoreTitle": "Treba ti više vremena uživo ili hostinga?",
+      "needMoreBody": "Premium pokriva većinu članova. Ako si domaćin soba zajednice ili koristiš glas svaki dan, pogledaj naše veće planove.",
+      "showAll": "Prikaži sve planove",
+      "hideAll": "Sakrij veće planove",
+      "headlineSection": "Započni sa Premiumom",
+      "expandedSection": "Za domaćine i zajednice",
+      "currentPlan": "Trenutni plan",
+      "selectPlan": "Izaberi",
+      "perMonth": "/mesec",
+      "perYear": "/godina",
+      "saveAnnual": "Uštedi uz godišnju pretplatu",
+      "trial14": "Probaj besplatno 14 dana. Otkaži bilo kada.",
+      "free": {
+        "name": "Besplatno",
+        "tagline": "Isprobaj — bez rizika, bez isteka",
+        "price": "Besplatno"
+      },
+      "premium": {
+        "name": "Premium",
+        "tagline": "Svakodnevna upotreba — više vremena uživo, više hostinga, više skladištenja"
+      },
+      "premium_5x": {
+        "name": "Domaćin",
+        "tagline": "Napredni korisnici · porodice · redovni domaćini",
+        "ribbon": "5× Premium"
+      },
+      "premium_20x": {
+        "name": "Zajednica",
+        "tagline": "Treneri · praktičari · vođe zajednice",
+        "ribbon": "20× Premium"
+      }
+    },
+    "features": {
+      "voiceLive": "Razgovori uživo sa ORB-om",
+      "voiceLiveUnit": "min/mesec",
+      "voiceStandard": "Standardni glasovni razgovori",
+      "voiceStandardUnit": "Fer upotreba",
+      "liveRooms": "Hosting sobe uživo",
+      "liveRoomsUnit": "sati/mesec",
+      "matchPosts": "Objave za Pronađi-Par",
+      "matchPostsUnit": "/mesec",
+      "matchReveals": "Otkrivanja za Pronađi-Par",
+      "matchRevealsUnit": "/nedelja",
+      "labAnalyses": "Laboratorijska analiza",
+      "labAnalysesUnit": "/mesec",
+      "photoUploads": "Otpremanje fotografija",
+      "photoUploadsUnit": "/mesec",
+      "storage": "Sigurna pohrana",
+      "storageUnit": "GB",
+      "aiDigest": "AI sažeci",
+      "aiDigestWeekly": "Nedeljno",
+      "aiDigestDaily": "Dnevno",
+      "aiDigestOnDemand": "Dnevno + na zahtev",
+      "sellAndEarnCatalog": "Katalog „Prodaj i zaradi“",
+      "sellAndEarnCatalogUnit": "stavki",
+      "priorityPractitioner": "Prioritetni pristup praktičarima",
+      "yes": "Da",
+      "no": "–",
+      "fairUse": "Fer upotreba",
+      "used": "{iskorišćeno} / {limit} {jedinica}",
+      "resetIn": "Resetuje se za {duration}",
+      "comparisonTitle": "Šta je uključeno u svaki plan"
+    },
+    "creditPacks": {
+      "title": "Dodaj dodatne minute",
+      "subtitle": "Dopuni jednom, troši kad god želiš",
+      "starter": "10 sati standardnog glasa ILI 100 minuta uživo",
+      "boost": "Najpopularnije — 7 sati glasa uživo",
+      "power": "Intenzivna upotreba — 40 sati glasa uživo",
+      "credits": "{credits} kredita",
+      "creditsWithBonus": "{credits} kredita +{bonus} bonusa",
+      "buy": "Kupi",
+      "yourBalance": "Tvoje stanje: {amount} kredita",
+      "starterShort": "Početni",
+      "boostShort": "Pojačanje",
+      "powerShort": "Snaga"
+    },
+    "redeemCard": {
+      "title": "Imaš kod?",
+      "placeholder": "VITANA-XXXX-XXXX",
+      "button": "Iskoristi",
+      "redeeming": "Korišćenje koda…",
+      "successTitle": "Premium aktiviran",
+      "successBody": "Premium je aktivan do {date}. Uživaj.",
+      "founding": "🏆 Dobrodošao, Osnivački Član — ti si #{position} od {max}. Premium je besplatan 90 dana.",
+      "error": {
+        "invalid": "Kod nije pronađen",
+        "expired": "Kod je istekao",
+        "maxUsed": "Kod je previše puta iskorišćen",
+        "alreadyRedeemed": "Već si iskoristio ovaj kod",
+        "stripeActive": "Već imaš Premium — sačuvaj ovaj kod za kasnije",
+        "budgetExhausted": "Kampanja pauzirana — molimo te, pokušaj ponovo kasnije",
+        "generic": "Nije bilo moguće iskoristiti kod"
+      }
+    },
+    "earnings": {
+      "title": "Tvoja zarada (ove godine)",
+      "youPaid": "Platio si Vitani",
+      "youEarned": "Vitana ti je pomogla da zaradiš (Prodaj i zaradi)",
+      "net": "Neto",
+      "withdraw": "Podigni",
+      "empty": "Još nemaš zarade"
+    },
+    "founding": {
+      "bannerTitle": "🏆 Budi među prvih {max}",
+      "bannerBody": "3 meseca Premium besplatno uz kod {code}.",
+      "spotsRemaining": "{remaining} od {max} mesta preostalo"
+    },
+    "launchGrant": {
+      "title": "🎁 Dobrodošli — Premium je na naš račun",
+      "body": "Dobio/la si 12 meseci Vitana Premium-a kao zahvalnost što si sa nama od početka. Aktivno do {endsAt}.",
+      "noAction": "Nije potrebna akcija. Uživaj.",
+      "dismissAria": "Odbaci baner"
+    },
+    "mobileBilling": {
+      "rootIntro": "Upravljaj svojim planom, načinom plaćanja i isplatama kreatorima.",
+      "navPlan": "Trenutni plan",
+      "navPayment": "Način plaćanja",
+      "navInvoices": "Fakture i računi",
+      "navCreator": "Isplate kreatorima",
+      "changePlan": "Promeni plan",
+      "openStripe": "Otvori Stripe portal",
+      "paymentTitle": "Način plaćanja",
+      "paymentBody": "Tvoja sačuvana kartica i podaci za naplatu su pod upravom Stripe-a.",
+      "paymentNoneTitle": "Nemaš sačuvan način plaćanja",
+      "paymentNoneBody": "Dodaj karticu kada pokreneš Premium plan.",
+      "invoicesTitle": "Fakture i računi",
+      "invoicesBody": "Sve fakture i računi su dostupni u Stripe portalu za naplatu.",
+      "summaryRenewsOn": "Tvoj plan se obnavlja {date}"
+    },
+    "state": {
+      "freeStatus": "Koristiš Vitana Free",
+      "freeBody": "Isprobaj Premium besplatno 14 dana.",
+      "premiumActive": "Vitana Premium",
+      "renewsAt": "Obnavlja se {date}",
+      "autoGrantUntil": "Automatski dodeljeno pri pokretanju · do {date}",
+      "cancelAtPeriodEnd": "Biće otkazano na kraju perioda",
+      "pastDue": "Plaćanje nije uspelo",
+      "pastDueBody": "Ažuriraj svoj metod plaćanja da zadržiš Premium.",
+      "manage": "Upravljaj",
+      "viewPlans": "Pogledaj Premium",
+      "upgrade": "Nadogradi",
+      "trialEndsAt": "Probni period se završava {date}",
+      "trialingBadge": "U probnom periodu",
+      "activeBadge": "Aktivno"
+    },
+    "subscriptionsPage": {
+      "title": "Pretplate",
+      "subtitle": "Upravljaj svojim Vitana Premium i kreditima",
+      "tabs": {
+        "yourPlan": "Tvoj plan",
+        "billing": "Naplata"
+      }
+    },
+    "faq": {
+      "title": "Zašto Premium?",
+      "q1": "Šta dobijam sa Premiumom?",
+      "a1": "Više vremena za glas uživo sa ORB-om, više hostovanja u Sobama uživo, više prostora za skladištenje i brži lični sažeci.",
+      "q2": "Koja je razlika u odnosu na kredite?",
+      "a2": "Krediti su za povremenu upotrebu. Premium ti daje više od svega neprekidno — dizajniran za svakodnevnu upotrebu.",
+      "q3": "Mogu li da otkažem bilo kada?",
+      "a3": "Da, bez ugovora. Zadržavaš Premium do kraja tekućeg perioda.",
+      "q4": "Da li prodaješ moje podatke?",
+      "a4": "Nikada. Nikada ne prodajemo tvoje podatke reklamnim mrežama, posrednicima podataka ili partnerima."
+    },
+    "checkoutErrors": {
+      "stripeNotConfigured": "Plaćanja još nisu u potpunosti podešena. Molimo pokušaj ponovo kasnije.",
+      "alreadySubscribed": "Već imaš aktivnu pretplatu. Upravljaj njome u portalu za naplatu.",
+      "noStripeCustomer": "Prvo se pretplati pre korišćenja portala.",
+      "checkoutFailed": "Naplata nije uspela",
+      "portalFailed": "Nije bilo moguće otvoriti portal za naplatu."
+    }
+  },
+  "paywall": {
+    "title": "Otključaj Premium",
+    "softExtension": "Produžio sam ti besplatno vreme za danas.",
+    "creditsUsed": "Kredit iskorišćen — uživaj",
+    "voice_live_minutes": {
+      "title": "Vreme za glas uživo isteklo",
+      "body": "Tvoje uključeno vreme za glas uživo je iskorišćeno. ORB će nastaviti u Standardnom režimu. Dodaj minute uživo ili nadogradi bilo kada.",
+      "stayInStandard": "Nastavi u Standardnom režimu",
+      "addMinutes": "Dodaj minute uživo"
+    },
+    "live_room_minutes": {
+      "title": "Vreme za hostovanje pri kraju",
+      "body": "Ova soba ima još 5 minuta uključenog vremena za hostovanje. Dodaj vreme za hostovanje ili nadogradi da bi nastavila da radi.",
+      "wrapUp": "Završi",
+      "addTime": "Dodaj vreme za hostovanje"
+    },
+    "match_posts": {
+      "title": "Sve besplatne objave iskorišćene",
+      "body": "Iskoristio si svoje besplatne objave ovog meseca. Premium ti daje više."
+    },
+    "match_reveals": {
+      "title": "Otkrij podudaranje",
+      "body": "Iskoristio si svoja besplatna otkrivanja. Iskoristi {credits} kredita ili nadogradi na Premium."
+    },
+    "lab_analyses": {
+      "title": "Laboratorijske analize iskorišćene",
+      "body": "Iskoristio si svoje laboratorijske analize ovog meseca."
+    },
+    "photo_uploads": {
+      "title": "Otpremanja fotografija iskorišćena",
+      "body": "Iskoristio si svoja otpremanja fotografija ovog meseca."
+    },
+    "memory_garden": {
+      "title": "Bašta sećanja je puna",
+      "body": "Premium ti daje više prostora."
+    },
+    "autopilot": {
+      "title": "Više Autopilot preporuka",
+      "body": "Premium povećava broj tvojih aktivnih preporuka."
+    },
+    "default": {
+      "title": "Otključaj Premium",
+      "body": "Iskoristio si svoju besplatnu kvotu za ovaj period."
+    },
+    "ctaUpgrade": "Otključaj Premium",
+    "ctaCredits": "Iskoristi {credits} kredita",
+    "ctaLater": "Možda kasnije",
+    "remainingCounter": "{preostalo} / {limit}",
+    "resetsIn": "Resetuje se {date}",
+    "creditsInsufficient": "Nemaš dovoljno kredita. Dopuni prvo."
+  }
+}

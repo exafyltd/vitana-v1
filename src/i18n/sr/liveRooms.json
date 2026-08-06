@@ -130,16 +130,22 @@
         "aiImageHintTitle": "AI generisanje slike",
         "aiImageHintDesc": "Slika će biti generisana kada strim počne."
       }
+    },
+    "editSession": {
+      "title": "Uredi sesiju",
+      "saving": "Čuvanje…",
+      "changeCover": "Promeni naslovnu sliku",
+      "noChanges": "Nema izmena za čuvanje"
     }
   },
   "goLivePopup": {
-    "durationLabel": "Duration",
-    "duration15": "15 minutes",
-    "duration30": "30 minutes",
-    "duration45": "45 minutes",
-    "duration60": "1 hour",
-    "duration90": "1.5 hours",
-    "duration120": "2 hours",
-    "durationHint": "The room closes automatically after this time if you don’t end it manually."
+    "durationLabel": "Trajanje",
+    "duration15": "15 minuta",
+    "duration30": "30 minuta",
+    "duration45": "45 minuta",
+    "duration60": "1 sat",
+    "duration90": "1,5 sat",
+    "duration120": "2 sata",
+    "durationHint": "Soba se automatski zatvara nakon ovog vremena ako je ne završiš ručno."
   }
 }

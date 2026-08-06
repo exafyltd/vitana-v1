@@ -172,7 +172,8 @@
       "weLlAnalyzeUpdateSuggestionsShortly": "Uskoro ćemo analizirati i ažurirati predloge.",
       "activityHidden": "Aktivnost sakrivena",
       "success": "Uspeh! 🎉",
-      "donTBreakStreakOneSmall": "🔥 Nemoj prekinuti niz — jedna mala akcija danas"
+      "donTBreakStreakOneSmall": "🔥 Nemoj prekinuti niz — jedna mala akcija danas",
+      "contentCreateFailed": "Nije moguće kreirati sadržaj"
     },
     "admin": {
       "companionOverridesSavedVoiceCacheRefreshes": "Prilagođavanja saputnika sačuvana — keš glasa se osvežava u roku od 30s.",
@@ -609,7 +610,21 @@
       "share": "Podeli",
       "calendarExport": "Izvoz kalendara",
       "icsFileWillDownloaded": "ICS datoteka će biti preuzeta",
-      "openingCalendar": "Otvaram kalendar"
+      "openingCalendar": "Otvaram kalendar",
+      "notifyOnTitle": "Podsetnik postavljen",
+      "notifyOnDesc": "Podsetićemo te pre nego što počne",
+      "notifyOffTitle": "Podsetnik uklonjen",
+      "notifyOffDesc": "Više te nećemo podsećati",
+      "notifyError": "Nije moguće ažurirati podsetnik",
+      "reminderActionText": "Uživo \"{title}\" počinje uskoro",
+      "savedTitle": "Sačuvano!",
+      "savedDesc": "Soba sačuvana za kasnije",
+      "unsavedTitle": "Uklonjeno iz sačuvanih",
+      "unsavedDesc": "Soba uklonjena sa tvoje liste sačuvanih",
+      "followedTitle": "Pratiš!",
+      "followedDesc": "Sada pratiš {name}",
+      "unfollowedTitle": "Više ne pratiš",
+      "unfollowedDesc": "Više ne pratiš {name}"
     },
     "meetups": {
       "signRequired": "Potrebna prijava",
@@ -848,7 +863,11 @@
       "invalidTime": "Neispravno vreme",
       "reminderCreated": "Podsetnik kreiran",
       "reminderDeleted": "Podsetnik obrisan",
-      "markedDone": "Označeno kao završeno"
+      "markedDone": "Označeno kao završeno",
+      "failedToCreate": "Nije uspelo kreiranje podsetnika",
+      "failedToDelete": "Nije uspelo brisanje podsetnika",
+      "failedToMarkDone": "Nije uspelo označavanje kao završeno",
+      "remindersDeleted": "{count} podsetnika obrisano"
     },
     "reseller": {
       "activatingYourResellerProfile": "Aktiviranje tvog prodajnog profila...",
@@ -1286,7 +1305,8 @@
       "exchangeSendSuccessful": "Razmena i slanje uspešni! ✨",
       "exchangeSendFailed": "Razmena i slanje nisu uspeli",
       "linkAvailable": "Link je dostupan",
-      "errorUpdatingPreferences": "Greška pri ažuriranju podešavanja"
+      "errorUpdatingPreferences": "Greška pri ažuriranju podešavanja",
+      "failedPurchaseTicket": "Nije uspela kupovina karte"
     },
     "businesslistings": {
       "couldNotLoadListings": "Nije moguće učitati liste"
@@ -1338,6 +1358,10 @@
     },
     "index": {
       "vitanaDevGatewayUrlNotConfigured": "Vitana Dev Gateway URL nije konfigurisan"
+    },
+    "dailyGoal": {
+      "title": "Čestitamo! Današnji cilj postignut 🎉",
+      "body": "Samo nastavi."
     }
   }
 }

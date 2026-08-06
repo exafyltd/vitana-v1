@@ -42,7 +42,7 @@
       },
       "fields": {
         "avatar": "Profilna slika",
-        "handle": "Handle",
+        "handle": "Nadimak",
         "longevityArchetype": "Arhetip dugovečnosti",
         "firstName": "Ime",
         "lastName": "Prezime",

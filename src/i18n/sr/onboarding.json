@@ -23,7 +23,10 @@
       "handleAvailable": "Korisničko ime je dostupno!",
       "handleMinLength": "Najmanje 3 karaktera",
       "saving": "Podešavanje...",
-      "submit": "Hajde da počnemo!"
-    }
-  }
+      "submit": "Hajde da počnemo!",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

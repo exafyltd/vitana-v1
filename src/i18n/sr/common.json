@@ -14,7 +14,7 @@
     "actions": "Akcije",
     "yes": "Da",
     "no": "Ne",
-    "ok": "OK",
+    "ok": "U redu",
     "done": "Gotovo",
     "apply": "Primeni",
     "reset": "Resetuj",
@@ -33,6 +33,9 @@
     "download": "Preuzmi",
     "upload": "Otpremi",
     "refresh": "Osveži",
-    "retry": "Pokušaj ponovo"
+    "retry": "Pokušaj ponovo",
+    "follow": "Prati",
+    "getMaxina": "Nabavi MAXINA",
+    "uploading": "Otpremam..."
   }
 }

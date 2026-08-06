@@ -2,6 +2,8 @@
   "logout": {
     "signingOut": "Odjavljujem se...",
     "signedOut": "Uspešno odjavljen/a",
-    "redirecting": "Preusmeravam..."
-  }
+    "redirecting": "Preusmeravam...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

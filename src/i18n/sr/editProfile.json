@@ -12,6 +12,10 @@
     "manage": "Upravljaj",
     "about": "O meni",
     "addBio": "Dodaj biografiju...",
-    "tapToEdit": "Dodirni za uređivanje"
+    "tapToEdit": "Dodirni za uređivanje",
+    "title": "Naslov",
+    "titlePlaceholder": "Naslov videa",
+    "description": "Opis",
+    "descriptionPlaceholder": "Opcioni opis..."
   }
 }

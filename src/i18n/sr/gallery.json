@@ -12,6 +12,10 @@
     "videos": "Galerija videa",
     "uploadVideo": "Otpremi video",
     "noVideos": "Još nema videa",
-    "addFirstVideo": "Dodaj svoj prvi video"
+    "addFirstVideo": "Dodaj svoj prvi video",
+    "invalidFormat": "Nevažeći format",
+    "fileTooLarge": "Prevelik fajl",
+    "maxSize": "Maksimalna veličina fajla: 500 MB",
+    "maxSizeHint": "Maks. 500 MB"
   }
 }

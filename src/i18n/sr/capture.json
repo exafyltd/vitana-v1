@@ -41,6 +41,8 @@
     "sendFailed": "Slanje neuspešno",
     "sendFailedDesc": "Nije moguće poslati tvoju povratnu informaciju. Pokušaj ponovo.",
     "recognitionError": "Greška u prepoznavanju",
-    "recognitionErrorDesc": "Došlo je do greške u prepoznavanju govora. Pokušaj ponovo."
-  }
+    "recognitionErrorDesc": "Došlo je do greške u prepoznavanju govora. Pokušaj ponovo.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

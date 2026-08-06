@@ -4,28 +4,37 @@
     "items": {
       "recordVoiceDiary": {
         "title": "Snimi glasovni dnevnik",
-        "description": "Zabeleži misli i refleksije glasom"
+        "description": "Zabeleži misli i refleksije glasom",
+        "_pending_review": {}
       },
       "addMemoryNote": {
         "title": "Dodaj belešku o pamćenju",
-        "description": "Zapiši važne zdravstvene trenutke"
+        "description": "Zapiši važne zdravstvene trenutke",
+        "_pending_review": {}
       },
       "viewTimeline": {
         "title": "Pregledaj vremensku liniju",
-        "description": "Pogledaj svoje celokupno wellness putovanje"
+        "description": "Pogledaj svoje celokupno wellness putovanje",
+        "_pending_review": {}
       },
       "searchMemories": {
         "title": "Pretraži uspomene",
-        "description": "Pronađi specifične trenutke i uvide"
+        "description": "Pronađi specifične trenutke i uvide",
+        "_pending_review": {}
       },
       "photoMemory": {
         "title": "Fotografija uspomene",
-        "description": "Dodaj vizuelne uspomene na svoje putovanje"
+        "description": "Dodaj vizuelne uspomene na svoje putovanje",
+        "_pending_review": {}
       },
       "aiMemoryAnalysis": {
         "title": "AI analiza pamćenja",
-        "description": "Dobij uvide iz svojih obrazaca pamćenja"
-      }
-    }
-  }
+        "description": "Dobij uvide iz svojih obrazaca pamćenja",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

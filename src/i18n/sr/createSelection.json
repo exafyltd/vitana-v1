@@ -4,7 +4,7 @@
     "description": "Izaberi vrstu okupljanja koje želiš da napraviš",
     "event": "Događaj",
     "eventDescription": "Formalna okupljanja sa zakazanim vremenom i strukturiranim programom",
-    "meetup": "MeetUp",
+    "meetup": "Druženje",
     "meetupDescription": "Neformalna okupljanja za umrežavanje i izgradnju zajednice"
   }
 }

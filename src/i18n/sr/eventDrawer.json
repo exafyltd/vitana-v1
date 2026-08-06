@@ -55,9 +55,9 @@
     "error": "Greška",
     "leaveError": "Nije uspelo napuštanje događaja. Pokušaj ponovo.",
     "addToCalendar": "Dodaj u kalendar",
-    "googleCal": "Google Calendar",
+    "googleCal": "Google Kalendar",
     "outlook": "Outlook",
-    "appleCal": "Apple Calendar",
+    "appleCal": "Apple Kalendar",
     "downloadIcs": "Preuzmi ICS"
   }
 }

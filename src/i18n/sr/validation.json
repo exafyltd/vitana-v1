@@ -24,6 +24,8 @@
     "charactersRemaining": "Preostalo {count} karaktera",
     "fileTooBig": "Fajl je prevelik (maksimum {max})",
     "invalidFileType": "Neispravan tip fajla",
-    "uploadLimit": "Maksimum {max} fajlova je dozvoljeno"
-  }
+    "uploadLimit": "Maksimum {max} fajlova je dozvoljeno",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

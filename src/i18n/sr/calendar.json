@@ -49,7 +49,7 @@
     },
     "bookingStatus": {
       "booked": "Rezervisano",
-      "rsvp": "RSVP",
+      "rsvp": "Potvrdi",
       "ticket": "Karta",
       "reserved": "Rezervisano"
     },
@@ -131,7 +131,7 @@
       "showFullAgenda": "Prikaži ceo raspored",
       "moreEvents": "još događaja",
       "onboardingPlan": "Današnji plan uvođenja",
-      "estimatedTime": "~{minutes} min",
+      "estimatedTime": "oko {minutes} min",
       "startPlan": "Započni plan",
       "tasksCompleted": "{completed}/{total} gotovo",
       "waveNames": {

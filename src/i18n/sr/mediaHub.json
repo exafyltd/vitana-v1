@@ -62,7 +62,9 @@
       "uploadSuccess": "Uspeh!",
       "uploadSuccessDesc": "Tvoj {type} je sada dostupan u zajednici.",
       "deleteError": "Greška",
-      "deleteErrorDesc": "Brisanje nije uspelo. Pokušaj ponovo."
+      "deleteErrorDesc": "Brisanje nije uspelo. Pokušaj ponovo.",
+      "commentError": "Greška",
+      "commentErrorDesc": "Nije uspelo objavljivanje komentara. Molimo pokušaj ponovo."
     },
     "deletePodcast": {
       "title": "Obriši podkast",
@@ -129,10 +131,23 @@
         "mindfulness": "Svesnost",
         "fitness": "Fitnes",
         "mentalHealth": "Mentalno zdravlje",
-        "wellness": "Wellness",
+        "wellness": "Velnes",
         "education": "Obrazovanje",
         "lifestyle": "Životni stil"
       }
+    },
+    "comments": {
+      "title": "Komentari",
+      "placeholder": "Napiši komentar...",
+      "empty": "Još nema komentara",
+      "beFirst": "Budi prvi koji će komentarisati",
+      "signIn": "Prijavi se za komentarisanje",
+      "send": "Pošalji komentar",
+      "member": "Član zajednice",
+      "reply": "Odgovori",
+      "replyingTo": "Odgovaraš na {name}",
+      "cancelReply": "Otkaži odgovor",
+      "like": "Lajkuj komentar"
     }
   }
 }
