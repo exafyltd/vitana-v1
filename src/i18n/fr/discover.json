@@ -1,23 +1,23 @@
 {
   "discover": {
-    "title": "Découvre ton Marché de la Longévité",
+    "title": "Découvre ton marché pour la longévité",
     "mobileTitle": "Découvre",
     "mobileDescription": "Explore des expériences, des personnes et du bien-être",
-    "description": "Trouve des médecins, des services de bien-être et des groupes communautaires parfaitement adaptés à ton parcours de vieillissement sain.",
+    "description": "Trouve des médecins, des services de bien-être et des groupes communautaires qui correspondent parfaitement à ton parcours vers un vieillissement sain.",
     "searchPlaceholder": "Que cherches-tu ? (ex: cours de yoga, médecin de la longévité, rencontres)",
     "doctorsCoaches": "Médecins & Coachs",
     "doctorsCoachesDesc": "Trouve des spécialistes de la longévité, des coachs de santé et des experts médicaux",
     "wellnessServices": "Services de bien-être",
     "wellnessServicesDesc": "Découvre le yoga, le massage, la danse, la thérapie et les services de récupération",
     "communityGroups": "Groupes communautaires",
-    "communityGroupsDesc": "Rejoins des rencontres, des groupes et connecte-toi avec des personnes partageant les mêmes idées",
+    "communityGroupsDesc": "Rejoins des rencontres et des groupes et connecte-toi avec des personnes partageant les mêmes idées.",
     "explore": "Explore",
-    "aiPicksForYou": "Sélections IA pour toi",
+    "aiPicksForYou": "Recommandations IA pour toi",
     "vitanaPicksLabel": "Sélections Vitana",
-    "recommendedForYou": "Vitana recommande",
+    "recommendedForYou": "Recommandé pour toi",
     "moreToExplore": "Plus à explorer",
     "seeAll": "Voir tout",
-    "suggestedForYou": "Suggéré pour toi",
+    "suggestedForYou": "Recommandé pour toi",
     "browseCategories": "Parcourir les catégories",
     "skincareCosmetics": "Soins de la peau & Cosmétiques",
     "healthTests": "Tests de santé",
@@ -35,7 +35,7 @@
     "reasonGeneric": "Correspond à ton Parcours",
     "viewProduct": "Voir le produit",
     "noResults": "Aucun résultat trouvé",
-    "noResultsDesc": "Essaie d'autres termes de recherche ou explore les catégories.",
+    "noResultsDesc": "Essaie d'autres termes de recherche ou parcours les catégories.",
     "back": "Retour",
     "productsFound": "{count} produits",
     "recommendProduct": "Recommander",
@@ -92,22 +92,16 @@
       "viewSavedItems": "Voir les articles enregistrés"
     },
     "aiPicks": {
-      "title": "Sélection IA pour toi",
+      "title": "Recommandations IA pour toi",
       "description": "Recommandations personnalisées basées sur ton Index Vitana, tes biomarqueurs et tes objectifs de santé",
-      "backToDiscover": "Retour à Découvrir",
+      "backToDiscover": "Retour à la découverte",
       "loading": "Chargement des recommandations IA...",
       "unavailable": "Sélection IA indisponible",
       "unavailableDesc": "Nous n'avons pas pu charger tes recommandations personnalisées pour le moment",
       "recommendationsFound": "{count} recommandations trouvées",
       "noRecommendations": "Aucune recommandation trouvée",
-      "noRecommendationsDesc": "Essaie de sélectionner un filtre différent pour voir plus de recommandations",
-      "viewAllPicks": "Voir toutes les sélections",
-      "_pending_review": {
-        "title": true,
-        "backToDiscover": true,
-        "unavailableDesc": true,
-        "noRecommendationsDesc": true
-      }
+      "noRecommendationsDesc": "Choisis un filtre différent pour voir plus de recommandations",
+      "viewAllPicks": "Voir toutes les sélections"
     },
     "filters": {
       "all": "Tout",
@@ -125,15 +119,6 @@
       "bannerSubtitle": "Navigue librement — connecte-toi (c'est gratuit) pour acheter et commencer à gagner des récompenses.",
       "bannerCta": "Se connecter",
       "signIn": "Se connecter"
-    },
-    "_pending_review": {
-      "title": true,
-      "description": true,
-      "communityGroupsDesc": true,
-      "aiPicksForYou": true,
-      "recommendedForYou": true,
-      "suggestedForYou": true,
-      "noResultsDesc": true
     }
   }
 }

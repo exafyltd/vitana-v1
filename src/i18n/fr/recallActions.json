@@ -1,6 +1,6 @@
 {
   "recallActions": {
-    "title": "Recherche de souvenirs & Rappels",
+    "title": "Actions de recherche et de récupération de rappels",
     "items": {
       "askAiQuestion": {
         "title": "Demande à l'IA",
@@ -34,9 +34,6 @@
         "title": "Rappels rapides",
         "description": "Accède aux souvenirs et requêtes fréquemment recherchés"
       }
-    },
-    "_pending_review": {
-      "title": true
     }
   }
 }

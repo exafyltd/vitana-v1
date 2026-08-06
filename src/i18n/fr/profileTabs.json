@@ -1,16 +1,13 @@
 {
   "profileTabs": {
     "posts": "Publications",
-    "about": "À propos",
+    "about": "Mon profil",
     "media": "Médias",
     "groups": "Groupes",
     "events": "Événements",
     "health": "Santé",
     "services": "Services",
     "insight": "Aperçu",
-    "milestones": "Étapes",
-    "_pending_review": {
-      "about": true
-    }
+    "milestones": "Étapes"
   }
 }

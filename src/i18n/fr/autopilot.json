@@ -7,20 +7,16 @@
       "enable": "Activer",
       "showcaseTitle": "Recommandations Pilote automatique",
       "showcaseBadge": "Intelligent",
-      "showcaseDesc": "Selon ton activité, ces publications pourraient bien fonctionner comme contenu mis en avant :",
+      "showcaseDesc": "D'après ton activité, ces publications pourraient bien fonctionner comme contenu mis en avant :",
       "suggestPopular": "Suggérer des publications populaires",
       "recentHighlights": "Faits marquants récents",
       "archetypeTitle": "Aperçus d'archétype",
       "archetypeBadge": "Analyse IA",
-      "archetypeDesc": "Tes activités de bien-être suggèrent que tu pourrais être « Le Moteur Conscient » - veux-tu mettre à jour ?",
+      "archetypeDesc": "Tes activités de bien-être suggèrent que tu pourrais être \"Le Moteur Conscient\" - souhaites-tu mettre à jour ?",
       "updateArchetype": "Mettre à jour l'archétype",
       "profileSectionTitle": "Le Pilote automatique peut peaufiner ton profil ✨",
       "profileSectionDesc": "Obtiens des suggestions basées sur l'IA pour ta bio, ton archétype et tes faits marquants.",
-      "tryAutopilot": "Essayer le Pilote automatique",
-      "_pending_review": {
-        "showcaseDesc": true,
-        "archetypeDesc": true
-      }
+      "tryAutopilot": "Essayer le Pilote automatique"
     },
     "preview": "Aperçu Pilote automatique",
     "viewAll": "Voir tout",
@@ -33,9 +29,9 @@
     "popup": {
       "title": "Actions Pilote automatique",
       "selectedOf": "{selected} sur {total} sélectionnés",
-      "readyToExecute": "Prêt à exécuter {count} action(s) préparée(s) par ton assistant IA.",
+      "readyToExecute": "Prêt à effectuer {count} action(s) que ton assistant IA a préparées.",
       "executingTitle": "Exécution des actions...",
-      "executingDesc": "Merci de patienter pendant que l'IA gère tes requêtes",
+      "executingDesc": "Veuille patienter pendant que l'IA traite tes requêtes.",
       "complete": "{percent}% terminé",
       "go": "ALLER ({count})",
       "notNow": "Pas maintenant",
@@ -45,17 +41,12 @@
       "toastExecutedTitle": "Actions exécutées",
       "toastExecutedDesc": "{success}/{total} actions terminées avec succès",
       "toastFailedTitle": "Exécution échouée",
-      "toastFailedDesc": "Quelque chose s'est mal passé. Réessaie.",
-      "_pending_review": {
-        "readyToExecute": true,
-        "executingDesc": true
-      }
+      "toastFailedDesc": "Quelque chose s'est mal passé. Réessaie."
     },
     "priorities": {
       "high": "Élevé",
       "medium": "Moyen",
-      "low": "Faible",
-      "_pending_review": {}
+      "low": "Faible"
     },
     "widget": {
       "title": "Pilote automatique ⚡",
@@ -63,33 +54,25 @@
       "paused": "En pause",
       "doNow": "Faire maintenant",
       "allOptimized": "Tout est optimisé ! 🎯",
-      "enableToSee": "Active le Pilote automatique pour voir les suggestions",
-      "completeForRewards": "Termine les suggestions du Pilote automatique pour des récompenses",
-      "enableForCredits": "Active le Pilote automatique pour des crédits",
-      "_pending_review": {
-        "enableToSee": true,
-        "completeForRewards": true,
-        "enableForCredits": true
-      }
+      "enableToSee": "Active l'Autopilot pour voir les suggestions.",
+      "completeForRewards": "Termine les suggestions de l'Autopilot pour obtenir des récompenses.",
+      "enableForCredits": "Active l'Autopilot pour des crédits."
     },
     "insightBanner": {
       "title": "Aperçu de la santé du Pilote automatique",
-      "description": "Ton Pilote automatique Vitana a analysé tes plans actuels et ta cohérence.",
+      "description": "Ton Autopilot Vitana a analysé tes plans récents et ta régularité.",
       "synergyIndex": "Indice de synergie",
       "statusBalanced": "Équilibré",
       "statusNeedsAttention": "À surveiller",
-      "statusImproving": "S'améliore",
-      "_pending_review": {
-        "description": true
-      }
+      "statusImproving": "S'améliore"
     },
     "profilePopup": {
-      "title": "Laisse le Pilote automatique peaufiner ton profil ✨",
-      "polishBio": "Peaufine ma bio",
+      "title": "Laisse l'Autopilot optimiser ton profil ✨",
+      "polishBio": "Optimise ta bio",
       "polishBioDesc": "Le Pilote automatique peut réécrire ta section À propos pour la rendre plus inspirante",
-      "refreshArchetype": "Actualise mon Archétype",
+      "refreshArchetype": "Mets à jour ton Archétype",
       "refreshArchetypeDesc": "Suggère une mise à jour de ton Archétype de Longévité basée sur ton activité",
-      "highlightShowcase": "Mettre en avant ton Profil",
+      "highlightShowcase": "Valorise ton profil",
       "highlightShowcaseDesc": "Suggère les meilleurs posts ou médias pour le contenu mis en avant",
       "styleProfile": "Styliser ton Profil",
       "styleProfileDesc": "Suggère des améliorations pour la photo de couverture, les rôles, la photo de profil",
@@ -104,37 +87,23 @@
       "acceptAll": "Accepter tout",
       "applied": "Modifications enregistrées !",
       "error": "Quelque chose s'est mal passé",
-      "comingSoon": "Bientôt disponible",
-      "_pending_review": {
-        "title": true,
-        "polishBio": true,
-        "refreshArchetype": true,
-        "highlightShowcase": true
-      }
+      "comingSoon": "Bientôt disponible"
     },
     "actions": {
       "action1Title": "Rejoins le Groupe de danse Longévité ce soir ?",
-      "action1Reason": "Correspondance parfaite pour tes objectifs de mouvement + des ondes de bien-être social",
+      "action1Reason": "Correspond parfaitement à tes objectifs de mouvement + tes ambiances de bien-être social",
       "action2Title": "Une révélation IA vient de tomber",
-      "action2Reason": "Ton jumeau numérique a découvert quelque chose de fascinant à partir de tes habitudes",
+      "action2Reason": "Ton jumeau numérique a découvert quelque chose de fascinant dans tes schémas.",
       "action3Title": "Série d'hydratation de 5 jours — Le statut de légende t'attend",
       "action3Reason": "Une gorgée de plus pour ta maîtrise hebdomadaire de l'hydratation",
       "action4Title": "Invite auto ta Tribu à un rassemblement épique ce week-end",
       "action4Reason": "Sarah, Luna et Marcus sont des correspondances parfaites pour ta tribu de longévité",
       "action5Title": "Ton histoire de biomarqueurs t'attend",
-      "action5Reason": "Dr Chen a décodé des révélations passionnantes à partir de ton dernier bilan",
+      "action5Reason": "Dr Chen a révélé des aperçus passionnants de ton dernier panel.",
       "action6Title": "Magie matinale consciente",
       "action6Reason": "Ton âme réclame ces techniques anti-stress",
       "newActionTitle": "Nouvelle suggestion IA",
-      "newActionReason": "Basé sur tes modèles d'activité récente",
-      "_pending_review": {
-        "action1Reason": true,
-        "action2Reason": true,
-        "action5Title": true,
-        "action5Reason": true
-      }
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "newActionReason": "Basé sur tes modèles d'activité récente"
+    }
+  }
 }

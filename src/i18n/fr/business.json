@@ -4,32 +4,27 @@
       "readyToEarn": "Prêt(e) à gagner avec VITANA ?",
       "choosePathGuide": "Choisis un chemin et nous te guiderons vers ta première source de revenus.",
       "startEarning": "Commence à gagner",
-      "howToEarn": "Comment veux-tu gagner ?",
-      "pickOne": "Choisis-en un — tu pourras toujours faire les autres plus tard.",
+      "howToEarn": "Comment souhaites-tu gagner ?",
+      "pickOne": "Choisis une option — tu pourras découvrir les autres plus tard.",
       "createEvent": "Crée un événement",
       "createEventDesc": "Organise ton propre événement et vends des billets.",
       "addToInventory": "Ajoute des événements à l'inventaire",
       "addToInventoryDesc": "Revends des événements sélectionnés et gagne une commission.",
       "createService": "Crée un service",
-      "createServiceDesc": "Propose des sessions que les gens peuvent réserver.",
+      "createServiceDesc": "Propose des sessions réservables.",
       "createPromotion": "Crée une promotion",
       "createPromotionDesc": "Augmente ta visibilité et partage sur les réseaux sociaux.",
       "hostAndSell": "Organise et vends des billets",
       "resellAndEarn": "Revends et gagne",
       "offerBookings": "Propose des réservations",
-      "boostVisibility": "Augmente la visibilité",
-      "_pending_review": {
-        "howToEarn": true,
-        "pickOne": true,
-        "createServiceDesc": true
-      }
+      "boostVisibility": "Augmente la visibilité"
     },
     "history": {
       "all": "Tout",
       "directSales": "Ventes directes",
       "reseller": "Revendeur",
-      "noEarningsYet": "Aucun historique de gains pour l'instant",
-      "startSellingToSee": "Commence à vendre pour voir tes transactions ici",
+      "noEarningsYet": "Pas encore d'historique de gains.",
+      "startSellingToSee": "Commence à vendre pour voir tes transactions ici.",
       "ticketsSold": "Billets vendus",
       "grossAmount": "Montant brut",
       "youEarned": "Tu as gagné",
@@ -40,16 +35,10 @@
       "last7Days": "7 derniers jours",
       "last30Days": "Les 30 derniers jours",
       "last90Days": "Les 90 derniers jours",
-      "allTime": "Depuis toujours",
+      "allTime": "Temps total",
       "details": "Détails",
       "earningsActivity": "Activité des gains",
-      "noEarningsStartSelling": "Pas encore de gains. Commence à vendre pour voir l'activité ici.",
-      "_pending_review": {
-        "noEarningsYet": true,
-        "startSellingToSee": true,
-        "youEarned": true,
-        "allTime": true
-      }
+      "noEarningsStartSelling": "Pas encore de gains. Commence à vendre pour voir l'activité ici."
     },
     "kpi": {
       "totalEarnings": "Gains totaux",
@@ -70,13 +59,9 @@
       "viewMyEvents": "Voir mes événements",
       "totalGrossSales": "Ventes brutes totales",
       "resellerCommissions": "Commissions de revendeur",
-      "goToSellEarn": "Va à Vendre et Gagner",
+      "goToSellEarn": "Vendre et Gagner",
       "totalEarned": "Total gagné",
-      "earningsBySource": "Gains par source",
-      "_pending_review": {
-        "goToSellEarn": true,
-        "totalEarned": true
-      }
+      "earningsBySource": "Gains par source"
     },
     "reseller": {
       "upcomingEvents": "Événements à venir",
@@ -84,13 +69,13 @@
       "resellerCode": "Code de revendeur",
       "codeCopied": "Code revendeur copié !",
       "noSalesYet": "Aucune vente pour l'instant",
-      "shareLinkToStart": "Partage un lien pour commencer à gagner.",
+      "shareLinkToStart": "Partage un lien pour gagner.",
       "tickets": "billets",
       "shareResellerLink": "Partage le lien revendeur",
       "createPromotion": "Crée une promotion",
-      "shareLinkOrPromotion": "Partage tes liens revendeur ou crée une promotion pour commencer à gagner des commissions.",
+      "shareLinkOrPromotion": "Partage tes liens de revendeur ou crée une promotion pour gagner des commissions.",
       "selectEventToShare": "Sélectionne un événement à partager",
-      "pickEventForLink": "Choisis un événement pour générer ton lien revendeur",
+      "pickEventForLink": "Choisis un événement pour générer ton lien de revendeur.",
       "noEventsToSell": "Aucun événement disponible à la vente",
       "commission": "commission",
       "commissionEarned": "Commission gagnée",
@@ -99,24 +84,16 @@
       "noPayoutsYet": "Aucun versement pour l'instant",
       "attributedSales": "Ventes attribuées par événement",
       "noSalesMatchFilter": "Aucune vente ne correspond aux filtres actuels",
-      "mockDataActive": "Données de test actives",
-      "_pending_review": {
-        "shareLinkToStart": true,
-        "shareLinkOrPromotion": true,
-        "pickEventForLink": true
-      }
+      "mockDataActive": "Données de test actives"
     },
     "transfer": {
       "title": "Transférer vers le portefeuille",
       "description": "Transfère tes commissions revendeur en attente vers ton portefeuille VITANA.",
       "pending": "En attente",
       "wallet": "Portefeuille",
-      "instantCredit": "Cela créditera instantanément tes gains à ton solde de portefeuille.",
+      "instantCredit": "Cela créditera instantanément tes gains à ton solde de Portefeuille.",
       "transferring": "Transfert en cours...",
-      "transfer": "Transférer",
-      "_pending_review": {
-        "instantCredit": true
-      }
+      "transfer": "Transférer"
     },
     "typeSelector": {
       "title": "Lance une entreprise",
@@ -128,15 +105,12 @@
       "sellTicketsDesc": "Fais la promotion d'événements et gagne des commissions",
       "badgeNew": "Nouveau",
       "badgeActive": "Actif",
-      "alreadyReseller": "Tu es déjà un revendeur ! Consulte l'onglet Vendre et Gagner.",
-      "cancel": "Annuler",
-      "_pending_review": {
-        "alreadyReseller": true
-      }
+      "alreadyReseller": "Tu es déjà revendeur ! Consulte l'onglet « Vendre et Gagner ».",
+      "cancel": "Annuler"
     },
     "missionOpportunities": {
       "title": "Opportunités de mission",
-      "subtitle": "Chemins recommandés par l'Autopilot qui font avancer l'économie de la longévité",
+      "subtitle": "Parcours suggérés par l'Autopilot faisant progresser l'économie de la longévité",
       "loading": "Chargement des opportunités…",
       "error": "Impossible de charger les opportunités",
       "empty": "Aucune recommandation alignée sur l'économie pour l'instant. Reviens plus tard.",
@@ -146,9 +120,6 @@
         "marketplace": "Marché",
         "income_generation": "Génération de revenus",
         "business_formation": "Création d'entreprise"
-      },
-      "_pending_review": {
-        "subtitle": true
       }
     }
   }

@@ -5,7 +5,7 @@
     "postponeComingSoon": "Fonction de report bientôt disponible",
     "addNotePrompt": "Ajouter une note à cette tâche :",
     "noteAdded": "Note ajoutée : {note}",
-    "navigateTo": "Naviguer vers : {url}",
+    "navigateTo": "Va à : {url}",
     "openVtid": "Ouvrir VTID : {vtid}",
     "description": "Description",
     "activityLog": "Journal d'activité",
@@ -14,10 +14,6 @@
     "postpone": "Reporter",
     "addNote": "Ajouter une note",
     "openContext": "Ouvrir le contexte",
-    "assignee": "Responsable",
-    "_pending_review": {
-      "postponeComingSoon": true,
-      "navigateTo": true
-    }
+    "assignee": "Responsable"
   }
 }

@@ -6,14 +6,11 @@
       "live": "En direct maintenant",
       "scheduled": "Programmé",
       "all": "Tous les salons",
-      "past": "Passés",
-      "_pending_review": {
-        "live": true
-      }
+      "past": "Passés"
     },
     "goLive": "Passe en direct",
     "joinRoom": "Rejoins le salon",
-    "noRooms": "Aucun salon en direct pour le moment",
+    "noRooms": "Pas de salons en direct actuellement",
     "beFirst": "Sois le premier à passer en direct",
     "demoRoom": "Salon démo",
     "demoRoomDesc": "Ceci est un salon exemple. Crée le tien pour passer en direct !",
@@ -44,7 +41,7 @@
       "streamTitleLabel": "Titre du direct",
       "streamTitlePlaceholder": "En direct avec {name}",
       "descriptionLabel": "Description / Bio (Facultatif)",
-      "descriptionPlaceholder": "Dis à ton public de quoi parle ce direct…",
+      "descriptionPlaceholder": "Décris brièvement le sujet de ce stream…",
       "charactersCount": "{count}/500 caractères",
       "streamTypeLabel": "Type de direct",
       "streamTypeAudio": "Audio",
@@ -52,7 +49,7 @@
       "coverLabel": "Image de couverture / Miniature",
       "coverAlt": "Couverture du direct",
       "coverUploadCta": "Clique pour télécharger une image personnalisée",
-      "coverUploadHint": "N'importe quelle image – redimensionnée automatiquement",
+      "coverUploadHint": "N'importe quelle image – s'ajuste automatiquement",
       "aiAutoGenerateLabel": "Générer automatiquement avec l'IA",
       "aiAutoGenerateHint": "Générer une image si aucune n'est téléchargée",
       "generatingAiImage": "Génération d'image IA en cours…",
@@ -125,21 +122,13 @@
       },
       "success": {
         "streamUpdatedTitle": "Flux mis à jour ! ✨",
-        "streamUpdatedDesc": "Ton flux a été mis à jour avec succès",
+        "streamUpdatedDesc": "Ton stream a été mis à jour avec succès",
         "streamScheduledTitle": "Flux programmé ! 📅",
         "streamScheduledDesc": "Ton flux est programmé pour le {date} à {time}",
         "youAreLiveTitle": "Tu es en direct ! 🎙️",
         "youAreLiveDesc": "Rejoindre ta salle de flux…",
         "aiImageHintTitle": "Génération d'images IA",
-        "aiImageHintDesc": "L'image sera générée au démarrage du flux.",
-        "_pending_review": {
-          "streamUpdatedDesc": true,
-          "youAreLiveTitle": true
-        }
-      },
-      "_pending_review": {
-        "descriptionPlaceholder": true,
-        "coverUploadHint": true
+        "aiImageHintDesc": "L'image sera générée au démarrage du flux."
       }
     },
     "editSession": {
@@ -147,9 +136,6 @@
       "saving": "Enregistrement…",
       "changeCover": "Changer l'image de couverture",
       "noChanges": "Aucun changement à enregistrer"
-    },
-    "_pending_review": {
-      "noRooms": true
     }
   },
   "goLivePopup": {

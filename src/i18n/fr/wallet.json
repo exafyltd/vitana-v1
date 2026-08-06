@@ -1,7 +1,7 @@
 {
   "wallet": {
     "title": "Portefeuille",
-    "description": "Ton solde, tes crédits et tes récompenses",
+    "description": "Ton Solde, Crédits et Récompenses",
     "usdBalance": "Solde EUR / USD",
     "creditsBalance": "Solde de crédits VTNA",
     "creditsLabel": "Crédits VTNA",
@@ -14,23 +14,17 @@
       "actions": "Actions"
     },
     "filters": {
-      "commissions": "Vendre et gagner des commissions",
+      "commissions": "Vends et gagne des commissions",
       "transfers": "Virements",
       "exchanges": "Échanges",
       "rewards": "Récompenses",
       "purchases": "Achats",
       "pending": "Paiements en attente",
       "withdrawals": "Retraits",
-      "stakes": "Mise en jeu",
-      "_pending_review": {
-        "commissions": true
-      }
+      "stakes": "Mise en jeu"
     },
     "noActivity": "Aucune activité pour l'instant",
     "noActivityDesc": "Tes transactions apparaîtront ici.",
-    "displayCurrency": "Devise d'affichage",
-    "_pending_review": {
-      "description": true
-    }
+    "displayCurrency": "Devise d'affichage"
   }
 }

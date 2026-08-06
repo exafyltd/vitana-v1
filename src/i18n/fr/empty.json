@@ -10,7 +10,7 @@
     "noUsersFound": "Aucun utilisateur trouvé",
     "noTransactionsFound": "Aucune transaction trouvée",
     "noEventsYet": "Aucun événement pour l'instant. Crée d'abord un événement.",
-    "tryAdjustingFilters": "Essaie d'ajuster tes filtres ou ta requête de recherche",
+    "tryAdjustingFilters": "Essaie d'ajuster tes filtres ou ta requête de recherche.",
     "noData": "Aucune donnée disponible",
     "noMessages": "Aucun message",
     "noNotifications": "Aucune notification",
@@ -22,10 +22,6 @@
     "healthEmpty": "Enregistre ta première entrée pour démarrer ton Index.",
     "noActionsMatchedYet": "Aucune action encore trouvée — Autopilot est en train de façonner des suggestions.",
     "actionsPendingOne": "{count} action en attente",
-    "actionsPendingOther": "{count} actions en attente",
-    "_pending_review": {
-      "tryAdjustingFilters": true
-    }
-  },
-  "_pending_review": {}
+    "actionsPendingOther": "{count} actions en attente"
+  }
 }

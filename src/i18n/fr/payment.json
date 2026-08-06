@@ -13,16 +13,11 @@
     "insufficientBalanceDesc": "Tu n'as pas assez de {currency} pour cet échange",
     "transactionFailed": "Transaction échouée",
     "paymentFailed": "Paiement échoué",
-    "paymentFailedDesc": "Échec du traitement du paiement. Réessaie.",
+    "paymentFailedDesc": "Le paiement n'a pas pu être traité. Réessaie.",
     "balanceRefreshed": "Solde actualisé",
     "balanceRefreshedDesc": "Le solde du portefeuille a été mis à jour",
     "refreshFailed": "Actualisation échouée",
-    "refreshFailedDesc": "Impossible d'actualiser le solde. Réessaie.",
-    "error": "Erreur",
-    "_pending_review": {
-      "paymentFailedDesc": true,
-      "refreshFailedDesc": true
-    }
-  },
-  "_pending_review": {}
+    "refreshFailedDesc": "Le solde n'a pas pu être mis à jour. Réessaie.",
+    "error": "Erreur"
+  }
 }

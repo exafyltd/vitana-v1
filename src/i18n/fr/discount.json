@@ -9,10 +9,10 @@
     "invalid": "Code de réduction invalide",
     "bannerAvailable": "Réduction de bienvenue disponible",
     "tapToApply": "Appliquer",
-    "discountAppliedAmount": "{percent}% de réduction appliquée",
+    "discountAppliedAmount": "{percent} % de réduction appliquée",
     "remove": "Supprimer",
     "ticketsComing": "Billets bientôt disponibles",
-    "contactOrganizer": "Contacte l'organisateur de l'événement pour les informations sur les billets.",
+    "contactOrganizer": "Contacte l'organisateur pour les informations sur les billets.",
     "contactOrganizerPrice": "Cet événement coûte {price} $. Contacte l'organisateur pour la disponibilité des billets.",
     "soldOut": "Complet",
     "salesEnded": "Ventes terminées",
@@ -21,19 +21,11 @@
     "ticketsSelected": "{count} billet(s) sélectionné(s)",
     "useAccountEmail": "Utilise l'e-mail de mon compte",
     "buyAsGuest": "Acheter en tant qu'invité (pas de compte)",
-    "guestDetails": "Saisis tes coordonnées pour recevoir ton billet. Aucun compte requis.",
+    "guestDetails": "Saisis tes coordonnées pour obtenir ton billet. Aucun compte requis.",
     "fullName": "Nom complet",
     "email": "E-mail",
     "ticketEmailNote": "Ton billet et ta confirmation seront envoyés à cet e-mail.",
     "left": "{count} restant(s)",
-    "loadFailed": "Échec du chargement des billets",
-    "_pending_review": {
-      "welcomeTitle": true,
-      "welcomeMessage": true,
-      "discountAppliedAmount": true,
-      "contactOrganizer": true,
-      "guestDetails": true
-    }
-  },
-  "_pending_review": {}
+    "loadFailed": "Échec du chargement des billets"
+  }
 }

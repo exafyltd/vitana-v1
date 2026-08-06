@@ -10,6 +10,8 @@
     "role": "Rôle",
     "email": "E-mail",
     "date": "Date",
-    "amount": "Montant"
-  }
+    "amount": "Montant",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

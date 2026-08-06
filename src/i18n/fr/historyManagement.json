@@ -34,21 +34,12 @@
     "clearFailed": "Effacement échoué",
     "clearFailedDesc": "Une erreur est survenue lors de l'effacement de l'ancien historique.",
     "allHistoryDeleted": "Tout l'historique supprimé",
-    "allHistoryDeletedDesc": "Ton historique entier a été définitivement supprimé.",
+    "allHistoryDeletedDesc": "Ton historique entier a été supprimé définitivement.",
     "deleteFailed": "Suppression échouée",
     "deleteFailedDesc": "Une erreur est survenue lors de la suppression de ton historique.",
-    "confirmClearOld": "Es-tu sûr(e) de vouloir effacer l'historique de plus de 90 jours ?",
-    "confirmDeleteAll": "⚠️ ATTENTION : Cela supprimera définitivement TOUT ton historique. Cette action ne peut pas être annulée. Es-tu absolument sûr(e) ?",
+    "confirmClearOld": "Es-tu sûr(e) de vouloir supprimer l'historique de plus de 90 jours ?",
+    "confirmDeleteAll": "⚠️ ATTENTION : Ceci supprimera définitivement TOUT ton historique. Cette action ne peut pas être annulée. Es-tu absolument sûr(e) ?",
     "beta": "Bêta",
-    "danger": "Danger",
-    "_pending_review": {
-      "archiveSettings": true,
-      "exportCompleteDesc": true,
-      "exportFailedDesc": true,
-      "allHistoryDeletedDesc": true,
-      "deleteFailedDesc": true,
-      "confirmClearOld": true,
-      "confirmDeleteAll": true
-    }
+    "danger": "Danger"
   }
 }

@@ -19,16 +19,11 @@
     "alreadyExists": "Existe déjà",
     "notFound": "Non trouvé",
     "invalidSelection": "Sélection invalide",
-    "pleaseSelect": "Sélectionne une option",
-    "pleaseEnter": "Saisis une valeur",
+    "pleaseSelect": "Choisis une option.",
+    "pleaseEnter": "Saisis une valeur.",
     "charactersRemaining": "{count} caractères restants",
     "fileTooBig": "Le fichier est trop grand (max {max})",
     "invalidFileType": "Type de fichier invalide",
-    "uploadLimit": "Maximum {max} fichiers autorisés",
-    "_pending_review": {
-      "pleaseSelect": true,
-      "pleaseEnter": true
-    }
-  },
-  "_pending_review": {}
+    "uploadLimit": "Maximum {max} fichiers autorisés"
+  }
 }

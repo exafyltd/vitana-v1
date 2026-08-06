@@ -1,7 +1,7 @@
 {
   "vitanaIndex": {
     "title": "Vitana Indice de Santé",
-    "subtitle": "Équilibre global de bien-être à travers tous les piliers de la santé",
+    "subtitle": "Équilibre global du bien-être à travers tous les piliers de la santé",
     "veryPoor": "Très Mauvais",
     "poor": "Mauvais",
     "fair": "Moyen",
@@ -16,16 +16,12 @@
     "viewFullReport": "Voir le rapport complet",
     "trackToday": "Suivre aujourd'hui",
     "tiers": {
-      "starting": "Démarrage",
+      "starting": "Débutant",
       "early": "Début",
-      "building": "En construction",
+      "building": "En progression",
       "strong": "Fort",
       "reallyGood": "Très bon",
-      "elite": "Élite",
-      "_pending_review": {
-        "starting": true,
-        "building": true
-      }
+      "elite": "Élite"
     },
     "framings": {
       "starting": "Tu commences juste",
@@ -34,9 +30,6 @@
       "strong": "Jalon de 90 jours",
       "reallyGood": "Prospère",
       "elite": "Élite"
-    },
-    "_pending_review": {
-      "subtitle": true
     }
   }
 }

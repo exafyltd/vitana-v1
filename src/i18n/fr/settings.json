@@ -13,7 +13,7 @@
       "privacy": "Confidentialité",
       "privacyDesc": "Contrôle qui voit ton profil et tes activités",
       "notifications": "Notifications",
-      "notificationsDesc": "Gère tes préférences de notification",
+      "notificationsDesc": "Gère tes paramètres de notification",
       "preferences": "Préférences",
       "preferencesDesc": "Options de langue, de thème et d'affichage",
       "connectedApps": "Applications connectées",
@@ -23,11 +23,7 @@
       "billing": "Facturation",
       "billingDesc": "Informations d'abonnement et de paiement",
       "support": "Assistance",
-      "supportDesc": "Aide, FAQ et options de contact",
-      "_pending_review": {
-        "privacyDesc": true,
-        "notificationsDesc": true
-      }
+      "supportDesc": "Aide, FAQ et options de contact"
     },
     "status": {
       "privacyStatus": "Statut de confidentialité",
@@ -40,9 +36,6 @@
       "apps": "applis"
     },
     "vitanaOpenedSection": "Vitana a ouvert {section}",
-    "vitanaUpdated": "Vitana a mis à jour ton paramètre",
-    "_pending_review": {
-      "description": true
-    }
+    "vitanaUpdated": "Vitana a mis à jour ton paramètre"
   }
 }

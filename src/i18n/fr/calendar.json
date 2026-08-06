@@ -12,7 +12,7 @@
     "agenda": "Agenda",
     "nothingScheduled": "Rien de prévu",
     "tryQuickAdd": "Essaie l'ajout rapide ou laisse l'Autopilot planifier ta journée",
-    "clickSlotHint": "Clique sur un créneau pour créer un événement • Fais glisser pour replanifier",
+    "clickSlotHint": "Clique sur un créneau pour créer un événement • Fais glisser pour déplacer",
     "noEventsOnDate": "Aucun événement à cette date",
     "lastSynced": "Dernière synchronisation",
     "justNow": "à l'instant",
@@ -23,16 +23,13 @@
     "noBookingsToday": "Pas de réservations aujourd'hui",
     "noBookingsYet": "Pas encore de réservations",
     "nextUpcoming": "À venir",
-    "exploreActivities": "Explore des activités à ajouter à ton calendrier",
+    "exploreActivities": "Découvre des activités pour ton calendrier",
     "browseActivities": "Parcourir les activités",
     "bookedEvents": {
       "title": "Tes événements réservés",
       "todayLabel": "Aujourd'hui",
       "nextUp": "Prochainement",
-      "noEventsToday": "Pas d'événements aujourd'hui",
-      "_pending_review": {
-        "title": true
-      }
+      "noEventsToday": "Pas d'événements aujourd'hui"
     },
     "filters": {
       "personal": "Personnel",
@@ -66,7 +63,7 @@
       "suggestions": "Suggestions Autopilot",
       "badge": "Autopilote",
       "accept": "Accepter",
-      "snooze": "Reporter",
+      "snooze": "Rappelle-moi plus tard",
       "dismiss": "Ignorer",
       "undo": "Annuler",
       "laterToday": "Plus tard aujourd'hui",
@@ -80,20 +77,15 @@
       "reminderLaterToday": "Rappel défini pour plus tard aujourd'hui",
       "reminderTomorrow": "Rappel défini pour demain",
       "recommendFocus": "Recommander un bloc de concentration",
-      "focusBlockDesc": "Tu as une fenêtre de 90 minutes disponible. Parfait pour le travail profond.",
-      "_pending_review": {
-        "snooze": true,
-        "suggestionSnoozed": true,
-        "focusBlockDesc": true
-      }
+      "focusBlockDesc": "Tu as un créneau de 90 minutes disponible. Parfait pour un travail concentré."
     },
     "toasts": {
       "eventCreated": "Événement créé",
       "eventCreatedDesc": "Ton événement a été ajouté au calendrier",
       "eventDeleted": "Événement supprimé",
-      "eventDeletedDesc": "L'événement a été retiré de ton calendrier",
+      "eventDeletedDesc": "L'événement a été supprimé de ton calendrier",
       "syncingTitle": "Synchronisation...",
-      "syncingDesc": "Synchronisation avec les calendriers externes",
+      "syncingDesc": "Synchronisation avec des calendriers externes",
       "syncedTitle": "Synchronisé",
       "syncedDesc": "Le calendrier est à jour",
       "joiningEvent": "Rejoindre l'événement",
@@ -102,13 +94,7 @@
       "featureComingSoon": "Fonctionnalité bientôt disponible",
       "inviteFollowers": "Inviter des abonnés",
       "rescheduleEvent": "Reporter l'événement",
-      "shareToGroup": "Partager au groupe",
-      "_pending_review": {
-        "eventCreatedDesc": true,
-        "eventDeletedDesc": true,
-        "syncingTitle": true,
-        "syncingDesc": true
-      }
+      "shareToGroup": "Partager au groupe"
     },
     "error": {
       "failedToCreate": "Échec de la création de l'événement"
@@ -156,10 +142,6 @@
         "wave-5": "Moments de perspicacité",
         "wave-6": "Recommandations et découverte"
       }
-    },
-    "_pending_review": {
-      "clickSlotHint": true,
-      "exploreActivities": true
     }
   }
 }

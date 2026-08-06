@@ -36,6 +36,8 @@
     "upload": "Importer",
     "refresh": "Actualiser",
     "retry": "Réessayer",
-    "uploading": "Importation en cours..."
-  }
+    "uploading": "Importation en cours...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -4,10 +4,10 @@
     "notAuthenticated": "Non authentifié(e)",
     "notAuthenticatedDesc": "Connecte-toi pour enregistrer ton profil.",
     "profileUpdated": "Profil mis à jour !",
-    "profileUpdatedDesc": "Tes changements sont maintenant en ligne. Ton profil VITANA est incroyable.",
+    "profileUpdatedDesc": "Tes modifications sont maintenant actives. Ton profil VITANA est superbe.",
     "error": "Erreur",
     "refreshFailed": "Impossible d'actualiser les données du profil.",
-    "showcaseHint": "Sélectionne des publications et du contenu à mettre en avant en haut de ton profil",
+    "showcaseHint": "Sélectionne des publications et du contenu à mettre en avant en haut de ton profil.",
     "showcaseTitle": "Mises en avant",
     "manage": "Gérer",
     "about": "À propos",
@@ -16,11 +16,6 @@
     "title": "Titre",
     "titlePlaceholder": "Titre de la vidéo",
     "description": "Description",
-    "descriptionPlaceholder": "Description facultative...",
-    "_pending_review": {
-      "notAuthenticatedDesc": true,
-      "profileUpdatedDesc": true,
-      "showcaseHint": true
-    }
+    "descriptionPlaceholder": "Description facultative..."
   }
 }

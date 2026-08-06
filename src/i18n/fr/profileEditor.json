@@ -1,10 +1,10 @@
 {
   "profileEditor": {
-    "editAbout": "Modifier ta bio",
+    "editAbout": "Modifier Ma Bio",
     "aboutTitle": "Ta bio",
     "aboutDescription": "Partage plus sur toi. Tu peux contrôler qui voit chaque champ.",
     "bio": "Bio",
-    "bioPlaceholder": "Partage ton parcours bien-être, tes passions et ce qui te rend unique...\n\nExemples :\n• 'Passionné(e) de bien-être, adepte d'une vie consciente et du renforcement communautaire 🌱'\n• 'Nutritionniste certifié(e) aidant les autres à découvrir leur moi le plus sain'\n• 'Coureur(euse) de marathon, professeur(e) de méditation et défenseur(e) d'une vie équilibrée'",
+    "bioPlaceholder": "Partage ton parcours bien-être, tes passions et ce qui te rend unique...\n\nExemples :\n• 'Passionné(e) de bien-être, adepte de la pleine conscience et du renforcement communautaire 🌱'\n• 'Nutritionniste certifié(e) aidant les autres à découvrir leur moi le plus sain'\n• 'Coureur(euse) de marathon, professeur(e) de méditation et défenseur(e) d'une vie équilibrée'",
     "location": "Lieu",
     "locationPlaceholder": "ex: San Francisco, CA • Londres, RU • À distance",
     "links": "Liens",
@@ -38,7 +38,7 @@
     "save": "Enregistrer les modifications",
     "saving": "Enregistrement...",
     "profileUpdated": "Profil mis à jour",
-    "profileUpdatedDesc": "Tes informations de bio ont été enregistrées avec succès.",
+    "profileUpdatedDesc": "Tes informations ont été enregistrées avec succès.",
     "saveFailed": "Enregistrement échoué",
     "saveFailedDesc": "Échec de l'enregistrement du profil. Merci de réessayer.",
     "autopilot": {
@@ -51,16 +51,16 @@
     "identity": {
       "editIdentity": "Modifier ton identité",
       "title": "Identité",
-      "description": "Gère ton nom d'affichage, ton pseudo et tes images de profil.",
+      "description": "Gère ton nom d'affichage, ton pseudo et tes photos de profil.",
       "profilePicture": "Photo de profil",
       "displayName": "Nom d'affichage",
-      "displayNamePlaceholder": "Ton nom d'affichage",
+      "displayNamePlaceholder": "Ton Nom d'Affichage",
       "handle": "Pseudo",
       "handlePlaceholder": "tonpseudo",
-      "handleDescription": "Ton pseudo sera utilisé dans l'URL de ton profil public : /u/@{handle}",
-      "personalityDescriptor": "Descripteur de personnalité",
-      "personalityDescriptorPlaceholder": "ex. : Le Moteur Conscient, Le Guerrier Zen",
-      "personalityDescriptorDescription": "Une courte phrase qui caractérise ton style de bien-être",
+      "handleDescription": "Ton pseudo est utilisé dans l'URL de ton profil public : /u/@{handle}",
+      "personalityDescriptor": "Description de Personnalité",
+      "personalityDescriptorPlaceholder": "ex. Le Mouvement Conscient, Le Guerrier Zen",
+      "personalityDescriptorDescription": "Une courte description qui caractérise ton style de bien-être",
       "upload": "Importer",
       "uploading": "Importation en cours...",
       "remove": "Supprimer",
@@ -69,24 +69,15 @@
       "uploadFailed": "Échec de l'importation",
       "uploadFailedDesc": "Échec du téléchargement de l'image. Réessaie.",
       "identityUpdated": "Identité mise à jour",
-      "identityUpdatedDesc": "Tes informations d'identité ont été enregistrées avec succès.",
-      "_pending_review": {
-        "description": true,
-        "displayNamePlaceholder": true,
-        "handleDescription": true,
-        "personalityDescriptor": true,
-        "personalityDescriptorPlaceholder": true,
-        "personalityDescriptorDescription": true,
-        "identityUpdatedDesc": true
-      }
+      "identityUpdatedDesc": "Tes informations d'identité ont été enregistrées avec succès."
     },
     "coverLibrary": {
       "title": "Bibliothèque de couvertures",
       "tileTitle": "Bibliothèque de couvertures",
-      "tileSubtitle": "Télécharge tes propres photos pour les publications Find-a-Match",
+      "tileSubtitle": "Charge tes propres photos pour les publications 'Trouve un Match'",
       "drawerTitle": "Photos de couverture pour tes publications",
       "universalSection": "Photo de couverture universelle",
-      "universalDescription": "Utilisée quand aucune de tes photos spécifiques à une activité ne correspond à la catégorie d'une publication — et au lieu d'une image générée par IA. Généralement un portrait de toi.",
+      "universalDescription": "Utilisé(e) quand aucune de tes photos spécifiques à une activité ne correspond à la catégorie d'une publication — et au lieu d'une image générée par IA. Généralement un portrait de toi.",
       "universalAdd": "Ajouter une photo universelle",
       "universalReplace": "Remplacer la photo",
       "universalRemove": "Supprimer",
@@ -105,16 +96,7 @@
       "universalRemoved": "Photo de couverture universelle supprimée",
       "uploadFailed": "Échec du téléchargement",
       "categoryRequired": "Choisis d'abord une catégorie pour cette photo.",
-      "saveError": "Impossible d'enregistrer — réessaie.",
-      "_pending_review": {
-        "tileSubtitle": true,
-        "universalDescription": true
-      }
-    },
-    "_pending_review": {
-      "editAbout": true,
-      "bioPlaceholder": true,
-      "profileUpdatedDesc": true
+      "saveError": "Impossible d'enregistrer — réessaie."
     }
   }
 }

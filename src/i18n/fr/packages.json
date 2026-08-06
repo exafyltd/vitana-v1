@@ -4,12 +4,14 @@
     "types": {
       "bundle": "Lot",
       "subscription": "Abonnement",
-      "program": "Programme"
+      "program": "Programme",
+      "_pending_review": {}
     },
     "status": {
       "draft": "Brouillon",
       "published": "En ligne",
-      "archived": "Archivé"
+      "archived": "Archivé",
+      "_pending_review": {}
     },
     "item": "article",
     "items": "articles",
@@ -17,6 +19,8 @@
     "validDays": "Valide {days} jours",
     "save": "Économise {percent}%",
     "unpublish": "Dépublier",
-    "publish": "Publier"
-  }
+    "publish": "Publier",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

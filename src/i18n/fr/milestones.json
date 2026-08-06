@@ -1,10 +1,10 @@
 {
   "milestones": {
-    "title": "Étapes de vie",
+    "title": "Moments Spéciaux",
     "add": "Ajouter une étape",
     "edit": "Modifier une étape",
-    "empty": "Aucune étape pour l'instant",
-    "addFirst": "Ajoute ta première étape",
+    "empty": "Aucun moment pour l'instant",
+    "addFirst": "Ajoute ton premier moment",
     "date": "Date",
     "description": "Que s'est-il passé ?",
     "titleLabel": "Titre",
@@ -12,11 +12,6 @@
     "descPlaceholder": "Décris ce moment...",
     "icon": "Icône",
     "publicLabel": "Visible par tous",
-    "private": "Privé",
-    "_pending_review": {
-      "title": true,
-      "empty": true,
-      "addFirst": true
-    }
+    "private": "Privé"
   }
 }

@@ -1,13 +1,10 @@
 {
   "createSelection": {
     "title": "Créer nouveau",
-    "description": "Choisis le type de rassemblement que tu veux créer",
+    "description": "Choisis le type d'événement que tu veux créer",
     "event": "Événement",
     "eventDescription": "Rassemblements formels avec des horaires et des programmes structurés",
     "meetup": "Rendez-vous",
-    "meetupDescription": "Rassemblements informels pour le réseautage et la création de communauté",
-    "_pending_review": {
-      "description": true
-    }
+    "meetupDescription": "Rassemblements informels pour le réseautage et la création de communauté"
   }
 }

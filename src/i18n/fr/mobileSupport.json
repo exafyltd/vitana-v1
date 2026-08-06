@@ -74,6 +74,8 @@
     "errorNoAudio": "Nous n'avons pas capté d'audio. Merci de réessayer.",
     "errorTranscription": "Transcription échouée. Merci de réessayer.",
     "transcribing": "Transcription de ton enregistrement…",
-    "backendRecordingHint": "Ta transcription apparaîtra après avoir appuyé sur Arrêter."
-  }
+    "backendRecordingHint": "Ta transcription apparaîtra après avoir appuyé sur Arrêter.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

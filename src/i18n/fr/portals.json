@@ -21,35 +21,22 @@
         "patient": "Patient",
         "professional": "Pro",
         "admin": "Admin"
-      },
-      "_pending_review": {
-        "continueJourney": true,
-        "createAccount": true
       }
     },
     "alkalma": {
       "joinAlkalma": "Rejoins AlKalma",
       "welcomeBack": "Re-bonjour sur AlKalma.",
-      "continueJourney": "Connecte-toi pour continuer.",
-      "_pending_review": {
-        "continueJourney": true
-      }
+      "continueJourney": "Connecte-toi pour continuer."
     },
     "earthlinks": {
       "joinEarthlinks": "Rejoins Earthlinks",
       "welcomeBack": "Re-bonjour sur Earthlinks.",
-      "continueJourney": "Connecte-toi pour continuer.",
-      "_pending_review": {
-        "continueJourney": true
-      }
+      "continueJourney": "Connecte-toi pour continuer."
     },
     "community": {
       "joinCommunity": "Rejoins la Communauté",
       "welcomeBack": "Re-bonjour.",
-      "continueJourney": "Connecte-toi pour continuer.",
-      "_pending_review": {
-        "continueJourney": true
-      }
+      "continueJourney": "Connecte-toi pour continuer."
     }
   }
 }

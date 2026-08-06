@@ -19,7 +19,10 @@
       "rejected": "Rejeté",
       "flagged": "Signalé",
       "podcastManagement": "Gestion des podcasts",
-      "podcastManagementDesc": "Examiner et modérer les téléchargements de podcasts"
-    }
-  }
+      "podcastManagementDesc": "Examiner et modérer les téléchargements de podcasts",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

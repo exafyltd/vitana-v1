@@ -18,10 +18,6 @@
     "noClients": "Aucun client pour l'instant",
     "noClientsDesc": "Tes clients apparaîtront ici.",
     "noSales": "Aucune vente pour l'instant",
-    "noSalesDesc": "Ton historique des ventes apparaîtra ici.",
-    "_pending_review": {
-      "noServicesDesc": true,
-      "noClientsDesc": true
-    }
+    "noSalesDesc": "Ton historique des ventes apparaîtra ici."
   }
 }

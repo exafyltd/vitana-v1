@@ -10,86 +10,55 @@
         "account": "Compte et profil",
         "events": "Événements et rencontres",
         "payments": "Paiements et facturation",
-        "technical": "Aide technique",
-        "_pending_review": {}
+        "technical": "Aide technique"
       },
       "faq": {
         "title": "Questions fréquentes",
         "createAccount": {
           "question": "Comment créer un compte Maxina ?",
-          "answer": "Télécharge l'application Maxina ou visite notre portail sur vitanaland.com/maxina. Appuie sur 'S'inscrire' et saisis ton adresse e-mail. Tu recevras un e-mail de confirmation pour vérifier ton compte. Une fois confirmé, complète ton profil pour commencer à explorer les événements bien-être et les fonctionnalités de la communauté.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Télécharge l'app Maxina ou visite notre portail sur vitanaland.com/maxina. Appuie sur 'S'inscrire' et saisis ton adresse e-mail. Tu recevras un e-mail de confirmation pour vérifier ton compte. Après confirmation, complète ton profil pour découvrir les événements bien-être et les fonctionnalités communautaires."
         },
         "resetPassword": {
           "question": "Comment réinitialiser mon mot de passe ?",
-          "answer": "Sur l'écran de connexion, appuie sur 'Mot de passe oublié' et saisis ton adresse e-mail enregistrée. Tu recevras un lien de réinitialisation de mot de passe en quelques minutes. Vérifie ton dossier de spams si tu ne le vois pas. Le lien expire après 24 heures pour des raisons de sécurité.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Sur l'écran de connexion, appuie sur 'Mot de passe oublié' et saisis ton adresse e-mail enregistrée. Tu recevras un lien de réinitialisation de mot de passe en quelques minutes. Vérifie ton dossier de spams si tu ne vois pas l'e-mail. Pour des raisons de sécurité, le lien expire après 24 heures."
         },
         "joinEvents": {
           "question": "Comment participer aux événements et rencontres ?",
-          "answer": "Parcours les événements disponibles dans la section Événements et rencontres. Appuie sur n'importe quel événement pour voir les détails, y compris la date, le lieu et le prix. Pour les événements gratuits, appuie simplement sur 'Rejoindre' ou 'RSVP'. Pour les événements payants, tu peux acheter des billets en toute sécurité via notre système de paiement intégré.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Parcours les événements disponibles dans la section Événements & Rencontres. Appuie sur un événement pour voir les détails tels que la date, le lieu et le prix. Pour les événements gratuits, appuie simplement sur 'Participer' ou 'RSVP'. Pour les événements payants, tu peux acheter des billets en toute sécurité via notre système de paiement intégré."
         },
         "updateProfile": {
           "question": "Comment mettre à jour les informations de mon profil ?",
-          "answer": "Va dans l'onglet Profil et appuie sur l'icône de modification ou 'Modifier le profil'. Tu peux mettre à jour ton nom d'affichage, ta bio, ta photo de profil et tes centres d'intérêt bien-être. Les modifications sont enregistrées automatiquement. Ton profil nous aide à personnaliser les recommandations d'événements pour toi.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Va dans l'onglet Profil et appuie sur l'icône Modifier ou 'Modifier le profil'. Tu peux mettre à jour ton nom d'affichage, ta bio, ta photo de profil et tes centres d'intérêt bien-être. Les changements sont enregistrés automatiquement. Ton profil nous aide à personnaliser les recommandations d'événements pour toi."
         },
         "deleteAccount": {
           "question": "Comment puis-je supprimer mon compte ?",
-          "answer": "Pour supprimer ton compte Maxina et les données associées, envoie un e-mail à support@exafy.io avec l'objet 'Demande de suppression de compte – Maxina'. Inclue l'adresse e-mail liée à ton compte. Nous traitons les demandes de suppression dans les 30 jours.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Pour supprimer ton compte Maxina et les données associées, envoie un e-mail à support@exafy.io avec l'objet 'Suppression de compte – Maxina'. Fournis l'adresse e-mail liée à ton compte. Nous traitons les demandes de suppression dans les 30 jours."
         },
         "paymentMethods": {
           "question": "Quels modes de paiement sont acceptés ?",
-          "answer": "Nous acceptons les principales cartes de crédit et de débit (Visa, Mastercard, American Express) via notre intégration sécurisée de paiement Stripe. Apple Pay et Google Pay sont également disponibles sur les appareils compatibles. Toutes les transactions sont chiffrées et conformes PCI-DSS.",
-          "_pending_review": {}
+          "answer": "Nous acceptons les principales cartes de crédit et de débit (Visa, Mastercard, American Express) via notre intégration sécurisée de paiement Stripe. Apple Pay et Google Pay sont également disponibles sur les appareils compatibles. Toutes les transactions sont chiffrées et conformes PCI-DSS."
         },
         "contactOrganizers": {
           "question": "Comment contacter les organisateurs d'événements ?",
-          "answer": "Sur n'importe quelle page d'événement, tu peux trouver le profil de l'organisateur. Appuie sur son nom pour voir son profil et accéder aux options de messagerie. Pour les questions sur des événements spécifiques, utilise la section Q&A de l'événement ou contacte l'organisateur directement via la messagerie intégrée à l'application.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Sur chaque page d'événement, tu trouveras le profil de l'organisateur. Appuie sur le nom pour voir le profil et accéder aux options de messagerie. Pour les questions sur des événements spécifiques, utilise la section Q&A de l'événement ou contacte l'organisateur directement via la messagerie intégrée à l'app."
         },
         "dataSecure": {
           "question": "Mes données personnelles sont-elles sécurisées ?",
-          "answer": "Oui, ta vie privée et ta sécurité sont nos principales priorités. Nous utilisons un chiffrement standard de l'industrie, une authentification sécurisée et suivons les directives du RGPD. Nous ne partageons jamais tes informations personnelles avec des tiers sans ton consentement. Lis notre politique de confidentialité complète pour plus de détails.",
-          "_pending_review": {
-            "answer": true
-          }
-        },
-        "_pending_review": {}
+          "answer": "Oui, ta vie privée et ta sécurité sont notre priorité absolue. Nous utilisons un chiffrement standard de l'industrie, une authentification sécurisée et nous nous conformons aux directives du RGPD. Nous ne partageons jamais tes données personnelles avec des tiers sans ton consentement. Lis notre politique de confidentialité complète pour plus de détails."
+        }
       },
       "contact": {
         "title": "Contacter le support",
         "email": "Envoie-nous un e-mail",
-        "responseTime": "Nous répondons généralement sous 24 heures",
-        "_pending_review": {}
+        "responseTime": "Nous répondons généralement sous 24 heures"
       },
       "usefulLinks": {
         "title": "Liens utiles",
         "privacy": "Politique de confidentialité",
         "deleteAccount": "Supprimer le compte",
-        "portal": "Retour au portail Maxina",
-        "_pending_review": {}
+        "portal": "Retour au portail Maxina"
       },
-      "footer": "Tous droits réservés.",
-      "_pending_review": {
-        "description": true
-      }
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "footer": "Tous droits réservés."
+    }
+  }
 }

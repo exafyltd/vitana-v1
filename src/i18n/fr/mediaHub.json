@@ -26,7 +26,7 @@
     "searchPlaceholder": "Rechercher des médias...",
     "shortsAvailable": "{count} shorts disponibles",
     "filteredBy": "Filtré par :",
-    "noMatchingShorts": "Aucun short ne correspond à tes intérêts",
+    "noMatchingShorts": "Aucune courte vidéo ne correspond à tes intérêts.",
     "viewAllShorts": "Voir tous les shorts",
     "tracks": "morceaux",
     "min": "min",
@@ -62,14 +62,9 @@
       "uploadSuccess": "Succès !",
       "uploadSuccessDesc": "Ton {type} est maintenant en ligne dans la communauté.",
       "deleteError": "Erreur",
-      "deleteErrorDesc": "Échec de la suppression. Réessaye.",
+      "deleteErrorDesc": "Échec de la suppression. Réessaie.",
       "commentError": "Erreur",
-      "commentErrorDesc": "Échec de la publication du commentaire. Réessaye.",
-      "_pending_review": {
-        "podcastDeletedDesc": true,
-        "videoDeletedDesc": true,
-        "deleteErrorDesc": true
-      }
+      "commentErrorDesc": "Échec de la publication du commentaire. Réessaye."
     },
     "comments": {
       "title": "Commentaires",
@@ -153,9 +148,6 @@
         "education": "Éducation",
         "lifestyle": "Style de vie"
       }
-    },
-    "_pending_review": {
-      "noMatchingShorts": true
     }
   }
 }

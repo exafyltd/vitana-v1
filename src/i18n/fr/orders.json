@@ -31,7 +31,7 @@
       "description": "Tes commandes terminées et événements passés apparaîtront ici."
     },
     "noOrders": "Aucune commande pour l'instant",
-    "noOrdersDesc": "Tes commandes apparaîtront ici une fois que tu auras effectué un achat.",
+    "noOrdersDesc": "Tes commandes apparaîtront ici une fois que tu auras acheté quelque chose.",
     "browseProducts": "Parcourir les produits",
     "findEvents": "Trouver des événements",
     "startShopping": "Commencer à acheter",
@@ -51,7 +51,7 @@
       "location": "Lieu",
       "quantity": "Quantité",
       "tickets": "billets",
-      "yourTicket": "Ton billet",
+      "yourTicket": "Ton ticket",
       "giftVoucher": "Bon cadeau",
       "code": "Code",
       "sendToRecipient": "Envoyer au destinataire",
@@ -60,10 +60,7 @@
       "personalMessage": "Message personnel",
       "cancel": "Annuler",
       "send": "Envoyer",
-      "downloadPdf": "Télécharger le PDF",
-      "_pending_review": {
-        "yourTicket": true
-      }
+      "downloadPdf": "Télécharger le PDF"
     },
     "status": {
       "upcoming": "À venir",
@@ -79,9 +76,6 @@
       "processing": "Traitement en cours",
       "paid": "Actif",
       "active": "Actif"
-    },
-    "_pending_review": {
-      "noOrdersDesc": true
     }
   }
 }

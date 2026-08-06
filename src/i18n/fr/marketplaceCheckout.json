@@ -4,7 +4,8 @@
       "title": "Ton solde",
       "loading": "Chargement du solde…",
       "empty": "Pas encore de solde",
-      "addMoney": "Ajouter de l'argent"
+      "addMoney": "Ajouter de l'argent",
+      "_pending_review": {}
     },
     "checkout": {
       "button": "Paiement",
@@ -16,7 +17,8 @@
       "affiliateTitle": "Finalise l'achat chez le marchand",
       "affiliateBody": "Certains articles sont achetés directement chez le marchand. Ouvre les liens ci-dessous pour finaliser l'achat.",
       "affiliateLink": "Finalise l'achat chez le marchand",
-      "affiliateOpened": "Liens marchands ouverts dans de nouveaux onglets."
+      "affiliateOpened": "Liens marchands ouverts dans de nouveaux onglets.",
+      "_pending_review": {}
     },
     "addMoney": {
       "title": "Ajouter de l'argent",
@@ -29,7 +31,8 @@
       "continue": "Continuer vers le paiement",
       "processing": "Préparation en cours…",
       "invalidAmount": "Merci de saisir un montant valide.",
-      "failed": "Impossible de démarrer la recharge."
+      "failed": "Impossible de démarrer la recharge.",
+      "_pending_review": {}
     },
     "deposit": {
       "checkingTitle": "Confirmation du paiement",
@@ -39,7 +42,8 @@
       "failedTitle": "Échec de la recharge",
       "failedBody": "Ton rechargement n'a pas pu être effectué. Rien n'a été facturé.",
       "amountLabel": "Montant",
-      "backToCart": "Retour au panier"
+      "backToCart": "Retour au panier",
+      "_pending_review": {}
     },
     "errors": {
       "invalid_request": "Ta demande n'était pas valide. Vérifie ton panier.",
@@ -57,7 +61,10 @@
       "ORDER_WRITE_FAILED": "Ta commande n'a pas pu être enregistrée. Réessaye.",
       "WALLET_READ_FAILED": "Nous n'avons pas pu lire ton solde. Réessaye.",
       "GATEWAY_MISCONFIGURED": "Le service de paiement est actuellement indisponible. Réessaye plus tard.",
-      "unknown": "Une erreur est survenue lors du paiement. Réessaye."
-    }
-  }
+      "unknown": "Une erreur est survenue lors du paiement. Réessaye.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

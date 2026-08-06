@@ -2,12 +2,9 @@
   "voucher": {
     "modal": {
       "title": "Offrir un bon Maxina",
-      "subtitle": "Offre le cadeau du bien-être et de la connexion à la communauté",
+      "subtitle": "Offrez Bien-être et Connexion communautaire",
       "buyVoucher": "Acheter un bon",
-      "openingCheckout": "Ouverture du paiement sécurisé...",
-      "_pending_review": {
-        "subtitle": true
-      }
+      "openingCheckout": "Ouverture du paiement sécurisé..."
     },
     "tiers": {
       "test": {
@@ -67,10 +64,7 @@
       "copyLink": "Copier le lien",
       "share": "Enregistrer / Partager",
       "shareHint": "Enregistrer dans Fichiers, Drive, ou envoyer à quelqu'un",
-      "downloadHint": "Si le téléchargement s'ouvre vide, touche Ouvrir dans le navigateur",
-      "_pending_review": {
-        "downloadHint": true
-      }
+      "downloadHint": "Si le téléchargement s'ouvre vide, appuie sur Ouvrir dans le navigateur."
     },
     "toast": {
       "downloadStarted": "Téléchargement démarré !",
@@ -79,21 +73,15 @@
       "linkCopiedDesc": "Colle dans le navigateur pour télécharger.",
       "voucherSent": "Bon envoyé à {email} !",
       "voucherShared": "Bon partagé avec succès !",
-      "checkoutFailed": "Échec du démarrage du paiement. Réessaye, s'il te plaît.",
+      "checkoutFailed": "Impossible de démarrer le paiement. Réessaie.",
       "generatingVoucher": "Génération du bon...",
       "failedToLoadVoucher": "Échec du chargement des données du bon",
       "downloadFailedCopyLink": "Échec du téléchargement. Essaie de copier le lien.",
-      "useTicketView": "Utilise la vue du billet pour imprimer ou enregistrer ton billet",
+      "useTicketView": "Utilise la vue du billet pour imprimer ou enregistrer.",
       "pdfNotAvailable": "Téléchargement PDF non disponible pour ce type de commande",
-      "enterRecipientEmail": "Entre l'e-mail du destinataire",
+      "enterRecipientEmail": "Saisis l'e-mail du destinataire.",
       "emailOnlyForVouchers": "Envoi d'e-mail uniquement disponible pour les bons",
-      "sendingVoucherEmail": "Envoi de l'e-mail du bon...",
-      "_pending_review": {
-        "linkCopiedDesc": true,
-        "checkoutFailed": true,
-        "useTicketView": true,
-        "enterRecipientEmail": true
-      }
+      "sendingVoucherEmail": "Envoi de l'e-mail du bon..."
     }
   }
 }

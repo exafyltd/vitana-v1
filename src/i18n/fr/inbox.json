@@ -65,16 +65,13 @@
       "groupNameRequired": "Nom du groupe requis",
       "groupNameRequiredDesc": "Veuillez saisir un nom pour ton groupe.",
       "addMembersRequired": "Ajouter des membres",
-      "addMembersRequiredDesc": "Veuillez ajouter au moins un membre au groupe.",
+      "addMembersRequiredDesc": "Ajoute au moins un membre.",
       "groupExists": "Le groupe existe déjà",
       "groupExistsDesc": "Un groupe avec ces membres a été créé récemment.",
       "created": "Groupe créé",
       "createdDesc": "\"{name}\" a été créé avec succès.",
       "failed": "Échec de la création du groupe",
-      "failedDesc": "Veuillez réessayer.",
-      "_pending_review": {
-        "addMembersRequiredDesc": true
-      }
+      "failedDesc": "Veuillez réessayer."
     },
     "toast": {
       "success": "Succès",
@@ -85,17 +82,13 @@
       "searchFailed": "Échec de la recherche",
       "accessDenied": "Accès refusé",
       "communityOnly": "Seuls les utilisateurs de la communauté peuvent créer des conversations globales",
-      "pleaseLogin": "Veuillez te connecter pour démarrer des conversations",
+      "pleaseLogin": "Connecte-toi pour démarrer des conversations.",
       "groupRecipientsRequired": "Le nom du groupe et les destinataires sont requis",
-      "singleRecipientRequired": "Sélectionne exactement un destinataire pour un message direct",
+      "singleRecipientRequired": "Sélectionne un seul destinataire pour les messages directs.",
       "groupCreated": "Le groupe \"{name}\" a été créé avec succès !",
       "groupFailed": "Échec de la création du groupe",
       "allMarkedRead": "Tous les messages marqués comme lus",
-      "markAllReadFailed": "Impossible de tout marquer comme lu. Veuillez réessayer.",
-      "_pending_review": {
-        "pleaseLogin": true,
-        "singleRecipientRequired": true
-      }
+      "markAllReadFailed": "Impossible de tout marquer comme lu. Veuillez réessayer."
     },
     "createGroupAction": "Créer un nouveau groupe",
     "newConversationAction": "Nouvelle conversation",
@@ -106,17 +99,14 @@
     "searchConversations": "Rechercher des conversations...",
     "searchPlaceholder": "Rechercher...",
     "noMessages": "Pas encore de messages",
-    "noMessagesDesc": "Lance une conversation pour commencer.",
+    "noMessagesDesc": "Démarre une conversation pour commencer.",
     "startConversation": "Démarrer une conversation",
     "emptyState": {
-      "title": "Ta boîte de réception est calme pour l'instant",
+      "title": "Ta boîte de réception est encore vide.",
       "globalDescription": "Démarre une conversation ou rejoins une communauté pour te connecter avec d'autres.",
       "tenantDescription": "Connecte-toi avec tes collègues et membres d'équipe dans ton réseau professionnel.",
       "startConversation": "Démarrer une conversation",
-      "discoverPeople": "Découvrir des personnes",
-      "_pending_review": {
-        "title": true
-      }
+      "discoverPeople": "Découvrir des personnes"
     },
     "group": {
       "loading": "Chargement du groupe…",
@@ -128,9 +118,6 @@
       "officialBadge": "groupe officiel",
       "empty": "Aucun message pour l'instant.",
       "composerPlaceholder": "Message…"
-    },
-    "_pending_review": {
-      "noMessagesDesc": true
     }
   }
 }

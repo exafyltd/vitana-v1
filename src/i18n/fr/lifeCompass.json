@@ -17,50 +17,37 @@
       "career": "carrière",
       "learning": "apprentissage",
       "spiritual": "spirituel",
-      "longevity": "longévité",
-      "_pending_review": {}
+      "longevity": "longévité"
     },
     "goals": {
       "wealth": {
         "title": "Construire la Liberté Financière",
-        "description": "Atteindre l'indépendance financière et la richesse",
-        "_pending_review": {}
+        "description": "Atteindre l'indépendance financière et la richesse"
       },
       "relationship": {
         "title": "Trouver un Partenaire de Vie",
-        "description": "Construire des relations amoureuses significatives",
-        "_pending_review": {}
+        "description": "Construire des relations amoureuses significatives"
       },
       "health": {
-        "title": "Transformer ta Santé",
-        "description": "Atteindre un bien-être physique et mental optimal",
-        "_pending_review": {
-          "title": true
-        }
+        "title": "Améliorer la Santé",
+        "description": "Atteindre un bien-être physique et mental optimal"
       },
       "career": {
         "title": "Faire Avancer ta Carrière",
-        "description": "Construire une carrière épanouissante et réussie",
-        "_pending_review": {}
+        "description": "Construire une carrière épanouissante et réussie"
       },
       "learning": {
         "title": "Maîtriser de Nouvelles Compétences",
-        "description": "Apprendre et grandir par le savoir",
-        "_pending_review": {}
+        "description": "Apprendre et grandir par le savoir"
       },
       "spiritual": {
         "title": "Vie Spirituelle",
-        "description": "Approfondir ton but, ta présence et ta paix intérieure",
-        "_pending_review": {}
+        "description": "Approfondir ton but, ta présence et ta paix intérieure"
       },
       "longevity": {
         "title": "Améliorer la qualité de vie et prolonger la durée de vie",
-        "description": "Concentre-toi sur la santé durable, l'énergie et la longévité — la mission de Vitanaland",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "description": "Concentre-toi sur la santé durable, l'énergie et la longévité — la mission de Vitanaland"
+      }
+    }
+  }
 }
