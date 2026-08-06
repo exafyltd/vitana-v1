@@ -10,7 +10,7 @@
     "noUsersFound": "Nema korisnika",
     "noTransactionsFound": "Nema transakcija",
     "noEventsYet": "Još uvek nema događaja. Prvo kreiraj događaj.",
-    "tryAdjustingFilters": "Pokušaj da prilagodiš filtere ili upit za pretragu.",
+    "tryAdjustingFilters": "Pokušaj da prilagodiš svoje filtere ili pretragu.",
     "noData": "Nema dostupnih podataka",
     "noMessages": "Nema poruka",
     "noNotifications": "Nema obaveštenja",
@@ -22,10 +22,6 @@
     "healthEmpty": "Zabeleži svoj prvi unos da bi pokrenuo Indeks.",
     "noActionsMatchedYet": "Još uvek nema podudarnih akcija — Autopilot oblikuje predloge.",
     "actionsPendingOne": "{count} akcija na čekanju",
-    "actionsPendingOther": "{count} akcija na čekanju",
-    "_pending_review": {
-      "tryAdjustingFilters": true
-    }
-  },
-  "_pending_review": {}
+    "actionsPendingOther": "{count} akcija na čekanju"
+  }
 }

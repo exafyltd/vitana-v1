@@ -1,7 +1,7 @@
 {
   "wallet": {
     "title": "Novčanik",
-    "description": "Tvoj balans, krediti i nagrade",
+    "description": "Tvoje Stanje, Krediti i Nagrade",
     "usdBalance": "EUR / USD Stanje",
     "creditsBalance": "Stanje VTNA kredita",
     "creditsLabel": "VTNA Krediti",
@@ -11,28 +11,20 @@
     "tabs": {
       "balances": "Balansi",
       "activity": "Aktivnost",
-      "actions": "Akcije",
-      "_pending_review": {}
+      "actions": "Akcije"
     },
     "filters": {
-      "commissions": "Prodaj i zaradi proviziju",
+      "commissions": "Prodaj i zaradi provizije",
       "transfers": "Transferi",
       "exchanges": "Razmene",
       "rewards": "Nagrade",
       "purchases": "Kupovine",
       "pending": "Isplate na čekanju",
       "withdrawals": "Isplate",
-      "stakes": "Ulaganje",
-      "_pending_review": {
-        "commissions": true
-      }
+      "stakes": "Ulaganje"
     },
     "noActivity": "Još uvek nema aktivnosti",
     "noActivityDesc": "Tvoje transakcije će se pojaviti ovde.",
-    "displayCurrency": "Valuta prikaza",
-    "_pending_review": {
-      "description": true
-    }
-  },
-  "_pending_review": {}
+    "displayCurrency": "Valuta prikaza"
+  }
 }

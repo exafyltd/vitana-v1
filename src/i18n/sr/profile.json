@@ -2,15 +2,11 @@
   "profile": {
     "defaultBio": "Entuzijasta za wellness, sa strašću prema holističkom zdravlju i izgradnji zajednice. 🌱",
     "autopilot": {
-      "polishBio": "Sredite svoju biografiju, arhetip i istaknute sadržaje",
+      "polishBio": "Sredi svoj Bio, Arhetip i Istaknuto",
       "editHighlights": "Uredi istaknute sadržaje",
       "saveHighlights": "Sačuvaj istaknute sadržaje",
-      "highlightsDesc": "Izaberi svoje najbolje objave i medije da se istaknu na vrhu profila. Istaknuti sadržaj se pojavljuje u sekciji istaknutih sadržaja i privlači više pratilaca.",
-      "try": "Probaj",
-      "_pending_review": {
-        "polishBio": true,
-        "highlightsDesc": true
-      }
+      "highlightsDesc": "Izaberi svoje najbolje objave i medije za prikaz na vrhu tvog profila. Istaknuti sadržaj se pojavljuje u odeljku Istaknuto i privlači više pratilaca.",
+      "try": "Probaj"
     },
     "identity": {
       "vitanaIndex": "Vitana indeks",
@@ -19,15 +15,13 @@
       "follow": "Zaprati",
       "followingState": "Pratim",
       "understandIndex": "Razumi indeks",
-      "brandFooter": "MAXINA × VITANA",
-      "_pending_review": {}
+      "brandFooter": "MAXINA × VITANA"
     },
     "tabs": {
       "identity": "Identitet",
       "social": "Društveno",
       "account": "Nalog",
-      "business": "Biznis",
-      "_pending_review": {}
+      "business": "Biznis"
     },
     "account": {
       "notSet": "Nije uneseno",
@@ -36,8 +30,7 @@
       "visibility": {
         "private": "Privatno",
         "connections": "Kontakti",
-        "public": "Javno",
-        "_pending_review": {}
+        "public": "Javno"
       },
       "sections": {
         "publicProfile": "Javni profil",
@@ -45,8 +38,7 @@
         "basicInfo": "Osnovni lični podaci",
         "basicInfoSubtitle": "Fiksni podaci identiteta",
         "contactInfo": "Kontakt informacije",
-        "accountDetails": "Detalji naloga",
-        "_pending_review": {}
+        "accountDetails": "Detalji naloga"
       },
       "fields": {
         "avatar": "Profilna slika",
@@ -64,14 +56,11 @@
         "city": "Grad",
         "memberSince": "Član od",
         "accountType": "Tip naloga",
-        "verificationStatus": "Status verifikacije",
-        "_pending_review": {}
+        "verificationStatus": "Status verifikacije"
       },
       "values": {
-        "uploaded": "Otpremljeno",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "uploaded": "Otpremljeno"
+      }
     },
     "business": {
       "title": "Moje preporuke",
@@ -86,10 +75,7 @@
       "publicTitle": "Preporuke",
       "publicSubtitle": "Proizvodi koje preporučuje ovaj profil",
       "publicEmpty": "Još nema preporuka",
-      "viewProduct": "Pogledaj",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "viewProduct": "Pogledaj"
+    }
+  }
 }

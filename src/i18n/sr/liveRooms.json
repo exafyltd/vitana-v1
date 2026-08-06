@@ -6,10 +6,7 @@
       "live": "Uživo sada",
       "scheduled": "Zakazano",
       "all": "Sve sobe",
-      "past": "Prošlo",
-      "_pending_review": {
-        "live": true
-      }
+      "past": "Prošlo"
     },
     "goLive": "Kreni uživo",
     "joinRoom": "Pridruži se sobi",
@@ -20,8 +17,7 @@
     "search": {
       "placeholder": "Pretraži sobe, teme ili voditelje...",
       "category": "Kategorija",
-      "allCategories": "Sve kategorije",
-      "_pending_review": {}
+      "allCategories": "Sve kategorije"
     },
     "room": {
       "join": "Pridruži se sobi",
@@ -29,8 +25,7 @@
       "duration": "Trajanje",
       "host": "Voditelj",
       "premium": "Premium",
-      "live": "UŽIVO",
-      "_pending_review": {}
+      "live": "UŽIVO"
     },
     "viewer": {
       "leave": "Napusti",
@@ -38,8 +33,7 @@
       "video": "Video",
       "raiseHand": "Podigni ruku",
       "chat": "Ćaskanje",
-      "reactions": "Reakcije",
-      "_pending_review": {}
+      "reactions": "Reakcije"
     },
     "goLivePopup": {
       "titleCreate": "Kreni uživo",
@@ -47,7 +41,7 @@
       "streamTitleLabel": "Naslov strima",
       "streamTitlePlaceholder": "Uživo sa {name}",
       "descriptionLabel": "Opis / Biografija (opciono)",
-      "descriptionPlaceholder": "Reci publici o čemu je ovaj strim...",
+      "descriptionPlaceholder": "Ukratko opiši o čemu se radi u ovom strimu…",
       "charactersCount": "{count}/500 karaktera",
       "streamTypeLabel": "Tip strima",
       "streamTypeAudio": "Audio",
@@ -55,7 +49,7 @@
       "coverLabel": "Naslovna slika / Minijatura",
       "coverAlt": "Naslovna strima",
       "coverUploadCta": "Klikni da otpremiš prilagođenu sliku",
-      "coverUploadHint": "Bilo koja slika – automatski promenjena veličina",
+      "coverUploadHint": "Bilo koja slika – automatski se prilagođava",
       "aiAutoGenerateLabel": "Automatski generiši pomoću AI",
       "aiAutoGenerateHint": "Generiši sliku ako nijedna nije otpremljena",
       "generatingAiImage": "Generišem AI sliku…",
@@ -71,8 +65,7 @@
         "sleep": "San",
         "motivation": "Motivacija",
         "education": "Obrazovanje",
-        "lifestyle": "Životni stil",
-        "_pending_review": {}
+        "lifestyle": "Životni stil"
       },
       "advancedTitle": "Napredne opcije",
       "cohostLabel": "Poziv ko- hosta / gosta",
@@ -81,20 +74,16 @@
       "access": {
         "public": {
           "label": "Javno",
-          "desc": "Svako može da se pridruži",
-          "_pending_review": {}
+          "desc": "Svako može da se pridruži"
         },
         "followers": {
           "label": "Samo pratioci",
-          "desc": "Samo tvoji pratioci",
-          "_pending_review": {}
+          "desc": "Samo tvoji pratioci"
         },
         "group": {
           "label": "Grupa/VIP",
-          "desc": "Samo pozvani članovi",
-          "_pending_review": {}
-        },
-        "_pending_review": {}
+          "desc": "Samo pozvani članovi"
+        }
       },
       "scheduleLabel": "Zakaži za kasnije",
       "goLiveNow": "Kreni uživo sada",
@@ -129,8 +118,7 @@
         "imageUploadFailedDesc": "Zadržaćemo postojeću sliku.",
         "genericTitle": "Greška",
         "genericDesc": "Kreiranje strima nije uspelo. Pokušaj ponovo.",
-        "genericDescWithReason": "Kreiranje strima nije uspelo: {reason}. Pokušaj ponovo.",
-        "_pending_review": {}
+        "genericDescWithReason": "Kreiranje strima nije uspelo: {reason}. Pokušaj ponovo."
       },
       "success": {
         "streamUpdatedTitle": "Strim ažuriran! ✨",
@@ -140,26 +128,14 @@
         "youAreLiveTitle": "Uživo si! 🎙️",
         "youAreLiveDesc": "Pridružujem se tvojoj strim sobi…",
         "aiImageHintTitle": "AI generisanje slike",
-        "aiImageHintDesc": "Slika će biti generisana kada strim počne.",
-        "_pending_review": {
-          "streamUpdatedDesc": true,
-          "youAreLiveTitle": true
-        }
-      },
-      "_pending_review": {
-        "descriptionPlaceholder": true,
-        "coverUploadHint": true
+        "aiImageHintDesc": "Slika će biti generisana kada strim počne."
       }
     },
     "editSession": {
       "title": "Uredi sesiju",
       "saving": "Čuvanje…",
       "changeCover": "Promeni naslovnu sliku",
-      "noChanges": "Nema izmena za čuvanje",
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "noRooms": true
+      "noChanges": "Nema izmena za čuvanje"
     }
   },
   "goLivePopup": {
@@ -170,8 +146,6 @@
     "duration60": "1 sat",
     "duration90": "1,5 sat",
     "duration120": "2 sata",
-    "durationHint": "Soba se automatski zatvara nakon ovog vremena ako je ne završiš ručno.",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "durationHint": "Soba se automatski zatvara nakon ovog vremena ako je ne završiš ručno."
+  }
 }

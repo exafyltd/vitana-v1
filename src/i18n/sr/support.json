@@ -3,93 +3,62 @@
     "maxina": {
       "title": "Maxina podrška",
       "subtitle": "Kako možemo da ti pomognemo danas?",
-      "description": "Pronađi odgovore na česta pitanja ili kontaktiraj naš tim podrške.",
+      "description": "Pronađi odgovore na često postavljana pitanja ili kontaktiraj naš tim za podršku.",
       "categoriesTitle": "Pregledaj teme pomoći",
       "categories": {
         "gettingStarted": "Prvi koraci",
         "account": "Nalog i profil",
         "events": "Događaji i MeetUpovi",
         "payments": "Plaćanja i naplata",
-        "technical": "Tehnička pomoć",
-        "_pending_review": {}
+        "technical": "Tehnička pomoć"
       },
       "faq": {
         "title": "Često postavljana pitanja",
         "createAccount": {
           "question": "Kako da kreiram Maxina nalog?",
-          "answer": "Preuzmi Maxina aplikaciju ili poseti naš portal na vitanaland.com/maxina. Dodirni 'Prijavi se' i unesi svoju e-adresu. Dobićeš potvrdni e-mail za verifikaciju naloga. Kada potvrdiš, popuni profil i počni da istražuješ wellness događaje i funkcije zajednice.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Preuzmi Maxina aplikaciju ili poseti naš portal na vitanaland.com/maxina. Dodirni 'Register' i unesi svoju imejl adresu. Dobićeš potvrdni imejl za verifikaciju naloga. Nakon potvrde, popuni svoj profil da otkriješ wellness događaje i funkcije zajednice."
         },
         "resetPassword": {
           "question": "Kako da resetujem lozinku?",
-          "answer": "Na ekranu za prijavu dodirni 'Zaboravljena lozinka' i unesi svoju registrovanu e-adresu. Dobićeš link za resetovanje lozinke u roku od nekoliko minuta. Proveri spam folder ako ga ne vidiš. Link ističe nakon 24 sata iz sigurnosnih razloga.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Na ekranu za prijavu, dodirni 'Forgot Password' i unesi svoju registrovanu imejl adresu. Dobićeš link za resetovanje lozinke u roku od nekoliko minuta. Proveri svoj spam folder ako ne vidiš imejl. Iz bezbednosnih razloga, link ističe nakon 24 sata."
         },
         "joinEvents": {
           "question": "Kako da se pridružim događajima i meetupovima?",
-          "answer": "Pregledaj dostupne događaje u odeljku Događaji i MeetUpovi. Dodirni bilo koji događaj da vidiš detalje uključujući datum, lokaciju i cenu. Za besplatne događaje, samo dodirni 'Pridruži se' ili 'RSVP'. Za plaćene događaje, možeš bezbedno kupiti karte kroz naš integrisani sistem plaćanja.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Pregledaj dostupne događaje u sekciji Events & MeetUps. Dodirni događaj da vidiš detalje kao što su datum, lokacija i cena. Za besplatne događaje, jednostavno dodirni 'Participate' ili 'RSVP'. Za plaćene događaje, možeš sigurno kupiti karte putem našeg integrisanog sistema plaćanja."
         },
         "updateProfile": {
           "question": "Kako da ažuriram informacije na profilu?",
-          "answer": "Idi na karticu Profil i dodirni ikonicu za uređivanje ili 'Uredi profil'. Možeš da ažuriraš svoje ime, biografiju, profilnu sliku i wellness interesovanja. Promene se čuvaju automatski. Tvoj profil nam pomaže da personalizujemo preporuke događaja za tebe.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Idi na karticu Profil i dodirni ikonu Uredi ili 'Edit Profile'. Možeš ažurirati svoje prikazno ime, biografiju, profilnu sliku i wellness interesovanja. Promene se automatski čuvaju. Tvoj profil nam pomaže da personalizujemo preporuke događaja za tebe."
         },
         "deleteAccount": {
           "question": "Kako mogu da obrišem svoj nalog?",
-          "answer": "Da obrišeš svoj Maxina nalog i povezane podatke, pošalji e-mail na support@exafy.io sa naslovom 'Zahtev za brisanje naloga – Maxina'. Uključi e-adresu povezanu sa tvojim nalogom. Zahteve za brisanje obrađujemo u roku od 30 dana.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Da obrišeš svoj Maxina nalog i povezane podatke, pošalji imejl na support@exafy.io sa naslovom 'Account Deletion – Maxina'. Navedi imejl adresu povezanu sa tvojim nalogom. Zahteve za brisanje obrađujemo u roku od 30 dana."
         },
         "paymentMethods": {
           "question": "Koji načini plaćanja su prihvaćeni?",
-          "answer": "Prihvatamo glavne kreditne i debitne kartice (Visa, Mastercard, American Express) kroz našu sigurnu Stripe integraciju plaćanja. Apple Pay i Google Pay su takođe dostupni na podržanim uređajima. Sve transakcije su šifrovane i usklađene sa PCI-DSS standardom.",
-          "_pending_review": {}
+          "answer": "Prihvatamo glavne kreditne i debitne kartice (Visa, Mastercard, American Express) kroz našu sigurnu Stripe integraciju plaćanja. Apple Pay i Google Pay su takođe dostupni na podržanim uređajima. Sve transakcije su šifrovane i usklađene sa PCI-DSS standardom."
         },
         "contactOrganizers": {
           "question": "Kako da kontaktiram organizatore događaja?",
-          "answer": "Na stranici bilo kog događaja možeš pronaći profil organizatora. Dodirni njegovo ime da vidiš profil i pristupiš opcijama za poruke. Za pitanja o konkretnim događajima, koristi Q&A sekciju događaja ili kontaktiraj organizatora direktno putem poruka u aplikaciji.",
-          "_pending_review": {
-            "answer": true
-          }
+          "answer": "Na svakoj stranici događaja, pronaći ćeš profil organizatora. Dodirni ime da vidiš profil i pristupiš opcijama za poruke. Za pitanja o specifičnim događajima, koristi Q&A sekciju događaja ili kontaktiraj organizatora direktno putem poruka u aplikaciji."
         },
         "dataSecure": {
           "question": "Da li su moji lični podaci sigurni?",
-          "answer": "Da, tvoja privatnost i sigurnost su nam na prvom mestu. Koristimo enkripciju industrijskog standarda, sigurnu autentifikaciju i pratimo GDPR smernice. Nikada ne delimo tvoje lične podatke sa trećim stranama bez tvog pristanka. Pročitaj našu celokupnu Politiku privatnosti za više detalja.",
-          "_pending_review": {
-            "answer": true
-          }
-        },
-        "_pending_review": {}
+          "answer": "Da, tvoja privatnost i bezbednost su nam glavni prioritet. Koristimo industrijski-standardnu enkripciju, sigurnu autentifikaciju i usklađeni smo sa GDPR smernicama. Nikada ne delimo tvoje lične podatke sa trećim stranama bez tvog pristanka. Pročitaj našu potpunu politiku privatnosti za više detalja."
+        }
       },
       "contact": {
         "title": "Kontaktiraj podršku",
         "email": "Pošalji nam e-mail",
-        "responseTime": "Obično odgovaramo u roku od 24 sata",
-        "_pending_review": {}
+        "responseTime": "Obično odgovaramo u roku od 24 sata"
       },
       "usefulLinks": {
         "title": "Korisni linkovi",
         "privacy": "Politika privatnosti",
         "deleteAccount": "Obriši nalog",
-        "portal": "Nazad na Maxina portal",
-        "_pending_review": {}
+        "portal": "Nazad na Maxina portal"
       },
-      "footer": "Sva prava zadržana.",
-      "_pending_review": {
-        "description": true
-      }
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "footer": "Sva prava zadržana."
+    }
+  }
 }

@@ -8,20 +8,13 @@
     "unsavedChangesDesc": "Stvarno želiš da odeš? Tvoje izmene će biti izgubljene.",
     "leave": "Stvarno želiš da napustiš ovu stranicu?",
     "leaveDesc": "Nesačuvane izmene će biti izgubljene.",
-    "logout": "Jesi li siguran/na da želiš da se odjaviš?",
-    "logoutDesc": "Moraćeš ponovo da se prijaviš.",
+    "logout": "Da li stvarno želiš da se odjaviš?",
+    "logoutDesc": "Moraš ponovo da se prijaviš.",
     "remove": "Stvarno želiš da ukloniš ovu stavku?",
     "removeDesc": "Stavka će biti uklonjena sa liste.",
-    "disconnect": "Stvarno želiš da prekineš vezu?",
+    "disconnect": "Da li stvarno želiš da prekineš ovu vezu?",
     "disconnectDesc": "Možeš se ponovo povezati kasnije.",
-    "proceed": "Želiš li da nastaviš?",
-    "proceedDesc": "Ova radnja će biti izvršena.",
-    "_pending_review": {
-      "logout": true,
-      "logoutDesc": true,
-      "disconnect": true,
-      "proceed": true
-    }
-  },
-  "_pending_review": {}
+    "proceed": "Da li želiš da nastaviš?",
+    "proceedDesc": "Ova radnja će biti izvršena."
+  }
 }

@@ -5,34 +5,29 @@
       "choosePathGuide": "Izaberi put i mi ćemo te voditi do tvog prvog izvora prihoda.",
       "startEarning": "Počni sa zarađivanjem",
       "howToEarn": "Kako želiš da zarađuješ?",
-      "pickOne": "Izaberi jedno — uvek možeš kasnije da radiš i ostalo.",
+      "pickOne": "Izaberi opciju — ostale možeš istražiti kasnije.",
       "createEvent": "Kreiraj događaj",
       "createEventDesc": "Organizuj sopstveni događaj i prodaj karte.",
       "addToInventory": "Dodaj događaje u inventar",
       "addToInventoryDesc": "Preprodaj kurirane događaje i zaradi proviziju.",
       "createService": "Kreiraj uslugu",
-      "createServiceDesc": "Ponudi termine koje ljudi mogu da rezervišu.",
+      "createServiceDesc": "Ponudi sesije koje se mogu rezervisati.",
       "createPromotion": "Kreiraj promociju",
       "createPromotionDesc": "Povećaj vidljivost i podeli na društvenim mrežama.",
       "hostAndSell": "Organizuj i prodaj karte",
       "resellAndEarn": "Preprodaj i zaradi",
       "offerBookings": "Ponudi rezervacije",
-      "boostVisibility": "Povećaj vidljivost",
-      "_pending_review": {
-        "howToEarn": true,
-        "pickOne": true,
-        "createServiceDesc": true
-      }
+      "boostVisibility": "Povećaj vidljivost"
     },
     "history": {
       "all": "Sve",
       "directSales": "Direktna prodaja",
       "reseller": "Preprodavac",
-      "noEarningsYet": "Još uvek nema istorije zarade",
-      "startSellingToSee": "Počni sa prodajom da bi video/la svoje transakcije ovde",
+      "noEarningsYet": "Još nema istorije zarade.",
+      "startSellingToSee": "Počni sa prodajom da vidiš svoje transakcije ovde.",
       "ticketsSold": "Prodate karte",
       "grossAmount": "Bruto iznos",
-      "youEarned": "Zaradio/la si",
+      "youEarned": "Zaradio si",
       "paidToWallet": "Isplaćeno u novčanik",
       "pendingPayout": "Na čekanju isplata",
       "transactionId": "ID transakcije",
@@ -40,16 +35,10 @@
       "last7Days": "Poslednjih 7 dana",
       "last30Days": "Poslednjih 30 dana",
       "last90Days": "Poslednjih 90 dana",
-      "allTime": "Sve vreme",
+      "allTime": "Ukupno vreme",
       "details": "Detalji",
       "earningsActivity": "Aktivnost zarade",
-      "noEarningsStartSelling": "Još uvek nema zarade. Počni sa prodajom da bi video/la aktivnost ovde.",
-      "_pending_review": {
-        "noEarningsYet": true,
-        "startSellingToSee": true,
-        "youEarned": true,
-        "allTime": true
-      }
+      "noEarningsStartSelling": "Još uvek nema zarade. Počni sa prodajom da bi video/la aktivnost ovde."
     },
     "kpi": {
       "totalEarnings": "Ukupna zarada",
@@ -70,13 +59,9 @@
       "viewMyEvents": "Pogledaj moje događaje",
       "totalGrossSales": "Ukupna bruto prodaja",
       "resellerCommissions": "Provizije preprodavaca",
-      "goToSellEarn": "Idi na Prodaja i zarada",
+      "goToSellEarn": "Prodaj i zaradi",
       "totalEarned": "Ukupno zarađeno",
-      "earningsBySource": "Zarada po izvoru",
-      "_pending_review": {
-        "goToSellEarn": true,
-        "totalEarned": true
-      }
+      "earningsBySource": "Zarada po izvoru"
     },
     "reseller": {
       "upcomingEvents": "Predstojeći događaji",
@@ -84,13 +69,13 @@
       "resellerCode": "Preprodavački kod",
       "codeCopied": "Preprodavački kod kopiran!",
       "noSalesYet": "Još nema prodaje",
-      "shareLinkToStart": "Podeli link da bi počeo/la da zarađuješ.",
+      "shareLinkToStart": "Podeli link da zaradiš.",
       "tickets": "karte",
       "shareResellerLink": "Podeli preprodavački link",
       "createPromotion": "Kreiraj promociju",
-      "shareLinkOrPromotion": "Podeli svoje preprodavačke linkove ili kreiraj promociju da bi počeo/la da zarađuješ provizije.",
+      "shareLinkOrPromotion": "Podeli svoje partnerske linkove ili kreiraj promociju da bi zaradio provizije.",
       "selectEventToShare": "Izaberi događaj za deljenje",
-      "pickEventForLink": "Izaberi događaj da generišeš svoj preprodavački link",
+      "pickEventForLink": "Izaberi događaj da generišeš svoj partnerski link.",
       "noEventsToSell": "Nema dostupnih događaja za prodaju",
       "commission": "provizija",
       "commissionEarned": "Zarađena provizija",
@@ -99,24 +84,16 @@
       "noPayoutsYet": "Još nema isplata",
       "attributedSales": "Pripisana prodaja po događaju",
       "noSalesMatchFilter": "Nema prodaje koja odgovara trenutnim filterima",
-      "mockDataActive": "Lažni podaci aktivni",
-      "_pending_review": {
-        "shareLinkToStart": true,
-        "shareLinkOrPromotion": true,
-        "pickEventForLink": true
-      }
+      "mockDataActive": "Lažni podaci aktivni"
     },
     "transfer": {
       "title": "Prenesi u novčanik",
       "description": "Prenesi svoje provizije preprodavaca na čekanju u svoj VITANA novčanik.",
       "pending": "Na čekanju",
       "wallet": "Novčanik",
-      "instantCredit": "Ovo će odmah uplatiti tvoju zaradu na stanje novčanika.",
+      "instantCredit": "Ovo će ti odmah pripisati zaradu na stanje u Novčaniku.",
       "transferring": "Prenosim...",
-      "transfer": "Prenesi",
-      "_pending_review": {
-        "instantCredit": true
-      }
+      "transfer": "Prenesi"
     },
     "typeSelector": {
       "title": "Pokreni biznis",
@@ -128,15 +105,12 @@
       "sellTicketsDesc": "Promoviši događaje i zaradi proviziju",
       "badgeNew": "Novo",
       "badgeActive": "Aktivno",
-      "alreadyReseller": "Već si preprodavac! Pogledaj karticu Prodaj i zaradi.",
-      "cancel": "Otkaži",
-      "_pending_review": {
-        "alreadyReseller": true
-      }
+      "alreadyReseller": "Već si partner! Proveri karticu „Prodaj i zaradi“.",
+      "cancel": "Otkaži"
     },
     "missionOpportunities": {
       "title": "Prilike za misije",
-      "subtitle": "Autopilotom preporučeni putevi koji unapređuju ekonomiju dugovečnosti",
+      "subtitle": "Autopilot-predložene putanje koje unapređuju ekonomiju dugovečnosti",
       "loading": "Učitavam prilike...",
       "error": "Nije moguće učitati prilike",
       "empty": "Još uvek nema preporuka usklađenih sa ekonomijom. Proveri kasnije.",
@@ -145,14 +119,8 @@
         "find_match": "Pronađi spoj",
         "marketplace": "Tržište",
         "income_generation": "Generisanje prihoda",
-        "business_formation": "Osnivanje biznisa",
-        "_pending_review": {}
-      },
-      "_pending_review": {
-        "subtitle": true
+        "business_formation": "Osnivanje biznisa"
       }
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    }
+  }
 }

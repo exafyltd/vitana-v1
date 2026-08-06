@@ -1,23 +1,23 @@
 {
   "discover": {
-    "title": "Otkrij svoj Longevity Marketplace",
+    "title": "Otkrij svoje tržište za dugovečnost",
     "mobileTitle": "Otkrij",
     "mobileDescription": "Istraži iskustva, ljude i wellness",
-    "description": "Pronađi lekare, wellness usluge i zajednice savršeno usklađene sa tvojim putem zdravog starenja.",
+    "description": "Pronađi lekare, velnes usluge i zajednice koje se savršeno uklapaju u tvoje putovanje ka zdravom starenju.",
     "searchPlaceholder": "Šta tražiš? (npr. časovi joge, lekar za dugovečnost, sastanci)",
     "doctorsCoaches": "Lekari i treneri",
     "doctorsCoachesDesc": "Pronađi specijaliste za dugovečnost, zdravstvene trenere i medicinske stručnjake",
     "wellnessServices": "Wellness usluge",
     "wellnessServicesDesc": "Otkrij jogu, masažu, ples, terapiju i usluge oporavka",
     "communityGroups": "Zajednice",
-    "communityGroupsDesc": "Pridruži se sastancima, grupama i poveži se sa istomišljenicima",
+    "communityGroupsDesc": "Pridruži se okupljanjima i grupama i poveži se sa istomišljenicima",
     "explore": "Istraži",
     "aiPicksForYou": "AI preporuke za tebe",
     "vitanaPicksLabel": "Vitana izbor",
-    "recommendedForYou": "Vitana preporučuje",
+    "recommendedForYou": "Preporučeno za tebe",
     "moreToExplore": "Još za istraživanje",
     "seeAll": "Prikaži sve",
-    "suggestedForYou": "Predloženo za tebe",
+    "suggestedForYou": "Preporučeno za tebe",
     "browseCategories": "Pregledaj kategorije",
     "skincareCosmetics": "Nega kože i kozmetika",
     "healthTests": "Zdravstveni testovi",
@@ -51,8 +51,7 @@
       "movement": "Kretanje",
       "mind": "Um",
       "supplements": "Suplementi",
-      "experts": "Stručnjaci",
-      "_pending_review": {}
+      "experts": "Stručnjaci"
     },
     "subcategories": {
       "longevity": "Dugovečnost",
@@ -79,8 +78,7 @@
       "sexualHealth": "Seksualno zdravlje",
       "prevention": "Prevencija i rano otkrivanje",
       "generalHealth": "Opšte zdravlje",
-      "dnaAnalysis": "DNK analize",
-      "_pending_review": {}
+      "dnaAnalysis": "DNK analize"
     },
     "quickActions": {
       "title": "Brze radnje",
@@ -91,56 +89,36 @@
       "reorderPrevious": "Ponovi prethodno",
       "managePayment": "Upravljanje plaćanjem",
       "findServicesNearMe": "Pronađi usluge u blizini",
-      "viewSavedItems": "Pregledaj sačuvane stavke",
-      "_pending_review": {}
+      "viewSavedItems": "Pregledaj sačuvane stavke"
     },
     "aiPicks": {
-      "title": "AI odabiri za tebe",
+      "title": "AI preporuke za tebe",
       "description": "Personalizovane preporuke na osnovu tvog Vitana indeksa, biomarkera i zdravstvenih ciljeva",
-      "backToDiscover": "Nazad na Otkrij",
+      "backToDiscover": "Nazad na otkrivanje",
       "loading": "Učitavanje AI preporuka...",
       "unavailable": "AI odabiri nedostupni",
-      "unavailableDesc": "Trenutno nismo mogli da učitamo tvoje personalizovane preporuke",
+      "unavailableDesc": "Nismo mogli da učitamo tvoje personalizovane preporuke trenutno",
       "recommendationsFound": "Pronađeno {count} preporuka",
       "noRecommendations": "Nema pronađenih preporuka",
-      "noRecommendationsDesc": "Probaj da izabereš drugi filter da vidiš više preporuka",
-      "viewAllPicks": "Pogledaj sve odabire",
-      "_pending_review": {
-        "title": true,
-        "backToDiscover": true,
-        "unavailableDesc": true,
-        "noRecommendationsDesc": true
-      }
+      "noRecommendationsDesc": "Izaberi drugi filter da vidiš više preporuka",
+      "viewAllPicks": "Pogledaj sve odabire"
     },
     "filters": {
       "all": "Sve",
       "services": "Usluge",
       "supplements": "Suplementi",
       "experts": "Stručnjaci",
-      "deals": "Ponude",
-      "_pending_review": {}
+      "deals": "Ponude"
     },
     "toast": {
       "actionSelected": "Akcija izabrana",
-      "comingSoon": "{action} funkcija uskoro stiže!",
-      "_pending_review": {}
+      "comingSoon": "{action} funkcija uskoro stiže!"
     },
     "guest": {
       "bannerTitle": "Prijavi se i osvoji Vitana nagrade pri svakoj kupovini",
       "bannerSubtitle": "Slobodno razgledaj — prijavi se (besplatno je) da kupuješ i skupljaš nagrade.",
       "bannerCta": "Prijavi se",
-      "signIn": "Prijavi se",
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "title": true,
-      "description": true,
-      "communityGroupsDesc": true,
-      "aiPicksForYou": true,
-      "recommendedForYou": true,
-      "suggestedForYou": true,
-      "noResultsDesc": true
+      "signIn": "Prijavi se"
     }
-  },
-  "_pending_review": {}
+  }
 }

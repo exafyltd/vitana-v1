@@ -6,7 +6,7 @@
     "headlineLine2": "MAXINA test korisnik",
     "tagline": "…i svi plešu!!",
     "subheadline": "Pozivamo te da postaneš MAXINA test korisnik i pomogneš nam da poboljšamo performanse aplikacije pre njenog zvaničnog lansiranja 18. juna 2026.",
-    "subheadlineTicket": "🎟️ Svaki verifikovani test korisnik dobija 1 besplatnu kartu vrednu 99 EUR za jedan od naših 12 letnjih događaja — ispunjenih ritmom, pokretom, povezivanjem i radošću.",
+    "subheadlineTicket": "🎟️ Svi verifikovani test korisnici dobijaju 1 besplatnu kartu u vrednosti od 99 EUR za jedan od naših 12 letnjih događaja — punih ritma, pokreta, povezanosti i radosti.",
     "subheadlineCommunity": "Kao MAXINA test korisnik, ne samo da istražuješ aplikaciju pre svih, već postaješ deo zajednice i energije koju MAXINA Experience predstavlja.",
     "chipEvents": "12 letnjih događaja",
     "chipLocation": "Majorka",
@@ -56,7 +56,7 @@
     "footerPrivacy": "Privatnost",
     "footerTerms": "Uslovi",
     "ariaApplyForm": "Prijavni formular",
-    "aboutEyebrow": "Čemu se pridružujete",
+    "aboutEyebrow": "O čemu se radi",
     "aboutTitle": "Više od aplikacije",
     "aboutVitanalandLabel": "Vitanaland",
     "aboutVitanalandTag": "Destinacija",
@@ -75,12 +75,6 @@
     "benefitTicket": "1 besplatna karta vredna 99 EUR za MAXINA Experience događaj",
     "benefitEvents": "Prvotalasni pristup svim 12 letnjih događaja na Majorki",
     "benefitVitana": "Lično Vitana AI vođenje od prvog dana",
-    "benefitSeat": "Osnivačko mesto za stolom dok se Vitanaland razvija",
-    "_pending_review": {
-      "subheadlineTicket": true,
-      "aboutEyebrow": true,
-      "benefitSeat": true
-    }
-  },
-  "_pending_review": {}
+    "benefitSeat": "Kao osnivač, pomozi u oblikovanju razvoja Vitanalanda"
+  }
 }

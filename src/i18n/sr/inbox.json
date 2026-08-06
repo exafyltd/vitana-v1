@@ -11,35 +11,30 @@
       "direct": "Direktno",
       "contacts": "Kontakti",
       "notifications": "Obaveštenja",
-      "archived": "Arhivirano",
-      "_pending_review": {}
+      "archived": "Arhivirano"
     },
     "contextTabs": {
       "community": "Zajednica",
-      "network": "Mreža",
-      "_pending_review": {}
+      "network": "Mreža"
     },
     "actions": {
       "new": "Novo",
       "newMessage": "Nova poruka",
       "createGroup": "Kreiraj grupu",
       "markAllRead": "Označi sve kao pročitano",
-      "menu": "Više",
-      "_pending_review": {}
+      "menu": "Više"
     },
     "composer": {
       "placeholder": "Unesi svoju poruku...",
       "send": "Pošalji",
       "attachments": "Prilozi",
       "recipients": "Za:",
-      "add": "Dodaj",
-      "_pending_review": {}
+      "add": "Dodaj"
     },
     "states": {
       "empty": "Još nema poruka",
       "loading": "Učitavanje poruka...",
-      "error": "Neuspešno učitavanje poruka",
-      "_pending_review": {}
+      "error": "Neuspešno učitavanje poruka"
     },
     "newConversation": {
       "title": "Započni novi razgovor",
@@ -59,8 +54,7 @@
       "cancel": "Otkaži",
       "startChat": "Započni čet",
       "createGroup": "Napravi grupu",
-      "creating": "Pravljenje...",
-      "_pending_review": {}
+      "creating": "Pravljenje..."
     },
     "createGroup": {
       "title": "Napravi grupu",
@@ -71,16 +65,13 @@
       "groupNameRequired": "Ime grupe je obavezno",
       "groupNameRequiredDesc": "Molimo unesi ime za tvoju grupu.",
       "addMembersRequired": "Dodaj članove",
-      "addMembersRequiredDesc": "Molimo dodaj bar jednog člana u grupu.",
+      "addMembersRequiredDesc": "Dodaj barem jednog člana.",
       "groupExists": "Grupa već postoji",
       "groupExistsDesc": "Grupa sa ovim članovima je nedavno napravljena.",
       "created": "Grupa napravljena",
       "createdDesc": "\"{name}\" je uspešno napravljena.",
       "failed": "Neuspešno pravljenje grupe",
-      "failedDesc": "Molimo pokušaj ponovo.",
-      "_pending_review": {
-        "addMembersRequiredDesc": true
-      }
+      "failedDesc": "Molimo pokušaj ponovo."
     },
     "toast": {
       "success": "Uspeh",
@@ -91,17 +82,13 @@
       "searchFailed": "Pretraga neuspešna",
       "accessDenied": "Pristup odbijen",
       "communityOnly": "Samo korisnici zajednice mogu kreirati globalne razgovore",
-      "pleaseLogin": "Molimo prijavi se da započneš razgovore.",
+      "pleaseLogin": "Prijavi se da započneš razgovore.",
       "groupRecipientsRequired": "Ime grupe i primaoci su obavezni",
-      "singleRecipientRequired": "Izaberi tačno jednog primaoca za direktnu poruku",
+      "singleRecipientRequired": "Izaberi tačno jednog primaoca za direktne poruke.",
       "groupCreated": "Grupa \"{name}\" uspešno napravljena!",
       "groupFailed": "Neuspešno kreiranje grupe",
       "allMarkedRead": "Sve poruke označene kao pročitane",
-      "markAllReadFailed": "Nije bilo moguće označiti sve kao pročitano. Molimo pokušaj ponovo.",
-      "_pending_review": {
-        "pleaseLogin": true,
-        "singleRecipientRequired": true
-      }
+      "markAllReadFailed": "Nije bilo moguće označiti sve kao pročitano. Molimo pokušaj ponovo."
     },
     "createGroupAction": "Kreiraj novu grupu",
     "newConversationAction": "Novi razgovor",
@@ -112,17 +99,14 @@
     "searchConversations": "Pretraži razgovore...",
     "searchPlaceholder": "Pretraži...",
     "noMessages": "Još nema poruka",
-    "noMessagesDesc": "Započni razgovor da bi krenuo/la.",
+    "noMessagesDesc": "Započni razgovor da počneš.",
     "startConversation": "Započni razgovor",
     "emptyState": {
-      "title": "Tvoje prijemno sanduče je za sada tiho.",
+      "title": "Tvoj inboks je još uvek prazan.",
       "globalDescription": "Započni razgovor ili se pridruži zajednici da bi se povezao/la sa drugima.",
       "tenantDescription": "Poveži se sa kolegama i članovima tima u svojoj profesionalnoj mreži.",
       "startConversation": "Započni razgovor",
-      "discoverPeople": "Otkrij ljude",
-      "_pending_review": {
-        "title": true
-      }
+      "discoverPeople": "Otkrij ljude"
     },
     "group": {
       "loading": "Učitavam grupu…",
@@ -133,12 +117,7 @@
       "memberOther": "članovi",
       "officialBadge": "zvanična grupa",
       "empty": "Još nema poruka.",
-      "composerPlaceholder": "Poruka…",
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "noMessagesDesc": true
+      "composerPlaceholder": "Poruka…"
     }
-  },
-  "_pending_review": {}
+  }
 }

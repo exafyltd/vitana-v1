@@ -6,24 +6,18 @@
       "snapshot": "Pregled",
       "services": "Usluge",
       "sales": "Prodaja",
-      "insights": "Uvidi",
-      "_pending_review": {}
+      "insights": "Uvidi"
     },
     "recentActivity": "Nedavna aktivnost",
     "clients": "Klijenti",
     "analytics": "Analitika",
     "searchBusiness": "Pretraži biznis...",
     "noServices": "Još uvek nema usluga",
-    "noServicesDesc": "Kreiraj prvu uslugu da bi počeo da privlačiš klijente.",
+    "noServicesDesc": "Kreiraj svoju prvu uslugu da privučeš klijente.",
     "createService": "Kreiraj uslugu",
     "noClients": "Još uvek nema klijenata",
     "noClientsDesc": "Tvoji klijenti će se pojaviti ovde.",
     "noSales": "Još uvek nema prodaja",
-    "noSalesDesc": "Tvoja istorija prodaja će se pojaviti ovde.",
-    "_pending_review": {
-      "noServicesDesc": true,
-      "noClientsDesc": true
-    }
-  },
-  "_pending_review": {}
+    "noSalesDesc": "Tvoja istorija prodaja će se pojaviti ovde."
+  }
 }

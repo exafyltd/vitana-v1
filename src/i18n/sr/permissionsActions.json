@@ -1,58 +1,39 @@
 {
   "permissionsActions": {
-    "title": "Postavke privatnosti i dozvola",
+    "title": "Akcije privatnosti i dozvola",
     "items": {
       "privacySettings": {
         "title": "Podešavanja privatnosti",
-        "description": "Konfiguriši privatnost podataka i podešavanja deljenja",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Podesi podešavanja privatnosti i deljenja"
       },
       "manageAccess": {
         "title": "Upravljaj pristupom",
-        "description": "Kontroliši ko može da vidi tvoje zdravstvene uspomene",
-        "_pending_review": {}
+        "description": "Kontroliši ko može da vidi tvoje zdravstvene uspomene"
       },
       "securitySettings": {
         "title": "Sigurnosna podešavanja",
-        "description": "Ažuriraj autentifikaciju i sigurnosna podešavanja",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Ažuriraj podešavanja autentifikacije i bezbednosti"
       },
       "apiKeysAccess": {
         "title": "API ključevi i pristup",
-        "description": "Upravljaj integracijama trećih aplikacija i API pristupom",
-        "_pending_review": {}
+        "description": "Upravljaj integracijama trećih aplikacija i API pristupom"
       },
       "dataRights": {
         "title": "Prava na podatke",
-        "description": "Ostvari svoja prava na prenosivost i brisanje podataka",
-        "_pending_review": {}
+        "description": "Ostvari svoja prava na prenosivost i brisanje podataka"
       },
       "auditLogs": {
         "title": "Revizijski dnevnici",
-        "description": "Pregledaj istoriju pristupa i sigurnosni revizijski trag",
-        "_pending_review": {}
+        "description": "Pregledaj istoriju pristupa i sigurnosni revizijski trag"
       },
       "permissionSettings": {
         "title": "Podešavanja dozvola",
-        "description": "Fino podesi dozvole za različite funkcije",
-        "_pending_review": {
-          "title": true
-        }
+        "description": "Fino podesi dozvole za različite funkcije"
       },
       "exportData": {
         "title": "Izvezi podatke",
-        "description": "Bezbedno preuzmi svoje uspomene i zdravstvene podatke",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "title": true
+        "description": "Bezbedno preuzmi svoje uspomene i zdravstvene podatke"
+      }
     }
-  },
-  "_pending_review": {}
+  }
 }

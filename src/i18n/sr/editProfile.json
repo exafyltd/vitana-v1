@@ -2,7 +2,7 @@
   "editProfile": {
     "unsavedChanges": "Imaš nesačuvane izmene. Da li si siguran da želiš da odeš?",
     "notAuthenticated": "Nisi autentifikovan",
-    "notAuthenticatedDesc": "Molimo prijavi se da bi sačuvao svoj profil.",
+    "notAuthenticatedDesc": "Prijavi se da sačuvaš svoj profil.",
     "profileUpdated": "Profil uspešno ažuriran!",
     "profileUpdatedDesc": "Tvoje izmene su sada aktivne. Tvoj VITANA profil izgleda sjajno.",
     "error": "Greška",
@@ -16,12 +16,6 @@
     "title": "Naslov",
     "titlePlaceholder": "Naslov videa",
     "description": "Opis",
-    "descriptionPlaceholder": "Opcioni opis...",
-    "_pending_review": {
-      "notAuthenticatedDesc": true,
-      "profileUpdatedDesc": true,
-      "showcaseHint": true
-    }
-  },
-  "_pending_review": {}
+    "descriptionPlaceholder": "Opcioni opis..."
+  }
 }

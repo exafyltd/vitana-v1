@@ -6,7 +6,7 @@
       "continueJourney": "Prijavi se da nastaviš svoje putovanje.",
       "joinMaxina": "Pridruži se Maxini",
       "joinCommunity": "Pridruži se Maxina zajednici.",
-      "createAccount": "Napravi nalog i započni svoje putovanje.",
+      "createAccount": "Kreiraj svoj nalog i započni svoje putovanje.",
       "signingIn": "Prijavljivanje…",
       "creatingAccount": "Pravljenje naloga…",
       "joiningAs": "Pridružujem se kao:",
@@ -20,39 +20,23 @@
         "community": "Zajednica",
         "patient": "Pacijent",
         "professional": "Profesionalac",
-        "admin": "Administrator",
-        "_pending_review": {}
-      },
-      "_pending_review": {
-        "continueJourney": true,
-        "createAccount": true
+        "admin": "Administrator"
       }
     },
     "alkalma": {
       "joinAlkalma": "Pridruži se AlKalmi",
       "welcomeBack": "Dobrodošao/la nazad u AlKalmu.",
-      "continueJourney": "Prijavi se da nastaviš.",
-      "_pending_review": {
-        "continueJourney": true
-      }
+      "continueJourney": "Prijavi se da nastaviš."
     },
     "earthlinks": {
       "joinEarthlinks": "Pridruži se Earthlinksu",
       "welcomeBack": "Dobrodošao/la nazad u Earthlinks.",
-      "continueJourney": "Prijavi se da nastaviš.",
-      "_pending_review": {
-        "continueJourney": true
-      }
+      "continueJourney": "Prijavi se da nastaviš."
     },
     "community": {
       "joinCommunity": "Pridruži se zajednici",
       "welcomeBack": "Dobrodošao/la nazad.",
-      "continueJourney": "Prijavi se da nastaviš.",
-      "_pending_review": {
-        "continueJourney": true
-      }
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "continueJourney": "Prijavi se da nastaviš."
+    }
+  }
 }

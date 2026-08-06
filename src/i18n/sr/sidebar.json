@@ -41,14 +41,10 @@
     "liveStream": "Uživo i strimovanje",
     "tenantManagement": "Upravljanje zakupcima",
     "systemAdmin": "Sistemski Admin",
-    "clinicalOps": "Kliničke Operacije",
+    "clinicalOps": "Kliničke operacije",
     "monitoring": "Praćenje",
     "logout": "Odjavi se",
     "connectors": "Konektori",
-    "support": "Podrška",
-    "_pending_review": {
-      "clinicalOps": true
-    }
-  },
-  "_pending_review": {}
+    "support": "Podrška"
+  }
 }

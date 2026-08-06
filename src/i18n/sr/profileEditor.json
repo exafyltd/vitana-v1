@@ -1,10 +1,10 @@
 {
   "profileEditor": {
-    "editAbout": "Izmeni o meni",
+    "editAbout": "Uredi O meni",
     "aboutTitle": "O meni",
     "aboutDescription": "Podeli više o sebi. Možeš da kontrolišeš ko vidi svako polje.",
     "bio": "Biografija",
-    "bioPlaceholder": "Podeli svoje wellness putovanje, strasti i ono što te čini jedinstvenim...\n\nPrimeri:\n• 'Wellness entuzijasta strastven za svesni život i izgradnju zajednice 🌱'\n• 'Sertifikovani nutricionista koji pomaže drugima da otkriju svoje najzdravije ja'\n• 'Maratonac, učitelj meditacije i zagovornik uravnoteženog života'",
+    "bioPlaceholder": "Podeli svoje putovanje ka blagostanju, strasti i ono što te čini jedinstvenim...\n\nPrimeri:\n• 'Entuzijasta za blagostanje sa strašću za svesnim životom i izgradnjom zajednice 🌱'\n• 'Sertifikovani nutricionista koji pomaže drugima da otkriju svoje najzdravije ja'\n• 'Maratonac, učitelj meditacije i zagovornik uravnoteženog života'",
     "location": "Lokacija",
     "locationPlaceholder": "npr. San Francisco, CA • London, UK • Remote",
     "links": "Linkovi",
@@ -20,8 +20,7 @@
     "visibility": {
       "public": "Javno",
       "followers": "Pratioci",
-      "private": "Privatno",
-      "_pending_review": {}
+      "private": "Privatno"
     },
     "languageOptions": {
       "english": "Engleski",
@@ -33,14 +32,13 @@
       "russian": "Ruski",
       "arabic": "Arapski",
       "chinese": "Kineski",
-      "japanese": "Japanski",
-      "_pending_review": {}
+      "japanese": "Japanski"
     },
     "cancel": "Otkaži",
     "save": "Sačuvaj izmene",
     "saving": "Čuvanje...",
     "profileUpdated": "Profil ažuriran",
-    "profileUpdatedDesc": "Tvoja informacija o meni je uspešno sačuvana.",
+    "profileUpdatedDesc": "Tvoji podaci su uspešno sačuvani.",
     "saveFailed": "Čuvanje nije uspelo",
     "saveFailedDesc": "Čuvanje profila nije uspelo. Pokušaj ponovo.",
     "autopilot": {
@@ -48,22 +46,21 @@
       "makeShorter": "Skrati",
       "moreProfessional": "Profesionalnije",
       "moreInspirational": "Još inspirativnije",
-      "suggestion": "Autopilot sugestija",
-      "_pending_review": {}
+      "suggestion": "Autopilot sugestija"
     },
     "identity": {
       "editIdentity": "Izmeni identitet",
       "title": "Identitet",
-      "description": "Upravljaj svojim imenom, nadimkom i profilnim slikama.",
+      "description": "Upravljaj svojim prikaznim imenom, korisničkim imenom i profilnim slikama.",
       "profilePicture": "Profilna slika",
       "displayName": "Ime",
-      "displayNamePlaceholder": "Tvoje ime",
+      "displayNamePlaceholder": "Tvoje prikazno ime",
       "handle": "Nadimak",
       "handlePlaceholder": "tvojnadimak",
-      "handleDescription": "Tvoj nadimak će se koristiti u URL-u tvog javnog profila: /u/@{handle}",
+      "handleDescription": "Tvoje korisničko ime se koristi u URL-u tvog javnog profila: /u/@{handle}",
       "personalityDescriptor": "Opis ličnosti",
-      "personalityDescriptorPlaceholder": "npr. Svesni pokretač, Zen ratnik",
-      "personalityDescriptorDescription": "Kratka fraza koja opisuje tvoj wellness stil",
+      "personalityDescriptorPlaceholder": "npr. Svesni Pokretač, Zen Ratnik",
+      "personalityDescriptorDescription": "Kratak opis koji karakteriše tvoj stil blagostanja",
       "upload": "Otpremi",
       "uploading": "Otpremanje...",
       "remove": "Ukloni",
@@ -72,24 +69,15 @@
       "uploadFailed": "Otpremanje neuspešno",
       "uploadFailedDesc": "Otpremanje slike nije uspelo. Pokušaj ponovo.",
       "identityUpdated": "Identitet ažuriran",
-      "identityUpdatedDesc": "Tvoji podaci o identitetu su uspešno sačuvani.",
-      "_pending_review": {
-        "description": true,
-        "displayNamePlaceholder": true,
-        "handleDescription": true,
-        "personalityDescriptor": true,
-        "personalityDescriptorPlaceholder": true,
-        "personalityDescriptorDescription": true,
-        "identityUpdatedDesc": true
-      }
+      "identityUpdatedDesc": "Tvoji podaci o identitetu su uspešno sačuvani."
     },
     "coverLibrary": {
       "title": "Biblioteka naslovnica",
       "tileTitle": "Biblioteka naslovnica",
-      "tileSubtitle": "Otpremi svoje fotografije za Find-a-Match objave",
+      "tileSubtitle": "Otpremi svoje fotografije za objave 'Pronađi par'",
       "drawerTitle": "Naslovne fotografije za tvoje objave",
       "universalSection": "Univerzalna naslovna fotografija",
-      "universalDescription": "Koristi se kada nijedna od tvojih fotografija specifičnih za aktivnost ne odgovara kategoriji objave — umesto AI-generisane slike. Obično tvoj portret.",
+      "universalDescription": "Koristi se kada nijedna od tvojih fotografija specifičnih za aktivnost ne odgovara kategoriji objave — i umesto slike generisane veštačkom inteligencijom. Obično je to tvoj portret.",
       "universalAdd": "Dodaj univerzalnu fotografiju",
       "universalReplace": "Zameni fotografiju",
       "universalRemove": "Ukloni",
@@ -108,17 +96,7 @@
       "universalRemoved": "Univerzalna naslovna fotografija uklonjena",
       "uploadFailed": "Otpremanje nije uspelo",
       "categoryRequired": "Molim te prvo izaberi kategoriju za ovu fotografiju.",
-      "saveError": "Nije moguće sačuvati — pokušaj ponovo.",
-      "_pending_review": {
-        "tileSubtitle": true,
-        "universalDescription": true
-      }
-    },
-    "_pending_review": {
-      "editAbout": true,
-      "bioPlaceholder": true,
-      "profileUpdatedDesc": true
+      "saveError": "Nije moguće sačuvati — pokušaj ponovo."
     }
-  },
-  "_pending_review": {}
+  }
 }

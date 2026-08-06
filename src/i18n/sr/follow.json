@@ -1,10 +1,6 @@
 {
   "follow": {
     "noFollowers": "Još nemaš pratilaca",
-    "noFollowing": "Još nikoga ne pratiš",
-    "_pending_review": {
-      "noFollowing": true
-    }
-  },
-  "_pending_review": {}
+    "noFollowing": "Još uvek nikoga ne pratiš"
+  }
 }

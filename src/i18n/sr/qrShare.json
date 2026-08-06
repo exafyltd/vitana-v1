@@ -1,7 +1,7 @@
 {
   "qrShare": {
     "title": "QR kod",
-    "scanToView": "Skeniraj da vidiš profil",
+    "scanToView": "Skeniraj da vidiš svoj profil.",
     "shareProfile": "Podeli profil",
     "copyLink": "Kopiraj link",
     "download": "Preuzmi",
@@ -13,10 +13,6 @@
     "appName": "MAXINA",
     "appTagline": "Zajednica dugovečnosti",
     "inviteShareTitle": "MAXINA – Zajednica dugovečnosti",
-    "inviteShareText": "Preuzmi MAXINA i započni svoje putovanje ka dugovečnosti:",
-    "_pending_review": {
-      "scanToView": true
-    }
-  },
-  "_pending_review": {}
+    "inviteShareText": "Preuzmi MAXINA i započni svoje putovanje ka dugovečnosti:"
+  }
 }

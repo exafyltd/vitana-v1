@@ -34,18 +34,13 @@
     "campaigns": "Kampanje",
     "distribution": "Distribucija",
     "dataConsent": "Podaci i saglasnost",
-    "timeline": "Vremenska linija",
+    "timeline": "Istorija",
     "diary": "Dnevnik",
     "recall": "Priseti se i pretraži",
     "permissions": "Dozvole",
     "preferences": "Podešavanja",
     "privacy": "Privatnost",
     "connectedApps": "Povezane aplikacije i integracije",
-    "support": "Podrška",
-    "_pending_review": {
-      "timeline": true,
-      "preferences": true
-    }
-  },
-  "_pending_review": {}
+    "support": "Podrška"
+  }
 }

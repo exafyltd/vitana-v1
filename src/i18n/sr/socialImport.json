@@ -1,6 +1,6 @@
 {
   "socialImport": {
-    "dialogTitle": "Uvezi {platform} profil",
+    "dialogTitle": "{platform} Uvezi Profil",
     "dialogDescription": "Poveži svoj {platform} profil da obogatiš svoj Vitana identitet AI uvidima.",
     "profileUrl": "URL {platform} profila",
     "bioLabel": "Bio / O meni sekcija",
@@ -15,30 +15,17 @@
     "importFailed": "Uvoz neuspešan",
     "connect": "Poveži:",
     "socialPresence": "Društveno prisustvo",
-    "verifiedConnections": "Verifikovane veze kroz tvoj digitalni život",
+    "verifiedConnections": "Verifikovane veze u tvom digitalnom životu",
     "tapToVisit": "Dodirni da posetiš profil",
     "noAccountsConnected": "Nema povezanih društvenih naloga",
     "connectAccounts": "Poveži naloge",
     "platformHelp": {
-      "linkedin": "Koristićemo AI da izvučemo tvoj naslov, sažetak i profesionalne veštine.",
-      "instagram": "Analiziraćemo tvoj bio da razumemo tvoja interesovanja i životne teme.",
-      "tiktok": "Izvlačimo teme sadržaja i kreativnu ličnost iz tvog bio-a.",
-      "youtube": "Identifikovaćemo tvoje kategorije sadržaja i oblasti stručnosti iz tvog opisa.",
-      "facebook": "Izvlačimo tvoja interesovanja i učešće u zajednici iz tvog bio-a.",
-      "x": "Analiziraćemo tvoj bio da razumemo teme koje te zanimaju i stil komunikacije.",
-      "_pending_review": {
-        "linkedin": true,
-        "instagram": true,
-        "tiktok": true,
-        "youtube": true,
-        "facebook": true,
-        "x": true
-      }
-    },
-    "_pending_review": {
-      "dialogTitle": true,
-      "verifiedConnections": true
+      "linkedin": "Koristimo AI da izvučemo tvoj naslov, sažetak i profesionalne veštine.",
+      "instagram": "Analiziramo tvoju biografiju da bismo razumeli tvoja interesovanja i teme životnog stila.",
+      "tiktok": "Izvlačimo tvoje teme sadržaja i kreativnu ličnost iz tvoje biografije.",
+      "youtube": "Identifikujemo tvoje kategorije sadržaja i oblasti stručnosti iz tvog opisa.",
+      "facebook": "Izvlačimo tvoja interesovanja i angažovanje u zajednici iz tvoje biografije.",
+      "x": "Analiziramo tvoju biografiju da bismo razumeli tvoje oblasti i stil komunikacije."
     }
-  },
-  "_pending_review": {}
+  }
 }

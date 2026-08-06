@@ -2,7 +2,7 @@
   "tasks": {
     "noOpenTasks": "Nema otvorenih zadataka",
     "confirmCancelTask": "Da li si siguran da želiš da otkažeš ovaj zadatak?",
-    "postponeComingSoon": "Funkcija odlaganja uskoro stiže",
+    "postponeComingSoon": "Funkcija za pomeranje termina uskoro stiže",
     "addNotePrompt": "Dodaj belešku ovom zadatku:",
     "noteAdded": "Beleška dodata: {note}",
     "navigateTo": "Idi na: {url}",
@@ -14,11 +14,6 @@
     "postpone": "Odloži",
     "addNote": "Dodaj belešku",
     "openContext": "Otvori kontekst",
-    "assignee": "Zaduženi",
-    "_pending_review": {
-      "postponeComingSoon": true,
-      "navigateTo": true
-    }
-  },
-  "_pending_review": {}
+    "assignee": "Zaduženi"
+  }
 }

@@ -1,7 +1,7 @@
 {
   "profilePosts": {
     "createPost": "Kreiraj objavu",
-    "placeholder": "Šta ti je na umu?",
+    "placeholder": "Šta ti je sada na umu?",
     "shareCta": "Podeli nešto sa zajednicom",
     "post": "Objavi",
     "posted": "Objavljeno!",
@@ -14,10 +14,6 @@
     "background": "Pozadina",
     "noBackground": "Nema pozadine",
     "searchingPeople": "Tražim ljude …",
-    "noPeopleFound": "Niko nije pronađen.",
-    "_pending_review": {
-      "placeholder": true
-    }
-  },
-  "_pending_review": {}
+    "noPeopleFound": "Niko nije pronađen."
+  }
 }

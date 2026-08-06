@@ -1,18 +1,17 @@
 {
   "settings": {
     "title": "Podešavanja",
-    "description": "Upravljaj podešavanjima naloga, privatnošću i preferencijama",
+    "description": "Upravljaj podešavanjima naloga, privatnošću i svojim preferencama",
     "searchPlaceholder": "Pretraži podešavanja, kontrole privatnosti, integracije...",
     "quickSetup": "Brzo podešavanje",
     "tabs": {
       "overview": "Pregled",
       "notifications": "Obaveštenja",
-      "quickActions": "Brze akcije",
-      "_pending_review": {}
+      "quickActions": "Brze akcije"
     },
     "categories": {
       "privacy": "Privatnost",
-      "privacyDesc": "Kontroliši ko vidi tvoj profil i aktivnosti",
+      "privacyDesc": "Kontroliši ko vidi tvoj profil i tvoje aktivnosti",
       "notifications": "Obaveštenja",
       "notificationsDesc": "Upravljaj podešavanjima obaveštenja",
       "preferences": "Preferencije",
@@ -24,11 +23,7 @@
       "billing": "Naplata",
       "billingDesc": "Informacije o pretplati i plaćanju",
       "support": "Podrška",
-      "supportDesc": "Pomoć, česta pitanja i opcije kontakta",
-      "_pending_review": {
-        "privacyDesc": true,
-        "notificationsDesc": true
-      }
+      "supportDesc": "Pomoć, česta pitanja i opcije kontakta"
     },
     "status": {
       "privacyStatus": "Status privatnosti",
@@ -38,14 +33,9 @@
       "notificationsActive": "Obaveštenja aktivna",
       "connectedAppsCount": "Povezane aplikacije",
       "types": "tipovi",
-      "apps": "aplikacije",
-      "_pending_review": {}
+      "apps": "aplikacije"
     },
     "vitanaOpenedSection": "Vitana je otvorila {section}",
-    "vitanaUpdated": "Vitana je ažurirala tvoje podešavanje",
-    "_pending_review": {
-      "description": true
-    }
-  },
-  "_pending_review": {}
+    "vitanaUpdated": "Vitana je ažurirala tvoje podešavanje"
+  }
 }

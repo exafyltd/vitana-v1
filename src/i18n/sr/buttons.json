@@ -10,7 +10,7 @@
     "submit": "Pošalji",
     "next": "Sledeće",
     "back": "Nazad",
-    "previous": "Prethodno",
+    "previous": "Nazad",
     "retry": "Pokušaj ponovo",
     "refresh": "Osveži",
     "viewAll": "Prikaži sve",
@@ -54,10 +54,6 @@
     "no": "Ne",
     "ok": "U redu",
     "generate": "Generiši",
-    "generating": "Generisanje...",
-    "_pending_review": {
-      "previous": true
-    }
-  },
-  "_pending_review": {}
+    "generating": "Generisanje..."
+  }
 }

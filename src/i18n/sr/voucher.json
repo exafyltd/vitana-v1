@@ -2,12 +2,9 @@
   "voucher": {
     "modal": {
       "title": "Pokloni Maxina Vaučer",
-      "subtitle": "Pokloni dobrobit i povezanost sa zajednicom",
+      "subtitle": "Pokloni Velnes i povezanost zajednice",
       "buyVoucher": "Kupi vaučer",
-      "openingCheckout": "Otvaranje sigurnog checkout-a...",
-      "_pending_review": {
-        "subtitle": true
-      }
+      "openingCheckout": "Otvaranje sigurnog checkout-a..."
     },
     "tiers": {
       "test": {
@@ -16,8 +13,7 @@
           "Samo za testiranje plaćanja",
           "Nije pravi vaučer",
           "Za razvojna testiranja"
-        ],
-        "_pending_review": {}
+        ]
       },
       "experience": {
         "name": "Iskustvo",
@@ -26,8 +22,7 @@
           "Personalizovano savetovanje o dobrobiti",
           "Uključena 30-dnevna proba Vitana+",
           "Prelepo dizajniran e-vaučer"
-        ],
-        "_pending_review": {}
+        ]
       },
       "exclusive": {
         "name": "Ekskluzivno",
@@ -36,10 +31,8 @@
           "Individualni koučing sa stručnjakom",
           "90-dnevna pretplata na Vitana+",
           "Prioritetna rezervacija + VIP pogodnosti"
-        ],
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        ]
+      }
     },
     "success": {
       "title": "Vaučer kupljen!",
@@ -47,8 +40,7 @@
       "download": "Preuzmi vaučer",
       "sendEmail": "Pošalji primaocu e-poštom",
       "viewOrders": "Pogledaj u porudžbinama",
-      "done": "Gotovo",
-      "_pending_review": {}
+      "done": "Gotovo"
     },
     "email": {
       "title": "Pošalji vaučer e-poštom",
@@ -58,8 +50,7 @@
       "personalMessage": "Lična poruka (opciono)",
       "messagePlaceholder": "Srećan rođendan! Uživaj u ovom wellness poklonu...",
       "back": "Nazad",
-      "send": "Pošalji vaučer",
-      "_pending_review": {}
+      "send": "Pošalji vaučer"
     },
     "preview": {
       "title": "Tvoj vaučer",
@@ -73,35 +64,24 @@
       "copyLink": "Kopiraj link",
       "share": "Sačuvaj / Podeli",
       "shareHint": "Sačuvaj u Fajlove, Drive ili pošalji nekome",
-      "downloadHint": "Ako se preuzimanje otvori prazno, tapni Otvori u pregledaču",
-      "_pending_review": {
-        "downloadHint": true
-      }
+      "downloadHint": "Ako se preuzimanje ne prikaže, dodirni Otvori u pregledaču."
     },
     "toast": {
       "downloadStarted": "Preuzimanje započeto!",
       "downloadFailed": "Preuzimanje nije uspelo",
       "linkCopied": "Link kopiran!",
-      "linkCopiedDesc": "Nalepi u pregledač da preuzmeš.",
+      "linkCopiedDesc": "Nalepi u pregledač za preuzimanje.",
       "voucherSent": "Vaučer poslat na {email}!",
       "voucherShared": "Vaučer uspešno podeljen!",
-      "checkoutFailed": "Pokretanje checkout-a nije uspelo. Pokušaj ponovo.",
+      "checkoutFailed": "Nije uspelo pokretanje naplate. Pokušaj ponovo.",
       "generatingVoucher": "Generišem vaučer...",
       "failedToLoadVoucher": "Neuspešno učitavanje podataka o vaučeru",
       "downloadFailedCopyLink": "Preuzimanje nije uspelo. Pokušaj da kopiraš link.",
-      "useTicketView": "Koristi prikaz karte da odštampaš ili sačuvaš svoju kartu",
+      "useTicketView": "Koristi prikaz karte za štampanje ili čuvanje.",
       "pdfNotAvailable": "PDF preuzimanje nije dostupno za ovaj tip porudžbine",
-      "enterRecipientEmail": "Unesi e-mail primaoca",
+      "enterRecipientEmail": "Unesi imejl primaoca.",
       "emailOnlyForVouchers": "Slanje e-maila je dostupno samo za vaučere",
-      "sendingVoucherEmail": "Šaljem e-mail sa vaučerom...",
-      "_pending_review": {
-        "linkCopiedDesc": true,
-        "checkoutFailed": true,
-        "useTicketView": true,
-        "enterRecipientEmail": true
-      }
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "sendingVoucherEmail": "Šaljem e-mail sa vaučerom..."
+    }
+  }
 }

@@ -17,50 +17,37 @@
       "career": "karijera",
       "learning": "učenje",
       "spiritual": "duhovnost",
-      "longevity": "dugovečnost",
-      "_pending_review": {}
+      "longevity": "dugovečnost"
     },
     "goals": {
       "wealth": {
         "title": "Izgradi finansijsku slobodu",
-        "description": "Postigni finansijsku nezavisnost i bogatstvo",
-        "_pending_review": {}
+        "description": "Postigni finansijsku nezavisnost i bogatstvo"
       },
       "relationship": {
         "title": "Pronađi životnog partnera",
-        "description": "Izgradi smislene romantične veze",
-        "_pending_review": {}
+        "description": "Izgradi smislene romantične veze"
       },
       "health": {
-        "title": "Transformiši zdravlje",
-        "description": "Postigni optimalno fizičko i mentalno blagostanje",
-        "_pending_review": {
-          "title": true
-        }
+        "title": "Poboljšaj zdravlje",
+        "description": "Postigni optimalno fizičko i mentalno blagostanje"
       },
       "career": {
         "title": "Unapredi karijeru",
-        "description": "Izgradi ispunjenu i uspešnu karijeru",
-        "_pending_review": {}
+        "description": "Izgradi ispunjenu i uspešnu karijeru"
       },
       "learning": {
         "title": "Savladaj nove veštine",
-        "description": "Uči i rasti kroz znanje",
-        "_pending_review": {}
+        "description": "Uči i rasti kroz znanje"
       },
       "spiritual": {
         "title": "Duhovni život",
-        "description": "Produbi svrhu, prisutnost i unutrašnji mir",
-        "_pending_review": {}
+        "description": "Produbi svrhu, prisutnost i unutrašnji mir"
       },
       "longevity": {
         "title": "Poboljšaj kvalitet života i produži životni vek",
-        "description": "Fokus na zdravstveni vek, energiju i dugovečnost — misija Vitanalanda",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "description": "Fokus na zdravstveni vek, energiju i dugovečnost — misija Vitanalanda"
+      }
+    }
+  }
 }

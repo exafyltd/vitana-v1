@@ -2,7 +2,7 @@
   "eventCta": {
     "buyTicket": "Kupi kartu",
     "buyTicketWithPrice": "Kupi kartu · {price}",
-    "getFreeTicket": "Dobij besplatnu kartu",
+    "getFreeTicket": "Uzmi svoju besplatnu kartu",
     "reserveSpot": "Rezerviši mesto",
     "reserveMySpot": "Rezerviši moje mesto",
     "viewTicket": "Pogledaj kartu",
@@ -19,10 +19,6 @@
     "processing": "Obrađuje se...",
     "joining": "Povezivanje...",
     "getTickets": "Uzmi karte",
-    "promoteEvent": "Promoviši događaj",
-    "_pending_review": {
-      "getFreeTicket": true
-    }
-  },
-  "_pending_review": {}
+    "promoteEvent": "Promoviši događaj"
+  }
 }

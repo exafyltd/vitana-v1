@@ -1,17 +1,13 @@
 {
   "diary": {
     "title": "Dnevnik",
-    "description": "Prati svoje wellness putovanje i pomozi nam da se poboljšamo",
+    "description": "Prati svoje wellness putovanje i pomozi nam da budemo bolji",
     "healthTab": "Zdravstveni dnevnik",
     "bugTab": "Prijave grešaka",
     "text": "Tekst",
     "photo": "Fotografija",
     "textEntry": "✍️ Unos teksta",
     "photoEntry": "📸 Unos fotografije",
-    "searchPlaceholder": "Pretraži dnevnik...",
-    "_pending_review": {
-      "description": true
-    }
-  },
-  "_pending_review": {}
+    "searchPlaceholder": "Pretraži dnevnik..."
+  }
 }
