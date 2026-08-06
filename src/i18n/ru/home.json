@@ -7,9 +7,6 @@
     "eventsAndMeetups": "События и встречи",
     "communityNews": "Новости сообщества",
     "inspiration": "Вдохновение",
-    "dailyMatches": "Ежедневные совпадения",
-    "_pending_review": {
-      "mediaContent": true
-    }
+    "dailyMatches": "Ежедневные совпадения"
   }
 }

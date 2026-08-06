@@ -34,17 +34,13 @@
     "campaigns": "Кампании",
     "distribution": "Распределение",
     "dataConsent": "Данные и Согласие",
-    "timeline": "Хронология",
+    "timeline": "История",
     "diary": "Ежедневный Дневник",
     "recall": "Воспоминания и Поиск",
     "permissions": "Разрешения",
     "preferences": "Настройки",
     "privacy": "Конфиденциальность",
     "connectedApps": "Подключенные Приложения и Интеграции",
-    "support": "Поддержка",
-    "_pending_review": {
-      "timeline": true,
-      "preferences": true
-    }
+    "support": "Поддержка"
   }
 }

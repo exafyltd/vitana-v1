@@ -5,13 +5,17 @@
       "pending": "Ожидающие",
       "approved": "Одобрено",
       "flagged": "Помечено",
-      "rejected": "Отклонено"
+      "rejected": "Отклонено",
+      "_pending_review": {}
     },
     "rooms": {
       "active": "Активные комнаты",
       "scheduled": "Запланировано",
       "analytics": "Аналитика",
-      "moderation": "Модерация"
-    }
-  }
+      "moderation": "Модерация",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,59 +1,30 @@
 {
-  "_pending_review": {},
   "wallet": {
-    "_pending_review": {
-      "title": true,
-      "description": true,
-      "usdBalance": true,
-      "creditsBalance": true,
-      "creditsLabel": true,
-      "available": true,
-      "staked": true,
-      "searchWallet": true,
-      "noActivity": true,
-      "noActivityDesc": true,
-      "displayCurrency": true
-    },
-    "title": "Wallet",
-    "description": "Your balance, credits, and rewards",
-    "usdBalance": "EUR / USD Balance",
-    "creditsBalance": "VTNA Credits Balance",
-    "creditsLabel": "VTNA Credits",
-    "available": "Available",
-    "staked": "Staked",
-    "searchWallet": "Search wallet...",
+    "title": "Кошелёк",
+    "description": "Твой баланс, кредиты и награды",
+    "usdBalance": "Баланс EUR / USD",
+    "creditsBalance": "Баланс кредитов VTNA",
+    "creditsLabel": "Кредиты VTNA",
+    "available": "Доступно",
+    "staked": "В стейкинге",
+    "searchWallet": "Поиск по кошельку...",
     "tabs": {
-      "_pending_review": {
-        "balances": true,
-        "activity": true,
-        "actions": true
-      },
-      "balances": "Balances",
-      "activity": "Activity",
-      "actions": "Actions"
+      "balances": "Балансы",
+      "activity": "Активность",
+      "actions": "Действия"
     },
     "filters": {
-      "_pending_review": {
-        "commissions": true,
-        "transfers": true,
-        "exchanges": true,
-        "rewards": true,
-        "purchases": true,
-        "pending": true,
-        "withdrawals": true,
-        "stakes": true
-      },
-      "commissions": "Sell & Earn Commissions",
-      "transfers": "Transfers",
-      "exchanges": "Exchanges",
-      "rewards": "Rewards",
-      "purchases": "Purchases",
-      "pending": "Pending Payouts",
-      "withdrawals": "Withdrawals",
-      "stakes": "Staking"
+      "commissions": "Продавай и зарабатывай комиссии",
+      "transfers": "Переводы",
+      "exchanges": "Обмены",
+      "rewards": "Награды",
+      "purchases": "Покупки",
+      "pending": "Ожидаемые выплаты",
+      "withdrawals": "Выводы",
+      "stakes": "Стейкинг"
     },
-    "noActivity": "No activity yet",
-    "noActivityDesc": "Your transactions will appear here.",
-    "displayCurrency": "Display currency"
+    "noActivity": "Пока нет активности",
+    "noActivityDesc": "Твои транзакции появятся здесь.",
+    "displayCurrency": "Валюта отображения"
   }
 }

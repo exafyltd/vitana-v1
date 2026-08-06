@@ -3,10 +3,10 @@
     "title": "Календарь",
     "nextEvents": "Следующие {count} события",
     "conflicts": "{count} конфликтов",
-    "upcomingSchedule": "Твое предстоящее расписание и события",
+    "upcomingSchedule": "Твоё предстоящее расписание и записи",
     "addNewEvent": "Добавить новое событие",
     "noUpcomingEvents": "Нет предстоящих событий",
-    "createFirstEvent": "Создай свое первое событие",
+    "createFirstEvent": "Создай свою первую запись",
     "aiSuggestions": "ИИ-Предложения",
     "findBetterSlot": "Найти лучшее время",
     "prepareBrief": "Подготовь краткое описание",
@@ -16,11 +16,6 @@
     "quickAdd": "Быстрое добавление",
     "eventFormComingSoon": "Форма создания события скоро появится",
     "externalSync": "Внешняя синхронизация",
-    "connectingCalendars": "Подключение к внешним календарям...",
-    "_pending_review": {
-      "upcomingSchedule": true,
-      "createFirstEvent": true,
-      "connectingCalendars": true
-    }
+    "connectingCalendars": "Подключись к внешним календарям..."
   }
 }

@@ -1,20 +1,20 @@
 {
   "discover": {
-    "title": "Открой свой Рынок Долголетия",
+    "title": "Открой свой маркетплейс для долголетия",
     "mobileTitle": "Открой",
     "mobileDescription": "Исследуй впечатления, людей и благополучие",
-    "description": "Найди врачей, велнес-услуги и сообщества, идеально подходящие для твоего пути к здоровому старению.",
+    "description": "Найди врачей, велнес-услуги и группы по интересам, которые идеально подходят твоему пути к здоровому старению.",
     "searchPlaceholder": "Что ты ищешь? (напр., занятия йогой, врач по долголетию, встречи)",
     "doctorsCoaches": "Врачи и Коучи",
     "doctorsCoachesDesc": "Найди специалистов по долголетию, коучей по здоровью и медицинских экспертов",
     "wellnessServices": "Велнес-услуги",
     "wellnessServicesDesc": "Открой йогу, массаж, танцы, терапию и услуги по восстановлению",
     "communityGroups": "Сообщества",
-    "communityGroupsDesc": "Присоединяйся к встречам, группам и общайся с единомышленниками",
+    "communityGroupsDesc": "Присоединяйся к встречам и группам и общайся с единомышленниками.",
     "explore": "Исследуй",
-    "aiPicksForYou": "Выбор ИИ для тебя",
+    "aiPicksForYou": "Рекомендации ИИ для тебя",
     "vitanaPicksLabel": "Vitana Выбор",
-    "recommendedForYou": "Vitana рекомендует",
+    "recommendedForYou": "Рекомендовано для тебя",
     "moreToExplore": "Больше для исследования",
     "seeAll": "Смотреть все",
     "suggestedForYou": "Рекомендовано для тебя",
@@ -92,22 +92,16 @@
       "viewSavedItems": "Посмотреть сохраненное"
     },
     "aiPicks": {
-      "title": "Подборки ИИ для тебя",
+      "title": "Рекомендации ИИ для тебя",
       "description": "Персонализированные рекомендации на основе твоего Vitana Index, биомаркеров и целей по здоровью",
-      "backToDiscover": "Назад к открытиям",
+      "backToDiscover": "Назад к открытию",
       "loading": "Загрузка рекомендаций ИИ...",
       "unavailable": "Подборки ИИ недоступны",
-      "unavailableDesc": "Мы не смогли загрузить твои персонализированные рекомендации прямо сейчас",
+      "unavailableDesc": "Мы не смогли загрузить твои персональные рекомендации сейчас.",
       "recommendationsFound": "{count} рекомендаций найдено",
       "noRecommendations": "Рекомендаций не найдено",
-      "noRecommendationsDesc": "Попробуй выбрать другой фильтр, чтобы увидеть больше рекомендаций",
-      "viewAllPicks": "Посмотреть все подборки",
-      "_pending_review": {
-        "title": true,
-        "backToDiscover": true,
-        "unavailableDesc": true,
-        "noRecommendationsDesc": true
-      }
+      "noRecommendationsDesc": "Выбери другой фильтр, чтобы увидеть больше рекомендаций.",
+      "viewAllPicks": "Посмотреть все подборки"
     },
     "filters": {
       "all": "Все",
@@ -125,15 +119,6 @@
       "bannerSubtitle": "Просматривай свободно — войди (это бесплатно), чтобы покупать и начать получать бонусы.",
       "bannerCta": "Войти",
       "signIn": "Войти"
-    },
-    "_pending_review": {
-      "title": true,
-      "description": true,
-      "communityGroupsDesc": true,
-      "aiPicksForYou": true,
-      "recommendedForYou": true,
-      "suggestedForYou": true,
-      "noResultsDesc": true
     }
   }
 }

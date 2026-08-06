@@ -1,26 +1,14 @@
 {
-  "_pending_review": {},
   "voucher": {
-    "_pending_review": {},
     "modal": {
-      "_pending_review": {
-        "title": true,
-        "subtitle": true,
-        "buyVoucher": true,
-        "openingCheckout": true
-      },
-      "title": "Gift a Maxina Voucher",
-      "subtitle": "Give the gift of wellness and community connection",
-      "buyVoucher": "Buy Voucher",
-      "openingCheckout": "Opening secure checkout..."
+      "title": "Подари ваучер Maxina",
+      "subtitle": "Подари благополучие и связь с сообществом",
+      "buyVoucher": "Купи ваучер",
+      "openingCheckout": "Открываем безопасную оплату..."
     },
     "tiers": {
-      "_pending_review": {},
       "test": {
-        "_pending_review": {
-          "name": true
-        },
-        "name": "Test",
+        "name": "Тест",
         "benefits": [
           "Только для теста оплаты",
           "Это не настоящий сертификат",
@@ -28,10 +16,7 @@
         ]
       },
       "experience": {
-        "_pending_review": {
-          "name": true
-        },
-        "name": "Experience",
+        "name": "Опыт",
         "benefits": [
           "Доступ на 1 премиум-мероприятие сообщества",
           "Персональная консультация по здоровью",
@@ -40,10 +25,7 @@
         ]
       },
       "exclusive": {
-        "_pending_review": {
-          "name": true
-        },
-        "name": "Exclusive",
+        "name": "Эксклюзив",
         "benefits": [
           "3 премиум-мероприятия сообщества",
           "Индивидуальная сессия с экспертом-коучем",
@@ -53,102 +35,53 @@
       }
     },
     "success": {
-      "_pending_review": {
-        "title": true,
-        "ready": true,
-        "download": true,
-        "sendEmail": true,
-        "viewOrders": true,
-        "done": true
-      },
-      "title": "Voucher Purchased!",
-      "ready": "Your {tier} voucher is ready",
-      "download": "Download Voucher",
-      "sendEmail": "Send to Recipient by Email",
-      "viewOrders": "View in Orders",
-      "done": "Done"
+      "title": "Ваучер куплен!",
+      "ready": "Твой ваучер {tier} готов",
+      "download": "Скачай ваучер",
+      "sendEmail": "Отправь получателю по электронной почте",
+      "viewOrders": "Посмотри в заказах",
+      "done": "Готово"
     },
     "email": {
-      "_pending_review": {
-        "title": true,
-        "subtitle": true,
-        "recipientEmail": true,
-        "recipientName": true,
-        "personalMessage": true,
-        "messagePlaceholder": true,
-        "back": true,
-        "send": true
-      },
-      "title": "Send Voucher by Email",
-      "subtitle": "We'll send a beautifully designed email with the voucher",
-      "recipientEmail": "Recipient Email *",
-      "recipientName": "Recipient Name (optional)",
-      "personalMessage": "Personal Message (optional)",
-      "messagePlaceholder": "Happy Birthday! Enjoy this wellness treat...",
-      "back": "Back",
-      "send": "Send Voucher"
+      "title": "Отправь ваучер по электронной почте",
+      "subtitle": "Мы отправим красиво оформленное письмо с ваучером",
+      "recipientEmail": "Электронная почта получателя *",
+      "recipientName": "Имя получателя (необязательно)",
+      "personalMessage": "Личное сообщение (необязательно)",
+      "messagePlaceholder": "С Днем Рождения! Наслаждайся этим подарком для благополучия...",
+      "back": "Назад",
+      "send": "Отправить ваучер"
     },
     "preview": {
-      "_pending_review": {
-        "title": true,
-        "giftVoucher": true,
-        "validUntil": true,
-        "voucherCode": true,
-        "whatsIncluded": true,
-        "downloadPdf": true,
-        "downloadDirect": true,
-        "openInBrowser": true,
-        "copyLink": true,
-        "share": true,
-        "shareHint": true,
-        "downloadHint": true
-      },
-      "title": "Your Voucher",
-      "giftVoucher": "Gift Voucher",
-      "validUntil": "Valid until {date}",
-      "voucherCode": "Voucher Code",
-      "whatsIncluded": "What's Included",
-      "downloadPdf": "Download PDF",
-      "downloadDirect": "Download Direct",
-      "openInBrowser": "Open in Browser",
-      "copyLink": "Copy Link",
-      "share": "Save / Share",
-      "shareHint": "Save to Files, Drive, or send to someone",
-      "downloadHint": "If download opens blank, tap Open in Browser"
+      "title": "Твой ваучер",
+      "giftVoucher": "Подарочный ваучер",
+      "validUntil": "Действителен до {date}",
+      "voucherCode": "Код ваучера",
+      "whatsIncluded": "Что включено",
+      "downloadPdf": "Скачать PDF",
+      "downloadDirect": "Скачать напрямую",
+      "openInBrowser": "Открыть в браузере",
+      "copyLink": "Скопировать ссылку",
+      "share": "Сохранить / Поделиться",
+      "shareHint": "Сохранить в Файлы, Диск или отправить кому-то",
+      "downloadHint": "Если загрузка открывается пустой, нажми Открыть в браузере"
     },
     "toast": {
-      "_pending_review": {
-        "downloadStarted": true,
-        "downloadFailed": true,
-        "linkCopied": true,
-        "linkCopiedDesc": true,
-        "voucherSent": true,
-        "voucherShared": true,
-        "checkoutFailed": true,
-        "generatingVoucher": true,
-        "failedToLoadVoucher": true,
-        "downloadFailedCopyLink": true,
-        "useTicketView": true,
-        "pdfNotAvailable": true,
-        "enterRecipientEmail": true,
-        "emailOnlyForVouchers": true,
-        "sendingVoucherEmail": true
-      },
-      "downloadStarted": "Download started!",
-      "downloadFailed": "Download failed",
-      "linkCopied": "Link copied!",
-      "linkCopiedDesc": "Paste in browser to download.",
-      "voucherSent": "Voucher sent to {email}!",
-      "voucherShared": "Voucher shared successfully!",
-      "checkoutFailed": "Failed to start checkout. Please try again.",
-      "generatingVoucher": "Generating voucher...",
-      "failedToLoadVoucher": "Failed to load voucher data",
-      "downloadFailedCopyLink": "Download failed. Try copying the link.",
-      "useTicketView": "Use the ticket view to print or save your ticket",
-      "pdfNotAvailable": "PDF download not available for this order type",
-      "enterRecipientEmail": "Please enter recipient email",
-      "emailOnlyForVouchers": "Email sending only available for vouchers",
-      "sendingVoucherEmail": "Sending voucher email..."
+      "downloadStarted": "Загрузка началась!",
+      "downloadFailed": "Загрузка не удалась",
+      "linkCopied": "Ссылка скопирована!",
+      "linkCopiedDesc": "Вставь в браузер, чтобы скачать.",
+      "voucherSent": "Ваучер отправлен на {email}!",
+      "voucherShared": "Ваучер успешно отправлен!",
+      "checkoutFailed": "Не удалось начать оформление заказа. Пожалуйста, попробуй еще раз.",
+      "generatingVoucher": "Генерируем ваучер...",
+      "failedToLoadVoucher": "Не удалось загрузить данные ваучера",
+      "downloadFailedCopyLink": "Загрузка не удалась. Попробуй скопировать ссылку.",
+      "useTicketView": "Используй просмотр билета, чтобы распечатать или сохранить.",
+      "pdfNotAvailable": "Загрузка PDF недоступна для этого типа заказа",
+      "enterRecipientEmail": "Пожалуйста, введи email получателя.",
+      "emailOnlyForVouchers": "Отправка email доступна только для ваучеров",
+      "sendingVoucherEmail": "Отправляем email с ваучером..."
     }
   }
 }

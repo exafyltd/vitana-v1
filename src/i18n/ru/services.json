@@ -6,14 +6,16 @@
       "preventive": "Профилактические скрининги",
       "labTests": "Лабораторные анализы",
       "coaching": "Коучинг и персональные тренировки",
-      "groupPrograms": "Групповые программы и челенджи"
+      "groupPrograms": "Групповые программы и челенджи",
+      "_pending_review": {}
     },
     "actions": {
       "book": "Записаться",
       "addToPlan": "Добавить в план",
       "askAI": "Спроси ИИ",
       "joinRoom": "Присоединиться к комнате",
-      "setReminder": "Установить напоминание"
+      "setReminder": "Установить напоминание",
+      "_pending_review": {}
     },
     "details": {
       "duration": "Длительность",
@@ -24,7 +26,10 @@
       "healthBenefits": "Польза для здоровья",
       "availableProviders": "Доступные специалисты",
       "requirements": "Требования и подготовка",
-      "tags": "Теги"
-    }
-  }
+      "tags": "Теги",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

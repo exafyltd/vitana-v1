@@ -2,7 +2,7 @@
   "glassMode": {
     "shareWithAI": "Поделиться выбором с ИИ?",
     "screenSharingComingSoon": "🖥️ Демонстрация экрана скоро",
-    "screenSharingDesc": "Поделись своим экраном с VITANA для контекстной помощи.",
+    "screenSharingDesc": "Поделись своим экраном с VITANA для контекстной поддержки.",
     "screenSharingStopped": "Демонстрация экрана остановлена",
     "glassModeDisabled": "Режим стекла отключен",
     "cameraModeComingSoon": "📹 Режим камеры скоро",
@@ -12,12 +12,8 @@
     "autopilotActivated": "Автопилот активирован",
     "runningAutopilot": "Запущен режим автопилота",
     "textInputReady": "Ввод текста готов",
-    "typeMessage": "Теперь ты можешь ввести свое сообщение",
+    "typeMessage": "Теперь ты можешь ввести свое сообщение.",
     "actionFailed": "Действие не удалось",
-    "couldNotExecute": "Не удалось выполнить {action}",
-    "_pending_review": {
-      "screenSharingDesc": true,
-      "typeMessage": true
-    }
+    "couldNotExecute": "Не удалось выполнить {action}"
   }
 }

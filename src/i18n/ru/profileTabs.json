@@ -1,16 +1,13 @@
 {
   "profileTabs": {
     "posts": "Посты",
-    "about": "О нас",
+    "about": "Мой профиль",
     "media": "Медиа",
     "groups": "Группы",
     "events": "События",
     "health": "Здоровье",
     "services": "Услуги",
     "insight": "Инсайты",
-    "milestones": "Достижения",
-    "_pending_review": {
-      "about": true
-    }
+    "milestones": "Достижения"
   }
 }

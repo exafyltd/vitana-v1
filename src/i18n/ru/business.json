@@ -5,31 +5,26 @@
       "choosePathGuide": "Выбери путь, и мы направим тебя к твоему первому источнику дохода.",
       "startEarning": "Начни зарабатывать",
       "howToEarn": "Как ты хочешь зарабатывать?",
-      "pickOne": "Выбери один — ты всегда сможешь заняться другими позже.",
+      "pickOne": "Выбери вариант — остальные ты сможешь посмотреть позже.",
       "createEvent": "Создай Событие",
       "createEventDesc": "Проведи своё событие и продавай билеты.",
       "addToInventory": "Добавь События в Инвентарь",
       "addToInventoryDesc": "Перепродавай отобранные события и зарабатывай комиссию.",
       "createService": "Создай Услугу",
-      "createServiceDesc": "Предлагай сессии, которые люди могут забронировать.",
+      "createServiceDesc": "Предлагай сессии для записи.",
       "createPromotion": "Создай Продвижение",
       "createPromotionDesc": "Повысь видимость и поделись в соцсетях.",
       "hostAndSell": "Проводи и продавай билеты",
       "resellAndEarn": "Перепродавай и зарабатывай",
       "offerBookings": "Предлагай бронирования",
-      "boostVisibility": "Повысь видимость",
-      "_pending_review": {
-        "howToEarn": true,
-        "pickOne": true,
-        "createServiceDesc": true
-      }
+      "boostVisibility": "Повысь видимость"
     },
     "history": {
       "all": "Все",
       "directSales": "Прямые продажи",
       "reseller": "Реселлер",
-      "noEarningsYet": "Пока нет истории заработка",
-      "startSellingToSee": "Начни продавать, чтобы увидеть свои транзакции здесь",
+      "noEarningsYet": "Пока нет истории заработка.",
+      "startSellingToSee": "Начни продавать, чтобы увидеть здесь свои транзакции.",
       "ticketsSold": "Продано билетов",
       "grossAmount": "Общая сумма",
       "youEarned": "Ты заработал(а)",
@@ -40,16 +35,10 @@
       "last7Days": "Последние 7 дней",
       "last30Days": "Последние 30 дней",
       "last90Days": "Последние 90 дней",
-      "allTime": "За всё время",
+      "allTime": "Общее время",
       "details": "Подробнее",
       "earningsActivity": "Активность заработка",
-      "noEarningsStartSelling": "Пока нет заработка. Начни продавать, чтобы увидеть активность здесь.",
-      "_pending_review": {
-        "noEarningsYet": true,
-        "startSellingToSee": true,
-        "youEarned": true,
-        "allTime": true
-      }
+      "noEarningsStartSelling": "Пока нет заработка. Начни продавать, чтобы увидеть активность здесь."
     },
     "kpi": {
       "totalEarnings": "Общий заработок",
@@ -70,13 +59,9 @@
       "viewMyEvents": "Посмотреть мои мероприятия",
       "totalGrossSales": "Общие валовые продажи",
       "resellerCommissions": "Комиссии реселлера",
-      "goToSellEarn": "Перейти к Продавай и Зарабатывай",
+      "goToSellEarn": "Продавай и зарабатывай",
       "totalEarned": "Всего заработано",
-      "earningsBySource": "Заработок по источникам",
-      "_pending_review": {
-        "goToSellEarn": true,
-        "totalEarned": true
-      }
+      "earningsBySource": "Заработок по источникам"
     },
     "reseller": {
       "upcomingEvents": "Предстоящие мероприятия",
@@ -84,13 +69,13 @@
       "resellerCode": "Код реселлера",
       "codeCopied": "Код реселлера скопирован!",
       "noSalesYet": "Пока нет продаж",
-      "shareLinkToStart": "Поделись ссылкой, чтобы начать зарабатывать.",
+      "shareLinkToStart": "Поделись ссылкой, чтобы заработать.",
       "tickets": "билеты",
       "shareResellerLink": "Поделиться ссылкой реселлера",
       "createPromotion": "Создать акцию",
-      "shareLinkOrPromotion": "Поделись своими ссылками реселлера или создай акцию, чтобы начать зарабатывать комиссионные.",
+      "shareLinkOrPromotion": "Поделись своими реселлерскими ссылками или создай акцию, чтобы заработать комиссионные.",
       "selectEventToShare": "Выбери событие, чтобы поделиться",
-      "pickEventForLink": "Выбери событие, чтобы сгенерировать свою ссылку реселлера",
+      "pickEventForLink": "Выбери событие, чтобы сгенерировать свою реселлерскую ссылку.",
       "noEventsToSell": "Нет событий, доступных для продажи",
       "commission": "комиссия",
       "commissionEarned": "Заработано комиссии",
@@ -99,24 +84,16 @@
       "noPayoutsYet": "Пока нет выплат",
       "attributedSales": "Приписанные продажи по событию",
       "noSalesMatchFilter": "Нет продаж, соответствующих текущим фильтрам",
-      "mockDataActive": "Тестовые данные активны",
-      "_pending_review": {
-        "shareLinkToStart": true,
-        "shareLinkOrPromotion": true,
-        "pickEventForLink": true
-      }
+      "mockDataActive": "Тестовые данные активны"
     },
     "transfer": {
       "title": "Перевести в кошелек",
       "description": "Переведи свои ожидающие комиссионные реселлера в свой кошелек VITANA.",
       "pending": "В ожидании",
       "wallet": "Кошелек",
-      "instantCredit": "Это зачислит твои заработки мгновенно на баланс твоего кошелька.",
+      "instantCredit": "Это мгновенно зачислит твой заработок на баланс Кошелька.",
       "transferring": "Перевод...",
-      "transfer": "Перевести",
-      "_pending_review": {
-        "instantCredit": true
-      }
+      "transfer": "Перевести"
     },
     "typeSelector": {
       "title": "Начать бизнес",
@@ -128,15 +105,12 @@
       "sellTicketsDesc": "Продвигай мероприятия и зарабатывай комиссии",
       "badgeNew": "Новое",
       "badgeActive": "Активно",
-      "alreadyReseller": "Ты уже реселлер! Проверь вкладку «Продавай и Зарабатывай».",
-      "cancel": "Отмена",
-      "_pending_review": {
-        "alreadyReseller": true
-      }
+      "alreadyReseller": "Ты уже реселлер! Проверь вкладку «Продавай и зарабатывай».",
+      "cancel": "Отмена"
     },
     "missionOpportunities": {
       "title": "Возможности для миссий",
-      "subtitle": "Пути, рекомендованные автопилотом, которые развивают экономику долголетия",
+      "subtitle": "Предложенные автопилотом пути, способствующие экономике долголетия.",
       "loading": "Загрузка возможностей…",
       "error": "Не удалось загрузить возможности",
       "empty": "Пока нет рекомендаций, соответствующих экономике. Загляни позже.",
@@ -146,9 +120,6 @@
         "marketplace": "Маркетплейс",
         "income_generation": "Получение дохода",
         "business_formation": "Создание бизнеса"
-      },
-      "_pending_review": {
-        "subtitle": true
       }
     }
   }

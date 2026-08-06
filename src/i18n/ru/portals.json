@@ -3,10 +3,10 @@
     "maxina": {
       "title": "Платформа здоровья Maxina",
       "welcomeBack": "С возвращением в Maxina.",
-      "continueJourney": "Войди, чтобы продолжить свой путь.",
+      "continueJourney": "Войди, чтобы продолжить своё путешествие.",
       "joinMaxina": "Присоединяйся к Maxina",
       "joinCommunity": "Присоединяйся к сообществу Maxina.",
-      "createAccount": "Создай аккаунт и начни свой путь.",
+      "createAccount": "Создай свой аккаунт и начни своё путешествие.",
       "signingIn": "Вход…",
       "creatingAccount": "Создание аккаунта…",
       "joiningAs": "Я присоединяюсь как:",
@@ -21,35 +21,22 @@
         "patient": "Пациент",
         "professional": "Про",
         "admin": "Админ"
-      },
-      "_pending_review": {
-        "continueJourney": true,
-        "createAccount": true
       }
     },
     "alkalma": {
       "joinAlkalma": "Присоединяйся к AlKalma",
       "welcomeBack": "С возвращением в AlKalma.",
-      "continueJourney": "Войди, чтобы продолжить.",
-      "_pending_review": {
-        "continueJourney": true
-      }
+      "continueJourney": "Войди, чтобы продолжить."
     },
     "earthlinks": {
       "joinEarthlinks": "Присоединяйся к Earthlinks",
       "welcomeBack": "С возвращением в Earthlinks.",
-      "continueJourney": "Войди, чтобы продолжить.",
-      "_pending_review": {
-        "continueJourney": true
-      }
+      "continueJourney": "Войди, чтобы продолжить."
     },
     "community": {
       "joinCommunity": "Присоединяйся к сообществу",
       "welcomeBack": "С возвращением.",
-      "continueJourney": "Войди, чтобы продолжить.",
-      "_pending_review": {
-        "continueJourney": true
-      }
+      "continueJourney": "Войди, чтобы продолжить."
     }
   }
 }

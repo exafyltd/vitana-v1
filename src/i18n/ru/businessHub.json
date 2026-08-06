@@ -13,15 +13,11 @@
     "analytics": "Аналитика",
     "searchBusiness": "Поиск бизнеса...",
     "noServices": "Пока нет услуг",
-    "noServicesDesc": "Создай свою первую услугу, чтобы начать привлекать клиентов.",
+    "noServicesDesc": "Создай свою первую услугу, чтобы привлечь клиентов.",
     "createService": "Создать услугу",
     "noClients": "Пока нет клиентов",
     "noClientsDesc": "Твои клиенты появятся здесь.",
     "noSales": "Пока нет продаж",
-    "noSalesDesc": "Твоя история продаж появится здесь.",
-    "_pending_review": {
-      "noServicesDesc": true,
-      "noClientsDesc": true
-    }
+    "noSalesDesc": "Твоя история продаж появится здесь."
   }
 }

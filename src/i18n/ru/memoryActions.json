@@ -4,28 +4,37 @@
     "items": {
       "recordVoiceDiary": {
         "title": "Записать голосовой дневник",
-        "description": "Запиши мысли и размышления голосом"
+        "description": "Запиши мысли и размышления голосом",
+        "_pending_review": {}
       },
       "addMemoryNote": {
         "title": "Добавить памятную заметку",
-        "description": "Запиши важные моменты здоровья"
+        "description": "Запиши важные моменты здоровья",
+        "_pending_review": {}
       },
       "viewTimeline": {
         "title": "Посмотреть хронологию",
-        "description": "Посмотри свой полный путь к благополучию"
+        "description": "Посмотри свой полный путь к благополучию",
+        "_pending_review": {}
       },
       "searchMemories": {
         "title": "Найти воспоминания",
-        "description": "Найди конкретные моменты и идеи"
+        "description": "Найди конкретные моменты и идеи",
+        "_pending_review": {}
       },
       "photoMemory": {
         "title": "Фото-воспоминание",
-        "description": "Добавь визуальные воспоминания в свой путь"
+        "description": "Добавь визуальные воспоминания в свой путь",
+        "_pending_review": {}
       },
       "aiMemoryAnalysis": {
         "title": "ИИ-анализ воспоминаний",
-        "description": "Получи идеи из своих паттернов памяти"
-      }
-    }
-  }
+        "description": "Получи идеи из своих паттернов памяти",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

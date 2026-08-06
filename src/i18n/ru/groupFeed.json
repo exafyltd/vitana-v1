@@ -10,6 +10,8 @@
     "messageDeleted": "Сообщение удалено",
     "error": "Ошибка",
     "errorSend": "Не удалось отправить сообщение",
-    "errorDelete": "Не удалось удалить сообщение"
-  }
+    "errorDelete": "Не удалось удалить сообщение",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

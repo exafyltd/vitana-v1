@@ -2,6 +2,8 @@
   "logout": {
     "signingOut": "Выходим...",
     "signedOut": "Выход выполнен успешно",
-    "redirecting": "Перенаправление..."
-  }
+    "redirecting": "Перенаправление...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

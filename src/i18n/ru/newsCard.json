@@ -25,10 +25,7 @@
       "continueReading": "Продолжить чтение на",
       "openInBrowser": "Открыть в браузере",
       "couldNotLoad": "Эту статью нельзя отобразить здесь",
-      "readOn": "Читать далее",
-      "_pending_review": {
-        "readOn": true
-      }
+      "readOn": "Подробнее"
     },
     "pillars": {
       "all": "Все",

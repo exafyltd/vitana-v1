@@ -11,6 +11,8 @@
     "notFound": "Группа не найдена",
     "notFoundDesc": "Эта группа могла быть удалена или не существует.",
     "browseGroups": "Просмотреть группы",
-    "support": "Поддержка"
-  }
+    "support": "Поддержка",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

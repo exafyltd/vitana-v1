@@ -4,12 +4,14 @@
     "types": {
       "bundle": "Набор",
       "subscription": "Подписка",
-      "program": "Программа"
+      "program": "Программа",
+      "_pending_review": {}
     },
     "status": {
       "draft": "Черновик",
       "published": "Активный",
-      "archived": "Архивировано"
+      "archived": "Архивировано",
+      "_pending_review": {}
     },
     "item": "элемент",
     "items": "элементы",
@@ -17,6 +19,8 @@
     "validDays": "Действует {days} дней",
     "save": "Сэкономь {percent}%",
     "unpublish": "Снять с публикации",
-    "publish": "Опубликовать"
-  }
+    "publish": "Опубликовать",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

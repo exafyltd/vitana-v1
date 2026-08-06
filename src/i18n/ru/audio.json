@@ -2,9 +2,6 @@
   "audio": {
     "listening": "Слушаю...",
     "processing": "Минутку...",
-    "connectionError": "Проблема с соединением. Пожалуйста, попробуй еще раз.",
-    "_pending_review": {
-      "connectionError": true
-    }
+    "connectionError": "Проблема с подключением. Пожалуйста, попробуй снова."
   }
 }

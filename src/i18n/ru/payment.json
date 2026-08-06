@@ -13,15 +13,11 @@
     "insufficientBalanceDesc": "У тебя недостаточно {currency} для этого обмена",
     "transactionFailed": "Транзакция не удалась",
     "paymentFailed": "Платеж не удался",
-    "paymentFailedDesc": "Не удалось обработать платеж. Пожалуйста, попробуй еще раз.",
+    "paymentFailedDesc": "Платеж не удалось обработать. Попробуй еще раз.",
     "balanceRefreshed": "Баланс обновлен",
     "balanceRefreshedDesc": "Баланс кошелька обновлен",
     "refreshFailed": "Обновление не удалось",
-    "refreshFailedDesc": "Не удалось обновить баланс. Пожалуйста, попробуй еще раз.",
-    "error": "Ошибка",
-    "_pending_review": {
-      "paymentFailedDesc": true,
-      "refreshFailedDesc": true
-    }
+    "refreshFailedDesc": "Баланс не удалось обновить. Попробуй еще раз.",
+    "error": "Ошибка"
   }
 }

@@ -1,7 +1,7 @@
 {
   "authPage": {
     "welcomeTitle": "Добро пожаловать в VITANA",
-    "subtitle": "Твоя персонализированная платформа здоровья",
+    "subtitle": "Твоя персонализированная интеллектуальная платформа здоровья",
     "signIn": "Войти",
     "signUp": "Зарегистрироваться",
     "email": "Email",
@@ -14,9 +14,6 @@
     "createAccount": "Создать аккаунт",
     "orContinueWith": "Или продолжить с",
     "backToPortals": "Назад ко всем порталам",
-    "keepLoggedIn": "Запомнить меня",
-    "_pending_review": {
-      "subtitle": true
-    }
+    "keepLoggedIn": "Запомнить меня"
   }
 }

@@ -65,16 +65,13 @@
       "groupNameRequired": "Имя группы обязательно",
       "groupNameRequiredDesc": "Пожалуйста, введи имя для своей группы.",
       "addMembersRequired": "Добавить участников",
-      "addMembersRequiredDesc": "Пожалуйста, добавь хотя бы одного участника в группу.",
+      "addMembersRequiredDesc": "Пожалуйста, добавь хотя бы одного участника.",
       "groupExists": "Группа уже существует",
       "groupExistsDesc": "Группа с этими участниками была недавно создана.",
       "created": "Группа создана",
       "createdDesc": "\"{name}\" успешно создана.",
       "failed": "Не удалось создать группу",
-      "failedDesc": "Пожалуйста, попробуй еще раз.",
-      "_pending_review": {
-        "addMembersRequiredDesc": true
-      }
+      "failedDesc": "Пожалуйста, попробуй еще раз."
     },
     "toast": {
       "success": "Успех",
@@ -87,15 +84,11 @@
       "communityOnly": "Только пользователи сообщества могут создавать глобальные разговоры.",
       "pleaseLogin": "Пожалуйста, войди, чтобы начать разговоры.",
       "groupRecipientsRequired": "Имя группы и получатели обязательны",
-      "singleRecipientRequired": "Выбери ровно одного получателя для личного сообщения",
+      "singleRecipientRequired": "Выбери ровно одного получателя для личных сообщений.",
       "groupCreated": "Группа \"{name}\" успешно создана!",
       "groupFailed": "Не удалось создать группу",
       "allMarkedRead": "Все сообщения помечены как прочитанные",
-      "markAllReadFailed": "Не удалось пометить все как прочитанные. Пожалуйста, попробуй еще раз.",
-      "_pending_review": {
-        "pleaseLogin": true,
-        "singleRecipientRequired": true
-      }
+      "markAllReadFailed": "Не удалось пометить все как прочитанные. Пожалуйста, попробуй еще раз."
     },
     "createGroupAction": "Создать новую группу",
     "newConversationAction": "Новая беседа",
@@ -106,17 +99,14 @@
     "searchConversations": "Поиск бесед...",
     "searchPlaceholder": "Поиск...",
     "noMessages": "Пока нет сообщений",
-    "noMessagesDesc": "Начни беседу, чтобы начать.",
+    "noMessagesDesc": "Начни разговор, чтобы начать.",
     "startConversation": "Начать беседу",
     "emptyState": {
-      "title": "В твоем почтовом ящике пока тихо",
+      "title": "Твой почтовый ящик всё ещё пуст.",
       "globalDescription": "Начни разговор или присоединись к сообществу, чтобы общаться с другими.",
       "tenantDescription": "Общайся с коллегами и членами команды в своей профессиональной сети.",
       "startConversation": "Начать разговор",
-      "discoverPeople": "Найти людей",
-      "_pending_review": {
-        "title": true
-      }
+      "discoverPeople": "Найти людей"
     },
     "group": {
       "loading": "Загрузка группы…",
@@ -128,9 +118,6 @@
       "officialBadge": "официальная группа",
       "empty": "Пока нет сообщений.",
       "composerPlaceholder": "Сообщение…"
-    },
-    "_pending_review": {
-      "noMessagesDesc": true
     }
   }
 }

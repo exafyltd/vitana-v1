@@ -2,7 +2,7 @@
   "eventCta": {
     "buyTicket": "Купить билет",
     "buyTicketWithPrice": "Купить билет · {price}",
-    "getFreeTicket": "Получить бесплатный билет",
+    "getFreeTicket": "Получи свой бесплатный билет",
     "reserveSpot": "Забронировать место",
     "reserveMySpot": "Забронировать моё место",
     "viewTicket": "Посмотреть билет",
@@ -19,9 +19,6 @@
     "processing": "Обработка...",
     "joining": "Присоединение...",
     "getTickets": "Получить билеты",
-    "promoteEvent": "Продвигать событие",
-    "_pending_review": {
-      "getFreeTicket": true
-    }
+    "promoteEvent": "Продвигать событие"
   }
 }

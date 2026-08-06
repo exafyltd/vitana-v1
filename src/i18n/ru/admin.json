@@ -19,7 +19,10 @@
       "rejected": "Отклонено",
       "flagged": "Помечено",
       "podcastManagement": "Управление подкастами",
-      "podcastManagementDesc": "Просмотр и модерация загрузок подкастов"
-    }
-  }
+      "podcastManagementDesc": "Просмотр и модерация загрузок подкастов",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

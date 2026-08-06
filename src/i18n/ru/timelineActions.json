@@ -4,36 +4,47 @@
     "items": {
       "logHealthEvent": {
         "title": "Записать Событие Здоровья",
-        "description": "Записывай важные вехи здоровья"
+        "description": "Записывай важные вехи здоровья",
+        "_pending_review": {}
       },
       "markAchievement": {
         "title": "Отметить Достижение",
-        "description": "Отмечай достигнутые цели благополучия"
+        "description": "Отмечай достигнутые цели благополучия",
+        "_pending_review": {}
       },
       "recordLifeMoment": {
         "title": "Записать Момент Жизни",
-        "description": "Запечатлей значимые моменты"
+        "description": "Запечатлей значимые моменты",
+        "_pending_review": {}
       },
       "addPhotoMemory": {
         "title": "Добавить Фото-Воспоминание",
-        "description": "Визуальная лента с фото о здоровье"
+        "description": "Визуальная лента с фото о здоровье",
+        "_pending_review": {}
       },
       "voiceTimelineEntry": {
         "title": "Голосовая Запись в Ленте",
-        "description": "Быстрые аудио-обновления о здоровье"
+        "description": "Быстрые аудио-обновления о здоровье",
+        "_pending_review": {}
       },
       "trackProgress": {
         "title": "Отслеживать Прогресс",
-        "description": "Записывай метрики и тенденции благополучия"
+        "description": "Записывай метрики и тенденции благополучия",
+        "_pending_review": {}
       },
       "activityCheckIn": {
         "title": "Отметка Активности",
-        "description": "Записывай тренировки и активности"
+        "description": "Записывай тренировки и активности",
+        "_pending_review": {}
       },
       "setTimelineGoal": {
         "title": "Установить Цель в Ленте",
-        "description": "Создавай будущие цели по здоровью"
-      }
-    }
-  }
+        "description": "Создавай будущие цели по здоровью",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

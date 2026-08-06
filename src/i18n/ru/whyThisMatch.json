@@ -1,35 +1,18 @@
 {
-  "_pending_review": {},
   "whyThisMatch": {
-    "_pending_review": {
-      "title": true,
-      "interpretedAs": true,
-      "consideredSignals": true,
-      "showSomeoneElse": true,
-      "dismiss": true,
-      "ethicsNote": true,
-      "loadingRecipe": true,
-      "recipeUnavailable": true
-    },
-    "title": "Why this member?",
-    "interpretedAs": "Vitana understood:",
-    "consideredSignals": "Signals considered:",
-    "showSomeoneElse": "Show me someone else",
-    "dismiss": "Dismiss",
-    "ethicsNote": "Vitana doesn't rank members on appearance or wealth — but here's someone whose journey shines right now.",
-    "loadingRecipe": "Loading search details…",
-    "recipeUnavailable": "Those search details are no longer available.",
+    "title": "Почему этот участник?",
+    "interpretedAs": "Vitana поняла:",
+    "consideredSignals": "Учтены сигналы:",
+    "showSomeoneElse": "Покажи мне кого-то другого",
+    "dismiss": "Закрыть",
+    "ethicsNote": "Vitana не ранжирует участников по внешности или богатству — но вот кто-то, чей путь сияет прямо сейчас.",
+    "loadingRecipe": "Загрузка деталей поиска…",
+    "recipeUnavailable": "Эти детали поиска больше недоступны.",
     "tierLabel": {
-      "1": "Exact match",
-      "2": "Vitana Index",
-      "3": "Closest match",
-      "4": "Fairness re-route",
-      "_pending_review": {
-        "1": true,
-        "2": true,
-        "3": true,
-        "4": true
-      }
+      "1": "Точное совпадение",
+      "2": "Индекс Vitana",
+      "3": "Лучшее совпадение",
+      "4": "Справедливое перенаправление"
     }
   }
 }

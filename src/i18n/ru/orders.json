@@ -31,7 +31,7 @@
       "description": "Твои выполненные заказы и прошедшие события появятся здесь."
     },
     "noOrders": "Пока нет заказов",
-    "noOrdersDesc": "Твои заказы появятся здесь, как только ты совершишь покупку.",
+    "noOrdersDesc": "Твои заказы появятся здесь, как только ты что-нибудь купишь.",
     "browseProducts": "Посмотреть продукты",
     "findEvents": "Найти мероприятия",
     "startShopping": "Начать покупки",
@@ -60,10 +60,7 @@
       "personalMessage": "Личное сообщение",
       "cancel": "Отменить",
       "send": "Отправить",
-      "downloadPdf": "Скачать PDF",
-      "_pending_review": {
-        "yourTicket": true
-      }
+      "downloadPdf": "Скачать PDF"
     },
     "status": {
       "upcoming": "Предстоящие",
@@ -79,9 +76,6 @@
       "processing": "Обработка",
       "paid": "Активно",
       "active": "Активно"
-    },
-    "_pending_review": {
-      "noOrdersDesc": true
     }
   }
 }

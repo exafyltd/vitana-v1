@@ -1,10 +1,10 @@
 {
   "milestones": {
-    "title": "Жизненные вехи",
+    "title": "Особые моменты",
     "add": "Добавить веху",
     "edit": "Редактировать веху",
-    "empty": "Пока нет вех",
-    "addFirst": "Добавь свою первую веху",
+    "empty": "Пока нет моментов",
+    "addFirst": "Добавь свой первый момент",
     "date": "Дата",
     "description": "Что произошло?",
     "titleLabel": "Заголовок",
@@ -12,11 +12,6 @@
     "descPlaceholder": "Опиши этот момент...",
     "icon": "Иконка",
     "publicLabel": "Видно всем",
-    "private": "Приватно",
-    "_pending_review": {
-      "title": true,
-      "empty": true,
-      "addFirst": true
-    }
+    "private": "Приватно"
   }
 }

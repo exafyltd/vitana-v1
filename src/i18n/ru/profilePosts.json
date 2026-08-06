@@ -1,7 +1,7 @@
 {
   "profilePosts": {
     "createPost": "Создать пост",
-    "placeholder": "Что у тебя на уме?",
+    "placeholder": "О чем ты сейчас думаешь?",
     "shareCta": "Поделись чем-нибудь с сообществом",
     "post": "Опубликовать",
     "posted": "Опубликовано!",
@@ -14,9 +14,6 @@
     "background": "Фон",
     "noBackground": "Без фона",
     "searchingPeople": "Ищем людей…",
-    "noPeopleFound": "Никого не найдено",
-    "_pending_review": {
-      "placeholder": true
-    }
+    "noPeopleFound": "Никого не найдено"
   }
 }

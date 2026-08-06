@@ -26,7 +26,7 @@
     "clearing": "Очистка...",
     "deleting": "Удаление...",
     "exportComplete": "Экспорт завершен",
-    "exportCompleteDesc": "Твоя история успешно экспортирована.",
+    "exportCompleteDesc": "Твоя история была успешно экспортирована.",
     "exportFailed": "Ошибка экспорта",
     "exportFailedDesc": "Произошла ошибка при экспорте твоей истории.",
     "historyCleared": "История очищена",
@@ -37,18 +37,9 @@
     "allHistoryDeletedDesc": "Вся твоя история была безвозвратно удалена.",
     "deleteFailed": "Удаление не удалось",
     "deleteFailedDesc": "Произошла ошибка при удалении твоей истории.",
-    "confirmClearOld": "Ты уверен(-а), что хочешь удалить историю старше 90 дней?",
-    "confirmDeleteAll": "⚠️ ВНИМАНИЕ: Это безвозвратно удалит ВСЮ твою историю. Это действие нельзя отменить. Ты абсолютно уверен(-а)?",
+    "confirmClearOld": "Ты уверен, что хочешь удалить историю старше 90 дней?",
+    "confirmDeleteAll": "⚠️ ВНИМАНИЕ: Это безвозвратно удалит ВСЮ твою историю. Это действие нельзя отменить. Ты абсолютно уверен?",
     "beta": "Бета",
-    "danger": "Опасно",
-    "_pending_review": {
-      "archiveSettings": true,
-      "exportCompleteDesc": true,
-      "exportFailedDesc": true,
-      "allHistoryDeletedDesc": true,
-      "deleteFailedDesc": true,
-      "confirmClearOld": true,
-      "confirmDeleteAll": true
-    }
+    "danger": "Опасно"
   }
 }

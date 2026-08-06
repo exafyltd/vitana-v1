@@ -4,6 +4,8 @@
     "media": "Медиа",
     "groups": "Группы",
     "followers": "Подписчики",
-    "following": "Подписки"
-  }
+    "following": "Подписки",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

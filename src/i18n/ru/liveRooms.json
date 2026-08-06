@@ -3,17 +3,14 @@
     "title": "Прямые комнаты",
     "description": "Присоединяйся к прямым аудио- и видео-обсуждениям",
     "tabs": {
-      "live": "В эфире сейчас",
+      "live": "В эфире",
       "scheduled": "Запланировано",
       "all": "Все комнаты",
-      "past": "Прошедшие",
-      "_pending_review": {
-        "live": true
-      }
+      "past": "Прошедшие"
     },
     "goLive": "Выйти в эфир",
     "joinRoom": "Присоединиться к комнате",
-    "noRooms": "Пока нет прямых комнат",
+    "noRooms": "Сейчас нет прямых эфиров",
     "beFirst": "Будь первым, кто выйдет в эфир",
     "demoRoom": "Демо-комната",
     "demoRoomDesc": "Это пример комнаты. Создай свою, чтобы выйти в эфир!",
@@ -44,7 +41,7 @@
       "streamTitleLabel": "Название эфира",
       "streamTitlePlaceholder": "В эфире с {name}",
       "descriptionLabel": "Описание / Биография (Необязательно)",
-      "descriptionPlaceholder": "Расскажи своей аудитории, о чем этот стрим…",
+      "descriptionPlaceholder": "Кратко опиши, о чем этот стрим…",
       "charactersCount": "{count}/500 символов",
       "streamTypeLabel": "Тип стрима",
       "streamTypeAudio": "Аудио",
@@ -52,7 +49,7 @@
       "coverLabel": "Обложка / Миниатюра",
       "coverAlt": "Обложка стрима",
       "coverUploadCta": "Нажми, чтобы загрузить свое изображение",
-      "coverUploadHint": "Любое изображение – размер изменится автоматически",
+      "coverUploadHint": "Любое изображение – автонастройка",
       "aiAutoGenerateLabel": "Автоматически сгенерировать с помощью ИИ",
       "aiAutoGenerateHint": "Сгенерировать изображение, если не загружено",
       "generatingAiImage": "Генерируется ИИ-изображение…",
@@ -125,21 +122,13 @@
       },
       "success": {
         "streamUpdatedTitle": "Трансляция обновлена! ✨",
-        "streamUpdatedDesc": "Твоя трансляция успешно обновлена",
+        "streamUpdatedDesc": "Твой стрим успешно обновлен",
         "streamScheduledTitle": "Трансляция запланирована! 📅",
         "streamScheduledDesc": "Твоя трансляция запланирована на {date} в {time}",
         "youAreLiveTitle": "Ты в эфире! 🎙️",
         "youAreLiveDesc": "Вход в твою комнату трансляции…",
         "aiImageHintTitle": "Генерация ИИ-изображения",
-        "aiImageHintDesc": "Изображение будет сгенерировано при начале трансляции.",
-        "_pending_review": {
-          "streamUpdatedDesc": true,
-          "youAreLiveTitle": true
-        }
-      },
-      "_pending_review": {
-        "descriptionPlaceholder": true,
-        "coverUploadHint": true
+        "aiImageHintDesc": "Изображение будет сгенерировано при начале трансляции."
       }
     },
     "editSession": {
@@ -147,9 +136,6 @@
       "saving": "Сохранение…",
       "changeCover": "Изменить обложку",
       "noChanges": "Нет изменений для сохранения"
-    },
-    "_pending_review": {
-      "noRooms": true
     }
   },
   "goLivePopup": {

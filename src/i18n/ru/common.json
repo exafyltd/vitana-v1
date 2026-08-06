@@ -36,6 +36,8 @@
     "upload": "Загрузить",
     "refresh": "Обновить",
     "retry": "Повторить",
-    "uploading": "Загрузка..."
-  }
+    "uploading": "Загрузка...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

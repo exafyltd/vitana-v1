@@ -2,10 +2,10 @@
   "tasks": {
     "noOpenTasks": "Нет открытых задач",
     "confirmCancelTask": "Ты уверен(а), что хочешь отменить эту задачу?",
-    "postponeComingSoon": "Функция отложить скоро появится",
+    "postponeComingSoon": "Функция переноса скоро появится",
     "addNotePrompt": "Добавь заметку к этой задаче:",
     "noteAdded": "Заметка добавлена: {note}",
-    "navigateTo": "Перейти к: {url}",
+    "navigateTo": "Перейти на: {url}",
     "openVtid": "Открыть VTID: {vtid}",
     "description": "Описание",
     "activityLog": "Журнал активности",
@@ -14,10 +14,6 @@
     "postpone": "Отложить",
     "addNote": "Добавить заметку",
     "openContext": "Открыть контекст",
-    "assignee": "Исполнитель",
-    "_pending_review": {
-      "postponeComingSoon": true,
-      "navigateTo": true
-    }
+    "assignee": "Исполнитель"
   }
 }

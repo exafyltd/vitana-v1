@@ -1,7 +1,7 @@
 {
   "settings": {
     "title": "Настройки",
-    "description": "Управляй настройками аккаунта, конфиденциальностью и предпочтениями",
+    "description": "Управляй настройками своего аккаунта, своей конфиденциальностью и своими предпочтениями",
     "searchPlaceholder": "Поиск настроек, элементов управления конфиденциальностью, интеграций...",
     "quickSetup": "Быстрая настройка",
     "tabs": {
@@ -11,9 +11,9 @@
     },
     "categories": {
       "privacy": "Конфиденциальность",
-      "privacyDesc": "Контролируй, кто видит твой профиль и активность",
+      "privacyDesc": "Контролируй, кто видит твой профиль и твои действия",
       "notifications": "Уведомления",
-      "notificationsDesc": "Управляй настройками уведомлений",
+      "notificationsDesc": "Управляй настройками своих уведомлений",
       "preferences": "Предпочтения",
       "preferencesDesc": "Язык, тема и параметры отображения",
       "connectedApps": "Подключенные приложения",
@@ -23,11 +23,7 @@
       "billing": "Оплата",
       "billingDesc": "Информация о подписке и платежах",
       "support": "Поддержка",
-      "supportDesc": "Помощь, FAQ и контакты",
-      "_pending_review": {
-        "privacyDesc": true,
-        "notificationsDesc": true
-      }
+      "supportDesc": "Помощь, FAQ и контакты"
     },
     "status": {
       "privacyStatus": "Статус конфиденциальности",
@@ -40,9 +36,6 @@
       "apps": "Приложения"
     },
     "vitanaOpenedSection": "Vitana открыла {section}",
-    "vitanaUpdated": "Vitana обновила твою настройку",
-    "_pending_review": {
-      "description": true
-    }
+    "vitanaUpdated": "Vitana обновила твою настройку"
   }
 }

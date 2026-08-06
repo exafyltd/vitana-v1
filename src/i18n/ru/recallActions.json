@@ -1,6 +1,6 @@
 {
   "recallActions": {
-    "title": "Поиск по воспоминаниям и действия по вызову",
+    "title": "Действия по поиску и извлечению напоминаний",
     "items": {
       "askAiQuestion": {
         "title": "Задай вопрос ИИ",
@@ -31,15 +31,9 @@
         "description": "Просматривай воспоминания по столпам благополучия и категориям"
       },
       "quickRecalls": {
-        "_pending_review": {
-          "description": true
-        },
         "title": "Быстрые вызовы",
-        "description": "Access frequently searched memories and queries"
+        "description": "Получи доступ к часто искомым воспоминаниям и запросам"
       }
-    },
-    "_pending_review": {
-      "title": true
     }
   }
 }

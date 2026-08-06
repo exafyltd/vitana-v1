@@ -19,6 +19,8 @@
     "searching": "Поиск...",
     "deleting": "Удаление...",
     "creating": "Создание...",
-    "updating": "Обновление..."
-  }
+    "updating": "Обновление...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

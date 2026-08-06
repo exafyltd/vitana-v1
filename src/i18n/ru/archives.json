@@ -1,5 +1,7 @@
 {
   "archives": {
-    "searchPlaceholder": "Поиск по архивам..."
-  }
+    "searchPlaceholder": "Поиск по архивам...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

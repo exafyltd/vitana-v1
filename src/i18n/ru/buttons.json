@@ -10,7 +10,7 @@
     "submit": "Отправить",
     "next": "Далее",
     "back": "Назад",
-    "previous": "Предыдущий",
+    "previous": "Назад",
     "retry": "Повторить",
     "refresh": "Обновить",
     "viewAll": "Посмотреть все",
@@ -54,9 +54,6 @@
     "no": "Нет",
     "ok": "ОК",
     "generate": "Сгенерировать",
-    "generating": "Генерируется...",
-    "_pending_review": {
-      "previous": true
-    }
+    "generating": "Генерируется..."
   }
 }

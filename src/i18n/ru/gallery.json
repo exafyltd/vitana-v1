@@ -16,6 +16,8 @@
     "invalidFormat": "Неверный формат",
     "fileTooLarge": "Файл слишком большой",
     "maxSize": "Максимальный размер файла: 500 МБ",
-    "maxSizeHint": "Макс. 500 МБ"
-  }
+    "maxSizeHint": "Макс. 500 МБ",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

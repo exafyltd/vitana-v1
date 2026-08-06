@@ -1,5 +1,7 @@
 {
   "challenges": {
-    "searchPlaceholder": "Поиск челленджей..."
-  }
+    "searchPlaceholder": "Поиск челленджей...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

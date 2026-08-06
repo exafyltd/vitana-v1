@@ -5,12 +5,16 @@
       "badge": "Новое",
       "intro": "Теперь ты можешь:",
       "cta": "Попробуй сам",
-      "closing": "Удачного тестирования 🥳"
+      "closing": "Удачного тестирования 🥳",
+      "_pending_review": {}
     },
     "didYouKnow": {
       "eyebrow": "Знаешь ли ты?",
       "intro": "Ты можешь:",
-      "cta": "Попробуй сейчас"
-    }
-  }
+      "cta": "Попробуй сейчас",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

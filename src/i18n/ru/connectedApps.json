@@ -5,7 +5,7 @@
     "searchPlaceholder": "Искать приложения...",
     "addApp": "Добавить приложение",
     "connected": "подключено",
-    "syncing": "синхронизация",
+    "syncing": "Синхронизация",
     "sections": {
       "social": "Социальные сети и обмен",
       "fitness": "Фитнес и носимые устройства",
@@ -45,11 +45,6 @@
       "noResults": "Приложения не найдены",
       "connectionSuccess": "Подключение успешно",
       "connectionPlaceholder": "Подключение {appName} скоро"
-    },
-    "_pending_review": {
-      "syncing": true,
-      "lastSync": true,
-      "dataSync": true
     }
   }
 }

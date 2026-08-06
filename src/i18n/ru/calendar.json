@@ -12,7 +12,7 @@
     "agenda": "Расписание",
     "nothingScheduled": "Ничего не запланировано",
     "tryQuickAdd": "Попробуй Быстрое добавление или позволь Автопилоту спланировать твой день",
-    "clickSlotHint": "Нажми на любой слот, чтобы создать событие • Перетащи, чтобы перенести",
+    "clickSlotHint": "Нажми на слот, чтобы создать событие • Перетащи для перемещения",
     "noEventsOnDate": "На эту дату нет событий",
     "lastSynced": "Последняя синхронизация",
     "justNow": "только что",
@@ -23,16 +23,13 @@
     "noBookingsToday": "На сегодня нет бронирований",
     "noBookingsYet": "Пока нет бронирований",
     "nextUpcoming": "Следующее",
-    "exploreActivities": "Изучи занятия, чтобы добавить в свой календарь",
+    "exploreActivities": "Открой для себя занятия для своего календаря",
     "browseActivities": "Просмотр занятий",
     "bookedEvents": {
-      "title": "Твои забронированные события",
+      "title": "Твои запланированные события",
       "todayLabel": "Сегодня",
       "nextUp": "Далее",
-      "noEventsToday": "Сегодня нет событий",
-      "_pending_review": {
-        "title": true
-      }
+      "noEventsToday": "Сегодня нет событий"
     },
     "filters": {
       "personal": "Личное",
@@ -66,7 +63,7 @@
       "suggestions": "Предложения Автопилота",
       "badge": "Автопилот",
       "accept": "Принять",
-      "snooze": "Отложить",
+      "snooze": "Напомни позже",
       "dismiss": "Отклонить",
       "undo": "Отменить",
       "laterToday": "Позже сегодня",
@@ -80,18 +77,13 @@
       "reminderLaterToday": "Напоминание установлено на сегодня",
       "reminderTomorrow": "Напоминание установлено на завтра",
       "recommendFocus": "Рекомендуем блок для фокуса",
-      "focusBlockDesc": "У тебя есть 90-минутное окно. Идеально для глубокой работы.",
-      "_pending_review": {
-        "snooze": true,
-        "suggestionSnoozed": true,
-        "focusBlockDesc": true
-      }
+      "focusBlockDesc": "У тебя есть доступный 90-минутный слот. Идеально для сфокусированной работы."
     },
     "toasts": {
       "eventCreated": "Событие создано",
-      "eventCreatedDesc": "Твое событие добавлено в календарь",
+      "eventCreatedDesc": "Твое событие было добавлено в календарь",
       "eventDeleted": "Событие удалено",
-      "eventDeletedDesc": "Событие удалено из твоего календаря",
+      "eventDeletedDesc": "Событие было удалено из твоего календаря",
       "syncingTitle": "Синхронизация...",
       "syncingDesc": "Синхронизация с внешними календарями",
       "syncedTitle": "Синхронизировано",
@@ -102,13 +94,7 @@
       "featureComingSoon": "Функция скоро появится",
       "inviteFollowers": "Пригласить подписчиков",
       "rescheduleEvent": "Перенести событие",
-      "shareToGroup": "Поделиться в группе",
-      "_pending_review": {
-        "eventCreatedDesc": true,
-        "eventDeletedDesc": true,
-        "syncingTitle": true,
-        "syncingDesc": true
-      }
+      "shareToGroup": "Поделиться в группе"
     },
     "error": {
       "failedToCreate": "Не удалось создать событие"
@@ -156,10 +142,6 @@
         "wave-5": "Моменты озарения",
         "wave-6": "Рекомендации и Открытия"
       }
-    },
-    "_pending_review": {
-      "clickSlotHint": true,
-      "exploreActivities": true
     }
   }
 }

@@ -10,6 +10,8 @@
     "role": "Роль",
     "email": "Электронная почта",
     "date": "Дата",
-    "amount": "Сумма"
-  }
+    "amount": "Сумма",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
