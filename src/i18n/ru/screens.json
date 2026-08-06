@@ -918,7 +918,10 @@
         "pasteSentenceUserMightSayRouter": true,
         "eGIHaveQuestionHow": true,
         "confidenceValue0": true,
-        "deepEngagementAnalyticsComingSoonSession": true
+        "deepEngagementAnalyticsComingSoonSession": true,
+        "averageAnalysisCompletesValue0SValue1": true,
+        "lengthResultValue1ForActivequery": true,
+        "lengthTopicValue1AcrossLength2Document": true
       },
       "usingDefaults": "По умолчанию",
       "extra_config": "Дополнительная конфигурация",
@@ -3887,7 +3890,8 @@
         "lengthNew": true,
         "eventratesRate": true,
         "showingLengthLoadedTotalloadedMore": true,
-        "focusLeft": true
+        "focusLeft": true,
+        "activecountConnectionValue1Detected": true
       },
       "currentStep": "Текущий шаг",
       "noVtidSelected": "VTID не выбран",
@@ -5241,7 +5245,12 @@
       "fromWearablesLogs": "с носимых устройств и журналов,\n                и",
       "forConsistencyWeSumFivePillars": "за последовательность. Мы суммируем пять опор, применяем",
       "itDampensWhenOnePillarFar": "(он ослабевает, когда одна опора значительно опережает другую),\n                и ограничиваем 999.",
-      "markAnyJourneyEventCompletePillar": "Отмечай любое событие в пути как завершённое → опора, на которую оно нацелено, растёт. Продолжай день за днём →\n                активируется бонус за серию. Подключи носимое устройство → полоса подключённых данных заполняется.\n                Балансируй по всем пяти → фактор баланса остаётся 1.0×, и каждое очко учитывается полностью."
+      "markAnyJourneyEventCompletePillar": "Отмечай любое событие в пути как завершённое → опора, на которую оно нацелено, растёт. Продолжай день за днём →\n                активируется бонус за серию. Подключи носимое устройство → полоса подключённых данных заполняется.\n                Балансируй по всем пяти → фактор баланса остаётся 1.0×, и каждое очко учитывается полностью.",
+      "_pending_review": {
+        "completeLengthActionValue1AutopilotSuggests": true,
+        "completeLengthActionValue1AutopilotSuggests2": true,
+        "lengthTestValue1Available": true
+      }
     },
     "home": {
       "priorityOfTheDay": "Приоритет дня:",
@@ -7505,7 +7514,8 @@
         "connectName": true,
         "enterYourFullNameProfileUrl": true,
         "testEmailConfiguration": true,
-        "getYourCredentialsFromTwilioConsole": true
+        "getYourCredentialsFromTwilioConsole": true,
+        "selectedcountCampaignValue1Selected": true
       },
       "activateCampaign": "Активировать кампанию",
       "totalPosts": "Всего постов",
