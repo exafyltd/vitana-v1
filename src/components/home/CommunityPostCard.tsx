@@ -67,6 +67,26 @@ export function CommunityPostCard({
   const [likeCount, setLikeCount] = useState(item.likes_count);
   const [commentCount, setCommentCount] = useState(item.comments_count);
 
+  // ...but only if we actually adopt the reconciled values (VTID-03503). These
+  // were seeded from props once and then never resynced, so once the card had
+  // rendered, a newer count arriving from the feed — a background refetch, or
+  // this viewer's own action being written into the feed cache — was ignored
+  // for the lifetime of the mount. Adjusting state during render (rather than
+  // in an effect) is React's documented pattern for prop-derived state: it
+  // re-renders before paint, so no stale number is ever shown.
+  const [syncedCounts, setSyncedCounts] = useState({
+    likes: item.likes_count,
+    comments: item.comments_count,
+  });
+  if (
+    syncedCounts.likes !== item.likes_count ||
+    syncedCounts.comments !== item.comments_count
+  ) {
+    setSyncedCounts({ likes: item.likes_count, comments: item.comments_count });
+    setLikeCount(item.likes_count);
+    setCommentCount(item.comments_count);
+  }
+
   const openProfile = () => {
     onOpen?.(item);
     navigate(`/u/${item.user_id}`);
@@ -112,8 +132,14 @@ export function CommunityPostCard({
       notify("screens.home.signInToInteract");
       return;
     }
-    setLikeCount((c) => Math.max(0, c + (isLiked ? -1 : 1)));
-    toggleLike();
+    const delta = isLiked ? -1 : 1;
+    setLikeCount((c) => Math.max(0, c + delta));
+    // Roll the optimistic count back if the write fails — otherwise a phantom
+    // +1 sits there until the next feed refetch, which is the same class of
+    // "the number lies" bug as VTID-03503 itself, just in the other direction.
+    toggleLike(undefined, {
+      onError: () => setLikeCount((c) => Math.max(0, c - delta)),
+    });
   };
 
   const handleAddComment = async () => {

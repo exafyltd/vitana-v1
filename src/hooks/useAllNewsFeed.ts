@@ -13,8 +13,9 @@
  * a preference re-ranks instantly without a refetch.
  */
 import { useEffect, useMemo, useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { persistQueryCacheNow } from "@/lib/query-persist";
 import { useAuth } from "@/context/AuthProvider";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from "@/lib/i18n-toast";
@@ -290,6 +291,52 @@ export async function fetchNewsFeedCandidates(
  */
 export const allNewsFeedKey = (userId: string | null, language: string) =>
   ["all-news-feed", userId, language] as const;
+
+/**
+ * Apply a viewer's own like/comment to the cached feed counts (VTID-03503).
+ *
+ * `likes_count` / `comments_count` are read once, with the post row, and then
+ * held for FEED_CANDIDATES_STALE_TIME (5 min) — and this entry is persisted to
+ * localStorage, so it also survives a reload. Nothing in the interaction path
+ * used to touch it: a user could like a post, refresh, and be shown the count
+ * from before her own tap, which reads exactly like the like was discarded.
+ * The realtime channel doesn't cover it either — it only listens for INSERTs on
+ * profile_posts / media_uploads, not on the like and comment tables.
+ *
+ * Patching the cache (rather than invalidating it) is deliberate: invalidation
+ * would re-run the whole multi-request candidate load on every heart tap, and
+ * the counts are authored by DB triggers that have already committed. The next
+ * natural refetch reconciles.
+ *
+ * Ordering is not affected — engagement is only a tiebreak *below*
+ * published_at in rankFeed, and posts have distinct timestamps.
+ */
+export function applyFeedEngagementDelta(
+  queryClient: QueryClient,
+  target: { source: PostFeedItem["source"]; postId: string; likes?: number; comments?: number },
+): void {
+  queryClient.setQueriesData<RawCandidates>(
+    { queryKey: ["all-news-feed"] },
+    (prev) => {
+      if (!prev?.posts) return prev;
+      let changed = false;
+      const posts = prev.posts.map((p) => {
+        if (p.source !== target.source || p.post_id !== target.postId) return p;
+        changed = true;
+        return {
+          ...p,
+          likes_count: Math.max(0, p.likes_count + (target.likes ?? 0)),
+          comments_count: Math.max(0, p.comments_count + (target.comments ?? 0)),
+        };
+      });
+      return changed ? { ...prev, posts } : prev;
+    },
+  );
+
+  // The interval-based writer is up to 30s behind; a refresh inside that window
+  // would restore the pre-interaction snapshot and undo the patch above.
+  persistQueryCacheNow();
+}
 
 /**
  * Shared cache policy for the feed candidates.
