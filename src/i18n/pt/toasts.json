@@ -66,7 +66,7 @@
       "connectionFailed": "Falha na conexão",
       "connectionFailedDesc": "A conexão não pôde ser estabelecida.",
       "validationFailed": "Falha na validação",
-      "validationFailedDesc": "Por favor, verifique sua entrada.",
+      "validationFailedDesc": "Por favor, verifica a tua entrada.",
       "sessionExpired": "Sessão expirada",
       "sessionExpiredDesc": "Por favor, faça login novamente.",
       "serverError": "Erro do servidor",
@@ -76,10 +76,7 @@
       "importFailed": "Falha na importação",
       "importFailedDesc": "Os dados não puderam ser importados.",
       "exportFailed": "Falha na exportação",
-      "exportFailedDesc": "Os dados não puderam ser exportados.",
-      "_pending_review": {
-        "validationFailedDesc": true
-      }
+      "exportFailedDesc": "Os dados não puderam ser exportados."
     },
     "info": {
       "processing": "A processar...",
@@ -702,7 +699,7 @@
       "eventWillAddedYourCalendarShortly": "O evento será adicionado ao seu calendário em breve",
       "inviteSent": "Convite Enviado",
       "signAddEventYourCalendar": "Faça login para adicionar o evento ao seu calendário.",
-      "pleaseWait": "Por favor, aguarde.",
+      "pleaseWait": "Por favor, aguarda.",
       "stillSyncingThisMessageTryAgain": "Ainda sincronizando esta mensagem. Tente novamente em um momento.",
       "responseSent": "Resposta Enviada",
       "calendarInviteError": "Erro no Convite do Calendário",
@@ -728,10 +725,7 @@
       "selectOpenConversationBeforeAttachingFiles": "Selecione ou abra uma conversa antes de anexar arquivos.",
       "uploadFailed": "Falha no upload",
       "failedSendVoiceMessage": "Falha ao enviar mensagem de voz",
-      "thereErrorSendingYourVoiceMessage": "Ocorreu um erro ao enviar sua mensagem de voz",
-      "_pending_review": {
-        "pleaseWait": true
-      }
+      "thereErrorSendingYourVoiceMessage": "Ocorreu um erro ao enviar sua mensagem de voz"
     },
     "notifications": {
       "bookingConfirmed": "Reserva Confirmada! 🎉",
@@ -746,14 +740,14 @@
     },
     "payment": {
       "missingInformation": "Informações Ausentes",
-      "pleaseSelectDateTimeForYour": "Por favor, selecione uma data e hora para sua reserva",
+      "pleaseSelectDateTimeForYour": "Por favor, seleciona uma data e hora para a tua reserva.",
       "insufficientBalance": "Saldo Insuficiente",
       "redirectingPayment": "Redirecionando para o Pagamento",
       "completeYourPaymentPopupWindow": "Conclua seu pagamento na janela pop-up",
       "bookingConfirmed": "Reserva Confirmada! 🎉",
       "bookingFailed": "Falha na Reserva",
       "invalidTransfer": "Transferência Inválida",
-      "pleaseEnterValidAmountWithinYour": "Por favor, insira um valor válido dentro do seu saldo",
+      "pleaseEnterValidAmountWithinYour": "Por favor, insere um valor válido dentro do teu saldo.",
       "transferCompleted": "Transferência Concluída! ✨",
       "transferFailed": "Falha na Transferência",
       "pleaseTryAgainContactSupport": "Por favor, tente novamente ou entre em contato com o suporte",
@@ -791,11 +785,7 @@
       "paymentRequestSent": "Pedido de Pagamento Enviado! 💸",
       "failedSendPaymentRequest": "Falha ao enviar pedido de pagamento",
       "pleaseFillAllRequiredFields": "Por favor, preenche todos os campos obrigatórios",
-      "exchangeSendRequestSent": "Pedido de Troca e Envio Enviado! ✨",
-      "_pending_review": {
-        "pleaseSelectDateTimeForYour": true,
-        "pleaseEnterValidAmountWithinYour": true
-      }
+      "exchangeSendRequestSent": "Pedido de Troca e Envio Enviado! ✨"
     },
     "proactive": {
       "messageGenerated": "Mensagem Gerada!",

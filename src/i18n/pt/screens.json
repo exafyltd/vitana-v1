@@ -9481,14 +9481,11 @@
       "purchaseErrorVitana": "Erro na Compra | VITANA",
       "confirmingPurchaseVitana": "A compra está a ser confirmada | VITANA",
       "purchaseSuccessfulVitana": "Compra Concluída | VITANA",
-      "weCouldnTFindYourPurchase": "Não conseguimos encontrar os detalhes da sua compra. Por favor, verifique o seu email para confirmação.",
+      "weCouldnTFindYourPurchase": "Não conseguimos encontrar os teus detalhes de compra. Por favor, verifica o teu email para confirmação.",
       "viewMyOrders": "Ver os Seus Pedidos",
       "redeemNow": "Resgatar Agora",
       "viewOrders": "Ver Pedidos",
-      "confirmationHasSent": "Uma confirmação foi enviada para",
-      "_pending_review": {
-        "weCouldnTFindYourPurchase": true
-      }
+      "confirmationHasSent": "Uma confirmação foi enviada para"
     },
     "privacysettings": {
       "privacyVisibility": "Privacidade e Visibilidade",

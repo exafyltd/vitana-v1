@@ -14,6 +14,8 @@
     "textInputReady": "Entrada de Texto Pronta",
     "typeMessage": "Podes agora inserir a tua mensagem.",
     "actionFailed": "Ação Falhou",
-    "couldNotExecute": "Não foi possível executar {action}"
-  }
+    "couldNotExecute": "Não foi possível executar {action}",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

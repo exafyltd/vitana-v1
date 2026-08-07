@@ -107,7 +107,7 @@
       "goLiveNowAction": "Entrar ao Vivo Agora",
       "errors": {
         "selectStreamTypeTitle": "Selecionar Tipo de Transmissão",
-        "selectStreamTypeDesc": "Por favor, selecione Áudio ou Vídeo",
+        "selectStreamTypeDesc": "Por favor, seleciona Áudio ou Vídeo",
         "notLoggedInTitle": "Erro",
         "notLoggedInDesc": "Tens de estar com sessão iniciada para entrar em direto",
         "invalidFileTypeTitle": "Tipo de Arquivo Inválido",
@@ -118,10 +118,7 @@
         "imageUploadFailedDesc": "Manteremos a imagem existente.",
         "genericTitle": "Erro",
         "genericDesc": "Falha ao criar stream. Por favor, tenta novamente.",
-        "genericDescWithReason": "Falha ao criar stream: {reason}. Por favor, tenta novamente.",
-        "_pending_review": {
-          "selectStreamTypeDesc": true
-        }
+        "genericDescWithReason": "Falha ao criar stream: {reason}. Por favor, tenta novamente."
       },
       "success": {
         "streamUpdatedTitle": "Stream Atualizado! ✨",
