@@ -58,6 +58,8 @@ export const REGISTER_RULES = {
     name: 'French',
     instruction:
       'Use the tu-form (informal singular) throughout. Never vous/votre/vos when addressing one reader. ' +
+      'Never begin a request with "Veuillez" — it is the vous-form imperative. Use "Merci de …" or a ' +
+      'plain 2nd-person-singular imperative instead ("Saisis un nom…", "Réessaie plus tard"). ' +
       'Keep the fixed expressions "rendez-vous" and "s\'il vous plaît" as they are — they are not formal address.',
   },
   es: {
@@ -79,7 +81,10 @@ export const REGISTER_RULES = {
       'Use EUROPEAN Portuguese (pt-PT) with the tu-form (informal singular): teu/tua/contigo, ' +
       'and second-person singular verbs ("podes", "estás", "tens"). ' +
       'Do NOT use "você" — it is Brazilian usage and semi-formal in pt-PT. ' +
-      'Never "o senhor"/"a senhora". Use clitic pronouns where natural ("ajudou-te", not "ajudou você").',
+      'Never "o senhor"/"a senhora". Use clitic pronouns where natural ("ajudou-te", not "ajudou você"). ' +
+      'Imperatives must be 2nd-person singular, NOT the 3rd-person/você form: ' +
+      '"verifica" not "verifique", "seleciona" not "selecione", "aguarda" not "aguarde", "insere" not "insira". ' +
+      'Possessives are "teu"/"tua", not "seu"/"sua", when addressing the reader.',
   },
   ru: {
     name: 'Russian',

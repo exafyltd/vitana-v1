@@ -2759,7 +2759,10 @@
       "sendResetLink": "Envoyer le lien de réinitialisation",
       "resendAvailableCooldownS": "Renvoyer disponible dans {cooldown}s",
       "ifYouArenTSentBack": "Si tu n'es pas automatiquement redirigé(e), touche ci-dessous – ou passe simplement à l'app Vitana, elle se mettra à jour en quelques secondes.",
-      "updating": "Mise à jour…"
+      "updating": "Mise à jour…",
+      "_pending_review": {
+        "pleaseWaitMoment": true
+      }
     },
     "billing": {
       "from": "De :",
@@ -4143,7 +4146,10 @@
       "briefDescriptionDocument": "Brève description du document",
       "whatSNewThisFrontpageVersion": "Quoi de neuf dans cette version de la page d'accueil ?",
       "tryAdjustingYourFiltersWaitFor": "Essaie d'ajuster tes filtres ou attends l'arrivée de nouveaux événements.",
-      "statusLastcode": "Statut : {lastCode}"
+      "statusLastcode": "Statut : {lastCode}",
+      "_pending_review": {
+        "pleaseWaitWhileAiHandlesYour": true
+      }
     },
     "diary": {
       "startRecordingYourWellnessJourney": "Commence à enregistrer ton parcours bien-être",

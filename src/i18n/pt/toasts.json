@@ -76,7 +76,10 @@
       "importFailed": "Falha na importação",
       "importFailedDesc": "Os dados não puderam ser importados.",
       "exportFailed": "Falha na exportação",
-      "exportFailedDesc": "Os dados não puderam ser exportados."
+      "exportFailedDesc": "Os dados não puderam ser exportados.",
+      "_pending_review": {
+        "validationFailedDesc": true
+      }
     },
     "info": {
       "processing": "A processar...",
@@ -725,7 +728,10 @@
       "selectOpenConversationBeforeAttachingFiles": "Selecione ou abra uma conversa antes de anexar arquivos.",
       "uploadFailed": "Falha no upload",
       "failedSendVoiceMessage": "Falha ao enviar mensagem de voz",
-      "thereErrorSendingYourVoiceMessage": "Ocorreu um erro ao enviar sua mensagem de voz"
+      "thereErrorSendingYourVoiceMessage": "Ocorreu um erro ao enviar sua mensagem de voz",
+      "_pending_review": {
+        "pleaseWait": true
+      }
     },
     "notifications": {
       "bookingConfirmed": "Reserva Confirmada! 🎉",
@@ -785,7 +791,11 @@
       "paymentRequestSent": "Pedido de Pagamento Enviado! 💸",
       "failedSendPaymentRequest": "Falha ao enviar pedido de pagamento",
       "pleaseFillAllRequiredFields": "Por favor, preenche todos os campos obrigatórios",
-      "exchangeSendRequestSent": "Pedido de Troca e Envio Enviado! ✨"
+      "exchangeSendRequestSent": "Pedido de Troca e Envio Enviado! ✨",
+      "_pending_review": {
+        "pleaseSelectDateTimeForYour": true,
+        "pleaseEnterValidAmountWithinYour": true
+      }
     },
     "proactive": {
       "messageGenerated": "Mensagem Gerada!",

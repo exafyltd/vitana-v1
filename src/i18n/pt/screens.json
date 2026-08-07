@@ -9485,7 +9485,10 @@
       "viewMyOrders": "Ver os Seus Pedidos",
       "redeemNow": "Resgatar Agora",
       "viewOrders": "Ver Pedidos",
-      "confirmationHasSent": "Uma confirmação foi enviada para"
+      "confirmationHasSent": "Uma confirmação foi enviada para",
+      "_pending_review": {
+        "weCouldnTFindYourPurchase": true
+      }
     },
     "privacysettings": {
       "privacyVisibility": "Privacidade e Visibilidade",

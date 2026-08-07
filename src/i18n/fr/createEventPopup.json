@@ -113,7 +113,12 @@
       "personalEventCreated": "Événement créé !",
       "personalEventCreatedDesc": "L'événement a été ajouté à ton calendrier.",
       "error": "Erreur",
-      "errorDesc": "L'événement n'a pas pu être créé. Réessaie."
+      "errorDesc": "L'événement n'a pas pu être créé. Réessaie.",
+      "_pending_review": {
+        "invalidFileTypeDesc": true,
+        "missingFieldsDesc": true,
+        "invalidDateDesc": true
+      }
     }
   }
 }

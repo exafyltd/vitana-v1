@@ -76,7 +76,10 @@
       "importFailed": "Importation échouée",
       "importFailedDesc": "Les données n'ont pas pu être importées.",
       "exportFailed": "Exportation échouée",
-      "exportFailedDesc": "Les données n'ont pas pu être exportées."
+      "exportFailedDesc": "Les données n'ont pas pu être exportées.",
+      "_pending_review": {
+        "serverErrorDesc": true
+      }
     },
     "info": {
       "processing": "Traitement en cours...",
@@ -86,7 +89,10 @@
       "loading": "Chargement...",
       "loadingDesc": "Les données sont récupérées.",
       "syncing": "Synchronisation...",
-      "syncingDesc": "Les données sont synchronisées."
+      "syncingDesc": "Les données sont synchronisées.",
+      "_pending_review": {
+        "processingDesc": true
+      }
     },
     "warning": {
       "unsavedChanges": "Modifications non enregistrées",
@@ -173,7 +179,19 @@
       "weLlAnalyzeUpdateSuggestionsShortly": "Nous analyserons et mettrons à jour les suggestions sous peu.",
       "activityHidden": "Activité masquée",
       "success": "Succès ! 🎉",
-      "donTBreakStreakOneSmall": "🔥 Ne brise pas ta série — une petite action aujourd'hui"
+      "donTBreakStreakOneSmall": "🔥 Ne brise pas ta série — une petite action aujourd'hui",
+      "_pending_review": {
+        "pleaseEnterGroupName": true,
+        "pleaseLogCreateGroup": true,
+        "pleaseEnterNameForYourLive": true,
+        "pleaseEnablePaymentsSettingsBeforeCreating": true,
+        "pleaseEnterPriceAtLeast1": true,
+        "pleaseTryAgain": true,
+        "pleaseFillAllRequiredFields": true,
+        "youCannotCreateMeetupPastPlease": true,
+        "thereIssueCreatingYourMeetupPlease": true,
+        "couldNotEstablishConnectionPleaseTry": true
+      }
     },
     "admin": {
       "companionOverridesSavedVoiceCacheRefreshes": "Paramètres du compagnon enregistrés — le cache vocal se rafraîchit dans 30s.",
@@ -328,7 +346,11 @@
       "removedFromActiveList": "Retiré de la liste active.",
       "rollbackFailed": "Échec de la restauration",
       "ticketRejected": "{ticketNumber} rejeté",
-      "ticketRemovedActiveList": "Retiré de la liste active."
+      "ticketRemovedActiveList": "Retiré de la liste active.",
+      "_pending_review": {
+        "pleaseEnterYourGeminiApiKey": true,
+        "pleaseEnterValidEmailAddress2": true
+      }
     },
     "audio": {
       "cameraStopped": "Caméra arrêtée",
@@ -366,7 +388,10 @@
       "error": "Erreur",
       "pleaseEnterApiKey": "Veuillez saisir une clé API",
       "success": "Succès",
-      "apiKeySavedSecurelyWithEncryption": "Clé API enregistrée en toute sécurité avec chiffrement"
+      "apiKeySavedSecurelyWithEncryption": "Clé API enregistrée en toute sécurité avec chiffrement",
+      "_pending_review": {
+        "pleaseEnterApiKey": true
+      }
     },
     "coaches": {
       "bookingStarted": "📅 Réservation commencée"
@@ -785,7 +810,18 @@
       "paymentRequestSent": "Demande de paiement envoyée ! 💸",
       "failedSendPaymentRequest": "Échec de l'envoi de la demande de paiement",
       "pleaseFillAllRequiredFields": "Veuillez remplir tous les champs requis",
-      "exchangeSendRequestSent": "Demande d'échange et d'envoi envoyée ! ✨"
+      "exchangeSendRequestSent": "Demande d'échange et d'envoi envoyée ! ✨",
+      "_pending_review": {
+        "pleaseFillAmountDescription": true,
+        "failedSearchUsersPleaseTryAgain": true,
+        "pleaseSelectRecipientEnterAmountChoose": true,
+        "pleaseEnterValidAmountGreaterThan": true,
+        "failedSendPaymentRequestPleaseTry": true,
+        "pleaseSelectWhoSendPayment": true,
+        "failedProcessPaymentPleaseTryAgain": true,
+        "couldNotRefreshBalancePleaseTry": true,
+        "pleaseFillAllRequiredFields": true
+      }
     },
     "proactive": {
       "messageGenerated": "Message généré !",
@@ -851,7 +887,11 @@
       "universalCoverRemoved": "Photo de couverture universelle supprimée",
       "libraryPhotoUploaded": "Photo ajoutée à la bibliothèque",
       "libraryPhotoRemoved": "Photo supprimée",
-      "categoryRequired": "Choisis d'abord une catégorie."
+      "categoryRequired": "Choisis d'abord une catégorie.",
+      "_pending_review": {
+        "pleaseEnterYourLinkedinProfileUrl": true,
+        "heicheifFormatNotSupportedByBrowsers": true
+      }
     },
     "reminders": {
       "notificationsArenTSupportedThisBrowser": "Les notifications ne sont pas prises en charge dans ce navigateur.",
@@ -977,7 +1017,19 @@
       "postPublished": "Publication publiée !",
       "campaignsExportedCsv": "Campagnes exportées au format CSV",
       "smartrescheduleFeatureComingSoon": "La fonction Smart-Reschedule arrive bientôt !",
-      "viberNotDetectedLinkCopiedClipboard": "Viber non détecté. Lien copié dans le presse-papiers !"
+      "viberNotDetectedLinkCopiedClipboard": "Viber non détecté. Lien copié dans le presse-papiers !",
+      "_pending_review": {
+        "pleaseSelectImageFile": true,
+        "pleaseLogCreatePosts": true,
+        "pleaseUploadCsvFile": true,
+        "pleaseEnterYourProfileUrl": true,
+        "pleaseFillAllEmailFields": true,
+        "pleaseFillAllTwilioFields": true,
+        "pleaseFillAllWhatsappFields": true,
+        "pleaseFillSenderNameEmail": true,
+        "pleaseFillAllTwilioCredentials": true,
+        "pleaseFillMetaApiCredentials": true
+      }
     },
     "tickets": {
       "ticketDownloaded": "Billet téléchargé !",

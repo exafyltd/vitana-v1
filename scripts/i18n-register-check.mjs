@@ -86,7 +86,20 @@ const RULES = {
   },
   fr: {
     name: 'French',
-    formal: L('vous|votre|vos'),
+    // `Veuillez` added VTID-03524. It is the vous-form imperative ("kindly
+    // do X") and matching only the PRONOUN missed all 44 instances of it,
+    // including two that mix registers inside a single sentence:
+    //   "Veuillez te connecter pour créer un groupe."
+    //   "Veuillez saisir un nom pour ta salle en direct."
+    // formal imperative + informal possessive. There is no du-form context in
+    // which `Veuillez` is correct — the informal equivalents are "Merci de …"
+    // or a plain 2sg imperative ("Saisis …") — so it needs no cross-check and
+    // carries no plural exemption, unlike the pronoun.
+    //
+    // Found by the LLM audit, not by this script. Worth remembering why: a
+    // regex over pronouns cannot see a register encoded in VERB MORPHOLOGY,
+    // and every language here can express formality that way.
+    formal: L('vous|votre|vos|Veuillez|veuillez'),
     // `rendez-vous` (appointment) and `chez-vous`/`au-revoir` style compounds.
     // Stripped BEFORE matching — this alone removed 37 of 41 French hits.
     // `s'il vous plaît` is "please" — a frozen politeness formula that is
@@ -125,7 +138,19 @@ const RULES = {
     // European Portuguese: `tu` is informal, `o senhor`/`a senhora` formal.
     // `você` is a genuine grey area — semi-formal in pt-PT, standard in pt-BR
     // — so it is reported SEPARATELY rather than counted as a violation.
-    formal: /\bo senhor\b|\ba senhora\b|\bVossa Excel[êe]ncia\b/iu,
+    // VTID-03524: the 3rd-person imperative is the você/formal form and is
+    // what "Por favor, verifique…" uses. The tu-form is "verifica"/"seleciona"
+    // /"aguarda". Same lesson as `Veuillez`: register lives in the verb, so a
+    // pronoun-only rule reports a clean catalog that reads as Brazilian
+    // semi-formal throughout. `Por favor` ALONE is register-neutral and is
+    // deliberately not matched — only the formal imperative forms are.
+    // Deliberately anchored to "Por favor, <verb>" rather than matching the
+    // bare verb forms. `complete`, `confirme` and `tente` are also ordinary
+    // subjunctives, so an unanchored list would flag correct sentences — the
+    // same over-matching that made Spanish `su` unusable. `Por favor` on its
+    // own is register-neutral and is NOT matched; only the construction is.
+    formal:
+      /\bo senhor\b|\ba senhora\b|\bVossa Excel[êe]ncia\b|\bpor favor,?\s+(?:verifique|selecione|introduza|aguarde|complete|escolha|preencha|confirme|insira|clique)\b/iu,
     soft: L('você'),
     exempt: [],
     note: 'tu-form (European Portuguese). Never o senhor.',
