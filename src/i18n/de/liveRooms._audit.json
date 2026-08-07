@@ -61,10 +61,8 @@
       "phase": "llm"
     },
     "liveRooms.tabs.live": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect capitalization for adverbial 'live'.",
-      "suggested": "Jetzt live",
       "phase": "llm"
     },
     "liveRooms.tabs.scheduled": {
@@ -93,10 +91,8 @@
       "phase": "llm"
     },
     "liveRooms.noRooms": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing 'rooms' and slightly awkward phrasing.",
-      "suggested": "Derzeit keine Live-Räume",
       "phase": "llm"
     },
     "liveRooms.beFirst": {
@@ -110,10 +106,8 @@
       "phase": "llm"
     },
     "liveRooms.demoRoomDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing part of the English meaning ('to go live').",
-      "suggested": "Dies ist ein Beispielraum. Erstelle deinen eigenen, um live zu gehen!",
       "phase": "llm"
     },
     "liveRooms.search.placeholder": {
@@ -157,10 +151,8 @@
       "phase": "llm"
     },
     "liveRooms.viewer.mute": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect part of speech; 'Stumm' is an adjective, not a command.",
-      "suggested": "Stummschalten",
       "phase": "llm"
     },
     "liveRooms.viewer.raiseHand": {
@@ -199,10 +191,8 @@
       "phase": "llm"
     },
     "liveRooms.goLivePopup.descriptionPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Beschreibe kurz, worum es in diesem Stream geht…",
       "phase": "llm"
     },
     "liveRooms.goLivePopup.charactersCount": {
@@ -326,10 +316,8 @@
       "phase": "llm"
     },
     "liveRooms.goLivePopup.access.followers.desc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'Ihre' instead of informal 'deine' for du-form.",
-      "suggested": "Nur deine Follower",
       "phase": "llm"
     },
     "liveRooms.goLivePopup.access.group.label": {
@@ -458,10 +446,8 @@
       "phase": "llm"
     },
     "liveRooms.goLivePopup.errors.notLoggedInDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Du musst angemeldet sein, um live zu gehen",
       "phase": "llm"
     },
     "liveRooms.goLivePopup.errors.invalidFileTypeTitle": {
@@ -510,10 +496,8 @@
       "phase": "llm"
     },
     "liveRooms.goLivePopup.success.streamUpdatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register: uses formal possessive 'Ihr' instead of informal 'Dein'.",
-      "suggested": "Dein Stream wurde erfolgreich aktualisiert",
       "phase": "llm"
     },
     "liveRooms.goLivePopup.success.streamScheduledTitle": {
@@ -522,24 +506,18 @@
       "phase": "llm"
     },
     "liveRooms.goLivePopup.success.streamScheduledDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Formal register used instead of informal 'du'.",
-      "suggested": "Dein Stream ist geplant für {date} um {time}",
       "phase": "llm"
     },
     "liveRooms.goLivePopup.success.youAreLiveTitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Formal register used instead of informal 'du'.",
-      "suggested": "Du bist live! 🎙️",
       "phase": "llm"
     },
     "liveRooms.goLivePopup.success.youAreLiveDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Formal register used instead of informal 'du'.",
-      "suggested": "Du trittst deinem Stream-Raum bei…",
       "phase": "llm"
     },
     "liveRooms.goLivePopup.success.aiImageHintTitle": {
@@ -551,7 +529,72 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.genericDescWithReason": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.editSession.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.editSession.saving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.editSession.changeCover": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.editSession.noChanges": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.durationLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration15": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration30": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration45": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration60": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration90": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration120": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.durationHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:14:55.989Z"
+  "generatedAt": "2026-08-07T05:16:41.523Z"
 }
