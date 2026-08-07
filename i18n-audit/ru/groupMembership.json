@@ -1,0 +1,39 @@
+{
+  "verdicts": {
+    "groupMembership.joined": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Grammatically incorrect; 'Присоединение' is a noun (the act of joining), not a completed action.",
+      "suggested": "Присоединились! 🎉",
+      "phase": "llm"
+    },
+    "groupMembership.joinedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.left": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Grammatically incorrect; 'Выход из группы' is a noun phrase (exit from group), not a completed action/status.",
+      "suggested": "Покинул группу",
+      "phase": "llm"
+    },
+    "groupMembership.leftDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.errorJoin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.errorLeave": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-07T00:35:07.749Z"
+}

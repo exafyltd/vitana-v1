@@ -1,0 +1,51 @@
+{
+  "verdicts": {
+    "profileTabs.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.about": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.events": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.services": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.insight": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "issue": "English is singular 'Insight', Russian is plural 'Инсайты'. However, 'Инсайты' is idiomatic for a menu section in this context.",
+      "phase": "llm"
+    },
+    "profileTabs.milestones": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-07T00:44:32.390Z"
+}
