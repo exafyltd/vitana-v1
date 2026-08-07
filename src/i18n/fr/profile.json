@@ -6,7 +6,8 @@
       "editHighlights": "Modifier les coups de cœur",
       "saveHighlights": "Enregistrer les coups de cœur",
       "highlightsDesc": "Choisis tes meilleurs posts et médias à afficher en haut de ton profil. Le contenu mis en avant apparaît dans la section Highlights et attire plus d'abonnés.",
-      "try": "Essayer"
+      "try": "Essayer",
+      "_pending_review": {}
     },
     "identity": {
       "vitanaIndex": "Index Vitana",
@@ -15,13 +16,15 @@
       "follow": "Suivre",
       "followingState": "Abonné(e)",
       "understandIndex": "Comprendre l'index",
-      "brandFooter": "MAXINA × VITANA"
+      "brandFooter": "MAXINA × VITANA",
+      "_pending_review": {}
     },
     "tabs": {
       "identity": "Identité",
       "social": "Social",
       "account": "Compte",
-      "business": "Entreprise"
+      "business": "Entreprise",
+      "_pending_review": {}
     },
     "account": {
       "notSet": "Non défini",
@@ -30,7 +33,8 @@
       "visibility": {
         "private": "Privé",
         "connections": "Connexions",
-        "public": "Public"
+        "public": "Public",
+        "_pending_review": {}
       },
       "sections": {
         "publicProfile": "Profil public",
@@ -38,7 +42,8 @@
         "basicInfo": "Informations personnelles de base",
         "basicInfoSubtitle": "Données d'identité fixes",
         "contactInfo": "Coordonnées",
-        "accountDetails": "Détails du compte"
+        "accountDetails": "Détails du compte",
+        "_pending_review": {}
       },
       "fields": {
         "avatar": "Avatar",
@@ -56,11 +61,14 @@
         "city": "Ville",
         "memberSince": "Membre depuis",
         "accountType": "Type de compte",
-        "verificationStatus": "Statut de vérification"
+        "verificationStatus": "Statut de vérification",
+        "_pending_review": {}
       },
       "values": {
-        "uploaded": "Téléchargé"
-      }
+        "uploaded": "Téléchargé",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "business": {
       "title": "Mes recommandations",
@@ -75,7 +83,10 @@
       "publicTitle": "Recommandations",
       "publicSubtitle": "Produits recommandés par ce profil",
       "publicEmpty": "Aucune recommandation pour l'instant",
-      "viewProduct": "Voir"
-    }
-  }
+      "viewProduct": "Voir",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

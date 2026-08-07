@@ -63,7 +63,7 @@
       "addMembers": "Ajouter des membres",
       "searchPlaceholder": "Rechercher des utilisateurs...",
       "groupNameRequired": "Nom du groupe requis",
-      "groupNameRequiredDesc": "Veuillez saisir un nom pour ton groupe.",
+      "groupNameRequiredDesc": "Saisis un nom pour ton groupe.",
       "addMembersRequired": "Ajouter des membres",
       "addMembersRequiredDesc": "Ajoute au moins un membre.",
       "groupExists": "Le groupe existe déjà",
@@ -71,11 +71,7 @@
       "created": "Groupe créé",
       "createdDesc": "\"{name}\" a été créé avec succès.",
       "failed": "Échec de la création du groupe",
-      "failedDesc": "Veuillez réessayer.",
-      "_pending_review": {
-        "groupNameRequiredDesc": true,
-        "failedDesc": true
-      }
+      "failedDesc": "Réessaie."
     },
     "toast": {
       "success": "Succès",
@@ -92,10 +88,7 @@
       "groupCreated": "Le groupe \"{name}\" a été créé avec succès !",
       "groupFailed": "Échec de la création du groupe",
       "allMarkedRead": "Tous les messages marqués comme lus",
-      "markAllReadFailed": "Impossible de tout marquer comme lu. Veuillez réessayer.",
-      "_pending_review": {
-        "markAllReadFailed": true
-      }
+      "markAllReadFailed": "Impossible de marquer tout lu. Réessaie."
     },
     "createGroupAction": "Créer un nouveau groupe",
     "newConversationAction": "Nouvelle conversation",

@@ -14,6 +14,8 @@
     "postpone": "Reporter",
     "addNote": "Ajouter une note",
     "openContext": "Ouvrir le contexte",
-    "assignee": "Responsable"
-  }
+    "assignee": "Responsable",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

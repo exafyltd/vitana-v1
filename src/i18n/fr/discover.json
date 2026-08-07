@@ -51,7 +51,8 @@
       "movement": "Mouvement",
       "mind": "Esprit",
       "supplements": "Suppléments",
-      "experts": "Experts"
+      "experts": "Experts",
+      "_pending_review": {}
     },
     "subcategories": {
       "longevity": "Longévité",
@@ -78,7 +79,8 @@
       "sexualHealth": "Santé sexuelle",
       "prevention": "Prévention & Détection précoce",
       "generalHealth": "Santé générale",
-      "dnaAnalysis": "Analyse ADN"
+      "dnaAnalysis": "Analyse ADN",
+      "_pending_review": {}
     },
     "quickActions": {
       "title": "Actions rapides",
@@ -89,7 +91,8 @@
       "reorderPrevious": "Recommander un précédent",
       "managePayment": "Gérer le paiement",
       "findServicesNearMe": "Trouver des services près de toi",
-      "viewSavedItems": "Voir les articles enregistrés"
+      "viewSavedItems": "Voir les articles enregistrés",
+      "_pending_review": {}
     },
     "aiPicks": {
       "title": "Recommandations IA pour toi",
@@ -101,24 +104,30 @@
       "recommendationsFound": "{count} recommandations trouvées",
       "noRecommendations": "Aucune recommandation trouvée",
       "noRecommendationsDesc": "Choisis un filtre différent pour voir plus de recommandations",
-      "viewAllPicks": "Voir toutes les sélections"
+      "viewAllPicks": "Voir toutes les sélections",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Tout",
       "services": "Services",
       "supplements": "Compléments",
       "experts": "Experts",
-      "deals": "Offres"
+      "deals": "Offres",
+      "_pending_review": {}
     },
     "toast": {
       "actionSelected": "Action sélectionnée",
-      "comingSoon": "La fonctionnalité {action} arrive bientôt !"
+      "comingSoon": "La fonctionnalité {action} arrive bientôt !",
+      "_pending_review": {}
     },
     "guest": {
       "bannerTitle": "Connecte-toi pour gagner des récompenses Vitana à chaque achat",
       "bannerSubtitle": "Navigue librement — connecte-toi (c'est gratuit) pour acheter et commencer à gagner des récompenses.",
       "bannerCta": "Se connecter",
-      "signIn": "Se connecter"
-    }
-  }
+      "signIn": "Se connecter",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

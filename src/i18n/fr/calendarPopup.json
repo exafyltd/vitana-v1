@@ -16,6 +16,8 @@
     "quickAdd": "Ajout rapide",
     "eventFormComingSoon": "Formulaire de création d'événement bientôt disponible",
     "externalSync": "Synchronisation externe",
-    "connectingCalendars": "Connecte-toi avec des calendriers externes..."
-  }
+    "connectingCalendars": "Connecte-toi avec des calendriers externes...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

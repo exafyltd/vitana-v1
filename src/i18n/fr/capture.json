@@ -41,6 +41,8 @@
     "sendFailed": "Échec de l'envoi",
     "sendFailedDesc": "Ton retour n'a pas pu être envoyé. Veuille réessayer.",
     "recognitionError": "Erreur de reconnaissance",
-    "recognitionErrorDesc": "La reconnaissance vocale a rencontré une erreur. Réessaye."
-  }
+    "recognitionErrorDesc": "La reconnaissance vocale a rencontré une erreur. Réessaye.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

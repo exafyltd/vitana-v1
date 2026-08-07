@@ -8,6 +8,8 @@
     "photo": "Photo",
     "textEntry": "✍️ Saisie de texte",
     "photoEntry": "📸 Saisie de photo",
-    "searchPlaceholder": "Rechercher dans le journal..."
-  }
+    "searchPlaceholder": "Rechercher dans le journal...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

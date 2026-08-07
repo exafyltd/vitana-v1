@@ -10,7 +10,8 @@
       "history": "Historique",
       "all": "Tout",
       "completed": "Terminées",
-      "cancelled": "Annulées"
+      "cancelled": "Annulées",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Tout",
@@ -18,17 +19,20 @@
       "products": "Produits",
       "vouchers": "Bons",
       "services": "Services",
-      "refunds": "Remboursements"
+      "refunds": "Remboursements",
+      "_pending_review": {}
     },
     "previewNotice": "Ce sont des commandes d'aperçu. Tes commandes réelles apparaîtront ici.",
     "sampleData": "Données d'exemple",
     "emptyActive": {
       "title": "Aucune commande active",
-      "description": "Tu n'as aucune commande active ni événement à venir."
+      "description": "Tu n'as aucune commande active ni événement à venir.",
+      "_pending_review": {}
     },
     "emptyHistory": {
       "title": "Aucun historique de commandes",
-      "description": "Tes commandes terminées et événements passés apparaîtront ici."
+      "description": "Tes commandes terminées et événements passés apparaîtront ici.",
+      "_pending_review": {}
     },
     "noOrders": "Aucune commande pour l'instant",
     "noOrdersDesc": "Tes commandes apparaîtront ici une fois que tu auras acheté quelque chose.",
@@ -60,7 +64,8 @@
       "personalMessage": "Message personnel",
       "cancel": "Annuler",
       "send": "Envoyer",
-      "downloadPdf": "Télécharger le PDF"
+      "downloadPdf": "Télécharger le PDF",
+      "_pending_review": {}
     },
     "status": {
       "upcoming": "À venir",
@@ -75,7 +80,10 @@
       "pending": "En attente",
       "processing": "Traitement en cours",
       "paid": "Actif",
-      "active": "Actif"
-    }
-  }
+      "active": "Actif",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

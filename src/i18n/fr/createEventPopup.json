@@ -85,13 +85,13 @@
     },
     "toasts": {
       "invalidFileType": "Type de fichier invalide",
-      "invalidFileTypeDesc": "Veuillez sélectionner un fichier image (JPEG, PNG, WebP)",
+      "invalidFileTypeDesc": "Sélectionne un fichier image (JPEG, PNG, WebP)",
       "fileTooLarge": "Fichier trop volumineux",
       "fileTooLargeDesc": "L'image doit être inférieure à 5 Mo",
       "missingFields": "Champs requis manquants",
-      "missingFieldsDesc": "Veuillez fournir le titre, la date et l'heure de l'événement.",
+      "missingFieldsDesc": "Fournis un titre d'événement, la date et l'heure.",
       "invalidDate": "Date invalide",
-      "invalidDateDesc": "Tu ne peux pas créer un événement dans le passé. Veuillez sélectionner une date et une heure futures.",
+      "invalidDateDesc": "Tu ne peux pas créer un événement passé. Sélectionne une date et une heure futures.",
       "imageUploadFailed": "Échec du téléchargement de l'image",
       "imageUploadFailedDesc": "L'événement sera créé sans image.",
       "errorCreating": "Erreur lors de la création de l'événement",
@@ -113,12 +113,7 @@
       "personalEventCreated": "Événement créé !",
       "personalEventCreatedDesc": "L'événement a été ajouté à ton calendrier.",
       "error": "Erreur",
-      "errorDesc": "L'événement n'a pas pu être créé. Réessaie.",
-      "_pending_review": {
-        "invalidFileTypeDesc": true,
-        "missingFieldsDesc": true,
-        "invalidDateDesc": true
-      }
+      "errorDesc": "L'événement n'a pas pu être créé. Réessaie."
     }
   }
 }

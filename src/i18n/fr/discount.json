@@ -26,6 +26,8 @@
     "email": "E-mail",
     "ticketEmailNote": "Ton billet et ta confirmation seront envoyés à cet e-mail.",
     "left": "{count} restant(s)",
-    "loadFailed": "Échec du chargement des billets"
-  }
+    "loadFailed": "Échec du chargement des billets",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -7,7 +7,8 @@
       "today": "Aujourd'hui",
       "upcoming": "À venir",
       "following": "Suivis",
-      "recommended": "Recommandés"
+      "recommended": "Recommandés",
+      "_pending_review": {}
     },
     "noEvents": "Aucun événement prévu",
     "checkBack": "Reviens bientôt pour les événements communautaires à venir !",
@@ -22,7 +23,10 @@
       "noPostsFromFollowing": "Aucune publication pour l'instant",
       "noPostsFromFollowingDesc": "Les personnes que tu suis n'ont pas encore créé d'événements ou de rencontres.",
       "youFollow": "Tu suis",
-      "loadingFollowing": "Chargement des publications…"
-    }
-  }
+      "loadingFollowing": "Chargement des publications…",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -22,6 +22,8 @@
     "healthEmpty": "Enregistre ta première entrée pour démarrer ton Index.",
     "noActionsMatchedYet": "Aucune action encore trouvée — Autopilot est en train de façonner des suggestions.",
     "actionsPendingOne": "{count} action en attente",
-    "actionsPendingOther": "{count} actions en attente"
-  }
+    "actionsPendingOther": "{count} actions en attente",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

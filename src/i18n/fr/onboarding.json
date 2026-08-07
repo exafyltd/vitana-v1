@@ -23,7 +23,10 @@
       "handleAvailable": "Nom d'utilisateur disponible !",
       "handleMinLength": "Au moins 3 caractères",
       "saving": "Configuration...",
-      "submit": "C'est parti !"
-    }
-  }
+      "submit": "C'est parti !",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

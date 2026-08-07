@@ -26,18 +26,21 @@
     "trend": {
       "improving": "S'améliore",
       "declining": "Aggravation",
-      "stable": "Stable"
+      "stable": "Stable",
+      "_pending_review": {}
     },
     "suggestions": {
       "uploadBloodTestResults": "Télécharge tes résultats d'analyse sanguine",
-      "startFitnessChallenge": "Commence ton défi fitness de 30 jours"
+      "startFitnessChallenge": "Commence ton défi fitness de 30 jours",
+      "_pending_review": {}
     },
     "pillars": {
       "sleep": "Sommeil",
       "exercise": "Exercice",
       "nutrition": "Nutrition",
       "hydration": "Hydratation",
-      "mental": "Mental"
+      "mental": "Mental",
+      "_pending_review": {}
     },
     "emptyStates": {
       "noSleepPlan": "Pas encore de plan de sommeil",
@@ -51,7 +54,8 @@
       "noMentalPlan": "Pas encore de plan mental",
       "noMentalPlanDesc": "Génère ton plan de bien-être mental personnalisé, pour suivre le stress, le focus et l'équilibre émotionnel avec le soutien de l'IA.",
       "generatePlan": "Générer le plan",
-      "generating": "Génération en cours..."
+      "generating": "Génération en cours...",
+      "_pending_review": {}
     },
     "noSupplements": "Pas encore de compléments",
     "noSupplementsDesc": "Suis tes vitamines, minéraux et suppléments quotidiens. Ajoute ton premier supplément pour commencer.",
@@ -80,15 +84,20 @@
         "hydration": "Hydratation",
         "exercise": "Exercice",
         "sleep": "Sommeil",
-        "mental": "Santé Mentale"
+        "mental": "Santé Mentale",
+        "_pending_review": {}
       },
       "economyAxes": {
         "find_match": "Trouver une correspondance",
         "marketplace": "Marché",
         "income_generation": "Génération de revenus",
-        "business_formation": "Création d'entreprise"
+        "business_formation": "Création d'entreprise",
+        "_pending_review": {}
       },
-      "contractLink": "Voir le contrat de l'Objectif Ultime"
-    }
-  }
+      "contractLink": "Voir le contrat de l'Objectif Ultime",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

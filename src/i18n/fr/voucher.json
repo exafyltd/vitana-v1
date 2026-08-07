@@ -4,7 +4,8 @@
       "title": "Offrir un bon Maxina",
       "subtitle": "Offrez Bien-être et Connexion communautaire",
       "buyVoucher": "Acheter un bon",
-      "openingCheckout": "Ouverture du paiement sécurisé..."
+      "openingCheckout": "Ouverture du paiement sécurisé...",
+      "_pending_review": {}
     },
     "tiers": {
       "test": {
@@ -13,7 +14,8 @@
           "Test de paiement uniquement",
           "Pas un vrai bon",
           "Pour les tests de développement"
-        ]
+        ],
+        "_pending_review": {}
       },
       "experience": {
         "name": "Expérience",
@@ -22,7 +24,8 @@
           "Conseil bien-être personnalisé",
           "Essai Vitana+ de 30 jours inclus",
           "Bon électronique au design soigné"
-        ]
+        ],
+        "_pending_review": {}
       },
       "exclusive": {
         "name": "Exclusif",
@@ -31,8 +34,10 @@
           "Séance de coaching individuel avec un expert",
           "Abonnement Vitana+ de 90 jours",
           "Réservation prioritaire + avantages VIP"
-        ]
-      }
+        ],
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "success": {
       "title": "Bon acheté !",
@@ -40,7 +45,8 @@
       "download": "Télécharger le bon",
       "sendEmail": "Envoyer au destinataire par e-mail",
       "viewOrders": "Voir dans les commandes",
-      "done": "Terminé"
+      "done": "Terminé",
+      "_pending_review": {}
     },
     "email": {
       "title": "Envoyer le bon par e-mail",
@@ -50,7 +56,8 @@
       "personalMessage": "Message personnel (facultatif)",
       "messagePlaceholder": "Joyeux anniversaire ! Profite de ce moment de bien-être...",
       "back": "Retour",
-      "send": "Envoyer le bon"
+      "send": "Envoyer le bon",
+      "_pending_review": {}
     },
     "preview": {
       "title": "Ton bon",
@@ -64,7 +71,8 @@
       "copyLink": "Copier le lien",
       "share": "Enregistrer / Partager",
       "shareHint": "Enregistrer dans Fichiers, Drive, ou envoyer à quelqu'un",
-      "downloadHint": "Si le téléchargement s'ouvre vide, appuie sur Ouvrir dans le navigateur."
+      "downloadHint": "Si le téléchargement s'ouvre vide, appuie sur Ouvrir dans le navigateur.",
+      "_pending_review": {}
     },
     "toast": {
       "downloadStarted": "Téléchargement démarré !",
@@ -81,7 +89,10 @@
       "pdfNotAvailable": "Téléchargement PDF non disponible pour ce type de commande",
       "enterRecipientEmail": "Saisis l'e-mail du destinataire.",
       "emailOnlyForVouchers": "Envoi d'e-mail uniquement disponible pour les bons",
-      "sendingVoucherEmail": "Envoi de l'e-mail du bon..."
-    }
-  }
+      "sendingVoucherEmail": "Envoi de l'e-mail du bon...",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

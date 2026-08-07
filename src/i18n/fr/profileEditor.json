@@ -20,7 +20,8 @@
     "visibility": {
       "public": "Public",
       "followers": "Abonnés",
-      "private": "Privé"
+      "private": "Privé",
+      "_pending_review": {}
     },
     "languageOptions": {
       "english": "Anglais",
@@ -32,7 +33,8 @@
       "russian": "Russe",
       "arabic": "Arabe",
       "chinese": "Chinois",
-      "japanese": "Japonais"
+      "japanese": "Japonais",
+      "_pending_review": {}
     },
     "cancel": "Annuler",
     "save": "Enregistrer les modifications",
@@ -46,7 +48,8 @@
       "makeShorter": "Raccourcir",
       "moreProfessional": "Plus professionnel",
       "moreInspirational": "Plus inspirant",
-      "suggestion": "Suggestion Autopilot"
+      "suggestion": "Suggestion Autopilot",
+      "_pending_review": {}
     },
     "identity": {
       "editIdentity": "Modifier ton identité",
@@ -69,7 +72,8 @@
       "uploadFailed": "Échec de l'importation",
       "uploadFailedDesc": "Échec du téléchargement de l'image. Réessaie.",
       "identityUpdated": "Identité mise à jour",
-      "identityUpdatedDesc": "Tes informations d'identité ont été enregistrées avec succès."
+      "identityUpdatedDesc": "Tes informations d'identité ont été enregistrées avec succès.",
+      "_pending_review": {}
     },
     "coverLibrary": {
       "title": "Bibliothèque de couvertures",
@@ -96,7 +100,10 @@
       "universalRemoved": "Photo de couverture universelle supprimée",
       "uploadFailed": "Échec du téléchargement",
       "categoryRequired": "Choisis d'abord une catégorie pour cette photo.",
-      "saveError": "Impossible d'enregistrer — réessaie."
-    }
-  }
+      "saveError": "Impossible d'enregistrer — réessaie.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

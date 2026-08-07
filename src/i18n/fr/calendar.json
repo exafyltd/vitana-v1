@@ -29,14 +29,16 @@
       "title": "Tes événements réservés",
       "todayLabel": "Aujourd'hui",
       "nextUp": "Prochainement",
-      "noEventsToday": "Pas d'événements aujourd'hui"
+      "noEventsToday": "Pas d'événements aujourd'hui",
+      "_pending_review": {}
     },
     "filters": {
       "personal": "Personnel",
       "community": "Communauté",
       "work": "Travail",
       "health": "Santé",
-      "workout": "Entraînement"
+      "workout": "Entraînement",
+      "_pending_review": {}
     },
     "categories": {
       "community": "Communauté",
@@ -45,19 +47,22 @@
       "nutrition": "Nutrition",
       "professional": "Travail",
       "personal": "Personnel",
-      "training": "Entraînement"
+      "training": "Entraînement",
+      "_pending_review": {}
     },
     "bookingStatus": {
       "booked": "Réservé",
       "rsvp": "Confirmer",
       "ticket": "Billet",
-      "reserved": "Réservé"
+      "reserved": "Réservé",
+      "_pending_review": {}
     },
     "timeGroups": {
       "today": "Aujourd'hui",
       "tomorrow": "Demain",
       "thisWeek": "Cette semaine",
-      "later": "Plus tard"
+      "later": "Plus tard",
+      "_pending_review": {}
     },
     "autopilot": {
       "suggestions": "Suggestions Autopilot",
@@ -77,7 +82,8 @@
       "reminderLaterToday": "Rappel défini pour plus tard aujourd'hui",
       "reminderTomorrow": "Rappel défini pour demain",
       "recommendFocus": "Recommander un bloc de concentration",
-      "focusBlockDesc": "Tu as un créneau de 90 minutes disponible. Parfait pour un travail concentré."
+      "focusBlockDesc": "Tu as un créneau de 90 minutes disponible. Parfait pour un travail concentré.",
+      "_pending_review": {}
     },
     "toasts": {
       "eventCreated": "Événement créé",
@@ -94,22 +100,26 @@
       "featureComingSoon": "Fonctionnalité bientôt disponible",
       "inviteFollowers": "Inviter des abonnés",
       "rescheduleEvent": "Reporter l'événement",
-      "shareToGroup": "Partager au groupe"
+      "shareToGroup": "Partager au groupe",
+      "_pending_review": {}
     },
     "error": {
-      "failedToCreate": "Échec de la création de l'événement"
+      "failedToCreate": "Échec de la création de l'événement",
+      "_pending_review": {}
     },
     "allDay": "Toute la journée",
     "milestoneToday": "Jalon",
     "focus": {
       "todaysFocus": "Objectif du jour",
       "lightDay": "Journée légère — explore des activités ou rattrape ton journal",
-      "moreSteps": "plus de pas"
+      "moreSteps": "plus de pas",
+      "_pending_review": {}
     },
     "badge": {
       "guidedStep": "Étape guidée",
       "milestone": "Jalon",
-      "wellness": "Bien-être"
+      "wellness": "Bien-être",
+      "_pending_review": {}
     },
     "action": {
       "start": "Démarrer",
@@ -118,11 +128,13 @@
       "details": "Détails",
       "viewPlan": "Voir le plan",
       "open": "Ouvrir",
-      "done": "Terminé"
+      "done": "Terminé",
+      "_pending_review": {}
     },
     "group": {
       "stepsRemaining": "étapes restantes",
-      "min": "min"
+      "min": "min",
+      "_pending_review": {}
     },
     "journey": {
       "dayOf": "Jour {day} sur {total}",
@@ -140,8 +152,12 @@
         "wave-3": "Approfondir les liens",
         "wave-4": "Intelligence santé",
         "wave-5": "Moments de perspicacité",
-        "wave-6": "Recommandations et découverte"
-      }
-    }
-  }
+        "wave-6": "Recommandations et découverte",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

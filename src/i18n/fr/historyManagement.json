@@ -40,6 +40,8 @@
     "confirmClearOld": "Es-tu sûr(e) de vouloir supprimer l'historique de plus de 90 jours ?",
     "confirmDeleteAll": "⚠️ ATTENTION : Ceci supprimera définitivement TOUT ton historique. Cette action ne peut pas être annulée. Es-tu absolument sûr(e) ?",
     "beta": "Bêta",
-    "danger": "Danger"
-  }
+    "danger": "Danger",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

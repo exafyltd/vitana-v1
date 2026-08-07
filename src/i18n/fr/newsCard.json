@@ -18,14 +18,16 @@
       "showLessToast": "Nous t'en montrerons moins comme ça",
       "mutedToast": "Source en sourdine",
       "undo": "Annuler",
-      "unmute": "Désactiver la sourdine"
+      "unmute": "Désactiver la sourdine",
+      "_pending_review": {}
     },
     "detail": {
       "back": "Retour",
       "continueReading": "Continuer la lecture sur",
       "openInBrowser": "Ouvrir dans le navigateur",
       "couldNotLoad": "Cet article ne peut pas être affiché directement",
-      "readOn": "En savoir plus"
+      "readOn": "En savoir plus",
+      "_pending_review": {}
     },
     "pillars": {
       "all": "Tout",
@@ -33,7 +35,10 @@
       "hydration": "Hydratation",
       "sleep": "Sommeil",
       "exercise": "Exercice",
-      "mental": "Mental"
-    }
-  }
+      "mental": "Mental",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
