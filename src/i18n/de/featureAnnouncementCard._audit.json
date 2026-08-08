@@ -1,50 +1,45 @@
 {
   "verdicts": {
-    "adminTabs.rooms.moderation": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "adminTabs.groups.all": {
+    "featureAnnouncementCard.brandNew.eyebrow": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "adminTabs.groups.pending": {
+    "featureAnnouncementCard.brandNew.badge": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "adminTabs.groups.approved": {
+    "featureAnnouncementCard.brandNew.intro": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "adminTabs.groups.flagged": {
+    "featureAnnouncementCard.brandNew.cta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "adminTabs.groups.rejected": {
+    "featureAnnouncementCard.brandNew.closing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "adminTabs.rooms.active": {
+    "featureAnnouncementCard.didYouKnow.eyebrow": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "adminTabs.rooms.scheduled": {
+    "featureAnnouncementCard.didYouKnow.intro": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "adminTabs.rooms.analytics": {
+    "featureAnnouncementCard.didYouKnow.cta": {
       "verdict": "OK",
       "confidence": 1,
-      "phase": "identical"
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-08T04:32:49.004Z"
+  "generatedAt": "2026-08-08T04:37:21.298Z"
 }
