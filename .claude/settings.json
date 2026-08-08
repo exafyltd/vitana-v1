@@ -4,5 +4,31 @@
   },
   "permissions": {
     "allow": ["Bash(*)", "Edit", "Write", "Skill"]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR:-/home/user/vitana-v1}/scripts/watcher/session-hook.sh\" start",
+            "timeout": 10,
+            "statusMessage": "Watcher: recording session start..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR:-/home/user/vitana-v1}/scripts/watcher/session-hook.sh\" stop",
+            "timeout": 10,
+            "statusMessage": "Watcher: reconciling session end..."
+          }
+        ]
+      }
+    ]
   }
 }
