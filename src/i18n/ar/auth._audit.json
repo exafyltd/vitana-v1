@@ -1,0 +1,27 @@
+{
+  "verdicts": {
+    "auth.notAuthorized": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "auth.noPermission": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "auth.contactAdmin": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Missing possessive 'your' for administrator. 'المدير' means 'the administrator', not 'your administrator'.",
+      "suggested": "يرجى الاتصال بمديرك للحصول على الوصول",
+      "phase": "llm"
+    },
+    "auth.backHome": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-09T04:42:34.569Z"
+}
