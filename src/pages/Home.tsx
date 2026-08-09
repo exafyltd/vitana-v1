@@ -12,7 +12,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
-import { RefreshCw, Loader2, Plus } from "lucide-react";
+import { RefreshCw, Loader2, Plus, UserPlus } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
@@ -31,9 +31,13 @@ import {
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
 import { CreateContentPopup } from "@/components/CreateContentPopup";
 import { MobileCreatePostSheet } from "@/components/profile/mobile/MobileCreatePostSheet";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { useAutopilot } from "@/hooks/use-autopilot";
 import { VitanaIndexCard } from "@/components/home/VitanaIndexCard";
 import { DidYouKnowCard } from "@/components/proactive/DidYouKnowCard";
 import { LongevityJourneyCard } from "@/components/home/LongevityJourneyCard";
+import { InviteFriendCard } from "@/components/home/InviteFriendCard";
+import { useInviteFriendShare } from "@/hooks/useInviteFriendShare";
 import { useNewsFeedPreferencesStore } from "@/stores/newsFeedPreferencesStore";
 import {
   useLongevityNewsFeed,
@@ -46,7 +50,7 @@ import { NewsFeedItemCard } from "@/components/home/NewsFeedItemCard";
 import { track } from "@/lib/product-analytics/client";
 import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { t } from '@/lib/i18n-toast';
 
@@ -59,6 +63,9 @@ const FILTER_MODES = [
   { value: "community", label: "Community", icon: "👥" },
 ];
 
+
+/** Last scroll offset per feed tab, kept across unmounts of this route. */
+const feedScrollMemory = new Map<FilterTab, number>();
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -82,9 +89,33 @@ export default function Home() {
   }, [searchParams]);
   const [searchQuery, setSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const { pendingCount } = useAutopilot();
   const [createPostOpen, setCreatePostOpen] = useState(false);
+  // Deep-link support for "?compose=1" (e.g. the Brand-New-Feature card's CTA)
+  // so a feed card can open the composer directly instead of only the header
+  // button. Strips the param right after opening so back/refresh doesn't
+  // reopen it.
+  useEffect(() => {
+    if (searchParams.get("compose") !== "1") return;
+    setCreatePostOpen(true);
+    const next = new URLSearchParams(searchParams);
+    next.delete("compose");
+    setSearchParams(next, { replace: true });
+  }, [searchParams, setSearchParams]);
   const navigate = useNavigate();
+  const location = useLocation();
+  // Path-based twin of "?compose=1" — Appilix's Android WebView silently
+  // drops query-string deep links when opening a push notification tap (see
+  // 20260625000000_post_notification_deeplink.sql), so the CTA's push payload
+  // points here instead of the query-string form. Normalizes back to /home
+  // right after opening, same as the query-string path above.
+  useEffect(() => {
+    if (location.pathname !== "/home/compose") return;
+    setCreatePostOpen(true);
+    navigate("/home", { replace: true });
+  }, [location.pathname, navigate]);
   const isMobile = useIsMobile();
+  const { shareInvite } = useInviteFriendShare();
 
   const {
     data: longevityData, fetchNextPage, hasNextPage, isFetchingNextPage,
@@ -183,6 +214,39 @@ export default function Home() {
     return () => observer.disconnect();
   }, [handleV2Observer]);
 
+  // Restore the reader's place in the feed.
+  //
+  // The data now survives navigation (see useNewsFeedKeepAlive), but the route
+  // component itself is still unmounted and remounted, so without this the user
+  // was thrown back to the top of the feed every time they came back from
+  // Messenger — which reads as "it reloaded" even when nothing was refetched.
+  // Module-scope so it survives the unmount; per-session only, deliberately not
+  // persisted.
+  useEffect(() => {
+    const saved = feedScrollMemory.get(activeTab);
+    if (saved == null) return;
+    // Two frames: the first lets the restored feed commit, the second lets the
+    // browser lay it out, so the target offset actually exists to scroll to.
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => window.scrollTo(0, saved));
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+    // Restore once per tab activation, not on every feed update.
+  }, [activeTab]);
+
+  useEffect(() => {
+    const remember = () => feedScrollMemory.set(activeTab, window.scrollY);
+    window.addEventListener("scroll", remember, { passive: true });
+    return () => {
+      remember();
+      window.removeEventListener("scroll", remember);
+    };
+  }, [activeTab]);
+
   const handleArticleClick = (article: NewsArticle) => {
     navigate(`/news/${article.id}`, { state: { article } });
   };
@@ -227,6 +291,7 @@ export default function Home() {
     const cardSlots: { key: string; node: JSX.Element }[] = [
       { key: "card-vitana-index", node: <VitanaIndexCard /> },
       { key: "card-guided-journey", node: <LongevityJourneyCard /> },
+      { key: "card-invite-friend", node: <InviteFriendCard /> },
     ];
     if (matchItem) {
       cardSlots.push({
@@ -404,7 +469,7 @@ export default function Home() {
         <div className={isMobile ? "" : "max-w-7xl mx-auto"}>
           <StandardHeader title={t('screens.home.news')} description="Longevity science & community updates" emoji="📰" />
           <UtilityActionButton className="min-w-0" compact={isMobile}
-            afterGiftVoucherChildren={isMobile ? (<><VitanaIndexChip /><AutopilotChip pendingCount={0} onClick={() => setAutopilotOpen(true)} /></>) : undefined}
+            afterGiftVoucherChildren={isMobile ? (<><VitanaIndexChip /><AutopilotChip pendingCount={pendingCount} onClick={() => setAutopilotOpen(true)} /></>) : undefined}
             trailingElement={!isMobile ? (
               <Button variant="ghost" size="icon" className="rounded-full" onClick={handleRefresh} title={t('screens.home.refreshNews')} disabled={isLoading}>
                 <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
@@ -414,6 +479,16 @@ export default function Home() {
             <div className="flex items-center gap-1 min-w-max">
               <ExpandableSearchButton compact placeholder={isMobile ? t('screens.home.searchShort') : t('screens.home.searchNewsTopicsSources')} onSearch={(query) => setSearchQuery(query)} />
               {isMobile && <MobileModePill className="px-2" modes={FILTER_MODES} activeMode={activeTab} onModeChange={(v) => setActiveTab(v as FilterTab)} />}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full shrink-0"
+                onClick={() => void shareInvite()}
+                title={t('screens.downloadFlyer.inviteCardCta')}
+                aria-label={t('screens.downloadFlyer.inviteCardCta')}
+              >
+                <UserPlus className="h-4 w-4" />
+              </Button>
               <UniversalCalendarButton showText={!isMobile} className="!px-2" />
               <Button
                 onClick={() => setCreatePostOpen(true)}
@@ -449,6 +524,7 @@ export default function Home() {
       ) : (
         <CreateContentPopup isOpen={createPostOpen} onClose={() => setCreatePostOpen(false)} />
       )}
+      <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
     </AppLayout>
   );
 }

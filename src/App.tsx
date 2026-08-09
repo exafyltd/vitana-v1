@@ -47,6 +47,7 @@ import ReminderInterruptOverlay from "./components/reminders/ReminderInterruptOv
 import { DelayedLoader } from "./components/ui/DelayedLoader";
 import RouteTransitionOverlay from "./components/RouteTransitionOverlay";
 import { usePostLoginWarmup } from "@/hooks/usePostLoginWarmup";
+import { useNewsFeedKeepAlive } from "@/hooks/useNewsFeedKeepAlive";
 
 // Route loading fallback — a full-screen clean background + delayed spinner so a
 // lazy chunk that loads instantly never flashes a placeholder, and a slow one
@@ -169,6 +170,8 @@ const BusinessOpportunities = lazy(() => import("./pages/BusinessOpportunities")
 const BusinessListings = lazy(() => import("./pages/BusinessListings"));
 const PublicEventLanding = lazy(() => import("./pages/PublicEventLanding"));
 const PublicCampaignLanding = lazy(() => import("./pages/PublicCampaignLanding"));
+const DownloadFlyer = lazy(() => import("./pages/DownloadFlyer"));
+const MaxinaAppRedirect = lazy(() => import("./pages/MaxinaAppRedirect"));
 const Apply = lazy(() => import("./pages/Apply"));
 const AutopilotDashboard = lazy(() => import("./pages/AutopilotDashboard"));
 const MatchesPage = lazy(() => import("./pages/MatchesPage"));
@@ -400,6 +403,9 @@ const AppHooksInitializer = () => {
   // Warm route chunks + React Query data for the first authenticated screens as
   // soon as auth + tenant settle — earlier than AppLayout's own prefetch.
   usePostLoginWarmup();
+  // Holds the News Feed's queries active for the whole session so switching to
+  // Messenger/Events and back is a cache read, not a reload. See the hook.
+  useNewsFeedKeepAlive();
   const { user, session } = useAuth();
   const navigate = useNavigate();
 
@@ -482,7 +488,17 @@ const AppHooksInitializer = () => {
       const targetUrl = (row.data as any)?.url;
       if (!targetUrl || typeof targetUrl !== 'string') return false;
       const currentPath = window.location.pathname + window.location.search;
-      if (currentPath === targetUrl) return false;
+      if (currentPath === targetUrl) {
+        // Already there — Appilix's native open_link_url landed the WebView
+        // on the target directly, so there's nothing to navigate. Still mark
+        // this row processed: Messages.tsx immediately strips the deep-link
+        // segment back to bare /inbox once it resolves the thread, which
+        // would otherwise make currentPath !== targetUrl again on the very
+        // next retry poll (300-3200ms later) and re-trigger navigate(),
+        // remounting the same chat a second/third time for no reason.
+        processedIds.add(row.id);
+        return false;
+      }
 
       processedIds.add(row.id);
       console.log('[DeepLink] Navigating to chat notification:', targetUrl, 'from', currentPath);
@@ -524,10 +540,20 @@ const AppHooksInitializer = () => {
       if (document.hidden) return;
       clearRetries();
       checkPendingNotification();
-      // Two short retries cover the race where the row hasn't propagated to the
-      // read replica yet. Both stay inside the 5s grace window above.
+      // Retries cover the race where the row hasn't propagated to the read
+      // replica yet. Front-loaded and more frequent than before (was just
+      // 1200ms/3500ms) — on Android, where the notification tap doesn't
+      // land the WebView on the target chat directly, this poll is the ONLY
+      // thing that gets the user there, so its latency is fully visible as
+      // "wrong screen, then a jump to chat a couple seconds later." Checking
+      // every ~300-450ms instead cuts that visible delay down to whatever
+      // the replica actually needs, typically well under a second. All stay
+      // inside the 5s grace window above.
+      retryTimers.push(setTimeout(checkPendingNotification, 300));
+      retryTimers.push(setTimeout(checkPendingNotification, 700));
       retryTimers.push(setTimeout(checkPendingNotification, 1200));
-      retryTimers.push(setTimeout(checkPendingNotification, 3500));
+      retryTimers.push(setTimeout(checkPendingNotification, 2000));
+      retryTimers.push(setTimeout(checkPendingNotification, 3200));
     };
 
     const onForeground = () => {
@@ -738,6 +764,13 @@ const App = () => {
           <Route path="/e/:slug" element={<PublicEventLanding />} />
           <Route path="/pub/events/:id" element={<PublicEventLanding />} />
           <Route path="/pub/campaigns/:id" element={<PublicCampaignLanding />} />
+          {/* Download flyer — shared via "Invite a friend"; recipients are logged out */}
+          <Route path="/download" element={<DownloadFlyer />} />
+          {/* QR-code app-store redirect — printed on physical merchandise; detects
+              iOS/Android and sends the visitor straight to the matching store
+              listing. Distinct from /maxina (portal login) and /download
+              (manual-choice invite flyer). */}
+          <Route path="/maxina/app" element={<MaxinaAppRedirect />} />
           <Route path="/apply" element={<Apply />} />
           
           {/* Portal Routes */}
@@ -820,6 +853,29 @@ const App = () => {
           <Route path="/home/actions" element={<Navigate to="/home" replace />} />
           <Route path="/home/matches" element={<Navigate to="/home" replace />} />
           <Route path="/home/aifeed" element={<Navigate to="/home" replace />} />
+          {/* Path-based (not query-string) compose deep-link — renders Home directly
+              so Appilix's Android WebView can open it from a push notification tap;
+              query strings silently fail there on cold notification-tap launches
+              (see 20260625000000_post_notification_deeplink.sql). */}
+          <Route path="/home/compose" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <Home />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          {/* Feature-announcement push notification tap target — same feed as
+              /home, but deliberately NOT in useOrbFrontDoor's MAXINA_LANDING_ROUTES
+              set. Appilix notification taps are full page loads (fresh React
+              tree mount), which would otherwise auto-open the Orb front-door
+              overlay on top of the card the notification is about. */}
+          <Route path="/home/notif" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <Home />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
 
           {/* News article detail — full-screen reader */}
           <Route path="/news/:id" element={
@@ -1010,6 +1066,15 @@ const App = () => {
 
           {/* VTID-02601 Reminders */}
           <Route path="/reminders" element={
+            <AuthGuard>
+              <Reminders />
+            </AuthGuard>
+          } />
+          {/* Path-based reminder-fire push deep-link (BOOTSTRAP-NOTIF-MESSENGER-DIAG
+              follow-up) — /reminders?fire=<id> silently failed to launch in
+              Appilix's Android in-app browser because it's a query string.
+              Reminders.tsx / ReminderInterruptOverlay.tsx accept both forms. */}
+          <Route path="/reminders/fire/:fireId" element={
             <AuthGuard>
               <Reminders />
             </AuthGuard>

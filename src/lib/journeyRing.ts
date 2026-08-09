@@ -32,19 +32,33 @@ export interface JourneyRingModel {
  * Both inputs come from the same `/api/v1/my-journey` payload: `goal`
  * (life_compass) and `journey` (the onboarding plan with day_in_journey /
  * total_days / days_left).
+ *
+ * The big center number (`day`) is ALWAYS `journey.day_in_journey` — calendar
+ * days since the user's Vitana journey began (`user_journey.started_at`).
+ * This is the exact same value the ORB voice greeting speaks ("Heute ist
+ * dein {day_in_journey}. Tag mit Vitana"), so the ring and the greeting can
+ * never disagree. It used to be swapped for `goal.goal_day` (days since the
+ * active Life Compass goal was *set*) whenever a deadline goal existed —
+ * a different, independently-drifting counter that made the screen and the
+ * voice greeting show two different "day" numbers for the same account.
+ * The goal deadline still drives the countdown around that number
+ * (`daysLeft` / `total` / `pct`) — that's a genuinely different quantity
+ * (time left, not day count) and is fine to differ.
  */
 export function buildJourneyRing(
   goal: MyJourneyGoal | null,
   journey: MyJourneyJourney | null,
 ): JourneyRingModel {
-  // Goal deadline set → count down to the goal's target date.
+  const dayInJourney = Math.max(0, journey?.day_in_journey ?? goal?.goal_day ?? 0);
+  const day = dayInJourney + 1;
+
+  // Goal deadline set → the countdown (fill %, days-left, total) tracks the
+  // goal's target date. `day` still reads the user's real journey tenure.
   if (goal?.has_deadline) {
-    const total = goal.goal_total_days ?? null;
-    const rawDay = (goal.goal_day ?? 0) + 1;
     return {
-      day: Math.min(rawDay, total ?? rawDay),
+      day,
       daysLeft: goal.days_to_deadline ?? 0,
-      total,
+      total: goal.goal_total_days ?? null,
       pct: goal.goal_progress_pct ?? 0,
       source: "goal",
       hasCountdown: true,
@@ -54,14 +68,12 @@ export function buildJourneyRing(
   // No goal deadline → count down the 90-day onboarding plan.
   if (journey && journey.total_days > 0) {
     const total = journey.total_days;
-    const dayInJourney = Math.max(0, journey.day_in_journey ?? 0);
-    const rawDay = dayInJourney + 1;
     const daysLeft =
       typeof journey.days_left === "number"
         ? journey.days_left
         : Math.max(0, total - dayInJourney);
     return {
-      day: Math.min(rawDay, total),
+      day,
       daysLeft,
       total,
       pct: Math.min(100, Math.round((dayInJourney / total) * 100)),
@@ -71,6 +83,5 @@ export function buildJourneyRing(
   }
 
   // Journey unavailable — keep a sane Day-1 default with no countdown.
-  const rawDay = (goal?.goal_day ?? 0) + 1;
-  return { day: rawDay, daysLeft: 0, total: null, pct: 0, source: null, hasCountdown: false };
+  return { day, daysLeft: 0, total: null, pct: 0, source: null, hasCountdown: false };
 }

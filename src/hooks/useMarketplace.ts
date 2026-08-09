@@ -7,6 +7,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { toEurCents } from "@/lib/currency-convert";
 
 // VITE_GATEWAY_URL in this repo already includes "/api/v1"; VITE_GATEWAY_BASE
 // is the bare origin. Normalize to a bare origin so paths below can append
@@ -107,6 +108,27 @@ export interface MarketplaceSearchResponse {
 
 // ==================== Feed hook ====================
 
+// Exported so the background prefetch registry (src/lib/prefetch-registry.ts)
+// can warm this exact query — same queryFn, so the cache entry it produces is
+// picked up by useMarketplaceFeed on arrival instead of triggering a second,
+// redundant cold fetch.
+export async function fetchMarketplaceFeed(opts: {
+  category?: string;
+  limit?: number;
+} = {}): Promise<MarketplaceFeedResponse> {
+  if (!GATEWAY_URL) throw new Error("GATEWAY_URL not configured");
+  const params = new URLSearchParams();
+  if (opts.category) params.set("category", opts.category);
+  if (opts.limit) params.set("limit", String(opts.limit));
+  const headers = await authHeaders();
+  const resp = await fetch(
+    `${GATEWAY_URL}/api/v1/discover/feed?${params.toString()}`,
+    { headers }
+  );
+  if (!resp.ok) throw new Error(`Feed failed: ${resp.status}`);
+  return resp.json();
+}
+
 export function useMarketplaceFeed(opts: {
   category?: string;
   limit?: number;
@@ -114,19 +136,7 @@ export function useMarketplaceFeed(opts: {
 } = {}) {
   return useQuery<MarketplaceFeedResponse>({
     queryKey: ["marketplace-feed", opts.category, opts.limit],
-    queryFn: async () => {
-      if (!GATEWAY_URL) throw new Error("GATEWAY_URL not configured");
-      const params = new URLSearchParams();
-      if (opts.category) params.set("category", opts.category);
-      if (opts.limit) params.set("limit", String(opts.limit));
-      const headers = await authHeaders();
-      const resp = await fetch(
-        `${GATEWAY_URL}/api/v1/discover/feed?${params.toString()}`,
-        { headers }
-      );
-      if (!resp.ok) throw new Error(`Feed failed: ${resp.status}`);
-      return resp.json();
-    },
+    queryFn: () => fetchMarketplaceFeed(opts),
     enabled: opts.enabled !== false,
     staleTime: 60_000,
     refetchOnWindowFocus: false,
@@ -218,14 +228,100 @@ export function useMarketplaceSearch(params: MarketplaceSearchParams, opts: { en
 
 export function formatPrice(cents: number | null | undefined, currency: string | null | undefined): string {
   if (cents === null || cents === undefined || !currency) return "";
+  const eurCents = toEurCents(cents, currency);
   return new Intl.NumberFormat(undefined, {
     style: "currency",
-    currency: currency.toUpperCase(),
+    currency: "EUR",
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(cents / 100);
+  }).format(eurCents / 100);
 }
 
-export function getRedirectUrl(productId: string, surface: string = "discover"): string {
-  return `${GATEWAY_URL}/r/${productId}?surface=${surface}`;
+export function getRedirectUrl(productId: string, surface: string = "discover", recId?: string | null): string {
+  const base = `${GATEWAY_URL}/r/${productId}?surface=${surface}`;
+  return recId ? `${base}&rec_id=${encodeURIComponent(recId)}` : base;
+}
+
+// ==================== Recommend & Earn (VTID-02950) ====================
+
+export interface CreateRecommendationResponse {
+  ok: boolean;
+  recommendation_id: string;
+  share_url: string;
+  product_title: string;
+  error?: string;
+}
+
+/** Creates (or reuses) the caller's recommendation for a product and returns a shareable link. */
+export async function createProductRecommendation(productId: string): Promise<CreateRecommendationResponse> {
+  const headers = await authHeaders();
+  const resp = await fetch(`${GATEWAY_URL}/api/v1/discover/recommendations`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ product_id: productId }),
+  });
+  const data = await resp.json();
+  if (!resp.ok || !data.ok) throw new Error(data.error || `Recommend failed: ${resp.status}`);
+  return data;
+}
+
+export interface MyRecommendationItem {
+  id: string;
+  product_id: string;
+  product_title: string | null;
+  product_thumbnail_url: string | null;
+  status: string;
+  click_count: number;
+  conversion_count: number;
+  commission_earned_minor: number;
+  currency: string;
+  created_at: string;
+}
+
+export function useMyRecommendations(opts: { enabled?: boolean } = {}) {
+  return useQuery<{ ok: boolean; items: MyRecommendationItem[] }>({
+    queryKey: ["my-recommendations"],
+    queryFn: async () => {
+      if (!GATEWAY_URL) throw new Error("GATEWAY_URL not configured");
+      const headers = await authHeaders();
+      const resp = await fetch(`${GATEWAY_URL}/api/v1/discover/my-recommendations`, { headers });
+      if (!resp.ok) throw new Error(`My recommendations failed: ${resp.status}`);
+      return resp.json();
+    },
+    enabled: opts.enabled !== false,
+    staleTime: 30_000,
+    refetchOnWindowFocus: false,
+  });
+}
+
+// Public storefront view of ANOTHER user's recommendations (Business tab,
+// visitor view) — deliberately excludes click_count/conversion_count/
+// commission_earned_minor/currency/status, which are private to the owner.
+export interface PublicRecommendationItem {
+  recommendation_id: string;
+  product_id: string;
+  product_title: string | null;
+  product_thumbnail_url: string | null;
+  created_at: string;
+}
+
+export function usePublicRecommendations(vitanaId: string | undefined, opts: { enabled?: boolean } = {}) {
+  return useQuery<{ ok: boolean; items: PublicRecommendationItem[] }>({
+    queryKey: ["public-recommendations", vitanaId],
+    queryFn: async () => {
+      if (!GATEWAY_URL) throw new Error("GATEWAY_URL not configured");
+      if (!vitanaId) throw new Error("missing vitanaId");
+      const headers = await authHeaders();
+      const resp = await fetch(
+        `${GATEWAY_URL}/api/v1/discover/recommendations/${encodeURIComponent(vitanaId)}`,
+        { headers }
+      );
+      if (resp.status === 404) return { ok: false, items: [] };
+      if (!resp.ok) throw new Error(`Public recommendations failed: ${resp.status}`);
+      return resp.json();
+    },
+    enabled: !!vitanaId && opts.enabled !== false,
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
+  });
 }

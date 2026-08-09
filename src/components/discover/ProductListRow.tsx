@@ -8,6 +8,7 @@ import { Sparkles, ExternalLink } from "lucide-react";
 import { t } from "@/lib/i18n-toast";
 import { ProductImage } from "@/components/discover/ProductImage";
 import { BookmarkButton } from "@/components/bookmarks/BookmarkButton";
+import { RecommendButton } from "@/components/discover/RecommendButton";
 import { bookmarkItem, cardKeyDown } from "@/components/discover/PremiumProductCard";
 import {
   formatPrice,
@@ -42,6 +43,10 @@ export function ProductListRow({ product, badgeText, reasonText, onClick }: Prod
         />
         <BookmarkButton
           item={bookmarkItem(product)}
+          className="h-5 w-5 bg-white/70 dark:bg-black/40 backdrop-blur hover:bg-white/90 dark:hover:bg-black/60"
+        />
+        <RecommendButton
+          productId={product.id}
           className="h-5 w-5 bg-white/70 dark:bg-black/40 backdrop-blur hover:bg-white/90 dark:hover:bg-black/60"
         />
       </div>

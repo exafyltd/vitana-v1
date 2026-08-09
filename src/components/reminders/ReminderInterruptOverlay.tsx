@@ -116,14 +116,21 @@ export const ReminderInterruptOverlay: React.FC = () => {
     return () => window.clearTimeout(t);
   }, [latestFire, clear]);
 
-  // Deep-link path: a mobile push click lands on /reminders?fire=<id>. There's
-  // no SSE event (the app was closed), so fetch the reminder by id and show the
-  // same Mark-done / Snooze / Dismiss modal. No chime/voice — that audio is
-  // only pre-rendered for the SSE stream, and the lock-screen push already
-  // notified the user. Strip the param afterwards so a refresh doesn't re-open.
+  // Deep-link path: a mobile push click lands on /reminders/fire/<id> (or the
+  // legacy /reminders?fire=<id> query form). There's no SSE event (the app
+  // was closed), so fetch the reminder by id and show the same Mark-done /
+  // Snooze / Dismiss modal. No chime/voice — that audio is only pre-rendered
+  // for the SSE stream, and the lock-screen push already notified the user.
+  // Strip the id from the URL afterwards so a refresh doesn't re-open it.
+  //
+  // This component is mounted once at the app shell level, outside the
+  // <Routes> tree (see App.tsx), so it can't use useParams() to read the
+  // :fireId route segment — it parses window.location.pathname directly,
+  // same as it already does for the legacy query string.
   useEffect(() => {
+    const pathMatch = window.location.pathname.match(/^\/reminders\/fire\/([^/]+)/);
     const params = new URLSearchParams(window.location.search);
-    const fireId = params.get("fire");
+    const fireId = pathMatch?.[1] || params.get("fire");
     if (!fireId) return;
     if (playedFor.current === fireId) return;
     playedFor.current = fireId;
@@ -150,10 +157,13 @@ export const ReminderInterruptOverlay: React.FC = () => {
       } catch (err) {
         console.warn("[reminder-overlay] deep-link fetch failed", err);
       } finally {
-        // Remove ?fire= from the URL without a navigation/reload.
+        // Remove the fire id from the URL without a navigation/reload —
+        // either the /reminders/fire/<id> path segment or the legacy
+        // ?fire= query param, whichever was actually present.
         params.delete("fire");
         const qs = params.toString();
-        const newUrl = window.location.pathname + (qs ? `?${qs}` : "") + window.location.hash;
+        const newPath = pathMatch ? "/reminders" : window.location.pathname;
+        const newUrl = newPath + (qs ? `?${qs}` : "") + window.location.hash;
         window.history.replaceState({}, "", newUrl);
       }
     })();

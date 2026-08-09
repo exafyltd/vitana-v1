@@ -10,6 +10,7 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/lib/i18n-toast";
 
 const GATEWAY_URL =
   import.meta.env.VITE_GATEWAY_URL ||
@@ -105,7 +106,14 @@ export function useLongevityNewsFeed(options?: {
       lastPage.has_more ? lastPage.page + 1 : undefined,
     initialPageParam: 1,
     enabled: options?.enabled !== false,
-    staleTime: 5 * 60 * 1000,
+    // Longer than the old 5min on purpose. A background refetch of an INFINITE
+    // query re-fetches every page the user has scrolled through, sequentially —
+    // so a reader who paged deep into the feed paid a long serial request chain
+    // just for coming back to the screen. RSS-sourced articles do not change
+    // minute to minute; 15min (plus the explicit refresh button and pull-to-
+    // refresh) is ample, and keeps returning to the feed instant.
+    staleTime: 15 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 }
@@ -248,7 +256,7 @@ export async function fetchCommunityNews(
 
             for (const p of posts) {
               const author = authorMap.get(p.user_id);
-              const name = author?.display_name || "Community Member";
+              const name = author?.display_name || t("screens.home.communityMember");
               const content = (p.content || "").trim();
               articles.push({
                 id: `post-${p.id}`,

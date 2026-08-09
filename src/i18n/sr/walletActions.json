@@ -1,11 +1,11 @@
 {
   "walletActions": {
     "title": "Brze radnje",
-    "addFunds": "Dodaj sredstva",
+    "addFunds": "Uplati",
     "send": "Pošalji",
     "exchange": "Razmeni",
     "withdraw": "Povuci",
-    "buyCredits": "Kupi kredite",
+    "buyCredits": "Kupi VTNA Credits",
     "stakeTokens": "Uloži tokene"
   }
 }

@@ -11,7 +11,71 @@
     "identity": {
       "vitanaIndex": "Índice Vitana",
       "basedOnActivity": "Basado en actividad, compromiso con la salud y contribución",
-      "viewLongevityId": "Ver mi ID de Longevidad"
+      "viewLongevityId": "Ver mi ID de Longevidad",
+      "follow": "Seguir",
+      "followingState": "Siguiendo",
+      "understandIndex": "Entender el índice",
+      "brandFooter": "MAXINA × VITANA"
+    },
+    "tabs": {
+      "identity": "Identidad",
+      "social": "Social",
+      "account": "Cuenta",
+      "business": "Negocio"
+    },
+    "account": {
+      "notSet": "Sin especificar",
+      "editField": "Editar {field}",
+      "visibilityToggle": "Visibilidad: {label}. Toca para cambiar.",
+      "visibility": {
+        "private": "Privado",
+        "connections": "Contactos",
+        "public": "Público"
+      },
+      "sections": {
+        "publicProfile": "Perfil público",
+        "publicProfileSubtitle": "Se muestra en Identidad",
+        "basicInfo": "Información personal básica",
+        "basicInfoSubtitle": "Datos de identidad fijos",
+        "contactInfo": "Información de contacto",
+        "accountDetails": "Detalles de la cuenta"
+      },
+      "fields": {
+        "avatar": "Avatar",
+        "handle": "Handle",
+        "longevityArchetype": "Arquetipo de longevidad",
+        "firstName": "Nombre",
+        "lastName": "Apellido",
+        "dateOfBirth": "Fecha de nacimiento",
+        "gender": "Género",
+        "maritalStatus": "Estado civil",
+        "email": "Correo electrónico",
+        "phone": "Teléfono",
+        "address": "Dirección",
+        "country": "País",
+        "city": "Ciudad",
+        "memberSince": "Miembro desde",
+        "accountType": "Tipo de cuenta",
+        "verificationStatus": "Estado de verificación"
+      },
+      "values": {
+        "uploaded": "Subido"
+      }
+    },
+    "business": {
+      "title": "Mis recomendaciones",
+      "subtitle": "Productos que has recomendado y lo que has ganado con ellos",
+      "empty": "Aún no hay recomendaciones",
+      "emptyDesc": "Recomienda un producto desde Descubre para ver aquí tus clics, compras y comisiones.",
+      "clicks": "{count} clics",
+      "conversions": "{count} compras",
+      "totalEarned": "Total ganado",
+      "statusActive": "Activa",
+      "shareRow": "Compartir enlace de recomendación",
+      "publicTitle": "Recomendaciones",
+      "publicSubtitle": "Productos recomendados por este perfil",
+      "publicEmpty": "Aún no hay recomendaciones",
+      "viewProduct": "Ver"
     }
   }
 }

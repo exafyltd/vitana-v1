@@ -22,7 +22,7 @@
 
 import type { MatchReason } from "@/lib/matchReason";
 
-export type FeedItemKind = "match" | "performer" | "post" | "article";
+export type FeedItemKind = "match" | "performer" | "post" | "article" | "feature_announcement";
 
 /** A member tagged in a post body via an inline @mention. */
 export interface PostMention {
@@ -89,7 +89,27 @@ export interface ArticleFeedItem extends FeedItemBase {
   tags: string[];
 }
 
-export type FeedItem = MatchFeedItem | PerformerFeedItem | PostFeedItem | ArticleFeedItem;
+/**
+ * A system-authored "product discovery" post — either a brand-new-feature
+ * launch announcement or a daily "did you know" tip. Rendered by
+ * FeatureAnnouncementCard (src/components/home/FeatureAnnouncementCard.tsx).
+ * `feature_title`/`description` are already resolved to the viewer's locale
+ * by whichever source supplies these items.
+ */
+export interface FeatureAnnouncementFeedItem extends FeedItemBase {
+  kind: "feature_announcement";
+  variant: "brand-new-feature" | "did-you-know-feature";
+  feature_title: string;
+  description: string;
+  deep_link: string;
+}
+
+export type FeedItem =
+  | MatchFeedItem
+  | PerformerFeedItem
+  | PostFeedItem
+  | ArticleFeedItem
+  | FeatureAnnouncementFeedItem;
 
 export interface RankOptions {
   /** Item ids the user explicitly hid. */
@@ -104,6 +124,13 @@ export interface RankOptions {
   articleInterleave?: number;
   /** Max matches pinned to the top (default 1, to avoid match spam). */
   maxPinnedMatches?: number;
+  /**
+   * Max feature-announcement cards eligible to appear at all (default 1 —
+   * one per day). NOT pinned to the top — the eligible ones are merged into
+   * the chronological post stream by their own publish time, so they get
+   * pushed down naturally as newer posts arrive.
+   */
+  maxPinnedFeatureAnnouncements?: number;
 }
 
 function ts(iso: string): number {
@@ -129,11 +156,13 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
   const downranked = options.downrankedTags ?? {};
   const interleave = Math.max(1, options.articleInterleave ?? 4);
   const maxPinnedMatches = Math.max(0, options.maxPinnedMatches ?? 1);
+  const maxPinnedFeatureAnnouncements = Math.max(0, options.maxPinnedFeatureAnnouncements ?? 1);
 
   const matches: MatchFeedItem[] = [];
   const performers: PerformerFeedItem[] = [];
-  const posts: PostFeedItem[] = [];
+  const postsOnly: PostFeedItem[] = [];
   const articles: ArticleFeedItem[] = [];
+  const featureAnnouncements: FeatureAnnouncementFeedItem[] = [];
 
   for (const item of items) {
     if (hidden.has(item.id)) continue;
@@ -145,11 +174,14 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
         performers.push(item);
         break;
       case "post":
-        posts.push(item);
+        postsOnly.push(item);
         break;
       case "article":
         if (muted.has(item.source_name)) continue;
         articles.push(item);
+        break;
+      case "feature_announcement":
+        featureAnnouncements.push(item);
         break;
     }
   }
@@ -174,17 +206,36 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
   );
   const pinnedPerformer = performers.slice(0, 1);
 
+  // System-authored feature-discovery cards are NOT pinned — they're a
+  // "classic part of the feed": ranked by their own publish time, merged
+  // into the same chronological stream as community posts, and naturally
+  // pushed down as newer posts arrive. (Previously always prepended to the
+  // very top with no decay, which meant a card could sit there for weeks —
+  // confirmed as unwanted behavior.) `maxPinnedFeatureAnnouncements` caps how
+  // many recent ones are eligible to appear at all, so a backlog of tips
+  // doesn't flood the feed once several exist.
+  featureAnnouncements.sort(
+    (a, b) => ts(b.published_at) - ts(a.published_at) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
+  );
+  const eligibleFeatureAnnouncements = featureAnnouncements.slice(0, maxPinnedFeatureAnnouncements);
+
   // 3. Posts — "show less" penalty, then newest regardless of follow status or
-  //    media format, then engagement, then stable id.
+  //    media format, then engagement, then stable id. Feature-announcement
+  //    cards are merged in here (0 engagement, no downrank penalty) so they
+  //    sort purely by recency alongside everything else.
+  const posts: (PostFeedItem | FeatureAnnouncementFeedItem)[] = [
+    ...postsOnly,
+    ...eligibleFeatureAnnouncements,
+  ];
   posts.sort((a, b) => {
-    const pa = downrankPenalty(a.tags, downranked);
-    const pb = downrankPenalty(b.tags, downranked);
+    const pa = a.kind === "post" ? downrankPenalty(a.tags, downranked) : 0;
+    const pb = b.kind === "post" ? downrankPenalty(b.tags, downranked) : 0;
     if (pa !== pb) return pa - pb;
     const ta = ts(a.published_at);
     const tb = ts(b.published_at);
     if (ta !== tb) return tb - ta;
-    const ea = a.likes_count + a.comments_count;
-    const eb = b.likes_count + b.comments_count;
+    const ea = a.kind === "post" ? a.likes_count + a.comments_count : 0;
+    const eb = b.kind === "post" ? b.likes_count + b.comments_count : 0;
     if (ea !== eb) return eb - ea;
     return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
   });
@@ -202,6 +253,7 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
 
   // Compose: pinned community items first, then interleave the post stream with
   // public news at the configured cadence so neither side is starved.
+  // Feature-announcement cards are NOT pinned here — see the sort above.
   const result: FeedItem[] = [...pinnedMatches, ...pinnedPerformer];
   let ai = 0;
   for (let i = 0; i < posts.length; i++) {
@@ -215,6 +267,76 @@ export function rankFeed(items: FeedItem[], options: RankOptions = {}): FeedItem
   return result;
 }
 
+/**
+ * Client-side heuristic rules mapping a post's caption to a motivational-note
+ * i18n key. Ordered — the first match wins. Deliberately simple (keyword
+ * matching, DE + EN) since `profile_posts` carries no category/mood/topic
+ * column to classify against (see news-feed-ranker regression tests). The
+ * eventual replacement is server-side classification from the post's image,
+ * text, topic, and the viewer's relationship with the author.
+ */
+// A positive achievement/progress stem doesn't mean the post is a success —
+// "nicht geschafft", "kein Fortschritt", "erfolglos" describe a setback and
+// should read as an invitation to lend support, not a celebration prompt.
+const POSITIVE_STEM_RE =
+  /geschafft|erfolg|stolz|erreicht|meilenstein|abgenommen|gewonnen|achievement|fortschritt|dran geblieben|durchgehalten|progress/i;
+const NEGATION_RE = /\b(nicht|kein|keine|keinen|keinem|keiner|nie|niemals)\b/i;
+
+const MOTIVATION_RULES: Array<{ key: string; test: (text: string) => boolean }> = [
+  { key: "motivationQuestion", test: (t) => t.trim().endsWith("?") },
+  { key: "motivationChallenge", test: (t) => /challenge|herausforderung/i.test(t) },
+  {
+    key: "motivationEmotional",
+    test: (t) =>
+      (POSITIVE_STEM_RE.test(t) && NEGATION_RE.test(t)) || /erfolglos|gescheitert|misslungen|vergeblich/i.test(t),
+  },
+  {
+    key: "motivationAchievement",
+    test: (t) => /geschafft|erfolg|stolz|erreicht|meilenstein|abgenommen|gewonnen|achievement/i.test(t),
+  },
+  {
+    key: "motivationProgress",
+    test: (t) => /fortschritt|\btag \d+\b|\bwoche \d+\b|dran geblieben|durchgehalten|progress/i.test(t),
+  },
+  { key: "motivationDance", test: (t) => /tanz|dance/i.test(t) },
+  {
+    key: "motivationWorkout",
+    test: (t) => /workout|training|\bsport\b|fitness|joggen|laufen|\bgym\b|yoga|pilates|krafttraining|hiit/i.test(t),
+  },
+  {
+    key: "motivationMeal",
+    test: (t) => /rezept|ernährung|kochen|smoothie|frühstück|mittagessen|abendessen|gesundes essen|healthy meal/i.test(t),
+  },
+  { key: "motivationRelax", test: (t) => /entspann|\bruhe\b|\bpause\b|meditation|erholung|auszeit|relax/i.test(t) },
+  {
+    key: "motivationTravelNature",
+    test: (t) =>
+      /sonnenuntergang|sunset|\breise\b|urlaub|strand|\bbeach\b|\bmeer\b|berge|\bnatur\b|landschaft|ferien|wandern/i.test(
+        t,
+      ),
+  },
+  { key: "motivationEvent", test: (t) => /\bevent\b|veranstaltung|\btreffen\b|meetup|konzert|\bfeier\b/i.test(t) },
+  { key: "motivationEducational", test: (t) => /wusstest du|studie zeigt|tipp des tages|neu gelernt/i.test(t) },
+  { key: "motivationEmotional", test: (t) => /verlust|trauer|schwer gefallen|kämpf|dankbar für/i.test(t) },
+];
+
+/**
+ * Personalized motivational-impulse key for a community post — replaces the
+ * old "from the community" / "from someone you follow" provenance label,
+ * which described where the post came from instead of inviting the viewer
+ * to do something with it.
+ */
+export function motivationKeyFor(item: PostFeedItem): string {
+  const text = item.content ?? "";
+  for (const rule of MOTIVATION_RULES) {
+    if (rule.test(text)) return `screens.home.${rule.key}`;
+  }
+  if (item.followed) return "screens.home.motivationFollowed";
+  if (item.image_url) return "screens.home.motivationGreeting";
+  if (item.video_url) return "screens.home.motivationWorkout";
+  return "screens.home.motivationDefault";
+}
+
 /** The "why you're seeing this" reason key for a feed item (i18n lookup key). */
 export function reasonKeyFor(item: FeedItem): string {
   switch (item.kind) {
@@ -223,8 +345,12 @@ export function reasonKeyFor(item: FeedItem): string {
     case "performer":
       return "screens.home.whySpotlight";
     case "post":
-      return item.followed ? "screens.home.whyFollowed" : "screens.home.whyCommunity";
+      return motivationKeyFor(item);
     case "article":
       return "screens.home.whyPublic";
+    case "feature_announcement":
+      return item.variant === "brand-new-feature"
+        ? "featureAnnouncementCard.brandNew.eyebrow"
+        : "featureAnnouncementCard.didYouKnow.eyebrow";
   }
 }

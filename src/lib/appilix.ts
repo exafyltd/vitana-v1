@@ -20,6 +20,13 @@ declare global {
     };
     /** Native FCM token injected by Appilix before page load */
     appilix_fcm_token?: string;
+    /**
+     * Supabase user id the Appilix shell maps this device to for
+     * user_identity push targeting. Read by the shell at PAGE LOAD, so it must
+     * be cleared on sign-out — a device left claimed by a signed-out account
+     * keeps receiving that account's notifications (VTID-03481).
+     */
+    appilix_push_notification_user_identity?: string;
   }
 }
 
@@ -129,6 +136,16 @@ export function showNativeNotification(title: string, body: string, data?: Recor
  * Register the authenticated user's identity with the Appilix native shell.
  * This is the critical step that maps a Supabase user UUID to a physical device
  * so that push notifications via the Appilix Push API can find this user.
+ *
+ * Sends via BOTH the documented appilix.postMessage bridge AND the direct
+ * WKWebView messageHandlers channel, same redundancy as
+ * requestNativeFcmTokenFromBridge() below — per that function's own finding,
+ * which channel the native wrapper actually listens on differs between
+ * wrapper builds and platforms (Android reliably uses appilix.postMessage;
+ * iOS wrapper builds have been unreliable on that channel alone). This
+ * message type has no delivery confirmation from the native side, so unlike
+ * the FCM token bridge we can't detect a channel failing — sending on both
+ * is the only mitigation available.
  */
 export function registerAppilixIdentity(userId: string): boolean {
   if (!isAppilix()) {
@@ -136,16 +153,27 @@ export function registerAppilixIdentity(userId: string): boolean {
     return false;
   }
   console.log(`[Appilix] Registering user_identity: ${userId}`);
+  const payload = JSON.stringify({
+    type: "firebase_record_user_identity",
+    props: { user_identity: userId }
+  });
+  let sent = false;
   try {
-    window.appilix!.postMessage(JSON.stringify({
-      type: "firebase_record_user_identity",
-      props: { user_identity: userId }
-    }));
-    return true;
+    window.appilix!.postMessage(payload);
+    sent = true;
   } catch (e) {
-    console.warn('[Appilix] Identity registration failed:', e);
-    return false;
+    console.warn('[Appilix] Identity registration via appilix.postMessage failed:', e);
   }
+  try {
+    const handlers = (window as any).webkit?.messageHandlers;
+    if (handlers?.appilix?.postMessage) {
+      handlers.appilix.postMessage(payload);
+      sent = true;
+    }
+  } catch (e) {
+    console.warn('[Appilix] Identity registration via webkit.messageHandlers failed:', e);
+  }
+  return sent;
 }
 
 /**

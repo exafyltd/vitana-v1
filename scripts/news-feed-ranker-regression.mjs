@@ -219,9 +219,82 @@ const { rankFeed, reasonKeyFor } = await loadRanker();
 {
   assert(reasonKeyFor(match("x")) === "screens.home.whyMatch", "§9 match reason key");
   assert(reasonKeyFor(performer("x")) === "screens.home.whySpotlight", "§9 performer reason key");
-  assert(reasonKeyFor(post("x", { followed: true })) === "screens.home.whyFollowed", "§9 followed reason key");
-  assert(reasonKeyFor(post("x", { followed: false })) === "screens.home.whyCommunity", "§9 community reason key");
   assert(reasonKeyFor(article("x")) === "screens.home.whyPublic", "§9 public reason key");
+}
+
+// §10 — motivationKeyFor: content keywords win over media/follow fallbacks.
+{
+  assert(
+    reasonKeyFor(post("x", { content: "Wer macht heute mit beim Workout?" })) === "screens.home.motivationQuestion",
+    "§10 a trailing question mark wins over a topic keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "30-Tage-Challenge gestartet" })) === "screens.home.motivationChallenge",
+    "§10 challenge keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Endlich geschafft, mein Ziel erreicht!" })) === "screens.home.motivationAchievement",
+    "§10 achievement keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Tanz mit mir!" })) === "screens.home.motivationDance",
+    "§10 dance keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Heutiges Workout im Gym" })) === "screens.home.motivationWorkout",
+    "§10 workout keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Mein Rezept für den Smoothie" })) === "screens.home.motivationMeal",
+    "§10 meal keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Zeit für etwas Entspannung" })) === "screens.home.motivationRelax",
+    "§10 relax keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Sonnenuntergang am Strand" })) === "screens.home.motivationTravelNature",
+    "§10 travel/nature keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Tolles Event gestern Abend" })) === "screens.home.motivationEvent",
+    "§10 event keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Ich habe es nicht geschafft und kämpfe weiter" })) ===
+      "screens.home.motivationEmotional",
+    "§10 a negated achievement stem reads as a setback, not a celebration",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Mein Ziel nicht erreicht" })) === "screens.home.motivationEmotional",
+    "§10 negated 'erreicht' reads as a setback",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Leider nur erfolglos trainiert" })) === "screens.home.motivationEmotional",
+    "§10 'erfolglos' isn't just a substring match on 'erfolg'",
+  );
+}
+
+// §11 — motivationKeyFor fallbacks when no keyword matches.
+{
+  assert(
+    reasonKeyFor(post("x", { content: "", followed: true })) === "screens.home.motivationFollowed",
+    "§11 followed author with no content signal",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "", followed: false, image_url: "https://x/img.jpg" })) ===
+      "screens.home.motivationGreeting",
+    "§11 unclassified photo falls back to a greeting",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "", followed: false, video_url: "https://x/v.mp4" })) ===
+      "screens.home.motivationWorkout",
+    "§11 unclassified video falls back to a call to join in",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "", followed: false })) === "screens.home.motivationDefault",
+    "§11 no signal at all falls back to the generic default",
+  );
 }
 
 if (failures.length) {

@@ -40,6 +40,13 @@
     <link rel="preconnect" href="%VITE_GATEWAY_BASE%" crossorigin>
     <link rel="dns-prefetch" href="%VITE_GATEWAY_BASE%">
 
+    <!-- Warm the Supabase handshake too: storage serves every event/post cover
+         image (no-CORS pool, no crossorigin) and supabase-js hits auth/REST on
+         boot (CORS pool, crossorigin) — both save one DNS+TCP+TLS round-trip. -->
+    <link rel="preconnect" href="%VITE_SUPABASE_URL%">
+    <link rel="preconnect" href="%VITE_SUPABASE_URL%" crossorigin>
+    <link rel="dns-prefetch" href="%VITE_SUPABASE_URL%">
+
     <!-- ORB Voice Widget -->
     <!-- BOOTSTRAP-ORB-STAGING-GATEWAY: load the widget from THIS environment's
          gateway via %VITE_GATEWAY_BASE% (Vite bakes it at build:
@@ -52,7 +59,7 @@
          The widget lives in the gateway repo
          (services/gateway/src/frontend/command-hub/orb-widget.js); the ?v= bump
          forces browsers to refetch instead of serving the cached prod widget. -->
-    <script src="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260612-latency-phase3" defer></script>
+    <script src="%VITE_GATEWAY_BASE%/command-hub/orb-widget.js?v=20260801-ws-default" defer></script>
   </head>
 
   <body>
