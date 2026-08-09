@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode, useState, useEffect, useRef } from 'react';
+import { createContext, useContext, ReactNode, useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { useAuth } from '@/context/AuthProvider';
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
@@ -146,7 +146,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
   }, [user, hasInitializedFromServer, preferences?.stt_language, selectedLanguage]);
 
-  const setSelectedLanguage = (language: string) => {
+  const setSelectedLanguage = useCallback((language: string) => {
     if (!ALLOWED_LANGUAGES.includes(language)) {
       console.error('[LANG] Invalid language:', language, '- fallback to de-DE');
       language = "de-DE";
@@ -196,17 +196,22 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       console.log('[LANG] Keeping existing voice:', currentVoice);
       updatePreferences({ stt_language: language });
     }
-  };
+  }, [user, preferences?.tts_voice, updatePreferences]);
+
+  // Memoized so this root-level provider doesn't hand every consumer a fresh
+  // object (and thus a re-render) each time the provider itself re-renders.
+  const contextValue = useMemo(
+    () => ({
+      selectedLanguage,
+      setSelectedLanguage,
+      languageOptions,
+      isLoading,
+    }),
+    [selectedLanguage, setSelectedLanguage, isLoading]
+  );
 
   return (
-    <LanguageContext.Provider 
-      value={{ 
-        selectedLanguage, 
-        setSelectedLanguage, 
-        languageOptions,
-        isLoading,
-      }}
-    >
+    <LanguageContext.Provider value={contextValue}>
       {children}
     </LanguageContext.Provider>
   );

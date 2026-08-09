@@ -1,8 +1,12 @@
 /**
  * Firebase Configuration & Cloud Messaging Init
+ *
+ * firebase/app and firebase/messaging are dynamic-imported on first use so
+ * the Firebase SDK stays out of the main bundle and initializeApp() no longer
+ * runs at boot for every visitor — it only loads when push messaging is
+ * actually requested (permission granted or Appilix subscribe).
  */
-import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken, onMessage, isSupported, Messaging } from 'firebase/messaging';
+import type { Messaging } from 'firebase/messaging';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCthnpKTnUPpC8d-_bLt3DKz9VCQ8eiwnc",
@@ -16,16 +20,18 @@ const firebaseConfig = {
 
 const VAPID_KEY = 'BK_lu3UlVM0UwMJ23a7KIcoKar2-XFVrqyuxmrkfx0ssCTQmsBgtgn-C0_lXhwrM55cBA8iU64zkRDOsz9D5vbE';
 
-const app = initializeApp(firebaseConfig);
 let messagingInstance: Messaging | null = null;
 
 async function getMessagingInstance(): Promise<Messaging | null> {
   if (messagingInstance) return messagingInstance;
+  const { getMessaging, isSupported } = await import('firebase/messaging');
   const supported = await isSupported();
   if (!supported) {
     console.warn('[Firebase] Messaging not supported in this browser');
     return null;
   }
+  const { initializeApp, getApps, getApp } = await import('firebase/app');
+  const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
   messagingInstance = getMessaging(app);
   return messagingInstance;
 }
@@ -36,6 +42,7 @@ export async function requestFCMToken(swRegistration?: ServiceWorkerRegistration
     if (permission !== 'granted') return null;
     const messaging = await getMessagingInstance();
     if (!messaging) return null;
+    const { getToken } = await import('firebase/messaging');
     const tokenOptions: { vapidKey: string; serviceWorkerRegistration?: ServiceWorkerRegistration } = { vapidKey: VAPID_KEY };
     if (swRegistration) {
       tokenOptions.serviceWorkerRegistration = swRegistration;
@@ -52,7 +59,6 @@ export async function requestFCMToken(swRegistration?: ServiceWorkerRegistration
 export async function onForegroundMessage(callback: (payload: any) => void): Promise<(() => void) | null> {
   const messaging = await getMessagingInstance();
   if (!messaging) return null;
+  const { onMessage } = await import('firebase/messaging');
   return onMessage(messaging, callback);
 }
-
-export { app as firebaseApp };
