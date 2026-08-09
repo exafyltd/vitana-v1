@@ -36,7 +36,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { getDisplayAvatarUrl } from '@/lib/autoAvatar';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { MapPin, Users, Heart, Plus } from 'lucide-react';
+import { MapPin, Users, Heart, Plus, Sparkles } from 'lucide-react';
 import { useAuth } from '@/context/AuthProvider';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { IntentCard } from '@/components/intents/IntentCard';
@@ -55,14 +55,12 @@ import {
   getIntentBoard,
   getFindPartnerMatches,
   getCommunityMemberCount,
+  getCommunityMembers,
+  type CommunityMember,
   type FindPartnerMatch,
   type UserIntent,
 } from '@/lib/intentApi';
 import { t } from '@/lib/i18n-toast';
-
-const GATEWAY_URL =
-  (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
-  'https://gateway-q74ibpv6ia-uc.a.run.app/api/v1';
 
 const MEMBERS_TAB_THRESHOLD = 1000;
 
@@ -94,16 +92,6 @@ function viewMeta(v: View) {
   return VIEW_OPTIONS.find((o) => o.value === v) ?? VIEW_OPTIONS[0];
 }
 
-interface MemberRow {
-  vitana_id: string | null;
-  registration_seq: number | null;
-  display_name: string | null;
-  avatar_url: string | null;
-  location: string | null;
-  member_since: string | null;
-  dance_preview: { variety: string | null; level: string | null; role: string | null } | null;
-}
-
 function initialsFor(name: string | null): string {
   if (!name) return '?';
   return (
@@ -125,7 +113,7 @@ const MEMBER_COUNT_STALE_TIME = 10 * 60 * 1000;
 export default function FindPartner() {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const { user, session } = useAuth();
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -183,6 +171,20 @@ export default function FindPartner() {
     staleTime: FIND_PARTNER_STALE_TIME,
   });
 
+  // Autopilot fallback. My Matches must never be a dead end: when the user
+  // has no matches to show — because they haven't posted a wish yet, or their
+  // posts produced none — surface real community members as suggestions so
+  // there is always someone to discover. Only fires once the matches query has
+  // resolved empty, so it never races the real matches.
+  const suggestionsQuery = useQuery({
+    queryKey: ['find-partner-suggestions', user?.id ?? 'anon'],
+    queryFn: () => getCommunityMembers({ limit: 12, sort: 'newest' }),
+    enabled:
+      view === 'matches' && !!user && matchesQuery.isSuccess &&
+      (matchesQuery.data?.length ?? 0) === 0,
+    staleTime: FIND_PARTNER_STALE_TIME,
+  });
+
   const boardQuery = useQuery({
     queryKey: ['intent-board', 'find_a_partner'],
     queryFn: () =>
@@ -204,16 +206,8 @@ export default function FindPartner() {
 
   const membersQuery = useQuery({
     queryKey: ['community-members', user?.id ?? 'anon'],
-    queryFn: async (): Promise<MemberRow[]> => {
-      if (!session?.access_token) return [];
-      const params = new URLSearchParams({ limit: '50', sort: 'newest' });
-      const res = await fetch(`${GATEWAY_URL}/community/members?${params.toString()}`, {
-        headers: { Authorization: `Bearer ${session.access_token}` },
-      });
-      const data = await res.json();
-      return Array.isArray(data?.members) ? (data.members as MemberRow[]) : [];
-    },
-    enabled: view === 'members' && !!user && showMembersTab && !!session?.access_token,
+    queryFn: () => getCommunityMembers({ limit: 50, sort: 'newest' }),
+    enabled: view === 'members' && !!user && showMembersTab,
     staleTime: FIND_PARTNER_STALE_TIME,
   });
 
@@ -221,6 +215,7 @@ export default function FindPartner() {
   const allBoardIntents = boardQuery.data?.intents ?? [];
   const allMyPosts = myPostsQuery.data ?? [];
   const allMembers = membersQuery.data ?? [];
+  const suggestions = suggestionsQuery.data ?? [];
 
   // Free-text search is shared across views (the box reads "Search posts
   // & matches"), so wire a light client-side text filter into each list
@@ -393,12 +388,12 @@ export default function FindPartner() {
                   cta={{ label: t('screens.community.filterReset'), onClick: resetMatchFilters }}
                 />
               ) : (
-              <EmptyState
-                icon={<Heart className="h-10 w-10 text-muted-foreground mb-3" />}
-                title={t('screens.community.noMatchesYet')}
-                body={t('screens.community.matchesEmptyBody')}
-                cta={{ label: t('screens.community.postNewWish'), onClick: () => setComposerOpen(true) }}
-              />
+                <SuggestedMatches
+                  members={suggestions}
+                  loading={suggestionsQuery.isLoading}
+                  onPostWish={() => setComposerOpen(true)}
+                  onOpenMember={(vid) => vid && navigate(`/profile/${vid}`)}
+                />
               )
             ) : isMobile ? (
               // Bottom padding leaves ~ a card height of clear space so the
@@ -502,43 +497,11 @@ export default function FindPartner() {
             ) : (
               <div className="space-y-2">
                 {members.map((m) => (
-                  <button
+                  <MemberListRow
                     key={m.vitana_id ?? `${m.registration_seq}`}
-                    type="button"
-                    onClick={() => m.vitana_id && navigate(`/profile/${m.vitana_id}`)}
-                    className="w-full flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted transition-colors text-left"
-                  >
-                    <Avatar className="h-12 w-12 flex-shrink-0">
-                      <AvatarImage src={getDisplayAvatarUrl(m)} alt={m.display_name ?? ''} />
-                      <AvatarFallback>{initialsFor(m.display_name)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-baseline gap-2 flex-wrap">
-                        <span className="font-medium truncate">{m.display_name ?? 'Member'}</span>
-                        {m.vitana_id && (
-                          <span className="text-sm text-muted-foreground">@{m.vitana_id}</span>
-                        )}
-                        {m.registration_seq != null && (
-                          <span className="text-[11px] uppercase tracking-wider text-primary/70 bg-primary/10 px-1.5 py-0.5 rounded">{t('screens.community.memberRegistration_seq', { registration_seq: m.registration_seq })}</span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
-                        {m.location && (
-                          <span className="inline-flex items-center gap-1">
-                            <MapPin className="h-3 w-3" />
-                            {m.location}
-                          </span>
-                        )}
-                        {m.dance_preview && m.dance_preview.variety && (
-                          <span className="inline-flex items-center gap-1 text-foreground/80">
-                            {[m.dance_preview.variety, m.dance_preview.level, m.dance_preview.role]
-                              .filter(Boolean)
-                              .join(' · ')}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </button>
+                    member={m}
+                    onOpen={(vid) => vid && navigate(`/profile/${vid}`)}
+                  />
                 ))}
               </div>
             )
@@ -674,6 +637,137 @@ function EmptyState({ icon, title, body, cta }: EmptyStateProps) {
           <Button onClick={cta.onClick}>{cta.label}</Button>
         )}
       </div>
+    </div>
+  );
+}
+
+/**
+ * A single tappable community-member row. Shared between the Members
+ * directory tab and the Autopilot suggestion fallback on My Matches.
+ * `badge` lets the suggestion list flag rows as Autopilot picks.
+ */
+function MemberListRow({
+  member,
+  onOpen,
+  badge,
+}: {
+  member: CommunityMember;
+  onOpen: (vitanaId: string | null) => void;
+  badge?: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => onOpen(member.vitana_id)}
+      className="w-full flex items-start gap-3 p-3 rounded-lg border border-border hover:bg-muted transition-colors text-left"
+    >
+      <Avatar className="h-12 w-12 flex-shrink-0">
+        <AvatarImage src={getDisplayAvatarUrl(member)} alt={member.display_name ?? ''} />
+        <AvatarFallback>{initialsFor(member.display_name)}</AvatarFallback>
+      </Avatar>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-baseline gap-2 flex-wrap">
+          <span className="font-medium truncate">{member.display_name ?? 'Member'}</span>
+          {member.vitana_id && (
+            <span className="text-sm text-muted-foreground">@{member.vitana_id}</span>
+          )}
+          {badge}
+          {member.registration_seq != null && (
+            <span className="text-[11px] uppercase tracking-wider text-primary/70 bg-primary/10 px-1.5 py-0.5 rounded">{t('screens.community.memberRegistration_seq', { registration_seq: member.registration_seq })}</span>
+          )}
+        </div>
+        <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+          {member.location && (
+            <span className="inline-flex items-center gap-1">
+              <MapPin className="h-3 w-3" />
+              {member.location}
+            </span>
+          )}
+          {member.dance_preview && member.dance_preview.variety && (
+            <span className="inline-flex items-center gap-1 text-foreground/80">
+              {[member.dance_preview.variety, member.dance_preview.level, member.dance_preview.role]
+                .filter(Boolean)
+                .join(' · ')}
+            </span>
+          )}
+        </div>
+      </div>
+    </button>
+  );
+}
+
+interface SuggestedMatchesProps {
+  members: CommunityMember[];
+  loading: boolean;
+  onPostWish: () => void;
+  onOpenMember: (vitanaId: string | null) => void;
+}
+
+/**
+ * Autopilot fallback for an empty My Matches list. Surfaces real community
+ * members as suggestions so the tab is never a dead end, while keeping the
+ * "post a wish" CTA front-and-centre as the path to real AI-ranked matches.
+ * If the community has no one to suggest, we fall back to the plain empty
+ * state so the screen still reads correctly.
+ */
+function SuggestedMatches({ members, loading, onPostWish, onOpenMember }: SuggestedMatchesProps) {
+  if (!loading && members.length === 0) {
+    return (
+      <EmptyState
+        icon={<Heart className="h-10 w-10 text-muted-foreground mb-3" />}
+        title={t('screens.community.noMatchesYet')}
+        body={t('screens.community.matchesEmptyBody')}
+        cta={{ label: t('screens.community.postNewWish'), onClick: onPostWish }}
+      />
+    );
+  }
+
+  const autopilotBadge = (
+    <span className="inline-flex items-center gap-1 text-[11px] font-medium rounded-full bg-primary/10 text-primary px-1.5 py-0.5">
+      <Sparkles className="h-3 w-3" />
+      {t('screens.community.autopilotSuggestionBadge')}
+    </span>
+  );
+
+  return (
+    <div className="max-w-2xl mx-auto pb-28">
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-primary" />
+          {t('screens.community.autopilotSuggestionsTitle')}
+        </h3>
+        <p className="text-sm text-muted-foreground mt-1">
+          {t('screens.community.autopilotSuggestionsBody')}
+        </p>
+      </div>
+      <Button onClick={onPostWish} className="mb-4 w-full sm:w-auto gap-1.5">
+        <Plus className="h-4 w-4" />
+        {t('screens.community.postNewWish')}
+      </Button>
+      {loading ? (
+        <div className="space-y-2">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-border">
+              <Skeleton className="h-12 w-12 rounded-full flex-shrink-0" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-3 w-1/3" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {members.map((m) => (
+            <MemberListRow
+              key={m.vitana_id ?? `${m.registration_seq}`}
+              member={m}
+              onOpen={onOpenMember}
+              badge={autopilotBadge}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
