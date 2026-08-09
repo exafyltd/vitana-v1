@@ -48,7 +48,9 @@ export function useFollowingFeed() {
       };
     },
     enabled: !!validViewer,
-    staleTime: 30_000,
+    // Align with the global 2min default so a cached Following tab paints
+    // instantly on re-navigation instead of refetching every 30s.
+    staleTime: 2 * 60 * 1000,
   });
 
   return {

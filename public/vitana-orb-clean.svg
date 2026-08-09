@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-hidden="true">
+  <defs>
+    <radialGradient id="vitanaOrbBody" cx="38%" cy="32%" r="75%">
+      <stop offset="0%" stop-color="#eef4ff"/>
+      <stop offset="18%" stop-color="#c3d6f7"/>
+      <stop offset="45%" stop-color="#7f9fdc"/>
+      <stop offset="72%" stop-color="#5677b8"/>
+      <stop offset="100%" stop-color="#3a5390"/>
+    </radialGradient>
+    <radialGradient id="vitanaOrbHighlight" cx="34%" cy="26%" r="30%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="64" cy="64" r="60" fill="url(#vitanaOrbBody)"/>
+  <circle cx="64" cy="64" r="60" fill="url(#vitanaOrbHighlight)"/>
+</svg>

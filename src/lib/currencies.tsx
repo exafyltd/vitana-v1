@@ -2,6 +2,9 @@ import React from 'react';
 import { DollarSign, Coins, CreditCard } from 'lucide-react';
 
 export interface CurrencyConfig {
+  // 'VTNA' kept in the union for historical transaction rows (from_currency /
+  // to_currency) written before the VTNA/Credits merge — it is no longer
+  // offered as a selectable currency (see CURRENCY_CONFIGS below).
   value: 'USD' | 'VTNA' | 'CREDITS';
   label: string;
   icon: typeof DollarSign;
@@ -16,16 +19,10 @@ export const CURRENCY_CONFIGS: CurrencyConfig[] = [
     fullLabel: 'US Dollars'
   },
   {
-    value: 'VTNA',
-    label: 'VTNA',
-    icon: Coins,
-    fullLabel: 'VTNA Tokens'
-  },
-  {
     value: 'CREDITS',
-    label: 'Credits',
+    label: 'VTNA Credits',
     icon: CreditCard,
-    fullLabel: 'Platform Credits'
+    fullLabel: 'VTNA Credits'
   }
 ];
 

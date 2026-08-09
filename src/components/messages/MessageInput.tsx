@@ -78,6 +78,13 @@ const MessageInput: React.FC<MessageInputProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout>();
   const debounceTimeoutRef = useRef<NodeJS.Timeout>();
+  // VTID-03459: `isSending` (prop, backed by React state in the parent) is
+  // not synchronous — two handleSend() invocations in the same tick (fast
+  // double-tap/Enter, IME auto-repeat) can both read isSending=false before
+  // either re-render lands, so both proceed and fire two POST /send calls.
+  // This ref is set synchronously at the top of handleSend, closing that
+  // window; isSending still drives the disabled UI state as before.
+  const sendingLockRef = useRef(false);
   const { toast } = useToast();
   const { user } = useAuth();
   const { activeTenantId } = useTenant();
@@ -152,14 +159,15 @@ const MessageInput: React.FC<MessageInputProps> = ({
     }
     
     // Guard conditions - allow sending if we have either threadId or recipientId
-    if ((!activeThread?.id && !recipientId) || (message.trim() === '' && attachments.length === 0) || disabled || isUploading || isSending) {
+    if ((!activeThread?.id && !recipientId) || (message.trim() === '' && attachments.length === 0) || disabled || isUploading || isSending || sendingLockRef.current) {
       return;
     }
-    
+
     const raw = message;
     const text = raw.trim();
-    
+
     // Clear composer optimistically
+    sendingLockRef.current = true;
     setMessage("");
     setAttachments([]);
     setUploadProgress({});
@@ -202,11 +210,13 @@ const MessageInput: React.FC<MessageInputProps> = ({
       notifyError('toasts.messages.messageFailed');
       
       console.error({
-        stage: "send", 
-        threadId: activeThread?.id, 
-        payload: { text }, 
+        stage: "send",
+        threadId: activeThread?.id,
+        payload: { text },
         error
       });
+    } finally {
+      sendingLockRef.current = false;
     }
   };
 

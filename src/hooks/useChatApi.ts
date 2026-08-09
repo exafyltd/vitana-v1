@@ -9,7 +9,12 @@
 
 import { supabase } from "@/integrations/supabase/client";
 
-const GATEWAY_BASE = "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
+// Honor VITE_GATEWAY_URL (already includes "/api/v1") so the staging frontend
+// exercises the staging gateway code (VTID-03292) instead of always hitting
+// prod. Falls back to the prod gateway for builds without the env var.
+const GATEWAY_BASE =
+  (import.meta.env.VITE_GATEWAY_URL as string | undefined) ||
+  "https://gateway-q74ibpv6ia-uc.a.run.app/api/v1";
 
 // ── Types ─────────────────────────────────────────────────────────────
 
@@ -106,12 +111,42 @@ export async function sendChatMessage(
   return json.data;
 }
 
+/**
+ * Ask Vitana to generate + write her reply to the last message sent to her,
+ * and wait for it (VTID-03470). Call this right after a successful
+ * sendChatMessage() to the Vitana bot — the reply used to be generated
+ * fire-and-forget as a side effect of /send itself, which could silently
+ * lose the reply under the gateway's serverless CPU throttling. This is a
+ * separate, explicitly-awaited call so completion is deterministic; the
+ * reply still lands in chat_messages and is picked up by the existing
+ * Realtime subscription like any other message, so no rendering change is
+ * needed beyond calling this after send. Errors are non-fatal to the send
+ * itself — the user's message already went through — so callers should
+ * catch and log/toast rather than treat this as blocking.
+ */
+export async function requestVitanaReply(content: string): Promise<string | null> {
+  const json = await gatewayFetch("/vitana-reply", {
+    method: "POST",
+    body: JSON.stringify({ content }),
+  });
+  return json.reply ?? null;
+}
+
 /** Mark all messages from a peer as read. */
 export async function markChatRead(peerId: string): Promise<void> {
   await gatewayFetch("/read", {
     method: "POST",
     body: JSON.stringify({ peer_id: peerId }),
   });
+}
+
+/** Mark ALL of the caller's unread direct messages as read. Returns the number updated. */
+export async function markAllChatRead(): Promise<number> {
+  const json = await gatewayFetch("/read-all", {
+    method: "POST",
+    body: JSON.stringify({}),
+  });
+  return json.updated ?? 0;
 }
 
 /** Get total unread message count from gateway. */
@@ -215,4 +250,22 @@ export async function sendGroupMessage(
 
 export async function markGroupRead(groupId: string): Promise<void> {
   await gatewayGroupFetch(`/${groupId}/read`, { method: "POST" });
+}
+
+/** Edit a group message the caller sent. Returns the updated message. */
+export async function updateGroupMessage(
+  groupId: string,
+  messageId: string,
+  content: string,
+): Promise<ChatGroupMessage> {
+  const json = await gatewayGroupFetch(`/${groupId}/messages/${messageId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ content }),
+  });
+  return json.data;
+}
+
+/** Delete a group message the caller sent. */
+export async function deleteGroupMessage(groupId: string, messageId: string): Promise<void> {
+  await gatewayGroupFetch(`/${groupId}/messages/${messageId}`, { method: "DELETE" });
 }

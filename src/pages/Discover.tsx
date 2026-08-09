@@ -54,6 +54,9 @@ import { UniversalShareButton } from '@/components/sharing/UniversalShareButton'
 import { useTranslation } from '@/hooks/useTranslation';
 import { useToast } from '@/hooks/use-toast';
 import { notifyError, t } from '@/lib/i18n-toast';
+import { useAuth } from '@/context/AuthProvider';
+import { loginRouteWithRedirect } from '@/lib/guest-auth';
+import { Gift } from 'lucide-react';
 
 // VTID-NAV-DISCOVER-TABS: the Discover mode pills (shared by mobile pill +
 // desktop split-bar). Vitana deep-links to a pill via /discover?tab=<value>
@@ -69,6 +72,7 @@ function resolveDiscoverTab(raw: string | null): string | null {
 
 function DiscoverInner() {
   const { selectProduct } = useProductSelection();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const isMobile = useIsMobile();
@@ -134,6 +138,12 @@ function DiscoverInner() {
   // VTID-02000: Real marketplace feed (replaces hardcoded mock data)
   const [scope, setScope] = useState<string>("friendly");
   const { data: feedData, isLoading: feedLoading } = useMarketplaceFeed({ limit: 12 });
+
+  // Signed-out visitors browse a public storefront. The backend serves the
+  // guest starter feed (feed_context.guest === true); fall back to !user so the
+  // CTA shows even before the feed resolves.
+  const isGuest = !user || feedData?.feed_context?.guest === true;
+  const goToSignIn = () => navigate(loginRouteWithRedirect());
 
   // Map marketplace products to the legacy AIRecommendation shape so
   // MobileDiscoverView doesn't need changes yet.
@@ -256,6 +266,38 @@ function DiscoverInner() {
               emoji="🔍"
             />
 
+          {/* Guest CTA — signed-out visitors can browse but must sign in to buy
+              and earn rewards. */}
+          {isGuest && (
+            <Card className="border-primary/30 bg-gradient-to-r from-primary/10 via-purple-500/5 to-pink-500/10">
+              <CardContent className={cn(
+                "flex items-center gap-3 p-4",
+                isMobile ? "flex-col text-center" : "flex-row"
+              )}>
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <div className="bg-primary/15 rounded-full p-2 shrink-0">
+                    <Gift className="h-5 w-5 text-primary" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-semibold text-sm">
+                      {translate('discover.guest.bannerTitle')}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {translate('discover.guest.bannerSubtitle')}
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  size="sm"
+                  onClick={goToSignIn}
+                  className={cn("shrink-0", isMobile && "w-full")}
+                >
+                  {translate('discover.guest.bannerCta')}
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Utility Action Buttons - Mobile optimized pill rail */}
           <UtilityActionButton
             compact={isMobile}
@@ -312,7 +354,7 @@ function DiscoverInner() {
               {isMobile && (
                 <MobileModePill
                   modes={[
-                    { value: "suggested", label: "AI Picks", icon: "💡" },
+                    { value: "suggested", label: translate('discover.vitanaPicksLabel'), icon: "💡" },
                     { value: "categories", label: "Categories", icon: "📂" },
                     { value: "share", label: "Share & Earn", icon: "💰" },
                   ]}

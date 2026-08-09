@@ -5,6 +5,7 @@ import { RewardDot } from "@/components/ui/reward-dot";
 import { Lightbulb, ArrowRight, Sparkles, Target } from "lucide-react";
 import { withCardId } from "@/lib/withCardId";
 import { t } from '@/lib/i18n-toast';
+import { track } from "@/lib/product-analytics/client";
 
 interface Suggestion {
   title: string;
@@ -29,6 +30,22 @@ function SmartSuggestionsBase({
   maxItems = 3
 }: SmartSuggestionsProps) {
   const displaySuggestions = suggestions.slice(0, maxItems);
+
+  // BOOTSTRAP-PRODUCT-ANALYTICS: AI recommendation clicks feed the
+  // /admin/insights dashboards (metadata only — title/type/priority/label).
+  const handleAction = (suggestion: Suggestion) => () => {
+    track("recommendation_clicked", {
+      event_type: "assistant",
+      feature_key: "ai_recommendations",
+      properties: {
+        card_title: suggestion.title,
+        card_type: suggestion.type,
+        priority: suggestion.priority,
+        action_label: suggestion.action,
+      },
+    });
+    suggestion.onAction?.();
+  };
 
   const getTypeIcon = (type: Suggestion["type"]) => {
     switch (type) {
@@ -71,7 +88,7 @@ function SmartSuggestionsBase({
                 <p className="text-sm font-medium text-foreground truncate">{suggestion.title}</p>
               </div>
               {suggestion.action && (
-                <Button size="sm" variant="ghost" onClick={suggestion.onAction}>
+                <Button size="sm" variant="ghost" onClick={handleAction(suggestion)}>
                   {suggestion.action}
                 </Button>
               )}
@@ -104,7 +121,7 @@ function SmartSuggestionsBase({
                   </div>
                   <p className="text-sm text-muted-foreground">{suggestion.description}</p>
                   {suggestion.action && (
-                    <Button size="sm" variant="outline" onClick={suggestion.onAction} className="mt-2">
+                    <Button size="sm" variant="outline" onClick={handleAction(suggestion)} className="mt-2">
                       {suggestion.action}
                       <ArrowRight className="w-4 h-4 ml-1" />
                     </Button>
@@ -150,7 +167,7 @@ function SmartSuggestionsBase({
                   <Button 
                     size="sm" 
                     variant="ghost" 
-                    onClick={suggestion.onAction}
+                    onClick={handleAction(suggestion)}
                     className="mt-1 p-0 h-auto text-calendar-primary hover:text-calendar-primary/80 hover:bg-transparent"
                   >
                     {suggestion.action} <ArrowRight className="w-3 h-3 ml-1" />

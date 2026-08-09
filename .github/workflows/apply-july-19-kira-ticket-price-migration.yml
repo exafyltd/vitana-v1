@@ -1,0 +1,112 @@
+name: Apply July 19 KIRA ticket price migration
+
+# Synchronizes the July 19 KIRA Rooftop event card, detail view, and Stripe
+# checkout price at EUR 99. The SQL targets one event and one ticket row and is
+# idempotent, so this workflow is safe to re-run.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/20260703000000_fix_july_19_kira_ticket_price.sql'
+      - '.github/workflows/apply-july-19-kira-ticket-price-migration.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: apply-july-19-kira-ticket-price-migration
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_REF: inmkhvwdcuyhnxkgfvsb
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply migration via Supabase Management API
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_ACCESS_TOKEN:-}" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN secret is not set"
+            exit 1
+          fi
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.error
+          import urllib.request
+
+          ref = os.environ['PROJECT_REF']
+          token = os.environ['SUPABASE_ACCESS_TOKEN']
+          migration = 'supabase/migrations/20260703000000_fix_july_19_kira_ticket_price.sql'
+          sql = open(migration, encoding='utf-8').read()
+          request = urllib.request.Request(
+              f'https://api.supabase.com/v1/projects/{ref}/database/query',
+              data=json.dumps({'query': sql}).encode(),
+              headers={
+                  'Authorization': f'Bearer {token}',
+                  'Content-Type': 'application/json',
+                  'User-Agent': 'Mozilla/5.0 (vitana-ci) supabase-management-api',
+              },
+              method='POST',
+          )
+          try:
+              response = urllib.request.urlopen(request)
+              print('Apply OK, status', response.status)
+              print((response.read().decode() or '[]')[:1000])
+          except urllib.error.HTTPError as error:
+              print('Apply FAILED, HTTP', error.code)
+              print(error.read().decode())
+              raise SystemExit(1)
+          PY
+
+      - name: Verify event and ticket prices
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          ref = os.environ['PROJECT_REF']
+          token = os.environ['SUPABASE_ACCESS_TOKEN']
+          sql = """
+          SELECT
+            event.metadata->>'price' AS metadata_price,
+            ticket.price::text AS ticket_price,
+            ticket.currency
+          FROM public.global_community_events AS event
+          JOIN public.event_ticket_types AS ticket
+            ON ticket.event_id = event.id
+          WHERE event.id = '3ed6c7e1-d284-42bb-bc0f-ef8e8c655bb7'
+            AND ticket.id = '2528505b-007b-421b-bc22-064894706e2e';
+          """
+          request = urllib.request.Request(
+              f'https://api.supabase.com/v1/projects/{ref}/database/query',
+              data=json.dumps({'query': sql}).encode(),
+              headers={
+                  'Authorization': f'Bearer {token}',
+                  'Content-Type': 'application/json',
+                  'User-Agent': 'Mozilla/5.0 (vitana-ci) supabase-management-api',
+              },
+              method='POST',
+          )
+          rows = json.loads(urllib.request.urlopen(request).read().decode() or '[]')
+          row = rows[0] if rows else {}
+          print('Verify:', row)
+          if (
+              row.get('metadata_price') != '99'
+              or float(row.get('ticket_price', 'nan')) != 99
+              or row.get('currency') != 'EUR'
+          ):
+              raise SystemExit(f'::error::Price verification failed: {row}')
+          print('Verify OK: event metadata and ticket price are both EUR 99.')
+          PY

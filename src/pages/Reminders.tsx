@@ -2,21 +2,22 @@
  * VTID-02601 — Reminders route (/reminders).
  *
  * Kept for ORB voice navigation and reminder push deep-links
- * (/reminders?fire=<id>). The list UI lives in <RemindersPanel> (shared with
- * the Calendar → Reminders tab).
+ * (/reminders/fire/<id>, or legacy /reminders?fire=<id>). The list UI lives
+ * in <RemindersPanel> (shared with the Calendar → Reminders tab).
  *
  * Push deep-link behaviour (BOOTSTRAP-REMINDER-DEEPLINK): when arriving with
- * ?fire=<id>, open the Calendar popup directly on the Reminders tab so the
+ * a fire id, open the Calendar popup directly on the Reminders tab so the
  * push-tap experience matches the in-app calendar. The global
- * ReminderInterruptOverlay reads ?fire= itself and renders the Mark-done /
- * Snooze / Dismiss card on top (z-9999). We render the popup locally rather
- * than dispatching the global `calendar:open` event because that event's
- * listener lives in the desktop sidebar only. BOOTSTRAP-MOBILE-NAV-CONTAINMENT
- * now also mounts that listener in MobileAppShell, and on mobile this page
- * auto-opens the Calendar popup on the Reminders tab so a mobile user never
- * gets stranded on the bare desktop full-list page.
+ * ReminderInterruptOverlay reads the fire id itself and renders the
+ * Mark-done / Snooze / Dismiss card on top (z-9999). We render the popup
+ * locally rather than dispatching the global `calendar:open` event because
+ * that event's listener lives in the desktop sidebar only.
+ * BOOTSTRAP-MOBILE-NAV-CONTAINMENT now also mounts that listener in
+ * MobileAppShell, and on mobile this page auto-opens the Calendar popup on
+ * the Reminders tab so a mobile user never gets stranded on the bare desktop
+ * full-list page.
  *
- * In that overlay-mode (mobile, or any device arriving with ?fire=) the
+ * In that overlay-mode (mobile, or any device arriving with a fire id) the
  * Calendar popup IS the destination. We skip rendering the full-page
  * <RemindersPanel> underneath — otherwise the user sees the same list
  * twice, and closing the popup strands them on /reminders. When the
@@ -26,7 +27,7 @@
  */
 
 import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import RemindersPanel from "@/components/reminders/RemindersPanel";
 import { EnhancedCalendarPopup } from "@/components/calendar/EnhancedCalendarPopup";
 import { Bell } from "lucide-react";
@@ -36,12 +37,16 @@ import { useIsMobile } from "@/hooks/use-mobile";
 const Reminders: React.FC = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  // Path-based /reminders/fire/:fireId (current) or legacy ?fire= query
+  // string — the query form silently fails to launch in Appilix's Android
+  // in-app browser when opened from a notification tap.
+  const { fireId } = useParams<{ fireId?: string }>();
   // Sticky for the lifetime of this mount — survives the URL change we do
   // when we strip ?fire= via navigate(), so the panel underneath stays
   // hidden until we leave the route.
   const isOverlayMode = useMemo(
-    () => isMobile || new URLSearchParams(window.location.search).has('fire'),
-    [isMobile],
+    () => isMobile || !!fireId || new URLSearchParams(window.location.search).has('fire'),
+    [isMobile, fireId],
   );
   const [calendarOpen, setCalendarOpen] = useState(isOverlayMode);
 

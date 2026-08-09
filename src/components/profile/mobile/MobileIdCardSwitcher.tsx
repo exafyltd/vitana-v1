@@ -5,12 +5,27 @@ import { cn } from "@/lib/utils";
 import { MobileIdentityCard } from "./MobileIdentityCard";
 import { MobileIdCardBack } from "./MobileIdCardBack";
 import { MobileAccountCard } from "./MobileAccountCard";
+import { MobileBusinessCard } from "./MobileBusinessCard";
+import { BusinessPublicCard } from "../shared/BusinessPublicCard";
 import { MobileSubscriptionSummary } from "./MobileSubscriptionSummary";
 import { ProfileIdSegmentedControl } from "../shared/ProfileIdSegmentedControl";
 import { UserProfile } from "@/types/profile";
+import { useTranslation } from "@/hooks/useTranslation";
 
-type CardSide = "front" | "back" | "account";
-const VALID_SIDES: ReadonlySet<CardSide> = new Set(["front", "back", "account"]);
+export type CardSide = "front" | "back" | "account" | "business";
+const VALID_SIDES: ReadonlySet<CardSide> = new Set(["front", "back", "account", "business"]);
+
+/**
+ * Shared with parent pages (EditProfilePage.tsx, ProfileLayout.tsx) so they
+ * can independently derive which segment is active — from the same ?card=
+ * URL param this component itself reads — to gate the unrelated
+ * Posts/About/Media/Groups tab system below them (VTID-02950 round 2: that
+ * system must not render under the Business segment).
+ */
+export function getActiveCardSide(searchParams: URLSearchParams): CardSide {
+  const param = searchParams.get("card");
+  return param && VALID_SIDES.has(param as CardSide) ? (param as CardSide) : "front";
+}
 
 interface MobileIdCardSwitcherProps {
   profile: UserProfile;
@@ -21,18 +36,15 @@ interface MobileIdCardSwitcherProps {
   onEditAccount?: () => void;
   onRefreshProfile?: () => void;
   onShare?: () => void;
+  onGetMaxina?: () => void;
   onFollow?: () => void;
   onMessage?: () => void;
   isFollowing?: boolean;
   followLoading?: boolean;
+  followersCount?: number;
+  followingCount?: number;
   className?: string;
 }
-
-const SEGMENTS: readonly { id: CardSide; label: string }[] = [
-  { id: "front", label: "Identity" },
-  { id: "back", label: "Social" },
-  { id: "account", label: "Account" },
-] as const;
 
 export function MobileIdCardSwitcher({
   profile,
@@ -43,20 +55,31 @@ export function MobileIdCardSwitcher({
   onEditAccount,
   onRefreshProfile,
   onShare,
+  onGetMaxina,
   onFollow,
   onMessage,
   isFollowing = false,
   followLoading = false,
+  followersCount,
+  followingCount,
   className
 }: MobileIdCardSwitcherProps) {
+  // Resolved at render so the labels follow the user's chosen language.
+  const { translate } = useTranslation();
+  // Business (Recommend & Earn, VTID-02950) is now shown to every viewer —
+  // owner gets the private stats dashboard, visitors get a read-only
+  // storefront of the owner's recommendations (BOOTSTRAP-PUBLIC-BUSINESS-PROFILE).
+  const segments: readonly { id: CardSide; label: string }[] = [
+    { id: "front", label: translate('profile.tabs.identity', 'Identity') },
+    { id: "back", label: translate('profile.tabs.social', 'Social') },
+    { id: "account", label: translate('profile.tabs.account', 'Account') },
+    { id: "business" as const, label: translate('profile.tabs.business', 'Business') },
+  ];
   // Persist the active segment in the URL (?card=front|back|account) so
   // navigating away (e.g. into /profile/subscriptions) and back returns the
   // user to the segment they were on, instead of resetting to Identity.
   const [searchParams, setSearchParams] = useSearchParams();
-  const param = searchParams.get("card");
-  const activeSide: CardSide = param && VALID_SIDES.has(param as CardSide)
-    ? (param as CardSide)
-    : "front";
+  const activeSide = getActiveCardSide(searchParams);
 
   const handleSegmentChange = useCallback(
     (next: CardSide) => {
@@ -79,11 +102,12 @@ export function MobileIdCardSwitcher({
       {/* Segmented Control — soft, secondary treatment so the card below
           stays the hero. Extra top padding gives it room to breathe
           between the app bar and the card. */}
-      <ProfileIdSegmentedControl<CardSide>
-        segments={SEGMENTS}
+      <ProfileIdSegmentedControl
+        segments={segments}
         value={activeSide}
         onChange={handleSegmentChange}
         size="sm"
+        accent="mint"
         className="px-4 pt-5 pb-5"
       />
 
@@ -103,10 +127,15 @@ export function MobileIdCardSwitcher({
                 vitanaPercentile={profile.vitanaPercentile}
                 isOwner={isOwner}
                 onShare={onShare}
+                onGetMaxina={onGetMaxina}
                 onFollow={onFollow}
                 onMessage={onMessage}
                 isFollowing={isFollowing}
                 followLoading={followLoading}
+                userId={profile.user_id}
+                profileId={profile.id}
+                followersCount={followersCount}
+                followingCount={followingCount}
               />
             </motion.div>
           )}
@@ -115,6 +144,7 @@ export function MobileIdCardSwitcher({
               <MobileIdCardBack
                 profile={profile}
                 editMode={editMode}
+                isOwner={isOwner}
                 onEdit={onEditSocial}
                 onRefreshProfile={onRefreshProfile}
               />
@@ -134,6 +164,11 @@ export function MobileIdCardSwitcher({
                   <MobileSubscriptionSummary />
                 </div>
               )}
+            </motion.div>
+          )}
+          {activeSide === "business" && (
+            <motion.div key="business" {...slotAnim(1)} transition={{ duration: 0.25, ease: "easeInOut" }}>
+              {isOwner ? <MobileBusinessCard /> : <BusinessPublicCard vitanaId={profile.handle} />}
             </motion.div>
           )}
         </AnimatePresence>

@@ -20,7 +20,7 @@ import { useBookmarks } from "@/hooks/useBookmarks";
 import { Star, Search, Filter, Plane, Plus, RefreshCw, Brain, Sparkles } from "lucide-react";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
@@ -57,15 +57,16 @@ export default function Supplements() {
 
 function SupplementsInner() {
   const navigate = useNavigate();
+  const [urlParams] = useSearchParams();
   const { pendingCount } = useAutopilot();
   const { getBookmarksByType } = useBookmarks();
   const { selectProduct } = useProductSelection();
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("browse");
-  
+
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState(() => urlParams.get("category") ?? "all");
   const [sortBy, setSortBy] = useState("popular");
 
   const searchParams = useMemo<MarketplaceSearchParams>(() => {
@@ -78,8 +79,7 @@ function SupplementsInner() {
     return {
       category: "supplements",
       q: searchQuery || undefined,
-      subcategory:
-        selectedCategory !== "all" ? selectedCategory.toLowerCase() : undefined,
+      subcategory: selectedCategory !== "all" ? selectedCategory : undefined,
       sort: sortMap[sortBy] ?? "relevance",
       limit: 48,
     };
@@ -117,21 +117,23 @@ function SupplementsInner() {
     [searchData]
   );
 
-  const categories = [
-    "All",
-    "Multivitamins",
-    "Vitamins",
-    "Minerals",
-    "Omega-3",
-    "Adaptogens",
-    "Nootropics",
-    "Longevity",
-    "Sleep",
-    "Performance",
-    "Beauty",
-    "Gut Health",
-    "Herbs",
-    "Heart Health"
+  const categories: Array<{ label: string; value: string }> = [
+    { label: "All", value: "all" },
+    { label: "Multivitamins", value: "multivitamins" },
+    { label: "Vitamins", value: "vitamins" },
+    { label: "Minerals", value: "minerals" },
+    { label: "Omega-3", value: "essential-fatty-acids" },
+    { label: "Adaptogens", value: "adaptogens" },
+    { label: "Nootropics", value: "nootropics" },
+    { label: "Longevity", value: "longevity" },
+    { label: "Immunity", value: "immunity" },
+    { label: "Antioxidants", value: "antioxidants" },
+    { label: "Sleep", value: "sleep" },
+    { label: "Performance", value: "performance" },
+    { label: "Beauty", value: "beauty" },
+    { label: "Gut Health", value: "gut-health" },
+    { label: "Herbs", value: "herbs" },
+    { label: "Heart Health", value: "heart-health" },
   ];
 
 
@@ -210,8 +212,8 @@ function SupplementsInner() {
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map(cat => (
-                    <SelectItem key={cat} value={cat.toLowerCase()}>
-                      {cat}
+                    <SelectItem key={cat.value} value={cat.value}>
+                      {cat.label}
                     </SelectItem>
                   ))}
                 </SelectContent>

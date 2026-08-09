@@ -37,26 +37,28 @@ export function useRoomState(roomId: string | undefined, enabled = true) {
 }
 
 export function useCreateSession() {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({ roomId, request }: { roomId: string; request: CreateSessionRequest }) =>
       liveRoomService.createSession(roomId, request),
-    onSuccess: (data, variables) => {
-      const isScheduled = data.status === 'scheduled';
-      toast({
-        title: isScheduled ? 'Session scheduled!' : 'You are live!',
-        description: isScheduled
-          ? 'Your live room has been scheduled'
-          : 'Your session has started',
-      });
+    // User-facing success/error messaging is owned by the caller (GoLivePopup):
+    // it shows a localized "scheduled" toast (or navigates the host into the room),
+    // and runs the 409 "room not idle" cancel-and-retry recovery. Surfacing toasts
+    // here was wrong on both ends: the onError fired a premature
+    // "Sitzung konnte nicht erstellt werden" while the popup was about to retry and
+    // succeed, and the onSuccess fired a duplicate, hardcoded-English
+    // "Session scheduled!". We only own cache invalidation here.
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-room'] });
       queryClient.invalidateQueries({ queryKey: ['live-rooms'] });
       queryClient.invalidateQueries({ queryKey: ['room-state'] });
-    },
-    onError: (error: Error) => {
-      notifyError('toasts.hooks.failedCreateSession');
+      // The community Live Rooms list reads ['live-streams', 'scheduled'|'live'].
+      // Without invalidating it the CREATOR keeps her stale pre-create cache
+      // (global staleTime 2m, refetchOnWindowFocus off) and never sees her own
+      // just-scheduled room — while everyone else fetches fresh on mount and sees
+      // it immediately. Invalidate so the host's open list refetches too.
+      queryClient.invalidateQueries({ queryKey: ['live-streams'] });
     },
   });
 }
@@ -74,6 +76,8 @@ export function useEndRoom() {
       queryClient.invalidateQueries({ queryKey: ['my-room'] });
       queryClient.invalidateQueries({ queryKey: ['live-rooms'] });
       queryClient.invalidateQueries({ queryKey: ['room-state'] });
+      // Refresh the community Live Rooms list so the ended room drops off the host's view.
+      queryClient.invalidateQueries({ queryKey: ['live-streams'] });
     },
     onError: (error: Error) => {
       notifyError('toasts.hooks.failedEndRoom');
@@ -96,6 +100,8 @@ export function useCancelRoom() {
       queryClient.invalidateQueries({ queryKey: ['my-room'] });
       queryClient.invalidateQueries({ queryKey: ['live-rooms'] });
       queryClient.invalidateQueries({ queryKey: ['room-state'] });
+      // Refresh the community Live Rooms list so the cancelled room drops off the host's view.
+      queryClient.invalidateQueries({ queryKey: ['live-streams'] });
     },
     onError: (error: Error) => {
       notifyError('toasts.hooks.failedCancel');

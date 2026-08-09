@@ -62,10 +62,21 @@ All colors MUST be HSL.
     /* System / Utility */
     --sys-vitana-accent: 199 36% 48%;
     --sys-vitana-tint: 199 36% 96%;
+    --sys-vitana-card: 235 100% 98%;
+    --sys-vitana-card-border: 235 45% 90%;
     --sys-autopilot-accent: 8 85% 56%;
     --sys-autopilot-tint: 8 100% 96%;
     --sys-ai-accent: 14 88% 54%;
     --sys-ai-tint: 14 100% 96%;
+    /* Feature-discovery post cards (News Feed) */
+    --sys-feature-new-accent: 262 83% 58%;
+    --sys-feature-new-tint: 262 60% 96%;
+    --sys-feature-new-card: 262 65% 94%;
+    --sys-feature-new-card-border: 262 50% 86%;
+    --sys-feature-tip-accent: 38 92% 42%;
+    --sys-feature-tip-tint: 42 90% 95%;
+    --sys-feature-tip-card: 42 45% 98%;
+    --sys-feature-tip-card-border: 42 40% 89%;
     --util-calendar-accent: 215 16% 60%;
     --util-calendar-tint: 215 25% 97%;
     --util-settings-accent: 215 16% 60%;
@@ -212,10 +223,21 @@ All colors MUST be HSL.
     /* System / Utility */
     --sys-vitana-accent: 199 36% 52%;
     --sys-vitana-tint: 199 36% 8%;
+    --sys-vitana-card: 235 25% 16%;
+    --sys-vitana-card-border: 235 25% 28%;
     --sys-autopilot-accent: 8 85% 66%;
     --sys-autopilot-tint: 8 100% 8%;
     --sys-ai-accent: 14 88% 64%;
     --sys-ai-tint: 14 100% 8%;
+    /* Feature-discovery post cards (News Feed) - Dark Mode */
+    --sys-feature-new-accent: 262 83% 74%;
+    --sys-feature-new-tint: 262 45% 10%;
+    --sys-feature-new-card: 262 28% 15%;
+    --sys-feature-new-card-border: 262 28% 27%;
+    --sys-feature-tip-accent: 42 90% 65%;
+    --sys-feature-tip-tint: 42 55% 9%;
+    --sys-feature-tip-card: 42 22% 15%;
+    --sys-feature-tip-card-border: 42 22% 27%;
     --util-calendar-accent: 215 16% 70%;
     --util-calendar-tint: 215 25% 10%;
     --util-settings-accent: 215 16% 70%;
@@ -670,6 +692,22 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
     z-index: 0 !important;
     pointer-events: none !important;
     opacity: 0 !important;
+  }
+
+  /* Keep ORB docked to the bottom nav but BELOW the side drawer + backdrop
+     (SideDrawerNav, both z-60) so the drawer's scrim dims it instead of the
+     ORB floating over the panel. Position/opacity untouched — it stays in
+     place, just tucked behind the scrim; taps fall through to close the drawer. */
+  body[data-side-drawer-open="true"] .vtorb-fab,
+  body[data-side-drawer-open="true"] .vitana-orb,
+  body[data-side-drawer-open="true"] [data-vitana-orb="true"],
+  body[data-side-drawer-open="true"] #vitana-orb,
+  body[data-side-drawer-open="true"] .OrbFloatingButton,
+  body[data-side-drawer-open="true"] #vitana-orb-fab,
+  body[data-side-drawer-open="true"] [id^="vitana-orb"],
+  body[data-side-drawer-open="true"] [class^="vtorb-fab"] {
+    z-index: 55 !important;          /* above bottom nav (50), below drawer/backdrop (60) */
+    pointer-events: none !important; /* taps fall through to the backdrop → closes drawer */
   }
 
   /* Suppress ORB when direct chat screen is open (belt-and-suspenders) */

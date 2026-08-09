@@ -22,6 +22,15 @@ const hashString = (s: string): string => {
   return Math.abs(h).toString(36);
 };
 
+// Baked into the `?v=` hash so we can invalidate ALL cached previews at once
+// when the og-proxy worker's rendering changes. v2: multi-MB avatars used to
+// be emitted as og:image verbatim; WhatsApp silently drops images over
+// ~600 KB, so those share URLs have an image-less preview cached against
+// them. Bumping the salt gives every profile a new URL key, forcing a fresh
+// scrape against the fixed worker (which now serves a resized 512×512
+// rendition).
+const SHARE_URL_SALT = 'v2';
+
 export const useProfileShare = ({ handle, name, profileId, isPublic, avatarUrl }: ShareOptions) => {
   const [isShareOpen, setIsShareOpen] = useState(false);
 
@@ -39,12 +48,13 @@ export const useProfileShare = ({ handle, name, profileId, isPublic, avatarUrl }
   // the default-images bucket was 403'ing). Hashing `noavatar:<id>` gives
   // those URLs a distinct, stable key that flips the moment an avatar is
   // added, forcing a fresh scrape.
+  //
   const getShareUrl = useCallback(() => {
     const base = `https://vitanaland.com/profiles/${encodeURIComponent(profileId)}`;
     const versionInput = avatarUrl && avatarUrl.length > 0
       ? avatarUrl
       : `noavatar:${profileId}`;
-    return `${base}?v=${hashString(versionInput)}`;
+    return `${base}?v=${hashString(`${SHARE_URL_SALT}:${versionInput}`)}`;
   }, [profileId, avatarUrl]);
 
   // Check if Web Share API is available

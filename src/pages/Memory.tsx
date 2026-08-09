@@ -1,3 +1,4 @@
+import { useUrlTab } from "@/hooks/useUrlTab";
 import { useState } from "react";
 import { Plus } from "lucide-react";
 import SEO from "@/components/SEO";
@@ -123,7 +124,7 @@ const diaryEntries = [
 ];
 
 export default withScreenId(function Memory() {
-  const [activeTab, setActiveTab] = useState("categories");
+  const [activeTab, setActiveTab] = useUrlTab("tab", "categories");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   
   // Mock sync timestamp - will be replaced with real data
