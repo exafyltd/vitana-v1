@@ -3,8 +3,8 @@
  *
  * Pure Node ESM. Transpiles src/lib/news-feed-ranker.ts with esbuild (already a
  * Vite dependency) to a temp module, imports it, and exercises the REAL ranking
- * logic — not a string-grep. Covers the approved deterministic order, follow-
- * before-format, public-news interleave, hide/mute, "show less" downrank,
+ * logic — not a string-grep. Covers the approved deterministic order, global
+ * newest-first post ordering, public-news interleave, hide/mute, "show less" downrank,
  * match cap + seen-match exclusion, and tie-breaking by stable id.
  *
  * Invocation:
@@ -104,42 +104,59 @@ function performer(id, over = {}) {
 
 const { rankFeed, reasonKeyFor } = await loadRanker();
 
-// §1 — Tier order: match → performer → followed post → other post → article.
+// §1 — Tier order: match → performer → community posts → article.
 {
   const out = rankFeed([
     article("a"),
-    post("other", { followed: false }),
-    post("followed", { followed: true }),
+    post("b"),
+    post("a"),
     performer("p"),
     match("m"),
   ]);
   const kinds = out.map((i) => i.kind);
   assert(kinds[0] === "match", "§1 match is pinned first");
   assert(kinds[1] === "performer", "§1 performer is second");
-  assert(out[2].id === "post-followed", "§1 followed post before other post");
-  assert(out[3].id === "post-other", "§1 other post next");
+  assert(out[2].id === "post-a", "§1 community posts follow pinned cards");
+  assert(out[3].id === "post-b", "§1 all community posts remain present");
   assert(kinds[4] === "article", "§1 public news after community posts");
 }
 
-// §2 — Follow status outranks media format (followed text beats stranger video).
+// §2 — Recency outranks follow status in the global community feed.
 {
   const out = rankFeed([
-    post("strangerVideo", { followed: false, video_url: "v.mp4" }),
-    post("followedText", { followed: true }),
-  ]);
-  assert(out[0].id === "post-followedText", "§2 followed text beats stranger video");
-}
-
-// §3 — Within a follow group, video > image > text.
-{
-  const out = rankFeed([
-    post("t", { followed: true }),
-    post("i", { followed: true, image_url: "i.png" }),
-    post("v", { followed: true, video_url: "v.mp4" }),
+    post("olderFollowed", {
+      followed: true,
+      published_at: "2026-07-04T10:00:00Z",
+    }),
+    post("newerCommunity", {
+      followed: false,
+      published_at: "2026-07-04T11:00:00Z",
+    }),
   ]);
   assert(
-    out.map((x) => x.id).join(",") === "post-v,post-i,post-t",
-    "§3 video then image then text within group",
+    out[0].id === "post-newerCommunity",
+    "§2 newest community post wins regardless of follow status",
+  );
+}
+
+// §3 — Newest community post wins regardless of media format.
+{
+  const out = rankFeed([
+    post("newText", { followed: true, published_at: "2026-06-22T12:00:00Z" }),
+    post("olderImage", {
+      followed: true,
+      image_url: "i.png",
+      published_at: "2026-06-22T11:00:00Z",
+    }),
+    post("oldestVideo", {
+      followed: true,
+      video_url: "v.mp4",
+      published_at: "2026-06-22T10:00:00Z",
+    }),
+  ]);
+  assert(
+    out.map((x) => x.id).join(",") === "post-newText,post-olderImage,post-oldestVideo",
+    "§3 newest post wins regardless of media format",
   );
 }
 
@@ -202,9 +219,82 @@ const { rankFeed, reasonKeyFor } = await loadRanker();
 {
   assert(reasonKeyFor(match("x")) === "screens.home.whyMatch", "§9 match reason key");
   assert(reasonKeyFor(performer("x")) === "screens.home.whySpotlight", "§9 performer reason key");
-  assert(reasonKeyFor(post("x", { followed: true })) === "screens.home.whyFollowed", "§9 followed reason key");
-  assert(reasonKeyFor(post("x", { followed: false })) === "screens.home.whyCommunity", "§9 community reason key");
   assert(reasonKeyFor(article("x")) === "screens.home.whyPublic", "§9 public reason key");
+}
+
+// §10 — motivationKeyFor: content keywords win over media/follow fallbacks.
+{
+  assert(
+    reasonKeyFor(post("x", { content: "Wer macht heute mit beim Workout?" })) === "screens.home.motivationQuestion",
+    "§10 a trailing question mark wins over a topic keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "30-Tage-Challenge gestartet" })) === "screens.home.motivationChallenge",
+    "§10 challenge keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Endlich geschafft, mein Ziel erreicht!" })) === "screens.home.motivationAchievement",
+    "§10 achievement keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Tanz mit mir!" })) === "screens.home.motivationDance",
+    "§10 dance keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Heutiges Workout im Gym" })) === "screens.home.motivationWorkout",
+    "§10 workout keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Mein Rezept für den Smoothie" })) === "screens.home.motivationMeal",
+    "§10 meal keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Zeit für etwas Entspannung" })) === "screens.home.motivationRelax",
+    "§10 relax keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Sonnenuntergang am Strand" })) === "screens.home.motivationTravelNature",
+    "§10 travel/nature keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Tolles Event gestern Abend" })) === "screens.home.motivationEvent",
+    "§10 event keyword",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Ich habe es nicht geschafft und kämpfe weiter" })) ===
+      "screens.home.motivationEmotional",
+    "§10 a negated achievement stem reads as a setback, not a celebration",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Mein Ziel nicht erreicht" })) === "screens.home.motivationEmotional",
+    "§10 negated 'erreicht' reads as a setback",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "Leider nur erfolglos trainiert" })) === "screens.home.motivationEmotional",
+    "§10 'erfolglos' isn't just a substring match on 'erfolg'",
+  );
+}
+
+// §11 — motivationKeyFor fallbacks when no keyword matches.
+{
+  assert(
+    reasonKeyFor(post("x", { content: "", followed: true })) === "screens.home.motivationFollowed",
+    "§11 followed author with no content signal",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "", followed: false, image_url: "https://x/img.jpg" })) ===
+      "screens.home.motivationGreeting",
+    "§11 unclassified photo falls back to a greeting",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "", followed: false, video_url: "https://x/v.mp4" })) ===
+      "screens.home.motivationWorkout",
+    "§11 unclassified video falls back to a call to join in",
+  );
+  assert(
+    reasonKeyFor(post("x", { content: "", followed: false })) === "screens.home.motivationDefault",
+    "§11 no signal at all falls back to the generic default",
+  );
 }
 
 if (failures.length) {

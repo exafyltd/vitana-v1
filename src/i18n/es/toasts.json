@@ -994,6 +994,8 @@
       "pleaseEnterValidAmountAdd": "Por favor ingresa un monto válido para agregar",
       "fundsAddedSuccessfully": "✅ ¡Fondos agregados exitosamente!",
       "transactionFailed": "❌ Transacción fallida",
+      "depositCanceled": "Depósito cancelado",
+      "redirectingToCheckout": "Redirigiendo al pago seguro …",
       "insufficientUsdBalance": "❌ Saldo USD insuficiente",
       "youDonTHaveEnoughUsd": "No tienes suficiente USD para comprar estos créditos",
       "creditsPurchasedSuccessfully": "✅ ¡Créditos comprados exitosamente!",

@@ -1,43 +1,22 @@
 import { useEffect, useRef } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { Calendar, Compass, LayoutGrid, Mail, Radio } from "lucide-react";
+import { Calendar, Compass, Mail, Newspaper } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useChatUnreadCount } from "@/hooks/useChatUnreadCount";
-import { useGuidedMode } from "@/context/GuidedModeProvider"; // VTID-03285
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/context/AuthProvider";
 import { useTenantSafe } from "@/hooks/useTenant";
-import { prefetchForPath } from "@/lib/prefetch-registry";
+import { prefetchForPath, ROUTE_CHUNK_IMPORTERS } from "@/lib/prefetch-registry";
 
-// Lazy-route chunk importers per destination — fired on tap-intent
-// (pointerdown / touchstart) so the chunk's network fetch starts ~100-300ms
-// before navigation commits, turning a blank Suspense flash into an instant
-// paint. Each importer matches the lazy import in App.tsx.
-const ROUTE_CHUNK_IMPORTERS: Record<string, () => Promise<unknown>> = {
-  '/autopilot': () => import('@/pages/AutopilotDashboard'),
-  '/inbox': () => import('@/pages/Messages'),
-  '/comm/live-rooms': () => import('@/pages/community/LiveRooms'),
-  '/comm/media-hub': () => import('@/pages/community/MediaHub'),
-  '/comm/events-meetups': () => import('@/pages/community/EventsAndMeetups'),
-};
-
-// Full App bottom nav (unchanged — design freeze).
+// Single bottom nav — identical in both Full App and Guided Journey modes:
+// News, Inbox, ORB (center spacer), Journey, Events. Live moved to the App Bar.
 const navItems = [
-  { id: 'events', icon: Calendar, label: 'Events', path: '/comm/events-meetups', i18nKey: 'mobileNav.events' },
+  { id: 'news', icon: Newspaper, label: 'News', path: '/home', i18nKey: 'mobileNav.news' },
   { id: 'inbox', icon: Mail, label: 'Inbox', path: '/inbox', i18nKey: 'mobileNav.inbox' },
-  { id: 'live', icon: Radio, label: 'Live', path: '/comm/live-rooms', i18nKey: 'mobileNav.live' },
-  { id: 'media', icon: LayoutGrid, label: 'Media', path: '/comm/media-hub', i18nKey: 'mobileNav.media' },
-];
-
-// VTID-03285: Guided Mode nav — Journey replaces Media (spec screen 01:
-// My Journey, Inbox, ORB, Live, Events). Journey is the onboarding home.
-const guidedNavItems = [
   { id: 'journey', icon: Compass, label: 'Journey', path: '/autopilot', i18nKey: 'mobileNav.myJourney' },
-  { id: 'inbox', icon: Mail, label: 'Inbox', path: '/inbox', i18nKey: 'mobileNav.inbox' },
-  { id: 'live', icon: Radio, label: 'Live', path: '/comm/live-rooms', i18nKey: 'mobileNav.live' },
   { id: 'events', icon: Calendar, label: 'Events', path: '/comm/events-meetups', i18nKey: 'mobileNav.events' },
 ];
 
@@ -49,9 +28,8 @@ export function MobileBottomNav() {
   const isMobile = useIsMobile();
   const location = useLocation();
   const { unreadCount } = useChatUnreadCount();
-  const { isGuided } = useGuidedMode(); // VTID-03285: Guided Mode swaps Media→Journey
-  const items = isGuided ? guidedNavItems : navItems;
-  
+  const items = navItems;
+
   // Routes where the bottom nav should be hidden
   const hideNavRoutes = [
     '/_intro',
@@ -93,10 +71,20 @@ export function MobileBottomNav() {
   }
   
   return (
+    // Opacity-only entrance (no `y` transform): AppLayout isn't a persistent
+    // route layout — every page mounts its own <AppLayout>/<MobileBottomNav>,
+    // so this remounts on every navigation, not just cold start. A transform
+    // slide-up left the bar's hit-zone at its off-screen `y: 100` start
+    // position for ~0.2-0.6s after each tap, during which a second/impatient
+    // tap in that screen region fell through to whatever page content sits
+    // there instead (e.g. a News Feed card linking to a profile) — the
+    // reported "tapping News sometimes opens a profile" bug. Opacity doesn't
+    // move the hit-box, so the bar is immediately tappable at its correct
+    // position even while still fading in.
     <motion.nav
-      initial={{ y: 100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.2, duration: 0.4, ease: "easeOut" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
       className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-50 md:hidden"
     >
       <div className="relative grid grid-cols-5 items-end bg-background/95 backdrop-blur-3xl border-t border-foreground/8 pb-safe pt-2 px-4 shadow-[0_-1px_3px_0_hsl(var(--foreground)/0.03)]">

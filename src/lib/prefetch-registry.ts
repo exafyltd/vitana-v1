@@ -7,7 +7,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { EMPTY_SHORTS_PARAMS } from '@/hooks/useShorts';
 import { fetchCommunityEventsQueryFn } from '@/hooks/useCommunityEvents';
 import { getFindPartnerMatches, getIntentBoard } from '@/lib/intentApi';
-import { buildGlobalThreadsQueryFn } from '@/hooks/useGlobalMessages';
+import { buildGlobalThreadsQueryFn, buildGlobalMessagesQueryFn } from '@/hooks/useGlobalMessages';
+import { chatGroupsQueryKey, isChatGroupThreadId } from '@/hooks/useChatGroupsAsThreads';
+import { fetchGroups } from '@/hooks/useChatApi';
 import { communityFetch } from '@/lib/community-gateway';
 import {
   SCHEDULED_STREAMS_KEY,
@@ -21,6 +23,16 @@ import {
   longevityNewsKey,
   fetchLongevityNews,
 } from '@/hooks/useNewsFeed';
+import {
+  allNewsFeedKey,
+  fetchNewsFeedCandidates,
+  FEED_CANDIDATES_STALE_TIME,
+  FEED_CANDIDATES_GC_TIME,
+} from '@/hooks/useAllNewsFeed';
+import { isFeedV2Enabled } from '@/lib/feature-flags';
+import { journeyChecklistQueryKey, fetchJourneyChecklist } from '@/hooks/useJourneyChecklist';
+import { JOURNEY_STATE_QUERY_KEY, fetchJourneyState } from '@/hooks/useGuidedJourneyProgress';
+import { fetchMarketplaceFeed } from '@/hooks/useMarketplace';
 
 /**
  * Map of adjacent pillars to prefetch when on a given route
@@ -36,6 +48,21 @@ export const ADJACENT_PILLARS: Record<string, string[]> = {
   '/wallet': ['/home', '/business'],
   '/calendar': ['/home', '/health'],
   '/inbox': ['/home', '/comm'],
+};
+
+/**
+ * Lazy-route chunk importers per destination — fired on tap-intent
+ * (pointerdown / touchstart) so the chunk's network fetch starts ~100-300ms
+ * before navigation commits, turning a blank Suspense flash into an instant
+ * paint. Each importer matches the lazy import in App.tsx. Shared between
+ * MobileBottomNav and SideDrawerNav so both nav surfaces warm the same set.
+ */
+export const ROUTE_CHUNK_IMPORTERS: Record<string, () => Promise<unknown>> = {
+  '/home': () => import('@/pages/Home'),
+  '/inbox': () => import('@/pages/Messages'),
+  '/autopilot': () => import('@/pages/AutopilotDashboard'),
+  '/comm/events-meetups': () => import('@/pages/community/EventsAndMeetups'),
+  '/discover': () => import('@/pages/Discover'),
 };
 
 /**
@@ -56,6 +83,11 @@ export async function prefetchForPath(
   // journey summary and the onboarding recommendations so the screen paints
   // from cache on first arrival. Keys MUST match the hooks (user-scoped).
   if (path === '/autopilot') {
+    // 'de' matches LanguageContext's documented default for the primary user
+    // base. If a user's resolved locale differs, this prefetch simply goes
+    // unused (the hook's own queryKey won't match) — no correctness issue,
+    // just a missed optimization for non-German users.
+    const journeyLocale = 'de';
     await Promise.all([
       queryClient.prefetchQuery({
         queryKey: ['my-journey', userId],
@@ -77,6 +109,20 @@ export async function prefetchForPath(
         },
         staleTime,
       }),
+      // Guided Journey hero data — the 90-session curriculum (rarely changes,
+      // long staleTime matches the hook) and the user's durable progress.
+      // Warming these is what stops the "0 of 0 for several seconds" flash
+      // the FIRST time /autopilot is opened after a fresh load.
+      queryClient.prefetchQuery({
+        queryKey: journeyChecklistQueryKey(journeyLocale),
+        queryFn: () => fetchJourneyChecklist(journeyLocale),
+        staleTime: 10 * 60 * 1000,
+      }),
+      queryClient.prefetchQuery({
+        queryKey: JOURNEY_STATE_QUERY_KEY,
+        queryFn: () => fetchJourneyState(userId ?? null),
+        staleTime: 60 * 1000,
+      }),
     ]);
   }
 
@@ -93,6 +139,7 @@ export async function prefetchForPath(
     }
     const { data: { session } } = await supabase.auth.getSession();
     const token = session?.access_token ?? null;
+    const viewerId = session?.user?.id ?? null;
     await Promise.all([
       queryClient.prefetchInfiniteQuery({
         queryKey: longevityNewsKey(undefined, 20, lang),
@@ -102,10 +149,22 @@ export async function prefetchForPath(
         staleTime: newsStale,
       }),
       queryClient.prefetchQuery({
-        queryKey: communityNewsKey(15),
-        queryFn: () => fetchCommunityNews(15),
+        queryKey: communityNewsKey(15, viewerId),
+        queryFn: () => fetchCommunityNews(15, viewerId),
         staleTime: newsStale,
       }),
+      // The unified "All" feed candidates — the DEFAULT tab under feed v2.
+      // Previously this warmup hydrated only the two LEGACY news queries, so
+      // the screen the user actually lands on still had to run its whole
+      // multi-request load on first arrival. Warm the key the screen reads.
+      isFeedV2Enabled()
+        ? queryClient.prefetchQuery({
+            queryKey: allNewsFeedKey(viewerId, lang),
+            queryFn: () => fetchNewsFeedCandidates(viewerId, token),
+            staleTime: FEED_CANDIDATES_STALE_TIME,
+            gcTime: FEED_CANDIDATES_GC_TIME,
+          })
+        : Promise.resolve(),
     ]);
   }
 
@@ -207,9 +266,14 @@ export async function prefetchForPath(
   }
 
   if (path.startsWith('/discover')) {
+    // Matches useMarketplaceFeed({ limit: 12 }) in Discover.tsx exactly — key
+    // AND queryFn — so this warms the query Discover actually reads. It used
+    // to warm `eventsKey` (the community-events query, already covered by the
+    // /comm branch above), which meant Discover's real content never had a
+    // warm cache and was a cold network round trip on every visit.
     await queryClient.prefetchQuery({
-      queryKey: eventsKey,
-      queryFn: fetchCommunityEventsQueryFn,
+      queryKey: ['marketplace-feed', undefined, 12],
+      queryFn: () => fetchMarketplaceFeed({ limit: 12 }),
       staleTime,
     });
   }
@@ -253,12 +317,44 @@ export async function prefetchForPath(
   // also match exactly (['global-threads', userId]) so the hook reads our prefetched
   // result on mount instead of refetching.
   if (path === '/inbox' && userId) {
-    await queryClient.prefetchQuery({
-      queryKey: ['global-threads', userId],
-      queryFn: ({ queryKey: qk }) => buildGlobalThreadsQueryFn(userId, queryClient, qk),
-      // 10min matches the hook's per-query staleTime; the hook treats the
-      // prefetched data as fresh until then, paint-instant from cache.
-      staleTime: 10 * 60 * 1000,
-    });
+    await Promise.all([
+      queryClient.prefetchQuery({
+        queryKey: ['global-threads', userId],
+        queryFn: ({ queryKey: qk }) => buildGlobalThreadsQueryFn(userId, queryClient, qk),
+        // 10min matches the hook's per-query staleTime; the hook treats the
+        // prefetched data as fresh until then, paint-instant from cache.
+        staleTime: 10 * 60 * 1000,
+      }),
+      // chat_groups rows (e.g. "FIRST 100") render in the same inbox list —
+      // warm them too or the group section still pops in after the DMs.
+      queryClient.prefetchQuery({
+        queryKey: chatGroupsQueryKey(userId),
+        queryFn: fetchGroups,
+        staleTime: 2 * 60 * 1000,
+      }),
+    ]);
+
+    // Warm the message HISTORY of the most recent conversations so opening
+    // chat shows messages instantly instead of the "Loading messages" spinner.
+    // Uses the same fetcher as the live hook (no drift) and the same 10min
+    // staleTime, so the hook reads the prefetched result on mount. Capped at
+    // 3 threads to keep the background cost proportional.
+    const threads =
+      queryClient.getQueryData<Array<{ id: string; updated_at: string }>>([
+        'global-threads',
+        userId,
+      ]) ?? [];
+    const recent = threads
+      .filter((t) => !isChatGroupThreadId(t.id))
+      .slice(0, 3);
+    await Promise.all(
+      recent.map((t) =>
+        queryClient.prefetchQuery({
+          queryKey: ['global-messages', t.id],
+          queryFn: () => buildGlobalMessagesQueryFn(userId, t.id, queryClient),
+          staleTime: 10 * 60 * 1000,
+        }),
+      ),
+    );
   }
 }

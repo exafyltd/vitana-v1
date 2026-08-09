@@ -98,7 +98,7 @@ export function SpendCreditsPopup({ open, onOpenChange }: SpendCreditsPopupProps
     setIsProcessing(true);
     
     try {
-      await updateBalance('CREDITS', amount, 'subtract');
+      await updateBalance('CREDITS', amount, 'subtract', 'purchase', selectedItem?.name ?? 'Credits spent');
       
       notify('toasts.wallet.success');
       

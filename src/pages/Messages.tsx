@@ -60,6 +60,20 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { t, notify, notifyError } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+
+// Session-scoped memory of the last inbox view (context + open conversation)
+// so navigating away (news feed, events, live rooms) and back restores the
+// exact view instantly instead of re-running auto-selection from scratch.
+// sessionStorage: per-tab, cleared when the browser session ends.
+const INBOX_STATE_KEY = 'vitana.inbox.lastState';
+function readInboxState(): { context?: 'global' | 'tenant'; threadId?: string | null } {
+  try {
+    return JSON.parse(sessionStorage.getItem(INBOX_STATE_KEY) || '{}') || {};
+  } catch {
+    return {};
+  }
+}
+
 export default function Messages() {
   const { user } = useAuth();
   const { translate } = useTranslation();
@@ -73,7 +87,12 @@ export default function Messages() {
   // messageContext initialized to 'tenant' whose query has no data, while
   // on full refresh the role loads async and the switch was accidentally
   // skipped via roleLoadedRef — making it look like refresh "fixed" it.
-  const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
+  // Restore the user's last explicit context choice for this tab session —
+  // this is the user's own selection (mode pill), NOT the role-derived
+  // auto-switch that caused the empty-inbox bug described above.
+  const [messageContext, setMessageContext] = useState<'global' | 'tenant'>(
+    () => (readInboxState().context === 'tenant' ? 'tenant' : 'global')
+  );
   const { threads: apiThreads, isLoading, isFetching, context, ...hybridMessages } = useHybridMessages(messageContext);
   const isGlobalContext = context === 'global';
 
@@ -88,7 +107,12 @@ export default function Messages() {
   }, [apiThreads, chatGroupThreads, isGlobalContext]);
 
   const userSelectedContextRef = React.useRef(false);
-  const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
+  // Desktop restores the conversation that was open when the user navigated
+  // away (mobile is list-first by design, so it never restores a selection).
+  const [selectedThreadId, setSelectedThreadId] = useState<string | null>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) return null;
+    return readInboxState().threadId ?? null;
+  });
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
 
   const [showNewConversation, setShowNewConversation] = useState(false);
@@ -112,10 +136,18 @@ export default function Messages() {
   // form is kept for backward compatibility with legacy notifications and
   // bookmarks.
   const [searchParams, setSearchParams] = useSearchParams();
-  const pathParams = useParams<{ recipientId?: string; threadId?: string }>();
+  const pathParams = useParams<{ recipientId?: string; threadId?: string; messageId?: string }>();
   const urlThreadId = pathParams.threadId || searchParams.get('thread');
   const urlRecipientId = pathParams.recipientId || searchParams.get('recipient');
   const urlContext = searchParams.get('context') as 'global' | 'tenant' | null;
+
+  // Reaction notification deep-link: /inbox/u|t/:id/msg/:messageId. Captured
+  // once into state (not read from the URL downstream) because the
+  // thread/recipient effects below immediately navigate('/inbox', {replace}),
+  // stripping the path segment before ConversationView could use it.
+  const [deepLinkMessageId, setDeepLinkMessageId] = useState<string | null>(
+    pathParams.messageId || null,
+  );
 
   // ?thread= param OR /inbox/t/:threadId path (thread UUID)
   useEffect(() => {
@@ -182,6 +214,28 @@ export default function Messages() {
       setPendingRecipient(null);
     }
   }, [threads, pendingRecipient]);
+
+  // Safety net: a deep-link recipient that never matches a loaded thread
+  // (e.g. the conversation genuinely isn't in `threads` for some reason)
+  // would otherwise leave `resolvingDeepLink` below stuck true forever,
+  // showing a loading state with no way out. Give resolution a bounded
+  // window, then fall through to the normal list render.
+  useEffect(() => {
+    if (!pendingRecipient) return;
+    const timer = setTimeout(() => {
+      console.warn('[Messages] Deep-link recipient never resolved to a thread, showing list instead:', pendingRecipient);
+      setPendingRecipient(null);
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [pendingRecipient]);
+
+  // True for the render(s) between "threads finished loading" and "the
+  // resolve effect above actually set selectedThreadId" — without this,
+  // that one-render gap falls through to the full conversation LIST below
+  // (selectedThreadId is still null), which is briefly visible before the
+  // effect fires and swaps to the conversation. That's the "list flashes,
+  // then jumps to the chat" jank reported from a notification tap.
+  const resolvingDeepLink = pendingRecipient !== null && selectedThreadId === null;
 
   // Track optimistic unread updates (threadId -> 0)
   const [optimisticUnreadUpdates, setOptimisticUnreadUpdates] = useState<Record<string, number>>({});
@@ -280,8 +334,26 @@ export default function Messages() {
     }
   }, [displayThreads, selectedThreadId, pinnedThreads, user?.id, isMobile]);
 
-  // Reset selection when context changes
+  // Remember the current view so returning to /inbox restores it instantly.
   useEffect(() => {
+    try {
+      sessionStorage.setItem(
+        INBOX_STATE_KEY,
+        JSON.stringify({ context: messageContext, threadId: selectedThreadId })
+      );
+    } catch {
+      /* private mode / storage full — restore is best-effort */
+    }
+  }, [messageContext, selectedThreadId]);
+
+  // Reset selection when context changes. Skips the mount run — otherwise it
+  // would immediately clear the selection just restored from sessionStorage.
+  const contextMountedRef = React.useRef(false);
+  useEffect(() => {
+    if (!contextMountedRef.current) {
+      contextMountedRef.current = true;
+      return;
+    }
     setSelectedThreadId(null);
     setSelectedRecipientId(null);
     setOptimisticUnreadUpdates({}); // Clear optimistic updates
@@ -393,8 +465,11 @@ export default function Messages() {
     }
   }, [isMobile, selectedThreadId]);
 
-  // Show skeleton when loading/fetching AND no cached data
-  if ((isLoading || isFetching) && threads.length === 0) {
+  // Show skeleton when loading/fetching AND no cached data, OR when a
+  // notification deep-link's recipient hasn't resolved to a thread yet
+  // (resolvingDeepLink) — otherwise the list renders for one frame in
+  // between, which is the flash reported from a chat notification tap.
+  if (((isLoading || isFetching) && threads.length === 0) || resolvingDeepLink) {
     // Mobile loading state
     if (isMobile) {
       return (
@@ -684,10 +759,19 @@ export default function Messages() {
                       onClick={() => handleThreadOpen(thread)}
                     >
                       <div className="flex items-start space-x-3">
-                        <GroupAvatarStack 
-                          participants={thread.participants || []}
-                          size={densityMode === 'compact' ? 'sm' : 'md'}
-                        />
+                        {thread.avatar_url ? (
+                          <Avatar className={densityMode === 'compact' ? 'h-8 w-8' : 'h-10 w-10'}>
+                            <AvatarImage src={thread.avatar_url} alt={thread.name || ''} className="object-cover" />
+                            <AvatarFallback>
+                              <Users className="w-4 h-4 text-muted-foreground" />
+                            </AvatarFallback>
+                          </Avatar>
+                        ) : (
+                          <GroupAvatarStack
+                            participants={thread.participants || []}
+                            size={densityMode === 'compact' ? 'sm' : 'md'}
+                          />
+                        )}
                         
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between">
@@ -908,6 +992,8 @@ export default function Messages() {
                   onConversationOpened={handleConversationOpened}
                   onMessageSent={handleMessageSent}
                   onGroupCreated={handleGroupCreated}
+                  initialScrollMessageId={deepLinkMessageId}
+                  onInitialMessageScrolled={() => setDeepLinkMessageId(null)}
                 />
               </ConversationErrorBoundary>
             </div>
@@ -956,6 +1042,8 @@ export default function Messages() {
                     onConversationOpened={handleConversationOpened}
                     onMessageSent={handleMessageSent}
                     onGroupCreated={handleGroupCreated}
+                    initialScrollMessageId={deepLinkMessageId}
+                    onInitialMessageScrolled={() => setDeepLinkMessageId(null)}
                   />
                 </ConversationErrorBoundary>
               ) : (
@@ -1080,6 +1168,8 @@ export default function Messages() {
                     onConversationOpened={handleConversationOpened}
                     onMessageSent={handleMessageSent}
                     onGroupCreated={handleGroupCreated}
+                    initialScrollMessageId={deepLinkMessageId}
+                    onInitialMessageScrolled={() => setDeepLinkMessageId(null)}
                   />
                 </ConversationErrorBoundary>
               </div>

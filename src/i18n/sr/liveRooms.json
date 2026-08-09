@@ -117,7 +117,8 @@
         "imageUploadFailedTitle": "Otpremanje slike nije uspelo",
         "imageUploadFailedDesc": "Zadržaćemo postojeću sliku.",
         "genericTitle": "Greška",
-        "genericDesc": "Kreiranje strima nije uspelo. Pokušaj ponovo."
+        "genericDesc": "Kreiranje strima nije uspelo. Pokušaj ponovo.",
+        "genericDescWithReason": "Kreiranje strima nije uspelo: {reason}. Pokušaj ponovo."
       },
       "success": {
         "streamUpdatedTitle": "Strim ažuriran! ✨",
@@ -130,5 +131,15 @@
         "aiImageHintDesc": "Slika će biti generisana kada strim počne."
       }
     }
+  },
+  "goLivePopup": {
+    "durationLabel": "Duration",
+    "duration15": "15 minutes",
+    "duration30": "30 minutes",
+    "duration45": "45 minutes",
+    "duration60": "1 hour",
+    "duration90": "1.5 hours",
+    "duration120": "2 hours",
+    "durationHint": "The room closes automatically after this time if you don’t end it manually."
   }
 }

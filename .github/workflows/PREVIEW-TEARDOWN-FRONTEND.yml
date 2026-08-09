@@ -1,0 +1,45 @@
+# Deletes the per-PR preview Cloud Run service created by
+# PREVIEW-DEPLOY-FRONTEND.yml once the PR closes (merged or not) — keeps
+# ephemeral preview services from accumulating. Safe to run even if a PR
+# never got a preview deployed (e.g. it never touched frontend paths): the
+# existence check makes this a no-op instead of a failed job.
+
+name: Preview Teardown Frontend (per-PR)
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  GCP_PROJECT: lovable-vitana-vers1
+  GCP_REGION: us-central1
+  CLOUD_RUN_SERVICE: community-app-pr-${{ github.event.pull_request.number }}
+
+jobs:
+  preview-teardown:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auth to GCP (WIF)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_WIF_SA_EMAIL }}
+          project_id: lovable-vitana-vers1
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Delete preview service (if it exists)
+        run: |
+          if gcloud run services describe "${CLOUD_RUN_SERVICE}" \
+              --region="${GCP_REGION}" --project="${GCP_PROJECT}" >/dev/null 2>&1; then
+            gcloud run services delete "${CLOUD_RUN_SERVICE}" \
+              --region="${GCP_REGION}" --project="${GCP_PROJECT}" --quiet
+            echo "Deleted ${CLOUD_RUN_SERVICE}"
+          else
+            echo "${CLOUD_RUN_SERVICE} does not exist — nothing to delete (PR never got a preview deploy)"
+          fi

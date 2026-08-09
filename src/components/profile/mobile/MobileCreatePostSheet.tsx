@@ -1,13 +1,16 @@
 import { useState, useRef } from 'react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { X, Send, Loader2, ImagePlus } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useProfilePosts } from '@/hooks/useProfilePosts';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { notifyError, t } from '@/lib/i18n-toast';
+import { MentionTextarea } from '@/components/feed/MentionTextarea';
+import { PostBackgroundPicker } from '@/components/feed/PostBackgroundPicker';
+import { getPostBackground } from '@/lib/post-backgrounds';
+import type { PostMention } from '@/lib/news-feed-ranker';
 
 interface MobileCreatePostSheetProps {
   open: boolean;
@@ -27,12 +30,23 @@ type MediaKind = 'image' | 'video';
 
 export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSheetProps) {
   const [content, setContent] = useState('');
+  const [backgroundStyle, setBackgroundStyle] = useState<string | null>(null);
+  const [mentions, setMentions] = useState<PostMention[]>([]);
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [mediaPreview, setMediaPreview] = useState<string | null>(null);
   const [mediaKind, setMediaKind] = useState<MediaKind | null>(null);
   const [isCompressing, setIsCompressing] = useState(false);
   const [compressProgress, setCompressProgress] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // Synchronous re-entrancy lock. `isSubmitting` / `createPost.isPending` are
+  // React state and only settle on the next render, so a burst of taps can slip
+  // past them entirely — see handlePost for why that is the whole bug.
+  const submittingRef = useRef(false);
+  // Object path for the current attachment, generated once and reused across
+  // retries so a retry overwrites its own object instead of orphaning another
+  // copy of the same file in the bucket.
+  const uploadPathRef = useRef<string | null>(null);
   const { translate } = useTranslation();
   const { createPost } = useProfilePosts();
 
@@ -66,6 +80,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
       console.log('[PostUpload] File materialized:', materializedFile.size, materializedFile.type);
       // Revoke any previous preview before replacing it
       if (mediaPreview) URL.revokeObjectURL(mediaPreview);
+      uploadPathRef.current = null;
       setMediaFile(materializedFile);
       setMediaPreview(URL.createObjectURL(materializedFile));
       setMediaKind(isVideo ? 'video' : 'image');
@@ -77,13 +92,42 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
 
   const removeMedia = () => {
     if (mediaPreview) URL.revokeObjectURL(mediaPreview);
+    uploadPathRef.current = null;
     setMediaFile(null);
     setMediaPreview(null);
     setMediaKind(null);
   };
 
+  /**
+   * Did the object actually land in the bucket? Used to tell a genuinely failed
+   * upload apart from one whose *response* was lost in transit — the bucket is
+   * publicly readable, so this list() works for any signed-in author.
+   */
+  const uploadedObjectExists = async (path: string) => {
+    const slash = path.lastIndexOf('/');
+    const dir = path.slice(0, slash);
+    const name = path.slice(slash + 1);
+    const { data, error } = await supabase.storage
+      .from('media-uploads')
+      .list(dir, { search: name, limit: 100 });
+    if (error) return false;
+    return (data ?? []).some((o) => o.name === name);
+  };
+
   const handlePost = async () => {
     if (!content.trim() && !mediaFile) return;
+    // The button's `disabled` prop cannot carry this on its own: it was gated on
+    // `createPost.isPending`, which only flips once the *insert* starts — i.e.
+    // after the upload has already finished. For the whole multi-second upload
+    // the button stayed live and gave no feedback, so users re-tapped it. Each
+    // tap fired another full upload of the same file, and N concurrent uploads
+    // saturating a phone's uplink is exactly what makes WebKit abort the
+    // in-flight ones with TypeError "Load failed" — after the bytes already
+    // landed. One attempt would still complete the post, so the author saw an
+    // error toast on a post that went through (and sometimes a duplicate post).
+    if (submittingRef.current) return;
+    submittingRef.current = true;
+    setIsSubmitting(true);
     try {
       let imageUrl: string | undefined;
       let videoUrl: string | undefined;
@@ -113,16 +157,32 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) throw new Error('Not authenticated');
 
-        const fileExt = fileToUpload.name.split('.').pop();
-        const path = `${user.id}/posts/${Date.now()}.${fileExt}`;
+        if (!uploadPathRef.current) {
+          const fileExt = fileToUpload.name.split('.').pop();
+          uploadPathRef.current = `${user.id}/posts/${Date.now()}.${fileExt}`;
+        }
+        const path = uploadPathRef.current;
 
         console.log('[PostUpload] uploading...', { size: fileToUpload.size, type: fileToUpload.type, path, kind: mediaKind });
         const { error: uploadError } = await supabase.storage
           .from('media-uploads')
-          .upload(path, fileToUpload, { contentType: fileToUpload.type, upsert: false });
+          // upsert so retrying after a failure reuses this attempt's own path
+          // rather than leaving another orphaned copy behind.
+          .upload(path, fileToUpload, { contentType: fileToUpload.type, upsert: true });
         if (uploadError) {
-          console.error('[PostUpload] upload failed:', uploadError);
-          throw new Error(`Upload failed: ${uploadError.message}`);
+          // Same transport-drop shape the insert leg already reconciles (see
+          // useProfilePosts.createPost): storage can commit the object while the
+          // response never makes it back, which WebKit reports as "Load failed".
+          // Check whether it landed before calling this a failure.
+          if (await uploadedObjectExists(path)) {
+            console.warn('[PostUpload] upload response lost but object landed, continuing:', uploadError);
+          } else {
+            console.error('[PostUpload] upload failed:', uploadError);
+            // Keep the sheet open with the text and attachment intact so the
+            // author can retry without retyping.
+            notifyError('toasts.profile.uploadFailed');
+            return;
+          }
         }
 
         console.log('[PostUpload] getting public URL...');
@@ -135,7 +195,14 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
         console.log('[PostUpload] mediaUrl:', publicUrl, 'kind:', mediaKind);
       }
       console.log('[PostUpload] inserting post...');
-      await createPost.mutateAsync({ content: content.trim(), imageUrl, videoUrl });
+      await createPost.mutateAsync({
+        content: content.trim(),
+        imageUrl,
+        videoUrl,
+        // Backgrounds only apply to text-only posts.
+        backgroundStyle: mediaFile ? null : backgroundStyle,
+        mentions,
+      });
       toast({ title: translate('profilePosts.posted', 'Posted!') });
       cleanup();
       onOpenChange(false);
@@ -143,11 +210,16 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
       console.error('[PostUpload] error:', err);
       const description = err instanceof Error ? err.message : '';
       toast({ title: translate('profilePosts.error', 'Something went wrong'), description, variant: 'destructive' });
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
     }
   };
 
   const cleanup = () => {
     setContent('');
+    setBackgroundStyle(null);
+    setMentions([]);
     removeMedia();
     setIsCompressing(false);
     setCompressProgress(0);
@@ -168,13 +240,13 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
 
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b">
-          <Button variant="ghost" size="icon" onClick={handleClose} disabled={isCompressing || createPost.isPending}>
+          <Button variant="ghost" size="icon" onClick={handleClose} disabled={isCompressing || isSubmitting}>
             <X className="h-5 w-5" />
           </Button>
           <h2 className="text-base font-semibold">{translate('profilePosts.createPost', 'Create Post')}</h2>
           <Button
             size="sm"
-            disabled={(!content.trim() && !mediaFile) || content.length > MAX_CHARS || createPost.isPending || isCompressing}
+            disabled={(!content.trim() && !mediaFile) || content.length > MAX_CHARS || isSubmitting || isCompressing}
             onClick={handlePost}
             className="rounded-full"
           >
@@ -183,7 +255,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
                 <Loader2 className="h-4 w-4 animate-spin mr-1.5" />
                 <span className="text-xs">{t('screens.profile.compressingVideoPct', { pct: compressProgress })}</span>
               </>
-            ) : createPost.isPending ? (
+            ) : isSubmitting ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <>
@@ -196,11 +268,13 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
 
         {/* Content */}
         <div className="flex-1 p-4 overflow-y-auto">
-          <Textarea
+          <MentionTextarea
             value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder={translate('profilePosts.placeholder', "What's on your mind?")}
-            className="min-h-[200px] border-0 resize-none text-base focus-visible:ring-0 bg-transparent p-0"
+            onChange={setContent}
+            mentions={mentions}
+            onMentionsChange={setMentions}
+            placeholder={translate('profilePosts.mentionPlaceholder', "What's on your mind? Type @ to tag someone")}
+            background={mediaFile ? null : getPostBackground(backgroundStyle)}
             autoFocus
           />
 
@@ -225,6 +299,13 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
           )}
         </div>
 
+        {/* Background picker — text-only posts (hidden once media is attached) */}
+        {!mediaPreview && (
+          <div className="px-4 pt-2">
+            <PostBackgroundPicker value={backgroundStyle} onChange={setBackgroundStyle} />
+          </div>
+        )}
+
         {/* Footer */}
         <div className="px-4 py-3 border-t flex items-center justify-between">
           <input
@@ -238,7 +319,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
             variant="outline"
             size="sm"
             onClick={() => fileInputRef.current?.click()}
-            disabled={isCompressing || createPost.isPending}
+            disabled={isCompressing || isSubmitting}
             className="rounded-full border-primary/30 bg-primary/5 text-primary hover:bg-primary/10 gap-1.5 px-4"
           >
             <ImagePlus className="h-5 w-5" />

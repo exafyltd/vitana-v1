@@ -14,7 +14,7 @@ import { PublicProfileLanding } from "@/components/profile/public/PublicProfileL
 // VTID-02754 — "How we searched" card when arriving via find_community_member voice tool
 import { WhyThisMatchCard } from "@/components/community/WhyThisMatchCard";
 import { getScope } from "@/lib/profileScope";
-import { UserProfile } from "@/types/profile";
+import { UserProfile, DEFAULT_ACCOUNT_VISIBILITY, AccountVerificationStatus } from "@/types/profile";
 import { useAuth } from "@/context/AuthProvider";
 import { Milestone } from "@/hooks/useProfileMilestones";
 import { GalleryPhoto } from "@/hooks/useProfileGallery";
@@ -59,6 +59,9 @@ interface DatabaseProfile {
   x_followers_count: number;
   x_synced_at: string;
   x_topics: string[];
+  longevity_archetype: string;
+  account_type: string;
+  verification_status: string;
 }
 
 export default function PublicProfilePage() {
@@ -129,8 +132,14 @@ export default function PublicProfilePage() {
 
       console.log('PublicProfilePage: Fetching profile for identifier:', cleanId);
 
+      // abortSignal bounds every request below — without it a stalled
+      // connection (e.g. a WebView socket suspended by backgrounding or a
+      // bottom-nav tab switch) leaves the await pending forever, so
+      // `finally` never runs and `loading` never clears: an infinite
+      // "Profil wird geladen…" spinner instead of a retry/error state.
       let { data, error: dbError } = await supabase
-        .rpc('get_user_profile_by_identifier', { identifier: cleanId });
+        .rpc('get_user_profile_by_identifier', { identifier: cleanId })
+        .abortSignal(AbortSignal.timeout(10000));
 
       // VTID-01967: alias-redirect fallback. If the identifier doesn't match
       // a current profiles.handle (which is now a mirror of vitana_id under
@@ -142,13 +151,15 @@ export default function PublicProfilePage() {
             .from('handle_aliases')
             .select('user_id')
             .eq('old_handle', cleanId.toLowerCase())
-            .maybeSingle();
+            .maybeSingle()
+            .abortSignal(AbortSignal.timeout(10000));
           if (aliasRow?.user_id) {
             const { data: canonicalProfile } = await supabase
               .from('profiles')
               .select('handle, vitana_id')
               .eq('user_id', aliasRow.user_id)
-              .maybeSingle();
+              .maybeSingle()
+              .abortSignal(AbortSignal.timeout(10000));
             const canonical =
               (canonicalProfile as any)?.vitana_id ||
               (canonicalProfile as any)?.handle;
@@ -189,7 +200,8 @@ export default function PublicProfilePage() {
         let vitanaScore: number | null = null;
         try {
           const { data: indexData, error: indexErr } = await (supabase as any)
-            .rpc('get_public_vitana_index', { p_user_id: dbProfile.user_id });
+            .rpc('get_public_vitana_index', { p_user_id: dbProfile.user_id })
+            .abortSignal(AbortSignal.timeout(10000));
           if (!indexErr) {
             const row = Array.isArray(indexData) ? indexData[0] : indexData;
             const raw = row?.score_total;
@@ -213,6 +225,7 @@ export default function PublicProfilePage() {
           languages: ['English'],
           vitanaIndex: vitanaScore ?? undefined,
           vitanaPercentile: vitanaScore ? Math.min(99, Math.floor((vitanaScore / 999) * 100)) : undefined,
+          longevityArchetype: dbProfile.longevity_archetype || undefined,
           // LinkedIn
           linkedin_url: dbProfile.linkedin_url || undefined,
           linkedin_headline: dbProfile.linkedin_headline || undefined,
@@ -247,6 +260,19 @@ export default function PublicProfilePage() {
           x_followers_count: dbProfile.x_followers_count || undefined,
           x_synced_at: dbProfile.x_synced_at || undefined,
           x_topics: dbProfile.x_topics || undefined,
+          // Mirrors the subset of Account-tab fields ("Public profile —
+          // Shown on Identity") that are already visible on this same
+          // Identity card above, so non-owner viewers don't see "—" for
+          // data they can already see one tab over.
+          account: {
+            avatarUrl: dbProfile.avatar_url || undefined,
+            handle: dbProfile.handle || undefined,
+            longevityArchetype: dbProfile.longevity_archetype || undefined,
+            memberSince: dbProfile.created_at || undefined,
+            accountType: dbProfile.account_type || undefined,
+            verificationStatus: (dbProfile.verification_status as AccountVerificationStatus) || undefined,
+            visibility: DEFAULT_ACCOUNT_VISIBILITY,
+          },
           stats: {
             posts: 0,
             followers: 0,
@@ -280,13 +306,15 @@ export default function PublicProfilePage() {
               .select('*')
               .eq('user_id', dbProfile.user_id)
               .eq('is_public', true)
-              .order('milestone_date', { ascending: false }),
+              .order('milestone_date', { ascending: false })
+              .abortSignal(AbortSignal.timeout(10000)),
             supabase
               .from('profile_gallery')
               .select('*')
               .eq('user_id', dbProfile.user_id)
               .eq('is_public', true)
-              .order('sort_order', { ascending: true }),
+              .order('sort_order', { ascending: true })
+              .abortSignal(AbortSignal.timeout(10000)),
           ]);
 
           if (isStale()) return;

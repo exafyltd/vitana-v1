@@ -15,9 +15,13 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 interface NewsCardProps {
   title: string;
+  /** Short line rendered in a smaller font directly under the title, e.g. "with Special Guests" */
+  subtitle?: string;
   description?: string;
   imageUrl: string;
   fallbackImageUrl?: string;
+  /** Above-the-fold cards: fetch the image eagerly at high priority instead of lazily. */
+  imagePriority?: boolean;
   category?: "event" | "community" | "wellness" | "achievement" | "people" | "media" | "group";
   pillar?: string;
   icon?: React.ComponentType<any>;
@@ -62,9 +66,11 @@ interface NewsCardProps {
 const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
   ({
     title,
+    subtitle,
     description,
     imageUrl,
     fallbackImageUrl,
+    imagePriority = false,
     category,
     pillar,
     icon: IconComponent,
@@ -356,7 +362,10 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
               <img
                 src={currentImageUrl}
                 alt=""
-                loading="lazy"
+                loading={imagePriority ? 'eager' : 'lazy'}
+                // React 18 only knows the lowercase DOM attribute, not the
+                // camelCase prop React 19 added — spread keeps TS quiet.
+                {...(imagePriority ? ({ fetchpriority: 'high' } as Record<string, 'high'>) : {})}
                 decoding="async"
                 onLoad={() => setImageLoaded(true)}
                 onError={() => {
@@ -444,6 +453,13 @@ const NewsCardBase = React.forwardRef<HTMLDivElement, NewsCardProps>(
               <h3 className="text-lg font-bold leading-tight group-hover:text-primary-foreground transition-colors drop-shadow-[0_2px_10px_rgba(0,0,0,1)]">
                 {title}
               </h3>
+
+              {/* Subtitle */}
+              {subtitle && (
+                <p className="text-xs text-white/80 font-medium -mt-2 drop-shadow-[0_1px_6px_rgba(0,0,0,0.9)]">
+                  {subtitle}
+                </p>
+              )}
 
               {/* Description */}
               {description && (

@@ -49,6 +49,15 @@ export interface GuidedJourneyProgress {
   completedTopics: number;
   totalTopics: number;
   completedSessions: number;
+  /**
+   * Sessions completed contiguously from the start (in curriculum order, no
+   * gaps). Unlike `completedSessions` (the raw distinct count), this stays in
+   * lock-step with `nextSession`: finish 1–9 in order and this is 9 while the
+   * next session is 10. The card uses this so it can never show the
+   * contradictory "9 done · now 9" / "10 done · now 10" state that a raw count
+   * produces when a later session is completed out of order.
+   */
+  completedInOrder: number;
   totalSessions: number;
   /** Ring fill percentage, 0–100, driven by listened sessions. */
   pct: number;
@@ -184,6 +193,56 @@ export function markSessionListenedInJourneyState(
   });
 }
 
+/**
+ * Shared query function so the hook and the prefetch registry hit the exact
+ * same request and can't drift (same pattern as fetchJourneyChecklist).
+ */
+export async function fetchJourneyState(userId: string | null): Promise<JourneyStateProgress> {
+  const resp = await communityFetch('/api/v1/journey/state');
+  const json = await resp.json();
+  if (resp.ok && json?.ok && json.state) {
+    const rawState = json.state as Record<string, unknown>;
+    // Durable, account-scoped progress: `currentSession` is the session the
+    // user is ON, so sessions 1..(currentSession-1) are listened/complete.
+    // This is what makes the ring survive a localStorage clear and stay
+    // consistent across devices/origins (staging vs production) — the server
+    // is now the source of truth, with localStorage only as an optimistic
+    // overlay for the just-tapped session.
+    const currentSession =
+      typeof rawState.currentSession === 'number' ? rawState.currentSession : 0;
+    const fromCurrentSession =
+      currentSession > 1
+        ? Array.from({ length: currentSession - 1 }, (_, i) => i + 1)
+        : [];
+    return {
+      completedTopicIds: stringArray(rawState.completedTopicIds),
+      completedListenedTopicIds: [
+        ...stringArray(rawState.completedListenedTopicIds),
+        ...stringArray(rawState.listenedTopicIds),
+        ...stringArray(rawState.sessionListenedTopicIds),
+      ],
+      completedSessionNumbers: [
+        ...fromCurrentSession,
+        ...numberArray(rawState.completedSessionNumbers),
+        ...numberArray(rawState.completedSessions),
+        ...numberArray(rawState.listenedSessions),
+        ...numberArray(rawState.listenedSessionNumbers),
+        ...readStoredListenedSessions(userId),
+      ],
+      completedPracticeCount:
+        typeof rawState.completedPracticeCount === 'number'
+          ? rawState.completedPracticeCount
+          : 0,
+    };
+  }
+  return {
+    completedTopicIds: [],
+    completedListenedTopicIds: [],
+    completedSessionNumbers: readStoredListenedSessions(userId),
+    completedPracticeCount: 0,
+  };
+}
+
 export function useGuidedJourneyProgress(): GuidedJourneyProgress {
   const { user } = useAuth();
   const userId = user?.id ?? null;
@@ -191,51 +250,7 @@ export function useGuidedJourneyProgress(): GuidedJourneyProgress {
 
   const { data: state, isLoading: stateLoading } = useQuery({
     queryKey: JOURNEY_STATE_QUERY_KEY,
-    queryFn: async (): Promise<JourneyStateProgress> => {
-      const resp = await communityFetch('/api/v1/journey/state');
-      const json = await resp.json();
-      if (resp.ok && json?.ok && json.state) {
-        const rawState = json.state as Record<string, unknown>;
-        // Durable, account-scoped progress: `currentSession` is the session the
-        // user is ON, so sessions 1..(currentSession-1) are listened/complete.
-        // This is what makes the ring survive a localStorage clear and stay
-        // consistent across devices/origins (staging vs production) — the server
-        // is now the source of truth, with localStorage only as an optimistic
-        // overlay for the just-tapped session.
-        const currentSession =
-          typeof rawState.currentSession === 'number' ? rawState.currentSession : 0;
-        const fromCurrentSession =
-          currentSession > 1
-            ? Array.from({ length: currentSession - 1 }, (_, i) => i + 1)
-            : [];
-        return {
-          completedTopicIds: stringArray(rawState.completedTopicIds),
-          completedListenedTopicIds: [
-            ...stringArray(rawState.completedListenedTopicIds),
-            ...stringArray(rawState.listenedTopicIds),
-            ...stringArray(rawState.sessionListenedTopicIds),
-          ],
-          completedSessionNumbers: [
-            ...fromCurrentSession,
-            ...numberArray(rawState.completedSessionNumbers),
-            ...numberArray(rawState.completedSessions),
-            ...numberArray(rawState.listenedSessions),
-            ...numberArray(rawState.listenedSessionNumbers),
-            ...readStoredListenedSessions(userId),
-          ],
-          completedPracticeCount:
-            typeof rawState.completedPracticeCount === 'number'
-              ? rawState.completedPracticeCount
-              : 0,
-        };
-      }
-      return {
-        completedTopicIds: [],
-        completedListenedTopicIds: [],
-        completedSessionNumbers: readStoredListenedSessions(userId),
-        completedPracticeCount: 0,
-      };
-    },
+    queryFn: () => fetchJourneyState(userId),
     staleTime: 60 * 1000,
     enabled: !!user,
   });
@@ -264,6 +279,16 @@ export function useGuidedJourneyProgress(): GuidedJourneyProgress {
   }
   const completedSessions = listenedSessionSet.size;
 
+  // Contiguous progress from the start, in curriculum order: count leading
+  // sessions until the first gap. This is the count we surface on the journey
+  // card's "Erledigt" step — it equals nextSession − 1, so the stepper always
+  // reads as a coherent sequence (… 9 done → 10 now …) instead of colliding.
+  let completedInOrder = 0;
+  for (const s of sessions) {
+    if (!listenedSessionSet.has(s.session)) break;
+    completedInOrder += 1;
+  }
+
   const pct = totalSessions > 0 ? (completedSessions / totalSessions) * 100 : 0;
 
   // The next session = first session (in curriculum order) not listened yet;
@@ -291,6 +316,7 @@ export function useGuidedJourneyProgress(): GuidedJourneyProgress {
     completedTopics,
     totalTopics,
     completedSessions,
+    completedInOrder,
     totalSessions,
     pct,
     completedSet,

@@ -2637,6 +2637,8 @@
     "audio": {
       "volume": "Jačina",
       "soundscape": "Zvučni pejzaž",
+      "mute": "Utišaj",
+      "unmute": "Uključi zvuk",
       "send": "Pošalji",
       "exitAudioMode": "Izađi iz audio režima",
       "soundscapeValue0": "Zvučni pejzaž {value0}",
@@ -3567,7 +3569,20 @@
       "fromSessions_from": "od €{sessions_from}",
       "newinvitesNewInviteValue1": "{newInvites}novi poziv{value1}",
       "lengthReportValue1ReadyShare": "{length}izveštaj{value1}spreman za deljenje",
-      "chat": "💬 Ćaskanje"
+      "chat": "💬 Ćaskanje",
+      "matchCatInterests": "Zajednička interesovanja",
+      "matchCatLocation": "Isto područje",
+      "matchCatActivity": "Slične aktivnosti",
+      "matchCatSports": "Sport",
+      "matchCatGoals": "Isti ciljevi",
+      "matchCatFriends": "Zajednički prijatelji",
+      "matchCatBusiness": "Posao",
+      "matchCatRoutine": "Slična rutina",
+      "matchCatLifestyle": "Sličan stil života",
+      "matchCatFitness": "Fitnes",
+      "matchCatLongevity": "Faza dugovečnosti",
+      "matchCatCommunity": "Zajednica",
+      "matchCatWellness": "Zajednički wellness"
     },
     "debug": {
       "presenceDebug": "Prisutnost Debug",
@@ -4728,6 +4743,8 @@
       "markAnyJourneyEventCompletePillar": "Označite bilo koji događaj na putovanju kao završen → stub koji cilja raste. Nastavite iz dana u dan →\n                bonus za niz se aktivira. Povežite nosivi uređaj → traka sa povezanim podacima se puni.\n                Balansirajte svih pet → faktor balansa ostaje 1.0× i svaki poen se u potpunosti računa."
     },
     "home": {
+      "matchPercent": "{score} %",
+      "matchLabel": "Match",
       "noUpcomingEvents": "Nema predstojećih događaja",
       "dismissWelcomeBanner": "Odbaci dobrodošli banner",
       "loadingNews": "Učitavanje vesti…",
@@ -4945,7 +4962,29 @@
       "streamOptions": "Opcije strimovanja",
       "nextRoom": "Sledeća soba",
       "value0More": "+{value0} više",
-      "thisWillPermanentlyDeleteTitleThis": "Ovo će trajno obrisati \"{title}\". Ova radnja se ne može poništiti."
+      "thisWillPermanentlyDeleteTitleThis": "Ovo će trajno obrisati \"{title}\". Ova radnja se ne može poništiti.",
+      "past": {
+        "endedBadge": "Ended",
+        "watchRecording": "Watch recording",
+        "endedValue": "Ended {value0}",
+        "peakListeners": "{value0} peak listeners",
+        "messages": "{value0} messages",
+        "plannedMinutes": "{value0} min planned",
+        "noRecording": "No recording available",
+        "delete": "Delete",
+        "deleteTitle": "Delete room?",
+        "deleteDescription": "This past room and its recording will be permanently removed. This can’t be undone.",
+        "deleteCancel": "Cancel",
+        "deleteConfirm": "Delete",
+        "empty": "No past rooms yet",
+        "emptyHint": "Finished rooms appear here — with a recap, highlights and recording.",
+        "loading": "Loading past rooms…",
+        "heldAt": "{date} · {time}",
+        "heldRange": "{date} · {start}–{end}"
+      },
+      "durationMin": "{value0} min",
+      "durationHour": "{value0} h",
+      "durationHourMin": "{value0} h {value1} min"
     },
     "meetups": {
       "detailsProgram": "Detalji i program",
@@ -4954,6 +4993,7 @@
       "shareMeetup": "Podeli meetup"
     },
     "memory": {
+      "updatedAgo": "Ažurirano {distance}",
       "deleteActivity": "Obriši aktivnost",
       "addMemory": "Dodaj uspomenu",
       "categoryOptional": "Kategorija (opciono)",
@@ -5346,6 +5386,7 @@
       "searchMembersGroups": "Pretraži članove, grupe ili...",
       "tapResumeSoundscape": "Dodirni da nastaviš Soundscape",
       "openNavigationMenu": "Otvori navigacioni meni",
+      "openLiveRooms": "Otvori uživo sobe",
       "search": "Pretraga",
       "calendar": "Kalendar",
       "alerts": "Obaveštenja",
@@ -6036,6 +6077,7 @@
       "postapiv1capabilitiesmusicPlay": "POST /api/v1/capabilities/music.play",
       "musicYoutubeCom": "music.youtube.com",
       "aiAssistants": "AI asistenti",
+      "shoppingRewards": "Kupovina i nagrade",
       "youReAllSet": "Sve je spremno.",
       "dismiss": "Odbaci",
       "yourSessionExpired": "Tvoja sesija je istekla",
@@ -7805,6 +7847,7 @@
       "creditPackages": "Paketi kredita",
       "customAmount": "Prilagođeni iznos",
       "rate025PerCredit": "Cena: $0.25 po kreditu",
+      "rateValue0PerCredit": "Cena: ${value0} po kreditu",
       "creditUsage": "Korišćenje kredita",
       "accessPremiumFeaturesServices": "• Pristup premium funkcijama i uslugama",
       "purchaseInappItemsUpgrades": "• Kupovina u aplikaciji i nadogradnje",
@@ -7860,7 +7903,8 @@
       "vitanaWalletVitana": "Vitana Wallet | VITANA",
       "vitanaWallet": "Vitana Wallet",
       "searchTransactionsRewardsBenefits": "Pretraži transakcije, nagrade ili beneficije...",
-      "creditsBalance": "Stanje kredita",
+      "creditsBalance": "VTNA Credits stanje",
+      "vtnaCreditsAmount": "{value0} VTNA",
       "creditsAccount": "💳 Kreditni račun",
       "tokensAccount": "🪙 Račun tokena",
       "membershipBenefits": "⭐ Članske pogodnosti",
@@ -8155,6 +8199,8 @@
       "showingValue0": "Prikaz: {value0}",
       "lengthTransactionValue1": "{length}transakcija{value1}",
       "addFundsBalance": "Dodaj sredstva na {currency} saldo",
+      "continueToSecureCheckout": "Nastavi na bezbednu naplatu",
+      "cardPaymentViaStripe": "Plaćanje karticom, bezbedno obrađeno preko Stripe-a",
       "currentBalanceLabel": "Trenutni {currency} saldo",
       "amountAddCurrency": "Iznos za dodavanje ({currency})"
     },

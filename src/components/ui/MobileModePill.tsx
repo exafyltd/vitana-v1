@@ -70,7 +70,7 @@ export function MobileModePill({ modes, activeMode, onModeChange, className }: M
         type="button"
         onClick={() => setOpen(true)}
         className={cn(
-          "flex items-center gap-1.5 h-9 px-3 rounded-full bg-muted/60 hover:bg-muted shrink-0 transition-colors",
+          "flex items-center gap-1 h-9 px-2.5 rounded-full bg-muted/60 hover:bg-muted shrink-0 transition-colors",
           className
         )}
       >

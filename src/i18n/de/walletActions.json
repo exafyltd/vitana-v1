@@ -1,11 +1,11 @@
 {
   "walletActions": {
     "title": "Schnellaktionen",
-    "addFunds": "Geld hinzufügen",
+    "addFunds": "Einzahlen",
     "send": "Senden",
-    "exchange": "Umtauschen",
-    "withdraw": "Abheben",
-    "buyCredits": "Credits kaufen",
+    "exchange": "Tauschen",
+    "withdraw": "Auszahlen",
+    "buyCredits": "VTNA Credits kaufen",
     "stakeTokens": "Token staken"
   }
 }

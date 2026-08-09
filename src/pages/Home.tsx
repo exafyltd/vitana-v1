@@ -12,7 +12,7 @@
  */
 
 import { useState, useRef, useCallback, useEffect, useMemo } from "react";
-import { RefreshCw, Loader2 } from "lucide-react";
+import { RefreshCw, Loader2, Plus, UserPlus } from "lucide-react";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import StandardHeader from "@/components/StandardHeader";
@@ -29,9 +29,15 @@ import {
   SplitBarTrigger,
 } from "@/components/ui/split-bar";
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
-import { WelcomeBackBanner } from "@/components/home/WelcomeBackBanner";
+import { CreateContentPopup } from "@/components/CreateContentPopup";
+import { MobileCreatePostSheet } from "@/components/profile/mobile/MobileCreatePostSheet";
+import { AutopilotPopup } from "@/components/AutopilotPopup";
+import { useAutopilot } from "@/hooks/use-autopilot";
+import { VitanaIndexCard } from "@/components/home/VitanaIndexCard";
 import { DidYouKnowCard } from "@/components/proactive/DidYouKnowCard";
-import { PriorityOfDayBanner } from "@/components/PriorityOfDayBanner";
+import { LongevityJourneyCard } from "@/components/home/LongevityJourneyCard";
+import { InviteFriendCard } from "@/components/home/InviteFriendCard";
+import { useInviteFriendShare } from "@/hooks/useInviteFriendShare";
 import { useNewsFeedPreferencesStore } from "@/stores/newsFeedPreferencesStore";
 import {
   useLongevityNewsFeed,
@@ -44,7 +50,7 @@ import { NewsFeedItemCard } from "@/components/home/NewsFeedItemCard";
 import { track } from "@/lib/product-analytics/client";
 import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { t } from '@/lib/i18n-toast';
 
@@ -57,6 +63,9 @@ const FILTER_MODES = [
   { value: "community", label: "Community", icon: "👥" },
 ];
 
+
+/** Last scroll offset per feed tab, kept across unmounts of this route. */
+const feedScrollMemory = new Map<FilterTab, number>();
 
 export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -80,8 +89,33 @@ export default function Home() {
   }, [searchParams]);
   const [searchQuery, setSearchQuery] = useState("");
   const [autopilotOpen, setAutopilotOpen] = useState(false);
+  const { pendingCount } = useAutopilot();
+  const [createPostOpen, setCreatePostOpen] = useState(false);
+  // Deep-link support for "?compose=1" (e.g. the Brand-New-Feature card's CTA)
+  // so a feed card can open the composer directly instead of only the header
+  // button. Strips the param right after opening so back/refresh doesn't
+  // reopen it.
+  useEffect(() => {
+    if (searchParams.get("compose") !== "1") return;
+    setCreatePostOpen(true);
+    const next = new URLSearchParams(searchParams);
+    next.delete("compose");
+    setSearchParams(next, { replace: true });
+  }, [searchParams, setSearchParams]);
   const navigate = useNavigate();
+  const location = useLocation();
+  // Path-based twin of "?compose=1" — Appilix's Android WebView silently
+  // drops query-string deep links when opening a push notification tap (see
+  // 20260625000000_post_notification_deeplink.sql), so the CTA's push payload
+  // points here instead of the query-string form. Normalizes back to /home
+  // right after opening, same as the query-string path above.
+  useEffect(() => {
+    if (location.pathname !== "/home/compose") return;
+    setCreatePostOpen(true);
+    navigate("/home", { replace: true });
+  }, [location.pathname, navigate]);
   const isMobile = useIsMobile();
+  const { shareInvite } = useInviteFriendShare();
 
   const {
     data: longevityData, fetchNextPage, hasNextPage, isFetchingNextPage,
@@ -90,12 +124,19 @@ export default function Home() {
 
   const {
     data: communityData, isLoading: isLoadingCommunity, refetch: refetchCommunity,
-  } = useCommunityNews({ limit: 15, enabled: activeTab !== "longevity" && !isFeedV2Enabled() });
+  } = useCommunityNews({
+    // The Community tab always pulls community items (incl. followed users'
+    // posts), even when feed v2 powers the "All" tab. Under v2-off it also
+    // feeds the "All" tab as before.
+    limit: 15,
+    enabled: activeTab === "community" || (activeTab !== "longevity" && !isFeedV2Enabled()),
+  });
 
   // VTID-03319: unified, ranked feed powers the "All" tab when feed v2 is on.
   const feedV2 = isFeedV2Enabled();
   const {
     items: feedItems, isLoading: isLoadingFeedV2, refetch: refetchFeedV2,
+    fetchNextPage: fetchNextV2, hasNextPage: hasNextV2, isFetchingNextPage: isFetchingNextV2,
   } = useAllNewsFeed({ enabled: feedV2 && activeTab === "all" });
 
   // One impression event per tab activation (fire-and-forget).
@@ -157,6 +198,55 @@ export default function Home() {
     return () => observer.disconnect();
   }, [handleObserver]);
 
+  // Endless scroll for the unified v2 "All" feed — its own sentinel, since it
+  // renders in a separate branch from the legacy feed above.
+  const v2ObserverRef = useRef<HTMLDivElement>(null);
+  const handleV2Observer = useCallback((entries: IntersectionObserverEntry[]) => {
+    const [entry] = entries;
+    if (entry.isIntersecting && hasNextV2 && !isFetchingNextV2) fetchNextV2();
+  }, [hasNextV2, isFetchingNextV2, fetchNextV2]);
+
+  useEffect(() => {
+    const el = v2ObserverRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(handleV2Observer, { rootMargin: "200px" });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [handleV2Observer]);
+
+  // Restore the reader's place in the feed.
+  //
+  // The data now survives navigation (see useNewsFeedKeepAlive), but the route
+  // component itself is still unmounted and remounted, so without this the user
+  // was thrown back to the top of the feed every time they came back from
+  // Messenger — which reads as "it reloaded" even when nothing was refetched.
+  // Module-scope so it survives the unmount; per-session only, deliberately not
+  // persisted.
+  useEffect(() => {
+    const saved = feedScrollMemory.get(activeTab);
+    if (saved == null) return;
+    // Two frames: the first lets the restored feed commit, the second lets the
+    // browser lay it out, so the target offset actually exists to scroll to.
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => window.scrollTo(0, saved));
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+    // Restore once per tab activation, not on every feed update.
+  }, [activeTab]);
+
+  useEffect(() => {
+    const remember = () => feedScrollMemory.set(activeTab, window.scrollY);
+    window.addEventListener("scroll", remember, { passive: true });
+    return () => {
+      remember();
+      window.removeEventListener("scroll", remember);
+    };
+  }, [activeTab]);
+
   const handleArticleClick = (article: NewsArticle) => {
     navigate(`/news/${article.id}`, { state: { article } });
   };
@@ -187,6 +277,51 @@ export default function Home() {
     });
   };
 
+  // First impression of the feed: weave the 3 promo cards into the opening
+  // posts as post, card, post, card, post, card instead of front-loading
+  // them all before any real content. One-time only — after the 3rd slot the
+  // rest of the ranked feed (with its existing article interleave) continues
+  // unchanged. A slot with no content (e.g. no live match candidate) is just
+  // skipped, so the pattern never leaves a visible gap.
+  const renderInterleavedFeedItems = (): JSX.Element[] => {
+    const matchIndex = feedItems.findIndex((item) => item.kind === "match" || item.kind === "performer");
+    const matchItem = matchIndex >= 0 ? feedItems[matchIndex] : null;
+    const streamItems = matchIndex >= 0 ? feedItems.filter((_, i) => i !== matchIndex) : feedItems;
+
+    const cardSlots: { key: string; node: JSX.Element }[] = [
+      { key: "card-vitana-index", node: <VitanaIndexCard /> },
+      { key: "card-guided-journey", node: <LongevityJourneyCard /> },
+      { key: "card-invite-friend", node: <InviteFriendCard /> },
+    ];
+    if (matchItem) {
+      cardSlots.push({
+        key: `card-find-a-match-${matchItem.id}`,
+        node: (
+          <NewsFeedItemCard
+            item={matchItem}
+            onArticleClick={handleFeedArticleClick}
+            onOpen={handleFeedItemOpen}
+          />
+        ),
+      });
+    }
+
+    const nodes: JSX.Element[] = [];
+    streamItems.forEach((item, index) => {
+      nodes.push(
+        <NewsFeedItemCard
+          key={item.id}
+          item={item}
+          onArticleClick={handleFeedArticleClick}
+          onOpen={handleFeedItemOpen}
+        />,
+      );
+      const slot = cardSlots[index];
+      if (slot) nodes.push(<div key={slot.key}>{slot.node}</div>);
+    });
+    return nodes;
+  };
+
   const renderV2Feed = () => (
     <>
       {isLoadingFeedV2 && feedItems.length === 0 && (
@@ -206,17 +341,18 @@ export default function Home() {
       )}
       {feedItems.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-5 mt-2 md:mt-5">
-          {feedItems.map((item) => (
-            <NewsFeedItemCard
-              key={item.id}
-              item={item}
-              onArticleClick={handleFeedArticleClick}
-              onOpen={handleFeedItemOpen}
-            />
-          ))}
+          {renderInterleavedFeedItems()}
         </div>
       )}
-      {!isLoadingFeedV2 && feedItems.length > 0 && (
+      {/* Endless-scroll sentinel: loads the next news page as it nears the viewport. */}
+      <div ref={v2ObserverRef} className="h-1" />
+      {isFetchingNextV2 && (
+        <div className="flex items-center justify-center py-8">
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+          <span className="ml-2 text-sm text-muted-foreground">{t('screens.home.loadingMore')}</span>
+        </div>
+      )}
+      {!isLoadingFeedV2 && !hasNextV2 && !isFetchingNextV2 && feedItems.length > 0 && (
         <p className="text-center text-sm text-muted-foreground py-8">{t('screens.home.youReAllCaughtUp')}</p>
       )}
     </>
@@ -333,23 +469,40 @@ export default function Home() {
         <div className={isMobile ? "" : "max-w-7xl mx-auto"}>
           <StandardHeader title={t('screens.home.news')} description="Longevity science & community updates" emoji="📰" />
           <UtilityActionButton className="min-w-0" compact={isMobile}
-            afterGiftVoucherChildren={isMobile ? (<><VitanaIndexChip /><AutopilotChip pendingCount={0} onClick={() => setAutopilotOpen(true)} /></>) : undefined}
+            afterGiftVoucherChildren={isMobile ? (<><VitanaIndexChip /><AutopilotChip pendingCount={pendingCount} onClick={() => setAutopilotOpen(true)} /></>) : undefined}
             trailingElement={!isMobile ? (
               <Button variant="ghost" size="icon" className="rounded-full" onClick={handleRefresh} title={t('screens.home.refreshNews')} disabled={isLoading}>
                 <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
               </Button>
             ) : undefined}
           >
-            <div className="flex items-center gap-2 min-w-max">
-              <ExpandableSearchButton placeholder={isMobile ? t('screens.home.searchShort') : t('screens.home.searchNewsTopicsSources')} onSearch={(query) => setSearchQuery(query)} />
-              {isMobile && <MobileModePill modes={FILTER_MODES} activeMode={activeTab} onModeChange={(v) => setActiveTab(v as FilterTab)} />}
-              <UniversalCalendarButton />
+            <div className="flex items-center gap-1 min-w-max">
+              <ExpandableSearchButton compact placeholder={isMobile ? t('screens.home.searchShort') : t('screens.home.searchNewsTopicsSources')} onSearch={(query) => setSearchQuery(query)} />
+              {isMobile && <MobileModePill className="px-2" modes={FILTER_MODES} activeMode={activeTab} onModeChange={(v) => setActiveTab(v as FilterTab)} />}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full shrink-0"
+                onClick={() => void shareInvite()}
+                title={t('screens.downloadFlyer.inviteCardCta')}
+                aria-label={t('screens.downloadFlyer.inviteCardCta')}
+              >
+                <UserPlus className="h-4 w-4" />
+              </Button>
+              <UniversalCalendarButton showText={!isMobile} className="!px-2" />
+              <Button
+                onClick={() => setCreatePostOpen(true)}
+                variant="ghost"
+                size="sm"
+                className="h-9 px-3 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 shrink-0"
+              >
+                <Plus className="h-4 w-4" />
+                <span className="text-sm">{t('screens.home.createPost')}</span>
+              </Button>
             </div>
           </UtilityActionButton>
-          <div className="mt-3 space-y-2">
-            <WelcomeBackBanner />
+          <div className="mt-3">
             <DidYouKnowCard />
-            <PriorityOfDayBanner />
           </div>
           {!isMobile && (
             <div className="mt-5">
@@ -366,6 +519,12 @@ export default function Home() {
           {isMobile && renderFeedContent()}
         </div>
       </div>
+      {isMobile ? (
+        <MobileCreatePostSheet open={createPostOpen} onOpenChange={setCreatePostOpen} />
+      ) : (
+        <CreateContentPopup isOpen={createPostOpen} onClose={() => setCreatePostOpen(false)} />
+      )}
+      <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
     </AppLayout>
   );
 }

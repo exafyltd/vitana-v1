@@ -57,11 +57,12 @@ export function UniversalCalendarButton({
       {/* Wrapper with overflow-visible to prevent badge clipping */}
       <div className="relative overflow-visible shrink-0">
         {/* Pill button */}
-        <Button 
+        <Button
           variant="ghost"
           size="sm"
-          onClick={() => setCalendarOpen(true)} 
-          className={`h-9 px-3 rounded-full bg-muted/60 hover:bg-muted text-foreground gap-1.5 ${className}`}
+          onClick={() => setCalendarOpen(true)}
+          aria-label={translate('actionBar.calendar', 'Calendar')}
+          className={`h-9 px-2.5 rounded-full bg-muted/60 hover:bg-muted text-foreground gap-1 ${className}`}
         >
           <Calendar className="w-4 h-4" />
           {showText && <span className="text-sm">{translate('actionBar.calendar', 'Calendar')}</span>}

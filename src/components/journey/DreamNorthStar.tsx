@@ -1,7 +1,7 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plane, Compass, Sparkles, CalendarClock, Check, Medal } from "lucide-react";
+import { Plane, Compass, Sparkles, CalendarClock, Check, Medal, Loader2 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { t } from "@/lib/i18n-toast";
 import { localizeGoal } from "@/lib/goalLabel";
@@ -201,6 +201,9 @@ export function DreamNorthStar({
    */
   guidedProgress?: {
     completedSessions: number;
+    /** Contiguous sessions done from the start — the value shown on the
+     *  "Erledigt" step so it can't collide with the next-session number. */
+    completedInOrder: number;
     totalSessions: number;
     completedTopics: number;
     totalTopics: number;
@@ -266,6 +269,28 @@ export function DreamNorthStar({
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
+
+  // Loading: never paint the hero with placeholder zeros ("session 0 of 0")
+  // while the journey/checklist queries resolve — loading must look like
+  // loading. The guided card renders independently of `goal` (a user can have
+  // a Life Compass goal AND be in Guided Mode), so guided-not-ready must gate
+  // on its own — requiring `!goal` here let any user with an existing goal
+  // skip this spinner entirely and fall through to the zero-data render below.
+  const guidedNotReady = guided && (!guidedProgress || guidedProgress.totalSessions === 0);
+  if (loading && (guidedNotReady || !goal)) {
+    return (
+      <Card className="rounded-[28px] border border-violet-200/50 shadow-lg bg-white/80">
+        <div
+          className="p-8 flex min-h-[320px] flex-col items-center justify-center gap-3"
+          role="status"
+          aria-live="polite"
+        >
+          <Loader2 className="w-8 h-8 animate-spin text-muted-foreground" aria-hidden="true" />
+          <span className="sr-only">{t("common.loading")}</span>
+        </div>
+      </Card>
+    );
+  }
 
   // Error: don't pretend "no goal", offer a retry.
   if (!loading && error && !goal) {
@@ -709,13 +734,13 @@ export function DreamNorthStar({
 
               <div className="flex items-start justify-center mt-2">
                 <JourneyStep
-                  value={guidedProgress!.completedSessions}
+                  value={guidedProgress!.completedInOrder}
                   label={t("screens.autopilotdashboard.stepDone")}
                   fill="#d1fae5"
                   ring="#6ee7b7"
                   text="#059669"
                   size={STEP_SIZE_SIDE}
-                  done
+                  done={guidedProgress!.completedInOrder > 0}
                 />
                 <StepConnector />
                 <JourneyStep
@@ -740,10 +765,12 @@ export function DreamNorthStar({
                     size={STEP_SIZE_SIDE}
                   />
                 ) : (
-                  // Daily countdown — starts at 5 each morning and ticks down to 0
-                  // as today's sessions are completed, motivating the daily streak.
+                  // Daily goal — shown as a "done / goal" ratio (e.g. 0/5) so it
+                  // reads as a distinct daily meter, not the next number in the
+                  // session sequence (which is what made the row look like it was
+                  // counting the same thing three times).
                   <JourneyStep
-                    value={guidedProgress!.remainingToday}
+                    value={`${guidedProgress!.completedToday}/${guidedProgress!.dailyGoal}`}
                     label={t("screens.autopilotdashboard.stepGoalLabel")}
                     fill="#fef3c7"
                     ring="#fcd34d"

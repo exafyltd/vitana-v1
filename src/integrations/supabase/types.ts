@@ -2675,6 +2675,7 @@ export type Database = {
           created_at: string | null
           created_by: string
           description: string | null
+          duration_minutes: number | null
           enable_chat: boolean | null
           enable_polls: boolean | null
           enable_recording: boolean | null
@@ -2701,6 +2702,7 @@ export type Database = {
           created_at?: string | null
           created_by: string
           description?: string | null
+          duration_minutes?: number | null
           enable_chat?: boolean | null
           enable_polls?: boolean | null
           enable_recording?: boolean | null
@@ -2727,6 +2729,7 @@ export type Database = {
           created_at?: string | null
           created_by?: string
           description?: string | null
+          duration_minutes?: number | null
           enable_chat?: boolean | null
           enable_polls?: boolean | null
           enable_recording?: boolean | null
@@ -6224,6 +6227,7 @@ export type Database = {
       media_uploads: {
         Row: {
           category: string | null
+          comments_count: number | null
           created_at: string
           description: string | null
           duration: number | null
@@ -6250,6 +6254,7 @@ export type Database = {
         }
         Insert: {
           category?: string | null
+          comments_count?: number | null
           created_at?: string
           description?: string | null
           duration?: number | null
@@ -6276,6 +6281,7 @@ export type Database = {
         }
         Update: {
           category?: string | null
+          comments_count?: number | null
           created_at?: string
           description?: string | null
           duration?: number | null

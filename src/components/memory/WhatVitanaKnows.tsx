@@ -8,12 +8,13 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, Edit3, Pause, ChevronRight } from 'lucide-react';
+import { Sparkles, Edit3, Pause, ChevronRight, Clock } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { t } from '@/lib/i18n-toast';
+import { formatDistanceToNow } from '@/lib/locale-format';
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_URL || 'https://gateway-q74ibpv6ia-uc.a.run.app/api/v1';
 
@@ -61,6 +62,16 @@ export function WhatVitanaKnows() {
 
   if (isLoading || !data?.ok || !data.items?.length) return null;
 
+  // Freshness indicator — the API has always returned last_refreshed_at;
+  // rendering it lets the user see the memory is alive, not a static list.
+  let refreshedAgo: string | null = null;
+  if (data.last_refreshed_at) {
+    const refreshedDate = new Date(data.last_refreshed_at);
+    if (!Number.isNaN(refreshedDate.getTime())) {
+      refreshedAgo = formatDistanceToNow(refreshedDate, { addSuffix: true });
+    }
+  }
+
   return (
     <Card className="border-primary/15 bg-gradient-to-br from-violet-500/5 via-purple-500/5 to-pink-500/5">
       <CardHeader className="pb-3">
@@ -69,6 +80,12 @@ export function WhatVitanaKnows() {
             <Sparkles className="w-4 h-4 text-primary" />
           </div>{t('screens.memory.whatVitanaRemembersAboutYou')}
         </CardTitle>
+        {refreshedAgo && (
+          <p className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
+            <Clock className="w-3 h-3" />
+            {t('screens.memory.updatedAgo', { distance: refreshedAgo })}
+          </p>
+        )}
       </CardHeader>
       <CardContent className="space-y-3">
         <ul className="space-y-2">

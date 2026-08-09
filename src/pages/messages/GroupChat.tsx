@@ -19,15 +19,19 @@ import { useTranslation } from "@/hooks/useTranslation";
 import MessageInput from "@/components/messages/MessageInput";
 import MessageBubble from "@/components/messages/MessageBubble";
 import MessageDivider from "@/components/messages/MessageDivider";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   fetchGroup,
   fetchGroupMessages,
   sendGroupMessage,
   markGroupRead,
+  updateGroupMessage,
+  deleteGroupMessage,
   type ChatGroup,
   type ChatGroupMember,
   type ChatGroupMessage,
 } from "@/hooks/useChatApi";
+import { notify, notifyError } from "@/lib/i18n-toast";
 import { getDateSeparatedMessageItems } from "@/lib/messageDateSeparators";
 import { formatDate } from "@/lib/locale-format";
 import { isThisYear, isToday, isYesterday } from "date-fns";
@@ -71,7 +75,7 @@ function toBubbleMessage(msg: ChatGroupMessage, groupId: string): BubbleMessage 
 }
 
 export default function GroupChat() {
-  const { groupId } = useParams<{ groupId: string }>();
+  const { groupId, messageId: initialScrollMessageId } = useParams<{ groupId: string; messageId?: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { translate } = useTranslation();
@@ -153,9 +157,25 @@ export default function GroupChat() {
     return () => clearInterval(id);
   }, [reload]);
 
+  const hasScrolledToTargetRef = useRef(false);
+
   useEffect(() => {
+    if (initialScrollMessageId) return; // reaction-notification deep-link wins instead
     streamEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages.length]);
+  }, [messages.length, initialScrollMessageId]);
+
+  // Reaction-notification deep-link: scroll to and highlight the reacted-to
+  // message once it's rendered, instead of the default scroll-to-bottom.
+  useEffect(() => {
+    if (!initialScrollMessageId || hasScrolledToTargetRef.current || messages.length === 0) return;
+    const el = document.getElementById(`msg-${initialScrollMessageId}`);
+    if (!el) return; // not rendered yet — retry on next messages update
+    hasScrolledToTargetRef.current = true;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    el.classList.add("message-highlight");
+    const timer = setTimeout(() => el.classList.remove("message-highlight"), 1500);
+    return () => clearTimeout(timer);
+  }, [initialScrollMessageId, messages]);
 
   // MessageInput.onSendMessage matches the DM signature so all of its
   // code paths (text, attachment, voice) plug into the chat_groups endpoint
@@ -193,6 +213,33 @@ export default function GroupChat() {
       setIsSending(false);
     }
   }, [groupId, isSending, userId]);
+
+  // MessageBubble's edit ("correction") flow is a no-op unless onUpdateMessage
+  // is supplied — see handleEditSave's `!onUpdateMessage` guard.
+  const handleUpdateMessage = useCallback(async (messageId: string, updates: any) => {
+    if (!groupId) return;
+    const content = String(updates?.body ?? updates?.content ?? "").trim();
+    if (!content) return;
+    try {
+      const saved = await updateGroupMessage(groupId, messageId, content);
+      setMessages(prev => prev.map(m => (m.id === messageId ? saved : m)));
+    } catch (err) {
+      notifyError('toasts.messages.updateFailed', 'toasts.messages.failedUpdateMessagePleaseTryAgain');
+      throw err;
+    }
+  }, [groupId]);
+
+  const handleDeleteMessage = useCallback(async (messageId: string) => {
+    if (!groupId) return;
+    try {
+      await deleteGroupMessage(groupId, messageId);
+      setMessages(prev => prev.filter(m => m.id !== messageId));
+      notify('toasts.messages.messageDeleted');
+    } catch (err) {
+      notifyError('toasts.messages.deleteFailed', 'toasts.messages.failedDeleteMessagePleaseTryAgain');
+      throw err;
+    }
+  }, [groupId]);
 
   const goBack = useCallback(() => {
     navigate("/inbox", { replace: true });
@@ -235,6 +282,16 @@ export default function GroupChat() {
           className="rounded p-2 hover:bg-gray-100"
           onClick={goBack}
         >←</button>
+        {typeof (group.metadata as Record<string, unknown> | null)?.avatar_url === "string" && (
+          <Avatar className="h-9 w-9">
+            <AvatarImage
+              src={String((group.metadata as Record<string, unknown>).avatar_url)}
+              alt={group.name}
+              className="object-cover"
+            />
+            <AvatarFallback>{group.name?.[0] ?? "#"}</AvatarFallback>
+          </Avatar>
+        )}
         <div className="flex-1">
           <div className="font-semibold leading-tight">{group.name}</div>
           <div className="text-xs text-gray-500">
@@ -266,21 +323,24 @@ export default function GroupChat() {
               const isOwn = msg.sender_id === userId;
               const sender = memberById.get(msg.sender_id);
               return (
-                <MessageBubble
-                  key={msg.id}
-                  message={{
-                    ...toBubbleMessage(msg, group.id),
-                    sender: sender
-                      ? {
-                          user_id: sender.user_id,
-                          display_name: sender.display_name,
-                          avatar_url: sender.avatar_url,
-                        }
-                      : null,
-                  }}
-                  isOwnMessage={isOwn}
-                  showAvatar={!isOwn}
-                />
+                <div key={msg.id} id={`msg-${msg.id}`} className="transition-colors duration-500">
+                  <MessageBubble
+                    message={{
+                      ...toBubbleMessage(msg, group.id),
+                      sender: sender
+                        ? {
+                            user_id: sender.user_id,
+                            display_name: sender.display_name,
+                            avatar_url: sender.avatar_url,
+                          }
+                        : null,
+                    }}
+                    isOwnMessage={isOwn}
+                    showAvatar={!isOwn}
+                    onUpdateMessage={handleUpdateMessage}
+                    onDeleteMessage={handleDeleteMessage}
+                  />
+                </div>
               );
             })}
           </div>

@@ -10,6 +10,7 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { t } from "@/lib/i18n-toast";
 
 const GATEWAY_URL =
   import.meta.env.VITE_GATEWAY_URL ||
@@ -105,16 +106,27 @@ export function useLongevityNewsFeed(options?: {
       lastPage.has_more ? lastPage.page + 1 : undefined,
     initialPageParam: 1,
     enabled: options?.enabled !== false,
-    staleTime: 5 * 60 * 1000,
+    // Longer than the old 5min on purpose. A background refetch of an INFINITE
+    // query re-fetches every page the user has scrolled through, sequentially —
+    // so a reader who paged deep into the feed paid a long serial request chain
+    // just for coming back to the screen. RSS-sourced articles do not change
+    // minute to minute; 15min (plus the explicit refresh button and pull-to-
+    // refresh) is ample, and keeps returning to the feed instant.
+    staleTime: 15 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 }
 
 // Exported so the prefetch registry / post-login warmup can hydrate the exact
 // same key+fetch the Home news feed binds to.
-export const communityNewsKey = (limit: number) => ["community-news", limit] as const;
+export const communityNewsKey = (limit: number, viewerId?: string | null) =>
+  ["community-news", limit, viewerId ?? null] as const;
 
-export async function fetchCommunityNews(limit: number): Promise<NewsArticle[]> {
+export async function fetchCommunityNews(
+  limit: number,
+  viewerId?: string | null,
+): Promise<NewsArticle[]> {
   const articles: NewsArticle[] = [];
 
   {
@@ -192,6 +204,77 @@ export async function fetchCommunityNews(limit: number): Promise<NewsArticle[]> 
         }
       }
 
+      // Free-form posts from people the viewer follows, so the Community tab
+      // surfaces social posts — not just events, media and new-member
+      // spotlights. Mirrors the post→author resolution used by useAllNewsFeed.
+      if (viewerId) {
+        const { data: follows } = await supabase
+          .from("user_follows")
+          .select("following_id")
+          .eq("follower_id", viewerId);
+
+        const followingIds = (follows || [])
+          .map((f) => f.following_id)
+          .filter(Boolean);
+
+        if (followingIds.length) {
+          const { data: postRows } = await supabase
+            .from("profile_posts" as never)
+            .select("id, user_id, content, image_url, video_url, created_at")
+            .eq("is_public", true)
+            .in("user_id", followingIds)
+            .order("created_at", { ascending: false })
+            .limit(limit);
+
+          const posts =
+            (postRows as unknown as Array<{
+              id: string;
+              user_id: string;
+              content: string | null;
+              image_url: string | null;
+              video_url: string | null;
+              created_at: string;
+            }>) || [];
+
+          if (posts.length) {
+            const authorIds = [...new Set(posts.map((p) => p.user_id))];
+            const { data: authorRows } = await supabase
+              .from("global_community_profiles")
+              .select("user_id, display_name, avatar_url")
+              .in("user_id", authorIds);
+
+            const authorMap = new Map<
+              string,
+              { display_name: string | null; avatar_url: string | null }
+            >();
+            for (const a of authorRows || []) {
+              authorMap.set(a.user_id, {
+                display_name: a.display_name,
+                avatar_url: a.avatar_url,
+              });
+            }
+
+            for (const p of posts) {
+              const author = authorMap.get(p.user_id);
+              const name = author?.display_name || t("screens.home.communityMember");
+              const content = (p.content || "").trim();
+              articles.push({
+                id: `post-${p.id}`,
+                source: "community",
+                source_name: name,
+                title: content || name,
+                link: `/u/${p.user_id}`,
+                summary: null,
+                image_url: p.image_url || null,
+                published_at: p.created_at,
+                tags: ["community_post"],
+                category: "community_post",
+              });
+            }
+          }
+        }
+      }
+
       articles.sort(
         (a, b) =>
           new Date(b.published_at).getTime() - new Date(a.published_at).getTime()
@@ -203,10 +286,12 @@ export async function fetchCommunityNews(limit: number): Promise<NewsArticle[]> 
 
 export function useCommunityNews(options?: { limit?: number; enabled?: boolean }) {
   const limit = options?.limit ?? 10;
+  const { session } = useAuth();
+  const viewerId = session?.user?.id ?? null;
 
   return useQuery({
-    queryKey: communityNewsKey(limit),
-    queryFn: () => fetchCommunityNews(limit),
+    queryKey: communityNewsKey(limit, viewerId),
+    queryFn: () => fetchCommunityNews(limit, viewerId),
     enabled: options?.enabled !== false,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,

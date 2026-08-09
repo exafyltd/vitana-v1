@@ -25,7 +25,7 @@ const mockInsights: SpendingInsight[] = [
   {
     id: "1",
     title: "Optimal Purchase Timing",
-    description: "Wait 3 days for 15% better VTNA conversion rates",
+    description: "Bundle upcoming purchases into a single credit top-up to save on transaction fees",
     impact: "positive",
     category: "timing",
     actionable: true,

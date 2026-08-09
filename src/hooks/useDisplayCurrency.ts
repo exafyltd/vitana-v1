@@ -7,8 +7,9 @@ const STORAGE_KEY = 'vitana.wallet.displayCurrency';
 const SYNC_EVENT = 'vitana:display-currency';
 
 const read = (): DisplayCurrency => {
-  if (typeof window === 'undefined') return 'USD';
-  return window.localStorage.getItem(STORAGE_KEY) === 'EUR' ? 'EUR' : 'USD';
+  if (typeof window === 'undefined') return 'EUR';
+  // EUR is the default; an explicit stored 'USD' preference is respected.
+  return window.localStorage.getItem(STORAGE_KEY) === 'USD' ? 'USD' : 'EUR';
 };
 
 /**

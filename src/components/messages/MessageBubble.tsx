@@ -43,6 +43,7 @@ import { ReactionPopover } from './ReactionPopover';
 import { ReplyQuote } from './ReplyQuote';
 import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
 import { t } from '@/lib/i18n-toast';
+import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 
 import { formatDate } from '@/lib/locale-format';
 interface MessageBubbleProps {
@@ -933,7 +934,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               <AvatarImage
                 src={(() => {
                   const senderId = message.sender_id || (message.sender as any)?.user_id;
-                  if (senderId === '00000000-0000-0000-0000-000000000001') return '/vitana-orb-avatar.png';
+                  if (isVitanaBot(senderId)) return VITANA_BOT_AVATAR_URL;
                   return message.sender?.avatar_url;
                 })()}
                 alt={message.sender?.display_name || message.sender?.full_name || 'User'}
@@ -941,7 +942,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               <AvatarFallback>
                 {(() => {
                   const senderId = message.sender_id || (message.sender as any)?.user_id;
-                  if (senderId === '00000000-0000-0000-0000-000000000001') return 'V';
+                  if (isVitanaBot(senderId)) return VITANA_BOT_DISPLAY_NAME[0];
                   return (message.sender?.display_name?.[0] || message.sender?.full_name?.[0] || 'U').toUpperCase();
                 })()}
               </AvatarFallback>
@@ -958,7 +959,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             <span className="text-xs text-muted-foreground mb-0.5 ml-3">
               {(() => {
                 const senderId = message.sender_id || (message.sender as any)?.user_id;
-                if (senderId === '00000000-0000-0000-0000-000000000001') return 'Vitana';
+                if (isVitanaBot(senderId)) return VITANA_BOT_DISPLAY_NAME;
                 return message.sender?.display_name || message.sender?.full_name || 'Unknown User';
               })()}
             </span>

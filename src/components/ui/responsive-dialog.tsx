@@ -88,7 +88,7 @@ const ResponsiveDialogContent = React.forwardRef<
           // Mobile styles - bottom sheet or fullscreen
           isMobile && [
             fullscreenOnMobile
-              ? "inset-0 rounded-none"
+              ? "inset-0 rounded-none pt-[env(safe-area-inset-top)]"
               : [
                   "inset-x-0 bottom-0 rounded-t-2xl border-t",
                   "max-h-[calc(100dvh-24px)]",
