@@ -162,10 +162,15 @@ This is the **frontend** repo. The backend is in `exafyltd/vitana-platform`:
 **Test user UUID:** `a27552a3-0257-4305-8ed0-351a80fd3701`
 Use this user when an authenticated user is needed for testing (e.g., Playwright screenshots, API calls, profile checks).
 
-### Never create community content as the test user — on ANY host (VTID-03506)
+### Why no host is exempt from the absolute rule above (VTID-03506)
 
-**There is no safe host for this write today, and picking a "safer" URL does not
-create one.** `PREVIEW-DEPLOY-FRONTEND.yml` (L69–81) and
+The ban at the top of this file covers **every write** as this account — a
+profile edit, an onboarding step, a settings toggle, a wallet call, not only
+community content. This section exists for the follow-up question it kept
+provoking: *"then I'll just run it against the preview instead."*
+
+**You cannot. There is no safe host for a write today, and picking a "safer" URL
+does not create one.** `PREVIEW-DEPLOY-FRONTEND.yml` (L69–81) and
 `STAGE-DEPLOY-FRONTEND.yml` (L72–93) override **only** the gateway URL and
 deliberately leave Supabase unset, so both builds inherit the **production**
 Supabase project from the committed `.env` — gateway-staging runs against prod
@@ -175,9 +180,12 @@ created on `community-app-pr-123` lands in the same `profile_posts` rows real
 members read. **The host selects which _code_ runs; it does not select which
 database gets written.**
 
-So, as the test account: **do not create posts, comments, likes, videos or chat
-messages at all** — not on prod, not on staging, not on a PR preview. Reading is
-fine everywhere.
+So a PR preview is not an isolated environment — it is production with different
+frontend code in front of it. Every write lands in the same rows real members
+read, whichever URL you were pointed at. **Reading is fine everywhere; writing is
+fine nowhere**, and community content — posts, comments, likes, videos, chat
+messages — is the case with no exception clause at all, because it reaches real
+feeds and lock screens the instant it lands.
 
 Verify feed and interaction changes against content that already exists, a Vitest
 unit/integration test, or a local Supabase. If a change genuinely cannot be
