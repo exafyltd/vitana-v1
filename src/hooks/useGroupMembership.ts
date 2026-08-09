@@ -59,6 +59,43 @@ export function useGroupMembership(groupId?: string) {
   const joinMutation = useMutation({
     mutationFn: async () => {
       if (!groupId || !userId) throw new Error('Missing groupId or userId');
+
+      // Prefer the gateway join endpoint: it writes the membership AND
+      // dispatches the `community.member.joined` automation event (with
+      // user_id) so the Welcome Squad (AP-0212) and new-member welcome
+      // (AP-0203) can fire. A direct Supabase insert bypasses the gateway
+      // and never triggers those automations. Falls back to a direct insert
+      // if the gateway is unreachable so joining never breaks.
+      const rawGateway = (import.meta.env.VITE_GATEWAY_URL as string | undefined) || '';
+      const gatewayBase = rawGateway.replace(/\/api\/v1\/?$/, '').replace(/\/$/, '');
+
+      if (gatewayBase) {
+        try {
+          const {
+            data: { session },
+          } = await supabase.auth.getSession();
+          const token = session?.access_token;
+          if (token) {
+            const res = await fetch(
+              `${gatewayBase}/api/v1/community/global-groups/${groupId}/join`,
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`,
+                },
+                body: '{}',
+              },
+            );
+            if (res.ok) return; // membership + automation handled server-side
+            console.warn('[joinGroup] gateway join failed, falling back to direct insert:', res.status);
+          }
+        } catch (err) {
+          console.warn('[joinGroup] gateway join error, falling back to direct insert:', err);
+        }
+      }
+
+      // Fallback: direct membership insert (no Welcome Squad automation).
       const { error } = await supabase
         .from('global_community_group_members')
         .insert({ group_id: groupId, user_id: userId, role: 'member' });

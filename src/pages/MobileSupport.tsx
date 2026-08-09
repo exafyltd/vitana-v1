@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Mic, Square, Send, CheckCircle2, Mail, MessageCircle, Phone, BookOpen, Paperclip, X, Users } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Mic, Square, Send, CheckCircle2, Mail, MessageCircle, Phone, BookOpen, Paperclip, X, Users, Loader2 } from "lucide-react";
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
+import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 import StandardHeader from "@/components/StandardHeader";
 import { UtilityActionButton } from "@/components/ui/utility-action-button";
 import { ExpandableSearchButton } from "@/components/ui/expandable-search-button";
@@ -17,6 +18,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
+import {
+  DiaryAudioRecorder,
+  shouldUseBackendSTT,
+  transcribeAudioBlob,
+} from "@/utils/diaryAudioRecorder";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getLocalStorageItem } from "@/lib/localStorage";
 import { notifyError, t } from "@/lib/i18n-toast";
@@ -28,19 +34,73 @@ const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || "https://gateway-q74ibp
 const CATEGORY_KEYS = ["account", "billing", "technical", "feature", "privacy", "other"] as const;
 type CategoryKey = (typeof CATEGORY_KEYS)[number];
 
+// Map the member-facing Support category onto a unified-pipeline ticket `kind`.
+// This is only a routing hint — the backend classifier is authoritative — but
+// it gives the admin dashboard a sensible kind badge from the start.
+const KIND_BY_CATEGORY: Record<CategoryKey, string> = {
+  account: "account_issue",
+  billing: "account_issue",
+  technical: "bug",
+  feature: "feature_request",
+  privacy: "support_question",
+  other: "support_question",
+};
+
 type TabKey = "contact" | "faqs" | "community";
+
+// VTID-NAV-SUPPORT-TABS: map an incoming `?tab=` value (e.g. from a Vitana
+// deep-link like /support?tab=faqs) onto a local tab. Accepts the canonical
+// keys plus a few synonyms the navigator/desktop screen may emit (knowledge →
+// faqs) so "take me to Support FAQs" opens the FAQ tab directly.
+const TAB_ALIASES: Record<string, TabKey> = {
+  contact: "contact",
+  "contact-support": "contact",
+  faqs: "faqs",
+  faq: "faqs",
+  knowledge: "faqs",
+  "knowledge-base": "faqs",
+  help: "faqs",
+  articles: "faqs",
+  community: "community",
+  "community-help": "community",
+};
+
+function normalizeTab(value: string | null | undefined): TabKey | null {
+  if (!value) return null;
+  return TAB_ALIASES[value.trim().toLowerCase().replace(/[\s_]+/g, "-")] ?? null;
+}
 
 const FAQ_KEYS = ["CreateAccount", "ResetPassword", "UpdateProfile", "PaymentMethods", "DataSecure", "DeleteAccount"] as const;
 
 function MobileSupport() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { selectedLanguage } = useLanguage();
   const { pendingCount } = useAutopilot();
   const isAndroid = /Android/i.test(navigator.userAgent);
+  // iOS Safari / WKWebView (Appilix) can't reliably use the Web Speech API,
+  // so we fall back to MediaRecorder + backend STT on those runtimes.
+  const useBackendSTT = shouldUseBackendSTT();
 
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<TabKey>("contact");
+  const [activeTab, setActiveTab] = useState<TabKey>(() => normalizeTab(searchParams.get("tab")) ?? "contact");
+
+  // VTID-NAV-SUPPORT-TABS: honor `?tab=` deep-links. Runs on mount and whenever
+  // the param changes (e.g. Vitana navigates here with ?tab=faqs).
+  useEffect(() => {
+    const next = normalizeTab(searchParams.get("tab"));
+    if (next && next !== activeTab) setActiveTab(next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  // Keep the URL in sync so the active tab is deep-linkable/shareable.
+  const handleTabChange = (next: TabKey) => {
+    setActiveTab(next);
+    const params = new URLSearchParams(searchParams);
+    params.set("tab", next);
+    setSearchParams(params, { replace: true });
+  };
 
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState("");
@@ -51,11 +111,16 @@ function MobileSupport() {
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [isSending, setIsSending] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
 
   const sttRef = useRef<ClientSTT | null>(null);
+  const audioRecorderRef = useRef<DiaryAudioRecorder | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const isRecordingRef = useRef(false);
+  // Tracks whether the member used the mic for this message (vs. typing it),
+  // so we can record HOW the feedback was left on the resulting ticket.
+  const usedVoiceRef = useRef(false);
   const restartTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastFinalRef = useRef("");
   const lastFinalAtRef = useRef(0);
@@ -65,6 +130,7 @@ function MobileSupport() {
       isRecordingRef.current = false;
       if (restartTimeoutRef.current) clearTimeout(restartTimeoutRef.current);
       if (timerRef.current) clearInterval(timerRef.current);
+      audioRecorderRef.current?.cancel();
       sttRef.current?.stop();
     };
   }, []);
@@ -110,14 +176,73 @@ function MobileSupport() {
     return tail ? `${e} ${tail}`.trim() : e;
   };
 
+  const resolveLanguage = () => {
+    const stored = getLocalStorageItem("global", "language", "selected_language");
+    return (typeof stored === "string" ? stored : selectedLanguage)?.trim() || "de-DE";
+  };
+
+  // iOS path: capture audio with MediaRecorder and transcribe server-side.
+  // The Web Speech API (webkitSpeechRecognition) throws an immediate
+  // `service-not-allowed`/`not-allowed` on iOS Safari + WKWebView even when
+  // the mic is granted, which previously surfaced the bogus "Microphone
+  // access denied" toast. getUserMedia is the FIRST awaited call in the tap
+  // handler — iOS rejects with NotAllowedError if a fetch/WebSocket is
+  // awaited before it.
+  const startBackendRecording = async () => {
+    if (!DiaryAudioRecorder.isSupported()) {
+      notifyError("mobilesupport.errorNotSupported");
+      return;
+    }
+
+    let recorder: DiaryAudioRecorder;
+    try {
+      recorder = new DiaryAudioRecorder({ language: resolveLanguage() });
+      await recorder.start();
+    } catch (e: unknown) {
+      console.error("[MobileSupport] MediaRecorder start failed:", e);
+      const name = (e as { name?: string })?.name;
+      switch (name) {
+        case "NotAllowedError":
+        case "SecurityError":
+          notifyError("mobilesupport.errorMicPermission");
+          break;
+        case "NotFoundError":
+          notifyError("mobilesupport.errorMicNotFound");
+          break;
+        case "NotReadableError":
+          notifyError("mobilesupport.errorMicInUse");
+          break;
+        default:
+          notifyError("mobilesupport.errorMicGeneric");
+      }
+      return;
+    }
+
+    audioRecorderRef.current = recorder;
+    usedVoiceRef.current = true;
+    setIsRecording(true);
+    isRecordingRef.current = true;
+    setRecordingDuration(0);
+    setTranscript("");
+    setInterimText("");
+
+    timerRef.current = setInterval(() => {
+      setRecordingDuration((p) => p + 1);
+    }, 1000);
+  };
+
   const startRecording = () => {
+    if (useBackendSTT) {
+      void startBackendRecording();
+      return;
+    }
+
     if (!ClientSTT.isSupported()) {
       notifyError("mobilesupport.errorNotSupported");
       return;
     }
 
-    const stored = getLocalStorageItem("global", "language", "selected_language");
-    const sttLanguage = (typeof stored === "string" ? stored : selectedLanguage)?.trim() || "de-DE";
+    const sttLanguage = resolveLanguage();
     const useContinuous = !isAndroid;
 
     sttRef.current = new ClientSTT({
@@ -144,10 +269,18 @@ function MobileSupport() {
       },
       onError: (error) => {
         if (error === "no-speech" || error === "aborted" || error === "audio-capture") return;
-        if (error === "not-allowed" || error === "service-not-allowed") {
+        // Branch on the specific error instead of mapping everything to
+        // "denied". `service-not-allowed` is a recognition-service failure,
+        // NOT a microphone-permission denial. (iOS no longer reaches this
+        // path — it uses backend STT above — but Android/desktop can.)
+        if (error === "not-allowed") {
           notifyError("mobilesupport.errorMicPermission");
+        } else if (error === "service-not-allowed") {
+          notifyError("mobilesupport.errorMicGeneric");
+        } else {
+          notifyError("mobilesupport.errorMicGeneric");
         }
-        stopRecording();
+        void stopRecording();
       },
       onEnd: () => {
         if (restartTimeoutRef.current) {
@@ -170,6 +303,7 @@ function MobileSupport() {
 
     sttRef.current.setLanguage(sttLanguage);
     sttRef.current.start();
+    usedVoiceRef.current = true;
     setIsRecording(true);
     isRecordingRef.current = true;
     setRecordingDuration(0);
@@ -182,20 +316,50 @@ function MobileSupport() {
     }, 1000);
   };
 
-  const stopRecording = () => {
+  const stopRecording = async () => {
     isRecordingRef.current = false;
     if (restartTimeoutRef.current) {
       clearTimeout(restartTimeoutRef.current);
       restartTimeoutRef.current = null;
     }
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+
+    // iOS backend-STT path: stop the recorder and transcribe server-side.
+    if (audioRecorderRef.current) {
+      const recorder = audioRecorderRef.current;
+      audioRecorderRef.current = null;
+      setIsRecording(false);
+      setInterimText("");
+      setIsTranscribing(true);
+      try {
+        const blob = await recorder.stop();
+        if (!blob || blob.size === 0) {
+          notifyError("mobilesupport.errorNoAudio");
+          return;
+        }
+        const text = await transcribeAudioBlob(blob, resolveLanguage());
+        if (!text) {
+          notifyError("mobilesupport.errorNoAudio");
+          return;
+        }
+        setTranscript((prev) => (prev ? `${prev} ${text}`.trim() : text));
+      } catch (e) {
+        console.error("[MobileSupport] Backend transcription failed:", e);
+        notifyError("mobilesupport.errorTranscription");
+      } finally {
+        setIsTranscribing(false);
+      }
+      return;
+    }
+
+    // Web Speech API path (Android/desktop).
     if (sttRef.current) {
       sttRef.current.stop();
       setIsRecording(false);
       setInterimText("");
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
     }
   };
 
@@ -240,24 +404,38 @@ function MobileSupport() {
         }
       }
 
-      const taggedTranscript = `[SUPPORT${category ? `:${category}` : ""}] ${message}`;
-      const res = await fetch(`${GATEWAY_URL}/api/v1/voice-feedback/submit`, {
+      // Route into the unified feedback pipeline (feedback_tickets) so the
+      // submission shows up on the admin Feedback → Tickets dashboard with
+      // clear attribution. The gateway resolves WHO it came from (vitana_id
+      // from the member's token → member name/avatar on the dashboard); we
+      // tag HOW/WHERE it was left via screen_path + structured_fields
+      // (in-app Support → Contact, the chosen category, voice vs typed).
+      const res = await fetch(`${GATEWAY_URL}/api/v1/feedback/tickets`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
-          transcript: taggedTranscript,
-          report_type: "bug_report",
-          severity: "medium",
-          affected_screen: category ? `support:${category}` : "support",
-          attachments: uploadedUrls,
+          raw_text: message,
+          kind: category ? KIND_BY_CATEGORY[category] : "support_question",
+          // Pin the surface so these form a distinct, human-only queue that
+          // the auto-triage routine skips (no AI specialist auto-handling).
+          surface: "support",
+          screen_path: category ? `support/contact:${category}` : "support/contact",
+          screenshot_url: uploadedUrls[0] || undefined,
+          structured_fields: {
+            source: "support_contact",
+            category: category || null,
+            entry_method: usedVoiceRef.current ? "voice" : "text",
+            attachments: uploadedUrls,
+          },
         }),
       });
       const result = await res.json();
       if (!result.ok) throw new Error(result.error || "Submit failed");
 
+      usedVoiceRef.current = false;
       setTranscript("");
       setRecordingDuration(0);
       setAttachments([]);
@@ -309,13 +487,13 @@ function MobileSupport() {
             <MobileModePill
               modes={SUPPORT_MODES}
               activeMode={activeTab}
-              onModeChange={(v) => setActiveTab(v as TabKey)}
+              onModeChange={(v) => handleTabChange(v as TabKey)}
             />
           </div>
         </UtilityActionButton>
 
         {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto pb-24 px-0 flex flex-col gap-3">
+        <div className="flex-1 overflow-y-auto pb-[120px] px-0 flex flex-col gap-3">
           {activeTab === "contact" && (
             showSuccess ? (
               <Card className="rounded-2xl border-border/50 shadow-sm">
@@ -351,10 +529,11 @@ function MobileSupport() {
                       {!isRecording ? (
                         <button
                           onClick={startRecording}
+                          disabled={isTranscribing}
                           aria-label={t("mobilesupport.recordButtonStart")}
-                          className="h-24 w-24 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground flex items-center justify-center shadow-lg active:scale-95 transition-transform"
+                          className="h-24 w-24 rounded-full bg-gradient-to-br from-primary to-primary/80 text-primary-foreground flex items-center justify-center shadow-lg active:scale-95 transition-transform disabled:opacity-60"
                         >
-                          <Mic className="h-10 w-10" />
+                          {isTranscribing ? <Loader2 className="h-10 w-10 animate-spin" /> : <Mic className="h-10 w-10" />}
                         </button>
                       ) : (
                         <div className="flex flex-col items-center gap-3">
@@ -374,7 +553,11 @@ function MobileSupport() {
                     </div>
 
                     <p className="text-xs text-muted-foreground">
-                      {isRecording ? t("mobilesupport.listening") : t("mobilesupport.tapToSpeak")}
+                      {isTranscribing
+                        ? t("mobilesupport.transcribing")
+                        : isRecording
+                          ? (useBackendSTT ? t("mobilesupport.backendRecordingHint") : t("mobilesupport.listening"))
+                          : t("mobilesupport.tapToSpeak")}
                     </p>
 
                     {isRecording && (
@@ -623,6 +806,9 @@ function MobileSupport() {
       </div>
 
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
+
+      {/* Bottom navigation with integrated Orb FAB */}
+      <MobileBottomNav />
     </MobileAppShell>
   );
 }

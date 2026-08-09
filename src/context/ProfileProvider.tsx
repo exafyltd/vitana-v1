@@ -75,12 +75,17 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
       setLoading(true);
       console.log('Fetching profile for user ID:', userId);
       
-      // Fetch profile data from Supabase
+      // Fetch profile data from Supabase. abortSignal bounds the request —
+      // without it, a stalled connection (e.g. a WebView socket suspended by
+      // backgrounding/foregrounding, common when switching tabs on mobile)
+      // leaves this await pending forever, so `finally` never runs and
+      // `loading` never clears: an infinite "Profil wird geladen…" spinner.
       const { data: profileData, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', userId)
-        .maybeSingle();
+        .maybeSingle()
+        .abortSignal(AbortSignal.timeout(10000));
 
       if (error) {
         console.error('Error fetching profile:', error);
@@ -292,13 +297,20 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
 
     // If the patch touches first/last name, also write display_name so any
     // legacy consumer still reading that column stays in sync with the new
-    // derived display-name shown on the Identity card.
+    // derived display-name shown on the Identity card. Only write it when a
+    // name was actually composed: the Account Edit drawer always includes
+    // firstName/lastName in its save payload even when the user is only
+    // touching an unrelated field (e.g. city), and both can be legitimately
+    // empty for accounts whose name came from signup metadata rather than
+    // these fields. Writing null here would silently wipe an existing name.
     if ('firstName' in data || 'lastName' in data) {
       const existing = profile.account;
       const first = 'firstName' in data ? data.firstName : existing?.firstName;
       const last = 'lastName' in data ? data.lastName : existing?.lastName;
       const composed = [first, last].filter(Boolean).join(' ').trim();
-      row.display_name = composed || null;
+      if (composed) {
+        row.display_name = composed;
+      }
     }
 
     row.updated_at = new Date().toISOString();

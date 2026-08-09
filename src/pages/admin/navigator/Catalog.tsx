@@ -12,7 +12,7 @@
  */
 
 import { useState, useMemo } from "react";
-import { Plus, Search, RefreshCw, Globe } from "lucide-react";
+import { Plus, Search, RefreshCw, Globe, Smartphone, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -37,6 +37,7 @@ import {
   useNavCatalogList,
   useNavCoverage,
   NavCatalogRow,
+  NavPlatform,
 } from "@/hooks/useAdminNavigator";
 import { TriggerEditor } from "./components/TriggerEditor";
 import { SimulatorPanel } from "./components/SimulatorPanel";
@@ -60,6 +61,8 @@ const CATEGORY_LABELS: Record<string, string> = {
 type TenantSelection = "shared" | "all" | string;
 
 export default function NavigatorCatalog() {
+  // BOOTSTRAP-NAV-PLATFORM: the two separate MAXINA catalogs the Navigator manages.
+  const [platform, setPlatform] = useState<NavPlatform>("mobile");
   const [tenantFilter, setTenantFilter] = useState<TenantSelection>("shared");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -67,8 +70,17 @@ export default function NavigatorCatalog() {
 
   const tenantQuery = tenantFilter === "all" ? undefined : tenantFilter === "shared" ? null : tenantFilter;
 
-  const catalogQuery = useNavCatalogList({ tenantId: tenantQuery, q: query.trim() });
-  const coverageQuery = useNavCoverage(tenantQuery || null);
+  const catalogQuery = useNavCatalogList({ tenantId: tenantQuery, q: query.trim(), platform });
+  const coverageQuery = useNavCoverage(tenantQuery || null, platform);
+
+  // Switching catalogs clears any open editor so we never edit a screen from
+  // the other surface.
+  function switchPlatform(next: NavPlatform) {
+    if (next === platform) return;
+    setPlatform(next);
+    setSelectedId(null);
+    setCreating(false);
+  }
 
   const entries = catalogQuery.data || [];
   const selectedEntry = useMemo(
@@ -92,6 +104,15 @@ export default function NavigatorCatalog() {
     return m;
   }, [entries]);
 
+  // Pre-fill the simulator with one of the selected screen's trigger phrases
+  // (if any), so testing "does this route to my screen?" is one click.
+  const simSuggestion = useMemo(() => {
+    const trig = (selectedEntry?.override_triggers || []).find(
+      (x) => x.active && x.phrase?.trim()
+    );
+    return trig?.phrase?.trim() || "";
+  }, [selectedEntry]);
+
   function openNew() {
     setSelectedId(null);
     setCreating(true);
@@ -114,7 +135,7 @@ export default function NavigatorCatalog() {
         <AdminHeader
           emoji="🧭"
           title={t('screens.admin.vitanaNavigator')}
-          description="Manage the catalog of screens and trigger phrases that drive Vitana's in-conversation redirects. Edit a screen's when-to-visit text, add override phrases for exact matches, and test your changes in the live simulator before saving."
+          description={t('screens.admin.vitanaNavigatorDesc')}
           rightAction={
             <Button onClick={openNew}>
               <Plus className="mr-2 h-4 w-4" />
@@ -124,6 +145,32 @@ export default function NavigatorCatalog() {
         />
 
         <SubNavigation items={adminNavigatorNavigation} />
+
+        {/* ── Platform switch: two clearly-separated catalogs ──────────────── */}
+        <div className="inline-flex rounded-lg border bg-muted/40 p-1">
+          <button
+            type="button"
+            onClick={() => switchPlatform("mobile")}
+            aria-pressed={platform === "mobile"}
+            className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+              platform === "mobile" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Smartphone className="h-4 w-4" />
+            {t('screens.admin.navigatorMobileCatalog')}
+          </button>
+          <button
+            type="button"
+            onClick={() => switchPlatform("desktop")}
+            aria-pressed={platform === "desktop"}
+            className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+              platform === "desktop" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <Monitor className="h-4 w-4" />
+            {t('screens.admin.navigatorDesktopCatalog')}
+          </button>
+        </div>
 
         {/* Summary strip */}
         {coverage && (
@@ -260,6 +307,7 @@ export default function NavigatorCatalog() {
               {creating || selectedEntry ? (
                 <TriggerEditor
                   entry={creating ? null : selectedEntry}
+                  platform={platform}
                   onSaved={() => onSaved()}
                   onClose={() => {
                     setCreating(false);
@@ -276,7 +324,8 @@ export default function NavigatorCatalog() {
           {/* ── Right: simulator ─────────────────────────────────────────── */}
           <SimulatorPanel
             tenantId={tenantQuery === null ? null : tenantQuery}
-            defaultUtterance=""
+            selectedScreenId={selectedEntry?.screen_id || null}
+            suggestedUtterance={simSuggestion}
           />
         </div>
       </div>

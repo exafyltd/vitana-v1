@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { t } from "@/lib/i18n-toast";
 import type { RingPhase } from "@/lib/goalPhases";
+import { cn } from "@/lib/utils";
 
 /**
  * The My Journey progress ring — shared by the North Star card and the plan
@@ -16,6 +17,12 @@ export function GoalProgressRing({
   phases,
   currentDay,
   totalDays,
+  daysLeftLabel,
+  topLabel,
+  topLabelClassName,
+  dayClassName,
+  captionClassName,
+  glow = false,
 }: {
   pct: number;
   day: number;
@@ -24,8 +31,27 @@ export function GoalProgressRing({
   phases?: RingPhase[];
   currentDay?: number;
   totalDays?: number;
+  /** Pre-translated countdown caption. Falls back to the "days left to your goal" string. */
+  daysLeftLabel?: string;
+  /** Pre-translated small top label. Falls back to the "Day" label. */
+  topLabel?: string;
+  /** Optional fit override for long in-ring labels such as "Hier klicken". */
+  topLabelClassName?: string;
+  /** Optional fit override for the large in-ring number. */
+  dayClassName?: string;
+  /** Optional fit override for the lower in-ring caption. */
+  captionClassName?: string;
+  /** When true the ring reads as a raised, glowing CTA button (3D domed fill +
+   *  pulsing violet glow) so users recognise it as something to tap. */
+  glow?: boolean;
 }) {
   const reduce = useReducedMotion();
+  // Pulsing-glow keyframes for the CTA state — a domed surface lifted off the
+  // card with a soft violet halo that breathes to draw the eye.
+  const glowSoft =
+    "0 8px 20px rgba(124,58,237,0.28), 0 0 22px 4px rgba(167,139,250,0.45)";
+  const glowBright =
+    "0 12px 26px rgba(124,58,237,0.34), 0 0 36px 10px rgba(167,139,250,0.78)";
   const stroke = 12;
   const radius = (size - stroke) / 2;
   const cx = size / 2;
@@ -66,7 +92,22 @@ export function GoalProgressRing({
   const GAP = 0.008; // small visual gap between phase bands
 
   return (
-    <div className="relative" style={{ width: size, height: size }}>
+    <motion.div
+      className={`relative ${glow ? "rounded-full" : ""}`}
+      style={{
+        width: size,
+        height: size,
+        ...(glow
+          ? {
+              background:
+                "radial-gradient(circle at 50% 32%, #ffffff 0%, #faf5ff 55%, #ede9fe 100%)",
+              boxShadow: reduce ? glowBright : undefined,
+            }
+          : {}),
+      }}
+      animate={glow && !reduce ? { boxShadow: [glowSoft, glowBright, glowSoft] } : undefined}
+      transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+    >
       <svg width={size} height={size}>
         {/* track */}
         <circle cx={cx} cy={cy} r={radius} fill="none" stroke="currentColor" strokeWidth={stroke} className="text-slate-400/30" />
@@ -113,15 +154,17 @@ export function GoalProgressRing({
         )}
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-        <span className="text-xs uppercase tracking-wide text-muted-foreground">
-          {t("screens.autopilotdashboard.dayLabel")}
+        <span className={cn("text-xs uppercase tracking-wide text-muted-foreground", topLabelClassName)}>
+          {topLabel ?? t("screens.autopilotdashboard.dayLabel")}
         </span>
-        <span className="text-4xl font-bold leading-none tracking-tight">{day}</span>
-        <span className="text-[11px] text-muted-foreground mt-2">
-          {t("screens.autopilotdashboard.daysLeftCount", { days: daysLeft })}
+        <span className={cn("text-4xl font-bold leading-none tracking-tight", dayClassName)}>
+          {day}
+        </span>
+        <span className={cn("text-[11px] text-muted-foreground mt-2", captionClassName)}>
+          {daysLeftLabel ?? t("screens.autopilotdashboard.daysLeftCount", { days: daysLeft })}
         </span>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

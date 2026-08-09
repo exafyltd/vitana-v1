@@ -67,6 +67,13 @@
     "errorNotSupported": "Spracheingabe wird auf diesem Gerät nicht unterstützt – bitte tippe deine Nachricht.",
     "errorEmpty": "Bitte sprich oder tippe zuerst eine Nachricht.",
     "errorSend": "Senden fehlgeschlagen. Bitte versuche es erneut.",
-    "errorMicPermission": "Mikrofon-Zugriff nicht erlaubt. Bitte erlaube den Zugriff in den Browser-Einstellungen."
+    "errorMicPermission": "Mikrofon-Zugriff nicht erlaubt. Bitte erlaube den Zugriff in den Browser-Einstellungen.",
+    "errorMicNotFound": "Kein Mikrofon gefunden.",
+    "errorMicInUse": "Das Mikrofon wird von einer anderen App verwendet. Schließe sie und versuche es erneut.",
+    "errorMicGeneric": "Das Mikrofon konnte nicht gestartet werden. Bitte versuche es erneut.",
+    "errorNoAudio": "Wir haben kein Audio aufgenommen. Bitte versuche es erneut.",
+    "errorTranscription": "Transkription fehlgeschlagen. Bitte versuche es erneut.",
+    "transcribing": "Aufnahme wird transkribiert …",
+    "backendRecordingHint": "Deine Transkription erscheint, nachdem du auf Stopp getippt hast."
   }
 }

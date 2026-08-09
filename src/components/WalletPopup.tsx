@@ -116,7 +116,7 @@ export function WalletPopup({ open, onOpenChange }: WalletPopupProps) {
   
   const { balances, loading, getBalance, exchangeCurrency } = useWallet();
   
-  const currentBalance = getBalance('VTNA') || 0;
+  const currentBalance = getBalance('CREDITS') || 0;
   const usdBalance = getBalance('USD') || 0;
   const creditsBalance = getBalance('CREDITS') || 0;
   const pendingRewards = 156;

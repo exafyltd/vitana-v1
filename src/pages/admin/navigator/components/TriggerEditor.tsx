@@ -33,6 +33,7 @@ import {
 import {
   NavCatalogRow,
   NavOverrideTrigger,
+  NavPlatform,
   useCreateCatalogEntry,
   useUpdateCatalogEntry,
   useDeleteCatalogEntry,
@@ -49,6 +50,8 @@ interface TriggerEditorProps {
   entry: NavCatalogRow | null; // null = create mode
   onSaved?: (row: NavCatalogRow) => void;
   onClose?: () => void;
+  // BOOTSTRAP-NAV-PLATFORM: which catalog a newly-created screen belongs to.
+  platform?: NavPlatform;
 }
 
 type I18nMap = Record<string, { title: string; description: string; when_to_visit: string }>;
@@ -77,7 +80,7 @@ function blankEntry(): {
   };
 }
 
-export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
+export function TriggerEditor({ entry, onSaved, onClose, platform = "mobile" }: TriggerEditorProps) {
   const createMutation = useCreateCatalogEntry();
   const updateMutation = useUpdateCatalogEntry();
   const deleteMutation = useDeleteCatalogEntry();
@@ -172,6 +175,9 @@ export function TriggerEditor({ entry, onSaved, onClose }: TriggerEditorProps) {
         i18n: form.i18n,
         override_triggers: form.override_triggers,
         related_kb_topics: form.related_kb_topics,
+        // Platform is set at creation time and is part of the entry's identity;
+        // it is not editable afterwards (a screen is moved by recreating it).
+        ...(isCreate ? { platform } : {}),
       } as any;
       const saved = isCreate
         ? await createMutation.mutateAsync(payload)

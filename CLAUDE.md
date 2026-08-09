@@ -21,16 +21,78 @@ npm run build     # Production build → dist/
 npm run preview   # Preview production build
 ```
 
-## Deployment (Dual — Parallel)
+## Deployment — production is AWS, not Cloud Run
 
-This app currently deploys to **two** hosts simultaneously:
+**`vitanaland.com` and `www` are served by the AWS ECS service
+`vitana-community-app-awsdr`.** Cloud Run's `community-app` is a rollback
+target that no user reaches. This moved at the VTID-03419 cutover.
 
-| Host | URL | Trigger | Status |
-|------|-----|---------|--------|
-| **Cloud Run** | `community-app` service in `lovable-vitana-vers1` | `.github/workflows/DEPLOY.yml` on push to `main` | New (being verified) |
-| **Lovable CDN** | `vitana-lovable-vers1.lovable.app` | Auto-deploy on push to `main` | Legacy (fallback) |
+| Host | Serves | Role |
+|------|--------|------|
+| **AWS ECS** `vitana-community-app-awsdr` | `vitanaland.com`, `www`, `dr-app.vitanaland.com` | **Production — what users get** |
+| Cloud Run `community-app` | its own `*.run.app` URL | Rollback target, kept in sync |
+| Lovable CDN | `vitana-lovable-vers1.lovable.app` | Legacy, being decommissioned |
 
-Once Cloud Run is verified working, Lovable will be decommissioned.
+`DEPLOY.yml` deploys **both** — its `aws_prod` job calls
+`AWS-PROD-DEPLOY-FRONTEND.yml` with the same pinned commit (VTID-03483).
+Before that job existed, running `DEPLOY.yml` deployed Cloud Run, reported
+success everywhere, and left every visitor on the previous build; shipping
+anything required a second, separate, undocumented dispatch of the AWS
+workflow. **If you edit `DEPLOY.yml`, keep `aws_prod`.**
+
+### Verifying a frontend deploy actually shipped
+
+A green workflow is not evidence. Check the bytes production serves, and
+sample repeatedly — an ECS rolling deploy serves the old and new build
+side by side for a minute or two, so a single request can report either:
+
+```bash
+for i in $(seq 1 20); do
+  curl -s "https://vitanaland.com/<page>?s=$i" \
+    | grep -o 'assets/index-[A-Za-z0-9_-]*\.js' | head -1
+done | sort | uniq -c
+```
+
+Only when all samples agree on the new chunk is the deploy live. Then grep
+that chunk for a string unique to your change. Cloudflare fronts the apex
+but sends `cf-cache-status: DYNAMIC` with `no-store` for the SPA shell, so
+a stale response means the rollout is still in flight, not a cache.
+
+### Staging-first cutover (effective Mon 8 Jun 2026, 10:00 Europe/Berlin)
+
+Auto deploy-to-live is **time-gated**. Before the cutover instant, a push to
+`main` deploys the **live** `community-app` as before. At/after it, the
+automatic (push) path in `DEPLOY.yml` is **frozen** (via its `cutover_gate`
+job): frontend changes auto-deploy to **staging** (`community-app-staging` via
+`STAGE-DEPLOY-FRONTEND.yml`, on `preview.vitanaland.com`), and production is
+reached only via:
+
+1. the single **PUBLISH** button in the backend Command Hub, or
+2. a deliberate manual `workflow_dispatch` of `DEPLOY.yml` (requires a `reason`)
+   — the documented exception.
+
+`supabase-functions-deploy.yml` is gated the same way (no staging-functions
+auto-deploy yet, so it is freeze-only on the auto path post-cutover; ship via
+manual dispatch). `STAGE-DEPLOY-FRONTEND.yml` is **not** gated — staging deploys
+always run. The backend half of the cutover lives in `exafyltd/vitana-platform`.
+
+### Per-PR preview deploys
+
+Every open PR that touches frontend files gets its **own** Cloud Run service
+(`community-app-pr-<number>`), independent of `community-app-staging`:
+
+- `.github/workflows/PREVIEW-DEPLOY-FRONTEND.yml` auto-deploys on every push
+  to the PR and posts/updates a PR comment with the preview URL.
+- `.github/workflows/PREVIEW-TEARDOWN-FRONTEND.yml` deletes the service when
+  the PR closes (merged or not).
+
+**Do not manually `workflow_dispatch` `STAGE-DEPLOY-FRONTEND.yml` against a
+feature branch.** That deploys the *shared* `community-app-staging` /
+`preview.vitanaland.com` service — if two branches do this back-to-back,
+each overwrites the other's verification (this happened and reverted a
+merged fix on staging). Use the PR's own preview URL instead; it can't be
+clobbered by other branches. `STAGE-DEPLOY-FRONTEND.yml` should only ever
+run via its normal push-to-`main` trigger.
 
 ## Project Structure
 
@@ -155,3 +217,85 @@ mirror helper lives in `services/gateway/src/i18n/llm-locale.ts`
 **When you skip this**: explicit comment why. E.g. `// admin-facing,
 English by design` for admin/dev tooling. New code without either the
 wrapper OR the explicit skip-comment should be rejected in PR review.
+
+---
+
+## Mandatory Codebase Intelligence Workflow
+
+Before planning, modifying, debugging, reviewing, or generating code, always query both RepoWise and Graphify. Do not begin implementation from assumptions or broad grep searches.
+
+### 1. Verify index freshness
+
+1. Determine the current repository and Git `HEAD`.
+2. Select the correct RepoWise MCP server. Never use an index belonging to another repository or an older checkout.
+3. Confirm RepoWise's indexed commit matches `HEAD`.
+4. Check for `graphify-out/graph.json`.
+5. If either index is missing or stale, update it before implementation:
+   - `repowise update`
+   - `graphify --update`
+
+Report any indexing failure clearly. Do not silently continue with stale information.
+
+### 2. Read the codebase before execution
+
+Use RepoWise for precise code and health information:
+
+1. Call `get_overview` once to understand architecture, layers, entry points, and key modules.
+2. Use `search_codebase` to locate relevant concepts, symbols, and paths.
+3. Use `get_context` for compact file and module context.
+4. Use `get_symbol` only when full implementation bodies are required.
+5. Use `get_why` when architectural decisions or historical rationale matter.
+6. Call `get_risk` before changing shared, central, or high-risk files.
+
+Use Graphify for relationships and system-wide reasoning:
+
+1. Run `graphify query "<task-specific question>" --budget 1500`.
+2. Use `graphify path "<source>" "<target>"` to trace dependencies or data flow.
+3. Use `graphify explain "<component>"` for unfamiliar systems.
+4. Pay particular attention to god nodes, community boundaries, dependency paths, and surprising cross-module connections.
+
+### 3. Produce a pre-execution code map
+
+Before editing, establish:
+
+- Relevant entry points and execution flow.
+- Files, symbols, modules, and tests involved.
+- Upstream and downstream dependencies.
+- Existing patterns that should be followed.
+- Architectural constraints and recorded decisions.
+- Health hotspots, complexity, missing tests, and change risk.
+- The smallest safe implementation scope.
+
+Do not start execution until this map is sufficient to explain what will change, why, and what may be affected.
+
+### 4. Minimize token and search waste
+
+- Treat RepoWise and Graphify as the primary navigation layer.
+- Do not recursively read directories or perform broad grep searches when an indexed query can answer the question.
+- Retrieve compact context first and expand only the exact files or symbols required.
+- Do not repeatedly call `get_overview` during the same task unless the index changes.
+- Reuse already retrieved results instead of requesting identical context again.
+- Raw file reads are allowed only for targeted implementation details, verification, or when an index result is missing, stale, ambiguous, or approximate.
+- Source code and tests remain the final authority; never invent a relationship that the indexes or source do not support.
+
+### 5. Validate after implementation
+
+After changing code:
+
+1. Run the relevant tests, linting, type checks, and build.
+2. Re-query change risk for the affected files when appropriate.
+3. Update both indexes:
+   - `repowise update`
+   - `graphify --update`
+4. Confirm the indexes now match the final Git state.
+5. Summarize changed behavior, affected dependencies, risks, and verification evidence.
+
+A task is not complete until the implementation is verified and both indexes are current.
+
+For Graphify's built-in Claude integration, also run once per repository:
+
+```
+graphify claude install
+```
+
+This workflow improves Claude's navigation speed, token efficiency, and change accuracy. It does not automatically improve application runtime performance—that requires acting on the health and performance findings uncovered by the indexes.

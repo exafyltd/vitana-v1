@@ -1,11 +1,34 @@
-name: Deploy Community App to Cloud Run
+name: Deploy Community App to Production (AWS + Cloud Run)
 
-# Deploys vitana-v1 (React/Vite SPA) to Cloud Run service 'community-app'
-# Runs alongside Lovable CDN until migration is verified complete
+# Deploys vitana-v1 (React/Vite SPA) to PRODUCTION.
+#
+# WHERE PRODUCTION ACTUALLY IS (VTID-03483): vitanaland.com and www are
+# served by the AWS ECS service 'vitana-community-app-awsdr' (see the
+# aws_prod job), NOT by Cloud Run. Cloud Run's 'community-app' is kept in
+# sync as a rollback target only. If you change this workflow, keep the
+# aws_prod job — without it this workflow deploys, goes green, and changes
+# nothing that any user can see.
+#
+# STAGING-FIRST CUTOVER (effective Mon 8 Jun 2026, 10:00 Europe/Berlin):
+# BEFORE the cutover, a push to `main` deploys to the LIVE community-app as
+# before. AT/AFTER it, the automatic (push) path is FROZEN — frontend changes
+# auto-deploy to STAGING via STAGE-DEPLOY-FRONTEND.yml (community-app-staging),
+# and production is reached only via the Command Hub PUBLISH button or a manual
+# `workflow_dispatch` of this workflow (the documented exception). The switch is
+# time-based (see the `cutover_gate` job); manual dispatch is never frozen.
 
 on:
   push:
     branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Why are you deploying community-app to PROD manually (the documented exception)?'
+        required: true
+      commit_sha:
+        description: 'Exact commit SHA to rebuild + deploy (the commit verified on community-app-staging). Empty → main HEAD. The frontend is REBUILT here (not image-promoted) because Vite bakes prod URLs from .env at build time — the staging image carries staging URLs and must never be promoted as-is.'
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -16,10 +39,78 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Staging-first cutover gate. Freezes the AUTOMATIC (push) deploy of the live
+  # community-app at/after the cutover instant. Manual dispatch is exempt.
+  cutover_gate:
+    runs-on: ubuntu-latest
+    outputs:
+      frozen: ${{ steps.gate.outputs.frozen }}
+    steps:
+      - name: Evaluate staging-first cutover
+        id: gate
+        shell: bash
+        # DISPATCH_REASON is passed via env (NOT interpolated inline into the
+        # script). The reason is free text from the PUBLISH button / a human; a
+        # shell-special character (quote, backtick, $(), …) spliced straight into
+        # `run:` would break this gate step and, because `deploy` needs it, silently
+        # skip the whole prod promotion. Reading it as an env var is injection-safe.
+        env:
+          DISPATCH_REASON: ${{ github.event.inputs.reason }}
+        run: |
+          CUTOVER_EPOCH="$(date -d 'TZ="Europe/Berlin" 2026-06-08 10:00:00' +%s)"
+          NOW_EPOCH="$(date -u +%s)"
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            echo "Manual dispatch (reason: ${DISPATCH_REASON}) → not frozen (deliberate prod exception)."
+            echo "frozen=false" >> "$GITHUB_OUTPUT"
+          elif [ "$NOW_EPOCH" -ge "$CUTOVER_EPOCH" ]; then
+            echo "::warning::Staging-first cutover ACTIVE — auto deploy of community-app to LIVE is frozen. Frontend auto-deploys to community-app-staging; promote via the Command Hub PUBLISH button or a manual dispatch."
+            echo "frozen=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Pre-cutover — auto deploy to live proceeds normally (cutover at $(date -u -d @${CUTOVER_EPOCH}) UTC)."
+            echo "frozen=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  # THE JOB THAT ACTUALLY REACHES USERS (VTID-03483).
+  #
+  # vitanaland.com and www are served by the AWS ECS service
+  # vitana-community-app-awsdr, not by Cloud Run — that moved at the
+  # VTID-03419 cutover. Before this job existed, running this workflow
+  # deployed Cloud Run, reported success everywhere, and left every visitor
+  # on the previous build; shipping anything took a second, separate,
+  # undocumented dispatch of AWS-PROD-DEPLOY-FRONTEND.yml. That gap burned a
+  # whole afternoon of "deployed" fixes that were not live.
+  #
+  # Deliberately depends on cutover_gate ONLY, not on the Cloud Run `deploy`
+  # job: production must not be held hostage by the legacy rollback stack.
+  # Both are handed the same commit, so the two stacks stay identical.
+  aws_prod:
+    needs: cutover_gate
+    if: needs.cutover_gate.outputs.frozen != 'true'
+    uses: ./.github/workflows/AWS-PROD-DEPLOY-FRONTEND.yml
+    secrets: inherit
+    with:
+      reason: >-
+        Via DEPLOY.yml (${{ github.event_name }}):
+        ${{ github.event.inputs.reason || 'automatic deploy' }}
+      commit_sha: ${{ github.event.inputs.commit_sha || '' }}
+
+  # GCP Cloud Run. No longer user-facing — kept current so it stays a viable
+  # rollback target if AWS has to be abandoned in a hurry.
   deploy:
+    needs: cutover_gate
+    if: needs.cutover_gate.outputs.frozen != 'true'
     runs-on: ubuntu-latest
     steps:
+      # Check out the exact tested staging commit when provided (the PUBLISH flow
+      # passes it); otherwise main HEAD. Rebuilds with the committed prod .env.
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.commit_sha != '' && github.event.inputs.commit_sha || github.sha }}
+
+      - name: Resolve deploy SHA
+        id: deploy_sha
+        shell: bash
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -37,6 +128,7 @@ jobs:
             --region=us-central1 \
             --project=lovable-vitana-vers1 \
             --allow-unauthenticated \
+            --update-env-vars=GIT_COMMIT_SHA=${{ steps.deploy_sha.outputs.sha }},COMMIT_SHA=${{ steps.deploy_sha.outputs.sha }} \
             --quiet
 
           # Get deployed URL

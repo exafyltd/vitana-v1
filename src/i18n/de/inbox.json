@@ -20,7 +20,9 @@
     "actions": {
       "new": "Neu",
       "newMessage": "Neue Nachricht",
-      "createGroup": "Gruppe erstellen"
+      "createGroup": "Gruppe erstellen",
+      "markAllRead": "Alle als gelesen markieren",
+      "menu": "Mehr"
     },
     "composer": {
       "placeholder": "Nachricht eingeben...",
@@ -84,7 +86,9 @@
       "groupRecipientsRequired": "Gruppenname und Empfänger erforderlich",
       "singleRecipientRequired": "Wähle genau einen Empfänger für Direktnachrichten.",
       "groupCreated": "Gruppe \"{name}\" wurde erfolgreich erstellt!",
-      "groupFailed": "Gruppe konnte nicht erstellt werden"
+      "groupFailed": "Gruppe konnte nicht erstellt werden",
+      "allMarkedRead": "Alle Nachrichten als gelesen markiert",
+      "markAllReadFailed": "Konnte nicht alle als gelesen markieren. Bitte versuch es erneut."
     },
     "createGroupAction": "Neue Gruppe erstellen",
     "newConversationAction": "Neue Unterhaltung",

@@ -236,28 +236,56 @@ export default function IntroExperience() {
           {t.intro?.welcomeTo || 'WELCOME TO VITANALAND'}
         </p>
 
-        {/* Primary Title - MAXINA in ALL CAPS */}
-        <h1 
-          className="text-4xl md:text-5xl font-bold text-white text-center mb-1 animate-fade-in leading-tight tracking-tight uppercase"
-          style={{ animationDelay: '1600ms', animationFillMode: 'both' }}
-        >
-          MAXINA
-        </h1>
+        {/* Brand block - MAXINA wordmark + Experience, with a soft golden flare accent */}
+        <div className="relative">
+          {/* Primary Title - MAXINA in ALL CAPS, champagne/ivory gradient for contrast + brand presence */}
+          <h1
+            className="relative text-3xl md:text-4xl font-bold text-center mb-1 animate-fade-in leading-tight tracking-tight uppercase bg-gradient-to-b from-[#FBF3DE] via-[#F3E2B0] to-[#D9B873] bg-clip-text text-transparent [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.45))_drop-shadow(0_0_16px_rgba(235,205,150,0.35))]"
+            style={{ animationDelay: '1600ms', animationFillMode: 'both' }}
+          >
+            MAXINA
+          </h1>
 
-        {/* Signature Subtitle */}
-        <p 
-          className="text-lg md:text-xl font-light text-white/80 text-center mb-6 animate-fade-in italic tracking-wide"
-          style={{ animationDelay: '1800ms', animationFillMode: 'both' }}
-        >
-          {t.intro?.experience || 'Experience'}
-        </p>
+          {/* Signature Subtitle */}
+          <p
+            className="relative text-base md:text-lg font-light text-white/80 text-center mb-2 animate-fade-in italic tracking-wide"
+            style={{ animationDelay: '1800ms', animationFillMode: 'both' }}
+          >
+            {t.intro?.experience || 'Experience'}
+          </p>
 
-        {/* Longevity Tagline - Single line */}
-        <p 
-          className="text-sm md:text-base text-white/70 text-center mb-10 animate-fade-in whitespace-nowrap"
+          {/* Golden shine flare - refined glint: thin champagne streak + luminous center + soft cinematic bloom, sits right under Experience as part of the brand block */}
+          <div
+            className="relative w-28 md:w-36 h-3 mx-auto mb-7 animate-fade-in"
+            style={{ animationDelay: '1900ms', animationFillMode: 'both' }}
+          >
+            {/* Ambient warm bloom - soft, wide, distinct from the sharp center point */}
+            <div
+              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full blur-lg opacity-70"
+              style={{
+                background:
+                  'radial-gradient(circle, rgba(250,230,180,0.6) 0%, rgba(224,170,82,0.28) 50%, transparent 75%)',
+              }}
+            />
+            {/* Thin champagne-gold streak, strongest at center fading to transparent at both ends */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#E0AA52] to-transparent" />
+            {/* Small bright luminous point */}
+            <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#FFFDF6] shadow-[0_0_6px_2px_rgba(250,235,190,0.9)]" />
+          </div>
+        </div>
+
+        {/* Purpose statement - dominant headline + smaller supporting line */}
+        <p
+          className="text-4xl md:text-5xl font-bold text-white text-center leading-tight tracking-tight text-balance max-w-xs md:max-w-sm mb-1 animate-fade-in"
           style={{ animationDelay: '2000ms', animationFillMode: 'both' }}
         >
-          {t.intro?.tagline || 'Your longevity journey, guided.'}
+          {t.intro?.taglineMain || 'Start your Longevity Journey'}
+        </p>
+        <p
+          className="text-lg md:text-xl font-light text-white/70 text-center italic tracking-wide mb-10 animate-fade-in"
+          style={{ animationDelay: '2100ms', animationFillMode: 'both' }}
+        >
+          {t.intro?.taglineSub || 'together with us!'}
         </p>
 
         {/* CTA Stack - Premium glass buttons */}
@@ -311,12 +339,12 @@ export default function IntroExperience() {
             <LanguageToggleButton size="md" />
           </div>
 
-          {/* Skip intro - secondary text button */}
+          {/* Go to Login - secondary text button, bright ivory + permanent underline, still subordinate to Play Welcome */}
           <button
             onClick={handleSkip}
-            className="text-white/50 hover:text-white/80 text-sm font-medium transition-colors duration-200 underline-offset-4 hover:underline"
+            className="text-[#F5ECD8] hover:text-white text-sm font-semibold [text-shadow:0_1px_4px_rgba(0,0,0,0.55)] transition-colors duration-200 underline underline-offset-4"
           >
-            {t.intro?.skipIntro || 'Skip intro'}
+            {t.intro?.goToLogin || 'Go to Login'}
           </button>
         </div>
 

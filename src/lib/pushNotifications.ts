@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { requestFCMToken, onForegroundMessage } from './firebase';
 import {
   isAppilix,
+  waitForAppilixBridge,
   getNativeFcmToken,
   requestNativeFcmTokenFromBridge,
   showNativeNotification,
@@ -75,7 +76,17 @@ class PushNotificationManager {
 
       this.attachAppilixTokenListener();
 
-      if (isAppilix()) {
+      // Resolve Appilix detection reliably BEFORE deciding anything. The
+      // Appilix bridge (window.appilix) can be injected slightly after the
+      // initial page load, so a bare isAppilix() at boot is a false-negative
+      // race: subscribe() could slip past the guard below and register a
+      // crash-prone browser web-push token in an installed-app session.
+      // waitForAppilixBridge() resolves immediately when the bridge is already
+      // present and otherwise waits briefly for late injection (real browsers
+      // wait out the short timeout once — harmless for background push setup).
+      const inAppilix = isAppilix() || (await waitForAppilixBridge(3000));
+
+      if (inAppilix) {
         // 1. Check if Appilix already injected the token (URL param or
         //    pre-mount custom event).
         let nativeToken = getNativeFcmToken();
@@ -102,8 +113,22 @@ class PushNotificationManager {
         this.registerAppilixDevice(nativeToken || undefined).catch(() => {});
       }
 
-      // Attempt web FCM (works in browsers, may work in some WebViews)
-      if (!token && this.isSupported) {
+      // Attempt web FCM — REAL BROWSERS ONLY (never inside the Appilix WebView).
+      //
+      // Inside Appilix we must NOT register a web-push FCM token. When the
+      // native FCM bridge fails to return a token (some Appilix wrapper builds
+      // never answer the firebase_token request), this branch used to fall back
+      // to a browser web-push token whose device_label is a plain UA string
+      // (no "Appilix " prefix). The gateway then delivers chat pushes to that
+      // token via FCM web-push, and tapping an FCM-delivered notification
+      // CRASHES the Appilix WebView with "Something went wrong" — the native tap
+      // handler never receives the deep-link URL (see the dispatch comment in
+      // services/gateway/src/services/notification-service.ts). Appilix devices
+      // are reached via Appilix user_identity native push (registered in
+      // App.tsx via ensureAppilixIdentity) and/or the native bridge FCM token
+      // instead, so skipping this fallback removes the crash without losing
+      // delivery.
+      if (!token && this.isSupported && !inAppilix) {
         try {
           console.log('[Push] Trying web FCM...');
           token = await requestFCMToken(this.registration || undefined);
@@ -115,10 +140,18 @@ class PushNotificationManager {
         } catch (webErr) {
           console.warn('[Push] ⚠️ Web FCM error (expected in some WebViews):', webErr);
         }
+      } else if (!token && inAppilix) {
+        console.log('[Push] Appilix WebView without a native FCM token — skipping web-push fallback (it would crash the WebView on tap). Relying on Appilix user_identity native push.');
       }
 
       if (!token) {
         console.warn('[Push] ❌ No FCM token — push notifications unavailable');
+        // In Appilix, keep retrying the native bridge and refreshing the
+        // user_identity so native push can start working once the wrapper
+        // responds — but do NOT register a web-push token.
+        if (inAppilix) {
+          this.startTokenRefreshMonitor();
+        }
         return null;
       }
 
@@ -135,9 +168,13 @@ class PushNotificationManager {
   }
 
   async unsubscribe(): Promise<boolean> {
-    if (!this.fcmToken) return false;
+    // Fall back to the Appilix native token: on a cold start the shell may have
+    // a registered token that this instance never saw, and failing to release
+    // it leaves the device claimed by the signed-out account (VTID-03481).
+    const token = this.fcmToken || getNativeFcmToken();
+    if (!token) return false;
     try {
-      await this.removeTokenFromBackend(this.fcmToken);
+      await this.removeTokenFromBackend(token);
       this.fcmToken = null;
       this.foregroundCleanup?.();
       this.foregroundCleanup = null;
@@ -351,6 +388,11 @@ class PushNotificationManager {
               return;
             }
           }
+
+          // Never register a web-push token inside Appilix — it crashes the
+          // WebView when an FCM-delivered notification is tapped. We rely on
+          // Appilix user_identity native push (re-registered above) instead.
+          return;
         }
 
         const newToken = await requestFCMToken(this.registration || undefined);
@@ -433,6 +475,42 @@ class PushNotificationManager {
 }
 
 export const pushNotificationManager = new PushNotificationManager();
+
+/**
+ * Release this device's push registration before signing out (VTID-03481).
+ *
+ * A device may only be claimed by ONE account at a time: the FCM token belongs
+ * to the app installation, and Appilix maps its own `user_identity` to the same
+ * physical device. Sign-out used to leave both claims in place, so the next
+ * account to sign in ADDED a claim rather than replacing one — and every
+ * community fan-out was then delivered once per account that had ever used the
+ * phone, each rendered in THAT account's language. That is the reported
+ * "Neuer Beitrag" + "New post" pair on one lock screen.
+ *
+ * Must run BEFORE supabase.auth.signOut(): the gateway call needs a live JWT.
+ * Never throws — a failed release must not block sign-out, and the server-side
+ * takeover in POST /notifications/token still repairs it at the next sign-in.
+ */
+export async function releaseDeviceOnSignOut(): Promise<void> {
+  try {
+    await pushNotificationManager.unsubscribe();
+  } catch (err) {
+    console.warn('[Push] Device release failed (continuing sign-out):', err);
+  }
+
+  // Drop the Appilix identity claim too. The native shell reads this at page
+  // load; leaving it set means the shell keeps reporting the signed-out account
+  // as this device's owner.
+  try {
+    window.appilix_push_notification_user_identity = '';
+    document.cookie =
+      'appilix_push_notification_user_identity=; path=/; max-age=0; SameSite=Lax; Secure';
+    localStorage.removeItem('appilix_registered_identity_v1');
+    localStorage.removeItem('appilix_active_identity');
+  } catch {
+    /* cookie/localStorage unavailable — server-side takeover still covers it */
+  }
+}
 export const muteThread = (threadId: string) => pushNotificationManager.muteThread(threadId);
 export const unmuteThread = (threadId: string) => pushNotificationManager.unmuteThread(threadId);
 export const isThreadMuted = (threadId: string) => pushNotificationManager.isThreadMuted(threadId);

@@ -14,6 +14,7 @@ import { ExpandableSearchButton } from "@/components/ui/expandable-search-button
 import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
 import { MobileBillingView, type MobileBillingSection } from "@/components/settings/MobileBillingView";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
+import { UniversalCalendarButton } from "@/components/UniversalCalendarButton";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useNotificationPreferences } from "@/hooks/useNotifications";
@@ -181,7 +182,16 @@ export default function MobileSettings() {
   };
 
   const renderContent = () => {
-    switch (activeSection) {
+    // A bare parent section (e.g. 'preferences', 'privacy') has no content of its
+    // own — it's a group of children. Landing on it directly (parent pill tap, or
+    // a redirect that lost the ?section) would otherwise hit `default: null` and
+    // show only the Delete Account button. Fall through to the first child so the
+    // parent is never a dead-end. ('billing' has its own overview case.)
+    const section =
+      activeSection === 'preferences' ? 'preferences.appearance'
+      : activeSection === 'privacy' ? 'privacy.visibility'
+      : activeSection;
+    switch (section) {
       case 'notifications':
         return (
           <>
@@ -557,6 +567,7 @@ export default function MobileSettings() {
               activeMode={activeSection}
               onModeChange={setActiveSection}
             />
+            <UniversalCalendarButton />
           </div>
         </UtilityActionButton>
 

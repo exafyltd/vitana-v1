@@ -40,12 +40,14 @@ export function ProductImage({
 
   if (hasImage) {
     return (
-      <img
-        src={src as string}
-        alt={alt}
-        loading="lazy"
-        className={cn("object-cover", sizeClass, className)}
-      />
+      <div className={cn("bg-white dark:bg-neutral-50", sizeClass, className)}>
+        <img
+          src={src as string}
+          alt={alt}
+          loading="lazy"
+          className="w-full h-full object-contain p-1"
+        />
+      </div>
     );
   }
 

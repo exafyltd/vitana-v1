@@ -70,7 +70,9 @@ export interface MyJourneyResponse {
 export function useMyJourney() {
   const { user } = useAuth();
   return useQuery({
-    queryKey: ["my-journey"],
+    // User-scoped so a different account can't read the previous user's journey
+    // from cache/persistence. Prefix-invalidations (["my-journey"]) still match.
+    queryKey: ["my-journey", user?.id],
     queryFn: async () => {
       const res = await communityFetch("/api/v1/my-journey");
       if (!res.ok) throw new Error("Failed to fetch my-journey");

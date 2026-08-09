@@ -35,8 +35,9 @@ import { Badge } from "@/components/ui/badge";
 import { communityNavigation } from "@/config/navigation";
 import { toast } from "@/hooks/use-toast";
 import SocialShareButton from "@/components/sharing/SocialShareButton";
-import { useScheduledStreams, useLiveStreams, useStartStream, useCancelStream, useDeleteStream, useUpdateStream } from "@/hooks/useLiveStreams";
+import { useScheduledStreams, useLiveStreams, useEndedStreams, useStartStream, useCancelStream, useDeleteStream, useUpdateStream } from "@/hooks/useLiveStreams";
 import type { LiveStream } from "@/hooks/useLiveStreams";
+import { PastRoomCard } from "@/components/liverooms/PastRoomCard";
 import {
   useMyStreamSubscriptions,
   useStreamSubscriberCounts,
@@ -75,6 +76,8 @@ export default function LiveRooms() {
   // Fetch live streams data
   const { data: liveStreams = [], isLoading: isLoadingLive } = useLiveStreams();
   const { data: scheduledStreams = [], isLoading: isLoadingScheduled } = useScheduledStreams();
+  // Past tab — only fetch when it's open (avoids an extra query on every visit).
+  const { data: endedStreams = [], isLoading: isLoadingEnded } = useEndedStreams(activeTab === 'past');
   const { mutateAsync: startStream } = useStartStream();
   const { mutateAsync: cancelStream } = useCancelStream();
   const { mutateAsync: deleteStream } = useDeleteStream();
@@ -91,8 +94,8 @@ export default function LiveRooms() {
   
   // Fetch profiles for all creators
   const creatorIds = useMemo(() => {
-    return Array.from(new Set([...liveStreams, ...scheduledStreams].map(s => s.created_by))).filter(Boolean);
-  }, [liveStreams, scheduledStreams]);
+    return Array.from(new Set([...liveStreams, ...scheduledStreams, ...endedStreams].map(s => s.created_by))).filter(Boolean);
+  }, [liveStreams, scheduledStreams, endedStreams]);
   
   const { data: profiles = [] } = useProfilesByIds(creatorIds);
   
@@ -128,6 +131,8 @@ export default function LiveRooms() {
       },
       isLive: stream.status === 'live',
       scheduledTime: stream.scheduled_for || undefined,
+      startedAt: stream.started_at || undefined,
+      durationMinutes: stream.duration_minutes ?? undefined,
       participants: stream.viewer_count,
       interestedCount: subscriberCounts[stream.id] ?? 0,
       maxParticipants: 100,
@@ -192,6 +197,21 @@ export default function LiveRooms() {
       setSelectedRoomId(null);
     }
   }, [searchParams]);
+
+  // Vitana / deep-link tab selection: honor ?tab=<all|live|scheduled|past> so the
+  // Orb (and shareable links) can open a specific Live Rooms tab. Works on both
+  // mobile (MobileModePill) and desktop (SplitBar) since they share activeTab —
+  // no is_mobile dependency. Strip the param once consumed so the pill picker
+  // stays usable (mirrors MobileSettings' ?mode handling).
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab && ['all', 'live', 'scheduled', 'past'].includes(tab)) {
+      setActiveTab(tab);
+      const next = new URLSearchParams(searchParams);
+      next.delete('tab');
+      setSearchParams(next, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   const handleCardClick = (roomId: string) => {
     // Check if it's a mock room
@@ -321,6 +341,33 @@ export default function LiveRooms() {
     }
   };
 
+  // Past tab delete — PastRoomCard already confirms, so delete straight away.
+  const handleDeletePastRoom = async (streamId: string) => {
+    try {
+      // Remove the recording object(s) from the public `stream-recordings`
+      // bucket FIRST. deleteStream only removes the DB row (the stream_recordings
+      // row cascades), but the uploaded file would otherwise stay reachable via
+      // its public recording_url after the UI says the room was permanently
+      // deleted. Fetch every storage_path for this stream and delete the objects.
+      const { data: recs } = await supabase
+        .from('stream_recordings')
+        .select('storage_path')
+        .eq('stream_id', streamId);
+      const paths = (recs ?? [])
+        .map((r) => r.storage_path)
+        .filter((p): p is string => Boolean(p));
+      if (paths.length > 0) {
+        const { error: rmErr } = await supabase.storage.from('stream-recordings').remove(paths);
+        if (rmErr) console.warn('[DeletePastRoom] storage object removal failed:', rmErr.message);
+      }
+      await deleteStream(streamId);
+      notify('toasts.community.streamDeleted', 'toasts.community.yourLiveStreamHasDeleted');
+    } catch (error) {
+      console.error('Delete past room error:', error);
+      notifyError('toasts.community.error');
+    }
+  };
+
   const handleCardEdit = async (e: React.MouseEvent, roomId: string) => {
     e.stopPropagation();
     setEditRoomId(roomId);
@@ -384,7 +431,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[0].title,
                           description: rowRooms[0].description || `Join ${rowRooms[0].host.name}'s live session`,
-                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[0].id)}`
+                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[0].id)}`
                         }}
                         variant="icon"
                         size="sm"
@@ -417,7 +464,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[1].title,
                           description: rowRooms[1].description || `Join ${rowRooms[1].host.name}'s live session`,
-                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[1].id)}`
+                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[1].id)}`
                         }}
                         variant="icon"
                         size="sm"
@@ -450,7 +497,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[2].title,
                           description: rowRooms[2].description || `Join ${rowRooms[2].host.name}'s live session`,
-                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[2].id)}`
+                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[2].id)}`
                         }}
                         variant="icon"
                         size="sm"
@@ -487,7 +534,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[0].title,
                           description: rowRooms[0].description || `Join ${rowRooms[0].host.name}'s live session`,
-                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[0].id)}`
+                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[0].id)}`
                         }}
                         variant="icon"
                         size="sm"
@@ -520,7 +567,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[1].title,
                           description: rowRooms[1].description || `Join ${rowRooms[1].host.name}'s live session`,
-                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[1].id)}`
+                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[1].id)}`
                         }}
                         variant="icon"
                         size="sm"
@@ -554,7 +601,7 @@ export default function LiveRooms() {
                         data={{
                           title: rowRooms[2].title,
                           description: rowRooms[2].description || `Join ${rowRooms[2].host.name}'s live session`,
-                          link: `${window.location.origin}/community/liverooms?room=${encodeURIComponent(rowRooms[2].id)}`
+                          link: `${window.location.origin}/comm/live-rooms?live=${encodeURIComponent(rowRooms[2].id)}`
                         }}
                         variant="icon"
                         size="sm"
@@ -856,11 +903,33 @@ export default function LiveRooms() {
           </SplitBarContent>
 
           <SplitBarContent value="past" className={isMobile ? "mt-1" : "mt-6"}>
-            <div className="text-center py-6">
-              <p className="text-muted-foreground">{t('screens.community.pastSessionsWillAppearHereOnce')}</p>
-              <p className="text-sm text-muted-foreground mt-2">{t('screens.community.viewSummariesHighlightsRecordingsFromCompleted')}
-              </p>
-            </div>
+            {isLoadingEnded ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">{t('screens.liverooms.past.loading')}</p>
+              </div>
+            ) : endedStreams.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {endedStreams.map((stream) => {
+                  const profile = profilesMap[stream.created_by];
+                  const isYou = user?.id === stream.created_by;
+                  return (
+                    <PastRoomCard
+                      key={stream.id}
+                      stream={stream}
+                      hostName={profile?.display_name || (isYou ? t('screens.liverooms.you') : t('screens.liverooms.anonymousHost'))}
+                      hostAvatar={profile?.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${stream.created_by}`}
+                      isHost={isYou}
+                      onDelete={handleDeletePastRoom}
+                    />
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-6">
+                <p className="text-muted-foreground">{t('screens.liverooms.past.empty')}</p>
+                <p className="text-sm text-muted-foreground mt-2">{t('screens.liverooms.past.emptyHint')}</p>
+              </div>
+            )}
           </SplitBarContent>
         </SplitBar>
       </div>

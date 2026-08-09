@@ -1,3 +1,4 @@
+import { useUrlTab } from "@/hooks/useUrlTab";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -21,7 +22,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from '@/lib/i18n-toast';
 
 function Preferences() {
-  const [activeTab, setActiveTab] = useState("appearance");
+  const [activeTab, setActiveTab] = useUrlTab("section", "appearance");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const { selectedLanguage, setSelectedLanguage, languageOptions } = useLanguage();
   const { theme, setTheme, resolvedTheme } = useTheme();

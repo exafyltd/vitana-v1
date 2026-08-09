@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, CheckCircle2, Circle, Flag, Repeat, Sparkles, Trophy, ChevronDown } from "lucide-react";
 import { fmtDate } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
+import { localizeGoal } from "@/lib/goalLabel";
 import { GoalProgressRing } from "@/components/journey/GoalProgressRing";
 import { GoalTrendBadge } from "@/components/journey/GoalTrendBadge";
 import { buildPhases } from "@/lib/goalPhases";
@@ -223,7 +224,7 @@ export function GoalPlanSheet({ open, onOpenChange }: { open: boolean; onOpenCha
         <SheetHeader>
           <SheetTitle className="text-xl font-semibold">{t("screens.autopilotdashboard.planSheetTitle")}</SheetTitle>
           {plan && (
-            <SheetDescription className="text-sm text-muted-foreground">{plan.goal_text}</SheetDescription>
+            <SheetDescription className="text-sm text-muted-foreground">{localizeGoal(plan.goal_text)}</SheetDescription>
           )}
         </SheetHeader>
 

@@ -1,3 +1,4 @@
+import { useUrlTab } from "@/hooks/useUrlTab";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -17,10 +18,11 @@ import { StandardCard } from "@/components/templates/StandardCard";
 import { PrivacyAuditPopup } from "@/components/PrivacyAuditPopup";
 import { useAIConsent } from "@/hooks/useAIConsent";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
+import { SpotlightConsentToggle } from "@/components/settings/SpotlightConsentToggle";
 import { t } from '@/lib/i18n-toast';
 
 function Privacy() {
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeTab, setActiveTab] = useUrlTab("section", "profile");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent, revokeConsent } = useAIConsent();
 
@@ -152,6 +154,7 @@ function Privacy() {
                           </div>
                           <Switch />
                         </div>
+                        <SpotlightConsentToggle />
                       </div>
                     }
                   />

@@ -17,8 +17,12 @@ FROM nginx:1.25-alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Create health check file (more reliable than nginx return directive)
-RUN echo "ok" > /usr/share/nginx/html/healthz
+# Create health check files (more reliable than nginx return directive).
+# /alive is the platform-canonical health path (vitana-platform CLAUDE.md
+# Always-rule #15) — the AWS staging target group probes it; /healthz kept
+# for the existing Docker HEALTHCHECK below.
+RUN echo "ok" > /usr/share/nginx/html/healthz \
+  && echo "ok" > /usr/share/nginx/html/alive
 
 EXPOSE 8080
 

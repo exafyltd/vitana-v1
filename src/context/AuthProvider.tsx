@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { clearChatCache } from "@/hooks/chatPersistCache";
 import { stopAndReset as stopSoundscape } from "@/audio/SoundscapeAudioManager";
+import { releaseDeviceOnSignOut } from "@/lib/pushNotifications";
 import { QueryClient } from "@tanstack/react-query";
 import { AuthContext } from "./AuthContext";
 import type { AuthContextValue } from "./AuthContext";
@@ -237,50 +238,149 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // VTID-AUTH-GUARD: Active session health monitor.
     // supabase.auth.getSession() returns the CACHED session from memory /
     // localStorage — it does NOT verify the token against the server.
-    // The autoRefreshToken timer can be suspended in Appilix WebView or
+    // The autoRefreshToken timer can be suspended in the Appilix WebView or
     // backgrounded browser tabs, so the cached session looks valid while
     // the JWT is actually expired on the backend.
     //
-    // Fix: every 30s, read the cached session's expires_at and compare to
-    // Date.now(). If the token is expired (or about to expire within 60s),
-    // force an explicit refreshSession(). If the refresh fails (refresh
-    // token also expired), call signOut() → AuthGuard redirects to login.
+    // Goal: the app must stay logged in across inactivity / backgrounding and
+    // only ever return the user to the login screen when they explicitly log
+    // out OR their session is genuinely dead (refresh token revoked/expired).
+    //
+    // Every 30s (and when the app returns to the foreground) we read the
+    // cached session's expires_at. If the access token is expired (or expiring
+    // within 60s) we force an explicit refreshSession().
+    //
+    // CRITICAL: a refresh can fail for two very different reasons:
+    //   1. Transient — no network yet (mobile radio still reconnecting after
+    //      wake-from-background), a 5xx, or a timeout. These are NOT a reason
+    //      to log the user out; connectivity will return and the next attempt
+    //      succeeds. The old code signed out on ANY failure, which is exactly
+    //      why the app appeared to "close itself" after inactivity.
+    //   2. Definitive — the server says the refresh token is invalid / not
+    //      found / already used / revoked. Only THEN is the session truly dead
+    //      and we sign out → AuthGuard redirects to login.
+
+    // Is this refresh error a definitive "your session is dead" response from
+    // the auth server (vs. a transient network / server hiccup we can retry)?
+    const isDefinitiveAuthFailure = (error: unknown): boolean => {
+      if (!error || typeof error !== 'object') return false;
+      const err = error as { name?: string; status?: number; code?: string; message?: string };
+      // supabase-js wraps network/5xx failures in AuthRetryableFetchError —
+      // those are always retryable, never a reason to sign out.
+      if (err.name === 'AuthRetryableFetchError') return false;
+      const code = (err.code || '').toLowerCase();
+      const message = (err.message || '').toLowerCase();
+      // Explicit refresh-token-dead signals from GoTrue.
+      if (
+        code.includes('refresh_token_not_found') ||
+        code.includes('refresh_token_already_used') ||
+        code.includes('session_not_found') ||
+        message.includes('invalid refresh token') ||
+        message.includes('refresh token not found') ||
+        message.includes('already used')
+      ) {
+        return true;
+      }
+      // A 4xx (but not 429 rate-limit, which is transient) from the auth
+      // server is a definitive client-side rejection of the credentials.
+      if (typeof err.status === 'number' && err.status >= 400 && err.status < 500 && err.status !== 429) {
+        return true;
+      }
+      // Anything else (no status, network throw, timeout, 5xx) → transient.
+      return false;
+    };
+
+    const isRefreshingRef = { current: false };
+
     const checkSession = async () => {
       // Only check if we think we have a logged-in user
       if (!prevUserIdRef.current) return;
+      // Avoid overlapping refreshes (poll + visibilitychange can race).
+      if (isRefreshingRef.current) return;
 
-      const { data: { session: cached } } = await supabase.auth.getSession();
-
-      if (!cached) {
-        // Session already cleared — sign out
-        console.warn('[AuthProvider] No cached session — signing out');
-        supabase.auth.signOut();
+      let cached;
+      try {
+        ({ data: { session: cached } } = await supabase.auth.getSession());
+      } catch (err) {
+        // getSession reads local storage; a throw here is transient — keep the
+        // session and try again on the next tick rather than logging out.
+        console.warn('[AuthProvider] getSession threw — will retry, keeping session:', err);
         return;
       }
 
-      // Check if the access token has expired or will expire within 60s
+      if (!cached) {
+        // No cached session. This means storage was cleared (explicit logout
+        // elsewhere, or a different tab signed out). There is nothing to
+        // refresh; just make sure our React state reflects the signed-out
+        // status — do NOT call signOut() (it would race the real sign-out and
+        // can fire spurious SIGNED_OUT side effects).
+        return;
+      }
+
+      // Check if the access token has expired or will expire within 60s.
       const expiresAt = cached.expires_at; // Unix seconds
-      if (expiresAt && expiresAt * 1000 - Date.now() < 60_000) {
-        console.log('[AuthProvider] Token expired or expiring soon — forcing refresh');
-        const { data: { session: refreshed }, error } = await supabase.auth.refreshSession();
-        if (refreshed) {
-          // Refresh succeeded — sync React state with fresh tokens
-          setSession(refreshed);
-          setUser(refreshed.user);
-        } else {
-          // Refresh failed — session truly dead, redirect to login
-          console.warn('[AuthProvider] Refresh failed — signing out:', error?.message);
-          supabase.auth.signOut();
+      if (!expiresAt || expiresAt * 1000 - Date.now() >= 60_000) return;
+
+      console.log('[AuthProvider] Token expired or expiring soon — refreshing');
+      isRefreshingRef.current = true;
+      try {
+        // Retry transient failures with backoff before giving up. We do NOT
+        // sign out on transient failure — the session stays and the next
+        // poll / foreground will retry. We only sign out on a definitive
+        // "refresh token dead" response.
+        const backoffMs = [0, 2_000, 5_000];
+        for (let attempt = 0; attempt < backoffMs.length; attempt++) {
+          if (backoffMs[attempt] > 0) {
+            await new Promise((r) => setTimeout(r, backoffMs[attempt]));
+          }
+          let refreshed = null;
+          let error: unknown = null;
+          try {
+            const res = await supabase.auth.refreshSession();
+            refreshed = res.data.session;
+            error = res.error;
+          } catch (thrown) {
+            // Network throw (AuthRetryableFetchError / fetch failure).
+            error = thrown;
+          }
+
+          if (refreshed) {
+            // Refresh succeeded — sync React state with fresh tokens.
+            setSession(refreshed);
+            setUser(refreshed.user);
+            return;
+          }
+
+          if (isDefinitiveAuthFailure(error)) {
+            // Session is genuinely dead — this is the only path that logs out.
+            console.warn('[AuthProvider] Refresh token invalid — signing out:', (error as { message?: string })?.message);
+            supabase.auth.signOut();
+            return;
+          }
+
+          // Transient failure — log and retry (or give up this round, keeping
+          // the session so a later check can recover it).
+          console.warn(
+            `[AuthProvider] Token refresh transient failure (attempt ${attempt + 1}/${backoffMs.length}) — keeping session, will retry:`,
+            (error as { message?: string })?.message,
+          );
         }
+      } finally {
+        isRefreshingRef.current = false;
       }
     };
 
     // Poll every 30 seconds
     const sessionCheckInterval = setInterval(checkSession, 30_000);
 
-    // Also check immediately when tab becomes visible again
+    // Also check (and resume auto-refresh) when the app returns to foreground.
+    // In a WebView the visibility/focus events that drive supabase-js's own
+    // auto-refresh can be unreliable, so we nudge it explicitly.
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') checkSession();
+      if (document.visibilityState === 'visible') {
+        supabase.auth.startAutoRefresh().catch(() => {});
+        checkSession();
+      }
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
@@ -298,6 +398,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       stopSoundscape();
       clearChatCache();
       clearOrbSessionState();
+
+      // Release this device's push claim while the JWT is still valid
+      // (VTID-03481). Without this the signed-out account stays registered as
+      // an owner of the phone, and the next account to sign in ADDS a claim
+      // instead of replacing one — so every fan-out notification arrives once
+      // per account, each in that account's own language. Awaited but never
+      // throws, so it cannot block or slow-fail sign-out.
+      await releaseDeviceOnSignOut();
 
       // ORB widget lifecycle is now managed solely by useOrbVoiceWidget hook
 

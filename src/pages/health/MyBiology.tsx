@@ -1,3 +1,4 @@
+import { useUrlTab } from "@/hooks/useUrlTab";
 import React, { useState, useEffect } from 'react';
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
@@ -77,7 +78,7 @@ const STATUS_CONFIG: Record<string, { label: string; variant: 'secondary' | 'out
 
 export default function MyBiology() {
   const [biomarkerActionsOpen, setBiomarkerActionsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("medical");
+  const [activeTab, setActiveTab] = useUrlTab("tab", "medical");
   const [supplementDialogOpen, setSupplementDialogOpen] = useState(false);
   const [editingSupplement, setEditingSupplement] = useState<UserSupplement | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<string>("all");

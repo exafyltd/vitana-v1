@@ -1,5 +1,5 @@
 /**
- * Notification Type Registry — All 70 Vitana Notification Types
+ * Notification Type Registry — All 73 Vitana Notification Types
  *
  * Central definition of every notification type across the platform.
  * Each type defines icon, label, category, channel, priority, and click route.
@@ -60,7 +60,7 @@ export const CATEGORY_TO_PREF_COLUMN: Record<NotificationCategory, string> = {
   system: 'system_notifications',
 };
 
-// ── Master Registry (70 types) ──────────────────────────────
+// ── Master Registry (72 types) ──────────────────────────────
 
 export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
 
@@ -122,6 +122,31 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
   group_invitation_received: {
     icon: '📨', label: 'Group Invitation', category: 'community',
     channel: 'push_and_inapp', priority: 'p1', route: '/community',
+  },
+  post_like: {
+    icon: '❤️', label: 'New Like', category: 'community',
+    channel: 'push_and_inapp', priority: 'p1', route: '/home',
+  },
+  post_comment: {
+    icon: '💬', label: 'New Comment', category: 'community',
+    channel: 'push_and_inapp', priority: 'p1', route: '/home',
+  },
+  // Emitted by the notify_on_post_mention_insert()/_update() DB triggers on
+  // profile_posts inserts/updates. Always ships with an explicit data.url
+  // (the specific /post/post/<id>), so no `route` template here —
+  // resolveNotificationRoute() honors data.url before falling back to this
+  // registry.
+  post_mention: {
+    icon: '🏷️', label: 'Tagged You', category: 'community',
+    channel: 'push_and_inapp', priority: 'p1',
+  },
+  community_post_published: {
+    icon: '📝', label: 'New Post', category: 'community',
+    channel: 'push_and_inapp', priority: 'p2', route: '/home',
+  },
+  community_video_published: {
+    icon: '🎬', label: 'New Video', category: 'community',
+    channel: 'push_and_inapp', priority: 'p2', route: '/home',
   },
 
   // ═══════════════════════════════════════════════════════════
@@ -185,7 +210,7 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
   },
 
   // ═══════════════════════════════════════════════════════════
-  // 5. CHAT / CONVERSATION (4)
+  // 5. CHAT / CONVERSATION (5)
   // ═══════════════════════════════════════════════════════════
   new_chat_message: {
     icon: '💬', label: 'New Message', category: 'chat',
@@ -202,6 +227,15 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
   orb_suggestion: {
     icon: '💡', label: 'ORB Suggestion', category: 'chat',
     channel: 'push_and_inapp', priority: 'p1',
+  },
+  // Emitted by the notify_on_reaction() DB trigger on message_reactions
+  // inserts. Always ships with an explicit data.url (built server-side to
+  // the specific conversation + /msg/:messageId), so no `route` template
+  // here — resolveNotificationRoute() honors data.url before falling back
+  // to this registry.
+  message_reaction: {
+    icon: '❤️', label: 'New Reaction', category: 'chat',
+    channel: 'push_and_inapp', priority: 'p2',
   },
 
   // ═══════════════════════════════════════════════════════════
@@ -333,8 +367,12 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
   },
 
   // ═══════════════════════════════════════════════════════════
-  // 12. RELATIONSHIPS & SOCIAL (3)
+  // 12. RELATIONSHIPS & SOCIAL (4)
   // ═══════════════════════════════════════════════════════════
+  new_follower: {
+    icon: '👤', label: 'New Follower', category: 'social',
+    channel: 'push_and_inapp', priority: 'p1', route: '/u/{id}',
+  },
   new_connection_formed: {
     icon: '🔗', label: 'New Connection', category: 'social',
     channel: 'push_and_inapp', priority: 'p1',
@@ -409,6 +447,12 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
   },
   weekly_activity_summary: {
     icon: '📰', label: 'Weekly Summary', category: 'system',
+    channel: 'push_and_inapp', priority: 'p2',
+  },
+  // resolveNotificationRoute() honors data.url before falling back to this
+  // registry — the gateway always sets data.url to the announcement's deep_link.
+  feature_announcement: {
+    icon: '🎉', label: 'New Feature', category: 'system',
     channel: 'push_and_inapp', priority: 'p2',
   },
 

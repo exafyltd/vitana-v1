@@ -21,6 +21,9 @@ import {
   Music,
   Music2,
   Youtube,
+  ShoppingBag,
+  Store,
+  Globe,
   LucideIcon
 } from "lucide-react";
 import { LinkedInIcon } from "@/components/icons/LinkedInIcon";
@@ -38,10 +41,88 @@ export interface Integration {
   syncData: string;
   lastSync?: string;
   comingSoon?: boolean;
+  // Optional status line that overrides the generic "Connected"/syncData subtitle
+  // in the mobile row. Used by the Shopping & Rewards tiles to say what "connected"
+  // actually means here (rewards on, checkout still on the merchant's site) so the
+  // badge doesn't imply in-app checkout.
+  statusLabel?: string;
   // VTID-02403: extended category list to include 'ai' for AI Assistants (ChatGPT, Claude)
   // Added 'productivity' for email/calendar/contacts and 'media' for music/video playback
-  category: 'social' | 'fitness' | 'health' | 'other' | 'ai' | 'productivity' | 'media';
+  category: 'social' | 'fitness' | 'health' | 'other' | 'ai' | 'productivity' | 'media' | 'shopping';
 }
+
+// Shopping & Rewards — commerce providers that power the Discover marketplace.
+// Status mirrors the live VCAOP affiliate programs: AliExpress / Bodylab24 /
+// Alibaba (Admitad) and ROCKBROS (Awin) are live with cashback rewards; Amazon
+// is recommendations-only (Amazon terms forbid incentivized cashback); eBay and
+// third-party Shopify stores are coming soon. "Connecting" here opts the member
+// into shopping via Discover, where the Buy action routes through the rewards-
+// bearing affiliate link — no merchant password is ever stored.
+export const shoppingIntegrations: Integration[] = [
+  {
+    id: 'aliexpress',
+    name: 'AliExpress',
+    icon: ShoppingBag,
+    connected: true,
+    syncData: 'Rewards active — shop in Discover to earn',
+    statusLabel: 'Rewards active · checkout on merchant site',
+    category: 'shopping',
+  },
+  {
+    id: 'bodylab24',
+    name: 'Bodylab24',
+    icon: ShoppingBag,
+    connected: true,
+    syncData: 'Rewards active — German supplements',
+    statusLabel: 'Rewards active · checkout on merchant site',
+    category: 'shopping',
+  },
+  {
+    id: 'alibaba',
+    name: 'Alibaba',
+    icon: Globe,
+    connected: true,
+    syncData: 'Rewards active — global marketplace',
+    statusLabel: 'Rewards active · checkout on merchant site',
+    category: 'shopping',
+  },
+  {
+    id: 'rockbros',
+    name: 'ROCKBROS',
+    icon: Store,
+    connected: true,
+    syncData: 'Rewards active — fitness & outdoor gear',
+    statusLabel: 'Rewards active · checkout on merchant site',
+    category: 'shopping',
+  },
+  {
+    id: 'amazon',
+    name: 'Amazon',
+    icon: ShoppingBag,
+    connected: false,
+    syncData: 'Recommendations only — opens on Amazon',
+    statusLabel: 'Recommendations only · opens on Amazon',
+    category: 'shopping',
+  },
+  {
+    id: 'ebay',
+    name: 'eBay',
+    icon: ShoppingBag,
+    connected: false,
+    comingSoon: true,
+    syncData: 'Coming soon',
+    category: 'shopping',
+  },
+  {
+    id: 'shopify-stores',
+    name: 'Shopify Stores',
+    icon: Store,
+    connected: false,
+    comingSoon: true,
+    syncData: 'Coming soon',
+    category: 'shopping',
+  },
+];
 
 // Social & Sharing integrations
 export const socialIntegrations: Integration[] = [

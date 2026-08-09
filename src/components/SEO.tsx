@@ -8,9 +8,10 @@ interface SEOProps {
   imageAlt?: string;
   type?: 'website' | 'article' | 'event';
   url?: string;
+  noindex?: boolean;
 }
 
-const SEO = ({ title, description, canonical, image, imageAlt, type = 'website', url }: SEOProps) => {
+const SEO = ({ title, description, canonical, image, imageAlt, type = 'website', url, noindex }: SEOProps) => {
   useEffect(() => {
     document.title = title;
 
@@ -32,6 +33,10 @@ const SEO = ({ title, description, canonical, image, imageAlt, type = 'website',
     // Standard meta description
     if (description) {
       updateMetaTag('meta[name="description"]', 'content', description);
+    }
+
+    if (noindex) {
+      updateMetaTag('meta[name="robots"]', 'content', 'noindex, nofollow');
     }
 
     // Canonical URL
@@ -73,7 +78,7 @@ const SEO = ({ title, description, canonical, image, imageAlt, type = 'website',
       updateMetaTag('meta[name="twitter:image"]', 'content', image);
       updateMetaTag('meta[name="twitter:image:alt"]', 'content', imageAlt || title);
     }
-  }, [title, description, canonical, image, imageAlt, type, url]);
+  }, [title, description, canonical, image, imageAlt, type, url, noindex]);
 
   return null;
 };

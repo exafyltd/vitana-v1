@@ -11,8 +11,8 @@ import { t } from '@/lib/i18n-toast';
 type Phase = 'speech' | 'form';
 
 function getDefaultTarget(): string {
-  // My Journey (the goal North Star) is the default landing screen after login.
-  return '/autopilot';
+  // News (the "All News" home feed) is the default landing screen after login.
+  return '/home';
 }
 
 export default function OnboardingWelcome() {

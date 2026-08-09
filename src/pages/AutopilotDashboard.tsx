@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import StandardHeader from "@/components/StandardHeader";
@@ -27,6 +27,17 @@ import { bucketFromWaveId, type HorizonBucket } from "@/lib/horizonBuckets";
 import { useMyJourney } from "@/hooks/useMyJourney";
 import { GoalNorthStar } from "@/components/journey/GoalNorthStar";
 import { DreamNorthStar } from "@/components/journey/DreamNorthStar";
+import { GuidedModeSwitch } from "@/components/journey/GuidedModeSwitch"; // VTID-03279
+import { GuidedJourneyCatalog } from "@/components/journey/GuidedJourneyCatalog"; // VTID-03280
+import { JourneyHowItWorks } from "@/components/journey/JourneyHowItWorks";
+import { useGuidedMode } from "@/context/GuidedModeProvider"; // VTID-03280
+import {
+  JOURNEY_STATE_QUERY_KEY,
+  markSessionListenedInJourneyState,
+  useGuidedJourneyProgress,
+} from "@/hooks/useGuidedJourneyProgress";
+import { activateOrb } from "@/lib/orbActivate"; // VTID-03281
+import { recordSessionListened } from "@/lib/journeyPractice";
 import { FutureSelfTiles } from "@/components/journey/FutureSelfTiles";
 import { TodaysGoalCard, type TodayAction } from "@/components/journey/TodaysGoalCard";
 import { GoalSetupDialog } from "@/components/journey/GoalSetupDialog";
@@ -34,9 +45,6 @@ import { GoalPlanSheet } from "@/components/journey/GoalPlanSheet";
 import { MatchesPreview } from "@/components/journey/MatchesPreview";
 import { EventsPreview } from "@/components/journey/EventsPreview";
 import { AutopilotCard } from "@/components/journey/AutopilotCard";
-import { CurrentMoveCard } from "@/components/journey/CurrentMoveCard";
-import { FoundationPath } from "@/components/journey/FoundationPath";
-import { useJourneyFoundation } from "@/hooks/useJourneyFoundation";
 import { useGenerateGoalPlan } from "@/hooks/useGoalPlan";
 import { useAIConsent } from "@/hooks/useAIConsent";
 import { t } from "@/lib/i18n-toast";
@@ -144,6 +152,9 @@ function IndexNowCard() {
 
 export default function AutopilotDashboard() {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
+  const { isGuided } = useGuidedMode(); // VTID-03280: show guided catalog below start view
+  const guidedJourneyProgress = useGuidedJourneyProgress(); // sessions/topics learned for the hero ring
   const isMobile = useIsMobile();
   const { allVisibleActions, fetchRecommendations } = useAutopilot();
   const { hasConsent } = useAIConsent();
@@ -155,13 +166,13 @@ export default function AutopilotDashboard() {
 
   const { data: journeyData, isLoading: journeyLoading, isError: journeyError, refetch: refetchJourney } = useMyJourney();
   const goal = journeyData?.life_compass ?? null;
-
-  // VTID-03255 — the shared Journey Foundation snapshot (next move + path).
-  const { data: jfData, isLoading: jfLoading } = useJourneyFoundation();
-  const jfSnapshot = jfData?.snapshot ?? null;
+  // Onboarding plan (day_in_journey / total_days / days_left). When the goal has
+  // no deadline, the North Star ring counts down this 90-day plan instead.
+  const journey = journeyData?.journey ?? null;
 
   const { data: recData, isLoading: recLoading, refetch } = useQuery({
-    queryKey: ["autopilot-onboarding"],
+    // User-scoped so cached/persisted recommendations never bleed across accounts.
+    queryKey: ["autopilot-onboarding", user?.id],
     queryFn: async () => {
       const res = await communityFetch(
         "/api/v1/autopilot/recommendations?status=new,activated,completed&limit=100",
@@ -242,27 +253,88 @@ export default function AutopilotDashboard() {
 
   const motivational = <MotivationalLine />;
 
+  // VTID-03280: Guided Journey catalog — rendered BELOW the existing start view
+  // in Guided Mode only (additive; Full App is unchanged).
+  const guidedCatalog = isGuided ? (
+    <GuidedJourneyCatalog className="pt-1" />
+  ) : null;
+
+  // First-time explainer between the next-session card and the catalog.
+  const guidedHowItWorks = isGuided ? <JourneyHowItWorks /> : null;
+
+  // Tapping the next-session card starts that session: Vitana/ORB speaks the
+  // topic (same flow as tapping it in the catalog) and the listen reward is
+  // credited idempotently server-side.
+  const nextSession = guidedJourneyProgress.nextSession;
+  const handleStartNextSession = () => {
+    if (!nextSession) return;
+    activateOrb(nextSession.topic.topicId);
+    markSessionListenedInJourneyState(
+      queryClient,
+      nextSession.session,
+      nextSession.topic.topicId,
+      user?.id,
+    );
+    void recordSessionListened(nextSession.session, nextSession.topic.topicId).finally(() => {
+      queryClient.invalidateQueries({ queryKey: JOURNEY_STATE_QUERY_KEY });
+    });
+  };
+  const guidedNextSession = nextSession
+    ? { session: nextSession.session, title: nextSession.topic.displayLabel }
+    : null;
+
   // Mobile leads with the painted "dream-board" hero (vision-board feel,
   // emotional first anchor). Desktop keeps the structured GoalNorthStar
   // until we redesign the wide layout — mobile-first per the brief.
+  // Guided Mode → the hero card reflects learning progress (sessions/topics
+  // learned) instead of the goal-deadline countdown. Omitted in Full App.
+  // The hero must treat the guided-progress queries (checklist + journey
+  // state) as part of its loading window: they are what produce the session
+  // counters, and rendering before they resolve painted "0 of 0" first and
+  // swapped in the real numbers seconds later.
+  const heroLoading = journeyLoading || (isGuided && guidedJourneyProgress.loading);
+  const guidedProgress = isGuided
+    ? {
+        completedSessions: guidedJourneyProgress.completedSessions,
+        completedInOrder: guidedJourneyProgress.completedInOrder,
+        totalSessions: guidedJourneyProgress.totalSessions,
+        completedTopics: guidedJourneyProgress.completedTopics,
+        totalTopics: guidedJourneyProgress.totalTopics,
+        pct: guidedJourneyProgress.pct,
+        dailyGoal: guidedJourneyProgress.dailyGoal,
+        completedToday: guidedJourneyProgress.completedToday,
+        remainingToday: guidedJourneyProgress.remainingToday,
+        dailyGoalMet: guidedJourneyProgress.dailyGoalMet,
+      }
+    : undefined;
   const dreamHero = (
     <DreamNorthStar
       goal={goal}
-      loading={journeyLoading}
+      journey={journey}
+      loading={heroLoading}
       error={journeyError}
       onSetGoal={handleSetGoal}
       onRetry={() => refetchJourney()}
       onOpenPlan={() => setPlanSheetOpen(true)}
+      guided={isGuided}
+      guidedProgress={guidedProgress}
+      guidedNextSession={guidedNextSession}
+      onStartSession={handleStartNextSession}
     />
   );
   const northStar = (
     <GoalNorthStar
       goal={goal}
-      loading={journeyLoading}
+      journey={journey}
+      loading={heroLoading}
       error={journeyError}
       onSetGoal={handleSetGoal}
       onRetry={() => refetchJourney()}
       onOpenPlan={() => setPlanSheetOpen(true)}
+      guided={isGuided}
+      guidedProgress={guidedProgress}
+      guidedNextSession={guidedNextSession}
+      onStartSession={handleStartNextSession}
     />
   );
   const futureSelf = <FutureSelfTiles goal={goal} />;
@@ -270,20 +342,6 @@ export default function AutopilotDashboard() {
   const todaysGoal = (
     <TodaysGoalCard actions={todayActions} loading={recLoading} onOpenAutopilot={handleOpenAutopilot} />
   );
-
-  // VTID-03255 — "Jetzt wichtig" current move + "Mein Weg" foundation path.
-  // onStart maps the guided step to the existing flow where one exists; the
-  // rest are driven by Vitana in voice, so we never navigate to a dead route.
-  const handleJourneyStart = (stepKey: string) => {
-    if (stepKey === "life_compass" || stepKey === "economic_intent") return handleSetGoal();
-    if (stepKey === "autopilot") return handleOpenAutopilot();
-  };
-  const currentMove = (
-    <CurrentMoveCard snapshot={jfSnapshot} loading={jfLoading} onStart={handleJourneyStart} />
-  );
-  const foundationPath = jfSnapshot ? (
-    <FoundationPath steps={jfSnapshot.foundation_steps} currentKey={jfSnapshot.current_next_step?.key ?? null} />
-  ) : null;
 
   const matchesPreview = <MatchesPreview />;
   const eventsPreview = <EventsPreview />;
@@ -323,16 +381,27 @@ export default function AutopilotDashboard() {
   // beat before the screen drops into utility (Today / Matches / etc).
   const content = (
     <div className="space-y-4">
+      <GuidedModeSwitch className="px-1" />{/* VTID-03279: Guided/Full switch above Journey card — more prominent for first-time users */}
       {dreamHero}
-      {currentMove}
-      {futureSelf}
-      {todaysGoal}
-      {foundationPath}
-      {matchesPreview}
-      {eventsPreview}
-      {yourPlanCard}
-      {howYoureDoing}
-      {keepCheckingIn}
+      {/* VTID-03284: the switch swaps the screen. Guided = catalog-led onboarding
+          (Full App feed hidden); Full App = the existing feed (no catalog). The
+          start view (Journey card + switch) is shared by both. */}
+      {isGuided ? (
+        <>
+          {guidedHowItWorks}
+          {guidedCatalog}
+        </>
+      ) : (
+        <>
+          {futureSelf}
+          {todaysGoal}
+          {matchesPreview}
+          {eventsPreview}
+          {yourPlanCard}
+          {howYoureDoing}
+          {keepCheckingIn}
+        </>
+      )}
     </div>
   );
 
@@ -390,21 +459,29 @@ export default function AutopilotDashboard() {
           <StandardHeader title={t("screens.autopilotdashboard.myJourney")} description={t("screens.autopilotdashboard.northStarTagline")} emoji="🧭" />
           <div className="mb-4">{utilityBar}</div>
           {motivational}
+          {/* VTID-03284: Guided swaps the screen to the catalog; Full keeps the feed grid. */}
           <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-4">
+              <GuidedModeSwitch className="px-1" />{/* VTID-03279: Guided/Full switch above Journey card — more prominent for first-time users */}
               {northStar}
-              {currentMove}
-              {todaysGoal}
-              {matchesPreview}
-              {eventsPreview}
+              {!isGuided && (
+                <>
+                  {todaysGoal}
+                  {matchesPreview}
+                  {eventsPreview}
+                </>
+              )}
             </div>
-            <div className="space-y-4">
-              {foundationPath}
-              {yourPlanCard}
-              {howYoureDoing}
-            </div>
+            {!isGuided && (
+              <div className="space-y-4">
+                {yourPlanCard}
+                {howYoureDoing}
+              </div>
+            )}
           </div>
-          {keepCheckingIn}
+          {!isGuided && keepCheckingIn}
+          {isGuided && <div className="mt-4">{guidedHowItWorks}</div>}
+          {guidedCatalog}
         </div>
       </div>
       <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />

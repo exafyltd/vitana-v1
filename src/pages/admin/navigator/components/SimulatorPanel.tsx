@@ -9,8 +9,8 @@
  * saving — and to reproduce "wrong screen" bug reports from real users.
  */
 
-import { useState } from "react";
-import { Play, Zap, AlertCircle, Info } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Play, Zap, AlertCircle, Info, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -37,12 +37,18 @@ interface SimulatorPanelProps {
   tenantId?: string | null;
   defaultUtterance?: string;
   defaultLang?: string;
+  // The screen currently open in the editor — lets the simulator pre-fill a
+  // test phrase and tell you where THAT screen ranked.
+  selectedScreenId?: string | null;
+  suggestedUtterance?: string;
 }
 
 export function SimulatorPanel({
   tenantId,
   defaultUtterance = "",
   defaultLang = "en",
+  selectedScreenId,
+  suggestedUtterance,
 }: SimulatorPanelProps) {
   const [utterance, setUtterance] = useState(defaultUtterance);
   const [lang, setLang] = useState(defaultLang);
@@ -51,6 +57,22 @@ export function SimulatorPanel({
   const simulate = useSimulateNavigator();
 
   const result = simulate.data;
+
+  // When the admin selects a screen that has trigger phrases, pre-fill the
+  // utterance with one so testing "does this route to my screen?" is one click.
+  useEffect(() => {
+    if (suggestedUtterance) setUtterance(suggestedUtterance);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedScreenId, suggestedUtterance]);
+
+  // Where did the selected screen land in this run? 1 = top pick, >1 = ranked,
+  // 0 = not in the top picks, null = nothing to compare.
+  const selectedRank = useMemo<number | null>(() => {
+    if (!result || !selectedScreenId) return null;
+    const idx = result.top_picks.findIndex((p) => p.screen_id === selectedScreenId);
+    if (idx >= 0) return idx + 1;
+    return result.primary?.screen_id === selectedScreenId ? 1 : 0;
+  }, [result, selectedScreenId]);
 
   async function onRun() {
     if (!utterance.trim()) return;
@@ -145,6 +167,30 @@ export function SimulatorPanel({
 
         {result && (
           <div className="space-y-3 border-t pt-4">
+            {selectedScreenId && selectedRank != null && (
+              <div
+                className={`flex items-start gap-2 rounded-md border p-3 text-sm ${
+                  selectedRank === 1
+                    ? "border-green-500/50 bg-green-500/10 text-green-700 dark:text-green-400"
+                    : selectedRank > 1
+                    ? "border-amber-500/50 bg-amber-500/10 text-amber-700 dark:text-amber-400"
+                    : "border-destructive/50 bg-destructive/10 text-destructive"
+                }`}
+              >
+                {selectedRank === 1 ? (
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+                ) : (
+                  <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+                )}
+                <span>
+                  {selectedRank === 1
+                    ? t('screens.admin.selectedScreenTopPick')
+                    : selectedRank > 1
+                    ? t('screens.admin.selectedScreenRanked', { rank: selectedRank })
+                    : t('screens.admin.selectedScreenNotInPicks')}
+                </span>
+              </div>
+            )}
             <div className="flex items-center justify-between">
               <span className={`rounded-full px-3 py-1 text-xs font-medium ${confidenceColor}`}>
                 {result.confidence.toUpperCase()}
@@ -185,12 +231,19 @@ export function SimulatorPanel({
                   {result.top_picks.map((p, i) => (
                     <div
                       key={p.screen_id + i}
-                      className="flex items-center justify-between rounded border px-2 py-1.5 text-xs"
+                      className={`flex items-center justify-between rounded border px-2 py-1.5 text-xs ${
+                        p.screen_id === selectedScreenId
+                          ? "border-primary ring-1 ring-primary bg-primary/5"
+                          : ""
+                      }`}
                     >
                       <div className="flex items-center gap-2">
                         <span className="font-mono text-muted-foreground">#{i + 1}</span>
                         <span className="font-medium">{p.title}</span>
                         <span className="text-muted-foreground">{p.route}</span>
+                        {p.screen_id === selectedScreenId && (
+                          <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
+                        )}
                       </div>
                       <span className="font-mono">{p.score ?? "—"}</span>
                     </div>

@@ -1,7 +1,6 @@
-import { MoreVertical, Volume2, VolumeX } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
+import { MoreVertical } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useTenant } from '@/hooks/useTenant';
-import { useSoundscape } from '@/context/SoundscapeContext';
 import { getInstantTenantName } from '@/lib/tenant-display';
 import { t } from '@/lib/i18n-toast';
 
@@ -12,6 +11,7 @@ interface TopAppBarProps {
 export function TopAppBar({ onMenuClick }: TopAppBarProps) {
   const { tenant } = useTenant();
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   // Deterministic branding: prefer instant slug from URL/localStorage over async tenant context
   // This prevents "Earthlinks" flash during Maxina OAuth hydration
@@ -21,14 +21,10 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
   const isMaxina = resolvedSlug === 'maxina';
   const isInLiveRoom = pathname.startsWith('/comm/live-rooms/') || pathname.startsWith('/community/live-rooms/');
 
-  let soundscapeContext: ReturnType<typeof useSoundscape> | null = null;
-  try {
-    soundscapeContext = useSoundscape();
-  } catch {
-    // Context not available yet
-  }
-
-  const showMute = !!soundscapeContext && !isInLiveRoom;
+  // Live entry point lives in the App Bar (replaces the old mute toggle, which
+  // moved into the side drawer). Hidden while already inside a live room so the
+  // centered title stays balanced.
+  const showLive = !isInLiveRoom;
 
   return (
     <header
@@ -42,7 +38,8 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
       )}
 
       <div className="relative h-8 flex items-center px-3">
-        {/* Kebab menu – left */}
+        {/* Kebab menu – left. Always shown (incl. Guided Mode) so the side
+            navigation drawer is reachable from the App Bar in every mode. */}
         <button
           onClick={onMenuClick}
           className="relative z-10 flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-white/10"
@@ -59,18 +56,19 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
           {tenantName.toUpperCase()}
         </span>
 
-        {/* Mute toggle – right */}
-        {showMute ? (
+        {/* Live – right. Styled as a recognizable "LIVE" badge (red live dot +
+            label) so its purpose reads instantly, à la TikTok. */}
+        {showLive ? (
           <button
-            onClick={soundscapeContext!.toggleMute}
-            className="relative z-10 flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-white/10 ml-auto"
-            aria-label={soundscapeContext!.isMuted ? 'Unmute background music' : 'Mute background music'}
+            onClick={() => navigate('/comm/live-rooms')}
+            className={`relative z-10 ml-auto flex items-center gap-1.5 rounded-full border px-2.5 h-6 transition-colors ${isMaxina ? 'border-white/45 text-white hover:bg-white/10' : 'border-foreground/25 hover:bg-foreground/5'}`}
+            style={!isMaxina ? { color: 'hsl(var(--foreground))' } : undefined}
+            aria-label={t('screens.mobile.openLiveRooms')}
           >
-            {soundscapeContext!.isMuted ? (
-              <VolumeX className="h-5 w-5" style={!isMaxina ? { color: 'hsl(var(--muted-foreground))' } : undefined} />
-            ) : (
-              <Volume2 className="h-5 w-5" style={!isMaxina ? { color: 'hsl(var(--foreground))' } : undefined} />
-            )}
+            <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
+            <span className="text-[11px] font-bold uppercase leading-none tracking-wide">
+              {t('mobileNav.live')}
+            </span>
           </button>
         ) : (
           <div className="w-8 ml-auto" />

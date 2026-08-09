@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Radio } from 'lucide-react';
 import { type LiveRoom } from '@/components/liverooms/LiveRoomCard';
+import { formatDuration } from '@/components/liverooms/liveRoomFormat';
 import { NewsCard } from '@/components/crossover/NewsCard';
 import { Button } from '@/components/ui/button';
 import { Bell, Pencil, Trash2 } from 'lucide-react';
@@ -137,11 +138,21 @@ export function MobileLiveRoomCarousel({
   const transformRoomToCard = (room: LiveRoom) => {
     const isCreator = room.host.id === currentUserId;
     const imageUrl = room.imageUrl || generateRoomImage(room.title);
-    // Scheduled cards show a prominent relative date/time at the BOTTOM (e.g.
-    // "Heute 20.00h" / "Di 09 Aug 20.00h"). Live cards rely on the LIVE pill.
-    const whenLabel = !room.isLive && room.scheduledTime
-      ? formatRoomWhen(room.scheduledTime)
-      : undefined;
+    // Time + duration shown at the BOTTOM of the card. Scheduled cards show a
+    // relative date/time (e.g. "Heute 20.00h"); live cards show when the
+    // session started. Both append the planned duration when it's known.
+    const durationLabel = formatDuration(room.durationMinutes);
+    let whenLabel: string | undefined;
+    if (room.isLive) {
+      const startIso = room.startedAt || room.scheduledTime;
+      const startLabel = startIso
+        ? t('screens.liverooms.timeChip', { time: formatDate(new Date(startIso), 'HH:mm') })
+        : undefined;
+      whenLabel = [startLabel, durationLabel].filter(Boolean).join(' · ') || undefined;
+    } else if (room.scheduledTime) {
+      const base = formatRoomWhen(room.scheduledTime);
+      whenLabel = durationLabel ? `${base} · ${durationLabel}` : base;
+    }
 
     const actionButton = room.isLive ? (
       <Button

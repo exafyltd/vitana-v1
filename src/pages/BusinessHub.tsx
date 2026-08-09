@@ -9,7 +9,7 @@ import { Plus, Plane, Users, TrendingUp, BarChart3 } from "lucide-react";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useUnifiedEarnings } from "@/hooks/useUnifiedEarnings";
 import { CreateSelectionDialog } from "@/components/CreateSelectionDialog";
 import { CreateEventPopup } from "@/components/CreateEventPopup";
@@ -55,6 +55,40 @@ import { t } from '@/lib/i18n-toast';
 
 type TabValue = "overview" | "services" | "clients" | "sell-earn" | "analytics";
 
+// VTID-NAV-BUSINESS-TABS: map the Business Hub route path to the mobile mode
+// pill. Desktop reads the path via `activeTab`; the mobile layout drives its
+// content from local `mobileTab`, so without this a Vitana deep-link to
+// /business/services (etc.) would always land on the default Snapshot pill on
+// mobile. The mobile pills nest a few desktop tabs under Insights.
+function pathToMobileTab(pathname: string): string {
+  if (pathname === "/business/services") return "services.services";
+  if (pathname === "/business/clients") return "insights.clients";
+  if (pathname === "/business/sell-earn") return "sales.inventory";
+  if (pathname === "/business/analytics") return "insights.performance";
+  return "snapshot";
+}
+
+// VTID-NAV-BUSINESS-SUBTABS: the full set of valid mobile mode-pill leaves
+// (pill.subtab). Vitana deep-links to any sub-tab via /business?tab=<leaf>
+// (e.g. /business?tab=insights.earnings) — the gateway navigation catalog
+// routes "Business Hub <Pill> <Subtab>" here. The 5 path routes above stay
+// for the desktop tabs that have real routes; everything else is reached by
+// ?tab=.
+const VALID_MOBILE_TABS = new Set<string>([
+  "snapshot",
+  "services.services", "services.events", "services.packages",
+  "sales.inventory", "sales.promotions", "sales.referrals",
+  "insights.clients", "insights.performance", "insights.earnings", "insights.growth",
+]);
+
+// Resolve the active mobile tab: an explicit, valid ?tab= leaf wins (precise
+// sub-tab deep-link); otherwise fall back to the path mapping.
+function resolveMobileTab(pathname: string, search: string): string {
+  const tab = new URLSearchParams(search).get("tab");
+  if (tab && VALID_MOBILE_TABS.has(tab)) return tab;
+  return pathToMobileTab(pathname);
+}
+
 export default function BusinessHub() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -62,7 +96,7 @@ export default function BusinessHub() {
   const { pendingCount, getLatestActions } = useAutopilot();
   const { translate } = useTranslation();
   const [showSelectionDialog, setShowSelectionDialog] = useState(false);
-  const [mobileTab, setMobileTab] = useState("snapshot");
+  const [mobileTab, setMobileTab] = useState(() => resolveMobileTab(location.pathname, location.search));
   const [showCreateEvent, setShowCreateEvent] = useState(false);
   const [showCreateMeetup, setShowCreateMeetup] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
@@ -109,6 +143,15 @@ export default function BusinessHub() {
     if (path === "/business/analytics") return "analytics";
     return "overview";
   }, [location.pathname, isReseller]);
+
+  // VTID-NAV-BUSINESS-TABS: when the route changes (e.g. Vitana navigates to
+  // /business/services or /business?tab=insights.earnings), move the mobile
+  // mode pill to the matching tab/sub-tab. An explicit ?tab= leaf wins over the
+  // path. In-screen pill taps don't change the URL, so they aren't affected.
+  useEffect(() => {
+    setMobileTab(resolveMobileTab(location.pathname, location.search));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname, location.search]);
 
   // Navigate when tab changes
   const handleTabChange = (value: string) => {

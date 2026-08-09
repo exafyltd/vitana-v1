@@ -1,8 +1,11 @@
 {
   "mobileNav": {
+    "news": "News",
+    "inbox": "Inbox",
     "events": "Events",
     "business": "Business",
     "live": "Live",
-    "media": "Media"
+    "media": "Media",
+    "myJourney": "Journey"
   }
 }

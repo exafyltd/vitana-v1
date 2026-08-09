@@ -28,7 +28,7 @@ export function QuickExchangeWidget({
   if (isIAPRestricted()) return null;
   const [fromAmount, setFromAmount] = useState('');
   const [fromCurrency, setFromCurrency] = useState('USD');
-  const [toCurrency, setToCurrency] = useState('VTNA');
+  const [toCurrency, setToCurrency] = useState('CREDITS');
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
 
