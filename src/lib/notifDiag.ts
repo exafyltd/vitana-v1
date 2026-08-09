@@ -24,6 +24,7 @@ type BeaconEvent =
   | 'deep_link_detected'
   | 'window_error'
   | 'unhandled_rejection'
+  | 'react_error_boundary'
   | 'ping';
 
 function resolveGatewayBase(): string {
@@ -138,5 +139,38 @@ export function bootstrapNotifDiag(): void {
       reason_name: reason?.name,
       reason_message: String(reason?.message || reason || '').slice(0, 500),
     });
+  });
+}
+
+/**
+ * Report a React render/lifecycle crash caught by a React error boundary.
+ *
+ * React error boundaries swallow render-phase errors BEFORE they reach
+ * `window.onerror`, so the `window_error` listener above never sees them —
+ * they are the one class of crash that otherwise leaves zero server-side
+ * trace. The MAXINA "Something went wrong" screen on Android (see
+ * GlobalErrorBoundary) is exactly this case: the voice ("voice-to-voice")
+ * overlay auto-opens on a landing route, something in the routed tree throws
+ * during render, and the boundary unmounts the page.
+ *
+ * The `component_stack` React hands the boundary names the exact component
+ * that threw — that is what we need to fix the crash from real devices, since
+ * it only reproduces on mobile / inside the WebView.
+ *
+ * Fire-and-forget, never throws, and uses `sendBeacon` so the report survives
+ * the immediate `window.location.reload()` the boundary may trigger.
+ */
+export function reportReactError(
+  error: unknown,
+  componentStack?: string | null,
+  extra?: Record<string, unknown>,
+): void {
+  const err = error as { name?: string; message?: string; stack?: string } | null;
+  send('react_error_boundary', {
+    error_name: err?.name,
+    error_message: String(err?.message || error || '').slice(0, 500),
+    error_stack: String(err?.stack || '').slice(0, 2000),
+    component_stack: String(componentStack || '').slice(0, 2000),
+    ...(extra || {}),
   });
 }
