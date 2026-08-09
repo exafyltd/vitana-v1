@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import SEO from '@/components/SEO';
 import { t, notifySuccess, notifyError } from '@/lib/i18n-toast';
-import { redirectViaSystemBrowser } from '@/lib/webview';
+import { redirectViaSystemBrowser, isAppilixWebView } from '@/lib/webview';
 import { detectInAppBrowser, type InAppBrowser } from '@/lib/in-app-browser';
 import {
   APP_STORE_URL,
@@ -51,6 +51,27 @@ export default function MaxinaAppRedirect() {
   const [platform] = useState<Platform>(detectPlatform);
   const [inApp] = useState<InAppBrowser | null>(() => detectInAppBrowser());
 
+  /*
+   * Already inside the MAXINA shell. Never redirect here, for two reasons:
+   *
+   *   1. There is nothing to install — the visitor is running the app.
+   *   2. `detectInAppBrowser()` deliberately returns null for our own shell
+   *      (see the note in `lib/in-app-browser.ts`), so without this check
+   *      Android falls through to the bottom of the effect and fires a
+   *      top-level `market://` navigation from a non-gesture effect. The
+   *      Appilix WebView has no handler for that scheme, so the navigation
+   *      fails and the native shell replaces the page with its own
+   *      "Something went wrong." screen — the app looks like it won't open.
+   *
+   * Android App Links make this easy to hit: `assetlinks.json` claims
+   * vitanaland.com with `handle_all_urls`, so tapping the QR / link-in-bio
+   * URL on a device that has the app opens it *in* the app. That is also
+   * the documented in-app use for this page — a member pulling up the QR
+   * to show someone in person (see MAXINA_APP_QR_URL) — which the redirect
+   * broke rather than served.
+   */
+  const [inOwnApp] = useState<boolean>(() => isAppilixWebView());
+
   // iOS inside a webview is the one combination with no automatic route:
   // apps.apple.com answers every iOS user agent with a redirect into the
   // itms-appss:// scheme, and a gesture-less navigation there is dropped.
@@ -58,7 +79,7 @@ export default function MaxinaAppRedirect() {
   const iosInWebview = platform === 'ios' && inApp !== null;
 
   useEffect(() => {
-    if (platform === 'other' || iosInWebview) return;
+    if (platform === 'other' || iosInWebview || inOwnApp) return;
 
     if (inApp) {
       // Android in a webview: play.google.com renders normally here, so the
@@ -79,7 +100,7 @@ export default function MaxinaAppRedirect() {
       if (!document.hidden) redirectViaSystemBrowser(PLAY_STORE_URL);
     }, 1500);
     return () => window.clearTimeout(timer);
-  }, [platform, inApp, iosInWebview]);
+  }, [platform, inApp, iosInWebview, inOwnApp]);
 
   const copyLink = useCallback(async () => {
     try {
@@ -126,11 +147,12 @@ export default function MaxinaAppRedirect() {
   const statusLabel =
     iosInWebview || platform === 'other'
       ? t('screens.maxinaAppRedirect.fallbackBody')
-      : inApp
+      : inApp || inOwnApp
         ? t('screens.maxinaAppRedirect.tapToDownload')
         : t('screens.maxinaAppRedirect.redirecting');
 
-  const showsButtons = iosInWebview || platform === 'other' || inApp !== null;
+  const showsButtons =
+    iosInWebview || platform === 'other' || inApp !== null || inOwnApp;
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-background px-6 py-10 text-center">

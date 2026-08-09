@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 280
+- **Pages scanned:** 281
 - **Distinct i18n keys consumed:** 4280
 - **Namespaces in use:** 43
 - **Hardcoded string suspects (regex heuristic):** 66
@@ -198,6 +198,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 4, total in shard: 9890
+
+### src/pages/MaxinaAppRedirect.test.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/MaxinaAppRedirect.tsx
 
