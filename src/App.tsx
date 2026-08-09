@@ -71,6 +71,10 @@ const MaxinaSupport = lazy(() => import("./pages/legal/MaxinaSupport"));
 const IntroExperience = lazy(() => import("./pages/IntroExperience"));
 const RedeemVoucher = lazy(() => import("./pages/RedeemVoucher"));
 const CreatorOnboarded = lazy(() => import("./pages/CreatorOnboarded"));
+// Commerce Mesh Partner Portal + MCP OAuth consent (VTID-03546)
+const PartnerConnections = lazy(() => import("./pages/PartnerConnections"));
+const PartnerConnectionDetail = lazy(() => import("./pages/PartnerConnectionDetail"));
+const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const Logout = lazy(() => import("./pages/Logout"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const EmailConfirmed = lazy(() => import("./pages/auth/EmailConfirmed"));
@@ -1662,6 +1666,20 @@ const App = () => {
           {/* ══════════════════════════════════════════════════════════ */}
           {/* ADMIN ROUTES — Restructured (9 Sections)                  */}
           {/* ══════════════════════════════════════════════════════════ */}
+
+          {/* Commerce Mesh Partner Portal (VTID-03546) — admin back office
+              over the gateway's /api/v1/vcaop/portal surface. */}
+          <Route path="/partner/connections" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><PartnerConnections /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/partner/connections/:id" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><PartnerConnectionDetail /></ProtectedRoute></AuthGuard>
+          } />
+          {/* MCP OAuth consent (BLK-007): the embedded AS 302s here; any
+              signed-in user consents for themselves. */}
+          <Route path="/oauth/consent" element={
+            <AuthGuard><OAuthConsent /></AuthGuard>
+          } />
 
           {/* Root redirect → new Overview Dashboard */}
           <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
