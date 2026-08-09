@@ -257,14 +257,18 @@ export function CommunityPostCard({
               <MessageCircle className="h-3.5 w-3.5" />
               {commentCount}
             </button>
-            {item.source === "post" && (
-              <NewsPostModerationMenu
-                postId={item.post_id}
-                authorId={item.user_id}
-                authorName={item.author_name}
-                postContent={item.content}
-              />
-            )}
+            {/* VTID-03468: rendered for BOTH backing sources. This used to be
+                gated on `source === "post"`, which left media_uploads-backed
+                cards with no kebab at all — an author could not delete their
+                own uploaded video from the feed, and no one could report it.
+                The menu targets the right table via the `source` prop. */}
+            <NewsPostModerationMenu
+              postId={item.post_id}
+              authorId={item.user_id}
+              authorName={item.author_name}
+              postContent={item.content}
+              source={item.source}
+            />
           </div>
         </div>
 
