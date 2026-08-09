@@ -10156,7 +10156,7 @@
       "activationSummary": "Aktivierung",
       "certification": "Zertifizierung",
       "approveActivation": "Aktivierung freigeben",
-      "activationHint": "Eine Freigabe, danach ist die Verbindung live. Sicherheits-, Consent- und Zertifizierungsprüfungen werden dadurch nie übersprungen.",
+      "activationHint": "Eine Freigabe, danach ist die Verbindung live. Sicherheits-, Consent- und Zertifizierungs-Prüfungen werden dadurch nie übersprungen.",
       "pause": "Pausieren",
       "resume": "Fortsetzen",
       "reauthorize": "Neu autorisieren",
