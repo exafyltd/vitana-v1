@@ -5120,7 +5120,34 @@
       "fromWearablesLogs": "from wearables and logs,\n                and a",
       "forConsistencyWeSumFivePillars": "for consistency. We sum the five pillars, apply a",
       "itDampensWhenOnePillarFar": "(it dampens when one pillar is far ahead of another),\n                and cap at 999.",
-      "markAnyJourneyEventCompletePillar": "Mark any journey event complete → the pillar it targets goes up. Keep it going day after day →\n                the streak bonus kicks in. Connect a wearable → the connected-data bar fills.\n                Balance across all five → the balance factor stays at 1.0× and every point counts fully."
+      "markAnyJourneyEventCompletePillar": "Mark any journey event complete → the pillar it targets goes up. Keep it going day after day →\n                the streak bonus kicks in. Connect a wearable → the connected-data bar fills.\n                Balance across all five → the balance factor stays at 1.0× and every point counts fully.",
+      "missionAlignment": {
+        "title": "Mission Alignment",
+        "subtitle": "How your recommendations advance the five pillars and the longevity economy",
+        "loading": "Loading mission data…",
+        "error": "Could not load mission data",
+        "noRecs": "No recommendations in your queue yet.",
+        "summaryServed": "{pct}% of your recommendations advance the mission",
+        "summaryServedCount": "{served} of {total} recommendations aligned",
+        "pillarHeading": "Pillars served",
+        "economyHeading": "Longevity economy",
+        "noPillar": "Not pillar-aligned",
+        "noEconomy": "Not economy-aligned",
+        "pillars": {
+          "nutrition": "Nutrition",
+          "hydration": "Hydration",
+          "exercise": "Exercise",
+          "sleep": "Sleep",
+          "mental": "Mental Health"
+        },
+        "economyAxes": {
+          "find_match": "Find a Match",
+          "marketplace": "Marketplace",
+          "income_generation": "Income generation",
+          "business_formation": "Business formation"
+        },
+        "contractLink": "View the Ultimate Goal contract"
+      }
     },
     "home": {
       "priorityOfTheDay": "Priority of the Day:",

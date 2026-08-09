@@ -5120,7 +5120,34 @@
       "fromWearablesLogs": "von Wearables und Protokollen,\n                und eine",
       "forConsistencyWeSumFivePillars": "für Konsistenz. Wir summieren die fünf Säulen, wenden einen",
       "itDampensWhenOnePillarFar": "an (er dämpft, wenn eine Säule weit voraus ist),\n                und begrenzen auf 999.",
-      "markAnyJourneyEventCompletePillar": "Markiere ein beliebiges Reiseereignis als abgeschlossen → die zugehörige Säule steigt. Mach Tag für Tag weiter →\n                der Serienbonus greift. Verbinde ein Wearable → der Balken für verbundene Daten füllt sich.\n                Halte das Gleichgewicht in allen fünf → der Balancefaktor bleibt bei 1,0× und jeder Punkt zählt voll."
+      "markAnyJourneyEventCompletePillar": "Markiere ein beliebiges Reiseereignis als abgeschlossen → die zugehörige Säule steigt. Mach Tag für Tag weiter →\n                der Serienbonus greift. Verbinde ein Wearable → der Balken für verbundene Daten füllt sich.\n                Halte das Gleichgewicht in allen fünf → der Balancefaktor bleibt bei 1,0× und jeder Punkt zählt voll.",
+      "missionAlignment": {
+        "title": "Mission-Ausrichtung",
+        "subtitle": "Wie deine Empfehlungen die fünf Säulen und die Langlebigkeits-Wirtschaft unterstützen",
+        "loading": "Mission-Daten werden geladen…",
+        "error": "Mission-Daten konnten nicht geladen werden",
+        "noRecs": "Noch keine Empfehlungen in deiner Warteschlange.",
+        "summaryServed": "{pct}% deiner Empfehlungen unterstützen die Mission",
+        "summaryServedCount": "{served} von {total} Empfehlungen ausgerichtet",
+        "pillarHeading": "Säulen unterstützt",
+        "economyHeading": "Langlebigkeits-Wirtschaft",
+        "noPillar": "Nicht auf die Säulen ausgerichtet",
+        "noEconomy": "Nicht auf die Wirtschaft ausgerichtet",
+        "pillars": {
+          "nutrition": "Ernährung",
+          "hydration": "Hydration",
+          "exercise": "Bewegung",
+          "sleep": "Schlaf",
+          "mental": "Mentale Gesundheit"
+        },
+        "economyAxes": {
+          "find_match": "Find a Match",
+          "marketplace": "Marktplatz",
+          "income_generation": "Einkommensgenerierung",
+          "business_formation": "Geschäftsgründung"
+        },
+        "contractLink": "Ultimate Goal-Vertrag anzeigen"
+      }
     },
     "home": {
       "priorityOfTheDay": "Priorität des Tages:",
