@@ -14,6 +14,7 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query";
+import type { RealtimePostgresUpdatePayload } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { persistQueryCacheNow } from "@/lib/query-persist";
 import { useAuth } from "@/context/AuthProvider";
@@ -300,8 +301,9 @@ export const allNewsFeedKey = (userId: string | null, language: string) =>
  * localStorage, so it also survives a reload. Nothing in the interaction path
  * used to touch it: a user could like a post, refresh, and be shown the count
  * from before her own tap, which reads exactly like the like was discarded.
- * The realtime channel doesn't cover it either — it only listens for INSERTs on
- * profile_posts / media_uploads, not on the like and comment tables.
+ * This delta patch is applied instantly, without waiting on the realtime round
+ * trip below — realtime is what carries the same correction to every OTHER
+ * viewer of this post.
  *
  * Patching the cache (rather than invalidating it) is deliberate: invalidation
  * would re-run the whole multi-request candidate load on every heart tap, and
@@ -365,21 +367,80 @@ export const FEED_CANDIDATES_GC_TIME = 60 * 60 * 1000;
  * supposed to already be loaded. Listeners are refcounted; the channel is
  * opened on the first and closed only when the last one goes away (which, with
  * the keep-alive mounted, is logout — not navigation).
+ *
+ * UPDATEs on profile_posts / media_uploads fire on every like or comment too
+ * (the sync_post_likes_count / sync_post_comments_count / sync_media_upload_*
+ * triggers write likes_count / comments_count onto the parent row), which is
+ * why those tables carry REPLICA IDENTITY FULL. Until now only media_uploads
+ * was subscribed to UPDATE at all, and even that collapsed every UPDATE — a
+ * count tick or a real status change — into the same full feed-candidates
+ * refetch. profile_posts had no UPDATE subscription whatsoever, so someone
+ * else's like or comment on a post never reached any other viewer's counter;
+ * it only self-corrected once that viewer's own 5-minute cache staleTime
+ * lapsed. A row update is classified by diffing payload.old vs payload.new
+ * (REPLICA IDENTITY FULL guarantees payload.old is populated): if only the
+ * count columns moved, the new counts are patched straight into the cached
+ * feed row (cheap, and mirrors applyFeedEngagementDelta's own-action patch
+ * above); any other field changing (moderation_status, is_public, …) still
+ * triggers the full refresh, since that can change which posts belong in the
+ * feed at all.
  */
-const feedRefreshListeners = new Set<() => void>();
+type FeedRealtimeEvent =
+  | { kind: "refresh" }
+  | {
+      kind: "counts";
+      source: PostFeedItem["source"];
+      postId: string;
+      likesCount: number;
+      commentsCount: number;
+    };
+
+const feedRefreshListeners = new Set<(event: FeedRealtimeEvent) => void>();
 let feedChannel: ReturnType<typeof supabase.channel> | null = null;
 
-function subscribeToFeedRealtime(listener: () => void): () => void {
+/** True when some field besides the trigger-maintained counts (or updated_at) changed. */
+export function rowChangedBeyondCounts(
+  oldRow: Record<string, unknown> | null | undefined,
+  newRow: Record<string, unknown>,
+): boolean {
+  if (!oldRow) return true;
+  return Object.keys(newRow).some((key) => {
+    if (key === "likes_count" || key === "comments_count" || key === "updated_at") return false;
+    return newRow[key] !== oldRow[key];
+  });
+}
+
+function subscribeToFeedRealtime(listener: (event: FeedRealtimeEvent) => void): () => void {
   feedRefreshListeners.add(listener);
   if (!feedChannel) {
-    const fire = () => {
-      for (const l of [...feedRefreshListeners]) l();
+    const emit = (event: FeedRealtimeEvent) => {
+      for (const l of [...feedRefreshListeners]) l(event);
     };
+    const fire = () => emit({ kind: "refresh" });
+    const handleCountsRow =
+      (source: PostFeedItem["source"]) =>
+      (payload: RealtimePostgresUpdatePayload<Record<string, unknown>>) => {
+        const newRow = payload.new;
+        const postId = newRow?.id as string | undefined;
+        if (!postId) return;
+        if (rowChangedBeyondCounts(payload.old, newRow)) {
+          emit({ kind: "refresh" });
+          return;
+        }
+        emit({
+          kind: "counts",
+          source,
+          postId,
+          likesCount: Number(newRow.likes_count) || 0,
+          commentsCount: Number(newRow.comments_count) || 0,
+        });
+      };
     feedChannel = supabase
       .channel("all-news-feed-live")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "profile_posts" }, fire)
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "profile_posts" }, handleCountsRow("post"))
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "media_uploads" }, fire)
-      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "media_uploads" }, fire)
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "media_uploads" }, handleCountsRow("media"))
       .subscribe();
   }
   return () => {
@@ -399,10 +460,28 @@ export function useFeedRealtimeRefresh(enabled: boolean): void {
   const queryClient = useQueryClient();
   useEffect(() => {
     if (!enabled) return;
-    return subscribeToFeedRealtime(() => {
-      // Invalidate every user/language variant — the caller's own entry is the
-      // only active one, and this avoids threading ids through the listener.
-      queryClient.invalidateQueries({ queryKey: ["all-news-feed"] });
+    return subscribeToFeedRealtime((event) => {
+      if (event.kind === "refresh") {
+        // Invalidate every user/language variant — the caller's own entry is
+        // the only active one, and this avoids threading ids through the
+        // listener.
+        queryClient.invalidateQueries({ queryKey: ["all-news-feed"] });
+        return;
+      }
+      // Count-only change: patch in place rather than refetching, same
+      // reasoning as applyFeedEngagementDelta — the counts are already
+      // authoritative (they came from the DB row itself).
+      queryClient.setQueriesData<RawCandidates>({ queryKey: ["all-news-feed"] }, (prev) => {
+        if (!prev?.posts) return prev;
+        let changed = false;
+        const posts = prev.posts.map((p) => {
+          if (p.source !== event.source || p.post_id !== event.postId) return p;
+          if (p.likes_count === event.likesCount && p.comments_count === event.commentsCount) return p;
+          changed = true;
+          return { ...p, likes_count: event.likesCount, comments_count: event.commentsCount };
+        });
+        return changed ? { ...prev, posts } : prev;
+      });
     });
   }, [queryClient, enabled]);
 }
