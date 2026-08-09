@@ -3223,6 +3223,8 @@
       "streamReplay": "Stream Replay",
       "loading": "Loading...",
       "settingUpVideoRoom": "Setting up video room...",
+      "videoRoomUnavailable": "Couldn't load the video room",
+      "videoRoomUnavailableHint": "The stream isn't reachable right now. Please try again.",
       "roomEnded": "Room Ended",
       "demo": "(demo)",
       "loadingLiveRooms": "Loading live rooms...",
