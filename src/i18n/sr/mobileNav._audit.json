@@ -19,7 +19,25 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "mobileNav.myJourney": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target is not a string",
+      "phase": "static"
+    },
+    "mobileNav.news": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.inbox": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Too literal and slightly old-fashioned for a digital inbox; 'Pristigla pošta' or 'Inbox' (as a loanword) are more common and appropriate.",
+      "suggested": "Pristigla pošta",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:04:55.826Z"
+  "generatedAt": "2026-08-09T04:44:51.475Z"
 }

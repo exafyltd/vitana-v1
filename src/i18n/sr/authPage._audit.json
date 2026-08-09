@@ -1,17 +1,13 @@
 {
   "verdicts": {
     "authPage.welcomeTitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The verb 'Dobrodošli' is plural/formal. For informal 'du-form' addressing a single user, a gendered singular form is required.",
-      "suggested": "Dobrodošao/la u VITANA",
       "phase": "llm"
     },
     "authPage.subtitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Vaša' is the formal/plural possessive pronoun. For informal 'du-form', 'Tvoja' (feminine, matching 'platforma') should be used.",
-      "suggested": "Tvoja personalizovana platforma za zdravstvenu inteligenciju",
       "phase": "llm"
     },
     "authPage.signIn": {
@@ -40,31 +36,23 @@
       "phase": "llm"
     },
     "authPage.enterEmail": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The imperative verb 'Unesite' is plural/formal. For informal 'du-form', 'Unesi' (singular informal) should be used.",
-      "suggested": "Unesi svoju e-poštu",
       "phase": "llm"
     },
     "authPage.enterPassword": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The imperative verb 'Unesite' is plural/formal. For informal 'du-form', 'Unesi' (singular informal) should be used.",
-      "suggested": "Unesi svoju lozinku",
       "phase": "llm"
     },
     "authPage.enterFullName": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The imperative verb 'Unesite' is plural/formal. For informal 'du-form', 'Unesi' (singular informal) should be used.",
-      "suggested": "Unesi svoje ime i prezime",
       "phase": "llm"
     },
     "authPage.createPassword": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The imperative verb 'Kreirajte' is plural/formal. For informal 'du-form', 'Kreiraj' (singular informal) should be used.",
-      "suggested": "Kreiraj lozinku",
       "phase": "llm"
     },
     "authPage.createAccount": {
@@ -73,10 +61,8 @@
       "phase": "llm"
     },
     "authPage.orContinueWith": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The imperative verb 'nastavite' is plural/formal. For informal 'du-form', 'nastavi' (singular informal) should be used.",
-      "suggested": "Ili nastavi sa",
       "phase": "llm"
     },
     "authPage.backToPortals": {
@@ -90,5 +76,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:04.217Z"
+  "generatedAt": "2026-08-09T04:42:39.640Z"
 }
