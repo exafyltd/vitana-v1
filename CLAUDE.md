@@ -1,5 +1,39 @@
 # Vitana V1 — Community App
 
+## 🚫 ABSOLUTE RULE — NEVER TEST AGAINST PRODUCTION (NO EXCEPTIONS)
+
+**Testing against production is FORBIDDEN at all times. There is no scenario,
+no justification, and no "I'll clean it up afterwards" that makes it OK.**
+
+This applies to Claude and to every human and every agent working in this repo.
+
+Specifically, you must **NEVER**, against any live/production service —
+including the production Supabase project (`inmkhvwdcuyhnxkgfvsb`), the
+production gateway (`gateway.vitanaland.com`), or any production Cloud Run
+service or live user-facing endpoint:
+
+- Run tests, probes, latency measurements, load tests, or "quick checks".
+- INSERT, UPDATE, DELETE, or send any data (chat messages, group messages,
+  notifications, records of any kind), even with a test account.
+- Run scripts (`scripts/*.mjs`), Playwright, curl, or SDK calls that mutate
+  state or post to real groups/users.
+- Treat the documented test user or auth snippets as permission to write —
+  they are NOT. They exist for narrow, read-only verification only.
+- Rationalize that cleanup, a temp tag, or a "self-message" makes it safe.
+  It does not. The rule is absolute.
+
+**If a change needs runtime verification:**
+1. Use an **isolated / staging / local** environment that the user has
+   explicitly designated for testing — never production.
+2. If no safe environment exists, **deliver the test script for the user to
+   run themselves** and STOP.
+3. When in any doubt, **stop and ask first.** Writing to a shared/live system
+   is a destructive, outward-facing action and requires explicit approval.
+
+> Why this rule exists: an agent ran latency "tests" against production —
+> inserting rows into the live `chat_messages` table and posting junk messages
+> into a real community group that real members could see. Never again.
+
 ## Overview
 
 VITANA community app (branded "MAXINA - Longevity Community"). React/Vite SPA with 551+ screens spanning community, health, AI, messaging, wallet, and admin features.
