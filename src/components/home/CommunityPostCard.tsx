@@ -4,13 +4,17 @@
  * Split out of NewsFeedItemCard so the like/comment hook can be called
  * unconditionally (it is only mounted for kind === "post"). The card body still
  * navigates to the author's profile; the heart and the comment affordance are
- * inline — tapping the heart toggles a like, long-pressing it opens the "who
- * liked this" list (mirrors Instagram's long-press-to-see-likers gesture),
- * tapping the comment count expands an inline list of comments plus an input
- * to post a new one. Every interactive control stops propagation so it never
- * triggers the card's navigation.
+ * inline — tapping the heart toggles a like, tapping the comment count expands
+ * an inline list of comments plus an input to post a new one. The "who liked
+ * this" list opens from its own full-width "{count} Likes" row below the icon
+ * row (VTID-03554) — a prior version hid this behind a long-press on the heart
+ * button, which was both undiscoverable and unreliable inside a scrollable
+ * feed (a touch-move during the hold cancels the pointer sequence before the
+ * 500ms threshold), so the list was effectively unreachable for most users.
+ * Every interactive control stops propagation so it never triggers the card's
+ * navigation.
  */
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Send, Trash2 } from "lucide-react";
@@ -92,42 +96,8 @@ export function CommunityPostCard({
     navigate(`/u/${item.user_id}`);
   };
 
-  // Long-press-to-see-likers: a press held past LONG_PRESS_MS opens the
-  // "who liked this" list instead of toggling the like on release.
-  const LONG_PRESS_MS = 500;
-  const longPressTimer = useRef<number | null>(null);
-  const longPressTriggered = useRef(false);
-
-  const clearLongPressTimer = () => {
-    if (longPressTimer.current !== null) {
-      window.clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
-    }
-  };
-  useEffect(() => clearLongPressTimer, []);
-
-  const handleLikePointerDown = (e: React.PointerEvent) => {
-    e.stopPropagation();
-    longPressTriggered.current = false;
-    clearLongPressTimer();
-    longPressTimer.current = window.setTimeout(() => {
-      longPressTriggered.current = true;
-      setShowLikers(true);
-    }, LONG_PRESS_MS);
-  };
-
-  const handleLikePointerRelease = (e: React.PointerEvent) => {
-    e.stopPropagation();
-    clearLongPressTimer();
-  };
-
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (longPressTriggered.current) {
-      // The long press already opened the likers list — don't also toggle.
-      longPressTriggered.current = false;
-      return;
-    }
     if (!user) {
       notify("screens.home.signInToInteract");
       return;
@@ -226,15 +196,10 @@ export function CommunityPostCard({
             <button
               type="button"
               onClick={handleLike}
-              onPointerDown={handleLikePointerDown}
-              onPointerUp={handleLikePointerRelease}
-              onPointerLeave={handleLikePointerRelease}
-              onPointerCancel={handleLikePointerRelease}
-              onContextMenu={(e) => e.preventDefault()}
               aria-label={t("screens.profile.likePost")}
               aria-pressed={isLiked}
               className={cn(
-                "flex select-none items-center gap-1 text-xs transition-colors touch-manipulation",
+                "flex items-center gap-1 text-xs transition-colors",
                 isLiked ? "text-pink-500" : "text-muted-foreground hover:text-pink-500",
               )}
             >
@@ -271,6 +236,19 @@ export function CommunityPostCard({
             />
           </div>
         </div>
+
+        {likeCount > 0 && (
+          <button
+            type="button"
+            onClick={(e) => {
+              stop(e);
+              setShowLikers(true);
+            }}
+            className="mt-1.5 block py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {t("screens.home.likesCount", { count: likeCount })}
+          </button>
+        )}
 
         {showComments && (
           <div className="mt-3 space-y-3 border-t border-border/40 pt-3" onClick={stop}>
