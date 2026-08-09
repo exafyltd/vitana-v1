@@ -45,15 +45,18 @@ export function usePostLikers(source: FeedPostSource, id: string, enabled: boole
       const userIds = [...new Set(rows.map((r) => r.user_id))];
       const { data: profiles } = await supabase
         .from('profiles')
-        .select('user_id, display_name, avatar_url')
+        .select('user_id, display_name, full_name, avatar_url')
         .in('user_id', userIds);
       const profileMap = new Map((profiles || []).map((p) => [p.user_id, p]));
 
-      return rows.map((r) => ({
-        user_id: r.user_id,
-        display_name: profileMap.get(r.user_id)?.display_name || undefined,
-        avatar_url: profileMap.get(r.user_id)?.avatar_url ?? null,
-      }));
+      return rows.map((r) => {
+        const profile = profileMap.get(r.user_id);
+        return {
+          user_id: r.user_id,
+          display_name: profile?.display_name || profile?.full_name || undefined,
+          avatar_url: profile?.avatar_url ?? null,
+        };
+      });
     },
   });
 }
