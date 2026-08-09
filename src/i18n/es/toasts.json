@@ -348,6 +348,8 @@
     "business": {
       "noAttendeesExport": "No hay asistentes para exportar",
       "attendeeListExported": "¡Lista de asistentes exportada!",
+      "noOrdersExport": "No hay pedidos para exportar",
+      "ordersExported": "¡Datos de ventas exportados!",
       "printTickets": "Imprimir boletos",
       "ticketPrintingWillAvailableSoon": "La impresión de boletos estará disponible pronto.",
       "confirmationSent": "Confirmación enviada",

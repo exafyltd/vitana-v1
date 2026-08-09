@@ -13,15 +13,16 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Download, MapPin, Calendar, DollarSign, Ticket, Users, UserCheck, Settings, Building2 } from "lucide-react";
+import { ArrowLeft, Download, MapPin, Calendar, DollarSign, Ticket, Users, UserCheck, Settings, Building2, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { OrganizerEvent } from "@/hooks/useOrganizerEvents";
 import { OrderManagementTable } from "./OrderManagementTable";
 import { OrderDetailView } from "./OrderDetailView";
 import { OperationsPanel } from "./OperationsPanel";
 import { TicketOrder } from "@/hooks/useOrderManagement";
-import { t } from '@/lib/i18n-toast';
+import { notifyError, notifySuccess, t } from '@/lib/i18n-toast';
 
-import { fmtDateTime, formatDate } from '@/lib/locale-format';
+import { fmtNumber, formatDate } from '@/lib/locale-format';
 interface OrganizerEventSalesSheetProps {
   event: OrganizerEvent | null;
   open: boolean;
@@ -35,6 +36,7 @@ export function OrganizerEventSalesSheet({
 }: OrganizerEventSalesSheetProps) {
   const [selectedOrder, setSelectedOrder] = useState<TicketOrder | null>(null);
   const [activeTab, setActiveTab] = useState("sales");
+  const [exporting, setExporting] = useState(false);
 
   if (!event) return null;
 
@@ -46,9 +48,111 @@ export function OrganizerEventSalesSheet({
     }
   };
 
-  const handleExportCSV = () => {
-    // TODO: Implement CSV export
-    console.log("Export CSV for event:", event.id);
+  // Wrap a CSV cell: escape embedded quotes and guard against CSV injection
+  // (cells starting with = + - @ are prefixed with a single quote).
+  const csvCell = (value: unknown): string => {
+    let str = value === null || value === undefined ? "" : String(value);
+    if (/^[=+\-@]/.test(str)) str = `'${str}`;
+    return `"${str.replace(/"/g, '""')}"`;
+  };
+
+  const handleExportCSV = async () => {
+    setExporting(true);
+    try {
+      const { data, error } = await supabase
+        .from("event_ticket_purchases")
+        .select(`
+          ticket_number,
+          buyer_name,
+          buyer_email,
+          quantity,
+          unit_price,
+          total_amount,
+          currency,
+          status,
+          checked_in_at,
+          created_at,
+          event_ticket_types ( name )
+        `)
+        .eq("event_id", event.id)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+
+      type ExportRow = {
+        ticket_number: string | null;
+        buyer_name: string | null;
+        buyer_email: string | null;
+        quantity: number | null;
+        unit_price: number | null;
+        total_amount: number | null;
+        currency: string | null;
+        status: string | null;
+        checked_in_at: string | null;
+        created_at: string;
+        event_ticket_types: { name: string | null } | null;
+      };
+
+      const orders = (data || []) as unknown as ExportRow[];
+      if (orders.length === 0) {
+        notifyError('toasts.business.noOrdersExport');
+        return;
+      }
+
+      const headers = [
+        "Order #",
+        "Buyer Name",
+        "Email",
+        "Ticket Type",
+        "Quantity",
+        "Unit Price",
+        "Total Amount",
+        "Currency",
+        "Status",
+        "Checked In",
+        "Purchase Date",
+      ];
+
+      const rows = orders.map((o) => [
+        o.ticket_number,
+        o.buyer_name,
+        o.buyer_email,
+        o.event_ticket_types?.name || "General",
+        o.quantity,
+        (o.unit_price ?? 0).toFixed(2),
+        (o.total_amount ?? 0).toFixed(2),
+        (o.currency || "USD").toUpperCase(),
+        o.status,
+        o.checked_in_at
+          ? formatDate(new Date(o.checked_in_at), "yyyy-MM-dd HH:mm")
+          : "No",
+        formatDate(new Date(o.created_at), "yyyy-MM-dd HH:mm"),
+      ]);
+
+      const csvContent = [headers, ...rows]
+        .map((row) => row.map(csvCell).join(","))
+        .join("\r\n");
+
+      // Prepend a UTF-8 BOM so Excel reads accented names correctly.
+      const blob = new Blob(["﻿" + csvContent], {
+        type: "text/csv;charset=utf-8;",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${(event.title || "event").replace(/[^a-z0-9]/gi, "_")}_sales.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      notifySuccess('toasts.business.ordersExported');
+    } catch (err) {
+      console.error("Error exporting sales CSV:", err);
+      notifyError('toasts.business.noOrdersExport');
+    } finally {
+      setExporting(false);
+    }
   };
 
   // Check if event has client info
@@ -129,7 +233,7 @@ export function OrganizerEventSalesSheet({
                       <span className="text-xs font-medium">{t('screens.business.revenue')}</span>
                     </div>
                     <p className="text-2xl font-bold text-green-700 dark:text-green-300">
-                      ${fmtDateTime((event.totalRevenue ?? 0))}
+                      ${fmtNumber(event.totalRevenue ?? 0, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </p>
                   </div>
 
@@ -176,8 +280,12 @@ export function OrganizerEventSalesSheet({
 
                 {/* Export Button */}
                 <div className="flex justify-end">
-                  <Button variant="outline" size="sm" onClick={handleExportCSV}>
-                    <Download className="w-4 h-4 mr-2" />
+                  <Button variant="outline" size="sm" onClick={handleExportCSV} disabled={exporting}>
+                    {exporting ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Download className="w-4 h-4 mr-2" />
+                    )}
                     {t('screens.business.exportCsv')}
                   </Button>
                 </div>
