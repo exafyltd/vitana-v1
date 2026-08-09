@@ -45,9 +45,11 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileBottomNav } from "@/components/mobile/MobileBottomNav";
 import { useGuidedMode } from "@/context/GuidedModeProvider"; // VTID-03279
 import { MobileAppShell } from "@/components/mobile/MobileAppShell";
+import { DelayedLoader } from "@/components/ui/DelayedLoader";
 import { useTranslation } from "@/hooks/useTranslation";
 import { isIAPRestricted } from "@/lib/appilix";
 import { t } from '@/lib/i18n-toast';
+import PublicAppShell from "@/components/PublicAppShell";
 
 // Dynamic navigation based on user role - removed static sidebar categories
 
@@ -411,11 +413,31 @@ function AppSidebar({
   );
 }
 
+/**
+ * Public browse surfaces (e.g. /discover) render for signed-out visitors. The
+ * full member layout below depends on an authenticated session (role, profile,
+ * cart, tenant, autopilot), so for guests we short-circuit to a minimal public
+ * storefront shell instead. Auth-gated routes never reach this branch because
+ * their AuthGuard redirects first — only routes mounted with `allowGuest` do.
+ */
 export default function AppLayout({ children }: AppLayoutProps) {
+  const { user, loading } = useAuth();
+  if (!loading && !user) {
+    return <PublicAppShell>{children}</PublicAppShell>;
+  }
+  return <AuthedAppLayout>{children}</AuthedAppLayout>;
+}
+
+function AuthedAppLayout({ children }: AppLayoutProps) {
   const [autopilotPopupOpen, setAutopilotPopupOpen] = useState(false);
   const [walletPopupOpen, setWalletPopupOpen] = useState(false);
   const isMobile = useIsMobile();
-  const { isGuided } = useGuidedMode(); // VTID-03279: Guided Mode hides sidebar/menu
+  // VTID-03279: Guided Mode hides sidebar/menu. `isGuided` is mobile-only (the
+  // provider forces Full chrome on desktop), so the desktop sidebar always shows.
+  // `guidedLoading` is true only on the first-ever load (no cached mode); we use
+  // it below to gate the mobile shell so the Full-app chrome never flashes
+  // before the Guided Journey resolves.
+  const { isGuided, loading: guidedLoading } = useGuidedMode();
   const { tenant } = useTenant();
   const { preferences } = useUserPreferences();
   const { triggerGreeting } = useIntelligentGreeting();
@@ -423,7 +445,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   // Enforce role-route alignment (admin on community routes → redirect, etc.)
   useRoleRouteEnforcement();
 
-  // Land the native app on My Journey when it cold-starts on the News feed.
+  // News (/home) is the default landing screen; no cold-start redirect needed.
   useInitialLandingRedirect();
 
   // Background loading system
@@ -472,12 +494,21 @@ export default function AppLayout({ children }: AppLayoutProps) {
     return () => window.removeEventListener("autopilot:open", handler);
   }, []);
 
+  // First-ever load on mobile: until Guided/Full is resolved, show a clean
+  // delayed spinner instead of committing to either chrome. This is what stops
+  // My Journey from flashing the Full-app shell before the Guided screen.
+  // Returning users resolve from cache (guidedLoading=false) and skip this.
+  if (isMobile && guidedLoading) {
+    return <DelayedLoader fullscreen />;
+  }
+
   return (
     <div>
       <SidebarProvider open={sidebarOpen} onOpenChange={handleSidebarOpenChange}>
         <div className="flex min-h-screen w-full overflow-x-hidden">
-          {/* VTID-03279: Guided Mode hides the sidebar/menu (no dots, no drawer).
-              Account/settings/support are reached by switching to Full App. */}
+          {/* VTID-03279: Guided Mode hides the sidebar/menu (no dots, no drawer)
+              on the MOBILE app. `isGuided` is false on desktop (provider gates
+              it to mobile), so the desktop sidebar always renders. */}
           {!isGuided && (
             <div className="dark">
               <AppSidebar

@@ -59,17 +59,14 @@ export function IntelligentGreetingProvider({
     }
   }, []);
 
-  // Trigger greeting once per session after authentication AND session ready
-  useEffect(() => {
-    if (user && sessionReady && !glassModeActive && !micActive) {
-      // Wait 5s to ensure everything is stable
-      const timer = setTimeout(() => {
-        triggerGreeting();
-      }, 5000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [user, sessionReady, glassModeActive, micActive, triggerGreeting]);
+  // Greeting v2 (Phase 0): the post-login greeting is now owned solely by the
+  // backend ORB wake-brief (Gemini Live voice). The old frontend auto-greeting
+  // — a separate browser SpeechSynthesis path gated behind a hardcoded 5s
+  // setTimeout — has been removed. It was the single biggest contributor to the
+  // ~10s "time-to-first-word" after login and produced a second, competing
+  // voice. `triggerGreeting`/`manualGreeting` remain available for explicit,
+  // user-initiated greetings (e.g. the Proactive Talking panel button); only
+  // the automatic login-time trigger is gone.
 
   // Clear greeting state on logout
   useEffect(() => {

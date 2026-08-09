@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
-import { catalogs } from '@/i18n';
+import { useCallback, useEffect } from 'react';
+import { catalogs, ensureCatalog } from '@/i18n';
 import { t as globalT } from '@/lib/i18n-toast';
 
 export type LegalLang = 'de' | 'en';
@@ -32,6 +32,14 @@ function applyParams(s: string, params?: Record<string, string | number>): strin
 }
 
 export function useScopedT(lang: LegalLang | null) {
+  // en/ar catalogs are lazy-loaded (VTID-03255). This hook is driven by an
+  // explicit `lang` prop independent of the app's selected language, so make
+  // sure the requested locale's catalog is fetched; until it lands, resolveOnce
+  // falls back to de. LanguageProvider's onCatalogLoaded re-renders the tree.
+  useEffect(() => {
+    if (lang) void ensureCatalog(LOCALE_KEY[lang]);
+  }, [lang]);
+
   return useCallback(
     (key: string, params?: Record<string, string | number>): string => {
       if (!lang) return globalT(key, params);

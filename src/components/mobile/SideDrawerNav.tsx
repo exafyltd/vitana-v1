@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart } from 'lucide-react';
+import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart, Music2, Volume2, VolumeX } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { NotificationBadge } from '@/components/ui/notification-badge';
@@ -22,7 +23,9 @@ import { useUniversalCart } from '@/hooks/useUniversalCart';
 import { avatarPositionStyle } from '@/lib/avatarPosition';
 import { supabase } from '@/integrations/supabase/client';
 import { isIAPRestricted } from '@/lib/appilix';
+import { useSoundscape } from '@/context/SoundscapeContext';
 import { t } from '@/lib/i18n-toast';
+import { prefetchForPath, ROUTE_CHUNK_IMPORTERS } from '@/lib/prefetch-registry';
 
 interface SideDrawerNavProps {
   open: boolean;
@@ -33,9 +36,13 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { translate } = useTranslation();
-  const { tenant, isExafyAdmin } = useTenant();
-  const { signOut } = useAuth();
+  const { tenant, isExafyAdmin, activeTenantId } = useTenant();
+  const { signOut, user } = useAuth();
   const { profile } = useProfile();
+  const queryClient = useQueryClient();
+  // De-dupe tap-intent warming per item, per drawer-open — avoids firing twice
+  // for the pointerdown + touchstart pair some browsers send for one tap.
+  const warmedItemsRef = useRef<Set<string>>(new Set());
   // Use unforced DB role: useRole() pins currentRole to "community" on mobile
   // for permissioning, but the drawer subtitle should reflect the real role.
   const { dbRole } = useRole();
@@ -49,9 +56,30 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   // Phase 0: counts from the one canonical cart (0 when roleBlocked).
   const { cartCount } = useUniversalCart();
 
+  // Soundscape mute — relocated here from the mobile App Bar (mirrors the
+  // desktop sidebar's SoundscapeControl). SoundscapeProvider wraps the whole
+  // app (App.tsx), so the context is always available here.
+  const soundscape = useSoundscape();
+
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+
+  // Flag the body while the side drawer is open so the ORB FAB (injected into
+  // <body> by the external widget at z-index 60) can be layered *below* the
+  // drawer + backdrop (also z-60). Distinct from the fullscreen Sheet's
+  // `data-drawer-open`, which hides the bottom nav and the ORB entirely — here
+  // we keep the ORB docked to the bottom nav, just tucked behind the scrim.
+  useEffect(() => {
+    if (open) {
+      document.body.dataset.sideDrawerOpen = 'true';
+    } else {
+      delete document.body.dataset.sideDrawerOpen;
+    }
+    return () => {
+      delete document.body.dataset.sideDrawerOpen;
+    };
+  }, [open]);
 
   const openPopup = (setter: (v: boolean) => void) => {
     setter(true);
@@ -108,6 +136,20 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     return () => clearTimeout(timeout);
   }, [searchQuery]);
 
+  // Mirrors MobileBottomNav's tap-intent warming (pointerdown/touchstart fires
+  // before the click commits): the drawer previously navigated cold on every
+  // tap, since only the bottom nav had this. Warms both the route's JS chunk
+  // and its data query so Events/Discover/etc. paint from cache when opened
+  // from here, not just from the bottom nav.
+  const handleTapIntent = (item: (typeof drawerNavItems)[number]) => {
+    if (item.id === 'logout' || warmedItemsRef.current.has(item.id)) return;
+    warmedItemsRef.current.add(item.id);
+    ROUTE_CHUNK_IMPORTERS[item.route]?.().catch(() => {});
+    if (user?.id) {
+      void prefetchForPath(queryClient, item.route, user.id, activeTenantId ?? undefined).catch(() => {});
+    }
+  };
+
   const handleItemClick = async (item: (typeof drawerNavItems)[number]) => {
     onClose();
 
@@ -139,7 +181,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 z-50 bg-black/40"
+            className="fixed inset-0 z-[60] bg-black/40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -148,7 +190,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
 
           {/* Drawer panel */}
           <motion.nav
-            className="fixed top-0 left-0 bottom-0 z-50 w-72 flex flex-col bg-background shadow-2xl"
+            className="fixed top-0 left-0 bottom-0 z-[60] w-72 flex flex-col bg-background shadow-2xl"
             initial={{ x: '-100%' }}
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
@@ -345,7 +387,7 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
             )}
 
             {/* Nav items */}
-            <div className="flex-1 overflow-y-auto pt-1.5 pb-2 px-3" style={{ paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom, 0px))' }}>
+            <div className="flex-1 overflow-y-auto pt-1.5 pb-2 px-3">
               {(isIAPRestricted() ? drawerNavItems.filter(item => item.id !== 'wallet') : drawerNavItems).map((item) => {
                 const active = isActive(item.route);
                 const Icon = item.icon;
@@ -357,6 +399,8 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   <button
                     key={item.id}
                     onClick={() => handleItemClick(item)}
+                    onPointerDown={() => handleTapIntent(item)}
+                    onTouchStart={() => handleTapIntent(item)}
                     className={`
                       relative w-full flex items-center gap-3 rounded-xl px-3 py-2.5 mb-0.5
                       text-sm font-medium transition-all duration-150
@@ -383,6 +427,39 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
                   </button>
                 );
               })}
+            </div>
+
+            {/* Soundscape footer — play/pause + mute, mirrors the desktop sidebar.
+                The safe-area inset is CAPPED: the Appilix Android WebView reports
+                a large `env(safe-area-inset-bottom)` (~120px) even though the
+                system nav renders as a separate bar outside the drawer, which
+                otherwise leaves a big empty band below the player. Cap the inset
+                contribution so we still clear a gesture pill without the bloat. */}
+            <div
+              className="border-t border-border/50 px-3 pt-1.5"
+              style={{ paddingBottom: 'calc(0.75rem + min(env(safe-area-inset-bottom, 0px), 16px))' }}
+            >
+              <div className="flex items-center gap-2 rounded-xl bg-muted/40 px-3 py-2">
+                <button
+                  onClick={() => soundscape.toggle()}
+                  aria-label={t('screens.audio.soundscape')}
+                  className="flex items-center justify-center h-8 w-8 rounded-full shrink-0 hover:bg-muted transition-colors"
+                >
+                  <Music2 className={`h-4 w-4 ${soundscape.isPlaying ? 'text-primary' : 'text-muted-foreground'}`} />
+                </button>
+                <span className="flex-1 text-sm text-foreground">{t('screens.audio.soundscape')}</span>
+                <button
+                  onClick={() => soundscape.toggleMute()}
+                  aria-label={soundscape.isMuted ? t('screens.audio.unmute') : t('screens.audio.mute')}
+                  className="flex items-center justify-center h-8 w-8 rounded-lg hover:bg-muted transition-colors"
+                >
+                  {soundscape.isMuted ? (
+                    <VolumeX className="h-[18px] w-[18px] text-muted-foreground" />
+                  ) : (
+                    <Volume2 className="h-[18px] w-[18px] text-foreground" />
+                  )}
+                </button>
+              </div>
             </div>
           </motion.nav>
         </>

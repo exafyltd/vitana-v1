@@ -11,7 +11,71 @@
     "identity": {
       "vitanaIndex": "Vitana Index",
       "basedOnActivity": "Based on activity, health engagement & contribution",
-      "viewLongevityId": "View my Longevity ID"
+      "viewLongevityId": "View my Longevity ID",
+      "follow": "Follow",
+      "followingState": "Following",
+      "understandIndex": "Understand index",
+      "brandFooter": "MAXINA × VITANA"
+    },
+    "tabs": {
+      "identity": "Identity",
+      "social": "Social",
+      "account": "Account",
+      "business": "Business"
+    },
+    "account": {
+      "notSet": "Not set",
+      "editField": "Edit {field}",
+      "visibilityToggle": "Visibility: {label}. Tap to change.",
+      "visibility": {
+        "private": "Private",
+        "connections": "Connections",
+        "public": "Public"
+      },
+      "sections": {
+        "publicProfile": "Public profile",
+        "publicProfileSubtitle": "Shown on Identity",
+        "basicInfo": "Basic Personal Information",
+        "basicInfoSubtitle": "Fixed identity data",
+        "contactInfo": "Contact Information",
+        "accountDetails": "Account Details"
+      },
+      "fields": {
+        "avatar": "Avatar",
+        "handle": "Handle",
+        "longevityArchetype": "Longevity archetype",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "dateOfBirth": "Date of birth",
+        "gender": "Gender",
+        "maritalStatus": "Marital status",
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Address",
+        "country": "Country",
+        "city": "City",
+        "memberSince": "Member since",
+        "accountType": "Account type",
+        "verificationStatus": "Verification status"
+      },
+      "values": {
+        "uploaded": "Uploaded"
+      }
+    },
+    "business": {
+      "title": "My Recommendations",
+      "subtitle": "Products you've recommended, and what you've earned from them",
+      "empty": "No recommendations yet",
+      "emptyDesc": "Recommend a product from Discover to see your clicks, purchases, and commissions here.",
+      "clicks": "{count} clicks",
+      "conversions": "{count} purchases",
+      "totalEarned": "Total earned",
+      "statusActive": "Active",
+      "shareRow": "Share recommendation link",
+      "publicTitle": "Recommendations",
+      "publicSubtitle": "Products recommended by this profile",
+      "publicEmpty": "No recommendations yet",
+      "viewProduct": "View"
     }
   }
 }

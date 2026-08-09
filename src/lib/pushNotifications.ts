@@ -168,9 +168,13 @@ class PushNotificationManager {
   }
 
   async unsubscribe(): Promise<boolean> {
-    if (!this.fcmToken) return false;
+    // Fall back to the Appilix native token: on a cold start the shell may have
+    // a registered token that this instance never saw, and failing to release
+    // it leaves the device claimed by the signed-out account (VTID-03481).
+    const token = this.fcmToken || getNativeFcmToken();
+    if (!token) return false;
     try {
-      await this.removeTokenFromBackend(this.fcmToken);
+      await this.removeTokenFromBackend(token);
       this.fcmToken = null;
       this.foregroundCleanup?.();
       this.foregroundCleanup = null;
@@ -471,6 +475,42 @@ class PushNotificationManager {
 }
 
 export const pushNotificationManager = new PushNotificationManager();
+
+/**
+ * Release this device's push registration before signing out (VTID-03481).
+ *
+ * A device may only be claimed by ONE account at a time: the FCM token belongs
+ * to the app installation, and Appilix maps its own `user_identity` to the same
+ * physical device. Sign-out used to leave both claims in place, so the next
+ * account to sign in ADDED a claim rather than replacing one — and every
+ * community fan-out was then delivered once per account that had ever used the
+ * phone, each rendered in THAT account's language. That is the reported
+ * "Neuer Beitrag" + "New post" pair on one lock screen.
+ *
+ * Must run BEFORE supabase.auth.signOut(): the gateway call needs a live JWT.
+ * Never throws — a failed release must not block sign-out, and the server-side
+ * takeover in POST /notifications/token still repairs it at the next sign-in.
+ */
+export async function releaseDeviceOnSignOut(): Promise<void> {
+  try {
+    await pushNotificationManager.unsubscribe();
+  } catch (err) {
+    console.warn('[Push] Device release failed (continuing sign-out):', err);
+  }
+
+  // Drop the Appilix identity claim too. The native shell reads this at page
+  // load; leaving it set means the shell keeps reporting the signed-out account
+  // as this device's owner.
+  try {
+    window.appilix_push_notification_user_identity = '';
+    document.cookie =
+      'appilix_push_notification_user_identity=; path=/; max-age=0; SameSite=Lax; Secure';
+    localStorage.removeItem('appilix_registered_identity_v1');
+    localStorage.removeItem('appilix_active_identity');
+  } catch {
+    /* cookie/localStorage unavailable — server-side takeover still covers it */
+  }
+}
 export const muteThread = (threadId: string) => pushNotificationManager.muteThread(threadId);
 export const unmuteThread = (threadId: string) => pushNotificationManager.unmuteThread(threadId);
 export const isThreadMuted = (threadId: string) => pushNotificationManager.isThreadMuted(threadId);

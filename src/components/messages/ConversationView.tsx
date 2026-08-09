@@ -14,7 +14,6 @@ import { SwipeableMessage } from './SwipeableMessage';
 import TypingIndicator from './TypingIndicator';
 import VirtualizedList from '@/components/ui/virtualized-list';
 import { useHybridMessages } from '@/hooks/useHybridMessages';
-import { usePaginatedMessages } from '@/hooks/usePaginatedMessages';
 import { useAuth } from "@/context/AuthProvider";
 import { useCalendarEvents } from '@/hooks/useCalendarEvents';
 import { useToast } from '@/hooks/use-toast';
@@ -53,6 +52,9 @@ interface ConversationViewProps {
   onConversationOpened?: (threadId: string) => void;
   onMessageSent?: (threadId: string, newMessage: any, context: 'global' | 'tenant') => void;
   onGroupCreated?: (threadId: string) => void;
+  /** Reaction-notification deep-link: scroll to and highlight this message once loaded, instead of the default scroll-to-bottom. */
+  initialScrollMessageId?: string | null;
+  onInitialMessageScrolled?: () => void;
 }
 
 const ComposerDock: React.FC<{ children: React.ReactNode; isMobile: boolean }> = ({ children, isMobile }) => {
@@ -79,20 +81,15 @@ const ConversationView: React.FC<ConversationViewProps> = ({
   onThreadRead,
   onConversationOpened,
   onMessageSent,
-  onGroupCreated
+  onGroupCreated,
+  initialScrollMessageId,
+  onInitialMessageScrolled,
 }) => {
   // Import calendar hook at the top
   const { respondToInvite, getInviteResponse, addEvent, fetchEvents } = useCalendarEvents();
   const { user } = useAuth();
   const isMobile = useIsMobile();
   
-  // Use paginated messages for performance
-  const paginatedMessages = usePaginatedMessages({
-    pageSize: 50,
-    paginationThreshold: 50,
-    virtualizationThreshold: 200,
-  });
-
   // CRITICAL: Only pass real threadId, never recipientId (prevents wrong cache key)
   const {
     threads,
@@ -107,6 +104,9 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     context: messageContext,
     isMessagesLoading,
     isMessagesFetching,
+    loadOlderMessages,
+    hasOlderMessages,
+    isLoadingOlder,
   } = useHybridMessages(context, threadId);
 
 
@@ -239,22 +239,41 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     if (threadId !== previousThreadId.current) {
       setIsThreadDataLoaded(false);
       hasInitialScrolledRef.current = null;
+      // New thread opens at its newest message again.
+      hasPagedBackRef.current = false;
+      scrollAnchorRef.current = null;
       previousThreadId.current = threadId;
       setIsThreadSwitching(false);
     }
   }, [threadId]);
 
 
-  // Handle scroll to top for loading older messages
+  // Handle scroll to top for loading older messages.
+  //
+  // Prepending history grows the container ABOVE the viewport, which would
+  // otherwise shove the user's reading position down the page. Record the
+  // distance from the bottom before the fetch, then restore it once the new
+  // messages have laid out (see the useLayoutEffect below).
+  const scrollAnchorRef = useRef<number | null>(null);
+  // Set once the user pages back in this thread; suppresses the entry-time
+  // scroll-to-newest retries so they can't undo the restore. Reset per thread.
+  const hasPagedBackRef = useRef(false);
+
   const handleScrollToTop = useCallback(() => {
-    if (threadId && paginatedMessages.hasOlder && !paginatedMessages.isLoadingOlder) {
-      paginatedMessages.loadOlderMessages(
-        threadId,
-        messageContext,
-        messageContext === 'tenant' ? undefined : undefined // Add tenant ID if needed
-      );
-    }
-  }, [threadId, messageContext, paginatedMessages]);
+    if (!threadId || !hasOlderMessages || isLoadingOlder) return;
+    hasPagedBackRef.current = true;
+    const el = scrollRef.current;
+    scrollAnchorRef.current = el ? el.scrollHeight - el.scrollTop : null;
+    // A load that prepends nothing — an empty page (history that happens to be
+    // an exact multiple of the page size), a duplicate page, or a failed
+    // request — leaves the rendered count unchanged, so the restore effect
+    // below never fires to consume the anchor. Left set, it would be applied
+    // to the NEXT unrelated message arrival and yank the viewport away from
+    // wherever the user had scrolled. Clear it ourselves.
+    void Promise.resolve(loadOlderMessages())
+      .then((added) => { if (!added) scrollAnchorRef.current = null; })
+      .catch(() => { scrollAnchorRef.current = null; });
+  }, [threadId, hasOlderMessages, isLoadingOlder, loadOlderMessages]);
 
   // Track scroll position and trigger top pagination — throttled via rAF, no state updates
   const handleScroll = useCallback(() => {
@@ -387,32 +406,76 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     prevMessageCountRef.current = messages.length;
   }, [messages.length, scrollToBottom]);
 
+  // Keep the reading position steady after a page of older history is
+  // prepended. Runs before paint so the user never sees the jump.
+  //
+  // Keyed on the id of the TOP message, not on messages.length: only a
+  // prepend changes what sits at the top. Keying on length let an unrelated
+  // count change that landed first — a base-page refetch appending new
+  // messages at the bottom, which is common on mobile where the thread
+  // bootstraps twice — consume the anchor, so the real prepend then went
+  // unanchored and the viewport slid.
+  const topMessageId = messages.length > 0 ? messages[0].id : null;
+  useLayoutEffect(() => {
+    const anchor = scrollAnchorRef.current;
+    if (anchor == null) return;
+    scrollAnchorRef.current = null;
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight - anchor;
+  }, [topMessageId]);
+
 
   // Scroll to latest messages instantly when entering a conversation (WhatsApp-style)
   // Use useLayoutEffect to run before browser paint for smoother UX
+  // Skipped when a reaction-notification deep-link is pending — that scroll
+  // target wins instead (see the effect below).
   useLayoutEffect(() => {
+    if (initialScrollMessageId) return;
     if (threadId && messages.length > 0 && hasInitialScrolledRef.current !== threadId) {
       hasInitialScrolledRef.current = threadId;
-      
+
       const scrollToEnd = () => {
+        // Never fight scrollback. These retries are fired from timers whose
+        // queued requestAnimationFrame survives this effect's cleanup, so one
+        // can land AFTER a prepend has already restored the reading position
+        // and slam the user back to the newest message. Reproduced on mobile
+        // by scrolling up within ~300ms of opening a thread.
+        if (hasPagedBackRef.current || scrollAnchorRef.current != null) return;
         const el = scrollRef.current;
         if (el) {
           el.scrollTop = el.scrollHeight - el.clientHeight;
           isUserNearBottomRef.current = true;
         }
       };
-      
+
       scrollToEnd();
-      
-      const timers = [50, 150, 300].map(delay => 
+
+      const timers = [50, 150, 300].map(delay =>
         setTimeout(() => {
           requestAnimationFrame(scrollToEnd);
         }, delay)
       );
-      
+
       return () => timers.forEach(clearTimeout);
     }
-  }, [threadId, messages.length]);
+  }, [threadId, messages.length, initialScrollMessageId]);
+
+  // Reaction-notification deep-link: once the target message is rendered,
+  // scroll it into view and highlight it, then hand control back to the
+  // normal bottom-scroll behavior (via onInitialMessageScrolled clearing the
+  // parent's state, which drops initialScrollMessageId to null/undefined).
+  useEffect(() => {
+    if (!initialScrollMessageId || !threadId || messages.length === 0) return;
+    const el = document.getElementById(`msg-${initialScrollMessageId}`);
+    if (!el) return; // not rendered yet (e.g. still paginating) — retry on next messages update
+    hasInitialScrolledRef.current = threadId;
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.add('message-highlight');
+    const timer = setTimeout(() => el.classList.remove('message-highlight'), 1500);
+    onInitialMessageScrolled?.();
+    return () => clearTimeout(timer);
+  }, [initialScrollMessageId, threadId, messages, onInitialMessageScrolled]);
 
   // ResizeObserver to keep pinned at bottom when content resizes (images loading, etc.)
   useEffect(() => {
@@ -453,34 +516,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
         console.error('No thread ID available for sending message');
         setSendError('Thread not found');
         return;
-      }
-
-      // Create optimistic message for instant feedback
-      const optimisticMessage = {
-        id: `temp-${Date.now()}`,
-        body: content,
-        message_type: messageType || 'text',
-        content_data: contentData,
-        sender_id: user?.id,
-        thread_id: threadId,
-        created_at: new Date().toISOString(),
-        parent_message_id: parentMessageId,
-        action_buttons: actionButtons,
-        sent_at: new Date().toISOString(),
-        delivered_at: null,
-        read_at: null,
-        updated_at: new Date().toISOString(),
-        optimistic: true,
-        sender: {
-          user_id: user?.id || '',
-          display_name: user?.email || 'You',
-          avatar_url: null 
-        }
-      };
-
-      // Add optimistic message immediately for instant feedback
-      if (paginatedMessages.shouldUsePagination) {
-        paginatedMessages.addNewMessage(optimisticMessage);
       }
 
       // Scroll to show new message immediately
@@ -574,17 +609,6 @@ const ConversationView: React.FC<ConversationViewProps> = ({
       }
 
       setReplyingTo(null);
-
-      if (paginatedMessages.shouldUsePagination && newMessage) {
-        paginatedMessages.addNewMessage({
-          ...newMessage,
-          sender: { 
-            user_id: user?.id || '',
-            display_name: user?.email || 'You',
-            avatar_url: null 
-          }
-        });
-      }
     } catch (error) {
       // Extract meaningful error message from various error types
       const extractMessage = (e: unknown): string => {
@@ -636,13 +660,7 @@ const ConversationView: React.FC<ConversationViewProps> = ({
     
     try {
       setLoadError(null);
-      if (paginatedMessages.shouldUsePagination) {
-        await paginatedMessages.fetchInitialMessages(
-          threadId, 
-          messageContext, 
-          messageContext === 'tenant' ? undefined : undefined
-        );
-      }
+      await fetchMessages(threadId);
     } catch (error) {
       console.error('Error loading messages:', error);
       setLoadError('Failed to load messages. Please try again.');
@@ -996,6 +1014,19 @@ const ConversationView: React.FC<ConversationViewProps> = ({
           ) : (
 
             <div ref={contentRef}>
+              {isLoadingOlder && (
+                <div className="flex items-center justify-center gap-2 py-3">
+                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">
+                    {t('screens.messages.loadingOlderMessages')}
+                  </span>
+                </div>
+              )}
+              {!isLoadingOlder && !hasOlderMessages && messages.length > 0 && (
+                <p className="py-3 text-center text-xs text-muted-foreground">
+                  {t('screens.messages.conversationStart')}
+                </p>
+              )}
               {(() => {
                 // Build message lookup map for O(1) parent resolution
                 const messageMap = new Map<string, any>(messages.map(m => [m.id, m] as [string, any]));

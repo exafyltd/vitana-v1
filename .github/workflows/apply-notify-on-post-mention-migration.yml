@@ -1,0 +1,109 @@
+name: Apply post mention notifications migration
+
+# Applies the @mention author-notification triggers
+# (supabase/migrations/20260716000000_notify_on_post_mention.sql) to the live
+# Supabase project using the Management API query endpoint and the existing
+# SUPABASE_ACCESS_TOKEN secret — no DB password required. The SQL is
+# idempotent (CREATE OR REPLACE FUNCTION / DROP TRIGGER IF EXISTS + CREATE
+# TRIGGER), so the job is safe to re-run.
+#
+# There is a single Supabase project for both preview and prod (and both GCP
+# and AWS staging) frontends, so once applied the triggers create
+# notifications for @mentions on every host — no frontend deploy required.
+#
+# Triggers:
+#   - Auto:   push to main that touches the migration file or this workflow.
+#   - Manual: Actions tab -> "Run workflow".
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/20260716000000_notify_on_post_mention.sql'
+      - '.github/workflows/apply-notify-on-post-mention-migration.yml'
+
+concurrency:
+  group: apply-notify-on-post-mention-migration
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_REF: inmkhvwdcuyhnxkgfvsb
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply migration via Supabase Management API
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_ACCESS_TOKEN:-}" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN secret is not set"; exit 1
+          fi
+          python3 - <<'PY'
+          import os, json, urllib.request, urllib.error
+          ref = os.environ['PROJECT_REF']
+          tok = os.environ['SUPABASE_ACCESS_TOKEN']
+          sql = open('supabase/migrations/20260716000000_notify_on_post_mention.sql').read()
+          req = urllib.request.Request(
+              f'https://api.supabase.com/v1/projects/{ref}/database/query',
+              data=json.dumps({'query': sql}).encode(),
+              headers={'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json',
+                       'User-Agent': 'Mozilla/5.0 (vitana-ci) supabase-management-api'},
+              method='POST',
+          )
+          try:
+              r = urllib.request.urlopen(req)
+              print('Apply OK, status', r.status)
+              print((r.read().decode() or '[]')[:1000])
+          except urllib.error.HTTPError as e:
+              print('Apply FAILED, HTTP', e.code)
+              print(e.read().decode())
+              raise SystemExit(1)
+          PY
+
+      - name: Verify functions and triggers exist
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os, json, urllib.request
+          ref = os.environ['PROJECT_REF']
+          tok = os.environ['SUPABASE_ACCESS_TOKEN']
+
+          def query(sql):
+              req = urllib.request.Request(
+                  f'https://api.supabase.com/v1/projects/{ref}/database/query',
+                  data=json.dumps({'query': sql}).encode(),
+                  headers={'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json',
+                           'User-Agent': 'Mozilla/5.0 (vitana-ci) supabase-management-api'},
+                  method='POST',
+              )
+              return json.loads(urllib.request.urlopen(req).read().decode() or '[]')
+
+          fns = query(
+              "select count(*)::int as n from pg_proc where proname in "
+              "('_dispatch_post_mention_notifications','notify_on_post_mention_insert',"
+              "'notify_on_post_mention_update');"
+          )
+          nf = (fns[0] if fns else {}).get('n', 0)
+          print('Functions found:', nf)
+          if nf != 3:
+              raise SystemExit(f"::error::Expected 3 functions, found {nf}")
+
+          trg = query(
+              "select count(*)::int as n from pg_trigger where tgname in "
+              "('trg_notify_post_mention_insert','trg_notify_post_mention_update') "
+              "and not tgisinternal;"
+          )
+          nt = (trg[0] if trg else {}).get('n', 0)
+          print('Triggers found:', nt)
+          if nt != 2:
+              raise SystemExit(f"::error::Expected 2 triggers, found {nt}")
+
+          print('Verify OK: 3 functions + 2 triggers present.')
+          PY

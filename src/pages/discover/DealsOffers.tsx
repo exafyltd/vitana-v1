@@ -1,3 +1,4 @@
+import { useUrlTab } from "@/hooks/useUrlTab";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -59,7 +60,7 @@ function DealsOffersInner() {
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [masterActionOpen, setMasterActionOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("flash");
+  const [activeTab, setActiveTab] = useUrlTab("tab", "flash");
 
   const latestActions = getLatestActions(2);
 

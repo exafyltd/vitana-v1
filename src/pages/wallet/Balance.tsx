@@ -1,3 +1,4 @@
+import { useUrlTab } from "@/hooks/useUrlTab";
 import SEO from "@/components/SEO";
 import AppLayout from "@/components/AppLayout";
 import SubNavigation from "@/components/SubNavigation";
@@ -64,7 +65,7 @@ const balanceData = {
 };
 
 function Balance() {
-  const [activeTab, setActiveTab] = useState("credits");
+  const [activeTab, setActiveTab] = useUrlTab("tab", "credits");
   const [isTopUpOpen, setIsTopUpOpen] = useState(false);
   const [isTokensOpen, setIsTokensOpen] = useState(false);
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
@@ -166,7 +167,8 @@ function Balance() {
 
               <div className="grid grid-cols-1 gap-4">
                 {loading && <div className="text-center py-4">{t('screens.wallet.loadingTransactions')}</div>}
-                {transactions.filter(t => t.from_currency === 'CREDITS' || t.to_currency === 'CREDITS').slice(0, 5).map((transaction) => (
+                {/* VTNA merged into CREDITS: historical VTNA transactions are folded into this unified list rather than shown separately */}
+                {transactions.filter(t => t.from_currency === 'CREDITS' || t.to_currency === 'CREDITS' || t.from_currency === 'VTNA' || t.to_currency === 'VTNA').slice(0, 5).map((transaction) => (
                   <WalletTransactionCard
                     key={transaction.id}
                     id={transaction.id}
@@ -181,7 +183,7 @@ function Balance() {
                     onClick={() => console.log('Transaction clicked:', transaction.id)}
                   />
                 ))}
-                {!loading && transactions.filter(t => t.from_currency === 'CREDITS' || t.to_currency === 'CREDITS').length === 0 && (
+                {!loading && transactions.filter(t => t.from_currency === 'CREDITS' || t.to_currency === 'CREDITS' || t.from_currency === 'VTNA' || t.to_currency === 'VTNA').length === 0 && (
                   <div className="text-center py-8 text-muted-foreground">{t('screens.wallet.noCreditTransactionsYet')}</div>
                 )}
               </div>
@@ -202,43 +204,14 @@ function Balance() {
                   description="Vitana Network tokens for governance and rewards"
                   isLoading={!isLoaded}
                 />
-                <WalletBalanceCard
-                  type="tokens"
-                  title={t('screens.wallet.stakingRewards')}
-                  balance="45.50 VTNA"
-                  description="Accumulated rewards from staking your VTNA tokens"
-                  status="Claimable"
-                />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <TokenMarketIntelligenceCard />
-                <WalletMotivationalBanner 
-                  variant="balance" 
+                <WalletMotivationalBanner
+                  variant="balance"
                   activeTab="tokens"
                 />
-              </div>
-
-              <div className="grid grid-cols-1 gap-4">
-                {loading && <div className="text-center py-4">{t('screens.wallet.loadingTransactions')}</div>}
-                {transactions.filter(t => t.from_currency === 'VTNA' || t.to_currency === 'VTNA').slice(0, 5).map((transaction) => (
-                  <WalletTransactionCard
-                    key={transaction.id}
-                    id={transaction.id}
-                    type="conversion"
-                    title={`${transaction.transaction_type} Transaction`}
-                    description={`${transaction.from_currency || ''} ${transaction.to_currency ? `→ ${transaction.to_currency}` : ''}`}
-                    amount={`${transaction.amount > 0 ? '+' : ''}${transaction.amount}`}
-                    status={transaction.status as any}
-                    timestamp={fmtDate(new Date(transaction.created_at))}
-                    transaction={transaction}
-                    currentUserId={user?.id}
-                    onClick={() => console.log('Token transaction clicked:', transaction.id)}
-                  />
-                ))}
-                {!loading && transactions.filter(t => t.from_currency === 'VTNA' || t.to_currency === 'VTNA').length === 0 && (
-                  <div className="text-center py-8 text-muted-foreground">{t('screens.wallet.noVtnaTransactionsYet')}</div>
-                )}
               </div>
             </div>
           </SplitBarContent>

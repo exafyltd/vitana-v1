@@ -1,0 +1,21 @@
+-- Fix: "Benutzer nicht gefunden" / "user not found" on public profiles opened
+-- via a shared link or while logged out.
+--
+-- get_user_profile_by_identifier is the single resolver used by BOTH the public
+-- profile page (PublicProfilePage) and the matches feed (useRealMatches /
+-- PeopleDiscoveryHero). It is SECURITY DEFINER, so it safely returns only
+-- publicly visible profiles (global_community_profiles.is_visible = true)
+-- regardless of the caller's role.
+--
+-- The bug: EXECUTE had been granted to `authenticated` and `service_role` but
+-- NOT to `anon` — unlike its sibling public resolvers get_public_vitana_index
+-- and get_follow_status, which both grant `anon`. PublicProfilePage treats an
+-- unauthenticated viewer (and any `utm_source=profile` shared link) as a shared
+-- link, so the RPC runs as `anon`, hits "permission denied for function", the
+-- page catches the dbError and renders "Benutzer nicht gefunden". The same
+-- failure empties the match feed, because every match card is resolved through
+-- this RPC and cards that fail to resolve are dropped.
+--
+-- Align the grants with the other public profile resolvers.
+
+GRANT EXECUTE ON FUNCTION public.get_user_profile_by_identifier(text) TO anon, authenticated, service_role;

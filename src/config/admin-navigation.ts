@@ -218,6 +218,10 @@ export const ADMIN_SECTIONS: AdminSection[] = [
       { key: "growth", label: "Growth", path: "/admin/insights/growth" },
       { key: "engagement", label: "Engagement", path: "/admin/insights/engagement" },
       { key: "assistant-usage", label: "Assistant Usage", path: "/admin/insights/assistant-usage" },
+      // BOOTSTRAP-PRODUCT-ANALYTICS: product/behavior supervision screens
+      { key: "journeys", label: "Journeys", path: "/admin/insights/journeys" },
+      { key: "features", label: "Features", path: "/admin/insights/features" },
+      { key: "interests", label: "Interests", path: "/admin/insights/interests" },
       { key: "autopilot-impact", label: "Autopilot Impact", path: "/admin/insights/autopilot-impact" },
       { key: "reports", label: "Reports", path: "/admin/insights/reports" },
     ],

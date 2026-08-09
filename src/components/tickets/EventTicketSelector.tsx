@@ -8,6 +8,7 @@ import { useEventTicketTypes, usePurchaseTicket, TicketType, UtmParams } from "@
 import { useDiscountCode } from "@/hooks/useDiscountCode";
 import DiscountCodeInput from "@/components/tickets/DiscountCodeInput";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthProvider";
 import { useTranslation } from "@/hooks/useTranslation";
 import { t } from '@/lib/i18n-toast';
 
@@ -37,6 +38,7 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
   const { ticketTypes, loading, error } = useEventTicketTypes(eventId);
   const { purchaseTicket, loading: purchasing } = usePurchaseTicket();
   const { discountCode, loading: discountLoading, clearDiscount } = useDiscountCode('maxina');
+  const { user } = useAuth();
   const { translate } = useTranslation();
   
   const [selectedTickets, setSelectedTickets] = useState<Record<string, number>>({});
@@ -118,12 +120,24 @@ export function EventTicketSelector({ eventId, eventTitle, forceGuestMode = fals
     if (!firstSelectedId) return;
 
     try {
+      // Pass the buyer's email/name explicitly whenever we know it client-side
+      // (guest form input, or the logged-in user's own account), instead of
+      // relying on the edge function to derive it from the bearer token. A
+      // cached-but-server-expired session (see AuthProvider's VTID-AUTH-GUARD
+      // notes on stale tokens surviving in localStorage) would otherwise make
+      // the token fail server-side validation, leaving buyer email empty and
+      // the whole purchase rejected even though the user is genuinely signed in.
+      const buyerEmail = showGuestForm ? guestEmail : user?.email || undefined;
+      const buyerName = showGuestForm
+        ? guestName
+        : user?.user_metadata?.full_name || user?.email || undefined;
+
       await purchaseTicket(
         eventId,
         firstSelectedId,
         selectedTickets[firstSelectedId],
-        showGuestForm ? guestEmail : undefined,
-        showGuestForm ? guestName : undefined,
+        buyerEmail,
+        buyerName,
         utmParams,
         appliedCode || undefined
       );

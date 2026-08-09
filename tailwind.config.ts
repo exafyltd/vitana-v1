@@ -108,7 +108,9 @@ export default {
 				sys: {
 					vitana: {
 						accent: 'hsl(var(--sys-vitana-accent))',
-						tint: 'hsl(var(--sys-vitana-tint))'
+						tint: 'hsl(var(--sys-vitana-tint))',
+						card: 'hsl(var(--sys-vitana-card))',
+						'card-border': 'hsl(var(--sys-vitana-card-border))'
 					},
 					autopilot: {
 						accent: 'hsl(var(--sys-autopilot-accent))',
@@ -117,6 +119,20 @@ export default {
 					ai: {
 						accent: 'hsl(var(--sys-ai-accent))',
 						tint: 'hsl(var(--sys-ai-tint))'
+					},
+					feature: {
+						new: {
+							accent: 'hsl(var(--sys-feature-new-accent))',
+							tint: 'hsl(var(--sys-feature-new-tint))',
+							card: 'hsl(var(--sys-feature-new-card))',
+							'card-border': 'hsl(var(--sys-feature-new-card-border))'
+						},
+						tip: {
+							accent: 'hsl(var(--sys-feature-tip-accent))',
+							tint: 'hsl(var(--sys-feature-tip-tint))',
+							card: 'hsl(var(--sys-feature-tip-card))',
+							'card-border': 'hsl(var(--sys-feature-tip-card-border))'
+						}
 					}
 				},
 				util: {

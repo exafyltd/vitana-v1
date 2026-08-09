@@ -24,6 +24,12 @@ export interface HumanReason {
 type Make = (vertical: MatchVertical) => HumanReason | null;
 
 const REASON_DICT: Record<string, Make> = {
+  // BOOTSTRAP-MATCHMAKING-V4 — the four explainable dimension fits, in
+  // priority order (location → time → activity → profile).
+  location_fit: () => ({ key: 'location_fit', icon: '📍', label: 'Near you' }),
+  time_fit: () => ({ key: 'time_fit', icon: '🕖', label: 'Around your time' }),
+  activity_fit: () => ({ key: 'activity_fit', icon: '🎯', label: 'Activity fit' }),
+  profile_fit: () => ({ key: 'profile_fit', icon: '👤', label: 'Profile fit' }),
   geo: () => ({ key: 'geo', icon: '📍', label: 'Near you' }),
   cosine: () => ({ key: 'cosine', icon: '✨', label: 'Similar activity goal' }),
   recency: () => ({ key: 'recency', icon: '🟢', label: 'Recently active' }),
@@ -82,6 +88,91 @@ export function humanizeMatchReasons(
     if (out.length >= max) break;
   }
   return out;
+}
+
+// ─── BOOTSTRAP-MATCHMAKING-V4 — tiers, breakdown, activity badge ───
+
+export type MatchTierKey = 'perfect' | 'great' | 'good' | 'worth_a_look' | 'long_shot';
+
+export interface MatchTier {
+  key: MatchTierKey;
+  /** Friendly label rendered as a variable (not literal JSX), so it's i18n-safe. */
+  label: string;
+  icon: string;
+  /** Tailwind classes for the badge (bg + text) so a high score reads as a win. */
+  badgeClass: string;
+}
+
+const TIER_TABLE: Record<MatchTierKey, MatchTier> = {
+  perfect:      { key: 'perfect',      label: 'Perfect match', icon: '🏆', badgeClass: 'bg-amber-100 text-amber-700 ring-1 ring-amber-300' },
+  great:        { key: 'great',        label: 'Great match',   icon: '⭐', badgeClass: 'bg-emerald-100 text-emerald-700' },
+  good:         { key: 'good',         label: 'Good match',    icon: '👍', badgeClass: 'bg-sky-100 text-sky-700' },
+  worth_a_look: { key: 'worth_a_look', label: 'Worth a look',  icon: '🔎', badgeClass: 'bg-orange-100 text-orange-700' },
+  long_shot:    { key: 'long_shot',    label: 'Long shot',     icon: '○',  badgeClass: 'bg-muted text-muted-foreground' },
+};
+
+function tierKeyFromScore(score: number): MatchTierKey {
+  if (score >= 0.85) return 'perfect';
+  if (score >= 0.70) return 'great';
+  if (score >= 0.55) return 'good';
+  if (score >= 0.35) return 'worth_a_look';
+  return 'long_shot';
+}
+
+/**
+ * Resolve the visual tier for a match. Prefers the backend-emitted
+ * `reasons.tier` (BOOTSTRAP-MATCHMAKING-V4); falls back to deriving from the
+ * 0..1 score so older rows still get a sensible badge. Never returns null —
+ * every match, even a 13% long shot, gets a tier so the list is always
+ * visually self-explanatory.
+ */
+export function matchTierOf(
+  reasons: Record<string, unknown> | null | undefined,
+  score: number | null | undefined,
+): MatchTier {
+  const fromReasons = reasons && typeof reasons.tier === 'string' ? (reasons.tier as MatchTierKey) : null;
+  const key = fromReasons && TIER_TABLE[fromReasons] ? fromReasons : tierKeyFromScore(score ?? 0);
+  return TIER_TABLE[key];
+}
+
+export interface DimensionFit {
+  key: 'location_fit' | 'time_fit' | 'activity_fit' | 'profile_fit';
+  icon: string;
+  label: string;
+  /** 0..1 */
+  fit: number;
+}
+
+/**
+ * The per-dimension breakdown in PRIORITY ORDER (location → time → activity →
+ * profile), for the "why you matched" bars. Only dimensions present in the
+ * reasons payload are returned.
+ */
+export function dimensionBreakdown(reasons: Record<string, unknown> | null | undefined): DimensionFit[] {
+  if (!reasons) return [];
+  const order: Array<{ key: DimensionFit['key']; icon: string; label: string }> = [
+    { key: 'location_fit', icon: '📍', label: 'Location' },
+    { key: 'time_fit', icon: '🕖', label: 'Time' },
+    { key: 'activity_fit', icon: '🎯', label: 'Activity' },
+    { key: 'profile_fit', icon: '👤', label: 'Profile' },
+  ];
+  const out: DimensionFit[] = [];
+  for (const d of order) {
+    const v = reasons[d.key];
+    if (typeof v === 'number') out.push({ ...d, fit: Math.max(0, Math.min(1, v)) });
+  }
+  return out;
+}
+
+/**
+ * When the match is NOT the exact activity the user asked for (e.g. a walk for
+ * a tennis search), return an honest badge label; otherwise null. Lets the card
+ * say "different activity" instead of pretending it's a tennis match.
+ */
+export function activityMismatchLabel(reasons: Record<string, unknown> | null | undefined): string | null {
+  if (!reasons) return null;
+  if (reasons.activity_exact === false) return 'Different activity';
+  return null;
 }
 
 /**

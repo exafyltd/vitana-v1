@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Plus, Users, MessageSquareText, Globe, Building, Plane, Search } from "lucide-react";
+import { Plus, Users, MessageSquareText, Globe, Building, Plane, Search, MoreVertical, CheckCheck } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ConversationView from "@/components/messages/ConversationView";
 import { ConversationErrorBoundary } from "@/components/messages/ConversationErrorBoundary";
@@ -26,6 +26,8 @@ import { useHybridMessages } from "@/hooks/useHybridMessages";
 // VTID-03089: chat_groups appear in the unified /inbox list when in the
 // global community context. Selecting one routes to /inbox/g/<id>.
 import { useChatGroupsAsThreads, isChatGroupThreadId, chatGroupIdFromThreadId } from "@/hooks/useChatGroupsAsThreads";
+import { useChatUnreadCount } from "@/hooks/useChatUnreadCount";
+import { markGroupRead } from "@/hooks/useChatApi";
 import { useUnreadSync } from "@/hooks/useUnreadSync";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { useAuth } from "@/context/AuthProvider";
@@ -55,9 +57,23 @@ import { MobileConversationSkeleton } from "@/components/messages/mobile/MobileC
 import { MobileModePill, ModeOption } from "@/components/ui/MobileModePill";
 import { VitanaIndexChip, AutopilotChip } from "@/components/mobile/MobileActionChips";
 import { useTranslation } from "@/hooks/useTranslation";
-import { t } from '@/lib/i18n-toast';
+import { t, notify, notifyError } from '@/lib/i18n-toast';
 
 import { fmtDate } from '@/lib/locale-format';
+
+// Session-scoped memory of the last inbox view (context + open conversation)
+// so navigating away (news feed, events, live rooms) and back restores the
+// exact view instantly instead of re-running auto-selection from scratch.
+// sessionStorage: per-tab, cleared when the browser session ends.
+const INBOX_STATE_KEY = 'vitana.inbox.lastState';
+function readInboxState(): { context?: 'global' | 'tenant'; threadId?: string | null } {
+  try {
+    return JSON.parse(sessionStorage.getItem(INBOX_STATE_KEY) || '{}') || {};
+  } catch {
+    return {};
+  }
+}
+
 export default function Messages() {
   const { user } = useAuth();
   const { translate } = useTranslation();
@@ -71,21 +87,32 @@ export default function Messages() {
   // messageContext initialized to 'tenant' whose query has no data, while
   // on full refresh the role loads async and the switch was accidentally
   // skipped via roleLoadedRef — making it look like refresh "fixed" it.
-  const [messageContext, setMessageContext] = useState<'global' | 'tenant'>('global');
+  // Restore the user's last explicit context choice for this tab session —
+  // this is the user's own selection (mode pill), NOT the role-derived
+  // auto-switch that caused the empty-inbox bug described above.
+  const [messageContext, setMessageContext] = useState<'global' | 'tenant'>(
+    () => (readInboxState().context === 'tenant' ? 'tenant' : 'global')
+  );
   const { threads: apiThreads, isLoading, isFetching, context, ...hybridMessages } = useHybridMessages(messageContext);
   const isGlobalContext = context === 'global';
 
   // VTID-03089: merge chat_groups (new system) into the inbox list when in
   // the community/global context. Selecting one is intercepted below and
   // routed to /inbox/g/<id> instead of inline thread load.
-  const { threads: chatGroupThreads } = useChatGroupsAsThreads(isGlobalContext);
+  const { threads: chatGroupThreads, markGroupsReadLocal, reload: reloadChatGroups } = useChatGroupsAsThreads(isGlobalContext);
+  const { refresh: refreshUnreadBadge } = useChatUnreadCount();
   const threads = useMemo(() => {
     if (!isGlobalContext) return apiThreads;
     return [...chatGroupThreads, ...apiThreads];
   }, [apiThreads, chatGroupThreads, isGlobalContext]);
 
   const userSelectedContextRef = React.useRef(false);
-  const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
+  // Desktop restores the conversation that was open when the user navigated
+  // away (mobile is list-first by design, so it never restores a selection).
+  const [selectedThreadId, setSelectedThreadId] = useState<string | null>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) return null;
+    return readInboxState().threadId ?? null;
+  });
   const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
 
   const [showNewConversation, setShowNewConversation] = useState(false);
@@ -109,10 +136,18 @@ export default function Messages() {
   // form is kept for backward compatibility with legacy notifications and
   // bookmarks.
   const [searchParams, setSearchParams] = useSearchParams();
-  const pathParams = useParams<{ recipientId?: string; threadId?: string }>();
+  const pathParams = useParams<{ recipientId?: string; threadId?: string; messageId?: string }>();
   const urlThreadId = pathParams.threadId || searchParams.get('thread');
   const urlRecipientId = pathParams.recipientId || searchParams.get('recipient');
   const urlContext = searchParams.get('context') as 'global' | 'tenant' | null;
+
+  // Reaction notification deep-link: /inbox/u|t/:id/msg/:messageId. Captured
+  // once into state (not read from the URL downstream) because the
+  // thread/recipient effects below immediately navigate('/inbox', {replace}),
+  // stripping the path segment before ConversationView could use it.
+  const [deepLinkMessageId, setDeepLinkMessageId] = useState<string | null>(
+    pathParams.messageId || null,
+  );
 
   // ?thread= param OR /inbox/t/:threadId path (thread UUID)
   useEffect(() => {
@@ -180,6 +215,28 @@ export default function Messages() {
     }
   }, [threads, pendingRecipient]);
 
+  // Safety net: a deep-link recipient that never matches a loaded thread
+  // (e.g. the conversation genuinely isn't in `threads` for some reason)
+  // would otherwise leave `resolvingDeepLink` below stuck true forever,
+  // showing a loading state with no way out. Give resolution a bounded
+  // window, then fall through to the normal list render.
+  useEffect(() => {
+    if (!pendingRecipient) return;
+    const timer = setTimeout(() => {
+      console.warn('[Messages] Deep-link recipient never resolved to a thread, showing list instead:', pendingRecipient);
+      setPendingRecipient(null);
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [pendingRecipient]);
+
+  // True for the render(s) between "threads finished loading" and "the
+  // resolve effect above actually set selectedThreadId" — without this,
+  // that one-render gap falls through to the full conversation LIST below
+  // (selectedThreadId is still null), which is briefly visible before the
+  // effect fires and swaps to the conversation. That's the "list flashes,
+  // then jumps to the chat" jank reported from a notification tap.
+  const resolvingDeepLink = pendingRecipient !== null && selectedThreadId === null;
+
   // Track optimistic unread updates (threadId -> 0)
   const [optimisticUnreadUpdates, setOptimisticUnreadUpdates] = useState<Record<string, number>>({});
 
@@ -195,6 +252,45 @@ export default function Messages() {
       return { ...thread, unread_count };
     });
   }, [threads, optimisticUnreadUpdates]);
+
+  // Total unread across all conversations — drives the "Mark all as read" enablement.
+  const totalUnread = React.useMemo(
+    () => displayThreads.reduce((sum, t) => sum + (t.unread_count || 0), 0),
+    [displayThreads]
+  );
+
+  // Bulk "mark all as read" for the current context, honoring the active filter.
+  const markAllAsRead = (hybridMessages as any).markAllAsRead as
+    | ((filter?: 'all' | 'direct' | 'groups') => Promise<void>)
+    | undefined;
+  const handleMarkAllAsRead = useCallback(async () => {
+    if (totalUnread === 0) return;
+    const filter = conversationFilter === 'contacts' ? 'all' : conversationFilter;
+    try {
+      // 1. Direct DMs + legacy global threads (chat_messages + global_thread_participants).
+      if (markAllAsRead) await markAllAsRead(filter);
+
+      // 2. chat_groups (e.g. "FIRST 100") — a separate system that markAllAsRead
+      //    doesn't cover. Clear each unread group via its own read endpoint.
+      if (filter === 'all' || filter === 'groups') {
+        const groupIds = displayThreads
+          .filter((t) => isChatGroupThreadId(t.id) && (t.unread_count || 0) > 0)
+          .map((t) => chatGroupIdFromThreadId(t.id));
+        if (groupIds.length > 0) {
+          markGroupsReadLocal(groupIds); // optimistic: clear the rows immediately
+          await Promise.allSettled(groupIds.map((id) => markGroupRead(id)));
+          reloadChatGroups(); // reconcile the group list from the backend
+        }
+      }
+
+      // 3. Force the footer/sidebar badge to recompute now that DMs + groups are read.
+      refreshUnreadBadge();
+      notify('inbox.toast.allMarkedRead');
+    } catch (err) {
+      console.error('[inbox] mark all as read failed:', err);
+      notifyError('inbox.toast.markAllReadFailed');
+    }
+  }, [markAllAsRead, totalUnread, conversationFilter, displayThreads, markGroupsReadLocal, reloadChatGroups, refreshUnreadBadge]);
 
   // Auto-select the most recent conversation (WhatsApp-style behavior)
   // Only auto-select on desktop - on mobile, users should see the list first and tap to open
@@ -238,8 +334,26 @@ export default function Messages() {
     }
   }, [displayThreads, selectedThreadId, pinnedThreads, user?.id, isMobile]);
 
-  // Reset selection when context changes
+  // Remember the current view so returning to /inbox restores it instantly.
   useEffect(() => {
+    try {
+      sessionStorage.setItem(
+        INBOX_STATE_KEY,
+        JSON.stringify({ context: messageContext, threadId: selectedThreadId })
+      );
+    } catch {
+      /* private mode / storage full — restore is best-effort */
+    }
+  }, [messageContext, selectedThreadId]);
+
+  // Reset selection when context changes. Skips the mount run — otherwise it
+  // would immediately clear the selection just restored from sessionStorage.
+  const contextMountedRef = React.useRef(false);
+  useEffect(() => {
+    if (!contextMountedRef.current) {
+      contextMountedRef.current = true;
+      return;
+    }
     setSelectedThreadId(null);
     setSelectedRecipientId(null);
     setOptimisticUnreadUpdates({}); // Clear optimistic updates
@@ -351,8 +465,11 @@ export default function Messages() {
     }
   }, [isMobile, selectedThreadId]);
 
-  // Show skeleton when loading/fetching AND no cached data
-  if ((isLoading || isFetching) && threads.length === 0) {
+  // Show skeleton when loading/fetching AND no cached data, OR when a
+  // notification deep-link's recipient hasn't resolved to a thread yet
+  // (resolvingDeepLink) — otherwise the list renders for one frame in
+  // between, which is the flash reported from a chat notification tap.
+  if (((isLoading || isFetching) && threads.length === 0) || resolvingDeepLink) {
     // Mobile loading state
     if (isMobile) {
       return (
@@ -642,10 +759,19 @@ export default function Messages() {
                       onClick={() => handleThreadOpen(thread)}
                     >
                       <div className="flex items-start space-x-3">
-                        <GroupAvatarStack 
-                          participants={thread.participants || []}
-                          size={densityMode === 'compact' ? 'sm' : 'md'}
-                        />
+                        {thread.avatar_url ? (
+                          <Avatar className={densityMode === 'compact' ? 'h-8 w-8' : 'h-10 w-10'}>
+                            <AvatarImage src={thread.avatar_url} alt={thread.name || ''} className="object-cover" />
+                            <AvatarFallback>
+                              <Users className="w-4 h-4 text-muted-foreground" />
+                            </AvatarFallback>
+                          </Avatar>
+                        ) : (
+                          <GroupAvatarStack
+                            participants={thread.participants || []}
+                            size={densityMode === 'compact' ? 'sm' : 'md'}
+                          />
+                        )}
                         
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between">
@@ -866,6 +992,8 @@ export default function Messages() {
                   onConversationOpened={handleConversationOpened}
                   onMessageSent={handleMessageSent}
                   onGroupCreated={handleGroupCreated}
+                  initialScrollMessageId={deepLinkMessageId}
+                  onInitialMessageScrolled={() => setDeepLinkMessageId(null)}
                 />
               </ConversationErrorBoundary>
             </div>
@@ -914,6 +1042,8 @@ export default function Messages() {
                     onConversationOpened={handleConversationOpened}
                     onMessageSent={handleMessageSent}
                     onGroupCreated={handleGroupCreated}
+                    initialScrollMessageId={deepLinkMessageId}
+                    onInitialMessageScrolled={() => setDeepLinkMessageId(null)}
                   />
                 </ConversationErrorBoundary>
               ) : (
@@ -1038,6 +1168,8 @@ export default function Messages() {
                     onConversationOpened={handleConversationOpened}
                     onMessageSent={handleMessageSent}
                     onGroupCreated={handleGroupCreated}
+                    initialScrollMessageId={deepLinkMessageId}
+                    onInitialMessageScrolled={() => setDeepLinkMessageId(null)}
                   />
                 </ConversationErrorBoundary>
               </div>
@@ -1089,25 +1221,45 @@ export default function Messages() {
                   </div>
                 </UtilityActionButton>
                 
-                {/* Sub-filter pills */}
-                <div className="flex gap-2 overflow-x-auto pb-1">
-                  {['all', 'direct', 'groups'].map((filter) => (
-                    <Button
-                      key={filter}
-                      variant={conversationFilter === filter ? "default" : "ghost"}
-                      size="sm"
-                      onClick={() => setConversationFilter(filter as any)}
-                      className={`h-8 px-3 rounded-full shrink-0 text-sm ${
-                        conversationFilter === filter 
-                          ? 'bg-primary text-primary-foreground' 
-                          : 'bg-muted/60'
-                      }`}
-                    >
-                      {translate(`inbox.tabs.${filter}`)}
-                    </Button>
-                  ))}
+                {/* Sub-filter pills + overflow menu */}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex gap-2 overflow-x-auto pb-1">
+                    {['all', 'direct', 'groups'].map((filter) => (
+                      <Button
+                        key={filter}
+                        variant={conversationFilter === filter ? "default" : "ghost"}
+                        size="sm"
+                        onClick={() => setConversationFilter(filter as any)}
+                        className={`h-8 px-3 rounded-full shrink-0 text-sm ${
+                          conversationFilter === filter
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-muted/60'
+                        }`}
+                      >
+                        {translate(`inbox.tabs.${filter}`)}
+                      </Button>
+                    ))}
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 rounded-full shrink-0"
+                        aria-label={translate('inbox.actions.menu')}
+                      >
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem disabled={totalUnread === 0} onClick={handleMarkAllAsRead}>
+                        <CheckCheck className="w-4 h-4 mr-2" />
+                        {translate('inbox.actions.markAllRead')}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
-                
+
                 {renderMobileConversationList()}
               </div>
             )}
@@ -1180,6 +1332,19 @@ export default function Messages() {
                 <DropdownMenuItem onClick={() => setShowCreateGroup(true)}>
                   <Users className="w-4 h-4 mr-2" />
                   {t('screens.messages.createGroup')}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" aria-label={translate('inbox.actions.menu')}>
+                  <MoreVertical className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem disabled={totalUnread === 0} onClick={handleMarkAllAsRead}>
+                  <CheckCheck className="w-4 h-4 mr-2" />
+                  {translate('inbox.actions.markAllRead')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

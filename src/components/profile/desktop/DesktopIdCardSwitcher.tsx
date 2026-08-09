@@ -9,8 +9,11 @@ import { ProfileIdCardFront } from "../shared/ProfileIdCardFront";
 import { ProfileIdCardBack } from "../shared/ProfileIdCardBack";
 import { ProfileIdSegmentedControl } from "../shared/ProfileIdSegmentedControl";
 import { DesktopAccountCard } from "./DesktopAccountCard";
+import { DesktopBusinessCard } from "./DesktopBusinessCard";
+import { BusinessPublicCard } from "../shared/BusinessPublicCard";
+import { t } from "@/lib/i18n-toast";
 
-type DesktopCardSide = "identity" | "social" | "account";
+export type DesktopCardSide = "identity" | "social" | "account" | "business";
 
 interface DesktopIdCardSwitcherProps {
   profile: UserProfile;
@@ -21,13 +24,12 @@ interface DesktopIdCardSwitcherProps {
   onEditSocial?: () => void;
   onEditAccount?: () => void;
   className?: string;
+  /** Controlled active segment — lets the parent (ProfileLayout.tsx) gate its
+   *  own Posts/About/Media/Groups tab system off of this value (VTID-02950
+   *  round 2). Falls back to internal state when the parent doesn't pass it. */
+  activeSide?: DesktopCardSide;
+  onActiveSideChange?: (side: DesktopCardSide) => void;
 }
-
-const SEGMENTS: readonly { id: DesktopCardSide; label: string }[] = [
-  { id: "identity", label: "Identity" },
-  { id: "social", label: "Social" },
-  { id: "account", label: "Account" },
-] as const;
 
 export function DesktopIdCardSwitcher({
   profile,
@@ -38,8 +40,15 @@ export function DesktopIdCardSwitcher({
   onEditSocial,
   onEditAccount,
   className,
+  activeSide: controlledActiveSide,
+  onActiveSideChange,
 }: DesktopIdCardSwitcherProps) {
-  const [activeSide, setActiveSide] = useState<DesktopCardSide>("identity");
+  const [internalActiveSide, setInternalActiveSide] = useState<DesktopCardSide>("identity");
+  const activeSide = controlledActiveSide ?? internalActiveSide;
+  const setActiveSide = (side: DesktopCardSide) => {
+    setInternalActiveSide(side);
+    onActiveSideChange?.(side);
+  };
   const { user } = useAuth();
   const targetUserId = scope === "owner" ? user?.id : profile.id;
   const { themeConfig, cycleTheme } = useProfileTheme(targetUserId);
@@ -50,11 +59,24 @@ export function DesktopIdCardSwitcher({
     exit: { opacity: 0, x: -24 * direction },
   });
 
+  // Business (Recommend & Earn, VTID-02950) is now shown to every viewer —
+  // owner gets the private stats dashboard, visitors get a read-only
+  // storefront of the owner's recommendations (BOOTSTRAP-PUBLIC-BUSINESS-PROFILE).
+  // Recomputed per render (not module-scope) so the "business" label reacts
+  // to language changes; the other 3 stay hardcoded English pre-existing tech
+  // debt, out of scope for this feature.
+  const segments: readonly { id: DesktopCardSide; label: string }[] = [
+    { id: "identity", label: "Identity" },
+    { id: "social", label: "Social" },
+    { id: "account", label: "Account" },
+    { id: "business" as const, label: t("profile.tabs.business") },
+  ];
+
   return (
     <div className={cn("relative pt-3 pb-3", className)}>
       <div className="container mx-auto px-6">
         <ProfileIdSegmentedControl<DesktopCardSide>
-          segments={SEGMENTS}
+          segments={segments}
           value={activeSide}
           onChange={setActiveSide}
           size="md"
@@ -100,6 +122,15 @@ export function DesktopIdCardSwitcher({
                   editMode={editMode}
                   onEdit={onEditAccount}
                 />
+              </motion.div>
+            )}
+            {activeSide === "business" && (
+              <motion.div
+                key="business"
+                {...slotAnim(1)}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+              >
+                {isOwner ? <DesktopBusinessCard /> : <BusinessPublicCard vitanaId={profile.handle} />}
               </motion.div>
             )}
           </AnimatePresence>

@@ -39,9 +39,12 @@ const DEVICES = [
 
 // Environment base URLs. Staging is the default — this is the whole point.
 // Production is the apex domain the Appilix iOS/Android WebView shells load
-// (iOS → /, Android → /home).
+// (iOS → /, Android → /home). "Staging (AWS)" is a separate frontend build
+// (own bundle, wired to preview-aws-gateway.vitanaland.com) that runs
+// alongside GCP staging — not an alias of it.
 const ENVIRONMENTS = {
   staging: { url: "https://preview.vitanaland.com", labelKey: "devicePreviewEnvStaging" },
+  stagingAws: { url: "https://preview-aws.vitanaland.com", labelKey: "devicePreviewEnvStagingAws" },
   production: { url: "https://vitanaland.com", labelKey: "devicePreviewEnvProduction" },
   custom: { url: "", labelKey: "devicePreviewEnvCustom" },
 } as const;
@@ -206,6 +209,12 @@ export default function DevicePreview() {
                   key={reloadKey}
                   src={src}
                   title={t("screens.admin.devicePreview")}
+                  // Allow the framed app's Fullscreen API (feed media fullscreen
+                  // button) and microphone access (ORB voice) — without these
+                  // the browser blocks the in-iframe request; for the mic this
+                  // fails silently as a "Mikrofon-Problem" disconnect in ORB.
+                  allow="fullscreen; microphone"
+                  allowFullScreen
                   className="h-full w-full rounded-[1.6rem] bg-white"
                 />
               </div>

@@ -2,10 +2,11 @@
   "intro": {
     "welcomeTo": "BIENVENIDO A VITANALAND",
     "experience": "Experiencia",
-    "tagline": "Tu viaje de longevidad, guiado.",
+    "taglineMain": "Empieza tu viaje de longevidad",
+    "taglineSub": "¡junto a nosotros!",
     "playWelcome": "Reproducir bienvenida",
     "preparing": "Preparando...",
     "playing": "Reproduciendo",
-    "skipIntro": "Saltar intro"
+    "goToLogin": "Ir a iniciar sesión"
   }
 }

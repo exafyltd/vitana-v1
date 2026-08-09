@@ -42,7 +42,10 @@ import {
   Music,
   Music2,
   Youtube,
+  ShoppingBag,
+  Store,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { ConnectAppPopup } from "@/components/ConnectAppPopup";
 import { XIcon } from "@/components/icons/XIcon";
@@ -82,6 +85,7 @@ import { notify, notifyError, t } from '@/lib/i18n-toast';
 import { fmtDateTime } from '@/lib/locale-format';
 function ConnectedApps() {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("connected");
   const { allPlatforms, loading } = useSocialPlatforms();
@@ -291,6 +295,50 @@ function ConnectedApps() {
             {isDisabled
               ? `${p.display_name} is not enabled for this community.`
               : `Paste your ${p.display_name} API key to enable your personal AI assistant. Keys are encrypted at rest and never exposed again.`}
+          </div>
+        ),
+      };
+    });
+  };
+
+  // Shopping & Rewards — commerce providers that power the Discover marketplace.
+  // Status mirrors the live VCAOP affiliate programs. "Shop in Discover" is the
+  // complete rewards-bearing journey; no merchant credentials are ever stored.
+  const getShoppingRewardsCards = (): StandardHorizontalCardProps[] => {
+    const providers = [
+      { id: 'aliexpress', name: 'AliExpress', icon: ShoppingBag, status: 'rewards', detail: 'Supplements, devices & more — earn rewards on every order.' },
+      { id: 'bodylab24', name: 'Bodylab24', icon: ShoppingBag, status: 'rewards', detail: 'German sports nutrition & supplements.' },
+      { id: 'alibaba', name: 'Alibaba', icon: Link, status: 'rewards', detail: 'Global marketplace.' },
+      { id: 'rockbros', name: 'ROCKBROS', icon: ShoppingBag, status: 'rewards', detail: 'Fitness & outdoor gear.' },
+      { id: 'amazon', name: 'Amazon', icon: ShoppingBag, status: 'recommend', detail: 'Recommendations only — Amazon terms forbid incentivized rewards.' },
+      { id: 'ebay', name: 'eBay', icon: ShoppingBag, status: 'soon', detail: 'Coming soon.' },
+      { id: 'shopify-stores', name: 'Shopify Stores', icon: Store, status: 'soon', detail: 'Coming soon.' },
+    ] as const;
+    return providers.map((p) => {
+      const Icon = p.icon;
+      const badges: StandardHorizontalCardProps["badges"] =
+        p.status === 'rewards'
+          ? [{ label: 'Rewards active', variant: 'default' as const }]
+          : p.status === 'recommend'
+            ? [{ label: 'Recommendations only', variant: 'secondary' as const }]
+            : [{ label: 'Coming soon', variant: 'secondary' as const }];
+      return {
+        id: `shopping-${p.id}`,
+        screenId: "settings-connected-apps",
+        icon: <Icon className="w-5 h-5" />,
+        title: p.name,
+        description: p.detail,
+        badges,
+        primaryAction: p.status === 'soon'
+          ? undefined
+          : { label: 'Shop in Discover', onClick: () => navigate('/discover') },
+        expandedContent: (
+          <div className="text-sm text-muted-foreground pt-2">
+            {p.status === 'soon'
+              ? `${p.name} will be connectable soon.`
+              : p.status === 'recommend'
+                ? `Browse ${p.name} products in Discover. Purchases are recommendations only — no Vitana rewards, per Amazon's terms.`
+                : `Shop ${p.name} through Discover and earn rewards automatically. Your purchase opens on the merchant's own site — we never store your store password.`}
           </div>
         ),
       };
@@ -1761,6 +1809,24 @@ function ConnectedApps() {
         {/* Tab 1: Connected Apps (Social Media + Health & Fitness) */}
         <SplitBarContent value="connected">
           <div className="space-y-8">
+            {/* Shopping & Rewards — commerce providers powering the Discover marketplace */}
+            <div>
+              <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                <ShoppingBag className="w-5 h-5" />
+                {t('screens.settings.shoppingRewards')}
+              </h2>
+              <HorizontalCardList
+                items={getShoppingRewardsCards()}
+                variant="standard"
+                layout="stack"
+                screenId="settings-connected-apps"
+                listId="shopping-rewards"
+                gap="md"
+                infiniteScroll={false}
+                className="pb-2"
+              />
+            </div>
+
             {/* VTID-02403: AI Assistants (ChatGPT + Claude) */}
             <div>
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">

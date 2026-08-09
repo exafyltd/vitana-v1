@@ -2,12 +2,18 @@
   "profilePosts": {
     "createPost": "Beitrag erstellen",
     "placeholder": "Was bewegt dich gerade?",
+    "shareCta": "Teile etwas mit der Community",
     "post": "Posten",
     "posted": "Gepostet!",
     "deleted": "Beitrag gelöscht",
     "emptyTitle": "Noch keine Beiträge",
     "emptyDescription": "Teile dein erstes Update mit der Community",
     "deleteConfirm": "Beitrag löschen?",
-    "error": "Etwas ist schiefgelaufen"
+    "error": "Etwas ist schiefgelaufen",
+    "mentionPlaceholder": "Was bewegt dich gerade? Tippe @, um jemanden zu markieren",
+    "background": "Hintergrund",
+    "noBackground": "Kein Hintergrund",
+    "searchingPeople": "Suche Personen …",
+    "noPeopleFound": "Niemand gefunden"
   }
 }

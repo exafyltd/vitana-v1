@@ -2,10 +2,11 @@
   "intro": {
     "welcomeTo": "DOBRODOŠAO/LA U VITANALAND",
     "experience": "Iskustvo",
-    "tagline": "Tvoje putovanje ka dugovečnosti, vođeno.",
+    "taglineMain": "Započni svoje putovanje dugovečnosti",
+    "taglineSub": "zajedno sa nama!",
     "playWelcome": "Pusti dobrodošlicu",
     "preparing": "Priprema...",
     "playing": "Pušta se",
-    "skipIntro": "Preskoči uvod"
+    "goToLogin": "Idi na prijavu"
   }
 }

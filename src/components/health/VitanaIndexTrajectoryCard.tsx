@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, TrendingUp, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthProvider";
+import { useMyJourney } from "@/hooks/useMyJourney";
 import { useVitanaIndex } from "@/hooks/useVitanaIndex";
 import { useVitanaIndexHistory } from "@/hooks/useVitanaIndexHistory";
 import { getVitanaIndexTier } from "@/lib/vitanaIndex";
@@ -23,6 +24,10 @@ const RANGES: { key: Range; days: number; labelKey: string }[] = [
 
 interface Point { day: number; score: number; date: string }
 
+/** Fallback only — used until /api/v1/my-journey resolves. Raw signup-date
+ *  math can drift from the canonical `day_in_journey` (which tracks
+ *  `user_journey.started_at`, pause/restart-aware), so it must never be the
+ *  steady-state source once the real journey data is in. */
 function daysSince(iso?: string | null): number {
   if (!iso) return 0;
   const reg = new Date(iso).getTime();
@@ -33,12 +38,16 @@ function daysSince(iso?: string | null): number {
 export function VitanaIndexTrajectoryCard() {
   const { user } = useAuth();
   const { index, isLoading: indexLoading } = useVitanaIndex();
+  const { data: myJourney } = useMyJourney();
   const [range, setRange] = useState<Range>("30d");
 
   const fetchDays = range === "90d" ? JOURNEY_TOTAL_DAYS : range === "30d" ? 30 : 7;
   const { history, isLoading: historyLoading } = useVitanaIndexHistory(fetchDays);
 
-  const dayNumber = daysSince(user?.created_at);
+  // Canonical day-in-journey — the SAME value the ORB voice greeting speaks
+  // ("Tag X mit Vitana") and the My Journey ring shows, so this card never
+  // shows a third, disagreeing day count.
+  const dayNumber = myJourney?.journey?.day_in_journey ?? daysSince(user?.created_at);
 
   // Map history → indexed daily points (oldest first).
   const points = useMemo<Point[]>(() => {
