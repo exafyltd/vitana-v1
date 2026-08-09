@@ -41,6 +41,8 @@
     "sendFailed": "Slanje neuspešno",
     "sendFailedDesc": "Nije moguće poslati tvoju povratnu informaciju. Pokušaj ponovo.",
     "recognitionError": "Greška u prepoznavanju",
-    "recognitionErrorDesc": "Došlo je do greške u prepoznavanju govora. Pokušaj ponovo."
+    "recognitionErrorDesc": "Došlo je do greške u prepoznavanju govora. Pokušaj ponovo.",
+    "transcribing": "Tvoje snimanje se transkribuje…",
+    "backendRecordingHint": "Snimanje je u toku – tvoja transkripcija će se pojaviti kada dodirneš Stop."
   }
 }
