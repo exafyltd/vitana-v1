@@ -162,6 +162,48 @@ This is the **frontend** repo. The backend is in `exafyltd/vitana-platform`:
 **Test user UUID:** `a27552a3-0257-4305-8ed0-351a80fd3701`
 Use this user when an authenticated user is needed for testing (e.g., Playwright screenshots, API calls, profile checks).
 
+### Never create community content as the test user — on ANY host (VTID-03506)
+
+**There is no safe host for this write today, and picking a "safer" URL does not
+create one.** `PREVIEW-DEPLOY-FRONTEND.yml` (L69–81) and
+`STAGE-DEPLOY-FRONTEND.yml` (L72–93) override **only** the gateway URL and
+deliberately leave Supabase unset, so both builds inherit the **production**
+Supabase project from the committed `.env` — gateway-staging runs against prod
+Supabase too (BOOTSTRAP-ORB-STAGING-SUPABASE-ALIGN; `docs/STAGING.md` §6/§9b),
+and the frontend must match it or authed features silently degrade. A post
+created on `community-app-pr-123` lands in the same `profile_posts` rows real
+members read. **The host selects which _code_ runs; it does not select which
+database gets written.**
+
+So, as the test account: **do not create posts, comments, likes, videos or chat
+messages at all** — not on prod, not on staging, not on a PR preview. Reading is
+fine everywhere.
+
+Verify feed and interaction changes against content that already exists, a Vitest
+unit/integration test, or a local Supabase. If a change genuinely cannot be
+verified without new community content, **that is a blocker to raise, not a rule
+to route around** — it needs an isolated Supabase project for testing, which does
+not exist yet.
+
+On 2026-08-05 a session reproducing VTID-03503 created 5 public posts as this
+account on production between 14:54 and 15:00 UTC. Using a PR preview would have
+produced the identical rows and the identical pushes — the environment was never
+the protection anyone assumed it was. `trg_notify_community_post`
+fans out to every member of the author's tenant, so those 5 inserts became **960
+notifications and 600 delivered pushes** — real members' lock screens filled with
+"E2E Test User shared a new post". Deleting the posts afterwards fixed nothing:
+a push is unrecallable the moment it is sent.
+
+The account is a full member of the production tenant, which is what makes a
+"harmless" test write indistinguishable from a real member posting. Two guards
+now exist (migration `20260805160000`): `_notif_is_test_actor()` plus a BEFORE
+INSERT sink guard on `user_notifications` that drops any notification whose
+actor is a registered or `e2e-%`/`@vitanatest.exafy.io` account. **Treat them as
+the seatbelt, not the permission slip** — they stop notifications, not the posts,
+comments, likes, or chat messages themselves, which still land in the real feed
+in front of real people. Register any new test account in
+`notification_test_actors`.
+
 ## Key Patterns
 
 - **Mobile-first:** `useIsMobile()` hook, MobileAppShell wrapper
