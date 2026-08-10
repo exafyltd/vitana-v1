@@ -358,6 +358,9 @@ const InsightsReports = lazy(() => import("./pages/admin/insights/Reports"));
 const InsightsJourneys = lazy(() => import("./pages/admin/insights/Journeys"));
 const InsightsFeatures = lazy(() => import("./pages/admin/insights/Features"));
 const InsightsInterests = lazy(() => import("./pages/admin/insights/Interests"));
+// VTID-03567: Insights overview + raw event explorer
+const InsightsOverview = lazy(() => import("./pages/admin/insights/Overview"));
+const InsightsEvents = lazy(() => import("./pages/admin/insights/Events"));
 const AdminNotificationsCompose = lazy(() => import("./pages/admin/notifications/Compose"));
 const AdminNotificationsSentLog = lazy(() => import("./pages/admin/notifications/SentLog"));
 const AdminNotificationsPreferences = lazy(() => import("./pages/admin/notifications/Preferences"));
@@ -1886,6 +1889,12 @@ const App = () => {
           } />
 
           {/* Wave 2: Insights section */}
+          <Route path="/admin/insights/overview" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsOverview /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/insights/events" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsEvents /></ProtectedRoute></AuthGuard>
+          } />
           <Route path="/admin/insights/growth" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><InsightsGrowth /></ProtectedRoute></AuthGuard>
           } />

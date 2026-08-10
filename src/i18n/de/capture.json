@@ -41,6 +41,8 @@
     "sendFailed": "Senden fehlgeschlagen",
     "sendFailedDesc": "Dein Feedback konnte nicht gesendet werden. Bitte versuche es erneut.",
     "recognitionError": "Erkennungsfehler",
-    "recognitionErrorDesc": "Die Spracherkennung hat einen Fehler festgestellt. Bitte versuche es erneut."
+    "recognitionErrorDesc": "Die Spracherkennung hat einen Fehler festgestellt. Bitte versuche es erneut.",
+    "transcribing": "Deine Aufnahme wird transkribiert…",
+    "backendRecordingHint": "Aufnahme läuft – deine Transkription erscheint, nachdem du auf Stopp tippst."
   }
 }
