@@ -2,10 +2,11 @@
  * BOOTSTRAP-PRODUCT-ANALYTICS: Assistant usage analytics
  * (/admin/insights/assistant-usage).
  *
- * Replaces the "coming soon" placeholder with real Assistant supervision:
- * conversation KPIs, funnel, top intents/topics, tool reliability, and the
- * recent-unresolved queue. Data: useAdminAssistantAnalytics +
- * useAdminAnalyticsSummary (gateway product analytics endpoints).
+ * Conversation KPIs, funnel, outcome/feedback splits, top intents/topics,
+ * tool reliability, and the recent-unresolved queue. Data:
+ * useAdminAssistantAnalytics + useAdminAnalyticsSummary (gateway product
+ * analytics endpoints). Charted (VTID-03567): outcome + feedback donuts,
+ * ranked intent/topic bars.
  *
  * Privacy: everything here is metadata/aggregate — raw conversation text is
  * never stored in the analytics pipeline, so it cannot appear here.
@@ -23,12 +24,12 @@ import {
 } from "@/hooks/useAdminProductAnalytics";
 import {
   AnalyticsStates,
-  CountListCard,
   DaysSelect,
   KpiCard,
   PrivacyNote,
   pct,
 } from "@/components/admin/analytics/AnalyticsShared";
+import { BarListCard, DonutCard } from "@/components/admin/analytics/AnalyticsCharts";
 import { fmtNumber, formatDistanceToNow } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 
@@ -38,6 +39,10 @@ export default function AssistantUsage() {
   const { data: summary } = useAdminAnalyticsSummary(days);
 
   const isEmpty = !!data && data.conversations === 0 && data.messages === 0;
+
+  const resolved = data ? Math.round(data.resolution_rate * data.conversations) : 0;
+  const abandoned = data ? Math.round(data.abandonment_rate * data.conversations) : 0;
+  const openConvos = data ? Math.max(0, data.conversations - resolved - abandoned) : 0;
 
   return (
     <AppLayout>
@@ -68,6 +73,30 @@ export default function AssistantUsage() {
               <KpiCard label={t("screens.admin.paToolFailureRate")} value={pct(data.tool_failure_rate)} />
             </div>
 
+            <div className="grid gap-6 xl:grid-cols-2">
+              <DonutCard
+                title={t("screens.admin.paResolutionSplit")}
+                segments={[
+                  { label: t("screens.admin.paFunnelResolved"), value: resolved, colorIndex: 2 },
+                  { label: t("screens.admin.paAbandoned"), value: abandoned, colorIndex: 1 },
+                  { label: t("screens.admin.paOpenConversations"), value: openConvos, colorIndex: 0 },
+                ]}
+                centerValue={fmtNumber(data.conversations)}
+                centerLabel={t("screens.admin.paConversations")}
+                emptyLabel={t("screens.admin.noAnalyticsData")}
+              />
+              <DonutCard
+                title={t("screens.admin.paFeedbackSplit")}
+                segments={[
+                  { label: t("screens.admin.paPositive"), value: data.positive_feedback, colorIndex: 2 },
+                  { label: t("screens.admin.paNegative"), value: data.negative_feedback, colorIndex: 1 },
+                ]}
+                centerValue={fmtNumber(data.positive_feedback + data.negative_feedback)}
+                centerLabel={t("screens.admin.paFeedbackTotal")}
+                emptyLabel={t("screens.admin.noAnalyticsData")}
+              />
+            </div>
+
             {/* Funnel: conversations → messages → recommendation clicks → resolved */}
             <Card>
               <CardHeader>
@@ -81,22 +110,20 @@ export default function AssistantUsage() {
                     label={t("screens.admin.paFunnelRecommendationClicks")}
                     value={summary?.recommendation_clicks ?? 0}
                   />
-                  <KpiCard
-                    label={t("screens.admin.paFunnelResolved")}
-                    value={Math.round(data.resolution_rate * data.conversations)}
-                  />
+                  <KpiCard label={t("screens.admin.paFunnelResolved")} value={resolved} />
                 </div>
               </CardContent>
             </Card>
 
             <div className="grid gap-6 xl:grid-cols-2">
-              <CountListCard
+              <BarListCard
                 title={t("screens.admin.paTopIntents")}
                 rows={data.top_intents.map((i) => ({ label: i.intent, count: i.count }))}
                 emptyLabel={t("screens.admin.noAnalyticsData")}
               />
-              <CountListCard
+              <BarListCard
                 title={t("screens.admin.paTopTopics")}
+                colorIndex={2}
                 rows={data.top_topics.map((i) => ({ label: i.topic, count: i.count }))}
                 emptyLabel={t("screens.admin.noAnalyticsData")}
               />

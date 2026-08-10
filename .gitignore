@@ -31,3 +31,9 @@ scripts/.codemod-*.manifest.json
 
 supabase/.temp/
 .git-worktrees/
+
+# RepoWise codebase-intelligence index (local, machine-specific — see .mcp.json note)
+.repowise/
+.mcp.json
+.vscode/mcp.json
+.vscode/extensions.json
