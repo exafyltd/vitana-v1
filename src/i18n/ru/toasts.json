@@ -42,7 +42,8 @@
       "planGenerated": "План создан",
       "planGeneratedDesc": "Твой персонализированный план создан.",
       "bulkEnabled": "Массовый выбор включен",
-      "bulkEnabledDesc": "Выбери элементы из своей ленты для массовых действий."
+      "bulkEnabledDesc": "Выбери элементы из своей ленты для массовых действий.",
+      "_pending_review": {}
     },
     "error": {
       "generic": "Что-то пошло не так",
@@ -76,7 +77,8 @@
       "importFailed": "Сбой импорта",
       "importFailedDesc": "Не удалось импортировать данные.",
       "exportFailed": "Сбой экспорта",
-      "exportFailedDesc": "Не удалось экспортировать данные."
+      "exportFailedDesc": "Не удалось экспортировать данные.",
+      "_pending_review": {}
     },
     "info": {
       "processing": "Обработка...",
@@ -86,7 +88,8 @@
       "loading": "Загрузка...",
       "loadingDesc": "Данные загружаются.",
       "syncing": "Синхронизация...",
-      "syncingDesc": "Данные синхронизируются."
+      "syncingDesc": "Данные синхронизируются.",
+      "_pending_review": {}
     },
     "warning": {
       "unsavedChanges": "Несохраненные изменения",
@@ -94,7 +97,8 @@
       "limitReached": "Лимит достигнут",
       "limitReachedDesc": "Ты достиг максимума.",
       "slowConnection": "Медленное соединение",
-      "slowConnectionDesc": "Твоё интернет-соединение кажется медленным."
+      "slowConnectionDesc": "Твоё интернет-соединение кажется медленным.",
+      "_pending_review": {}
     },
     "common": {
       "couldNotCompleteTask": "Не удалось выполнить задачу",
@@ -173,7 +177,8 @@
       "weLlAnalyzeUpdateSuggestionsShortly": "Мы проанализируем и обновим предложения в ближайшее время.",
       "activityHidden": "Активность скрыта",
       "success": "Успешно! 🎉",
-      "donTBreakStreakOneSmall": "🔥 Не прерывай серию — одно маленькое действие сегодня"
+      "donTBreakStreakOneSmall": "🔥 Не прерывай серию — одно маленькое действие сегодня",
+      "_pending_review": {}
     },
     "admin": {
       "companionOverridesSavedVoiceCacheRefreshes": "Настройки компаньона сохранены — голосовой кэш обновится в течение 30 секунд.",
@@ -328,7 +333,8 @@
       "removedFromActiveList": "Удалено из активного списка.",
       "rollbackFailed": "Откат не удался",
       "ticketRejected": "{ticketNumber} отклонен",
-      "ticketRemovedActiveList": "Удалено из активного списка."
+      "ticketRemovedActiveList": "Удалено из активного списка.",
+      "_pending_review": {}
     },
     "audio": {
       "cameraStopped": "Камера остановлена",
@@ -336,15 +342,18 @@
       "failedToggleCamera": "Не удалось переключить камеру",
       "screenSharingStopped": "Демонстрация экрана остановлена",
       "screenSharingStarted": "Демонстрация экрана запущена",
-      "failedToggleScreenSharing": "Не удалось переключить демонстрацию экрана"
+      "failedToggleScreenSharing": "Не удалось переключить демонстрацию экрана",
+      "_pending_review": {}
     },
     "auth": {
       "confirmationEmailSentPleaseCheckYour": "Письмо с подтверждением отправлено! Проверь свою почту.",
-      "tooManyAttemptsPleaseWaitFew": "Слишком много попыток. Подожди несколько минут."
+      "tooManyAttemptsPleaseWaitFew": "Слишком много попыток. Подожди несколько минут.",
+      "_pending_review": {}
     },
     "billing": {
       "paymentFailed": "Платеж не удался",
-      "paymentSuccessful": "Платеж успешно выполнен!"
+      "paymentSuccessful": "Платеж успешно выполнен!",
+      "_pending_review": {}
     },
     "business": {
       "noAttendeesExport": "Нет участников для экспорта",
@@ -355,23 +364,28 @@
       "refund": "Возврат средств",
       "refundFunctionalityWillAvailableSoon": "Функция возврата средств скоро будет доступна.",
       "noOrdersExport": "Нет заказов для экспорта",
-      "ordersExported": "Данные о продажах экспортированы!"
+      "ordersExported": "Данные о продажах экспортированы!",
+      "_pending_review": {}
     },
     "calendar": {
-      "calendarUpdated": "Календарь обновлен"
+      "calendarUpdated": "Календарь обновлен",
+      "_pending_review": {}
     },
     "cart": {
       "signRequired": "Требуется вход",
-      "pleaseSignAddItemsYourCart": "Пожалуйста, войди, чтобы добавить товары в корзину."
+      "pleaseSignAddItemsYourCart": "Пожалуйста, войди, чтобы добавить товары в корзину.",
+      "_pending_review": {}
     },
     "chat": {
       "error": "Ошибка",
       "pleaseEnterApiKey": "Пожалуйста, введи ключ API.",
       "success": "Успешно",
-      "apiKeySavedSecurelyWithEncryption": "Ключ API надежно сохранен с шифрованием."
+      "apiKeySavedSecurelyWithEncryption": "Ключ API надежно сохранен с шифрованием.",
+      "_pending_review": {}
     },
     "coaches": {
-      "bookingStarted": "📅 Бронирование начато"
+      "bookingStarted": "📅 Бронирование начато",
+      "_pending_review": {}
     },
     "community": {
       "thumbnailCaptured": "Миниатюра захвачена",
@@ -420,7 +434,8 @@
       "vitanaWillFollowUp": "Vitana свяжется с тобой.",
       "couldnTReopen": "Не удалось вновь открыть",
       "demoRoom": "Демо-комната",
-      "thisExampleRoomCreateYourOwn": "Это пример комнаты. Создай свою, чтобы выйти в эфир!"
+      "thisExampleRoomCreateYourOwn": "Это пример комнаты. Создай свою, чтобы выйти в эфир!",
+      "_pending_review": {}
     },
     "crossover": {
       "bookingStarted": "📅 Бронирование начато",
@@ -430,7 +445,8 @@
       "joined": "✓ Присоединено",
       "chatStarted": "💬 Чат начат",
       "linkCopied": "Ссылка скопирована",
-      "podcastLinkCopiedClipboard": "Ссылка на подкаст скопирована в буфер обмена"
+      "podcastLinkCopiedClipboard": "Ссылка на подкаст скопирована в буфер обмена",
+      "_pending_review": {}
     },
     "dev": {
       "createVtid": "Создать VTID",
@@ -474,7 +490,8 @@
       "documentUploaded": "Документ загружен",
       "frontpageUploaded": "Главная страница загружена",
       "diagnosticsCopiedClipboard": "Диагностика скопирована в буфер обмена",
-      "error": "Ошибка"
+      "error": "Ошибка",
+      "_pending_review": {}
     },
     "diary": {
       "notSupported": "Не поддерживается",
@@ -509,7 +526,8 @@
       "saveFailed": "Сохранение не удалось",
       "failedSaveYourEntryPleaseTry": "Не удалось сохранить твою запись. Пожалуйста, попробуй снова.",
       "undoAvailable": "Отмена доступна",
-      "deleteLastDiaryEntry": "Удалить последнюю дневниковую запись"
+      "deleteLastDiaryEntry": "Удалить последнюю дневниковую запись",
+      "_pending_review": {}
     },
     "discover": {
       "actionSelected": "Действие выбрано",
@@ -518,18 +536,21 @@
       "appointmentBooked": "Запись забронирована! 🎉",
       "yourAppointmentHasConfirmed": "Твоя запись подтверждена",
       "bookingFailed": "Бронирование не удалось",
-      "pleaseTryAgain": "Пожалуйста, попробуй снова"
+      "pleaseTryAgain": "Пожалуйста, попробуй снова",
+      "_pending_review": {}
     },
     "discovery": {
       "connectionRequestSent": "Запрос на подключение отправлен! 💚",
       "theyLlNotifiedYourInterest": "Они будут уведомлены о твоем интересе.",
       "superConnectSent": "Суперсвязь отправлена! ⭐",
-      "youLlAppearAtTopTheir": "Ты появишься в топе их совпадений!"
+      "youLlAppearAtTopTheir": "Ты появишься в топе их совпадений!",
+      "_pending_review": {}
     },
     "events": {
       "eventDeleted": "Событие удалено",
       "failedDeleteEvent": "Не удалось удалить событие",
-      "pleaseTryAgainLater": "Пожалуйста, попробуй позже."
+      "pleaseTryAgainLater": "Пожалуйста, попробуй позже.",
+      "_pending_review": {}
     },
     "feedback": {
       "notSupported": "Не поддерживается",
@@ -543,7 +564,8 @@
       "reportDeleted": "Отчет удален",
       "feedbackReportHasRemoved": "Отчет об отзыве был удален.",
       "error": "Ошибка",
-      "failedDeleteReportPleaseTryAgain": "Не удалось удалить отчет. Пожалуйста, попробуй снова."
+      "failedDeleteReportPleaseTryAgain": "Не удалось удалить отчет. Пожалуйста, попробуй снова.",
+      "_pending_review": {}
     },
     "health": {
       "couldnTStartThatYetOpen": "Пока не удалось запустить — открой Автопилот, чтобы попробовать снова.",
@@ -572,7 +594,8 @@
       "noFileAvailable": "Файл недоступен",
       "couldNotLoadFile": "Не удалось загрузить файл",
       "recalibrationStarted": "🔄 Перекалибровка начата",
-      "reportGeneration": "📊 Создание отчета"
+      "reportGeneration": "📊 Создание отчета",
+      "_pending_review": {}
     },
     "intents": {
       "moreDetailNeeded": "Нужно больше деталей",
@@ -604,7 +627,8 @@
       "themedCoverReady": "Тематическая обложка готова",
       "youCanReplaceItAnyTime": "Ты можешь заменить ее в любое время.",
       "coverPhotoRequired": "Требуется фото обложки",
-      "uploadOneTapGenerateForMe": "Загрузи одно или нажми ✨ Сгенерировать для меня."
+      "uploadOneTapGenerateForMe": "Загрузи одно или нажми ✨ Сгенерировать для меня.",
+      "_pending_review": {}
     },
     "liverooms": {
       "linkCopied": "Ссылка скопирована",
@@ -626,7 +650,8 @@
       "followedTitle": "Теперь ты подписан!",
       "followedDesc": "Теперь ты подписан на {name}",
       "unfollowedTitle": "Ты отписался",
-      "unfollowedDesc": "Ты отписался от {name}"
+      "unfollowedDesc": "Ты отписался от {name}",
+      "_pending_review": {}
     },
     "meetups": {
       "signRequired": "Требуется вход",
@@ -641,7 +666,8 @@
       "failedSendMessage": "Не удалось отправить сообщение",
       "pleaseTryAgainLater": "Пожалуйста, попробуй позже",
       "addedSmartCalendar": "Добавлено в Умный Календарь ✓",
-      "eventSavedWeLlRemindYou": "Событие сохранено. Мы напомним тебе перед началом."
+      "eventSavedWeLlRemindYou": "Событие сохранено. Мы напомним тебе перед началом.",
+      "_pending_review": {}
     },
     "memory": {
       "voiceRecorded": "Голос записан",
@@ -690,7 +716,8 @@
       "pleaseRecordEnterSomeContentBefore": "Пожалуйста, запиши что-нибудь или введи текст перед сохранением.",
       "entrySaved": "Запись сохранена",
       "yourDiaryEntryHasAddedYour": "Твоя дневниковая запись добавлена на твою временную шкалу памяти.",
-      "couldNotSaveYourDiaryEntry": "Не удалось сохранить твою дневниковую запись. Пожалуйста, попробуй снова."
+      "couldNotSaveYourDiaryEntry": "Не удалось сохранить твою дневниковую запись. Пожалуйста, попробуй снова.",
+      "_pending_review": {}
     },
     "messages": {
       "newResponse": "🎉 Новый ответ!",
@@ -727,18 +754,21 @@
       "selectOpenConversationBeforeAttachingFiles": "Выбери или открой чат, прежде чем прикреплять файлы.",
       "uploadFailed": "Загрузка не удалась",
       "failedSendVoiceMessage": "Не удалось отправить голосовое сообщение",
-      "thereErrorSendingYourVoiceMessage": "Произошла ошибка при отправке твоего голосового сообщения"
+      "thereErrorSendingYourVoiceMessage": "Произошла ошибка при отправке твоего голосового сообщения",
+      "_pending_review": {}
     },
     "notifications": {
       "bookingConfirmed": "Бронирование подтверждено! 🎉",
       "paymentReceived": "Платёж получен! 💰",
       "creditsTransferred": "Кредиты переведены! ✨",
       "newServiceBooking": "Новая запись на услугу! 📅",
-      "eventRegistration": "Регистрация на событие! 🎊"
+      "eventRegistration": "Регистрация на событие! 🎊",
+      "_pending_review": {}
     },
     "onboarding": {
       "networkError": "Ошибка сети",
-      "thisYourSpeakableIdAcrossVitana": "Это твой голосовой ID в Vitana. Постоянный — выбирай с умом!"
+      "thisYourSpeakableIdAcrossVitana": "Это твой голосовой ID в Vitana. Постоянный — выбирай с умом!",
+      "_pending_review": {}
     },
     "payment": {
       "missingInformation": "Недостающая информация",
@@ -787,7 +817,8 @@
       "paymentRequestSent": "Запрос на платеж отправлен! 💸",
       "failedSendPaymentRequest": "Не удалось отправить запрос на платеж",
       "pleaseFillAllRequiredFields": "Пожалуйста, заполни все обязательные поля",
-      "exchangeSendRequestSent": "Запрос на обмен и отправку отправлен! ✨"
+      "exchangeSendRequestSent": "Запрос на обмен и отправку отправлен! ✨",
+      "_pending_review": {}
     },
     "proactive": {
       "messageGenerated": "Сообщение сгенерировано!",
@@ -796,7 +827,8 @@
       "invitationMessageCopiedClipboard": "Пригласительное сообщение скопировано в буфер обмена",
       "autoshareScheduled": "Автопубликация запланирована!",
       "editPost": "Редактировать пост",
-      "postEditorComingSoon": "Редактор постов скоро появится!"
+      "postEditorComingSoon": "Редактор постов скоро появится!",
+      "_pending_review": {}
     },
     "profile": {
       "qrCodeDownloaded": "QR-код скачан",
@@ -853,7 +885,8 @@
       "universalCoverRemoved": "Универсальное фото обложки удалено",
       "libraryPhotoUploaded": "Фото добавлено в библиотеку",
       "libraryPhotoRemoved": "Фото удалено",
-      "categoryRequired": "Пожалуйста, выбери сначала категорию."
+      "categoryRequired": "Пожалуйста, выбери сначала категорию.",
+      "_pending_review": {}
     },
     "reminders": {
       "notificationsArenTSupportedThisBrowser": "Уведомления не поддерживаются в этом браузере.",
@@ -869,14 +902,16 @@
       "failedToCreate": "Не удалось создать напоминание",
       "failedToDelete": "Не удалось удалить напоминание",
       "failedToMarkDone": "Не удалось отметить как готовое",
-      "remindersDeleted": "{count} напоминаний удалено"
+      "remindersDeleted": "{count} напоминаний удалено",
+      "_pending_review": {}
     },
     "reseller": {
       "activatingYourResellerProfile": "Активируем твой профиль реселлера...",
       "linkCopiedClipboard": "Ссылка скопирована в буфер обмена!",
       "failedCopyPleaseSelectCopyManually": "Не удалось скопировать. Пожалуйста, выдели и скопируй вручную.",
       "linkCopiedPasteItYourInstagram": "Ссылка скопирована! Вставь ее в свою биографию или историю Instagram.",
-      "failedCopyLink": "Не удалось скопировать ссылку."
+      "failedCopyLink": "Не удалось скопировать ссылку.",
+      "_pending_review": {}
     },
     "settings": {
       "googleConnected": "Google подключен",
@@ -901,7 +936,8 @@
       "failedSwitchRolePleaseTryAgain": "Не удалось переключить роль. Пожалуйста, попробуй ещё раз.",
       "organizationSwitched": "Организация переключена.",
       "errorSwitchingOrganization": "Ошибка переключения организации.",
-      "failedSwitchOrganizationPleaseTryAgain": "Не удалось переключить организацию. Пожалуйста, попробуй ещё раз."
+      "failedSwitchOrganizationPleaseTryAgain": "Не удалось переключить организацию. Пожалуйста, попробуй ещё раз.",
+      "_pending_review": {}
     },
     "sharing": {
       "channelNotConnected": "Канал не подключен.",
@@ -979,7 +1015,8 @@
       "postPublished": "Пост опубликован!",
       "campaignsExportedCsv": "Кампании экспортированы в CSV",
       "smartrescheduleFeatureComingSoon": "Функция Smart-Reschedule скоро появится!",
-      "viberNotDetectedLinkCopiedClipboard": "Viber не обнаружен. Ссылка скопирована в буфер обмена!"
+      "viberNotDetectedLinkCopiedClipboard": "Viber не обнаружен. Ссылка скопирована в буфер обмена!",
+      "_pending_review": {}
     },
     "tickets": {
       "ticketDownloaded": "Билет скачан!",
@@ -992,7 +1029,8 @@
       "ticketDownloadedOpeningEmail": "Билет загружен! Открываю почту...",
       "ticketDownloadedOpeningMessages": "Билет загружен! Открываю сообщения...",
       "ticketSaved": "Билет сохранен!",
-      "eventDetailsCopied": "Детали события скопированы!"
+      "eventDetailsCopied": "Детали события скопированы!",
+      "_pending_review": {}
     },
     "wallet": {
       "invalidAmount": "Неверная сумма",
@@ -1043,7 +1081,8 @@
       "withdrawalFailed": "Ошибка вывода средств.",
       "somethingWentWrongPleaseTryAgain": "Что-то пошло не так. Попробуй еще раз.",
       "pleaseSelectRecipientEnterAmount": "Пожалуйста, выбери получателя и введи сумму.",
-      "exchangeSendComplete": "✅ Обмен и отправка завершены!"
+      "exchangeSendComplete": "✅ Обмен и отправка завершены!",
+      "_pending_review": {}
     },
     "hooks": {
       "error": "Ошибка",
@@ -1308,45 +1347,56 @@
       "exchangeSendSuccessful": "Обмен и отправка успешны! ✨",
       "exchangeSendFailed": "Обмен и отправка не удались",
       "linkAvailable": "Ссылка доступна",
-      "errorUpdatingPreferences": "Ошибка при обновлении настроек"
+      "errorUpdatingPreferences": "Ошибка при обновлении настроек",
+      "_pending_review": {}
     },
     "businesslistings": {
-      "couldNotLoadListings": "Не удалось загрузить объявления"
+      "couldNotLoadListings": "Не удалось загрузить объявления",
+      "_pending_review": {}
     },
     "businessopportunities": {
-      "couldNotLoadOpportunities": "Не удалось загрузить возможности"
+      "couldNotLoadOpportunities": "Не удалось загрузить возможности",
+      "_pending_review": {}
     },
     "checkoutsuccess": {
       "orderConfirmed": "Заказ подтвержден!",
-      "yourPaymentSuccessfulCheckYourEmail": "Твой платеж прошел успешно. Проверь почту для деталей заказа."
+      "yourPaymentSuccessfulCheckYourEmail": "Твой платеж прошел успешно. Проверь почту для деталей заказа.",
+      "_pending_review": {}
     },
     "intentboard": {
-      "couldNotLoadBoard": "Не удалось загрузить доску"
+      "couldNotLoadBoard": "Не удалось загрузить доску",
+      "_pending_review": {}
     },
     "intentmatchdetail": {
       "couldNotLoadMatchDetail": "Не удалось загрузить детали матча",
       "intentClosed": "Намерение выполнено",
-      "couldNotClose": "Не удалось закрыть"
+      "couldNotClose": "Не удалось закрыть",
+      "_pending_review": {}
     },
     "introexperience": {
       "audioPlaybackFailed": "Сбой воспроизведения аудио",
-      "audioUnavailableNow": "Аудио сейчас недоступно"
+      "audioUnavailableNow": "Аудио сейчас недоступно",
+      "_pending_review": {}
     },
     "invitefriends": {
       "nameRequired": "Имя обязательно",
       "pleaseProvideEmailPhone": "Пожалуйста, укажи почту или телефон",
       "contactAdded": "Контакт добавлен",
-      "failedSendInvites": "Не удалось отправить приглашения"
+      "failedSendInvites": "Не удалось отправить приглашения",
+      "_pending_review": {}
     },
     "myintents": {
-      "couldNotLoadIntents": "Не удалось загрузить намерения"
+      "couldNotLoadIntents": "Не удалось загрузить намерения",
+      "_pending_review": {}
     },
     "packagepurchasesuccess": {
       "paymentConfirmed": "Оплата подтверждена!",
-      "yourPackagePurchaseSuccessful": "Покупка пакета прошла успешно."
+      "yourPackagePurchaseSuccessful": "Покупка пакета прошла успешно.",
+      "_pending_review": {}
     },
     "privacysettings": {
-      "couldNotSave": "Не удалось сохранить"
+      "couldNotSave": "Не удалось сохранить",
+      "_pending_review": {}
     },
     "home": {
       "removedFromMemory": "Удалено из хранилища",
@@ -1356,14 +1406,19 @@
       "actionExecuted": "Действие выполнено",
       "yourActionHasCompletedSuccessfully": "Твое действие успешно завершено.",
       "actionDismissed": "Действие отклонено",
-      "thisActionHasRemovedFromYour": "Это действие удалено из вашего списка."
+      "thisActionHasRemovedFromYour": "Это действие удалено из вашего списка.",
+      "_pending_review": {}
     },
     "index": {
-      "vitanaDevGatewayUrlNotConfigured": "URL-адрес Vitana Dev Gateway не настроен"
+      "vitanaDevGatewayUrlNotConfigured": "URL-адрес Vitana Dev Gateway не настроен",
+      "_pending_review": {}
     },
     "dailyGoal": {
       "title": "Поздравляем! Сегодняшняя цель достигнута 🎉",
-      "body": "Просто продолжай."
-    }
-  }
+      "body": "Просто продолжай.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
