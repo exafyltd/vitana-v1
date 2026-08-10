@@ -3512,7 +3512,12 @@
       "goalActivity": "Companheiro de atividade",
       "goalWeightLoss": "Perda de peso",
       "goalMentalWellness": "Bem-estar mental",
-      "goalValues": "Valores alinhados"
+      "goalValues": "Valores alinhados",
+      "videoRoomUnavailable": "Não foi possível carregar a sala de vídeo",
+      "videoRoomUnavailableHint": "A transmissão não está disponível agora. Por favor, tenta novamente.",
+      "autopilotSuggestionsTitle": "Sugestões do Autopilot",
+      "autopilotSuggestionsBody": "Ainda não publicaste um desejo. Entretanto, o Autopilot sugere pessoas da comunidade que podem ser uma boa opção. Publica um desejo para que a IA possa encontrar correspondências reais para ti.",
+      "autopilotSuggestionBadge": "Autopilot"
     },
     "contacts": {
       "addContact": "Adicionar Contato",
@@ -5115,7 +5120,34 @@
       "fromWearablesLogs": "de vestíveis e registos,\n                e um",
       "forConsistencyWeSumFivePillars": "para consistência. Somamos os cinco pilares, aplicamos um",
       "itDampensWhenOnePillarFar": "(ele atenua quando um pilar está muito à frente de outro),\n                e limita a 999.",
-      "markAnyJourneyEventCompletePillar": "Marca qualquer evento de jornada como completo → o pilar que ele visa sobe. Continua dia após dia →\n                o bónus de sequência entra em ação. Conecta um vestível → a barra de dados conectados preenche.\n                Equilibra entre os cinco → o fator de equilíbrio permanece em 1.0× e cada ponto conta totalmente."
+      "markAnyJourneyEventCompletePillar": "Marca qualquer evento de jornada como completo → o pilar que ele visa sobe. Continua dia após dia →\n                o bónus de sequência entra em ação. Conecta um vestível → a barra de dados conectados preenche.\n                Equilibra entre os cinco → o fator de equilíbrio permanece em 1.0× e cada ponto conta totalmente.",
+      "missionAlignment": {
+        "title": "Alinhamento da Missão",
+        "subtitle": "Como as tuas recomendações impulsionam os cinco pilares e a economia da longevidade",
+        "loading": "A carregar dados da missão…",
+        "error": "Não foi possível carregar dados da missão",
+        "noRecs": "Ainda não tens recomendações na tua fila.",
+        "summaryServed": "{pct}% das tuas recomendações impulsionam a missão",
+        "summaryServedCount": "{served} de {total} recomendações alinhadas",
+        "pillarHeading": "Pilares servidos",
+        "economyHeading": "Economia da longevidade",
+        "noPillar": "Não alinhado com pilares",
+        "noEconomy": "Não alinhado com a economia",
+        "pillars": {
+          "nutrition": "Nutrição",
+          "hydration": "Hidratação",
+          "exercise": "Exercício",
+          "sleep": "Sono",
+          "mental": "Saúde Mental"
+        },
+        "economyAxes": {
+          "find_match": "Encontrar uma Correspondência",
+          "marketplace": "Mercado",
+          "income_generation": "Geração de rendimento",
+          "business_formation": "Formação de negócios"
+        },
+        "contractLink": "Ver o contrato do Objetivo Final"
+      }
     },
     "home": {
       "priorityOfTheDay": "Prioridade do Dia:",
@@ -5325,7 +5357,8 @@
       "noRoutinesYetCreateYourFirst": "Ainda não tens rotinas. Cria a tua primeira rotina para começar!",
       "text4NewIdeas": "4 novas ideias",
       "executeAllValue0": "Executar Tudo {value0}",
-      "noValue0ActionsAvailable": "Nenhuma {value0}ação disponível"
+      "noValue0ActionsAvailable": "Nenhuma {value0}ação disponível",
+      "likesCount": "{count} Gostos"
     },
     "icons": {
       "xFormerlyTwitter": "X (antigo Twitter)"

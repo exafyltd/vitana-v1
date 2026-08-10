@@ -42,7 +42,7 @@
     "sendFailedDesc": "O teu feedback não pôde ser enviado. Por favor, tenta novamente.",
     "recognitionError": "Erro de Reconhecimento",
     "recognitionErrorDesc": "O reconhecimento de fala encontrou um erro. Por favor, tenta novamente.",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "transcribing": "A transcrever a tua gravação…",
+    "backendRecordingHint": "A gravar — a tua transcrição aparecerá depois de tocares em Parar."
+  }
 }
