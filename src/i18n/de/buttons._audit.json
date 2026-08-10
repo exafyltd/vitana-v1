@@ -56,10 +56,8 @@
       "phase": "llm"
     },
     "buttons.previous": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incomplete adjective; 'Zurück' is the standard for a 'Previous' button.",
-      "suggested": "Zurück",
       "phase": "llm"
     },
     "buttons.retry": {
@@ -118,10 +116,9 @@
       "phase": "llm"
     },
     "buttons.clear": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Löschen' means 'delete', which is too strong for 'Clear'. 'Clear' often implies emptying or resetting.",
-      "suggested": "Leeren",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.5,
+      "issue": "The English word 'Clear' is highly context-dependent in UI. 'Leeren' accurately translates 'to empty', but 'Clear' can also mean 'to delete' (löschen), 'to reset' (zurücksetzen), or 'to remove a selection' (Auswahl aufheben). Without specific context (e.g., 'Clear search', 'Clear form', 'Clear notifications'), it's hard to confirm if 'Leeren' is the most appropriate translation.",
       "phase": "llm"
     },
     "buttons.filter": {
@@ -280,5 +277,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:04:56.043Z"
+  "generatedAt": "2026-08-10T05:04:30.377Z"
 }
