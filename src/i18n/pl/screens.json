@@ -3512,7 +3512,12 @@
       "goalActivity": "Partner do aktywności",
       "goalWeightLoss": "Odchudzanie",
       "goalMentalWellness": "Zdrowie psychiczne",
-      "goalValues": "Zgodne wartości"
+      "goalValues": "Zgodne wartości",
+      "videoRoomUnavailable": "Nie udało się załadować pokoju wideo",
+      "videoRoomUnavailableHint": "Strumień jest teraz niedostępny. Spróbuj ponownie.",
+      "autopilotSuggestionsTitle": "Sugestie Autopilota",
+      "autopilotSuggestionsBody": "Nie opublikowałeś jeszcze życzenia. W międzyczasie Autopilot sugeruje osoby ze społeczności, które mogłyby pasować. Opublikuj życzenie, aby AI mogła znaleźć dla ciebie prawdziwe dopasowania.",
+      "autopilotSuggestionBadge": "Autopilot"
     },
     "contacts": {
       "addContact": "Dodaj kontakt",
@@ -5115,7 +5120,34 @@
       "fromWearablesLogs": "z gadżetów noszonych i dzienników,\n i",
       "forConsistencyWeSumFivePillars": "za konsekwencję. Sumujemy pięć filarów, stosujemy",
       "itDampensWhenOnePillarFar": "(osłabia się, gdy jeden filar jest znacznie przed innym),\n i ograniczamy do 999.",
-      "markAnyJourneyEventCompletePillar": "Oznacz dowolne wydarzenie w podróży jako ukończone → filar, którego dotyczy, wzrasta. Kontynuuj dzień po dniu →\n włącza się bonus za serię. Podłącz gadżet noszony → pasek połączonych danych się zapełnia.\n Równowaga we wszystkich pięciu → współczynnik równowagi pozostaje na poziomie 1.0×, a każdy punkt liczy się w pełni."
+      "markAnyJourneyEventCompletePillar": "Oznacz dowolne wydarzenie w podróży jako ukończone → filar, którego dotyczy, wzrasta. Kontynuuj dzień po dniu →\n włącza się bonus za serię. Podłącz gadżet noszony → pasek połączonych danych się zapełnia.\n Równowaga we wszystkich pięciu → współczynnik równowagi pozostaje na poziomie 1.0×, a każdy punkt liczy się w pełni.",
+      "missionAlignment": {
+        "title": "Zgodność z misją",
+        "subtitle": "Jak twoje rekomendacje wspierają pięć filarów i gospodarkę długowieczności",
+        "loading": "Ładowanie danych misji…",
+        "error": "Nie udało się załadować danych misji",
+        "noRecs": "Brak rekomendacji w twojej kolejce.",
+        "summaryServed": "{pct}% twoich rekomendacji wspiera misję",
+        "summaryServedCount": "{served} z {total} rekomendacji zgodnych",
+        "pillarHeading": "Obsłużone filary",
+        "economyHeading": "Gospodarka długowieczności",
+        "noPillar": "Niezgodne z filarami",
+        "noEconomy": "Niezgodne z gospodarką",
+        "pillars": {
+          "nutrition": "Odżywianie",
+          "hydration": "Nawodnienie",
+          "exercise": "Ćwiczenia",
+          "sleep": "Sen",
+          "mental": "Zdrowie psychiczne"
+        },
+        "economyAxes": {
+          "find_match": "Znajdź dopasowanie",
+          "marketplace": "Rynek",
+          "income_generation": "Generowanie dochodu",
+          "business_formation": "Tworzenie biznesu"
+        },
+        "contractLink": "Zobacz kontrakt Celu Ostatecznego"
+      }
     },
     "home": {
       "priorityOfTheDay": "Priorytet dnia:",
@@ -5325,7 +5357,8 @@
       "noRoutinesYetCreateYourFirst": "Brak rutyn. Stwórz swoją pierwszą rutynę, aby zacząć!",
       "text4NewIdeas": "4 nowe pomysły",
       "executeAllValue0": "Wykonaj wszystkie {value0}",
-      "noValue0ActionsAvailable": "Brak dostępnych {value0} działań"
+      "noValue0ActionsAvailable": "Brak dostępnych {value0} działań",
+      "likesCount": "{count} Polubień"
     },
     "icons": {
       "xFormerlyTwitter": "X (dawniej Twitter)"
