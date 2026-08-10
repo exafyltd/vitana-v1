@@ -70,8 +70,22 @@ const args = Object.fromEntries(
   }),
 );
 
-const CHECK = Boolean(args.check) || Boolean(args['check-all']);
 const FLAG = Boolean(args.flag);
+// --flag IMPLIES --check (VTID-03569). Flagging is a consumer of drift
+// detection: the flagging branch lives past the `if (!CHECK) { …write…;
+// continue }` guard below, so `--flag` on its own never reached it.
+//
+// It did not merely no-op. It fell into the WRITE path and re-stamped every
+// key against today's source — erasing the record of what each translation was
+// actually made from, marking stale strings as current, and turning the drift
+// gate green with the stale text still in place. Nothing failed and nothing
+// warned, because a rewritten stamp is indistinguishable from an honest one.
+//
+// The command this script prints on its own failure is the standalone form
+// (`--locale=<x> --flag`), so the documented remedy for drift was the thing
+// that destroyed the evidence of it. That is the same shape as the file header
+// warning right above: "never [re-stamp] to silence a --check".
+const CHECK = Boolean(args.check) || Boolean(args['check-all']) || FLAG;
 // A locale's stamp must track the source it was actually TRANSLATED FROM, or
 // it measures the wrong thing. scripts/translate-keys.mjs reads `en/` (its
 // --source default), so es/sr/fr/pt/ru/pl derive from English. `en` itself is

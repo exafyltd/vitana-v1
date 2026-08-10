@@ -81,6 +81,21 @@ jobs:
         with:
           node-version: 20
 
+      # VTID-03569. Flag keys whose EN source has CHANGED since they were
+      # translated, so the translator re-does them in the same run.
+      #
+      # --init only ever flags keys MISSING from the target. A key that exists
+      # but whose English source was since rewritten is present, non-empty and
+      # plausible-looking — invisible to --init, and permanently so: every
+      # subsequent run also skips it. Drift is the failure mode a catalog at
+      # "100% coverage" still has, because coverage counts rows and a stale row
+      # is still a row.
+      #
+      # Not continue-on-error: --flag mutates the catalogs and must either do
+      # that correctly or stop before the translator spends money on the result.
+      - name: Flag drifted keys for re-translation
+        run: node scripts/i18n-stamp-source.mjs --locale=${{ inputs.locale }} --flag
+
       # continue-on-error so a PARTIAL failure still reaches the commit step.
       # translate-keys.mjs exits 1 if ANY key failed, and the script persists
       # after every batch — so without this, a run that translated 14,068 of
@@ -103,6 +118,24 @@ jobs:
           echo "Running: node scripts/translate-keys.mjs $ARGS"
           node scripts/translate-keys.mjs $ARGS
 
+      # VTID-03569. Re-stamp what the translator just wrote, in the SAME run
+      # that wrote it.
+      #
+      # The drift gate demands a stamp per translated key, and nothing in this
+      # workflow ever produced one — so every translate run left the gate red
+      # ("N never stamped") and needed a separate manual command that is easy
+      # to forget and invisible when forgotten. The loop is now self-closing:
+      # translate and stamp are two halves of one operation and cannot drift
+      # apart, because they cannot be run separately.
+      #
+      # always(), because a partial translation still needs its successful keys
+      # stamped — otherwise re-running would treat them as untranslated and pay
+      # for them a second time. Stamps are derived from the catalogs on disk, so
+      # they describe exactly what is there, complete or not.
+      - name: Re-stamp translated keys
+        if: always()
+        run: node scripts/i18n-stamp-source.mjs --locale=${{ inputs.locale }}
+
       # always() so partial progress is committed even when the translator
       # reported failures. The script is idempotent and resumable — keys that
       # succeeded are written and cleared of _pending_review, so a re-run picks
@@ -114,7 +147,13 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # `git diff --quiet` doesn't see new untracked files (a fresh locale dir from --init).
           # Stage everything first, then check the cached diff against HEAD.
-          git add src/i18n/
+          #
+          # i18n-source-stamps/ as well as src/i18n/ (VTID-03569) — the stamps
+          # are written by the step above and live OUTSIDE src/i18n/. Staging
+          # only the catalogs would commit the translations and silently discard
+          # the record of what they were translated from, which is precisely the
+          # state the drift gate reports as "never stamped".
+          git add src/i18n/ i18n-source-stamps/
           if git diff --cached --quiet; then
             echo "No translation changes."
             exit 0
