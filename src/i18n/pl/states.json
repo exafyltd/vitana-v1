@@ -1,0 +1,26 @@
+{
+  "states": {
+    "loading": "Ładowanie...",
+    "saving": "Zapisywanie...",
+    "sending": "Wysyłanie...",
+    "uploading": "Przesyłanie...",
+    "downloading": "Pobieranie...",
+    "processing": "Przetwarzanie...",
+    "signingIn": "Logowanie...",
+    "signingOut": "Wylogowywanie...",
+    "signingUp": "Rejestrowanie...",
+    "importing": "Importowanie...",
+    "exporting": "Eksportowanie...",
+    "syncing": "Synchronizowanie...",
+    "generating": "Generowanie...",
+    "connecting": "Łączenie...",
+    "disconnecting": "Rozłączanie...",
+    "refreshing": "Odświeżanie...",
+    "searching": "Wyszukiwanie...",
+    "deleting": "Usuwanie...",
+    "creating": "Tworzenie...",
+    "updating": "Aktualizowanie...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

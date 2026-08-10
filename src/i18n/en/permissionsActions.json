@@ -1,39 +1,50 @@
 {
   "permissionsActions": {
-    "title": "Privacy & Permission Actions",
+    "title": "Privacy & Permissions Actions",
     "items": {
       "privacySettings": {
         "title": "Privacy Settings",
-        "description": "Configure data privacy and sharing preferences"
+        "description": "Configure Privacy and Sharing Settings",
+        "_pending_review": {}
       },
       "manageAccess": {
         "title": "Manage Access",
-        "description": "Control who can view your health memories"
+        "description": "Control who can view your health memories",
+        "_pending_review": {}
       },
       "securitySettings": {
         "title": "Security Settings",
-        "description": "Update authentication and security preferences"
+        "description": "Update Authentication and Security Settings",
+        "_pending_review": {}
       },
       "apiKeysAccess": {
         "title": "API Keys & Access",
-        "description": "Manage third-party app integrations and API access"
+        "description": "Manage third-party app integrations and API access",
+        "_pending_review": {}
       },
       "dataRights": {
         "title": "Data Rights",
-        "description": "Exercise your rights to data portability and deletion"
+        "description": "Exercise your rights to data portability and deletion",
+        "_pending_review": {}
       },
       "auditLogs": {
         "title": "Audit Logs",
-        "description": "Review access history and security audit trail"
+        "description": "Review access history and security audit trail",
+        "_pending_review": {}
       },
       "permissionSettings": {
-        "title": "Permission Settings",
-        "description": "Fine-tune granular permissions for different features"
+        "title": "Permissions Settings",
+        "description": "Fine-tune granular permissions for different features",
+        "_pending_review": {}
       },
       "exportData": {
         "title": "Export Data",
-        "description": "Download your memories and health data securely"
-      }
-    }
-  }
+        "description": "Download your memories and health data securely",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

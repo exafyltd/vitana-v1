@@ -1,0 +1,92 @@
+{
+  "profile": {
+    "defaultBio": "Энтузиаст велнеса, увлеченный целостным здоровьем и созданием сообщества. 🌱",
+    "autopilot": {
+      "polishBio": "Отполируй свой Био, Архетип и Избранное",
+      "editHighlights": "Редактировать избранное",
+      "saveHighlights": "Сохранить избранное",
+      "highlightsDesc": "Выбери свои лучшие посты и медиа для отображения вверху твоего профиля. Избранный контент появляется в разделе Избранное и привлекает больше подписчиков.",
+      "try": "Попробовать",
+      "_pending_review": {}
+    },
+    "identity": {
+      "vitanaIndex": "Индекс Vitana",
+      "basedOnActivity": "На основе активности, вовлеченности в здоровье и вклада",
+      "viewLongevityId": "Посмотреть мой ID долголетия",
+      "follow": "Подписаться",
+      "followingState": "Ты подписан",
+      "understandIndex": "Понять индекс",
+      "brandFooter": "MAXINA × VITANA",
+      "_pending_review": {}
+    },
+    "tabs": {
+      "identity": "Идентичность",
+      "social": "Социальное",
+      "account": "Аккаунт",
+      "business": "Бизнес",
+      "_pending_review": {}
+    },
+    "account": {
+      "notSet": "Не установлено",
+      "editField": "Редактировать {field}",
+      "visibilityToggle": "Видимость: {label}. Нажми, чтобы изменить.",
+      "visibility": {
+        "private": "Приватный",
+        "connections": "Связи",
+        "public": "Публичный",
+        "_pending_review": {}
+      },
+      "sections": {
+        "publicProfile": "Публичный профиль",
+        "publicProfileSubtitle": "Показано в Идентичности",
+        "basicInfo": "Основная личная информация",
+        "basicInfoSubtitle": "Неизменяемые данные идентичности",
+        "contactInfo": "Контактная информация",
+        "accountDetails": "Детали аккаунта",
+        "_pending_review": {}
+      },
+      "fields": {
+        "avatar": "Аватар",
+        "handle": "Никнейм",
+        "longevityArchetype": "Архетип долголетия",
+        "firstName": "Имя",
+        "lastName": "Фамилия",
+        "dateOfBirth": "Дата рождения",
+        "gender": "Пол",
+        "maritalStatus": "Семейное положение",
+        "email": "Email",
+        "phone": "Телефон",
+        "address": "Адрес",
+        "country": "Страна",
+        "city": "Город",
+        "memberSince": "Участник с",
+        "accountType": "Тип аккаунта",
+        "verificationStatus": "Статус верификации",
+        "_pending_review": {}
+      },
+      "values": {
+        "uploaded": "Загружено",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "business": {
+      "title": "Мои рекомендации",
+      "subtitle": "Продукты, которые ты рекомендовал(-а), и что ты на них заработал(-а)",
+      "empty": "Пока нет рекомендаций",
+      "emptyDesc": "Рекомендуй продукт из раздела «Обзор», чтобы увидеть свои клики, покупки и комиссии здесь.",
+      "clicks": "{count} кликов",
+      "conversions": "{count} покупок",
+      "totalEarned": "Всего заработано",
+      "statusActive": "Активно",
+      "shareRow": "Поделиться ссылкой на рекомендацию",
+      "publicTitle": "Рекомендации",
+      "publicSubtitle": "Продукты, рекомендованные этим профилем",
+      "publicEmpty": "Пока нет рекомендаций",
+      "viewProduct": "Посмотреть",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

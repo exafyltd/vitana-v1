@@ -1,0 +1,15 @@
+{
+  "menu": {
+    "home": "Accueil",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "logout": "Déconnexion",
+    "help": "Aide",
+    "about": "À propos",
+    "contact": "Contact",
+    "privacy": "Confidentialité",
+    "terms": "Conditions d'utilisation",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

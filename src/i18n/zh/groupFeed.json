@@ -1,0 +1,17 @@
+{
+  "groupFeed": {
+    "placeholder": "和群组分享点什么...",
+    "post": "发布",
+    "noMessages": "暂无消息",
+    "beFirst": "快来成为本群第一个发帖的人吧！",
+    "joinToPost": "加入群组即可开始发帖。",
+    "messageSent": "消息已发送",
+    "deleteConfirm": "删除这条消息吗？",
+    "messageDeleted": "消息已删除",
+    "error": "错误",
+    "errorSend": "消息发送失败",
+    "errorDelete": "消息删除失败",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

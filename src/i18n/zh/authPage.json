@@ -1,0 +1,21 @@
+{
+  "authPage": {
+    "welcomeTitle": "欢迎来到 VITANA",
+    "subtitle": "你的个性化健康智能平台",
+    "signIn": "登录",
+    "signUp": "注册",
+    "email": "邮箱",
+    "password": "密码",
+    "fullName": "姓名",
+    "enterEmail": "输入你的邮箱",
+    "enterPassword": "输入你的密码",
+    "enterFullName": "输入你的姓名",
+    "createPassword": "创建密码",
+    "createAccount": "创建账号",
+    "orContinueWith": "或者继续使用",
+    "backToPortals": "返回所有门户",
+    "keepLoggedIn": "保持登录",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

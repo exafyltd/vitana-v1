@@ -3,9 +3,9 @@
     "welcome": "Dobrodošao u VITANA",
     "subtitle": "Tvoja personalizovana platforma za dugovečnost",
     "connectApps": "Poveži svoje aplikacije",
-    "connectAppsDesc": "Poveži svoje zdravstvene i wellness aplikacije za bolje uvide",
+    "connectAppsDesc": "Poveži svoje aplikacije za zdravlje i velnes za bolje uvide",
     "setGoals": "Postavi svoje ciljeve",
-    "setGoalsDesc": "Definiši svoje zdravstvene ciljeve i ciljeve dugovečnosti",
+    "setGoalsDesc": "Definiši svoje ciljeve za zdravlje i dugovečnost",
     "joinCommunity": "Pridruži se zajednici",
     "joinCommunityDesc": "Poveži se sa istomišljenicima na sličnim putovanjima",
     "getStarted": "Započni",
@@ -23,7 +23,10 @@
       "handleAvailable": "Korisničko ime je dostupno!",
       "handleMinLength": "Najmanje 3 karaktera",
       "saving": "Podešavanje...",
-      "submit": "Hajde da počnemo!"
-    }
-  }
+      "submit": "Hajde da počnemo!",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

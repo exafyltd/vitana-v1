@@ -1,0 +1,92 @@
+{
+  "profile": {
+    "defaultBio": "Entusiasta do bem-estar apaixonado(a) por saúde holística e construção de comunidade. 🌱",
+    "autopilot": {
+      "polishBio": "Aprimora o teu Bio, Arquétipo e Destaques",
+      "editHighlights": "Editar Destaques",
+      "saveHighlights": "Salvar Destaques",
+      "highlightsDesc": "Escolhe as tuas melhores publicações e multimédia para exibir no topo do teu perfil. Conteúdo destacado aparece na secção de Destaques e atrai mais seguidores.",
+      "try": "Experimenta",
+      "_pending_review": {}
+    },
+    "identity": {
+      "vitanaIndex": "Índice Vitana",
+      "basedOnActivity": "Baseado(a) em atividade, engajamento com a saúde e contribuição",
+      "viewLongevityId": "Ver meu ID de Longevidade",
+      "follow": "Seguir",
+      "followingState": "Seguindo",
+      "understandIndex": "Entender índice",
+      "brandFooter": "MAXINA × VITANA",
+      "_pending_review": {}
+    },
+    "tabs": {
+      "identity": "Identidade",
+      "social": "Social",
+      "account": "Conta",
+      "business": "Negócios",
+      "_pending_review": {}
+    },
+    "account": {
+      "notSet": "Não definido",
+      "editField": "Editar {field}",
+      "visibilityToggle": "Visibilidade: {label}. Toca para mudar.",
+      "visibility": {
+        "private": "Privado",
+        "connections": "Conexões",
+        "public": "Público",
+        "_pending_review": {}
+      },
+      "sections": {
+        "publicProfile": "Perfil público",
+        "publicProfileSubtitle": "Exibido(a) em Identidade",
+        "basicInfo": "Informações Pessoais Básicas",
+        "basicInfoSubtitle": "Dados fixos de identidade",
+        "contactInfo": "Informações de Contato",
+        "accountDetails": "Detalhes da Conta",
+        "_pending_review": {}
+      },
+      "fields": {
+        "avatar": "Avatar",
+        "handle": "Nome de usuário",
+        "longevityArchetype": "Arquétipo de longevidade",
+        "firstName": "Primeiro nome",
+        "lastName": "Sobrenome",
+        "dateOfBirth": "Data de nascimento",
+        "gender": "Gênero",
+        "maritalStatus": "Estado civil",
+        "email": "E-mail",
+        "phone": "Telefone",
+        "address": "Endereço",
+        "country": "País",
+        "city": "Cidade",
+        "memberSince": "Membro desde",
+        "accountType": "Tipo de conta",
+        "verificationStatus": "Status de verificação",
+        "_pending_review": {}
+      },
+      "values": {
+        "uploaded": "Carregado",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "business": {
+      "title": "Minhas Recomendações",
+      "subtitle": "Produtos que recomendaste e o que ganhaste com eles",
+      "empty": "Nenhuma recomendação ainda",
+      "emptyDesc": "Recomenda um produto do Discover para veres os teus cliques, compras e comissões aqui.",
+      "clicks": "{count} cliques",
+      "conversions": "{count} compras",
+      "totalEarned": "Total ganho",
+      "statusActive": "Ativo",
+      "shareRow": "Partilhar link de recomendação",
+      "publicTitle": "Recomendações",
+      "publicSubtitle": "Produtos recomendados por este perfil",
+      "publicEmpty": "Nenhuma recomendação ainda",
+      "viewProduct": "Ver",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

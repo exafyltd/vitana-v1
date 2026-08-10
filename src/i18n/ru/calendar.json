@@ -1,0 +1,163 @@
+{
+  "calendar": {
+    "smartCalendar": "Умный календарь",
+    "myCalendar": "Мой календарь",
+    "bookedActivities": "Твои забронированные занятия в VITANA",
+    "addEvent": "Добавить событие",
+    "synced": "Синхронизировано",
+    "syncing": "Синхронизация",
+    "today": "Сегодня",
+    "week": "Неделя",
+    "month": "Месяц",
+    "agenda": "Расписание",
+    "nothingScheduled": "Ничего не запланировано",
+    "tryQuickAdd": "Попробуй Быстрое добавление или позволь Автопилоту спланировать твой день",
+    "clickSlotHint": "Нажми на слот, чтобы создать событие • Перетащи для перемещения",
+    "noEventsOnDate": "На эту дату нет событий",
+    "lastSynced": "Последняя синхронизация",
+    "justNow": "только что",
+    "now": "Сейчас",
+    "untitledEvent": "Событие без названия",
+    "newEvent": "Новое событие",
+    "close": "Закрыть",
+    "noBookingsToday": "На сегодня нет бронирований",
+    "noBookingsYet": "Пока нет бронирований",
+    "nextUpcoming": "Следующее",
+    "exploreActivities": "Открой для себя занятия для своего календаря",
+    "browseActivities": "Просмотр занятий",
+    "bookedEvents": {
+      "title": "Твои запланированные события",
+      "todayLabel": "Сегодня",
+      "nextUp": "Далее",
+      "noEventsToday": "Сегодня нет событий",
+      "_pending_review": {}
+    },
+    "filters": {
+      "personal": "Личное",
+      "community": "Сообщество",
+      "work": "Работа",
+      "health": "Здоровье",
+      "workout": "Тренировка",
+      "_pending_review": {}
+    },
+    "categories": {
+      "community": "Сообщество",
+      "fitness": "Фитнес",
+      "health": "Здоровье",
+      "nutrition": "Питание",
+      "professional": "Работа",
+      "personal": "Личное",
+      "training": "Тренировка",
+      "_pending_review": {}
+    },
+    "bookingStatus": {
+      "booked": "Забронировано",
+      "rsvp": "Ответить",
+      "ticket": "Билет",
+      "reserved": "Зарезервировано",
+      "_pending_review": {}
+    },
+    "timeGroups": {
+      "today": "Сегодня",
+      "tomorrow": "Завтра",
+      "thisWeek": "На этой неделе",
+      "later": "Позже",
+      "_pending_review": {}
+    },
+    "autopilot": {
+      "suggestions": "Предложения Автопилота",
+      "badge": "Автопилот",
+      "accept": "Принять",
+      "snooze": "Напомни позже",
+      "dismiss": "Отклонить",
+      "undo": "Отменить",
+      "laterToday": "Позже сегодня",
+      "tomorrow": "Завтра",
+      "conflictsWith": "Конфликтует с:",
+      "suggestionAccepted": "Предложение принято",
+      "calendarUpdated": "Автопилот обновил твой календарь",
+      "suggestionUndone": "Предложение отменено",
+      "changesReverted": "Изменения отменены",
+      "suggestionSnoozed": "Предложение отложено",
+      "reminderLaterToday": "Напоминание установлено на сегодня",
+      "reminderTomorrow": "Напоминание установлено на завтра",
+      "recommendFocus": "Рекомендуем блок для фокуса",
+      "focusBlockDesc": "У тебя есть доступный 90-минутный слот. Идеально для сфокусированной работы.",
+      "_pending_review": {}
+    },
+    "toasts": {
+      "eventCreated": "Событие создано",
+      "eventCreatedDesc": "Твое событие было добавлено в календарь",
+      "eventDeleted": "Событие удалено",
+      "eventDeletedDesc": "Событие было удалено из твоего календаря",
+      "syncingTitle": "Синхронизация...",
+      "syncingDesc": "Синхронизация с внешними календарями",
+      "syncedTitle": "Синхронизировано",
+      "syncedDesc": "Календарь обновлен",
+      "joiningEvent": "Присоединяемся к событию",
+      "openingVideoCall": "Открываем видеозвонок...",
+      "messageAttendees": "Написать участникам",
+      "featureComingSoon": "Функция скоро появится",
+      "inviteFollowers": "Пригласить подписчиков",
+      "rescheduleEvent": "Перенести событие",
+      "shareToGroup": "Поделиться в группе",
+      "_pending_review": {}
+    },
+    "error": {
+      "failedToCreate": "Не удалось создать событие",
+      "_pending_review": {}
+    },
+    "allDay": "Весь день",
+    "milestoneToday": "Веха",
+    "focus": {
+      "todaysFocus": "Фокус на сегодня",
+      "lightDay": "Легкий день — исследуй активности или наверстай упущенное в дневнике",
+      "moreSteps": "больше шагов",
+      "_pending_review": {}
+    },
+    "badge": {
+      "guidedStep": "Шаг с подсказкой",
+      "milestone": "Веха",
+      "wellness": "Велнес",
+      "_pending_review": {}
+    },
+    "action": {
+      "start": "Начать",
+      "continue": "Продолжить",
+      "join": "Присоединиться",
+      "details": "Подробнее",
+      "viewPlan": "Посмотреть план",
+      "open": "Открыть",
+      "done": "Готово",
+      "_pending_review": {}
+    },
+    "group": {
+      "stepsRemaining": "шагов осталось",
+      "min": "мин.",
+      "_pending_review": {}
+    },
+    "journey": {
+      "dayOf": "День {day} из {total}",
+      "yourJourney": "Твой путь",
+      "nextMilestone": "Следующий этап",
+      "showFullAgenda": "Показать полное расписание",
+      "moreEvents": "ещё событий",
+      "onboardingPlan": "План адаптации на сегодня",
+      "estimatedTime": "~{minutes} мин.",
+      "startPlan": "Начать план",
+      "tasksCompleted": "{completed}/{total} выполнено",
+      "waveNames": {
+        "wave-1": "Начало работы",
+        "wave-2": "Ежедневные якоря",
+        "wave-3": "Углубление связей",
+        "wave-4": "Интеллект здоровья",
+        "wave-5": "Моменты озарения",
+        "wave-6": "Рекомендации и Открытия",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

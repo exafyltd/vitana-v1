@@ -1,0 +1,70 @@
+{
+  "marketplaceCheckout": {
+    "balance": {
+      "title": "Twoje saldo",
+      "loading": "Ładowanie salda…",
+      "empty": "Brak salda",
+      "addMoney": "Doładuj",
+      "_pending_review": {}
+    },
+    "checkout": {
+      "button": "Kasa",
+      "processing": "Przetwarzanie…",
+      "successTitle": "Zamówienie złożone",
+      "successBody": "Twoje saldo zostało obciążone, a zamówienie utworzone.",
+      "duplicateTitle": "Zamówienie już złożone",
+      "duplicateBody": "To zamówienie zostało już przetworzone.",
+      "affiliateTitle": "Dokończ zakup u sprzedawcy",
+      "affiliateBody": "Niektóre produkty kupujesz bezpośrednio u sprzedawcy. Otwórz poniższe linki, aby dokończyć zakup.",
+      "affiliateLink": "Dokończ zakup u sprzedawcy",
+      "affiliateOpened": "Linki do sprzedawcy otwarte w nowych kartach.",
+      "_pending_review": {}
+    },
+    "addMoney": {
+      "title": "Doładuj",
+      "description": "Doładuj swoje saldo kartą przez Stripe.",
+      "amountLabel": "Kwota",
+      "amountPlaceholder": "0,00",
+      "currencyLabel": "Waluta",
+      "currencyEur": "EUR",
+      "currencyUsd": "USD",
+      "continue": "Przejdź do płatności",
+      "processing": "Przygotowywanie…",
+      "invalidAmount": "Wprowadź prawidłową kwotę.",
+      "failed": "Nie udało się rozpocząć doładowania.",
+      "_pending_review": {}
+    },
+    "deposit": {
+      "checkingTitle": "Potwierdzanie płatności",
+      "checkingBody": "Czekamy na potwierdzenie Twojej płatności. Może to chwilę potrwać.",
+      "succeededTitle": "Saldo doładowane",
+      "succeededBody": "Twoje saldo zostało pomyślnie doładowane.",
+      "failedTitle": "Doładowanie nieudane",
+      "failedBody": "Twoje doładowanie nie powiodło się. Nic nie zostało pobrane.",
+      "amountLabel": "Kwota",
+      "backToCart": "Wróć do koszyka",
+      "_pending_review": {}
+    },
+    "errors": {
+      "invalid_request": "Żądanie było nieprawidłowe. Sprawdź swój koszyk.",
+      "CART_EMPTY": "Twój koszyk jest pusty.",
+      "PRODUCT_UNAVAILABLE": "Produkt w Twoim koszyku nie jest już dostępny.",
+      "PRICE_UNAVAILABLE": "Cena produktu jest obecnie niedostępna.",
+      "MIXED_CURRENCY": "Twój koszyk zawiera produkty w różnych walutach. Rozdziel je.",
+      "UNSUPPORTED_WALLET_CURRENCY": "Ta waluta nie jest obsługiwana przez Twoje saldo.",
+      "WALLET_ACCOUNT_MISSING": "Konto salda dla tej waluty nie zostało jeszcze skonfigurowane.",
+      "WALLET_ACCOUNT_INACTIVE": "Twoje konto salda jest obecnie nieaktywne.",
+      "INSUFFICIENT_BALANCE": "Twoje saldo jest niewystarczające na ten zakup. Dodaj pieniądze.",
+      "TENANT_REQUIRED": "Ta operacja wymaga aktywnego obszaru roboczego.",
+      "WALLET_DEBIT_FAILED": "Doładowanie Twojego salda nie powiodło się. Spróbuj ponownie.",
+      "CART_READ_FAILED": "Nie udało nam się odczytać Twojego koszyka. Spróbuj ponownie.",
+      "ORDER_WRITE_FAILED": "Nie udało się zapisać Twojego zamówienia. Spróbuj ponownie.",
+      "WALLET_READ_FAILED": "Nie udało nam się odczytać Twojego salda. Spróbuj ponownie.",
+      "GATEWAY_MISCONFIGURED": "Usługa płatności jest obecnie niedostępna. Spróbuj ponownie później.",
+      "unknown": "Coś poszło nie tak podczas realizacji zamówienia. Spróbuj ponownie.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -9,10 +9,12 @@
     "networkError": "Mrežna greška",
     "networkErrorDesc": "Molimo proveri internet konekciju.",
     "unauthorized": "Neautorizovano",
-    "unauthorizedDesc": "Molimo prijavi se da nastaviš.",
+    "unauthorizedDesc": "Prijavi se da nastaviš.",
     "forbidden": "Pristup odbijen",
     "forbiddenDesc": "Nemaš dozvolu za ovu radnju.",
     "notFound": "Nije pronađeno",
-    "notFoundDesc": "Tražena stavka nije pronađena."
-  }
+    "notFoundDesc": "Tražena stavka nije pronađena.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

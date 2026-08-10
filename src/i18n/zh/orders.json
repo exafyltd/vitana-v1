@@ -1,0 +1,89 @@
+{
+  "orders": {
+    "myOrders": "我的订单",
+    "title": "订单",
+    "description": "你的订单历史和有效订阅",
+    "trackDescription": "追踪你的产品订单和活动门票",
+    "searchPlaceholder": "搜索订单...",
+    "tabs": {
+      "active": "有效",
+      "history": "历史记录",
+      "all": "全部",
+      "completed": "已完成",
+      "cancelled": "已取消",
+      "_pending_review": {}
+    },
+    "filters": {
+      "all": "全部",
+      "events": "活动",
+      "products": "产品",
+      "vouchers": "优惠券",
+      "services": "服务",
+      "refunds": "退款",
+      "_pending_review": {}
+    },
+    "previewNotice": "这些是预览订单。你的实际订单会显示在这里。",
+    "sampleData": "示例数据",
+    "emptyActive": {
+      "title": "没有进行中的订单",
+      "description": "你没有任何进行中的订单或即将到来的活动。",
+      "_pending_review": {}
+    },
+    "emptyHistory": {
+      "title": "没有订单历史",
+      "description": "你已完成的订单和过去的活动会显示在这里。",
+      "_pending_review": {}
+    },
+    "noOrders": "还没有订单",
+    "noOrdersDesc": "一旦你购买了东西，你的订单就会显示在这里。",
+    "browseProducts": "浏览产品",
+    "findEvents": "查找活动",
+    "startShopping": "开始购物",
+    "noFilter": "没有 {filter}",
+    "noFilterDesc": "在你的历史记录中没有找到 {filter}。",
+    "orderDate": "订单日期",
+    "orderNumber": "订单号",
+    "viewDetails": "查看详情",
+    "trackOrder": "追踪订单",
+    "reorder": "再次订购",
+    "detailSheet": {
+      "title": "订单详情",
+      "orderInfo": "订单信息",
+      "orderReference": "订单编号",
+      "purchaseDate": "购买日期",
+      "eventDate": "活动日期",
+      "location": "地点",
+      "quantity": "数量",
+      "tickets": "张票",
+      "yourTicket": "你的门票",
+      "giftVoucher": "礼品券",
+      "code": "兑换码",
+      "sendToRecipient": "发送给收件人",
+      "recipientEmail": "收件人邮箱 *",
+      "recipientName": "收件人姓名",
+      "personalMessage": "个人消息",
+      "cancel": "取消",
+      "send": "发送",
+      "downloadPdf": "下载PDF",
+      "_pending_review": {}
+    },
+    "status": {
+      "upcoming": "即将到来",
+      "attended": "已参加",
+      "expired": "已过期",
+      "completed": "已完成",
+      "delivered": "已送达",
+      "cancelled": "已取消",
+      "refunded": "已退款",
+      "shipped": "运输中",
+      "confirmed": "已确认",
+      "pending": "待处理",
+      "processing": "处理中",
+      "paid": "活跃",
+      "active": "活跃",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

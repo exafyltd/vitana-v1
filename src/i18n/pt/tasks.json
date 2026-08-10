@@ -1,0 +1,21 @@
+{
+  "tasks": {
+    "noOpenTasks": "Sem tarefas abertas",
+    "confirmCancelTask": "Queres mesmo cancelar esta tarefa?",
+    "postponeComingSoon": "Função de reagendamento em breve",
+    "addNotePrompt": "Adicionar uma nota a esta tarefa:",
+    "noteAdded": "Nota adicionada: {note}",
+    "navigateTo": "Ir para: {url}",
+    "openVtid": "Abrir VTID: {vtid}",
+    "description": "Descrição",
+    "activityLog": "Registo de Atividade",
+    "relatedLinks": "Ligações Relacionadas",
+    "complete": "Concluir",
+    "postpone": "Adiar",
+    "addNote": "Adicionar Nota",
+    "openContext": "Abrir Contexto",
+    "assignee": "Responsável",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

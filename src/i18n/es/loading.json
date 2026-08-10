@@ -6,6 +6,8 @@
     "uploading": "Subiendo...",
     "uploadingProgress": "Subiendo... {progress}%",
     "processing": "Procesando...",
-    "saving": "Guardando..."
-  }
+    "saving": "Guardando...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

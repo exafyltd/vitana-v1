@@ -10,7 +10,7 @@
     "sharing": "Compartir",
     "memory": "Recuerdos",
     "settings": "Ajustes",
-    "admin": "Admin",
+    "admin": "Administrador",
     "businessHub": "Centro de Negocios",
     "aiAssistant": "Asistente IA",
     "dashboard": "Panel",
@@ -41,10 +41,12 @@
     "liveStream": "En Vivo y Stream",
     "tenantManagement": "Gestión de Inquilinos",
     "systemAdmin": "Administrador del sistema",
-    "clinicalOps": "Operaciones clínicas",
+    "clinicalOps": "Operaciones Clínicas",
     "monitoring": "Monitoreo",
     "logout": "Cerrar sesión",
     "connectors": "Conectores",
-    "support": "Soporte"
-  }
+    "support": "Soporte",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

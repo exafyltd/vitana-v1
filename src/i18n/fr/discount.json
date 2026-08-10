@@ -1,0 +1,33 @@
+{
+  "discount": {
+    "welcomeTitle": "Ton cadeau de bienvenue",
+    "welcomeMessage": "Utilise ce code pour 10 % de réduction sur ton premier événement",
+    "validFor": "Valide pendant 90 jours",
+    "applyCode": "Appliquer le code de réduction",
+    "applied": "Réduction appliquée !",
+    "expired": "Ce code a expiré",
+    "invalid": "Code de réduction invalide",
+    "bannerAvailable": "Réduction de bienvenue disponible",
+    "tapToApply": "Appliquer",
+    "discountAppliedAmount": "{percent} % de réduction appliquée",
+    "remove": "Supprimer",
+    "ticketsComing": "Billets bientôt disponibles",
+    "contactOrganizer": "Contacte l'organisateur pour les informations sur les billets.",
+    "contactOrganizerPrice": "Cet événement coûte {price} $. Contacte l'organisateur pour la disponibilité des billets.",
+    "soldOut": "Complet",
+    "salesEnded": "Ventes terminées",
+    "salesStart": "Début des ventes le {date}",
+    "free": "Gratuit",
+    "ticketsSelected": "{count} billet(s) sélectionné(s)",
+    "useAccountEmail": "Utilise l'e-mail de mon compte",
+    "buyAsGuest": "Acheter en tant qu'invité (pas de compte)",
+    "guestDetails": "Saisis tes coordonnées pour obtenir ton billet. Aucun compte requis.",
+    "fullName": "Nom complet",
+    "email": "E-mail",
+    "ticketEmailNote": "Ton billet et ta confirmation seront envoyés à cet e-mail.",
+    "left": "{count} restant(s)",
+    "loadFailed": "Échec du chargement des billets",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -1,0 +1,25 @@
+{
+  "payment": {
+    "completed": "Pagamento Concluído! ✅",
+    "sentSuccess": "{amount} enviado com sucesso",
+    "alreadyProcessed": "Já processado",
+    "requestIs": "Este pedido está {status}.",
+    "alreadyAccepted": "Este pedido de pagamento já foi aceite.",
+    "declined": "Pagamento Recusado",
+    "declinedDesc": "O pedido de pagamento foi recusado",
+    "exchangeSuccess": "Troca e Envio com Sucesso! ✨",
+    "exchangeSuccessDesc": "Convertido e enviado {amount}",
+    "insufficientBalance": "Saldo Insuficiente",
+    "insufficientBalanceDesc": "Não tens {currency} suficiente para esta troca",
+    "transactionFailed": "Transação Falhou",
+    "paymentFailed": "Pagamento Falhou",
+    "paymentFailedDesc": "O pagamento não pôde ser processado. Por favor, tenta novamente.",
+    "balanceRefreshed": "Saldo Atualizado",
+    "balanceRefreshedDesc": "O saldo da carteira foi atualizado",
+    "refreshFailed": "Atualização Falhou",
+    "refreshFailedDesc": "O saldo não pôde ser atualizado. Por favor, tenta novamente.",
+    "error": "Erro",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

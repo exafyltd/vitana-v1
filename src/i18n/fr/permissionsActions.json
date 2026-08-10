@@ -1,0 +1,50 @@
+{
+  "permissionsActions": {
+    "title": "Actions de confidentialité et d'autorisations",
+    "items": {
+      "privacySettings": {
+        "title": "Paramètres de confidentialité",
+        "description": "Configurer les paramètres de confidentialité et de partage",
+        "_pending_review": {}
+      },
+      "manageAccess": {
+        "title": "Gérer l'accès",
+        "description": "Contrôle qui peut voir tes souvenirs de santé",
+        "_pending_review": {}
+      },
+      "securitySettings": {
+        "title": "Paramètres de sécurité",
+        "description": "Mettre à jour les paramètres d'authentification et de sécurité",
+        "_pending_review": {}
+      },
+      "apiKeysAccess": {
+        "title": "Clés API et Accès",
+        "description": "Gérer les intégrations d'applications tierces et l'accès API",
+        "_pending_review": {}
+      },
+      "dataRights": {
+        "title": "Droits des données",
+        "description": "Exerce tes droits à la portabilité et à la suppression des données",
+        "_pending_review": {}
+      },
+      "auditLogs": {
+        "title": "Journaux d'audit",
+        "description": "Consulte l'historique d'accès et la piste d'audit de sécurité",
+        "_pending_review": {}
+      },
+      "permissionSettings": {
+        "title": "Paramètres d'autorisations",
+        "description": "Ajuste les permissions granulaires pour différentes fonctionnalités",
+        "_pending_review": {}
+      },
+      "exportData": {
+        "title": "Exporter les données",
+        "description": "Télécharge tes souvenirs et tes données de santé en toute sécurité",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -10,7 +10,8 @@
       "history": "Istorija",
       "all": "Sve",
       "completed": "Završeno",
-      "cancelled": "Otkazano"
+      "cancelled": "Otkazano",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Sve",
@@ -18,20 +19,23 @@
       "products": "Proizvodi",
       "vouchers": "Vaučeri",
       "services": "Usluge",
-      "refunds": "Povraćaji"
+      "refunds": "Povraćaji",
+      "_pending_review": {}
     },
     "previewNotice": "Ovo su probne porudžbine. Tvoje stvarne porudžbine će se pojaviti ovde.",
     "sampleData": "Probni podaci",
     "emptyActive": {
       "title": "Nema aktivnih porudžbina",
-      "description": "Nemaš aktivnih porudžbina ili predstojećih događaja."
+      "description": "Nemaš aktivnih porudžbina ili predstojećih događaja.",
+      "_pending_review": {}
     },
     "emptyHistory": {
       "title": "Nema istorije porudžbina",
-      "description": "Tvoje završene porudžbine i prošli događaji će se pojaviti ovde."
+      "description": "Tvoje završene porudžbine i prošli događaji će se pojaviti ovde.",
+      "_pending_review": {}
     },
     "noOrders": "Još uvek nema porudžbina",
-    "noOrdersDesc": "Tvoje porudžbine će se pojaviti ovde nakon što obaviš kupovinu.",
+    "noOrdersDesc": "Tvoje porudžbine će se pojaviti ovde kada nešto kupiš.",
     "browseProducts": "Pregledaj proizvode",
     "findEvents": "Pronađi događaje",
     "startShopping": "Započni kupovinu",
@@ -60,7 +64,8 @@
       "personalMessage": "Lična poruka",
       "cancel": "Otkaži",
       "send": "Pošalji",
-      "downloadPdf": "Preuzmi PDF"
+      "downloadPdf": "Preuzmi PDF",
+      "_pending_review": {}
     },
     "status": {
       "upcoming": "Predstojeće",
@@ -75,7 +80,10 @@
       "pending": "Na čekanju",
       "processing": "Obrađuje se",
       "paid": "Aktivno",
-      "active": "Aktivno"
-    }
-  }
+      "active": "Aktivno",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

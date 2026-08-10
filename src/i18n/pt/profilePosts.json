@@ -1,0 +1,21 @@
+{
+  "profilePosts": {
+    "createPost": "Criar Publicação",
+    "placeholder": "O que está na tua mente agora?",
+    "shareCta": "Compartilhe algo com a comunidade",
+    "post": "Publicar",
+    "posted": "Publicado!",
+    "deleted": "Publicação excluída",
+    "emptyTitle": "Nenhuma publicação ainda",
+    "emptyDescription": "Compartilhe sua primeira atualização com a comunidade",
+    "deleteConfirm": "Excluir esta publicação?",
+    "error": "Algo deu errado",
+    "mentionPlaceholder": "O que tens em mente? Escreve @ para marcar alguém",
+    "background": "Plano de fundo",
+    "noBackground": "Sem plano de fundo",
+    "searchingPeople": "Procurando pessoas …",
+    "noPeopleFound": "Ninguém encontrado",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

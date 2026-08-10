@@ -2,7 +2,7 @@
   "glassMode": {
     "shareWithAI": "Share selection with AI?",
     "screenSharingComingSoon": "🖥️ Screen Sharing Coming Soon",
-    "screenSharingDesc": "Share your screen with VITANA for contextual assistance.",
+    "screenSharingDesc": "Share your screen with VITANA for contextual support.",
     "screenSharingStopped": "Screen Sharing Stopped",
     "glassModeDisabled": "Glass mode disabled",
     "cameraModeComingSoon": "📹 Camera Mode Coming Soon",
@@ -12,8 +12,10 @@
     "autopilotActivated": "Autopilot Activated",
     "runningAutopilot": "Running autopilot mode",
     "textInputReady": "Text Input Ready",
-    "typeMessage": "You can now type your message",
+    "typeMessage": "You can now enter your message.",
     "actionFailed": "Action Failed",
-    "couldNotExecute": "Could not execute {action}"
-  }
+    "couldNotExecute": "Could not execute {action}",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

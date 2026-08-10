@@ -1,0 +1,167 @@
+{
+  "liveRooms": {
+    "title": "Salons en direct",
+    "description": "Rejoins les discussions audio et vidéo en direct",
+    "tabs": {
+      "live": "En direct maintenant",
+      "scheduled": "Programmé",
+      "all": "Tous les salons",
+      "past": "Passés",
+      "_pending_review": {}
+    },
+    "goLive": "Passe en direct",
+    "joinRoom": "Rejoins le salon",
+    "noRooms": "Pas de salons en direct actuellement",
+    "beFirst": "Sois le premier à passer en direct",
+    "demoRoom": "Salon démo",
+    "demoRoomDesc": "Ceci est un salon exemple. Crée le tien pour passer en direct !",
+    "search": {
+      "placeholder": "Rechercher des salons, des sujets ou des hôtes...",
+      "category": "Catégorie",
+      "allCategories": "Toutes les catégories",
+      "_pending_review": {}
+    },
+    "room": {
+      "join": "Rejoins le salon",
+      "participants": "Participants",
+      "duration": "Durée",
+      "host": "Hôte",
+      "premium": "Premium",
+      "live": "EN DIRECT",
+      "_pending_review": {}
+    },
+    "viewer": {
+      "leave": "Quitter",
+      "mute": "Muet",
+      "video": "Vidéo",
+      "raiseHand": "Lever la main",
+      "chat": "Chat",
+      "reactions": "Réactions",
+      "_pending_review": {}
+    },
+    "goLivePopup": {
+      "titleCreate": "Passe en direct",
+      "titleEdit": "Modifier le direct",
+      "streamTitleLabel": "Titre du direct",
+      "streamTitlePlaceholder": "En direct avec {name}",
+      "descriptionLabel": "Description / Bio (Facultatif)",
+      "descriptionPlaceholder": "Décris brièvement le sujet de ce stream…",
+      "charactersCount": "{count}/500 caractères",
+      "streamTypeLabel": "Type de direct",
+      "streamTypeAudio": "Audio",
+      "streamTypeVideo": "Vidéo",
+      "coverLabel": "Image de couverture / Miniature",
+      "coverAlt": "Couverture du direct",
+      "coverUploadCta": "Clique pour télécharger une image personnalisée",
+      "coverUploadHint": "N'importe quelle image – s'ajuste automatiquement",
+      "aiAutoGenerateLabel": "Générer automatiquement avec l'IA",
+      "aiAutoGenerateHint": "Générer une image si aucune n'est téléchargée",
+      "generatingAiImage": "Génération d'image IA en cours…",
+      "tagsLabel": "Tags / Catégorie (Sélectionne 1-3)",
+      "tagsSelected": "{count}/3 sélectionnés",
+      "tags": {
+        "wellness": "Bien-être",
+        "nutrition": "Nutrition",
+        "fitness": "Fitness",
+        "mentalHealth": "Santé mentale",
+        "longevity": "Longévité",
+        "meditation": "Méditation",
+        "sleep": "Sommeil",
+        "motivation": "Motivation",
+        "education": "Éducation",
+        "lifestyle": "Style de vie",
+        "_pending_review": {}
+      },
+      "advancedTitle": "Options avancées",
+      "cohostLabel": "Co-hôte / Invitation d'invité",
+      "cohostPlaceholder": "Rechercher et ajouter un co-hôte",
+      "accessLevelLabel": "Niveau d'accès",
+      "access": {
+        "public": {
+          "label": "Public",
+          "desc": "Tout le monde peut rejoindre",
+          "_pending_review": {}
+        },
+        "followers": {
+          "label": "Abonnés seulement",
+          "desc": "Seulement tes abonnés",
+          "_pending_review": {}
+        },
+        "group": {
+          "label": "Groupe/VIP",
+          "desc": "Membres invités seulement",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "scheduleLabel": "Planifier pour plus tard",
+      "goLiveNow": "Lancer le direct maintenant",
+      "selectTime": "Sélectionne l'heure",
+      "clearSchedule": "Effacer la planification (Lancer le direct maintenant)",
+      "scheduledAt": "{date} à {time}",
+      "dateNeedsTime": "{date} – sélectionne l'heure",
+      "time": "Heure",
+      "engagementLabel": "Chat et engagement",
+      "enableChatTitle": "Activer le chat",
+      "enableChatDesc": "Autoriser les spectateurs à chatter",
+      "enablePollsTitle": "Activer les sondages",
+      "enablePollsDesc": "Créer des sondages en direct pendant le stream",
+      "recordReplayTitle": "Enregistrer pour revoir",
+      "recordReplayDesc": "Sauvegarder le stream pour le regarder plus tard",
+      "cancel": "Annuler",
+      "starting": "Démarrage…",
+      "updating": "Mise à jour…",
+      "updateStream": "Mettre à jour le stream",
+      "scheduleSession": "Planifier une session en direct",
+      "goLiveNowAction": "Passer en direct maintenant",
+      "errors": {
+        "selectStreamTypeTitle": "Sélectionner le type de stream",
+        "selectStreamTypeDesc": "Choisis Audio ou Vidéo",
+        "notLoggedInTitle": "Erreur",
+        "notLoggedInDesc": "Tu dois être connecté pour lancer le direct",
+        "invalidFileTypeTitle": "Type de fichier invalide",
+        "invalidFileTypeDesc": "Sélectionne un fichier image (JPEG, PNG, WebP)",
+        "fileTooLargeTitle": "Fichier trop grand",
+        "fileTooLargeDesc": "L'image doit être inférieure à 2 Mo",
+        "imageUploadFailedTitle": "Échec du téléchargement de l'image",
+        "imageUploadFailedDesc": "Nous gardons l'image existante.",
+        "genericTitle": "Erreur",
+        "genericDesc": "Échec de la création du flux. Réessaie.",
+        "genericDescWithReason": "Échec de la création du flux : {reason}. Réessaie.",
+        "_pending_review": {}
+      },
+      "success": {
+        "streamUpdatedTitle": "Flux mis à jour ! ✨",
+        "streamUpdatedDesc": "Ton stream a été mis à jour avec succès",
+        "streamScheduledTitle": "Flux programmé ! 📅",
+        "streamScheduledDesc": "Ton flux est programmé pour le {date} à {time}",
+        "youAreLiveTitle": "Tu es en direct ! 🎙️",
+        "youAreLiveDesc": "Rejoindre ta salle de flux…",
+        "aiImageHintTitle": "Génération d'images IA",
+        "aiImageHintDesc": "L'image sera générée au démarrage du flux.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "editSession": {
+      "title": "Modifier la session",
+      "saving": "Enregistrement…",
+      "changeCover": "Changer l'image de couverture",
+      "noChanges": "Aucun changement à enregistrer",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "goLivePopup": {
+    "durationLabel": "Durée",
+    "duration15": "15 minutes",
+    "duration30": "30 minutes",
+    "duration45": "45 minutes",
+    "duration60": "1 heure",
+    "duration90": "1,5 heures",
+    "duration120": "2 heures",
+    "durationHint": "La salle se ferme automatiquement après ce délai si tu ne la termines pas manuellement.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -3,10 +3,10 @@
     "title": "Kalendar",
     "nextEvents": "Sledećih {count} događaja",
     "conflicts": "{count} konflikata",
-    "upcomingSchedule": "Tvoj predstojeći raspored i događaji",
+    "upcomingSchedule": "Tvoj predstojeći raspored i termini",
     "addNewEvent": "Dodaj novi događaj",
     "noUpcomingEvents": "Nema predstojećih događaja",
-    "createFirstEvent": "Napravi svoj prvi događaj",
+    "createFirstEvent": "Kreiraj svoj prvi termin",
     "aiSuggestions": "AI predlozi",
     "findBetterSlot": "Pronađi bolji termin",
     "prepareBrief": "Pripremi kratak pregled",
@@ -16,6 +16,8 @@
     "quickAdd": "Brzo dodavanje",
     "eventFormComingSoon": "Forma za kreiranje događaja uskoro",
     "externalSync": "Spoljna sinhronizacija",
-    "connectingCalendars": "Povezivanje sa spoljnim kalendarima..."
-  }
+    "connectingCalendars": "Poveži se sa spoljnim kalendarima...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -8,8 +8,10 @@
     "actions": "Akcije",
     "name": "Ime",
     "role": "Uloga",
-    "email": "Email",
+    "email": "Imejl",
     "date": "Datum",
-    "amount": "Iznos"
-  }
+    "amount": "Iznos",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

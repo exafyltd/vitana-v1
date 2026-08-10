@@ -7,16 +7,17 @@
       "enable": "Omogući",
       "showcaseTitle": "Autopilot preporuke",
       "showcaseBadge": "Pametno",
-      "showcaseDesc": "Na osnovu tvoje aktivnosti, ovi postovi bi mogli dobro da prođu kao istaknuti sadržaj:",
+      "showcaseDesc": "Na osnovu tvoje aktivnosti, ovi postovi bi mogli dobro da funkcionišu kao istaknuti sadržaj:",
       "suggestPopular": "Predloži popularne postove",
       "recentHighlights": "Nedavni istaci",
       "archetypeTitle": "Uvid u arhetip",
       "archetypeBadge": "AI analiza",
-      "archetypeDesc": "Tvoje wellness aktivnosti sugerišu da si možda „Svesni pokretač“ – želiš da ažuriraš?",
+      "archetypeDesc": "Tvoje wellness aktivnosti sugerišu da si \"Svesni Pokretač\" - želiš li da ažuriraš?",
       "updateArchetype": "Ažuriraj arhetip",
       "profileSectionTitle": "Autopilot može da uglača tvoj profil ✨",
       "profileSectionDesc": "Dobij AI predloge za tvoju biografiju, arhetip i istaknute delove.",
-      "tryAutopilot": "Isprobaj Autopilot"
+      "tryAutopilot": "Isprobaj Autopilot",
+      "_pending_review": {}
     },
     "preview": "Pregled Autopilota",
     "viewAll": "Prikaži sve",
@@ -29,9 +30,9 @@
     "popup": {
       "title": "Autopilot akcije",
       "selectedOf": "{selected} od {total} izabrano",
-      "readyToExecute": "Spreman si da izvršiš {count} akcija koje je pripremio tvoj AI asistent.",
+      "readyToExecute": "Spreman/na da izvršiš {count} akcije koje je tvoj AI asistent pripremio.",
       "executingTitle": "Izvršavanje akcija...",
-      "executingDesc": "Sačekaj dok AI obrađuje tvoje zahteve",
+      "executingDesc": "Molimo sačekaj dok AI obrađuje tvoje zahteve.",
       "complete": "{percent}% završeno",
       "go": "Kreni ({count})",
       "notNow": "Ne sada",
@@ -41,12 +42,14 @@
       "toastExecutedTitle": "Akcije izvršene",
       "toastExecutedDesc": "{success}/{total} akcija uspešno završene",
       "toastFailedTitle": "Izvršenje neuspešno",
-      "toastFailedDesc": "Nešto je pošlo po zlu. Pokušaj ponovo."
+      "toastFailedDesc": "Nešto je pošlo po zlu. Pokušaj ponovo.",
+      "_pending_review": {}
     },
     "priorities": {
       "high": "Visok",
       "medium": "Srednji",
-      "low": "Nizak"
+      "low": "Nizak",
+      "_pending_review": {}
     },
     "widget": {
       "title": "Autopilot ⚡",
@@ -54,25 +57,27 @@
       "paused": "Pauziran",
       "doNow": "Uradi sada",
       "allOptimized": "Sve optimizovano! 🎯",
-      "enableToSee": "Uključi Autopilot da vidiš predloge",
-      "completeForRewards": "Završi predloge Autopilota za nagrade",
-      "enableForCredits": "Uključi autopilot za kredite"
+      "enableToSee": "Aktiviraj Autopilot da vidiš predloge.",
+      "completeForRewards": "Završi Autopilot predloge da dobiješ nagrade.",
+      "enableForCredits": "Aktiviraj Autopilot za kredite.",
+      "_pending_review": {}
     },
     "insightBanner": {
       "title": "Pregled zdravlja Autopilota",
-      "description": "Tvoj Vitana Autopilot je analizirao trenutne planove i doslednost.",
+      "description": "Tvoj Vitana Autopilot je analizirao nedavne planove i doslednost.",
       "synergyIndex": "Indeks sinergije",
       "statusBalanced": "Uravnotežen",
       "statusNeedsAttention": "Zahteva pažnju",
-      "statusImproving": "Poboljšava se"
+      "statusImproving": "Poboljšava se",
+      "_pending_review": {}
     },
     "profilePopup": {
-      "title": "Neka Autopilot uglača tvoj profil ✨",
-      "polishBio": "Uglačaj moju biografiju",
+      "title": "Neka Autopilot optimizuje tvoj profil ✨",
+      "polishBio": "Optimizuj svoj Bio.",
       "polishBioDesc": "Autopilot može da prepiše O meni sekciju da bude inspirativnija",
-      "refreshArchetype": "Osveži moj Arhetip",
+      "refreshArchetype": "Ažuriraj svoj Arhetip.",
       "refreshArchetypeDesc": "Predloži ažuriranje Longevity Arhetipa na osnovu aktivnosti",
-      "highlightShowcase": "Istakni moj profil",
+      "highlightShowcase": "Istakni svoj profil.",
       "highlightShowcaseDesc": "Predloži najbolje objave ili medije za istaknuti sadržaj",
       "styleProfile": "Stilizuj moj profil",
       "styleProfileDesc": "Predloži poboljšanja za naslovnu fotografiju, uloge, profilnu sliku",
@@ -87,23 +92,27 @@
       "acceptAll": "Prihvati sve",
       "applied": "Promene sačuvane!",
       "error": "Nešto nije u redu",
-      "comingSoon": "Uskoro"
+      "comingSoon": "Uskoro",
+      "_pending_review": {}
     },
     "actions": {
       "action1Title": "Pridruži se Longevity Plesnoj Grupi večeras?",
-      "action1Reason": "Savršen spoj za tvoje ciljeve kretanja + vibracije društvenog wellnessa",
+      "action1Reason": "Savršeno se podudara sa tvojim ciljevima kretanja + društvenim wellness vibracijama.",
       "action2Title": "AI probojni uvid upravo objavljen",
-      "action2Reason": "Tvoj digitalni blizanac je otkrio nešto fascinantno iz tvojih obrazaca",
+      "action2Reason": "Tvoj digitalni blizanac je otkrio nešto fascinantno u tvojim obrascima.",
       "action3Title": "Hidratacioni niz od 5 dana — Legenda te čeka",
       "action3Reason": "Još jedan gutljaj bliže tvojoj nedeljnoj hidratacionoj majstoriji",
       "action4Title": "Automatski pozovi ekipu na epski vikend sastanak",
       "action4Reason": "Sara, Luna i Markus su savršeni parovi za dugovečno pleme",
-      "action5Title": "Tvoja priča o biomarkerima te čeka",
-      "action5Reason": "Dr. Čen je dešifrovao uzbudljive uvide iz tvog poslednjeg panela",
+      "action5Title": "Tvoja priča o biomarkerima čeka.",
+      "action5Reason": "Dr. Chen je otključao uzbudljive uvide iz tvog najnovijeg panela.",
       "action6Title": "Svesna jutarnja magija",
       "action6Reason": "Tvoja duša traži ove tehnike za otapanje stresa",
       "newActionTitle": "Nova AI sugestija",
-      "newActionReason": "Na osnovu skorašnjih obrazaca aktivnosti"
-    }
-  }
+      "newActionReason": "Na osnovu skorašnjih obrazaca aktivnosti",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

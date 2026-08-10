@@ -16,6 +16,8 @@
     "inbox": "Primljene poruke",
     "support": "Podrška",
     "settings": "Podešavanja",
-    "logout": "Odjavi se"
-  }
+    "logout": "Odjavi se",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,5 +1,7 @@
 {
   "challenges": {
-    "searchPlaceholder": "Buscar desafíos..."
-  }
+    "searchPlaceholder": "Buscar desafíos...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

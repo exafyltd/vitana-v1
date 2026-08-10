@@ -1,0 +1,39 @@
+{
+  "recallActions": {
+    "title": "提醒搜索和检索操作",
+    "items": {
+      "askAiQuestion": {
+        "title": "向 AI 提问",
+        "description": "用自然语言 AI 搜索查询记忆"
+      },
+      "advancedSearch": {
+        "title": "高级搜索",
+        "description": "使用筛选器、标签和日期范围查找记忆"
+      },
+      "patternAnalysis": {
+        "title": "模式分析",
+        "description": "发现健康数据中的趋势和模式"
+      },
+      "memoryInsights": {
+        "title": "记忆洞察",
+        "description": "获取 AI 驱动的健康旅程洞察"
+      },
+      "searchByDate": {
+        "title": "按日期搜索",
+        "description": "浏览特定时间段的记忆"
+      },
+      "locationMemories": {
+        "title": "地点记忆",
+        "description": "查找到访地点和位置的条目"
+      },
+      "filterByCategory": {
+        "title": "按类别筛选",
+        "description": "按健康支柱和类别浏览记忆"
+      },
+      "quickRecalls": {
+        "title": "快速回忆",
+        "description": "访问常用搜索的记忆和查询"
+      }
+    }
+  }
+}

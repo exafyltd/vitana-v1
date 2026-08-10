@@ -5,12 +5,16 @@
       "badge": "New",
       "intro": "From now on, you can:",
       "cta": "Try it yourself",
-      "closing": "Happy testing 🥳"
+      "closing": "Happy testing 🥳",
+      "_pending_review": {}
     },
     "didYouKnow": {
       "eyebrow": "Did you know?",
       "intro": "You can:",
-      "cta": "Try it now"
-    }
-  }
+      "cta": "Try it now",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,0 +1,24 @@
+{
+  "eventCta": {
+    "buyTicket": "اشترِ تذكرة",
+    "buyTicketWithPrice": "اشترِ تذكرة · {price}",
+    "getFreeTicket": "احصل على تذكرتك المجانية",
+    "reserveSpot": "احجز مكانًا",
+    "reserveMySpot": "احجز مكاني",
+    "viewTicket": "اعرض التذكرة",
+    "soldOut": "نفدت التذاكر",
+    "joinMeetup": "انضم إلى اللقاء",
+    "leaveMeetup": "غادر اللقاء",
+    "cancelReservation": "إلغاء الحجز",
+    "viewEvent": "اعرض الحدث",
+    "yourTicket": "تذكرتك",
+    "getYourTicket": "احصل على تذكرتك",
+    "joinThisEvent": "انضم إلى هذا الحدث",
+    "selectTickets": "اختر التذاكر",
+    "buyTicketsTotal": "اشترِ التذاكر – {total}",
+    "processing": "جاري المعالجة...",
+    "joining": "جاري الانضمام...",
+    "getTickets": "احصل على التذاكر",
+    "promoteEvent": "روّج للحدث"
+  }
+}

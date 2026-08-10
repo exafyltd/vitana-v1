@@ -1,0 +1,33 @@
+{
+  "discount": {
+    "welcomeTitle": "你的欢迎礼",
+    "welcomeMessage": "首次活动可使用此代码享九折优惠",
+    "validFor": "90天内有效",
+    "applyCode": "应用折扣码",
+    "applied": "折扣已应用！",
+    "expired": "此代码已过期",
+    "invalid": "无效折扣码",
+    "bannerAvailable": "欢迎折扣可用",
+    "tapToApply": "应用",
+    "discountAppliedAmount": "{percent}% 折扣已应用",
+    "remove": "移除",
+    "ticketsComing": "门票即将推出",
+    "contactOrganizer": "请联系组织者获取门票信息。",
+    "contactOrganizerPrice": "此活动费用为 ${price}。请联系组织者了解门票供应情况。",
+    "soldOut": "售罄",
+    "salesEnded": "销售已结束",
+    "salesStart": "销售于 {date} 开始",
+    "free": "免费",
+    "ticketsSelected": "已选择 {count} 张门票",
+    "useAccountEmail": "使用我的账户邮箱",
+    "buyAsGuest": "以访客身份购买（无需账户）",
+    "guestDetails": "输入你的详细信息以获取门票。无需账户。",
+    "fullName": "全名",
+    "email": "邮箱",
+    "ticketEmailNote": "你的门票和确认函将发送到此邮箱。",
+    "left": "还剩 {count} 张",
+    "loadFailed": "门票加载失败",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

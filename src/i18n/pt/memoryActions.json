@@ -1,0 +1,40 @@
+{
+  "memoryActions": {
+    "title": "Ações de Memória",
+    "items": {
+      "recordVoiceDiary": {
+        "title": "Gravar Diário de Voz",
+        "description": "Captura pensamentos e reflexões com a tua voz",
+        "_pending_review": {}
+      },
+      "addMemoryNote": {
+        "title": "Adicionar Nota de Memória",
+        "description": "Anota momentos importantes de saúde",
+        "_pending_review": {}
+      },
+      "viewTimeline": {
+        "title": "Ver Linha do Tempo",
+        "description": "Vê a tua jornada de bem-estar completa",
+        "_pending_review": {}
+      },
+      "searchMemories": {
+        "title": "Pesquisar Memórias",
+        "description": "Encontra momentos e insights específicos",
+        "_pending_review": {}
+      },
+      "photoMemory": {
+        "title": "Memória de Foto",
+        "description": "Adiciona memórias visuais à tua jornada",
+        "_pending_review": {}
+      },
+      "aiMemoryAnalysis": {
+        "title": "Análise de Memória por IA",
+        "description": "Obtém insights dos teus padrões de memória",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

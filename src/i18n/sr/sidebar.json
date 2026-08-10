@@ -10,7 +10,7 @@
     "sharing": "Deljenje",
     "memory": "Sećanje",
     "settings": "Podešavanja",
-    "admin": "Admin",
+    "admin": "Administrator",
     "businessHub": "Poslovni centar",
     "aiAssistant": "AI asistent",
     "dashboard": "Kontrolna tabla",
@@ -41,10 +41,12 @@
     "liveStream": "Uživo i strimovanje",
     "tenantManagement": "Upravljanje zakupcima",
     "systemAdmin": "Sistemski Admin",
-    "clinicalOps": "Kliničke Operacije",
+    "clinicalOps": "Kliničke operacije",
     "monitoring": "Praćenje",
     "logout": "Odjavi se",
     "connectors": "Konektori",
-    "support": "Podrška"
-  }
+    "support": "Podrška",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

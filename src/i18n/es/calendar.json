@@ -12,7 +12,7 @@
     "agenda": "Agenda",
     "nothingScheduled": "Nada programado",
     "tryQuickAdd": "Prueba Añadir Rápido o deja que Autopilot planifique tu día",
-    "clickSlotHint": "Haz clic en cualquier espacio para crear un evento • Arrastra para reprogramar",
+    "clickSlotHint": "Haz clic en un espacio para crear un evento • Arrastra para mover",
     "noEventsOnDate": "Sin eventos en esta fecha",
     "lastSynced": "Última sincronización",
     "justNow": "ahora mismo",
@@ -23,20 +23,22 @@
     "noBookingsToday": "Sin reservas hoy",
     "noBookingsYet": "Aún sin reservas",
     "nextUpcoming": "Próximo",
-    "exploreActivities": "Explora actividades para agregar a tu calendario",
+    "exploreActivities": "Descubre actividades para tu calendario",
     "browseActivities": "Explorar Actividades",
     "bookedEvents": {
-      "title": "Tus Eventos Reservados",
+      "title": "Tus eventos reservados",
       "todayLabel": "Hoy",
       "nextUp": "Siguiente",
-      "noEventsToday": "Sin eventos hoy"
+      "noEventsToday": "Sin eventos hoy",
+      "_pending_review": {}
     },
     "filters": {
       "personal": "Personal",
       "community": "Comunidad",
       "work": "Trabajo",
       "health": "Salud",
-      "workout": "Entrenamiento"
+      "workout": "Entrenamiento",
+      "_pending_review": {}
     },
     "categories": {
       "community": "Comunidad",
@@ -45,25 +47,28 @@
       "nutrition": "Nutrición",
       "professional": "Trabajo",
       "personal": "Personal",
-      "training": "Entrenamiento"
+      "training": "Entrenamiento",
+      "_pending_review": {}
     },
     "bookingStatus": {
       "booked": "Reservado",
       "rsvp": "Confirmar asistencia",
       "ticket": "Boleto",
-      "reserved": "Reservado"
+      "reserved": "Reservado",
+      "_pending_review": {}
     },
     "timeGroups": {
       "today": "Hoy",
       "tomorrow": "Mañana",
       "thisWeek": "Esta semana",
-      "later": "Más tarde"
+      "later": "Más tarde",
+      "_pending_review": {}
     },
     "autopilot": {
       "suggestions": "Sugerencias de Autopilot",
-      "badge": "Autopilot",
+      "badge": "Piloto automático",
       "accept": "Aceptar",
-      "snooze": "Posponer",
+      "snooze": "Recordar más tarde",
       "dismiss": "Descartar",
       "undo": "Deshacer",
       "laterToday": "Más tarde hoy",
@@ -77,13 +82,14 @@
       "reminderLaterToday": "Recordatorio configurado para más tarde hoy",
       "reminderTomorrow": "Recordatorio configurado para mañana",
       "recommendFocus": "Recomendar bloque de enfoque",
-      "focusBlockDesc": "Tienes una ventana de 90 minutos disponible. Perfecta para trabajo profundo."
+      "focusBlockDesc": "Tienes un espacio de 90 minutos disponible. Perfecto para trabajo concentrado.",
+      "_pending_review": {}
     },
     "toasts": {
       "eventCreated": "Evento creado",
-      "eventCreatedDesc": "Tu evento se ha añadido al calendario",
+      "eventCreatedDesc": "Tu evento se añadió al calendario",
       "eventDeleted": "Evento eliminado",
-      "eventDeletedDesc": "El evento se ha eliminado de tu calendario",
+      "eventDeletedDesc": "El evento se eliminó de tu calendario",
       "syncingTitle": "Sincronizando...",
       "syncingDesc": "Sincronizando con calendarios externos",
       "syncedTitle": "Sincronizado",
@@ -94,22 +100,26 @@
       "featureComingSoon": "Función próximamente",
       "inviteFollowers": "Invitar seguidores",
       "rescheduleEvent": "Reprogramar evento",
-      "shareToGroup": "Compartir en grupo"
+      "shareToGroup": "Compartir en grupo",
+      "_pending_review": {}
     },
     "error": {
-      "failedToCreate": "Error al crear evento"
+      "failedToCreate": "Error al crear evento",
+      "_pending_review": {}
     },
     "allDay": "Todo el día",
     "milestoneToday": "Hito",
     "focus": {
       "todaysFocus": "Enfoque de hoy",
       "lightDay": "Día ligero: explora actividades o pon al día tu diario",
-      "moreSteps": "más pasos"
+      "moreSteps": "más pasos",
+      "_pending_review": {}
     },
     "badge": {
       "guidedStep": "Paso guiado",
       "milestone": "Hito",
-      "wellness": "Bienestar"
+      "wellness": "Bienestar",
+      "_pending_review": {}
     },
     "action": {
       "start": "Empezar",
@@ -118,11 +128,13 @@
       "details": "Detalles",
       "viewPlan": "Ver plan",
       "open": "Abrir",
-      "done": "Listo"
+      "done": "Listo",
+      "_pending_review": {}
     },
     "group": {
       "stepsRemaining": "pasos restantes",
-      "min": "min"
+      "min": "min",
+      "_pending_review": {}
     },
     "journey": {
       "dayOf": "Día {day} de {total}",
@@ -140,8 +152,12 @@
         "wave-3": "Profundizando conexiones",
         "wave-4": "Inteligencia de salud",
         "wave-5": "Momentos de insight",
-        "wave-6": "Recomendaciones y descubrimiento"
-      }
-    }
-  }
+        "wave-6": "Recomendaciones y descubrimiento",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

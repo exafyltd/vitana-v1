@@ -1,0 +1,34 @@
+{
+  "socialImport": {
+    "dialogTitle": "{platform} Importar Perfil",
+    "dialogDescription": "Conecta teu perfil {platform} para enriquecer tua identidade Vitana com insights de IA.",
+    "profileUrl": "URL do Perfil {platform}",
+    "bioLabel": "Bio / Seção Sobre",
+    "bioOptional": "(Opcional)",
+    "cancel": "Cancelar",
+    "importProfile": "Importar Perfil",
+    "importing": "Importando...",
+    "urlRequired": "URL Obrigatória",
+    "urlRequiredDesc": "Por favor, insere a URL do teu perfil {platform}",
+    "importSuccess": "Importação Bem-sucedida",
+    "importSuccessDesc": "Teu perfil {platform} foi importado e enriquecido com insights de IA.",
+    "importFailed": "Importação Falhou",
+    "connect": "Conectar:",
+    "socialPresence": "Presença Social",
+    "verifiedConnections": "Conexões verificadas na tua vida digital",
+    "tapToVisit": "Toca para visitar o perfil",
+    "noAccountsConnected": "Nenhuma conta social conectada",
+    "connectAccounts": "Conectar Contas",
+    "platformHelp": {
+      "linkedin": "Usamos IA para extrair o teu título, resumo e habilidades profissionais.",
+      "instagram": "Analisamos a tua biografia para entender os teus interesses e tópicos de estilo de vida.",
+      "tiktok": "Extraímos os teus temas de conteúdo e personalidade criativa da tua biografia.",
+      "youtube": "Identificamos as tuas categorias de conteúdo e áreas de especialização da tua descrição.",
+      "facebook": "Extraímos os teus interesses e envolvimento comunitário da tua biografia.",
+      "x": "Analisamos a tua biografia para entender as tuas áreas de assunto e estilo de comunicação.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

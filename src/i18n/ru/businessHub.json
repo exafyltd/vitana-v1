@@ -1,0 +1,26 @@
+{
+  "businessHub": {
+    "title": "Бизнес-центр",
+    "description": "Развивай свой велнес-бизнес",
+    "tabs": {
+      "snapshot": "Обзор",
+      "services": "Услуги",
+      "sales": "Продажи",
+      "insights": "Статистика",
+      "_pending_review": {}
+    },
+    "recentActivity": "Последняя активность",
+    "clients": "Клиенты",
+    "analytics": "Аналитика",
+    "searchBusiness": "Поиск бизнеса...",
+    "noServices": "Пока нет услуг",
+    "noServicesDesc": "Создай свою первую услугу, чтобы привлечь клиентов.",
+    "createService": "Создать услугу",
+    "noClients": "Пока нет клиентов",
+    "noClientsDesc": "Твои клиенты появятся здесь.",
+    "noSales": "Пока нет продаж",
+    "noSalesDesc": "Твоя история продаж появится здесь.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

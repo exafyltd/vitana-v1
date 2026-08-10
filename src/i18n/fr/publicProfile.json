@@ -1,0 +1,14 @@
+{
+  "publicProfile": {
+    "viewFull": "Voir le profil complet",
+    "sendMessage": "Message",
+    "follow": "Suivre",
+    "milestones": "Étapes de vie",
+    "posts": "Publications",
+    "followers": "Abonnés",
+    "following": "Abonnements",
+    "groups": "Groupes",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

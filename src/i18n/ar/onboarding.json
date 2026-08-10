@@ -23,7 +23,10 @@
       "handleAvailable": "اسم المستخدم متاح!",
       "handleMinLength": "3 أحرف على الأقل",
       "saving": "جاري الإعداد...",
-      "submit": "هيا نبدأ!"
-    }
-  }
+      "submit": "هيا نبدأ!",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

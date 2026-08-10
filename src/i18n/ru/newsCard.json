@@ -1,0 +1,44 @@
+{
+  "newsCard": {
+    "menu": {
+      "share": "Поделиться",
+      "save": "Сохранить",
+      "saved": "Сохранено",
+      "summarize": "Суммировать с Vitana",
+      "copyLink": "Скопировать ссылку",
+      "openInBrowser": "Открыть в браузере",
+      "hide": "Скрыть эту статью",
+      "showLess": "Показывать меньше такого",
+      "muteSource": "Отключить этот источник",
+      "linkCopied": "Ссылка скопирована",
+      "savedToast": "Сохранено на потом",
+      "unsavedToast": "Удалено из сохраненных",
+      "summarizeToast": "В очереди для Vitana",
+      "hiddenToast": "Статья скрыта",
+      "showLessToast": "Будем показывать меньше такого",
+      "mutedToast": "Источник отключен",
+      "undo": "Отменить",
+      "unmute": "Включить",
+      "_pending_review": {}
+    },
+    "detail": {
+      "back": "Назад",
+      "continueReading": "Продолжить чтение на",
+      "openInBrowser": "Открыть в браузере",
+      "couldNotLoad": "Эту статью нельзя отобразить здесь",
+      "readOn": "Подробнее",
+      "_pending_review": {}
+    },
+    "pillars": {
+      "all": "Все",
+      "nutrition": "Питание",
+      "hydration": "Гидратация",
+      "sleep": "Сон",
+      "exercise": "Упражнения",
+      "mental": "Ментальное здоровье",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

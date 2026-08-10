@@ -1,0 +1,25 @@
+{
+  "navigation": {
+    "navigatingTo": "Navegando para",
+    "hydrationTracker": "Monitor de Hidratação",
+    "sleepTracker": "Monitor de Sono",
+    "nutritionTracker": "Monitor de Nutrição",
+    "workoutTracker": "Monitor de Treino",
+    "biomarkers": "Biomarcadores",
+    "calendar": "Calendário",
+    "community": "Comunidade",
+    "groups": "Grupos",
+    "messages": "Mensagens",
+    "discover": "Descobrir",
+    "supplements": "Suplementos",
+    "wallet": "Carteira",
+    "profile": "Perfil",
+    "settings": "Configurações",
+    "diary": "Diário",
+    "home": "Início",
+    "myJourney": "Minha Jornada",
+    "news": "Notícias de Longevidade",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

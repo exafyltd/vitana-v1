@@ -1,0 +1,21 @@
+{
+  "tasks": {
+    "noOpenTasks": "没有待办事项",
+    "confirmCancelTask": "确定要取消这个任务吗？",
+    "postponeComingSoon": "改期功能即将上线",
+    "addNotePrompt": "给这个任务添加备注：",
+    "noteAdded": "备注已添加：{note}",
+    "navigateTo": "前往：{url}",
+    "openVtid": "打开VTID：{vtid}",
+    "description": "描述",
+    "activityLog": "活动日志",
+    "relatedLinks": "相关链接",
+    "complete": "完成",
+    "postpone": "推迟",
+    "addNote": "添加备注",
+    "openContext": "查看详情",
+    "assignee": "负责人",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

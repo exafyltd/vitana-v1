@@ -1,0 +1,34 @@
+{
+  "socialImport": {
+    "dialogTitle": "{platform} Importuj Profil",
+    "dialogDescription": "Połącz swój profil {platform}, aby wzbogacić swoją tożsamość Vitana o spostrzeżenia oparte na AI.",
+    "profileUrl": "URL profilu {platform}",
+    "bioLabel": "Bio / Sekcja O mnie",
+    "bioOptional": "(Opcjonalnie)",
+    "cancel": "Anuluj",
+    "importProfile": "Importuj profil",
+    "importing": "Importowanie...",
+    "urlRequired": "Wymagany URL",
+    "urlRequiredDesc": "Wprowadź adres URL swojego profilu {platform}",
+    "importSuccess": "Import zakończony sukcesem",
+    "importSuccessDesc": "Twój profil {platform} został zaimportowany i wzbogacony o spostrzeżenia AI.",
+    "importFailed": "Import nieudany",
+    "connect": "Połącz:",
+    "socialPresence": "Obecność społeczna",
+    "verifiedConnections": "Zweryfikowane połączenia w Twoim cyfrowym życiu",
+    "tapToVisit": "Dotknij, aby odwiedzić profil",
+    "noAccountsConnected": "Brak połączonych kont społecznościowych",
+    "connectAccounts": "Połącz konta",
+    "platformHelp": {
+      "linkedin": "Używamy AI, aby wyodrębnić Twój nagłówek, podsumowanie i umiejętności zawodowe.",
+      "instagram": "Analizujemy Twoje bio, aby zrozumieć Twoje zainteresowania i tematykę stylu życia.",
+      "tiktok": "Wyodrębniamy Twoje tematy treści i kreatywną osobowość z Twojego bio.",
+      "youtube": "Identyfikujemy Twoje kategorie treści i obszary ekspertyzy z Twojego opisu.",
+      "facebook": "Wyodrębniamy Twoje zainteresowania i zaangażowanie społeczne z Twojego bio.",
+      "x": "Analizujemy Twoje bio, aby zrozumieć Twoje obszary tematyczne i styl komunikacji.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

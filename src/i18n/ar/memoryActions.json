@@ -1,0 +1,31 @@
+{
+  "memoryActions": {
+    "title": "إجراءات الذكريات",
+    "items": {
+      "recordVoiceDiary": {
+        "title": "سجّل يوميات صوتية",
+        "description": "التقط أفكارك وتأملاتك بالصوت"
+      },
+      "addMemoryNote": {
+        "title": "أضف ملاحظة ذاكرة",
+        "description": "دوّن لحظات صحية مهمة"
+      },
+      "viewTimeline": {
+        "title": "شاهد الخط الزمني",
+        "description": "شاهد رحلتك الصحية الكاملة"
+      },
+      "searchMemories": {
+        "title": "ابحث في الذكريات",
+        "description": "اعثر على لحظات ورؤى محددة"
+      },
+      "photoMemory": {
+        "title": "ذاكرة صور",
+        "description": "أضف ذكريات بصرية لرحلتك"
+      },
+      "aiMemoryAnalysis": {
+        "title": "تحليل ذكريات بالذكاء الاصطناعي",
+        "description": "احصل على رؤى من أنماط ذكرياتك"
+      }
+    }
+  }
+}

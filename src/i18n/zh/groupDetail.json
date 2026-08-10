@@ -1,0 +1,18 @@
+{
+  "groupDetail": {
+    "members": "成员",
+    "public": "公开",
+    "private": "私密",
+    "leaveGroup": "退出群组",
+    "leaving": "正在退出...",
+    "joinGroup": "加入群组",
+    "joining": "正在加入...",
+    "back": "返回",
+    "notFound": "未找到群组",
+    "notFoundDesc": "此群组可能已被移除或不存在。",
+    "browseGroups": "浏览群组",
+    "support": "支持",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

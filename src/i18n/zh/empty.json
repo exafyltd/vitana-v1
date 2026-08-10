@@ -1,0 +1,29 @@
+{
+  "empty": {
+    "noAppsFound": "没有找到匹配你搜索的应用。",
+    "noEventsFound": "没有找到活动。",
+    "noContactsFound": "没有找到联系人。",
+    "noContactsFoundMatching": "没有找到匹配“{query}”的联系人。",
+    "noGroupsFound": "没有找到群组。",
+    "noResultsFound": "没有找到结果。",
+    "noReportsFound": "没有找到报告。",
+    "noUsersFound": "没有找到用户。",
+    "noTransactionsFound": "没有找到交易。",
+    "noEventsYet": "还没有活动。先创建一个活动吧。",
+    "tryAdjustingFilters": "尝试调整你的筛选条件或搜索查询。",
+    "noData": "没有可用数据。",
+    "noMessages": "没有消息。",
+    "noNotifications": "没有通知。",
+    "indexSheetNextDays": "没有活跃的Autopilot建议。当这里有内容时，完成它会提升你的Index。",
+    "indexSheetHorizon": "还需要几天的数据来预测你的30天轨迹。",
+    "myJourneyPath": "你的旅程才刚刚开始。当Autopilot有建议时，它们会在这里显示为你可以遵循的路径。",
+    "myJourneyOnePillar": "选择一件小事——看着你的Index变化。",
+    "autopilotPopupZero": "选择行动来查看Index提升。",
+    "healthEmpty": "记录你的第一次输入来启动你的Index。",
+    "noActionsMatchedYet": "还没有匹配的行动——Autopilot正在生成建议。",
+    "actionsPendingOne": "{count} 项行动待处理",
+    "actionsPendingOther": "{count} 项行动待处理",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

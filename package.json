@@ -13,6 +13,8 @@
     "extract-routes": "node scripts/extract-routes.mjs",
     "i18n:split": "node scripts/split-i18n.mjs",
     "i18n:audit": "node scripts/i18n-audit.mjs",
+    "i18n:stale": "node scripts/i18n-stamp-source.mjs --check-all",
+    "i18n:stamp": "node scripts/i18n-stamp-source.mjs",
     "i18n:audit:strict": "node scripts/i18n-audit.mjs --strict",
     "i18n:inventory": "node scripts/generate-screen-inventory.mjs",
     "i18n:audit:llm": "node scripts/i18n-audit-llm.mjs",
@@ -30,7 +32,9 @@
     "test:news-feed-ranker": "node scripts/news-feed-ranker-regression.mjs",
     "test:news-feed-revisit": "node scripts/news-feed-revisit-regression.mjs",
     "test:news-card-features": "node scripts/news-card-feature-badges-regression.mjs",
-    "test:maxina-kira-price": "node scripts/maxina-kira-price-regression.mjs"
+    "test:maxina-kira-price": "node scripts/maxina-kira-price-regression.mjs",
+    "i18n:register": "node scripts/i18n-register-check.mjs --all",
+    "i18n:gate": "node scripts/i18n-parity-gate.mjs --all"
   },
   "dependencies": {
     "@axe-core/react": "^4.10.2",

@@ -107,7 +107,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Stage first so new audit files (untracked) show up in the diff.
-          git add src/i18n/ docs/
+          # i18n-audit/ carries the MACHINE-READABLE verdicts that
+          # scripts/apply-audit-suggestions.mjs consumes (VTID-03524). Staging
+          # only src/i18n/ and docs/ left the markdown report committed and its
+          # companion JSON discarded with the runner, so the documented
+          # "apply the >=0.80 suggestions" step could never actually run — the
+          # audit produced advice nothing could act on.
+          git add src/i18n/ docs/ i18n-audit/
           if git diff --cached --quiet; then
             echo "No audit changes."
             exit 0
@@ -170,7 +176,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "$BRANCH"
-          git add src/i18n/ docs/
+          # i18n-audit/ carries the MACHINE-READABLE verdicts that
+          # scripts/apply-audit-suggestions.mjs consumes (VTID-03524). Staging
+          # only src/i18n/ and docs/ left the markdown report committed and its
+          # companion JSON discarded with the runner, so the documented
+          # "apply the >=0.80 suggestions" step could never actually run — the
+          # audit produced advice nothing could act on.
+          git add src/i18n/ docs/ i18n-audit/
           if git diff --cached --quiet; then
             echo "No new audit findings for ${{ matrix.locale }}."
             exit 0

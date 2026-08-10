@@ -4,36 +4,47 @@
     "items": {
       "recordVoiceEntry": {
         "title": "Grabar entrada de voz",
-        "description": "Captura pensamientos y reflexiones con grabación de voz"
+        "description": "Captura pensamientos y reflexiones con grabación de voz",
+        "_pending_review": {}
       },
       "addPhotoEntry": {
         "title": "Agregar entrada con foto",
-        "description": "Sube imágenes para documentar tu viaje de bienestar"
+        "description": "Sube imágenes para documentar tu viaje de bienestar",
+        "_pending_review": {}
       },
       "writeTextEntry": {
         "title": "Escribir entrada de texto",
-        "description": "Crea reflexiones y notas escritas detalladas"
+        "description": "Crea reflexiones y notas escritas detalladas",
+        "_pending_review": {}
       },
       "quickNote": {
         "title": "Nota rápida",
-        "description": "Anota pensamientos u observaciones breves"
+        "description": "Anota pensamientos u observaciones breves",
+        "_pending_review": {}
       },
       "videoDiary": {
         "title": "Video diario",
-        "description": "Graba reflexiones en video y actualizaciones de progreso"
+        "description": "Graba reflexiones en video y actualizaciones de progreso",
+        "_pending_review": {}
       },
       "scheduleEntry": {
         "title": "Programar entrada",
-        "description": "Planifica futuras entradas del diario y recordatorios"
+        "description": "Planifica futuras entradas del diario y recordatorios",
+        "_pending_review": {}
       },
       "tagMemories": {
         "title": "Etiquetar recuerdos",
-        "description": "Organiza entradas existentes con etiquetas y categorías"
+        "description": "Organiza entradas existentes con etiquetas y categorías",
+        "_pending_review": {}
       },
       "importFiles": {
         "title": "Importar archivos",
-        "description": "Sube documentos, imágenes u otros archivos de bienestar"
-      }
-    }
-  }
+        "description": "Sube documentos, imágenes u otros archivos de bienestar",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

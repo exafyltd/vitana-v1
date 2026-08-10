@@ -19,7 +19,10 @@
       "rejected": "Odbijeno",
       "flagged": "Obeleženo",
       "podcastManagement": "Upravljanje podkastima",
-      "podcastManagementDesc": "Pregledaj i moderiraj podkast upload-e"
-    }
-  }
+      "podcastManagementDesc": "Pregledaj i moderiraj podkast upload-e",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

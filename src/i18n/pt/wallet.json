@@ -1,0 +1,34 @@
+{
+  "wallet": {
+    "title": "Carteira",
+    "description": "Teu Saldo, Créditos e Recompensas",
+    "usdBalance": "Saldo EUR / USD",
+    "creditsBalance": "Saldo de Créditos VTNA",
+    "creditsLabel": "Créditos VTNA",
+    "available": "Disponível",
+    "staked": "Em Staking",
+    "searchWallet": "Pesquisar carteira...",
+    "tabs": {
+      "balances": "Saldos",
+      "activity": "Atividade",
+      "actions": "Ações",
+      "_pending_review": {}
+    },
+    "filters": {
+      "commissions": "Vende e ganha comissões",
+      "transfers": "Transferências",
+      "exchanges": "Trocas",
+      "rewards": "Recompensas",
+      "purchases": "Compras",
+      "pending": "Pagamentos Pendentes",
+      "withdrawals": "Levantamentos",
+      "stakes": "Aposta",
+      "_pending_review": {}
+    },
+    "noActivity": "Nenhuma atividade ainda",
+    "noActivityDesc": "Tuas transações aparecerão aqui.",
+    "displayCurrency": "Moeda de exibição",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

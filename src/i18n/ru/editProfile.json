@@ -1,0 +1,23 @@
+{
+  "editProfile": {
+    "unsavedChanges": "У тебя есть несохраненные изменения. Ты уверен(а), что хочешь уйти?",
+    "notAuthenticated": "Не авторизован(а)",
+    "notAuthenticatedDesc": "Пожалуйста, войди, чтобы сохранить свой профиль.",
+    "profileUpdated": "Профиль успешно обновлен!",
+    "profileUpdatedDesc": "Твои изменения применены. Твой профиль VITANA выглядит отлично.",
+    "error": "Ошибка",
+    "refreshFailed": "Не удалось обновить данные профиля.",
+    "showcaseHint": "Выбери посты и контент для закрепления вверху твоего профиля.",
+    "showcaseTitle": "Избранное",
+    "manage": "Управлять",
+    "about": "О себе",
+    "addBio": "Добавь биографию...",
+    "tapToEdit": "Нажми, чтобы изменить",
+    "title": "Заголовок",
+    "titlePlaceholder": "Название видео",
+    "description": "Описание",
+    "descriptionPlaceholder": "Необязательное описание...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

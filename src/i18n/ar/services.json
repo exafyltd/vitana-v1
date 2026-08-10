@@ -1,0 +1,30 @@
+{
+  "services": {
+    "title": "مركز الخدمات",
+    "subtitle": "احصل على خدمات رعاية صحية وعافية شاملة",
+    "categories": {
+      "preventive": "فحوصات وقائية",
+      "labTests": "تحاليل مخبرية",
+      "coaching": "تدريب وتوجيه شخصي",
+      "groupPrograms": "برامج جماعية وتحديات"
+    },
+    "actions": {
+      "book": "احجز",
+      "addToPlan": "أضف إلى الخطة",
+      "askAI": "اسأل الذكاء الاصطناعي",
+      "joinRoom": "انضم إلى الغرفة",
+      "setReminder": "اضبط تذكيرًا"
+    },
+    "details": {
+      "duration": "المدة",
+      "price": "السعر",
+      "location": "الموقع",
+      "nextAvailable": "المتاح التالي",
+      "whatsIncluded": "المتضمنات",
+      "healthBenefits": "فوائد صحية",
+      "availableProviders": "مقدمو الخدمة المتاحون",
+      "requirements": "المتطلبات والتحضير",
+      "tags": "الوسوم"
+    }
+  }
+}

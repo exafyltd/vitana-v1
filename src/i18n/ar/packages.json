@@ -1,0 +1,22 @@
+{
+  "packages": {
+    "confirmDelete": "هل أنت متأكد من حذف هذه الحزمة؟",
+    "types": {
+      "bundle": "حزمة",
+      "subscription": "اشتراك",
+      "program": "برنامج"
+    },
+    "status": {
+      "draft": "مسودة",
+      "published": "مباشر",
+      "archived": "مؤرشف"
+    },
+    "item": "عنصر",
+    "items": "عناصر",
+    "total": "المجموع",
+    "validDays": "صالح لمدة {days} أيام",
+    "save": "وفر {percent}%",
+    "unpublish": "إلغاء النشر",
+    "publish": "نشر"
+  }
+}

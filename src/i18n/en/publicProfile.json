@@ -3,10 +3,12 @@
     "viewFull": "View Full Profile",
     "sendMessage": "Message",
     "follow": "Follow",
-    "milestones": "Life Milestones",
+    "milestones": "Life milestones",
     "posts": "Posts",
     "followers": "Followers",
     "following": "Following",
-    "groups": "Groups"
-  }
+    "groups": "Groups",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,0 +1,9 @@
+{
+  "logout": {
+    "signingOut": "正在登出...",
+    "signedOut": "成功登出",
+    "redirecting": "正在跳转...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

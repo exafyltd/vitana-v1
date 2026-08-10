@@ -17,37 +17,48 @@
       "career": "career",
       "learning": "learning",
       "spiritual": "spiritual",
-      "longevity": "longevity"
+      "longevity": "longevity",
+      "_pending_review": {}
     },
     "goals": {
       "wealth": {
         "title": "Build Financial Freedom",
-        "description": "Achieve financial independence and wealth"
+        "description": "Achieve financial independence and wealth",
+        "_pending_review": {}
       },
       "relationship": {
         "title": "Find Life Partner",
-        "description": "Build meaningful romantic relationships"
+        "description": "Build meaningful romantic relationships",
+        "_pending_review": {}
       },
       "health": {
-        "title": "Transform Health",
-        "description": "Achieve optimal physical and mental wellness"
+        "title": "Improve Health",
+        "description": "Achieve optimal physical and mental wellness",
+        "_pending_review": {}
       },
       "career": {
         "title": "Advance Career",
-        "description": "Build a fulfilling and successful career"
+        "description": "Build a fulfilling and successful career",
+        "_pending_review": {}
       },
       "learning": {
         "title": "Master New Skills",
-        "description": "Learn and grow through knowledge"
+        "description": "Learn and grow through knowledge",
+        "_pending_review": {}
       },
       "spiritual": {
         "title": "Spiritual Life",
-        "description": "Deepen purpose, presence, and inner peace"
+        "description": "Deepen purpose, presence, and inner peace",
+        "_pending_review": {}
       },
       "longevity": {
         "title": "Improve quality of life and extend lifespan",
-        "description": "Focus on healthspan, energy, and longevity — Vitanaland's mission"
-      }
-    }
-  }
+        "description": "Focus on healthspan, energy, and longevity — Vitanaland's mission",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

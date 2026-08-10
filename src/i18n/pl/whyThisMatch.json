@@ -1,0 +1,21 @@
+{
+  "whyThisMatch": {
+    "title": "Dlaczego ten członek?",
+    "interpretedAs": "Vitana zrozumiała:",
+    "consideredSignals": "Sygnały rozważone:",
+    "showSomeoneElse": "Pokaż mi kogoś innego",
+    "dismiss": "Odrzuć",
+    "ethicsNote": "Vitana nie ocenia członków na podstawie wyglądu ani majątku — ale oto ktoś, czyja podróż świeci teraz.",
+    "loadingRecipe": "Ładowanie szczegółów wyszukiwania…",
+    "recipeUnavailable": "Te szczegóły wyszukiwania nie są już dostępne.",
+    "tierLabel": {
+      "1": "Dokładne dopasowanie",
+      "2": "Vitana Indeks",
+      "3": "Najlepsze dopasowanie",
+      "4": "Przekierowanie sprawiedliwości",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

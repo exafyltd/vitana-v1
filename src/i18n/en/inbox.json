@@ -11,30 +11,35 @@
       "direct": "Direct",
       "contacts": "Contacts",
       "notifications": "Notifications",
-      "archived": "Archived"
+      "archived": "Archived",
+      "_pending_review": {}
     },
     "contextTabs": {
       "community": "Community",
-      "network": "Network"
+      "network": "Network",
+      "_pending_review": {}
     },
     "actions": {
       "new": "New",
       "newMessage": "New Message",
       "createGroup": "Create Group",
       "markAllRead": "Mark all as read",
-      "menu": "More"
+      "menu": "More",
+      "_pending_review": {}
     },
     "composer": {
       "placeholder": "Type your message...",
       "send": "Send",
       "attachments": "Attachments",
       "recipients": "To:",
-      "add": "Add"
+      "add": "Add",
+      "_pending_review": {}
     },
     "states": {
       "empty": "No messages yet",
       "loading": "Loading messages...",
-      "error": "Failed to load messages"
+      "error": "Failed to load messages",
+      "_pending_review": {}
     },
     "newConversation": {
       "title": "Start New Conversation",
@@ -54,7 +59,8 @@
       "cancel": "Cancel",
       "startChat": "Start Chat",
       "createGroup": "Create Group",
-      "creating": "Creating..."
+      "creating": "Creating...",
+      "_pending_review": {}
     },
     "createGroup": {
       "title": "Create Group",
@@ -65,13 +71,14 @@
       "groupNameRequired": "Group name required",
       "groupNameRequiredDesc": "Please enter a name for your group.",
       "addMembersRequired": "Add members",
-      "addMembersRequiredDesc": "Please add at least one member to the group.",
+      "addMembersRequiredDesc": "Please add at least one member.",
       "groupExists": "Group already exists",
       "groupExistsDesc": "A group with these members was created recently.",
       "created": "Group created",
       "createdDesc": "\"{name}\" has been created successfully.",
       "failed": "Failed to create group",
-      "failedDesc": "Please try again."
+      "failedDesc": "Please try again.",
+      "_pending_review": {}
     },
     "toast": {
       "success": "Success",
@@ -82,13 +89,14 @@
       "searchFailed": "Search failed",
       "accessDenied": "Access denied",
       "communityOnly": "Only community users can create global conversations",
-      "pleaseLogin": "Please log in to start conversations",
+      "pleaseLogin": "Please sign in to start conversations.",
       "groupRecipientsRequired": "Group name and recipients are required",
-      "singleRecipientRequired": "Select exactly one recipient for direct message",
+      "singleRecipientRequired": "Select exactly one recipient for direct messages.",
       "groupCreated": "Group \"{name}\" created successfully!",
       "groupFailed": "Failed to create group",
       "allMarkedRead": "All messages marked as read",
-      "markAllReadFailed": "Couldn't mark all as read. Please try again."
+      "markAllReadFailed": "Couldn't mark all as read. Please try again.",
+      "_pending_review": {}
     },
     "createGroupAction": "Create New Group",
     "newConversationAction": "New Conversation",
@@ -99,14 +107,15 @@
     "searchConversations": "Search conversations...",
     "searchPlaceholder": "Search...",
     "noMessages": "No messages yet",
-    "noMessagesDesc": "Start a conversation to get going.",
+    "noMessagesDesc": "Start a conversation to get started.",
     "startConversation": "Start Conversation",
     "emptyState": {
-      "title": "Your inbox is quiet for now",
+      "title": "Your inbox is still empty.",
       "globalDescription": "Start a conversation or join a community to connect with others.",
       "tenantDescription": "Connect with colleagues and team members in your professional network.",
       "startConversation": "Start a conversation",
-      "discoverPeople": "Discover people"
+      "discoverPeople": "Discover people",
+      "_pending_review": {}
     },
     "group": {
       "loading": "Loading group…",
@@ -117,7 +126,10 @@
       "memberOther": "members",
       "officialBadge": "official group",
       "empty": "No messages yet.",
-      "composerPlaceholder": "Message…"
-    }
-  }
+      "composerPlaceholder": "Message…",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

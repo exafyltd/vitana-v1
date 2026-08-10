@@ -1,0 +1,67 @@
+{
+  "health": {
+    "title": "صحة",
+    "description": "لوحة معلومات صحتك الشخصية",
+    "overview": "نظرة عامة",
+    "overviewDesc": "لوحة معلومات صحتك الشاملة ونظرة عامة على عافيتك",
+    "servicesHub": "مركز الخدمات",
+    "servicesHubDesc": "احجز الأطباء، التدريب، البرامج والفحوصات",
+    "biomarkers": "المؤشرات الحيوية",
+    "biomarkersDesc": "اعرض أحدث نتائج اختباراتك والمؤشرات الحيوية",
+    "healthTracker": "متتبع صحتي",
+    "healthTrackerDesc": "تتبع تغذيتك اليومية، نومك، وتمارينك الرياضية",
+    "education": "التعليم والعلوم",
+    "educationDesc": "تعلّم عن مواضيع الصحة وادخل إلى موارد العافية",
+    "priorityFocus": "منطقة تركيزك",
+    "priorityFocusExplanation": "هذه المنطقة حاليًا لها أكبر تأثير على مدى صحتك على المدى الطويل.",
+    "autopilotGuidance": "إرشادات الطيار الآلي",
+    "autopilotSuggests": "الطيار الآلي يقترح",
+    "takeAction": "إجراء",
+    "uploadBloodTest": "حمّل فحص الدم",
+    "orderBloodTest": "اطلب فحص الدم",
+    "viewPlans": "اعرض الخطط",
+    "vitanaIndex": "مؤشر Vitana",
+    "healthSnapshot": "لقطة صحتك",
+    "topPercentile": "أفضل {percent}%",
+    "trend": {
+      "improving": "يتحسن",
+      "declining": "يتدهور",
+      "stable": "مستقر"
+    },
+    "suggestions": {
+      "uploadBloodTestResults": "حمّل نتائج فحص الدم",
+      "startFitnessChallenge": "ابدأ تحدي اللياقة البدنية لمدة 30 يومًا"
+    },
+    "pillars": {
+      "sleep": "النوم",
+      "exercise": "التمرين",
+      "nutrition": "التغذية",
+      "hydration": "الترطيب",
+      "mental": "نفسي"
+    },
+    "emptyStates": {
+      "noSleepPlan": "لا يوجد خطة نوم بعد",
+      "noSleepPlanDesc": "أنشئ خطة نومك المخصصة بأهداف محسّنة بالذكاء الاصطناعي، مصممة خصيصًا لإيقاعك الحيوي، واحتياجات التعافي، وأدائك اليومي.",
+      "noExercisePlan": "لا يوجد خطة تمرين بعد",
+      "noExercisePlanDesc": "أنشئ خطة تمرينك المخصصة بتمارين محسّنة بالذكاء الاصطناعي، مصممة خصيصًا لمستوى لياقتك، وأهدافك، واحتياجات التعافي.",
+      "noNutritionPlan": "لا يوجد خطة تغذية بعد",
+      "noNutritionPlanDesc": "أنشئ خطة تغذيتك المخصصة بوصفات لذيذة ومتوازنة، مصممة خصيصًا لأهدافك وتفضيلاتك الغذائية.",
+      "noHydrationPlan": "لا يوجد خطة ترطيب بعد",
+      "noHydrationPlanDesc": "أنشئ خطة ترطيبك المخصصة بأهداف يومية محسّنة بالذكاء الاصطناعي، مصممة خصيصًا لمستوى نشاطك، وبيئتك، واحتياجات التعافي.",
+      "noMentalPlan": "لا يوجد خطة نفسية بعد",
+      "noMentalPlanDesc": "أنشئ خطة عافيتك النفسية المخصصة، لتتبع التوتر والتركيز والتوازن العاطفي بدعم الذكاء الاصطناعي.",
+      "generatePlan": "أنشئ خطة",
+      "generating": "جاري الإنشاء..."
+    },
+    "noSupplements": "لا توجد مكملات بعد",
+    "noSupplementsDesc": "تتبع فيتاميناتك ومعادنك ومكملاتك اليومية. أضف أول مكمل لك للبدء.",
+    "noReports": "لا توجد تقارير صحية بعد",
+    "noReportsDesc": "حمّل فحوصات دمك ونتائج المختبر والتقارير الطبية للحصول على رؤى صحية مخصصة.",
+    "medical": "طبي",
+    "supplements": "مكملات",
+    "uploadDescription": "فحوصات الدم، التصوير، نتائج المختبر",
+    "unknownProvider": "مزود غير معروف",
+    "addSupplement": "أضف مكمل",
+    "uploadFirstReport": "حمّل أول تقرير"
+  }
+}

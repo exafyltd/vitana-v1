@@ -1,0 +1,28 @@
+{
+  "events": {
+    "title": "فعاليات ولقاءات",
+    "description": "اكتشف تجمعات صحية محلية",
+    "searchPlaceholder": "ابحث عن فعاليات ولقاءات...",
+    "tabs": {
+      "today": "اليوم",
+      "upcoming": "القادمة",
+      "following": "المتابعة",
+      "recommended": "مقترح"
+    },
+    "noEvents": "لا توجد فعاليات مجدولة",
+    "checkBack": "عُد قريبًا لفعاليات مجتمعية قادمة!",
+    "emptyStates": {
+      "noEventsToday": "لا توجد فعاليات اليوم",
+      "noEventsTodayDesc": "لا توجد فعاليات مخططة لليوم. تفقد الفعاليات القادمة أو أنشئ فعاليتك الخاصة!",
+      "createEvent": "أنشئ فعالية",
+      "viewUpcoming": "عرض الفعاليات القادمة",
+      "followingTitle": "منشورات من أشخاص تتابعهم",
+      "followingDesc": "المحتوى من أشخاص ومجموعات تتابعهم يظهر هنا",
+      "findPeople": "ابحث عن أشخاص لمتابعتهم",
+      "noPostsFromFollowing": "لا توجد منشورات بعد",
+      "noPostsFromFollowingDesc": "الأشخاص الذين تتابعهم لم ينشئوا أي فعاليات أو لقاءات بعد.",
+      "youFollow": "تتابع",
+      "loadingFollowing": "جارٍ تحميل المنشورات…"
+    }
+  }
+}

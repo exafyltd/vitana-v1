@@ -2,6 +2,8 @@
   "audio": {
     "listening": "Slušam...",
     "processing": "Trenutak...",
-    "connectionError": "Problem sa vezom. Pokušaj ponovo."
-  }
+    "connectionError": "Problem sa vezom. Molimo pokušaj ponovo.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

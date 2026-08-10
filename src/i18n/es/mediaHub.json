@@ -5,28 +5,31 @@
     "discoverContent": "Descubre y comparte contenido de bienestar inspirador con tu comunidad.",
     "tabs": {
       "music": "Música",
-      "podcasts": "Podcasts",
-      "shorts": "Shorts",
-      "videos": "Videos"
+      "podcasts": "Pódcasts",
+      "shorts": "Cortos",
+      "videos": "Videos",
+      "_pending_review": {}
     },
     "sections": {
       "trendingShorts": "Shorts populares",
       "trendingMusic": "Música popular",
       "musicPlaylists": "Listas de reproducción de música",
       "latestEpisodes": "Últimos episodios",
-      "popularShows": "Programas populares"
+      "popularShows": "Programas populares",
+      "_pending_review": {}
     },
     "actions": {
       "upload": "Subir",
       "watchShorts": "Ver Cortos",
       "viewAllShorts": "Ver todos los {count} cortos",
       "playPlaylist": "Reproducir lista",
-      "clearFilters": "Limpiar filtros"
+      "clearFilters": "Limpiar filtros",
+      "_pending_review": {}
     },
     "searchPlaceholder": "Buscar medios...",
     "shortsAvailable": "{count} shorts disponibles",
     "filteredBy": "Filtrado por:",
-    "noMatchingShorts": "Ningún short coincide con tus intereses",
+    "noMatchingShorts": "Ningún video corto coincide con tus intereses.",
     "viewAllShorts": "Ver todos los shorts",
     "tracks": "pistas",
     "min": "min",
@@ -42,11 +45,12 @@
     "menu": {
       "video": "Video",
       "music": "Música",
-      "podcast": "Podcast",
+      "podcast": "Pódcast",
       "singleUpload": "Subir uno",
       "bulkUpload": "Subir varios",
       "addToPlaylist": "Agregar a lista",
-      "viewArtist": "Ver artista"
+      "viewArtist": "Ver artista",
+      "_pending_review": {}
     },
     "toast": {
       "linkCopied": "Enlace copiado",
@@ -54,27 +58,32 @@
       "filtersCleared": "Filtros borrados",
       "filtersClearedDesc": "Mostrando todos los cortos",
       "podcastDeleted": "Podcast eliminado",
-      "podcastDeletedDesc": "Tu podcast se ha eliminado correctamente.",
+      "podcastDeletedDesc": "Tu pódcast se eliminó correctamente.",
       "videoDeleted": "Video eliminado",
-      "videoDeletedDesc": "Tu video se ha eliminado correctamente.",
+      "videoDeletedDesc": "Tu video se eliminó correctamente.",
       "videoUpdated": "Éxito",
       "videoUpdatedDesc": "Video actualizado correctamente",
       "uploadSuccess": "¡Éxito!",
       "uploadSuccessDesc": "Tu {type} ya está disponible en la comunidad.",
       "deleteError": "Error",
-      "deleteErrorDesc": "No se pudo eliminar. Intenta de nuevo."
+      "deleteErrorDesc": "Error al eliminar. Inténtalo de nuevo.",
+      "commentError": "Error",
+      "commentErrorDesc": "No se pudo publicar el comentario. Inténtalo de nuevo.",
+      "_pending_review": {}
     },
     "deletePodcast": {
       "title": "Eliminar podcast",
       "description": "¿Seguro que quieres eliminar este podcast? Esta acción no se puede deshacer.",
       "cancel": "Cancelar",
-      "confirm": "Eliminar"
+      "confirm": "Eliminar",
+      "_pending_review": {}
     },
     "deleteVideo": {
       "title": "Eliminar video",
       "description": "¿Seguro que quieres eliminar este video? Esta acción no se puede deshacer y eliminará el video del almacenamiento.",
       "cancel": "Cancelar",
-      "confirm": "Eliminar"
+      "confirm": "Eliminar",
+      "_pending_review": {}
     },
     "noMusic": "Aún no se ha subido música",
     "noMusicDesc": "¡Sé el primero en compartir música con la comunidad!",
@@ -131,8 +140,26 @@
         "mentalHealth": "Salud mental",
         "wellness": "Bienestar",
         "education": "Educación",
-        "lifestyle": "Estilo de vida"
-      }
-    }
-  }
+        "lifestyle": "Estilo de vida",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "comments": {
+      "title": "Comentarios",
+      "placeholder": "Escribe un comentario...",
+      "empty": "Aún no hay comentarios",
+      "beFirst": "Sé el primero en comentar",
+      "signIn": "Inicia sesión para comentar",
+      "send": "Enviar comentario",
+      "member": "Miembro de la comunidad",
+      "reply": "Responder",
+      "replyingTo": "Respondiendo a {name}",
+      "cancelReply": "Cancelar respuesta",
+      "like": "Me gusta el comentario",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

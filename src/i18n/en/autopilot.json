@@ -7,16 +7,17 @@
       "enable": "Enable",
       "showcaseTitle": "Autopilot Recommendations",
       "showcaseBadge": "Smart",
-      "showcaseDesc": "Based on your activity, these posts might perform well as featured content:",
+      "showcaseDesc": "Based on your activity, these posts could work well as featured content:",
       "suggestPopular": "Suggest Popular Posts",
       "recentHighlights": "Recent Highlights",
       "archetypeTitle": "Archetype Insights",
       "archetypeBadge": "AI Analysis",
-      "archetypeDesc": "Your wellness activities suggest you might be \"The Mindful Mover\" - want to update?",
+      "archetypeDesc": "Your wellness activities suggest you could be \"The Mindful Mover\" - would you like to update?",
       "updateArchetype": "Update Archetype",
       "profileSectionTitle": "Autopilot can polish your profile ✨",
       "profileSectionDesc": "Get AI-powered suggestions for your bio, archetype, and highlights.",
-      "tryAutopilot": "Try Autopilot"
+      "tryAutopilot": "Try Autopilot",
+      "_pending_review": {}
     },
     "preview": "Autopilot Preview",
     "viewAll": "View All",
@@ -29,9 +30,9 @@
     "popup": {
       "title": "Autopilot Actions",
       "selectedOf": "{selected} of {total} selected",
-      "readyToExecute": "Ready to execute {count} action(s) prepared by your AI assistant.",
+      "readyToExecute": "Ready to perform {count} action(s) your AI assistant has prepared.",
       "executingTitle": "Executing Actions...",
-      "executingDesc": "Please wait while AI handles your requests",
+      "executingDesc": "Please wait while the AI processes your requests",
       "complete": "{percent}% complete",
       "go": "GO ({count})",
       "notNow": "Not Now",
@@ -41,12 +42,14 @@
       "toastExecutedTitle": "Actions Executed",
       "toastExecutedDesc": "{success}/{total} actions completed successfully",
       "toastFailedTitle": "Execution Failed",
-      "toastFailedDesc": "Something went wrong. Please try again."
+      "toastFailedDesc": "Something went wrong. Please try again.",
+      "_pending_review": {}
     },
     "priorities": {
       "high": "High",
       "medium": "Medium",
-      "low": "Low"
+      "low": "Low",
+      "_pending_review": {}
     },
     "widget": {
       "title": "Autopilot ⚡",
@@ -54,25 +57,27 @@
       "paused": "Paused",
       "doNow": "Do Now",
       "allOptimized": "All optimized! 🎯",
-      "enableToSee": "Enable Autopilot to see suggestions",
-      "completeForRewards": "Complete autopilot suggestions for rewards",
-      "enableForCredits": "Enable autopilot for credits"
+      "enableToSee": "Activate Autopilot to see suggestions",
+      "completeForRewards": "Complete Autopilot suggestions to get rewards",
+      "enableForCredits": "Activate Autopilot for credits",
+      "_pending_review": {}
     },
     "insightBanner": {
       "title": "Autopilot Health Overview",
-      "description": "Your Vitana Autopilot analyzed current plans and consistency.",
+      "description": "Your Vitana Autopilot has analyzed recent plans and consistency.",
       "synergyIndex": "Synergy Index",
       "statusBalanced": "Balanced",
       "statusNeedsAttention": "Needs Attention",
-      "statusImproving": "Improving"
+      "statusImproving": "Improving",
+      "_pending_review": {}
     },
     "profilePopup": {
-      "title": "Let Autopilot polish your profile ✨",
-      "polishBio": "Polish my Bio",
+      "title": "Let Autopilot optimize your profile ✨",
+      "polishBio": "Optimize your Bio",
       "polishBioDesc": "Autopilot can rewrite About section to be more inspiring",
-      "refreshArchetype": "Refresh my Archetype",
+      "refreshArchetype": "Update your Archetype",
       "refreshArchetypeDesc": "Suggest Longevity Archetype update based on activity",
-      "highlightShowcase": "Highlight my Profile",
+      "highlightShowcase": "Highlight your profile",
       "highlightShowcaseDesc": "Suggest top posts or media for featured content",
       "styleProfile": "Style my Profile",
       "styleProfileDesc": "Suggest improvements to cover photo, roles, profile picture",
@@ -87,23 +92,27 @@
       "acceptAll": "Accept All",
       "applied": "Changes saved!",
       "error": "Something went wrong",
-      "comingSoon": "Coming Soon"
+      "comingSoon": "Coming Soon",
+      "_pending_review": {}
     },
     "actions": {
       "action1Title": "Join Longevity Dance Group Tonight?",
-      "action1Reason": "Perfect match for your movement goals + social wellness vibes",
+      "action1Reason": "Perfectly matching your movement goals + social wellness vibes",
       "action2Title": "AI Breakthrough Insight Just Dropped",
-      "action2Reason": "Your digital twin discovered something fascinating from your patterns",
+      "action2Reason": "Your digital twin has discovered something fascinating in your patterns",
       "action3Title": "Hydration Streak at 5 Days — Legend Status Awaits",
       "action3Reason": "One more sip closer to your weekly hydration mastery",
       "action4Title": "Auto-invite Squad to Epic Weekend Meetup",
       "action4Reason": "Sarah, Luna & Marcus are perfect longevity tribe matches",
-      "action5Title": "Your Biomarker Story Awaits",
-      "action5Reason": "Dr. Chen decoded exciting insights from your latest panel",
+      "action5Title": "Your biomarker story awaits",
+      "action5Reason": "Dr. Chen has unlocked exciting insights from your latest panel",
       "action6Title": "Mindful Morning Magic",
       "action6Reason": "Your soul is calling for these stress-melting techniques",
       "newActionTitle": "New AI suggestion",
-      "newActionReason": "Based on recent activity patterns"
-    }
-  }
+      "newActionReason": "Based on recent activity patterns",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

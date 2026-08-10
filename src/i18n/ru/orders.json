@@ -1,0 +1,89 @@
+{
+  "orders": {
+    "myOrders": "Мои заказы",
+    "title": "Заказы",
+    "description": "Твоя история заказов и активные подписки",
+    "trackDescription": "Отслеживай заказы продуктов и билеты на мероприятия",
+    "searchPlaceholder": "Поиск заказов...",
+    "tabs": {
+      "active": "Активные",
+      "history": "История",
+      "all": "Все",
+      "completed": "Завершенные",
+      "cancelled": "Отмененные",
+      "_pending_review": {}
+    },
+    "filters": {
+      "all": "Все",
+      "events": "Мероприятия",
+      "products": "Продукты",
+      "vouchers": "Ваучеры",
+      "services": "Услуги",
+      "refunds": "Возвраты",
+      "_pending_review": {}
+    },
+    "previewNotice": "Это предварительные заказы. Твои настоящие заказы появятся здесь.",
+    "sampleData": "Пример данных",
+    "emptyActive": {
+      "title": "Нет активных заказов",
+      "description": "У тебя нет активных заказов или предстоящих событий.",
+      "_pending_review": {}
+    },
+    "emptyHistory": {
+      "title": "Нет истории заказов",
+      "description": "Твои выполненные заказы и прошедшие события появятся здесь.",
+      "_pending_review": {}
+    },
+    "noOrders": "Пока нет заказов",
+    "noOrdersDesc": "Твои заказы появятся здесь, как только ты что-нибудь купишь.",
+    "browseProducts": "Посмотреть продукты",
+    "findEvents": "Найти мероприятия",
+    "startShopping": "Начать покупки",
+    "noFilter": "Нет {filter}",
+    "noFilterDesc": "В твоей истории не найдено {filter}.",
+    "orderDate": "Дата заказа",
+    "orderNumber": "Номер заказа",
+    "viewDetails": "Посмотреть детали",
+    "trackOrder": "Отследить заказ",
+    "reorder": "Повторить заказ",
+    "detailSheet": {
+      "title": "Детали заказа",
+      "orderInfo": "Информация о заказе",
+      "orderReference": "Номер заказа",
+      "purchaseDate": "Дата покупки",
+      "eventDate": "Дата события",
+      "location": "Местоположение",
+      "quantity": "Количество",
+      "tickets": "билеты",
+      "yourTicket": "Твой билет",
+      "giftVoucher": "Подарочный ваучер",
+      "code": "Код",
+      "sendToRecipient": "Отправить получателю",
+      "recipientEmail": "Email получателя *",
+      "recipientName": "Имя получателя",
+      "personalMessage": "Личное сообщение",
+      "cancel": "Отменить",
+      "send": "Отправить",
+      "downloadPdf": "Скачать PDF",
+      "_pending_review": {}
+    },
+    "status": {
+      "upcoming": "Предстоящие",
+      "attended": "Посещенные",
+      "expired": "Истекшие",
+      "completed": "Выполненные",
+      "delivered": "Доставлено",
+      "cancelled": "Отменено",
+      "refunded": "Возвращено",
+      "shipped": "В пути",
+      "confirmed": "Подтверждено",
+      "pending": "Ожидает",
+      "processing": "Обработка",
+      "paid": "Активно",
+      "active": "Активно",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

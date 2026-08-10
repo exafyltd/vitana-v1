@@ -5,6 +5,8 @@
     "left": "Napustio/la si grupu",
     "leftDesc": "Napustio/la si ovu grupu.",
     "errorJoin": "Nije moguće pridružiti se grupi. Pokušaj ponovo.",
-    "errorLeave": "Nije moguće napustiti grupu. Pokušaj ponovo."
-  }
+    "errorLeave": "Nije moguće napustiti grupu. Pokušaj ponovo.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

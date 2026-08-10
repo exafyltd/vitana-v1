@@ -1,0 +1,9 @@
+{
+  "audio": {
+    "listening": "Słucham...",
+    "processing": "Chwileczkę...",
+    "connectionError": "Problem z połączeniem. Spróbuj ponownie.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

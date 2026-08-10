@@ -1,0 +1,23 @@
+{
+  "gallery": {
+    "title": "Galeria de Fotos",
+    "upload": "Carregar Foto",
+    "caption": "Legenda",
+    "captionPlaceholder": "Adicionar uma legenda...",
+    "empty": "Nenhuma foto ainda",
+    "uploadFirst": "Adiciona a tua primeira foto",
+    "photo": "Foto",
+    "dropzone": "Arrasta e larga ou clica para selecionar",
+    "publicLabel": "Visível para todos",
+    "videos": "Galeria de Vídeos",
+    "uploadVideo": "Carregar Vídeo",
+    "noVideos": "Nenhum vídeo ainda",
+    "addFirstVideo": "Adiciona o teu primeiro vídeo",
+    "invalidFormat": "Formato inválido",
+    "fileTooLarge": "Ficheiro muito grande",
+    "maxSize": "Tamanho máximo do ficheiro: 500 MB",
+    "maxSizeHint": "Máx. 500 MB",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

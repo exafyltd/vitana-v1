@@ -1,0 +1,81 @@
+{
+  "profile": {
+    "defaultBio": "متحمس للعافية وشغوف بالصحة الشاملة وبناء المجتمع. 🌱",
+    "autopilot": {
+      "polishBio": "صقل سيرتك الذاتية، نمطك الأصلي، وأبرز نقاطك",
+      "editHighlights": "تعديل أبرز النقاط",
+      "saveHighlights": "حفظ أبرز النقاط",
+      "highlightsDesc": "اختر أفضل منشوراتك ووسائطك لعرضها في أعلى ملفك الشخصي. يظهر المحتوى المميّز في قسم أبرز النقاط ويجذب المزيد من المتابعين.",
+      "try": "جرّب"
+    },
+    "identity": {
+      "vitanaIndex": "مؤشر Vitana",
+      "basedOnActivity": "بناءً على النشاط، المشاركة الصحية والمساهمة",
+      "viewLongevityId": "عرض معرّف طول العمر الخاص بي",
+      "follow": "متابعة",
+      "followingState": "تتابع",
+      "understandIndex": "فهم المؤشر",
+      "brandFooter": "MAXINA × VITANA"
+    },
+    "tabs": {
+      "identity": "الهوية",
+      "social": "اجتماعي",
+      "account": "الحساب",
+      "business": "الأعمال"
+    },
+    "account": {
+      "notSet": "لم يتم الضبط",
+      "editField": "تعديل {field}",
+      "visibilityToggle": "مستوى الرؤية: {label}. اضغط للتغيير.",
+      "visibility": {
+        "private": "خاص",
+        "connections": "الاتصالات",
+        "public": "عام"
+      },
+      "sections": {
+        "publicProfile": "ملف شخصي عام",
+        "publicProfileSubtitle": "معروض في الهوية",
+        "basicInfo": "معلومات شخصية أساسية",
+        "basicInfoSubtitle": "بيانات الهوية الثابتة",
+        "contactInfo": "معلومات الاتصال",
+        "accountDetails": "تفاصيل الحساب"
+      },
+      "fields": {
+        "avatar": "الصورة الرمزية",
+        "handle": "اسم المستخدم",
+        "longevityArchetype": "نمط طول العمر",
+        "firstName": "الاسم الأول",
+        "lastName": "اسم العائلة",
+        "dateOfBirth": "تاريخ الميلاد",
+        "gender": "الجنس",
+        "maritalStatus": "الحالة الاجتماعية",
+        "email": "البريد الإلكتروني",
+        "phone": "الهاتف",
+        "address": "العنوان",
+        "country": "البلد",
+        "city": "المدينة",
+        "memberSince": "عضو منذ",
+        "accountType": "نوع الحساب",
+        "verificationStatus": "حالة التحقق"
+      },
+      "values": {
+        "uploaded": "مرفوع"
+      }
+    },
+    "business": {
+      "title": "توصياتي",
+      "subtitle": "المنتجات التي أوصيت بها، وما كسبته منها",
+      "empty": "لا توجد توصيات بعد",
+      "emptyDesc": "أوصِ بمنتج من Discover لترى نقراتك، ومشترياتك، وعمولاتك هنا.",
+      "clicks": "{count} نقرة",
+      "conversions": "{count} مشتريات",
+      "totalEarned": "إجمالي الأرباح",
+      "statusActive": "نشط",
+      "shareRow": "شارك رابط التوصية",
+      "publicTitle": "توصيات",
+      "publicSubtitle": "المنتجات التي أوصى بها هذا الملف الشخصي",
+      "publicEmpty": "لا توجد توصيات بعد",
+      "viewProduct": "عرض"
+    }
+  }
+}

@@ -2,9 +2,10 @@
   "campaigns": {
     "delete": {
       "title": "Obriši kampanju?",
-      "description": "Brisanje \"{name}\" će trajno ukloniti sve povezane nacrte i analitiku. Ova radnja se ne može poništiti.",
+      "description": "Brisanje \"{name}\" trajno uklanja sve povezane nacrte i analize. Ovo se ne može poništiti.",
       "dontAskAgain": "Ne pitaj me ponovo za nacrte kampanja",
-      "deletePermanently": "Trajno obriši"
+      "deletePermanently": "Trajno obriši",
+      "_pending_review": {}
     },
     "creation": {
       "title": "Kreiraj kampanju",
@@ -15,10 +16,14 @@
       "proTip": "Profesionalni savet",
       "tips": {
         "1": "Jasni nazivi ti pomažu da kasnije pronađeš kampanje",
-        "2": "Poveži kanale sada za trenutno zakazivanje",
+        "2": "Poveži kanale sada za trenutno planiranje",
         "3": "Šablon za pokretanje radi za većinu najava",
-        "4": "Pametno zakazivanje koristi tvoje prethodne podatke o angažovanju"
-      }
-    }
-  }
+        "4": "Pametno planiranje koristi tvoje prošle podatke o angažovanju",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

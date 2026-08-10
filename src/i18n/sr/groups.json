@@ -1,5 +1,7 @@
 {
   "groups": {
-    "searchPlaceholder": "Pretraži grupe..."
-  }
+    "searchPlaceholder": "Pretraži grupe...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,0 +1,89 @@
+{
+  "orders": {
+    "myOrders": "Meus Pedidos",
+    "title": "Pedidos",
+    "description": "Teu histórico de pedidos e assinaturas ativas",
+    "trackDescription": "Acompanha teus pedidos de produtos e bilhetes de eventos",
+    "searchPlaceholder": "Pesquisar pedidos...",
+    "tabs": {
+      "active": "Ativo",
+      "history": "Histórico",
+      "all": "Todos",
+      "completed": "Concluídos",
+      "cancelled": "Cancelados",
+      "_pending_review": {}
+    },
+    "filters": {
+      "all": "Todos",
+      "events": "Eventos",
+      "products": "Produtos",
+      "vouchers": "Vales",
+      "services": "Serviços",
+      "refunds": "Reembolsos",
+      "_pending_review": {}
+    },
+    "previewNotice": "Estes são pedidos de pré-visualização. Teus pedidos reais aparecerão aqui.",
+    "sampleData": "Dados de Exemplo",
+    "emptyActive": {
+      "title": "Nenhum Pedido Ativo",
+      "description": "Não tens nenhuma encomenda ativa ou próximos eventos.",
+      "_pending_review": {}
+    },
+    "emptyHistory": {
+      "title": "Nenhum Histórico de Pedidos",
+      "description": "Seus pedidos concluídos e eventos passados aparecerão aqui.",
+      "_pending_review": {}
+    },
+    "noOrders": "Ainda sem pedidos",
+    "noOrdersDesc": "Teus pedidos aparecerão aqui assim que comprares algo.",
+    "browseProducts": "Explorar Produtos",
+    "findEvents": "Encontrar Eventos",
+    "startShopping": "Começar a Comprar",
+    "noFilter": "Nenhum {filter}",
+    "noFilterDesc": "Nenhum {filter} encontrado no teu histórico.",
+    "orderDate": "Data do pedido",
+    "orderNumber": "Número do pedido",
+    "viewDetails": "Ver Detalhes",
+    "trackOrder": "Acompanhar Pedido",
+    "reorder": "Reordenar",
+    "detailSheet": {
+      "title": "Detalhes do Pedido",
+      "orderInfo": "Informações do Pedido",
+      "orderReference": "Referência do Pedido",
+      "purchaseDate": "Data da Compra",
+      "eventDate": "Data do Evento",
+      "location": "Local",
+      "quantity": "Quantidade",
+      "tickets": "ingressos",
+      "yourTicket": "Teu bilhete",
+      "giftVoucher": "Vale-Presente",
+      "code": "Código",
+      "sendToRecipient": "Enviar ao Destinatário",
+      "recipientEmail": "Email do Destinatário *",
+      "recipientName": "Nome do Destinatário",
+      "personalMessage": "Mensagem Pessoal",
+      "cancel": "Cancelar",
+      "send": "Enviar",
+      "downloadPdf": "Baixar PDF",
+      "_pending_review": {}
+    },
+    "status": {
+      "upcoming": "Próximos",
+      "attended": "Participados",
+      "expired": "Expirados",
+      "completed": "Concluídos",
+      "delivered": "Entregues",
+      "cancelled": "Cancelados",
+      "refunded": "Reembolsados",
+      "shipped": "Em Trânsito",
+      "confirmed": "Confirmado",
+      "pending": "Pendente",
+      "processing": "Processando",
+      "paid": "Ativo",
+      "active": "Ativo",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -1,0 +1,19 @@
+{
+  "milestones": {
+    "title": "特别时刻",
+    "add": "添加里程碑",
+    "edit": "编辑里程碑",
+    "empty": "暂无时刻",
+    "addFirst": "添加你的第一个时刻",
+    "date": "日期",
+    "description": "发生了什么？",
+    "titleLabel": "标题",
+    "titlePlaceholder": "例如：大学毕业",
+    "descPlaceholder": "描述这个时刻...",
+    "icon": "图标",
+    "publicLabel": "所有人可见",
+    "private": "私密",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

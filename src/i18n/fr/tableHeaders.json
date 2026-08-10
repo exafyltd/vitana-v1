@@ -1,0 +1,17 @@
+{
+  "tableHeaders": {
+    "groupName": "Nom du groupe",
+    "category": "Catégorie",
+    "members": "Membres",
+    "privacy": "Confidentialité",
+    "status": "Statut",
+    "actions": "Actions",
+    "name": "Nom",
+    "role": "Rôle",
+    "email": "E-mail",
+    "date": "Date",
+    "amount": "Montant",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

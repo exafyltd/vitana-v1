@@ -1,0 +1,26 @@
+{
+  "packages": {
+    "confirmDelete": "Czy na pewno chcesz usunąć ten pakiet?",
+    "types": {
+      "bundle": "Pakiet",
+      "subscription": "Subskrypcja",
+      "program": "Program",
+      "_pending_review": {}
+    },
+    "status": {
+      "draft": "Szkic",
+      "published": "Aktywny",
+      "archived": "Zarchiwizowane",
+      "_pending_review": {}
+    },
+    "item": "pozycja",
+    "items": "pozycje",
+    "total": "łącznie",
+    "validDays": "Ważne {days} dni",
+    "save": "Oszczędź {percent}%",
+    "unpublish": "Wycofaj publikację",
+    "publish": "Opublikuj",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

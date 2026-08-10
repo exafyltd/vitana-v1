@@ -17,17 +17,38 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 // `status` controls visibility in the user-facing language picker.
 // Only `ga` languages appear by default; `beta`/`draft` are dev-only
 // (override via `?i18n-preview=1` in the URL).
+//
+// VTID-03509 — a `ga` entry here is a PROMISE, not a switch. Before flipping a
+// locale to `ga`, all three of these must be true, or users get a half-German
+// UI with no way back:
+//   1. src/i18n/<locale>/ exists and is at parity with de (npm run i18n:audit)
+//   2. the locale is registered in BOTH maps in src/i18n/index.ts — an
+//      unregistered locale silently renders 100% German (see the note there)
+//   3. the gateway catalog knows it (services/gateway/src/i18n/catalog.ts),
+//      or push notifications and emails arrive in German
 export const languageOptions: Array<{ label: string; value: string; status: 'ga' | 'beta' | 'draft' }> = [
-  { label: "German (DE)", value: "de-DE", status: 'ga' },     // primary
+  { label: "German (DE)", value: "de-DE", status: 'ga' },     // primary / source of truth
   { label: "English (EN)", value: "en-US", status: 'ga' },    // mirror
-  { label: "Serbian (SR)", value: "sr-RS", status: 'draft' },
+  // 18 Aug 2026 market release. A locale is flipped to 'ga' only once its
+  // catalog is genuinely complete: `npm run i18n:audit` FAILS a 'ga' locale
+  // below 100% of DE, so this is gated on measured coverage, not on intent.
+  // ES/SR meet all five GA conditions, each independently verified — coverage
+  // alone was never enough, and claimed 100% while three of these were broken:
+  //   1. 14,163/14,163 keys                    (npm run i18n:audit)
+  //   2. 0 keys flagged _pending_review
+  //   3. 0 placeholder mismatches vs DE        (audit; catches "{usado}" etc.)
+  //   4. 0 drift vs their EN source            (npm run i18n:stale)
+  //   5. 0 formal-register values in SR        (544 informal, 0 Vi/Vaš)
+  { label: "Spanish (ES)", value: "es-ES", status: 'ga' },
+  { label: "Serbian (SR)", value: "sr-RS", status: 'ga' },
+  { label: "French (FR)", value: "fr-FR", status: 'ga' },
+  { label: "Portuguese (PT)", value: "pt-PT", status: 'beta' },
+  { label: "Russian (RU)", value: "ru-RU", status: 'beta' },
+  { label: "Polish (PL)", value: "pl-PL", status: 'beta' },
+  // Deferred past 18 Aug. AR needs RTL layout work (RTLProvider is not wired
+  // to the selected language); ZH needs a CJK font stack + line-break audit.
   { label: "Arabic (AR)", value: "ar-XA", status: 'draft' },
-  { label: "Spanish (ES)", value: "es-ES", status: 'draft' },
-  { label: "Russian (RU)", value: "ru-RU", status: 'draft' },
   { label: "Chinese (ZH)", value: "zh-CN", status: 'draft' },
-  { label: "French (FR)", value: "fr-FR", status: 'draft' },
-  { label: "Portuguese (PT)", value: "pt-PT", status: 'draft' },
-  { label: "Polish (PL)", value: "pl-PL", status: 'draft' },
 ];
 
 // User-facing list: only GA, unless ?i18n-preview=1 is set.

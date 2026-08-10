@@ -1,0 +1,18 @@
+{
+  "errors": {
+    "somethingWentWrong": "حدث خطأ ما",
+    "tryAgain": "حاول مرة أخرى",
+    "pageNotFound": "الصفحة غير موجودة",
+    "pageNotFoundDesc": "الصفحة المطلوبة غير موجودة.",
+    "serverError": "خطأ في الخادم",
+    "serverErrorDesc": "حدث خطأ غير متوقع.",
+    "networkError": "خطأ في الشبكة",
+    "networkErrorDesc": "تحقق من اتصالك بالإنترنت.",
+    "unauthorized": "غير مصرّح لك",
+    "unauthorizedDesc": "سجل الدخول للمتابعة.",
+    "forbidden": "الوصول مرفوض",
+    "forbiddenDesc": "ليس لديك صلاحية لهذا الإجراء.",
+    "notFound": "غير موجود",
+    "notFoundDesc": "لم يتم العثور على العنصر المطلوب."
+  }
+}

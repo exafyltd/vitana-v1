@@ -1,19 +1,20 @@
 {
   "settings": {
     "title": "Settings",
-    "description": "Manage your account settings, privacy, and preferences",
+    "description": "Manage your account settings, your privacy, and your preferences",
     "searchPlaceholder": "Search settings, privacy controls, integrations...",
     "quickSetup": "Quick Setup",
     "tabs": {
       "overview": "Overview",
       "notifications": "Notifications",
-      "quickActions": "Quick Actions"
+      "quickActions": "Quick Actions",
+      "_pending_review": {}
     },
     "categories": {
       "privacy": "Privacy",
-      "privacyDesc": "Control who sees your profile and activities",
+      "privacyDesc": "Control who sees your profile and your activities",
       "notifications": "Notifications",
-      "notificationsDesc": "Manage your notification preferences",
+      "notificationsDesc": "Manage your notification settings",
       "preferences": "Preferences",
       "preferencesDesc": "Language, theme, and display options",
       "connectedApps": "Connected Apps",
@@ -23,7 +24,8 @@
       "billing": "Billing",
       "billingDesc": "Subscription and payment information",
       "support": "Support",
-      "supportDesc": "Help, FAQ, and contact options"
+      "supportDesc": "Help, FAQ, and contact options",
+      "_pending_review": {}
     },
     "status": {
       "privacyStatus": "Privacy Status",
@@ -33,9 +35,12 @@
       "notificationsActive": "Notifications Active",
       "connectedAppsCount": "Connected Apps",
       "types": "types",
-      "apps": "apps"
+      "apps": "apps",
+      "_pending_review": {}
     },
     "vitanaOpenedSection": "Vitana opened {section}",
-    "vitanaUpdated": "Vitana updated your setting"
-  }
+    "vitanaUpdated": "Vitana updated your setting",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,0 +1,23 @@
+{
+  "drawerNav": {
+    "journey": "Мой путь",
+    "news": "Новости",
+    "events": "События и встречи",
+    "findPartner": "Найти пару",
+    "live": "Прямые эфиры",
+    "media": "Медиа-хаб",
+    "business": "Бизнес-хаб",
+    "discover": "Исследуйте",
+    "orders": "Заказы",
+    "wallet": "Кошелек",
+    "health": "Здоровье",
+    "diary": "Ежедневник",
+    "connectors": "Коннекторы",
+    "inbox": "Входящие",
+    "support": "Поддержка",
+    "settings": "Настройки",
+    "logout": "Выйти",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

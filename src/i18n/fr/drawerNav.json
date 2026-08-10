@@ -1,0 +1,23 @@
+{
+  "drawerNav": {
+    "journey": "Mon Parcours",
+    "news": "Actualités",
+    "events": "Événements & Rencontres",
+    "findPartner": "Trouver un Match",
+    "live": "Salons en direct",
+    "media": "Centre Média",
+    "business": "Centre d'affaires",
+    "discover": "Découvrir",
+    "orders": "Commandes",
+    "wallet": "Portefeuille",
+    "health": "Santé",
+    "diary": "Journal Quotidien",
+    "connectors": "Connecteurs",
+    "inbox": "Boîte de réception",
+    "support": "Aide",
+    "settings": "Paramètres",
+    "logout": "Se déconnecter",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

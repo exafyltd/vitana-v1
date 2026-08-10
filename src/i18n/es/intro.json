@@ -7,6 +7,8 @@
     "playWelcome": "Reproducir bienvenida",
     "preparing": "Preparando...",
     "playing": "Reproduciendo",
-    "goToLogin": "Ir a iniciar sesión"
-  }
+    "goToLogin": "Ir a iniciar sesión",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

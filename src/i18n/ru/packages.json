@@ -1,0 +1,26 @@
+{
+  "packages": {
+    "confirmDelete": "Ты уверен(а), что хочешь удалить этот пакет?",
+    "types": {
+      "bundle": "Набор",
+      "subscription": "Подписка",
+      "program": "Программа",
+      "_pending_review": {}
+    },
+    "status": {
+      "draft": "Черновик",
+      "published": "Активный",
+      "archived": "Архивировано",
+      "_pending_review": {}
+    },
+    "item": "элемент",
+    "items": "элементы",
+    "total": "всего",
+    "validDays": "Действует {days} дней",
+    "save": "Сэкономь {percent}%",
+    "unpublish": "Снять с публикации",
+    "publish": "Опубликовать",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

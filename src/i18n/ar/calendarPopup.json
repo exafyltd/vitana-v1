@@ -1,0 +1,21 @@
+{
+  "calendarPopup": {
+    "title": "تقويم",
+    "nextEvents": "{count} أحداث قادمة",
+    "conflicts": "{count} تعارضات",
+    "upcomingSchedule": "جدولك ومواعيدك القادمة",
+    "addNewEvent": "إضافة حدث جديد",
+    "noUpcomingEvents": "لا توجد أحداث قادمة",
+    "createFirstEvent": "أنشئ موعدك الأول",
+    "aiSuggestions": "اقتراحات الذكاء الاصطناعي",
+    "findBetterSlot": "ابحث عن وقت أفضل",
+    "prepareBrief": "جهّز ملخصًا",
+    "shareAvailability": "شارك توفرك",
+    "syncExternal": "مزامنة خارجية",
+    "addEvent": "إضافة حدث",
+    "quickAdd": "إضافة سريعة",
+    "eventFormComingSoon": "نموذج إنشاء الحدث قريباً",
+    "externalSync": "مزامنة خارجية",
+    "connectingCalendars": "اتصل بالتقاويم الخارجية..."
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "settings": {
+    "title": "إعدادات",
+    "description": "إدارة إعدادات حسابك، خصوصيتك، وتفضيلاتك",
+    "searchPlaceholder": "ابحث عن الإعدادات، ضوابط الخصوصية، التكاملات...",
+    "quickSetup": "إعداد سريع",
+    "tabs": {
+      "overview": "نظرة عامة",
+      "notifications": "إشعارات",
+      "quickActions": "إجراءات سريعة"
+    },
+    "categories": {
+      "privacy": "الخصوصية",
+      "privacyDesc": "تحكم بمن يرى ملفك الشخصي وأنشطتك",
+      "notifications": "إشعارات",
+      "notificationsDesc": "إدارة إعدادات إشعاراتك",
+      "preferences": "تفضيلات",
+      "preferencesDesc": "خيارات اللغة، المظهر، والعرض",
+      "connectedApps": "تطبيقات متصلة",
+      "connectedAppsDesc": "إدارة التكاملات والأذونات",
+      "tenantRole": "المستأجر والدور",
+      "tenantRoleDesc": "التبديل بين الأدوار والمستأجرين",
+      "billing": "الفواتير",
+      "billingDesc": "معلومات الاشتراك والدفع",
+      "support": "الدعم",
+      "supportDesc": "المساعدة، الأسئلة الشائعة، وخيارات الاتصال"
+    },
+    "status": {
+      "privacyStatus": "حالة الخصوصية",
+      "subscription": "الاشتراك",
+      "protected": "محمي",
+      "premium": "مميز",
+      "notificationsActive": "الإشعارات نشطة",
+      "connectedAppsCount": "تطبيقات متصلة",
+      "types": "أنواع",
+      "apps": "تطبيقات"
+    },
+    "vitanaOpenedSection": "Vitana فتحت {section}",
+    "vitanaUpdated": "Vitana حدثت إعداداتك"
+  }
+}

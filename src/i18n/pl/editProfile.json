@@ -1,0 +1,23 @@
+{
+  "editProfile": {
+    "unsavedChanges": "Masz niezapisane zmiany. Czy na pewno chcesz wyjść?",
+    "notAuthenticated": "Brak uwierzytelnienia",
+    "notAuthenticatedDesc": "Zaloguj się, aby zapisać swój profil.",
+    "profileUpdated": "Profil zaktualizowany pomyślnie!",
+    "profileUpdatedDesc": "Twoje zmiany są teraz aktywne. Twój profil VITANA wygląda świetnie.",
+    "error": "Błąd",
+    "refreshFailed": "Nie udało się odświeżyć danych profilu.",
+    "showcaseHint": "Wybierz posty i treści, które mają być wyróżnione na górze Twojego profilu.",
+    "showcaseTitle": "Wyróżnione",
+    "manage": "Zarządzaj",
+    "about": "O mnie",
+    "addBio": "Dodaj bio...",
+    "tapToEdit": "Dotknij, aby edytować",
+    "title": "Tytuł",
+    "titlePlaceholder": "Tytuł wideo",
+    "description": "Opis",
+    "descriptionPlaceholder": "Opcjonalny opis...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

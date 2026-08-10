@@ -1,0 +1,46 @@
+{
+  "settings": {
+    "title": "Настройки",
+    "description": "Управляй настройками своего аккаунта, своей конфиденциальностью и своими предпочтениями",
+    "searchPlaceholder": "Поиск настроек, элементов управления конфиденциальностью, интеграций...",
+    "quickSetup": "Быстрая настройка",
+    "tabs": {
+      "overview": "Обзор",
+      "notifications": "Уведомления",
+      "quickActions": "Быстрые действия",
+      "_pending_review": {}
+    },
+    "categories": {
+      "privacy": "Конфиденциальность",
+      "privacyDesc": "Контролируй, кто видит твой профиль и твои действия",
+      "notifications": "Уведомления",
+      "notificationsDesc": "Управляй настройками своих уведомлений",
+      "preferences": "Предпочтения",
+      "preferencesDesc": "Язык, тема и параметры отображения",
+      "connectedApps": "Подключенные приложения",
+      "connectedAppsDesc": "Управляй интеграциями и разрешениями",
+      "tenantRole": "Арендатор и роль",
+      "tenantRoleDesc": "Переключайся между ролями и арендаторами",
+      "billing": "Оплата",
+      "billingDesc": "Информация о подписке и платежах",
+      "support": "Поддержка",
+      "supportDesc": "Помощь, FAQ и контакты",
+      "_pending_review": {}
+    },
+    "status": {
+      "privacyStatus": "Статус конфиденциальности",
+      "subscription": "Подписка",
+      "protected": "Защищено",
+      "premium": "Премиум",
+      "notificationsActive": "Уведомления активны",
+      "connectedAppsCount": "Подключенные приложения",
+      "types": "типы",
+      "apps": "Приложения",
+      "_pending_review": {}
+    },
+    "vitanaOpenedSection": "Vitana открыла {section}",
+    "vitanaUpdated": "Vitana обновила твою настройку",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

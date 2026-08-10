@@ -1,0 +1,21 @@
+{
+  "gallery": {
+    "title": "معرض الصور",
+    "upload": "تحميل صورة",
+    "caption": "تعليق",
+    "captionPlaceholder": "أضف تعليقًا...",
+    "empty": "لا توجد صور بعد",
+    "uploadFirst": "أضف صورتك الأولى",
+    "photo": "صورة",
+    "dropzone": "اسحب وأفلت أو انقر للاختيار",
+    "publicLabel": "مرئي للجميع",
+    "videos": "معرض الفيديو",
+    "uploadVideo": "تحميل فيديو",
+    "noVideos": "لا توجد فيديوهات بعد",
+    "addFirstVideo": "أضف فيديوك الأول",
+    "invalidFormat": "صيغة غير صالحة",
+    "fileTooLarge": "الملف كبير جدًا",
+    "maxSize": "أقصى حجم للملف: 500 ميجابايت",
+    "maxSizeHint": "حد أقصى 500 ميجابايت"
+  }
+}

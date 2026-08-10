@@ -28,18 +28,20 @@
     "exportComplete": "Izvoz završen",
     "exportCompleteDesc": "Tvoja istorija je uspešno izvezena.",
     "exportFailed": "Izvoz neuspešan",
-    "exportFailedDesc": "Došlo je do greške prilikom izvoza istorije.",
+    "exportFailedDesc": "Došlo je do greške prilikom izvoza tvoje istorije.",
     "historyCleared": "Istorija obrisana",
     "historyClearedDesc": "Stare stavke istorije su uklonjene.",
     "clearFailed": "Brisanje neuspešno",
     "clearFailedDesc": "Došlo je do greške prilikom brisanja stare istorije.",
     "allHistoryDeleted": "Cela istorija obrisana",
-    "allHistoryDeletedDesc": "Tvoja celokupna istorija je trajno uklonjena.",
+    "allHistoryDeletedDesc": "Tvoja celokupna istorija je trajno obrisana.",
     "deleteFailed": "Brisanje neuspešno",
-    "deleteFailedDesc": "Došlo je do greške prilikom brisanja istorije.",
-    "confirmClearOld": "Da li si siguran/na da želiš da obrišeš istoriju stariju od 90 dana?",
-    "confirmDeleteAll": "⚠️ UPOZORENJE: Ovo će trajno obrisati SVE tvoje podatke. Ova radnja se ne može poništiti. Jesi li apsolutno siguran/na?",
+    "deleteFailedDesc": "Došlo je do greške prilikom brisanja tvoje istorije.",
+    "confirmClearOld": "Da li si siguran da želiš da obrišeš istoriju stariju od 90 dana?",
+    "confirmDeleteAll": "⚠️ UPOZORENJE: Ovo će trajno obrisati TVOJU CELOKUPNU istoriju. Ova radnja se ne može poništiti. Da li si apsolutno siguran?",
     "beta": "Beta",
-    "danger": "Opasnost"
-  }
+    "danger": "Opasnost",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

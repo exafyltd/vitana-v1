@@ -1,0 +1,98 @@
+{
+  "voucher": {
+    "modal": {
+      "title": "Podaruj voucher Maxina",
+      "subtitle": "Podaruj dobre samopoczucie i połączenie ze społecznością.",
+      "buyVoucher": "Kup voucher",
+      "openingCheckout": "Otwieranie bezpiecznej płatności...",
+      "_pending_review": {}
+    },
+    "tiers": {
+      "test": {
+        "name": "Test",
+        "benefits": [
+          "Tylko do testu płatności",
+          "To nie jest prawdziwy voucher",
+          "Do testów deweloperskich"
+        ],
+        "_pending_review": {}
+      },
+      "experience": {
+        "name": "Doświadczenie",
+        "benefits": [
+          "Wstęp na 1 wydarzenie premium społeczności",
+          "Spersonalizowana konsultacja wellness",
+          "30-dniowy okres próbny Vitana+ w zestawie",
+          "Pięknie zaprojektowany e-voucher"
+        ],
+        "_pending_review": {}
+      },
+      "exclusive": {
+        "name": "Wyjątkowy",
+        "benefits": [
+          "3 wydarzenia premium społeczności",
+          "Indywidualna sesja coachingowa z ekspertem",
+          "90-dniowa subskrypcja Vitana+",
+          "Priorytetowa rezerwacja + korzyści VIP"
+        ],
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "success": {
+      "title": "Voucher zakupiony!",
+      "ready": "Twój voucher {tier} jest gotowy",
+      "download": "Pobierz voucher",
+      "sendEmail": "Wyślij do odbiorcy e-mailem",
+      "viewOrders": "Zobacz w zamówieniach",
+      "done": "Gotowe",
+      "_pending_review": {}
+    },
+    "email": {
+      "title": "Wyślij voucher e-mailem",
+      "subtitle": "Wyślemy pięknie zaprojektowany e-mail z voucherem",
+      "recipientEmail": "E-mail odbiorcy *",
+      "recipientName": "Imię odbiorcy (opcjonalnie)",
+      "personalMessage": "Wiadomość osobista (opcjonalnie)",
+      "messagePlaceholder": "Wszystkiego najlepszego! Ciesz się tą dobrostanową przyjemnością...",
+      "back": "Wstecz",
+      "send": "Wyślij voucher",
+      "_pending_review": {}
+    },
+    "preview": {
+      "title": "Twój voucher",
+      "giftVoucher": "Voucher podarunkowy",
+      "validUntil": "Ważny do {date}",
+      "voucherCode": "Kod vouchera",
+      "whatsIncluded": "Co zawiera",
+      "downloadPdf": "Pobierz PDF",
+      "downloadDirect": "Pobierz bezpośrednio",
+      "openInBrowser": "Otwórz w przeglądarce",
+      "copyLink": "Kopiuj link",
+      "share": "Zapisz / Udostępnij",
+      "shareHint": "Zapisz do Plików, na Dysk lub wyślij komuś",
+      "downloadHint": "Jeśli pobieranie otworzy się puste, dotknij Otwórz w przeglądarce.",
+      "_pending_review": {}
+    },
+    "toast": {
+      "downloadStarted": "Pobieranie rozpoczęte!",
+      "downloadFailed": "Pobieranie nie powiodło się",
+      "linkCopied": "Link skopiowany!",
+      "linkCopiedDesc": "Wklej w przeglądarce, aby pobrać.",
+      "voucherSent": "Voucher wysłany na {email}!",
+      "voucherShared": "Voucher udostępniony pomyślnie!",
+      "checkoutFailed": "Nie udało się rozpocząć płatności. Spróbuj ponownie.",
+      "generatingVoucher": "Generowanie vouchera...",
+      "failedToLoadVoucher": "Nie udało się załadować danych vouchera",
+      "downloadFailedCopyLink": "Pobieranie nie powiodło się. Spróbuj skopiować link.",
+      "useTicketView": "Użyj widoku biletu, aby wydrukować lub zapisać.",
+      "pdfNotAvailable": "Pobieranie PDF niedostępne dla tego typu zamówienia",
+      "enterRecipientEmail": "Wprowadź adres e-mail odbiorcy.",
+      "emailOnlyForVouchers": "Wysyłanie e-maili dostępne tylko dla voucherów",
+      "sendingVoucherEmail": "Wysyłanie e-maila z voucherem...",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

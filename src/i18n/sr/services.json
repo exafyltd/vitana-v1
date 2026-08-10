@@ -6,14 +6,16 @@
       "preventive": "Preventivni skriningi",
       "labTests": "Laboratorijske analize",
       "coaching": "Coaching i lični trening",
-      "groupPrograms": "Grupni programi i izazovi"
+      "groupPrograms": "Grupni programi i izazovi",
+      "_pending_review": {}
     },
     "actions": {
       "book": "Rezerviši",
       "addToPlan": "Dodaj u plan",
       "askAI": "Pitaj AI",
       "joinRoom": "Uđi u sobu",
-      "setReminder": "Postavi podsetnik"
+      "setReminder": "Postavi podsetnik",
+      "_pending_review": {}
     },
     "details": {
       "duration": "Trajanje",
@@ -24,7 +26,10 @@
       "healthBenefits": "Zdravstvene prednosti",
       "availableProviders": "Dostupni pružaoci",
       "requirements": "Zahtevi i priprema",
-      "tags": "Oznake"
-    }
-  }
+      "tags": "Oznake",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

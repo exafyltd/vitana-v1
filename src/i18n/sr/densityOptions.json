@@ -2,6 +2,8 @@
   "densityOptions": {
     "cozy": "Udobno",
     "compact": "Kompaktno",
-    "gallery": "Galerija"
-  }
+    "gallery": "Galerija",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

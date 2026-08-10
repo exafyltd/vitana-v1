@@ -4,30 +4,31 @@
       "readyToEarn": "¿Listo para ganar con VITANA?",
       "choosePathGuide": "Elige un camino y te guiaremos hacia tu primera fuente de ingresos.",
       "startEarning": "Empezar a ganar",
-      "howToEarn": "¿Cómo quieres ganar?",
-      "pickOne": "Elige uno — siempre puedes hacer los otros después.",
+      "howToEarn": "¿Cómo te gustaría ganar?",
+      "pickOne": "Elige una opción — puedes explorar las otras más tarde.",
       "createEvent": "Crear un Evento",
       "createEventDesc": "Organiza tu propio evento y vende entradas.",
       "addToInventory": "Agregar Eventos al Inventario",
       "addToInventoryDesc": "Revende eventos seleccionados y gana comisión.",
       "createService": "Crear un Servicio",
-      "createServiceDesc": "Ofrece sesiones que la gente pueda reservar.",
+      "createServiceDesc": "Ofrece sesiones reservables.",
       "createPromotion": "Crear una Promoción",
       "createPromotionDesc": "Aumenta la visibilidad y comparte en redes.",
       "hostAndSell": "Organizar y vender entradas",
       "resellAndEarn": "Revender y ganar",
       "offerBookings": "Ofrecer reservas",
-      "boostVisibility": "Aumentar visibilidad"
+      "boostVisibility": "Aumentar visibilidad",
+      "_pending_review": {}
     },
     "history": {
       "all": "Todo",
       "directSales": "Ventas Directas",
       "reseller": "Revendedor",
-      "noEarningsYet": "Aún no hay historial de ganancias",
-      "startSellingToSee": "Empieza a vender para ver tus transacciones aquí",
+      "noEarningsYet": "Aún no tienes historial de ganancias.",
+      "startSellingToSee": "Empieza a vender para ver tus transacciones aquí.",
       "ticketsSold": "Entradas Vendidas",
       "grossAmount": "Monto Bruto",
-      "youEarned": "Ganaste",
+      "youEarned": "Has ganado",
       "paidToWallet": "Pagado a la Cartera",
       "pendingPayout": "Pago Pendiente",
       "transactionId": "ID de Transacción",
@@ -35,10 +36,11 @@
       "last7Days": "Últimos 7 Días",
       "last30Days": "Últimos 30 Días",
       "last90Days": "Últimos 90 Días",
-      "allTime": "Histórico",
+      "allTime": "Tiempo total",
       "details": "Detalles",
       "earningsActivity": "Actividad de Ganancias",
-      "noEarningsStartSelling": "Aún sin ganancias. Empieza a vender para ver actividad aquí."
+      "noEarningsStartSelling": "Aún sin ganancias. Empieza a vender para ver actividad aquí.",
+      "_pending_review": {}
     },
     "kpi": {
       "totalEarnings": "Ganancias Totales",
@@ -59,9 +61,10 @@
       "viewMyEvents": "Ver mis eventos",
       "totalGrossSales": "Ventas brutas totales",
       "resellerCommissions": "Comisiones de revendedor",
-      "goToSellEarn": "Ir a Vender y Ganar",
+      "goToSellEarn": "Vende y Gana",
       "totalEarned": "Total ganado",
-      "earningsBySource": "Ganancias por fuente"
+      "earningsBySource": "Ganancias por fuente",
+      "_pending_review": {}
     },
     "reseller": {
       "upcomingEvents": "Próximos eventos",
@@ -69,13 +72,13 @@
       "resellerCode": "Código de revendedor",
       "codeCopied": "¡Código de revendedor copiado!",
       "noSalesYet": "Aún sin ventas",
-      "shareLinkToStart": "Comparte un enlace para empezar a ganar.",
+      "shareLinkToStart": "Comparte un enlace para ganar.",
       "tickets": "boletos",
       "shareResellerLink": "Compartir enlace de revendedor",
       "createPromotion": "Crear promoción",
-      "shareLinkOrPromotion": "Comparte tus enlaces de revendedor o crea una promoción para empezar a ganar comisiones.",
+      "shareLinkOrPromotion": "Comparte tus enlaces de revendedor o crea una promoción para ganar comisiones.",
       "selectEventToShare": "Selecciona un evento para compartir",
-      "pickEventForLink": "Elige un evento para generar tu enlace de revendedor",
+      "pickEventForLink": "Elige un evento para generar tu enlace de revendedor.",
       "noEventsToSell": "No hay eventos disponibles para vender",
       "commission": "comisión",
       "commissionEarned": "Comisión ganada",
@@ -84,16 +87,18 @@
       "noPayoutsYet": "Aún sin pagos",
       "attributedSales": "Ventas atribuidas por evento",
       "noSalesMatchFilter": "Ninguna venta coincide con los filtros actuales",
-      "mockDataActive": "Datos simulados activos"
+      "mockDataActive": "Datos simulados activos",
+      "_pending_review": {}
     },
     "transfer": {
       "title": "Transferir a la billetera",
       "description": "Transfiere tus comisiones de revendedor pendientes a tu billetera de VITANA.",
       "pending": "Pendiente",
       "wallet": "Billetera",
-      "instantCredit": "Esto acreditará tus ganancias instantáneamente a tu saldo de billetera.",
+      "instantCredit": "Esto acreditará tus ganancias instantáneamente a tu saldo de Wallet.",
       "transferring": "Transfiriendo...",
-      "transfer": "Transferir"
+      "transfer": "Transferir",
+      "_pending_review": {}
     },
     "typeSelector": {
       "title": "Iniciar un Negocio",
@@ -105,12 +110,13 @@
       "sellTicketsDesc": "Promociona eventos y gana comisiones",
       "badgeNew": "Nuevo",
       "badgeActive": "Activo",
-      "alreadyReseller": "¡Ya eres revendedor! Revisa la pestaña Vender y Ganar.",
-      "cancel": "Cancelar"
+      "alreadyReseller": "¡Ya eres revendedor! Revisa la pestaña \"Vende y Gana\".",
+      "cancel": "Cancelar",
+      "_pending_review": {}
     },
     "missionOpportunities": {
       "title": "Oportunidades de Misión",
-      "subtitle": "Rutas recomendadas por piloto automático que avanzan la economía de longevidad",
+      "subtitle": "Rutas sugeridas por Autopilot que impulsan la economía de la longevidad",
       "loading": "Cargando oportunidades...",
       "error": "No se pudieron cargar las oportunidades",
       "empty": "Aún no hay recomendaciones alineadas con la economía. Vuelve más tarde.",
@@ -119,8 +125,12 @@
         "find_match": "Encontrar una Coincidencia",
         "marketplace": "Mercado",
         "income_generation": "Generación de ingresos",
-        "business_formation": "Formación empresarial"
-      }
-    }
-  }
+        "business_formation": "Formación empresarial",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

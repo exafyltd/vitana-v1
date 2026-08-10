@@ -1,19 +1,20 @@
 {
   "settings": {
     "title": "Configuración",
-    "description": "Gestiona la configuración de tu cuenta, privacidad y preferencias",
+    "description": "Gestiona la configuración de tu cuenta, tu privacidad y tus preferencias",
     "searchPlaceholder": "Buscar configuración, controles de privacidad, integraciones...",
     "quickSetup": "Configuración rápida",
     "tabs": {
       "overview": "Resumen",
       "notifications": "Notificaciones",
-      "quickActions": "Acciones rápidas"
+      "quickActions": "Acciones rápidas",
+      "_pending_review": {}
     },
     "categories": {
       "privacy": "Privacidad",
-      "privacyDesc": "Controla quién ve tu perfil y actividades",
+      "privacyDesc": "Controla quién ve tu perfil y tus actividades",
       "notifications": "Notificaciones",
-      "notificationsDesc": "Gestiona tus preferencias de notificaciones",
+      "notificationsDesc": "Gestiona la configuración de tus notificaciones",
       "preferences": "Preferencias",
       "preferencesDesc": "Opciones de idioma, tema y pantalla",
       "connectedApps": "Apps conectadas",
@@ -23,7 +24,8 @@
       "billing": "Facturación",
       "billingDesc": "Información de suscripción y pago",
       "support": "Soporte",
-      "supportDesc": "Ayuda, preguntas frecuentes y opciones de contacto"
+      "supportDesc": "Ayuda, preguntas frecuentes y opciones de contacto",
+      "_pending_review": {}
     },
     "status": {
       "privacyStatus": "Estado de privacidad",
@@ -33,7 +35,12 @@
       "notificationsActive": "Notificaciones activas",
       "connectedAppsCount": "Apps conectadas",
       "types": "tipos",
-      "apps": "apps"
-    }
-  }
+      "apps": "aplicaciones",
+      "_pending_review": {}
+    },
+    "vitanaOpenedSection": "Vitana abrió {section}",
+    "vitanaUpdated": "Vitana actualizó tu configuración",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

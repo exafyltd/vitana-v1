@@ -1,0 +1,19 @@
+{
+  "milestones": {
+    "title": "Wyjątkowe Chwile",
+    "add": "Dodaj kamień milowy",
+    "edit": "Edytuj kamień milowy",
+    "empty": "Brak Chwil jeszcze",
+    "addFirst": "Dodaj swoją pierwszą chwilę",
+    "date": "Data",
+    "description": "Co się stało?",
+    "titleLabel": "Tytuł",
+    "titlePlaceholder": "Np. Ukończyłeś/aś studia",
+    "descPlaceholder": "Opisz tę chwilę...",
+    "icon": "Ikona",
+    "publicLabel": "Widoczne dla wszystkich",
+    "private": "Prywatne",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

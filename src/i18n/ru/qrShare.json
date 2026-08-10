@@ -1,0 +1,20 @@
+{
+  "qrShare": {
+    "title": "QR-код",
+    "scanToView": "Отсканируй, чтобы посмотреть свой профиль.",
+    "scanToDownload": "Сканируй, чтобы скачать MAXINA",
+    "shareProfile": "Поделиться профилем",
+    "shareApp": "Поделиться MAXINA",
+    "copyLink": "Скопировать ссылку",
+    "download": "Скачать",
+    "linkCopied": "Ссылка скопирована!",
+    "modeProfile": "Мой профиль",
+    "modeInvite": "Получи MAXINA",
+    "appName": "MAXINA",
+    "appTagline": "Сообщество долголетия",
+    "inviteShareTitle": "MAXINA – Сообщество долголетия",
+    "inviteShareText": "Получи MAXINA и начни свой путь к долголетию:",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

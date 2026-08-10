@@ -6,10 +6,15 @@
 //   2. Orphan shards: a shard exists in en/ but not de/ (or reverse).
 //   3. _pending_review markers: present in any GA-flagged language.
 //   4. Empty values: any leaf string is "" (likely an unfilled stub).
+//   5. Coverage of EVERY locale against DE. A `ga` locale below 100% is an
+//      ERROR; `beta`/`draft` are reported for visibility only. (VTID-03509)
+//   6. PLACEHOLDER INTEGRITY across every locale. (VTID-03509)
+//   7. STALENESS: a translation whose DE source changed after it was written.
 //
-// GA languages are read from src/contexts/LanguageContext.tsx by literal match.
-// In Wave 1 only de-DE and en-US are GA; new entries are added in Wave 6 with
-// a `status: 'ga'|'beta'|'draft'` field on languageOptions.
+// GA languages ARE now read from src/contexts/LanguageContext.tsx — the header
+// claimed this before, but GA_LOCALES was a hardcoded Set(['en','de']). Adding
+// a locale to the picker did not extend the audit, which is why es/sr could sit
+// at 90.8% while this reported "all in sync".
 
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -18,7 +23,29 @@ import { dirname, join } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const I18N_DIR = join(__dirname, '..', 'src', 'i18n');
 
-const GA_LOCALES = new Set(['en', 'de']);
+// Parse `languageOptions` out of LanguageContext.tsx so the picker and the
+// audit can never disagree about which languages are GA.
+function readLanguageStatuses() {
+  const src = readFileSync(
+    join(__dirname, '..', 'src', 'contexts', 'LanguageContext.tsx'),
+    'utf8',
+  );
+  const block = src.split('export const languageOptions')[1]?.split('];')[0] ?? '';
+  const out = new Map(); // short code ('de') -> 'ga' | 'beta' | 'draft'
+  for (const m of block.matchAll(/value:\s*"([a-z]{2})-[A-Za-z]+",\s*status:\s*'(\w+)'/g)) {
+    out.set(m[1], m[2]);
+  }
+  if (out.size === 0) {
+    console.error('[i18n-audit] FATAL: could not parse languageOptions from LanguageContext.tsx');
+    process.exit(2);
+  }
+  return out;
+}
+
+const LANGUAGE_STATUS = readLanguageStatuses();
+const GA_LOCALES = new Set(
+  [...LANGUAGE_STATUS.entries()].filter(([, st]) => st === 'ga').map(([code]) => code),
+);
 const STRICT = process.argv.includes('--strict');
 const REPORT_ONLY = process.argv.includes('--report-only'); // exit 0 even on errors (Wave 1 CI)
 
@@ -121,6 +148,187 @@ for (const locale of allLocales) {
     const pending = findPendingReview(shard);
     for (const p of pending) {
       recordIssue('error', locale, `${shardName}: key "${p}" is _pending_review but locale is GA`);
+    }
+  }
+}
+
+// 4. Coverage of every locale against DE (VTID-03509).
+//
+// This is the check that would have caught es/sr sitting at 90.8% while the
+// audit reported everything in sync, and it is what makes flipping a locale to
+// `ga` self-enforcing: a thin catalog fails CI instead of shipping a
+// half-German UI.
+const deAllKeys = new Set();
+for (const shardName of deShards) {
+  for (const { path } of flatten(loadShard(join(I18N_DIR, 'de'), shardName))) {
+    deAllKeys.add(`${shardName}.${path}`);
+  }
+}
+
+// Array-valued keys (e.g. voucher.tiers.*.benefits) are leaves for coverage
+// purposes, but scripts/translate-keys.mjs does NOT translate them — its leaf
+// collector skips arrays, so `--init` creates the parent object without them
+// and they stay missing after a full translation run. There are only 3 in DE
+// today (11 strings, all in voucher.json); they are hand-translated. Surfaced
+// here so a fourth one added later is noticed rather than silently absent from
+// every non-DE locale.
+const deArrayKeys = [];
+for (const shardName of deShards) {
+  const walk = (obj, prefix) => {
+    for (const [k, v] of Object.entries(obj)) {
+      if (k.startsWith('_')) continue;
+      const path = prefix ? `${prefix}.${k}` : k;
+      if (Array.isArray(v)) deArrayKeys.push(`${shardName}.${path}`);
+      else if (v && typeof v === 'object') walk(v, path);
+    }
+  };
+  walk(loadShard(join(I18N_DIR, 'de'), shardName), '');
+}
+
+const coverage = [];
+for (const locale of allLocales.sort()) {
+  if (locale === 'de') continue;
+  const status = LANGUAGE_STATUS.get(locale) ?? 'unlisted';
+  const shards = listShards(join(I18N_DIR, locale));
+  const keys = new Set();
+  for (const shardName of shards) {
+    for (const { path } of flatten(loadShard(join(I18N_DIR, locale), shardName))) {
+      keys.add(`${shardName}.${path}`);
+    }
+  }
+  const missing = [...deAllKeys].filter((k) => !keys.has(k));
+  // Floor to one decimal, and never print 100.0% while a key is missing.
+  // 14160/14163 rounds to "100.0%" — a locale reporting complete while three
+  // keys fall back to German is precisely the misleading signal this check
+  // exists to remove.
+  const raw = deAllKeys.size === 0 ? 100 : ((deAllKeys.size - missing.length) / deAllKeys.size) * 100;
+  const pct = missing.length === 0 ? 100 : Math.min(raw, 99.9);
+  coverage.push({ locale, status, pct, missing: missing.length, total: deAllKeys.size });
+
+  if (status === 'ga' && missing.length > 0) {
+    recordIssue(
+      'error',
+      locale,
+      `marked GA in LanguageContext but only ${pct.toFixed(1)}% of DE keys ` +
+        `(${missing.length} missing, e.g. ${missing.slice(0, 3).join(', ')}). ` +
+        `A GA locale must be complete — users get German for every missing key.`,
+    );
+  }
+}
+
+console.log('\n[i18n-audit] coverage vs DE:');
+for (const c of coverage) {
+  const flag = c.status === 'ga' && c.missing > 0 ? '  <-- GA BUT INCOMPLETE' : '';
+  console.log(
+    `  ${c.locale.padEnd(3)} ${String(c.status).padEnd(6)} ${c.pct.toFixed(1).padStart(5)}%  ` +
+      `(${c.total - c.missing}/${c.total})${flag}`,
+  );
+}
+if (deArrayKeys.length > 0) {
+  // VTID-03509 — this used to just LIST the array keys with "must be filled by
+  // hand", which reads as "these are missing" and is what made me report them
+  // as an outstanding gap when in fact all seven locales had them translated.
+  // A warning that cannot distinguish done from not-done is worse than none:
+  // it costs attention every run and carries no information. So now it checks.
+  //
+  // The test is "does the target array differ, element-wise, from German?" —
+  // an untranslated array is a verbatim copy of the source, exactly like the
+  // verbatim-echo case the DB-content translator guards against.
+  const readArray = (locale, dotted) => {
+    const [shardName, ...rest] = dotted.split('.');
+    let node = loadShard(join(I18N_DIR, locale), shardName);
+    for (const seg of rest) {
+      if (!node || typeof node !== 'object') return undefined;
+      node = node[seg];
+    }
+    return Array.isArray(node) ? node : undefined;
+  };
+  const arrayGaps = [];
+  for (const locale of allLocales.sort()) {
+    if (locale === 'de') continue;
+    const status = LANGUAGE_STATUS.get(locale) ?? 'unlisted';
+    // draft locales are not expected to be complete.
+    if (status === 'draft' || status === 'unlisted') continue;
+    for (const key of deArrayKeys) {
+      const src = readArray('de', key);
+      const tgt = readArray(locale, key);
+      if (!tgt) arrayGaps.push(`${locale}: ${key} — MISSING`);
+      else if (JSON.stringify(src) === JSON.stringify(tgt)) {
+        arrayGaps.push(`${locale}: ${key} — verbatim copy of DE (untranslated)`);
+      }
+    }
+  }
+  if (arrayGaps.length === 0) {
+    console.log(
+      `[i18n-audit] ${deArrayKeys.length} array-valued key(s) present and translated in every ` +
+        `tracked locale.\n             (translate-keys.mjs cannot maintain these — they are hand-held.)`,
+    );
+  } else {
+    console.log(
+      `[i18n-audit] ${arrayGaps.length} array-value gap(s) — translate-keys.mjs does NOT\n` +
+        `             translate these; fill them by hand:`,
+    );
+    for (const g of arrayGaps) console.log(`  ${g}`);
+  }
+  console.log('');
+}
+
+// 5. Placeholder integrity (VTID-03509).
+//
+// Coverage cannot see this class at all: the key is present, so it counts as
+// translated, but the interpolation is broken and the user sees a literal
+// `{token}`. Two real failure modes, both found in the shipped es/sr catalogs:
+//
+//   a) the translator translated the placeholder NAME —
+//      de "{used} / {limit} {unit}" became es "{usado} / {límite} {unidad}",
+//      so none of the three substituted and the whole string rendered raw;
+//   b) a placeholder was RENAMED in DE after the locale was translated —
+//      de "Tag {n}" vs a stale es "Día {day}".
+//
+// (b) is why this check is also the cheapest staleness signal available: it is
+// language-independent, so it needs no reviewer who speaks the language.
+// A placeholder is `{` + an identifier + `}` — the runtime substitutes by key
+// name from a params object (src/lib/i18n-toast.ts). Deliberately NOT \w+:
+// a translated placeholder is usually non-ASCII ("{početak}", "{límite}") and an
+// ASCII-only pattern cannot see it. Equally deliberately NOT [^{}]+: some UI
+// strings embed a literal JSON example (an admin field shows
+// `{ "forbidden_openings": [...] }`), and that is not a placeholder. Excluding
+// whitespace and quotes separates the two without a special case.
+function placeholdersOf(v) {
+  return [...String(v).matchAll(/\{([^{}\s"']+)\}/g)].map((m) => m[1]).sort().join(',');
+}
+
+const deValues = {};
+for (const shardName of deShards) {
+  for (const { path, value } of flatten(loadShard(join(I18N_DIR, 'de'), shardName))) {
+    deValues[`${shardName}.${path}`] = value;
+  }
+}
+
+for (const locale of allLocales.sort()) {
+  if (locale === 'de') continue;
+  const status = LANGUAGE_STATUS.get(locale) ?? 'unlisted';
+  if (status === 'draft') continue; // not offered to users; noise
+  for (const shardName of listShards(join(I18N_DIR, locale))) {
+    for (const { path, value } of flatten(loadShard(join(I18N_DIR, locale), shardName))) {
+      const key = `${shardName}.${path}`;
+      const source = deValues[key];
+      if (source === undefined) continue;
+      const want = placeholdersOf(source);
+      const got = placeholdersOf(value);
+      if (want !== got) {
+        // ERROR for ga, WARN for beta — same severity split coverage already
+        // uses. `beta` means "offered but explicitly not guaranteed", and a
+        // locale mid-translation will legitimately carry these until its run
+        // drains; failing CI for the whole branch on that would train people to
+        // ignore the check. A ga locale has no such excuse.
+        recordIssue(
+          status === 'ga' ? 'error' : 'warn',
+          locale,
+          `${shardName}: "${path}" placeholder mismatch — de{${want}} vs ${locale}{${got}}. ` +
+            `The user sees a literal {token}. Value: ${JSON.stringify(String(value).slice(0, 60))}`,
+        );
+      }
     }
   }
 }

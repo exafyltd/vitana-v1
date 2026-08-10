@@ -1,0 +1,32 @@
+{
+  "events": {
+    "title": "Événements & Rencontres",
+    "description": "Découvre les rassemblements bien-être locaux",
+    "searchPlaceholder": "Rechercher des événements et rencontres...",
+    "tabs": {
+      "today": "Aujourd'hui",
+      "upcoming": "À venir",
+      "following": "Suivis",
+      "recommended": "Recommandés",
+      "_pending_review": {}
+    },
+    "noEvents": "Aucun événement prévu",
+    "checkBack": "Reviens bientôt pour les événements communautaires à venir !",
+    "emptyStates": {
+      "noEventsToday": "Aucun événement aujourd'hui",
+      "noEventsTodayDesc": "Aucun événement n'est prévu pour aujourd'hui. Découvre les événements à venir ou crée le tien !",
+      "createEvent": "Créer un événement",
+      "viewUpcoming": "Voir les événements à venir",
+      "followingTitle": "Publications des personnes que tu suis",
+      "followingDesc": "Le contenu des personnes et des groupes que tu suis apparaît ici",
+      "findPeople": "Trouver des personnes à suivre",
+      "noPostsFromFollowing": "Aucune publication pour l'instant",
+      "noPostsFromFollowingDesc": "Les personnes que tu suis n'ont pas encore créé d'événements ou de rencontres.",
+      "youFollow": "Tu suis",
+      "loadingFollowing": "Chargement des publications…",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

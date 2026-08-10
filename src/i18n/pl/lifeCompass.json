@@ -1,0 +1,64 @@
+{
+  "lifeCompass": {
+    "title": "Kompas Życia",
+    "description": "Twój Kompas Życia kieruje wszystkimi rekomendacjami i decyzjami AI. Wybierz główny cel, który jest dla Ciebie najważniejszy w tej chwili. AI będzie priorytetyzować sugestie zgodne z tym kierunkiem.",
+    "currentCompass": "Obecny Kompas",
+    "alignment": "Dopasowanie: {value}%",
+    "confidence": "Pewność: {value}%",
+    "suggestedGoals": "Sugerowane Cele",
+    "customGoal": "Własny Cel",
+    "customGoalPlaceholder": "Opisz swój główny cel własnymi słowami...",
+    "setCustomGoal": "Ustaw Własny Cel",
+    "closeAria": "Zamknij",
+    "categoryLabels": {
+      "wealth": "bogactwo",
+      "relationship": "związek",
+      "health": "zdrowie",
+      "career": "kariera",
+      "learning": "nauka",
+      "spiritual": "duchowość",
+      "longevity": "długowieczność",
+      "_pending_review": {}
+    },
+    "goals": {
+      "wealth": {
+        "title": "Zbuduj Wolność Finansową",
+        "description": "Osiągnij niezależność finansową i bogactwo",
+        "_pending_review": {}
+      },
+      "relationship": {
+        "title": "Znajdź Partnera Życiowego",
+        "description": "Zbuduj znaczące relacje romantyczne",
+        "_pending_review": {}
+      },
+      "health": {
+        "title": "Popraw zdrowie",
+        "description": "Osiągnij optymalne zdrowie fizyczne i psychiczne",
+        "_pending_review": {}
+      },
+      "career": {
+        "title": "Rozwiń Karierę",
+        "description": "Zbuduj satysfakcjonującą i udaną karierę",
+        "_pending_review": {}
+      },
+      "learning": {
+        "title": "Opanuj Nowe Umiejętności",
+        "description": "Ucz się i rozwijaj poprzez wiedzę",
+        "_pending_review": {}
+      },
+      "spiritual": {
+        "title": "Życie Duchowe",
+        "description": "Pogłębiaj cel, obecność i wewnętrzny spokój",
+        "_pending_review": {}
+      },
+      "longevity": {
+        "title": "Popraw jakość życia i wydłuż długość życia",
+        "description": "Skup się na długości życia w zdrowiu, energii i długowieczności — misja Vitanaland.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -1,0 +1,23 @@
+{
+  "gallery": {
+    "title": "Galeria zdjęć",
+    "upload": "Prześlij zdjęcie",
+    "caption": "Podpis",
+    "captionPlaceholder": "Dodaj podpis...",
+    "empty": "Brak zdjęć",
+    "uploadFirst": "Dodaj swoje pierwsze zdjęcie",
+    "photo": "Zdjęcie",
+    "dropzone": "Przeciągnij i upuść lub kliknij, aby wybrać",
+    "publicLabel": "Widoczne dla wszystkich",
+    "videos": "Galeria wideo",
+    "uploadVideo": "Prześlij wideo",
+    "noVideos": "Brak wideo",
+    "addFirstVideo": "Dodaj swoje pierwsze wideo",
+    "invalidFormat": "Nieprawidłowy format",
+    "fileTooLarge": "Plik za duży",
+    "maxSize": "Maksymalny rozmiar pliku: 500 MB",
+    "maxSizeHint": "Maks. 500 MB",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

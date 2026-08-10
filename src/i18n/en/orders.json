@@ -10,7 +10,8 @@
       "history": "History",
       "all": "All",
       "completed": "Completed",
-      "cancelled": "Cancelled"
+      "cancelled": "Cancelled",
+      "_pending_review": {}
     },
     "filters": {
       "all": "All",
@@ -18,20 +19,23 @@
       "products": "Products",
       "vouchers": "Vouchers",
       "services": "Services",
-      "refunds": "Refunds"
+      "refunds": "Refunds",
+      "_pending_review": {}
     },
     "previewNotice": "These are preview orders. Your actual orders will appear here.",
     "sampleData": "Sample Data",
     "emptyActive": {
       "title": "No Active Orders",
-      "description": "You don't have any active orders or upcoming events."
+      "description": "You don't have any active orders or upcoming events.",
+      "_pending_review": {}
     },
     "emptyHistory": {
       "title": "No Order History",
-      "description": "Your completed orders and past events will appear here."
+      "description": "Your completed orders and past events will appear here.",
+      "_pending_review": {}
     },
     "noOrders": "No orders yet",
-    "noOrdersDesc": "Your orders will appear here once you make a purchase.",
+    "noOrdersDesc": "Your orders will appear here once you buy something.",
     "browseProducts": "Browse Products",
     "findEvents": "Find Events",
     "startShopping": "Start Shopping",
@@ -51,7 +55,7 @@
       "location": "Location",
       "quantity": "Quantity",
       "tickets": "tickets",
-      "yourTicket": "Your Ticket",
+      "yourTicket": "Your ticket",
       "giftVoucher": "Gift Voucher",
       "code": "Code",
       "sendToRecipient": "Send to Recipient",
@@ -60,7 +64,8 @@
       "personalMessage": "Personal Message",
       "cancel": "Cancel",
       "send": "Send",
-      "downloadPdf": "Download PDF"
+      "downloadPdf": "Download PDF",
+      "_pending_review": {}
     },
     "status": {
       "upcoming": "Upcoming",
@@ -75,7 +80,10 @@
       "pending": "Pending",
       "processing": "Processing",
       "paid": "Active",
-      "active": "Active"
-    }
-  }
+      "active": "Active",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

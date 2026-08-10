@@ -1,0 +1,12 @@
+{
+  "createSelection": {
+    "title": "Utwórz nowe",
+    "description": "Wybierz typ wydarzenia, które chcesz utworzyć",
+    "event": "Wydarzenie",
+    "eventDescription": "Formalne spotkania z ustalonymi godzinami i ustrukturyzowanymi programami",
+    "meetup": "Spotkanie",
+    "meetupDescription": "Nieformalne spotkania do networkingu i budowania społeczności",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

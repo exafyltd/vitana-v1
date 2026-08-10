@@ -1,7 +1,7 @@
 {
   "vitanaIndex": {
     "title": "Vitana Health Index",
-    "subtitle": "Overall wellness balance across all health pillars",
+    "subtitle": "Overall Wellness Balance across all health pillars",
     "veryPoor": "Very Poor",
     "poor": "Poor",
     "fair": "Fair",
@@ -16,12 +16,13 @@
     "viewFullReport": "View Full Report",
     "trackToday": "Track Today",
     "tiers": {
-      "starting": "Starting",
+      "starting": "Beginner",
       "early": "Early",
-      "building": "Building",
+      "building": "Building up",
       "strong": "Strong",
       "reallyGood": "Really good",
-      "elite": "Elite"
+      "elite": "Elite",
+      "_pending_review": {}
     },
     "framings": {
       "starting": "Just starting",
@@ -29,7 +30,10 @@
       "building": "Habits forming",
       "strong": "90-day milestone",
       "reallyGood": "Thriving",
-      "elite": "Elite"
-    }
-  }
+      "elite": "Elite",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,0 +1,49 @@
+{
+  "portals": {
+    "maxina": {
+      "title": "Maxina 健康平台",
+      "welcomeBack": "欢迎回来 Maxina。",
+      "continueJourney": "登录，继续你的旅程。",
+      "joinMaxina": "加入 Maxina",
+      "joinCommunity": "加入 Maxina 社区。",
+      "createAccount": "创建你的账号，开始你的旅程。",
+      "signingIn": "正在登录…",
+      "creatingAccount": "正在创建账号…",
+      "joiningAs": "我将以…身份加入:",
+      "yourFullName": "你的全名",
+      "forgotPassword": "忘记密码?",
+      "partOfVitana": "Maxina 是 VITANA 生态系统的一部分。",
+      "allPortals": "所有门户",
+      "emailConfirmed": "邮箱已确认！欢迎来到 Maxina。",
+      "checkEmail": "请检查你的邮箱，以确认你的账号。",
+      "roles": {
+        "community": "社区",
+        "patient": "患者",
+        "professional": "专业人士",
+        "admin": "管理员",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "alkalma": {
+      "joinAlkalma": "加入 AlKalma",
+      "welcomeBack": "欢迎回来 AlKalma。",
+      "continueJourney": "登录，继续。",
+      "_pending_review": {}
+    },
+    "earthlinks": {
+      "joinEarthlinks": "加入 Earthlinks",
+      "welcomeBack": "欢迎回来 Earthlinks。",
+      "continueJourney": "登录，继续。",
+      "_pending_review": {}
+    },
+    "community": {
+      "joinCommunity": "加入社区",
+      "welcomeBack": "欢迎回来。",
+      "continueJourney": "登录，继续。",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

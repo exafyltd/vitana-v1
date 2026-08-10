@@ -1,5 +1,7 @@
 {
   "archives": {
-    "searchPlaceholder": "Pretraži arhive..."
-  }
+    "searchPlaceholder": "Pretraži arhive...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

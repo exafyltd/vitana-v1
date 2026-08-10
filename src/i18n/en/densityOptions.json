@@ -2,6 +2,8 @@
   "densityOptions": {
     "cozy": "Cozy",
     "compact": "Compact",
-    "gallery": "Gallery"
-  }
+    "gallery": "Gallery",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

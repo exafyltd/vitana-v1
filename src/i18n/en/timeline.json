@@ -1,5 +1,7 @@
 {
   "timeline": {
-    "searchPlaceholder": "Search activity..."
-  }
+    "searchPlaceholder": "Search activity...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

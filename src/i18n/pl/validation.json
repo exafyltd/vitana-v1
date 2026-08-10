@@ -1,0 +1,31 @@
+{
+  "validation": {
+    "required": "To pole jest wymagane",
+    "invalidEmail": "Nieprawidłowy adres e-mail",
+    "invalidUrl": "Nieprawidłowy adres URL",
+    "invalidPhone": "Nieprawidłowy numer telefonu",
+    "tooShort": "Wymagane minimum {min} znaków",
+    "tooLong": "Maksymalnie {max} znaków",
+    "passwordMismatch": "Hasła się nie zgadzają",
+    "passwordTooWeak": "Hasło jest za słabe",
+    "invalidDate": "Nieprawidłowa data",
+    "invalidNumber": "Nieprawidłowy numer",
+    "mustBePositive": "Musi być liczbą dodatnią",
+    "mustBeNegative": "Musi być liczbą ujemną",
+    "mustBeInteger": "Musi być liczbą całkowitą",
+    "minValue": "Minimalna wartość to {min}",
+    "maxValue": "Maksymalna wartość to {max}",
+    "invalidFormat": "Nieprawidłowy format",
+    "alreadyExists": "Już istnieje",
+    "notFound": "Nie znaleziono",
+    "invalidSelection": "Nieprawidłowy wybór",
+    "pleaseSelect": "Proszę wybrać opcję.",
+    "pleaseEnter": "Proszę wprowadzić wartość.",
+    "charactersRemaining": "Pozostało {count} znaków",
+    "fileTooBig": "Plik jest za duży (maks. {max})",
+    "invalidFileType": "Nieprawidłowy typ pliku",
+    "uploadLimit": "Maksymalnie {max} plików",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

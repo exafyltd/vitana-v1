@@ -1,0 +1,39 @@
+{
+  "permissionsActions": {
+    "title": "إجراءات الخصوصية والأذونات",
+    "items": {
+      "privacySettings": {
+        "title": "إعدادات الخصوصية",
+        "description": "ضبط إعدادات الخصوصية والمشاركة"
+      },
+      "manageAccess": {
+        "title": "إدارة الوصول",
+        "description": "تحكم في من يمكنه عرض ذكرياتك الصحية"
+      },
+      "securitySettings": {
+        "title": "إعدادات الأمان",
+        "description": "تحديث إعدادات المصادقة والأمان"
+      },
+      "apiKeysAccess": {
+        "title": "مفاتيح API والوصول",
+        "description": "إدارة عمليات دمج تطبيقات الطرف الثالث والوصول إلى API"
+      },
+      "dataRights": {
+        "title": "حقوق البيانات",
+        "description": "مارس حقوقك في قابلية نقل البيانات والحذف"
+      },
+      "auditLogs": {
+        "title": "سجلات التدقيق",
+        "description": "راجع سجل الوصول ومسار تدقيق الأمان"
+      },
+      "permissionSettings": {
+        "title": "إعدادات الأذونات",
+        "description": "خصص الأذونات التفصيلية لميزات مختلفة"
+      },
+      "exportData": {
+        "title": "تصدير البيانات",
+        "description": "نزّل ذكرياتك وبياناتك الصحية بأمان"
+      }
+    }
+  }
+}

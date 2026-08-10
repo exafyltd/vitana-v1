@@ -6,6 +6,8 @@
     "uploading": "Otpremanje...",
     "uploadingProgress": "Otpremanje... {progress}%",
     "processing": "Obrada...",
-    "saving": "Čuvanje..."
-  }
+    "saving": "Čuvanje...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

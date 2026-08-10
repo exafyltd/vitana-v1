@@ -1,13 +1,15 @@
 {
   "profileTabs": {
     "posts": "Objave",
-    "about": "O nama",
+    "about": "Moj profil",
     "media": "Mediji",
     "groups": "Grupe",
     "events": "Događaji",
     "health": "Zdravlje",
     "services": "Usluge",
     "insight": "Uvid",
-    "milestones": "Prekretnice"
-  }
+    "milestones": "Prekretnice",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

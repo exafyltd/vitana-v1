@@ -1,0 +1,26 @@
+{
+  "packages": {
+    "confirmDelete": "Tens certeza que queres eliminar este pacote?",
+    "types": {
+      "bundle": "Pacote",
+      "subscription": "Subscrição",
+      "program": "Programa",
+      "_pending_review": {}
+    },
+    "status": {
+      "draft": "Rascunho",
+      "published": "Ativo",
+      "archived": "Arquivado",
+      "_pending_review": {}
+    },
+    "item": "item",
+    "items": "itens",
+    "total": "total",
+    "validDays": "Válido por {days} dias",
+    "save": "Poupa {percent}%",
+    "unpublish": "Despublicar",
+    "publish": "Publicar",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

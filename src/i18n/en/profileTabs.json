@@ -1,13 +1,15 @@
 {
   "profileTabs": {
     "posts": "Posts",
-    "about": "About",
+    "about": "My Profile",
     "media": "Media",
     "groups": "Groups",
     "events": "Events",
     "health": "Health",
     "services": "Services",
     "insight": "Insight",
-    "milestones": "Milestones"
-  }
+    "milestones": "Milestones",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

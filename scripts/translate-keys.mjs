@@ -20,6 +20,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { registerInstruction } from './i18n-register-rules.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -74,6 +75,29 @@ if (!existsSync(SRC_DIR)) {
 // in the target shard.
 if (INIT) {
   const { mkdirSync } = await import('node:fs');
+
+  // Keys already covered by a translation pass, per i18n-source-stamps/.
+  //
+  // Without this, --init re-flags every value that legitimately EQUALS its
+  // English source — brand and product names ("Vitana", "MAXINA", "iPhone",
+  // "Autopilot"), place names ("Mallorca"), phone numbers. 384 such keys in es
+  // and 338 in sr. Its "has this been translated?" test is `target === source`,
+  // which cannot distinguish "never translated" from "correctly translated to
+  // the same string".
+  //
+  // The cost is not just wasted API budget on every run: each pass gives the
+  // model another chance to "translate" a brand name, so `Autopilot` surviving
+  // is a coin flip repeated indefinitely.
+  //
+  // A stamp means a translation pass has already decided this key. Staleness is
+  // a separate question, owned by scripts/i18n-stamp-source.mjs --check/--flag.
+  const stampPath = join(ROOT, 'i18n-source-stamps', `${TARGET_LOCALE}.json`);
+  const alreadyTranslated = existsSync(stampPath)
+    ? new Set(Object.keys(JSON.parse(readFileSync(stampPath, 'utf8'))))
+    : new Set();
+  if (alreadyTranslated.size) {
+    console.log(`[translate] --init: ${alreadyTranslated.size} key(s) have source stamps; not re-flagging those`);
+  }
   if (!existsSync(TARGET_DIR)) {
     mkdirSync(TARGET_DIR, { recursive: true });
     console.log(`[translate] --init: created ${TARGET_DIR}`);
@@ -87,8 +111,9 @@ if (INIT) {
     const tgtPath = join(TARGET_DIR, name);
     const srcCat = JSON.parse(readFileSync(srcPath, 'utf8'));
     const tgtCat = existsSync(tgtPath) ? JSON.parse(readFileSync(tgtPath, 'utf8')) : {};
+    const shardKey = name.replace(/\.json$/, '');
     // For every leaf in src, ensure tgt has a placeholder + _pending_review flag.
-    function walk(srcNode, tgtNode, parentPending) {
+    function walk(srcNode, tgtNode, parentPending, trail = []) {
       if (!srcNode || typeof srcNode !== 'object') return;
       if (!parentPending) {
         if (!tgtNode._pending_review || typeof tgtNode._pending_review !== 'object') {
@@ -100,7 +125,7 @@ if (INIT) {
         if (k.startsWith('_')) continue;
         if (v && typeof v === 'object' && !Array.isArray(v)) {
           if (!tgtNode[k] || typeof tgtNode[k] !== 'object') tgtNode[k] = {};
-          walk(v, tgtNode[k], null);
+          walk(v, tgtNode[k], null, [...trail, k]);
         } else if (typeof v === 'string') {
           if (tgtNode[k] === undefined) {
             tgtNode[k] = v; // placeholder = source value
@@ -108,13 +133,17 @@ if (INIT) {
           // Only flag if not already a real translation (i.e. tgt still
           // equals source, meaning it hasn't been translated yet).
           if (tgtNode[k] === v && !parentPending[k]) {
+            // Stamped => a translation pass already covered this key, and the
+            // match is a legitimate identical translation (brand name, etc).
+            const dotted = [shardKey, ...trail, k].join('.');
+            if (alreadyTranslated.has(dotted)) continue;
             parentPending[k] = true;
             flagged++;
           }
         }
       }
     }
-    walk(srcCat, tgtCat, null);
+    walk(srcCat, tgtCat, null, []);
     if (existsSync(tgtPath)) merged++; else created++;
     writeFileSync(tgtPath, JSON.stringify(tgtCat, null, 2) + '\n', 'utf8');
   }
@@ -263,8 +292,10 @@ function buildPrompt(items) {
 
 Rules:
 - Output ONLY a JSON object: { "<index>": "${TARGET_LANG_NAME} translation", ... }
-- Use du-form (informal) ${TARGET_LANG_NAME} where applicable, friendly tone matching a wellness app.
-- Keep placeholders intact: {name}, {count}, {date}, etc.
+- REGISTER (${TARGET_LANG_NAME}): ${registerInstruction(TARGET_LOCALE)} Friendly tone, matching a wellness app.
+- NEVER translate or rename a {placeholder}. {date} stays {date}, NOT {datum}/{fecha}. The
+  surrounding words are translated; the token inside the braces is code and must be copied
+  byte-for-byte. Translating it makes the app print a literal "{datum}" to the user.
 - Keep emojis intact.
 - For brand names (Vitana, MAXINA, Lovable, Exafy), do not translate.
 - Match length and tone to short UI labels — these are toast notifications, button labels, error messages.
@@ -273,6 +304,44 @@ Rules:
 
 Strings:
 ${items.map((it, i) => `${i}: ${JSON.stringify(it.en)}`).join('\n')}`;
+}
+
+/**
+ * Placeholder tokens in a string, in order of appearance.
+ *
+ * A placeholder is `{` + an identifier + `}` — the runtime substitutes by key
+ * name from a params object (src/lib/i18n-toast.ts). Deliberately NOT \w+:
+ * a translated placeholder is usually non-ASCII ("{početak}", "{límite}") and an
+ * ASCII-only pattern cannot see it. Equally deliberately NOT [^{}]+: some UI
+ * strings embed a literal JSON example (an admin field shows
+ * `{ "forbidden_openings": [...] }`), and that is not a placeholder. Excluding
+ * whitespace and quotes separates the two without a special case.
+ */
+function placeholderList(v) {
+  return [...String(v).matchAll(/\{([^{}\s"']+)\}/g)].map((m) => m[1]);
+}
+
+/**
+ * Enforce placeholder integrity on a translation. (VTID-03509)
+ *
+ * The prompt already tells the model not to translate {placeholders}; it does
+ * it anyway — an sr run produced "{datum} · {početak}–{kraj}" for
+ * "{date} · {start}–{end}", and es produced "{usado} / {límite} {unidad}".
+ * The app substitutes by NAME, so every one of those renders a literal token
+ * to the user. An instruction is not an guarantee, so this is checked in code.
+ *
+ * When the model kept the right NUMBER of placeholders and merely renamed them,
+ * the mapping back is unambiguous — remap positionally and keep the translation.
+ * Otherwise reject it: the key stays _pending_review, which is recoverable,
+ * whereas a silently corrupted string is not.
+ */
+function repairPlaceholders(source, translated) {
+  const want = placeholderList(source);
+  const got = placeholderList(translated);
+  if (want.join(',') === got.join(',')) return translated;
+  if (want.length !== got.length) return null; // unrecoverable — reject
+  let i = 0;
+  return String(translated).replace(/\{[^{}\s"']+\}/g, () => `{${want[i++]}}`);
 }
 
 async function translateBatch(items) {
@@ -286,7 +355,19 @@ async function translateBatch(items) {
       const out = new Map();
       for (let i = 0; i < items.length; i++) {
         const v = parsed[String(i)];
-        if (typeof v === 'string' && v.trim()) out.set(items[i].key, v.trim());
+        if (typeof v !== 'string' || !v.trim()) continue;
+        const fixed = repairPlaceholders(items[i].en, v.trim());
+        if (fixed === null) {
+          console.warn(
+            `  ${items[i].key}: REJECTED — placeholders {${placeholderList(items[i].en)}} ` +
+              `became {${placeholderList(v)}}; leaving _pending_review`,
+          );
+          continue;
+        }
+        if (fixed !== v.trim()) {
+          console.log(`  ${items[i].key}: repaired renamed placeholder(s)`);
+        }
+        out.set(items[i].key, fixed);
       }
       return out;
     } catch (err) {
@@ -324,14 +405,37 @@ for (const shardName of shards) {
   console.log(`[translate] ${shardName}: ${pending.length} pending`);
   if (DRY) continue;
 
-  const items = pending
-    .map(({ pathParts, slug }) => ({
-      pathParts,
-      slug,
-      key: [...pathParts, slug].join('.'),
-      en: getNested(srcCat, [...pathParts, slug]),
-    }))
-    .filter((x) => typeof x.en === 'string' && x.en.length > 0);
+  const resolved = pending.map(({ pathParts, slug }) => ({
+    pathParts,
+    slug,
+    key: [...pathParts, slug].join('.'),
+    en: getNested(srcCat, [...pathParts, slug]),
+  }));
+  const items = resolved.filter((x) => typeof x.en === 'string' && x.en.length > 0);
+
+  // A pending flag whose source string cannot be found used to be dropped
+  // here, silently. That turns a real inconsistency into a no-op that is
+  // indistinguishable from success: the run exits 0 in about a second, the
+  // keys stay flagged forever, and the locale quietly never updates.
+  //
+  // It is exactly how 55 hand-flagged pt keys were lost — they had been
+  // written in the wrong SHAPE (`_pending_review` at the shard root with
+  // dotted paths, rather than beside the leaf keyed by its bare name), so
+  // every lookup missed and the translator reported nothing to do.
+  //
+  // Either way it is a defect worth seeing: the flag points at a key that
+  // does not exist in the source, so it can never be drained by any run.
+  // Counted as failed so the exit code and the workflow both go red.
+  const unresolvable = resolved.filter((x) => typeof x.en !== 'string' || x.en.length === 0);
+  if (unresolvable.length) {
+    console.error(
+      `  ${shardName}: ${unresolvable.length} pending flag(s) have NO source string in ${SRC_LOCALE}/ — ` +
+        `these can never be translated and will stay flagged:`,
+    );
+    for (const u of unresolvable.slice(0, 8)) console.error(`    ✗ ${u.key}`);
+    if (unresolvable.length > 8) console.error(`    ...and ${unresolvable.length - 8} more`);
+    totalFailed += unresolvable.length;
+  }
 
   for (let i = 0; i < items.length; i += BATCH_SIZE) {
     const batch = items.slice(i, i + BATCH_SIZE);
@@ -340,9 +444,50 @@ for (const shardName of shards) {
     try {
       translations = await translateBatch(batch);
     } catch (err) {
-      console.error(`  batch ${i}-${i + batch.length} failed: ${err.message}`);
-      totalFailed += batch.length;
-      continue;
+      // A batch that fails every retry with the SAME error is not transient.
+      // The observed cause is output truncation: a batch containing long legal
+      // / privacy paragraphs produces a JSON response that exceeds the model's
+      // output limit, so it is cut off mid-string and never parses. Retrying —
+      // or re-dispatching the workflow — reproduces it exactly, forever. A
+      // smaller --batch does not help either once a SINGLE item is long enough.
+      //
+      // Splitting is the fix that actually terminates: halve the batch and
+      // retry, down to one item per request. One paragraph always fits, so the
+      // recursion bottoms out on a real translation rather than a stuck key.
+      if (batch.length > 1) {
+        console.error(
+          `  batch ${i}-${i + batch.length} failed (${err.message.slice(0, 60)}…) — splitting`,
+        );
+        const half = Math.ceil(batch.length / 2);
+        const recovered = new Map();
+        for (const part of [batch.slice(0, half), batch.slice(half)]) {
+          try {
+            for (const [k, v] of await translateBatch(part)) recovered.set(k, v);
+          } catch (inner) {
+            if (part.length === 1) {
+              console.error(`  key ${part[0].key} failed alone: ${inner.message.slice(0, 80)}`);
+              continue;
+            }
+            const q = Math.ceil(part.length / 2);
+            for (const sub of [part.slice(0, q), part.slice(q)]) {
+              try {
+                for (const [k, v] of await translateBatch(sub)) recovered.set(k, v);
+              } catch (e2) {
+                console.error(`  sub-batch of ${sub.length} failed: ${e2.message.slice(0, 60)}`);
+              }
+            }
+          }
+        }
+        translations = recovered;
+        if (recovered.size === 0) {
+          totalFailed += batch.length;
+          continue;
+        }
+      } else {
+        console.error(`  key ${batch[0].key} failed: ${err.message.slice(0, 80)}`);
+        totalFailed += batch.length;
+        continue;
+      }
     }
     for (const it of batch) {
       const tx = translations.get(it.key);

@@ -2,10 +2,10 @@
   "tasks": {
     "noOpenTasks": "No open tasks",
     "confirmCancelTask": "Are you sure you want to cancel this task?",
-    "postponeComingSoon": "Postpone feature coming soon",
+    "postponeComingSoon": "Reschedule function coming soon",
     "addNotePrompt": "Add a note to this task:",
     "noteAdded": "Note added: {note}",
-    "navigateTo": "Navigate to: {url}",
+    "navigateTo": "Go to: {url}",
     "openVtid": "Open VTID: {vtid}",
     "description": "Description",
     "activityLog": "Activity Log",
@@ -14,6 +14,8 @@
     "postpone": "Postpone",
     "addNote": "Add Note",
     "openContext": "Open Context",
-    "assignee": "Assignee"
-  }
+    "assignee": "Assignee",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

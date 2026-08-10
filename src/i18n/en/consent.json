@@ -1,5 +1,7 @@
 {
   "consent": {
-    "searchPlaceholder": "Search consent packages, organizations, permissions..."
-  }
+    "searchPlaceholder": "Search consent packages, organizations, permissions...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

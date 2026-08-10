@@ -1,5 +1,7 @@
 {
   "wellnessServices": {
-    "searchPlaceholder": "Search services, providers, or programs..."
-  }
+    "searchPlaceholder": "Search services, providers, or programs...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

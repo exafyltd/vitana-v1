@@ -1,0 +1,23 @@
+{
+  "businessHub": {
+    "title": "مركز الأعمال",
+    "description": "نمّي عملك في مجال العافية",
+    "tabs": {
+      "snapshot": "ملخص",
+      "services": "الخدمات",
+      "sales": "المبيعات",
+      "insights": "الرؤى"
+    },
+    "recentActivity": "النشاط الأخير",
+    "clients": "العملاء",
+    "analytics": "التحليلات",
+    "searchBusiness": "ابحث عن عمل...",
+    "noServices": "لا توجد خدمات بعد",
+    "noServicesDesc": "أنشئ خدمتك الأولى لجذب العملاء.",
+    "createService": "أنشئ خدمة",
+    "noClients": "لا يوجد عملاء بعد",
+    "noClientsDesc": "سيظهر عملاؤك هنا.",
+    "noSales": "لا توجد مبيعات بعد",
+    "noSalesDesc": "سيظهر سجل مبيعاتك هنا."
+  }
+}

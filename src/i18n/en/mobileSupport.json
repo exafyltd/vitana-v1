@@ -74,6 +74,8 @@
     "errorNoAudio": "We didn't catch any audio. Please try again.",
     "errorTranscription": "Transcription failed. Please try again.",
     "transcribing": "Transcribing your recording…",
-    "backendRecordingHint": "Your transcription will appear after you tap Stop."
-  }
+    "backendRecordingHint": "Your transcription will appear after you tap Stop.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

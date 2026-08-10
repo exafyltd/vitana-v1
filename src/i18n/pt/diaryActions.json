@@ -1,0 +1,50 @@
+{
+  "diaryActions": {
+    "title": "Ações de Entrada do Diário",
+    "items": {
+      "recordVoiceEntry": {
+        "title": "Gravar Entrada de Voz",
+        "description": "Capture pensamentos e reflexões com gravação de voz",
+        "_pending_review": {}
+      },
+      "addPhotoEntry": {
+        "title": "Adicionar Entrada de Foto",
+        "description": "Carregue imagens para documentar sua jornada de bem-estar",
+        "_pending_review": {}
+      },
+      "writeTextEntry": {
+        "title": "Escrever Entrada de Texto",
+        "description": "Crie reflexões e notas escritas detalhadas",
+        "_pending_review": {}
+      },
+      "quickNote": {
+        "title": "Nota Rápida",
+        "description": "Anote pensamentos ou observações breves",
+        "_pending_review": {}
+      },
+      "videoDiary": {
+        "title": "Diário em Vídeo",
+        "description": "Grave reflexões em vídeo e atualizações de progresso",
+        "_pending_review": {}
+      },
+      "scheduleEntry": {
+        "title": "Agendar Entrada",
+        "description": "Planeje futuras entradas de diário e lembretes",
+        "_pending_review": {}
+      },
+      "tagMemories": {
+        "title": "Marcar Memórias",
+        "description": "Organize entradas existentes com tags e categorias",
+        "_pending_review": {}
+      },
+      "importFiles": {
+        "title": "Importar Arquivos",
+        "description": "Carregue documentos, imagens ou outros arquivos de bem-estar",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

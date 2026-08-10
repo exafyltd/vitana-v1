@@ -4,28 +4,37 @@
     "items": {
       "recordVoiceDiary": {
         "title": "Grabar Diario de Voz",
-        "description": "Captura pensamientos y reflexiones con la voz"
+        "description": "Captura pensamientos y reflexiones con la voz",
+        "_pending_review": {}
       },
       "addMemoryNote": {
         "title": "Agregar Nota de Memoria",
-        "description": "Escribe momentos importantes de salud"
+        "description": "Escribe momentos importantes de salud",
+        "_pending_review": {}
       },
       "viewTimeline": {
         "title": "Ver Línea de Tiempo",
-        "description": "Ve tu viaje completo de bienestar"
+        "description": "Ve tu viaje completo de bienestar",
+        "_pending_review": {}
       },
       "searchMemories": {
         "title": "Buscar Memorias",
-        "description": "Encuentra momentos e ideas específicas"
+        "description": "Encuentra momentos e ideas específicas",
+        "_pending_review": {}
       },
       "photoMemory": {
         "title": "Recuerdo Fotográfico",
-        "description": "Agrega recuerdos visuales a tu viaje"
+        "description": "Agrega recuerdos visuales a tu viaje",
+        "_pending_review": {}
       },
       "aiMemoryAnalysis": {
         "title": "Análisis de Memoria IA",
-        "description": "Obtén información de tus patrones de memoria"
-      }
-    }
-  }
+        "description": "Obtén información de tus patrones de memoria",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,6 +1,8 @@
 {
   "privacy": {
     "public": "Javno",
-    "private": "Privatno"
-  }
+    "private": "Privatno",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

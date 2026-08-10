@@ -1,0 +1,21 @@
+{
+  "profilePosts": {
+    "createPost": "Créer un post",
+    "placeholder": "À quoi penses-tu en ce moment ?",
+    "shareCta": "Partage quelque chose avec la communauté",
+    "post": "Publier",
+    "posted": "Publié !",
+    "deleted": "Post supprimé",
+    "emptyTitle": "Pas encore de posts",
+    "emptyDescription": "Partage ta première mise à jour avec la communauté",
+    "deleteConfirm": "Supprimer ce post ?",
+    "error": "Une erreur est survenue",
+    "mentionPlaceholder": "Qu'as-tu en tête ? Tape @ pour taguer quelqu'un",
+    "background": "Arrière-plan",
+    "noBackground": "Pas d'arrière-plan",
+    "searchingPeople": "Recherche de personnes…",
+    "noPeopleFound": "Aucune personne trouvée",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -1,0 +1,50 @@
+{
+  "recallActions": {
+    "title": "Działania wyszukiwania i pobierania przypomnień",
+    "items": {
+      "askAiQuestion": {
+        "title": "Zapytaj AI",
+        "description": "Przeszukuj swoje wspomnienia za pomocą wyszukiwania AI w języku naturalnym",
+        "_pending_review": {}
+      },
+      "advancedSearch": {
+        "title": "Zaawansowane wyszukiwanie",
+        "description": "Użyj filtrów, tagów i zakresów dat, aby znaleźć wspomnienia",
+        "_pending_review": {}
+      },
+      "patternAnalysis": {
+        "title": "Analiza wzorców",
+        "description": "Odkryj trendy i wzorce w swoich danych dotyczących dobrego samopoczucia",
+        "_pending_review": {}
+      },
+      "memoryInsights": {
+        "title": "Spostrzeżenia ze wspomnień",
+        "description": "Uzyskaj spostrzeżenia oparte na AI z Twojej podróży zdrowotnej",
+        "_pending_review": {}
+      },
+      "searchByDate": {
+        "title": "Szukaj według daty",
+        "description": "Przeglądaj wspomnienia z określonych okresów czasu",
+        "_pending_review": {}
+      },
+      "locationMemories": {
+        "title": "Wspomnienia z miejsc",
+        "description": "Znajdź wpisy według odwiedzonych miejsc i lokalizacji",
+        "_pending_review": {}
+      },
+      "filterByCategory": {
+        "title": "Filtruj według kategorii",
+        "description": "Przeglądaj wspomnienia według filarów dobrego samopoczucia i kategorii",
+        "_pending_review": {}
+      },
+      "quickRecalls": {
+        "title": "Szybkie przywoływanie",
+        "description": "Uzyskaj dostęp do często wyszukiwanych wspomnień i zapytań.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

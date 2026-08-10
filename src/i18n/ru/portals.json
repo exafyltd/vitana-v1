@@ -1,0 +1,49 @@
+{
+  "portals": {
+    "maxina": {
+      "title": "Платформа здоровья Maxina",
+      "welcomeBack": "С возвращением в Maxina.",
+      "continueJourney": "Войди, чтобы продолжить своё путешествие.",
+      "joinMaxina": "Присоединяйся к Maxina",
+      "joinCommunity": "Присоединяйся к сообществу Maxina.",
+      "createAccount": "Создай свой аккаунт и начни своё путешествие.",
+      "signingIn": "Вход…",
+      "creatingAccount": "Создание аккаунта…",
+      "joiningAs": "Я присоединяюсь как:",
+      "yourFullName": "Твое полное имя",
+      "forgotPassword": "Забыл пароль?",
+      "partOfVitana": "Maxina — часть экосистемы VITANA.",
+      "allPortals": "Все порталы",
+      "emailConfirmed": "Email подтвержден! Добро пожаловать в Maxina.",
+      "checkEmail": "Пожалуйста, проверь свою почту, чтобы подтвердить аккаунт.",
+      "roles": {
+        "community": "Сообщество",
+        "patient": "Пациент",
+        "professional": "Про",
+        "admin": "Админ",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "alkalma": {
+      "joinAlkalma": "Присоединяйся к AlKalma",
+      "welcomeBack": "С возвращением в AlKalma.",
+      "continueJourney": "Войди, чтобы продолжить.",
+      "_pending_review": {}
+    },
+    "earthlinks": {
+      "joinEarthlinks": "Присоединяйся к Earthlinks",
+      "welcomeBack": "С возвращением в Earthlinks.",
+      "continueJourney": "Войди, чтобы продолжить.",
+      "_pending_review": {}
+    },
+    "community": {
+      "joinCommunity": "Присоединяйся к сообществу",
+      "welcomeBack": "С возвращением.",
+      "continueJourney": "Войди, чтобы продолжить.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

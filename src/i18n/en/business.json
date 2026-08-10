@@ -4,30 +4,31 @@
       "readyToEarn": "Ready to earn with VITANA?",
       "choosePathGuide": "Choose a path and we'll guide you to your first income stream.",
       "startEarning": "Start earning",
-      "howToEarn": "How do you want to earn?",
-      "pickOne": "Pick one — you can always do the others later.",
+      "howToEarn": "How would you like to earn?",
+      "pickOne": "Choose an option — you can explore the others later.",
       "createEvent": "Create an Event",
       "createEventDesc": "Host your own event and sell tickets.",
       "addToInventory": "Add Events to Inventory",
       "addToInventoryDesc": "Resell curated events and earn commission.",
       "createService": "Create a Service",
-      "createServiceDesc": "Offer sessions people can book.",
+      "createServiceDesc": "Offer bookable sessions.",
       "createPromotion": "Create a Promotion",
       "createPromotionDesc": "Boost visibility and share to social.",
       "hostAndSell": "Host & sell tickets",
       "resellAndEarn": "Resell & earn",
       "offerBookings": "Offer bookings",
-      "boostVisibility": "Boost visibility"
+      "boostVisibility": "Boost visibility",
+      "_pending_review": {}
     },
     "history": {
       "all": "All",
       "directSales": "Direct Sales",
       "reseller": "Reseller",
-      "noEarningsYet": "No earnings history yet",
-      "startSellingToSee": "Start selling to see your transactions here",
+      "noEarningsYet": "No earning history yet",
+      "startSellingToSee": "Start selling to see your transactions here.",
       "ticketsSold": "Tickets Sold",
       "grossAmount": "Gross Amount",
-      "youEarned": "You Earned",
+      "youEarned": "You've earned",
       "paidToWallet": "Paid to Wallet",
       "pendingPayout": "Pending Payout",
       "transactionId": "Transaction ID",
@@ -35,10 +36,11 @@
       "last7Days": "Last 7 Days",
       "last30Days": "Last 30 Days",
       "last90Days": "Last 90 Days",
-      "allTime": "All time",
+      "allTime": "Total time",
       "details": "Details",
       "earningsActivity": "Earnings Activity",
-      "noEarningsStartSelling": "No earnings yet. Start selling to see activity here."
+      "noEarningsStartSelling": "No earnings yet. Start selling to see activity here.",
+      "_pending_review": {}
     },
     "kpi": {
       "totalEarnings": "Total Earnings",
@@ -59,9 +61,10 @@
       "viewMyEvents": "View My Events",
       "totalGrossSales": "Total Gross Sales",
       "resellerCommissions": "Reseller Commissions",
-      "goToSellEarn": "Go to Sell & Earn",
-      "totalEarned": "Total Earned",
-      "earningsBySource": "Earnings by Source"
+      "goToSellEarn": "Sell & Earn",
+      "totalEarned": "Total earned",
+      "earningsBySource": "Earnings by Source",
+      "_pending_review": {}
     },
     "reseller": {
       "upcomingEvents": "Upcoming Events",
@@ -69,13 +72,13 @@
       "resellerCode": "Reseller code",
       "codeCopied": "Reseller code copied!",
       "noSalesYet": "No sales yet",
-      "shareLinkToStart": "Share a link to start earning.",
+      "shareLinkToStart": "Share a link to earn.",
       "tickets": "tickets",
       "shareResellerLink": "Share reseller link",
       "createPromotion": "Create promotion",
-      "shareLinkOrPromotion": "Share your reseller links or create a promotion to start earning commissions.",
+      "shareLinkOrPromotion": "Share your reseller links or create a promotion to earn commissions.",
       "selectEventToShare": "Select an event to share",
-      "pickEventForLink": "Pick an event to generate your reseller link",
+      "pickEventForLink": "Choose an event to generate your reseller link.",
       "noEventsToSell": "No events available to sell",
       "commission": "commission",
       "commissionEarned": "Commission Earned",
@@ -84,16 +87,18 @@
       "noPayoutsYet": "No payouts yet",
       "attributedSales": "Attributed Sales by Event",
       "noSalesMatchFilter": "No sales match the current filters",
-      "mockDataActive": "Mock data active"
+      "mockDataActive": "Mock data active",
+      "_pending_review": {}
     },
     "transfer": {
       "title": "Transfer to Wallet",
       "description": "Transfer your pending reseller commissions to your VITANA Wallet.",
       "pending": "Pending",
       "wallet": "Wallet",
-      "instantCredit": "This will credit your earnings instantly to your wallet balance.",
+      "instantCredit": "This will instantly credit your earnings to your Wallet balance.",
       "transferring": "Transferring...",
-      "transfer": "Transfer"
+      "transfer": "Transfer",
+      "_pending_review": {}
     },
     "typeSelector": {
       "title": "Start a Business",
@@ -105,12 +110,13 @@
       "sellTicketsDesc": "Promote events and earn commissions",
       "badgeNew": "New",
       "badgeActive": "Active",
-      "alreadyReseller": "You're already a reseller! Check the Sell & Earn tab.",
-      "cancel": "Cancel"
+      "alreadyReseller": "You're already a reseller! Check the \"Sell & Earn\" tab.",
+      "cancel": "Cancel",
+      "_pending_review": {}
     },
     "missionOpportunities": {
       "title": "Mission Opportunities",
-      "subtitle": "Autopilot-recommended paths that advance the longevity economy",
+      "subtitle": "Autopilot-suggested paths advancing the longevity economy",
       "loading": "Loading opportunities…",
       "error": "Could not load opportunities",
       "empty": "No economy-aligned recommendations yet. Check back later.",
@@ -119,8 +125,12 @@
         "find_match": "Find a Match",
         "marketplace": "Marketplace",
         "income_generation": "Income generation",
-        "business_formation": "Business formation"
-      }
-    }
-  }
+        "business_formation": "Business formation",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

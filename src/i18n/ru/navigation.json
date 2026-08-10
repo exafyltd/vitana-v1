@@ -1,0 +1,25 @@
+{
+  "navigation": {
+    "navigatingTo": "Переход к",
+    "hydrationTracker": "Трекер водного баланса",
+    "sleepTracker": "Трекер сна",
+    "nutritionTracker": "Трекер питания",
+    "workoutTracker": "Трекер тренировок",
+    "biomarkers": "Биомаркеры",
+    "calendar": "Календарь",
+    "community": "Сообщество",
+    "groups": "Группы",
+    "messages": "Сообщения",
+    "discover": "Обзор",
+    "supplements": "Добавки",
+    "wallet": "Кошелек",
+    "profile": "Профиль",
+    "settings": "Настройки",
+    "diary": "Дневник",
+    "home": "Главная",
+    "myJourney": "Мой путь",
+    "news": "Новости долголетия",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -1,0 +1,39 @@
+{
+  "diaryActions": {
+    "title": "إجراءات إدخال اليوميات",
+    "items": {
+      "recordVoiceEntry": {
+        "title": "سجل إدخالًا صوتيًا",
+        "description": "التقط أفكارك وتأملاتك بالتسجيل الصوتي"
+      },
+      "addPhotoEntry": {
+        "title": "أضف إدخال صورة",
+        "description": "حمّل صورًا لتوثيق رحلتك الصحية"
+      },
+      "writeTextEntry": {
+        "title": "اكتب إدخالًا نصيًا",
+        "description": "أنشئ تأملات وملاحظات مكتوبة مفصلة"
+      },
+      "quickNote": {
+        "title": "ملاحظة سريعة",
+        "description": "دوّن أفكارًا أو ملاحظات موجزة"
+      },
+      "videoDiary": {
+        "title": "يوميات فيديو",
+        "description": "سجل تأملات فيديو وتحديثات عن التقدم"
+      },
+      "scheduleEntry": {
+        "title": "جدولة إدخال",
+        "description": "خطط لإدخالات يوميات مستقبلية وتذكيرات"
+      },
+      "tagMemories": {
+        "title": "وسم الذكريات",
+        "description": "نظم الإدخالات الموجودة بالوسوم والفئات"
+      },
+      "importFiles": {
+        "title": "استورد ملفات",
+        "description": "حمّل مستندات، صور، أو ملفات صحية أخرى"
+      }
+    }
+  }
+}

@@ -2,9 +2,10 @@
   "voucher": {
     "modal": {
       "title": "Gift a Maxina Voucher",
-      "subtitle": "Give the gift of wellness and community connection",
+      "subtitle": "Gift Wellness and Community Connection",
       "buyVoucher": "Buy Voucher",
-      "openingCheckout": "Opening secure checkout..."
+      "openingCheckout": "Opening secure checkout...",
+      "_pending_review": {}
     },
     "tiers": {
       "test": {
@@ -13,7 +14,8 @@
           "Payment flow test only",
           "Not a real voucher",
           "For development testing"
-        ]
+        ],
+        "_pending_review": {}
       },
       "experience": {
         "name": "Experience",
@@ -22,7 +24,8 @@
           "Personalized wellness consultation",
           "30-day Vitana+ trial included",
           "Beautifully designed e-voucher"
-        ]
+        ],
+        "_pending_review": {}
       },
       "exclusive": {
         "name": "Exclusive",
@@ -31,8 +34,10 @@
           "1-on-1 expert coaching session",
           "90-day Vitana+ subscription",
           "Priority booking + VIP perks"
-        ]
-      }
+        ],
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "success": {
       "title": "Voucher Purchased!",
@@ -40,7 +45,8 @@
       "download": "Download Voucher",
       "sendEmail": "Send to Recipient by Email",
       "viewOrders": "View in Orders",
-      "done": "Done"
+      "done": "Done",
+      "_pending_review": {}
     },
     "email": {
       "title": "Send Voucher by Email",
@@ -50,7 +56,8 @@
       "personalMessage": "Personal Message (optional)",
       "messagePlaceholder": "Happy Birthday! Enjoy this wellness treat...",
       "back": "Back",
-      "send": "Send Voucher"
+      "send": "Send Voucher",
+      "_pending_review": {}
     },
     "preview": {
       "title": "Your Voucher",
@@ -64,24 +71,28 @@
       "copyLink": "Copy Link",
       "share": "Save / Share",
       "shareHint": "Save to Files, Drive, or send to someone",
-      "downloadHint": "If download opens blank, tap Open in Browser"
+      "downloadHint": "If the download opens blank, tap Open in Browser",
+      "_pending_review": {}
     },
     "toast": {
       "downloadStarted": "Download started!",
       "downloadFailed": "Download failed",
       "linkCopied": "Link copied!",
-      "linkCopiedDesc": "Paste in browser to download.",
+      "linkCopiedDesc": "Paste in the browser to download.",
       "voucherSent": "Voucher sent to {email}!",
       "voucherShared": "Voucher shared successfully!",
-      "checkoutFailed": "Failed to start checkout. Please try again.",
+      "checkoutFailed": "Could not start checkout. Please try again.",
       "generatingVoucher": "Generating voucher...",
       "failedToLoadVoucher": "Failed to load voucher data",
       "downloadFailedCopyLink": "Download failed. Try copying the link.",
-      "useTicketView": "Use the ticket view to print or save your ticket",
+      "useTicketView": "Use the ticket view to print or save.",
       "pdfNotAvailable": "PDF download not available for this order type",
-      "enterRecipientEmail": "Please enter recipient email",
+      "enterRecipientEmail": "Please enter the recipient's email.",
       "emailOnlyForVouchers": "Email sending only available for vouchers",
-      "sendingVoucherEmail": "Sending voucher email..."
-    }
-  }
+      "sendingVoucherEmail": "Sending voucher email...",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

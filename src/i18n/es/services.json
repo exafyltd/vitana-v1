@@ -6,14 +6,16 @@
       "preventive": "Exámenes Preventivos",
       "labTests": "Pruebas de Laboratorio",
       "coaching": "Coaching y Entrenamiento Personal",
-      "groupPrograms": "Programas Grupales y Desafíos"
+      "groupPrograms": "Programas Grupales y Desafíos",
+      "_pending_review": {}
     },
     "actions": {
       "book": "Reservar",
       "addToPlan": "Agregar al Plan",
       "askAI": "Preguntar a la IA",
       "joinRoom": "Unirse a la Sala",
-      "setReminder": "Configurar Recordatorio"
+      "setReminder": "Configurar Recordatorio",
+      "_pending_review": {}
     },
     "details": {
       "duration": "Duración",
@@ -24,7 +26,10 @@
       "healthBenefits": "Beneficios para la Salud",
       "availableProviders": "Proveedores Disponibles",
       "requirements": "Requisitos y Preparación",
-      "tags": "Etiquetas"
-    }
-  }
+      "tags": "Etiquetas",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

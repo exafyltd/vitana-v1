@@ -7,26 +7,29 @@
       "music": "Muzika",
       "podcasts": "Podkasti",
       "shorts": "Kratki snimci",
-      "videos": "Video snimci"
+      "videos": "Video snimci",
+      "_pending_review": {}
     },
     "sections": {
       "trendingShorts": "Popularni kratki snimci",
       "trendingMusic": "Popularna muzika",
       "musicPlaylists": "Muzičke liste",
       "latestEpisodes": "Najnovije epizode",
-      "popularShows": "Popularne emisije"
+      "popularShows": "Popularne emisije",
+      "_pending_review": {}
     },
     "actions": {
       "upload": "Otpremi",
       "watchShorts": "Gledaj kratke klipove",
       "viewAllShorts": "Prikaži svih {count} kratkih klipova",
       "playPlaylist": "Pusti plejlistu",
-      "clearFilters": "Obriši filtere"
+      "clearFilters": "Obriši filtere",
+      "_pending_review": {}
     },
     "searchPlaceholder": "Pretraži medije...",
     "shortsAvailable": "{count} kratkih snimaka dostupno",
     "filteredBy": "Filtrirano po:",
-    "noMatchingShorts": "Nijedan kratki snimak ne odgovara vašim interesovanjima",
+    "noMatchingShorts": "Nema kratkih video-zapisa koji odgovaraju tvojim interesovanjima.",
     "viewAllShorts": "Pogledaj sve kratke snimke",
     "tracks": "numere",
     "min": "min",
@@ -46,7 +49,8 @@
       "singleUpload": "Pojedinačni otprem",
       "bulkUpload": "Grupni otprem",
       "addToPlaylist": "Dodaj u plejlistu",
-      "viewArtist": "Prikaži izvođača"
+      "viewArtist": "Prikaži izvođača",
+      "_pending_review": {}
     },
     "toast": {
       "linkCopied": "Link kopiran",
@@ -62,19 +66,24 @@
       "uploadSuccess": "Uspeh!",
       "uploadSuccessDesc": "Tvoj {type} je sada dostupan u zajednici.",
       "deleteError": "Greška",
-      "deleteErrorDesc": "Brisanje nije uspelo. Pokušaj ponovo."
+      "deleteErrorDesc": "Brisanje nije uspelo. Molimo te, pokušaj ponovo.",
+      "commentError": "Greška",
+      "commentErrorDesc": "Nije uspelo objavljivanje komentara. Molimo pokušaj ponovo.",
+      "_pending_review": {}
     },
     "deletePodcast": {
       "title": "Obriši podkast",
       "description": "Da li si siguran da želiš da obrišeš ovaj podkast? Ova radnja se ne može poništiti.",
       "cancel": "Otkaži",
-      "confirm": "Obriši"
+      "confirm": "Obriši",
+      "_pending_review": {}
     },
     "deleteVideo": {
       "title": "Obriši video",
       "description": "Da li si siguran da želiš da obrišeš ovaj video? Ova radnja se ne može poništiti i ukloniće video iz skladišta.",
       "cancel": "Otkaži",
-      "confirm": "Obriši"
+      "confirm": "Obriši",
+      "_pending_review": {}
     },
     "noMusic": "Muzika još nije otpremljena",
     "noMusicDesc": "Budi prvi koji će podeliti muziku sa zajednicom!",
@@ -129,10 +138,28 @@
         "mindfulness": "Svesnost",
         "fitness": "Fitnes",
         "mentalHealth": "Mentalno zdravlje",
-        "wellness": "Wellness",
+        "wellness": "Velnes",
         "education": "Obrazovanje",
-        "lifestyle": "Životni stil"
-      }
-    }
-  }
+        "lifestyle": "Životni stil",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "comments": {
+      "title": "Komentari",
+      "placeholder": "Napiši komentar...",
+      "empty": "Još nema komentara",
+      "beFirst": "Budi prvi koji će komentarisati",
+      "signIn": "Prijavi se za komentarisanje",
+      "send": "Pošalji komentar",
+      "member": "Član zajednice",
+      "reply": "Odgovori",
+      "replyingTo": "Odgovaraš na {name}",
+      "cancelReply": "Otkaži odgovor",
+      "like": "Lajkuj komentar",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

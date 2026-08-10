@@ -1,0 +1,21 @@
+{
+  "adminTabs": {
+    "groups": {
+      "all": "Wszystkie Grupy",
+      "pending": "Oczekujące",
+      "approved": "Zatwierdzone",
+      "flagged": "Oznaczone",
+      "rejected": "Odrzucone",
+      "_pending_review": {}
+    },
+    "rooms": {
+      "active": "Aktywne Pokoje",
+      "scheduled": "Zaplanowane",
+      "analytics": "Analityka",
+      "moderation": "Moderacja",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

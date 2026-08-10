@@ -10,6 +10,8 @@
     "messageDeleted": "Mensaje eliminado",
     "error": "Error",
     "errorSend": "Error al enviar el mensaje",
-    "errorDelete": "Error al eliminar el mensaje"
-  }
+    "errorDelete": "Error al eliminar el mensaje",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

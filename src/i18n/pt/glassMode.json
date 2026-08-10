@@ -1,0 +1,21 @@
+{
+  "glassMode": {
+    "shareWithAI": "Compartilhar seleção com IA?",
+    "screenSharingComingSoon": "🖥️ Compartilhamento de Tela em Breve",
+    "screenSharingDesc": "Compartilhe sua tela com a VITANA para suporte contextual.",
+    "screenSharingStopped": "Compartilhamento de Tela Parado",
+    "glassModeDisabled": "Modo Vidro desativado",
+    "cameraModeComingSoon": "📹 Modo Câmera em Breve",
+    "cameraModeDesc": "Interações de IA baseadas em visão estarão disponíveis na próxima atualização.",
+    "diaryReady": "Diário Pronto",
+    "openingDiary": "Abrindo entrada do diário",
+    "autopilotActivated": "Piloto Automático Ativado",
+    "runningAutopilot": "Executando modo piloto automático",
+    "textInputReady": "Entrada de Texto Pronta",
+    "typeMessage": "Podes agora inserir a tua mensagem.",
+    "actionFailed": "Ação Falhou",
+    "couldNotExecute": "Não foi possível executar {action}",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

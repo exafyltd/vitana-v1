@@ -1,0 +1,21 @@
+{
+  "authPage": {
+    "welcomeTitle": "Добро пожаловать в VITANA",
+    "subtitle": "Твоя персонализированная интеллектуальная платформа здоровья",
+    "signIn": "Войти",
+    "signUp": "Зарегистрироваться",
+    "email": "Email",
+    "password": "Пароль",
+    "fullName": "Полное имя",
+    "enterEmail": "Введи свой Email",
+    "enterPassword": "Введи свой пароль",
+    "enterFullName": "Введи свое полное имя",
+    "createPassword": "Создай пароль",
+    "createAccount": "Создать аккаунт",
+    "orContinueWith": "Или продолжить с",
+    "backToPortals": "Назад ко всем порталам",
+    "keepLoggedIn": "Запомнить меня",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

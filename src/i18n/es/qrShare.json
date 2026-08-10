@@ -1,10 +1,20 @@
 {
   "qrShare": {
     "title": "Código QR",
-    "scanToView": "Escanea para ver el perfil",
+    "scanToView": "Escanea para ver tu perfil.",
     "shareProfile": "Compartir perfil",
     "copyLink": "Copiar enlace",
     "download": "Descargar",
-    "linkCopied": "¡Enlace copiado!"
-  }
+    "linkCopied": "¡Enlace copiado!",
+    "scanToDownload": "Escanea para descargar MAXINA",
+    "shareApp": "Comparte MAXINA",
+    "modeProfile": "Mi Perfil",
+    "modeInvite": "Obtén MAXINA",
+    "appName": "MAXINA",
+    "appTagline": "Comunidad de Longevidad",
+    "inviteShareTitle": "MAXINA – Comunidad de Longevidad",
+    "inviteShareText": "Obtén MAXINA y comienza tu viaje de longevidad:",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
