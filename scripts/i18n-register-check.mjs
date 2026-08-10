@@ -181,6 +181,28 @@ const RULES = {
     note: 'ty-form. Never Pan/Pani.',
     crossCheck: true,
   },
+  zh: {
+    name: 'Chinese',
+    // DELIBERATELY NOT L(). Every other rule wraps its pattern in L(), which
+    // asserts `(?<![\p{L}\p{N}])` on both sides — and CJK ideographs ARE
+    // \p{L}. Chinese is written without spaces, so 您 is almost always
+    // adjacent to another ideograph and L('您') would match essentially
+    // nothing. The check would report a clean locale and mean nothing by it —
+    // worse than no rule, because "0 violations" would look like evidence.
+    //
+    // A bare character match is CORRECT here rather than a shortcut: 您 is a
+    // distinct character whose only use is polite second-person address. It
+    // needs no boundary because it is not a substring of anything else, and it
+    // needs no German cross-check because — unlike French `vous`, Russian `вы`
+    // or Spanish `su` — it is never also a plural or a third person. That
+    // ambiguity is what crossCheck exists to resolve, and Chinese does not
+    // have it.
+    formal: /您/u,
+    exempt: [],
+    informal: /你/u,
+    note: 'Simplified zh-CN, 你-form. Never 您.',
+    crossCheck: false,
+  },
 };
 
 function flatten(obj, prefix = '') {

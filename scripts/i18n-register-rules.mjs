@@ -98,6 +98,20 @@ export const REGISTER_RULES = {
       'Use the ty-form (informal singular) throughout: ty/twój and second-person singular verbs. ' +
       'Never the honorific Pan/Pani constructions when addressing the reader.',
   },
+  zh: {
+    name: 'Chinese',
+    // Chinese marks register with a different PRONOUN CHARACTER rather than
+    // with verb morphology, so unlike fr/pt this one really is decidable by
+    // looking for a single character — 您 is the polite second person, 你 the
+    // ordinary one. Also worth stating the script: Simplified is a separate
+    // axis from register, and a model given only "informal Chinese" may return
+    // Traditional, which is wrong for zh-CN and invisible to a register check.
+    instruction:
+      'Use SIMPLIFIED Chinese (zh-CN) and the ordinary second person 你/你的. ' +
+      'Never the polite 您/您的 when addressing the reader. ' +
+      'Do NOT return Traditional characters. ' +
+      'Keep the tone direct and friendly, as between peers.',
+  },
 };
 
 /**
