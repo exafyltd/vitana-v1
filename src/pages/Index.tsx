@@ -6,7 +6,7 @@ import { useSmartRouting } from "@/hooks/useSmartRouting";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Heart, BookOpen, Leaf, Shield, Terminal, ExternalLink } from "lucide-react";
+import { Heart, BookOpen, Leaf, Shield, Terminal, ExternalLink, ShoppingBag } from "lucide-react";
 import { getCommandHubUrl } from "@/config/devHub.config";
 import { toast } from "sonner";
 import { lookup, t } from '@/lib/i18n-toast';
@@ -53,7 +53,7 @@ const Index = () => {
           </p>
           
           {/* Platform Selection */}
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {/* Maxina Portal */}
             <div onClick={handleMaxinaClick}>
               <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
@@ -157,6 +157,24 @@ const Index = () => {
                 </CardContent>
               </Card>
             </a>
+
+            {/* Commerce Portal - Merchant self-service (VTID-03555) */}
+            <Link to="/commerce-login">
+              <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group border-amber-200 bg-gradient-to-br from-amber-50/50 to-orange-50/50">
+                <CardHeader className="text-center">
+                  <div className="flex justify-center mb-4">
+                    <ShoppingBag className="h-12 w-12 text-amber-600 group-hover:scale-110 transition-transform" />
+                  </div>
+                  <CardTitle className="text-xl text-amber-700">{t('screens.index.commercePortal')}</CardTitle>
+                  <CardDescription>{t('screens.index.merchantSelfServiceMarketplace')}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">
+                    {t('screens.index.connectYourBusinessToDiscoverYourself')}
+                  </p>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
 
           {/* Footer Info */}
