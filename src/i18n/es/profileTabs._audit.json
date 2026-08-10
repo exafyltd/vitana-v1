@@ -37,9 +37,9 @@
     },
     "profileTabs.insight": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation 'Información' is too generic and doesn't fully capture the nuance and depth of 'Insight' in a wellness context, which often implies a deeper understanding or valuable takeaway.",
-      "suggested": "Perspectiva",
+      "confidence": 0.8,
+      "issue": "Slight nuance mismatch; 'Perspectiva' means 'perspective', while 'Insight' often implies a deeper understanding or discovery in this context.",
+      "suggested": "Conocimiento",
       "phase": "llm"
     },
     "profileTabs.milestones": {
@@ -48,5 +48,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:03:25.570Z"
+  "generatedAt": "2026-08-10T05:03:59.157Z"
 }
