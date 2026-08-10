@@ -31,11 +31,8 @@
         "description": "تصفح الذكريات حسب ركائز العافية والفئات"
       },
       "quickRecalls": {
-        "_pending_review": {
-          "description": true
-        },
         "title": "استدعاءات سريعة",
-        "description": "Access frequently searched memories and queries"
+        "description": "الوصول إلى الذكريات والاستفسارات الأكثر بحثًا"
       }
     }
   }

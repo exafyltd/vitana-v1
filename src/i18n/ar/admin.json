@@ -19,7 +19,10 @@
       "rejected": "مرفوض",
       "flagged": "مبلغ عنه",
       "podcastManagement": "إدارة البودكاست",
-      "podcastManagementDesc": "مراجعة وتعديل تحميلات البودكاست"
-    }
-  }
+      "podcastManagementDesc": "مراجعة وتعديل تحميلات البودكاست",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

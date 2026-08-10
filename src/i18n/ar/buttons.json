@@ -54,6 +54,8 @@
     "no": "لا",
     "ok": "حسناً",
     "generate": "إنشاء",
-    "generating": "جاري الإنشاء..."
-  }
+    "generating": "جاري الإنشاء...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

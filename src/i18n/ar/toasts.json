@@ -42,7 +42,8 @@
       "planGenerated": "تم إنشاء الخطة",
       "planGeneratedDesc": "تم إنشاء خطتك المخصصة.",
       "bulkEnabled": "التحديد الجماعي مفعّل",
-      "bulkEnabledDesc": "اختر عناصر من جدولك الزمني لإجراءات جماعية."
+      "bulkEnabledDesc": "اختر عناصر من جدولك الزمني لإجراءات جماعية.",
+      "_pending_review": {}
     },
     "error": {
       "generic": "حدث خطأ ما",
@@ -76,7 +77,8 @@
       "importFailed": "فشل الاستيراد",
       "importFailedDesc": "تعذر استيراد البيانات.",
       "exportFailed": "فشل التصدير",
-      "exportFailedDesc": "تعذر تصدير البيانات."
+      "exportFailedDesc": "تعذر تصدير البيانات.",
+      "_pending_review": {}
     },
     "info": {
       "processing": "جاري المعالجة...",
@@ -86,7 +88,8 @@
       "loading": "جاري التحميل...",
       "loadingDesc": "يتم استرداد البيانات.",
       "syncing": "جاري المزامنة...",
-      "syncingDesc": "يتم مزامنة البيانات."
+      "syncingDesc": "يتم مزامنة البيانات.",
+      "_pending_review": {}
     },
     "warning": {
       "unsavedChanges": "تغييرات غير محفوظة",
@@ -94,7 +97,8 @@
       "limitReached": "تم الوصول إلى الحد الأقصى",
       "limitReachedDesc": "لقد وصلت إلى الحد الأقصى.",
       "slowConnection": "اتصال بطيء",
-      "slowConnectionDesc": "يبدو أن اتصالك بالإنترنت بطيء."
+      "slowConnectionDesc": "يبدو أن اتصالك بالإنترنت بطيء.",
+      "_pending_review": {}
     },
     "common": {
       "couldNotCompleteTask": "تعذر إكمال المهمة",
@@ -173,7 +177,8 @@
       "weLlAnalyzeUpdateSuggestionsShortly": "سنحلل ونحدّث الاقتراحات قريبًا.",
       "activityHidden": "تم إخفاء النشاط",
       "success": "نجاح! 🎉",
-      "donTBreakStreakOneSmall": "🔥 لا تقطع السلسلة — عمل صغير واحد اليوم"
+      "donTBreakStreakOneSmall": "🔥 لا تقطع السلسلة — عمل صغير واحد اليوم",
+      "_pending_review": {}
     },
     "admin": {
       "companionOverridesSavedVoiceCacheRefreshes": "تم حفظ تجاوزات الرفيق — يتم تحديث ذاكرة التخزين المؤقت للصوت خلال 30 ثانية.",
@@ -328,7 +333,8 @@
       "removedFromActiveList": "تمت إزالته من القائمة النشطة.",
       "rollbackFailed": "فشل التراجع",
       "ticketRejected": "تم رفض {ticketNumber}",
-      "ticketRemovedActiveList": "تمت إزالته من القائمة النشطة."
+      "ticketRemovedActiveList": "تمت إزالته من القائمة النشطة.",
+      "_pending_review": {}
     },
     "audio": {
       "cameraStopped": "تم إيقاف الكاميرا",
@@ -336,15 +342,18 @@
       "failedToggleCamera": "فشل تبديل الكاميرا",
       "screenSharingStopped": "تم إيقاف مشاركة الشاشة",
       "screenSharingStarted": "تم بدء مشاركة الشاشة",
-      "failedToggleScreenSharing": "فشل تبديل مشاركة الشاشة"
+      "failedToggleScreenSharing": "فشل تبديل مشاركة الشاشة",
+      "_pending_review": {}
     },
     "auth": {
       "confirmationEmailSentPleaseCheckYour": "تم إرسال بريد التأكيد! الرجاء التحقق من صندوق الوارد.",
-      "tooManyAttemptsPleaseWaitFew": "محاولات كثيرة جدًا. الرجاء الانتظار بضع دقائق."
+      "tooManyAttemptsPleaseWaitFew": "محاولات كثيرة جدًا. الرجاء الانتظار بضع دقائق.",
+      "_pending_review": {}
     },
     "billing": {
       "paymentFailed": "فشل الدفع",
-      "paymentSuccessful": "تم الدفع بنجاح!"
+      "paymentSuccessful": "تم الدفع بنجاح!",
+      "_pending_review": {}
     },
     "business": {
       "noAttendeesExport": "لا يوجد حاضرون للتصدير.",
@@ -355,23 +364,28 @@
       "ticketPrintingWillAvailableSoon": "طباعة التذاكر ستكون متاحة قريبًا.",
       "confirmationSent": "تم إرسال التأكيد",
       "refund": "استرداد",
-      "refundFunctionalityWillAvailableSoon": "ميزة الاسترداد ستكون متاحة قريبًا."
+      "refundFunctionalityWillAvailableSoon": "ميزة الاسترداد ستكون متاحة قريبًا.",
+      "_pending_review": {}
     },
     "calendar": {
-      "calendarUpdated": "تم تحديث التقويم"
+      "calendarUpdated": "تم تحديث التقويم",
+      "_pending_review": {}
     },
     "cart": {
       "signRequired": "تسجيل الدخول مطلوب",
-      "pleaseSignAddItemsYourCart": "الرجاء تسجيل الدخول لإضافة عناصر إلى سلتك"
+      "pleaseSignAddItemsYourCart": "الرجاء تسجيل الدخول لإضافة عناصر إلى سلتك",
+      "_pending_review": {}
     },
     "chat": {
       "error": "خطأ",
       "pleaseEnterApiKey": "الرجاء إدخال مفتاح API",
       "success": "نجاح",
-      "apiKeySavedSecurelyWithEncryption": "تم حفظ مفتاح API بأمان مع التشفير"
+      "apiKeySavedSecurelyWithEncryption": "تم حفظ مفتاح API بأمان مع التشفير",
+      "_pending_review": {}
     },
     "coaches": {
-      "bookingStarted": "📅 بدأ الحجز"
+      "bookingStarted": "📅 بدأ الحجز",
+      "_pending_review": {}
     },
     "community": {
       "thumbnailCaptured": "تم التقاط الصورة المصغرة",
@@ -420,7 +434,8 @@
       "vitanaWillFollowUp": "Vitana ستتابع الأمر.",
       "couldnTReopen": "تعذر إعادة الفتح",
       "demoRoom": "غرفة تجريبية",
-      "thisExampleRoomCreateYourOwn": "هذه غرفة مثال. أنشئ غرفتك الخاصة لتبدأ البث المباشر!"
+      "thisExampleRoomCreateYourOwn": "هذه غرفة مثال. أنشئ غرفتك الخاصة لتبدأ البث المباشر!",
+      "_pending_review": {}
     },
     "crossover": {
       "bookingStarted": "📅 بدأ الحجز",
@@ -430,7 +445,8 @@
       "joined": "✓ انضممت",
       "chatStarted": "💬 بدأت الدردشة",
       "linkCopied": "تم نسخ الرابط",
-      "podcastLinkCopiedClipboard": "تم نسخ رابط البودكاست إلى الحافظة"
+      "podcastLinkCopiedClipboard": "تم نسخ رابط البودكاست إلى الحافظة",
+      "_pending_review": {}
     },
     "dev": {
       "createVtid": "إنشاء VTID",
@@ -474,7 +490,8 @@
       "documentUploaded": "تم رفع المستند",
       "frontpageUploaded": "تم رفع الصفحة الرئيسية",
       "diagnosticsCopiedClipboard": "تم نسخ التشخيصات إلى الحافظة",
-      "error": "خطأ"
+      "error": "خطأ",
+      "_pending_review": {}
     },
     "diary": {
       "notSupported": "غير مدعوم",
@@ -509,7 +526,8 @@
       "saveFailed": "فشل الحفظ",
       "failedSaveYourEntryPleaseTry": "فشل حفظ إدخالك. الرجاء المحاولة مرة أخرى.",
       "undoAvailable": "التراجع متاح",
-      "deleteLastDiaryEntry": "حذف آخر إدخال يوميات"
+      "deleteLastDiaryEntry": "حذف آخر إدخال يوميات",
+      "_pending_review": {}
     },
     "discover": {
       "actionSelected": "تم تحديد الإجراء",
@@ -518,18 +536,21 @@
       "appointmentBooked": "تم حجز الموعد! 🎉",
       "yourAppointmentHasConfirmed": "تم تأكيد موعدك",
       "bookingFailed": "فشل الحجز",
-      "pleaseTryAgain": "حاول مرة أخرى"
+      "pleaseTryAgain": "حاول مرة أخرى",
+      "_pending_review": {}
     },
     "discovery": {
       "connectionRequestSent": "تم إرسال طلب الاتصال! 💚",
       "theyLlNotifiedYourInterest": "سيتم إعلامهم باهتمامك.",
       "superConnectSent": "تم إرسال سوبر كونكت! ⭐",
-      "youLlAppearAtTopTheir": "ستظهر في أعلى قائمة تطابقاتهم!"
+      "youLlAppearAtTopTheir": "ستظهر في أعلى قائمة تطابقاتهم!",
+      "_pending_review": {}
     },
     "events": {
       "eventDeleted": "تم حذف الحدث",
       "failedDeleteEvent": "فشل حذف الحدث",
-      "pleaseTryAgainLater": "حاول لاحقًا"
+      "pleaseTryAgainLater": "حاول لاحقًا",
+      "_pending_review": {}
     },
     "feedback": {
       "notSupported": "غير مدعوم",
@@ -543,7 +564,8 @@
       "reportDeleted": "تم حذف التقرير",
       "feedbackReportHasRemoved": "تمت إزالة تقرير الملاحظات.",
       "error": "خطأ",
-      "failedDeleteReportPleaseTryAgain": "فشل حذف التقرير. حاول مرة أخرى."
+      "failedDeleteReportPleaseTryAgain": "فشل حذف التقرير. حاول مرة أخرى.",
+      "_pending_review": {}
     },
     "health": {
       "couldnTStartThatYetOpen": "لم نتمكن من بدء ذلك بعد — افتح Autopilot للمحاولة مرة أخرى.",
@@ -572,7 +594,8 @@
       "noFileAvailable": "لا يوجد ملف متاح",
       "couldNotLoadFile": "تعذر تحميل الملف",
       "recalibrationStarted": "🔄 بدأت إعادة المعايرة",
-      "reportGeneration": "📊 إنشاء التقرير"
+      "reportGeneration": "📊 إنشاء التقرير",
+      "_pending_review": {}
     },
     "intents": {
       "moreDetailNeeded": "مطلوب تفاصيل أكثر",
@@ -604,7 +627,8 @@
       "themedCoverReady": "الغلاف المخصص جاهز",
       "youCanReplaceItAnyTime": "يمكنك استبدالها في أي وقت.",
       "coverPhotoRequired": "صورة الغلاف مطلوبة",
-      "uploadOneTapGenerateForMe": "حمّل واحدة، أو اضغط ✨ توليد لي."
+      "uploadOneTapGenerateForMe": "حمّل واحدة، أو اضغط ✨ توليد لي.",
+      "_pending_review": {}
     },
     "liverooms": {
       "linkCopied": "تم نسخ الرابط",
@@ -626,7 +650,8 @@
       "followedTitle": "تتابع الآن!",
       "followedDesc": "تتابع {name} الآن",
       "unfollowedTitle": "تم إلغاء المتابعة",
-      "unfollowedDesc": "ألغيت متابعة {name}"
+      "unfollowedDesc": "ألغيت متابعة {name}",
+      "_pending_review": {}
     },
     "meetups": {
       "signRequired": "يلزم تسجيل الدخول",
@@ -641,7 +666,8 @@
       "failedSendMessage": "فشل إرسال الرسالة",
       "pleaseTryAgainLater": "الرجاء المحاولة لاحقًا",
       "addedSmartCalendar": "أُضيف إلى التقويم الذكي ✓",
-      "eventSavedWeLlRemindYou": "تم حفظ الحدث. سنذكرك قبل أن يبدأ."
+      "eventSavedWeLlRemindYou": "تم حفظ الحدث. سنذكرك قبل أن يبدأ.",
+      "_pending_review": {}
     },
     "memory": {
       "voiceRecorded": "تم تسجيل الصوت",
@@ -690,7 +716,8 @@
       "pleaseRecordEnterSomeContentBefore": "الرجاء تسجيل شيء أو إدخال محتوى قبل الحفظ.",
       "entrySaved": "تم حفظ الإدخال",
       "yourDiaryEntryHasAddedYour": "تمت إضافة إدخال يومياتك إلى خطك الزمني للذكريات.",
-      "couldNotSaveYourDiaryEntry": "تعذر حفظ إدخال يومياتك. الرجاء المحاولة مرة أخرى."
+      "couldNotSaveYourDiaryEntry": "تعذر حفظ إدخال يومياتك. الرجاء المحاولة مرة أخرى.",
+      "_pending_review": {}
     },
     "messages": {
       "newResponse": "🎉 رد جديد!",
@@ -727,18 +754,21 @@
       "selectOpenConversationBeforeAttachingFiles": "حدد أو افتح محادثة قبل إرفاق الملفات.",
       "uploadFailed": "فشل الرفع.",
       "failedSendVoiceMessage": "فشل إرسال الرسالة الصوتية.",
-      "thereErrorSendingYourVoiceMessage": "حدث خطأ أثناء إرسال رسالتك الصوتية."
+      "thereErrorSendingYourVoiceMessage": "حدث خطأ أثناء إرسال رسالتك الصوتية.",
+      "_pending_review": {}
     },
     "notifications": {
       "bookingConfirmed": "تم تأكيد الحجز! 🎉",
       "paymentReceived": "تم استلام الدفع! 💰",
       "creditsTransferred": "تم تحويل الرصيد! ✨",
       "newServiceBooking": "حجز خدمة جديد! 📅",
-      "eventRegistration": "تسجيل حدث! 🎊"
+      "eventRegistration": "تسجيل حدث! 🎊",
+      "_pending_review": {}
     },
     "onboarding": {
       "networkError": "خطأ في الشبكة.",
-      "thisYourSpeakableIdAcrossVitana": "هذا هو معرفك الصوتي عبر Vitana. دائم — اختر بحكمة!"
+      "thisYourSpeakableIdAcrossVitana": "هذا هو معرفك الصوتي عبر Vitana. دائم — اختر بحكمة!",
+      "_pending_review": {}
     },
     "payment": {
       "missingInformation": "معلومات ناقصة.",
@@ -787,7 +817,8 @@
       "paymentRequestSent": "تم إرسال طلب الدفع! 💸",
       "failedSendPaymentRequest": "فشل إرسال طلب الدفع",
       "pleaseFillAllRequiredFields": "الرجاء ملء جميع الحقول المطلوبة",
-      "exchangeSendRequestSent": "تم إرسال طلب التبادل والإرسال! ✨"
+      "exchangeSendRequestSent": "تم إرسال طلب التبادل والإرسال! ✨",
+      "_pending_review": {}
     },
     "proactive": {
       "messageGenerated": "تم إنشاء الرسالة!",
@@ -796,7 +827,8 @@
       "invitationMessageCopiedClipboard": "تم نسخ رسالة الدعوة إلى الحافظة",
       "autoshareScheduled": "تم جدولة المشاركة التلقائية!",
       "editPost": "تعديل المنشور",
-      "postEditorComingSoon": "محرر المنشور قريباً!"
+      "postEditorComingSoon": "محرر المنشور قريباً!",
+      "_pending_review": {}
     },
     "profile": {
       "qrCodeDownloaded": "تم تنزيل رمز QR",
@@ -853,7 +885,8 @@
       "universalCoverRemoved": "تمت إزالة صورة الغلاف الشاملة.",
       "libraryPhotoUploaded": "تمت إضافة الصورة إلى المكتبة.",
       "libraryPhotoRemoved": "تمت إزالة الصورة.",
-      "categoryRequired": "الرجاء اختيار فئة أولاً."
+      "categoryRequired": "الرجاء اختيار فئة أولاً.",
+      "_pending_review": {}
     },
     "reminders": {
       "notificationsArenTSupportedThisBrowser": "الإشعارات غير مدعومة في هذا المتصفح.",
@@ -869,14 +902,16 @@
       "failedToCreate": "فشل إنشاء التذكير.",
       "failedToDelete": "فشل حذف التذكير.",
       "failedToMarkDone": "فشل وضع علامة \"تم\".",
-      "remindersDeleted": "تم حذف {count} تذكيرات."
+      "remindersDeleted": "تم حذف {count} تذكيرات.",
+      "_pending_review": {}
     },
     "reseller": {
       "activatingYourResellerProfile": "جارٍ تفعيل ملفك الشخصي كبائع...",
       "linkCopiedClipboard": "تم نسخ الرابط إلى الحافظة!",
       "failedCopyPleaseSelectCopyManually": "فشل النسخ. الرجاء التحديد والنسخ يدويًا.",
       "linkCopiedPasteItYourInstagram": "تم نسخ الرابط! الصقه في سيرتك الذاتية على إنستغرام أو قصتك.",
-      "failedCopyLink": "فشل نسخ الرابط."
+      "failedCopyLink": "فشل نسخ الرابط.",
+      "_pending_review": {}
     },
     "settings": {
       "googleConnected": "تم ربط جوجل.",
@@ -901,7 +936,8 @@
       "failedSwitchRolePleaseTryAgain": "فشل تبديل الدور. يرجى المحاولة مرة أخرى.",
       "organizationSwitched": "تم تبديل المؤسسة",
       "errorSwitchingOrganization": "خطأ في تبديل المؤسسة",
-      "failedSwitchOrganizationPleaseTryAgain": "تعذر تغيير المؤسسة. يرجى المحاولة مرة أخرى."
+      "failedSwitchOrganizationPleaseTryAgain": "تعذر تغيير المؤسسة. يرجى المحاولة مرة أخرى.",
+      "_pending_review": {}
     },
     "sharing": {
       "channelNotConnected": "القناة غير متصلة",
@@ -979,7 +1015,8 @@
       "postPublished": "تم نشر المنشور!",
       "campaignsExportedCsv": "تم تصدير الحملات إلى CSV",
       "smartrescheduleFeatureComingSoon": "ميزة إعادة الجدولة الذكية قريباً!",
-      "viberNotDetectedLinkCopiedClipboard": "لم يتم الكشف عن فايبر. تم نسخ الرابط إلى الحافظة!"
+      "viberNotDetectedLinkCopiedClipboard": "لم يتم الكشف عن فايبر. تم نسخ الرابط إلى الحافظة!",
+      "_pending_review": {}
     },
     "tickets": {
       "ticketDownloaded": "تم تنزيل التذكرة!",
@@ -992,7 +1029,8 @@
       "ticketDownloadedOpeningEmail": "تم تنزيل التذكرة! جارٍ فتح البريد الإلكتروني...",
       "ticketDownloadedOpeningMessages": "تم تنزيل التذكرة! جارٍ فتح الرسائل...",
       "ticketSaved": "تم حفظ التذكرة!",
-      "eventDetailsCopied": "تم نسخ تفاصيل الحدث!"
+      "eventDetailsCopied": "تم نسخ تفاصيل الحدث!",
+      "_pending_review": {}
     },
     "wallet": {
       "invalidAmount": "مبلغ غير صالح",
@@ -1043,7 +1081,8 @@
       "withdrawalFailed": "فشل السحب",
       "somethingWentWrongPleaseTryAgain": "حدث خطأ ما. الرجاء المحاولة مرة أخرى.",
       "pleaseSelectRecipientEnterAmount": "الرجاء اختيار مستلم وإدخال مبلغ",
-      "exchangeSendComplete": "✅ تم إكمال التبادل والإرسال!"
+      "exchangeSendComplete": "✅ تم إكمال التبادل والإرسال!",
+      "_pending_review": {}
     },
     "hooks": {
       "error": "خطأ",
@@ -1308,45 +1347,56 @@
       "exchangeSendSuccessful": "تم التبادل والإرسال بنجاح! ✨",
       "exchangeSendFailed": "فشل التبادل والإرسال",
       "linkAvailable": "الرابط متاح",
-      "errorUpdatingPreferences": "خطأ في تحديث التفضيلات"
+      "errorUpdatingPreferences": "خطأ في تحديث التفضيلات",
+      "_pending_review": {}
     },
     "businesslistings": {
-      "couldNotLoadListings": "تعذر تحميل القوائم"
+      "couldNotLoadListings": "تعذر تحميل القوائم",
+      "_pending_review": {}
     },
     "businessopportunities": {
-      "couldNotLoadOpportunities": "تعذر تحميل الفرص"
+      "couldNotLoadOpportunities": "تعذر تحميل الفرص",
+      "_pending_review": {}
     },
     "checkoutsuccess": {
       "orderConfirmed": "تم تأكيد الطلب!",
-      "yourPaymentSuccessfulCheckYourEmail": "تم الدفع بنجاح. تحقق من بريدك الإلكتروني لتفاصيل الطلب."
+      "yourPaymentSuccessfulCheckYourEmail": "تم الدفع بنجاح. تحقق من بريدك الإلكتروني لتفاصيل الطلب.",
+      "_pending_review": {}
     },
     "intentboard": {
-      "couldNotLoadBoard": "تعذر تحميل اللوحة"
+      "couldNotLoadBoard": "تعذر تحميل اللوحة",
+      "_pending_review": {}
     },
     "intentmatchdetail": {
       "couldNotLoadMatchDetail": "تعذر تحميل تفاصيل المطابقة",
       "intentClosed": "تم إكمال النية",
-      "couldNotClose": "تعذر الإغلاق"
+      "couldNotClose": "تعذر الإغلاق",
+      "_pending_review": {}
     },
     "introexperience": {
       "audioPlaybackFailed": "فشل تشغيل الصوت",
-      "audioUnavailableNow": "الصوت غير متاح الآن"
+      "audioUnavailableNow": "الصوت غير متاح الآن",
+      "_pending_review": {}
     },
     "invitefriends": {
       "nameRequired": "الاسم مطلوب",
       "pleaseProvideEmailPhone": "الرجاء إدخال البريد الإلكتروني أو رقم الهاتف",
       "contactAdded": "تمت إضافة جهة الاتصال",
-      "failedSendInvites": "فشل إرسال الدعوات"
+      "failedSendInvites": "فشل إرسال الدعوات",
+      "_pending_review": {}
     },
     "myintents": {
-      "couldNotLoadIntents": "فشل تحميل النوايا"
+      "couldNotLoadIntents": "فشل تحميل النوايا",
+      "_pending_review": {}
     },
     "packagepurchasesuccess": {
       "paymentConfirmed": "تم تأكيد الدفع!",
-      "yourPackagePurchaseSuccessful": "تم شراء باقتك بنجاح."
+      "yourPackagePurchaseSuccessful": "تم شراء باقتك بنجاح.",
+      "_pending_review": {}
     },
     "privacysettings": {
-      "couldNotSave": "تعذر الحفظ"
+      "couldNotSave": "تعذر الحفظ",
+      "_pending_review": {}
     },
     "home": {
       "removedFromMemory": "تمت إزالته من التخزين",
@@ -1356,14 +1406,19 @@
       "actionExecuted": "تم تنفيذ الإجراء",
       "yourActionHasCompletedSuccessfully": "تم إكمال إجرائك بنجاح.",
       "actionDismissed": "تم تجاهل الإجراء",
-      "thisActionHasRemovedFromYour": "تمت إزالة هذا الإجراء من قائمتك."
+      "thisActionHasRemovedFromYour": "تمت إزالة هذا الإجراء من قائمتك.",
+      "_pending_review": {}
     },
     "index": {
-      "vitanaDevGatewayUrlNotConfigured": "لم يتم تكوين عنوان URL لبوابة Vitana Dev"
+      "vitanaDevGatewayUrlNotConfigured": "لم يتم تكوين عنوان URL لبوابة Vitana Dev",
+      "_pending_review": {}
     },
     "dailyGoal": {
       "title": "تهانينا! تم تحقيق هدف اليوم 🎉",
-      "body": "فقط استمر."
-    }
-  }
+      "body": "فقط استمر.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

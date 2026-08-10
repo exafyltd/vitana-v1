@@ -7,7 +7,8 @@
       "today": "اليوم",
       "upcoming": "القادمة",
       "following": "المتابعة",
-      "recommended": "مقترح"
+      "recommended": "مقترح",
+      "_pending_review": {}
     },
     "noEvents": "لا توجد فعاليات مجدولة",
     "checkBack": "عُد قريبًا لفعاليات مجتمعية قادمة!",
@@ -22,7 +23,10 @@
       "noPostsFromFollowing": "لا توجد منشورات بعد",
       "noPostsFromFollowingDesc": "الأشخاص الذين تتابعهم لم ينشئوا أي فعاليات أو لقاءات بعد.",
       "youFollow": "تتابع",
-      "loadingFollowing": "جارٍ تحميل المنشورات…"
-    }
-  }
+      "loadingFollowing": "جارٍ تحميل المنشورات…",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -45,6 +45,8 @@
     "systemAdmin": "مسؤول النظام",
     "clinicalOps": "العمليات السريرية",
     "monitoring": "مراقبة",
-    "logout": "تسجيل الخروج"
-  }
+    "logout": "تسجيل الخروج",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,5 +1,7 @@
 {
   "consent": {
-    "searchPlaceholder": "ابحث عن حزم الموافقة، المنظمات، الأذونات..."
-  }
+    "searchPlaceholder": "ابحث عن حزم الموافقة، المنظمات، الأذونات...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -20,7 +20,8 @@
     "visibility": {
       "public": "عام",
       "followers": "المتابعون",
-      "private": "خاص"
+      "private": "خاص",
+      "_pending_review": {}
     },
     "languageOptions": {
       "english": "الإنجليزية",
@@ -32,7 +33,8 @@
       "russian": "الروسية",
       "arabic": "العربية",
       "chinese": "الصينية",
-      "japanese": "اليابانية"
+      "japanese": "اليابانية",
+      "_pending_review": {}
     },
     "cancel": "إلغاء",
     "save": "حفظ التغييرات",
@@ -46,7 +48,8 @@
       "makeShorter": "اجعلها أقصر",
       "moreProfessional": "أكثر احترافية",
       "moreInspirational": "أكثر إلهامًا",
-      "suggestion": "اقتراح الطيار الآلي"
+      "suggestion": "اقتراح الطيار الآلي",
+      "_pending_review": {}
     },
     "identity": {
       "editIdentity": "تعديل الهوية",
@@ -69,7 +72,8 @@
       "uploadFailed": "فشل التحميل",
       "uploadFailedDesc": "فشل تحميل الصورة. الرجاء المحاولة مرة أخرى.",
       "identityUpdated": "تم تحديث الهوية",
-      "identityUpdatedDesc": "تم حفظ معلومات هويتك بنجاح."
+      "identityUpdatedDesc": "تم حفظ معلومات هويتك بنجاح.",
+      "_pending_review": {}
     },
     "coverLibrary": {
       "title": "مكتبة الغلاف",
@@ -96,7 +100,10 @@
       "universalRemoved": "تمت إزالة صورة الغلاف العامة",
       "uploadFailed": "فشل التحميل",
       "categoryRequired": "الرجاء اختيار فئة لهذه الصورة أولاً.",
-      "saveError": "تعذر الحفظ — الرجاء المحاولة مرة أخرى."
-    }
-  }
+      "saveError": "تعذر الحفظ — الرجاء المحاولة مرة أخرى.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

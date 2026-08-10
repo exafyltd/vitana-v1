@@ -22,6 +22,8 @@
     "healthEmpty": "سجل إدخالك الأول لبدء مؤشرك.",
     "noActionsMatchedYet": "لم تتم مطابقة أي إجراءات بعد — Autopilot يشكل اقتراحات.",
     "actionsPendingOne": "{count} إجراء معلق.",
-    "actionsPendingOther": "{count} إجراءات معلقة."
-  }
+    "actionsPendingOther": "{count} إجراءات معلقة.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

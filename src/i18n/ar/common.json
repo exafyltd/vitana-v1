@@ -36,6 +36,8 @@
     "upload": "حمّل",
     "refresh": "حدّث",
     "retry": "أعد المحاولة",
-    "uploading": "جاري التحميل..."
-  }
+    "uploading": "جاري التحميل...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

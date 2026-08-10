@@ -15,20 +15,24 @@
       "completeAction": "وضع علامة \"مكتمل\"",
       "alreadyCompleted": "مكتمل بالفعل",
       "linkToDiscover": "تصفح Discover",
-      "close": "إغلاق"
+      "close": "إغلاق",
+      "_pending_review": {}
     },
     "tabs": {
       "cart": "السلة",
-      "saved": "المحفوظات"
+      "saved": "المحفوظات",
+      "_pending_review": {}
     },
     "saved": {
       "moveToCart": "أضف إلى السلة",
       "saveForLater": "احفظ لوقت لاحق",
       "emptyTitle": "لم يتم حفظ أي شيء بعد",
-      "emptyBody": "احفظ المنتجات لوقت لاحق بالضغط على \"احفظ لوقت لاحق\" في سلتك."
+      "emptyBody": "احفظ المنتجات لوقت لاحق بالضغط على \"احفظ لوقت لاحق\" في سلتك.",
+      "_pending_review": {}
     },
     "item": {
-      "viewProduct": "عرض المنتج"
+      "viewProduct": "عرض المنتج",
+      "_pending_review": {}
     },
     "agent": {
       "promptLabel": "ماذا تتسوق؟",
@@ -53,7 +57,8 @@
       "reordering": "فيتانا تضيف عناصرك مرة أخرى…",
       "overCapAdvisory": "هذه العناصر تتجاوز ميزانيتك الشهرية.",
       "nearCapAdvisory": "هذه العناصر تقربك من ميزانيتك الشهرية.",
-      "error": "حدث خطأ ما. الرجاء المحاولة مرة أخرى."
+      "error": "حدث خطأ ما. الرجاء المحاولة مرة أخرى.",
+      "_pending_review": {}
     },
     "budget": {
       "title": "ميزانية هذا الشهر",
@@ -61,7 +66,8 @@
       "statusUnder": "ضمن الميزانية",
       "statusNear": "قريب من الميزانية",
       "statusOver": "تجاوز الميزانية",
-      "noCapHint": "حدد ميزانية شهرية لمراقبة إنفاقك."
+      "noCapHint": "حدد ميزانية شهرية لمراقبة إنفاقك.",
+      "_pending_review": {}
     },
     "addButton": {
       "label": "أضف إلى السلة",
@@ -71,7 +77,10 @@
       "signRequired": "سجل الدخول لإضافة إلى سلتك.",
       "roleBlocked": "السلة متاحة فقط في دورك المجتمعي.",
       "failed": "تعذر الإضافة إلى السلة",
-      "success": "تمت الإضافة إلى السلة"
-    }
-  }
+      "success": "تمت الإضافة إلى السلة",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

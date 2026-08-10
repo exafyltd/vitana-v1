@@ -4,36 +4,47 @@
     "items": {
       "logHealthEvent": {
         "title": "سجّل حدثًا صحيًا",
-        "description": "سجّل إنجازات صحية مهمة"
+        "description": "سجّل إنجازات صحية مهمة",
+        "_pending_review": {}
       },
       "markAchievement": {
         "title": "سجّل إنجازًا",
-        "description": "احتفل بأهداف العافية التي حققتها"
+        "description": "احتفل بأهداف العافية التي حققتها",
+        "_pending_review": {}
       },
       "recordLifeMoment": {
         "title": "سجّل لحظة حياتية",
-        "description": "التقط تجارب هادفة"
+        "description": "التقط تجارب هادفة",
+        "_pending_review": {}
       },
       "addPhotoMemory": {
         "title": "أضف ذكرى مصورة",
-        "description": "خط زمني مرئي مع صور صحية"
+        "description": "خط زمني مرئي مع صور صحية",
+        "_pending_review": {}
       },
       "voiceTimelineEntry": {
         "title": "إدخال صوتي للخط الزمني",
-        "description": "تحديثات صحية صوتية سريعة"
+        "description": "تحديثات صحية صوتية سريعة",
+        "_pending_review": {}
       },
       "trackProgress": {
         "title": "تتبّع التقدّم",
-        "description": "سجّل مقاييس العافية والاتجاهات"
+        "description": "سجّل مقاييس العافية والاتجاهات",
+        "_pending_review": {}
       },
       "activityCheckIn": {
         "title": "تسجيل نشاط",
-        "description": "سجّل التمارين والأنشطة"
+        "description": "سجّل التمارين والأنشطة",
+        "_pending_review": {}
       },
       "setTimelineGoal": {
         "title": "حدّد هدفًا للخط الزمني",
-        "description": "أنشئ أهدافًا صحية مستقبلية"
-      }
-    }
-  }
+        "description": "أنشئ أهدافًا صحية مستقبلية",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

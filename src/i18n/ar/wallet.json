@@ -11,7 +11,8 @@
     "tabs": {
       "balances": "الأرصدة",
       "activity": "النشاط",
-      "actions": "الإجراءات"
+      "actions": "الإجراءات",
+      "_pending_review": {}
     },
     "filters": {
       "commissions": "بِع واكسب عمولات",
@@ -21,10 +22,13 @@
       "purchases": "المشتريات",
       "pending": "دفعات معلقة",
       "withdrawals": "السحوبات",
-      "stakes": "الرهن"
+      "stakes": "الرهن",
+      "_pending_review": {}
     },
     "noActivity": "لا يوجد نشاط بعد",
     "noActivityDesc": "ستظهر معاملاتك هنا.",
-    "displayCurrency": "عملة العرض"
-  }
+    "displayCurrency": "عملة العرض",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

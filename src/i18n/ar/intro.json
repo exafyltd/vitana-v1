@@ -7,6 +7,8 @@
     "playWelcome": "تشغيل الترحيب",
     "preparing": "جارٍ التحضير...",
     "playing": "قيد التشغيل",
-    "goToLogin": "الانتقال إلى تسجيل الدخول"
-  }
+    "goToLogin": "الانتقال إلى تسجيل الدخول",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

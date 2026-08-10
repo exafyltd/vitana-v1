@@ -16,6 +16,8 @@
     "invalidFormat": "صيغة غير صالحة",
     "fileTooLarge": "الملف كبير جدًا",
     "maxSize": "أقصى حجم للملف: 500 ميجابايت",
-    "maxSizeHint": "حد أقصى 500 ميجابايت"
-  }
+    "maxSizeHint": "حد أقصى 500 ميجابايت",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

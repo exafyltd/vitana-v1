@@ -58,6 +58,8 @@
     "googleCal": "تقويم Google",
     "outlook": "Outlook",
     "appleCal": "تقويم Apple",
-    "downloadIcs": "تنزيل ICS"
-  }
+    "downloadIcs": "تنزيل ICS",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

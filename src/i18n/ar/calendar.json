@@ -29,14 +29,16 @@
       "title": "أحداثك المحجوزة",
       "todayLabel": "اليوم",
       "nextUp": "القادم",
-      "noEventsToday": "لا توجد أحداث اليوم"
+      "noEventsToday": "لا توجد أحداث اليوم",
+      "_pending_review": {}
     },
     "filters": {
       "personal": "شخصي",
       "community": "مجتمع",
       "work": "عمل",
       "health": "صحة",
-      "workout": "تمرين"
+      "workout": "تمرين",
+      "_pending_review": {}
     },
     "categories": {
       "community": "مجتمع",
@@ -45,19 +47,22 @@
       "nutrition": "تغذية",
       "professional": "عمل",
       "personal": "شخصي",
-      "training": "تدريب"
+      "training": "تدريب",
+      "_pending_review": {}
     },
     "bookingStatus": {
       "booked": "محجوز",
       "rsvp": "تأكيد الحضور",
       "ticket": "تذكرة",
-      "reserved": "محجوز"
+      "reserved": "محجوز",
+      "_pending_review": {}
     },
     "timeGroups": {
       "today": "اليوم",
       "tomorrow": "غدًا",
       "thisWeek": "هذا الأسبوع",
-      "later": "لاحقًا"
+      "later": "لاحقًا",
+      "_pending_review": {}
     },
     "autopilot": {
       "suggestions": "اقتراحات Autopilot",
@@ -77,7 +82,8 @@
       "reminderLaterToday": "تم ضبط تذكير لوقت لاحق اليوم",
       "reminderTomorrow": "تم ضبط تذكير ليوم غد",
       "recommendFocus": "اقتراح فترة تركيز",
-      "focusBlockDesc": "لديك فترة زمنية متاحة مدتها 90 دقيقة. مثالية للعمل المركّز."
+      "focusBlockDesc": "لديك فترة زمنية متاحة مدتها 90 دقيقة. مثالية للعمل المركّز.",
+      "_pending_review": {}
     },
     "toasts": {
       "eventCreated": "تم إنشاء الحدث",
@@ -94,22 +100,26 @@
       "featureComingSoon": "الميزة قادمة قريبًا",
       "inviteFollowers": "دعوة المتابعين",
       "rescheduleEvent": "إعادة جدولة الحدث",
-      "shareToGroup": "مشاركة إلى مجموعة"
+      "shareToGroup": "مشاركة إلى مجموعة",
+      "_pending_review": {}
     },
     "error": {
-      "failedToCreate": "فشل إنشاء الحدث"
+      "failedToCreate": "فشل إنشاء الحدث",
+      "_pending_review": {}
     },
     "allDay": "طوال اليوم",
     "milestoneToday": "معلم",
     "focus": {
       "todaysFocus": "تركيز اليوم",
       "lightDay": "يوم خفيف — استكشف الأنشطة أو تابع يومياتك",
-      "moreSteps": "المزيد من الخطوات"
+      "moreSteps": "المزيد من الخطوات",
+      "_pending_review": {}
     },
     "badge": {
       "guidedStep": "خطوة موجهة",
       "milestone": "معلم",
-      "wellness": "العافية"
+      "wellness": "العافية",
+      "_pending_review": {}
     },
     "action": {
       "start": "ابدأ",
@@ -118,11 +128,13 @@
       "details": "التفاصيل",
       "viewPlan": "عرض الخطة",
       "open": "افتح",
-      "done": "تم"
+      "done": "تم",
+      "_pending_review": {}
     },
     "group": {
       "stepsRemaining": "خطوات متبقية",
-      "min": "دقيقة"
+      "min": "دقيقة",
+      "_pending_review": {}
     },
     "journey": {
       "dayOf": "اليوم {day} من {total}",
@@ -140,8 +152,12 @@
         "wave-3": "تعميق الروابط",
         "wave-4": "الذكاء الصحي",
         "wave-5": "لحظات إلهام",
-        "wave-6": "توصيات واكتشاف"
-      }
-    }
-  }
+        "wave-6": "توصيات واكتشاف",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

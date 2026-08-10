@@ -1,5 +1,7 @@
 {
   "wellnessServices": {
-    "searchPlaceholder": "ابحث عن خدمات، أو مقدمي الخدمة، أو برامج..."
-  }
+    "searchPlaceholder": "ابحث عن خدمات، أو مقدمي الخدمة، أو برامج...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

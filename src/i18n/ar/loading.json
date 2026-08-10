@@ -6,6 +6,8 @@
     "uploading": "جاري الرفع...",
     "uploadingProgress": "جاري الرفع... {progress}%",
     "processing": "جاري المعالجة...",
-    "saving": "جاري الحفظ..."
-  }
+    "saving": "جاري الحفظ...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

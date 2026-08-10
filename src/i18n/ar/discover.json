@@ -51,7 +51,8 @@
       "movement": "الحركة",
       "mind": "العقل",
       "supplements": "المكملات",
-      "experts": "الخبراء"
+      "experts": "الخبراء",
+      "_pending_review": {}
     },
     "subcategories": {
       "longevity": "طول العمر",
@@ -78,7 +79,8 @@
       "sexualHealth": "صحة جنسية",
       "prevention": "الوقاية والكشف المبكر",
       "generalHealth": "صحة عامة",
-      "dnaAnalysis": "تحليل الحمض النووي (DNA)"
+      "dnaAnalysis": "تحليل الحمض النووي (DNA)",
+      "_pending_review": {}
     },
     "quickActions": {
       "title": "إجراءات سريعة",
@@ -89,7 +91,8 @@
       "reorderPrevious": "إعادة طلب سابق",
       "managePayment": "إدارة الدفع",
       "findServicesNearMe": "ابحث عن خدمات قريبة مني",
-      "viewSavedItems": "عرض العناصر المحفوظة"
+      "viewSavedItems": "عرض العناصر المحفوظة",
+      "_pending_review": {}
     },
     "aiPicks": {
       "title": "توصيات الذكاء الاصطناعي لك",
@@ -101,24 +104,30 @@
       "recommendationsFound": "تم العثور على {count} توصيات",
       "noRecommendations": "لم يتم العثور على توصيات",
       "noRecommendationsDesc": "اختر فلترًا مختلفًا لرؤية المزيد من التوصيات",
-      "viewAllPicks": "عرض كل التوصيات"
+      "viewAllPicks": "عرض كل التوصيات",
+      "_pending_review": {}
     },
     "filters": {
       "all": "الكل",
       "services": "خدمات",
       "supplements": "مكملات",
       "experts": "خبراء",
-      "deals": "عروض"
+      "deals": "عروض",
+      "_pending_review": {}
     },
     "toast": {
       "actionSelected": "تم تحديد الإجراء",
-      "comingSoon": "ميزة {action} قادمة قريبًا!"
+      "comingSoon": "ميزة {action} قادمة قريبًا!",
+      "_pending_review": {}
     },
     "guest": {
       "bannerTitle": "سجّل الدخول لتربح مكافآت Vitana مع كل عملية شراء.",
       "bannerSubtitle": "تصفّح بحرية — سجّل الدخول (إنه مجاني) للشراء وبدء ربح المكافآت.",
       "bannerCta": "سجّل الدخول",
-      "signIn": "سجّل الدخول"
-    }
-  }
+      "signIn": "سجّل الدخول",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

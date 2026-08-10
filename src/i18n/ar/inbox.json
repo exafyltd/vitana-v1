@@ -11,30 +11,35 @@
       "direct": "مباشر",
       "contacts": "جهات الاتصال",
       "notifications": "الإشعارات",
-      "archived": "المؤرشفة"
+      "archived": "المؤرشفة",
+      "_pending_review": {}
     },
     "contextTabs": {
       "community": "المجتمع",
-      "network": "الشبكة"
+      "network": "الشبكة",
+      "_pending_review": {}
     },
     "actions": {
       "new": "جديد",
       "newMessage": "رسالة جديدة",
       "createGroup": "أنشئ مجموعة",
       "markAllRead": "ضع علامة مقروءة على الكل",
-      "menu": "المزيد"
+      "menu": "المزيد",
+      "_pending_review": {}
     },
     "composer": {
       "placeholder": "اكتب رسالتك...",
       "send": "إرسال",
       "attachments": "مرفقات",
       "recipients": "إلى:",
-      "add": "أضف"
+      "add": "أضف",
+      "_pending_review": {}
     },
     "states": {
       "empty": "لا توجد رسائل بعد",
       "loading": "جارٍ تحميل الرسائل...",
-      "error": "فشل تحميل الرسائل"
+      "error": "فشل تحميل الرسائل",
+      "_pending_review": {}
     },
     "newConversation": {
       "title": "ابدأ محادثة جديدة",
@@ -54,7 +59,8 @@
       "cancel": "إلغاء",
       "startChat": "ابدأ الدردشة",
       "createGroup": "إنشاء مجموعة",
-      "creating": "جارٍ الإنشاء..."
+      "creating": "جارٍ الإنشاء...",
+      "_pending_review": {}
     },
     "createGroup": {
       "title": "إنشاء مجموعة",
@@ -71,7 +77,8 @@
       "created": "تم إنشاء المجموعة",
       "createdDesc": "تم إنشاء \"{name}\" بنجاح.",
       "failed": "فشل إنشاء المجموعة",
-      "failedDesc": "الرجاء المحاولة مرة أخرى."
+      "failedDesc": "الرجاء المحاولة مرة أخرى.",
+      "_pending_review": {}
     },
     "toast": {
       "success": "نجاح",
@@ -88,7 +95,8 @@
       "groupCreated": "تم إنشاء المجموعة \"{name}\" بنجاح!",
       "groupFailed": "فشل إنشاء المجموعة",
       "allMarkedRead": "تم قراءة جميع الرسائل",
-      "markAllReadFailed": "تعذر قراءة الكل. الرجاء المحاولة مرة أخرى."
+      "markAllReadFailed": "تعذر قراءة الكل. الرجاء المحاولة مرة أخرى.",
+      "_pending_review": {}
     },
     "createGroupAction": "أنشئ مجموعة جديدة",
     "newConversationAction": "محادثة جديدة",
@@ -106,7 +114,8 @@
       "globalDescription": "ابدأ محادثة أو انضم إلى مجتمع للتواصل مع الآخرين.",
       "tenantDescription": "تواصل مع الزملاء وأعضاء الفريق في شبكتك المهنية.",
       "startConversation": "ابدأ محادثة",
-      "discoverPeople": "اكتشف أشخاصًا"
+      "discoverPeople": "اكتشف أشخاصًا",
+      "_pending_review": {}
     },
     "group": {
       "loading": "جاري تحميل المجموعة…",
@@ -117,7 +126,10 @@
       "memberOther": "أعضاء",
       "officialBadge": "مجموعة رسمية",
       "empty": "لا توجد رسائل بعد.",
-      "composerPlaceholder": "رسالة…"
-    }
-  }
+      "composerPlaceholder": "رسالة…",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

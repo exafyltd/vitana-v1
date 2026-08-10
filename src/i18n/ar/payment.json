@@ -18,6 +18,8 @@
     "balanceRefreshedDesc": "تم تحديث رصيد المحفظة",
     "refreshFailed": "فشل التحديث",
     "refreshFailedDesc": "تعذر تحديث الرصيد. حاول مرة أخرى.",
-    "error": "خطأ"
-  }
+    "error": "خطأ",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

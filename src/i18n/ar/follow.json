@@ -1,6 +1,8 @@
 {
   "follow": {
     "noFollowers": "لا يوجد متابعون بعد",
-    "noFollowing": "أنت لا تتابع أحدًا بعد"
-  }
+    "noFollowing": "أنت لا تتابع أحدًا بعد",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -15,6 +15,7 @@ import { DevAuthGuard } from "@/components/dev/DevAuthGuard";
 import { DevErrorBoundary } from "@/components/dev/DevErrorBoundary";
 import { GlobalErrorBoundary } from "@/components/GlobalErrorBoundary";
 import { AdminGuard } from "@/routes/guards/AdminGuard";
+import { isCommerceHost } from "@/lib/commerce-host"; // VTID-03555 commerce host routing
 import { RTLProvider } from "@/components/RTLProvider";
 import { MeetupSelectionProvider } from "@/context/MeetupSelectionContext";
 import { EventSelectionProvider } from "@/context/EventSelectionContext";
@@ -71,6 +72,15 @@ const MaxinaSupport = lazy(() => import("./pages/legal/MaxinaSupport"));
 const IntroExperience = lazy(() => import("./pages/IntroExperience"));
 const RedeemVoucher = lazy(() => import("./pages/RedeemVoucher"));
 const CreatorOnboarded = lazy(() => import("./pages/CreatorOnboarded"));
+// Commerce Mesh Partner Portal + MCP OAuth consent (VTID-03546)
+const PartnerConnections = lazy(() => import("./pages/PartnerConnections"));
+const PartnerConnectionDetail = lazy(() => import("./pages/PartnerConnectionDetail"));
+// Merchant self-service Commerce Portal — commerce.vitanaland.com (VTID-03555)
+const CommercePortalLogin = lazy(() => import("./pages/portals/CommercePortalLogin"));
+const CommerceLanding = lazy(() => import("./pages/CommerceLanding"));
+const CommerceConnections = lazy(() => import("./pages/CommerceConnections"));
+const CommerceConnectionDetail = lazy(() => import("./pages/CommerceConnectionDetail"));
+const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const Logout = lazy(() => import("./pages/Logout"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const EmailConfirmed = lazy(() => import("./pages/auth/EmailConfirmed"));
@@ -730,7 +740,10 @@ const App = () => {
                   <GlobalErrorBoundary>
                   <Suspense fallback={<RouteFallback />}>
                   <Routes>
-          <Route path="/" element={<ShareEntry fallback={<Index />} />} />
+          {/* commerce.vitanaland.com is host-routed onto this same build:
+              its root lands on the merchant Commerce Portal (VTID-03555).
+              Hostname is fixed per page load, so a render-time branch is safe. */}
+          <Route path="/" element={isCommerceHost() ? <Navigate to="/commerce" replace /> : <ShareEntry fallback={<Index />} />} />
           <Route path="/_intro/:tenantSlug" element={<IntroExperience />} />
           {/* /login and /register redirect to portal selector */}
           <Route path="/login" element={<Navigate to="/" replace />} />
@@ -778,6 +791,10 @@ const App = () => {
           
           {/* Portal Routes */}
           <Route path="/exafy-admin" element={<ExafyAdminPortal />} />
+          {/* Commerce Portal entry (VTID-03555): dark-themed, self-contained
+              login page — not wrapped in AuthGuard, same pattern as the
+              other portal entry points above. Hands off to /commerce. */}
+          <Route path="/commerce-login" element={<CommercePortalLogin />} />
           <Route path="/maxina" element={<MaxinaPortal />} />
           <Route path="/alkalma" element={<AlkalmaPortal />} />
           <Route path="/earthlinks" element={<EarthlinksPortal />} />
@@ -1665,6 +1682,27 @@ const App = () => {
           {/* ══════════════════════════════════════════════════════════ */}
           {/* ADMIN ROUTES — Restructured (9 Sections)                  */}
           {/* ══════════════════════════════════════════════════════════ */}
+
+          {/* Commerce Mesh Partner Portal (VTID-03546) — admin back office
+              over the gateway's /api/v1/vcaop/portal surface. */}
+          <Route path="/partner/connections" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><PartnerConnections /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/partner/connections/:id" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><PartnerConnectionDetail /></ProtectedRoute></AuthGuard>
+          } />
+          {/* Merchant self-service Commerce Portal (VTID-03555) — owner-scoped
+              /api/v1/vcaop/portal/my surface; any signed-in user manages the
+              businesses THEY created (no admin role). Path-based here so PR
+              previews verify it; commerce.vitanaland.com host-routes onto it. */}
+          <Route path="/commerce" element={<AuthGuard><CommerceLanding /></AuthGuard>} />
+          <Route path="/commerce/connections" element={<AuthGuard><CommerceConnections /></AuthGuard>} />
+          <Route path="/commerce/connections/:id" element={<AuthGuard><CommerceConnectionDetail /></AuthGuard>} />
+          {/* MCP OAuth consent (BLK-007): the embedded AS 302s here; any
+              signed-in user consents for themselves. */}
+          <Route path="/oauth/consent" element={
+            <AuthGuard><OAuthConsent /></AuthGuard>
+          } />
 
           {/* Root redirect → new Overview Dashboard */}
           <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />

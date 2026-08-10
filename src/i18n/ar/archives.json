@@ -1,5 +1,7 @@
 {
   "archives": {
-    "searchPlaceholder": "ابحث في الأرشيف..."
-  }
+    "searchPlaceholder": "ابحث في الأرشيف...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

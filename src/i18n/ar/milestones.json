@@ -12,6 +12,8 @@
     "descPlaceholder": "صف هذه اللحظة...",
     "icon": "أيقونة",
     "publicLabel": "مرئي للجميع",
-    "private": "خاص"
-  }
+    "private": "خاص",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

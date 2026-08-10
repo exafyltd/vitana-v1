@@ -16,6 +16,8 @@
     "diary": "مفكرة يومية",
     "connectors": "جهات الاتصال",
     "inbox": "صندوق الوارد",
-    "logout": "تسجيل الخروج"
-  }
+    "logout": "تسجيل الخروج",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
