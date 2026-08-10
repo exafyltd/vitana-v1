@@ -76,6 +76,7 @@ const CreatorOnboarded = lazy(() => import("./pages/CreatorOnboarded"));
 const PartnerConnections = lazy(() => import("./pages/PartnerConnections"));
 const PartnerConnectionDetail = lazy(() => import("./pages/PartnerConnectionDetail"));
 // Merchant self-service Commerce Portal — commerce.vitanaland.com (VTID-03555)
+const CommercePortalLogin = lazy(() => import("./pages/portals/CommercePortalLogin"));
 const CommerceLanding = lazy(() => import("./pages/CommerceLanding"));
 const CommerceConnections = lazy(() => import("./pages/CommerceConnections"));
 const CommerceConnectionDetail = lazy(() => import("./pages/CommerceConnectionDetail"));
@@ -790,6 +791,10 @@ const App = () => {
           
           {/* Portal Routes */}
           <Route path="/exafy-admin" element={<ExafyAdminPortal />} />
+          {/* Commerce Portal entry (VTID-03555): dark-themed, self-contained
+              login page — not wrapped in AuthGuard, same pattern as the
+              other portal entry points above. Hands off to /commerce. */}
+          <Route path="/commerce-login" element={<CommercePortalLogin />} />
           <Route path="/maxina" element={<MaxinaPortal />} />
           <Route path="/alkalma" element={<AlkalmaPortal />} />
           <Route path="/earthlinks" element={<EarthlinksPortal />} />

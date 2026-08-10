@@ -9347,6 +9347,9 @@
       "naturefocusedHealthcareSustainableWellnessSolution": "Nature-focused healthcare and sustainable wellness solutions for conscious living.",
       "secureAccessForExafyAdministratorsManage": "Secure access for Exafy administrators to manage tenant environments.",
       "operateVitanaPlatformObserveEventsIssue": "Operate the Vitana platform: observe events, issue commands, and review agent activity with VTID governance.",
+      "commercePortal": "Commerce Portal",
+      "merchantSelfServiceMarketplace": "Merchant Self-Service Marketplace",
+      "connectYourBusinessToDiscoverYourself": "Connect your business to the Discover marketplace yourself — no integration project, no waiting for engineers.",
       "vitanaDev": "Vitana DEV",
       "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA is a comprehensive digital health platform offering multiple specialized environments \n              for different wellness communities and professional healthcare management."
     },
@@ -10219,7 +10222,11 @@
       "connectionsSubtitle": "Your businesses on the Discover marketplace",
       "empty": "No connections yet. Bring your first business to Vitanaland.",
       "awaitingApproval": "Certified — waiting for approval by the Vitanaland team",
-      "activationHint": "After certification, the Vitanaland team reviews your connection and switches it live."
+      "activationHint": "After certification, the Vitanaland team reviews your connection and switches it live.",
+      "loginSubtitle": "Commerce Portal",
+      "loginIntro": "Sign in to manage your business.",
+      "loginButton": "Sign in",
+      "loginError": "Sign-in failed"
     },
     "oauthconsent": {
       "title": "Allow access?",
