@@ -1,0 +1,127 @@
+{
+  "verdicts": {
+    "onboarding.welcome": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"VITANA\" missing from target",
+      "phase": "static"
+    },
+    "onboarding.subtitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Slightly redundant and less natural phrasing. 'الشخصية الخاصة بك' is a bit clunky.",
+      "suggested": "منصتك الشخصية لطول العمر",
+      "phase": "llm"
+    },
+    "onboarding.connectApps": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Grammatical form mismatch. 'ربط' is a noun (masdar), not an imperative verb for a command.",
+      "suggested": "اربط تطبيقاتك",
+      "phase": "llm"
+    },
+    "onboarding.connectAppsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.setGoals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.setGoalsDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Slightly redundant and less natural phrasing. 'الخاصة بك' is redundant with the implied 'your' and can be integrated more smoothly.",
+      "suggested": "حدد أهدافك الصحية وطول العمر",
+      "phase": "llm"
+    },
+    "onboarding.joinCommunity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.joinCommunityDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.getStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.skip": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.skipIntro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.displayNameLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.displayNamePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handlePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleTaken": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleInvalid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleMinLength": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.saving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.submit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-10T05:02:10.685Z"
+}
