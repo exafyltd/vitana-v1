@@ -3,7 +3,8 @@
  *
  * Entry/exit routes, top paths, drop-off screens, and assistant→feature
  * attribution, aggregated per session from the clickstream
- * (useAdminJourneyAnalytics).
+ * (useAdminJourneyAnalytics). Charted (VTID-03567): ranked entry/exit and
+ * drop-off bars, assisted-vs-direct stacks.
  */
 
 import { useState } from "react";
@@ -15,12 +16,12 @@ import { Badge } from "@/components/ui/badge";
 import { useAdminJourneyAnalytics } from "@/hooks/useAdminProductAnalytics";
 import {
   AnalyticsStates,
-  CountListCard,
   DaysSelect,
   KpiCard,
   PrivacyNote,
   pct,
 } from "@/components/admin/analytics/AnalyticsShared";
+import { BarListCard, StackedBarListCard } from "@/components/admin/analytics/AnalyticsCharts";
 import { fmtNumber } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 
@@ -53,13 +54,14 @@ export default function Journeys() {
             </div>
 
             <div className="grid gap-6 xl:grid-cols-2">
-              <CountListCard
+              <BarListCard
                 title={t("screens.admin.paTopEntryRoutes")}
                 rows={data.top_entry_routes.map((r) => ({ label: r.screen_route, count: r.sessions }))}
                 emptyLabel={t("screens.admin.noAnalyticsData")}
               />
-              <CountListCard
+              <BarListCard
                 title={t("screens.admin.paTopExitRoutes")}
+                colorIndex={1}
                 rows={data.top_exit_routes.map((r) => ({ label: r.screen_route, count: r.sessions }))}
                 emptyLabel={t("screens.admin.noAnalyticsData")}
               />
@@ -90,67 +92,32 @@ export default function Journeys() {
             </Card>
 
             <div className="grid gap-6 xl:grid-cols-2">
-              {/* Drop-off screens */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">{t("screens.admin.paDropoffScreens")}</CardTitle>
-                </CardHeader>
-                <CardContent className="max-h-[60vh] overflow-y-auto">
-                  {data.dropoffs.length === 0 ? (
-                    <p className="text-sm italic text-muted-foreground">{t("screens.admin.noAnalyticsData")}</p>
-                  ) : (
-                    <div className="space-y-1">
-                      {data.dropoffs.map((d) => (
-                        <div
-                          key={d.screen_route}
-                          className="flex items-center justify-between rounded border px-2 py-1.5 text-sm"
-                        >
-                          <span className="truncate font-mono">{d.screen_route}</span>
-                          <span className="flex items-center gap-2">
-                            <Badge variant="secondary">
-                              {t("screens.admin.paExits")}: {fmtNumber(d.exits)}
-                            </Badge>
-                            <Badge variant="outline">
-                              {t("screens.admin.paExitRate")}: {pct(d.exit_rate)}
-                            </Badge>
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-
-              {/* Assistant → feature attribution */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">{t("screens.admin.paAssistantToFeature")}</CardTitle>
-                </CardHeader>
-                <CardContent className="max-h-[60vh] overflow-y-auto">
-                  {data.assistant_to_feature.length === 0 ? (
-                    <p className="text-sm italic text-muted-foreground">{t("screens.admin.noAnalyticsData")}</p>
-                  ) : (
-                    <div className="space-y-1">
-                      {data.assistant_to_feature.map((f) => (
-                        <div
-                          key={f.feature_key}
-                          className="flex items-center justify-between rounded border px-2 py-1.5 text-sm"
-                        >
-                          <span className="font-mono">{f.feature_key}</span>
-                          <span className="flex items-center gap-2">
-                            <Badge variant="secondary">
-                              {t("screens.admin.paAssistedOpens")}: {fmtNumber(f.assisted_opens)}
-                            </Badge>
-                            <Badge variant="outline">
-                              {t("screens.admin.paDirectOpens")}: {fmtNumber(f.direct_opens)}
-                            </Badge>
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+              <BarListCard
+                title={t("screens.admin.paDropoffScreens")}
+                colorIndex={7}
+                rows={data.dropoffs.map((d) => ({
+                  label: d.screen_route,
+                  count: d.exits,
+                  extra: (
+                    <Badge variant="outline" className="hidden sm:inline-flex">
+                      {t("screens.admin.paExitRate")}: {pct(d.exit_rate)}
+                    </Badge>
+                  ),
+                }))}
+                emptyLabel={t("screens.admin.noAnalyticsData")}
+              />
+              <StackedBarListCard
+                title={t("screens.admin.paAssistantToFeature")}
+                rows={data.assistant_to_feature.map((f) => ({
+                  label: f.feature_key,
+                  values: [f.assisted_opens, f.direct_opens],
+                }))}
+                series={[
+                  { key: "assisted", label: t("screens.admin.paAssistedOpens") },
+                  { key: "direct", label: t("screens.admin.paDirectOpens") },
+                ]}
+                emptyLabel={t("screens.admin.noAnalyticsData")}
+              />
             </div>
 
             <PrivacyNote />

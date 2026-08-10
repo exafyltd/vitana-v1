@@ -1,17 +1,25 @@
+import { useState } from "react";
 import AppLayout from "@/components/AppLayout";
 import AdminTabs from "@/components/admin/AdminTabs";
 import AdminHeader from "@/components/admin/AdminHeader";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useOverviewSummary } from "@/hooks/useAdminOverview";
 import { useMembers } from "@/hooks/useAdminMembers";
+import { useAdminAnalyticsSummary } from "@/hooks/useAdminProductAnalytics";
+import { DaysSelect, KpiCard } from "@/components/admin/analytics/AnalyticsShared";
+import { BarListCard } from "@/components/admin/analytics/AnalyticsCharts";
 import { t } from '@/lib/i18n-toast';
 
 export default function Engagement() {
+  const [days, setDays] = useState(30);
   const summaryQuery = useOverviewSummary();
   const membersQuery = useMembers({ limit: 50 });
+  // VTID-03567: behavioral engagement from the product analytics pipeline.
+  const analyticsQuery = useAdminAnalyticsSummary(days);
 
   const kpi = summaryQuery.data?.kpi;
   const members = membersQuery.data || [];
+  const analytics = analyticsQuery.data;
 
   return (
     <AppLayout>
@@ -20,7 +28,8 @@ export default function Engagement() {
         <AdminHeader
           emoji="💬"
           title={t('screens.admin.engagement')}
-          description="Member activity and engagement metrics"
+          description={t('screens.admin.paEngagementDesc')}
+          rightAction={<DaysSelect days={days} onChange={setDays} />}
         />
 
         {(summaryQuery.isLoading || membersQuery.isLoading) && (
@@ -51,15 +60,23 @@ export default function Engagement() {
           </div>
         )}
 
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">{t('screens.admin.deepEngagementAnalytics')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground text-center py-6">{t('screens.admin.deepEngagementAnalyticsComingSoonSession')}
-            </p>
-          </CardContent>
-        </Card>
+        {/* VTID-03567: real behavioral engagement (replaces the "coming soon" card) */}
+        {analytics && (
+          <>
+            <div className="grid gap-3 md:grid-cols-4">
+              <KpiCard label={t('screens.admin.paActiveUsers')} value={analytics.active_users} />
+              <KpiCard label={t('screens.admin.paSessions')} value={analytics.sessions} />
+              <KpiCard label={t('screens.admin.paScreenViews')} value={analytics.screen_views} />
+              <KpiCard label={t('screens.admin.paFeatureOpens')} value={analytics.feature_opens} />
+            </div>
+            <BarListCard
+              title={t('screens.admin.paTopRoutes')}
+              rows={analytics.top_routes.map((r) => ({ label: r.screen_route, count: r.count }))}
+              emptyLabel={t('screens.admin.noAnalyticsData')}
+              maxRows={10}
+            />
+          </>
+        )}
       </div>
     </AppLayout>
   );
