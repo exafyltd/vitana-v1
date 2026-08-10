@@ -26,18 +26,21 @@
     "trend": {
       "improving": "Mejorando",
       "declining": "Empeorando",
-      "stable": "Estable"
+      "stable": "Estable",
+      "_pending_review": {}
     },
     "suggestions": {
       "uploadBloodTestResults": "Subir resultados de análisis de sangre",
-      "startFitnessChallenge": "Iniciar Desafío de Fitness de 30 Días"
+      "startFitnessChallenge": "Iniciar Desafío de Fitness de 30 Días",
+      "_pending_review": {}
     },
     "pillars": {
       "sleep": "Sueño",
       "exercise": "Ejercicio",
       "nutrition": "Nutrición",
       "hydration": "Hidratación",
-      "mental": "Mental"
+      "mental": "Mental",
+      "_pending_review": {}
     },
     "emptyStates": {
       "noSleepPlan": "Aún no hay plan de sueño",
@@ -51,7 +54,8 @@
       "noMentalPlan": "Aún no hay plan mental",
       "noMentalPlanDesc": "Genera tu plan de bienestar mental personalizado, para seguir el estrés, el enfoque y el equilibrio emocional con soporte de IA.",
       "generatePlan": "Generar plan",
-      "generating": "Generando..."
+      "generating": "Generando...",
+      "_pending_review": {}
     },
     "noSupplements": "Aún no hay suplementos",
     "noSupplementsDesc": "Registra tus vitaminas, minerales y suplementos diarios. Añade tu primer suplemento para empezar.",
@@ -89,6 +93,8 @@
         "business_formation": "Formación de negocios"
       },
       "contractLink": "Ver el contrato del Objetivo Final"
-    }
-  }
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

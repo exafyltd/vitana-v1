@@ -19,6 +19,8 @@
     "processing": "Procesando...",
     "joining": "Uniéndose...",
     "getTickets": "Obtener boletos",
-    "promoteEvent": "Promocionar evento"
-  }
+    "promoteEvent": "Promocionar evento",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

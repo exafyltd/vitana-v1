@@ -18,6 +18,8 @@
     "balanceRefreshedDesc": "El saldo de la billetera se ha actualizado",
     "refreshFailed": "Actualización fallida",
     "refreshFailedDesc": "No se pudo actualizar el saldo. Por favor, inténtalo de nuevo.",
-    "error": "Error"
-  }
+    "error": "Error",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

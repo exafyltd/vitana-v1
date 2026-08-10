@@ -3508,7 +3508,12 @@
       "goalActivity": "Compañero de actividad",
       "goalWeightLoss": "Pérdida de peso",
       "goalMentalWellness": "Bienestar mental",
-      "goalValues": "Valores alineados"
+      "goalValues": "Valores alineados",
+      "videoRoomUnavailable": "No se pudo cargar la sala de video",
+      "videoRoomUnavailableHint": "La transmisión no está disponible ahora mismo. Por favor, inténtalo de nuevo.",
+      "autopilotSuggestionsTitle": "Sugerencias de Piloto Automático",
+      "autopilotSuggestionsBody": "Aún no has publicado un deseo. Mientras tanto, Piloto Automático sugiere personas de la comunidad que podrían encajar bien. Publica un deseo para que la IA pueda encontrarte coincidencias reales.",
+      "autopilotSuggestionBadge": "Piloto Automático"
     },
     "contacts": {
       "addContact": "Agregar contacto",
@@ -5111,7 +5116,34 @@
       "trajectoryAria": "Trayectoria del Índice Vitana — hoy {today}.",
       "insightUp": "¡Tendencia al alza! +{delta} puntos en los últimos 7 días — sigue así.",
       "insightDown": "−{delta} puntos en los últimos 7 días. Una pequeña acción hoy importa.",
-      "insightFlat": "Estable en los últimos 7 días. La constancia supera los picos."
+      "insightFlat": "Estable en los últimos 7 días. La constancia supera los picos.",
+      "missionAlignment": {
+        "title": "Alineación de la Misión",
+        "subtitle": "Cómo tus recomendaciones impulsan los cinco pilares y la economía de la longevidad",
+        "loading": "Cargando datos de la misión…",
+        "error": "No se pudieron cargar los datos de la misión",
+        "noRecs": "Aún no hay recomendaciones en tu cola.",
+        "summaryServed": "{pct}% de tus recomendaciones impulsan la misión",
+        "summaryServedCount": "{served} de {total} recomendaciones alineadas",
+        "pillarHeading": "Pilares atendidos",
+        "economyHeading": "Economía de la longevidad",
+        "noPillar": "No alineado con los pilares",
+        "noEconomy": "No alineado con la economía",
+        "pillars": {
+          "nutrition": "Nutrición",
+          "hydration": "Hidratación",
+          "exercise": "Ejercicio",
+          "sleep": "Sueño",
+          "mental": "Salud Mental"
+        },
+        "economyAxes": {
+          "find_match": "Encontrar una Coincidencia",
+          "marketplace": "Mercado",
+          "income_generation": "Generación de ingresos",
+          "business_formation": "Formación de empresas"
+        },
+        "contractLink": "Ver el contrato del Objetivo Final"
+      }
     },
     "home": {
       "matchPercent": "{score} %",
@@ -5321,7 +5353,8 @@
       "modBanned": "Usuario vetado.",
       "modBanConfirm": "¿Vetar a {name}? Sus publicaciones se ocultarán y no podrá volver a publicar.",
       "modFailed": "Acción fallida.",
-      "createPost": "Publicación"
+      "createPost": "Publicación",
+      "likesCount": "{count} Me gusta"
     },
     "icons": {
       "xFormerlyTwitter": "X (antes Twitter)"

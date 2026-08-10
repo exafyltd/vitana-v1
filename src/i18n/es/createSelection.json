@@ -5,6 +5,8 @@
     "event": "Evento",
     "eventDescription": "Reuniones formales con horarios programados y programas estructurados",
     "meetup": "Quedada",
-    "meetupDescription": "Reuniones informales para networking y construcción de comunidad"
-  }
+    "meetupDescription": "Reuniones informales para networking y construcción de comunidad",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

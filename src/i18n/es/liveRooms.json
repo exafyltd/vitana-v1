@@ -6,7 +6,8 @@
       "live": "En vivo ahora",
       "scheduled": "Programado",
       "all": "Todas las Salas",
-      "past": "Pasado"
+      "past": "Pasado",
+      "_pending_review": {}
     },
     "goLive": "Ir en Vivo",
     "joinRoom": "Unirse a la Sala",
@@ -17,7 +18,8 @@
     "search": {
       "placeholder": "Buscar salas, temas o anfitriones...",
       "category": "Categoría",
-      "allCategories": "Todas las Categorías"
+      "allCategories": "Todas las Categorías",
+      "_pending_review": {}
     },
     "room": {
       "join": "Unirse a la Sala",
@@ -25,7 +27,8 @@
       "duration": "Duración",
       "host": "Anfitrión",
       "premium": "Premium",
-      "live": "EN VIVO"
+      "live": "EN VIVO",
+      "_pending_review": {}
     },
     "viewer": {
       "leave": "Salir",
@@ -33,7 +36,8 @@
       "video": "Video",
       "raiseHand": "Levantar la Mano",
       "chat": "Chat",
-      "reactions": "Reacciones"
+      "reactions": "Reacciones",
+      "_pending_review": {}
     },
     "goLivePopup": {
       "titleCreate": "Ir en Vivo",
@@ -65,7 +69,8 @@
         "sleep": "Sueño",
         "motivation": "Motivación",
         "education": "Educación",
-        "lifestyle": "Estilo de vida"
+        "lifestyle": "Estilo de vida",
+        "_pending_review": {}
       },
       "advancedTitle": "Opciones avanzadas",
       "cohostLabel": "Invitación de coanfitrión/invitado",
@@ -74,16 +79,20 @@
       "access": {
         "public": {
           "label": "Público",
-          "desc": "Cualquiera puede unirse"
+          "desc": "Cualquiera puede unirse",
+          "_pending_review": {}
         },
         "followers": {
           "label": "Solo seguidores",
-          "desc": "Solo tus seguidores"
+          "desc": "Solo tus seguidores",
+          "_pending_review": {}
         },
         "group": {
           "label": "Grupo/VIP",
-          "desc": "Solo miembros invitados"
-        }
+          "desc": "Solo miembros invitados",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "scheduleLabel": "Programar para después",
       "goLiveNow": "Ir en vivo ahora",
@@ -118,7 +127,8 @@
         "imageUploadFailedDesc": "Mantendremos la imagen actual.",
         "genericTitle": "Error",
         "genericDesc": "Error al crear la transmisión. Intenta de nuevo.",
-        "genericDescWithReason": "Error al crear la transmisión: {reason}. Inténtalo de nuevo."
+        "genericDescWithReason": "Error al crear la transmisión: {reason}. Inténtalo de nuevo.",
+        "_pending_review": {}
       },
       "success": {
         "streamUpdatedTitle": "¡Transmisión actualizada! ✨",
@@ -128,15 +138,19 @@
         "youAreLiveTitle": "¡Estás en vivo! 🎙️",
         "youAreLiveDesc": "Uniéndote a la sala de transmisión…",
         "aiImageHintTitle": "Generación de imagen con IA",
-        "aiImageHintDesc": "La imagen se generará cuando comience la transmisión."
-      }
+        "aiImageHintDesc": "La imagen se generará cuando comience la transmisión.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "editSession": {
       "title": "Editar sesión",
       "saving": "Guardando…",
       "changeCover": "Cambiar imagen de portada",
-      "noChanges": "No hay cambios para guardar"
-    }
+      "noChanges": "No hay cambios para guardar",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
   },
   "goLivePopup": {
     "durationLabel": "Duración",
@@ -146,6 +160,8 @@
     "duration60": "1 hora",
     "duration90": "1,5 horas",
     "duration120": "2 horas",
-    "durationHint": "La sala se cierra automáticamente después de este tiempo si no la terminas manualmente."
-  }
+    "durationHint": "La sala se cierra automáticamente después de este tiempo si no la terminas manualmente.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -14,6 +14,8 @@
     "textInputReady": "Entrada de texto lista",
     "typeMessage": "Ahora puedes escribir tu mensaje.",
     "actionFailed": "Acción fallida",
-    "couldNotExecute": "No se pudo ejecutar {action}"
-  }
+    "couldNotExecute": "No se pudo ejecutar {action}",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

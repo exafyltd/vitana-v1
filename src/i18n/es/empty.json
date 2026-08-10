@@ -22,6 +22,8 @@
     "healthEmpty": "Registra tu primera entrada para iniciar tu Índice.",
     "noActionsMatchedYet": "Aún no hay acciones coincidentes — Autopilot está dando forma a las sugerencias.",
     "actionsPendingOne": "{count} acción pendiente",
-    "actionsPendingOther": "{count} acciones pendientes"
-  }
+    "actionsPendingOther": "{count} acciones pendientes",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

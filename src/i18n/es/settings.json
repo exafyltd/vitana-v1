@@ -7,7 +7,8 @@
     "tabs": {
       "overview": "Resumen",
       "notifications": "Notificaciones",
-      "quickActions": "Acciones rápidas"
+      "quickActions": "Acciones rápidas",
+      "_pending_review": {}
     },
     "categories": {
       "privacy": "Privacidad",
@@ -23,7 +24,8 @@
       "billing": "Facturación",
       "billingDesc": "Información de suscripción y pago",
       "support": "Soporte",
-      "supportDesc": "Ayuda, preguntas frecuentes y opciones de contacto"
+      "supportDesc": "Ayuda, preguntas frecuentes y opciones de contacto",
+      "_pending_review": {}
     },
     "status": {
       "privacyStatus": "Estado de privacidad",
@@ -33,9 +35,12 @@
       "notificationsActive": "Notificaciones activas",
       "connectedAppsCount": "Apps conectadas",
       "types": "tipos",
-      "apps": "aplicaciones"
+      "apps": "aplicaciones",
+      "_pending_review": {}
     },
     "vitanaOpenedSection": "Vitana abrió {section}",
-    "vitanaUpdated": "Vitana actualizó tu configuración"
-  }
+    "vitanaUpdated": "Vitana actualizó tu configuración",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

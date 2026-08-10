@@ -24,6 +24,8 @@
     "charactersRemaining": "{count} caracteres restantes",
     "fileTooBig": "El archivo es demasiado grande (máx. {max})",
     "invalidFileType": "Tipo de archivo no válido",
-    "uploadLimit": "Máximo {max} archivos permitidos"
-  }
+    "uploadLimit": "Máximo {max} archivos permitidos",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -43,6 +43,8 @@
     "recognitionError": "Error de reconocimiento",
     "recognitionErrorDesc": "El reconocimiento de voz tuvo un error. Inténtalo de nuevo.",
     "transcribing": "Transcribiendo tu grabación…",
-    "backendRecordingHint": "Grabando: tu transcripción aparecerá después de tocar Detener."
-  }
+    "backendRecordingHint": "Grabando: tu transcripción aparecerá después de tocar Detener.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

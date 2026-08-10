@@ -51,7 +51,8 @@
       "movement": "Movimiento",
       "mind": "Mente",
       "supplements": "Suplementos",
-      "experts": "Expertos"
+      "experts": "Expertos",
+      "_pending_review": {}
     },
     "subcategories": {
       "longevity": "Longevidad",
@@ -78,7 +79,8 @@
       "sexualHealth": "Salud Sexual",
       "prevention": "Prevención y Detección Temprana",
       "generalHealth": "Salud General",
-      "dnaAnalysis": "Análisis de ADN"
+      "dnaAnalysis": "Análisis de ADN",
+      "_pending_review": {}
     },
     "quickActions": {
       "title": "Acciones Rápidas",
@@ -89,7 +91,8 @@
       "reorderPrevious": "Reordena lo anterior",
       "managePayment": "Gestionar Pago",
       "findServicesNearMe": "Buscar Servicios Cerca de Mí",
-      "viewSavedItems": "Ver Artículos Guardados"
+      "viewSavedItems": "Ver Artículos Guardados",
+      "_pending_review": {}
     },
     "aiPicks": {
       "title": "Recomendaciones de IA para ti",
@@ -101,24 +104,30 @@
       "recommendationsFound": "{count} recomendaciones encontradas",
       "noRecommendations": "No se encontraron recomendaciones",
       "noRecommendationsDesc": "Elige un filtro diferente para ver más recomendaciones",
-      "viewAllPicks": "Ver Todas las Selecciones"
+      "viewAllPicks": "Ver Todas las Selecciones",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Todo",
       "services": "Servicios",
       "supplements": "Suplementos",
       "experts": "Expertos",
-      "deals": "Ofertas"
+      "deals": "Ofertas",
+      "_pending_review": {}
     },
     "toast": {
       "actionSelected": "Acción Seleccionada",
-      "comingSoon": "¡Función de {action} próximamente!"
+      "comingSoon": "¡Función de {action} próximamente!",
+      "_pending_review": {}
     },
     "guest": {
       "bannerTitle": "Inicia sesión para ganar recompensas Vitana en cada compra",
       "bannerSubtitle": "Explora libremente: inicia sesión (es gratis) para comprar y empezar a ganar recompensas.",
       "bannerCta": "Iniciar sesión",
-      "signIn": "Iniciar sesión"
-    }
-  }
+      "signIn": "Iniciar sesión",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
