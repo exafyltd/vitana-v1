@@ -43,6 +43,8 @@
     "recognitionError": "Erreur de reconnaissance",
     "recognitionErrorDesc": "La reconnaissance vocale a rencontré une erreur. Réessaye.",
     "transcribing": "Transcription de ton enregistrement…",
-    "backendRecordingHint": "Enregistrement — ta transcription apparaîtra après avoir appuyé sur Arrêter."
-  }
+    "backendRecordingHint": "Enregistrement — ta transcription apparaîtra après avoir appuyé sur Arrêter.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
