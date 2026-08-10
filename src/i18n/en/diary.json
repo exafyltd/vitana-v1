@@ -8,6 +8,8 @@
     "photo": "Photo",
     "textEntry": "✍️ Text Entry",
     "photoEntry": "📸 Photo Entry",
-    "searchPlaceholder": "Search diary..."
-  }
+    "searchPlaceholder": "Search diary...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

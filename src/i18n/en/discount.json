@@ -26,6 +26,8 @@
     "email": "Email",
     "ticketEmailNote": "Your ticket and confirmation will be sent to this email.",
     "left": "{count} left",
-    "loadFailed": "Failed to load tickets"
-  }
+    "loadFailed": "Failed to load tickets",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -5,13 +5,17 @@
       "pending": "Pending",
       "approved": "Approved",
       "flagged": "Flagged",
-      "rejected": "Rejected"
+      "rejected": "Rejected",
+      "_pending_review": {}
     },
     "rooms": {
       "active": "Active Rooms",
       "scheduled": "Scheduled",
       "analytics": "Analytics",
-      "moderation": "Moderation"
-    }
-  }
+      "moderation": "Moderation",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

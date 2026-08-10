@@ -4,7 +4,8 @@
       "title": "Delete Campaign?",
       "description": "Deleting \"{name}\" permanently removes all associated drafts and analyses. This cannot be undone.",
       "dontAskAgain": "Don't ask me again for draft campaigns",
-      "deletePermanently": "Delete Permanently"
+      "deletePermanently": "Delete Permanently",
+      "_pending_review": {}
     },
     "creation": {
       "title": "Create Campaign",
@@ -17,8 +18,12 @@
         "1": "Clear names help you find campaigns later",
         "2": "Connect channels now for instant planning",
         "3": "Launch template works for most announcements",
-        "4": "Smart planning uses your past engagement data"
-      }
-    }
-  }
+        "4": "Smart planning uses your past engagement data",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

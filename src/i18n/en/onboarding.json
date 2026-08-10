@@ -23,7 +23,10 @@
       "handleAvailable": "Username is available!",
       "handleMinLength": "At least 3 characters",
       "saving": "Setting up...",
-      "submit": "Let's get started!"
-    }
-  }
+      "submit": "Let's get started!",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

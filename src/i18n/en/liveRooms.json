@@ -6,7 +6,8 @@
       "live": "Live now",
       "scheduled": "Scheduled",
       "all": "All Rooms",
-      "past": "Past"
+      "past": "Past",
+      "_pending_review": {}
     },
     "goLive": "Go Live",
     "joinRoom": "Join Room",
@@ -17,7 +18,8 @@
     "search": {
       "placeholder": "Search rooms, topics, or hosts...",
       "category": "Category",
-      "allCategories": "All Categories"
+      "allCategories": "All Categories",
+      "_pending_review": {}
     },
     "room": {
       "join": "Join Room",
@@ -25,7 +27,8 @@
       "duration": "Duration",
       "host": "Host",
       "premium": "Premium",
-      "live": "LIVE"
+      "live": "LIVE",
+      "_pending_review": {}
     },
     "viewer": {
       "leave": "Leave",
@@ -33,7 +36,8 @@
       "video": "Video",
       "raiseHand": "Raise Hand",
       "chat": "Chat",
-      "reactions": "Reactions"
+      "reactions": "Reactions",
+      "_pending_review": {}
     },
     "goLivePopup": {
       "titleCreate": "Go Live",
@@ -65,7 +69,8 @@
         "sleep": "Sleep",
         "motivation": "Motivation",
         "education": "Education",
-        "lifestyle": "Lifestyle"
+        "lifestyle": "Lifestyle",
+        "_pending_review": {}
       },
       "advancedTitle": "Advanced Options",
       "cohostLabel": "Co-Host / Guest Invite",
@@ -74,16 +79,20 @@
       "access": {
         "public": {
           "label": "Public",
-          "desc": "Anyone can join"
+          "desc": "Anyone can join",
+          "_pending_review": {}
         },
         "followers": {
           "label": "Followers Only",
-          "desc": "Only your followers"
+          "desc": "Only your followers",
+          "_pending_review": {}
         },
         "group": {
           "label": "Group/VIP",
-          "desc": "Invited members only"
-        }
+          "desc": "Invited members only",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "scheduleLabel": "Schedule for Later",
       "goLiveNow": "Go Live Now",
@@ -118,7 +127,8 @@
         "imageUploadFailedDesc": "We'll keep the existing image.",
         "genericTitle": "Error",
         "genericDesc": "Failed to create stream. Please try again.",
-        "genericDescWithReason": "Failed to create stream: {reason}. Please try again."
+        "genericDescWithReason": "Failed to create stream: {reason}. Please try again.",
+        "_pending_review": {}
       },
       "success": {
         "streamUpdatedTitle": "Stream Updated! ✨",
@@ -128,15 +138,19 @@
         "youAreLiveTitle": "You're live! 🎙️",
         "youAreLiveDesc": "Joining your stream room…",
         "aiImageHintTitle": "AI Image Generation",
-        "aiImageHintDesc": "Image will be generated when stream starts."
-      }
+        "aiImageHintDesc": "Image will be generated when stream starts.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "editSession": {
       "title": "Edit Session",
       "saving": "Saving …",
       "changeCover": "Change cover image",
-      "noChanges": "No changes to save"
-    }
+      "noChanges": "No changes to save",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
   },
   "goLivePopup": {
     "durationLabel": "Duration",
@@ -146,6 +160,8 @@
     "duration60": "1 hour",
     "duration90": "1.5 hours",
     "duration120": "2 hours",
-    "durationHint": "The room closes automatically after this time if you don’t end it manually."
-  }
+    "durationHint": "The room closes automatically after this time if you don’t end it manually.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

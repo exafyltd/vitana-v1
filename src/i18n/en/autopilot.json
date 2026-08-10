@@ -16,7 +16,8 @@
       "updateArchetype": "Update Archetype",
       "profileSectionTitle": "Autopilot can polish your profile ✨",
       "profileSectionDesc": "Get AI-powered suggestions for your bio, archetype, and highlights.",
-      "tryAutopilot": "Try Autopilot"
+      "tryAutopilot": "Try Autopilot",
+      "_pending_review": {}
     },
     "preview": "Autopilot Preview",
     "viewAll": "View All",
@@ -41,12 +42,14 @@
       "toastExecutedTitle": "Actions Executed",
       "toastExecutedDesc": "{success}/{total} actions completed successfully",
       "toastFailedTitle": "Execution Failed",
-      "toastFailedDesc": "Something went wrong. Please try again."
+      "toastFailedDesc": "Something went wrong. Please try again.",
+      "_pending_review": {}
     },
     "priorities": {
       "high": "High",
       "medium": "Medium",
-      "low": "Low"
+      "low": "Low",
+      "_pending_review": {}
     },
     "widget": {
       "title": "Autopilot ⚡",
@@ -56,7 +59,8 @@
       "allOptimized": "All optimized! 🎯",
       "enableToSee": "Activate Autopilot to see suggestions",
       "completeForRewards": "Complete Autopilot suggestions to get rewards",
-      "enableForCredits": "Activate Autopilot for credits"
+      "enableForCredits": "Activate Autopilot for credits",
+      "_pending_review": {}
     },
     "insightBanner": {
       "title": "Autopilot Health Overview",
@@ -64,7 +68,8 @@
       "synergyIndex": "Synergy Index",
       "statusBalanced": "Balanced",
       "statusNeedsAttention": "Needs Attention",
-      "statusImproving": "Improving"
+      "statusImproving": "Improving",
+      "_pending_review": {}
     },
     "profilePopup": {
       "title": "Let Autopilot optimize your profile ✨",
@@ -87,7 +92,8 @@
       "acceptAll": "Accept All",
       "applied": "Changes saved!",
       "error": "Something went wrong",
-      "comingSoon": "Coming Soon"
+      "comingSoon": "Coming Soon",
+      "_pending_review": {}
     },
     "actions": {
       "action1Title": "Join Longevity Dance Group Tonight?",
@@ -103,7 +109,10 @@
       "action6Title": "Mindful Morning Magic",
       "action6Reason": "Your soul is calling for these stress-melting techniques",
       "newActionTitle": "New AI suggestion",
-      "newActionReason": "Based on recent activity patterns"
-    }
-  }
+      "newActionReason": "Based on recent activity patterns",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

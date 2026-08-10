@@ -40,6 +40,8 @@
     "confirmClearOld": "Are you sure you want to delete history older than 90 days?",
     "confirmDeleteAll": "⚠️ WARNING: This will permanently delete your ENTIRE history. This action cannot be undone. Are you absolutely sure?",
     "beta": "Beta",
-    "danger": "Danger"
-  }
+    "danger": "Danger",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

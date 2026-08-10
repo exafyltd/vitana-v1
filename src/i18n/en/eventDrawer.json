@@ -58,6 +58,8 @@
     "googleCal": "Google Calendar",
     "outlook": "Outlook",
     "appleCal": "Apple Calendar",
-    "downloadIcs": "Download ICS"
-  }
+    "downloadIcs": "Download ICS",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

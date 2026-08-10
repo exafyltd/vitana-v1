@@ -26,18 +26,21 @@
     "trend": {
       "improving": "Improving",
       "declining": "Worsening",
-      "stable": "Stable"
+      "stable": "Stable",
+      "_pending_review": {}
     },
     "suggestions": {
       "uploadBloodTestResults": "Upload blood test results",
-      "startFitnessChallenge": "Start 30-Day Fitness Challenge"
+      "startFitnessChallenge": "Start 30-Day Fitness Challenge",
+      "_pending_review": {}
     },
     "pillars": {
       "sleep": "Sleep",
       "exercise": "Exercise",
       "nutrition": "Nutrition",
       "hydration": "Hydration",
-      "mental": "Mental"
+      "mental": "Mental",
+      "_pending_review": {}
     },
     "emptyStates": {
       "noSleepPlan": "No Sleep Plan Yet",
@@ -51,7 +54,8 @@
       "noMentalPlan": "No Mental Plan Yet",
       "noMentalPlanDesc": "Generate your personalized mental wellness plan, to track stress, focus, and emotional balance with AI support.",
       "generatePlan": "Generate Plan",
-      "generating": "Generating..."
+      "generating": "Generating...",
+      "_pending_review": {}
     },
     "noSupplements": "No supplements yet",
     "noSupplementsDesc": "Track your daily vitamins, minerals, and supplements. Add your first supplement to get started.",
@@ -62,6 +66,8 @@
     "uploadDescription": "Blood tests, imaging, lab results",
     "unknownProvider": "Unknown provider",
     "addSupplement": "Add Supplement",
-    "uploadFirstReport": "Upload First Report"
-  }
+    "uploadFirstReport": "Upload First Report",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

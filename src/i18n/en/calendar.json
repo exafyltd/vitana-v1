@@ -29,14 +29,16 @@
       "title": "Your booked events",
       "todayLabel": "Today",
       "nextUp": "Next up",
-      "noEventsToday": "No events today"
+      "noEventsToday": "No events today",
+      "_pending_review": {}
     },
     "filters": {
       "personal": "Personal",
       "community": "Community",
       "work": "Work",
       "health": "Health",
-      "workout": "Workout"
+      "workout": "Workout",
+      "_pending_review": {}
     },
     "categories": {
       "community": "Community",
@@ -45,19 +47,22 @@
       "nutrition": "Nutrition",
       "professional": "Work",
       "personal": "Personal",
-      "training": "Training"
+      "training": "Training",
+      "_pending_review": {}
     },
     "bookingStatus": {
       "booked": "Booked",
       "rsvp": "RSVP",
       "ticket": "Ticket",
-      "reserved": "Reserved"
+      "reserved": "Reserved",
+      "_pending_review": {}
     },
     "timeGroups": {
       "today": "Today",
       "tomorrow": "Tomorrow",
       "thisWeek": "This Week",
-      "later": "Later"
+      "later": "Later",
+      "_pending_review": {}
     },
     "autopilot": {
       "suggestions": "Autopilot Suggestions",
@@ -77,7 +82,8 @@
       "reminderLaterToday": "Reminder set for later today",
       "reminderTomorrow": "Reminder set for tomorrow",
       "recommendFocus": "Recommend focus block",
-      "focusBlockDesc": "You have a 90-minute time slot available. Perfect for focused work."
+      "focusBlockDesc": "You have a 90-minute time slot available. Perfect for focused work.",
+      "_pending_review": {}
     },
     "toasts": {
       "eventCreated": "Event created",
@@ -94,22 +100,26 @@
       "featureComingSoon": "Feature coming soon",
       "inviteFollowers": "Invite followers",
       "rescheduleEvent": "Reschedule event",
-      "shareToGroup": "Share to group"
+      "shareToGroup": "Share to group",
+      "_pending_review": {}
     },
     "error": {
-      "failedToCreate": "Failed to create event"
+      "failedToCreate": "Failed to create event",
+      "_pending_review": {}
     },
     "allDay": "All day",
     "milestoneToday": "Milestone",
     "focus": {
       "todaysFocus": "Today's focus",
       "lightDay": "Light day — explore activities or catch up on your diary",
-      "moreSteps": "more steps"
+      "moreSteps": "more steps",
+      "_pending_review": {}
     },
     "badge": {
       "guidedStep": "Guided step",
       "milestone": "Milestone",
-      "wellness": "Wellness"
+      "wellness": "Wellness",
+      "_pending_review": {}
     },
     "action": {
       "start": "Start",
@@ -118,11 +128,13 @@
       "details": "Details",
       "viewPlan": "View plan",
       "open": "Open",
-      "done": "Done"
+      "done": "Done",
+      "_pending_review": {}
     },
     "group": {
       "stepsRemaining": "steps remaining",
-      "min": "min"
+      "min": "min",
+      "_pending_review": {}
     },
     "journey": {
       "dayOf": "Day {day} of {total}",
@@ -140,8 +152,12 @@
         "wave-3": "Deepening Connections",
         "wave-4": "Health Intelligence",
         "wave-5": "Insight Moments",
-        "wave-6": "Recommendations & Discovery"
-      }
-    }
-  }
+        "wave-6": "Recommendations & Discovery",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

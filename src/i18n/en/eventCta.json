@@ -19,6 +19,8 @@
     "processing": "Processing...",
     "joining": "Joining...",
     "getTickets": "Get Tickets",
-    "promoteEvent": "Promote event"
-  }
+    "promoteEvent": "Promote event",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

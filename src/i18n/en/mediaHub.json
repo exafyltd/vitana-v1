@@ -7,21 +7,24 @@
       "music": "Music",
       "podcasts": "Podcasts",
       "shorts": "Shorts",
-      "videos": "Videos"
+      "videos": "Videos",
+      "_pending_review": {}
     },
     "sections": {
       "trendingShorts": "Trending Shorts",
       "trendingMusic": "Trending Music",
       "musicPlaylists": "Music Playlists",
       "latestEpisodes": "Latest Episodes",
-      "popularShows": "Popular Shows"
+      "popularShows": "Popular Shows",
+      "_pending_review": {}
     },
     "actions": {
       "upload": "Upload",
       "watchShorts": "Watch Shorts",
       "viewAllShorts": "View all {count} shorts",
       "playPlaylist": "Play Playlist",
-      "clearFilters": "Clear filters"
+      "clearFilters": "Clear filters",
+      "_pending_review": {}
     },
     "searchPlaceholder": "Search Media...",
     "shortsAvailable": "{count} shorts available",
@@ -46,7 +49,8 @@
       "singleUpload": "Single Upload",
       "bulkUpload": "Bulk Upload",
       "addToPlaylist": "Add to Playlist",
-      "viewArtist": "View Artist"
+      "viewArtist": "View Artist",
+      "_pending_review": {}
     },
     "toast": {
       "linkCopied": "Link copied",
@@ -64,7 +68,8 @@
       "deleteError": "Error",
       "deleteErrorDesc": "Deletion failed. Please try again.",
       "commentError": "Error",
-      "commentErrorDesc": "Failed to post comment. Please try again."
+      "commentErrorDesc": "Failed to post comment. Please try again.",
+      "_pending_review": {}
     },
     "comments": {
       "title": "Comments",
@@ -77,19 +82,22 @@
       "reply": "Reply",
       "replyingTo": "Replying to {name}",
       "cancelReply": "Cancel reply",
-      "like": "Like comment"
+      "like": "Like comment",
+      "_pending_review": {}
     },
     "deletePodcast": {
       "title": "Delete Podcast",
       "description": "Are you sure you want to delete this podcast? This action cannot be undone.",
       "cancel": "Cancel",
-      "confirm": "Delete"
+      "confirm": "Delete",
+      "_pending_review": {}
     },
     "deleteVideo": {
       "title": "Delete Video",
       "description": "Are you sure you want to delete this video? This action cannot be undone and will remove the video from storage.",
       "cancel": "Cancel",
-      "confirm": "Delete"
+      "confirm": "Delete",
+      "_pending_review": {}
     },
     "noMusic": "No music uploaded yet",
     "noMusicDesc": "Be the first to share music with the community!",
@@ -146,8 +154,12 @@
         "mentalHealth": "Mental Health",
         "wellness": "Wellness",
         "education": "Education",
-        "lifestyle": "Lifestyle"
-      }
-    }
-  }
+        "lifestyle": "Lifestyle",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

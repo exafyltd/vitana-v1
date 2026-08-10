@@ -18,6 +18,8 @@
     "balanceRefreshedDesc": "Wallet balance has been updated",
     "refreshFailed": "Refresh Failed",
     "refreshFailedDesc": "Balance could not be updated. Please try again.",
-    "error": "Error"
-  }
+    "error": "Error",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

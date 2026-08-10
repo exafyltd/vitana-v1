@@ -11,7 +11,8 @@
     "tabs": {
       "balances": "Balances",
       "activity": "Activity",
-      "actions": "Actions"
+      "actions": "Actions",
+      "_pending_review": {}
     },
     "filters": {
       "commissions": "Sell & earn commissions",
@@ -21,10 +22,13 @@
       "purchases": "Purchases",
       "pending": "Pending Payouts",
       "withdrawals": "Withdrawals",
-      "stakes": "Staking"
+      "stakes": "Staking",
+      "_pending_review": {}
     },
     "noActivity": "No activity yet",
     "noActivityDesc": "Your transactions will appear here.",
-    "displayCurrency": "Display currency"
-  }
+    "displayCurrency": "Display currency",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

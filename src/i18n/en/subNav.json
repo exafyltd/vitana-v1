@@ -41,6 +41,8 @@
     "preferences": "Settings",
     "privacy": "Privacy",
     "connectedApps": "Connected Apps & Integrations",
-    "support": "Support"
-  }
+    "support": "Support",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

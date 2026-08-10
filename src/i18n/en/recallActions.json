@@ -4,36 +4,47 @@
     "items": {
       "askAiQuestion": {
         "title": "Ask AI Question",
-        "description": "Query your memories with natural language AI search"
+        "description": "Query your memories with natural language AI search",
+        "_pending_review": {}
       },
       "advancedSearch": {
         "title": "Advanced Search",
-        "description": "Use filters, tags, and date ranges to find memories"
+        "description": "Use filters, tags, and date ranges to find memories",
+        "_pending_review": {}
       },
       "patternAnalysis": {
         "title": "Pattern Analysis",
-        "description": "Discover trends and patterns in your wellness data"
+        "description": "Discover trends and patterns in your wellness data",
+        "_pending_review": {}
       },
       "memoryInsights": {
         "title": "Memory Insights",
-        "description": "Get AI-powered insights from your health journey"
+        "description": "Get AI-powered insights from your health journey",
+        "_pending_review": {}
       },
       "searchByDate": {
         "title": "Search by Date",
-        "description": "Browse memories from specific time periods"
+        "description": "Browse memories from specific time periods",
+        "_pending_review": {}
       },
       "locationMemories": {
         "title": "Location Memories",
-        "description": "Find entries by places and locations visited"
+        "description": "Find entries by places and locations visited",
+        "_pending_review": {}
       },
       "filterByCategory": {
         "title": "Filter by Category",
-        "description": "Browse memories by wellness pillars and categories"
+        "description": "Browse memories by wellness pillars and categories",
+        "_pending_review": {}
       },
       "quickRecalls": {
         "title": "Quick Recalls",
-        "description": "Access frequently searched memories and queries"
-      }
-    }
-  }
+        "description": "Access frequently searched memories and queries",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
