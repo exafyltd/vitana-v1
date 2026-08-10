@@ -212,9 +212,11 @@ export const ADMIN_SECTIONS: AdminSection[] = [
     label: "Insights",
     icon: BarChart3,
     basePath: "/admin/insights",
-    defaultTab: "growth",
+    defaultTab: "overview",
     wave: 2,
     tabs: [
+      // VTID-03567: product analytics overview + raw event explorer
+      { key: "overview", label: "Overview", path: "/admin/insights/overview" },
       { key: "growth", label: "Growth", path: "/admin/insights/growth" },
       { key: "engagement", label: "Engagement", path: "/admin/insights/engagement" },
       { key: "assistant-usage", label: "Assistant Usage", path: "/admin/insights/assistant-usage" },
@@ -222,6 +224,7 @@ export const ADMIN_SECTIONS: AdminSection[] = [
       { key: "journeys", label: "Journeys", path: "/admin/insights/journeys" },
       { key: "features", label: "Features", path: "/admin/insights/features" },
       { key: "interests", label: "Interests", path: "/admin/insights/interests" },
+      { key: "events", label: "Event Explorer", path: "/admin/insights/events" },
       { key: "autopilot-impact", label: "Autopilot Impact", path: "/admin/insights/autopilot-impact" },
       { key: "reports", label: "Reports", path: "/admin/insights/reports" },
     ],
