@@ -43,6 +43,8 @@
     "recognitionError": "Błąd rozpoznawania",
     "recognitionErrorDesc": "Rozpoznawanie mowy napotkało błąd. Spróbuj ponownie.",
     "transcribing": "Transkrybuję Twoje nagranie…",
-    "backendRecordingHint": "Nagrywanie — Twoja transkrypcja pojawi się po tym, jak dotkniesz Stop."
-  }
+    "backendRecordingHint": "Nagrywanie — Twoja transkrypcja pojawi się po tym, jak dotkniesz Stop.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
