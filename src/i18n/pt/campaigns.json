@@ -19,9 +19,14 @@
         "2": "Conecta os canais agora para planeamento instantâneo",
         "3": "O modelo de lançamento funciona para a maioria dos anúncios",
         "4": "Planeamento inteligente usa os teus dados de interação passados",
-        "_pending_review": {}
+        "_pending_review": {
+          "1": true,
+          "4": true
+        }
       },
-      "_pending_review": {}
+      "_pending_review": {
+        "yourCampaigns": true
+      }
     },
     "_pending_review": {}
   },

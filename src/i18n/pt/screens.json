@@ -44,7 +44,10 @@
       "markDone": "Marcar como concluído",
       "skip": "Ignorar por agora",
       "doneToast": "Prática concluída!",
-      "doneError": "Não foi possível guardar."
+      "doneError": "Não foi possível guardar.",
+      "_pending_review": {
+        "congratsSubtitle": true
+      }
     },
     "common": {
       "languageToggleAriaLabel": "Idioma",
@@ -855,7 +858,71 @@
       "mental": "Mental",
       "next3": "Próximos 3 dias",
       "month": "30 dias",
-      "future": "Futuro"
+      "future": "Futuro",
+      "_pending_review": {
+        "yourHealthcareProvidersSpecialists": true,
+        "trackManageYourHealthObjectives": true,
+        "manageYourAppointmentCalendar": true,
+        "manageYourProfessionalCredentialsBio": true,
+        "yourAssignedTasksResponsibilities": true,
+        "briefTitleForYourIdea": true,
+        "describeYourIdeaMoreDetail": true,
+        "allCaughtUp": true,
+        "chooseWhichHealthDataYouD": true,
+        "reviewYourSelectedBiomarkersSharingPreferences": true,
+        "chooseHowShareYourConsentPackage": true,
+        "createSecureLinkThatYouCan": true,
+        "youCanRevokeAccessAtAny": true,
+        "recipientsCannotShareYourDataWithout": true,
+        "yourBiomarkerConsentPackageHasCreated": true,
+        "shareYourThoughts": true,
+        "whatSYourMind": true,
+        "turnYourSkillsIntoIncomeToday": true,
+        "uploadCoverImageForYourService": true,
+        "eGStartYourDayWith": true,
+        "whatSYourCurrentIntent": true,
+        "bringFriendAlong": true,
+        "yourInviteLink": true,
+        "chooseHowYouDLikeCollect": true,
+        "kitShippedYourAddress": true,
+        "whereShouldWeSendYourCollection": true,
+        "scheduleYourLabVisit": true,
+        "briefDescriptionYourIssue": true,
+        "pleaseDescribeYourIssueDetailInclude": true,
+        "readyBeginYourWellnessJourney": true,
+        "overallPrivacyHealth": true,
+        "reviewUpdateYourConnectedAppsPermissions": true,
+        "discoverConnectWithHealthcarePlatformsResearch": true,
+        "customizeYourCommunityOverviewShowContent": true,
+        "createSecurePackageYourBiomarkerData": true,
+        "addRefineSignalsImproveAccuracyYour": true,
+        "recordYourDailyHealthUpdatesSymptoms": true,
+        "journeyBetterTogetherShareYourInvite": true,
+        "generatingYourInviteLink": true,
+        "eachShareTrackedSoWhenFriend": true,
+        "controlYourDataSharingPreferencesManage": true,
+        "recommendedOrderBasedYourCurrentContext": true,
+        "whyTheseMatchesBasedSleepActivity": true,
+        "yourPrivacySettingsMostlySecureBut": true,
+        "yourProfileCurrentlyVisibleAllUsers": true,
+        "configureMostImportantSettingsQuicklyGet": true,
+        "resettingPreferencesWillPermanentlyRemoveYour": true,
+        "activeAnalyzingYourVisualContext": true,
+        "visualContextHelpsYourAiAssistant": true,
+        "yourHealthDataRewardsDigitalAssets": true,
+        "getYourApiKeyAtKey_url_label": true,
+        "shareYourThoughtsProgressTipsAsk": true,
+        "writeYourArticleContentHere": true,
+        "addCaptionYourMedia": true,
+        "describeYourGroupSPurposeActivities": true,
+        "describeYourMeetupWhatParticipantsCan": true,
+        "meetupImageWillAutomaticallyGeneratedBased": true,
+        "yourHealthDataWillEncryptedShared": true,
+        "completeYourOrderForName": true,
+        "usernameYou": true,
+        "allowNewOrganizationsAccessYourHealth": true,
+        "describeYourContent": true
+      }
     },
     "admin": {
       "usingDefaults": "Usando padrões",
@@ -2585,7 +2652,48 @@
       "paNegative": "Negativo",
       "paFeedbackTotal": "Total de feedback",
       "paFeatureOpens": "Aberturas de funcionalidades",
-      "paEngagementDesc": "Métricas de atividade e envolvimento de membros"
+      "paEngagementDesc": "Métricas de atividade e envolvimento de membros",
+      "_pending_review": {
+        "getYourApiKey": true,
+        "testYourApiKey": true,
+        "pasteYourApiKeyHereTest": true,
+        "whenTheseConditionsMet": true,
+        "youSure": true,
+        "vitanaYourMembersLifeCompanion": true,
+        "visibleOnlyYourTenantAdmins": true,
+        "yourTenantDocs": true,
+        "setUpYourGoogleGeminiApi": true,
+        "visitGoogleAiStudioGenerateYour": true,
+        "apiKeyValidationFailedPleaseCheck": true,
+        "forSecurityStoreYourApiKey": true,
+        "addApiKeysTokensOauthCredentials": true,
+        "connectMcpServerDiscoverAvailableTools": true,
+        "describeYourSituation": true,
+        "tellUsWhatYouWantAutomate": true,
+        "youMustExafyAdministratorAccessBootstrap": true,
+        "asExafyAdministratorYouCanSwitch": true,
+        "organizationsYouHaveAccessAsExafy": true,
+        "noTicketsYetYourMembersSubmissions": true,
+        "text1YourInstructions": true,
+        "selectedScreenTopPick": true,
+        "selectedScreenRanked": true,
+        "selectedScreenNotInPicks": true,
+        "neverCommitApiKeysYourCode": true,
+        "describeScenarioYouWantAutomate": true,
+        "youAboutElevateLengthUserS": true,
+        "youSureYouWantRevokeRole": true,
+        "enterYourTenantspecificSystemPrompt": true,
+        "messagesSentGatewayConversationEndpointWith": true,
+        "tenantspecificPhrasesThatRouteUserDisplay_name": true,
+        "tenantscopedConnectionsYourStripeYourAuth0": true,
+        "youReDomainExpertAddYour": true,
+        "draftAlreadyExistsBelowEditYour": true,
+        "possibleCausesGatewayHasnTRedeployed2": true,
+        "thisDocumentPartVitanaSystemKnowledge": true,
+        "runRealNavigatorPipelineAgainstTest": true,
+        "theseInternalNotificationTypeKeysThat": true,
+        "autoresolvedByDevAutopilotYouCan": true
+      }
     },
     "ai-feed": {
       "noEventsFound": "Nenhum evento encontrado",
@@ -2639,7 +2747,12 @@
       "explore": "Explorar →",
       "viewSchedule": "Ver Agenda →",
       "findCoaches": "Encontrar Coaches →",
-      "match_scoreMatch": "{match_score}% de compatibilidade"
+      "match_scoreMatch": "{match_score}% de compatibilidade",
+      "_pending_review": {
+        "basedYourGoals": true,
+        "yourCompatibilityOverview": true,
+        "aipoweredInsightsBasedYourProfileInterests": true
+      }
     },
     "assistant": {
       "voiceProviderHint_googleSpeech": "A API de Fala do Google oferece síntese de fala de alta qualidade",
@@ -2728,7 +2841,15 @@
       "proactive": "Proativo",
       "referrals": "Referências",
       "creativityValue0": "Criatividade: {value0}",
-      "languageSettingControlsWhatLanguageText": "A configuração de \"Idioma\" controla em que idioma o texto é gerado. A configuração de \"Voz\" controla qual voz de texto-para-voz o lê em voz alta. Elas são automaticamente sincronizadas para simplificar."
+      "languageSettingControlsWhatLanguageText": "A configuração de \"Idioma\" controla em que idioma o texto é gerado. A configuração de \"Voz\" controla qual voz de texto-para-voz o lê em voz alta. Elas são automaticamente sincronizadas para simplificar.",
+      "_pending_review": {
+        "voiceProviderHint_noVoicesAvailable": true,
+        "controlWhenHowVitanaSpeaksYou": true,
+        "configureHowAiSpeaksYou": true,
+        "chooseYourPreferredAiModelBehavior": true,
+        "chooseWhichTypesAutopilotActionsYou": true,
+        "vitanaWillGreetYouAutomatically": true
+      }
     },
     "audio": {
       "volume": "Volume",
@@ -2740,7 +2861,10 @@
       "soundscapeValue0": "Paisagem Sonora {value0}",
       "vitanaAudioMode": "Modo de Áudio VITANA",
       "typeYourMessage": "Escreve a tua mensagem...",
-      "returnVoice": "Voltar à voz"
+      "returnVoice": "Voltar à voz",
+      "_pending_review": {
+        "typeYourMessage": true
+      }
     },
     "auth": {
       "bundle": "PACOTE:",
@@ -2785,7 +2909,20 @@
       "sendResetLink": "Enviar link de redefinição",
       "resendAvailableCooldownS": "Reenviar disponível em {cooldown}s",
       "ifYouArenTSentBack": "Se não fores automaticamente redirecionado, toca abaixo – ou simplesmente muda para o app Vitana, ele será atualizado em segundos.",
-      "updating": "A atualizar…"
+      "updating": "A atualizar…",
+      "_pending_review": {
+        "checkYourEmail": true,
+        "resetYourPassword": true,
+        "enterYourEmailWeLlSend": true,
+        "chooseStrongPasswordForYourAccount": true,
+        "youExampleCom": true,
+        "reenterYourPassword": true,
+        "yourEmailHasSuccessfullyConfirmed": true,
+        "youLlRedirectedYourDashboardFew": true,
+        "welcomeYourPersonalizedHealthIntelligencePlatform": true,
+        "ifYouDonTSeeIt": true,
+        "yourPasswordHasSuccessfullyReset": true
+      }
     },
     "billing": {
       "from": "De:",
@@ -2963,7 +3100,18 @@
       "eGLongevitySleepSupplements": "ex: longevidade, sono, suplementos",
       "autopilotHasLengthReferralDraftValue1": "O piloto automático tem {length}rascunho de referência{value1} para ti",
       "scoreValue0": "pontuação {value0}",
-      "viewSource": "Ver fonte"
+      "viewSource": "Ver fonte",
+      "_pending_review": {
+        "yourReferralCatalog": true,
+        "ownProductsRankAboveVettedPartners": true,
+        "yourCatalogEmpty": true,
+        "yourThreeSwitches": true,
+        "createEventWithTicketSalesSee": true,
+        "becomeResellerEarnCommissionsByPromoting": true,
+        "startSellingSeeYourBestPerformer": true,
+        "theseDecideWhatAutopilotCanDo": true,
+        "whatYouReRecommending": true
+      }
     },
     "calendar": {
       "noUpcomingEvents": "Nenhum evento futuro",
@@ -3021,7 +3169,12 @@
       "suggestedValue0": "Sugerido: {value0}",
       "todaySIndexPulseCompletingYour": "Pulso do Índice de hoje: completar o teu evento com {totalCount}pilares\n                              {value1} irá mover o teu Índice.",
       "urgent": "urgente",
-      "highPriority": "alta prioridade"
+      "highPriority": "alta prioridade",
+      "_pending_review": {
+        "includingYou": true,
+        "yourGoalAchievementsThisWeek": true,
+        "todaySIndexPulseCompletingYour": true
+      }
     },
     "cart": {
       "yourCart": "O Teu Carrinho",
@@ -3045,7 +3198,11 @@
       "secureCheckoutPoweredByStripe": "Checkout seguro com tecnologia Stripe",
       "startAddingItemsFromDiscoverMarketplace": "Começa a adicionar itens do mercado Discover",
       "value0Each": "${value0} cada",
-      "byProvider": "por {provider}"
+      "byProvider": "por {provider}",
+      "_pending_review": {
+        "yourCart": true,
+        "yourCartEmpty": true
+      }
     },
     "chat": {
       "googleCloudApiKey": "Chave API do Google Cloud",
@@ -3059,7 +3216,12 @@
       "yourApiKeyStoredSecurelyOnly": "A tua chave API é armazenada de forma segura e usada apenas para recursos de voz de IA.",
       "cancel": "Cancelar",
       "go": "Ir para",
-      "saveApiKey": "Guardar Chave API"
+      "saveApiKey": "Guardar Chave API",
+      "_pending_review": {
+        "getYourGoogleCloudApiKey": true,
+        "enterYourGoogleCloudApiKey": true,
+        "yourApiKeyStoredSecurelyOnly": true
+      }
     },
     "coaches": {
       "topMatchFactors": "Principais fatores de correspondência",
@@ -3074,7 +3236,10 @@
       "fromSessions_from": "a partir de €{sessions_from}",
       "bookSession": "Reservar Sessão",
       "member_countMembers": "{member_count} membros",
-      "participant_countAttending": "{participant_count} a participar"
+      "participant_countAttending": "{participant_count} a participar",
+      "_pending_review": {
+        "vettedProfessionalsTailoredYourGoals": true
+      }
     },
     "community": {
       "openAsksKind_commercialBuy": "A Comprar",
@@ -3543,7 +3708,42 @@
       "videoRoomUnavailableHint": "A transmissão não está acessível agora. Por favor, tenta novamente.",
       "autopilotSuggestionsTitle": "Sugestões do Autopilot",
       "autopilotSuggestionsBody": "Ainda não publicaste um desejo. Entretanto, o Autopilot sugere pessoas da comunidade que podem ser uma boa opção. Publica um desejo para que a IA possa encontrar correspondências reais para ti.",
-      "autopilotSuggestionBadge": "Autopilot"
+      "autopilotSuggestionBadge": "Autopilot",
+      "_pending_review": {
+        "openAsksKind_mutualAid": true,
+        "openAsksSummary_empty": true,
+        "openAsksEmpty_dance": true,
+        "tryAdjustingYourSearchFilters": true,
+        "checkBackSoonGoLiveYourself": true,
+        "connectShareGrowTogether": true,
+        "trendingYourCommunity": true,
+        "joinChallengeStartYourWellnessJourney": true,
+        "completeChallengesSeeYourAchievementsHere": true,
+        "challengeYourselfAchieveGreatness": true,
+        "joinYourFirstGroupGetStarted": true,
+        "createYourFirstMeetupBringCommunity": true,
+        "stayConnectedWithYourGroupsDiscover": true,
+        "shareYourHydrationTipToday": true,
+        "helpYourCommunityStayHealthyMotivated": true,
+        "recommendedGroupsBasedYourInterestsWill": true,
+        "analyzingYourVideo": true,
+        "letAiAnalyzeYourWellnessGoals": true,
+        "peopleYouShouldMeet": true,
+        "youSureYouWantDeleteThis": true,
+        "growYourWellnessBusinessManageClients": true,
+        "whatSYourMind": true,
+        "vitanaDevonSageAtlasMiraAi": true,
+        "joinRoom": true,
+        "smartfilledFromYourVideo": true,
+        "giveYourShortCatchyTitle": true,
+        "tellViewersWhatYourShortAbout": true,
+        "joinLiveRooms": true,
+        "analyzingYourProfile": true,
+        "matchesEmptyBody": true,
+        "postYours": true,
+        "postsEmptyBody": true,
+        "noMatchesForFiltersBody": true
+      }
     },
     "contacts": {
       "addContact": "Adicionar Contato",
@@ -3609,7 +3809,15 @@
       "tipUseValue0IncludeYourPersonal": "Dica: Usa {value0}para incluir o teu link de convite pessoal",
       "sendInvites": "Enviar Convites",
       "weFoundTotalimportedContactsMatchedThem": "Encontrámos {totalImported} contactos e associámo-los à VITANA",
-      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound} dos teus amigos já estão na VITANA!"
+      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound} dos teus amigos já estão na VITANA!",
+      "_pending_review": {
+        "youSureYouWantDeleteDisplayname": true,
+        "selectWhereImportYourContactsFrom": true,
+        "findFriendsFromYourContacts": true,
+        "writeYourInviteMessage": true,
+        "tipUseValue0IncludeYourPersonal": true,
+        "matchesfoundYourFriendsAlreadyVitana": true
+      }
     },
     "context": {
       "aiSpotlight": "Destaque IA 🔮",
@@ -3648,7 +3856,13 @@
       "notEnabled": "Não Ativado",
       "completeYourPaymentSetupStartReceiving": "Conclua sua configuração de pagamento para começar a receber ganhos de Salas Ao Vivo pagas.",
       "enablePaymentsCreatePaidLiveRooms": "Ative os pagamentos para criar Salas Ao Vivo pagas e receber 90% da receita. Configuração rápida de 2 minutos com Stripe Connect.",
-      "checkingStatus": "Verificando status..."
+      "checkingStatus": "Verificando status...",
+      "_pending_review": {
+        "yourShare": true,
+        "earnFromYourLiveRooms": true,
+        "youCanNowCreatePaidLive": true,
+        "youCreator": true
+      }
     },
     "crossover": {
       "keyFactors": "Fatores Chave:",
@@ -3781,7 +3995,18 @@
       "matchCatFitness": "Fitness",
       "matchCatLongevity": "Estágio de longevidade",
       "matchCatCommunity": "Comunidade",
-      "matchCatWellness": "Bem-estar em comum"
+      "matchCatWellness": "Bem-estar em comum",
+      "_pending_review": {
+        "curatedForYourInterests": true,
+        "communitiesThatMatchYourVibe": true,
+        "perfectForYourInterests": true,
+        "vettedProfessionalsTailoredYourGoals": true,
+        "suggestedBasedYourProfileRecentActivity": true,
+        "matchReasonGeneric": true,
+        "findingMatches": true,
+        "matchReasonMutualConnectionsOne": true,
+        "matchReasonMutualConnectionsOther": true
+      }
     },
     "debug": {
       "presenceDebug": "Depuração de Presença",
@@ -4174,7 +4399,15 @@
       "briefDescriptionDocument": "Breve descrição do documento",
       "whatSNewThisFrontpageVersion": "O que há de novo nesta versão da página inicial?",
       "tryAdjustingYourFiltersWaitFor": "Tenta ajustar os teus filtros ou espera por novos eventos.",
-      "statusLastcode": "Status: {lastCode}"
+      "statusLastcode": "Status: {lastCode}",
+      "_pending_review": {
+        "pleaseWaitWhileAiHandlesYour": true,
+        "noExecutionLogsMatchYourFilters": true,
+        "noTemplatesFoundMatchingYourCriteria": true,
+        "reopenYourLastWorkingContextRestore": true,
+        "readyExecuteLengthDevActionValue1": true,
+        "tryAdjustingYourFiltersWaitFor": true
+      }
     },
     "diary": {
       "startRecordingYourWellnessJourney": "Começa a registrar a tua jornada de bem-estar",
@@ -4227,7 +4460,11 @@
       "tagLabel_voice": "voz",
       "tagLabel_text": "texto",
       "voiceTranscriptCaptured": "Transcrição de voz capturada. Edite e salve sua entrada.",
-      "writeYourThoughts": "Escreva seus pensamentos..."
+      "writeYourThoughts": "Escreva seus pensamentos...",
+      "_pending_review": {
+        "startRecordingYourWellnessJourney": true,
+        "typeYourTodaySEntry": true
+      }
     },
     "discover": {
       "marketplaceView_open": "Abrir o mercado",
@@ -4523,7 +4760,24 @@
       "bookmarkedValue0": "🔖 {value0} Marcadores",
       "exploreName": "Explora {name}",
       "exploreItem_name": "Explora {item_name}",
-      "value0Services": "{value0}Serviços"
+      "value0Services": "{value0}Serviços",
+      "_pending_review": {
+        "providersMatchedYourHealthNeedsPreferences": true,
+        "perfectForYourHealthGoals": true,
+        "noSupplementsFoundMatchingYourCriteria": true,
+        "personalizedSupplementRecommendationsBasedYourHeal": true,
+        "greatForYourHealthGoals": true,
+        "personalizedWellnessServiceRecommendationsBasedYou": true,
+        "basedYourHealthGoals": true,
+        "saveYourFavoriteProvidersAccessThem": true,
+        "yourCompletedAppointmentsWillAppearHere": true,
+        "saveYourFavoriteSupplementsTrackYour": true,
+        "browseWellnessServicesBookmarkYourFavorites": true,
+        "vitanaMayEarnCommissionFromPurchases2": true,
+        "value0HiddenByYourPreferences": true,
+        "basedYourVitanaIndexBiomarkersSleep": true,
+        "curatedProductBundlesYouCanShare": true
+      }
     },
     "discovery": {
       "filters": "Filtros:",
@@ -4578,7 +4832,10 @@
       "youSureYouWantDeleteTitle": "Tens certeza que queres excluir \"{title}\"? Esta ação não pode ser desfeita.\n              Todos os participantes, bilhetes e dados associados serão removidos permanentemente.",
       "sent_countSentResponse_countResponded": "{sent_count} enviados • {response_count} responderam",
       "attendeesTotal": "Participantes ({total})",
-      "noInvitationsSentYetStartInviting": "Nenhum convite enviado ainda. Começa a convidar pessoas para veres as respostas aqui."
+      "noInvitationsSentYetStartInviting": "Nenhum convite enviado ainda. Começa a convidar pessoas para veres as respostas aqui.",
+      "_pending_review": {
+        "youSureYouWantDeleteTitle": true
+      }
     },
     "feedback": {
       "reportSent": "Relatório Enviado!",
@@ -4605,7 +4862,10 @@
       "interimTextAppearsGrayUntilFinalized": "Texto provisório aparece a cinzento até ser finalizado...",
       "myReportsLength": "Os Meus Relatórios ({length})",
       "lengthAttachmentS": "📎 {length}anexo(s)",
-      "loadMoreValue0Remaining": "Carregar mais ({value0}restantes)"
+      "loadMoreValue0Remaining": "Carregar mais ({value0}restantes)",
+      "_pending_review": {
+        "exafyTeamAppreciatesYourSupportMake": true
+      }
     },
     "health": {
       "pillar_hydration_title": "Hidratação",
@@ -5172,7 +5432,78 @@
           "income_generation": "Geração de rendimentos",
           "business_formation": "Formação de negócios"
         },
-        "contractLink": "Ver o contrato do Objetivo Final"
+        "contractLink": "Ver o contrato do Objetivo Final",
+        "_pending_review": {
+          "subtitle": true,
+          "noRecs": true,
+          "summaryServed": true
+        }
+      },
+      "_pending_review": {
+        "conditionsSubtitle_riskTools": true,
+        "svc_specialist_desc": true,
+        "svc_wellnessChallenge_suggestion": true,
+        "svc_appointments_desc": true,
+        "svc_serviceHistory_desc": true,
+        "svc_myProviders_desc": true,
+        "svc_healthRecords_desc": true,
+        "howCanIHelpWithYour": true,
+        "yourVitanaScoreBreakdown": true,
+        "yourExercisePlanPoweredByAutopilot": true,
+        "yourWeeklyWorkouts": true,
+        "yourHydrationPlanPoweredByAutopilot": true,
+        "yourDailyHydrationTracking": true,
+        "yourDailyMindTracking": true,
+        "yourNutritionPlanPoweredByAutopilot": true,
+        "noRecipesMatchYourFilters": true,
+        "addYourCookingNotes": true,
+        "yourSleepPlanPoweredByAutopilot": true,
+        "yourDailySleepTracking": true,
+        "yourPillarsRightNow": true,
+        "buildYourFoundationForWellness": true,
+        "exploreFiveFundamentalPillarsHealthDiscover": true,
+        "yourPersonalizedHealthPlans": true,
+        "yourVitanaIndex": true,
+        "couldNotLoadYourIndexTry": true,
+        "your90dayGoal": true,
+        "howYourIndexMoves": true,
+        "manageYourPersonalServicesAppointments": true,
+        "howYourPlansInteract": true,
+        "nothingWaitingYouTodayYourIndex": true,
+        "iNeedYourBloodTestResults": true,
+        "withYourBiomarkerDataICan": true,
+        "donTWorryYourDataPrivate": true,
+        "aioptimizedWorkoutsTailoredYourFitnessLevel": true,
+        "properHydrationBoostingYourEnergyRecovery": true,
+        "youRePerfectlyHydratedTodayGreat": true,
+        "smartHydrationGuidanceTailoredYourLifestyle": true,
+        "trackingYourWeeklyConsistency": true,
+        "yourMentalPlanPoweredByAutopilot": true,
+        "trackingYourAverageMentalBalanceFocus": true,
+        "recalibrationAdjustsYourMentalGoalsBased": true,
+        "aioptimizedMealGuidanceTailoredYourPreferences": true,
+        "qualitySleepImprovingYourEnergyPerformance": true,
+        "yourSleepQualityOutstandingKeepMaintaining": true,
+        "smartSleepGuidanceTunedYourCircadian": true,
+        "trackingYourAverageSleepQualityOver": true,
+        "recalibrationAdjustsYourSleepGoalsBased": true,
+        "yourLabTestResultsWillAppear": true,
+        "trackYourSupplementRegimenAcross40": true,
+        "youReEliteBandKeepBalance": true,
+        "seedYourIndexWithBaselineSurvey": true,
+        "seeYour90dayJourney": true,
+        "youRe": true,
+        "vitanaIndexYourNorthStar": true,
+        "atYourCurrentPace": true,
+        "youHere": true,
+        "fiveQuickQuestionsSetYourDay0": true,
+        "yourVitanaIndexTrajectoryWillAppear": true,
+        "whatDrivesIndex": true,
+        "tierBalanceAcrossAllFivePillars": true,
+        "youVeMetYourHydrationGoal": true,
+        "yourIndexHasnTComputedYet": true,
+        "youReThrivingZoneStretchStretchgoal": true,
+        "fromYourOnboardingSurvey": true
       }
     },
     "home": {
@@ -5384,7 +5715,37 @@
       "text4NewIdeas": "4 novas ideias",
       "executeAllValue0": "Executar Tudo {value0}",
       "noValue0ActionsAvailable": "Nenhuma {value0}ação disponível",
-      "likesCount": "{count} Gostos"
+      "likesCount": "{count} Gostos",
+      "_pending_review": {
+        "vitanaIndexEyebrow": true,
+        "vitanaIndexDownHeadline": true,
+        "vitanaIndexStableHeadline": true,
+        "longevityJourneyEyebrow": true,
+        "longevityJourneyNextStepHeadline": true,
+        "longevityJourneySubtext": true,
+        "dailyPriority_hydration_action": true,
+        "dailyPriority_exercise_action": true,
+        "dailyPriority_social_action": true,
+        "dailyPriority_learning_action": true,
+        "dailyPriority_planning_msg": true,
+        "dailyPriority_planning_action": true,
+        "youReAllCaughtUp": true,
+        "motivationQuestion": true,
+        "motivationProgress": true,
+        "motivationWorkout": true,
+        "motivationMeal": true,
+        "motivationTravelNature": true,
+        "motivationEvent": true,
+        "motivationFollowed": true,
+        "spotlightConsentDesc": true,
+        "reportFailed": true,
+        "reportSheetDesc": true,
+        "aiRecommendedForYourGoals": true,
+        "trendingYourCommunity": true,
+        "findYourPeople": true,
+        "autopilotAnalyzedYourRoutinesFound": true,
+        "noRoutinesYetCreateYourFirst": true
+      }
     },
     "icons": {
       "xFormerlyTwitter": "X (antigo Twitter)"
@@ -5467,7 +5828,17 @@
       "kindOptionActivitySeek": "Parceiro de atividade",
       "kindOptionSocialSeek": "Bate-papo / mentoria",
       "kindOptionMutualAid": "Emprestar / pegar emprestado / dar",
-      "kindOptionPartnerSeek": "Parceiro de vida"
+      "kindOptionPartnerSeek": "Parceiro de vida",
+      "_pending_review": {
+        "kindFilter_learningSeek": true,
+        "tellCommunityWhatYouNeedWhat": true,
+        "mutualReveal": true,
+        "describeWhatYouNeedWhat": true,
+        "tracksWhoClickedFromYourShare": true,
+        "donTWorryAboutCoverPhoto": true,
+        "usingUniversalCoverHint": true,
+        "noCoverYetBannerBody": true
+      }
     },
     "layout": {
       "contentRequiresConsent": "Conteúdo Requer Consentimento",
@@ -5570,7 +5941,13 @@
       },
       "durationMin": "{value0} min",
       "durationHour": "{value0} h",
-      "durationHourMin": "{value0} h {value1} min"
+      "durationHourMin": "{value0} h {value1} min",
+      "_pending_review": {
+        "cannotCreatePaidRooms": true,
+        "youLlReceive90PriceVitana": true,
+        "you": true,
+        "manageAria": true
+      }
     },
     "meetups": {
       "detailsProgram": "Detalhes e Programa",
@@ -5804,7 +6181,31 @@
       "memorySubnav_diary": "Diário do Dia",
       "memorySubnav_recall": "Recordar e Pesquisar",
       "memorySubnav_permissions": "Permissões",
-      "wellnessDiaryMultimediaDescription": "Regista e revê a tua jornada de bem-estar através de entradas multimédia."
+      "wellnessDiaryMultimediaDescription": "Regista e revê a tua jornada de bem-estar através de entradas multimédia.",
+      "_pending_review": {
+        "writeYourMemoryReflectionInsightHere": true,
+        "controlYourDataPrivacySharingPreferences": true,
+        "manageWhoCanAccessYourHealth": true,
+        "askAiAboutYourWellnessJourney": true,
+        "youSureYouWantDeleteThis": true,
+        "clickBelowStartRecordingYourVoice": true,
+        "you": true,
+        "yourTranscriptionWillAppearHereAs": true,
+        "shareYourThoughtsFeelingsWellnessObservations": true,
+        "captureShareYourWellnessMomentsThrough": true,
+        "typeYourTodaySEntry": true,
+        "expressYourWellnessJourneyThroughWritten": true,
+        "helpExafyImproveVitanalandReportBugs": true,
+        "yourPrivacySettingsEncryptedCanModified": true,
+        "categoriesWithExistingItemsCannotDeleted": true,
+        "learnHowLifestyleFactorsInfluenceYour": true,
+        "asYouTrackMoreMemoriesData": true,
+        "yourPhoneSBrowserDoesnT": true,
+        "accessPermissionsAuditedRegularlyYouCan": true,
+        "readonlyChronologicalRecordYourSystemUsage": true,
+        "browseYourActivityOrganizedBySystem": true,
+        "wellnessDiaryMultimediaDescription": true
+      }
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Motivação Matinal",
@@ -5988,7 +6389,25 @@
       "participantcountMembers": "{participantCount} membros",
       "value0Participants": "{value0} participantes",
       "value0Members": "{value0} membros",
-      "chooseConversationFromLeftStartMessaging": "Seleciona uma conversa à esquerda para enviar mensagens."
+      "chooseConversationFromLeftStartMessaging": "Seleciona uma conversa à esquerda para enviar mensagens.",
+      "_pending_review": {
+        "inspirationTpl_morning1": true,
+        "inspirationTpl_morning2": true,
+        "inspirationTpl_goal1": true,
+        "inspirationTpl_goal2": true,
+        "inspirationTpl_goal3": true,
+        "inspirationTpl_checkin1": true,
+        "inspirationTpl_checkin2": true,
+        "inspirationTpl_celebrate1": true,
+        "inspirationTpl_celebrate2": true,
+        "inspirationTpl_celebrate3": true,
+        "you": true,
+        "connectWithYourCommunityProfessionalNetwork": true,
+        "yourSavedFavoriteTemplatesWillAppear": true,
+        "yourCustomCreatedMessagesWillAppear": true,
+        "createYourFirstGroup": true,
+        "startConversationSendYourFirstMessage": true
+      }
     },
     "mobile": {
       "searching": "A pesquisar…",
@@ -6025,7 +6444,12 @@
       "deleteThisNotification": "Excluir esta notificação",
       "delete": "Excluir",
       "close": "Fechar",
-      "closeNotifications": "Fechar notificações"
+      "closeNotifications": "Fechar notificações",
+      "_pending_review": {
+        "clearAllConfirmDescription": true,
+        "markAllConfirmDescription": true,
+        "manageYourNotifications": true
+      }
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Escolhe a parte do nome do teu Vitana ID",
@@ -6041,7 +6465,16 @@
       "typeYourOwnName": "Ou digita teu próprio nome",
       "eGAlex": "ex: alex",
       "welcomeMaxina": "Bem-vindo à Maxina",
-      "yourLongevityJourneyBeginsNow": "Tua jornada de longevidade começa agora"
+      "yourLongevityJourneyBeginsNow": "Tua jornada de longevidade começa agora",
+      "_pending_review": {
+        "pickNamePartYourVitanaId": true,
+        "pickYourVitanaId": true,
+        "yourVitanaIdMemberValue0": true,
+        "speakableLanguageneutralNumberYourRegistrationRank": true,
+        "numberSeqdigitsYourRegistrationRankLocked": true,
+        "typeYourOwnName": true,
+        "yourLongevityJourneyBeginsNow": true
+      }
     },
     "orders": {
       "friendExampleCom": "amigo@exemplo.com",
@@ -6146,7 +6579,18 @@
       "conversationspecificPaymentActionWith": "Uma ação de pagamento específica da conversa com",
       "alreadyActivePleaseCompleteCloseThat": "já está ativa. \n                    Por favor, completa ou fecha essa ação primeiro.",
       "anotherWalletActionCurrentlyProgressPlease": "Outra ação da carteira está atualmente em progresso. \n                    Por favor, completa ou fecha essa ação primeiro.",
-      "paymenttypePaymentRequest": "{paymentType} Solicitação de Pagamento"
+      "paymenttypePaymentRequest": "{paymentType} Solicitação de Pagamento",
+      "_pending_review": {
+        "yourBalance": true,
+        "youSend": true,
+        "yourBalance2": true,
+        "youSend2": true,
+        "yourBalance3": true,
+        "youExchange": true,
+        "willReceiveYourRequest": true,
+        "yourCurrentBalance": true,
+        "topUpYourWalletCompleteThis": true
+      }
     },
     "proactive": {
       "proTip": "Dica Profissional:",
@@ -6176,7 +6620,13 @@
       "personalInvitesGet3xMoreResponses": "Convites pessoais recebem 3x mais respostas do que mensagens genéricas. \n            A nossa IA cria convites autênticos que refletem a tua jornada de bem-estar!",
       "dismissTip": "Descartar dica",
       "seeNextValue0More": "Ver Próximo ({value0}mais)",
-      "membersWhoAutoshareTheirWellnessWins": "Membros que compartilham automaticamente suas conquistas de bem-estar inspiram 5-10 amigos a se juntarem a cada mês, criando um poderoso efeito dominó em sua rede."
+      "membersWhoAutoshareTheirWellnessWins": "Membros que compartilham automaticamente suas conquistas de bem-estar inspiram 5-10 amigos a se juntarem a cada mês, criando um poderoso efeito dominó em sua rede.",
+      "_pending_review": {
+        "joinWithin24hrs": true,
+        "createPersonalizedInvitationsThatInspireYour": true,
+        "automaticallyShareYourWellnessJourneyWhen": true,
+        "personalInvitesGet3xMoreResponses": true
+      }
     },
     "profile": {
       "adminAccess": "Acesso Admin",
@@ -6574,7 +7024,43 @@
       "licensedVerifiedHealthcareProvider": "Prestador de serviços de saúde licenciado e verificado",
       "media": "Mídia",
       "events": "Eventos",
-      "health": "Saúde"
+      "health": "Saúde",
+      "_pending_review": {
+        "onlyYouCanViewYourProfile": true,
+        "onlyYouSeeThis": true,
+        "typeYourMessage": true,
+        "showcaseYourProfessionalExpertise": true,
+        "youReNotAnyCommunitiesYet": true,
+        "importYourProfessionalProfileEnrichYour": true,
+        "copyYourLinkedinBioForAipowered": true,
+        "publicByDefaultTheseShowYour": true,
+        "manageYourProfessionalCredentialsSpecialtiesLicens": true,
+        "uploadYourProfessionalLicensesForVerification": true,
+        "controlWhoCanSeeDifferentParts": true,
+        "overallVisibilityYourProfile": true,
+        "shareYourVitanaIndexHealthInsights": true,
+        "peopleLikeYouAlsoConnectedWith": true,
+        "basedYourCompatibilityWithSarah": true,
+        "addYourCoachingSpecialtiesCertificationsCredential": true,
+        "verifiedConnectionsAcrossYourDigitalLife": true,
+        "selectPostsContentFeatureAtTop": true,
+        "openYourDeviceSShareSheet": true,
+        "letSomeoneScanOpenYourProfile": true,
+        "controlWhoCanSeeYourHealth": true,
+        "yourOverallHealthWellnessScoreBased": true,
+        "yourWellnessSync": true,
+        "yourMediaStudioWillGrowWith": true,
+        "uploadYourFirstTrackStartSharing": true,
+        "mutualConnections12FeaturedConnectionsShown": true,
+        "thisPreviewModeWillReflectYour": true,
+        "somePersonalInformationUsedPersonalizeYour": true,
+        "byEnablingThisYourVitanaIndex": true,
+        "mutualconnectionsMutual": true,
+        "somePersonalInformationUsedPersonalizeYour2": true,
+        "yourExerciseConsistencyHasImprovedBy": true,
+        "youReAveraging75Hours": true,
+        "considerAddingMoreLeafyGreensBoost": true
+      }
     },
     "reminders": {
       "subtitleDefault": "O que a Vitana está a agendar para ti. Fala com o ORB para adicionar naturalmente.",
@@ -6626,7 +7112,16 @@
       "noCompleted": "Nenhum lembrete concluído ainda.",
       "noMissed": "Nenhum lembrete perdido — estás em dia.",
       "creating": "A criar…",
-      "createReminder": "Criar lembrete"
+      "createReminder": "Criar lembrete",
+      "_pending_review": {
+        "remindersOnlyFireWhileYouHave": true,
+        "oneTapVitanaWillChimeSurface": true,
+        "getNotifiedWhenAppClosedTap": true,
+        "remindersWorkMaxinaAppWhileYou": true,
+        "timeTakeYourMagnesiumPills": true,
+        "theyWillRemovedFromYourList": true,
+        "noMissed": true
+      }
     },
     "reseller": {
       "noEventsYourInventory": "Nenhum evento no teu inventário",
@@ -6690,7 +7185,20 @@
       "viewDetails": "Ver detalhes",
       "perTicketSoldViaYourReseller": "por bilhete vendido através do teu link de revendedor. \n              A comissão é calculada sobre o preço bruto do bilhete antes das taxas da plataforma.",
       "viewWallet2": "Ver na Carteira →",
-      "ticketquantityTicketValue1Value2": "{ticketQuantity} bilhete{value1}· {value2}"
+      "ticketquantityTicketValue1Value2": "{ticketQuantity} bilhete{value1}· {value2}",
+      "_pending_review": {
+        "noEventsYourInventory": true,
+        "pickEventGenerateYourResellerLink": true,
+        "yourUniqueResellerLink": true,
+        "activateResellerModeAccessYourInventory": true,
+        "createCampaignPromoteEventsBoostYour": true,
+        "shareYourResellerLinksCreatePromotion": true,
+        "youEarn": true,
+        "shareYourUniqueResellerLinkEarn": true,
+        "yourResellerCode": true,
+        "onceYouAddEventsYourInventory": true,
+        "perTicketSoldViaYourReseller": true
+      }
     },
     "settings": {
       "googleConnectionLiveCheck": "Conexão Google — verificação ao vivo",
@@ -7341,7 +7849,41 @@
       "youExafySuperAdministratorYouCan": "Tu és um super-administrador Exafy. Podes alternar entre organizações e gerenciar todos os inquilinos.",
       "roleValue0": "Função: {value0}",
       "refreshBrowserVoices": "Atualizar Vozes do Navegador",
-      "creativityValue0": "Criatividade: {value0}"
+      "creativityValue0": "Criatividade: {value0}",
+      "_pending_review": {
+        "yourSessionExpired": true,
+        "signAgainSeeYourConnectedApps": true,
+        "receiveNotificationsYourDevice": true,
+        "manageYourInvestmentWellness": true,
+        "currentlyFilteredFromYourFeed": true,
+        "productsAboveYourPerproductCeilingHidden": true,
+        "allowOthersFindViewYourProfile": true,
+        "showWhenYouReActivePlatform": true,
+        "shareYourWellnessScoreWithCommunity": true,
+        "shareWellnessProgressPublicly": true,
+        "allowYourProgressContributeCommunityStatistics": true,
+        "customizeYourAlerts": true,
+        "configureYourNotificationPreferences": true,
+        "howYourWellnessScoreCalculated": true,
+        "learnHowWeProtectYourPersonal": true,
+        "getHelpFromOtherUsersShare": true,
+        "brieflyDescribeYourIssue": true,
+        "configureHowAiSpeaksYou": true,
+        "controlWhenHowVitanaSpeaksYou": true,
+        "callsGmailCalendarContactsYoutubeWith": true,
+        "finishSigningYourBrowserThenCome": true,
+        "chooseWhichTypesAutopilotActionsYou": true,
+        "automaticallyShareYourMilestonesAchievements": true,
+        "apply5CreditYourNextBilling": true,
+        "apply10CreditYourNextBilling": true,
+        "loadingYourPreferences": true,
+        "pasteYourSocialProfileUrlWe": true,
+        "youDonTHaveAnyRole": true,
+        "weUseThisAvoidRecommendingSupplements": true,
+        "safetycriticalFieldsAllergiesMedicationsPregnancyR": true,
+        "consentGrantedYouCanRevokeAt": true,
+        "youExafySuperAdministratorYouCan": true
+      }
     },
     "sharing": {
       "activateCampaign": "Ativar Campanha",
@@ -8151,7 +8693,50 @@
       "imageSpecsHashtagStrategyPostingTimes": "Especificações de imagem, estratégia de hashtag, horários de publicação",
       "canvaFigmaDirectlyInapp": "Canva, Figma, ou diretamente na app",
       "copypasteCustomizeForYourNeeds": "Copia e cola ou personaliza para tuas necessidades",
-      "createCustomDataPackageBySelecting": "Cria um pacote de dados personalizado selecionando métricas de saúde específicas, intervalos de datas e tipos de dados adaptados aos requisitos do teu provedor de serviços de saúde ou à participação em estudos de pesquisa."
+      "createCustomDataPackageBySelecting": "Cria um pacote de dados personalizado selecionando métricas de saúde específicas, intervalos de datas e tipos de dados adaptados aos requisitos do teu provedor de serviços de saúde ou à participação em estudos de pesquisa.",
+      "_pending_review": {
+        "selectYourAudience": true,
+        "whatYouSharing": true,
+        "writeYourMessage": true,
+        "basedYourCampaignTemplate": true,
+        "connectYourAccountsAutopublishYourCampaign": true,
+        "chooseYourCampaignTemplate": true,
+        "addCustomMessageYourShare": true,
+        "yourDataSecurityConsentOverview": true,
+        "awaitingYourDecision": true,
+        "manageYourPrivacySettingsConsentHistory": true,
+        "aicustomizedTemplatesBasedYourData": true,
+        "startBlastingPostsSeeYourPerformance": true,
+        "yourFollowers": true,
+        "peopleWhoAttendedYourPreviousEvents": true,
+        "chooseOneMoreAudienceSourcesYou": true,
+        "shareYourContentAcrossMultipleChannels": true,
+        "helpsAutopilotOptimizeYourPostingStrategy": true,
+        "opensYourPersonalAppsShareWith": true,
+        "campaignCreatedAsDraftYouCan": true,
+        "addSessionsEventsYourPackage": true,
+        "verifyYourDomainResendSendEmails": true,
+        "yourTwilioPhoneNumberWithCountry": true,
+        "yourWhatsappBusinessPhoneNumberId": true,
+        "trackWhoAccessedYourDataWhen": true,
+        "chooseWhenYouWantThisPost": true,
+        "opensYourPersonalAppsShareDirectly": true,
+        "opensYourPersonalAppsNo": true,
+        "sharePersonallyDistributeAcrossYourConnected": true,
+        "opensYourPersonalAppsShareDirectly2": true,
+        "createYourFirstCampaignOrganizeTrack": true,
+        "createYourFirstCampaign": true,
+        "chooseFromYourSavedContacts": true,
+        "describeYourCampaignOneSentenceWho": true,
+        "afterCreatingCampaignYouCanReview": true,
+        "eGYouReInvitedEvent": true,
+        "enterYourFullNameProfileUrl": true,
+        "getYourCredentialsFromTwilioConsole": true,
+        "enterYourTemplateContent": true,
+        "yourLongevityJourneyStartsWithSmall": true,
+        "copypasteCustomizeForYourNeeds": true,
+        "createCustomDataPackageBySelecting": true
+      }
     },
     "supplements": {
       "supplementName": "Nome do Suplemento*",
@@ -8227,7 +8812,12 @@
       "ticketValue0": "Bilhete {value0}",
       "eGGeneralAdmission": "ex: Entrada Geral",
       "priceValue0": "Preço ({value0}) *",
-      "whatSIncludedWithThisTicket": "O que está incluído neste bilhete?"
+      "whatSIncludedWithThisTicket": "O que está incluído neste bilhete?",
+      "_pending_review": {
+        "shareYourTicket": true,
+        "sendYourTicketFriendsSaveFor": true,
+        "opensYourPersonalAppsShareDirectly": true
+      }
     },
     "ui": {
       "reconnecting": "A reconectar...",
@@ -8286,7 +8876,10 @@
       "recording": "Gravando...",
       "aiSpeaking": "IA Falando...",
       "you": "Tu",
-      "transcriptWillAppearHere": "A transcrição aparecerá aqui..."
+      "transcriptWillAppearHere": "A transcrição aparecerá aqui...",
+      "_pending_review": {
+        "you": true
+      }
     },
     "vitanaland": {
       "enterVitanalandK": "Entrar em Vitanaland (⌘K)",
@@ -8316,7 +8909,16 @@
       "inviteCardBody": "Partilha o flyer de download e começa juntos.",
       "inviteCardCta": "Convida amigos",
       "inviteShareTitle": "MAXINA – Comunidade de Longevidade",
-      "inviteShareText": "Junta-te a mim na MAXINA – a comunidade de longevidade! Obtém a app aqui:"
+      "inviteShareText": "Junta-te a mim na MAXINA – a comunidade de longevidade! Obtém a app aqui:",
+      "_pending_review": {
+        "featureHealthBody": true,
+        "featureCommunityBody": true,
+        "joinTitle": true,
+        "seoTitle": true,
+        "seoDescription": true,
+        "inviteCardTitle": true,
+        "inviteShareText": true
+      }
     },
     "vitanaIdentity": {
       "vitana": "Vitana",
@@ -8351,7 +8953,14 @@
       "giftFrom": "Presente de",
       "claiming": "A Resgatar...",
       "fromBuyer_name": "De {buyer_name}",
-      "createAccount": "Criar Conta"
+      "createAccount": "Criar Conta",
+      "_pending_review": {
+        "claimYourGift": true,
+        "youReAboutAddThisVoucher": true,
+        "whatYouLlGet": true,
+        "voucherWillAddedYourWallet": true,
+        "signCreateAccountClaimYourWellness": true
+      }
     },
     "wallet": {
       "currentSubscriptionPerks": "Vantagens da subscrição atual",
@@ -8874,7 +9483,33 @@
       "continueToSecureCheckout": "Continuar para o checkout seguro",
       "cardPaymentViaStripe": "Pagamento com cartão, processado de forma segura pela Stripe",
       "currentBalanceLabel": "Teu Saldo Atual de {currency}",
-      "amountAddCurrency": "Valor a Adicionar ({currency})"
+      "amountAddCurrency": "Valor a Adicionar ({currency})",
+      "_pending_review": {
+        "youSend": true,
+        "youReceive": true,
+        "add100CreditsYourAccount": true,
+        "youSend2": true,
+        "youLlReceive": true,
+        "selectRewardsClaimConvertYourWallet": true,
+        "requestPayoutForYourPendingCommissions": true,
+        "shareYourReferralLinkEarnCommissions": true,
+        "yourReferralLink": true,
+        "browseAvailableSubscriptionPlansAddThem": true,
+        "yourStreaksBoostingEarningsBy": true,
+        "youReUnderutilizingAdvancedAnalytics67": true,
+        "yourMembership": true,
+        "basedYourBehaviorPatternsMarketAnalysis": true,
+        "byTimingYourSubscriptionsOptimally": true,
+        "usersSimilarYou3xMoreLikely": true,
+        "increaseYourCollaborationRateBy15": true,
+        "yourSocialEarningPotential": true,
+        "yourSubscriptionsDeliver": true,
+        "stakeVtnaTokens": true,
+        "restartYourWellnessGoalsStreakToday": true,
+        "transferMoneyFromYourVitanaWallet": true,
+        "addFundsBalance": true,
+        "currentBalanceLabel": true
+      }
     },
     "ai": {
       "subtitle_priorityActions": "Tarefas selecionadas por IA para máximo impacto no bem-estar",
@@ -9043,7 +9678,30 @@
       "impactImpact": "Impacto: {impact}",
       "defineHowYourAiAgentShould": "Define como o teu agente de IA deve comportar-se, no que se deve focar e como deve comunicar contigo...",
       "thisReadonlyPlaceholderForAgentPrompt": "Este é um marcador de posição apenas de leitura para o Centro de Prompts de Agente. \n              Fases futuras permitirão a personalização completa do agente de IA e testes em tempo real.",
-      "thisReadonlyPlaceholderForPersonalAi": "Este é um marcador de posição apenas de leitura para a Linha do Tempo de IA Pessoal. \n                Fases futuras conectar-se-ão a dados de atividade de IA reais e fornecerão insights interativos."
+      "thisReadonlyPlaceholderForPersonalAi": "Este é um marcador de posição apenas de leitura para a Linha do Tempo de IA Pessoal. \n                Fases futuras conectar-se-ão a dados de atividade de IA reais e fornecerão insights interativos.",
+      "_pending_review": {
+        "subtitle_autopilotStatus": true,
+        "subtitle_aiInsights": true,
+        "subtitle_weeklyTrends": true,
+        "subtitle_correlations": true,
+        "subtitle_aiForecasts": true,
+        "subtitle_recentAiActions": true,
+        "subtitle_progressTracking": true,
+        "subtitle_inspiration": true,
+        "companionSugg_posture": true,
+        "insightContent_energyPeak": true,
+        "insightContent_hydrationWeekly": true,
+        "insightContent_fitnessGoal": true,
+        "recoDesc_sleepPattern": true,
+        "storyTitle_thisWeeksJourney": true,
+        "storyDesc_thisWeeksJourney": true,
+        "storyDesc_patternDiscovery": true,
+        "eduArticle_vitanaIndex_title": true,
+        "lifestylePlan_nutrition_subtitle": true,
+        "lifestylePlan_exercise_subtitle": true,
+        "discoverMeaningfulPatternsTrendsYourWellness": true,
+        "defineHowYourAiAgentShould": true
+      }
     },
     "authpages": {
       "fullName": "Nome completo",
@@ -9054,7 +9712,13 @@
       "login": "Entrar",
       "signUp": "Registar",
       "alreadyHaveAccountValue0": "Já tens uma conta? {value0}",
-      "donAposTHaveAccountValue0": "Não tens uma conta? {value0}"
+      "donAposTHaveAccountValue0": "Não tens uma conta? {value0}",
+      "_pending_review": {
+        "yourEmailAddress": true,
+        "yourFullName": true,
+        "alreadyHaveAccountValue0": true,
+        "donAposTHaveAccountValue0": true
+      }
     },
     "autopilotdashboard": {
       "text999": "de 999",
@@ -9198,6 +9862,53 @@
         "masterNewSkills": "Domina Novas Habilidades",
         "spiritualLife": "Vida Espiritual",
         "earnFromRecommendations": "Ganha com recomendações"
+      },
+      "_pending_review": {
+        "yourIndex": true,
+        "yourCompass": true,
+        "setYourLifeCompass": true,
+        "allYourWork": true,
+        "startYourSession": true,
+        "nextStepLabel": true,
+        "northStarLabel": true,
+        "northStarTagline": true,
+        "setGoalTitle": true,
+        "setGoalSubtitle": true,
+        "setGoalCta": true,
+        "noDeadlineHint": true,
+        "onboardingDaysLeftCount": true,
+        "onboardingDaysLeftShort": true,
+        "yourPlan": true,
+        "planStepsWaiting": true,
+        "planAllClear": true,
+        "howYoureDoing": true,
+        "keepCheckingIn": true,
+        "motivation0": true,
+        "motivation1": true,
+        "motivation5": true,
+        "matchesTitle": true,
+        "matchesEmpty": true,
+        "matchesPageDescription": true,
+        "eventsTitle": true,
+        "goalDialogTitle": true,
+        "goalFieldLabel": true,
+        "journeyLoadErrorTitle": true,
+        "journeyLoadErrorBody": true,
+        "planSheetTitle": true,
+        "planSheetEmpty": true,
+        "planBuilding": true,
+        "planByDay": true,
+        "tapForPlan": true,
+        "daysLeftCount": true,
+        "daysToGoalShort": true,
+        "futureSelfTitle": true,
+        "futureSelfBecoming": true,
+        "pctThroughJourney": true,
+        "planError": true,
+        "planClarifyIntro": true,
+        "planClarifyPlaceholder": true,
+        "seoDescription": true,
+        "headerDescription": true
       }
     },
     "businesshub": {
@@ -9228,7 +9939,10 @@
       "backBusinessHub": "Voltar para a Central de Negócios",
       "listingsAvailableForProAccounts": "Ofertas disponíveis para contas Pro.",
       "noListingsYetClick": "Nenhuma oferta ainda. Clica",
-      "addOneOpenOrbJustSay": "para adicionar uma – ou abre o ORB e apenas diz"
+      "addOneOpenOrbJustSay": "para adicionar uma – ou abre o ORB e apenas diz",
+      "_pending_review": {
+        "servicesProductsYouReOfferingMatches": true
+      }
     },
     "businessopportunities": {
       "myListings": "Meus Anúncios",
@@ -9236,7 +9950,10 @@
       "opportunitiesAvailableForProAccountsUpgrade": "Oportunidades estão disponíveis para contas Pro. Faça upgrade para acessar leads recebidos.",
       "opportunities": "Oportunidades",
       "incomingLeadsMatchingYourOfferingsExpress": "Leads recebidos que correspondem às suas ofertas. Demonstre interesse para iniciar uma conversa.",
-      "noLeadsYetWeLlNotify": "Nenhum lead ainda. Notificar-te-emos quando a demanda correspondente chegar. Certifica-te de que tens pelo menos uma oferta commercial_sell em"
+      "noLeadsYetWeLlNotify": "Nenhum lead ainda. Notificar-te-emos quando a demanda correspondente chegar. Certifica-te de que tens pelo menos uma oferta commercial_sell em",
+      "_pending_review": {
+        "noLeadsYetWeLlNotify": true
+      }
     },
     "checkoutsuccess": {
       "whatSNext": "O que vem a seguir?",
@@ -9252,7 +9969,11 @@
       "continueShopping": "Continuar Comprando",
       "ifYouHaveAnyQuestionsAbout": "Se tiveres alguma pergunta sobre o teu pedido, a nossa equipa de suporte está aqui para ajudar.",
       "contactSupport": "Contactar Suporte",
-      "viewMyOrders": "Ver os Meus Pedidos"
+      "viewMyOrders": "Ver os Meus Pedidos",
+      "_pending_review": {
+        "youLlReceiveConfirmationEmailWith": true,
+        "ifYouHaveAnyQuestionsAbout": true
+      }
     },
     "creatoronboarded": {
       "checkingYourPaymentStatus": "O teu estado de pagamento está a ser revisto...",
@@ -9275,7 +9996,16 @@
       "createYourFirstPaidRoom": "Cria a Tua Primeira Sala Paga",
       "viewPaymentSettings": "Ver Definições de Pagamento",
       "value0PaymentSetupComplete": "Configuração de pagamento {value0} concluída!",
-      "youReAllSetStartEarning": "Estás pronto para começar a ganhar com as tuas Live Rooms"
+      "youReAllSetStartEarning": "Estás pronto para começar a ganhar com as tuas Live Rooms",
+      "_pending_review": {
+        "checkingYourPaymentStatus": true,
+        "youKeep90": true,
+        "stripeVerifyingYourAccountInformation": true,
+        "earningsDepositedDirectlyYourBankAccount": true,
+        "yourPaymentSetupProcessedThisCan": true,
+        "createYourFirstPaidRoom": true,
+        "youReAllSetStartEarning": true
+      }
     },
     "editprofilepage": {
       "editProfileVitana": "Editar Perfil – VITANA"
@@ -9328,7 +10058,12 @@
       "weeklyActivity": "Atividade Semanal",
       "mentalWellness": "Bem-estar Mental",
       "mindfulness": "Atenção Plena",
-      "vitanaIndexOverview": "Visão Geral do Índice Vitana"
+      "vitanaIndexOverview": "Visão Geral do Índice Vitana",
+      "_pending_review": {
+        "letSTrackYourProgressTogether": true,
+        "monitorYourPersonalHealthDataTrack": true,
+        "yourIndex": true
+      }
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "Plataforma completa de saúde e bem-estar",
@@ -9348,7 +10083,11 @@
       "secureAccessForExafyAdministratorsManage": "Acesso seguro para administradores Exafy gerirem ambientes de inquilino.",
       "operateVitanaPlatformObserveEventsIssue": "Opera a plataforma Vitana: observa eventos, emite comandos e revê a atividade do agente com a governança VTID.",
       "vitanaDev": "Vitana DEV",
-      "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA é uma plataforma de saúde digital abrangente que oferece múltiplos ambientes especializados para diferentes comunidades de bem-estar e gestão profissional de cuidados de saúde."
+      "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA é uma plataforma de saúde digital abrangente que oferece múltiplos ambientes especializados para diferentes comunidades de bem-estar e gestão profissional de cuidados de saúde.",
+      "_pending_review": {
+        "digitalSolutionsForYourWellnessJourney": true,
+        "chooseYourHealthPlatformExperienceInnovation": true
+      }
     },
     "intentboard": {
       "communityBoard": "Mural da comunidade",
@@ -9358,7 +10097,11 @@
       "style": "Estilo",
       "lookingForYourOwnIntents": "Procurando pelos teus próprios objetivos?",
       "whatOthersLookingFor": "O que os outros estão procurando.",
-      "surfacedForYour": "Sugerido para o teu"
+      "surfacedForYour": "Sugerido para o teu",
+      "_pending_review": {
+        "lookingForYourOwnIntents": true,
+        "surfacedForYour": true
+      }
     },
     "intentmatchdetail": {
       "intentNotFound": "Objetivo não encontrado.",
@@ -9390,7 +10133,10 @@
       "noContactsMatchSearch": "Nenhum contato corresponde a \"{search}\"",
       "importContacts": "Importar Contatos",
       "selectedcountSelected": "{selectedCount} selecionados",
-      "sendInvitesSelectedcount": "Enviar Convites ({selectedCount})"
+      "sendInvitesSelectedcount": "Enviar Convites ({selectedCount})",
+      "_pending_review": {
+        "importFromYourPhone": true
+      }
     },
     "logout": {
       "signingOut": "Saindo..."
@@ -9406,7 +10152,10 @@
       "copyLink": "Copiar link",
       "linkCopied": "Link copiado — cole-o no Safari",
       "copyFailed": "Não foi possível copiar o link",
-      "iosOpenInBrowser": "Toque em “…” no canto superior direito, depois em “Abrir no navegador” — a App Store abre imediatamente lá."
+      "iosOpenInBrowser": "Toque em “…” no canto superior direito, depois em “Abrir no navegador” — a App Store abre imediatamente lá.",
+      "_pending_review": {
+        "redirecting": true
+      }
     },
     "mobilesettings": {
       "pushNotifications": "Notificações Push",
@@ -9504,7 +10253,10 @@
       "browseWhatOthersLookingFor": "Explora o que outros procuram:",
       "lengthOpenUpPer_kind_slot_capPerCategory": "{length}abertos · até {PER_KIND_SLOT_CAP}por categoria",
       "lengthPer_kind_slot_capSlotsUsed": "{length}de {PER_KIND_SLOT_CAP}espaços usados",
-      "capReachedCloseOnePostNew": "— limite atingido, fecha um para publicar um novo"
+      "capReachedCloseOnePostNew": "— limite atingido, fecha um para publicar um novo",
+      "_pending_review": {
+        "yourOpenRequestsListingsPartnerSearches": true
+      }
     },
     "mytickets": {
       "myTickets": "Meus Bilhetes",
@@ -9516,7 +10268,10 @@
       "upcomingLength": "Próximos ({length})",
       "pastLength": "Passado ({length})",
       "noUpcomingEvents": "Nenhum evento futuro",
-      "noPastEvents": "Nenhum evento passado"
+      "noPastEvents": "Nenhum evento passado",
+      "_pending_review": {
+        "noTicketsYet": true
+      }
     },
     "notauthorized": {
       "accessDenied": "Acesso Negado",
@@ -9544,7 +10299,10 @@
       "viewMyOrders": "Ver os Seus Pedidos",
       "redeemNow": "Resgatar Agora",
       "viewOrders": "Ver Pedidos",
-      "confirmationHasSent": "Uma confirmação foi enviada para"
+      "confirmationHasSent": "Uma confirmação foi enviada para",
+      "_pending_review": {
+        "weCouldnTFindYourPurchase": true
+      }
     },
     "privacysettings": {
       "privacyVisibility": "Privacidade e Visibilidade",
@@ -9552,7 +10310,12 @@
       "pleaseSignManageYourPrivacySettings": "Por favor, inicia sessão para gerires as tuas definições de privacidade.",
       "serverEnforcesTheseTiersEveryCrossuser": "O servidor impõe estes níveis em cada recuperação interdepartamental – a tua alteração é vinculativa, não consultiva.",
       "back": "Voltar",
-      "tapAnyTierBadgeCyclePrivate": "Toca em qualquer distintivo de nível para alternar entre Privado → Conexões → Público. As configurações padrão priorizam a privacidade — tu decides o que partilhar."
+      "tapAnyTierBadgeCyclePrivate": "Toca em qualquer distintivo de nível para alternar entre Privado → Conexões → Público. As configurações padrão priorizam a privacidade — tu decides o que partilhar.",
+      "_pending_review": {
+        "pleaseSignManageYourPrivacySettings": true,
+        "serverEnforcesTheseTiersEveryCrossuser": true,
+        "tapAnyTierBadgeCyclePrivate": true
+      }
     },
     "publiccampaignlanding": {
       "campaignNotFound": "Campanha Não Encontrada",
@@ -9568,7 +10331,11 @@
       "lengthChannelValue1": "{length}canal{value1}",
       "youLlSignCreateAccountNext": "Vais iniciar sessão ou criar uma conta no próximo passo.",
       "YourLongevityCommunity": "- A tua comunidade de longevidade",
-      "getTicketsForValue0": "Obtém Bilhetes para {value0}"
+      "getTicketsForValue0": "Obtém Bilhetes para {value0}",
+      "_pending_review": {
+        "youLlSignCreateAccountNext": true,
+        "YourLongevityCommunity": true
+      }
     },
     "publiceventlanding": {
       "eventNotFound": "Evento não encontrado",
@@ -9585,7 +10352,11 @@
       "fromPricelabel": "A partir de {priceLabel}",
       "youLlSignCreateAccountNext": "Vais iniciar sessão ou criar uma conta no próximo passo.",
       "YourLongevityCommunity": "- A tua comunidade de longevidade",
-      "getTicketsForTitle": "Obtém Bilhetes para {title}"
+      "getTicketsForTitle": "Obtém Bilhetes para {title}",
+      "_pending_review": {
+        "youLlSignCreateAccountNext": true,
+        "YourLongevityCommunity": true
+      }
     },
     "publicprofilepage": {
       "loadingProfile": "Carregando perfil...",
@@ -9606,7 +10377,12 @@
       "thisVoucherHasExpiredCanNo": "Este vale expirou e não pode mais ser resgatado. Contacta o suporte se precisares de ajuda.",
       "yourValue0VoucherHasAddedYour": "Teu {value0}vale foi adicionado à tua conta. \n            Explora eventos e experiências para usares teus benefícios.",
       "viewWallet": "Ver Carteira",
-      "browseEvents": "Explorar Eventos"
+      "browseEvents": "Explorar Eventos",
+      "_pending_review": {
+        "loadingYourGiftVoucher": true,
+        "thisRedemptionLinkMissingVoucherCode": true,
+        "yourValue0VoucherHasAddedYour": true
+      }
     },
     "search": {
       "viewProfile": "Ver Perfil",
@@ -9623,7 +10399,10 @@
       "content": "🎬 Conteúdo",
       "health": "❤️ Saúde",
       "value0Members": "{value0}membros",
-      "showingResultsFor": "Mostrando resultados para \""
+      "showingResultsFor": "Mostrando resultados para \"",
+      "_pending_review": {
+        "tryAdjustingYourSearchTermsBrowse": true
+      }
     },
     "ticketdemo": {
       "ticketPreview": "Pré-visualização do Bilhete",
@@ -9640,7 +10419,10 @@
       "downloadAsPngShareOptions": "Opções de Descarregar como PNG ou Partilhar",
       "multitenantBoardingPassDesign": "Design de cartão de embarque multi-inquilino",
       "thisDemoTicketPreview": "🎫 Esta é uma pré-visualização de bilhete de demonstração",
-      "actualTicketsWillDisplayYourReal": "Os bilhetes reais exibirão os detalhes do teu evento e compra"
+      "actualTicketsWillDisplayYourReal": "Os bilhetes reais exibirão os detalhes do teu evento e compra",
+      "_pending_review": {
+        "actualTicketsWillDisplayYourReal": true
+      }
     },
     "ticketpurchasesuccess": {
       "invalidRequest": "Pedido Inválido",
@@ -9652,7 +10434,11 @@
       "paymentSuccessful": "Pagamento Bem-sucedido!",
       "viewAllMyTickets": "Vê Todos os Meus Bilhetes",
       "discoverMoreEvents": "Descobre Mais Eventos",
-      "yourTicketHasConfirmedConfirmationEmail": "O teu bilhete foi confirmado. Um e-mail de confirmação foi enviado para {value0}"
+      "yourTicketHasConfirmedConfirmationEmail": "O teu bilhete foi confirmado. Um e-mail de confirmação foi enviado para {value0}",
+      "_pending_review": {
+        "confirmingYourPurchase": true,
+        "yourTicketHasConfirmedConfirmationEmail": true
+      }
     },
     "legal": {
       "deleteAccount": "Apagar Conta",
@@ -9860,7 +10646,54 @@
       "legalRetentionObligations": "obrigações de retenção estatutárias;",
       "securityFraudPreventionReasons": "razões de segurança, prevenção de fraude e proteção contra abuso;",
       "legalClaimsDefense": "a necessidade de estabelecer, exercer ou defender reivindicações legais.",
-      "retentionAnonymizeDelete": "Quando dados pessoais não são mais necessários, nós os excluímos ou anonimizamos, a menos que obrigações de retenção estatutárias exijam o contrário."
+      "retentionAnonymizeDelete": "Quando dados pessoais não são mais necessários, nós os excluímos ou anonimizamos, a menos que obrigações de retenção estatutárias exijam o contrário.",
+      "_pending_review": {
+        "deleteYourAccount": true,
+        "whenYouDeleteYourAccountWe": true,
+        "deletingYourAccount": true,
+        "ifYouCommunicateWithUsWe": true,
+        "weUseYourDataEnableCore": true,
+        "helpUsOperateMaintainImproveApp": true,
+        "powerInappAiAssistantRelatedAi": true,
+        "durationYourRelationshipWithUsE": true,
+        "youCanRequestAccessPersonalData": true,
+        "youCanRequestCorrectionIncompleteInaccurate": true,
+        "youCanRequestDeletionYourData": true,
+        "youCanRequestThatWeLimit": true,
+        "youCanRequestCopyYourPersonal": true,
+        "rightObject": true,
+        "youCanObjectCertainProcessingActivities": true,
+        "ifWeRelyConsentProcessYour": true,
+        "shippingAmpReturnsForPhysicalGoods": true,
+        "youMayAdditionallySubmitDisputesVia": true,
+        "youNeedSignYourAccountBefore": true,
+        "text3HowWeCollectYourData": true,
+        "weProcessYourPersonalDataFor": true,
+        "text5HowWeShareYourData": true,
+        "weDoNotSellRentYour": true,
+        "text9YourRightsUnderGdprIf": true,
+        "ifYouLocatedEuropeanUnionYou": true,
+        "weWillDoOurBestAddress": true,
+        "thankYouForChoosingUseMaxina": true,
+        "ifYouPermitUsAccessLocation": true,
+        "weMayUseCookiesSimilarTracking": true,
+        "givenThatExafyLtdOperatesUae": true,
+        "weWillOnlyRetainYourPersonal": true,
+        "weCommittedProtectingYourPersonalData": true,
+        "exerciseAnyTheseRightsPleaseContact": true,
+        "maxinaMobileMayContainLinksThirdparty": true,
+        "weMayUpdateThisPrivacyPolicy": true,
+        "byUsingMaxinaMobileApplicationYou": true,
+        "theseTermsTermsFormLegallyBinding": true,
+        "byDownloadingAccessingUsingAnyPart": true,
+        "youGrantExafyWorldwideNonexclusiveRoyaltyfree": true,
+        "weMaySuspendTerminateYourAccess": true,
+        "byTappingAcceptCreatingAccountContinuing": true,
+        "communicateWithYou": true,
+        "communicateWithYouDescription": true,
+        "personalizeUserExperienceDescription": true,
+        "provideAiFeaturesDescription": true
+      }
     },
     "patient": {
       "myAppointments": "Minhas Consultas",
@@ -9931,7 +10764,10 @@
       "activity": "Atividade",
       "progress": "Progresso",
       "trend": "Tendência",
-      "text5FromLastMonth": "+5 do mês passado"
+      "text5FromLastMonth": "+5 do mês passado",
+      "_pending_review": {
+        "yourLatestHealthActivities": true
+      }
     },
     "portals": {
       "confirmationError": "Erro de Confirmação",
@@ -10002,7 +10838,18 @@
       "useDifferentEmail": "← Usar outro e-mail",
       "creatingAccount": "Criando Conta...",
       "tryAppleSigninAgain": "Tentar entrar com Apple novamente",
-      "backLogin": "Voltar ao login"
+      "backLogin": "Voltar ao login",
+      "_pending_review": {
+        "joinAlkalma": true,
+        "signYourAlkalmaAccount": true,
+        "checkYourEmail": true,
+        "createYourAccountChooseYourRole": true,
+        "yourFullName": true,
+        "joinEarthlinks": true,
+        "signYourEarthlinksAccount": true,
+        "youExampleCom": true,
+        "youLlRedirectedYourDashboardFew": true
+      }
     },
     "professional": {
       "professionalDashboard": "Painel Profissional",
@@ -10051,7 +10898,12 @@
       "hypertension": "Hipertensão",
       "sj": "SJ",
       "mw": "MW",
-      "text12FromLastMonth": "+12% do mês passado"
+      "text12FromLastMonth": "+12% do mês passado",
+      "_pending_review": {
+        "yourAppointmentsForToday": true,
+        "yourHealthcarePracticeManagementCenter": true,
+        "manageYourPatientRosterCarePlans": true
+      }
     },
     "staff": {
       "staffDashboard": "Painel da Equipe",
@@ -10111,7 +10963,11 @@
       "urgent2": "URGENTE",
       "sj": "SJ",
       "waiting2": "À ESPERA",
-      "mw": "MW"
+      "mw": "MW",
+      "_pending_review": {
+        "yourAssignedTasksForToday": true,
+        "yourDailyWorkflowTaskManagementCenter": true
+      }
     },
     "actions": {
       "doNow": "Fazer Agora",
@@ -10142,7 +10998,11 @@
       "preparingNextSteps": "A preparar teus próximos passos…",
       "allCaughtUpForToday": "Tudo em dia por hoje",
       "nothingNewRightNow": "Nada de novo para ti agora.",
-      "checkForNew": "Verificar novidades"
+      "checkForNew": "Verificar novidades",
+      "_pending_review": {
+        "yourAutopilotRecommendations": true,
+        "preparingNextSteps": true
+      }
     },
     "postDetail": {
       "title": "Publicação",

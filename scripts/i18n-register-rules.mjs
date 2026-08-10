@@ -74,17 +74,39 @@ export const REGISTER_RULES = {
   },
   pt: {
     name: 'Portuguese',
-    // The entry this file was written for. "Informal Portuguese" is ambiguous
-    // between two national standards, and the model split the catalog between
-    // them; naming European Portuguese explicitly is the whole fix.
+    // BRAZILIAN Portuguese (pt-BR) — product decision, 2026-08-10.
+    //
+    // This entry previously said the opposite, and the reversal is worth
+    // keeping visible rather than quietly overwriting. VTID-03523 found the
+    // catalog split between `você` and tu-form, correctly diagnosed that
+    // "informal Portuguese" is ambiguous between two national standards, and
+    // then resolved the ambiguity toward pt-PT — converting 55 Brazilian
+    // strings into European ones. The diagnosis was right and the direction
+    // was wrong: the product wants Brazilian.
+    //
+    // The tell that should have prompted the question: the catalog's
+    // VOCABULARY was Brazilian throughout — "Salvar", "usuário", "tela",
+    // "arquivo", "Carregando" — while only its grammar was European. A
+    // register rule that fights the vocabulary of the catalog it governs is
+    // evidence the rule is pointed the wrong way, not evidence the catalog is
+    // broken. Register and lexis are two axes and the checker only ever saw
+    // one of them.
+    //
+    // `você` is the ordinary second person in pt-BR and is NOT formal here —
+    // that is the single fact this instruction exists to state, because it is
+    // exactly backwards from pt-PT, where `você` is semi-formal.
     instruction:
-      'Use EUROPEAN Portuguese (pt-PT) with the tu-form (informal singular): teu/tua/contigo, ' +
-      'and second-person singular verbs ("podes", "estás", "tens"). ' +
-      'Do NOT use "você" — it is Brazilian usage and semi-formal in pt-PT. ' +
-      'Never "o senhor"/"a senhora". Use clitic pronouns where natural ("ajudou-te", not "ajudou você"). ' +
-      'Imperatives must be 2nd-person singular, NOT the 3rd-person/você form: ' +
-      '"verifica" not "verifique", "seleciona" not "selecione", "aguarda" not "aguarde", "insere" not "insira". ' +
-      'Possessives are "teu"/"tua", not "seu"/"sua", when addressing the reader.',
+      'Use BRAZILIAN Portuguese (pt-BR) with "você" as the ordinary second person. ' +
+      '"Você" is NOT formal in Brazilian Portuguese — it is the normal, friendly way to address someone. ' +
+      'Possessives are "seu"/"sua"; verbs agree in the 3rd person ("você pode", "você está", "você tem"). ' +
+      'Do NOT use the European tu-form: no "tu", no "teu"/"tua", no "contigo", ' +
+      'no 2nd-person-singular verbs ("podes", "estás", "tens", "queres"), ' +
+      'and no enclitic pronouns like "ajudou-te" or "candidata-te" — write "ajudou você", "se inscreva". ' +
+      'Imperatives take the você form: "verifique" not "verifica", "selecione" not "seleciona", ' +
+      '"aguarde" not "aguarda", "insira" not "insere". ' +
+      'Never "o senhor"/"a senhora" — that is genuinely formal and is wrong in both variants. ' +
+      'Prefer Brazilian vocabulary: "Salvar" (not "Guardar"), "usuário" (not "utilizador"), ' +
+      '"tela" (not "ecrã"), "arquivo" (not "ficheiro"), "Carregando" (not "A carregar").',
   },
   ru: {
     name: 'Russian',

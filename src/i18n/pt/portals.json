@@ -23,7 +23,13 @@
         "admin": "Admin",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {
+        "continueJourney": true,
+        "createAccount": true,
+        "yourFullName": true,
+        "forgotPassword": true,
+        "checkEmail": true
+      }
     },
     "alkalma": {
       "joinAlkalma": "Junte-se ao AlKalma",

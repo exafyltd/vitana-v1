@@ -26,9 +26,21 @@
       "youtube": "Identificamos as tuas categorias de conteúdo e áreas de especialização da tua descrição.",
       "facebook": "Extraímos os teus interesses e envolvimento comunitário da tua biografia.",
       "x": "Analisamos a tua biografia para entender as tuas áreas de assunto e estilo de comunicação.",
-      "_pending_review": {}
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "tiktok": true,
+        "youtube": true,
+        "facebook": true,
+        "x": true
+      }
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "dialogDescription": true,
+      "urlRequiredDesc": true,
+      "importSuccessDesc": true,
+      "verifiedConnections": true
+    }
   },
   "_pending_review": {}
 }

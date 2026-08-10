@@ -75,7 +75,22 @@
     "errorTranscription": "A transcrição falhou. Por favor, tenta novamente.",
     "transcribing": "Transcrevendo a tua gravação…",
     "backendRecordingHint": "A tua transcrição aparecerá depois de tocares em Parar.",
-    "_pending_review": {}
+    "_pending_review": {
+      "hint": true,
+      "speakNaturally": true,
+      "transcriptTitle": true,
+      "transcriptPlaceholder": true,
+      "sentBody": true,
+      "faqCreateAccountA": true,
+      "faqResetPasswordA": true,
+      "faqUpdateProfileA": true,
+      "faqDataSecureQ": true,
+      "faqDataSecureA": true,
+      "communityGroupBody": true,
+      "errorNotSupported": true,
+      "transcribing": true,
+      "backendRecordingHint": true
+    }
   },
   "_pending_review": {}
 }

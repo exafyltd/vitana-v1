@@ -33,7 +33,9 @@
       "attachments": "Anexos",
       "recipients": "Para:",
       "add": "Adicionar",
-      "_pending_review": {}
+      "_pending_review": {
+        "placeholder": true
+      }
     },
     "states": {
       "empty": "Nenhuma mensagem ainda",
@@ -78,7 +80,9 @@
       "createdDesc": "\"{name}\" foi criado com sucesso.",
       "failed": "Falha ao criar grupo",
       "failedDesc": "Por favor, tenta novamente.",
-      "_pending_review": {}
+      "_pending_review": {
+        "groupNameRequiredDesc": true
+      }
     },
     "toast": {
       "success": "Sucesso",
@@ -115,7 +119,11 @@
       "tenantDescription": "Conecta-te com colegas e membros da equipa na tua rede profissional.",
       "startConversation": "Iniciar uma conversa",
       "discoverPeople": "Descobrir pessoas",
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true,
+        "globalDescription": true,
+        "tenantDescription": true
+      }
     },
     "group": {
       "loading": "A carregar grupo…",
@@ -129,7 +137,12 @@
       "composerPlaceholder": "Mensagem…",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "subtitle": true,
+      "description": true,
+      "desktopDescription": true,
+      "noGroupsDesc": true
+    }
   },
   "_pending_review": {}
 }

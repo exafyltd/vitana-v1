@@ -73,7 +73,9 @@
       "uploadFailedDesc": "Falha ao carregar imagem. Por favor, tenta novamente.",
       "identityUpdated": "Identidade atualizada",
       "identityUpdatedDesc": "Suas informações de identidade foram salvas com sucesso.",
-      "_pending_review": {}
+      "_pending_review": {
+        "avatarUploadedDesc": true
+      }
     },
     "coverLibrary": {
       "title": "Biblioteca de Capas",
@@ -101,9 +103,14 @@
       "uploadFailed": "Falha no carregamento",
       "categoryRequired": "Por favor, escolhe primeiro uma categoria para esta foto.",
       "saveError": "Não foi possível guardar — por favor, tenta novamente.",
-      "_pending_review": {}
+      "_pending_review": {
+        "drawerTitle": true
+      }
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "aboutDescription": true,
+      "linkUrlPlaceholder": true
+    }
   },
   "_pending_review": {}
 }

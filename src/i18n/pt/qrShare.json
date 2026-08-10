@@ -14,7 +14,9 @@
     "appTagline": "Comunidade de Longevidade",
     "inviteShareTitle": "MAXINA – Comunidade de Longevidade",
     "inviteShareText": "Baixe MAXINA e comece sua jornada de longevidade:",
-    "_pending_review": {}
+    "_pending_review": {
+      "scanToView": true
+    }
   },
   "_pending_review": {}
 }

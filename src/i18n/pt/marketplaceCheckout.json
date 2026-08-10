@@ -5,7 +5,9 @@
       "loading": "A carregar saldo…",
       "empty": "Ainda sem saldo",
       "addMoney": "Adicionar dinheiro",
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true
+      }
     },
     "checkout": {
       "button": "Finalizar compra",
@@ -18,7 +20,9 @@
       "affiliateBody": "Alguns itens são comprados diretamente no comerciante. Abre os links abaixo para concluir a compra.",
       "affiliateLink": "Concluir compra no comerciante",
       "affiliateOpened": "Links do comerciante abertos em novos separadores.",
-      "_pending_review": {}
+      "_pending_review": {
+        "successBody": true
+      }
     },
     "addMoney": {
       "title": "Adicionar dinheiro",
@@ -32,7 +36,9 @@
       "processing": "A preparar…",
       "invalidAmount": "Por favor, insere um valor válido.",
       "failed": "Não foi possível iniciar o carregamento.",
-      "_pending_review": {}
+      "_pending_review": {
+        "description": true
+      }
     },
     "deposit": {
       "checkingTitle": "A confirmar pagamento",
@@ -43,7 +49,11 @@
       "failedBody": "O teu carregamento não pôde ser concluído. Nada foi cobrado.",
       "amountLabel": "Valor",
       "backToCart": "Voltar ao carrinho",
-      "_pending_review": {}
+      "_pending_review": {
+        "checkingBody": true,
+        "succeededBody": true,
+        "failedBody": true
+      }
     },
     "errors": {
       "invalid_request": "A solicitação é inválida. Por favor, verifica o teu carrinho.",
@@ -62,7 +72,19 @@
       "WALLET_READ_FAILED": "Não conseguimos ler o teu saldo. Por favor, tenta novamente.",
       "GATEWAY_MISCONFIGURED": "O serviço de pagamento está atualmente indisponível. Por favor, tenta novamente mais tarde.",
       "unknown": "Algo correu mal no checkout. Por favor, tenta novamente.",
-      "_pending_review": {}
+      "_pending_review": {
+        "invalid_request": true,
+        "CART_EMPTY": true,
+        "PRODUCT_UNAVAILABLE": true,
+        "MIXED_CURRENCY": true,
+        "UNSUPPORTED_WALLET_CURRENCY": true,
+        "WALLET_ACCOUNT_INACTIVE": true,
+        "INSUFFICIENT_BALANCE": true,
+        "WALLET_DEBIT_FAILED": true,
+        "CART_READ_FAILED": true,
+        "ORDER_WRITE_FAILED": true,
+        "WALLET_READ_FAILED": true
+      }
     },
     "_pending_review": {}
   },

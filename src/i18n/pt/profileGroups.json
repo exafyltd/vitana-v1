@@ -5,7 +5,9 @@
     "discoverCta": "Descobre grupos",
     "viewAllCta": "Ver todos os grupos",
     "membersLabel": "membros",
-    "_pending_review": {}
+    "_pending_review": {
+      "emptyDescription": true
+    }
   },
   "_pending_review": {}
 }

@@ -76,7 +76,25 @@
     "benefitEvents": "Acesso à primeira vaga a todos os 12 eventos de verão em Maiorca",
     "benefitVitana": "Orientação pessoal de IA da Vitana desde o primeiro dia",
     "benefitSeat": "Como membro fundador, ajuda a moldar o desenvolvimento de Vitanaland",
-    "_pending_review": {}
+    "_pending_review": {
+      "seoTitle": true,
+      "headlineLine1": true,
+      "subheadline": true,
+      "ctaScroll": true,
+      "nameLabel": true,
+      "deviceLabel": true,
+      "googleEmailLabel": true,
+      "googleEmailHelp": true,
+      "locationLabel": true,
+      "submit": true,
+      "errorAndroidGoogleRequired": true,
+      "errorAlreadyApplied": true,
+      "successTitle": true,
+      "successBody": true,
+      "successHint": true,
+      "aboutVitanalandDescription": true,
+      "aboutVitanaDescription": true
+    }
   },
   "_pending_review": {}
 }

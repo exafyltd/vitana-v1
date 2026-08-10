@@ -7,7 +7,10 @@
       "saveHighlights": "Salvar Destaques",
       "highlightsDesc": "Escolhe as tuas melhores publicações e multimédia para exibir no topo do teu perfil. Conteúdo destacado aparece na secção de Destaques e atrai mais seguidores.",
       "try": "Experimenta",
-      "_pending_review": {}
+      "_pending_review": {
+        "polishBio": true,
+        "highlightsDesc": true
+      }
     },
     "identity": {
       "vitanaIndex": "Índice Vitana",
@@ -84,7 +87,9 @@
       "publicSubtitle": "Produtos recomendados por este perfil",
       "publicEmpty": "Nenhuma recomendação ainda",
       "viewProduct": "Ver",
-      "_pending_review": {}
+      "_pending_review": {
+        "emptyDesc": true
+      }
     },
     "_pending_review": {}
   },

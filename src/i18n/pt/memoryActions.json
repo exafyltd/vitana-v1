@@ -5,7 +5,9 @@
       "recordVoiceDiary": {
         "title": "Gravar Diário de Voz",
         "description": "Captura pensamentos e reflexões com a tua voz",
-        "_pending_review": {}
+        "_pending_review": {
+          "description": true
+        }
       },
       "addMemoryNote": {
         "title": "Adicionar Nota de Memória",
@@ -15,7 +17,9 @@
       "viewTimeline": {
         "title": "Ver Linha do Tempo",
         "description": "Vê a tua jornada de bem-estar completa",
-        "_pending_review": {}
+        "_pending_review": {
+          "description": true
+        }
       },
       "searchMemories": {
         "title": "Pesquisar Memórias",
@@ -25,12 +29,16 @@
       "photoMemory": {
         "title": "Memória de Foto",
         "description": "Adiciona memórias visuais à tua jornada",
-        "_pending_review": {}
+        "_pending_review": {
+          "description": true
+        }
       },
       "aiMemoryAnalysis": {
         "title": "Análise de Memória por IA",
         "description": "Obtém insights dos teus padrões de memória",
-        "_pending_review": {}
+        "_pending_review": {
+          "description": true
+        }
       },
       "_pending_review": {}
     },

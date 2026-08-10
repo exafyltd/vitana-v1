@@ -46,7 +46,9 @@
       "sendEmail": "Enviar ao Destinatário por E-mail",
       "viewOrders": "Ver nas Encomendas",
       "done": "Feito",
-      "_pending_review": {}
+      "_pending_review": {
+        "ready": true
+      }
     },
     "email": {
       "title": "Enviar Voucher por E-mail",
@@ -72,7 +74,9 @@
       "share": "Salvar / Compartilhar",
       "shareHint": "Salvar em Arquivos, Drive ou enviar para alguém",
       "downloadHint": "Se o download abrir em branco, toca em Abrir no Navegador",
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true
+      }
     },
     "toast": {
       "downloadStarted": "Download iniciado!",

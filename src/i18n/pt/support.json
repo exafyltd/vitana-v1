@@ -18,27 +18,37 @@
         "createAccount": {
           "question": "Como crias uma conta Maxina?",
           "answer": "Descarrega a app Maxina ou visita o nosso portal em vitanaland.com/maxina. Toca em 'Registar' e insere o teu endereço de e-mail. Irás receber um e-mail de confirmação para verificar a tua conta. Após a confirmação, completa o teu perfil para descobrires eventos de bem-estar e funcionalidades da comunidade.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "resetPassword": {
           "question": "Como reponho a minha palavra-passe?",
           "answer": "No ecrã de início de sessão, toca em 'Esqueci-me da Palavra-passe' e insere o teu endereço de e-mail registado. Irás receber um link de redefinição de palavra-passe dentro de alguns minutos. Verifica a tua pasta de spam se não vires o e-mail. Por razões de segurança, o link expira após 24 horas.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "joinEvents": {
           "question": "Como faço para participar de eventos e encontros?",
           "answer": "Procura eventos disponíveis na secção Eventos & Encontros. Toca num evento para veres detalhes como data, local e preço. Para eventos gratuitos, basta tocares em 'Participar' ou 'RSVP'. Para eventos pagos, podes comprar bilhetes de forma segura através do nosso sistema de pagamento integrado.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "updateProfile": {
           "question": "Como atualizo as informações do meu perfil?",
           "answer": "Vai ao teu separador Perfil e toca no ícone Editar ou em 'Editar Perfil'. Podes atualizar o teu nome de exibição, biografia, foto de perfil e interesses de bem-estar. As alterações são guardadas automaticamente. O teu perfil ajuda-nos a personalizar recomendações de eventos para ti.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "deleteAccount": {
           "question": "Como posso apagar a minha conta?",
           "answer": "Para eliminar a tua conta Maxina e dados associados, por favor, envia um e-mail para support@exafy.io com o assunto 'Eliminação de Conta – Maxina'. Fornece o endereço de e-mail associado à tua conta. Processamos os pedidos de eliminação no prazo de 30 dias.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "paymentMethods": {
           "question": "Que métodos de pagamento são aceites?",
@@ -53,7 +63,9 @@
         "dataSecure": {
           "question": "Os meus dados pessoais estão seguros?",
           "answer": "Sim, a tua privacidade e segurança são a nossa principal prioridade. Usamos encriptação padrão da indústria, autenticação segura e cumprimos as diretrizes do RGPD. Nunca partilhamos os teus dados pessoais com terceiros sem o teu consentimento. Lê a nossa política de privacidade completa para mais detalhes.",
-          "_pending_review": {}
+          "_pending_review": {
+            "answer": true
+          }
         },
         "_pending_review": {}
       },

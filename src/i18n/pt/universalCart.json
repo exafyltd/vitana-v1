@@ -16,7 +16,12 @@
       "alreadyCompleted": "Já concluído",
       "linkToDiscover": "Explorar Discover",
       "close": "Fechar",
-      "_pending_review": {}
+      "_pending_review": {
+        "emptyTitle": true,
+        "loading": true,
+        "roleBlockedBody": true,
+        "errorTitle": true
+      }
     },
     "tabs": {
       "cart": "Carrinho",
@@ -28,7 +33,9 @@
       "saveForLater": "Guardar para mais tarde",
       "emptyTitle": "Nada guardado ainda",
       "emptyBody": "Guarda produtos para mais tarde tocando em “Guardar para mais tarde” no teu carrinho.",
-      "_pending_review": {}
+      "_pending_review": {
+        "emptyBody": true
+      }
     },
     "item": {
       "viewProduct": "Ver produto",
@@ -58,7 +65,17 @@
       "overCapAdvisory": "Estes itens fazem-te ultrapassar o teu orçamento mensal.",
       "nearCapAdvisory": "Estes itens aproximam-te do teu orçamento mensal.",
       "error": "Algo correu mal. Por favor, tenta novamente.",
-      "_pending_review": {}
+      "_pending_review": {
+        "promptLabel": true,
+        "promptPlaceholder": true,
+        "sectionSubtitle": true,
+        "roleBlocked": true,
+        "empty": true,
+        "reorderSectionSubtitle": true,
+        "reordering": true,
+        "overCapAdvisory": true,
+        "nearCapAdvisory": true
+      }
     },
     "budget": {
       "title": "Orçamento deste mês",
@@ -67,7 +84,9 @@
       "statusNear": "Quase no orçamento",
       "statusOver": "Acima do orçamento",
       "noCapHint": "Define um orçamento mensal para controlares os teus gastos.",
-      "_pending_review": {}
+      "_pending_review": {
+        "noCapHint": true
+      }
     },
     "addButton": {
       "label": "Adicionar ao carrinho",
@@ -78,7 +97,10 @@
       "roleBlocked": "O carrinho está disponível apenas no teu papel na comunidade.",
       "failed": "Não foi possível adicionar ao carrinho",
       "success": "Adicionado ao carrinho",
-      "_pending_review": {}
+      "_pending_review": {
+        "signRequired": true,
+        "roleBlocked": true
+      }
     },
     "_pending_review": {}
   },

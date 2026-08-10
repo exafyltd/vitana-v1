@@ -20,7 +20,11 @@
     "joining": "A aderir...",
     "getTickets": "Obter Bilhetes",
     "promoteEvent": "Promover evento",
-    "_pending_review": {}
+    "_pending_review": {
+      "getFreeTicket": true,
+      "yourTicket": true,
+      "getYourTicket": true
+    }
   },
   "_pending_review": {}
 }

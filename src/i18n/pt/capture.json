@@ -44,7 +44,19 @@
     "recognitionErrorDesc": "O reconhecimento de fala encontrou um erro. Por favor, tenta novamente.",
     "transcribing": "A transcrever a tua gravação…",
     "backendRecordingHint": "A gravar — a tua transcrição aparecerá depois de tocares em Parar.",
-    "_pending_review": {}
+    "_pending_review": {
+      "yourVoiceEntry": true,
+      "yourFeedback": true,
+      "reportSentDesc": true,
+      "recordingStartedDesc": true,
+      "recordingStoppedDesc": true,
+      "noContentBugDesc": true,
+      "entrySavedDesc": true,
+      "saveFailedDesc": true,
+      "sendFailedDesc": true,
+      "transcribing": true,
+      "backendRecordingHint": true
+    }
   },
   "_pending_review": {}
 }

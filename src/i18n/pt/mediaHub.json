@@ -69,7 +69,10 @@
       "deleteErrorDesc": "A eliminação falhou. Por favor, tenta novamente.",
       "commentError": "Erro",
       "commentErrorDesc": "Falha ao publicar comentário. Por favor, tente novamente.",
-      "_pending_review": {}
+      "_pending_review": {
+        "podcastDeletedDesc": true,
+        "videoDeletedDesc": true
+      }
     },
     "comments": {
       "title": "Comentários",
@@ -159,7 +162,10 @@
       },
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "discoverContent": true,
+      "noMatchingShorts": true
+    }
   },
   "_pending_review": {}
 }

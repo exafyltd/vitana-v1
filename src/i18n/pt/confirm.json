@@ -16,7 +16,19 @@
     "disconnectDesc": "Podes reconectar mais tarde.",
     "proceed": "Queres continuar?",
     "proceedDesc": "Esta ação será executada.",
-    "_pending_review": {}
+    "_pending_review": {
+      "delete": true,
+      "cancel": true,
+      "cancelDesc": true,
+      "unsavedChanges": true,
+      "unsavedChangesDesc": true,
+      "leave": true,
+      "logout": true,
+      "remove": true,
+      "disconnect": true,
+      "disconnectDesc": true,
+      "proceed": true
+    }
   },
   "_pending_review": {}
 }

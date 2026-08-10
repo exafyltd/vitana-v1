@@ -32,7 +32,7 @@
 //   node scripts/i18n-register-check.mjs --all
 //   node scripts/i18n-register-check.mjs --locale=pl --max=40
 
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { hasRegisterRule } from './i18n-register-rules.mjs';
@@ -135,25 +135,40 @@ const RULES = {
   },
   pt: {
     name: 'Portuguese',
-    // European Portuguese: `tu` is informal, `o senhor`/`a senhora` formal.
-    // `você` is a genuine grey area — semi-formal in pt-PT, standard in pt-BR
-    // — so it is reported SEPARATELY rather than counted as a violation.
-    // VTID-03524: the 3rd-person imperative is the você/formal form and is
-    // what "Por favor, verifique…" uses. The tu-form is "verifica"/"seleciona"
-    // /"aguarda". Same lesson as `Veuillez`: register lives in the verb, so a
-    // pronoun-only rule reports a clean catalog that reads as Brazilian
-    // semi-formal throughout. `Por favor` ALONE is register-neutral and is
-    // deliberately not matched — only the formal imperative forms are.
-    // Deliberately anchored to "Por favor, <verb>" rather than matching the
-    // bare verb forms. `complete`, `confirme` and `tente` are also ordinary
-    // subjunctives, so an unanchored list would flag correct sentences — the
-    // same over-matching that made Spanish `su` unusable. `Por favor` on its
-    // own is register-neutral and is NOT matched; only the construction is.
+    // BRAZILIAN Portuguese (pt-BR) — product decision, 2026-08-10. VTID-03577.
+    //
+    // This rule previously encoded the OPPOSITE variant, and inverting it is
+    // the whole change. Under pt-PT, `você` was the suspect form and the
+    // 3rd-person imperative ("Por favor, verifique…") was a violation. Under
+    // pt-BR both are simply correct, and the European tu-form is the error.
+    //
+    // Two things stay true across the flip, and they are the only genuinely
+    // formal markers in either variant:
+    //   * `o senhor` / `a senhora` — formal address, wrong in pt-PT and pt-BR alike
+    //   * `Vossa Excelência` — ceremonial
+    //
+    // `você` is NOT matched at all any more, soft or otherwise. Flagging the
+    // standard second person of the target variant would make every correct
+    // string a finding, which is how a check gets muted.
+    // Both genuinely-formal address AND wrong-variant markers live in `formal`,
+    // because only `formal` is counted and only the count sets the exit code —
+    // `soft` is printed once as a sample and never fails. A 1,174-hit variant
+    // mismatch that exits 0 is not a check, it is a log line.
+    //
+    // Enclisis (`ajudou-te`, `candidata-te`) is the highest-signal marker:
+    // Brazilian Portuguese proclises and effectively never hyphenates a
+    // second-person clitic, so a hit is close to conclusive. The 2sg verb list
+    // is explicit rather than a morphological pattern because `-es` endings are
+    // ordinary elsewhere (`meses`, `países`) — the over-matching that made
+    // Spanish `su` unusable.
+    //
+    // The two classes stay distinguishable in the OUTPUT rather than in the
+    // schema: every violation prints its matched string, so `o senhor` and
+    // `-te` are one glance apart and call for different repairs.
     formal:
-      /\bo senhor\b|\ba senhora\b|\bVossa Excel[êe]ncia\b|\bpor favor,?\s+(?:verifique|selecione|introduza|aguarde|complete|escolha|preencha|confirme|insira|clique)\b/iu,
-    soft: L('você'),
+      /\bo senhor\b|\ba senhora\b|\bVossa Excel[êe]ncia\b|\btu\b|\bte?us?\b|\btuas?\b|\bcontigo\b|\w+-te\b|\b(?:podes|est[áa]s|tens|queres|vais|fazes|sabes|deves)\b/iu,
     exempt: [],
-    note: 'tu-form (European Portuguese). Never o senhor.',
+    note: 'você-form (Brazilian Portuguese). Never o senhor; never the European tu-form.',
     crossCheck: true,
   },
   ru: {
@@ -319,11 +334,56 @@ const locales = args.all
   ? Object.keys(RULES).filter((l) => existsSync(join(I18N, l)))
   : [String(args.locale ?? 'ru')];
 
+/**
+ * Mark violating keys `_pending_review` so the translate workflow redoes them
+ * (VTID-03577).
+ *
+ * Without this, a register finding is a list of 1,174 keys and no way to act on
+ * it. `i18n-stamp-source.mjs --flag` cannot help: it flags keys whose SOURCE
+ * moved, and a wrong-variant translation has a perfectly current source — the
+ * German never changed, only the Portuguese was written in the wrong variety.
+ * Drift and register are independent defects and need independent flaggers.
+ *
+ * Writes the flag beside the leaf, in the shape `collectPending`/`translate-keys`
+ * already expect: `{ _pending_review: { <leafName>: true } }` on the parent.
+ */
+function flagViolations(locale, violations) {
+  const byShard = {};
+  for (const v of violations) {
+    const [shard, ...rest] = v.key.split('.');
+    (byShard[shard] ||= []).push(rest.join('.'));
+  }
+  let flagged = 0;
+  for (const [shard, keys] of Object.entries(byShard)) {
+    const file = join(I18N, locale, `${shard}.json`);
+    if (!existsSync(file)) continue;
+    const doc = JSON.parse(readFileSync(file, 'utf8'));
+    for (const dotted of keys) {
+      const parts = dotted.split('.');
+      let cur = doc;
+      let ok = true;
+      for (const seg of parts.slice(0, -1)) {
+        if (!cur[seg] || typeof cur[seg] !== 'object') { ok = false; break; }
+        cur = cur[seg];
+      }
+      if (!ok) continue;
+      (cur._pending_review ||= {})[parts[parts.length - 1]] = true;
+      flagged++;
+    }
+    writeFileSync(file, JSON.stringify(doc, null, 2) + '\n');
+  }
+  return flagged;
+}
+
 let total = 0;
 for (const locale of locales) {
   const { violations, plural, soft, rule } = checkLocale(locale);
   if (!rule) continue;
   total += violations.length;
+  if (args.flag && violations.length) {
+    const n = flagViolations(locale, violations);
+    console.log(`[register] ${locale}: flagged ${n} key(s) _pending_review for re-translation`);
+  }
   console.log(
     `\n[register] ${locale} (${rule.name}) — ${violations.length} violation(s)` +
       `, ${plural.length} correct-plural (excluded)` +

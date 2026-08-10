@@ -24,7 +24,9 @@
       "noPostsFromFollowingDesc": "As pessoas que segues ainda não criaram eventos ou encontros.",
       "youFollow": "Segues",
       "loadingFollowing": "A carregar publicações…",
-      "_pending_review": {}
+      "_pending_review": {
+        "noEventsTodayDesc": true
+      }
     },
     "_pending_review": {}
   },

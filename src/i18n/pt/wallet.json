@@ -28,7 +28,10 @@
     "noActivity": "Nenhuma atividade ainda",
     "noActivityDesc": "Tuas transações aparecerão aqui.",
     "displayCurrency": "Moeda de exibição",
-    "_pending_review": {}
+    "_pending_review": {
+      "description": true,
+      "noActivityDesc": true
+    }
   },
   "_pending_review": {}
 }

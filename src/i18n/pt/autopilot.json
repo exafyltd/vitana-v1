@@ -17,7 +17,14 @@
       "profileSectionTitle": "O Piloto Automático pode aprimorar teu perfil ✨",
       "profileSectionDesc": "Recebe sugestões com IA para tua biografia, arquétipo e destaques.",
       "tryAutopilot": "Experimentar Piloto Automático",
-      "_pending_review": {}
+      "_pending_review": {
+        "bannerTitle": true,
+        "bannerDesc": true,
+        "showcaseDesc": true,
+        "archetypeDesc": true,
+        "profileSectionTitle": true,
+        "profileSectionDesc": true
+      }
     },
     "preview": "Prévia do Piloto Automático",
     "viewAll": "Ver Tudo",
@@ -43,7 +50,10 @@
       "toastExecutedDesc": "{success}/{total} ações concluídas com sucesso",
       "toastFailedTitle": "Execução Falhou",
       "toastFailedDesc": "Algo deu errado. Por favor, tenta novamente.",
-      "_pending_review": {}
+      "_pending_review": {
+        "readyToExecute": true,
+        "executingDesc": true
+      }
     },
     "priorities": {
       "high": "Alto",
@@ -69,7 +79,9 @@
       "statusBalanced": "Equilibrado",
       "statusNeedsAttention": "Precisa de Atenção",
       "statusImproving": "A Melhorar",
-      "_pending_review": {}
+      "_pending_review": {
+        "description": true
+      }
     },
     "profilePopup": {
       "title": "Deixa o Piloto Automático otimizar o teu perfil ✨",
@@ -93,7 +105,12 @@
       "applied": "Alterações salvas!",
       "error": "Algo deu errado",
       "comingSoon": "Em breve",
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true,
+        "polishBio": true,
+        "refreshArchetype": true,
+        "highlightShowcase": true
+      }
     },
     "actions": {
       "action1Title": "Participar do Grupo de Dança da Longevidade Hoje à Noite?",
@@ -110,7 +127,14 @@
       "action6Reason": "Tua alma está chamando por estas técnicas para derreter o estresse",
       "newActionTitle": "Nova sugestão de IA",
       "newActionReason": "Com base em padrões de atividade recente",
-      "_pending_review": {}
+      "_pending_review": {
+        "action1Reason": true,
+        "action2Reason": true,
+        "action3Reason": true,
+        "action5Title": true,
+        "action5Reason": true,
+        "action6Reason": true
+      }
     },
     "_pending_review": {}
   },

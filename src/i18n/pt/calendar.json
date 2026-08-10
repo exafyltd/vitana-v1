@@ -30,7 +30,9 @@
       "todayLabel": "Hoje",
       "nextUp": "A seguir",
       "noEventsToday": "Nenhum evento hoje",
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true
+      }
     },
     "filters": {
       "personal": "Pessoal",
@@ -83,7 +85,10 @@
       "reminderTomorrow": "Lembrete definido para amanhã",
       "recommendFocus": "Recomendar bloco de foco",
       "focusBlockDesc": "Tens um espaço de 90 minutos disponível. Perfeito para trabalho concentrado.",
-      "_pending_review": {}
+      "_pending_review": {
+        "calendarUpdated": true,
+        "focusBlockDesc": true
+      }
     },
     "toasts": {
       "eventCreated": "Evento criado",
@@ -101,7 +106,10 @@
       "inviteFollowers": "Convidar seguidores",
       "rescheduleEvent": "Reagendar evento",
       "shareToGroup": "Partilhar com o grupo",
-      "_pending_review": {}
+      "_pending_review": {
+        "eventCreatedDesc": true,
+        "eventDeletedDesc": true
+      }
     },
     "error": {
       "failedToCreate": "Falha ao criar evento",
@@ -113,7 +121,9 @@
       "todaysFocus": "Foco de hoje",
       "lightDay": "Dia leve — explora atividades ou põe o teu diário em dia",
       "moreSteps": "mais passos",
-      "_pending_review": {}
+      "_pending_review": {
+        "lightDay": true
+      }
     },
     "badge": {
       "guidedStep": "Passo guiado",
@@ -155,9 +165,15 @@
         "wave-6": "Recomendações e Descoberta",
         "_pending_review": {}
       },
-      "_pending_review": {}
+      "_pending_review": {
+        "yourJourney": true
+      }
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "bookedActivities": true,
+      "tryQuickAdd": true,
+      "exploreActivities": true
+    }
   },
   "_pending_review": {}
 }

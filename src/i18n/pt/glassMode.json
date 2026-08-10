@@ -15,7 +15,9 @@
     "typeMessage": "Podes agora inserir a tua mensagem.",
     "actionFailed": "Ação Falhou",
     "couldNotExecute": "Não foi possível executar {action}",
-    "_pending_review": {}
+    "_pending_review": {
+      "typeMessage": true
+    }
   },
   "_pending_review": {}
 }

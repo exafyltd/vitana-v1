@@ -8,7 +8,9 @@
     "preparing": "Preparando...",
     "playing": "Reproduzindo",
     "goToLogin": "Ir para Entrar",
-    "_pending_review": {}
+    "_pending_review": {
+      "taglineMain": true
+    }
   },
   "_pending_review": {}
 }

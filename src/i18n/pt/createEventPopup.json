@@ -116,9 +116,20 @@
       "personalEventCreatedDesc": "O evento foi adicionado ao teu calendário.",
       "error": "Erro",
       "errorDesc": "O evento não pôde ser criado. Por favor, tenta novamente.",
-      "_pending_review": {}
+      "_pending_review": {
+        "invalidDateDesc": true,
+        "errorCreatingDesc": true,
+        "generatingImageDesc": true,
+        "imageGeneratedDesc": true,
+        "permissionDeniedDesc": true,
+        "imageGenFailedDesc": true,
+        "communityEventCreatedDesc": true,
+        "personalEventCreatedDesc": true
+      }
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "descriptionPlaceholder": true
+    }
   },
   "_pending_review": {}
 }

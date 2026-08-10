@@ -6,22 +6,32 @@
       "owned": {
         "title": "Tu és dono do que partilhas.",
         "body": "Memória, perfil, recomendações — tudo visível, exportável, eliminável a qualquer momento.",
-        "_pending_review": {}
+        "_pending_review": {
+          "title": true
+        }
       },
       "noSell": {
         "title": "Nunca vendemos os teus dados.",
         "body": "Nem a redes de anúncios, nem a corretores de dados, nem a parceiros. Imposto em código.",
-        "_pending_review": {}
+        "_pending_review": {
+          "title": true
+        }
       },
       "earn": {
         "title": "As tuas recomendações podem render-te.",
         "body": "Quando a tua recomendação fecha uma venda através de Vende e Ganha, ou quando hospedas uma Sala ao Vivo paga, o rendimento é teu — divulgado transparentemente.",
-        "_pending_review": {}
+        "_pending_review": {
+          "title": true,
+          "body": true
+        }
       },
       "control": {
         "title": "Tu decides o que Vende e Ganha faz por ti.",
         "body": "Três interruptores nas tuas definições de Conexão dão-te controlo total.",
-        "_pending_review": {}
+        "_pending_review": {
+          "title": true,
+          "body": true
+        }
       },
       "_pending_review": {}
     },
@@ -108,7 +118,9 @@
       "starterShort": "Inicial",
       "boostShort": "Impulso",
       "powerShort": "Potência",
-      "_pending_review": {}
+      "_pending_review": {
+        "yourBalance": true
+      }
     },
     "redeemCard": {
       "title": "Tens um código?",
@@ -126,9 +138,13 @@
         "stripeActive": "Já tens Premium — guarda este código para mais tarde",
         "budgetExhausted": "Campanha pausada — por favor, tenta novamente mais tarde",
         "generic": "Não foi possível resgatar o código",
-        "_pending_review": {}
+        "_pending_review": {
+          "stripeActive": true
+        }
       },
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true
+      }
     },
     "earnings": {
       "title": "Teus ganhos (este ano)",
@@ -137,7 +153,10 @@
       "net": "Líquido",
       "withdraw": "Retirar",
       "empty": "Nenhum ganho ainda",
-      "_pending_review": {}
+      "_pending_review": {
+        "title": true,
+        "youEarned": true
+      }
     },
     "founding": {
       "bannerTitle": "🏆 Seja um dos primeiros {max}",
@@ -184,7 +203,10 @@
       "trialEndsAt": "O teste termina em {date}",
       "trialingBadge": "Em teste",
       "activeBadge": "Ativo",
-      "_pending_review": {}
+      "_pending_review": {
+        "freeStatus": true,
+        "pastDueBody": true
+      }
     },
     "subscriptionsPage": {
       "title": "Subscrições",
@@ -192,9 +214,13 @@
       "tabs": {
         "yourPlan": "O teu plano",
         "billing": "Faturação",
-        "_pending_review": {}
+        "_pending_review": {
+          "yourPlan": true
+        }
       },
-      "_pending_review": {}
+      "_pending_review": {
+        "subtitle": true
+      }
     },
     "faq": {
       "title": "Porquê Premium?",
@@ -206,7 +232,9 @@
       "a3": "Sim, sem contrato. Manténs o Premium até ao fim do período atual.",
       "q4": "Vendes os meus dados?",
       "a4": "Nunca. Nunca vendemos os teus dados a redes de anúncios, corretores de dados ou parceiros.",
-      "_pending_review": {}
+      "_pending_review": {
+        "a4": true
+      }
     },
     "checkoutErrors": {
       "stripeNotConfigured": "Os pagamentos ainda não estão totalmente configurados. Tenta novamente mais tarde.",
@@ -214,7 +242,9 @@
       "noStripeCustomer": "Subscreve primeiro antes de usares o portal.",
       "checkoutFailed": "Pagamento falhou",
       "portalFailed": "Não foi possível abrir o portal de faturação",
-      "_pending_review": {}
+      "_pending_review": {
+        "alreadySubscribed": true
+      }
     },
     "_pending_review": {}
   },
@@ -227,7 +257,9 @@
       "body": "O teu tempo de voz ao vivo incluído foi usado. O ORB continuará no modo Padrão. Adiciona minutos ao vivo ou faz upgrade a qualquer momento.",
       "stayInStandard": "Continuar no modo Padrão",
       "addMinutes": "Adicionar minutos ao vivo",
-      "_pending_review": {}
+      "_pending_review": {
+        "body": true
+      }
     },
     "live_room_minutes": {
       "title": "Tempo de alojamento a esgotar-se",
@@ -239,22 +271,30 @@
     "match_posts": {
       "title": "Todas as publicações gratuitas usadas",
       "body": "Usaste as tuas publicações gratuitas deste mês. O Premium dá-te mais.",
-      "_pending_review": {}
+      "_pending_review": {
+        "body": true
+      }
     },
     "match_reveals": {
       "title": "Revelar correspondência",
       "body": "Usaste as tuas revelações gratuitas. Usa {credits} créditos ou faz upgrade para Premium.",
-      "_pending_review": {}
+      "_pending_review": {
+        "body": true
+      }
     },
     "lab_analyses": {
       "title": "Análises de laboratório usadas",
       "body": "Usaste as tuas análises de laboratório este mês.",
-      "_pending_review": {}
+      "_pending_review": {
+        "body": true
+      }
     },
     "photo_uploads": {
       "title": "Carregamentos de fotos usados",
       "body": "Usaste os teus carregamentos de fotos este mês.",
-      "_pending_review": {}
+      "_pending_review": {
+        "body": true
+      }
     },
     "memory_garden": {
       "title": "Jardim da memória cheio",
@@ -264,12 +304,16 @@
     "autopilot": {
       "title": "Mais recomendações de Piloto Automático",
       "body": "O Premium aumenta a tua contagem de recomendações ativas.",
-      "_pending_review": {}
+      "_pending_review": {
+        "body": true
+      }
     },
     "default": {
       "title": "Desbloquear Premium",
       "body": "Usaste a tua quota gratuita para este período.",
-      "_pending_review": {}
+      "_pending_review": {
+        "body": true
+      }
     },
     "ctaUpgrade": "Desbloquear Premium",
     "ctaCredits": "Usar {credits} créditos",
@@ -277,7 +321,9 @@
     "remainingCounter": "{remaining} / {limit}",
     "resetsIn": "Redefine em {date}",
     "creditsInsufficient": "Créditos insuficientes. Carrega primeiro.",
-    "_pending_review": {}
+    "_pending_review": {
+      "softExtension": true
+    }
   },
   "_pending_review": {}
 }

@@ -105,7 +105,10 @@
       "noRecommendations": "Nenhuma recomendação encontrada",
       "noRecommendationsDesc": "Escolhe um filtro diferente para ver mais recomendações.",
       "viewAllPicks": "Ver Todas as Escolhas",
-      "_pending_review": {}
+      "_pending_review": {
+        "description": true,
+        "unavailableDesc": true
+      }
     },
     "filters": {
       "all": "Tudo",
@@ -127,7 +130,14 @@
       "signIn": "Fazer login",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "title": true,
+      "description": true,
+      "communityGroupsDesc": true,
+      "reasonForCategory": true,
+      "reasonGeneric": true,
+      "recommendAdded": true
+    }
   },
   "_pending_review": {}
 }

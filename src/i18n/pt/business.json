@@ -18,7 +18,12 @@
       "resellAndEarn": "Revende e ganha",
       "offerBookings": "Oferece reservas",
       "boostVisibility": "Aumenta a visibilidade",
-      "_pending_review": {}
+      "_pending_review": {
+        "choosePathGuide": true,
+        "howToEarn": true,
+        "pickOne": true,
+        "createEventDesc": true
+      }
     },
     "history": {
       "all": "Tudo",
@@ -40,7 +45,10 @@
       "details": "Detalhes",
       "earningsActivity": "Atividade de Ganhos",
       "noEarningsStartSelling": "Ainda não tens ganhos. Começa a vender para veres a atividade aqui.",
-      "_pending_review": {}
+      "_pending_review": {
+        "startSellingToSee": true,
+        "noEarningsStartSelling": true
+      }
     },
     "kpi": {
       "totalEarnings": "Ganhos Totais",
@@ -88,7 +96,10 @@
       "attributedSales": "Vendas Atribuídas por Evento",
       "noSalesMatchFilter": "Nenhuma venda corresponde aos filtros atuais",
       "mockDataActive": "Dados de teste ativos",
-      "_pending_review": {}
+      "_pending_review": {
+        "shareLinkOrPromotion": true,
+        "pickEventForLink": true
+      }
     },
     "transfer": {
       "title": "Transferir para a Carteira",
@@ -98,7 +109,9 @@
       "instantCredit": "Isto irá creditar instantaneamente os teus ganhos no saldo da tua Carteira.",
       "transferring": "Transferindo...",
       "transfer": "Transferir",
-      "_pending_review": {}
+      "_pending_review": {
+        "instantCredit": true
+      }
     },
     "typeSelector": {
       "title": "Começar um Negócio",

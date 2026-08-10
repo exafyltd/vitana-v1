@@ -20,7 +20,9 @@
     "save": "Poupa {percent}%",
     "unpublish": "Despublicar",
     "publish": "Publicar",
-    "_pending_review": {}
+    "_pending_review": {
+      "confirmDelete": true
+    }
   },
   "_pending_review": {}
 }

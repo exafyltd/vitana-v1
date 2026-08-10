@@ -55,7 +55,13 @@
       "noMentalPlanDesc": "Gera o teu plano de bem-estar mental personalizado, para monitorizar o stress, foco e equilíbrio emocional com suporte de IA.",
       "generatePlan": "Gerar Plano",
       "generating": "A Gerar...",
-      "_pending_review": {}
+      "_pending_review": {
+        "noSleepPlanDesc": true,
+        "noExercisePlanDesc": true,
+        "noNutritionPlanDesc": true,
+        "noHydrationPlanDesc": true,
+        "noMentalPlanDesc": true
+      }
     },
     "noSupplements": "Ainda sem suplementos",
     "noSupplementsDesc": "Rastreia tuas vitaminas, minerais e suplementos diários. Adiciona teu primeiro suplemento para começar.",
@@ -95,9 +101,23 @@
         "_pending_review": {}
       },
       "contractLink": "Ver o contrato do Objetivo Final",
-      "_pending_review": {}
+      "_pending_review": {
+        "subtitle": true,
+        "noRecs": true,
+        "summaryServed": true
+      }
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "description": true,
+      "overviewDesc": true,
+      "biomarkersDesc": true,
+      "healthTrackerDesc": true,
+      "priorityFocus": true,
+      "priorityFocusExplanation": true,
+      "healthSnapshot": true,
+      "noSupplementsDesc": true,
+      "noReportsDesc": true
+    }
   },
   "_pending_review": {}
 }

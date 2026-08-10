@@ -41,7 +41,15 @@
     "confirmDeleteAll": "⚠️ AVISO: Isso excluirá permanentemente teu histórico INTEIRO. Esta ação não pode ser desfeita. Tens certeza absoluta?",
     "beta": "Beta",
     "danger": "Perigo",
-    "_pending_review": {}
+    "_pending_review": {
+      "exportHistoryDesc": true,
+      "exportCompleteDesc": true,
+      "exportFailedDesc": true,
+      "allHistoryDeletedDesc": true,
+      "deleteFailedDesc": true,
+      "confirmClearOld": true,
+      "confirmDeleteAll": true
+    }
   },
   "_pending_review": {}
 }

@@ -10,7 +10,9 @@
       "manageAccess": {
         "title": "Gerir Acesso",
         "description": "Controla quem pode ver as tuas memórias de saúde",
-        "_pending_review": {}
+        "_pending_review": {
+          "description": true
+        }
       },
       "securitySettings": {
         "title": "Configurações de Segurança",
@@ -25,7 +27,9 @@
       "dataRights": {
         "title": "Direitos de Dados",
         "description": "Exerce os teus direitos de portabilidade e eliminação de dados",
-        "_pending_review": {}
+        "_pending_review": {
+          "description": true
+        }
       },
       "auditLogs": {
         "title": "Registos de Auditoria",
@@ -40,7 +44,9 @@
       "exportData": {
         "title": "Exportar Dados",
         "description": "Transfere as tuas memórias e dados de saúde em segurança",
-        "_pending_review": {}
+        "_pending_review": {
+          "description": true
+        }
       },
       "_pending_review": {}
     },

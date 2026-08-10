@@ -15,7 +15,11 @@
     "orContinueWith": "Ou continua com",
     "backToPortals": "Voltar a todos os portais",
     "keepLoggedIn": "Mantém-me conectado(a)",
-    "_pending_review": {}
+    "_pending_review": {
+      "enterEmail": true,
+      "enterPassword": true,
+      "enterFullName": true
+    }
   },
   "_pending_review": {}
 }

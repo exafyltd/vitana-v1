@@ -6,7 +6,9 @@
     "leftDesc": "Saíste deste grupo.",
     "errorJoin": "Não foi possível entrar no grupo. Tenta novamente.",
     "errorLeave": "Não foi possível sair do grupo. Tenta novamente.",
-    "_pending_review": {}
+    "_pending_review": {
+      "joined": true
+    }
   },
   "_pending_review": {}
 }

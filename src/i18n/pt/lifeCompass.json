@@ -58,7 +58,10 @@
       },
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "description": true,
+      "customGoalPlaceholder": true
+    }
   },
   "_pending_review": {}
 }

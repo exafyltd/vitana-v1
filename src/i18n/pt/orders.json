@@ -27,7 +27,9 @@
     "emptyActive": {
       "title": "Nenhum Pedido Ativo",
       "description": "Não tens nenhuma encomenda ativa ou próximos eventos.",
-      "_pending_review": {}
+      "_pending_review": {
+        "description": true
+      }
     },
     "emptyHistory": {
       "title": "Nenhum Histórico de Pedidos",
@@ -65,7 +67,9 @@
       "cancel": "Cancelar",
       "send": "Enviar",
       "downloadPdf": "Baixar PDF",
-      "_pending_review": {}
+      "_pending_review": {
+        "yourTicket": true
+      }
     },
     "status": {
       "upcoming": "Próximos",
@@ -83,7 +87,13 @@
       "active": "Ativo",
       "_pending_review": {}
     },
-    "_pending_review": {}
+    "_pending_review": {
+      "description": true,
+      "trackDescription": true,
+      "previewNotice": true,
+      "noOrdersDesc": true,
+      "noFilterDesc": true
+    }
   },
   "_pending_review": {}
 }
