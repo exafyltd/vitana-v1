@@ -10177,6 +10177,23 @@
         "failed": "Fehlgeschlagen"
       }
     },
+    "commerceportal": {
+      "heroTitle": "Bring dein Business nach Vitanaland",
+      "heroSubtitle": "Verbinde deinen Shop im Self-Service mit dem Discover-Marktplatz — ohne Integrations-Projekt und ohne Warten auf Entwickler.",
+      "cta": "Jetzt Business verbinden",
+      "step1Title": "Business anlegen",
+      "step1Body": "Lege dein Business an und beschreibe deine Schnittstelle — mit OpenAPI-Spezifikation oder per Autorisierung.",
+      "step2Title": "Mapping prüfen",
+      "step2Body": "Die Factory-Pipeline schlägt Feld-Mappings vor. Sensible Felder gibst du selbst frei.",
+      "step3Title": "Freigabe & live gehen",
+      "step3Body": "Nach den Sandbox-Tests prüft das Vitanaland-Team deine Verbindung und schaltet sie frei.",
+      "footNote": "Sicherheits-, Consent- und Zertifizierungs-Prüfungen werden nie übersprungen.",
+      "connectionsTitle": "Meine Verbindungen",
+      "connectionsSubtitle": "Deine Businesses im Discover-Marktplatz",
+      "empty": "Noch keine Verbindungen. Bring dein erstes Business nach Vitanaland.",
+      "awaitingApproval": "Zertifiziert — wartet auf die Freigabe durch das Vitanaland-Team",
+      "activationHint": "Nach der Zertifizierung prüft das Vitanaland-Team deine Verbindung und schaltet sie frei."
+    },
     "oauthconsent": {
       "title": "Zugriff erlauben?",
       "clientWants": "{client} möchte auf dein Vitanaland-Konto zugreifen",
