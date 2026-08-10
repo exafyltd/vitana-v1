@@ -51,7 +51,8 @@
       "movement": "Movimento",
       "mind": "Mente",
       "supplements": "Suplementos",
-      "experts": "Especialistas"
+      "experts": "Especialistas",
+      "_pending_review": {}
     },
     "subcategories": {
       "longevity": "Longevidade",
@@ -78,7 +79,8 @@
       "sexualHealth": "Saúde Sexual",
       "prevention": "Prevenção e Deteção Precoce",
       "generalHealth": "Saúde Geral",
-      "dnaAnalysis": "Análise de DNA"
+      "dnaAnalysis": "Análise de DNA",
+      "_pending_review": {}
     },
     "quickActions": {
       "title": "Ações Rápidas",
@@ -89,7 +91,8 @@
       "reorderPrevious": "Reordenar Anterior",
       "managePayment": "Gerir Pagamento",
       "findServicesNearMe": "Encontrar Serviços Perto de Mim",
-      "viewSavedItems": "Ver Itens Guardados"
+      "viewSavedItems": "Ver Itens Guardados",
+      "_pending_review": {}
     },
     "aiPicks": {
       "title": "Recomendações de IA para ti",
@@ -101,24 +104,30 @@
       "recommendationsFound": "{count} recomendações encontradas",
       "noRecommendations": "Nenhuma recomendação encontrada",
       "noRecommendationsDesc": "Escolhe um filtro diferente para ver mais recomendações.",
-      "viewAllPicks": "Ver Todas as Escolhas"
+      "viewAllPicks": "Ver Todas as Escolhas",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Tudo",
       "services": "Serviços",
       "supplements": "Suplementos",
       "experts": "Especialistas",
-      "deals": "Ofertas"
+      "deals": "Ofertas",
+      "_pending_review": {}
     },
     "toast": {
       "actionSelected": "Ação Selecionada",
-      "comingSoon": "Recurso {action} em breve!"
+      "comingSoon": "Recurso {action} em breve!",
+      "_pending_review": {}
     },
     "guest": {
       "bannerTitle": "Faça login para ganhar recompensas Vitana em cada compra",
       "bannerSubtitle": "Navegue livremente — faça login (é grátis) para comprar e começar a ganhar recompensas.",
       "bannerCta": "Fazer login",
-      "signIn": "Fazer login"
-    }
-  }
+      "signIn": "Fazer login",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

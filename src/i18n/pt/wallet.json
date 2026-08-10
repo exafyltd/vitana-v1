@@ -11,7 +11,8 @@
     "tabs": {
       "balances": "Saldos",
       "activity": "Atividade",
-      "actions": "Ações"
+      "actions": "Ações",
+      "_pending_review": {}
     },
     "filters": {
       "commissions": "Vende e ganha comissões",
@@ -21,10 +22,13 @@
       "purchases": "Compras",
       "pending": "Pagamentos Pendentes",
       "withdrawals": "Levantamentos",
-      "stakes": "Aposta"
+      "stakes": "Aposta",
+      "_pending_review": {}
     },
     "noActivity": "Nenhuma atividade ainda",
     "noActivityDesc": "Suas transações aparecerão aqui.",
-    "displayCurrency": "Moeda de exibição"
-  }
+    "displayCurrency": "Moeda de exibição",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -16,6 +16,8 @@
     "title": "Título",
     "titlePlaceholder": "Título do vídeo",
     "description": "Descrição",
-    "descriptionPlaceholder": "Descrição opcional..."
-  }
+    "descriptionPlaceholder": "Descrição opcional...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

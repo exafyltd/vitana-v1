@@ -13,6 +13,8 @@
     "forbidden": "Acesso negado",
     "forbiddenDesc": "Você não tem permissão para esta ação.",
     "notFound": "Não encontrado",
-    "notFoundDesc": "O item solicitado não foi encontrado."
-  }
+    "notFoundDesc": "O item solicitado não foi encontrado.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

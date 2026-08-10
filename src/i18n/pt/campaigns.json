@@ -4,7 +4,8 @@
       "title": "Excluir Campanha?",
       "description": "Apagar \"{name}\" remove permanentemente todos os rascunhos e análises associados. Isto não pode ser desfeito.",
       "dontAskAgain": "Não me perguntes novamente sobre campanhas de rascunho",
-      "deletePermanently": "Excluir Permanentemente"
+      "deletePermanently": "Excluir Permanentemente",
+      "_pending_review": {}
     },
     "creation": {
       "title": "Criar Campanha",
@@ -17,8 +18,12 @@
         "1": "Nomes claros ajudam você a encontrar campanhas mais tarde",
         "2": "Conecta os canais agora para planeamento instantâneo",
         "3": "O modelo de lançamento funciona para a maioria dos anúncios",
-        "4": "Planejamento inteligente usa seus dados de engajamento passados"
-      }
-    }
-  }
+        "4": "Planejamento inteligente usa seus dados de engajamento passados",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

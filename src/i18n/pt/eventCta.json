@@ -19,6 +19,8 @@
     "processing": "A processar...",
     "joining": "A aderir...",
     "getTickets": "Obter Bilhetes",
-    "promoteEvent": "Promover evento"
-  }
+    "promoteEvent": "Promover evento",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

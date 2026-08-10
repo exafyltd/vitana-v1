@@ -29,14 +29,16 @@
       "title": "Seus eventos agendados",
       "todayLabel": "Hoje",
       "nextUp": "A seguir",
-      "noEventsToday": "Nenhum evento hoje"
+      "noEventsToday": "Nenhum evento hoje",
+      "_pending_review": {}
     },
     "filters": {
       "personal": "Pessoal",
       "community": "Comunidade",
       "work": "Trabalho",
       "health": "Saúde",
-      "workout": "Treino"
+      "workout": "Treino",
+      "_pending_review": {}
     },
     "categories": {
       "community": "Comunidade",
@@ -45,19 +47,22 @@
       "nutrition": "Nutrição",
       "professional": "Trabalho",
       "personal": "Pessoal",
-      "training": "Treino"
+      "training": "Treino",
+      "_pending_review": {}
     },
     "bookingStatus": {
       "booked": "Reservado",
       "rsvp": "Confirmar presença",
       "ticket": "Bilhete",
-      "reserved": "Reservado"
+      "reserved": "Reservado",
+      "_pending_review": {}
     },
     "timeGroups": {
       "today": "Hoje",
       "tomorrow": "Amanhã",
       "thisWeek": "Esta Semana",
-      "later": "Mais tarde"
+      "later": "Mais tarde",
+      "_pending_review": {}
     },
     "autopilot": {
       "suggestions": "Sugestões do Piloto Automático",
@@ -77,7 +82,8 @@
       "reminderLaterToday": "Lembrete definido para mais tarde hoje",
       "reminderTomorrow": "Lembrete definido para amanhã",
       "recommendFocus": "Recomendar bloco de foco",
-      "focusBlockDesc": "Você tem um período de 90 minutos disponível. Perfeito para trabalho focado."
+      "focusBlockDesc": "Você tem um período de 90 minutos disponível. Perfeito para trabalho focado.",
+      "_pending_review": {}
     },
     "toasts": {
       "eventCreated": "Evento criado",
@@ -94,22 +100,26 @@
       "featureComingSoon": "Funcionalidade em breve",
       "inviteFollowers": "Convidar seguidores",
       "rescheduleEvent": "Reagendar evento",
-      "shareToGroup": "Partilhar com o grupo"
+      "shareToGroup": "Partilhar com o grupo",
+      "_pending_review": {}
     },
     "error": {
-      "failedToCreate": "Falha ao criar evento"
+      "failedToCreate": "Falha ao criar evento",
+      "_pending_review": {}
     },
     "allDay": "O dia todo",
     "milestoneToday": "Marco",
     "focus": {
       "todaysFocus": "Foco de hoje",
       "lightDay": "Dia leve — explore atividades ou coloque seu diário em dia",
-      "moreSteps": "mais passos"
+      "moreSteps": "mais passos",
+      "_pending_review": {}
     },
     "badge": {
       "guidedStep": "Passo guiado",
       "milestone": "Marco",
-      "wellness": "Bem-estar"
+      "wellness": "Bem-estar",
+      "_pending_review": {}
     },
     "action": {
       "start": "Começar",
@@ -118,11 +128,13 @@
       "details": "Detalhes",
       "viewPlan": "Ver plano",
       "open": "Abrir",
-      "done": "Feito"
+      "done": "Feito",
+      "_pending_review": {}
     },
     "group": {
       "stepsRemaining": "passos restantes",
-      "min": "min"
+      "min": "min",
+      "_pending_review": {}
     },
     "journey": {
       "dayOf": "Dia {day} de {total}",
@@ -140,8 +152,12 @@
         "wave-3": "Aprofundando Conexões",
         "wave-4": "Inteligência em Saúde",
         "wave-5": "Momentos de Insight",
-        "wave-6": "Recomendações e Descoberta"
-      }
-    }
-  }
+        "wave-6": "Recomendações e Descoberta",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

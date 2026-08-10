@@ -15,6 +15,8 @@
     "disconnect": "Você realmente quer desconectar esta conexão?",
     "disconnectDesc": "Você pode reconectar mais tarde.",
     "proceed": "Você quer continuar?",
-    "proceedDesc": "Esta ação será executada."
-  }
+    "proceedDesc": "Esta ação será executada.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

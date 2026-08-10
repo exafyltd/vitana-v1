@@ -18,6 +18,8 @@
     "balanceRefreshedDesc": "O saldo da carteira foi atualizado",
     "refreshFailed": "Atualização Falhou",
     "refreshFailedDesc": "O saldo não pôde ser atualizado. Por favor, tenta novamente.",
-    "error": "Erro"
-  }
+    "error": "Erro",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

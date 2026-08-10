@@ -40,6 +40,8 @@
     "confirmClearOld": "Você tem certeza de que deseja excluir o histórico com mais de 90 dias?",
     "confirmDeleteAll": "⚠️ AVISO: Isso excluirá permanentemente TODO o seu histórico. Esta ação não pode ser desfeita. Você tem certeza absoluta?",
     "beta": "Beta",
-    "danger": "Perigo"
-  }
+    "danger": "Perigo",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

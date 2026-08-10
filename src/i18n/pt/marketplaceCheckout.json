@@ -4,7 +4,8 @@
       "title": "Seu saldo",
       "loading": "A carregar saldo…",
       "empty": "Ainda sem saldo",
-      "addMoney": "Adicionar dinheiro"
+      "addMoney": "Adicionar dinheiro",
+      "_pending_review": {}
     },
     "checkout": {
       "button": "Finalizar compra",
@@ -16,7 +17,8 @@
       "affiliateTitle": "Concluir compra no comerciante",
       "affiliateBody": "Alguns itens são comprados diretamente no comerciante. Abre os links abaixo para concluir a compra.",
       "affiliateLink": "Concluir compra no comerciante",
-      "affiliateOpened": "Links do comerciante abertos em novos separadores."
+      "affiliateOpened": "Links do comerciante abertos em novos separadores.",
+      "_pending_review": {}
     },
     "addMoney": {
       "title": "Adicionar dinheiro",
@@ -29,7 +31,8 @@
       "continue": "Continuar para pagamento",
       "processing": "A preparar…",
       "invalidAmount": "Por favor, insere um valor válido.",
-      "failed": "Não foi possível iniciar o carregamento."
+      "failed": "Não foi possível iniciar o carregamento.",
+      "_pending_review": {}
     },
     "deposit": {
       "checkingTitle": "A confirmar pagamento",
@@ -39,7 +42,8 @@
       "failedTitle": "Carregamento falhou",
       "failedBody": "Sua recarga não pôde ser concluída. Nada foi cobrado.",
       "amountLabel": "Valor",
-      "backToCart": "Voltar ao carrinho"
+      "backToCart": "Voltar ao carrinho",
+      "_pending_review": {}
     },
     "errors": {
       "invalid_request": "A solicitação foi inválida. Por favor, verifique seu carrinho.",
@@ -57,7 +61,10 @@
       "ORDER_WRITE_FAILED": "Seu pedido não pôde ser salvo. Por favor, tente novamente.",
       "WALLET_READ_FAILED": "Não conseguimos ler seu saldo. Por favor, tente novamente.",
       "GATEWAY_MISCONFIGURED": "O serviço de pagamento está atualmente indisponível. Por favor, tenta novamente mais tarde.",
-      "unknown": "Algo correu mal no checkout. Por favor, tenta novamente."
-    }
-  }
+      "unknown": "Algo correu mal no checkout. Por favor, tenta novamente.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

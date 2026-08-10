@@ -17,7 +17,8 @@
       "hostAndSell": "Organiza e vende bilhetes",
       "resellAndEarn": "Revende e ganha",
       "offerBookings": "Oferece reservas",
-      "boostVisibility": "Aumenta a visibilidade"
+      "boostVisibility": "Aumenta a visibilidade",
+      "_pending_review": {}
     },
     "history": {
       "all": "Tudo",
@@ -38,7 +39,8 @@
       "allTime": "Tempo total",
       "details": "Detalhes",
       "earningsActivity": "Atividade de Ganhos",
-      "noEarningsStartSelling": "Nenhum ganho ainda. Comece a vender para ver a atividade aqui."
+      "noEarningsStartSelling": "Nenhum ganho ainda. Comece a vender para ver a atividade aqui.",
+      "_pending_review": {}
     },
     "kpi": {
       "totalEarnings": "Ganhos Totais",
@@ -61,7 +63,8 @@
       "resellerCommissions": "Comissões de Revendedor",
       "goToSellEarn": "Vende e Ganha",
       "totalEarned": "Total ganho",
-      "earningsBySource": "Ganhos por Origem"
+      "earningsBySource": "Ganhos por Origem",
+      "_pending_review": {}
     },
     "reseller": {
       "upcomingEvents": "Próximos Eventos",
@@ -84,7 +87,8 @@
       "noPayoutsYet": "Sem pagamentos ainda",
       "attributedSales": "Vendas Atribuídas por Evento",
       "noSalesMatchFilter": "Nenhuma venda corresponde aos filtros atuais",
-      "mockDataActive": "Dados de teste ativos"
+      "mockDataActive": "Dados de teste ativos",
+      "_pending_review": {}
     },
     "transfer": {
       "title": "Transferir para a Carteira",
@@ -93,7 +97,8 @@
       "wallet": "Carteira",
       "instantCredit": "Isso vai creditar instantaneamente seus ganhos no seu saldo da Carteira.",
       "transferring": "Transferindo...",
-      "transfer": "Transferir"
+      "transfer": "Transferir",
+      "_pending_review": {}
     },
     "typeSelector": {
       "title": "Começar um Negócio",
@@ -106,7 +111,8 @@
       "badgeNew": "Novo",
       "badgeActive": "Ativo",
       "alreadyReseller": "Já és um revendedor! Vê o separador \"Vende e Ganha\".",
-      "cancel": "Cancelar"
+      "cancel": "Cancelar",
+      "_pending_review": {}
     },
     "missionOpportunities": {
       "title": "Oportunidades de Missão",
@@ -119,8 +125,12 @@
         "find_match": "Encontrar uma Correspondência",
         "marketplace": "Mercado",
         "income_generation": "Geração de renda",
-        "business_formation": "Formação de negócios"
-      }
-    }
-  }
+        "business_formation": "Formação de negócios",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

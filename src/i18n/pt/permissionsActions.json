@@ -4,36 +4,47 @@
     "items": {
       "privacySettings": {
         "title": "Configurações de Privacidade",
-        "description": "Configurar Definições de Privacidade e Partilha"
+        "description": "Configurar Definições de Privacidade e Partilha",
+        "_pending_review": {}
       },
       "manageAccess": {
         "title": "Gerir Acesso",
-        "description": "Controle quem pode ver suas memórias de saúde"
+        "description": "Controle quem pode ver suas memórias de saúde",
+        "_pending_review": {}
       },
       "securitySettings": {
         "title": "Configurações de Segurança",
-        "description": "Atualizar Configurações de Autenticação e Segurança"
+        "description": "Atualizar Configurações de Autenticação e Segurança",
+        "_pending_review": {}
       },
       "apiKeysAccess": {
         "title": "Chaves de API e Acesso",
-        "description": "Gere as integrações de apps de terceiros e o acesso à API"
+        "description": "Gere as integrações de apps de terceiros e o acesso à API",
+        "_pending_review": {}
       },
       "dataRights": {
         "title": "Direitos de Dados",
-        "description": "Exerça seus direitos à portabilidade de dados e exclusão"
+        "description": "Exerça seus direitos à portabilidade de dados e exclusão",
+        "_pending_review": {}
       },
       "auditLogs": {
         "title": "Registos de Auditoria",
-        "description": "Revisa o histórico de acesso e o rasto de auditoria de segurança"
+        "description": "Revisa o histórico de acesso e o rasto de auditoria de segurança",
+        "_pending_review": {}
       },
       "permissionSettings": {
         "title": "Configurações de Permissões",
-        "description": "Ajusta as permissões granulares para diferentes funcionalidades"
+        "description": "Ajusta as permissões granulares para diferentes funcionalidades",
+        "_pending_review": {}
       },
       "exportData": {
         "title": "Exportar Dados",
-        "description": "Baixe suas memórias e dados de saúde com segurança"
-      }
-    }
-  }
+        "description": "Baixe suas memórias e dados de saúde com segurança",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

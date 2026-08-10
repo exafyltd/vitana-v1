@@ -9351,10 +9351,7 @@
       "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA é uma plataforma de saúde digital abrangente que oferece múltiplos ambientes especializados para diferentes comunidades de bem-estar e gestão profissional de cuidados de saúde.",
       "commercePortal": "Portal de Comércio",
       "merchantSelfServiceMarketplace": "Mercado de Auto-Serviço para Comerciantes",
-      "connectYourBusinessToDiscoverYourself": "Conecta o teu negócio ao mercado Discover tu mesmo — sem projeto de integração, sem esperar por engenheiros.",
-      "_pending_review": {
-        "connectYourBusinessToDiscoverYourself": true
-      }
+      "connectYourBusinessToDiscoverYourself": "Conecte seu negócio ao marketplace Discover você mesmo — sem projeto de integração, sem esperar por engenheiros."
     },
     "intentboard": {
       "communityBoard": "Mural da comunidade",
@@ -10157,7 +10154,7 @@
     },
     "partnerportal": {
       "title": "Portal de Parceiros",
-      "subtitle": "Conecta o teu negócio ao mercado Vitanaland",
+      "subtitle": "Conecte seu negócio ao marketplace Vitanaland",
       "connections": "Conexões",
       "newConnection": "Conecta um negócio",
       "businessName": "Nome do negócio",
@@ -10168,7 +10165,7 @@
       "openapiHint": "Com uma especificação, a conexão começa no mapeamento. Sem uma, aguarda a autorização do parceiro.",
       "create": "Cria conexão",
       "creating": "A criar...",
-      "empty": "Ainda sem conexões. Conecta o teu primeiro negócio.",
+      "empty": "Nenhuma conexão ainda. Conecte seu primeiro negócio.",
       "loadFailed": "Não foi possível carregar as conexões",
       "state": "Estado",
       "updated": "Atualizado",
@@ -10179,7 +10176,7 @@
       "confidence": "Confiança",
       "decidedBy": "Decidido por",
       "sensitive": "Sensível",
-      "pendingReview": "{count} mapeamento(s) precisam da tua decisão",
+      "pendingReview": "{count} mapeamento(s) precisa(m) da sua decisão",
       "approve": "Aprovar",
       "reject": "Rejeitar",
       "awaitingFactory": "As propostas de mapeamento são produzidas pelo pipeline da fábrica e aparecerão aqui.",
@@ -10208,83 +10205,52 @@
         "suspended": "Em pausa",
         "revoked": "Revogado",
         "failed": "Falhou"
-      },
-      "_pending_review": {
-        "subtitle": true,
-        "empty": true,
-        "pendingReview": true
       }
     },
     "commerceportal": {
-      "heroTitle": "Traz o teu negócio para a Vitanaland",
-      "heroSubtitle": "Conecta a tua loja ao marketplace Discover — sem projeto de integração, sem esperar por engenheiros.",
-      "cta": "Conecta o teu negócio agora",
-      "step1Title": "Cria o teu negócio",
-      "step1Body": "Cria o teu negócio e descreve a tua interface — com uma especificação OpenAPI ou via autorização.",
+      "heroTitle": "Traga seu negócio para a Vitanaland",
+      "heroSubtitle": "Conecte sua loja ao marketplace Discover você mesmo — sem projeto de integração, sem esperar por engenheiros.",
+      "cta": "Conecte seu negócio agora",
+      "step1Title": "Crie seu negócio",
+      "step1Body": "Crie seu negócio e descreva sua interface — com uma especificação OpenAPI ou via autorização.",
       "step2Title": "Revisa o mapeamento",
-      "step2Body": "A pipeline da fábrica propõe mapeamentos de campos. Tu aprovas os campos sensíveis por ti.",
+      "step2Body": "O pipeline da fábrica propõe mapeamentos de campo. Você aprova campos sensíveis você mesmo.",
       "step3Title": "Aprovação e ativação",
-      "step3Body": "Após os testes na sandbox, a equipa Vitanaland revê a tua ligação e ativa-a.",
+      "step3Body": "Após os testes de sandbox, a equipe Vitanaland revisa sua conexão e a ativa.",
       "footNote": "As verificações de segurança, consentimento e certificação nunca são ignoradas.",
       "connectionsTitle": "As minhas ligações",
-      "connectionsSubtitle": "Os teus negócios no marketplace Discover",
-      "empty": "Ainda sem ligações. Traz o teu primeiro negócio para a Vitanaland.",
+      "connectionsSubtitle": "Seus negócios no marketplace Discover",
+      "empty": "Nenhuma conexão ainda. Traga seu primeiro negócio para a Vitanaland.",
       "awaitingApproval": "Certificado — à espera de aprovação pela equipa Vitanaland",
-      "activationHint": "Após a certificação, a equipa Vitanaland revê a tua ligação e ativa-a.",
+      "activationHint": "Após a certificação, a equipe Vitanaland revisa sua conexão e a ativa.",
       "loginSubtitle": "Portal de Comércio",
-      "loginIntro": "Inicia sessão para gerir o teu negócio.",
+      "loginIntro": "Faça login para gerenciar seu negócio.",
       "loginButton": "Iniciar sessão",
-      "loginError": "Falha ao iniciar sessão",
-      "_pending_review": {
-        "heroTitle": true,
-        "heroSubtitle": true,
-        "cta": true,
-        "step1Title": true,
-        "step1Body": true,
-        "step2Body": true,
-        "step3Body": true,
-        "connectionsSubtitle": true,
-        "empty": true,
-        "activationHint": true,
-        "loginIntro": true
-      }
+      "loginError": "Falha ao iniciar sessão"
     },
     "oauthconsent": {
       "title": "Permitir acesso?",
-      "clientWants": "{client} quer aceder à tua conta Vitanaland",
+      "clientWants": "{client} quer acessar sua conta Vitanaland",
       "scopesIntro": "Escolhe o que a aplicação pode fazer:",
       "approve": "Permitir",
       "deny": "Negar",
       "working": "Um momento...",
       "noSession": "Por favor, inicia sessão primeiro para continuar.",
       "invalidRequest": "Este pedido de autorização é inválido ou expirou.",
-      "decisionFailed": "A tua decisão não pôde ser submetida. Por favor, tenta novamente.",
+      "decisionFailed": "Sua decisão não pôde ser enviada. Por favor, tente novamente.",
       "nothingSelected": "Seleciona pelo menos uma permissão ou nega.",
       "scopes": {
         "vitana:catalog:read": "Ver produtos e ofertas",
-        "vitana:cart:read": "Ver o teu carrinho",
-        "vitana:cart:write": "Adicionar itens ao teu carrinho",
-        "vitana:orders:read": "Ver as tuas encomendas",
-        "vitana:orders:write": "Prepara encomendas (a confirmação fica contigo)",
-        "vitana:wallet:read": "Ver o teu saldo da carteira",
-        "vitana:rewards:read": "Ver as tuas recompensas",
+        "vitana:cart:read": "Ver seu carrinho",
+        "vitana:cart:write": "Adicionar itens ao seu carrinho",
+        "vitana:orders:read": "Ver seus pedidos",
+        "vitana:orders:write": "Preparar pedidos (a confirmação fica com você)",
+        "vitana:wallet:read": "Ver seu saldo da carteira",
+        "vitana:rewards:read": "Ver suas recompensas",
         "vitana:partners:read": "Visualiza a informação do parceiro",
         "vitana:connections:write": "Gere as ligações de negócio",
-        "vitana:grants:write": "Propõe concessões de dados (o consentimento fica contigo)",
-        "vitana:settlement:write": "Ativa as liquidações VTNA preparadas",
-        "_pending_review": {
-          "vitana:cart:read": true,
-          "vitana:cart:write": true,
-          "vitana:orders:read": true,
-          "vitana:orders:write": true,
-          "vitana:wallet:read": true,
-          "vitana:rewards:read": true,
-          "vitana:grants:write": true
-        }
-      },
-      "_pending_review": {
-        "clientWants": true,
-        "decisionFailed": true
+        "vitana:grants:write": "Propor concessões de dados (o consentimento fica com você)",
+        "vitana:settlement:write": "Ativa as liquidações VTNA preparadas"
       }
     }
   }

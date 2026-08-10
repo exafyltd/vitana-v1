@@ -10,55 +10,70 @@
         "account": "Conta e Perfil",
         "events": "Eventos e Encontros",
         "payments": "Pagamentos e Cobrança",
-        "technical": "Ajuda Técnica"
+        "technical": "Ajuda Técnica",
+        "_pending_review": {}
       },
       "faq": {
         "title": "Perguntas Frequentes",
         "createAccount": {
           "question": "Como crias uma conta Maxina?",
-          "answer": "Baixe o aplicativo Maxina ou visite nosso portal em vitanaland.com/maxina. Toque em 'Cadastrar' e insira seu endereço de e-mail. Você receberá um e-mail de confirmação para verificar sua conta. Após a confirmação, complete seu perfil para descobrir eventos de bem-estar e recursos da comunidade."
+          "answer": "Baixe o aplicativo Maxina ou visite nosso portal em vitanaland.com/maxina. Toque em 'Cadastrar' e insira seu endereço de e-mail. Você receberá um e-mail de confirmação para verificar sua conta. Após a confirmação, complete seu perfil para descobrir eventos de bem-estar e recursos da comunidade.",
+          "_pending_review": {}
         },
         "resetPassword": {
           "question": "Como reponho a minha palavra-passe?",
-          "answer": "Na tela de login, toque em 'Esqueci a Senha' e insira seu endereço de e-mail cadastrado. Você receberá um link para redefinir a senha em poucos minutos. Verifique sua caixa de spam se não vir o e-mail. Por razões de segurança, o link expira após 24 horas."
+          "answer": "Na tela de login, toque em 'Esqueci a Senha' e insira seu endereço de e-mail cadastrado. Você receberá um link para redefinir a senha em poucos minutos. Verifique sua caixa de spam se não vir o e-mail. Por razões de segurança, o link expira após 24 horas.",
+          "_pending_review": {}
         },
         "joinEvents": {
           "question": "Como faço para participar de eventos e encontros?",
-          "answer": "Navegue pelos eventos disponíveis na seção Eventos e Encontros. Toque em um evento para ver detalhes como data, local e preço. Para eventos gratuitos, basta tocar em 'Participar' ou 'RSVP'. Para eventos pagos, você pode comprar ingressos com segurança através do nosso sistema de pagamento integrado."
+          "answer": "Navegue pelos eventos disponíveis na seção Eventos e Encontros. Toque em um evento para ver detalhes como data, local e preço. Para eventos gratuitos, basta tocar em 'Participar' ou 'RSVP'. Para eventos pagos, você pode comprar ingressos com segurança através do nosso sistema de pagamento integrado.",
+          "_pending_review": {}
         },
         "updateProfile": {
           "question": "Como atualizo as informações do meu perfil?",
-          "answer": "Vá para a sua aba Perfil e toque no ícone Editar ou em 'Editar Perfil'. Você pode atualizar seu nome de exibição, biografia, foto de perfil e interesses de bem-estar. As alterações são salvas automaticamente. Seu perfil nos ajuda a personalizar recomendações de eventos para você."
+          "answer": "Vá para a sua aba Perfil e toque no ícone Editar ou em 'Editar Perfil'. Você pode atualizar seu nome de exibição, biografia, foto de perfil e interesses de bem-estar. As alterações são salvas automaticamente. Seu perfil nos ajuda a personalizar recomendações de eventos para você.",
+          "_pending_review": {}
         },
         "deleteAccount": {
           "question": "Como posso apagar a minha conta?",
-          "answer": "Para excluir sua conta Maxina e dados associados, por favor, envie um e-mail para support@exafy.io com o assunto 'Exclusão de Conta – Maxina'. Forneça o endereço de e-mail vinculado à sua conta. Processamos solicitações de exclusão em até 30 dias."
+          "answer": "Para excluir sua conta Maxina e dados associados, por favor, envie um e-mail para support@exafy.io com o assunto 'Exclusão de Conta – Maxina'. Forneça o endereço de e-mail vinculado à sua conta. Processamos solicitações de exclusão em até 30 dias.",
+          "_pending_review": {}
         },
         "paymentMethods": {
           "question": "Que métodos de pagamento são aceites?",
-          "answer": "Aceitamos os principais cartões de crédito e débito (Visa, Mastercard, American Express) através da nossa integração segura de pagamento Stripe. Apple Pay e Google Pay também estão disponíveis em dispositivos compatíveis. Todas as transações são encriptadas e compatíveis com PCI-DSS."
+          "answer": "Aceitamos os principais cartões de crédito e débito (Visa, Mastercard, American Express) através da nossa integração segura de pagamento Stripe. Apple Pay e Google Pay também estão disponíveis em dispositivos compatíveis. Todas as transações são encriptadas e compatíveis com PCI-DSS.",
+          "_pending_review": {}
         },
         "contactOrganizers": {
           "question": "Como contacto os organizadores de eventos?",
-          "answer": "Em cada página de evento, encontrarás o perfil do organizador. Toca no nome para veres o perfil e acederes às opções de mensagens. Para perguntas sobre eventos específicos, usa a secção de Perguntas e Respostas do evento ou contacta o organizador diretamente através de mensagens na app."
+          "answer": "Em cada página de evento, encontrarás o perfil do organizador. Toca no nome para veres o perfil e acederes às opções de mensagens. Para perguntas sobre eventos específicos, usa a secção de Perguntas e Respostas do evento ou contacta o organizador diretamente através de mensagens na app.",
+          "_pending_review": {}
         },
         "dataSecure": {
           "question": "Os meus dados pessoais estão seguros?",
-          "answer": "Sim, sua privacidade e segurança são nossa principal prioridade. Usamos criptografia padrão da indústria, autenticação segura e cumprimos as diretrizes do GDPR. Nunca compartilhamos seus dados pessoais com terceiros sem seu consentimento. Leia nossa política de privacidade completa para mais detalhes."
-        }
+          "answer": "Sim, sua privacidade e segurança são nossa principal prioridade. Usamos criptografia padrão da indústria, autenticação segura e cumprimos as diretrizes do GDPR. Nunca compartilhamos seus dados pessoais com terceiros sem seu consentimento. Leia nossa política de privacidade completa para mais detalhes.",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "contact": {
         "title": "Contactar Suporte",
         "email": "Envia-nos um e-mail",
-        "responseTime": "Normalmente respondemos em 24 horas"
+        "responseTime": "Normalmente respondemos em 24 horas",
+        "_pending_review": {}
       },
       "usefulLinks": {
         "title": "Links Úteis",
         "privacy": "Política de Privacidade",
         "deleteAccount": "Apagar Conta",
-        "portal": "Voltar ao Portal Maxina"
+        "portal": "Voltar ao Portal Maxina",
+        "_pending_review": {}
       },
-      "footer": "Todos os direitos reservados."
-    }
-  }
+      "footer": "Todos os direitos reservados.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

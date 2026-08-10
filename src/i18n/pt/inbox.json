@@ -11,30 +11,35 @@
       "direct": "Diretas",
       "contacts": "Contactos",
       "notifications": "Notificações",
-      "archived": "Arquivadas"
+      "archived": "Arquivadas",
+      "_pending_review": {}
     },
     "contextTabs": {
       "community": "Comunidade",
-      "network": "Rede"
+      "network": "Rede",
+      "_pending_review": {}
     },
     "actions": {
       "new": "Novo",
       "newMessage": "Nova Mensagem",
       "createGroup": "Criar Grupo",
       "markAllRead": "Marcar tudo como lido",
-      "menu": "Mais"
+      "menu": "Mais",
+      "_pending_review": {}
     },
     "composer": {
       "placeholder": "Digite sua mensagem...",
       "send": "Enviar",
       "attachments": "Anexos",
       "recipients": "Para:",
-      "add": "Adicionar"
+      "add": "Adicionar",
+      "_pending_review": {}
     },
     "states": {
       "empty": "Nenhuma mensagem ainda",
       "loading": "Carregando mensagens...",
-      "error": "Falha ao carregar mensagens"
+      "error": "Falha ao carregar mensagens",
+      "_pending_review": {}
     },
     "newConversation": {
       "title": "Iniciar Nova Conversa",
@@ -54,7 +59,8 @@
       "cancel": "Cancelar",
       "startChat": "Iniciar Chat",
       "createGroup": "Criar Grupo",
-      "creating": "A criar..."
+      "creating": "A criar...",
+      "_pending_review": {}
     },
     "createGroup": {
       "title": "Criar Grupo",
@@ -71,7 +77,8 @@
       "created": "Grupo criado",
       "createdDesc": "\"{name}\" foi criado com sucesso.",
       "failed": "Falha ao criar grupo",
-      "failedDesc": "Por favor, tenta novamente."
+      "failedDesc": "Por favor, tenta novamente.",
+      "_pending_review": {}
     },
     "toast": {
       "success": "Sucesso",
@@ -88,7 +95,8 @@
       "groupCreated": "Grupo \"{name}\" criado com sucesso!",
       "groupFailed": "Falha ao criar grupo",
       "allMarkedRead": "Todas as mensagens marcadas como lidas",
-      "markAllReadFailed": "Não foi possível marcar todas como lidas. Por favor, tenta novamente."
+      "markAllReadFailed": "Não foi possível marcar todas como lidas. Por favor, tenta novamente.",
+      "_pending_review": {}
     },
     "createGroupAction": "Criar Novo Grupo",
     "newConversationAction": "Nova Conversa",
@@ -106,7 +114,8 @@
       "globalDescription": "Inicie uma conversa ou junte-se a uma comunidade para se conectar com outras pessoas.",
       "tenantDescription": "Conecte-se com colegas e membros da equipe em sua rede profissional.",
       "startConversation": "Iniciar uma conversa",
-      "discoverPeople": "Descobrir pessoas"
+      "discoverPeople": "Descobrir pessoas",
+      "_pending_review": {}
     },
     "group": {
       "loading": "A carregar grupo…",
@@ -117,7 +126,10 @@
       "memberOther": "membros",
       "officialBadge": "grupo oficial",
       "empty": "Ainda não há mensagens.",
-      "composerPlaceholder": "Mensagem…"
-    }
-  }
+      "composerPlaceholder": "Mensagem…",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

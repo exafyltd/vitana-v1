@@ -15,20 +15,24 @@
       "completeAction": "Marcar como concluído",
       "alreadyCompleted": "Já concluído",
       "linkToDiscover": "Explorar Discover",
-      "close": "Fechar"
+      "close": "Fechar",
+      "_pending_review": {}
     },
     "tabs": {
       "cart": "Carrinho",
-      "saved": "Guardado"
+      "saved": "Guardado",
+      "_pending_review": {}
     },
     "saved": {
       "moveToCart": "Adicionar ao carrinho",
       "saveForLater": "Guardar para mais tarde",
       "emptyTitle": "Nada guardado ainda",
-      "emptyBody": "Salve produtos para mais tarde tocando em “Salvar para mais tarde” no seu carrinho."
+      "emptyBody": "Salve produtos para mais tarde tocando em “Salvar para mais tarde” no seu carrinho.",
+      "_pending_review": {}
     },
     "item": {
-      "viewProduct": "Ver produto"
+      "viewProduct": "Ver produto",
+      "_pending_review": {}
     },
     "agent": {
       "promptLabel": "O que você está comprando?",
@@ -53,7 +57,8 @@
       "reordering": "A Vitana está adicionando seus itens de volta…",
       "overCapAdvisory": "Esses itens excedem seu orçamento mensal.",
       "nearCapAdvisory": "Esses itens aproximam você do seu orçamento mensal.",
-      "error": "Algo correu mal. Por favor, tenta novamente."
+      "error": "Algo correu mal. Por favor, tenta novamente.",
+      "_pending_review": {}
     },
     "budget": {
       "title": "Orçamento deste mês",
@@ -61,7 +66,8 @@
       "statusUnder": "Dentro do orçamento",
       "statusNear": "Quase no orçamento",
       "statusOver": "Acima do orçamento",
-      "noCapHint": "Defina um orçamento mensal para controlar seus gastos."
+      "noCapHint": "Defina um orçamento mensal para controlar seus gastos.",
+      "_pending_review": {}
     },
     "addButton": {
       "label": "Adicionar ao carrinho",
@@ -71,7 +77,10 @@
       "signRequired": "Faça login para adicionar ao seu carrinho.",
       "roleBlocked": "O carrinho está disponível apenas no seu papel na comunidade.",
       "failed": "Não foi possível adicionar ao carrinho",
-      "success": "Adicionado ao carrinho"
-    }
-  }
+      "success": "Adicionado ao carrinho",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
