@@ -3512,7 +3512,12 @@
       "goalActivity": "Compagnon d'activité",
       "goalWeightLoss": "Perte de poids",
       "goalMentalWellness": "Bien-être mental",
-      "goalValues": "Valeurs alignées"
+      "goalValues": "Valeurs alignées",
+      "videoRoomUnavailable": "Impossible de charger la salle vidéo",
+      "videoRoomUnavailableHint": "Le flux n'est pas accessible pour le moment. Réessaie.",
+      "autopilotSuggestionsTitle": "Suggestions Autopilot",
+      "autopilotSuggestionsBody": "Tu n'as pas encore publié de souhait. En attendant, Autopilot te suggère des personnes de la communauté qui pourraient te correspondre. Publie un souhait pour que l'IA puisse te trouver de vraies correspondances.",
+      "autopilotSuggestionBadge": "Autopilot"
     },
     "contacts": {
       "addContact": "Ajouter un contact",
@@ -5115,7 +5120,34 @@
       "fromWearablesLogs": "des objets connectés et des journaux,\n                et un",
       "forConsistencyWeSumFivePillars": "pour la cohérence. Nous additionnons les cinq piliers, appliquons un",
       "itDampensWhenOnePillarFar": "(il s'atténue lorsqu'un pilier est bien en avance sur un autre),\n                et plafonnons à 999.",
-      "markAnyJourneyEventCompletePillar": "Marque tout événement de parcours comme terminé → le pilier ciblé augmente. Continue jour après jour →\n                le bonus de série s'active. Connecte un objet connecté → la barre de données connectées se remplit.\n                Équilibre les cinq → le facteur d'équilibre reste à 1,0× et chaque point compte entièrement."
+      "markAnyJourneyEventCompletePillar": "Marque tout événement de parcours comme terminé → le pilier ciblé augmente. Continue jour après jour →\n                le bonus de série s'active. Connecte un objet connecté → la barre de données connectées se remplit.\n                Équilibre les cinq → le facteur d'équilibre reste à 1,0× et chaque point compte entièrement.",
+      "missionAlignment": {
+        "title": "Alignement Mission",
+        "subtitle": "Comment tes recommandations font avancer les cinq piliers et l'économie de la longévité",
+        "loading": "Chargement des données de mission…",
+        "error": "Impossible de charger les données de mission",
+        "noRecs": "Aucune recommandation dans ta file d'attente pour le moment.",
+        "summaryServed": "{pct}% de tes recommandations font avancer la mission",
+        "summaryServedCount": "{served} sur {total} recommandations alignées",
+        "pillarHeading": "Piliers servis",
+        "economyHeading": "Économie de la longévité",
+        "noPillar": "Non aligné aux piliers",
+        "noEconomy": "Non aligné à l'économie",
+        "pillars": {
+          "nutrition": "Nutrition",
+          "hydration": "Hydratation",
+          "exercise": "Exercice",
+          "sleep": "Sommeil",
+          "mental": "Santé mentale"
+        },
+        "economyAxes": {
+          "find_match": "Trouver une correspondance",
+          "marketplace": "Marché",
+          "income_generation": "Génération de revenus",
+          "business_formation": "Création d'entreprise"
+        },
+        "contractLink": "Voir le contrat d'Objectif Ultime"
+      }
     },
     "home": {
       "priorityOfTheDay": "Priorité du jour :",
@@ -5325,7 +5357,8 @@
       "noRoutinesYetCreateYourFirst": "Pas encore de routines. Crée ta première routine pour commencer !",
       "text4NewIdeas": "4 nouvelles idées",
       "executeAllValue0": "Exécuter tout {value0}",
-      "noValue0ActionsAvailable": "Aucune action {value0} disponible"
+      "noValue0ActionsAvailable": "Aucune action {value0} disponible",
+      "likesCount": "{count} J'aime"
     },
     "icons": {
       "xFormerlyTwitter": "X (anciennement Twitter)"

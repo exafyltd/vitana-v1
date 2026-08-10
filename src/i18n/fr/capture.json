@@ -42,7 +42,7 @@
     "sendFailedDesc": "Ton retour n'a pas pu être envoyé. Veuille réessayer.",
     "recognitionError": "Erreur de reconnaissance",
     "recognitionErrorDesc": "La reconnaissance vocale a rencontré une erreur. Réessaye.",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "transcribing": "Transcription de ton enregistrement…",
+    "backendRecordingHint": "Enregistrement — ta transcription apparaîtra après avoir appuyé sur Arrêter."
+  }
 }

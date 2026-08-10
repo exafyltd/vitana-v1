@@ -353,7 +353,9 @@
       "ticketPrintingWillAvailableSoon": "L'impression des billets sera bientôt disponible.",
       "confirmationSent": "Confirmation envoyée",
       "refund": "Remboursement",
-      "refundFunctionalityWillAvailableSoon": "La fonction de remboursement sera bientôt disponible."
+      "refundFunctionalityWillAvailableSoon": "La fonction de remboursement sera bientôt disponible.",
+      "noOrdersExport": "Aucune commande à exporter",
+      "ordersExported": "Données de vente exportées !"
     },
     "calendar": {
       "calendarUpdated": "Calendrier mis à jour"
