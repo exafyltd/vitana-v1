@@ -1,14 +1,10 @@
 {
   "createSelection": {
     "title": "Criar Novo",
-    "description": "Escolhe o tipo de evento que queres criar",
+    "description": "Escolha o tipo de evento que deseja criar",
     "event": "Evento",
     "eventDescription": "Encontros formais com horários e programas estruturados",
     "meetup": "Encontro",
-    "meetupDescription": "Encontros casuais para networking e construção de comunidade",
-    "_pending_review": {
-      "description": true
-    }
-  },
-  "_pending_review": {}
+    "meetupDescription": "Encontros casuais para networking e construção de comunidade"
+  }
 }

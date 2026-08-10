@@ -2,15 +2,11 @@
   "profile": {
     "defaultBio": "Entusiasta do bem-estar apaixonado(a) por saúde holística e construção de comunidade. 🌱",
     "autopilot": {
-      "polishBio": "Aprimora o teu Bio, Arquétipo e Destaques",
+      "polishBio": "Aprimore sua Bio, Arquétipo e Destaques",
       "editHighlights": "Editar Destaques",
       "saveHighlights": "Salvar Destaques",
-      "highlightsDesc": "Escolhe as tuas melhores publicações e multimédia para exibir no topo do teu perfil. Conteúdo destacado aparece na secção de Destaques e atrai mais seguidores.",
-      "try": "Experimenta",
-      "_pending_review": {
-        "polishBio": true,
-        "highlightsDesc": true
-      }
+      "highlightsDesc": "Escolha seus melhores posts e mídias para exibir no topo do seu perfil. Conteúdo em destaque aparece na seção Destaques e atrai mais seguidores.",
+      "try": "Experimenta"
     },
     "identity": {
       "vitanaIndex": "Índice Vitana",
@@ -19,15 +15,13 @@
       "follow": "Seguir",
       "followingState": "Seguindo",
       "understandIndex": "Entender índice",
-      "brandFooter": "MAXINA × VITANA",
-      "_pending_review": {}
+      "brandFooter": "MAXINA × VITANA"
     },
     "tabs": {
       "identity": "Identidade",
       "social": "Social",
       "account": "Conta",
-      "business": "Negócios",
-      "_pending_review": {}
+      "business": "Negócios"
     },
     "account": {
       "notSet": "Não definido",
@@ -36,8 +30,7 @@
       "visibility": {
         "private": "Privado",
         "connections": "Conexões",
-        "public": "Público",
-        "_pending_review": {}
+        "public": "Público"
       },
       "sections": {
         "publicProfile": "Perfil público",
@@ -45,8 +38,7 @@
         "basicInfo": "Informações Pessoais Básicas",
         "basicInfoSubtitle": "Dados fixos de identidade",
         "contactInfo": "Informações de Contato",
-        "accountDetails": "Detalhes da Conta",
-        "_pending_review": {}
+        "accountDetails": "Detalhes da Conta"
       },
       "fields": {
         "avatar": "Avatar",
@@ -64,20 +56,17 @@
         "city": "Cidade",
         "memberSince": "Membro desde",
         "accountType": "Tipo de conta",
-        "verificationStatus": "Status de verificação",
-        "_pending_review": {}
+        "verificationStatus": "Status de verificação"
       },
       "values": {
-        "uploaded": "Carregado",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "uploaded": "Carregado"
+      }
     },
     "business": {
       "title": "Minhas Recomendações",
       "subtitle": "Produtos que recomendaste e o que ganhaste com eles",
       "empty": "Nenhuma recomendação ainda",
-      "emptyDesc": "Recomenda um produto do Discover para veres os teus cliques, compras e comissões aqui.",
+      "emptyDesc": "Recomende um produto do Discover para ver seus cliques, compras e comissões aqui.",
       "clicks": "{count} cliques",
       "conversions": "{count} compras",
       "totalEarned": "Total ganho",
@@ -86,12 +75,7 @@
       "publicTitle": "Recomendações",
       "publicSubtitle": "Produtos recomendados por este perfil",
       "publicEmpty": "Nenhuma recomendação ainda",
-      "viewProduct": "Ver",
-      "_pending_review": {
-        "emptyDesc": true
-      }
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "viewProduct": "Ver"
+    }
+  }
 }

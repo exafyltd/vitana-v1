@@ -1,34 +1,20 @@
 {
   "confirm": {
-    "delete": "Tens certeza de que queres apagar isto?",
+    "delete": "Tem certeza que deseja excluir isso?",
     "deleteDesc": "Esta ação não pode ser desfeita.",
-    "cancel": "Tens certeza de que queres cancelar?",
-    "cancelDesc": "As tuas alterações serão perdidas.",
-    "unsavedChanges": "Tens alterações não guardadas.",
-    "unsavedChangesDesc": "Queres mesmo sair? As tuas alterações serão perdidas.",
-    "leave": "Queres mesmo sair desta página?",
+    "cancel": "Tem certeza que deseja cancelar?",
+    "cancelDesc": "Suas alterações serão perdidas.",
+    "unsavedChanges": "Você tem alterações não salvas",
+    "unsavedChangesDesc": "Você realmente quer sair? Suas alterações serão perdidas.",
+    "leave": "Você realmente quer sair desta página?",
     "leaveDesc": "Alterações não guardadas serão perdidas.",
-    "logout": "Queres mesmo terminar a sessão?",
+    "logout": "Você realmente quer fazer logout?",
     "logoutDesc": "Precisas de iniciar sessão novamente.",
-    "remove": "Queres mesmo remover este item?",
+    "remove": "Você realmente quer remover este item?",
     "removeDesc": "O item será removido da lista.",
-    "disconnect": "Queres mesmo desligar esta ligação?",
-    "disconnectDesc": "Podes reconectar mais tarde.",
-    "proceed": "Queres continuar?",
-    "proceedDesc": "Esta ação será executada.",
-    "_pending_review": {
-      "delete": true,
-      "cancel": true,
-      "cancelDesc": true,
-      "unsavedChanges": true,
-      "unsavedChangesDesc": true,
-      "leave": true,
-      "logout": true,
-      "remove": true,
-      "disconnect": true,
-      "disconnectDesc": true,
-      "proceed": true
-    }
-  },
-  "_pending_review": {}
+    "disconnect": "Você realmente quer desconectar esta conexão?",
+    "disconnectDesc": "Você pode reconectar mais tarde.",
+    "proceed": "Você quer continuar?",
+    "proceedDesc": "Esta ação será executada."
+  }
 }

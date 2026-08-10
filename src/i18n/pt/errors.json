@@ -7,17 +7,12 @@
     "serverError": "Erro do servidor",
     "serverErrorDesc": "Ocorreu um erro inesperado.",
     "networkError": "Erro de rede",
-    "networkErrorDesc": "Verifica a tua conexão com a internet.",
+    "networkErrorDesc": "Verifique sua conexão com a internet.",
     "unauthorized": "Não autorizado",
     "unauthorizedDesc": "Por favor, faça login para continuar.",
     "forbidden": "Acesso negado",
-    "forbiddenDesc": "Não tens permissão para esta ação.",
+    "forbiddenDesc": "Você não tem permissão para esta ação.",
     "notFound": "Não encontrado",
-    "notFoundDesc": "O item solicitado não foi encontrado.",
-    "_pending_review": {
-      "networkErrorDesc": true,
-      "forbiddenDesc": true
-    }
-  },
-  "_pending_review": {}
+    "notFoundDesc": "O item solicitado não foi encontrado."
+  }
 }

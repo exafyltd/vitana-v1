@@ -2,16 +2,15 @@
   "orders": {
     "myOrders": "Meus Pedidos",
     "title": "Pedidos",
-    "description": "Teu histórico de pedidos e assinaturas ativas",
-    "trackDescription": "Acompanha teus pedidos de produtos e bilhetes de eventos",
+    "description": "Seu histórico de pedidos e assinaturas ativas",
+    "trackDescription": "Acompanhe seus pedidos de produtos e ingressos de eventos",
     "searchPlaceholder": "Pesquisar pedidos...",
     "tabs": {
       "active": "Ativo",
       "history": "Histórico",
       "all": "Todos",
       "completed": "Concluídos",
-      "cancelled": "Cancelados",
-      "_pending_review": {}
+      "cancelled": "Cancelados"
     },
     "filters": {
       "all": "Todos",
@@ -19,30 +18,25 @@
       "products": "Produtos",
       "vouchers": "Vales",
       "services": "Serviços",
-      "refunds": "Reembolsos",
-      "_pending_review": {}
+      "refunds": "Reembolsos"
     },
-    "previewNotice": "Estes são pedidos de pré-visualização. Teus pedidos reais aparecerão aqui.",
+    "previewNotice": "Estes são pedidos de pré-visualização. Seus pedidos reais aparecerão aqui.",
     "sampleData": "Dados de Exemplo",
     "emptyActive": {
       "title": "Nenhum Pedido Ativo",
-      "description": "Não tens nenhuma encomenda ativa ou próximos eventos.",
-      "_pending_review": {
-        "description": true
-      }
+      "description": "Você não tem nenhum pedido ativo ou eventos futuros."
     },
     "emptyHistory": {
       "title": "Nenhum Histórico de Pedidos",
-      "description": "Seus pedidos concluídos e eventos passados aparecerão aqui.",
-      "_pending_review": {}
+      "description": "Seus pedidos concluídos e eventos passados aparecerão aqui."
     },
     "noOrders": "Ainda sem pedidos",
-    "noOrdersDesc": "Teus pedidos aparecerão aqui assim que comprares algo.",
+    "noOrdersDesc": "Seus pedidos aparecerão aqui assim que você comprar algo.",
     "browseProducts": "Explorar Produtos",
     "findEvents": "Encontrar Eventos",
     "startShopping": "Começar a Comprar",
     "noFilter": "Nenhum {filter}",
-    "noFilterDesc": "Nenhum {filter} encontrado no teu histórico.",
+    "noFilterDesc": "Nenhum {filter} encontrado em seu histórico.",
     "orderDate": "Data do pedido",
     "orderNumber": "Número do pedido",
     "viewDetails": "Ver Detalhes",
@@ -57,7 +51,7 @@
       "location": "Local",
       "quantity": "Quantidade",
       "tickets": "ingressos",
-      "yourTicket": "Teu bilhete",
+      "yourTicket": "Seu ingresso",
       "giftVoucher": "Vale-Presente",
       "code": "Código",
       "sendToRecipient": "Enviar ao Destinatário",
@@ -66,10 +60,7 @@
       "personalMessage": "Mensagem Pessoal",
       "cancel": "Cancelar",
       "send": "Enviar",
-      "downloadPdf": "Baixar PDF",
-      "_pending_review": {
-        "yourTicket": true
-      }
+      "downloadPdf": "Baixar PDF"
     },
     "status": {
       "upcoming": "Próximos",
@@ -84,16 +75,7 @@
       "pending": "Pendente",
       "processing": "Processando",
       "paid": "Ativo",
-      "active": "Ativo",
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "description": true,
-      "trackDescription": true,
-      "previewNotice": true,
-      "noOrdersDesc": true,
-      "noFilterDesc": true
+      "active": "Ativo"
     }
-  },
-  "_pending_review": {}
+  }
 }

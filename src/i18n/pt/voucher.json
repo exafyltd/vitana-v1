@@ -4,8 +4,7 @@
       "title": "Oferece um Voucher Maxina",
       "subtitle": "Oferece Bem-estar e Conexão com a Comunidade",
       "buyVoucher": "Comprar Voucher",
-      "openingCheckout": "A abrir pagamento seguro...",
-      "_pending_review": {}
+      "openingCheckout": "A abrir pagamento seguro..."
     },
     "tiers": {
       "test": {
@@ -14,8 +13,7 @@
           "Apenas para testar o pagamento",
           "Não é um voucher real",
           "Para testes de desenvolvimento"
-        ],
-        "_pending_review": {}
+        ]
       },
       "experience": {
         "name": "Experiência",
@@ -24,8 +22,7 @@
           "Aconselhamento de bem-estar personalizado",
           "Teste Vitana+ de 30 dias incluído",
           "Voucher eletrónico com design cuidado"
-        ],
-        "_pending_review": {}
+        ]
       },
       "exclusive": {
         "name": "Exclusivo",
@@ -34,21 +31,16 @@
           "Sessão de coaching individual com um especialista",
           "Subscrição Vitana+ de 90 dias",
           "Reserva prioritária + vantagens VIP"
-        ],
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        ]
+      }
     },
     "success": {
       "title": "Voucher Comprado!",
-      "ready": "O teu voucher {tier} está pronto",
+      "ready": "Seu voucher {tier} está pronto",
       "download": "Descarregar Voucher",
       "sendEmail": "Enviar ao Destinatário por E-mail",
       "viewOrders": "Ver nas Encomendas",
-      "done": "Feito",
-      "_pending_review": {
-        "ready": true
-      }
+      "done": "Feito"
     },
     "email": {
       "title": "Enviar Voucher por E-mail",
@@ -58,11 +50,10 @@
       "personalMessage": "Mensagem Pessoal (opcional)",
       "messagePlaceholder": "Feliz Aniversário! Desfruta deste mimo de bem-estar...",
       "back": "Voltar",
-      "send": "Enviar Voucher",
-      "_pending_review": {}
+      "send": "Enviar Voucher"
     },
     "preview": {
-      "title": "O teu Voucher",
+      "title": "Seu Voucher",
       "giftVoucher": "Voucher Presente",
       "validUntil": "Válido até {date}",
       "voucherCode": "Código do Voucher",
@@ -73,10 +64,7 @@
       "copyLink": "Copiar Link",
       "share": "Salvar / Compartilhar",
       "shareHint": "Salvar em Arquivos, Drive ou enviar para alguém",
-      "downloadHint": "Se o download abrir em branco, toca em Abrir no Navegador",
-      "_pending_review": {
-        "title": true
-      }
+      "downloadHint": "Se o download abrir em branco, toca em Abrir no Navegador"
     },
     "toast": {
       "downloadStarted": "Download iniciado!",
@@ -93,10 +81,7 @@
       "pdfNotAvailable": "Download de PDF não disponível para este tipo de pedido",
       "enterRecipientEmail": "Por favor, insere o e-mail do destinatário.",
       "emailOnlyForVouchers": "Envio de e-mail disponível apenas para vouchers",
-      "sendingVoucherEmail": "Enviando e-mail do voucher...",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "sendingVoucherEmail": "Enviando e-mail do voucher..."
+    }
+  }
 }

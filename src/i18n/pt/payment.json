@@ -10,7 +10,7 @@
     "exchangeSuccess": "Troca e Envio com Sucesso! ✨",
     "exchangeSuccessDesc": "Convertido e enviado {amount}",
     "insufficientBalance": "Saldo Insuficiente",
-    "insufficientBalanceDesc": "Não tens {currency} suficiente para esta troca",
+    "insufficientBalanceDesc": "Você não tem {currency} suficiente para esta troca",
     "transactionFailed": "Transação Falhou",
     "paymentFailed": "Pagamento Falhou",
     "paymentFailedDesc": "O pagamento não pôde ser processado. Por favor, tenta novamente.",
@@ -18,10 +18,6 @@
     "balanceRefreshedDesc": "O saldo da carteira foi atualizado",
     "refreshFailed": "Atualização Falhou",
     "refreshFailedDesc": "O saldo não pôde ser atualizado. Por favor, tenta novamente.",
-    "error": "Erro",
-    "_pending_review": {
-      "insufficientBalanceDesc": true
-    }
-  },
-  "_pending_review": {}
+    "error": "Erro"
+  }
 }

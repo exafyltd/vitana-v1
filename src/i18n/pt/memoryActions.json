@@ -4,45 +4,28 @@
     "items": {
       "recordVoiceDiary": {
         "title": "Gravar Diário de Voz",
-        "description": "Captura pensamentos e reflexões com a tua voz",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Capture pensamentos e reflexões com a voz"
       },
       "addMemoryNote": {
         "title": "Adicionar Nota de Memória",
-        "description": "Anota momentos importantes de saúde",
-        "_pending_review": {}
+        "description": "Anota momentos importantes de saúde"
       },
       "viewTimeline": {
         "title": "Ver Linha do Tempo",
-        "description": "Vê a tua jornada de bem-estar completa",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Veja sua jornada de bem-estar completa"
       },
       "searchMemories": {
         "title": "Pesquisar Memórias",
-        "description": "Encontra momentos e insights específicos",
-        "_pending_review": {}
+        "description": "Encontra momentos e insights específicos"
       },
       "photoMemory": {
         "title": "Memória de Foto",
-        "description": "Adiciona memórias visuais à tua jornada",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Adicione memórias visuais à sua jornada"
       },
       "aiMemoryAnalysis": {
         "title": "Análise de Memória por IA",
-        "description": "Obtém insights dos teus padrões de memória",
-        "_pending_review": {
-          "description": true
-        }
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "description": "Obtenha insights dos seus padrões de memória"
+      }
+    }
+  }
 }

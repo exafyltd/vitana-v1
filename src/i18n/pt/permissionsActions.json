@@ -4,53 +4,36 @@
     "items": {
       "privacySettings": {
         "title": "Configurações de Privacidade",
-        "description": "Configurar Definições de Privacidade e Partilha",
-        "_pending_review": {}
+        "description": "Configurar Definições de Privacidade e Partilha"
       },
       "manageAccess": {
         "title": "Gerir Acesso",
-        "description": "Controla quem pode ver as tuas memórias de saúde",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Controle quem pode ver suas memórias de saúde"
       },
       "securitySettings": {
         "title": "Configurações de Segurança",
-        "description": "Atualizar Configurações de Autenticação e Segurança",
-        "_pending_review": {}
+        "description": "Atualizar Configurações de Autenticação e Segurança"
       },
       "apiKeysAccess": {
         "title": "Chaves de API e Acesso",
-        "description": "Gere as integrações de apps de terceiros e o acesso à API",
-        "_pending_review": {}
+        "description": "Gere as integrações de apps de terceiros e o acesso à API"
       },
       "dataRights": {
         "title": "Direitos de Dados",
-        "description": "Exerce os teus direitos de portabilidade e eliminação de dados",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Exerça seus direitos à portabilidade de dados e exclusão"
       },
       "auditLogs": {
         "title": "Registos de Auditoria",
-        "description": "Revisa o histórico de acesso e o rasto de auditoria de segurança",
-        "_pending_review": {}
+        "description": "Revisa o histórico de acesso e o rasto de auditoria de segurança"
       },
       "permissionSettings": {
         "title": "Configurações de Permissões",
-        "description": "Ajusta as permissões granulares para diferentes funcionalidades",
-        "_pending_review": {}
+        "description": "Ajusta as permissões granulares para diferentes funcionalidades"
       },
       "exportData": {
         "title": "Exportar Dados",
-        "description": "Transfere as tuas memórias e dados de saúde em segurança",
-        "_pending_review": {
-          "description": true
-        }
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "description": "Baixe suas memórias e dados de saúde com segurança"
+      }
+    }
+  }
 }

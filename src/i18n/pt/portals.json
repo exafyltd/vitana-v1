@@ -3,53 +3,40 @@
     "maxina": {
       "title": "Plataforma de Saúde Maxina",
       "welcomeBack": "Bem-vindo de volta à Maxina.",
-      "continueJourney": "Faz login para continuares a tua jornada.",
+      "continueJourney": "Faça login para continuar sua jornada.",
       "joinMaxina": "Junte-se à Maxina",
       "joinCommunity": "Junte-se à comunidade Maxina.",
-      "createAccount": "Cria a tua conta e começa a tua jornada.",
+      "createAccount": "Crie sua conta e comece sua jornada.",
       "signingIn": "A entrar…",
       "creatingAccount": "A criar conta…",
       "joiningAs": "Estou a aderir como:",
-      "yourFullName": "Teu nome completo",
-      "forgotPassword": "Esqueceste-te da palavra-passe?",
+      "yourFullName": "Seu nome completo",
+      "forgotPassword": "Esqueceu a senha?",
       "partOfVitana": "Maxina faz parte do ecossistema VITANA.",
       "allPortals": "Todos os Portais",
       "emailConfirmed": "Email confirmado! Bem-vindo à Maxina.",
-      "checkEmail": "Por favor, verifica teu email para confirmar tua conta.",
+      "checkEmail": "Por favor, verifique seu e-mail para confirmar sua conta.",
       "roles": {
         "community": "Comunidade",
         "patient": "Paciente",
         "professional": "Pro",
-        "admin": "Admin",
-        "_pending_review": {}
-      },
-      "_pending_review": {
-        "continueJourney": true,
-        "createAccount": true,
-        "yourFullName": true,
-        "forgotPassword": true,
-        "checkEmail": true
+        "admin": "Admin"
       }
     },
     "alkalma": {
       "joinAlkalma": "Junte-se ao AlKalma",
       "welcomeBack": "Bem-vindo de volta ao AlKalma.",
-      "continueJourney": "Faz login para continuares.",
-      "_pending_review": {}
+      "continueJourney": "Faz login para continuares."
     },
     "earthlinks": {
       "joinEarthlinks": "Junte-se ao Earthlinks",
       "welcomeBack": "Bem-vindo de volta ao Earthlinks.",
-      "continueJourney": "Faz login para continuares.",
-      "_pending_review": {}
+      "continueJourney": "Faz login para continuares."
     },
     "community": {
       "joinCommunity": "Junte-se à Comunidade",
       "welcomeBack": "Bem-vindo de volta.",
-      "continueJourney": "Faz login para continuares.",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "continueJourney": "Faz login para continuares."
+    }
+  }
 }

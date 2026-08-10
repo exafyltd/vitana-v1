@@ -2,34 +2,31 @@
   "mediaHub": {
     "title": "Central de Mídia",
     "description": "Música, podcasts, shorts e mais",
-    "discoverContent": "Descobre e partilha conteúdo de bem-estar inspirador com a tua comunidade.",
+    "discoverContent": "Descubra e compartilhe conteúdo de bem-estar inspirador com sua comunidade.",
     "tabs": {
       "music": "Música",
       "podcasts": "Podcasts",
       "shorts": "Shorts",
-      "videos": "Vídeos",
-      "_pending_review": {}
+      "videos": "Vídeos"
     },
     "sections": {
       "trendingShorts": "Shorts em Alta",
       "trendingMusic": "Música em Alta",
       "musicPlaylists": "Playlists de Música",
       "latestEpisodes": "Últimos Episódios",
-      "popularShows": "Programas Populares",
-      "_pending_review": {}
+      "popularShows": "Programas Populares"
     },
     "actions": {
       "upload": "Carregar",
       "watchShorts": "Assistir Shorts",
       "viewAllShorts": "Ver todos os {count} shorts",
       "playPlaylist": "Reproduzir Playlist",
-      "clearFilters": "Limpar filtros",
-      "_pending_review": {}
+      "clearFilters": "Limpar filtros"
     },
     "searchPlaceholder": "Pesquisar Mídia...",
     "shortsAvailable": "{count} shorts disponíveis",
     "filteredBy": "Filtrado por:",
-    "noMatchingShorts": "Nenhum vídeo curto corresponde aos teus interesses.",
+    "noMatchingShorts": "Nenhum vídeo curto corresponde aos seus interesses.",
     "viewAllShorts": "Ver todos os shorts",
     "tracks": "faixas",
     "min": "min",
@@ -49,8 +46,7 @@
       "singleUpload": "Carregar Único",
       "bulkUpload": "Carregar em Massa",
       "addToPlaylist": "Adicionar à Playlist",
-      "viewArtist": "Ver Artista",
-      "_pending_review": {}
+      "viewArtist": "Ver Artista"
     },
     "toast": {
       "linkCopied": "Link copiado",
@@ -58,9 +54,9 @@
       "filtersCleared": "Filtros limpos",
       "filtersClearedDesc": "Mostrando todos os shorts",
       "podcastDeleted": "Podcast excluído",
-      "podcastDeletedDesc": "O teu podcast foi eliminado com sucesso.",
+      "podcastDeletedDesc": "Seu podcast foi excluído com sucesso.",
       "videoDeleted": "Vídeo excluído",
-      "videoDeletedDesc": "O teu vídeo foi eliminado com sucesso.",
+      "videoDeletedDesc": "Seu vídeo foi excluído com sucesso.",
       "videoUpdated": "Sucesso",
       "videoUpdatedDesc": "Vídeo atualizado com sucesso",
       "uploadSuccess": "Sucesso!",
@@ -68,11 +64,7 @@
       "deleteError": "Erro",
       "deleteErrorDesc": "A eliminação falhou. Por favor, tenta novamente.",
       "commentError": "Erro",
-      "commentErrorDesc": "Falha ao publicar comentário. Por favor, tente novamente.",
-      "_pending_review": {
-        "podcastDeletedDesc": true,
-        "videoDeletedDesc": true
-      }
+      "commentErrorDesc": "Falha ao publicar comentário. Por favor, tente novamente."
     },
     "comments": {
       "title": "Comentários",
@@ -85,22 +77,19 @@
       "reply": "Responder",
       "replyingTo": "Respondendo a {name}",
       "cancelReply": "Cancelar resposta",
-      "like": "Curtir comentário",
-      "_pending_review": {}
+      "like": "Curtir comentário"
     },
     "deletePodcast": {
       "title": "Excluir Podcast",
       "description": "Tem certeza de que deseja excluir este podcast? Esta ação não pode ser desfeita.",
       "cancel": "Cancelar",
-      "confirm": "Excluir",
-      "_pending_review": {}
+      "confirm": "Excluir"
     },
     "deleteVideo": {
       "title": "Excluir Vídeo",
       "description": "Tem certeza de que deseja excluir este vídeo? Esta ação não pode ser desfeita e removerá o vídeo do armazenamento.",
       "cancel": "Cancelar",
-      "confirm": "Excluir",
-      "_pending_review": {}
+      "confirm": "Excluir"
     },
     "noMusic": "Nenhuma música carregada ainda",
     "noMusicDesc": "Sê o primeiro a partilhar música com a comunidade!",
@@ -157,15 +146,8 @@
         "mentalHealth": "Saúde Mental",
         "wellness": "Bem-estar",
         "education": "Educação",
-        "lifestyle": "Estilo de Vida",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "discoverContent": true,
-      "noMatchingShorts": true
+        "lifestyle": "Estilo de Vida"
+      }
     }
-  },
-  "_pending_review": {}
+  }
 }

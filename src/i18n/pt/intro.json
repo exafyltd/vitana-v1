@@ -2,15 +2,11 @@
   "intro": {
     "welcomeTo": "BEM-VINDO(A) À VITANALAND",
     "experience": "Experiência",
-    "taglineMain": "Começa a tua Jornada de Longevidade",
+    "taglineMain": "Comece sua Jornada de Longevidade",
     "taglineSub": "conosco!",
     "playWelcome": "Reproduzir Boas-vindas",
     "preparing": "Preparando...",
     "playing": "Reproduzindo",
-    "goToLogin": "Ir para Entrar",
-    "_pending_review": {
-      "taglineMain": true
-    }
-  },
-  "_pending_review": {}
+    "goToLogin": "Ir para Entrar"
+  }
 }

@@ -3,23 +3,14 @@
     "brandNew": {
       "eyebrow": "Nova Funcionalidade",
       "badge": "Novidade",
-      "intro": "A partir de agora, tu podes:",
-      "cta": "Experimenta tu mesmo",
-      "closing": "Bons testes 🥳",
-      "_pending_review": {
-        "intro": true,
-        "cta": true
-      }
+      "intro": "A partir de agora, você pode:",
+      "cta": "Experimente você mesmo",
+      "closing": "Bons testes 🥳"
     },
     "didYouKnow": {
       "eyebrow": "Sabias que?",
-      "intro": "Tu podes:",
-      "cta": "Experimenta agora",
-      "_pending_review": {
-        "intro": true
-      }
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "intro": "Você pode:",
+      "cta": "Experimenta agora"
+    }
+  }
 }

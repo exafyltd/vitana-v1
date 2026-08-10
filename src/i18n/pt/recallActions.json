@@ -4,53 +4,36 @@
     "items": {
       "askAiQuestion": {
         "title": "Perguntar à IA",
-        "description": "Consulta tuas memórias com pesquisa de IA em linguagem natural",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Pesquise suas memórias com pesquisa de IA em linguagem natural"
       },
       "advancedSearch": {
         "title": "Pesquisa Avançada",
-        "description": "Usa filtros, tags e intervalos de datas para encontrar memórias",
-        "_pending_review": {}
+        "description": "Usa filtros, tags e intervalos de datas para encontrar memórias"
       },
       "patternAnalysis": {
         "title": "Análise de Padrões",
-        "description": "Descobre tendências e padrões nos teus dados de bem-estar",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Descubra tendências e padrões em seus dados de bem-estar"
       },
       "memoryInsights": {
         "title": "Insights de Memória",
-        "description": "Obtém insights impulsionados por IA da tua jornada de saúde",
-        "_pending_review": {
-          "description": true
-        }
+        "description": "Obtenha insights com IA da sua jornada de saúde"
       },
       "searchByDate": {
         "title": "Pesquisar por Data",
-        "description": "Navega pelas memórias de períodos de tempo específicos",
-        "_pending_review": {}
+        "description": "Navega pelas memórias de períodos de tempo específicos"
       },
       "locationMemories": {
         "title": "Memórias de Localização",
-        "description": "Encontra entradas por lugares e locais visitados",
-        "_pending_review": {}
+        "description": "Encontra entradas por lugares e locais visitados"
       },
       "filterByCategory": {
         "title": "Filtrar por Categoria",
-        "description": "Navega pelas memórias por pilares de bem-estar e categorias",
-        "_pending_review": {}
+        "description": "Navega pelas memórias por pilares de bem-estar e categorias"
       },
       "quickRecalls": {
         "title": "Recuperações Rápidas",
-        "description": "Acessa memórias e consultas pesquisadas com frequência",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "description": "Acessa memórias e consultas pesquisadas com frequência"
+      }
+    }
+  }
 }

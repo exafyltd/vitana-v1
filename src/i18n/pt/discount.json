@@ -1,7 +1,7 @@
 {
   "discount": {
-    "welcomeTitle": "Teu presente de boas-vindas",
-    "welcomeMessage": "Usa este código para 10% de desconto no teu primeiro evento",
+    "welcomeTitle": "Seu presente de boas-vindas",
+    "welcomeMessage": "Use este código para 10% de desconto no seu primeiro evento",
     "validFor": "Válido por 90 dias",
     "applyCode": "Aplicar código de desconto",
     "applied": "Desconto aplicado!",
@@ -21,18 +21,11 @@
     "ticketsSelected": "{count} bilhete(s) selecionado(s)",
     "useAccountEmail": "Usa o email da minha conta",
     "buyAsGuest": "Comprar como convidado (sem conta)",
-    "guestDetails": "Insere os teus dados para teres o teu bilhete. Não é preciso conta.",
+    "guestDetails": "Insira seus dados para obter seu ingresso. Não precisa de conta.",
     "fullName": "Nome Completo",
     "email": "Email",
-    "ticketEmailNote": "O teu bilhete e confirmação serão enviados para este email.",
+    "ticketEmailNote": "Seu ingresso e confirmação serão enviados para este e-mail.",
     "left": "{count} restantes",
-    "loadFailed": "Falha ao carregar bilhetes",
-    "_pending_review": {
-      "welcomeTitle": true,
-      "welcomeMessage": true,
-      "guestDetails": true,
-      "ticketEmailNote": true
-    }
-  },
-  "_pending_review": {}
+    "loadFailed": "Falha ao carregar bilhetes"
+  }
 }

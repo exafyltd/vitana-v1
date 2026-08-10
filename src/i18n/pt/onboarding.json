@@ -3,9 +3,9 @@
     "welcome": "Bem-vindo à VITANA",
     "subtitle": "Sua plataforma de longevidade personalizada",
     "connectApps": "Conecte Seus Apps",
-    "connectAppsDesc": "Conecta os teus apps de saúde e bem-estar para melhores percepções",
+    "connectAppsDesc": "Conecte seus aplicativos de saúde e bem-estar para melhores informações",
     "setGoals": "Defina Seus Objetivos",
-    "setGoalsDesc": "Define os teus objetivos de saúde e longevidade",
+    "setGoalsDesc": "Defina suas metas de saúde e longevidade",
     "joinCommunity": "Junte-se à Comunidade",
     "joinCommunityDesc": "Conecte-se com pessoas com ideias semelhantes em jornadas parecidas",
     "getStarted": "Começar",
@@ -23,13 +23,7 @@
       "handleAvailable": "Nome de usuário disponível!",
       "handleMinLength": "Pelo menos 3 caracteres",
       "saving": "Configurando...",
-      "submit": "Vamos começar!",
-      "_pending_review": {}
-    },
-    "_pending_review": {
-      "connectAppsDesc": true,
-      "setGoalsDesc": true
+      "submit": "Vamos começar!"
     }
-  },
-  "_pending_review": {}
+  }
 }

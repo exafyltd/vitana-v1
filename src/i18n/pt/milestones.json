@@ -3,21 +3,15 @@
     "title": "Momentos Especiais",
     "add": "Adicionar Marco",
     "edit": "Editar Marco",
-    "empty": "Ainda não tens momentos",
-    "addFirst": "Adiciona o teu primeiro momento",
+    "empty": "Nenhum Momento Ainda",
+    "addFirst": "Adicione Seu Primeiro Momento",
     "date": "Data",
     "description": "O que aconteceu?",
     "titleLabel": "Título",
-    "titlePlaceholder": "ex: Formaste-te na Universidade",
+    "titlePlaceholder": "Ex.: Formou-se na Universidade",
     "descPlaceholder": "Descreve este momento...",
     "icon": "Ícone",
     "publicLabel": "Visível para todos",
-    "private": "Privado",
-    "_pending_review": {
-      "empty": true,
-      "addFirst": true,
-      "titlePlaceholder": true
-    }
-  },
-  "_pending_review": {}
+    "private": "Privado"
+  }
 }

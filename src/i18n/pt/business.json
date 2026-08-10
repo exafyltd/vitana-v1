@@ -2,12 +2,12 @@
   "business": {
     "earning": {
       "readyToEarn": "Pronto para ganhar com VITANA?",
-      "choosePathGuide": "Escolhe um caminho e vamos guiar-te para a tua primeira fonte de rendimento.",
+      "choosePathGuide": "Escolha um caminho e vamos guiar você para sua primeira fonte de renda.",
       "startEarning": "Começa a ganhar",
-      "howToEarn": "Como queres ganhar?",
-      "pickOne": "Escolhe uma opção — podes explorar as outras mais tarde.",
+      "howToEarn": "Como você gostaria de ganhar?",
+      "pickOne": "Escolha uma opção — você pode explorar as outras depois.",
       "createEvent": "Cria um Evento",
-      "createEventDesc": "Organiza o teu próprio evento e vende bilhetes.",
+      "createEventDesc": "Organize seu próprio evento e venda ingressos.",
       "addToInventory": "Adiciona Eventos ao Inventário",
       "addToInventoryDesc": "Revende eventos selecionados e ganha comissão.",
       "createService": "Cria um Serviço",
@@ -17,20 +17,14 @@
       "hostAndSell": "Organiza e vende bilhetes",
       "resellAndEarn": "Revende e ganha",
       "offerBookings": "Oferece reservas",
-      "boostVisibility": "Aumenta a visibilidade",
-      "_pending_review": {
-        "choosePathGuide": true,
-        "howToEarn": true,
-        "pickOne": true,
-        "createEventDesc": true
-      }
+      "boostVisibility": "Aumenta a visibilidade"
     },
     "history": {
       "all": "Tudo",
       "directSales": "Vendas Diretas",
       "reseller": "Revendedor",
       "noEarningsYet": "Ainda não há histórico de ganhos",
-      "startSellingToSee": "Começa a vender para veres as tuas transações aqui.",
+      "startSellingToSee": "Comece a vender para ver suas transações aqui.",
       "ticketsSold": "Bilhetes Vendidos",
       "grossAmount": "Valor Bruto",
       "youEarned": "Ganhaste",
@@ -44,11 +38,7 @@
       "allTime": "Tempo total",
       "details": "Detalhes",
       "earningsActivity": "Atividade de Ganhos",
-      "noEarningsStartSelling": "Ainda não tens ganhos. Começa a vender para veres a atividade aqui.",
-      "_pending_review": {
-        "startSellingToSee": true,
-        "noEarningsStartSelling": true
-      }
+      "noEarningsStartSelling": "Nenhum ganho ainda. Comece a vender para ver a atividade aqui."
     },
     "kpi": {
       "totalEarnings": "Ganhos Totais",
@@ -71,8 +61,7 @@
       "resellerCommissions": "Comissões de Revendedor",
       "goToSellEarn": "Vende e Ganha",
       "totalEarned": "Total ganho",
-      "earningsBySource": "Ganhos por Origem",
-      "_pending_review": {}
+      "earningsBySource": "Ganhos por Origem"
     },
     "reseller": {
       "upcomingEvents": "Próximos Eventos",
@@ -84,9 +73,9 @@
       "tickets": "ingressos",
       "shareResellerLink": "Compartilhar link de revendedor",
       "createPromotion": "Criar promoção",
-      "shareLinkOrPromotion": "Partilha os teus links de revendedor ou cria uma promoção para ganhar comissões.",
+      "shareLinkOrPromotion": "Compartilhe seus links de revendedor ou crie uma promoção para ganhar comissões.",
       "selectEventToShare": "Selecione um evento para compartilhar",
-      "pickEventForLink": "Escolhe um evento para gerar o teu link de revendedor.",
+      "pickEventForLink": "Escolha um evento para gerar seu link de revendedor.",
       "noEventsToSell": "Nenhum evento disponível para vender",
       "commission": "comissão",
       "commissionEarned": "Comissão Ganha",
@@ -95,23 +84,16 @@
       "noPayoutsYet": "Sem pagamentos ainda",
       "attributedSales": "Vendas Atribuídas por Evento",
       "noSalesMatchFilter": "Nenhuma venda corresponde aos filtros atuais",
-      "mockDataActive": "Dados de teste ativos",
-      "_pending_review": {
-        "shareLinkOrPromotion": true,
-        "pickEventForLink": true
-      }
+      "mockDataActive": "Dados de teste ativos"
     },
     "transfer": {
       "title": "Transferir para a Carteira",
       "description": "Transfira suas comissões de revendedor pendentes para sua Carteira VITANA.",
       "pending": "Pendente",
       "wallet": "Carteira",
-      "instantCredit": "Isto irá creditar instantaneamente os teus ganhos no saldo da tua Carteira.",
+      "instantCredit": "Isso vai creditar instantaneamente seus ganhos no seu saldo da Carteira.",
       "transferring": "Transferindo...",
-      "transfer": "Transferir",
-      "_pending_review": {
-        "instantCredit": true
-      }
+      "transfer": "Transferir"
     },
     "typeSelector": {
       "title": "Começar um Negócio",
@@ -124,8 +106,7 @@
       "badgeNew": "Novo",
       "badgeActive": "Ativo",
       "alreadyReseller": "Já és um revendedor! Vê o separador \"Vende e Ganha\".",
-      "cancel": "Cancelar",
-      "_pending_review": {}
+      "cancel": "Cancelar"
     },
     "missionOpportunities": {
       "title": "Oportunidades de Missão",
@@ -138,12 +119,8 @@
         "find_match": "Encontrar uma Correspondência",
         "marketplace": "Mercado",
         "income_generation": "Geração de renda",
-        "business_formation": "Formação de negócios",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "business_formation": "Formação de negócios"
+      }
+    }
+  }
 }

@@ -7,19 +7,13 @@
     "email": "E-mail",
     "password": "Senha",
     "fullName": "Nome Completo",
-    "enterEmail": "Insere teu e-mail",
-    "enterPassword": "Insere tua senha",
-    "enterFullName": "Insere teu nome completo",
+    "enterEmail": "Digite seu e-mail",
+    "enterPassword": "Digite sua senha",
+    "enterFullName": "Digite seu nome completo",
     "createPassword": "Cria uma senha",
     "createAccount": "Criar Conta",
     "orContinueWith": "Ou continua com",
     "backToPortals": "Voltar a todos os portais",
-    "keepLoggedIn": "Mantém-me conectado(a)",
-    "_pending_review": {
-      "enterEmail": true,
-      "enterPassword": true,
-      "enterFullName": true
-    }
-  },
-  "_pending_review": {}
+    "keepLoggedIn": "Mantém-me conectado(a)"
+  }
 }

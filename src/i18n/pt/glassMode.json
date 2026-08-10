@@ -12,12 +12,8 @@
     "autopilotActivated": "Piloto Automático Ativado",
     "runningAutopilot": "Executando modo piloto automático",
     "textInputReady": "Entrada de Texto Pronta",
-    "typeMessage": "Podes agora inserir a tua mensagem.",
+    "typeMessage": "Você pode agora digitar sua mensagem.",
     "actionFailed": "Ação Falhou",
-    "couldNotExecute": "Não foi possível executar {action}",
-    "_pending_review": {
-      "typeMessage": true
-    }
-  },
-  "_pending_review": {}
+    "couldNotExecute": "Não foi possível executar {action}"
+  }
 }
