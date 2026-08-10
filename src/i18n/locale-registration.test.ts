@@ -57,7 +57,7 @@ const TAG_TO_DIR: Record<string, string> = {
   'es-ES': 'es',
   'sr-RS': 'sr',
   'fr-FR': 'fr',
-  'pt-PT': 'pt',
+  'pt-BR': 'pt',
   'ru-RU': 'ru',
   'pl-PL': 'pl',
   'ar-XA': 'ar',

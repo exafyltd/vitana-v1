@@ -151,9 +151,13 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
       { name: 'fr-FR-Chirp3-HD-Aoede', label: 'Aoede (Gemini Chirp 3 HD)' },
       { name: 'fr-FR-Chirp3-HD-Sulafat', label: 'Sulafat (Gemini Chirp 3 HD)' },
     ],
-    'pt-PT': [
-      { name: 'pt-PT-Chirp3-HD-Zephyr', label: 'Zephyr (Gemini Chirp 3 HD)' },
-      { name: 'pt-PT-Chirp3-HD-Laomedeia', label: 'Laomedeia (Gemini Chirp 3 HD)' },
+    // pt-BR, not pt-PT (VTID-03577). These are Google Cloud TTS voice IDs and
+    // the locale prefix selects the ACCENT — a pt-PT voice reading Brazilian
+    // text is fluent European Portuguese, which is audible to any Brazilian
+    // user and invisible to every text-level check we have.
+    'pt-BR': [
+      { name: 'pt-BR-Chirp3-HD-Zephyr', label: 'Zephyr (Gemini Chirp 3 HD)' },
+      { name: 'pt-BR-Chirp3-HD-Laomedeia', label: 'Laomedeia (Gemini Chirp 3 HD)' },
     ],
     'pl-PL': [
       { name: 'pl-PL-Chirp3-HD-Despina', label: 'Despina (Gemini Chirp 3 HD)' },
@@ -188,7 +192,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
       'ru-RU': 'Привет, это предварительный просмотр выбранных настроек голоса.',
       'zh-CN': '您好，这是您所选语音设置的预览。',
       'fr-FR': 'Bonjour, ceci est un aperçu de vos paramètres vocaux sélectionnés.',
-      'pt-PT': 'Olá, esta é uma prévia das configurações de voz selecionadas.',
+      'pt-BR': 'Olá, esta é uma prévia das configurações de voz selecionadas.',
       'pl-PL': 'Cześć, to jest podgląd wybranych ustawień głosu.',
     };
     return phrases[language] || phrases['en-US'];
@@ -276,7 +280,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
               <SelectItem value="ru-RU">{t('screens.assistant.russianRu')}</SelectItem>
               <SelectItem value="zh-CN">{t('screens.assistant.chineseCn')}</SelectItem>
               <SelectItem value="fr-FR">{t('screens.assistant.frenchFr')}</SelectItem>
-              <SelectItem value="pt-PT">{t('screens.assistant.portuguesePt')}</SelectItem>
+              <SelectItem value="pt-BR">{t('screens.assistant.portuguesePt')}</SelectItem>
               <SelectItem value="pl-PL">{t('screens.assistant.polishPl')}</SelectItem>
             </SelectContent>
           </Select>

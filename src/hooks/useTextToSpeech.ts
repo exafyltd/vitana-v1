@@ -57,7 +57,7 @@ export function useTextToSpeech() {
         'zh-CN': 'cmn-CN-Chirp3-HD-Leda',
         'cmn-CN': 'cmn-CN-Chirp3-HD-Leda',
         'fr-FR': 'fr-FR-Chirp3-HD-Pulcherrima',
-        'pt-PT': 'pt-PT-Chirp3-HD-Zephyr',
+        'pt-BR': 'pt-BR-Chirp3-HD-Zephyr',
         'pl-PL': 'pl-PL-Chirp3-HD-Despina',
       };
 
