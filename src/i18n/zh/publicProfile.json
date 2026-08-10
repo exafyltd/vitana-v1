@@ -7,6 +7,8 @@
     "posts": "帖子",
     "followers": "粉丝",
     "following": "关注",
-    "groups": "群组"
-  }
+    "groups": "群组",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

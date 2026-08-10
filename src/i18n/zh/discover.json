@@ -51,7 +51,8 @@
       "movement": "运动",
       "mind": "心智",
       "supplements": "补充剂",
-      "experts": "专家"
+      "experts": "专家",
+      "_pending_review": {}
     },
     "subcategories": {
       "longevity": "长寿",
@@ -78,7 +79,8 @@
       "sexualHealth": "性健康",
       "prevention": "预防与早期发现",
       "generalHealth": "综合健康",
-      "dnaAnalysis": "DNA分析"
+      "dnaAnalysis": "DNA分析",
+      "_pending_review": {}
     },
     "quickActions": {
       "title": "快捷操作",
@@ -89,7 +91,8 @@
       "reorderPrevious": "重新订购",
       "managePayment": "管理支付",
       "findServicesNearMe": "查找附近服务",
-      "viewSavedItems": "查看已保存商品"
+      "viewSavedItems": "查看已保存商品",
+      "_pending_review": {}
     },
     "aiPicks": {
       "title": "你的AI推荐",
@@ -101,24 +104,30 @@
       "recommendationsFound": "找到 {count} 条推荐",
       "noRecommendations": "未找到推荐",
       "noRecommendationsDesc": "选择不同的筛选条件以查看更多推荐",
-      "viewAllPicks": "查看所有精选"
+      "viewAllPicks": "查看所有精选",
+      "_pending_review": {}
     },
     "filters": {
       "all": "全部",
       "services": "服务",
       "supplements": "补充剂",
       "experts": "专家",
-      "deals": "优惠"
+      "deals": "优惠",
+      "_pending_review": {}
     },
     "toast": {
       "actionSelected": "已选择操作",
-      "comingSoon": "{action} 功能即将推出！"
+      "comingSoon": "{action} 功能即将推出！",
+      "_pending_review": {}
     },
     "guest": {
       "bannerTitle": "登录即可在每次购买时赚取 Vitana 奖励",
       "bannerSubtitle": "自由浏览 — 登录（免费）即可购买并开始赚取奖励。",
       "bannerCta": "登录",
-      "signIn": "登录"
-    }
-  }
+      "signIn": "登录",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -8,6 +8,8 @@
     "photo": "照片",
     "textEntry": "✍️ 文字输入",
     "photoEntry": "📸 照片输入",
-    "searchPlaceholder": "搜索日记..."
-  }
+    "searchPlaceholder": "搜索日记...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

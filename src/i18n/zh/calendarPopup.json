@@ -16,6 +16,8 @@
     "quickAdd": "快速添加",
     "eventFormComingSoon": "活动创建表单即将推出",
     "externalSync": "外部同步",
-    "connectingCalendars": "连接外部日历..."
-  }
+    "connectingCalendars": "连接外部日历...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

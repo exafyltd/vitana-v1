@@ -15,6 +15,8 @@
     "disconnect": "你真的要断开这个连接吗？",
     "disconnectDesc": "你可以稍后重新连接。",
     "proceed": "你要继续吗？",
-    "proceedDesc": "这个操作将执行。"
-  }
+    "proceedDesc": "这个操作将执行。",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -13,6 +13,8 @@
     "forbidden": "拒绝访问",
     "forbiddenDesc": "你没有执行此操作的权限。",
     "notFound": "未找到",
-    "notFoundDesc": "未找到请求的项目。"
-  }
+    "notFoundDesc": "未找到请求的项目。",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

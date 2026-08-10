@@ -16,6 +16,8 @@
     "title": "标题",
     "titlePlaceholder": "视频标题",
     "description": "描述",
-    "descriptionPlaceholder": "可选描述..."
-  }
+    "descriptionPlaceholder": "可选描述...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

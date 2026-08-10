@@ -23,7 +23,10 @@
       "handleAvailable": "用户名可用！",
       "handleMinLength": "至少3个字符",
       "saving": "正在设置...",
-      "submit": "让我们开始吧！"
-    }
-  }
+      "submit": "让我们开始吧！",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

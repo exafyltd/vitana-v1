@@ -11,30 +11,35 @@
       "direct": "私聊",
       "contacts": "联系人",
       "notifications": "通知",
-      "archived": "已归档"
+      "archived": "已归档",
+      "_pending_review": {}
     },
     "contextTabs": {
       "community": "社群",
-      "network": "人脉"
+      "network": "人脉",
+      "_pending_review": {}
     },
     "actions": {
       "new": "新",
       "newMessage": "新消息",
       "createGroup": "创建群组",
       "markAllRead": "全部标记为已读",
-      "menu": "更多"
+      "menu": "更多",
+      "_pending_review": {}
     },
     "composer": {
       "placeholder": "输入你的消息...",
       "send": "发送",
       "attachments": "附件",
       "recipients": "收件人：",
-      "add": "添加"
+      "add": "添加",
+      "_pending_review": {}
     },
     "states": {
       "empty": "暂无消息",
       "loading": "正在加载消息...",
-      "error": "加载消息失败"
+      "error": "加载消息失败",
+      "_pending_review": {}
     },
     "newConversation": {
       "title": "开始新对话",
@@ -54,7 +59,8 @@
       "cancel": "取消",
       "startChat": "开始聊天",
       "createGroup": "创建群组",
-      "creating": "正在创建..."
+      "creating": "正在创建...",
+      "_pending_review": {}
     },
     "createGroup": {
       "title": "创建群组",
@@ -71,7 +77,8 @@
       "created": "群组已创建",
       "createdDesc": "\"{name}\" 已成功创建。",
       "failed": "创建群组失败",
-      "failedDesc": "请再试一次。"
+      "failedDesc": "请再试一次。",
+      "_pending_review": {}
     },
     "toast": {
       "success": "成功",
@@ -88,7 +95,8 @@
       "groupCreated": "群组 \"{name}\" 已成功创建！",
       "groupFailed": "创建群组失败",
       "allMarkedRead": "所有消息已标记为已读",
-      "markAllReadFailed": "无法将所有消息标记为已读。请再试一次。"
+      "markAllReadFailed": "无法将所有消息标记为已读。请再试一次。",
+      "_pending_review": {}
     },
     "createGroupAction": "创建新群组",
     "newConversationAction": "新对话",
@@ -106,7 +114,8 @@
       "globalDescription": "开始对话或加入社区以与他人联系。",
       "tenantDescription": "在你的专业网络中与同事和团队成员联系。",
       "startConversation": "开始对话",
-      "discoverPeople": "发现用户"
+      "discoverPeople": "发现用户",
+      "_pending_review": {}
     },
     "group": {
       "loading": "正在加载群组…",
@@ -117,7 +126,10 @@
       "memberOther": "成员",
       "officialBadge": "官方群组",
       "empty": "暂无消息。",
-      "composerPlaceholder": "消息…"
-    }
-  }
+      "composerPlaceholder": "消息…",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

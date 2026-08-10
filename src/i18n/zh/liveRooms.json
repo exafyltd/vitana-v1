@@ -6,7 +6,8 @@
       "live": "直播中",
       "scheduled": "已安排",
       "all": "所有房间",
-      "past": "往期"
+      "past": "往期",
+      "_pending_review": {}
     },
     "goLive": "开始直播",
     "joinRoom": "加入房间",
@@ -17,7 +18,8 @@
     "search": {
       "placeholder": "搜索房间、话题或主持人...",
       "category": "分类",
-      "allCategories": "所有分类"
+      "allCategories": "所有分类",
+      "_pending_review": {}
     },
     "room": {
       "join": "加入房间",
@@ -25,7 +27,8 @@
       "duration": "时长",
       "host": "主持人",
       "premium": "尊享",
-      "live": "直播"
+      "live": "直播",
+      "_pending_review": {}
     },
     "viewer": {
       "leave": "离开",
@@ -33,7 +36,8 @@
       "video": "视频",
       "raiseHand": "举手",
       "chat": "聊天",
-      "reactions": "表情"
+      "reactions": "表情",
+      "_pending_review": {}
     },
     "goLivePopup": {
       "titleCreate": "开始直播",
@@ -65,7 +69,8 @@
         "sleep": "睡眠",
         "motivation": "动力",
         "education": "教育",
-        "lifestyle": "生活方式"
+        "lifestyle": "生活方式",
+        "_pending_review": {}
       },
       "advancedTitle": "高级选项",
       "cohostLabel": "联播主持人 / 嘉宾邀请",
@@ -74,16 +79,20 @@
       "access": {
         "public": {
           "label": "公开",
-          "desc": "任何人都可以加入"
+          "desc": "任何人都可以加入",
+          "_pending_review": {}
         },
         "followers": {
           "label": "仅限关注者",
-          "desc": "仅限你的关注者"
+          "desc": "仅限你的关注者",
+          "_pending_review": {}
         },
         "group": {
           "label": "群组/VIP",
-          "desc": "仅限受邀成员"
-        }
+          "desc": "仅限受邀成员",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "scheduleLabel": "稍后安排",
       "goLiveNow": "立即直播",
@@ -118,7 +127,8 @@
         "imageUploadFailedDesc": "我们会保留现有图片。",
         "genericTitle": "错误",
         "genericDesc": "创建直播失败。请再试一次。",
-        "genericDescWithReason": "创建直播失败：{reason}。请再试一次。"
+        "genericDescWithReason": "创建直播失败：{reason}。请再试一次。",
+        "_pending_review": {}
       },
       "success": {
         "streamUpdatedTitle": "直播已更新！✨",
@@ -128,15 +138,19 @@
         "youAreLiveTitle": "你正在直播！🎙️",
         "youAreLiveDesc": "正在进入你的直播间…",
         "aiImageHintTitle": "AI图片生成",
-        "aiImageHintDesc": "图片将在直播开始时生成。"
-      }
+        "aiImageHintDesc": "图片将在直播开始时生成。",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "editSession": {
       "title": "编辑会话",
       "saving": "正在保存…",
       "changeCover": "更改封面图片",
-      "noChanges": "没有可保存的更改"
-    }
+      "noChanges": "没有可保存的更改",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
   },
   "goLivePopup": {
     "durationLabel": "时长",
@@ -146,6 +160,8 @@
     "duration60": "1小时",
     "duration90": "1.5小时",
     "duration120": "2小时",
-    "durationHint": "如果你不手动结束，房间会在此时后自动关闭。"
-  }
+    "durationHint": "如果你不手动结束，房间会在此时后自动关闭。",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

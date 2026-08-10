@@ -18,14 +18,16 @@
       "showLessToast": "我们会减少这类推荐",
       "mutedToast": "来源已屏蔽",
       "undo": "撤销",
-      "unmute": "取消屏蔽"
+      "unmute": "取消屏蔽",
+      "_pending_review": {}
     },
     "detail": {
       "back": "返回",
       "continueReading": "在...上继续阅读",
       "openInBrowser": "在浏览器中打开",
       "couldNotLoad": "此文章无法内联显示",
-      "readOn": "阅读更多"
+      "readOn": "阅读更多",
+      "_pending_review": {}
     },
     "pillars": {
       "all": "全部",
@@ -33,7 +35,10 @@
       "hydration": "补水",
       "sleep": "睡眠",
       "exercise": "运动",
-      "mental": "心理"
-    }
-  }
+      "mental": "心理",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

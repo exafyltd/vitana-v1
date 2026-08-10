@@ -29,14 +29,16 @@
       "title": "你预订的活动",
       "todayLabel": "今天",
       "nextUp": "接下来",
-      "noEventsToday": "今天没有活动"
+      "noEventsToday": "今天没有活动",
+      "_pending_review": {}
     },
     "filters": {
       "personal": "个人",
       "community": "社区",
       "work": "工作",
       "health": "健康",
-      "workout": "锻炼"
+      "workout": "锻炼",
+      "_pending_review": {}
     },
     "categories": {
       "community": "社区",
@@ -45,19 +47,22 @@
       "nutrition": "营养",
       "professional": "工作",
       "personal": "个人",
-      "training": "训练"
+      "training": "训练",
+      "_pending_review": {}
     },
     "bookingStatus": {
       "booked": "已预订",
       "rsvp": "回复",
       "ticket": "票",
-      "reserved": "已预留"
+      "reserved": "已预留",
+      "_pending_review": {}
     },
     "timeGroups": {
       "today": "今天",
       "tomorrow": "明天",
       "thisWeek": "本周",
-      "later": "稍后"
+      "later": "稍后",
+      "_pending_review": {}
     },
     "autopilot": {
       "suggestions": "自动驾驶建议",
@@ -77,7 +82,8 @@
       "reminderLaterToday": "已设置今天稍后提醒",
       "reminderTomorrow": "已设置明天提醒",
       "recommendFocus": "推荐专注时段",
-      "focusBlockDesc": "你有一个90分钟的空闲时段。非常适合专注工作。"
+      "focusBlockDesc": "你有一个90分钟的空闲时段。非常适合专注工作。",
+      "_pending_review": {}
     },
     "toasts": {
       "eventCreated": "事件已创建",
@@ -94,22 +100,26 @@
       "featureComingSoon": "功能即将推出",
       "inviteFollowers": "邀请关注者",
       "rescheduleEvent": "重新安排事件",
-      "shareToGroup": "分享到群组"
+      "shareToGroup": "分享到群组",
+      "_pending_review": {}
     },
     "error": {
-      "failedToCreate": "创建事件失败"
+      "failedToCreate": "创建事件失败",
+      "_pending_review": {}
     },
     "allDay": "全天",
     "milestoneToday": "里程碑",
     "focus": {
       "todaysFocus": "今日专注",
       "lightDay": "轻松的一天 — 探索活动或回顾你的日记",
-      "moreSteps": "更多步数"
+      "moreSteps": "更多步数",
+      "_pending_review": {}
     },
     "badge": {
       "guidedStep": "引导步骤",
       "milestone": "里程碑",
-      "wellness": "健康"
+      "wellness": "健康",
+      "_pending_review": {}
     },
     "action": {
       "start": "开始",
@@ -118,11 +128,13 @@
       "details": "详情",
       "viewPlan": "查看计划",
       "open": "打开",
-      "done": "完成"
+      "done": "完成",
+      "_pending_review": {}
     },
     "group": {
       "stepsRemaining": "剩余步骤",
-      "min": "分"
+      "min": "分",
+      "_pending_review": {}
     },
     "journey": {
       "dayOf": "第 {day} 天，共 {total} 天",
@@ -140,8 +152,12 @@
         "wave-3": "加深联系",
         "wave-4": "健康智能",
         "wave-5": "洞察时刻",
-        "wave-6": "推荐与发现"
-      }
-    }
-  }
+        "wave-6": "推荐与发现",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

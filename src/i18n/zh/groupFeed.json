@@ -10,6 +10,8 @@
     "messageDeleted": "消息已删除",
     "error": "错误",
     "errorSend": "消息发送失败",
-    "errorDelete": "消息删除失败"
-  }
+    "errorDelete": "消息删除失败",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

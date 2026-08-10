@@ -26,6 +26,8 @@
     "email": "邮箱",
     "ticketEmailNote": "你的门票和确认函将发送到此邮箱。",
     "left": "还剩 {count} 张",
-    "loadFailed": "门票加载失败"
-  }
+    "loadFailed": "门票加载失败",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

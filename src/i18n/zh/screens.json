@@ -47,9 +47,6 @@
       "doneError": "无法保存。"
     },
     "common": {
-      "_pending_review": {
-        "value0ParticipantValue1Room": true
-      },
       "languageToggleAriaLabel": "语言",
       "testResults": "检测结果",
       "patientTestResultsLabReports": "患者检测结果和化验报告",
@@ -824,7 +821,7 @@
       "completeYourOrderForName": "完成 {name} 的订单",
       "placeOrderValue0": "下订单 - ${value0}",
       "usernameYou": "{userName}(你)",
-      "value0ParticipantValue1Room": "{value0}participant{value1}in the room",
+      "value0ParticipantValue1Room": "{value0}位参与者{value1}在房间里",
       "allowNewOrganizationsAccessYourHealth": "允许新机构访问你的健康数据",
       "ageRangeValue0Value1Years": "年龄范围: {value0}- {value1}岁",
       "distanceWithinValue0Miles": "距离: {value0}英里以内",
@@ -2562,7 +2559,33 @@
       "paAssistantUsageDesc": "实际助手用量：对话、质量、话题和工具可靠性。",
       "paJourneysDesc": "用户在应用中的使用方式：进入、路径和流失。",
       "paFeaturesDesc": "功能采纳：打开、完成和重复使用。",
-      "paInterestsDesc": "用户关心的话题——来自助手、卡片和内容。"
+      "paInterestsDesc": "用户关心的话题——来自助手、卡片和内容。",
+      "paOverview": "概览",
+      "paOverviewDesc": "产品分析一览：使用情况、助手、功能和兴趣。",
+      "paActiveUsers": "活跃用户",
+      "paRecommendationClicks": "推荐点击",
+      "paUnresolvedConversations": "未解决的对话",
+      "paTopRoutes": "热门屏幕",
+      "paViewDetails": "详情",
+      "paEventExplorer": "事件探索器",
+      "paEventsDesc": "原始产品分析事件流（仅元数据），用于检查和调试。",
+      "paAllTypes": "所有类型",
+      "paEventNameFilter": "按事件名称筛选…",
+      "paProperties": "属性",
+      "paShowingLatest": "显示最新 {count} 个事件",
+      "paOpensVsCompletions": "打开量与完成量（每日）",
+      "paAssistedVsDirect": "辅助打开量与直接打开量",
+      "paAssisted": "辅助",
+      "paDirect": "直接",
+      "paResolutionSplit": "对话结果",
+      "paAbandoned": "已放弃",
+      "paOpenConversations": "开放",
+      "paFeedbackSplit": "反馈情绪",
+      "paPositive": "积极",
+      "paNegative": "消极",
+      "paFeedbackTotal": "总反馈",
+      "paFeatureOpens": "功能打开量",
+      "paEngagementDesc": "成员活动和参与度指标"
     },
     "ai-feed": {
       "noEventsFound": "未找到事件",
@@ -9484,15 +9507,12 @@
       "capReachedCloseOnePostNew": "— 已达上限，关闭一个即可发布新内容"
     },
     "mytickets": {
-      "_pending_review": {
-        "lengthTicketValue1Purchased": true
-      },
       "myTickets": "我的票券",
       "noTicketsYet": "暂无票券",
       "whenYouPurchaseEventTicketsThey": "当你购买活动票券后，它们会显示在这里。",
       "browseEvents": "浏览活动",
       "checked": "已签到",
-      "lengthTicketValue1Purchased": "{length}ticket{value1}purchased",
+      "lengthTicketValue1Purchased": "{length}张票{value1}已购买",
       "upcomingLength": "即将到来 ({length})",
       "pastLength": "过去 ({length})",
       "noUpcomingEvents": "暂无即将到来的活动",

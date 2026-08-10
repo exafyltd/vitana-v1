@@ -6,7 +6,8 @@
       "editHighlights": "编辑精选",
       "saveHighlights": "保存精选",
       "highlightsDesc": "选择你最棒的帖子和媒体，展示在你的个人资料顶部。精选内容会出现在精选版块，并吸引更多关注者。",
-      "try": "试试看"
+      "try": "试试看",
+      "_pending_review": {}
     },
     "identity": {
       "vitanaIndex": "Vitana 指数",
@@ -15,13 +16,15 @@
       "follow": "关注",
       "followingState": "已关注",
       "understandIndex": "了解指数",
-      "brandFooter": "MAXINA × VITANA"
+      "brandFooter": "MAXINA × VITANA",
+      "_pending_review": {}
     },
     "tabs": {
       "identity": "身份",
       "social": "社交",
       "account": "账户",
-      "business": "商业"
+      "business": "商业",
+      "_pending_review": {}
     },
     "account": {
       "notSet": "未设置",
@@ -30,7 +33,8 @@
       "visibility": {
         "private": "私密",
         "connections": "联系人",
-        "public": "公开"
+        "public": "公开",
+        "_pending_review": {}
       },
       "sections": {
         "publicProfile": "公开个人资料",
@@ -38,7 +42,8 @@
         "basicInfo": "基本个人信息",
         "basicInfoSubtitle": "固定身份数据",
         "contactInfo": "联系信息",
-        "accountDetails": "账户详情"
+        "accountDetails": "账户详情",
+        "_pending_review": {}
       },
       "fields": {
         "avatar": "头像",
@@ -56,11 +61,14 @@
         "city": "城市",
         "memberSince": "加入日期",
         "accountType": "账户类型",
-        "verificationStatus": "验证状态"
+        "verificationStatus": "验证状态",
+        "_pending_review": {}
       },
       "values": {
-        "uploaded": "已上传"
-      }
+        "uploaded": "已上传",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "business": {
       "title": "我的推荐",
@@ -75,7 +83,10 @@
       "publicTitle": "推荐",
       "publicSubtitle": "此个人资料推荐的产品",
       "publicEmpty": "暂无推荐",
-      "viewProduct": "查看"
-    }
-  }
+      "viewProduct": "查看",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

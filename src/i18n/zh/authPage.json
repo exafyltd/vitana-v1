@@ -14,6 +14,8 @@
     "createAccount": "创建账号",
     "orContinueWith": "或者继续使用",
     "backToPortals": "返回所有门户",
-    "keepLoggedIn": "保持登录"
-  }
+    "keepLoggedIn": "保持登录",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

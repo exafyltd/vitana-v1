@@ -41,6 +41,8 @@
     "preferences": "设置",
     "privacy": "隐私",
     "connectedApps": "已连接应用和集成",
-    "support": "支持"
-  }
+    "support": "支持",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

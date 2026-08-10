@@ -19,6 +19,8 @@
     "searching": "搜索中...",
     "deleting": "删除中...",
     "creating": "创建中...",
-    "updating": "更新中..."
-  }
+    "updating": "更新中...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

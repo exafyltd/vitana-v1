@@ -4,6 +4,8 @@
     "media": "媒体",
     "groups": "群组",
     "followers": "粉丝",
-    "following": "关注"
-  }
+    "following": "关注",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

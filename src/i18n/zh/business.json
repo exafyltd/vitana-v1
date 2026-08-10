@@ -17,7 +17,8 @@
       "hostAndSell": "举办并销售门票",
       "resellAndEarn": "转售并赚钱",
       "offerBookings": "提供预订",
-      "boostVisibility": "提高曝光度"
+      "boostVisibility": "提高曝光度",
+      "_pending_review": {}
     },
     "history": {
       "all": "全部",
@@ -38,7 +39,8 @@
       "allTime": "总时长",
       "details": "详情",
       "earningsActivity": "收入活动",
-      "noEarningsStartSelling": "还没收入呢。开始销售就能在这里看到活动啦。"
+      "noEarningsStartSelling": "还没收入呢。开始销售就能在这里看到活动啦。",
+      "_pending_review": {}
     },
     "kpi": {
       "totalEarnings": "总收入",
@@ -61,7 +63,8 @@
       "resellerCommissions": "经销商佣金",
       "goToSellEarn": "销售赚钱",
       "totalEarned": "总赚取",
-      "earningsBySource": "收入来源"
+      "earningsBySource": "收入来源",
+      "_pending_review": {}
     },
     "reseller": {
       "upcomingEvents": "即将到来的活动",
@@ -84,7 +87,8 @@
       "noPayoutsYet": "暂无提现记录",
       "attributedSales": "活动归属销售额",
       "noSalesMatchFilter": "暂无符合当前筛选条件的销售额",
-      "mockDataActive": "模拟数据已启用"
+      "mockDataActive": "模拟数据已启用",
+      "_pending_review": {}
     },
     "transfer": {
       "title": "转入钱包",
@@ -93,7 +97,8 @@
       "wallet": "钱包",
       "instantCredit": "这会将你的收入即时存入你的钱包余额。",
       "transferring": "正在转账...",
-      "transfer": "转账"
+      "transfer": "转账",
+      "_pending_review": {}
     },
     "typeSelector": {
       "title": "开始创业",
@@ -106,7 +111,8 @@
       "badgeNew": "新",
       "badgeActive": "活跃",
       "alreadyReseller": "你已经是分销商了！查看“销售与赚取”标签页。",
-      "cancel": "取消"
+      "cancel": "取消",
+      "_pending_review": {}
     },
     "missionOpportunities": {
       "title": "任务机会",
@@ -119,8 +125,12 @@
         "find_match": "寻找匹配",
         "marketplace": "市场",
         "income_generation": "创收",
-        "business_formation": "业务创建"
-      }
-    }
-  }
+        "business_formation": "业务创建",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

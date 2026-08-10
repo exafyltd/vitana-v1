@@ -1,5 +1,7 @@
 {
   "wellnessServices": {
-    "searchPlaceholder": "搜索服务、提供者或项目..."
-  }
+    "searchPlaceholder": "搜索服务、提供者或项目...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

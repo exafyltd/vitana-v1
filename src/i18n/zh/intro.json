@@ -7,6 +7,8 @@
     "playWelcome": "播放欢迎",
     "preparing": "准备中...",
     "playing": "播放中",
-    "goToLogin": "前往登录"
-  }
+    "goToLogin": "前往登录",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

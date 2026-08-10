@@ -11,6 +11,8 @@
     "notFound": "未找到群组",
     "notFoundDesc": "此群组可能已被移除或不存在。",
     "browseGroups": "浏览群组",
-    "support": "支持"
-  }
+    "support": "支持",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -7,21 +7,24 @@
       "music": "音乐",
       "podcasts": "播客",
       "shorts": "短片",
-      "videos": "视频"
+      "videos": "视频",
+      "_pending_review": {}
     },
     "sections": {
       "trendingShorts": "热门短片",
       "trendingMusic": "热门音乐",
       "musicPlaylists": "音乐歌单",
       "latestEpisodes": "最新节目",
-      "popularShows": "热门节目"
+      "popularShows": "热门节目",
+      "_pending_review": {}
     },
     "actions": {
       "upload": "上传",
       "watchShorts": "看短片",
       "viewAllShorts": "查看所有 {count} 部短片",
       "playPlaylist": "播放歌单",
-      "clearFilters": "清除筛选"
+      "clearFilters": "清除筛选",
+      "_pending_review": {}
     },
     "searchPlaceholder": "搜索媒体...",
     "shortsAvailable": "有 {count} 个短片",
@@ -46,7 +49,8 @@
       "singleUpload": "单个上传",
       "bulkUpload": "批量上传",
       "addToPlaylist": "添加到歌单",
-      "viewArtist": "查看艺人"
+      "viewArtist": "查看艺人",
+      "_pending_review": {}
     },
     "toast": {
       "linkCopied": "链接已复制",
@@ -64,7 +68,8 @@
       "deleteError": "错误",
       "deleteErrorDesc": "删除失败。请再试一次。",
       "commentError": "错误",
-      "commentErrorDesc": "发布评论失败。请再试一次。"
+      "commentErrorDesc": "发布评论失败。请再试一次。",
+      "_pending_review": {}
     },
     "comments": {
       "title": "评论",
@@ -77,19 +82,22 @@
       "reply": "回复",
       "replyingTo": "回复{name}",
       "cancelReply": "取消回复",
-      "like": "赞评论"
+      "like": "赞评论",
+      "_pending_review": {}
     },
     "deletePodcast": {
       "title": "删除播客",
       "description": "你确定要删除这个播客吗？此操作无法撤销。",
       "cancel": "取消",
-      "confirm": "删除"
+      "confirm": "删除",
+      "_pending_review": {}
     },
     "deleteVideo": {
       "title": "删除视频",
       "description": "你确定要删除这个视频吗？此操作无法撤销，并将从存储中移除该视频。",
       "cancel": "取消",
-      "confirm": "删除"
+      "confirm": "删除",
+      "_pending_review": {}
     },
     "noMusic": "还没有上传音乐",
     "noMusicDesc": "成为第一个与社群分享音乐的人吧！",
@@ -146,8 +154,12 @@
         "mentalHealth": "心理健康",
         "wellness": "健康",
         "education": "教育",
-        "lifestyle": "生活方式"
-      }
-    }
-  }
+        "lifestyle": "生活方式",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

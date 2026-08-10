@@ -12,6 +12,8 @@
     "descPlaceholder": "描述这个时刻...",
     "icon": "图标",
     "publicLabel": "所有人可见",
-    "private": "私密"
-  }
+    "private": "私密",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

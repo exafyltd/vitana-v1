@@ -7,7 +7,8 @@
       "today": "今天",
       "upcoming": "即将举行",
       "following": "关注中",
-      "recommended": "推荐"
+      "recommended": "推荐",
+      "_pending_review": {}
     },
     "noEvents": "暂无活动安排",
     "checkBack": "请稍后回来查看即将举行的社区活动！",
@@ -22,7 +23,10 @@
       "noPostsFromFollowing": "暂无帖子",
       "noPostsFromFollowingDesc": "你关注的人还没有创建任何活动或聚会。",
       "youFollow": "你关注了",
-      "loadingFollowing": "正在加载帖子…"
-    }
-  }
+      "loadingFollowing": "正在加载帖子…",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

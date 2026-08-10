@@ -43,6 +43,8 @@
     "recognitionError": "识别错误",
     "recognitionErrorDesc": "语音识别遇到错误。请再试一次。",
     "transcribing": "正在转录你的录音…",
-    "backendRecordingHint": "正在录音 — 点击停止后将显示你的转录。"
-  }
+    "backendRecordingHint": "正在录音 — 点击停止后将显示你的转录。",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

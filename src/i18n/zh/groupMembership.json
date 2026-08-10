@@ -5,6 +5,8 @@
     "left": "已退出群组",
     "leftDesc": "你已退出这个群组。",
     "errorJoin": "加入群组失败。请重试。",
-    "errorLeave": "退出群组失败。请重试。"
-  }
+    "errorLeave": "退出群组失败。请重试。",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

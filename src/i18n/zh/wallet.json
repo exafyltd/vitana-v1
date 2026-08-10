@@ -11,7 +11,8 @@
     "tabs": {
       "balances": "余额",
       "activity": "动态",
-      "actions": "操作"
+      "actions": "操作",
+      "_pending_review": {}
     },
     "filters": {
       "commissions": "出售并赚取佣金",
@@ -21,10 +22,13 @@
       "purchases": "购买",
       "pending": "待支付款项",
       "withdrawals": "提现",
-      "stakes": "质押"
+      "stakes": "质押",
+      "_pending_review": {}
     },
     "noActivity": "暂无动态",
     "noActivityDesc": "你的交易会显示在这里。",
-    "displayCurrency": "显示货币"
-  }
+    "displayCurrency": "显示货币",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

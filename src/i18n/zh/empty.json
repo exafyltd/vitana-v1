@@ -22,6 +22,8 @@
     "healthEmpty": "记录你的第一次输入来启动你的Index。",
     "noActionsMatchedYet": "还没有匹配的行动——Autopilot正在生成建议。",
     "actionsPendingOne": "{count} 项行动待处理",
-    "actionsPendingOther": "{count} 项行动待处理"
-  }
+    "actionsPendingOther": "{count} 项行动待处理",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -14,6 +14,8 @@
     "postpone": "推迟",
     "addNote": "添加备注",
     "openContext": "查看详情",
-    "assignee": "负责人"
-  }
+    "assignee": "负责人",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

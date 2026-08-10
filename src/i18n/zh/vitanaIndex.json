@@ -21,7 +21,8 @@
       "building": "逐步提升",
       "strong": "强",
       "reallyGood": "非常棒",
-      "elite": "顶尖"
+      "elite": "顶尖",
+      "_pending_review": {}
     },
     "framings": {
       "starting": "刚刚起步",
@@ -29,7 +30,10 @@
       "building": "习惯养成中",
       "strong": "90天里程碑",
       "reallyGood": "状态极佳",
-      "elite": "顶尖"
-    }
-  }
+      "elite": "顶尖",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

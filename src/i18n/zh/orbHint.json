@@ -1,5 +1,7 @@
 {
   "orbHint": {
-    "tapToTalk": "点击这里和Vitana聊天"
-  }
+    "tapToTalk": "点击这里和Vitana聊天",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

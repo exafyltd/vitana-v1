@@ -24,6 +24,8 @@
     "charactersRemaining": "还剩 {count} 个字符",
     "fileTooBig": "文件太大（最大 {max}）",
     "invalidFileType": "文件类型无效",
-    "uploadLimit": "最多允许 {max} 个文件"
-  }
+    "uploadLimit": "最多允许 {max} 个文件",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -6,6 +6,8 @@
     "exchange": "兑换",
     "withdraw": "提现",
     "buyCredits": "购买 VTNA 积分",
-    "stakeTokens": "质押代币"
-  }
+    "stakeTokens": "质押代币",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

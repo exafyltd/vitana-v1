@@ -74,6 +74,8 @@
     "errorNoAudio": "我们没有捕捉到任何音频。请再试一次。",
     "errorTranscription": "转录失败。请再试一次。",
     "transcribing": "正在转录你的录音…",
-    "backendRecordingHint": "你的转录将在你点击停止后显示。"
-  }
+    "backendRecordingHint": "你的转录将在你点击停止后显示。",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

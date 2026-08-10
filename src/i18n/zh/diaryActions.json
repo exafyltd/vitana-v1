@@ -4,36 +4,47 @@
     "items": {
       "recordVoiceEntry": {
         "title": "录制语音日记",
-        "description": "语音记录你的想法和感悟"
+        "description": "语音记录你的想法和感悟",
+        "_pending_review": {}
       },
       "addPhotoEntry": {
         "title": "添加照片日记",
-        "description": "上传图片，记录你的健康旅程"
+        "description": "上传图片，记录你的健康旅程",
+        "_pending_review": {}
       },
       "writeTextEntry": {
         "title": "记录文字日记",
-        "description": "记录详细的文字感悟和笔记"
+        "description": "记录详细的文字感悟和笔记",
+        "_pending_review": {}
       },
       "quickNote": {
         "title": "快速笔记",
-        "description": "随手记下简短的想法或观察"
+        "description": "随手记下简短的想法或观察",
+        "_pending_review": {}
       },
       "videoDiary": {
         "title": "视频日记",
-        "description": "录制视频感悟和进度更新"
+        "description": "录制视频感悟和进度更新",
+        "_pending_review": {}
       },
       "scheduleEntry": {
         "title": "安排日记",
-        "description": "计划未来的日记条目和提醒"
+        "description": "计划未来的日记条目和提醒",
+        "_pending_review": {}
       },
       "tagMemories": {
         "title": "标记回忆",
-        "description": "用标签和分类整理现有条目"
+        "description": "用标签和分类整理现有条目",
+        "_pending_review": {}
       },
       "importFiles": {
         "title": "导入文件",
-        "description": "上传文档、图片或其他健康文件"
-      }
-    }
-  }
+        "description": "上传文档、图片或其他健康文件",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

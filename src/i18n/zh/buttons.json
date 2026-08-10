@@ -54,6 +54,8 @@
     "no": "否",
     "ok": "确定",
     "generate": "生成",
-    "generating": "正在生成..."
-  }
+    "generating": "正在生成...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

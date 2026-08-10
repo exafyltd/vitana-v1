@@ -31,11 +31,8 @@
         "description": "按健康支柱和类别浏览记忆"
       },
       "quickRecalls": {
-        "_pending_review": {
-          "description": true
-        },
         "title": "快速回忆",
-        "description": "Access frequently searched memories and queries"
+        "description": "访问常用搜索的记忆和查询"
       }
     }
   }

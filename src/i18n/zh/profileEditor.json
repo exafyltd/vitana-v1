@@ -20,7 +20,8 @@
     "visibility": {
       "public": "公开",
       "followers": "关注者",
-      "private": "私密"
+      "private": "私密",
+      "_pending_review": {}
     },
     "languageOptions": {
       "english": "英语",
@@ -32,7 +33,8 @@
       "russian": "俄语",
       "arabic": "阿拉伯语",
       "chinese": "中文",
-      "japanese": "日语"
+      "japanese": "日语",
+      "_pending_review": {}
     },
     "cancel": "取消",
     "save": "保存更改",
@@ -46,7 +48,8 @@
       "makeShorter": "缩短",
       "moreProfessional": "更专业",
       "moreInspirational": "更励志",
-      "suggestion": "自动驾驶建议"
+      "suggestion": "自动驾驶建议",
+      "_pending_review": {}
     },
     "identity": {
       "editIdentity": "编辑身份",
@@ -69,7 +72,8 @@
       "uploadFailed": "上传失败",
       "uploadFailedDesc": "图片上传失败。请再试一次。",
       "identityUpdated": "身份信息已更新",
-      "identityUpdatedDesc": "你的身份信息已成功保存。"
+      "identityUpdatedDesc": "你的身份信息已成功保存。",
+      "_pending_review": {}
     },
     "coverLibrary": {
       "title": "封面图库",
@@ -96,7 +100,10 @@
       "universalRemoved": "通用封面照片已移除",
       "uploadFailed": "上传失败",
       "categoryRequired": "请先为这张照片选择一个类别。",
-      "saveError": "无法保存 — 请再试一次。"
-    }
-  }
+      "saveError": "无法保存 — 请再试一次。",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

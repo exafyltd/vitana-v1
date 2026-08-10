@@ -16,7 +16,8 @@
       "updateArchetype": "更新原型",
       "profileSectionTitle": "自动驾驶能美化你的个人资料 ✨",
       "profileSectionDesc": "获取AI驱动的建议，优化你的简介、原型和亮点。",
-      "tryAutopilot": "试试自动驾驶"
+      "tryAutopilot": "试试自动驾驶",
+      "_pending_review": {}
     },
     "preview": "自动驾驶预览",
     "viewAll": "查看全部",
@@ -41,12 +42,14 @@
       "toastExecutedTitle": "已执行操作",
       "toastExecutedDesc": "{success}/{total} 操作已成功完成",
       "toastFailedTitle": "执行失败",
-      "toastFailedDesc": "出错了。请重试。"
+      "toastFailedDesc": "出错了。请重试。",
+      "_pending_review": {}
     },
     "priorities": {
       "high": "高",
       "medium": "中",
-      "low": "低"
+      "low": "低",
+      "_pending_review": {}
     },
     "widget": {
       "title": "自动驾驶 ⚡",
@@ -56,7 +59,8 @@
       "allOptimized": "全部优化完成！🎯",
       "enableToSee": "开启自动驾驶以查看建议",
       "completeForRewards": "完成自动驾驶建议以获取奖励",
-      "enableForCredits": "开启自动驾驶以获取积分"
+      "enableForCredits": "开启自动驾驶以获取积分",
+      "_pending_review": {}
     },
     "insightBanner": {
       "title": "自动驾驶健康概览",
@@ -64,7 +68,8 @@
       "synergyIndex": "协同指数",
       "statusBalanced": "平衡",
       "statusNeedsAttention": "需要关注",
-      "statusImproving": "正在改善"
+      "statusImproving": "正在改善",
+      "_pending_review": {}
     },
     "profilePopup": {
       "title": "让自动驾驶优化你的个人资料 ✨",
@@ -87,7 +92,8 @@
       "acceptAll": "全部接受",
       "applied": "更改已保存！",
       "error": "出了点问题",
-      "comingSoon": "即将推出"
+      "comingSoon": "即将推出",
+      "_pending_review": {}
     },
     "actions": {
       "action1Title": "今晚加入长寿舞蹈团吗？",
@@ -103,7 +109,10 @@
       "action6Title": "正念早晨魔法",
       "action6Reason": "你的灵魂在呼唤这些缓解压力的技巧",
       "newActionTitle": "新的AI建议",
-      "newActionReason": "基于最近的活动模式"
-    }
-  }
+      "newActionReason": "基于最近的活动模式",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

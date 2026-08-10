@@ -68,7 +68,8 @@
       "volunteer": "❤️ 志愿与服务",
       "support": "🫂 支持小组",
       "entertainment": "🎭 娱乐",
-      "other": "✨ 其他"
+      "other": "✨ 其他",
+      "_pending_review": {}
     },
     "durations": {
       "30min": "30 分钟",
@@ -81,7 +82,8 @@
       "8hour": "8 小时",
       "half-day": "半天",
       "full-day": "全天",
-      "custom": "自定义时长..."
+      "custom": "自定义时长...",
+      "_pending_review": {}
     },
     "toasts": {
       "invalidFileType": "无效文件类型",
@@ -113,7 +115,10 @@
       "personalEventCreated": "活动已创建！",
       "personalEventCreatedDesc": "该活动已添加到你的日历。",
       "error": "错误",
-      "errorDesc": "未能创建活动。请再试一次。"
-    }
-  }
+      "errorDesc": "未能创建活动。请再试一次。",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

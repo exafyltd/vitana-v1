@@ -14,6 +14,8 @@
     "textInputReady": "文本输入就绪",
     "typeMessage": "你现在可以输入你的消息了。",
     "actionFailed": "操作失败",
-    "couldNotExecute": "无法执行{action}"
-  }
+    "couldNotExecute": "无法执行{action}",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

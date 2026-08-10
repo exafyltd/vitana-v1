@@ -1,6 +1,8 @@
 {
   "privacy": {
     "public": "公开",
-    "private": "私密"
-  }
+    "private": "私密",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

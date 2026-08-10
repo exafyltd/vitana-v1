@@ -6,6 +6,8 @@
     "uploading": "上传中...",
     "uploadingProgress": "上传中... {progress}%",
     "processing": "处理中...",
-    "saving": "保存中..."
-  }
+    "saving": "保存中...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

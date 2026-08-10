@@ -15,7 +15,8 @@
       "mute": "静音",
       "unmute": "取消静音",
       "share": "分享",
-      "linkCopied": "链接已复制"
+      "linkCopied": "链接已复制",
+      "_pending_review": {}
     },
     "drawer": {
       "loading": "正在加载商品…",
@@ -35,7 +36,10 @@
       "unavailableTitle": "不再可用",
       "unavailableBody": "此产品已下架。",
       "roleBlockedTitle": "此处无法购买。",
-      "roleBlockedBody": "购买是社区功能。请切换至社区身份以继续。"
-    }
-  }
+      "roleBlockedBody": "购买是社区功能。请切换至社区身份以继续。",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

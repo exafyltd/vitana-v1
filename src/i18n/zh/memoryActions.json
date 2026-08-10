@@ -4,28 +4,37 @@
     "items": {
       "recordVoiceDiary": {
         "title": "录制语音日记",
-        "description": "用语音捕捉思绪与反思"
+        "description": "用语音捕捉思绪与反思",
+        "_pending_review": {}
       },
       "addMemoryNote": {
         "title": "添加记忆笔记",
-        "description": "写下重要的健康时刻"
+        "description": "写下重要的健康时刻",
+        "_pending_review": {}
       },
       "viewTimeline": {
         "title": "查看时间线",
-        "description": "查看你的完整健康旅程"
+        "description": "查看你的完整健康旅程",
+        "_pending_review": {}
       },
       "searchMemories": {
         "title": "搜索记忆",
-        "description": "查找特定时刻和洞察"
+        "description": "查找特定时刻和洞察",
+        "_pending_review": {}
       },
       "photoMemory": {
         "title": "照片记忆",
-        "description": "将视觉记忆添加到你的旅程"
+        "description": "将视觉记忆添加到你的旅程",
+        "_pending_review": {}
       },
       "aiMemoryAnalysis": {
         "title": "AI记忆分析",
-        "description": "从你的记忆模式中获取洞察"
-      }
-    }
-  }
+        "description": "从你的记忆模式中获取洞察",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

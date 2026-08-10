@@ -18,6 +18,8 @@
     "balanceRefreshedDesc": "钱包余额已更新",
     "refreshFailed": "刷新失败",
     "refreshFailedDesc": "余额未能更新。请再试一次。",
-    "error": "错误"
-  }
+    "error": "错误",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

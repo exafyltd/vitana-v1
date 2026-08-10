@@ -36,6 +36,8 @@
     "upload": "上传",
     "refresh": "刷新",
     "retry": "重试",
-    "uploading": "正在上传..."
-  }
+    "uploading": "正在上传...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

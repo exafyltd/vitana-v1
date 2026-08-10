@@ -7,7 +7,8 @@
     "tabs": {
       "overview": "概览",
       "notifications": "通知",
-      "quickActions": "快速操作"
+      "quickActions": "快速操作",
+      "_pending_review": {}
     },
     "categories": {
       "privacy": "隐私",
@@ -23,7 +24,8 @@
       "billing": "账单",
       "billingDesc": "订阅和支付信息",
       "support": "支持",
-      "supportDesc": "帮助、常见问题和联系方式"
+      "supportDesc": "帮助、常见问题和联系方式",
+      "_pending_review": {}
     },
     "status": {
       "privacyStatus": "隐私状态",
@@ -33,9 +35,12 @@
       "notificationsActive": "通知已启用",
       "connectedAppsCount": "已连接应用",
       "types": "类型",
-      "apps": "应用"
+      "apps": "应用",
+      "_pending_review": {}
     },
     "vitanaOpenedSection": "Vitana 打开了 {section}",
-    "vitanaUpdated": "Vitana 更新了你的设置"
-  }
+    "vitanaUpdated": "Vitana 更新了你的设置",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

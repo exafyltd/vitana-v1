@@ -19,6 +19,8 @@
     "processing": "处理中...",
     "joining": "加入中...",
     "getTickets": "领取门票",
-    "promoteEvent": "推广活动"
-  }
+    "promoteEvent": "推广活动",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

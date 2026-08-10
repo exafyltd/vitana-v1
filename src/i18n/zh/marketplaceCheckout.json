@@ -4,7 +4,8 @@
       "title": "你的余额",
       "loading": "正在加载余额…",
       "empty": "暂无余额",
-      "addMoney": "充值"
+      "addMoney": "充值",
+      "_pending_review": {}
     },
     "checkout": {
       "button": "结账",
@@ -16,7 +17,8 @@
       "affiliateTitle": "前往商家完成购买",
       "affiliateBody": "部分商品需直接在商家处购买。打开下方链接完成购买。",
       "affiliateLink": "前往商家完成购买",
-      "affiliateOpened": "商家链接已在新标签页中打开。"
+      "affiliateOpened": "商家链接已在新标签页中打开。",
+      "_pending_review": {}
     },
     "addMoney": {
       "title": "充值",
@@ -29,7 +31,8 @@
       "continue": "继续支付",
       "processing": "正在准备…",
       "invalidAmount": "请输入有效金额。",
-      "failed": "无法开始充值。"
+      "failed": "无法开始充值。",
+      "_pending_review": {}
     },
     "deposit": {
       "checkingTitle": "正在确认支付",
@@ -39,7 +42,8 @@
       "failedTitle": "充值失败",
       "failedBody": "你的充值未能完成。没有扣款。",
       "amountLabel": "金额",
-      "backToCart": "返回购物车"
+      "backToCart": "返回购物车",
+      "_pending_review": {}
     },
     "errors": {
       "invalid_request": "请求无效。请检查你的购物车。",
@@ -57,7 +61,10 @@
       "ORDER_WRITE_FAILED": "你的订单未能保存。请重试。",
       "WALLET_READ_FAILED": "我们无法读取你的余额。请重试。",
       "GATEWAY_MISCONFIGURED": "支付服务目前不可用。请稍后重试。",
-      "unknown": "结账时出了问题。请重试。"
-    }
-  }
+      "unknown": "结账时出了问题。请重试。",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

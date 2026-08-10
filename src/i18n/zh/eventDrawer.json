@@ -58,6 +58,8 @@
     "googleCal": "Google 日历",
     "outlook": "Outlook",
     "appleCal": "Apple 日历",
-    "downloadIcs": "下载 ICS"
-  }
+    "downloadIcs": "下载 ICS",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -20,23 +20,30 @@
         "community": "社区",
         "patient": "患者",
         "professional": "专业人士",
-        "admin": "管理员"
-      }
+        "admin": "管理员",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "alkalma": {
       "joinAlkalma": "加入 AlKalma",
       "welcomeBack": "欢迎回来 AlKalma。",
-      "continueJourney": "登录，继续。"
+      "continueJourney": "登录，继续。",
+      "_pending_review": {}
     },
     "earthlinks": {
       "joinEarthlinks": "加入 Earthlinks",
       "welcomeBack": "欢迎回来 Earthlinks。",
-      "continueJourney": "登录，继续。"
+      "continueJourney": "登录，继续。",
+      "_pending_review": {}
     },
     "community": {
       "joinCommunity": "加入社区",
       "welcomeBack": "欢迎回来。",
-      "continueJourney": "登录，继续。"
-    }
-  }
+      "continueJourney": "登录，继续。",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
