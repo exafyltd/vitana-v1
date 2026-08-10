@@ -43,6 +43,8 @@
     "recognitionError": "Erro de Reconhecimento",
     "recognitionErrorDesc": "O reconhecimento de fala encontrou um erro. Por favor, tenta novamente.",
     "transcribing": "A transcrever a tua gravação…",
-    "backendRecordingHint": "A gravar — a tua transcrição aparecerá depois de tocares em Parar."
-  }
+    "backendRecordingHint": "A gravar — a tua transcrição aparecerá depois de tocares em Parar.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
