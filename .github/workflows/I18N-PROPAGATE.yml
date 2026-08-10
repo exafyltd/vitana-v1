@@ -86,8 +86,34 @@ jobs:
           node scripts/i18n-stamp-source.mjs --check-all > drift.txt 2>&1 || true
           cat drift.txt
           COUNT=$(grep -oE '^\[stamp\] [a-z]{2}: [0-9]+ key' drift.txt | grep -oE '[0-9]+ key' | grep -oE '^[0-9]+' | paste -sd+ | bc || echo 0)
-          echo "count=${COUNT:-0}" >> "$GITHUB_OUTPUT"
-          echo "Total drifted keys across all locales: ${COUNT:-0}"
+
+          # VTID-03576. Drift alone is the WRONG gate, and it fails in the
+          # commonest direction this catalog grows.
+          #
+          # The stamp checker walks the keys a TARGET has, so a key newly added
+          # to German and not yet present in a locale is never visited: drift
+          # reads 0 and this whole workflow skips `pivot` and `fanout`. That is
+          # not hypothetical — main added 26 keys and fr/pl/pt/ru silently fell
+          # to 99.8% while every stamp check reported a clean bill of health.
+          #
+          # Staleness and coverage are two different questions and deliberately
+          # live in two different tools. This gate needs BOTH: i18n:audit owns
+          # "does the locale have the key at all", the stamps own "was it
+          # translated from the current source".
+          #
+          # Counted for ga/beta only — ar and zh are `draft` and permanently
+          # behind by design, so including them would pin this gate open
+          # forever and propagate on every run. `|| true` because i18n:audit
+          # deliberately exits non-zero on a ga locale below 100%.
+          npm run i18n:audit > audit.txt 2>&1 || true
+          cat audit.txt
+          MISSING=$(grep -E '^\s+[a-z]{2}\s+(ga|beta)\s' audit.txt \
+            | grep -oE '\([0-9]+/[0-9]+\)' | tr -d '()' \
+            | awk -F/ '{s += $2 - $1} END {print s+0}')
+
+          TOTAL=$(( ${COUNT:-0} + ${MISSING:-0} ))
+          echo "count=${TOTAL}" >> "$GITHUB_OUTPUT"
+          echo "Drifted keys: ${COUNT:-0}; missing keys (ga/beta): ${MISSING:-0}; total: ${TOTAL}"
 
   # STAGE 1 — refresh the pivot. Everything downstream reads en/, so this must
   # complete before the fan-out starts or 20 locales inherit a stale English.

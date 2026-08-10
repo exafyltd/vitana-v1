@@ -146,6 +146,39 @@ function trackedLocales() {
     .filter((code) => code !== ROOT_SOURCE_LOCALE && existsSync(join(I18N_DIR, code)));
 }
 
+/**
+ * Flattened keys still flagged `_pending_review` in a locale (VTID-03576).
+ *
+ * `flatten()` deliberately drops every `_`-prefixed key, so the stamp writer
+ * below has no way to see that a translation FAILED — which is the whole
+ * problem this exists to solve. Walked separately rather than by loosening
+ * flatten(), because flatten()'s output is the key space everything else
+ * compares against and `_pending_review` is not a translatable key.
+ */
+function collectPending(locale) {
+  const pending = new Set();
+  const dir = join(I18N_DIR, locale);
+  if (!existsSync(dir)) return pending;
+  for (const f of listShards(dir)) {
+    const shard = f.replace(/\.json$/, '');
+    const walk = (obj, prefix) => {
+      if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return;
+      const flags = obj._pending_review;
+      if (flags && typeof flags === 'object') {
+        for (const leaf of Object.keys(flags)) {
+          if (flags[leaf]) pending.add(`${shard}.${prefix ? prefix + '.' : ''}${leaf}`);
+        }
+      }
+      for (const [k, v] of Object.entries(obj)) {
+        if (k.startsWith('_')) continue;
+        if (v && typeof v === 'object' && !Array.isArray(v)) walk(v, prefix ? `${prefix}.${k}` : k);
+      }
+    };
+    walk(JSON.parse(readFileSync(join(dir, f), 'utf8')), '');
+  }
+  return pending;
+}
+
 /** DE as of a given git rev — used to bootstrap a previously-translated locale. */
 function loadLocaleAtRev(rev, locale) {
   const out = {};
@@ -197,12 +230,40 @@ for (const locale of locales) {
   if (!CHECK) {
     const stamps = {};
     let fromHistory = 0;
+    // VTID-03576. A key still flagged `_pending_review` was NOT translated —
+    // the translator failed on it, or never reached it. Stamping it against
+    // today's source asserts the opposite, and the drift gate then reports
+    // clean while the string stays stale FOREVER, because nothing will ever
+    // flag it again.
+    //
+    // This became reachable on every run when VTID-03569 wired an unconditional
+    // re-stamp into i18n-translate.yml with `if: always()` — deliberately, so a
+    // partial run keeps its successful work, but the reasoning ("stamps
+    // describe what is on disk, complete or not") was wrong: a stamp describes
+    // the SOURCE, not whether the target was translated from it.
+    //
+    // Carry the PREVIOUS stamp forward where one exists, so the key keeps
+    // whatever drift it already had; omit it entirely otherwise, which reports
+    // as "never stamped" rather than as current.
+    const pending = collectPending(locale);
+    let skipped = 0;
     for (const key of Object.keys(target)) {
+      if (pending.has(key)) {
+        if (prev && key in prev) stamps[key] = prev[key];
+        skipped++;
+        continue;
+      }
       // A key present in the historical DE is stamped with THAT value (it is
       // what the translation was made from). A key that did not exist then was
       // translated later, from current DE, so it stamps as current.
       if (key in srcForStamping) { stamps[key] = stampOf(srcForStamping[key]); fromHistory++; }
       else if (key in src) stamps[key] = stampOf(src[key]);
+    }
+    if (skipped) {
+      console.log(
+        `[stamp] ${locale}: ${skipped} key(s) still _pending_review — NOT stamped as current ` +
+          `(their translation did not succeed; they stay visible to --check)`,
+      );
     }
     writeFileSync(stampPath, JSON.stringify(stamps, null, 0) + '\n');
     console.log(
