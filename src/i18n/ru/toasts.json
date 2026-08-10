@@ -353,7 +353,9 @@
       "ticketPrintingWillAvailableSoon": "Печать билетов скоро будет доступна.",
       "confirmationSent": "Подтверждение отправлено",
       "refund": "Возврат средств",
-      "refundFunctionalityWillAvailableSoon": "Функция возврата средств скоро будет доступна."
+      "refundFunctionalityWillAvailableSoon": "Функция возврата средств скоро будет доступна.",
+      "noOrdersExport": "Нет заказов для экспорта",
+      "ordersExported": "Данные о продажах экспортированы!"
     },
     "calendar": {
       "calendarUpdated": "Календарь обновлен"
