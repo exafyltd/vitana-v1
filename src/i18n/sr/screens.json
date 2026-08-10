@@ -3508,7 +3508,12 @@
       "goalActivity": "Partner za aktivnost",
       "goalWeightLoss": "Mršavljenje",
       "goalMentalWellness": "Mentalno blagostanje",
-      "goalValues": "Usklađene vrednosti"
+      "goalValues": "Usklađene vrednosti",
+      "videoRoomUnavailable": "Nije uspelo učitavanje video sobe",
+      "videoRoomUnavailableHint": "Prenos trenutno nije dostupan. Molimo te, pokušaj ponovo.",
+      "autopilotSuggestionsTitle": "Autopilot predlozi",
+      "autopilotSuggestionsBody": "Još nisi objavio želju. U međuvremenu, Autopilot ti predlaže ljude iz zajednice koji bi ti mogli odgovarati. Objavi želju kako bi AI mogao da ti pronađe prave podudarnosti.",
+      "autopilotSuggestionBadge": "Autopilot"
     },
     "contacts": {
       "addContact": "Dodaj kontakt",
@@ -5111,7 +5116,34 @@
       "trajectoryAria": "Putanja Vitana Indeksa — danas {today}.",
       "insightUp": "U porastu! +{delta} poena u poslednjih 7 dana — samo napred.",
       "insightDown": "−{delta} poena u poslednjih 7 dana. Jedna mala akcija danas je važna.",
-      "insightFlat": "Stabilno u poslednjih 7 dana. Doslednost pobeđuje nagle skokove."
+      "insightFlat": "Stabilno u poslednjih 7 dana. Doslednost pobeđuje nagle skokove.",
+      "missionAlignment": {
+        "title": "Usklađenost sa misijom",
+        "subtitle": "Kako tvoje preporuke unapređuju pet stubova i ekonomiju dugovečnosti",
+        "loading": "Učitavanje podataka o misiji…",
+        "error": "Nije uspelo učitavanje podataka o misiji",
+        "noRecs": "Još nema preporuka u tvom redu.",
+        "summaryServed": "{pct}% tvojih preporuka unapređuje misiju",
+        "summaryServedCount": "{served} od {total} preporuka usklađeno",
+        "pillarHeading": "Obuhvaćeni stubovi",
+        "economyHeading": "Ekonomija dugovečnosti",
+        "noPillar": "Nije usklađeno sa stubovima",
+        "noEconomy": "Nije usklađeno sa ekonomijom",
+        "pillars": {
+          "nutrition": "Ishrana",
+          "hydration": "Hidratacija",
+          "exercise": "Vežbanje",
+          "sleep": "Spavanje",
+          "mental": "Mentalno zdravlje"
+        },
+        "economyAxes": {
+          "find_match": "Pronađi podudarnost",
+          "marketplace": "Tržište",
+          "income_generation": "Stvaranje prihoda",
+          "business_formation": "Osnivanje posla"
+        },
+        "contractLink": "Pogledaj ugovor o krajnjem cilju"
+      }
     },
     "home": {
       "matchPercent": "{score} %",
@@ -5321,7 +5353,8 @@
       "modBanned": "Korisnik banovan.",
       "modBanConfirm": "Banuj {name}? Njihove objave će biti skrivene i neće moći ponovo da objavljuju.",
       "modFailed": "Akcija neuspešna.",
-      "createPost": "Objava"
+      "createPost": "Objava",
+      "likesCount": "{count} Sviđanja"
     },
     "icons": {
       "xFormerlyTwitter": "X (bivši Twitter)"
