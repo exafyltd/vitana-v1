@@ -65,11 +65,11 @@
     "uploadFirstReport": "Carregar Primeiro Relatório",
     "missionAlignment": {
       "title": "Alinhamento da Missão",
-      "subtitle": "Como as tuas recomendações apoiam os cinco pilares e a economia da longevidade",
+      "subtitle": "Como as suas recomendações apoiam os cinco pilares e a economia da longevidade",
       "loading": "A carregar dados da missão…",
       "error": "Não foi possível carregar os dados da missão",
-      "noRecs": "Ainda não tens recomendações na tua fila.",
-      "summaryServed": "{pct}% das tuas recomendações avançam a missão",
+      "noRecs": "Você ainda não tem recomendações na sua fila.",
+      "summaryServed": "{pct}% das suas recomendações avançam a missão",
       "summaryServedCount": "{served} de {total} recomendações alinhadas",
       "pillarHeading": "Pilares atendidos",
       "economyHeading": "Economia da Longevidade",
@@ -88,12 +88,7 @@
         "income_generation": "Geração de renda",
         "business_formation": "Formação de negócios"
       },
-      "contractLink": "Ver o contrato do Objetivo Final",
-      "_pending_review": {
-        "subtitle": true,
-        "noRecs": true,
-        "summaryServed": true
-      }
+      "contractLink": "Ver o contrato do Objetivo Final"
     }
   }
 }

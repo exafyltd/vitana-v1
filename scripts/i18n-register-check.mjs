@@ -68,6 +68,19 @@ const DE_INFORMAL_SINGULAR = /\b(du|dich|dir|dein[ermns]?|hast|bist|kannst|wills
  */
 const L = (body) => new RegExp(`(?<![\\p{L}\\p{N}])(?:${body})(?![\\p{L}\\p{N}])`, 'u');
 
+/**
+ * Case-insensitive sibling of L(). (VTID-03580)
+ *
+ * Most rules below are deliberately case-SENSITIVE — Serbian `Vi` is polite
+ * address while `vi` is the ordinary plural, and German `Sie`/`sie` splits the
+ * same way, so folding case there would destroy the distinction the rule is
+ * built on. Portuguese has no such split: `Tu` at the start of a sentence and
+ * `tu` mid-sentence are the same wrong-variant pronoun. Listing every form
+ * twice (the `Вы|вы` style used for Russian) would be six extra alternatives
+ * carrying no information.
+ */
+const LI = (body) => new RegExp(`(?<![\\p{L}\\p{N}])(?:${body})(?![\\p{L}\\p{N}])`, 'iu');
+
 const RULES = {
   de: {
     name: 'German',
@@ -165,8 +178,38 @@ const RULES = {
     // The two classes stay distinguishable in the OUTPUT rather than in the
     // schema: every violation prints its matched string, so `o senhor` and
     // `-te` are one glance apart and call for different repairs.
-    formal:
-      /\bo senhor\b|\ba senhora\b|\bVossa Excel[êe]ncia\b|\btu\b|\bte?us?\b|\btuas?\b|\bcontigo\b|\w+-te\b|\b(?:podes|est[áa]s|tens|queres|vais|fazes|sabes|deves)\b/iu,
+    // VTID-03580 — two defects fixed here, both of which made this rule cry
+    // wolf on correct Brazilian text. 11 of its 14 hits were false.
+    //
+    // 1. It used `\b`, alone among every rule in this file, while the L()
+    //    docstring above says "every rule below is built with this instead".
+    //    `\b` is ASCII-defined, so in **mútua** the gap between `ú` and `t`
+    //    counts as a word boundary and `\btua\b` matches inside the word.
+    //    Five hits were `mútua`/`mútuas` — "mutual", which has nothing to do
+    //    with the second person. Same defect the docstring records for
+    //    Serbian `Više`, reappearing because this rule opted out of the fix.
+    //
+    // 2. `est[áa]s` accepted the unaccented spelling, and **estas** without
+    //    the accent is the ordinary feminine plural demonstrative ("these").
+    //    Six more hits were that word. The accent is the *only* thing telling
+    //    `estás` (you are) from `estas` (these), so `[áa]` did not add
+    //    tolerance, it erased the distinction — the over-match that made
+    //    Spanish `su` unusable, in a new place. A translator who drops the
+    //    accent writes something genuinely ambiguous, and this file's own
+    //    precedent is to not match ambiguous markers.
+    //
+    // Bare `te` stays UNMATCHED, as before: `te` proclitic ("eu te amo") is
+    // ordinary Brazilian Portuguese. Only enclisis (`ajudou-te`) is the
+    // wrong-variant tell, and it keeps its own alternative below.
+    formal: new RegExp(
+      '(?<![\\p{L}\\p{N}])(?:' +
+        'o senhor|a senhora|Vossa Excel[êe]ncia|' +
+        'tus?|teus?|tuas?|contigo|' +
+        'podes|estás|tens|queres|vais|fazes|sabes|deves' +
+      ')(?![\\p{L}\\p{N}])' +
+      '|(?<![\\p{L}\\p{N}])\\p{L}+-te(?![\\p{L}\\p{N}])',
+      'iu',
+    ),
     exempt: [],
     note: 'você-form (Brazilian Portuguese). Never o senhor; never the European tu-form.',
     crossCheck: true,

@@ -42,9 +42,9 @@ export const languageOptions: Array<{ label: string; value: string; status: 'ga'
   { label: "Spanish (ES)", value: "es-ES", status: 'ga' },
   { label: "Serbian (SR)", value: "sr-RS", status: 'ga' },
   { label: "French (FR)", value: "fr-FR", status: 'ga' },
-  { label: "Portuguese (BR)", value: "pt-BR", status: 'beta' },
-  { label: "Russian (RU)", value: "ru-RU", status: 'beta' },
-  { label: "Polish (PL)", value: "pl-PL", status: 'beta' },
+  { label: "Portuguese (BR)", value: "pt-BR", status: 'ga' },
+  { label: "Russian (RU)", value: "ru-RU", status: 'ga' },
+  { label: "Polish (PL)", value: "pl-PL", status: 'ga' },
   // Deferred past 18 Aug. AR needs RTL layout work (RTLProvider is not wired
   // to the selected language); ZH needs a CJK font stack + line-break audit.
   { label: "Arabic (AR)", value: "ar-XA", status: 'draft' },
