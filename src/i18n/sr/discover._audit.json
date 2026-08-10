@@ -1,10 +1,8 @@
 {
   "verdicts": {
     "discover.title": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form.",
-      "suggested": "Otkrij svoj Longevity Marketplace",
       "phase": "llm"
     },
     "discover.mobileTitle": {
@@ -18,17 +16,13 @@
       "phase": "llm"
     },
     "discover.description": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form for verbs and possessive pronoun.",
-      "suggested": "Pronađi lekare, wellness usluge i zajednice savršeno usklađene sa tvojim putem zdravog starenja.",
       "phase": "llm"
     },
     "discover.searchPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form.",
-      "suggested": "Šta tražiš? (npr. časovi joge, lekar za dugovečnost, sastanci)",
       "phase": "llm"
     },
     "discover.doctorsCoaches": {
@@ -37,10 +31,8 @@
       "phase": "llm"
     },
     "discover.doctorsCoachesDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form.",
-      "suggested": "Pronađi specijaliste za dugovečnost, zdravstvene trenere i medicinske stručnjake",
       "phase": "llm"
     },
     "discover.wellnessServices": {
@@ -49,10 +41,8 @@
       "phase": "llm"
     },
     "discover.wellnessServicesDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form.",
-      "suggested": "Otkrij jogu, masažu, ples, terapiju i usluge oporavka",
       "phase": "llm"
     },
     "discover.communityGroups": {
@@ -61,10 +51,8 @@
       "phase": "llm"
     },
     "discover.communityGroupsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form for both verbs.",
-      "suggested": "Pridruži se sastancima, grupama i poveži se sa istomišljenicima",
       "phase": "llm"
     },
     "discover.explore": {
@@ -73,17 +61,13 @@
       "phase": "llm"
     },
     "discover.aiPicksForYou": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form.",
-      "suggested": "AI preporuke za tebe",
       "phase": "llm"
     },
     "discover.recommendedForYou": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form.",
-      "suggested": "Preporučeno za tebe",
       "phase": "llm"
     },
     "discover.moreToExplore": {
@@ -97,10 +81,8 @@
       "phase": "llm"
     },
     "discover.suggestedForYou": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form.",
-      "suggested": "Predloženo za tebe",
       "phase": "llm"
     },
     "discover.browseCategories": {
@@ -119,10 +101,8 @@
       "phase": "llm"
     },
     "discover.shareAndEarnDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form for both verbs.",
-      "suggested": "Preporuči proizvode, zaradi proviziju",
       "phase": "llm"
     },
     "discover.start": {
@@ -156,10 +136,8 @@
       "phase": "llm"
     },
     "discover.noResultsDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register mismatch: formal 'Vi' form used instead of informal 'du' form for both verbs.",
-      "suggested": "Probaj druge pojmove za pretragu ili pregledaj kategorije.",
       "phase": "llm"
     },
     "discover.categories.sleep": {
@@ -321,7 +299,237 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "discover.vitanaPicksLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.skincareCosmetics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.healthTests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.vitanaPickBadge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.popularBadge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.reasonForCategory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.reasonGeneric": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.viewProduct": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.back": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.productsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.recommendProduct": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.recommendAndEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.recommendShareTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.recommendLinkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.recommendFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.recommendAdded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.alreadyRecommended": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.longevity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.adaptogens": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.vitamins": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.essentialFattyAcids": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.minerals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.immunity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.beauty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.nootropics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.performance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.antioxidants": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.faceCare": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.makeup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.hairCare": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.bodyCare": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.fragrance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.sunCare": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.nutrientsVitamins": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.hormones": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.cardio": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.longevityFitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.womensHealth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.sexualHealth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.prevention": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.generalHealth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.subcategories.dnaAnalysis": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.guest.bannerTitle": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "discover.guest.bannerSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.guest.bannerCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "discover.guest.signIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:55.082Z"
+  "generatedAt": "2026-08-10T05:03:04.572Z"
 }
