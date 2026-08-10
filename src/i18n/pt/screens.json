@@ -9351,7 +9351,10 @@
       "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA é uma plataforma de saúde digital abrangente que oferece múltiplos ambientes especializados para diferentes comunidades de bem-estar e gestão profissional de cuidados de saúde.",
       "commercePortal": "Portal de Comércio",
       "merchantSelfServiceMarketplace": "Mercado de Auto-Serviço para Comerciantes",
-      "connectYourBusinessToDiscoverYourself": "Conecta o teu negócio ao mercado Discover tu mesmo — sem projeto de integração, sem esperar por engenheiros."
+      "connectYourBusinessToDiscoverYourself": "Conecta o teu negócio ao mercado Discover tu mesmo — sem projeto de integração, sem esperar por engenheiros.",
+      "_pending_review": {
+        "connectYourBusinessToDiscoverYourself": true
+      }
     },
     "intentboard": {
       "communityBoard": "Mural da comunidade",
@@ -10205,6 +10208,11 @@
         "suspended": "Em pausa",
         "revoked": "Revogado",
         "failed": "Falhou"
+      },
+      "_pending_review": {
+        "subtitle": true,
+        "empty": true,
+        "pendingReview": true
       }
     },
     "commerceportal": {
@@ -10226,7 +10234,20 @@
       "loginSubtitle": "Portal de Comércio",
       "loginIntro": "Inicia sessão para gerir o teu negócio.",
       "loginButton": "Iniciar sessão",
-      "loginError": "Falha ao iniciar sessão"
+      "loginError": "Falha ao iniciar sessão",
+      "_pending_review": {
+        "heroTitle": true,
+        "heroSubtitle": true,
+        "cta": true,
+        "step1Title": true,
+        "step1Body": true,
+        "step2Body": true,
+        "step3Body": true,
+        "connectionsSubtitle": true,
+        "empty": true,
+        "activationHint": true,
+        "loginIntro": true
+      }
     },
     "oauthconsent": {
       "title": "Permitir acesso?",
@@ -10250,7 +10271,20 @@
         "vitana:partners:read": "Visualiza a informação do parceiro",
         "vitana:connections:write": "Gere as ligações de negócio",
         "vitana:grants:write": "Propõe concessões de dados (o consentimento fica contigo)",
-        "vitana:settlement:write": "Ativa as liquidações VTNA preparadas"
+        "vitana:settlement:write": "Ativa as liquidações VTNA preparadas",
+        "_pending_review": {
+          "vitana:cart:read": true,
+          "vitana:cart:write": true,
+          "vitana:orders:read": true,
+          "vitana:orders:write": true,
+          "vitana:wallet:read": true,
+          "vitana:rewards:read": true,
+          "vitana:grants:write": true
+        }
+      },
+      "_pending_review": {
+        "clientWants": true,
+        "decisionFailed": true
       }
     }
   }
