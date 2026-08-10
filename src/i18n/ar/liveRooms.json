@@ -6,7 +6,8 @@
       "live": "مباشر الآن",
       "scheduled": "مجدول",
       "all": "كل الغرف",
-      "past": "سابقة"
+      "past": "سابقة",
+      "_pending_review": {}
     },
     "goLive": "انطلق مباشرة",
     "joinRoom": "انضم للغرفة",
@@ -17,7 +18,8 @@
     "search": {
       "placeholder": "ابحث عن غرف، مواضيع، أو مضيفين...",
       "category": "الفئة",
-      "allCategories": "كل الفئات"
+      "allCategories": "كل الفئات",
+      "_pending_review": {}
     },
     "room": {
       "join": "انضم للغرفة",
@@ -25,7 +27,8 @@
       "duration": "المدة",
       "host": "المضيف",
       "premium": "مميز",
-      "live": "مباشر"
+      "live": "مباشر",
+      "_pending_review": {}
     },
     "viewer": {
       "leave": "مغادرة",
@@ -33,7 +36,8 @@
       "video": "فيديو",
       "raiseHand": "ارفع يدك",
       "chat": "دردشة",
-      "reactions": "ردود الفعل"
+      "reactions": "ردود الفعل",
+      "_pending_review": {}
     },
     "goLivePopup": {
       "titleCreate": "انطلق مباشرة",
@@ -65,7 +69,8 @@
         "sleep": "النوم",
         "motivation": "التحفيز",
         "education": "التعليم",
-        "lifestyle": "نمط الحياة"
+        "lifestyle": "نمط الحياة",
+        "_pending_review": {}
       },
       "advancedTitle": "خيارات متقدمة",
       "cohostLabel": "مضيف مشارك / دعوة ضيف",
@@ -74,16 +79,20 @@
       "access": {
         "public": {
           "label": "عام",
-          "desc": "يمكن لأي شخص الانضمام"
+          "desc": "يمكن لأي شخص الانضمام",
+          "_pending_review": {}
         },
         "followers": {
           "label": "للمتابعين فقط",
-          "desc": "متابعوك فقط"
+          "desc": "متابعوك فقط",
+          "_pending_review": {}
         },
         "group": {
           "label": "مجموعة/شخصيات مهمة",
-          "desc": "الأعضاء المدعوون فقط"
-        }
+          "desc": "الأعضاء المدعوون فقط",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "scheduleLabel": "جدولة لوقت لاحق",
       "goLiveNow": "انطلق مباشر الآن",
@@ -118,7 +127,8 @@
         "imageUploadFailedDesc": "سنحتفظ بالصورة الحالية.",
         "genericTitle": "خطأ",
         "genericDesc": "فشل إنشاء البث. الرجاء المحاولة مرة أخرى.",
-        "genericDescWithReason": "فشل إنشاء البث: {reason}. الرجاء المحاولة مرة أخرى."
+        "genericDescWithReason": "فشل إنشاء البث: {reason}. الرجاء المحاولة مرة أخرى.",
+        "_pending_review": {}
       },
       "success": {
         "streamUpdatedTitle": "تم تحديث البث! ✨",
@@ -128,15 +138,19 @@
         "youAreLiveTitle": "أنت مباشر! 🎙️",
         "youAreLiveDesc": "جارٍ الانضمام إلى غرفة بثك…",
         "aiImageHintTitle": "توليد الصور بالذكاء الاصطناعي",
-        "aiImageHintDesc": "سيتم توليد الصورة عند بدء البث."
-      }
+        "aiImageHintDesc": "سيتم توليد الصورة عند بدء البث.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "editSession": {
       "title": "تعديل الجلسة",
       "saving": "جارٍ الحفظ…",
       "changeCover": "تغيير صورة الغلاف",
-      "noChanges": "لا توجد تغييرات للحفظ"
-    }
+      "noChanges": "لا توجد تغييرات للحفظ",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
   },
   "goLivePopup": {
     "durationLabel": "المدة",
@@ -146,6 +160,8 @@
     "duration60": "ساعة واحدة",
     "duration90": "ساعة ونصف",
     "duration120": "ساعتان",
-    "durationHint": "تُغلق الغرفة تلقائياً بعد هذا الوقت إذا لم تنهِها يدوياً."
-  }
+    "durationHint": "تُغلق الغرفة تلقائياً بعد هذا الوقت إذا لم تنهِها يدوياً.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

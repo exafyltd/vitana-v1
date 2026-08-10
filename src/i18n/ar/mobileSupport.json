@@ -74,6 +74,8 @@
     "errorNoAudio": "لم نلتقط أي صوت. يرجى المحاولة مرة أخرى.",
     "errorTranscription": "فشل النسخ. يرجى المحاولة مرة أخرى.",
     "transcribing": "جاري نسخ تسجيلك…",
-    "backendRecordingHint": "سيظهر نسختك بعد النقر على إيقاف."
-  }
+    "backendRecordingHint": "سيظهر نسختك بعد النقر على إيقاف.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

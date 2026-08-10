@@ -19,6 +19,8 @@
     "processing": "جاري المعالجة...",
     "joining": "جاري الانضمام...",
     "getTickets": "احصل على التذاكر",
-    "promoteEvent": "روّج للحدث"
-  }
+    "promoteEvent": "روّج للحدث",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

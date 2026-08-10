@@ -6,7 +6,8 @@
       "editHighlights": "تعديل أبرز النقاط",
       "saveHighlights": "حفظ أبرز النقاط",
       "highlightsDesc": "اختر أفضل منشوراتك ووسائطك لعرضها في أعلى ملفك الشخصي. يظهر المحتوى المميّز في قسم أبرز النقاط ويجذب المزيد من المتابعين.",
-      "try": "جرّب"
+      "try": "جرّب",
+      "_pending_review": {}
     },
     "identity": {
       "vitanaIndex": "مؤشر Vitana",
@@ -15,13 +16,15 @@
       "follow": "متابعة",
       "followingState": "تتابع",
       "understandIndex": "فهم المؤشر",
-      "brandFooter": "MAXINA × VITANA"
+      "brandFooter": "MAXINA × VITANA",
+      "_pending_review": {}
     },
     "tabs": {
       "identity": "الهوية",
       "social": "اجتماعي",
       "account": "الحساب",
-      "business": "الأعمال"
+      "business": "الأعمال",
+      "_pending_review": {}
     },
     "account": {
       "notSet": "لم يتم الضبط",
@@ -30,7 +33,8 @@
       "visibility": {
         "private": "خاص",
         "connections": "الاتصالات",
-        "public": "عام"
+        "public": "عام",
+        "_pending_review": {}
       },
       "sections": {
         "publicProfile": "ملف شخصي عام",
@@ -38,7 +42,8 @@
         "basicInfo": "معلومات شخصية أساسية",
         "basicInfoSubtitle": "بيانات الهوية الثابتة",
         "contactInfo": "معلومات الاتصال",
-        "accountDetails": "تفاصيل الحساب"
+        "accountDetails": "تفاصيل الحساب",
+        "_pending_review": {}
       },
       "fields": {
         "avatar": "الصورة الرمزية",
@@ -56,11 +61,14 @@
         "city": "المدينة",
         "memberSince": "عضو منذ",
         "accountType": "نوع الحساب",
-        "verificationStatus": "حالة التحقق"
+        "verificationStatus": "حالة التحقق",
+        "_pending_review": {}
       },
       "values": {
-        "uploaded": "مرفوع"
-      }
+        "uploaded": "مرفوع",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "business": {
       "title": "توصياتي",
@@ -75,7 +83,10 @@
       "publicTitle": "توصيات",
       "publicSubtitle": "المنتجات التي أوصى بها هذا الملف الشخصي",
       "publicEmpty": "لا توجد توصيات بعد",
-      "viewProduct": "عرض"
-    }
-  }
+      "viewProduct": "عرض",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

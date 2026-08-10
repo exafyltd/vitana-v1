@@ -20,23 +20,30 @@
         "community": "مجتمع",
         "patient": "مريض",
         "professional": "محترف",
-        "admin": "مسؤول"
-      }
+        "admin": "مسؤول",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "alkalma": {
       "joinAlkalma": "انضم إلى الكلمة",
       "welcomeBack": "مرحبًا بعودتك إلى الكلمة.",
-      "continueJourney": "سجّل الدخول للمتابعة."
+      "continueJourney": "سجّل الدخول للمتابعة.",
+      "_pending_review": {}
     },
     "earthlinks": {
       "joinEarthlinks": "انضم إلى إيرثلينكس",
       "welcomeBack": "مرحبًا بعودتك إلى إيرثلينكس.",
-      "continueJourney": "سجّل الدخول للمتابعة."
+      "continueJourney": "سجّل الدخول للمتابعة.",
+      "_pending_review": {}
     },
     "community": {
       "joinCommunity": "انضم إلى المجتمع",
       "welcomeBack": "مرحبًا بعودتك.",
-      "continueJourney": "سجّل الدخول للمتابعة."
-    }
-  }
+      "continueJourney": "سجّل الدخول للمتابعة.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

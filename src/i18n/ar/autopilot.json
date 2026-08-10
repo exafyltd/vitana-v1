@@ -16,7 +16,8 @@
       "updateArchetype": "تحديث النمط الأصلي",
       "profileSectionTitle": "يمكن للطيار الآلي أن يحسّن ملفك الشخصي ✨",
       "profileSectionDesc": "احصل على اقتراحات مدعومة بالذكاء الاصطناعي لسيرتك الذاتية، والنمط الأصلي، وأبرز اللحظات.",
-      "tryAutopilot": "جرّب الطيار الآلي"
+      "tryAutopilot": "جرّب الطيار الآلي",
+      "_pending_review": {}
     },
     "preview": "معاينة الطيار الآلي",
     "viewAll": "عرض الكل",
@@ -41,12 +42,14 @@
       "toastExecutedTitle": "الإجراءات المنفذة",
       "toastExecutedDesc": "{success}/{total} إجراءات اكتملت بنجاح",
       "toastFailedTitle": "فشل التنفيذ",
-      "toastFailedDesc": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+      "toastFailedDesc": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+      "_pending_review": {}
     },
     "priorities": {
       "high": "عالٍ",
       "medium": "متوسط",
-      "low": "منخفض"
+      "low": "منخفض",
+      "_pending_review": {}
     },
     "widget": {
       "title": "الطيار الآلي ⚡",
@@ -56,7 +59,8 @@
       "allOptimized": "كل شيء مُحسّن! 🎯",
       "enableToSee": "فعّل الطيار الآلي لترى الاقتراحات",
       "completeForRewards": "أكمل اقتراحات الطيار الآلي لتحصل على مكافآت",
-      "enableForCredits": "فعّل الطيار الآلي للحصول على أرصدة"
+      "enableForCredits": "فعّل الطيار الآلي للحصول على أرصدة",
+      "_pending_review": {}
     },
     "insightBanner": {
       "title": "نظرة عامة على صحة الطيار الآلي",
@@ -64,7 +68,8 @@
       "synergyIndex": "مؤشر التآزر",
       "statusBalanced": "متوازن",
       "statusNeedsAttention": "يحتاج إلى اهتمام",
-      "statusImproving": "في تحسن"
+      "statusImproving": "في تحسن",
+      "_pending_review": {}
     },
     "profilePopup": {
       "title": "دع الطيار الآلي يحسّن ملفك الشخصي ✨",
@@ -87,7 +92,8 @@
       "acceptAll": "قبول الكل",
       "applied": "تم حفظ التغييرات!",
       "error": "حدث خطأ ما",
-      "comingSoon": "قريبًا"
+      "comingSoon": "قريبًا",
+      "_pending_review": {}
     },
     "actions": {
       "action1Title": "انضم إلى مجموعة رقص طول العمر الليلة؟",
@@ -103,7 +109,10 @@
       "action6Title": "سحر الصباح الواعي",
       "action6Reason": "روحك تنادي هذه التقنيات المذيبة للتوتر",
       "newActionTitle": "اقتراح جديد من الذكاء الاصطناعي",
-      "newActionReason": "بناءً على أنماط النشاط الأخيرة"
-    }
-  }
+      "newActionReason": "بناءً على أنماط النشاط الأخيرة",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

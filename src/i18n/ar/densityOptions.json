@@ -2,6 +2,8 @@
   "densityOptions": {
     "cozy": "مريح",
     "compact": "مضغوط",
-    "gallery": "معرض"
-  }
+    "gallery": "معرض",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

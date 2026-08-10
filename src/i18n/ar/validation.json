@@ -24,6 +24,8 @@
     "charactersRemaining": "{count} أحرف متبقية",
     "fileTooBig": "الملف كبير جداً (الحد الأقصى {max})",
     "invalidFileType": "نوع ملف غير صالح",
-    "uploadLimit": "مسموح بـ {max} ملفات كحد أقصى"
-  }
+    "uploadLimit": "مسموح بـ {max} ملفات كحد أقصى",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

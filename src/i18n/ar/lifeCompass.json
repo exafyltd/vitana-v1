@@ -17,37 +17,48 @@
       "career": "المسيرة المهنية",
       "learning": "التعلم",
       "spiritual": "الروحانية",
-      "longevity": "طول العمر"
+      "longevity": "طول العمر",
+      "_pending_review": {}
     },
     "goals": {
       "wealth": {
         "title": "بناء الحرية المالية",
-        "description": "تحقيق الاستقلال المالي والثروة"
+        "description": "تحقيق الاستقلال المالي والثروة",
+        "_pending_review": {}
       },
       "relationship": {
         "title": "العثور على شريك الحياة",
-        "description": "بناء علاقات رومانسية هادفة"
+        "description": "بناء علاقات رومانسية هادفة",
+        "_pending_review": {}
       },
       "health": {
         "title": "تحسين الصحة",
-        "description": "تحقيق العافية البدنية والعقلية المثلى"
+        "description": "تحقيق العافية البدنية والعقلية المثلى",
+        "_pending_review": {}
       },
       "career": {
         "title": "تطوير المسيرة المهنية",
-        "description": "بناء مسيرة مهنية مُرضية وناجحة"
+        "description": "بناء مسيرة مهنية مُرضية وناجحة",
+        "_pending_review": {}
       },
       "learning": {
         "title": "إتقان مهارات جديدة",
-        "description": "تعلم وتطور من خلال المعرفة"
+        "description": "تعلم وتطور من خلال المعرفة",
+        "_pending_review": {}
       },
       "spiritual": {
         "title": "الحياة الروحية",
-        "description": "تعميق الهدف، الحضور، والسلام الداخلي"
+        "description": "تعميق الهدف، الحضور، والسلام الداخلي",
+        "_pending_review": {}
       },
       "longevity": {
         "title": "تحسين جودة الحياة وإطالة العمر",
-        "description": "ركّز على مدى الحياة الصحية، والطاقة، وطول العمر — مهمة فيتانالاند"
-      }
-    }
-  }
+        "description": "ركّز على مدى الحياة الصحية، والطاقة، وطول العمر — مهمة فيتانالاند",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

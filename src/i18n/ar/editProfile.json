@@ -16,6 +16,8 @@
     "title": "عنوان",
     "titlePlaceholder": "عنوان الفيديو",
     "description": "وصف",
-    "descriptionPlaceholder": "وصف اختياري..."
-  }
+    "descriptionPlaceholder": "وصف اختياري...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -19,6 +19,8 @@
     "searching": "جاري البحث...",
     "deleting": "جاري الحذف...",
     "creating": "جاري الإنشاء...",
-    "updating": "جاري التحديث..."
-  }
+    "updating": "جاري التحديث...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

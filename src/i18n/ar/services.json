@@ -6,14 +6,16 @@
       "preventive": "فحوصات وقائية",
       "labTests": "تحاليل مخبرية",
       "coaching": "تدريب وتوجيه شخصي",
-      "groupPrograms": "برامج جماعية وتحديات"
+      "groupPrograms": "برامج جماعية وتحديات",
+      "_pending_review": {}
     },
     "actions": {
       "book": "احجز",
       "addToPlan": "أضف إلى الخطة",
       "askAI": "اسأل الذكاء الاصطناعي",
       "joinRoom": "انضم إلى الغرفة",
-      "setReminder": "اضبط تذكيرًا"
+      "setReminder": "اضبط تذكيرًا",
+      "_pending_review": {}
     },
     "details": {
       "duration": "المدة",
@@ -24,7 +26,10 @@
       "healthBenefits": "فوائد صحية",
       "availableProviders": "مقدمو الخدمة المتاحون",
       "requirements": "المتطلبات والتحضير",
-      "tags": "الوسوم"
-    }
-  }
+      "tags": "الوسوم",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -43,6 +43,8 @@
     "recognitionError": "خطأ في التعرف",
     "recognitionErrorDesc": "حدث خطأ في التعرف على الكلام. الرجاء المحاولة مرة أخرى.",
     "transcribing": "جاري تفريغ تسجيلك...",
-    "backendRecordingHint": "تسجيل — ستظهر نسختك المكتوبة بعد النقر على إيقاف."
-  }
+    "backendRecordingHint": "تسجيل — ستظهر نسختك المكتوبة بعد النقر على إيقاف.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -68,7 +68,8 @@
       "volunteer": "❤️ تطوع وخدمة",
       "support": "🫂 مجموعة دعم",
       "entertainment": "🎭 ترفيه",
-      "other": "✨ أخرى"
+      "other": "✨ أخرى",
+      "_pending_review": {}
     },
     "durations": {
       "30min": "30 دقيقة",
@@ -81,7 +82,8 @@
       "8hour": "8 ساعات",
       "half-day": "نصف يوم",
       "full-day": "يوم كامل",
-      "custom": "مدة مخصصة..."
+      "custom": "مدة مخصصة...",
+      "_pending_review": {}
     },
     "toasts": {
       "invalidFileType": "نوع ملف غير صالح",
@@ -113,7 +115,10 @@
       "personalEventCreated": "تم إنشاء الحدث!",
       "personalEventCreatedDesc": "تمت إضافة الحدث إلى تقويمك.",
       "error": "خطأ",
-      "errorDesc": "تعذر إنشاء الحدث. الرجاء المحاولة مرة أخرى."
-    }
-  }
+      "errorDesc": "تعذر إنشاء الحدث. الرجاء المحاولة مرة أخرى.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

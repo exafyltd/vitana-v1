@@ -4,28 +4,37 @@
     "items": {
       "recordVoiceDiary": {
         "title": "سجّل يوميات صوتية",
-        "description": "التقط أفكارك وتأملاتك بالصوت"
+        "description": "التقط أفكارك وتأملاتك بالصوت",
+        "_pending_review": {}
       },
       "addMemoryNote": {
         "title": "أضف ملاحظة ذاكرة",
-        "description": "دوّن لحظات صحية مهمة"
+        "description": "دوّن لحظات صحية مهمة",
+        "_pending_review": {}
       },
       "viewTimeline": {
         "title": "شاهد الخط الزمني",
-        "description": "شاهد رحلتك الصحية الكاملة"
+        "description": "شاهد رحلتك الصحية الكاملة",
+        "_pending_review": {}
       },
       "searchMemories": {
         "title": "ابحث في الذكريات",
-        "description": "اعثر على لحظات ورؤى محددة"
+        "description": "اعثر على لحظات ورؤى محددة",
+        "_pending_review": {}
       },
       "photoMemory": {
         "title": "ذاكرة صور",
-        "description": "أضف ذكريات بصرية لرحلتك"
+        "description": "أضف ذكريات بصرية لرحلتك",
+        "_pending_review": {}
       },
       "aiMemoryAnalysis": {
         "title": "تحليل ذكريات بالذكاء الاصطناعي",
-        "description": "احصل على رؤى من أنماط ذكرياتك"
-      }
-    }
-  }
+        "description": "احصل على رؤى من أنماط ذكرياتك",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

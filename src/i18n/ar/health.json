@@ -26,18 +26,21 @@
     "trend": {
       "improving": "يتحسن",
       "declining": "يتدهور",
-      "stable": "مستقر"
+      "stable": "مستقر",
+      "_pending_review": {}
     },
     "suggestions": {
       "uploadBloodTestResults": "حمّل نتائج فحص الدم",
-      "startFitnessChallenge": "ابدأ تحدي اللياقة البدنية لمدة 30 يومًا"
+      "startFitnessChallenge": "ابدأ تحدي اللياقة البدنية لمدة 30 يومًا",
+      "_pending_review": {}
     },
     "pillars": {
       "sleep": "النوم",
       "exercise": "التمرين",
       "nutrition": "التغذية",
       "hydration": "الترطيب",
-      "mental": "نفسي"
+      "mental": "نفسي",
+      "_pending_review": {}
     },
     "emptyStates": {
       "noSleepPlan": "لا يوجد خطة نوم بعد",
@@ -51,7 +54,8 @@
       "noMentalPlan": "لا يوجد خطة نفسية بعد",
       "noMentalPlanDesc": "أنشئ خطة عافيتك النفسية المخصصة، لتتبع التوتر والتركيز والتوازن العاطفي بدعم الذكاء الاصطناعي.",
       "generatePlan": "أنشئ خطة",
-      "generating": "جاري الإنشاء..."
+      "generating": "جاري الإنشاء...",
+      "_pending_review": {}
     },
     "noSupplements": "لا توجد مكملات بعد",
     "noSupplementsDesc": "تتبع فيتاميناتك ومعادنك ومكملاتك اليومية. أضف أول مكمل لك للبدء.",
@@ -62,6 +66,8 @@
     "uploadDescription": "فحوصات الدم، التصوير، نتائج المختبر",
     "unknownProvider": "مزود غير معروف",
     "addSupplement": "أضف مكمل",
-    "uploadFirstReport": "حمّل أول تقرير"
-  }
+    "uploadFirstReport": "حمّل أول تقرير",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

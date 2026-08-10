@@ -4,7 +4,8 @@
       "title": "رصيدك",
       "loading": "جارٍ تحميل الرصيد…",
       "empty": "لا يوجد رصيد بعد",
-      "addMoney": "أضف مالاً"
+      "addMoney": "أضف مالاً",
+      "_pending_review": {}
     },
     "checkout": {
       "button": "الدفع",
@@ -16,7 +17,8 @@
       "affiliateTitle": "أكمل الشراء لدى التاجر",
       "affiliateBody": "يتم شراء بعض العناصر مباشرة من التاجر. افتح الروابط أدناه لإكمال الشراء.",
       "affiliateLink": "أكمل الشراء لدى التاجر",
-      "affiliateOpened": "تم فتح روابط التاجر في علامات تبويب جديدة."
+      "affiliateOpened": "تم فتح روابط التاجر في علامات تبويب جديدة.",
+      "_pending_review": {}
     },
     "addMoney": {
       "title": "أضف مالاً",
@@ -29,7 +31,8 @@
       "continue": "متابعة الدفع",
       "processing": "جارٍ التحضير…",
       "invalidAmount": "الرجاء إدخال مبلغ صحيح.",
-      "failed": "تعذر بدء عملية الشحن."
+      "failed": "تعذر بدء عملية الشحن.",
+      "_pending_review": {}
     },
     "deposit": {
       "checkingTitle": "تأكيد الدفع",
@@ -39,7 +42,8 @@
       "failedTitle": "فشل الشحن",
       "failedBody": "لم يكتمل شحن رصيدك. لم يتم خصم أي مبلغ.",
       "amountLabel": "المبلغ",
-      "backToCart": "العودة إلى السلة"
+      "backToCart": "العودة إلى السلة",
+      "_pending_review": {}
     },
     "errors": {
       "invalid_request": "الطلب غير صالح. يرجى التحقق من سلتك.",
@@ -57,7 +61,10 @@
       "ORDER_WRITE_FAILED": "لم يتم حفظ طلبك. يرجى المحاولة مرة أخرى.",
       "WALLET_READ_FAILED": "لم نتمكن من قراءة رصيدك. يرجى المحاولة مرة أخرى.",
       "GATEWAY_MISCONFIGURED": "خدمة الدفع غير متاحة حاليًا. يرجى المحاولة لاحقًا.",
-      "unknown": "حدث خطأ ما عند الدفع. يرجى المحاولة مرة أخرى."
-    }
-  }
+      "unknown": "حدث خطأ ما عند الدفع. يرجى المحاولة مرة أخرى.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

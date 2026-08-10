@@ -10,7 +10,8 @@
       "history": "السجل",
       "all": "الكل",
       "completed": "مكتملة",
-      "cancelled": "ملغاة"
+      "cancelled": "ملغاة",
+      "_pending_review": {}
     },
     "filters": {
       "all": "الكل",
@@ -18,17 +19,20 @@
       "products": "المنتجات",
       "vouchers": "القسائم",
       "services": "الخدمات",
-      "refunds": "المبالغ المستردة"
+      "refunds": "المبالغ المستردة",
+      "_pending_review": {}
     },
     "previewNotice": "هذه طلبات معاينة. ستظهر طلباتك الفعلية هنا.",
     "sampleData": "بيانات تجريبية",
     "emptyActive": {
       "title": "لا توجد طلبات نشطة",
-      "description": "ليس لديك أي طلبات نشطة أو فعاليات قادمة."
+      "description": "ليس لديك أي طلبات نشطة أو فعاليات قادمة.",
+      "_pending_review": {}
     },
     "emptyHistory": {
       "title": "لا يوجد سجل طلبات",
-      "description": "ستظهر طلباتك المكتملة وفعالياتك السابقة هنا."
+      "description": "ستظهر طلباتك المكتملة وفعالياتك السابقة هنا.",
+      "_pending_review": {}
     },
     "noOrders": "لا توجد طلبات بعد",
     "noOrdersDesc": "ستظهر طلباتك هنا بمجرد أن تشتري شيئًا.",
@@ -60,7 +64,8 @@
       "personalMessage": "رسالة شخصية",
       "cancel": "إلغاء",
       "send": "إرسال",
-      "downloadPdf": "تحميل PDF"
+      "downloadPdf": "تحميل PDF",
+      "_pending_review": {}
     },
     "status": {
       "upcoming": "قادمة",
@@ -75,7 +80,10 @@
       "pending": "معلق",
       "processing": "قيد المعالجة",
       "paid": "نشط",
-      "active": "نشط"
-    }
-  }
+      "active": "نشط",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -4,36 +4,47 @@
     "items": {
       "recordVoiceEntry": {
         "title": "سجل إدخالًا صوتيًا",
-        "description": "التقط أفكارك وتأملاتك بالتسجيل الصوتي"
+        "description": "التقط أفكارك وتأملاتك بالتسجيل الصوتي",
+        "_pending_review": {}
       },
       "addPhotoEntry": {
         "title": "أضف إدخال صورة",
-        "description": "حمّل صورًا لتوثيق رحلتك الصحية"
+        "description": "حمّل صورًا لتوثيق رحلتك الصحية",
+        "_pending_review": {}
       },
       "writeTextEntry": {
         "title": "اكتب إدخالًا نصيًا",
-        "description": "أنشئ تأملات وملاحظات مكتوبة مفصلة"
+        "description": "أنشئ تأملات وملاحظات مكتوبة مفصلة",
+        "_pending_review": {}
       },
       "quickNote": {
         "title": "ملاحظة سريعة",
-        "description": "دوّن أفكارًا أو ملاحظات موجزة"
+        "description": "دوّن أفكارًا أو ملاحظات موجزة",
+        "_pending_review": {}
       },
       "videoDiary": {
         "title": "يوميات فيديو",
-        "description": "سجل تأملات فيديو وتحديثات عن التقدم"
+        "description": "سجل تأملات فيديو وتحديثات عن التقدم",
+        "_pending_review": {}
       },
       "scheduleEntry": {
         "title": "جدولة إدخال",
-        "description": "خطط لإدخالات يوميات مستقبلية وتذكيرات"
+        "description": "خطط لإدخالات يوميات مستقبلية وتذكيرات",
+        "_pending_review": {}
       },
       "tagMemories": {
         "title": "وسم الذكريات",
-        "description": "نظم الإدخالات الموجودة بالوسوم والفئات"
+        "description": "نظم الإدخالات الموجودة بالوسوم والفئات",
+        "_pending_review": {}
       },
       "importFiles": {
         "title": "استورد ملفات",
-        "description": "حمّل مستندات، صور، أو ملفات صحية أخرى"
-      }
-    }
-  }
+        "description": "حمّل مستندات، صور، أو ملفات صحية أخرى",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

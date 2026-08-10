@@ -14,6 +14,8 @@
     "postpone": "تأجيل",
     "addNote": "إضافة ملاحظة",
     "openContext": "فتح السياق",
-    "assignee": "المسؤول"
-  }
+    "assignee": "المسؤول",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
