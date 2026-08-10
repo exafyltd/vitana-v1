@@ -1,0 +1,31 @@
+{
+  "memoryActions": {
+    "title": "记忆操作",
+    "items": {
+      "recordVoiceDiary": {
+        "title": "录制语音日记",
+        "description": "用语音捕捉思绪与反思"
+      },
+      "addMemoryNote": {
+        "title": "添加记忆笔记",
+        "description": "写下重要的健康时刻"
+      },
+      "viewTimeline": {
+        "title": "查看时间线",
+        "description": "查看你的完整健康旅程"
+      },
+      "searchMemories": {
+        "title": "搜索记忆",
+        "description": "查找特定时刻和洞察"
+      },
+      "photoMemory": {
+        "title": "照片记忆",
+        "description": "将视觉记忆添加到你的旅程"
+      },
+      "aiMemoryAnalysis": {
+        "title": "AI记忆分析",
+        "description": "从你的记忆模式中获取洞察"
+      }
+    }
+  }
+}

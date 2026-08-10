@@ -1,0 +1,31 @@
+{
+  "socialImport": {
+    "dialogTitle": "{platform} 导入个人资料",
+    "dialogDescription": "连接你的 {platform} 个人资料，用 AI 驱动的洞察丰富你的 Vitana 身份。",
+    "profileUrl": "{platform} 个人资料网址",
+    "bioLabel": "个人简介 / 关于",
+    "bioOptional": "(可选)",
+    "cancel": "取消",
+    "importProfile": "导入个人资料",
+    "importing": "正在导入...",
+    "urlRequired": "需要网址",
+    "urlRequiredDesc": "请输入你的 {platform} 个人资料网址",
+    "importSuccess": "导入成功",
+    "importSuccessDesc": "你的 {platform} 个人资料已导入，并已用 AI 洞察丰富。",
+    "importFailed": "导入失败",
+    "connect": "连接：",
+    "socialPresence": "社交存在",
+    "verifiedConnections": "你数字生活中的已验证连接",
+    "tapToVisit": "轻触访问个人资料",
+    "noAccountsConnected": "未连接社交账号",
+    "connectAccounts": "连接账号",
+    "platformHelp": {
+      "linkedin": "我们用 AI 提取你的标题、摘要和专业技能。",
+      "instagram": "我们分析你的个人简介，以了解你的兴趣和生活方式主题。",
+      "tiktok": "我们从你的个人简介中提取内容主题和创意个性。",
+      "youtube": "我们从你的描述中识别内容类别和专业领域。",
+      "facebook": "我们从你的个人简介中提取兴趣和社区参与度。",
+      "x": "我们分析你的个人简介，以了解你的主题领域和沟通风格。"
+    }
+  }
+}

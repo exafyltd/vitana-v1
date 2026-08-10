@@ -1,0 +1,15 @@
+{
+  "tableHeaders": {
+    "groupName": "群组名称",
+    "category": "类别",
+    "members": "成员",
+    "privacy": "隐私",
+    "status": "状态",
+    "actions": "操作",
+    "name": "名称",
+    "role": "角色",
+    "email": "邮箱",
+    "date": "日期",
+    "amount": "金额"
+  }
+}

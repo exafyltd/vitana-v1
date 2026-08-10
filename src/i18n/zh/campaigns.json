@@ -1,0 +1,24 @@
+{
+  "campaigns": {
+    "delete": {
+      "title": "删除活动？",
+      "description": "删除“{name}”会永久删除所有相关的草稿和分析。此操作无法撤销。",
+      "dontAskAgain": "不再询问草稿活动",
+      "deletePermanently": "永久删除"
+    },
+    "creation": {
+      "title": "创建活动",
+      "stepOf": "第 {current} 步，共 {total} 步",
+      "yourCampaigns": "你的活动",
+      "drafts": "草稿",
+      "live": "上线",
+      "proTip": "小贴士",
+      "tips": {
+        "1": "清晰的名称能帮你以后找到活动",
+        "2": "立即连接渠道，以便即时规划",
+        "3": "发布模板适用于大多数公告",
+        "4": "智能规划使用你过去的互动数据"
+      }
+    }
+  }
+}

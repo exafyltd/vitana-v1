@@ -1,0 +1,21 @@
+{
+  "calendarPopup": {
+    "title": "日历",
+    "nextEvents": "接下来的 {count} 个活动",
+    "conflicts": "{count} 个冲突",
+    "upcomingSchedule": "你即将到来的日程和预约",
+    "addNewEvent": "添加新活动",
+    "noUpcomingEvents": "没有即将到来的活动",
+    "createFirstEvent": "创建你的第一个预约",
+    "aiSuggestions": "AI 建议",
+    "findBetterSlot": "寻找更佳时段",
+    "prepareBrief": "准备简报",
+    "shareAvailability": "分享空闲时间",
+    "syncExternal": "同步外部",
+    "addEvent": "添加活动",
+    "quickAdd": "快速添加",
+    "eventFormComingSoon": "活动创建表单即将推出",
+    "externalSync": "外部同步",
+    "connectingCalendars": "连接外部日历..."
+  }
+}

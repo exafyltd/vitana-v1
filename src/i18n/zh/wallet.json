@@ -1,0 +1,30 @@
+{
+  "wallet": {
+    "title": "钱包",
+    "description": "你的余额、积分和奖励",
+    "usdBalance": "欧元/美元余额",
+    "creditsBalance": "VTNA 积分余额",
+    "creditsLabel": "VTNA 积分",
+    "available": "可用",
+    "staked": "已质押",
+    "searchWallet": "搜索钱包...",
+    "tabs": {
+      "balances": "余额",
+      "activity": "动态",
+      "actions": "操作"
+    },
+    "filters": {
+      "commissions": "出售并赚取佣金",
+      "transfers": "转账",
+      "exchanges": "兑换",
+      "rewards": "奖励",
+      "purchases": "购买",
+      "pending": "待支付款项",
+      "withdrawals": "提现",
+      "stakes": "质押"
+    },
+    "noActivity": "暂无动态",
+    "noActivityDesc": "你的交易会显示在这里。",
+    "displayCurrency": "显示货币"
+  }
+}

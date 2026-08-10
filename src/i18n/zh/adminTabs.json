@@ -1,0 +1,17 @@
+{
+  "adminTabs": {
+    "groups": {
+      "all": "所有群组",
+      "pending": "待处理",
+      "approved": "已通过",
+      "flagged": "已标记",
+      "rejected": "已拒绝"
+    },
+    "rooms": {
+      "active": "活跃房间",
+      "scheduled": "已安排",
+      "analytics": "分析",
+      "moderation": "审核"
+    }
+  }
+}

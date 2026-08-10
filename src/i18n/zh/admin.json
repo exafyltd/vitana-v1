@@ -1,0 +1,25 @@
+{
+  "admin": {
+    "media": {
+      "updateSuccess": "状态更新成功",
+      "updateFailed": "状态更新失败",
+      "deleteSuccess": "删除成功",
+      "deleteFailed": "删除失败",
+      "podcastStatus": "播客 {status}",
+      "podcastDeleted": "播客已删除",
+      "musicDeleted": "音乐已删除",
+      "videoDeleted": "视频已删除",
+      "searchPodcasts": "搜索播客...",
+      "searchMusic": "搜索音乐...",
+      "searchVideos": "搜索视频...",
+      "filterByStatus": "按状态筛选",
+      "allStatus": "所有状态",
+      "pending": "待审核",
+      "approved": "已通过",
+      "rejected": "已拒绝",
+      "flagged": "已标记",
+      "podcastManagement": "播客管理",
+      "podcastManagementDesc": "审核和管理播客上传"
+    }
+  }
+}

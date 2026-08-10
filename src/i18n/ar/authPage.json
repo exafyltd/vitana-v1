@@ -1,0 +1,19 @@
+{
+  "authPage": {
+    "welcomeTitle": "مرحباً في VITANA",
+    "subtitle": "منصتك المخصصة للذكاء الصحي",
+    "signIn": "تسجيل الدخول",
+    "signUp": "التسجيل",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "fullName": "الاسم الكامل",
+    "enterEmail": "أدخل بريدك الإلكتروني",
+    "enterPassword": "أدخل كلمة مرورك",
+    "enterFullName": "أدخل اسمك الكامل",
+    "createPassword": "أنشئ كلمة مرور",
+    "createAccount": "إنشاء حساب",
+    "orContinueWith": "أو تابع باستخدام",
+    "backToPortals": "العودة إلى جميع البوابات",
+    "keepLoggedIn": "أبقني مسجلاً للدخول"
+  }
+}

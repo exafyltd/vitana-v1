@@ -1,0 +1,30 @@
+{
+  "services": {
+    "title": "服务中心",
+    "subtitle": "获取全面的医疗保健和健康服务",
+    "categories": {
+      "preventive": "预防性筛查",
+      "labTests": "实验室检测",
+      "coaching": "辅导和私人训练",
+      "groupPrograms": "团体课程和挑战"
+    },
+    "actions": {
+      "book": "预订",
+      "addToPlan": "添加到计划",
+      "askAI": "问AI",
+      "joinRoom": "加入房间",
+      "setReminder": "设置提醒"
+    },
+    "details": {
+      "duration": "时长",
+      "price": "价格",
+      "location": "地点",
+      "nextAvailable": "下次可用",
+      "whatsIncluded": "包含内容",
+      "healthBenefits": "健康益处",
+      "availableProviders": "可用提供者",
+      "requirements": "要求和准备",
+      "tags": "标签"
+    }
+  }
+}

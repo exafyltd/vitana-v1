@@ -1,0 +1,10 @@
+{
+  "createSelection": {
+    "title": "إنشاء جديد",
+    "description": "اختر نوع الحدث الذي تريد إنشاءه",
+    "event": "حدث",
+    "eventDescription": "تجمعات رسمية بأوقات محددة وبرامج منظمة",
+    "meetup": "MeetUp",
+    "meetupDescription": "تجمعات عفوية للتواصل وبناء المجتمع"
+  }
+}

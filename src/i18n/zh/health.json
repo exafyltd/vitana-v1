@@ -1,0 +1,67 @@
+{
+  "health": {
+    "title": "健康",
+    "description": "你的个人健康仪表盘",
+    "overview": "概览",
+    "overviewDesc": "你的综合健康仪表盘和健康概览",
+    "servicesHub": "服务中心",
+    "servicesHubDesc": "预约医生、指导、课程和筛查",
+    "biomarkers": "生物标志物",
+    "biomarkersDesc": "查看你的最新检测结果和生物标志物",
+    "healthTracker": "我的健康追踪器",
+    "healthTrackerDesc": "追踪你的日常营养、睡眠、运动",
+    "education": "教育与科学",
+    "educationDesc": "了解健康话题并获取健康资源",
+    "priorityFocus": "你的重点关注区域",
+    "priorityFocusExplanation": "该区域目前对你的长期健康寿命影响最大",
+    "autopilotGuidance": "自动导航指导",
+    "autopilotSuggests": "自动导航建议",
+    "takeAction": "行动",
+    "uploadBloodTest": "上传血检报告",
+    "orderBloodTest": "订购血检",
+    "viewPlans": "查看计划",
+    "vitanaIndex": "Vitana 指数",
+    "healthSnapshot": "你的健康快照",
+    "topPercentile": "前 {percent}%",
+    "trend": {
+      "improving": "改善中",
+      "declining": "恶化中",
+      "stable": "稳定"
+    },
+    "suggestions": {
+      "uploadBloodTestResults": "上传血检结果",
+      "startFitnessChallenge": "开始30天健身挑战"
+    },
+    "pillars": {
+      "sleep": "睡眠",
+      "exercise": "运动",
+      "nutrition": "营养",
+      "hydration": "补水",
+      "mental": "心理"
+    },
+    "emptyStates": {
+      "noSleepPlan": "暂无睡眠计划",
+      "noSleepPlanDesc": "根据你的生物节律、恢复需求和日常表现，生成一份由AI优化目标、为你量身定制的个性化睡眠计划。",
+      "noExercisePlan": "暂无运动计划",
+      "noExercisePlanDesc": "根据你的健身水平、目标和恢复需求，生成一份由AI优化运动、为你量身定制的个性化训练计划。",
+      "noNutritionPlan": "暂无营养计划",
+      "noNutritionPlanDesc": "根据你的目标和饮食偏好，生成一份包含美味均衡食谱、为你量身定制的个性化营养计划。",
+      "noHydrationPlan": "暂无补水计划",
+      "noHydrationPlanDesc": "根据你的活动水平、环境和恢复需求，生成一份由AI优化每日目标、为你量身定制的个性化补水计划。",
+      "noMentalPlan": "暂无心理计划",
+      "noMentalPlanDesc": "在AI支持下，生成一份为你量身定制的个性化心理健康计划，以追踪压力、专注力和情绪平衡。",
+      "generatePlan": "生成计划",
+      "generating": "正在生成..."
+    },
+    "noSupplements": "暂无补充剂",
+    "noSupplementsDesc": "追踪你的日常维生素、矿物质和补充剂。添加你的第一个补充剂以开始。",
+    "noReports": "暂无健康报告",
+    "noReportsDesc": "上传你的血检、实验室结果和医疗报告，以获取个性化健康洞察。",
+    "medical": "医疗",
+    "supplements": "补充剂",
+    "uploadDescription": "血检、影像、实验室结果",
+    "unknownProvider": "未知提供者",
+    "addSupplement": "添加补充剂",
+    "uploadFirstReport": "上传首份报告"
+  }
+}

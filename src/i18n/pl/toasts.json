@@ -354,7 +354,7 @@
       "confirmationSent": "Potwierdzenie wysłane",
       "refund": "Zwrot",
       "refundFunctionalityWillAvailableSoon": "Funkcja zwrotu środków będzie dostępna wkrótce.",
-      "noOrdersExport": "Brak zamówień do wyeksportowania",
+      "noOrdersExport": "Brak zamówień do eksportu",
       "ordersExported": "Dane sprzedaży wyeksportowane!"
     },
     "calendar": {

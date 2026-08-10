@@ -1,0 +1,21 @@
+{
+  "editProfile": {
+    "unsavedChanges": "لديك تغييرات غير محفوظة. هل أنت متأكد أنك تريد المغادرة؟",
+    "notAuthenticated": "غير مصادق عليه",
+    "notAuthenticatedDesc": "يرجى تسجيل الدخول لحفظ ملفك الشخصي.",
+    "profileUpdated": "تم تحديث الملف الشخصي بنجاح!",
+    "profileUpdatedDesc": "تغييراتك أصبحت الآن مباشرة. ملفك الشخصي في VITANA يبدو رائعًا.",
+    "error": "خطأ",
+    "refreshFailed": "فشل تحديث بيانات الملف الشخصي.",
+    "showcaseHint": "اختر المنشورات والمحتوى ليتم تمييزها في أعلى ملفك الشخصي.",
+    "showcaseTitle": "المميزات",
+    "manage": "إدارة",
+    "about": "حول",
+    "addBio": "أضف نبذة شخصية...",
+    "tapToEdit": "اضغط للتعديل",
+    "title": "عنوان",
+    "titlePlaceholder": "عنوان الفيديو",
+    "description": "وصف",
+    "descriptionPlaceholder": "وصف اختياري..."
+  }
+}

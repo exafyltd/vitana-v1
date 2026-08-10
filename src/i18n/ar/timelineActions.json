@@ -1,0 +1,39 @@
+{
+  "timelineActions": {
+    "title": "إجراءات الخط الزمني",
+    "items": {
+      "logHealthEvent": {
+        "title": "سجّل حدثًا صحيًا",
+        "description": "سجّل إنجازات صحية مهمة"
+      },
+      "markAchievement": {
+        "title": "سجّل إنجازًا",
+        "description": "احتفل بأهداف العافية التي حققتها"
+      },
+      "recordLifeMoment": {
+        "title": "سجّل لحظة حياتية",
+        "description": "التقط تجارب هادفة"
+      },
+      "addPhotoMemory": {
+        "title": "أضف ذكرى مصورة",
+        "description": "خط زمني مرئي مع صور صحية"
+      },
+      "voiceTimelineEntry": {
+        "title": "إدخال صوتي للخط الزمني",
+        "description": "تحديثات صحية صوتية سريعة"
+      },
+      "trackProgress": {
+        "title": "تتبّع التقدّم",
+        "description": "سجّل مقاييس العافية والاتجاهات"
+      },
+      "activityCheckIn": {
+        "title": "تسجيل نشاط",
+        "description": "سجّل التمارين والأنشطة"
+      },
+      "setTimelineGoal": {
+        "title": "حدّد هدفًا للخط الزمني",
+        "description": "أنشئ أهدافًا صحية مستقبلية"
+      }
+    }
+  }
+}

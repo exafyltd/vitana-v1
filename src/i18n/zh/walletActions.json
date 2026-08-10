@@ -1,0 +1,11 @@
+{
+  "walletActions": {
+    "title": "快捷操作",
+    "addFunds": "充值",
+    "send": "转账",
+    "exchange": "兑换",
+    "withdraw": "提现",
+    "buyCredits": "购买 VTNA 积分",
+    "stakeTokens": "质押代币"
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "inbox": {
+    "title": "收件箱",
+    "subtitle": "和你的社群保持联系！",
+    "description": "你的对话、更新和通知",
+    "desktopTitle": "消息",
+    "desktopDescription": "和你的社群和人脉建立联系",
+    "tabs": {
+      "all": "全部",
+      "groups": "群组",
+      "direct": "私聊",
+      "contacts": "联系人",
+      "notifications": "通知",
+      "archived": "已归档"
+    },
+    "contextTabs": {
+      "community": "社群",
+      "network": "人脉"
+    },
+    "actions": {
+      "new": "新",
+      "newMessage": "新消息",
+      "createGroup": "创建群组",
+      "markAllRead": "全部标记为已读",
+      "menu": "更多"
+    },
+    "composer": {
+      "placeholder": "输入你的消息...",
+      "send": "发送",
+      "attachments": "附件",
+      "recipients": "收件人：",
+      "add": "添加"
+    },
+    "states": {
+      "empty": "暂无消息",
+      "loading": "正在加载消息...",
+      "error": "加载消息失败"
+    },
+    "newConversation": {
+      "title": "开始新对话",
+      "titleGroup": "创建群聊",
+      "groupName": "群名称",
+      "groupNamePlaceholder": "输入群名称...",
+      "members": "成员",
+      "recipient": "收件人",
+      "addMore": "添加更多成员",
+      "searchPeople": "搜索成员",
+      "searchPlaceholder": "输入姓名或邮箱搜索...",
+      "searchMinChars": "输入至少2个字符进行搜索",
+      "searchResults": "搜索结果",
+      "noResults": "未找到用户。请尝试其他搜索词。",
+      "add": "添加",
+      "added": "已添加",
+      "cancel": "取消",
+      "startChat": "开始聊天",
+      "createGroup": "创建群组",
+      "creating": "正在创建..."
+    },
+    "createGroup": {
+      "title": "创建群组",
+      "avatarSoon": "头像上传功能即将上线。",
+      "groupName": "群名称",
+      "addMembers": "添加成员",
+      "searchPlaceholder": "搜索用户...",
+      "groupNameRequired": "需要群组名称",
+      "groupNameRequiredDesc": "请为你的群组输入一个名称。",
+      "addMembersRequired": "添加成员",
+      "addMembersRequiredDesc": "请至少添加一名成员。",
+      "groupExists": "群组已存在",
+      "groupExistsDesc": "最近已创建了一个包含这些成员的群组。",
+      "created": "群组已创建",
+      "createdDesc": "\"{name}\" 已成功创建。",
+      "failed": "创建群组失败",
+      "failedDesc": "请再试一次。"
+    },
+    "toast": {
+      "success": "成功",
+      "error": "错误",
+      "conversationStarted": "对话已开始！",
+      "authRequired": "需要身份验证",
+      "noTenantContext": "无可用租户上下文",
+      "searchFailed": "搜索失败",
+      "accessDenied": "访问被拒绝",
+      "communityOnly": "只有社区用户才能创建全局对话",
+      "pleaseLogin": "请登录以开始对话。",
+      "groupRecipientsRequired": "需要群组名称和收件人",
+      "singleRecipientRequired": "请为私信选择一位收件人。",
+      "groupCreated": "群组 \"{name}\" 已成功创建！",
+      "groupFailed": "创建群组失败",
+      "allMarkedRead": "所有消息已标记为已读",
+      "markAllReadFailed": "无法将所有消息标记为已读。请再试一次。"
+    },
+    "createGroupAction": "创建新群组",
+    "newConversationAction": "新对话",
+    "noGroups": "暂无群组",
+    "noGroupsDesc": "群组能帮你同时和多人协作。",
+    "createFirstGroup": "创建第一个群组",
+    "loading": "正在加载消息...",
+    "searchConversations": "搜索对话...",
+    "searchPlaceholder": "搜索...",
+    "noMessages": "暂无消息",
+    "noMessagesDesc": "开始对话来开启吧。",
+    "startConversation": "开始对话",
+    "emptyState": {
+      "title": "你的收件箱仍然是空的。",
+      "globalDescription": "开始对话或加入社区以与他人联系。",
+      "tenantDescription": "在你的专业网络中与同事和团队成员联系。",
+      "startConversation": "开始对话",
+      "discoverPeople": "发现用户"
+    },
+    "group": {
+      "loading": "正在加载群组…",
+      "cantOpen": "无法打开群组",
+      "backToInbox": "返回收件箱",
+      "back": "返回",
+      "memberOne": "成员",
+      "memberOther": "成员",
+      "officialBadge": "官方群组",
+      "empty": "暂无消息。",
+      "composerPlaceholder": "消息…"
+    }
+  }
+}

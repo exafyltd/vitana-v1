@@ -3514,7 +3514,7 @@
       "goalMentalWellness": "Bem-estar mental",
       "goalValues": "Valores alinhados",
       "videoRoomUnavailable": "Não foi possível carregar a sala de vídeo",
-      "videoRoomUnavailableHint": "A transmissão não está disponível agora. Por favor, tenta novamente.",
+      "videoRoomUnavailableHint": "A transmissão não está acessível agora. Por favor, tenta novamente.",
       "autopilotSuggestionsTitle": "Sugestões do Autopilot",
       "autopilotSuggestionsBody": "Ainda não publicaste um desejo. Entretanto, o Autopilot sugere pessoas da comunidade que podem ser uma boa opção. Publica um desejo para que a IA possa encontrar correspondências reais para ti.",
       "autopilotSuggestionBadge": "Autopilot"
@@ -5125,13 +5125,13 @@
         "title": "Alinhamento da Missão",
         "subtitle": "Como as tuas recomendações impulsionam os cinco pilares e a economia da longevidade",
         "loading": "A carregar dados da missão…",
-        "error": "Não foi possível carregar dados da missão",
+        "error": "Não foi possível carregar os dados da missão",
         "noRecs": "Ainda não tens recomendações na tua fila.",
         "summaryServed": "{pct}% das tuas recomendações impulsionam a missão",
         "summaryServedCount": "{served} de {total} recomendações alinhadas",
         "pillarHeading": "Pilares servidos",
         "economyHeading": "Economia da longevidade",
-        "noPillar": "Não alinhado com pilares",
+        "noPillar": "Não alinhado com os pilares",
         "noEconomy": "Não alinhado com a economia",
         "pillars": {
           "nutrition": "Nutrição",
@@ -5143,7 +5143,7 @@
         "economyAxes": {
           "find_match": "Encontrar uma Correspondência",
           "marketplace": "Mercado",
-          "income_generation": "Geração de rendimento",
+          "income_generation": "Geração de rendimentos",
           "business_formation": "Formação de negócios"
         },
         "contractLink": "Ver o contrato do Objetivo Final"
@@ -7060,7 +7060,7 @@
       "brieflyDescribeYourIssue": "Descreve brevemente o teu problema",
       "pleaseProvideAsMuchDetailAs": "Por favor, fornece o máximo de detalhes possível...",
       "helpArticles": "Artigos de Ajuda",
-      "searchKnowledgeBase": "Pesquisar Base de Conhecimento",
+      "searchKnowledgeBase": "Pesquisar FAQs",
       "searchHelpArticles": "Pesquisar artigos de ajuda...",
       "popularHelpArticles": "Artigos de Ajuda Populares",
       "categories": "Categorias",

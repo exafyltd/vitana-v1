@@ -1,0 +1,21 @@
+{
+  "gallery": {
+    "title": "照片库",
+    "upload": "上传照片",
+    "caption": "标题",
+    "captionPlaceholder": "添加标题...",
+    "empty": "暂无照片",
+    "uploadFirst": "添加你的第一张照片",
+    "photo": "照片",
+    "dropzone": "拖放或点击选择",
+    "publicLabel": "所有人可见",
+    "videos": "视频库",
+    "uploadVideo": "上传视频",
+    "noVideos": "暂无视频",
+    "addFirstVideo": "添加你的第一个视频",
+    "invalidFormat": "格式无效",
+    "fileTooLarge": "文件过大",
+    "maxSize": "最大文件大小：500 MB",
+    "maxSizeHint": "最大 500 MB"
+  }
+}

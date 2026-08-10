@@ -1,0 +1,39 @@
+{
+  "newsCard": {
+    "menu": {
+      "share": "مشاركة",
+      "save": "حفظ",
+      "saved": "محفوظ",
+      "summarize": "لخص مع Vitana",
+      "copyLink": "انسخ الرابط",
+      "openInBrowser": "افتح في المتصفح",
+      "hide": "إخفاء هذا المقال",
+      "showLess": "أظهر أقل مثل هذا",
+      "muteSource": "كتم هذا المصدر",
+      "linkCopied": "الرابط منسوخ",
+      "savedToast": "محفوظ لوقت لاحق",
+      "unsavedToast": "أزيل من المحفوظات",
+      "summarizeToast": "في قائمة انتظار Vitana",
+      "hiddenToast": "المقال مخفي",
+      "showLessToast": "سنعرض أقل مثل هذا",
+      "mutedToast": "المصدر مكتوم",
+      "undo": "تراجع",
+      "unmute": "إلغاء الكتم"
+    },
+    "detail": {
+      "back": "رجوع",
+      "continueReading": "متابعة القراءة على",
+      "openInBrowser": "افتح في المتصفح",
+      "couldNotLoad": "لا يمكن عرض المقال هنا",
+      "readOn": "اقرأ المزيد"
+    },
+    "pillars": {
+      "all": "الكل",
+      "nutrition": "تغذية",
+      "hydration": "ترطيب",
+      "sleep": "نوم",
+      "exercise": "تمرين",
+      "mental": "نفسي"
+    }
+  }
+}

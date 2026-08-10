@@ -1,0 +1,41 @@
+{
+  "videoShop": {
+    "feed": {
+      "loading": "正在加载视频商店…",
+      "loadingMore": "正在加载更多视频…",
+      "end": "已经到底了。",
+      "emptyTitle": "暂无视频",
+      "emptyBody": "视频商店目前没有视频。请稍后回来查看或浏览“发现”。",
+      "browseDiscover": "浏览“发现”",
+      "errorTitle": "无法加载视频商店",
+      "errorBody": "请稍后重试。",
+      "retry": "重试",
+      "roleBlockedTitle": "你无法在此使用视频商店",
+      "roleBlockedBody": "视频商店是一项社区功能。请切换到社区角色才能使用。",
+      "mute": "静音",
+      "unmute": "取消静音",
+      "share": "分享",
+      "linkCopied": "链接已复制"
+    },
+    "drawer": {
+      "loading": "正在加载商品…",
+      "productFallback": "商品",
+      "addToCart": "加入购物车",
+      "adding": "正在添加…",
+      "addedTitle": "已添加",
+      "addedBody": "商品已在你的购物车中。",
+      "addFailed": "无法加入购物车",
+      "goToCart": "前往购物车",
+      "moreDetails": "更多详情",
+      "notifyMe": "通知我",
+      "outOfStock": "缺货",
+      "retry": "重试",
+      "errorTitle": "无法加载商品",
+      "errorBody": "请稍后重试。",
+      "unavailableTitle": "不再可用",
+      "unavailableBody": "此产品已下架。",
+      "roleBlockedTitle": "此处无法购买。",
+      "roleBlockedBody": "购买是社区功能。请切换至社区身份以继续。"
+    }
+  }
+}

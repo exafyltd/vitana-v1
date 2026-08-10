@@ -1,0 +1,27 @@
+{
+  "empty": {
+    "noAppsFound": "لم يتم العثور على تطبيقات مطابقة لبحثك.",
+    "noEventsFound": "لم يتم العثور على أحداث.",
+    "noContactsFound": "لم يتم العثور على جهات اتصال.",
+    "noContactsFoundMatching": "لم يتم العثور على جهات اتصال مطابقة لـ \"{query}\".",
+    "noGroupsFound": "لم يتم العثور على مجموعات.",
+    "noResultsFound": "لم يتم العثور على نتائج.",
+    "noReportsFound": "لم يتم العثور على تقارير.",
+    "noUsersFound": "لم يتم العثور على مستخدمين.",
+    "noTransactionsFound": "لم يتم العثور على معاملات.",
+    "noEventsYet": "لا توجد أحداث بعد. أنشئ حدثًا أولاً.",
+    "tryAdjustingFilters": "حاول تعديل مرشحاتك أو بحثك.",
+    "noData": "لا توجد بيانات متاحة.",
+    "noMessages": "لا توجد رسائل.",
+    "noNotifications": "لا توجد إشعارات.",
+    "indexSheetNextDays": "لا توجد اقتراحات Autopilot نشطة. عندما يظهر شيء هنا، إكماله سيحرك مؤشرك.",
+    "indexSheetHorizon": "تحتاج إلى بضعة أيام أخرى من البيانات لتوقع مسارك لمدة 30 يومًا.",
+    "myJourneyPath": "مسارك بدأ للتو. عندما يكون لدى Autopilot اقتراحات، ستظهر هنا كمسار يمكنك السير فيه.",
+    "myJourneyOnePillar": "اختر شيئًا صغيرًا واحدًا — وشاهد مؤشرك يتحرك.",
+    "autopilotPopupZero": "حدد إجراءات لترى ارتفاع المؤشر.",
+    "healthEmpty": "سجل إدخالك الأول لبدء مؤشرك.",
+    "noActionsMatchedYet": "لم تتم مطابقة أي إجراءات بعد — Autopilot يشكل اقتراحات.",
+    "actionsPendingOne": "{count} إجراء معلق.",
+    "actionsPendingOther": "{count} إجراءات معلقة."
+  }
+}

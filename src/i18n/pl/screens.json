@@ -5122,7 +5122,7 @@
       "itDampensWhenOnePillarFar": "(osłabia się, gdy jeden filar jest znacznie przed innym),\n i ograniczamy do 999.",
       "markAnyJourneyEventCompletePillar": "Oznacz dowolne wydarzenie w podróży jako ukończone → filar, którego dotyczy, wzrasta. Kontynuuj dzień po dniu →\n włącza się bonus za serię. Podłącz gadżet noszony → pasek połączonych danych się zapełnia.\n Równowaga we wszystkich pięciu → współczynnik równowagi pozostaje na poziomie 1.0×, a każdy punkt liczy się w pełni.",
       "missionAlignment": {
-        "title": "Zgodność z misją",
+        "title": "Zgodność z Misją",
         "subtitle": "Jak twoje rekomendacje wspierają pięć filarów i gospodarkę długowieczności",
         "loading": "Ładowanie danych misji…",
         "error": "Nie udało się załadować danych misji",
@@ -5146,7 +5146,7 @@
           "income_generation": "Generowanie dochodu",
           "business_formation": "Tworzenie biznesu"
         },
-        "contractLink": "Zobacz kontrakt Celu Ostatecznego"
+        "contractLink": "Zobacz umowę o Celu Ostatecznym"
       }
     },
     "home": {
@@ -7060,7 +7060,7 @@
       "brieflyDescribeYourIssue": "Krótko opisz swój problem",
       "pleaseProvideAsMuchDetailAs": "Podaj jak najwięcej szczegółów...",
       "helpArticles": "Artykuły pomocy",
-      "searchKnowledgeBase": "Szukaj w Bazie Wiedzy",
+      "searchKnowledgeBase": "Szukaj często zadawanych pytań",
       "searchHelpArticles": "Szukaj artykułów pomocy...",
       "popularHelpArticles": "Popularne artykuły pomocy",
       "categories": "Kategorie",

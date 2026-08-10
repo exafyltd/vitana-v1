@@ -1,0 +1,18 @@
+{
+  "qrShare": {
+    "title": "二维码",
+    "scanToView": "扫描查看你的个人资料。",
+    "scanToDownload": "扫描下载 MAXINA",
+    "shareProfile": "分享个人资料",
+    "shareApp": "分享 MAXINA",
+    "copyLink": "复制链接",
+    "download": "下载",
+    "linkCopied": "链接已复制！",
+    "modeProfile": "我的个人资料",
+    "modeInvite": "获取 MAXINA",
+    "appName": "MAXINA",
+    "appTagline": "长寿社区",
+    "inviteShareTitle": "MAXINA – 长寿社区",
+    "inviteShareText": "获取 MAXINA，开启你的长寿之旅："
+  }
+}

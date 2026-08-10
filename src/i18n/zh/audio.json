@@ -1,0 +1,7 @@
+{
+  "audio": {
+    "listening": "我在听...",
+    "processing": "稍等一下...",
+    "connectionError": "连接问题。请重试。"
+  }
+}

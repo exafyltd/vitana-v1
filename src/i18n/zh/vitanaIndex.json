@@ -1,0 +1,35 @@
+{
+  "vitanaIndex": {
+    "title": "Vitana 健康指数",
+    "subtitle": "所有健康维度的整体平衡",
+    "veryPoor": "很差",
+    "poor": "差",
+    "fair": "一般",
+    "improving": "进步中",
+    "good": "不错",
+    "excellent": "极佳",
+    "sleep": "睡眠",
+    "exercise": "运动",
+    "nutrition": "营养",
+    "hydration": "水分",
+    "mental": "心理",
+    "viewFullReport": "查看完整报告",
+    "trackToday": "记录今天",
+    "tiers": {
+      "starting": "新手",
+      "early": "早期",
+      "building": "逐步提升",
+      "strong": "强",
+      "reallyGood": "非常棒",
+      "elite": "顶尖"
+    },
+    "framings": {
+      "starting": "刚刚起步",
+      "early": "基础已打好",
+      "building": "习惯养成中",
+      "strong": "90天里程碑",
+      "reallyGood": "状态极佳",
+      "elite": "顶尖"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "recallActions": {
+    "title": "إجراءات البحث واسترجاع التذكيرات",
+    "items": {
+      "askAiQuestion": {
+        "title": "اسأل الذكاء الاصطناعي",
+        "description": "استعلم عن ذكرياتك باستخدام بحث الذكاء الاصطناعي باللغة الطبيعية"
+      },
+      "advancedSearch": {
+        "title": "بحث متقدم",
+        "description": "استخدم الفلاتر والوسوم ونطاقات التواريخ للعثور على الذكريات"
+      },
+      "patternAnalysis": {
+        "title": "تحليل الأنماط",
+        "description": "اكتشف الاتجاهات والأنماط في بيانات عافيتك"
+      },
+      "memoryInsights": {
+        "title": "رؤى الذكريات",
+        "description": "احصل على رؤى مدعومة بالذكاء الاصطناعي من رحلتك الصحية"
+      },
+      "searchByDate": {
+        "title": "بحث حسب التاريخ",
+        "description": "تصفح الذكريات من فترات زمنية محددة"
+      },
+      "locationMemories": {
+        "title": "ذكريات المواقع",
+        "description": "ابحث عن الإدخالات حسب الأماكن والمواقع التي زرتها"
+      },
+      "filterByCategory": {
+        "title": "تصفية حسب الفئة",
+        "description": "تصفح الذكريات حسب ركائز العافية والفئات"
+      },
+      "quickRecalls": {
+        "_pending_review": {
+          "description": true
+        },
+        "title": "استدعاءات سريعة",
+        "description": "Access frequently searched memories and queries"
+      }
+    }
+  }
+}

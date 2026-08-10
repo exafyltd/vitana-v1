@@ -1,0 +1,64 @@
+{
+  "support": {
+    "maxina": {
+      "title": "Maxina 支持",
+      "subtitle": "今天有什么能帮到你的吗？",
+      "description": "查找常见问题解答或联系我们的支持团队。",
+      "categoriesTitle": "浏览帮助主题",
+      "categories": {
+        "gettingStarted": "开始使用",
+        "account": "账户与个人资料",
+        "events": "活动与聚会",
+        "payments": "支付与账单",
+        "technical": "技术帮助"
+      },
+      "faq": {
+        "title": "常见问题",
+        "createAccount": {
+          "question": "如何创建 Maxina 账户？",
+          "answer": "下载 Maxina 应用或访问我们的门户网站 vitanaland.com/maxina。点击“注册”并输入你的电子邮件地址。你将收到一封确认邮件来验证你的账户。确认后，完善你的个人资料以发现健康活动和社区功能。"
+        },
+        "resetPassword": {
+          "question": "如何重置我的密码？",
+          "answer": "在登录屏幕上，点击“忘记密码”并输入你注册的电子邮件地址。你将在几分钟内收到一个密码重置链接。如果你没有看到邮件，请检查你的垃圾邮件文件夹。出于安全原因，该链接在24小时后失效。"
+        },
+        "joinEvents": {
+          "question": "我怎么参加活动和聚会？",
+          "answer": "在“活动和聚会”部分浏览可用活动。点击一个活动以查看详细信息，例如日期、地点和价格。对于免费活动，只需点击“参加”或“报名”。对于付费活动，你可以通过我们集成的支付系统安全地购买门票。"
+        },
+        "updateProfile": {
+          "question": "我怎么更新我的个人资料信息？",
+          "answer": "前往你的“个人资料”选项卡，然后点击编辑图标或“编辑个人资料”。你可以更新你的显示名称、简介、个人资料图片和健康兴趣。更改会自动保存。你的个人资料有助于我们为你个性化推荐活动。"
+        },
+        "deleteAccount": {
+          "question": "我怎么删除我的账户？",
+          "answer": "要删除你的 Maxina 账户及相关数据，请发送电子邮件至 support@exafy.io，主题为“账户删除 – Maxina”。请提供与你账户关联的电子邮件地址。我们会在 30 天内处理删除请求。"
+        },
+        "paymentMethods": {
+          "question": "接受哪些支付方式？",
+          "answer": "我们通过安全的 Stripe 支付集成接受主要的信用卡和借记卡（Visa、Mastercard、American Express）。Apple Pay 和 Google Pay 也可在支持的设备上使用。所有交易均经过加密并符合 PCI-DSS 标准。"
+        },
+        "contactOrganizers": {
+          "question": "我怎么联系活动组织者？",
+          "answer": "在每个活动页面上，你都会找到组织者的个人资料。点击名称以查看个人资料并访问消息选项。有关特定活动的问题，请使用活动的问答部分或通过应用内消息直接联系组织者。"
+        },
+        "dataSecure": {
+          "question": "我的个人数据安全吗？",
+          "answer": "是的，你的隐私和安全是我们的首要任务。我们使用行业标准加密、安全身份验证，并遵守 GDPR 指南。未经你的同意，我们绝不会与第三方分享你的个人数据。阅读我们的完整隐私政策以获取更多详细信息。"
+        }
+      },
+      "contact": {
+        "title": "联系支持",
+        "email": "给我们发邮件",
+        "responseTime": "我们通常会在 24 小时内回复"
+      },
+      "usefulLinks": {
+        "title": "有用链接",
+        "privacy": "隐私政策",
+        "deleteAccount": "删除账户",
+        "portal": "返回 MAXINA 门户"
+      },
+      "footer": "保留所有权利。"
+    }
+  }
+}

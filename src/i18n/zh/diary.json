@@ -1,0 +1,13 @@
+{
+  "diary": {
+    "title": "每日日记",
+    "description": "记录你的健康旅程，帮助我们做得更好",
+    "healthTab": "健康日记",
+    "bugTab": "错误报告",
+    "text": "文字",
+    "photo": "照片",
+    "textEntry": "✍️ 文字输入",
+    "photoEntry": "📸 照片输入",
+    "searchPlaceholder": "搜索日记..."
+  }
+}

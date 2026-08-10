@@ -1,0 +1,28 @@
+{
+  "events": {
+    "title": "活动与聚会",
+    "description": "发现本地健康聚会",
+    "searchPlaceholder": "搜索活动和聚会...",
+    "tabs": {
+      "today": "今天",
+      "upcoming": "即将举行",
+      "following": "关注中",
+      "recommended": "推荐"
+    },
+    "noEvents": "暂无活动安排",
+    "checkBack": "请稍后回来查看即将举行的社区活动！",
+    "emptyStates": {
+      "noEventsToday": "今天没有活动",
+      "noEventsTodayDesc": "今天没有计划的活动。查看即将举行的活动或创建你自己的活动吧！",
+      "createEvent": "创建活动",
+      "viewUpcoming": "查看即将举行的活动",
+      "followingTitle": "你关注的人的帖子",
+      "followingDesc": "你关注的人和群组的内容会显示在这里",
+      "findPeople": "寻找关注的人",
+      "noPostsFromFollowing": "暂无帖子",
+      "noPostsFromFollowingDesc": "你关注的人还没有创建任何活动或聚会。",
+      "youFollow": "你关注了",
+      "loadingFollowing": "正在加载帖子…"
+    }
+  }
+}

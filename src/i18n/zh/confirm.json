@@ -1,0 +1,20 @@
+{
+  "confirm": {
+    "delete": "你确定要删除这个吗？",
+    "deleteDesc": "这个操作无法撤销。",
+    "cancel": "你确定要取消吗？",
+    "cancelDesc": "你的更改将丢失。",
+    "unsavedChanges": "你有未保存的更改。",
+    "unsavedChangesDesc": "你真的要离开吗？你的更改将丢失。",
+    "leave": "你真的要离开这个页面吗？",
+    "leaveDesc": "未保存的更改将丢失。",
+    "logout": "你真的要退出登录吗？",
+    "logoutDesc": "你需要重新登录。",
+    "remove": "你真的要移除这个项目吗？",
+    "removeDesc": "这个项目将从列表中移除。",
+    "disconnect": "你真的要断开这个连接吗？",
+    "disconnectDesc": "你可以稍后重新连接。",
+    "proceed": "你要继续吗？",
+    "proceedDesc": "这个操作将执行。"
+  }
+}

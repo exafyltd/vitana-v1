@@ -1,0 +1,25 @@
+{
+  "admin": {
+    "media": {
+      "updateSuccess": "تم تحديث الحالة بنجاح",
+      "updateFailed": "فشل تحديث الحالة",
+      "deleteSuccess": "تم الحذف بنجاح",
+      "deleteFailed": "فشل الحذف",
+      "podcastStatus": "بودكاست {status}",
+      "podcastDeleted": "تم حذف البودكاست",
+      "musicDeleted": "تم حذف الموسيقى",
+      "videoDeleted": "تم حذف الفيديو",
+      "searchPodcasts": "ابحث عن بودكاست...",
+      "searchMusic": "ابحث عن موسيقى...",
+      "searchVideos": "ابحث عن فيديوهات...",
+      "filterByStatus": "تصفية حسب الحالة",
+      "allStatus": "جميع الحالات",
+      "pending": "معلق",
+      "approved": "موافق عليه",
+      "rejected": "مرفوض",
+      "flagged": "مبلغ عنه",
+      "podcastManagement": "إدارة البودكاست",
+      "podcastManagementDesc": "مراجعة وتعديل تحميلات البودكاست"
+    }
+  }
+}

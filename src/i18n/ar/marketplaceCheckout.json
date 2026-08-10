@@ -1,0 +1,63 @@
+{
+  "marketplaceCheckout": {
+    "balance": {
+      "title": "رصيدك",
+      "loading": "جارٍ تحميل الرصيد…",
+      "empty": "لا يوجد رصيد بعد",
+      "addMoney": "أضف مالاً"
+    },
+    "checkout": {
+      "button": "الدفع",
+      "processing": "جارٍ المعالجة…",
+      "successTitle": "تم وضع الطلب",
+      "successBody": "تم خصم رصيدك وإنشاء طلبك.",
+      "duplicateTitle": "الطلب تم وضعه بالفعل",
+      "duplicateBody": "تمت معالجة هذا الطلب بالفعل.",
+      "affiliateTitle": "أكمل الشراء لدى التاجر",
+      "affiliateBody": "يتم شراء بعض العناصر مباشرة من التاجر. افتح الروابط أدناه لإكمال الشراء.",
+      "affiliateLink": "أكمل الشراء لدى التاجر",
+      "affiliateOpened": "تم فتح روابط التاجر في علامات تبويب جديدة."
+    },
+    "addMoney": {
+      "title": "أضف مالاً",
+      "description": "اشحن رصيدك بالبطاقة عبر Stripe.",
+      "amountLabel": "المبلغ",
+      "amountPlaceholder": "0.00",
+      "currencyLabel": "العملة",
+      "currencyEur": "EUR",
+      "currencyUsd": "USD",
+      "continue": "متابعة الدفع",
+      "processing": "جارٍ التحضير…",
+      "invalidAmount": "الرجاء إدخال مبلغ صحيح.",
+      "failed": "تعذر بدء عملية الشحن."
+    },
+    "deposit": {
+      "checkingTitle": "تأكيد الدفع",
+      "checkingBody": "نحن ننتظر تأكيد دفعك. قد يستغرق هذا لحظة.",
+      "succeededTitle": "تم شحن الرصيد",
+      "succeededBody": "تم شحن رصيدك بنجاح.",
+      "failedTitle": "فشل الشحن",
+      "failedBody": "لم يكتمل شحن رصيدك. لم يتم خصم أي مبلغ.",
+      "amountLabel": "المبلغ",
+      "backToCart": "العودة إلى السلة"
+    },
+    "errors": {
+      "invalid_request": "الطلب غير صالح. يرجى التحقق من سلتك.",
+      "CART_EMPTY": "سلتك فارغة.",
+      "PRODUCT_UNAVAILABLE": "منتج في سلتك لم يعد متاحًا.",
+      "PRICE_UNAVAILABLE": "سعر غير متاح حاليًا لمنتج.",
+      "MIXED_CURRENCY": "سلتك تحتوي على عناصر بعملات مختلفة. يرجى فصلها.",
+      "UNSUPPORTED_WALLET_CURRENCY": "هذه العملة غير مدعومة من رصيدك.",
+      "WALLET_ACCOUNT_MISSING": "لم يتم إعداد حساب رصيد لهذه العملة بعد.",
+      "WALLET_ACCOUNT_INACTIVE": "حساب رصيدك غير نشط حاليًا.",
+      "INSUFFICIENT_BALANCE": "رصيدك غير كافٍ لهذا الشراء. يرجى إضافة أموال.",
+      "TENANT_REQUIRED": "تتطلب هذه العملية مساحة عمل نشطة.",
+      "WALLET_DEBIT_FAILED": "فشل شحن رصيدك. يرجى المحاولة مرة أخرى.",
+      "CART_READ_FAILED": "لم نتمكن من قراءة سلتك. يرجى المحاولة مرة أخرى.",
+      "ORDER_WRITE_FAILED": "لم يتم حفظ طلبك. يرجى المحاولة مرة أخرى.",
+      "WALLET_READ_FAILED": "لم نتمكن من قراءة رصيدك. يرجى المحاولة مرة أخرى.",
+      "GATEWAY_MISCONFIGURED": "خدمة الدفع غير متاحة حاليًا. يرجى المحاولة لاحقًا.",
+      "unknown": "حدث خطأ ما عند الدفع. يرجى المحاولة مرة أخرى."
+    }
+  }
+}

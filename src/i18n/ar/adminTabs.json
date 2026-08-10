@@ -1,0 +1,17 @@
+{
+  "adminTabs": {
+    "groups": {
+      "all": "كل المجموعات",
+      "pending": "معلّق",
+      "approved": "موافق عليه",
+      "flagged": "مُبلّغ عنه",
+      "rejected": "مرفوض"
+    },
+    "rooms": {
+      "active": "الغرف النشطة",
+      "scheduled": "مجدول",
+      "analytics": "التحليلات",
+      "moderation": "الإشراف"
+    }
+  }
+}

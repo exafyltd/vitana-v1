@@ -1,0 +1,24 @@
+{
+  "states": {
+    "loading": "加载中...",
+    "saving": "保存中...",
+    "sending": "发送中...",
+    "uploading": "上传中...",
+    "downloading": "下载中...",
+    "processing": "处理中...",
+    "signingIn": "登录中...",
+    "signingOut": "退出中...",
+    "signingUp": "注册中...",
+    "importing": "导入中...",
+    "exporting": "导出中...",
+    "syncing": "同步中...",
+    "generating": "生成中...",
+    "connecting": "连接中...",
+    "disconnecting": "断开连接中...",
+    "refreshing": "刷新中...",
+    "searching": "搜索中...",
+    "deleting": "删除中...",
+    "creating": "创建中...",
+    "updating": "更新中..."
+  }
+}

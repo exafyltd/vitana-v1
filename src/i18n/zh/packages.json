@@ -1,0 +1,22 @@
+{
+  "packages": {
+    "confirmDelete": "你确定要删除这个套餐吗？",
+    "types": {
+      "bundle": "套餐",
+      "subscription": "订阅",
+      "program": "项目"
+    },
+    "status": {
+      "draft": "草稿",
+      "published": "上线",
+      "archived": "已归档"
+    },
+    "item": "项目",
+    "items": "项目",
+    "total": "总计",
+    "validDays": "有效期 {days} 天",
+    "save": "节省 {percent}%",
+    "unpublish": "取消发布",
+    "publish": "发布"
+  }
+}

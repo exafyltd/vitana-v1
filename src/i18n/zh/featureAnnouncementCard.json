@@ -1,0 +1,16 @@
+{
+  "featureAnnouncementCard": {
+    "brandNew": {
+      "eyebrow": "新功能",
+      "badge": "新",
+      "intro": "从现在起，你可以：",
+      "cta": "自己试试",
+      "closing": "测试愉快 🥳"
+    },
+    "didYouKnow": {
+      "eyebrow": "你知道吗？",
+      "intro": "你可以：",
+      "cta": "现在就试试"
+    }
+  }
+}

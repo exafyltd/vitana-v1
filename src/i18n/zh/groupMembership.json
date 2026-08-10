@@ -1,0 +1,10 @@
+{
+  "groupMembership": {
+    "joined": "加入成功！🎉",
+    "joinedDesc": "你现在是这个群组的成员了。",
+    "left": "已退出群组",
+    "leftDesc": "你已退出这个群组。",
+    "errorJoin": "加入群组失败。请重试。",
+    "errorLeave": "退出群组失败。请重试。"
+  }
+}

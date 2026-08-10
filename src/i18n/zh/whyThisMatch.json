@@ -1,0 +1,18 @@
+{
+  "whyThisMatch": {
+    "title": "为什么是这个成员？",
+    "interpretedAs": "Vitana 理解了：",
+    "consideredSignals": "考量的信号：",
+    "showSomeoneElse": "给我推荐别人",
+    "dismiss": "忽略",
+    "ethicsNote": "Vitana 不会根据外貌或财富来给成员排名，但这里有位成员，TA 的旅程此刻正闪耀。",
+    "loadingRecipe": "正在加载搜索详情…",
+    "recipeUnavailable": "那些搜索详情已不可用。",
+    "tierLabel": {
+      "1": "精确匹配",
+      "2": "Vitana 指数",
+      "3": "最佳匹配",
+      "4": "公平性重定向"
+    }
+  }
+}

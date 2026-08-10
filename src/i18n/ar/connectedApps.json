@@ -1,0 +1,50 @@
+{
+  "connectedApps": {
+    "title": "تطبيقات متصلة",
+    "description": "إدارة أجهزتك وخدماتك المتصلة",
+    "searchPlaceholder": "ابحث عن تطبيقات...",
+    "addApp": "أضف تطبيقًا",
+    "connected": "متصل",
+    "syncing": "مزامنة",
+    "sections": {
+      "social": "اجتماعي ومشاركة",
+      "fitness": "لياقة وبدنيات",
+      "health": "صحة ومختبرات",
+      "other": "أخرى"
+    },
+    "status": {
+      "connected": "متصل",
+      "notConnected": "غير متصل",
+      "comingSoon": "قريبًا",
+      "soon": "قريبًا"
+    },
+    "actions": {
+      "connect": "اتصل",
+      "disconnect": "افصل",
+      "configure": "تهيئة المزامنة",
+      "manage": "إدارة"
+    },
+    "lastSync": "آخر مزامنة",
+    "dataSync": "مزامنة البيانات",
+    "comingSoonMessage": "تكامل {appName} قريبًا",
+    "popup": {
+      "title": "ربط التطبيقات والخدمات",
+      "searchPlaceholder": "ابحث عن تطبيقات وخدمات...",
+      "categories": {
+        "all": "كل التطبيقات",
+        "health": "الصحة واللياقة البدنية",
+        "social": "التواصل الاجتماعي"
+      },
+      "availableApps": "تطبيقات متاحة",
+      "verified": "موثق",
+      "connected": "متصل",
+      "settings": "الإعدادات",
+      "disconnect": "افصل",
+      "connect": "اتصل",
+      "done": "تم",
+      "noResults": "لا توجد تطبيقات",
+      "connectionSuccess": "تم الاتصال بنجاح",
+      "connectionPlaceholder": "اتصال {appName} قريباً"
+    }
+  }
+}
