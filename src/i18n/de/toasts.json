@@ -349,6 +349,8 @@
     "business": {
       "noAttendeesExport": "Keine Teilnehmer zum Exportieren",
       "attendeeListExported": "Teilnehmerliste exportiert!",
+      "noOrdersExport": "Keine Bestellungen zum Exportieren",
+      "ordersExported": "Verkaufsdaten exportiert!",
       "printTickets": "Tickets drucken",
       "ticketPrintingWillAvailableSoon": "Ticketdruck wird bald verfügbar sein.",
       "confirmationSent": "Bestätigung gesendet",

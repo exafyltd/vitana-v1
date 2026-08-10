@@ -3223,6 +3223,8 @@
       "streamReplay": "Stream-Wiederholung",
       "loading": "Lädt...",
       "settingUpVideoRoom": "Videoraum wird eingerichtet...",
+      "videoRoomUnavailable": "Videoraum konnte nicht geladen werden",
+      "videoRoomUnavailableHint": "Der Stream ist gerade nicht erreichbar. Versuche es erneut.",
       "roomEnded": "Raum beendet",
       "demo": "(Demo)",
       "loadingLiveRooms": "Live-Räume werden geladen...",
@@ -3482,6 +3484,9 @@
       "membersEmptyBody": "Die Community wächst – sieh alle im eigenen Mitgliederverzeichnis.",
       "openMembers": "Mitglieder öffnen",
       "findMatchDescription": "Tanz- und Fitness-Partner – per KI gematcht, nach Passung sortiert.",
+      "autopilotSuggestionsTitle": "Autopilot-Vorschläge",
+      "autopilotSuggestionsBody": "Du hast noch keinen Wunsch gepostet. Solange schlägt Autopilot Leute aus der Community vor, die zu dir passen könnten. Poste einen Wunsch, damit die KI echte Matches für dich findet.",
+      "autopilotSuggestionBadge": "Autopilot",
       "membersEmptyInvite": "Sei der Erste – lade eine:n Freund:in ein, Vitana beizutreten.",
       "filterMatches": "Matches filtern",
       "filterAge": "Altersbereich",
@@ -5115,7 +5120,34 @@
       "fromWearablesLogs": "von Wearables und Protokollen,\n                und eine",
       "forConsistencyWeSumFivePillars": "für Konsistenz. Wir summieren die fünf Säulen, wenden einen",
       "itDampensWhenOnePillarFar": "an (er dämpft, wenn eine Säule weit voraus ist),\n                und begrenzen auf 999.",
-      "markAnyJourneyEventCompletePillar": "Markiere ein beliebiges Reiseereignis als abgeschlossen → die zugehörige Säule steigt. Mach Tag für Tag weiter →\n                der Serienbonus greift. Verbinde ein Wearable → der Balken für verbundene Daten füllt sich.\n                Halte das Gleichgewicht in allen fünf → der Balancefaktor bleibt bei 1,0× und jeder Punkt zählt voll."
+      "markAnyJourneyEventCompletePillar": "Markiere ein beliebiges Reiseereignis als abgeschlossen → die zugehörige Säule steigt. Mach Tag für Tag weiter →\n                der Serienbonus greift. Verbinde ein Wearable → der Balken für verbundene Daten füllt sich.\n                Halte das Gleichgewicht in allen fünf → der Balancefaktor bleibt bei 1,0× und jeder Punkt zählt voll.",
+      "missionAlignment": {
+        "title": "Mission-Ausrichtung",
+        "subtitle": "Wie deine Empfehlungen die fünf Säulen und die Langlebigkeits-Wirtschaft unterstützen",
+        "loading": "Mission-Daten werden geladen…",
+        "error": "Mission-Daten konnten nicht geladen werden",
+        "noRecs": "Noch keine Empfehlungen in deiner Warteschlange.",
+        "summaryServed": "{pct}% deiner Empfehlungen unterstützen die Mission",
+        "summaryServedCount": "{served} von {total} Empfehlungen ausgerichtet",
+        "pillarHeading": "Säulen unterstützt",
+        "economyHeading": "Langlebigkeits-Wirtschaft",
+        "noPillar": "Nicht auf die Säulen ausgerichtet",
+        "noEconomy": "Nicht auf die Wirtschaft ausgerichtet",
+        "pillars": {
+          "nutrition": "Ernährung",
+          "hydration": "Hydration",
+          "exercise": "Bewegung",
+          "sleep": "Schlaf",
+          "mental": "Mentale Gesundheit"
+        },
+        "economyAxes": {
+          "find_match": "Find a Match",
+          "marketplace": "Marktplatz",
+          "income_generation": "Einkommensgenerierung",
+          "business_formation": "Geschäftsgründung"
+        },
+        "contractLink": "Ultimate Goal-Vertrag anzeigen"
+      }
     },
     "home": {
       "priorityOfTheDay": "Priorität des Tages:",
@@ -5196,6 +5228,7 @@
       "likesTitle": "Likes",
       "noLikesYet": "Noch keine Likes",
       "loadingLikes": "Likes werden geladen…",
+      "likesCount": "{count} Likes",
       "whyPublic": "Longevity-News",
       "matchScore": "{score} % Übereinstimmung",
       "matchPercent": "{score} %",
@@ -7027,7 +7060,7 @@
       "brieflyDescribeYourIssue": "Beschreibe kurz dein Problem",
       "pleaseProvideAsMuchDetailAs": "Bitte gib so viele Details wie möglich an...",
       "helpArticles": "Hilfeartikel",
-      "searchKnowledgeBase": "Wissensdatenbank durchsuchen",
+      "searchKnowledgeBase": "FAQs durchsuchen",
       "searchHelpArticles": "Hilfeartikel durchsuchen...",
       "popularHelpArticles": "Beliebte Hilfeartikel",
       "categories": "Kategorien",

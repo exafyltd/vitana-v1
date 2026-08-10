@@ -41,6 +41,8 @@
     "sendFailed": "Send Failed",
     "sendFailedDesc": "Your feedback could not be sent. Please try again.",
     "recognitionError": "Recognition Error",
-    "recognitionErrorDesc": "Speech recognition encountered an error. Please try again."
+    "recognitionErrorDesc": "Speech recognition encountered an error. Please try again.",
+    "transcribing": "Transcribing your recording…",
+    "backendRecordingHint": "Recording — your transcription will appear after you tap Stop."
   }
 }

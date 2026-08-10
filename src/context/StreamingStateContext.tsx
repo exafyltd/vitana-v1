@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useMemo, ReactNode } from 'react';
 
 interface StreamingStateContextValue {
   glassModeActive: boolean;
@@ -37,31 +37,48 @@ export function StreamingStateProvider({ children }: { children: ReactNode }) {
   const [autopilotActive, setAutopilotActive] = useState(false);
   const [textInputVisible, setTextInputVisible] = useState(false);
 
+  // Memoized so this root-level provider doesn't hand every consumer a fresh
+  // object (and thus a re-render) each time the provider itself re-renders.
+  // All setters come from useState and are referentially stable.
+  const value = useMemo(
+    () => ({
+      glassModeActive,
+      micActive,
+      sessionReady,
+      audioOverlayVisible,
+      triggeredByOrb,
+      cameraActive,
+      screenShareActive,
+      diaryActive,
+      autopilotActive,
+      textInputVisible,
+      setGlassModeActive,
+      setMicActive,
+      setSessionReady,
+      setAudioOverlayVisible,
+      setTriggeredByOrb,
+      setCameraActive,
+      setScreenShareActive,
+      setDiaryActive,
+      setAutopilotActive,
+      setTextInputVisible,
+    }),
+    [
+      glassModeActive,
+      micActive,
+      sessionReady,
+      audioOverlayVisible,
+      triggeredByOrb,
+      cameraActive,
+      screenShareActive,
+      diaryActive,
+      autopilotActive,
+      textInputVisible,
+    ]
+  );
+
   return (
-    <StreamingStateContext.Provider
-      value={{
-        glassModeActive,
-        micActive,
-        sessionReady,
-        audioOverlayVisible,
-        triggeredByOrb,
-        cameraActive,
-        screenShareActive,
-        diaryActive,
-        autopilotActive,
-        textInputVisible,
-        setGlassModeActive,
-        setMicActive,
-        setSessionReady,
-        setAudioOverlayVisible,
-        setTriggeredByOrb,
-        setCameraActive,
-        setScreenShareActive,
-        setDiaryActive,
-        setAutopilotActive,
-        setTextInputVisible,
-      }}
-    >
+    <StreamingStateContext.Provider value={value}>
       {children}
     </StreamingStateContext.Provider>
   );

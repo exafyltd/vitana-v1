@@ -13,6 +13,12 @@
  * block write to per-user tables (RLS-scoped to auth.uid()) and only affect the
  * current user's own feed. KebabMenu stops click propagation so opening the
  * menu doesn't navigate to the author profile.
+ *
+ * VTID-03468: the menu is source-aware. The feed merges two backing tables —
+ * profile_posts and media_uploads — and every action here targets whichever one
+ * the card came from (see the `source` prop). Actions with no media equivalent
+ * (inline Edit, and the staff `moderate_profile_post` takedown) are hidden on
+ * media cards rather than silently written against the wrong table.
  */
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -55,11 +61,21 @@ export function NewsPostModerationMenu({
   authorId,
   authorName,
   postContent = "",
+  source = "post",
 }: {
   postId: string;
   authorId: string;
   authorName: string;
   postContent?: string;
+  /**
+   * Which table backs this card — `profile_posts` ("post") or `media_uploads`
+   * ("media"). VTID-03468: the feed merges both, but this menu was only ever
+   * rendered for "post", so an author had no way to delete (or anyone to
+   * report) their own uploaded community video. The two live in different
+   * tables with different RLS, so every action below has to target the right
+   * one rather than assuming profile_posts.
+   */
+  source?: "post" | "media";
 }) {
   const { user } = useAuth();
   const { isExafyAdmin } = useTenant();
@@ -86,7 +102,9 @@ export function NewsPostModerationMenu({
     try {
       const { error } = await supabase.from("content_reports").insert({
         reporter_user_id: user.id,
-        content_type: "profile_post",
+        // Must match the backing table so the admin review queue resolves the
+        // reported item (VTID-03468).
+        content_type: source === "media" ? "media_upload" : "profile_post",
         content_id: postId,
         reason: reportReason,
         description: reportDetails.trim() || null,
@@ -176,7 +194,23 @@ export function NewsPostModerationMenu({
     if (!window.confirm(t("screens.home.deletePostConfirm"))) return;
     setBusy(true);
     try {
-      await deletePost.mutateAsync(postId);
+      if (source === "media") {
+        // media_uploads, not profile_posts. Scoped to the owner (matching the
+        // "Users can delete own media uploads" RLS policy) and read back, so a
+        // zero-row delete raises instead of reporting a false success — same
+        // contract as useProfilePosts.deletePost (VTID-03468).
+        const { data, error } = await supabase
+          .from("media_uploads")
+          .delete()
+          .eq("id", postId)
+          .eq("user_id", authorId)
+          .select("id");
+        if (error) throw error;
+        if (!data || data.length === 0) throw new Error("MEDIA_NOT_DELETED");
+        refreshFeed();
+      } else {
+        await deletePost.mutateAsync(postId);
+      }
       notifySuccess("screens.home.postDeleted");
     } catch {
       notifyError("screens.home.modFailed");
@@ -228,16 +262,18 @@ export function NewsPostModerationMenu({
       <KebabMenu>
         {isOwnPost ? (
           <>
-            <DropdownMenuItem
-              onClick={() => {
-                setEditContent(postContent);
-                setEditOpen(true);
-              }}
-              className="text-sm"
-            >
-              <Pencil className="mr-2 h-4 w-4" />
-              {t("screens.home.editPost")}
-            </DropdownMenuItem>
+            {source === "post" && (
+              <DropdownMenuItem
+                onClick={() => {
+                  setEditContent(postContent);
+                  setEditOpen(true);
+                }}
+                className="text-sm"
+              >
+                <Pencil className="mr-2 h-4 w-4" />
+                {t("screens.home.editPost")}
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem
               onClick={removeOwnPost}
               className="text-sm text-destructive focus:text-destructive"
@@ -267,7 +303,7 @@ export function NewsPostModerationMenu({
           </>
         )}
 
-        {canModerate && !isOwnPost && (
+        {canModerate && !isOwnPost && source === "post" && (
           <>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={removePost} className="text-sm text-destructive focus:text-destructive">

@@ -1163,4 +1163,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   );
 };
 
-export default MessageBubble;
+// Memoized: ConversationView/GroupChat render the full (unvirtualized)
+// message history, so without memo every parent state change (typing,
+// scroll, presence) re-renders every bubble in the thread.
+export default React.memo(MessageBubble);

@@ -35,8 +35,14 @@ permissions:
   id-token: write
 
 concurrency:
-  group: deploy-community-app
-  cancel-in-progress: true
+  # Push deploys share one cancellable group so only the newest push builds.
+  # Manual workflow_dispatch deploys to PROD each get a UNIQUE group and are
+  # NEVER cancelled — otherwise an unrelated push to `main` (which post-cutover
+  # only hits the frozen `cutover_gate` and no-ops) cancels an in-flight manual
+  # prod deploy. That happened on 2026-06-23: a manual prod deploy was killed
+  # mid-run by routine pushes landing seconds later.
+  group: deploy-community-app-${{ github.event_name == 'workflow_dispatch' && github.run_id || 'push' }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 
 jobs:
   # Staging-first cutover gate. Freezes the AUTOMATIC (push) deploy of the live

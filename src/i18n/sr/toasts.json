@@ -358,6 +358,8 @@
     "business": {
       "noAttendeesExport": "Nema učesnika za izvoz",
       "attendeeListExported": "Lista učesnika je izvezena!",
+      "noOrdersExport": "Nema porudžbina za izvoz",
+      "ordersExported": "Podaci o prodaji izvezeni!",
       "printTickets": "Štampaj karte",
       "ticketPrintingWillAvailableSoon": "Štampanje karata će uskoro biti dostupno.",
       "confirmationSent": "Potvrda poslata",

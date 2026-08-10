@@ -20,7 +20,10 @@ import { useAuth } from "@/context/AuthProvider";
 import { fetchGroups, type ChatGroup } from "./useChatApi";
 import type { GlobalMessageThread, GlobalMessage } from "./useGlobalMessages";
 
-const POLL_INTERVAL_MS = 30_000;
+// Reconnect-safety fallback for the group thread list. Tightened 30s → 10s so
+// the inbox last-message / unread badge for groups still converges quickly when
+// realtime misses an event on flaky mobile networks.
+const POLL_INTERVAL_MS = 10_000;
 
 export const CHAT_GROUP_THREAD_PREFIX = "chat_group:";
 
@@ -113,6 +116,24 @@ export function useChatGroupsAsThreads(enabled: boolean = true) {
     // queryKey is derived from user.id which is stable for a session
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled, groupIdsKey, queryClient, user?.id]);
+
+  // Catch silent websocket drops from backgrounding: the realtime channel
+  // above is known to suspend when a WebView-wrapped mobile app is
+  // backgrounded (locked screen, app switch, push notification), so a group
+  // that received new messages while backgrounded won't have bumped to the
+  // top by the time the app is reopened. Mirrors the same guard already in
+  // useGlobalMessages.ts for DM threads.
+  useEffect(() => {
+    if (!enabled) return;
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        queryClient.invalidateQueries({ queryKey });
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enabled, queryClient, user?.id]);
 
   // Optimistically zero the unread badge for the given raw group ids (no prefix)
   // so "Mark all as read" clears them instantly, before the backend round-trip

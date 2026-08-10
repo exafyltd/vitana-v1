@@ -23,7 +23,11 @@ vi.mock('@/lib/i18n-toast', () => ({
 }));
 vi.mock('@/lib/locale-format', () => ({ formatDistanceToNow: () => '1h' }));
 vi.mock('@/components/home/NewsPostModerationMenu', () => ({ NewsPostModerationMenu: () => null }));
-vi.mock('@/components/home/PostLikersDialog', () => ({ PostLikersDialog: () => null }));
+vi.mock('@/components/home/PostLikersDialog', () => ({
+  // Renders its `open` state as text so tests can assert the dialog was
+  // actually reached, without pulling in the real usePostLikers/Supabase query.
+  PostLikersDialog: ({ open }: { open: boolean }) => (open ? <div>likers-dialog-open</div> : null),
+}));
 vi.mock('@/components/media/FeedMedia', () => ({ FeedMedia: () => null }));
 vi.mock('@/components/feed/MentionText', () => ({ renderMentions: (c: string) => c }));
 
@@ -118,5 +122,32 @@ describe('CommunityPostCard counts', () => {
     act(() => opts.onError(new Error('offline')));
 
     expect(likeButton()).toHaveTextContent('4');
+  });
+});
+
+describe('CommunityPostCard likers list (VTID-03554)', () => {
+  beforeEach(() => toggleLikeMock.mockClear());
+
+  it('opens the likers dialog from a single tap on the "{count} Likes" row', () => {
+    render(<CommunityPostCard item={item({ likes_count: 4 })} />);
+
+    expect(screen.queryByText('likers-dialog-open')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText('screens.home.likesCount'));
+    expect(screen.getByText('likers-dialog-open')).toBeInTheDocument();
+  });
+
+  it('does not open the likers dialog on a plain tap of the heart — that only toggles the like', () => {
+    render(<CommunityPostCard item={item({ likes_count: 4 })} />);
+
+    fireEvent.click(likeButton());
+
+    expect(toggleLikeMock).toHaveBeenCalledTimes(1);
+    expect(screen.queryByText('likers-dialog-open')).not.toBeInTheDocument();
+  });
+
+  it('renders no likes row (and so no way to open the list) when nobody has liked yet', () => {
+    render(<CommunityPostCard item={item({ likes_count: 0 })} />);
+
+    expect(screen.queryByText('screens.home.likesCount')).not.toBeInTheDocument();
   });
 });

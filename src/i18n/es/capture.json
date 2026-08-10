@@ -41,6 +41,8 @@
     "sendFailed": "Error al enviar",
     "sendFailedDesc": "Tu opinión no pudo enviarse. Por favor, inténtalo de nuevo.",
     "recognitionError": "Error de reconocimiento",
-    "recognitionErrorDesc": "El reconocimiento de voz tuvo un error. Inténtalo de nuevo."
+    "recognitionErrorDesc": "El reconocimiento de voz tuvo un error. Inténtalo de nuevo.",
+    "transcribing": "Transcribiendo tu grabación…",
+    "backendRecordingHint": "Grabando: tu transcripción aparecerá después de tocar Detener."
   }
 }
