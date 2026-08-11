@@ -26,7 +26,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { t } from '@/lib/i18n-toast';
 
 export interface VitanaDmAction {
   kind?: string;
@@ -54,7 +54,6 @@ interface Props {
 
 export const VitanaMessageActions: React.FC<Props> = ({ contentData }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const actions = readVitanaActions(contentData);
 
   if (actions.length === 0) return null;
