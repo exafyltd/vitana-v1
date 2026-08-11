@@ -1,0 +1,10 @@
+{
+  "verdicts": {
+    "orbHint.tapToTalk": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T05:02:51.022Z"
+}

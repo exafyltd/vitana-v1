@@ -1,12 +1,12 @@
 # i18n Audit — Portuguese (pt)
 
-Generated: 2026-08-06T22:31:28.862Z via **gemini**
+Generated: 2026-08-11T04:46:51.660Z via **gemini**
 
 ## Summary
 
-- **OK:** 13764
-- **EDIT_SUGGESTED:** 384
-- **LOW_CONFIDENCE:** 12
+- **OK:** 13883
+- **EDIT_SUGGESTED:** 396
+- **LOW_CONFIDENCE:** 11
 - **Pass rate:** 97.2%
 - **Threshold:** 10% flagged max
 
@@ -17,22 +17,22 @@ Generated: 2026-08-06T22:31:28.862Z via **gemini**
 | actionBar.json | 5 | 0 | 0 | 5 |
 | admin.json | 19 | 0 | 0 | 19 |
 | adminTabs.json | 9 | 0 | 0 | 9 |
-| apply.json | 71 | 5 | 0 | 76 |
+| apply.json | 73 | 3 | 0 | 76 |
 | archives.json | 1 | 0 | 0 | 1 |
 | audio.json | 3 | 0 | 0 | 3 |
 | auth.json | 3 | 1 | 0 | 4 |
-| authPage.json | 15 | 0 | 0 | 15 |
-| autopilot.json | 90 | 1 | 0 | 91 |
+| authPage.json | 14 | 1 | 0 | 15 |
+| autopilot.json | 91 | 0 | 0 | 91 |
 | billing.json | 172 | 6 | 0 | 178 |
-| business.json | 102 | 4 | 0 | 106 |
+| business.json | 100 | 6 | 0 | 106 |
 | businessHub.json | 16 | 1 | 0 | 17 |
 | buttons.json | 55 | 0 | 0 | 55 |
 | calendar.json | 115 | 0 | 0 | 115 |
-| calendarPopup.json | 15 | 2 | 0 | 17 |
+| calendarPopup.json | 17 | 0 | 0 | 17 |
 | campaigns.json | 14 | 0 | 0 | 14 |
-| capture.json | 42 | 0 | 0 | 42 |
+| capture.json | 44 | 0 | 0 | 44 |
 | challenges.json | 1 | 0 | 0 | 1 |
-| common.json | 36 | 1 | 0 | 37 |
+| common.json | 37 | 0 | 0 | 37 |
 | confirm.json | 16 | 0 | 0 | 16 |
 | connectedApps.json | 36 | 0 | 0 | 36 |
 | consent.json | 1 | 0 | 0 | 1 |
@@ -41,14 +41,14 @@ Generated: 2026-08-06T22:31:28.862Z via **gemini**
 | currencies.json | 3 | 0 | 0 | 3 |
 | densityOptions.json | 3 | 0 | 0 | 3 |
 | diary.json | 9 | 0 | 0 | 9 |
-| diaryActions.json | 10 | 7 | 0 | 17 |
+| diaryActions.json | 17 | 0 | 0 | 17 |
 | discount.json | 27 | 0 | 0 | 27 |
 | discover.json | 106 | 0 | 0 | 106 |
 | drawerNav.json | 17 | 0 | 0 | 17 |
 | editProfile.json | 15 | 2 | 0 | 17 |
 | empty.json | 16 | 7 | 0 | 23 |
 | errors.json | 13 | 1 | 0 | 14 |
-| eventCta.json | 20 | 0 | 0 | 20 |
+| eventCta.json | 18 | 2 | 0 | 20 |
 | eventDrawer.json | 59 | 0 | 0 | 59 |
 | events.json | 20 | 0 | 0 | 20 |
 | featureAnnouncementCard.json | 8 | 0 | 0 | 8 |
@@ -56,20 +56,20 @@ Generated: 2026-08-06T22:31:28.862Z via **gemini**
 | gallery.json | 17 | 0 | 0 | 17 |
 | glassMode.json | 15 | 0 | 0 | 15 |
 | groupDetail.json | 12 | 0 | 0 | 12 |
-| groupFeed.json | 11 | 0 | 0 | 11 |
+| groupFeed.json | 10 | 1 | 0 | 11 |
 | groupMembership.json | 6 | 0 | 0 | 6 |
 | groups.json | 1 | 0 | 0 | 1 |
-| health.json | 74 | 2 | 0 | 76 |
+| health.json | 52 | 3 | 0 | 55 |
 | historyManagement.json | 41 | 0 | 0 | 41 |
 | home.json | 7 | 1 | 0 | 8 |
-| inbox.json | 98 | 0 | 1 | 99 |
-| intro.json | 8 | 0 | 0 | 8 |
-| lifeCompass.json | 30 | 1 | 0 | 31 |
-| liveRooms.json | 115 | 4 | 0 | 119 |
+| inbox.json | 99 | 0 | 0 | 99 |
+| intro.json | 7 | 1 | 0 | 8 |
+| lifeCompass.json | 31 | 0 | 0 | 31 |
+| liveRooms.json | 118 | 1 | 0 | 119 |
 | loading.json | 7 | 0 | 0 | 7 |
 | logout.json | 3 | 0 | 0 | 3 |
 | marketplaceCheckout.json | 48 | 1 | 0 | 49 |
-| mediaHub.json | 121 | 8 | 0 | 129 |
+| mediaHub.json | 120 | 9 | 0 | 129 |
 | memoryActions.json | 13 | 0 | 0 | 13 |
 | menu.json | 9 | 0 | 0 | 9 |
 | milestones.json | 13 | 0 | 0 | 13 |
@@ -79,14 +79,14 @@ Generated: 2026-08-06T22:31:28.862Z via **gemini**
 | newsCard.json | 29 | 0 | 0 | 29 |
 | onboarding.json | 14 | 9 | 0 | 23 |
 | orbHint.json | 1 | 0 | 0 | 1 |
-| orders.json | 62 | 3 | 0 | 65 |
+| orders.json | 64 | 1 | 0 | 65 |
 | packages.json | 14 | 0 | 0 | 14 |
 | payment.json | 19 | 0 | 0 | 19 |
 | permissionsActions.json | 17 | 0 | 0 | 17 |
 | portals.json | 23 | 5 | 0 | 28 |
 | privacy.json | 2 | 0 | 0 | 2 |
 | profile.json | 59 | 0 | 0 | 59 |
-| profileEditor.json | 78 | 10 | 0 | 88 |
+| profileEditor.json | 79 | 9 | 0 | 88 |
 | profileGroups.json | 5 | 0 | 0 | 5 |
 | profileMedia.json | 5 | 0 | 0 | 5 |
 | profilePosts.json | 13 | 2 | 0 | 15 |
@@ -94,8 +94,8 @@ Generated: 2026-08-06T22:31:28.862Z via **gemini**
 | profileTabs.json | 9 | 0 | 0 | 9 |
 | publicProfile.json | 8 | 0 | 0 | 8 |
 | qrShare.json | 12 | 2 | 0 | 14 |
-| recallActions.json | 16 | 0 | 1 | 17 |
-| screens.json | 9624 | 256 | 10 | 9890 |
+| recallActions.json | 17 | 0 | 0 | 17 |
+| screens.json | 9749 | 277 | 11 | 10037 |
 | services.json | 20 | 0 | 0 | 20 |
 | settings.json | 31 | 0 | 0 | 31 |
 | share.json | 8 | 0 | 0 | 8 |
@@ -103,13 +103,13 @@ Generated: 2026-08-06T22:31:28.862Z via **gemini**
 | socialImport.json | 25 | 0 | 0 | 25 |
 | states.json | 19 | 1 | 0 | 20 |
 | subNav.json | 42 | 0 | 0 | 42 |
-| support.json | 34 | 0 | 0 | 34 |
+| support.json | 29 | 5 | 0 | 34 |
 | tableHeaders.json | 11 | 0 | 0 | 11 |
 | tasks.json | 15 | 0 | 0 | 15 |
 | timeline.json | 1 | 0 | 0 | 1 |
 | timelineActions.json | 16 | 1 | 0 | 17 |
-| toasts.json | 1223 | 34 | 0 | 1257 |
-| universalCart.json | 59 | 0 | 0 | 59 |
+| toasts.json | 1229 | 30 | 0 | 1259 |
+| universalCart.json | 58 | 1 | 0 | 59 |
 | validation.json | 25 | 0 | 0 | 25 |
 | videoShop.json | 32 | 1 | 0 | 33 |
 | vitanaIndex.json | 27 | 0 | 0 | 27 |
@@ -121,63 +121,63 @@ Generated: 2026-08-06T22:31:28.862Z via **gemini**
 
 ## Sample of flagged keys
 
-- `apply.json:apply.subheadlineTicket` — **EDIT_SUGGESTED** (1.00) — Uses Brazilian Portuguese 'Usuários' instead of European Portuguese 'Utilizadores'; 'cheio' should be 'cheios' to agree with 'eventos'.
-  - suggested: `🎟️ Todos os Utilizadores de Teste verificados recebem 1 bilhete grátis no valor de 99 EUR para um dos nossos 12 eventos de verão — cheios de ritmo, movimento, conexão e alegria.`
-- `apply.json:apply.errorAlreadyApplied` — **EDIT_SUGGESTED** (1.00) — Incorrect verb conjugation and hyphenation for 'candidataste'.
+- `apply.json:apply.subheadlineTicket` — **EDIT_SUGGESTED** (0.90) — Uses Brazilian Portuguese 'Usuários' instead of European Portuguese 'Utilizadores', which is more consistent with du-form.
+  - suggested: `🎟️ Todos os Utilizadores de Teste verificados recebem 1 bilhete grátis no valor de 99 EUR para um dos nossos 12 eventos de verão — cheio de ritmo, movimento, conexão e alegria.`
+- `apply.json:apply.errorAlreadyApplied` — **EDIT_SUGGESTED** (1.00) — Incorrect verb conjugation for 'candidataste'. The hyphenated form 'candidatas-te' is incorrect here.
   - suggested: `Parece que já te candidataste — entraremos em contacto em breve.`
-- `apply.json:apply.footerCopy` — **EDIT_SUGGESTED** (1.00) — Brand name component 'Experience' should remain in English.
-  - suggested: `MAXINA Experience`
-- `apply.json:apply.aboutVitanalandLabel` — **EDIT_SUGGESTED** (1.00) — Brand name 'Vitanaland' should remain unchanged.
+- `apply.json:apply.aboutVitanalandLabel` — **EDIT_SUGGESTED** (1.00) — Brand name 'Vitanaland' should remain unchanged, not translated.
   - suggested: `Vitanaland`
-- `apply.json:apply.aboutMaxinaExperienceLabel` — **EDIT_SUGGESTED** (1.00) — Brand name component 'Experience' should remain in English.
-  - suggested: `MAXINA Experience`
-- `auth.json:auth.contactAdmin` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: uses formal 'você' form ('contate', 'seu') instead of informal 'tu' form.
-  - suggested: `Por favor, contata o teu administrador para acesso.`
-- `autopilot.json:autopilot.actions.action3Reason` — **EDIT_SUGGESTED** (0.90) — Slightly awkward phrasing with repetitive 'mais'. Can be more idiomatic.
-  - suggested: `Mais um gole para a tua maestria de hidratação semanal`
-- `billing.json:billing.founding.bannerTitle` — **EDIT_SUGGESTED** (1.00) — Incorrect verb conjugation for du-form imperative. 'Seja' is formal (você), 'Sê' is informal (tu).
+- `auth.json:auth.contactAdmin` — **EDIT_SUGGESTED** (1.00) — Verb conjugation is formal ('você' form) instead of informal ('tu' form).
+  - suggested: `Por favor, contacta o teu administrador para acesso.`
+- `authPage.json:authPage.subtitle` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: uses formal 'Sua' instead of informal 'Tua'.
+  - suggested: `Tua Plataforma de Inteligência de Saúde Personalizada`
+- `billing.json:billing.founding.bannerTitle` — **EDIT_SUGGESTED** (1.00) — Incorrect verb conjugation for informal 'du' form. 'Seja' is formal, 'Sê' is informal.
   - suggested: `🏆 Sê um dos primeiros {max}`
-- `billing.json:billing.launchGrant.noAction` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: 'Aproveite' is formal (você-form), should be informal (du-form).
+- `billing.json:billing.launchGrant.noAction` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: 'Aproveite' is formal (você-form), should be informal (tu-form) 'Aproveita'.
   - suggested: `Nenhuma ação necessária. Aproveita.`
-- `billing.json:billing.mobileBilling.rootIntro` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: 'Gerencie seu plano' is formal (você-form), should be informal (du-form).
-  - suggested: `Gere o teu plano, método de pagamento e pagamentos de criadores.`
-- `billing.json:billing.mobileBilling.paymentBody` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: 'Seu cartão' is formal (você-form), should be informal (du-form).
-  - suggested: `O teu cartão salvo e detalhes de cobrança são gerenciados pela Stripe.`
-- `billing.json:billing.mobileBilling.summaryRenewsOn` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: 'Seu plano' is formal (você-form), should be informal (du-form).
-  - suggested: `O teu plano renova em {date}`
-- `billing.json:billing.state.freeBody` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: 'Experimente' is formal (você-form), should be informal (du-form).
+- `billing.json:billing.mobileBilling.rootIntro` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: 'Gerencie' and 'seu' are formal (você-form), should be informal (tu-form) 'Gerencia' and 'teu'.
+  - suggested: `Gerencia teu plano, método de pagamento e pagamentos de criadores.`
+- `billing.json:billing.mobileBilling.paymentBody` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: 'Seu' is formal (você-form), should be informal (tu-form) 'Teu'.
+  - suggested: `Teu cartão salvo e detalhes de cobrança são gerenciados pela Stripe.`
+- `billing.json:billing.mobileBilling.summaryRenewsOn` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: 'Seu' is formal (você-form), should be informal (tu-form) 'Teu'.
+  - suggested: `Teu plano renova em {date}`
+- `billing.json:billing.state.freeBody` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: 'Experimente' is formal (você-form), should be informal (tu-form) 'Experimenta'.
   - suggested: `Experimenta Premium grátis por 14 dias.`
-- `business.json:business.reseller.shareResellerLink` — **EDIT_SUGGESTED** (0.90) — Inconsistent register: uses infinitive 'Compartilhar' where an informal 'tu' imperative ('Partilha') would be consistent with other app strings.
-  - suggested: `Partilha link de revendedor`
-- `business.json:business.reseller.selectEventToShare` — **EDIT_SUGGESTED** (0.90) — Inconsistent register: uses 'você' form 'Selecione' and 'compartilhar' where 'tu' form 'Seleciona' and 'partilhar' would be consistent with other app strings.
-  - suggested: `Seleciona um evento para partilhar`
-- `business.json:business.transfer.description` — **EDIT_SUGGESTED** (0.90) — Inconsistent register: uses 'você' form 'Transfira' and 'suas' where 'tu' form 'Transfere' and 'as tuas' would be consistent with other app strings.
+- `business.json:business.kpi.topPerformer` — **EDIT_SUGGESTED** (0.90) — Translation means 'Best Performance' instead of 'Top Performer' (the entity).
+  - suggested: `Destaque`
+- `business.json:business.reseller.shareResellerLink` — **EDIT_SUGGESTED** (1.00) — Inconsistent register (infinitive instead of informal 'tu' imperative). Also, adding 'o' for better flow.
+  - suggested: `Partilha o link de revendedor`
+- `business.json:business.reseller.selectEventToShare` — **EDIT_SUGGESTED** (1.00) — Inconsistent register ('você' form instead of informal 'tu' imperative).
+  - suggested: `Seleciona um evento para compartilhar`
+- `business.json:business.transfer.description` — **EDIT_SUGGESTED** (1.00) — Inconsistent register ('você' form instead of informal 'tu' imperative and possessives).
   - suggested: `Transfere as tuas comissões de revendedor pendentes para a tua Carteira VITANA.`
-- `business.json:business.typeSelector.createEventDesc` — **EDIT_SUGGESTED** (0.90) — Inconsistent register: uses 'você' form 'Organize' where 'tu' form 'Organiza' would be consistent with other app strings.
+- `business.json:business.typeSelector.createEventDesc` — **EDIT_SUGGESTED** (1.00) — Inconsistent register ('você' form instead of informal 'tu' imperative).
   - suggested: `Organiza workshops, aulas ou encontros`
-- `businessHub.json:businessHub.description` — **EDIT_SUGGESTED** (1.00) — Verb conjugation for 'tu' form is incorrect. 'Cresça' is for 'você', not 'tu'.
+- `business.json:business.missionOpportunities.empty` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: 'Volte' is formal (você form), should be informal (tu form) 'Volta' to match other du-form usage in the app.
+  - suggested: `Nenhuma recomendação alinhada à economia ainda. Volta mais tarde.`
+- `businessHub.json:businessHub.description` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: 'Cresça' is formal (você/ele/ela) while 'teu' is informal (tu). Should be 'Cresce' for informal.
   - suggested: `Cresce o teu negócio de bem-estar`
-- `calendarPopup.json:calendarPopup.upcomingSchedule` — **EDIT_SUGGESTED** (1.00) — 'Horário' is less idiomatic for 'schedule' in this context; 'agenda' is more common for personal schedules.
-  - suggested: `Tua próxima agenda e compromissos`
-- `calendarPopup.json:calendarPopup.syncExternal` — **EDIT_SUGGESTED** (1.00) — 'Sincronizar Externo' is grammatically awkward; 'externamente' (adverb) or 'com externos' is more natural for an action.
-  - suggested: `Sincronizar Externamente`
-- `common.json:common.uploading` — **EDIT_SUGGESTED** (0.90) — The continuous form 'A carregar...' is more commonly used for 'Loading...' in European Portuguese. For 'Uploading...' in a Brazilian Portuguese context (common for apps), the gerund 'Carregando...' or 'Enviando...' would be more idiomatic and clear.
-  - suggested: `Carregando...`
-- `createEventPopup.json:createEventPopup.displayPriceHint` — **EDIT_SUGGESTED** (1.00) — Inconsistent terminology: 'bilhetes' used instead of 'ingressos' which was used in previous related entries.
+- `createEventPopup.json:createEventPopup.displayPriceHint` — **EDIT_SUGGESTED** (0.90) — Inconsistent terminology: 'bilhetes' used instead of 'ingressos' for tickets, which was used in previous entries. For consistency, 'ingressos' is preferred.
   - suggested: `Apenas para exibição. Ativa a venda de ingressos acima para pagamentos integrados.`
-- `diaryActions.json:diaryActions.items.addPhotoEntry.description` — **EDIT_SUGGESTED** (1.00) — Incorrect imperative form for 'tu' (informal) and inconsistent pronoun.
-  - suggested: `Carrega imagens para documentar tua jornada de bem-estar`
-- `diaryActions.json:diaryActions.items.writeTextEntry.description` — **EDIT_SUGGESTED** (1.00) — Incorrect imperative form for 'tu' (informal).
-  - suggested: `Cria reflexões e notas escritas detalhadas`
-- `diaryActions.json:diaryActions.items.quickNote.description` — **EDIT_SUGGESTED** (1.00) — Incorrect imperative form for 'tu' (informal).
-  - suggested: `Anota pensamentos ou observações breves`
-- `diaryActions.json:diaryActions.items.videoDiary.description` — **EDIT_SUGGESTED** (1.00) — Incorrect imperative form for 'tu' (informal).
-  - suggested: `Grava reflexões em vídeo e atualizações de progresso`
-- `diaryActions.json:diaryActions.items.scheduleEntry.description` — **EDIT_SUGGESTED** (1.00) — Incorrect imperative form for 'tu' (informal).
-  - suggested: `Planeja futuras entradas de diário e lembretes`
-- `diaryActions.json:diaryActions.items.tagMemories.description` — **EDIT_SUGGESTED** (1.00) — Incorrect imperative form for 'tu' (informal).
-  - suggested: `Organiza entradas existentes com tags e categorias`
-- `diaryActions.json:diaryActions.items.importFiles.description` — **EDIT_SUGGESTED** (1.00) — Incorrect imperative form for 'tu' (informal).
-  - suggested: `Carrega documentos, imagens ou outros arquivos de bem-estar`
-- `editProfile.json:editProfile.notAuthenticatedDesc` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: uses 'você' form instead of 'tu' form.
+- `editProfile.json:editProfile.notAuthenticatedDesc` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: uses 'você' form ('faça', 'seu') instead of 'tu' form.
   - suggested: `Por favor, faz login para salvar teu perfil.`
+- `editProfile.json:editProfile.tapToEdit` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: uses 'você' form ('Toque') instead of 'tu' form.
+  - suggested: `Toca para editar`
+- `empty.json:empty.noAppsFound` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: uses 'sua' (formal/Brazilian informal) instead of 'tua' (explicit informal 'tu-form').
+  - suggested: `Nenhum aplicativo encontrado correspondendo à tua busca.`
+- `empty.json:empty.noEventsYet` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: uses 'Crie' (formal imperative) instead of 'Cria' (informal 'tu-form' imperative).
+  - suggested: `Nenhum evento ainda. Cria um evento primeiro.`
+- `empty.json:empty.indexSheetNextDays` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: uses 'seu' (formal/Brazilian informal) instead of 'teu' (explicit informal 'tu-form').
+  - suggested: `Nenhuma sugestão ativa do Autopilot. Quando algo aparecer aqui, completá-lo moverá teu Índice.`
+- `empty.json:empty.indexSheetHorizon` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: uses 'seu' (formal/Brazilian informal) instead of 'teu' (explicit informal 'tu-form').
+  - suggested: `Precisamos de mais alguns dias de dados para projetar teu arco de 30 dias.`
+- `empty.json:empty.myJourneyOnePillar` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: uses 'Escolha' and 'veja' (formal imperative) and 'seu' instead of 'Escolhe', 'vê' and 'teu' (informal 'tu-form').
+  - suggested: `Escolhe uma pequena coisa — vê teu Índice se mover.`
+- `empty.json:empty.autopilotPopupZero` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: uses 'Selecione' (formal imperative) instead of 'Seleciona' (informal 'tu-form' imperative).
+  - suggested: `Seleciona ações para ver o Índice subir.`
+- `empty.json:empty.healthEmpty` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: uses 'Registre' (formal imperative) and 'sua'/'seu' instead of 'Regista' and 'tua'/'teu' (informal 'tu-form').
+  - suggested: `Regista tua primeira entrada para iniciar teu Índice.`
+- `errors.json:errors.unauthorizedDesc` — **EDIT_SUGGESTED** (1.00) — Incorrect verb conjugation for informal 'tu' form.
+  - suggested: `Por favor, faz login para continuar.`
+- `eventCta.json:eventCta.getFreeTicket` — **EDIT_SUGGESTED** (1.00) — 'Pega' is too colloquial for a general friendly app; 'Obtém' or 'Consegue' is more appropriate for 'Get'.
+  - suggested: `Obtém o teu bilhete grátis`

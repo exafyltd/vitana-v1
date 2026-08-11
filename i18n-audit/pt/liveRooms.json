@@ -1,0 +1,602 @@
+{
+  "verdicts": {
+    "liveRooms.room.premium": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "liveRooms.viewer.chat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "liveRooms.goLivePopup.tags.fitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "liveRooms.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.tabs.live": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.tabs.scheduled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.tabs.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.tabs.past": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.joinRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.noRooms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.beFirst": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.demoRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.demoRoomDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.search.placeholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.search.category": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.search.allCategories": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.room.join": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.room.participants": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.room.duration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.room.host": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.room.live": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.viewer.leave": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.viewer.mute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.viewer.video": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.viewer.raiseHand": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.viewer.reactions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.titleCreate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.titleEdit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.streamTitleLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.streamTitlePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.descriptionLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.descriptionPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.charactersCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.streamTypeLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.streamTypeAudio": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.streamTypeVideo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.coverLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.coverAlt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.coverUploadCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.coverUploadHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.aiAutoGenerateLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.aiAutoGenerateHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.generatingAiImage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.tagsLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.tagsSelected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.tags.wellness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.tags.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.tags.mentalHealth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.tags.longevity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.tags.meditation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.tags.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.tags.motivation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.tags.education": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.tags.lifestyle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.advancedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.cohostLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.cohostPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.accessLevelLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.access.public.label": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.access.public.desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.access.followers.label": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.access.followers.desc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent. 'Seus' is for 'você' or formal plural. For 'tu' form, it should be 'teus', aligning with other 'tu' form usages in the provided entries.",
+      "suggested": "Somente teus seguidores",
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.access.group.label": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.access.group.desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.scheduleLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.goLiveNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.selectTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.clearSchedule": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.scheduledAt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.dateNeedsTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.time": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.engagementLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.enableChatTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.enableChatDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.enablePollsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.enablePollsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.recordReplayTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.recordReplayDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.starting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.updating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.updateStream": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.scheduleSession": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.goLiveNowAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.selectStreamTypeTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.selectStreamTypeDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.notLoggedInTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.notLoggedInDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.invalidFileTypeTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.invalidFileTypeDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.fileTooLargeTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.fileTooLargeDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.imageUploadFailedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.imageUploadFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.genericTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.genericDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.genericDescWithReason": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.success.streamUpdatedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.success.streamUpdatedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.success.streamScheduledTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.success.streamScheduledDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.success.youAreLiveTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.success.youAreLiveDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.success.aiImageHintTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.goLivePopup.success.aiImageHintDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.editSession.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.editSession.saving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.editSession.changeCover": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.editSession.noChanges": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.durationLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration15": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration30": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration45": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration60": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration90": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration120": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.durationHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T04:59:45.669Z"
+}

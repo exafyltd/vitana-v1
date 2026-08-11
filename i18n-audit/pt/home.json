@@ -1,0 +1,47 @@
+{
+  "verdicts": {
+    "home.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.welcomeBack": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.todaysSchedule": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.mediaContent": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'Média' is ambiguous; 'conteúdo' is more appropriate for 'media' as content.",
+      "suggested": "Conteúdo para ti",
+      "phase": "llm"
+    },
+    "home.eventsAndMeetups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.communityNews": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.inspiration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.dailyMatches": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T04:57:59.981Z"
+}

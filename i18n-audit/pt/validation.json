@@ -1,0 +1,130 @@
+{
+  "verdicts": {
+    "validation.required": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.invalidEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.invalidUrl": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.invalidPhone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.tooShort": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.tooLong": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.passwordMismatch": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.passwordTooWeak": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.invalidDate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.invalidNumber": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.mustBePositive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.mustBeNegative": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.mustBeInteger": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.minValue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.maxValue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.invalidFormat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.alreadyExists": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.notFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.invalidSelection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.pleaseSelect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.pleaseEnter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.charactersRemaining": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.fileTooBig": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.invalidFileType": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "validation.uploadLimit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T06:32:57.455Z"
+}

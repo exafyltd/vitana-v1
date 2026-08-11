@@ -1,0 +1,160 @@
+{
+  "verdicts": {
+    "lifeCompass.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.currentCompass": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.alignment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.confidence": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.suggestedGoals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.customGoal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.customGoalPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.setCustomGoal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.closeAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.categoryLabels.wealth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.categoryLabels.relationship": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.categoryLabels.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.categoryLabels.career": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.categoryLabels.learning": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.categoryLabels.spiritual": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.categoryLabels.longevity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.wealth.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.wealth.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.relationship.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.relationship.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.health.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.health.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.career.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.career.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.learning.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.learning.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.spiritual.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.spiritual.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.longevity.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.longevity.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T04:59:02.652Z"
+}
