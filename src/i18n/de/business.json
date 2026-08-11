@@ -87,13 +87,13 @@
       "mockDataActive": "Mock-Daten aktiv"
     },
     "transfer": {
-      "title": "An Wallet übertragen",
-      "description": "Übertrage deine ausstehenden Wiederverkäufer-Provisionen auf dein VITANA Wallet.",
+      "title": "Auszahlung anfordern",
+      "description": "Fordere die Auszahlung deiner ausstehenden Wiederverkäufer-Provisionen auf dein VITANA Wallet an.",
       "pending": "Ausstehend",
       "wallet": "Wallet",
-      "instantCredit": "Dies wird deine Einnahmen sofort auf dein Wallet-Guthaben gutschreiben.",
-      "transferring": "Wird übertragen...",
-      "transfer": "Übertragen"
+      "instantCredit": "Deine Anfrage wird von unserem Team geprüft, bevor sie deinem Wallet-Guthaben gutgeschrieben wird.",
+      "transferring": "Wird angefordert...",
+      "transfer": "Anfordern"
     },
     "typeSelector": {
       "title": "Ein Geschäft starten",

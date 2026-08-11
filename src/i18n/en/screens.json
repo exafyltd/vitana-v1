@@ -6732,7 +6732,7 @@
       "potentialPotentialformatted": "Potential: {potentialFormatted}",
       "onceYouAddEventsYourInventory": "Once you add events to your inventory, you'll be able to promote them, share reseller links, and earn from every ticket sold.",
       "viewWallet": "View in Wallet",
-      "transferWallet": "Transfer to Wallet",
+      "transferWallet": "Request Payout",
       "ticketssoldTicketsValue1SalesCommissionrateCommiss": "{ticketsSold}tickets · {value1}sales · {commissionRate}% commission",
       "value0Earned": "{value0}earned",
       "lastSaleValue0Ago": "Last sale {value0}ago",
