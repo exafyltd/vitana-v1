@@ -1,0 +1,21 @@
+{
+  "profilePosts": {
+    "createPost": "إنشاء منشور",
+    "placeholder": "ماذا يدور في ذهنك الآن؟",
+    "shareCta": "شارك شيئًا مع المجتمع",
+    "post": "نشر",
+    "posted": "تم النشر!",
+    "deleted": "تم حذف المنشور",
+    "emptyTitle": "لا توجد منشورات بعد",
+    "emptyDescription": "شارك أول تحديث لك مع المجتمع",
+    "deleteConfirm": "هل تريد حذف هذا المنشور؟",
+    "error": "حدث خطأ ما",
+    "mentionPlaceholder": "ماذا يدور في ذهنك؟ اكتب @ للإشارة إلى شخص ما",
+    "background": "الخلفية",
+    "noBackground": "لا توجد خلفية",
+    "searchingPeople": "البحث عن أشخاص…",
+    "noPeopleFound": "لم يتم العثور على أحد",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

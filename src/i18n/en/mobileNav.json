@@ -6,6 +6,8 @@
     "business": "Business",
     "live": "Live",
     "media": "Media",
-    "myJourney": "Journey"
-  }
+    "myJourney": "Journey",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

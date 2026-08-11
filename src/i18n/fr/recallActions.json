@@ -1,0 +1,50 @@
+{
+  "recallActions": {
+    "title": "Actions de recherche et de récupération de rappels",
+    "items": {
+      "askAiQuestion": {
+        "title": "Demande à l'IA",
+        "description": "Interroge tes souvenirs avec la recherche IA en langage naturel",
+        "_pending_review": {}
+      },
+      "advancedSearch": {
+        "title": "Recherche avancée",
+        "description": "Utilise des filtres, des étiquettes et des plages de dates pour trouver tes souvenirs",
+        "_pending_review": {}
+      },
+      "patternAnalysis": {
+        "title": "Analyse de schémas",
+        "description": "Découvre les tendances et les schémas dans tes données de bien-être",
+        "_pending_review": {}
+      },
+      "memoryInsights": {
+        "title": "Aperçus des souvenirs",
+        "description": "Obtiens des aperçus IA de ton parcours de bien-être",
+        "_pending_review": {}
+      },
+      "searchByDate": {
+        "title": "Recherche par date",
+        "description": "Parcours les souvenirs de périodes spécifiques",
+        "_pending_review": {}
+      },
+      "locationMemories": {
+        "title": "Souvenirs de lieux",
+        "description": "Trouve tes entrées par lieux visités",
+        "_pending_review": {}
+      },
+      "filterByCategory": {
+        "title": "Filtre par catégorie",
+        "description": "Parcours les souvenirs par piliers de bien-être et catégories",
+        "_pending_review": {}
+      },
+      "quickRecalls": {
+        "title": "Rappels rapides",
+        "description": "Accède aux souvenirs et requêtes fréquemment recherchés",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

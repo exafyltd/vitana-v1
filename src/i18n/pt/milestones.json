@@ -1,0 +1,19 @@
+{
+  "milestones": {
+    "title": "Momentos Especiais",
+    "add": "Adicionar Marco",
+    "edit": "Editar Marco",
+    "empty": "Ainda não tens momentos",
+    "addFirst": "Adiciona o teu primeiro momento",
+    "date": "Data",
+    "description": "O que aconteceu?",
+    "titleLabel": "Título",
+    "titlePlaceholder": "ex: Formaste-te na Universidade",
+    "descPlaceholder": "Descreve este momento...",
+    "icon": "Ícone",
+    "publicLabel": "Visível para todos",
+    "private": "Privado",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

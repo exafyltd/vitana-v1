@@ -1,0 +1,89 @@
+{
+  "orders": {
+    "myOrders": "طلباتي",
+    "title": "الطلبات",
+    "description": "سجل طلباتك واشتراكاتك النشطة",
+    "trackDescription": "تتبع طلبات منتجاتك وتذاكر الفعاليات",
+    "searchPlaceholder": "ابحث في الطلبات...",
+    "tabs": {
+      "active": "نشط",
+      "history": "السجل",
+      "all": "الكل",
+      "completed": "مكتملة",
+      "cancelled": "ملغاة",
+      "_pending_review": {}
+    },
+    "filters": {
+      "all": "الكل",
+      "events": "الفعاليات",
+      "products": "المنتجات",
+      "vouchers": "القسائم",
+      "services": "الخدمات",
+      "refunds": "المبالغ المستردة",
+      "_pending_review": {}
+    },
+    "previewNotice": "هذه طلبات معاينة. ستظهر طلباتك الفعلية هنا.",
+    "sampleData": "بيانات تجريبية",
+    "emptyActive": {
+      "title": "لا توجد طلبات نشطة",
+      "description": "ليس لديك أي طلبات نشطة أو فعاليات قادمة.",
+      "_pending_review": {}
+    },
+    "emptyHistory": {
+      "title": "لا يوجد سجل طلبات",
+      "description": "ستظهر طلباتك المكتملة وفعالياتك السابقة هنا.",
+      "_pending_review": {}
+    },
+    "noOrders": "لا توجد طلبات بعد",
+    "noOrdersDesc": "ستظهر طلباتك هنا بمجرد أن تشتري شيئًا.",
+    "browseProducts": "تصفح المنتجات",
+    "findEvents": "ابحث عن فعاليات",
+    "startShopping": "ابدأ التسوق",
+    "noFilter": "لا يوجد {filter}",
+    "noFilterDesc": "لم يتم العثور على {filter} في سجلك.",
+    "orderDate": "تاريخ الطلب",
+    "orderNumber": "رقم الطلب",
+    "viewDetails": "عرض التفاصيل",
+    "trackOrder": "تتبع الطلب",
+    "reorder": "إعادة الطلب",
+    "detailSheet": {
+      "title": "تفاصيل الطلب",
+      "orderInfo": "معلومات الطلب",
+      "orderReference": "مرجع الطلب",
+      "purchaseDate": "تاريخ الشراء",
+      "eventDate": "تاريخ الفعالية",
+      "location": "الموقع",
+      "quantity": "الكمية",
+      "tickets": "تذاكر",
+      "yourTicket": "تذكرتك",
+      "giftVoucher": "قسيمة هدية",
+      "code": "الرمز",
+      "sendToRecipient": "إرسال إلى المستلم",
+      "recipientEmail": "بريد المستلم الإلكتروني *",
+      "recipientName": "اسم المستلم",
+      "personalMessage": "رسالة شخصية",
+      "cancel": "إلغاء",
+      "send": "إرسال",
+      "downloadPdf": "تحميل PDF",
+      "_pending_review": {}
+    },
+    "status": {
+      "upcoming": "قادمة",
+      "attended": "تم الحضور",
+      "expired": "منتهية الصلاحية",
+      "completed": "مكتملة",
+      "delivered": "تم التوصيل",
+      "cancelled": "ملغاة",
+      "refunded": "تم استرداد المبلغ",
+      "shipped": "قيد الشحن",
+      "confirmed": "مؤكد",
+      "pending": "معلق",
+      "processing": "قيد المعالجة",
+      "paid": "نشط",
+      "active": "نشط",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

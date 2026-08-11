@@ -4,7 +4,8 @@
  *
  * Detected topics with user/event/repeat counts, a per-source breakdown
  * (assistant, web, orb…), and a suggested product action per topic.
- * Data: useAdminInterestAnalytics.
+ * Data: useAdminInterestAnalytics. Charted (VTID-03567): ranked topic bars,
+ * per-source stacks.
  */
 
 import { useState } from "react";
@@ -20,6 +21,7 @@ import {
   KpiCard,
   PrivacyNote,
 } from "@/components/admin/analytics/AnalyticsShared";
+import { BarListCard, StackedBarListCard } from "@/components/admin/analytics/AnalyticsCharts";
 import { fmtNumber } from "@/lib/locale-format";
 import { t } from "@/lib/i18n-toast";
 
@@ -29,6 +31,9 @@ interface TopicRow {
   events: number;
   repeated_users: number;
 }
+
+// Stable source order so a filter change never repaints surviving series.
+const SOURCE_ORDER = ["assistant", "orb", "web", "ios", "android", "gateway"] as const;
 
 function suggestedAction(
   topic: TopicRow,
@@ -54,6 +59,19 @@ export default function Interests() {
   const isEmpty = !!data && data.top_topics.length === 0;
   const repeatedUsersTotal = (data?.top_topics ?? []).reduce((sum, t2) => sum + t2.repeated_users, 0);
 
+  // Only sources actually present in the window get a series slot.
+  const presentSources = SOURCE_ORDER.filter((src) =>
+    (data?.topic_sources ?? []).some((s) => s.source === src && s.events > 0),
+  );
+  const sourceRows = (data?.top_topics ?? []).map((topic) => ({
+    label: topic.topic,
+    values: presentSources.map((src) =>
+      (data?.topic_sources ?? [])
+        .filter((s) => s.topic === topic.topic && s.source === src)
+        .reduce((sum, s) => sum + s.events, 0),
+    ),
+  }));
+
   return (
     <AppLayout>
       <AdminTabs sectionKey="insights" />
@@ -75,14 +93,36 @@ export default function Interests() {
               <KpiCard label={t("screens.admin.paTopTopic")} value={data.top_topics[0]?.topic ?? "—"} />
             </div>
 
+            <div className="grid gap-6 xl:grid-cols-2">
+              <BarListCard
+                title={t("screens.admin.paTopTopics")}
+                rows={data.top_topics.map((topic) => ({
+                  label: topic.topic,
+                  count: topic.events,
+                  extra: (
+                    <Badge variant="outline" className="hidden sm:inline-flex">
+                      {t("screens.admin.paUsers")}: {fmtNumber(topic.users)}
+                    </Badge>
+                  ),
+                }))}
+                emptyLabel={t("screens.admin.noAnalyticsData")}
+              />
+              <StackedBarListCard
+                title={t("screens.admin.paTopicSources")}
+                rows={sourceRows}
+                series={presentSources.map((src) => ({ key: src, label: src }))}
+                emptyLabel={t("screens.admin.noAnalyticsData")}
+              />
+            </div>
+
             {/* Top topics with decision prompts */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">{t("screens.admin.paTopTopics")}</CardTitle>
+                <CardTitle className="text-base">{t("screens.admin.paSuggestedAction")}</CardTitle>
               </CardHeader>
               <CardContent className="max-h-[70vh] overflow-y-auto">
                 <div className="space-y-2">
-                  {data.top_topics.map((topic) => (
+                  {data.top_topics.slice(0, 10).map((topic) => (
                     <div key={topic.topic} className="rounded border px-3 py-2 text-sm">
                       <div className="flex items-center justify-between gap-2">
                         <span className="font-mono font-medium">{topic.topic}</span>
@@ -99,40 +139,11 @@ export default function Interests() {
                         </span>
                       </div>
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {t("screens.admin.paSuggestedAction")}: {suggestedAction(topic, data.topic_sources)}
+                        {suggestedAction(topic, data.topic_sources)}
                       </p>
                     </div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Source breakdown */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">{t("screens.admin.paTopicSources")}</CardTitle>
-              </CardHeader>
-              <CardContent className="max-h-[60vh] overflow-y-auto">
-                {data.topic_sources.length === 0 ? (
-                  <p className="text-sm italic text-muted-foreground">{t("screens.admin.noAnalyticsData")}</p>
-                ) : (
-                  <div className="space-y-1">
-                    {data.topic_sources.map((s) => (
-                      <div
-                        key={`${s.topic}-${s.source}`}
-                        className="flex items-center justify-between rounded border px-2 py-1.5 text-sm"
-                      >
-                        <span className="font-mono">{s.topic}</span>
-                        <span className="flex items-center gap-2">
-                          <Badge variant="outline">
-                            {t("screens.admin.paSource")}: {s.source}
-                          </Badge>
-                          <Badge variant="secondary">{fmtNumber(s.events)}</Badge>
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </CardContent>
             </Card>
 

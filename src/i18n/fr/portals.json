@@ -1,0 +1,49 @@
+{
+  "portals": {
+    "maxina": {
+      "title": "Plateforme de santé Maxina",
+      "welcomeBack": "Re-bonjour sur Maxina.",
+      "continueJourney": "Connecte-toi pour continuer ton parcours.",
+      "joinMaxina": "Rejoins Maxina",
+      "joinCommunity": "Rejoins la communauté Maxina.",
+      "createAccount": "Crée ton compte et commence ton parcours.",
+      "signingIn": "Connexion en cours…",
+      "creatingAccount": "Création du compte…",
+      "joiningAs": "Je rejoins en tant que :",
+      "yourFullName": "Ton nom complet",
+      "forgotPassword": "Mot de passe oublié ?",
+      "partOfVitana": "Maxina fait partie de l'écosystème VITANA.",
+      "allPortals": "Tous les portails",
+      "emailConfirmed": "E-mail confirmé ! Bienvenue sur Maxina.",
+      "checkEmail": "Vérifie ton e-mail pour confirmer ton compte.",
+      "roles": {
+        "community": "Communauté",
+        "patient": "Patient",
+        "professional": "Pro",
+        "admin": "Admin",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "alkalma": {
+      "joinAlkalma": "Rejoins AlKalma",
+      "welcomeBack": "Re-bonjour sur AlKalma.",
+      "continueJourney": "Connecte-toi pour continuer.",
+      "_pending_review": {}
+    },
+    "earthlinks": {
+      "joinEarthlinks": "Rejoins Earthlinks",
+      "welcomeBack": "Re-bonjour sur Earthlinks.",
+      "continueJourney": "Connecte-toi pour continuer.",
+      "_pending_review": {}
+    },
+    "community": {
+      "joinCommunity": "Rejoins la Communauté",
+      "welcomeBack": "Re-bonjour.",
+      "continueJourney": "Connecte-toi pour continuer.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -1,0 +1,98 @@
+{
+  "voucher": {
+    "modal": {
+      "title": "Offrir un bon Maxina",
+      "subtitle": "Offrez Bien-être et Connexion communautaire",
+      "buyVoucher": "Acheter un bon",
+      "openingCheckout": "Ouverture du paiement sécurisé...",
+      "_pending_review": {}
+    },
+    "tiers": {
+      "test": {
+        "name": "Test",
+        "benefits": [
+          "Test de paiement uniquement",
+          "Pas un vrai bon",
+          "Pour les tests de développement"
+        ],
+        "_pending_review": {}
+      },
+      "experience": {
+        "name": "Expérience",
+        "benefits": [
+          "Accès à 1 événement premium de la communauté",
+          "Conseil bien-être personnalisé",
+          "Essai Vitana+ de 30 jours inclus",
+          "Bon électronique au design soigné"
+        ],
+        "_pending_review": {}
+      },
+      "exclusive": {
+        "name": "Exclusif",
+        "benefits": [
+          "3 événements premium de la communauté",
+          "Séance de coaching individuel avec un expert",
+          "Abonnement Vitana+ de 90 jours",
+          "Réservation prioritaire + avantages VIP"
+        ],
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "success": {
+      "title": "Bon acheté !",
+      "ready": "Ton bon {tier} est prêt",
+      "download": "Télécharger le bon",
+      "sendEmail": "Envoyer au destinataire par e-mail",
+      "viewOrders": "Voir dans les commandes",
+      "done": "Terminé",
+      "_pending_review": {}
+    },
+    "email": {
+      "title": "Envoyer le bon par e-mail",
+      "subtitle": "On enverra un e-mail magnifiquement conçu avec le bon",
+      "recipientEmail": "E-mail du destinataire *",
+      "recipientName": "Nom du destinataire (facultatif)",
+      "personalMessage": "Message personnel (facultatif)",
+      "messagePlaceholder": "Joyeux anniversaire ! Profite de ce moment de bien-être...",
+      "back": "Retour",
+      "send": "Envoyer le bon",
+      "_pending_review": {}
+    },
+    "preview": {
+      "title": "Ton bon",
+      "giftVoucher": "Bon cadeau",
+      "validUntil": "Valable jusqu'au {date}",
+      "voucherCode": "Code du bon",
+      "whatsIncluded": "Inclus",
+      "downloadPdf": "Télécharger le PDF",
+      "downloadDirect": "Télécharger directement",
+      "openInBrowser": "Ouvrir dans le navigateur",
+      "copyLink": "Copier le lien",
+      "share": "Enregistrer / Partager",
+      "shareHint": "Enregistrer dans Fichiers, Drive, ou envoyer à quelqu'un",
+      "downloadHint": "Si le téléchargement s'ouvre vide, appuie sur Ouvrir dans le navigateur.",
+      "_pending_review": {}
+    },
+    "toast": {
+      "downloadStarted": "Téléchargement démarré !",
+      "downloadFailed": "Échec du téléchargement",
+      "linkCopied": "Lien copié !",
+      "linkCopiedDesc": "Colle dans le navigateur pour télécharger.",
+      "voucherSent": "Bon envoyé à {email} !",
+      "voucherShared": "Bon partagé avec succès !",
+      "checkoutFailed": "Impossible de démarrer le paiement. Réessaie.",
+      "generatingVoucher": "Génération du bon...",
+      "failedToLoadVoucher": "Échec du chargement des données du bon",
+      "downloadFailedCopyLink": "Échec du téléchargement. Essaie de copier le lien.",
+      "useTicketView": "Utilise la vue du billet pour imprimer ou enregistrer.",
+      "pdfNotAvailable": "Téléchargement PDF non disponible pour ce type de commande",
+      "enterRecipientEmail": "Saisis l'e-mail du destinataire.",
+      "emailOnlyForVouchers": "Envoi d'e-mail uniquement disponible pour les bons",
+      "sendingVoucherEmail": "Envoi de l'e-mail du bon...",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

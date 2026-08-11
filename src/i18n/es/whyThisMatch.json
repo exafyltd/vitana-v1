@@ -11,8 +11,11 @@
     "tierLabel": {
       "1": "Coincidencia exacta",
       "2": "Índice Vitana",
-      "3": "Coincidencia más cercana",
-      "4": "Reenrutamiento por equidad"
-    }
-  }
+      "3": "Mejor coincidencia",
+      "4": "Redirección de equidad",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

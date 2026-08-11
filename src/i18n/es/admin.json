@@ -5,7 +5,7 @@
       "updateFailed": "Error al actualizar el estado",
       "deleteSuccess": "¡Eliminado con éxito!",
       "deleteFailed": "Error al eliminar",
-      "podcastStatus": "Podcast {status}",
+      "podcastStatus": "Pódcast {status}",
       "podcastDeleted": "Podcast eliminado",
       "musicDeleted": "Música eliminada",
       "videoDeleted": "Video eliminado",
@@ -19,7 +19,10 @@
       "rejected": "Rechazado",
       "flagged": "Marcado",
       "podcastManagement": "Gestión de Podcasts",
-      "podcastManagementDesc": "Revisa y modera las subidas de podcasts"
-    }
-  }
+      "podcastManagementDesc": "Revisa y modera las subidas de podcasts",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

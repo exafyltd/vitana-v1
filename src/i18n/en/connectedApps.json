@@ -5,27 +5,30 @@
     "searchPlaceholder": "Search apps...",
     "addApp": "Add App",
     "connected": "connected",
-    "syncing": "syncing",
+    "syncing": "Syncing",
     "sections": {
       "social": "Social & Sharing",
       "fitness": "Fitness & Wearables",
       "health": "Health & Labs",
-      "other": "Other"
+      "other": "Other",
+      "_pending_review": {}
     },
     "status": {
       "connected": "Connected",
       "notConnected": "Not connected",
       "comingSoon": "Coming Soon",
-      "soon": "Soon"
+      "soon": "Soon",
+      "_pending_review": {}
     },
     "actions": {
       "connect": "Connect",
       "disconnect": "Disconnect",
       "configure": "Configure Sync",
-      "manage": "Manage"
+      "manage": "Manage",
+      "_pending_review": {}
     },
-    "lastSync": "Last sync",
-    "dataSync": "Data syncing",
+    "lastSync": "Last Sync",
+    "dataSync": "Data Syncing",
     "comingSoonMessage": "{appName} integration coming soon",
     "popup": {
       "title": "Connect Apps & Services",
@@ -33,7 +36,8 @@
       "categories": {
         "all": "All Apps",
         "health": "Health & Fitness",
-        "social": "Social"
+        "social": "Social",
+        "_pending_review": {}
       },
       "availableApps": "Available Apps",
       "verified": "Verified",
@@ -44,7 +48,10 @@
       "done": "Done",
       "noResults": "No apps found",
       "connectionSuccess": "Connection successful",
-      "connectionPlaceholder": "{appName} connection coming soon"
-    }
-  }
+      "connectionPlaceholder": "{appName} connection coming soon",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

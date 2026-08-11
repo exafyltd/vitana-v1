@@ -18,14 +18,16 @@
       "showLessToast": "We'll show fewer like this",
       "mutedToast": "Source muted",
       "undo": "Undo",
-      "unmute": "Unmute"
+      "unmute": "Unmute",
+      "_pending_review": {}
     },
     "detail": {
       "back": "Back",
       "continueReading": "Continue reading on",
       "openInBrowser": "Open in browser",
       "couldNotLoad": "This article can't be displayed inline",
-      "readOn": "Read on"
+      "readOn": "Read more",
+      "_pending_review": {}
     },
     "pillars": {
       "all": "All",
@@ -33,7 +35,10 @@
       "hydration": "Hydration",
       "sleep": "Sleep",
       "exercise": "Exercise",
-      "mental": "Mental"
-    }
-  }
+      "mental": "Mental",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

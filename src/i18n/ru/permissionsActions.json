@@ -1,0 +1,50 @@
+{
+  "permissionsActions": {
+    "title": "Конфиденциальность и Разрешения Действия",
+    "items": {
+      "privacySettings": {
+        "title": "Настройки конфиденциальности",
+        "description": "Настроить параметры конфиденциальности и обмена",
+        "_pending_review": {}
+      },
+      "manageAccess": {
+        "title": "Управляй доступом",
+        "description": "Контролируй, кто может просматривать твои воспоминания о здоровье",
+        "_pending_review": {}
+      },
+      "securitySettings": {
+        "title": "Настройки безопасности",
+        "description": "Обновить Настройки Аутентификации и Безопасности",
+        "_pending_review": {}
+      },
+      "apiKeysAccess": {
+        "title": "Ключи API и доступ",
+        "description": "Управляй интеграциями сторонних приложений и доступом к API",
+        "_pending_review": {}
+      },
+      "dataRights": {
+        "title": "Права на данные",
+        "description": "Воспользуйся своими правами на переносимость данных и удаление",
+        "_pending_review": {}
+      },
+      "auditLogs": {
+        "title": "Журналы аудита",
+        "description": "Просмотри историю доступа и журнал аудита безопасности",
+        "_pending_review": {}
+      },
+      "permissionSettings": {
+        "title": "Настройки Разрешений",
+        "description": "Настрой детальные разрешения для разных функций",
+        "_pending_review": {}
+      },
+      "exportData": {
+        "title": "Экспортируй данные",
+        "description": "Загрузи свои воспоминания и данные о здоровье безопасно",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

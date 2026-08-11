@@ -1,0 +1,25 @@
+{
+  "payment": {
+    "completed": "تم الدفع! ✅",
+    "sentSuccess": "{amount} أُرسل بنجاح",
+    "alreadyProcessed": "معالج بالفعل",
+    "requestIs": "هذا الطلب {status}.",
+    "alreadyAccepted": "طلب الدفع هذا قُبل بالفعل.",
+    "declined": "رفض الدفع",
+    "declinedDesc": "رُفض طلب الدفع",
+    "exchangeSuccess": "تم التبادل والإرسال بنجاح! ✨",
+    "exchangeSuccessDesc": "حُوّل وأُرسل {amount}",
+    "insufficientBalance": "رصيد غير كافٍ",
+    "insufficientBalanceDesc": "ليس لديك ما يكفي من {currency} لهذا التبادل",
+    "transactionFailed": "فشلت المعاملة",
+    "paymentFailed": "فشل الدفع",
+    "paymentFailedDesc": "تعذر معالجة الدفع. حاول مرة أخرى.",
+    "balanceRefreshed": "تحديث الرصيد",
+    "balanceRefreshedDesc": "تم تحديث رصيد المحفظة",
+    "refreshFailed": "فشل التحديث",
+    "refreshFailedDesc": "تعذر تحديث الرصيد. حاول مرة أخرى.",
+    "error": "خطأ",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

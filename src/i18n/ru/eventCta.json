@@ -1,0 +1,26 @@
+{
+  "eventCta": {
+    "buyTicket": "Купить билет",
+    "buyTicketWithPrice": "Купить билет · {price}",
+    "getFreeTicket": "Получи свой бесплатный билет",
+    "reserveSpot": "Забронировать место",
+    "reserveMySpot": "Забронировать моё место",
+    "viewTicket": "Посмотреть билет",
+    "soldOut": "Распродано",
+    "joinMeetup": "Присоединиться к MeetUp",
+    "leaveMeetup": "Покинуть MeetUp",
+    "cancelReservation": "Отменить бронирование",
+    "viewEvent": "Посмотреть событие",
+    "yourTicket": "Твой билет",
+    "getYourTicket": "Получи свой билет",
+    "joinThisEvent": "Присоединись к этому событию",
+    "selectTickets": "Выбрать билеты",
+    "buyTicketsTotal": "Купить билеты – {total}",
+    "processing": "Обработка...",
+    "joining": "Присоединение...",
+    "getTickets": "Получить билеты",
+    "promoteEvent": "Продвигать событие",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

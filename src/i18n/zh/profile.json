@@ -1,0 +1,92 @@
+{
+  "profile": {
+    "defaultBio": "热衷于全面健康和社区建设的健康爱好者。🌱",
+    "autopilot": {
+      "polishBio": "完善你的个人简介、原型和精选",
+      "editHighlights": "编辑精选",
+      "saveHighlights": "保存精选",
+      "highlightsDesc": "选择你最棒的帖子和媒体，展示在你的个人资料顶部。精选内容会出现在精选版块，并吸引更多关注者。",
+      "try": "试试看",
+      "_pending_review": {}
+    },
+    "identity": {
+      "vitanaIndex": "Vitana 指数",
+      "basedOnActivity": "基于活跃度、健康参与度和贡献",
+      "viewLongevityId": "查看我的长寿 ID",
+      "follow": "关注",
+      "followingState": "已关注",
+      "understandIndex": "了解指数",
+      "brandFooter": "MAXINA × VITANA",
+      "_pending_review": {}
+    },
+    "tabs": {
+      "identity": "身份",
+      "social": "社交",
+      "account": "账户",
+      "business": "商业",
+      "_pending_review": {}
+    },
+    "account": {
+      "notSet": "未设置",
+      "editField": "编辑 {field}",
+      "visibilityToggle": "可见性：{label}。轻触更改。",
+      "visibility": {
+        "private": "私密",
+        "connections": "联系人",
+        "public": "公开",
+        "_pending_review": {}
+      },
+      "sections": {
+        "publicProfile": "公开个人资料",
+        "publicProfileSubtitle": "显示在身份",
+        "basicInfo": "基本个人信息",
+        "basicInfoSubtitle": "固定身份数据",
+        "contactInfo": "联系信息",
+        "accountDetails": "账户详情",
+        "_pending_review": {}
+      },
+      "fields": {
+        "avatar": "头像",
+        "handle": "昵称",
+        "longevityArchetype": "长寿原型",
+        "firstName": "名字",
+        "lastName": "姓",
+        "dateOfBirth": "出生日期",
+        "gender": "性别",
+        "maritalStatus": "婚姻状况",
+        "email": "邮箱",
+        "phone": "电话",
+        "address": "地址",
+        "country": "国家",
+        "city": "城市",
+        "memberSince": "加入日期",
+        "accountType": "账户类型",
+        "verificationStatus": "验证状态",
+        "_pending_review": {}
+      },
+      "values": {
+        "uploaded": "已上传",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "business": {
+      "title": "我的推荐",
+      "subtitle": "你推荐过的产品，以及从中获得的收益。",
+      "empty": "暂无推荐",
+      "emptyDesc": "从“发现”推荐产品，即可在此查看你的点击、购买和佣金。",
+      "clicks": "{count} 次点击",
+      "conversions": "{count} 次购买",
+      "totalEarned": "总收益",
+      "statusActive": "活跃",
+      "shareRow": "分享推荐链接",
+      "publicTitle": "推荐",
+      "publicSubtitle": "此个人资料推荐的产品",
+      "publicEmpty": "暂无推荐",
+      "viewProduct": "查看",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

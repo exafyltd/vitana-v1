@@ -1,0 +1,23 @@
+{
+  "drawerNav": {
+    "journey": "我的旅程",
+    "news": "新闻",
+    "events": "活动和聚会",
+    "findPartner": "找匹配",
+    "live": "直播间",
+    "media": "媒体中心",
+    "business": "商业中心",
+    "discover": "发现",
+    "orders": "订单",
+    "wallet": "钱包",
+    "health": "健康",
+    "diary": "每日日记",
+    "connectors": "联系",
+    "inbox": "收件箱",
+    "support": "支持",
+    "settings": "设置",
+    "logout": "退出登录",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

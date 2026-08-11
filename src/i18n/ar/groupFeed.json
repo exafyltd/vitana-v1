@@ -1,0 +1,17 @@
+{
+  "groupFeed": {
+    "placeholder": "شارك شيئًا مع المجموعة...",
+    "post": "انشر",
+    "noMessages": "لا توجد رسائل بعد",
+    "beFirst": "كن أول من ينشر في هذه المجموعة!",
+    "joinToPost": "انضم إلى المجموعة لبدء النشر.",
+    "messageSent": "تم إرسال الرسالة",
+    "deleteConfirm": "هل تريد حذف هذه الرسالة؟",
+    "messageDeleted": "تم حذف الرسالة",
+    "error": "خطأ",
+    "errorSend": "فشل إرسال الرسالة",
+    "errorDelete": "فشل حذف الرسالة",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

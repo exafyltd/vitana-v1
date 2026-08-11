@@ -8,13 +8,15 @@
     "unsavedChangesDesc": "Do you really want to leave? Your changes will be lost.",
     "leave": "Do you really want to leave this page?",
     "leaveDesc": "Unsaved changes will be lost.",
-    "logout": "Are you sure you want to log out?",
-    "logoutDesc": "You will need to sign in again.",
+    "logout": "Do you really want to log out?",
+    "logoutDesc": "You need to log in again.",
     "remove": "Do you really want to remove this item?",
     "removeDesc": "The item will be removed from the list.",
-    "disconnect": "Do you really want to disconnect?",
+    "disconnect": "Do you really want to disconnect this connection?",
     "disconnectDesc": "You can reconnect later.",
-    "proceed": "Do you want to proceed?",
-    "proceedDesc": "This action will be executed."
-  }
+    "proceed": "Do you want to continue?",
+    "proceedDesc": "This action will be executed.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

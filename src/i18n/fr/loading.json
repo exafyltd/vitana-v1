@@ -1,0 +1,13 @@
+{
+  "loading": {
+    "default": "Chargement...",
+    "groups": "Chargement des groupes...",
+    "messages": "Chargement des messages...",
+    "uploading": "Téléversement...",
+    "uploadingProgress": "Téléversement... {progress}%",
+    "processing": "Traitement...",
+    "saving": "Enregistrement...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

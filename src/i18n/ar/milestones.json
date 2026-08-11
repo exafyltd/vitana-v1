@@ -1,0 +1,19 @@
+{
+  "milestones": {
+    "title": "لحظات مميزة",
+    "add": "أضف إنجازًا",
+    "edit": "عدّل إنجازًا",
+    "empty": "لا توجد لحظات بعد",
+    "addFirst": "أضف لحظتك الأولى",
+    "date": "التاريخ",
+    "description": "ماذا حدث؟",
+    "titleLabel": "العنوان",
+    "titlePlaceholder": "مثلاً، تخرجت من الجامعة",
+    "descPlaceholder": "صف هذه اللحظة...",
+    "icon": "أيقونة",
+    "publicLabel": "مرئي للجميع",
+    "private": "خاص",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

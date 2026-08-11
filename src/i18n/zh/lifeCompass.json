@@ -1,0 +1,64 @@
+{
+  "lifeCompass": {
+    "title": "人生罗盘",
+    "description": "你的生活罗盘指引着所有AI推荐和决策。选择一个你目前最看重的主要目标。AI会优先考虑与此方向一致的建议。",
+    "currentCompass": "当前罗盘",
+    "alignment": "对齐: {value}%",
+    "confidence": "置信度: {value}%",
+    "suggestedGoals": "建议目标",
+    "customGoal": "自定义目标",
+    "customGoalPlaceholder": "描述你的主要目标...",
+    "setCustomGoal": "设置自定义目标",
+    "closeAria": "关闭",
+    "categoryLabels": {
+      "wealth": "财富",
+      "relationship": "关系",
+      "health": "健康",
+      "career": "事业",
+      "learning": "学习",
+      "spiritual": "心灵",
+      "longevity": "长寿",
+      "_pending_review": {}
+    },
+    "goals": {
+      "wealth": {
+        "title": "实现财务自由",
+        "description": "实现财务独立和财富",
+        "_pending_review": {}
+      },
+      "relationship": {
+        "title": "寻找人生伴侣",
+        "description": "建立有意义的浪漫关系",
+        "_pending_review": {}
+      },
+      "health": {
+        "title": "改善健康",
+        "description": "实现最佳身心健康",
+        "_pending_review": {}
+      },
+      "career": {
+        "title": "发展事业",
+        "description": "建立充实成功的事业",
+        "_pending_review": {}
+      },
+      "learning": {
+        "title": "掌握新技能",
+        "description": "通过知识学习和成长",
+        "_pending_review": {}
+      },
+      "spiritual": {
+        "title": "心灵生活",
+        "description": "深化目标、临在和内心平静",
+        "_pending_review": {}
+      },
+      "longevity": {
+        "title": "提高生活质量，延长寿命",
+        "description": "专注于健康寿命、活力和长寿 — Vitanaland 的使命",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

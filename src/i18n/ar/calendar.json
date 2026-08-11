@@ -1,0 +1,163 @@
+{
+  "calendar": {
+    "smartCalendar": "التقويم الذكي",
+    "myCalendar": "تقويمي",
+    "bookedActivities": "أنشطتك المحجوزة في VITANA",
+    "addEvent": "إضافة حدث",
+    "synced": "متزامن",
+    "syncing": "جاري المزامنة",
+    "today": "اليوم",
+    "week": "أسبوع",
+    "month": "شهر",
+    "agenda": "أجندة",
+    "nothingScheduled": "لا شيء مجدول",
+    "tryQuickAdd": "جرب الإضافة السريعة أو دع الطيار الآلي يخطط ليومك",
+    "clickSlotHint": "انقر على خانة لإنشاء حدث • اسحب للتحريك",
+    "noEventsOnDate": "لا توجد أحداث في هذا التاريخ",
+    "lastSynced": "آخر مزامنة",
+    "justNow": "للتو",
+    "now": "الآن",
+    "untitledEvent": "حدث بلا عنوان",
+    "newEvent": "حدث جديد",
+    "close": "إغلاق",
+    "noBookingsToday": "لا توجد حجوزات اليوم",
+    "noBookingsYet": "لا توجد حجوزات بعد",
+    "nextUpcoming": "القادم",
+    "exploreActivities": "اكتشف أنشطة لتقويمك",
+    "browseActivities": "تصفح الأنشطة",
+    "bookedEvents": {
+      "title": "أحداثك المحجوزة",
+      "todayLabel": "اليوم",
+      "nextUp": "القادم",
+      "noEventsToday": "لا توجد أحداث اليوم",
+      "_pending_review": {}
+    },
+    "filters": {
+      "personal": "شخصي",
+      "community": "مجتمع",
+      "work": "عمل",
+      "health": "صحة",
+      "workout": "تمرين",
+      "_pending_review": {}
+    },
+    "categories": {
+      "community": "مجتمع",
+      "fitness": "لياقة",
+      "health": "صحة",
+      "nutrition": "تغذية",
+      "professional": "عمل",
+      "personal": "شخصي",
+      "training": "تدريب",
+      "_pending_review": {}
+    },
+    "bookingStatus": {
+      "booked": "محجوز",
+      "rsvp": "تأكيد الحضور",
+      "ticket": "تذكرة",
+      "reserved": "محجوز",
+      "_pending_review": {}
+    },
+    "timeGroups": {
+      "today": "اليوم",
+      "tomorrow": "غدًا",
+      "thisWeek": "هذا الأسبوع",
+      "later": "لاحقًا",
+      "_pending_review": {}
+    },
+    "autopilot": {
+      "suggestions": "اقتراحات Autopilot",
+      "badge": "Autopilot",
+      "accept": "قبول",
+      "snooze": "تذكير لاحقًا",
+      "dismiss": "تجاهل",
+      "undo": "تراجع",
+      "laterToday": "لاحقًا اليوم",
+      "tomorrow": "غدًا",
+      "conflictsWith": "يتعارض مع:",
+      "suggestionAccepted": "تم قبول الاقتراح",
+      "calendarUpdated": "قام الطيار الآلي بتحديث تقويمك",
+      "suggestionUndone": "تم التراجع عن الاقتراح",
+      "changesReverted": "تم التراجع عن التغييرات",
+      "suggestionSnoozed": "تم تأجيل الاقتراح",
+      "reminderLaterToday": "تم ضبط تذكير لوقت لاحق اليوم",
+      "reminderTomorrow": "تم ضبط تذكير ليوم غد",
+      "recommendFocus": "اقتراح فترة تركيز",
+      "focusBlockDesc": "لديك فترة زمنية متاحة مدتها 90 دقيقة. مثالية للعمل المركّز.",
+      "_pending_review": {}
+    },
+    "toasts": {
+      "eventCreated": "تم إنشاء الحدث",
+      "eventCreatedDesc": "تمت إضافة حدثك إلى التقويم",
+      "eventDeleted": "تم حذف الحدث",
+      "eventDeletedDesc": "تمت إزالة الحدث من تقويمك",
+      "syncingTitle": "جارٍ المزامنة...",
+      "syncingDesc": "جارٍ المزامنة مع التقويمات الخارجية",
+      "syncedTitle": "تمت المزامنة",
+      "syncedDesc": "التقويم محدّث",
+      "joiningEvent": "الانضمام إلى الحدث",
+      "openingVideoCall": "جارٍ فتح مكالمة الفيديو...",
+      "messageAttendees": "مراسلة الحضور",
+      "featureComingSoon": "الميزة قادمة قريبًا",
+      "inviteFollowers": "دعوة المتابعين",
+      "rescheduleEvent": "إعادة جدولة الحدث",
+      "shareToGroup": "مشاركة إلى مجموعة",
+      "_pending_review": {}
+    },
+    "error": {
+      "failedToCreate": "فشل إنشاء الحدث",
+      "_pending_review": {}
+    },
+    "allDay": "طوال اليوم",
+    "milestoneToday": "معلم",
+    "focus": {
+      "todaysFocus": "تركيز اليوم",
+      "lightDay": "يوم خفيف — استكشف الأنشطة أو تابع يومياتك",
+      "moreSteps": "المزيد من الخطوات",
+      "_pending_review": {}
+    },
+    "badge": {
+      "guidedStep": "خطوة موجهة",
+      "milestone": "معلم",
+      "wellness": "العافية",
+      "_pending_review": {}
+    },
+    "action": {
+      "start": "ابدأ",
+      "continue": "استمر",
+      "join": "انضم",
+      "details": "التفاصيل",
+      "viewPlan": "عرض الخطة",
+      "open": "افتح",
+      "done": "تم",
+      "_pending_review": {}
+    },
+    "group": {
+      "stepsRemaining": "خطوات متبقية",
+      "min": "دقيقة",
+      "_pending_review": {}
+    },
+    "journey": {
+      "dayOf": "اليوم {day} من {total}",
+      "yourJourney": "رحلتك",
+      "nextMilestone": "المحطة التالية",
+      "showFullAgenda": "عرض الأجندة كاملة",
+      "moreEvents": "المزيد من الأحداث",
+      "onboardingPlan": "خطة الانضمام لليوم",
+      "estimatedTime": "~{minutes} دقيقة",
+      "startPlan": "ابدأ الخطة",
+      "tasksCompleted": "{completed}/{total} تم إنجازها",
+      "waveNames": {
+        "wave-1": "البدء",
+        "wave-2": "مراسٍ يومية",
+        "wave-3": "تعميق الروابط",
+        "wave-4": "الذكاء الصحي",
+        "wave-5": "لحظات إلهام",
+        "wave-6": "توصيات واكتشاف",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

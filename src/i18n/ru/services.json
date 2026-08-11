@@ -1,0 +1,35 @@
+{
+  "services": {
+    "title": "Хаб услуг",
+    "subtitle": "Доступ к комплексным медицинским и оздоровительным услугам",
+    "categories": {
+      "preventive": "Профилактические скрининги",
+      "labTests": "Лабораторные анализы",
+      "coaching": "Коучинг и персональные тренировки",
+      "groupPrograms": "Групповые программы и челенджи",
+      "_pending_review": {}
+    },
+    "actions": {
+      "book": "Записаться",
+      "addToPlan": "Добавить в план",
+      "askAI": "Спроси ИИ",
+      "joinRoom": "Присоединиться к комнате",
+      "setReminder": "Установить напоминание",
+      "_pending_review": {}
+    },
+    "details": {
+      "duration": "Длительность",
+      "price": "Цена",
+      "location": "Локация",
+      "nextAvailable": "Следующий доступный",
+      "whatsIncluded": "Что включено",
+      "healthBenefits": "Польза для здоровья",
+      "availableProviders": "Доступные специалисты",
+      "requirements": "Требования и подготовка",
+      "tags": "Теги",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

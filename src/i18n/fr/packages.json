@@ -1,0 +1,26 @@
+{
+  "packages": {
+    "confirmDelete": "Es-tu sûr(e) de vouloir supprimer ce forfait ?",
+    "types": {
+      "bundle": "Lot",
+      "subscription": "Abonnement",
+      "program": "Programme",
+      "_pending_review": {}
+    },
+    "status": {
+      "draft": "Brouillon",
+      "published": "En ligne",
+      "archived": "Archivé",
+      "_pending_review": {}
+    },
+    "item": "article",
+    "items": "articles",
+    "total": "total",
+    "validDays": "Valide {days} jours",
+    "save": "Économise {percent}%",
+    "unpublish": "Dépublier",
+    "publish": "Publier",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

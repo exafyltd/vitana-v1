@@ -4,12 +4,14 @@
     "types": {
       "bundle": "Bundle",
       "subscription": "Subscription",
-      "program": "Program"
+      "program": "Program",
+      "_pending_review": {}
     },
     "status": {
       "draft": "Draft",
       "published": "Live",
-      "archived": "Archived"
+      "archived": "Archived",
+      "_pending_review": {}
     },
     "item": "item",
     "items": "items",
@@ -17,6 +19,8 @@
     "validDays": "Valid {days} days",
     "save": "Save {percent}%",
     "unpublish": "Unpublish",
-    "publish": "Publish"
-  }
+    "publish": "Publish",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

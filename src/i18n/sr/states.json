@@ -19,6 +19,8 @@
     "searching": "Pretraga...",
     "deleting": "Brisanje...",
     "creating": "Kreiranje...",
-    "updating": "Ažuriranje..."
-  }
+    "updating": "Ažuriranje...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

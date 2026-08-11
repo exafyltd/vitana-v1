@@ -1,0 +1,10 @@
+{
+  "verdicts": {
+    "challenges.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-07T00:29:43.695Z"
+}

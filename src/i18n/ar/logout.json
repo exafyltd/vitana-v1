@@ -1,0 +1,9 @@
+{
+  "logout": {
+    "signingOut": "تسجيل الخروج...",
+    "signedOut": "تم تسجيل الخروج بنجاح",
+    "redirecting": "جاري إعادة التوجيه...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

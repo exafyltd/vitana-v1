@@ -6,18 +6,21 @@
       "snapshot": "Snapshot",
       "services": "Services",
       "sales": "Sales",
-      "insights": "Insights"
+      "insights": "Insights",
+      "_pending_review": {}
     },
     "recentActivity": "Recent Activity",
     "clients": "Clients",
     "analytics": "Analytics",
     "searchBusiness": "Search business...",
     "noServices": "No services yet",
-    "noServicesDesc": "Create your first service to start attracting clients.",
+    "noServicesDesc": "Create your first service to attract customers.",
     "createService": "Create Service",
     "noClients": "No clients yet",
-    "noClientsDesc": "Your clients will appear here.",
+    "noClientsDesc": "Your customers will appear here.",
     "noSales": "No sales yet",
-    "noSalesDesc": "Your sales history will appear here."
-  }
+    "noSalesDesc": "Your sales history will appear here.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,0 +1,26 @@
+{
+  "states": {
+    "loading": "Загрузка...",
+    "saving": "Сохранение...",
+    "sending": "Отправка...",
+    "uploading": "Загрузка...",
+    "downloading": "Скачивание...",
+    "processing": "Обработка...",
+    "signingIn": "Вход...",
+    "signingOut": "Выход...",
+    "signingUp": "Регистрация...",
+    "importing": "Импорт...",
+    "exporting": "Экспорт...",
+    "syncing": "Синхронизация...",
+    "generating": "Генерация...",
+    "connecting": "Подключение...",
+    "disconnecting": "Отключение...",
+    "refreshing": "Обновление...",
+    "searching": "Поиск...",
+    "deleting": "Удаление...",
+    "creating": "Создание...",
+    "updating": "Обновление...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

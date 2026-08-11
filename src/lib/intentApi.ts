@@ -241,6 +241,38 @@ export async function getIntentBoard(filters?: {
 }
 
 /**
+ * E6 — a single community member row as returned by /api/v1/community/members.
+ * Powers both the Members directory tab and the Autopilot suggestion fallback
+ * shown on My Matches when the user has nothing to match against yet.
+ */
+export interface CommunityMember {
+  vitana_id: string | null;
+  registration_seq: number | null;
+  display_name: string | null;
+  avatar_url: string | null;
+  location: string | null;
+  member_since: string | null;
+  dance_preview: { variety: string | null; level: string | null; role: string | null } | null;
+}
+
+/**
+ * E6 — paginated community member directory. Used by the Members tab and as
+ * the source for Autopilot match suggestions when the user has no matches yet.
+ */
+export async function getCommunityMembers(opts?: {
+  limit?: number;
+  sort?: 'newest' | 'oldest' | 'name';
+}): Promise<CommunityMember[]> {
+  const params = new URLSearchParams();
+  params.set('limit', String(opts?.limit ?? 50));
+  if (opts?.sort) params.set('sort', opts.sort);
+  const res = await communityFetch(`/api/v1/community/members?${params.toString()}`);
+  if (!res.ok) throw new Error(`Members failed (${res.status})`);
+  const data = await res.json();
+  return Array.isArray(data?.members) ? (data.members as CommunityMember[]) : [];
+}
+
+/**
  * E6 — count of community members (respects global_community_profiles.is_visible).
  * Powers the Find a Partner Members tab gate (visible only while total ≤ 1000).
  */

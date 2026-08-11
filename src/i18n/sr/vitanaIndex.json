@@ -1,7 +1,7 @@
 {
   "vitanaIndex": {
-    "title": "Vitana Health Index",
-    "subtitle": "Ukupni balans zdravlja kroz sve stubove zdravlja",
+    "title": "Vitana Zdravstveni indeks",
+    "subtitle": "Ukupan balans dobrobiti kroz sve stubove zdravlja",
     "veryPoor": "Veoma loše",
     "poor": "Loše",
     "fair": "Osrednje",
@@ -16,12 +16,24 @@
     "viewFullReport": "Pogledaj ceo izveštaj",
     "trackToday": "Prati danas",
     "tiers": {
-      "starting": "Početak",
+      "starting": "Početnik",
       "early": "Rano",
-      "building": "Izgradnja",
+      "building": "U napretku",
       "strong": "Snažno",
       "reallyGood": "Zaista dobro",
-      "elite": "Elitno"
-    }
-  }
+      "elite": "Elitno",
+      "_pending_review": {}
+    },
+    "framings": {
+      "starting": "Tek počinješ",
+      "early": "Osnovna linija uspostavljena",
+      "building": "Navike se formiraju",
+      "strong": "90-dnevna prekretnica",
+      "reallyGood": "Napreduješ",
+      "elite": "Elita",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

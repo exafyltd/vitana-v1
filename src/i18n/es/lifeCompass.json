@@ -17,37 +17,48 @@
       "career": "carrera",
       "learning": "aprendizaje",
       "spiritual": "espiritual",
-      "longevity": "longevidad"
+      "longevity": "longevidad",
+      "_pending_review": {}
     },
     "goals": {
       "wealth": {
         "title": "Construir Libertad Financiera",
-        "description": "Alcanza independencia financiera y riqueza"
+        "description": "Alcanza independencia financiera y riqueza",
+        "_pending_review": {}
       },
       "relationship": {
         "title": "Encontrar Pareja de Vida",
-        "description": "Construye relaciones románticas significativas"
+        "description": "Construye relaciones románticas significativas",
+        "_pending_review": {}
       },
       "health": {
-        "title": "Transformar la Salud",
-        "description": "Alcanza un bienestar físico y mental óptimo"
+        "title": "Mejorar la salud",
+        "description": "Alcanza un bienestar físico y mental óptimo",
+        "_pending_review": {}
       },
       "career": {
         "title": "Avanzar en la Carrera",
-        "description": "Construye una carrera exitosa y satisfactoria"
+        "description": "Construye una carrera exitosa y satisfactoria",
+        "_pending_review": {}
       },
       "learning": {
         "title": "Dominar Nuevas Habilidades",
-        "description": "Aprende y crece a través del conocimiento"
+        "description": "Aprende y crece a través del conocimiento",
+        "_pending_review": {}
       },
       "spiritual": {
         "title": "Vida Espiritual",
-        "description": "Profundiza propósito, presencia y paz interior"
+        "description": "Profundiza propósito, presencia y paz interior",
+        "_pending_review": {}
       },
       "longevity": {
         "title": "Mejorar calidad de vida y extender la esperanza de vida",
-        "description": "Enfócate en una vida sana y activa, energía y longevidad — la misión de Vitanaland"
-      }
-    }
-  }
+        "description": "Enfócate en una vida sana y activa, energía y longevidad — la misión de Vitanaland",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

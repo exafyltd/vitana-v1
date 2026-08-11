@@ -1,0 +1,9 @@
+{
+  "logout": {
+    "signingOut": "Saindo...",
+    "signedOut": "Saíste com sucesso",
+    "redirecting": "Redirecionando...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

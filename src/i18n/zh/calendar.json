@@ -1,0 +1,163 @@
+{
+  "calendar": {
+    "smartCalendar": "智能日历",
+    "myCalendar": "我的日历",
+    "bookedActivities": "你在 Vitana 预订的活动",
+    "addEvent": "添加活动",
+    "synced": "已同步",
+    "syncing": "正在同步",
+    "today": "今天",
+    "week": "周",
+    "month": "月",
+    "agenda": "日程",
+    "nothingScheduled": "没有安排",
+    "tryQuickAdd": "试试快速添加，或让自动驾驶帮你规划一天",
+    "clickSlotHint": "点击空位创建活动 • 拖动以移动",
+    "noEventsOnDate": "此日期没有活动",
+    "lastSynced": "上次同步",
+    "justNow": "刚才",
+    "now": "现在",
+    "untitledEvent": "无标题活动",
+    "newEvent": "新活动",
+    "close": "关闭",
+    "noBookingsToday": "今天没有预订",
+    "noBookingsYet": "还没有预订",
+    "nextUpcoming": "即将到来",
+    "exploreActivities": "发现适合你日历的活动",
+    "browseActivities": "浏览活动",
+    "bookedEvents": {
+      "title": "你预订的活动",
+      "todayLabel": "今天",
+      "nextUp": "接下来",
+      "noEventsToday": "今天没有活动",
+      "_pending_review": {}
+    },
+    "filters": {
+      "personal": "个人",
+      "community": "社区",
+      "work": "工作",
+      "health": "健康",
+      "workout": "锻炼",
+      "_pending_review": {}
+    },
+    "categories": {
+      "community": "社区",
+      "fitness": "健身",
+      "health": "健康",
+      "nutrition": "营养",
+      "professional": "工作",
+      "personal": "个人",
+      "training": "训练",
+      "_pending_review": {}
+    },
+    "bookingStatus": {
+      "booked": "已预订",
+      "rsvp": "回复",
+      "ticket": "票",
+      "reserved": "已预留",
+      "_pending_review": {}
+    },
+    "timeGroups": {
+      "today": "今天",
+      "tomorrow": "明天",
+      "thisWeek": "本周",
+      "later": "稍后",
+      "_pending_review": {}
+    },
+    "autopilot": {
+      "suggestions": "自动驾驶建议",
+      "badge": "自动驾驶",
+      "accept": "接受",
+      "snooze": "稍后提醒",
+      "dismiss": "忽略",
+      "undo": "撤销",
+      "laterToday": "今天稍后",
+      "tomorrow": "明天",
+      "conflictsWith": "冲突：",
+      "suggestionAccepted": "建议已接受",
+      "calendarUpdated": "自动驾驶已更新你的日历",
+      "suggestionUndone": "建议已撤销",
+      "changesReverted": "更改已还原",
+      "suggestionSnoozed": "建议已推迟",
+      "reminderLaterToday": "已设置今天稍后提醒",
+      "reminderTomorrow": "已设置明天提醒",
+      "recommendFocus": "推荐专注时段",
+      "focusBlockDesc": "你有一个90分钟的空闲时段。非常适合专注工作。",
+      "_pending_review": {}
+    },
+    "toasts": {
+      "eventCreated": "事件已创建",
+      "eventCreatedDesc": "你的事件已添加到日历",
+      "eventDeleted": "事件已删除",
+      "eventDeletedDesc": "事件已从你的日历中移除",
+      "syncingTitle": "正在同步...",
+      "syncingDesc": "正在与外部日历同步",
+      "syncedTitle": "已同步",
+      "syncedDesc": "日历已是最新",
+      "joiningEvent": "正在加入事件",
+      "openingVideoCall": "正在打开视频通话...",
+      "messageAttendees": "发送消息给参与者",
+      "featureComingSoon": "功能即将推出",
+      "inviteFollowers": "邀请关注者",
+      "rescheduleEvent": "重新安排事件",
+      "shareToGroup": "分享到群组",
+      "_pending_review": {}
+    },
+    "error": {
+      "failedToCreate": "创建事件失败",
+      "_pending_review": {}
+    },
+    "allDay": "全天",
+    "milestoneToday": "里程碑",
+    "focus": {
+      "todaysFocus": "今日专注",
+      "lightDay": "轻松的一天 — 探索活动或回顾你的日记",
+      "moreSteps": "更多步数",
+      "_pending_review": {}
+    },
+    "badge": {
+      "guidedStep": "引导步骤",
+      "milestone": "里程碑",
+      "wellness": "健康",
+      "_pending_review": {}
+    },
+    "action": {
+      "start": "开始",
+      "continue": "继续",
+      "join": "加入",
+      "details": "详情",
+      "viewPlan": "查看计划",
+      "open": "打开",
+      "done": "完成",
+      "_pending_review": {}
+    },
+    "group": {
+      "stepsRemaining": "剩余步骤",
+      "min": "分",
+      "_pending_review": {}
+    },
+    "journey": {
+      "dayOf": "第 {day} 天，共 {total} 天",
+      "yourJourney": "你的旅程",
+      "nextMilestone": "下一个里程碑",
+      "showFullAgenda": "查看完整日程",
+      "moreEvents": "更多活动",
+      "onboardingPlan": "今日入门计划",
+      "estimatedTime": "~{minutes} 分",
+      "startPlan": "开始计划",
+      "tasksCompleted": "已完成 {completed}/{total}",
+      "waveNames": {
+        "wave-1": "开始入门",
+        "wave-2": "每日锚点",
+        "wave-3": "加深联系",
+        "wave-4": "健康智能",
+        "wave-5": "洞察时刻",
+        "wave-6": "推荐与发现",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

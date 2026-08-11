@@ -1,0 +1,50 @@
+{
+  "permissionsActions": {
+    "title": "隐私和权限操作",
+    "items": {
+      "privacySettings": {
+        "title": "隐私设置",
+        "description": "管理隐私和分享设置",
+        "_pending_review": {}
+      },
+      "manageAccess": {
+        "title": "管理访问",
+        "description": "控制谁能查看你的健康回忆",
+        "_pending_review": {}
+      },
+      "securitySettings": {
+        "title": "安全设置",
+        "description": "更新认证和安全设置",
+        "_pending_review": {}
+      },
+      "apiKeysAccess": {
+        "title": "API 密钥和访问",
+        "description": "管理第三方应用集成和 API 访问",
+        "_pending_review": {}
+      },
+      "dataRights": {
+        "title": "数据权利",
+        "description": "行使你的数据可移植性和删除权利",
+        "_pending_review": {}
+      },
+      "auditLogs": {
+        "title": "审计日志",
+        "description": "查看访问历史和安全审计记录",
+        "_pending_review": {}
+      },
+      "permissionSettings": {
+        "title": "权限设置",
+        "description": "精细调整各项功能权限",
+        "_pending_review": {}
+      },
+      "exportData": {
+        "title": "导出数据",
+        "description": "安全下载你的回忆和健康数据",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

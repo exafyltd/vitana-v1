@@ -1,0 +1,283 @@
+{
+  "billing": {
+    "promises": {
+      "anchorHeading": "Prywatne z zało-żenia.",
+      "subheading": "Cztery obietnice, w każdym planie — darmowym lub płatnym.",
+      "owned": {
+        "title": "Jesteś właścicielem tego, co udostępniasz.",
+        "body": "Pamięć, profil, rekomendacje — wszystko widoczne, eksportowalne, usuwalne w każdej chwili.",
+        "_pending_review": {}
+      },
+      "noSell": {
+        "title": "Nigdy nie sprzedajemy Twoich danych.",
+        "body": "Nie sieciom reklamowym, nie brokerom danych, nie partnerom. Egzekwowane w kodzie.",
+        "_pending_review": {}
+      },
+      "earn": {
+        "title": "Twoje rekomendacje mogą dla Ciebie zarabiać.",
+        "body": "Gdy Twoja rekomendacja doprowadzi do sprzedaży przez Sprzedawaj i Zarabiaj, lub gdy prowadzisz płatny Pokój na żywo, dochód jest Twój — przejrzyście ujawniony.",
+        "_pending_review": {}
+      },
+      "control": {
+        "title": "Ty decydujesz, co Sprzedawaj i Zarabiaj dla Ciebie robi.",
+        "body": "Trzy przełączniki w ustawieniach Connect dają Ci pełną kontrolę.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "plans": {
+      "needMoreTitle": "Potrzebujesz więcej czasu na żywo lub hostingu?",
+      "needMoreBody": "Premium obejmuje większość członków. Jeśli prowadzisz pokoje społecznościowe lub używasz głosu codziennie, sprawdź nasze większe plany.",
+      "showAll": "Pokaż wszystkie plany",
+      "hideAll": "Ukryj większe plany",
+      "headlineSection": "Rozpocznij z Premium",
+      "expandedSection": "Dla hostów i społeczności",
+      "currentPlan": "Obecny plan",
+      "selectPlan": "Wybierz",
+      "perMonth": "/miesiąc",
+      "perYear": "/rok",
+      "saveAnnual": "Oszczędź z rocznym",
+      "trial14": "Wypróbuj za darmo przez 14 dni. Anuluj w dowolnym momencie.",
+      "free": {
+        "name": "Darmowy",
+        "tagline": "Wypróbuj — bez ryzyka, bez wygaśnięcia",
+        "price": "Darmowy",
+        "_pending_review": {}
+      },
+      "premium": {
+        "name": "Premium",
+        "tagline": "Codzienne użytkowanie — więcej czasu na żywo, więcej hostingu, więcej miejsca",
+        "_pending_review": {}
+      },
+      "premium_5x": {
+        "name": "Host",
+        "tagline": "Zaawansowani użytkownicy · rodziny · stali hostowie",
+        "ribbon": "5× Premium",
+        "_pending_review": {}
+      },
+      "premium_20x": {
+        "name": "Społeczność",
+        "tagline": "Trenerzy · praktycy · liderzy społeczności",
+        "ribbon": "20× Premium",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "features": {
+      "voiceLive": "Rozmowy na żywo z ORB",
+      "voiceLiveUnit": "min/miesiąc",
+      "voiceStandard": "Standardowe rozmowy głosowe",
+      "voiceStandardUnit": "Uczciwe użycie",
+      "liveRooms": "Hosting Pokojów na Żywo",
+      "liveRoomsUnit": "godz./miesiąc",
+      "matchPosts": "Posty Znajdź-Parę",
+      "matchPostsUnit": "/miesiąc",
+      "matchReveals": "Odsłonięcia Znajdź-Parę",
+      "matchRevealsUnit": "/tydzień",
+      "labAnalyses": "Analiza laboratoryjna",
+      "labAnalysesUnit": "/miesiąc",
+      "photoUploads": "Przesyłanie zdjęć",
+      "photoUploadsUnit": "/miesiąc",
+      "storage": "Bezpieczne przechowywanie",
+      "storageUnit": "GB",
+      "aiDigest": "Streszczenia AI",
+      "aiDigestWeekly": "Tygodniowo",
+      "aiDigestDaily": "Codziennie",
+      "aiDigestOnDemand": "Codziennie + na żądanie",
+      "sellAndEarnCatalog": "Katalog Sprzedawaj i Zarabiaj",
+      "sellAndEarnCatalogUnit": "pozycji",
+      "priorityPractitioner": "Priorytetowy dostęp do praktyków",
+      "yes": "Tak",
+      "no": "–",
+      "fairUse": "Uczciwe użycie",
+      "used": "{used} / {limit} {unit}",
+      "resetIn": "Resetuje się za {duration}",
+      "comparisonTitle": "Co zawiera każdy plan",
+      "_pending_review": {}
+    },
+    "creditPacks": {
+      "title": "Dodaj dodatkowe minuty",
+      "subtitle": "Doładuj raz, wydawaj kiedy chcesz",
+      "starter": "10 godzin standardowego głosu LUB 100 minut na żywo",
+      "boost": "Najpopularniejsze — 7 godzin głosu na żywo",
+      "power": "Intensywne użycie — 40 godzin głosu na żywo",
+      "credits": "{credits} kredytów",
+      "creditsWithBonus": "{credits} kredytów +{bonus} bonusu",
+      "buy": "Kup",
+      "yourBalance": "Twoje saldo: {amount} kredytów",
+      "starterShort": "Starter",
+      "boostShort": "Boost",
+      "powerShort": "Power",
+      "_pending_review": {}
+    },
+    "redeemCard": {
+      "title": "Masz kod?",
+      "placeholder": "VITANA-XXXX-XXXX",
+      "button": "Aktywuj",
+      "redeeming": "Aktywowanie…",
+      "successTitle": "Premium aktywowane",
+      "successBody": "Premium jest aktywne do {date}. Ciesz się.",
+      "founding": "🏆 Witaj, Członku-Założycielu — jesteś #{position} z {max}. Premium jest darmowe przez 90 dni.",
+      "error": {
+        "invalid": "Kod nie znaleziony",
+        "expired": "Kod wygasł",
+        "maxUsed": "Kod został użyty zbyt wiele razy",
+        "alreadyRedeemed": "Już aktywowałeś ten kod",
+        "stripeActive": "Masz już Premium — zachowaj ten kod na później",
+        "budgetExhausted": "Kampania wstrzymana — spróbuj ponownie później",
+        "generic": "Nie udało się aktywować kodu",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "earnings": {
+      "title": "Twoje zarobki (w tym roku)",
+      "youPaid": "Zapłaciłeś Vitana",
+      "youEarned": "Vitana pomogła Ci zarobić (Sprzedawaj i Zarabiaj)",
+      "net": "Netto",
+      "withdraw": "Wypłać",
+      "empty": "Jeszcze nie masz zarobków",
+      "_pending_review": {}
+    },
+    "founding": {
+      "bannerTitle": "🏆 Bądź wśród pierwszych {max}",
+      "bannerBody": "3 miesiące Premium za darmo z kodem {code}.",
+      "spotsRemaining": "{remaining} z {max} miejsc pozostało",
+      "_pending_review": {}
+    },
+    "launchGrant": {
+      "title": "🎁 Witaj — Premium od nas",
+      "body": "Otrzymałeś 12 miesięcy Vitana Premium w podziękowaniu za to, że jesteś z nami od początku. Aktywne do {endsAt}.",
+      "noAction": "Nie potrzeba żadnych działań. Ciesz się.",
+      "dismissAria": "Zamknij baner",
+      "_pending_review": {}
+    },
+    "mobileBilling": {
+      "rootIntro": "Zarządzaj swoim planem, metodą płatności i wypłatami dla twórców.",
+      "navPlan": "Obecny plan",
+      "navPayment": "Metoda płatności",
+      "navInvoices": "Faktury i paragony",
+      "navCreator": "Wypłaty dla twórców",
+      "changePlan": "Zmień plan",
+      "openStripe": "Otwórz portal Stripe",
+      "paymentTitle": "Metoda płatności",
+      "paymentBody": "Twoja zapisana karta i dane rozliczeniowe są zarządzane przez Stripe.",
+      "paymentNoneTitle": "Brak zapisanej metody płatności",
+      "paymentNoneBody": "Dodaj kartę, gdy uruchomisz plan Premium.",
+      "invoicesTitle": "Faktury i paragony",
+      "invoicesBody": "Wszystkie faktury i paragony są dostępne w portalu rozliczeniowym Stripe.",
+      "summaryRenewsOn": "Twój plan odnawia się {date}",
+      "_pending_review": {}
+    },
+    "state": {
+      "freeStatus": "Masz Vitana Free",
+      "freeBody": "Wypróbuj Premium za darmo przez 14 dni.",
+      "premiumActive": "Vitana Premium",
+      "renewsAt": "Odnawia się {date}",
+      "autoGrantUntil": "Przyznane automatycznie przy uruchomieniu · do {date}",
+      "cancelAtPeriodEnd": "Anulujesz na koniec okresu",
+      "pastDue": "Płatność nieudana",
+      "pastDueBody": "Zaktualizuj swoją metodę płatności, aby zachować Premium.",
+      "manage": "Zarządzaj",
+      "viewPlans": "Zobacz Premium",
+      "upgrade": "Ulepsz",
+      "trialEndsAt": "Okres próbny kończy się {date}",
+      "trialingBadge": "W okresie próbnym",
+      "activeBadge": "Aktywny",
+      "_pending_review": {}
+    },
+    "subscriptionsPage": {
+      "title": "Subskrypcje",
+      "subtitle": "Zarządzaj swoim Vitana Premium i kredytami",
+      "tabs": {
+        "yourPlan": "Twój plan",
+        "billing": "Rozliczenia",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "faq": {
+      "title": "Dlaczego Premium?",
+      "q1": "Co zyskuję z Premium?",
+      "a1": "Więcej czasu na rozmowy głosowe na żywo z ORB, więcej hostingu w Pokojach na Żywo, więcej miejsca na dane i szybsze osobiste podsumowania.",
+      "q2": "Jaka jest różnica w porównaniu z kredytami?",
+      "a2": "Kredyty są do okazjonalnego użytku. Premium daje Ci więcej wszystkiego w sposób ciągły — zaprojektowane do codziennego użytku.",
+      "q3": "Czy mogę anulować w dowolnym momencie?",
+      "a3": "Tak, bez umowy. Zachowujesz Premium do końca bieżącego okresu.",
+      "q4": "Czy sprzedajecie moje dane?",
+      "a4": "Nigdy. Nigdy nie sprzedajemy Twoich danych sieciom reklamowym, brokerom danych ani partnerom.",
+      "_pending_review": {}
+    },
+    "checkoutErrors": {
+      "stripeNotConfigured": "Płatności nie są jeszcze w pełni skonfigurowane. Spróbuj ponownie później.",
+      "alreadySubscribed": "Masz już aktywną subskrypcję. Zarządzaj nią w portalu rozliczeniowym.",
+      "noStripeCustomer": "Najpierw zasubskrybuj, zanim użyjesz portalu.",
+      "checkoutFailed": "Płatność nieudana",
+      "portalFailed": "Nie udało się otworzyć portalu rozliczeniowego",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "paywall": {
+    "title": "Odblokuj Premium",
+    "softExtension": "Przedłużyłem Ci darmowy czas na dziś.",
+    "creditsUsed": "Kredyt wykorzystany — ciesz się",
+    "voice_live_minutes": {
+      "title": "Czas na głos na żywo wyczerpany",
+      "body": "Twój wliczony czas na głos na żywo został wykorzystany. ORB będzie kontynuował w trybie Standard. Dodaj minuty na żywo lub ulepsz w dowolnym momencie.",
+      "stayInStandard": "Kontynuuj w trybie Standard",
+      "addMinutes": "Dodaj minuty na żywo",
+      "_pending_review": {}
+    },
+    "live_room_minutes": {
+      "title": "Czas hostingu się kończy",
+      "body": "W tym pokoju pozostało 5 minut wliczonego czasu hostingu. Dodaj czas hostingu lub ulepsz, aby utrzymać go w działaniu.",
+      "wrapUp": "Zakończ",
+      "addTime": "Dodaj czas hostingu",
+      "_pending_review": {}
+    },
+    "match_posts": {
+      "title": "Darmowe posty wykorzystane",
+      "body": "Wykorzystałeś swoje darmowe posty w tym miesiącu. Premium daje Ci więcej.",
+      "_pending_review": {}
+    },
+    "match_reveals": {
+      "title": "Odkryj dopasowanie",
+      "body": "Wykorzystałeś swoje darmowe odkrycia. Użyj {credits} kredytów lub ulepsz do Premium.",
+      "_pending_review": {}
+    },
+    "lab_analyses": {
+      "title": "Analizy laboratoryjne wykorzystane",
+      "body": "Wykorzystałeś swoje analizy laboratoryjne w tym miesiącu.",
+      "_pending_review": {}
+    },
+    "photo_uploads": {
+      "title": "Przesyłanie zdjęć wykorzystane",
+      "body": "Wykorzystałeś swoje przesyłanie zdjęć w tym miesiącu.",
+      "_pending_review": {}
+    },
+    "memory_garden": {
+      "title": "Ogród wspomnień pełny",
+      "body": "Premium daje Ci więcej miejsca.",
+      "_pending_review": {}
+    },
+    "autopilot": {
+      "title": "Więcej rekomendacji Autopilota",
+      "body": "Premium zwiększa liczbę Twoich aktywnych rekomendacji.",
+      "_pending_review": {}
+    },
+    "default": {
+      "title": "Odblokuj Premium",
+      "body": "Wykorzystałeś swoją darmową pulę na ten okres.",
+      "_pending_review": {}
+    },
+    "ctaUpgrade": "Odblokuj Premium",
+    "ctaCredits": "Użyj {credits} kredytów",
+    "ctaLater": "Może później",
+    "remainingCounter": "{remaining} / {limit}",
+    "resetsIn": "Zresetuje się {date}",
+    "creditsInsufficient": "Za mało kredytów. Doładuj najpierw.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

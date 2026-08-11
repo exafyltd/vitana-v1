@@ -1,0 +1,89 @@
+{
+  "orders": {
+    "myOrders": "Moje Zamówienia",
+    "title": "Zamówienia",
+    "description": "Twoja historia zamówień i aktywne subskrypcje",
+    "trackDescription": "Śledź swoje zamówienia produktów i bilety na wydarzenia",
+    "searchPlaceholder": "Szukaj zamówień...",
+    "tabs": {
+      "active": "Aktywne",
+      "history": "Historia",
+      "all": "Wszystkie",
+      "completed": "Zrealizowane",
+      "cancelled": "Anulowane",
+      "_pending_review": {}
+    },
+    "filters": {
+      "all": "Wszystkie",
+      "events": "Wydarzenia",
+      "products": "Produkty",
+      "vouchers": "Vouchery",
+      "services": "Usługi",
+      "refunds": "Zwroty",
+      "_pending_review": {}
+    },
+    "previewNotice": "To są zamówienia podglądowe. Twoje rzeczywiste zamówienia pojawią się tutaj.",
+    "sampleData": "Przykładowe Dane",
+    "emptyActive": {
+      "title": "Brak aktywnych zamówień",
+      "description": "Nie masz żadnych aktywnych zamówień ani nadchodzących wydarzeń.",
+      "_pending_review": {}
+    },
+    "emptyHistory": {
+      "title": "Brak historii zamówień",
+      "description": "Twoje zrealizowane zamówienia i minione wydarzenia pojawią się tutaj.",
+      "_pending_review": {}
+    },
+    "noOrders": "Brak zamówień",
+    "noOrdersDesc": "Twoje zamówienia pojawią się tutaj, gdy coś kupisz.",
+    "browseProducts": "Przeglądaj Produkty",
+    "findEvents": "Znajdź Wydarzenia",
+    "startShopping": "Rozpocznij Zakupy",
+    "noFilter": "Brak {filter}",
+    "noFilterDesc": "Brak {filter} w Twojej historii.",
+    "orderDate": "Data zamówienia",
+    "orderNumber": "Numer zamówienia",
+    "viewDetails": "Zobacz Szczegóły",
+    "trackOrder": "Śledź Zamówienie",
+    "reorder": "Zamów Ponownie",
+    "detailSheet": {
+      "title": "Szczegóły zamówienia",
+      "orderInfo": "Informacje o zamówieniu",
+      "orderReference": "Numer zamówienia",
+      "purchaseDate": "Data zakupu",
+      "eventDate": "Data wydarzenia",
+      "location": "Lokalizacja",
+      "quantity": "Ilość",
+      "tickets": "bilety",
+      "yourTicket": "Twój bilet",
+      "giftVoucher": "Bon podarunkowy",
+      "code": "Kod",
+      "sendToRecipient": "Wyślij do odbiorcy",
+      "recipientEmail": "E-mail odbiorcy *",
+      "recipientName": "Imię i nazwisko odbiorcy",
+      "personalMessage": "Wiadomość osobista",
+      "cancel": "Anuluj",
+      "send": "Wyślij",
+      "downloadPdf": "Pobierz PDF",
+      "_pending_review": {}
+    },
+    "status": {
+      "upcoming": "Nadchodzące",
+      "attended": "Uczestniczyłeś",
+      "expired": "Wygasłe",
+      "completed": "Zrealizowane",
+      "delivered": "Dostarczone",
+      "cancelled": "Anulowane",
+      "refunded": "Zwrócone",
+      "shipped": "W drodze",
+      "confirmed": "Potwierdzone",
+      "pending": "Oczekujące",
+      "processing": "Przetwarzanie",
+      "paid": "Aktywne",
+      "active": "Aktywne",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

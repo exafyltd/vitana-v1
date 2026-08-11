@@ -1,0 +1,31 @@
+{
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "invalidEmail": "عنوان بريد إلكتروني غير صالح",
+    "invalidUrl": "رابط URL غير صالح",
+    "invalidPhone": "رقم هاتف غير صالح",
+    "tooShort": "مطلوب {min} أحرف كحد أدنى",
+    "tooLong": "مسموح بـ {max} أحرف كحد أقصى",
+    "passwordMismatch": "كلمتا المرور غير متطابقتين",
+    "passwordTooWeak": "كلمة المرور ضعيفة جداً",
+    "invalidDate": "تاريخ غير صالح",
+    "invalidNumber": "رقم غير صالح",
+    "mustBePositive": "يجب أن يكون رقماً موجباً",
+    "mustBeNegative": "يجب أن يكون رقماً سالباً",
+    "mustBeInteger": "يجب أن يكون رقماً صحيحاً",
+    "minValue": "القيمة الدنيا هي {min}",
+    "maxValue": "القيمة القصوى هي {max}",
+    "invalidFormat": "صيغة غير صالحة",
+    "alreadyExists": "موجود بالفعل",
+    "notFound": "غير موجود",
+    "invalidSelection": "اختيار غير صالح",
+    "pleaseSelect": "الرجاء اختيار خيار.",
+    "pleaseEnter": "الرجاء إدخال قيمة.",
+    "charactersRemaining": "{count} أحرف متبقية",
+    "fileTooBig": "الملف كبير جداً (الحد الأقصى {max})",
+    "invalidFileType": "نوع ملف غير صالح",
+    "uploadLimit": "مسموح بـ {max} ملفات كحد أقصى",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

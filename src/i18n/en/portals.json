@@ -3,10 +3,10 @@
     "maxina": {
       "title": "Maxina Health Platform",
       "welcomeBack": "Welcome back to Maxina.",
-      "continueJourney": "Sign in to continue your journey.",
+      "continueJourney": "Log in to continue your journey.",
       "joinMaxina": "Join Maxina",
       "joinCommunity": "Join the Maxina community.",
-      "createAccount": "Create your account and begin your journey.",
+      "createAccount": "Create your account and start your journey.",
       "signingIn": "Signing in…",
       "creatingAccount": "Creating account…",
       "joiningAs": "I am joining as:",
@@ -20,23 +20,30 @@
         "community": "Community",
         "patient": "Patient",
         "professional": "Pro",
-        "admin": "Admin"
-      }
+        "admin": "Admin",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "alkalma": {
       "joinAlkalma": "Join AlKalma",
       "welcomeBack": "Welcome back to AlKalma.",
-      "continueJourney": "Sign in to continue."
+      "continueJourney": "Log in to continue.",
+      "_pending_review": {}
     },
     "earthlinks": {
       "joinEarthlinks": "Join Earthlinks",
       "welcomeBack": "Welcome back to Earthlinks.",
-      "continueJourney": "Sign in to continue."
+      "continueJourney": "Log in to continue.",
+      "_pending_review": {}
     },
     "community": {
       "joinCommunity": "Join Community",
       "welcomeBack": "Welcome back.",
-      "continueJourney": "Sign in to continue."
-    }
-  }
+      "continueJourney": "Log in to continue.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

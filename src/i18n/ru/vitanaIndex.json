@@ -1,0 +1,39 @@
+{
+  "vitanaIndex": {
+    "title": "Vitana Индекс здоровья",
+    "subtitle": "Общий баланс самочувствия по всем столпам здоровья",
+    "veryPoor": "Очень плохо",
+    "poor": "Плохо",
+    "fair": "Нормально",
+    "improving": "Улучшается",
+    "good": "Хорошо",
+    "excellent": "Отлично",
+    "sleep": "Сон",
+    "exercise": "Активность",
+    "nutrition": "Питание",
+    "hydration": "Гидратация",
+    "mental": "Ментальное",
+    "viewFullReport": "Посмотреть полный отчёт",
+    "trackToday": "Отслеживать сегодня",
+    "tiers": {
+      "starting": "Новичок",
+      "early": "Ранний",
+      "building": "Набираешь обороты",
+      "strong": "Сильный",
+      "reallyGood": "Очень хорошо",
+      "elite": "Элита",
+      "_pending_review": {}
+    },
+    "framings": {
+      "starting": "Только начинаешь",
+      "early": "База заложена",
+      "building": "Привычки формируются",
+      "strong": "90-дневный рубеж",
+      "reallyGood": "Процветаешь",
+      "elite": "Элита",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

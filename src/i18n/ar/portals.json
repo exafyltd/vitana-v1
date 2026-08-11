@@ -1,0 +1,49 @@
+{
+  "portals": {
+    "maxina": {
+      "title": "منصة ماكسينا الصحية",
+      "welcomeBack": "مرحبًا بعودتك إلى ماكسينا.",
+      "continueJourney": "سجّل الدخول لمتابعة رحلتك.",
+      "joinMaxina": "انضم إلى ماكسينا",
+      "joinCommunity": "انضم إلى مجتمع ماكسينا.",
+      "createAccount": "أنشئ حسابك وابدأ رحلتك.",
+      "signingIn": "جارٍ تسجيل الدخول…",
+      "creatingAccount": "جارٍ إنشاء حساب…",
+      "joiningAs": "أنضم بصفتي:",
+      "yourFullName": "اسمك الكامل",
+      "forgotPassword": "هل نسيت كلمة المرور؟",
+      "partOfVitana": "ماكسينا جزء من منظومة فيتانا.",
+      "allPortals": "جميع البوابات",
+      "emailConfirmed": "تم تأكيد البريد الإلكتروني! مرحبًا بك في ماكسينا.",
+      "checkEmail": "يرجى التحقق من بريدك الإلكتروني لتأكيد حسابك.",
+      "roles": {
+        "community": "مجتمع",
+        "patient": "مريض",
+        "professional": "محترف",
+        "admin": "مسؤول",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "alkalma": {
+      "joinAlkalma": "انضم إلى الكلمة",
+      "welcomeBack": "مرحبًا بعودتك إلى الكلمة.",
+      "continueJourney": "سجّل الدخول للمتابعة.",
+      "_pending_review": {}
+    },
+    "earthlinks": {
+      "joinEarthlinks": "انضم إلى إيرثلينكس",
+      "welcomeBack": "مرحبًا بعودتك إلى إيرثلينكس.",
+      "continueJourney": "سجّل الدخول للمتابعة.",
+      "_pending_review": {}
+    },
+    "community": {
+      "joinCommunity": "انضم إلى المجتمع",
+      "welcomeBack": "مرحبًا بعودتك.",
+      "continueJourney": "سجّل الدخول للمتابعة.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

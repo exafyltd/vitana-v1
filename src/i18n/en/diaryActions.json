@@ -4,36 +4,47 @@
     "items": {
       "recordVoiceEntry": {
         "title": "Record Voice Entry",
-        "description": "Capture thoughts and reflections with voice recording"
+        "description": "Capture thoughts and reflections with voice recording",
+        "_pending_review": {}
       },
       "addPhotoEntry": {
         "title": "Add Photo Entry",
-        "description": "Upload images to document your wellness journey"
+        "description": "Upload images to document your wellness journey",
+        "_pending_review": {}
       },
       "writeTextEntry": {
         "title": "Write Text Entry",
-        "description": "Create detailed written reflections and notes"
+        "description": "Create detailed written reflections and notes",
+        "_pending_review": {}
       },
       "quickNote": {
         "title": "Quick Note",
-        "description": "Jot down brief thoughts or observations"
+        "description": "Jot down brief thoughts or observations",
+        "_pending_review": {}
       },
       "videoDiary": {
         "title": "Video Diary",
-        "description": "Record video reflections and progress updates"
+        "description": "Record video reflections and progress updates",
+        "_pending_review": {}
       },
       "scheduleEntry": {
         "title": "Schedule Entry",
-        "description": "Plan future diary entries and reminders"
+        "description": "Plan future diary entries and reminders",
+        "_pending_review": {}
       },
       "tagMemories": {
         "title": "Tag Memories",
-        "description": "Organize existing entries with tags and categories"
+        "description": "Organize existing entries with tags and categories",
+        "_pending_review": {}
       },
       "importFiles": {
         "title": "Import Files",
-        "description": "Upload documents, images, or other wellness files"
-      }
-    }
-  }
+        "description": "Upload documents, images, or other wellness files",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

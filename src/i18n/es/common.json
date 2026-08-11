@@ -14,7 +14,7 @@
     "actions": "Acciones",
     "yes": "Sí",
     "no": "No",
-    "ok": "OK",
+    "ok": "Aceptar",
     "done": "Listo",
     "apply": "Aplicar",
     "reset": "Restablecer",
@@ -33,6 +33,11 @@
     "download": "Descargar",
     "upload": "Subir",
     "refresh": "Actualizar",
-    "retry": "Reintentar"
-  }
+    "retry": "Reintentar",
+    "follow": "Seguir",
+    "getMaxina": "Conseguir MAXINA",
+    "uploading": "Subiendo...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

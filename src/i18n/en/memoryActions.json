@@ -4,28 +4,37 @@
     "items": {
       "recordVoiceDiary": {
         "title": "Record Voice Diary",
-        "description": "Capture thoughts and reflections with voice"
+        "description": "Capture thoughts and reflections with voice",
+        "_pending_review": {}
       },
       "addMemoryNote": {
         "title": "Add Memory Note",
-        "description": "Write down important health moments"
+        "description": "Write down important health moments",
+        "_pending_review": {}
       },
       "viewTimeline": {
         "title": "View Timeline",
-        "description": "See your complete wellness journey"
+        "description": "See your complete wellness journey",
+        "_pending_review": {}
       },
       "searchMemories": {
         "title": "Search Memories",
-        "description": "Find specific moments and insights"
+        "description": "Find specific moments and insights",
+        "_pending_review": {}
       },
       "photoMemory": {
         "title": "Photo Memory",
-        "description": "Add visual memories to your journey"
+        "description": "Add visual memories to your journey",
+        "_pending_review": {}
       },
       "aiMemoryAnalysis": {
         "title": "AI Memory Analysis",
-        "description": "Get insights from your memory patterns"
-      }
-    }
-  }
+        "description": "Get insights from your memory patterns",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

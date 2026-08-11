@@ -1,0 +1,79 @@
+{
+  "support": {
+    "maxina": {
+      "title": "Wsparcie Maxina",
+      "subtitle": "Jak możemy Ci dzisiaj pomóc?",
+      "description": "Znajdź odpowiedzi na często zadawane pytania lub skontaktuj się z naszym zespołem wsparcia.",
+      "categoriesTitle": "Przeglądaj Tematy Pomocy",
+      "categories": {
+        "gettingStarted": "Pierwsze kroki",
+        "account": "Konto i Profil",
+        "events": "Wydarzenia i Spotkania",
+        "payments": "Płatności i Rozliczenia",
+        "technical": "Pomoc Techniczna",
+        "_pending_review": {}
+      },
+      "faq": {
+        "title": "Często Zadawane Pytania",
+        "createAccount": {
+          "question": "Jak utworzyć konto Maxina? Pobierz aplikację Maxina lub odwiedź nasz portal pod adresem vitanaland.com/maxina. Stuknij 'Zarejestruj się' i wprowadź swój adres e-mail. Otrzymasz e-mail z potwierdzeniem, aby zweryfikować swoje konto. Po potwierdzeniu, uzupełnij swój profil, aby zacząć odkrywać wydarzenia wellness i funkcje społeczności.",
+          "answer": "Pobierz aplikację Maxina lub odwiedź nasz portal pod adresem vitanaland.com/maxina. Stuknij 'Zarejestruj się' i wprowadź swój adres e-mail. Otrzymasz e-mail z potwierdzeniem, aby zweryfikować swoje konto. Po potwierdzeniu uzupełnij swój profil, aby odkrywać wydarzenia wellness i funkcje społeczności.",
+          "_pending_review": {}
+        },
+        "resetPassword": {
+          "question": "Jak zresetować moje hasło?",
+          "answer": "Na ekranie logowania stuknij 'Nie pamiętam hasła' i wprowadź swój zarejestrowany adres e-mail. Otrzymasz link do resetowania hasła w ciągu kilku minut. Sprawdź folder ze spamem, jeśli nie widzisz e-maila. Ze względów bezpieczeństwa link wygasa po 24 godzinach.",
+          "_pending_review": {}
+        },
+        "joinEvents": {
+          "question": "Jak dołączyć do wydarzeń i spotkań?",
+          "answer": "Przeglądaj dostępne wydarzenia w sekcji Wydarzenia i Spotkania. Stuknij wydarzenie, aby wyświetlić szczegóły, takie jak data, lokalizacja i cena. W przypadku bezpłatnych wydarzeń po prostu stuknij 'Uczestnicz' lub 'Potwierdź obecność'. W przypadku płatnych wydarzeń możesz bezpiecznie kupić bilety za pośrednictwem naszego zintegrowanego systemu płatności.",
+          "_pending_review": {}
+        },
+        "updateProfile": {
+          "question": "Jak zaktualizować informacje o moim profilu?",
+          "answer": "Przejdź do zakładki Profil i stuknij ikonę Edytuj lub 'Edytuj Profil'. Możesz zaktualizować swoją nazwę wyświetlaną, biogram, zdjęcie profilowe i zainteresowania wellness. Zmiany są zapisywane automatycznie. Twój profil pomaga nam personalizować rekomendacje wydarzeń dla Ciebie.",
+          "_pending_review": {}
+        },
+        "deleteAccount": {
+          "question": "Jak mogę usunąć moje konto?",
+          "answer": "Aby usunąć swoje konto Maxina i powiązane dane, wyślij e-mail na adres support@exafy.io z tematem 'Usunięcie konta – Maxina'. Podaj adres e-mail powiązany z Twoim kontem. Prośby o usunięcie przetwarzamy w ciągu 30 dni.",
+          "_pending_review": {}
+        },
+        "paymentMethods": {
+          "question": "Jakie metody płatności są akceptowane?",
+          "answer": "Akceptujemy główne karty kredytowe i debetowe (Visa, Mastercard, American Express) za pośrednictwem naszej bezpiecznej integracji płatności Stripe. Apple Pay i Google Pay są również dostępne na obsługiwanych urządzeniach. Wszystkie transakcje są szyfrowane i zgodne z PCI-DSS.",
+          "_pending_review": {}
+        },
+        "contactOrganizers": {
+          "question": "Jak skontaktować się z organizatorami wydarzeń?",
+          "answer": "Na każdej stronie wydarzenia znajdziesz profil organizatora. Stuknij nazwę, aby wyświetlić profil i uzyskać dostęp do opcji wiadomości. W przypadku pytań dotyczących konkretnych wydarzeń, skorzystaj z sekcji Q&A wydarzenia lub skontaktuj się z organizatorem bezpośrednio za pośrednictwem wiadomości w aplikacji.",
+          "_pending_review": {}
+        },
+        "dataSecure": {
+          "question": "Czy moje dane osobowe są bezpieczne?",
+          "answer": "Tak, Twoja prywatność i bezpieczeństwo są naszym najwyższym priorytetem. Stosujemy standardowe w branży szyfrowanie, bezpieczne uwierzytelnianie i przestrzegamy wytycznych RODO. Nigdy nie udostępniamy Twoich danych osobowych stronom trzecim bez Twojej zgody. Przeczytaj naszą pełną politykę prywatności, aby uzyskać więcej szczegółów.",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "contact": {
+        "title": "Skontaktuj się z pomocą",
+        "email": "Napisz do nas e-mail",
+        "responseTime": "Zazwyczaj odpowiadamy w ciągu 24 godzin",
+        "_pending_review": {}
+      },
+      "usefulLinks": {
+        "title": "Przydatne linki",
+        "privacy": "Polityka prywatności",
+        "deleteAccount": "Usuń konto",
+        "portal": "Wróć do portalu Maxina",
+        "_pending_review": {}
+      },
+      "footer": "Wszelkie prawa zastrzeżone.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

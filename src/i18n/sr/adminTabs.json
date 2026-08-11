@@ -5,13 +5,17 @@
       "pending": "Na čekanju",
       "approved": "Odobreno",
       "flagged": "Označeno",
-      "rejected": "Odbijeno"
+      "rejected": "Odbijeno",
+      "_pending_review": {}
     },
     "rooms": {
       "active": "Aktivne sobe",
       "scheduled": "Zakazano",
       "analytics": "Analitika",
-      "moderation": "Moderacija"
-    }
-  }
+      "moderation": "Moderacija",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

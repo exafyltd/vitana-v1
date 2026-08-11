@@ -10,6 +10,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Loader2, Plus } from "lucide-react";
+import AppLayout from "@/components/AppLayout";
 import { Button } from "@/components/ui/button";
 import { useToast } from '@/hooks/use-toast';
 import { getIntentBoard, type BoardResponse, type IntentKind } from "@/lib/intentApi";
@@ -80,7 +81,10 @@ export default function IntentBoard() {
   })();
 
   return (
-    <div className="container mx-auto px-4 py-6 space-y-4 max-w-3xl">
+    <AppLayout>
+      {/* pb-28 keeps the last card / "View my intents" link clear of the
+          fixed mobile bottom nav + central Orb FAB. */}
+      <div className="container mx-auto px-4 py-6 pb-28 space-y-4 max-w-3xl">
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold">{t('screens.intentboard.communityBoard')}</h1>
@@ -158,6 +162,7 @@ export default function IntentBoard() {
       <p className="text-xs text-muted-foreground text-center">
         {t('screens.intentboard.lookingForYourOwnIntents')} <Link to="/intents/mine" className="underline">{t('screens.intentboard.viewMyIntents')}</Link>
       </p>
-    </div>
+      </div>
+    </AppLayout>
   );
 }

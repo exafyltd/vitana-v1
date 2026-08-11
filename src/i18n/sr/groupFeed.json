@@ -10,6 +10,8 @@
     "messageDeleted": "Poruka obrisana",
     "error": "Greška",
     "errorSend": "Slanje poruke nije uspelo",
-    "errorDelete": "Brisanje poruke nije uspelo"
-  }
+    "errorDelete": "Brisanje poruke nije uspelo",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

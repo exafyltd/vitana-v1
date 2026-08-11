@@ -2,20 +2,42 @@
   "voucher": {
     "modal": {
       "title": "Regala un Vale de Maxina",
-      "subtitle": "Regala bienestar y conexión comunitaria",
+      "subtitle": "Regala Bienestar y Conexión Comunitaria",
       "buyVoucher": "Comprar Vale",
-      "openingCheckout": "Abriendo pago seguro..."
+      "openingCheckout": "Abriendo pago seguro...",
+      "_pending_review": {}
     },
     "tiers": {
       "test": {
-        "name": "Prueba"
+        "name": "Prueba",
+        "benefits": [
+          "Solo para probar el pago",
+          "No es un vale real",
+          "Para pruebas de desarrollo"
+        ],
+        "_pending_review": {}
       },
       "experience": {
-        "name": "Experiencia"
+        "name": "Experiencia",
+        "benefits": [
+          "Acceso a 1 evento premium de la comunidad",
+          "Asesoramiento de bienestar personalizado",
+          "Prueba de Vitana+ de 30 días incluida",
+          "Vale electrónico con un diseño precioso"
+        ],
+        "_pending_review": {}
       },
       "exclusive": {
-        "name": "Exclusivo"
-      }
+        "name": "Exclusivo",
+        "benefits": [
+          "3 eventos premium de la comunidad",
+          "Sesión de coaching individual con un experto",
+          "Suscripción a Vitana+ de 90 días",
+          "Reserva prioritaria + ventajas VIP"
+        ],
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "success": {
       "title": "¡Vale Comprado!",
@@ -23,7 +45,8 @@
       "download": "Descargar Vale",
       "sendEmail": "Enviar al Destinatario por Correo",
       "viewOrders": "Ver en Pedidos",
-      "done": "Listo"
+      "done": "Listo",
+      "_pending_review": {}
     },
     "email": {
       "title": "Enviar Vale por Correo",
@@ -33,7 +56,8 @@
       "personalMessage": "Mensaje Personal (opcional)",
       "messagePlaceholder": "¡Feliz Cumpleaños! Disfruta este capricho de bienestar...",
       "back": "Atrás",
-      "send": "Enviar Vale"
+      "send": "Enviar Vale",
+      "_pending_review": {}
     },
     "preview": {
       "title": "Tu Vale",
@@ -47,24 +71,28 @@
       "copyLink": "Copiar Enlace",
       "share": "Guardar / Compartir",
       "shareHint": "Guardar en Archivos, Drive o enviar a alguien",
-      "downloadHint": "Si la descarga se abre en blanco, toca Abrir en el Navegador"
+      "downloadHint": "Si la descarga se abre en blanco, toca Abrir en el navegador",
+      "_pending_review": {}
     },
     "toast": {
       "downloadStarted": "¡Descarga iniciada!",
       "downloadFailed": "Descarga fallida",
       "linkCopied": "¡Enlace copiado!",
-      "linkCopiedDesc": "Pégalo en el navegador para descargar.",
+      "linkCopiedDesc": "Pega en el navegador para descargar.",
       "voucherSent": "¡Vale enviado a {email}!",
       "voucherShared": "¡Vale compartido exitosamente!",
-      "checkoutFailed": "Error al iniciar el pago. Inténtalo de nuevo.",
+      "checkoutFailed": "No se pudo iniciar el pago. Por favor, inténtalo de nuevo.",
       "generatingVoucher": "Generando vale...",
       "failedToLoadVoucher": "Error al cargar los datos del vale",
       "downloadFailedCopyLink": "Descarga fallida. Intenta copiar el enlace.",
-      "useTicketView": "Usa la vista de ticket para imprimir o guardar tu ticket",
+      "useTicketView": "Usa la vista del boleto para imprimir o guardar.",
       "pdfNotAvailable": "Descarga de PDF no disponible para este tipo de pedido",
-      "enterRecipientEmail": "Por favor, ingresa el correo del destinatario",
+      "enterRecipientEmail": "Por favor, ingresa el correo electrónico del destinatario.",
       "emailOnlyForVouchers": "Envío por correo solo disponible para vales",
-      "sendingVoucherEmail": "Enviando correo del vale..."
-    }
-  }
+      "sendingVoucherEmail": "Enviando correo del vale...",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

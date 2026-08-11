@@ -1,0 +1,25 @@
+{
+  "payment": {
+    "completed": "支付完成！✅",
+    "sentSuccess": "{amount} 已成功发送",
+    "alreadyProcessed": "已处理",
+    "requestIs": "此请求是 {status}。",
+    "alreadyAccepted": "此支付请求已被接受。",
+    "declined": "支付被拒绝",
+    "declinedDesc": "支付请求已被拒绝",
+    "exchangeSuccess": "兑换并发送成功！✨",
+    "exchangeSuccessDesc": "已兑换并发送 {amount}",
+    "insufficientBalance": "余额不足",
+    "insufficientBalanceDesc": "你的 {currency} 不足以进行此次兑换",
+    "transactionFailed": "交易失败",
+    "paymentFailed": "支付失败",
+    "paymentFailedDesc": "支付未能处理。请再试一次。",
+    "balanceRefreshed": "余额已刷新",
+    "balanceRefreshedDesc": "钱包余额已更新",
+    "refreshFailed": "刷新失败",
+    "refreshFailedDesc": "余额未能更新。请再试一次。",
+    "error": "错误",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

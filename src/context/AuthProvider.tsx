@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { clearChatCache } from "@/hooks/chatPersistCache";
 import { stopAndReset as stopSoundscape } from "@/audio/SoundscapeAudioManager";
+import { releaseDeviceOnSignOut } from "@/lib/pushNotifications";
 import { QueryClient } from "@tanstack/react-query";
 import { AuthContext } from "./AuthContext";
 import type { AuthContextValue } from "./AuthContext";
@@ -124,6 +125,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(session?.user ?? null);
         setLoading(false);
 
+        // REALTIME AUTH GUARD: postgres_changes subscriptions (messenger DM +
+        // group chat) are RLS-filtered, so the Realtime server must hold the
+        // user's JWT — without it RLS drops every event and the messenger
+        // silently degrades to slow polling. supabase-js usually propagates
+        // the token automatically, but this app drives auth through manual
+        // setSession / exchangeCodeForSession / refreshSession (dual-JWT flow),
+        // so we set it explicitly on every auth event to remove all doubt.
+        try {
+          void supabase.realtime.setAuth(session?.access_token ?? undefined);
+        } catch (err) {
+          console.warn('[AuthProvider] realtime.setAuth failed:', err);
+        }
+
         // Invalidate any stale global-threads cache on sign-in / token refresh
         // so the Messages page's useGlobalMessages hook refetches fresh data
         // when it next mounts. We intentionally do NOT prefetch here: the
@@ -155,6 +169,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setSession(existingSession);
       setUser(existingSession?.user ?? null);
       setLoading(false);
+
+      // Authorize Realtime with the restored session token on cold start so
+      // messenger subscriptions deliver events before the first auth event.
+      if (existingSession?.access_token) {
+        try {
+          void supabase.realtime.setAuth(existingSession.access_token);
+        } catch (err) {
+          console.warn('[AuthProvider] realtime.setAuth (cold start) failed:', err);
+        }
+      }
 
       // No active session — purge any stale ORB auth to prevent
       // the external widget from using a previous user's identity
@@ -344,9 +368,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
 
           if (refreshed) {
-            // Refresh succeeded — sync React state with fresh tokens.
+            // Refresh succeeded — sync React state with fresh tokens and
+            // re-authorize Realtime so subscriptions keep delivering after the
+            // old access token expired (mobile wake-from-background).
             setSession(refreshed);
             setUser(refreshed.user);
+            try {
+              void supabase.realtime.setAuth(refreshed.access_token);
+            } catch (err) {
+              console.warn('[AuthProvider] realtime.setAuth (refresh) failed:', err);
+            }
             return;
           }
 
@@ -397,6 +428,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       stopSoundscape();
       clearChatCache();
       clearOrbSessionState();
+
+      // Release this device's push claim while the JWT is still valid
+      // (VTID-03481). Without this the signed-out account stays registered as
+      // an owner of the phone, and the next account to sign in ADDS a claim
+      // instead of replacing one — so every fan-out notification arrives once
+      // per account, each in that account's own language. Awaited but never
+      // throws, so it cannot block or slow-fail sign-out.
+      await releaseDeviceOnSignOut();
 
       // ORB widget lifecycle is now managed solely by useOrbVoiceWidget hook
 

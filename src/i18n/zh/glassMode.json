@@ -1,0 +1,21 @@
+{
+  "glassMode": {
+    "shareWithAI": "分享选择给AI吗？",
+    "screenSharingComingSoon": "🖥️ 屏幕共享即将推出",
+    "screenSharingDesc": "和VITANA分享你的屏幕，获取情境支持。",
+    "screenSharingStopped": "屏幕共享已停止",
+    "glassModeDisabled": "玻璃模式已关闭",
+    "cameraModeComingSoon": "📹 摄像头模式即将推出",
+    "cameraModeDesc": "基于视觉的AI互动将在下次更新中推出。",
+    "diaryReady": "日记就绪",
+    "openingDiary": "正在打开日记条目",
+    "autopilotActivated": "自动模式已开启",
+    "runningAutopilot": "正在运行自动模式",
+    "textInputReady": "文本输入就绪",
+    "typeMessage": "你现在可以输入你的消息了。",
+    "actionFailed": "操作失败",
+    "couldNotExecute": "无法执行{action}",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

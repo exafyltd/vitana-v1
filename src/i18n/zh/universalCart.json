@@ -1,0 +1,86 @@
+{
+  "universalCart": {
+    "page": {
+      "title": "购物车",
+      "subtitle": "来自 Discover 的产品、套餐和推荐——都在一个地方。",
+      "emptyTitle": "你的购物车是空的",
+      "emptyBody": "点击 Discover 上的任何商品旁的“加入购物车”即可添加。",
+      "loading": "正在加载你的购物车…",
+      "roleBlockedTitle": "购物车不适用于此角色",
+      "roleBlockedBody": "购物车是社区功能。切换到你的社区角色即可使用。",
+      "errorTitle": "我们无法加载你的购物车",
+      "errorBody": "请稍后重试。",
+      "removeAction": "移除",
+      "quantityLabel": "数量",
+      "completeAction": "标记为已完成",
+      "alreadyCompleted": "已完成",
+      "linkToDiscover": "浏览 Discover",
+      "close": "关闭",
+      "_pending_review": {}
+    },
+    "tabs": {
+      "cart": "购物车",
+      "saved": "已保存",
+      "_pending_review": {}
+    },
+    "saved": {
+      "moveToCart": "加入购物车",
+      "saveForLater": "稍后保存",
+      "emptyTitle": "暂无保存",
+      "emptyBody": "在购物车中点击“稍后保存”即可保存商品。",
+      "_pending_review": {}
+    },
+    "item": {
+      "viewProduct": "查看商品",
+      "_pending_review": {}
+    },
+    "agent": {
+      "promptLabel": "你想买什么？",
+      "promptPlaceholder": "描述你想买什么——例如“早上更有活力”",
+      "proposeCta": "询问 Vitana",
+      "proposing": "Vitana 正在寻找匹配的商品…",
+      "sectionTitle": "Vitana 推荐",
+      "sectionSubtitle": "推荐商品会出现在你的购物车中。你可以查看、保留或移除它们——只有点击“批准并支付”才会购买。",
+      "rationaleLabel": "Vitana 推荐此商品的原因",
+      "safetyTitle": "安全提示——请阅读",
+      "confidenceLabel": "置信度: {value}",
+      "keep": "保留",
+      "remove": "移除",
+      "unavailable": "Vitana 暂时不可用。请稍后再试。",
+      "roleBlocked": "Vitana 建议仅在你的社区角色中可用。",
+      "empty": "暂无建议。在上方告诉 Vitana 你想买什么。",
+      "reviewNote": "请查看注意事项：部分建议有安全提示。继续前请务必查看。",
+      "reorderCta": "回购",
+      "reorderLabel": "已购",
+      "reorderSectionTitle": "回购",
+      "reorderSectionSubtitle": "你之前买过的商品都在购物车里。查看它们，保留或移除 — 只有点击“批准并支付”才能购买。",
+      "reordering": "Vitana 正在将你的商品添加回来…",
+      "overCapAdvisory": "这些商品会让你超出月度预算。",
+      "nearCapAdvisory": "这些商品会让你接近月度预算。",
+      "error": "出错了。请重试。",
+      "_pending_review": {}
+    },
+    "budget": {
+      "title": "本月预算",
+      "spentOfCap": "本月已用 {spent} / {cap}",
+      "statusUnder": "预算内",
+      "statusNear": "接近预算",
+      "statusOver": "超出预算",
+      "noCapHint": "设置月度预算，关注你的支出。",
+      "_pending_review": {}
+    },
+    "addButton": {
+      "label": "加入购物车",
+      "added": "已在购物车",
+      "addAria": "加入购物车",
+      "addedAria": "已在购物车",
+      "signRequired": "登录才能加入购物车。",
+      "roleBlocked": "购物车仅在你的社区角色中可用。",
+      "failed": "无法加入购物车",
+      "success": "已加入购物车",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

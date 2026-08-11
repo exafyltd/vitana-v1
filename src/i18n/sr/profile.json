@@ -2,11 +2,12 @@
   "profile": {
     "defaultBio": "Entuzijasta za wellness, sa strašću prema holističkom zdravlju i izgradnji zajednice. 🌱",
     "autopilot": {
-      "polishBio": "Sredite svoju biografiju, arhetip i istaknute sadržaje",
+      "polishBio": "Sredi svoj Bio, Arhetip i Istaknuto",
       "editHighlights": "Uredi istaknute sadržaje",
       "saveHighlights": "Sačuvaj istaknute sadržaje",
-      "highlightsDesc": "Izaberi svoje najbolje objave i medije da se istaknu na vrhu profila. Istaknuti sadržaj se pojavljuje u sekciji istaknutih sadržaja i privlači više pratilaca.",
-      "try": "Probaj"
+      "highlightsDesc": "Izaberi svoje najbolje objave i medije za prikaz na vrhu tvog profila. Istaknuti sadržaj se pojavljuje u odeljku Istaknuto i privlači više pratilaca.",
+      "try": "Probaj",
+      "_pending_review": {}
     },
     "identity": {
       "vitanaIndex": "Vitana indeks",
@@ -15,13 +16,15 @@
       "follow": "Zaprati",
       "followingState": "Pratim",
       "understandIndex": "Razumi indeks",
-      "brandFooter": "MAXINA × VITANA"
+      "brandFooter": "MAXINA × VITANA",
+      "_pending_review": {}
     },
     "tabs": {
       "identity": "Identitet",
       "social": "Društveno",
       "account": "Nalog",
-      "business": "Biznis"
+      "business": "Biznis",
+      "_pending_review": {}
     },
     "account": {
       "notSet": "Nije uneseno",
@@ -30,7 +33,8 @@
       "visibility": {
         "private": "Privatno",
         "connections": "Kontakti",
-        "public": "Javno"
+        "public": "Javno",
+        "_pending_review": {}
       },
       "sections": {
         "publicProfile": "Javni profil",
@@ -38,11 +42,12 @@
         "basicInfo": "Osnovni lični podaci",
         "basicInfoSubtitle": "Fiksni podaci identiteta",
         "contactInfo": "Kontakt informacije",
-        "accountDetails": "Detalji naloga"
+        "accountDetails": "Detalji naloga",
+        "_pending_review": {}
       },
       "fields": {
         "avatar": "Profilna slika",
-        "handle": "Handle",
+        "handle": "Nadimak",
         "longevityArchetype": "Arhetip dugovečnosti",
         "firstName": "Ime",
         "lastName": "Prezime",
@@ -56,11 +61,14 @@
         "city": "Grad",
         "memberSince": "Član od",
         "accountType": "Tip naloga",
-        "verificationStatus": "Status verifikacije"
+        "verificationStatus": "Status verifikacije",
+        "_pending_review": {}
       },
       "values": {
-        "uploaded": "Otpremljeno"
-      }
+        "uploaded": "Otpremljeno",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "business": {
       "title": "Moje preporuke",
@@ -75,7 +83,10 @@
       "publicTitle": "Preporuke",
       "publicSubtitle": "Proizvodi koje preporučuje ovaj profil",
       "publicEmpty": "Još nema preporuka",
-      "viewProduct": "Pogledaj"
-    }
-  }
+      "viewProduct": "Pogledaj",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

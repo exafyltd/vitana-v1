@@ -105,15 +105,45 @@ export function useProfilePosts(userId?: string) {
     },
   });
 
+  /**
+   * Delete one of the caller's own posts.
+   *
+   * VTID-03468 — this used to be `.delete().eq('id', postId)` with no ownership
+   * scope and no read-back. Under RLS a delete that matches NOTHING is not an
+   * error: PostgREST happily returns 204 with zero rows affected. So every way
+   * this could fail to delete — the row belongs to someone else, the id came
+   * from a `media_uploads`-backed feed card and doesn't exist in profile_posts
+   * at all, the row was already gone — surfaced to the user as a cheerful
+   * "post deleted" toast while the post stayed exactly where it was. That is
+   * the "I deleted it and it's still there" report.
+   *
+   * Now: scope to the owner (matching the "Users can delete their own posts"
+   * RLS policy exactly, so this narrows nothing a user could legitimately do)
+   * and read the deleted ids back, so a zero-row delete fails loudly.
+   */
   const deletePost = useMutation({
     mutationFn: async (postId: string) => {
-      const { error } = await supabase
+      if (!user?.id) throw new Error('Not authenticated');
+      const { data, error } = await supabase
         .from('profile_posts' as never)
         .delete()
-        .eq('id', postId);
+        .eq('id', postId)
+        .eq('user_id', user.id)
+        .select('id');
       if (error) throw error;
+      if (!data || (data as unknown as { id: string }[]).length === 0) {
+        throw new Error('POST_NOT_DELETED');
+      }
+      return postId;
     },
-    onSuccess: () => {
+    onSuccess: (postId) => {
+      // Drop the card immediately instead of waiting out the refetch — the feed
+      // is cache-first with a 5-minute staleTime, so an invalidate alone can
+      // leave a just-deleted post on screen for a noticeable beat.
+      queryClient.setQueryData(
+        ['profile-posts', targetUserId],
+        (old: ProfilePost[] | undefined) => (old || []).filter((p) => p.id !== postId),
+      );
       queryClient.invalidateQueries({ queryKey: ['profile-posts', targetUserId] });
       queryClient.invalidateQueries({ queryKey: ['all-news-feed'] });
     },

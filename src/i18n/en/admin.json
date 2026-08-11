@@ -19,7 +19,10 @@
       "rejected": "Rejected",
       "flagged": "Flagged",
       "podcastManagement": "Podcast Management",
-      "podcastManagementDesc": "Review and moderate podcast uploads"
-    }
-  }
+      "podcastManagementDesc": "Review and moderate podcast uploads",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

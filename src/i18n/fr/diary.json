@@ -1,0 +1,15 @@
+{
+  "diary": {
+    "title": "Journal quotidien",
+    "description": "Suis ton parcours de bien-être et aide-nous à nous améliorer.",
+    "healthTab": "Journal de santé",
+    "bugTab": "Rapports de bugs",
+    "text": "Texte",
+    "photo": "Photo",
+    "textEntry": "✍️ Saisie de texte",
+    "photoEntry": "📸 Saisie de photo",
+    "searchPlaceholder": "Rechercher dans le journal...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

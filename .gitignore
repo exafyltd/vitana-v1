@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# TypeScript incremental build cache
+*.tsbuildinfo
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -28,3 +31,9 @@ scripts/.codemod-*.manifest.json
 
 supabase/.temp/
 .git-worktrees/
+
+# RepoWise codebase-intelligence index (local, machine-specific — see .mcp.json note)
+.repowise/
+.mcp.json
+.vscode/mcp.json
+.vscode/extensions.json

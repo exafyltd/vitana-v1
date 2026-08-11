@@ -1,0 +1,57 @@
+{
+  "connectedApps": {
+    "title": "Połączone Aplikacje",
+    "description": "Zarządzaj swoimi połączonymi urządzeniami i usługami",
+    "searchPlaceholder": "Szukaj aplikacji...",
+    "addApp": "Dodaj Aplikację",
+    "connected": "połączono",
+    "syncing": "Synchronizowanie",
+    "sections": {
+      "social": "Społecznościowe i Udostępnianie",
+      "fitness": "Fitness i Urządzenia noszone",
+      "health": "Zdrowie i Laboratoria",
+      "other": "Inne",
+      "_pending_review": {}
+    },
+    "status": {
+      "connected": "Połączone",
+      "notConnected": "Niepołączone",
+      "comingSoon": "Wkrótce",
+      "soon": "Wkrótce",
+      "_pending_review": {}
+    },
+    "actions": {
+      "connect": "Połącz",
+      "disconnect": "Rozłącz",
+      "configure": "Skonfiguruj Synchronizację",
+      "manage": "Zarządzaj",
+      "_pending_review": {}
+    },
+    "lastSync": "Ostatnia synchronizacja",
+    "dataSync": "Synchronizowanie danych",
+    "comingSoonMessage": "Integracja z {appName} już wkrótce",
+    "popup": {
+      "title": "Połącz Aplikacje i Usługi",
+      "searchPlaceholder": "Szukaj aplikacji i usług...",
+      "categories": {
+        "all": "Wszystkie aplikacje",
+        "health": "Zdrowie i kondycja",
+        "social": "Społecznościowe",
+        "_pending_review": {}
+      },
+      "availableApps": "Dostępne Aplikacje",
+      "verified": "Zweryfikowano",
+      "connected": "Połączone",
+      "settings": "Ustawienia",
+      "disconnect": "Rozłącz",
+      "connect": "Połącz",
+      "done": "Gotowe",
+      "noResults": "Nie znaleziono aplikacji",
+      "connectionSuccess": "Połączono pomyślnie",
+      "connectionPlaceholder": "Połączenie z {appName} wkrótce",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

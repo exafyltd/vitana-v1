@@ -1,11 +1,13 @@
 {
   "walletActions": {
     "title": "Acciones rápidas",
-    "addFunds": "Depositar",
+    "addFunds": "Depósito",
     "send": "Enviar",
-    "exchange": "Cambiar",
+    "exchange": "Intercambiar",
     "withdraw": "Retirar",
-    "buyCredits": "Comprar VTNA Credits",
-    "stakeTokens": "Hacer staking de tokens"
-  }
+    "buyCredits": "Comprar créditos VTNA",
+    "stakeTokens": "Hacer staking de tokens",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

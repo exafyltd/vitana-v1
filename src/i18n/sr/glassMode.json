@@ -2,7 +2,7 @@
   "glassMode": {
     "shareWithAI": "Podeli izbor sa AI-jem?",
     "screenSharingComingSoon": "🖥️ Deljenje ekrana uskoro",
-    "screenSharingDesc": "Podeli svoj ekran sa VITANA-om za kontekstualnu pomoć.",
+    "screenSharingDesc": "Podeli svoj ekran sa VITANA za kontekstualnu podršku.",
     "screenSharingStopped": "Deljenje ekrana zaustavljeno",
     "glassModeDisabled": "Stakleni režim isključen",
     "cameraModeComingSoon": "📹 Režim kamere uskoro",
@@ -12,8 +12,10 @@
     "autopilotActivated": "Autopilot aktiviran",
     "runningAutopilot": "Pokrenut autopilot režim",
     "textInputReady": "Unos teksta spreman",
-    "typeMessage": "Sada možeš da ukucaš svoju poruku",
+    "typeMessage": "Sada možeš da uneseš svoju poruku.",
     "actionFailed": "Radnja neuspešna",
-    "couldNotExecute": "Nije moguće izvršiti {action}"
-  }
+    "couldNotExecute": "Nije moguće izvršiti {action}",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

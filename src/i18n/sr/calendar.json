@@ -12,7 +12,7 @@
     "agenda": "Agenda",
     "nothingScheduled": "Ništa nije zakazano",
     "tryQuickAdd": "Probaj Brzo dodavanje ili pusti Autopilot da isplanira tvoj dan",
-    "clickSlotHint": "Klikni na bilo koji termin da kreiraš događaj • Prevlači da promeniš raspored",
+    "clickSlotHint": "Klikni na termin da kreiraš događaj • Prevlači za pomeranje",
     "noEventsOnDate": "Nema događaja na ovaj datum",
     "lastSynced": "Poslednja sinhronizacija",
     "justNow": "upravo sada",
@@ -23,20 +23,22 @@
     "noBookingsToday": "Nema rezervacija danas",
     "noBookingsYet": "Još uvek nema rezervacija",
     "nextUpcoming": "Sledeće",
-    "exploreActivities": "Istraži aktivnosti da dodaš u svoj kalendar",
+    "exploreActivities": "Otkrij aktivnosti za tvoj kalendar",
     "browseActivities": "Pregledaj aktivnosti",
     "bookedEvents": {
       "title": "Tvoji rezervisani događaji",
       "todayLabel": "Danas",
       "nextUp": "Sledeće",
-      "noEventsToday": "Nema događaja danas"
+      "noEventsToday": "Nema događaja danas",
+      "_pending_review": {}
     },
     "filters": {
       "personal": "Lično",
       "community": "Zajednica",
       "work": "Posao",
       "health": "Zdravlje",
-      "workout": "Trening"
+      "workout": "Trening",
+      "_pending_review": {}
     },
     "categories": {
       "community": "Zajednica",
@@ -45,25 +47,28 @@
       "nutrition": "Ishrana",
       "professional": "Posao",
       "personal": "Lično",
-      "training": "Trening"
+      "training": "Trening",
+      "_pending_review": {}
     },
     "bookingStatus": {
       "booked": "Rezervisano",
-      "rsvp": "RSVP",
+      "rsvp": "Potvrdi",
       "ticket": "Karta",
-      "reserved": "Rezervisano"
+      "reserved": "Rezervisano",
+      "_pending_review": {}
     },
     "timeGroups": {
       "today": "Danas",
       "tomorrow": "Sutra",
       "thisWeek": "Ove nedelje",
-      "later": "Kasnije"
+      "later": "Kasnije",
+      "_pending_review": {}
     },
     "autopilot": {
       "suggestions": "Autopilot predlozi",
       "badge": "Autopilot",
       "accept": "Prihvati",
-      "snooze": "Odloži",
+      "snooze": "Podseti kasnije",
       "dismiss": "Odbaci",
       "undo": "Poništi",
       "laterToday": "Danas kasnije",
@@ -77,15 +82,16 @@
       "reminderLaterToday": "Podsetnik postavljen za kasnije danas",
       "reminderTomorrow": "Podsetnik postavljen za sutra",
       "recommendFocus": "Preporuči blok fokusa",
-      "focusBlockDesc": "Imaš slobodan prozor od 90 minuta. Savršeno za duboki rad."
+      "focusBlockDesc": "Imaš dostupan termin od 90 minuta. Savršeno za fokusiran rad.",
+      "_pending_review": {}
     },
     "toasts": {
       "eventCreated": "Događaj kreiran",
       "eventCreatedDesc": "Tvoj događaj je dodat u kalendar",
       "eventDeleted": "Događaj obrisan",
       "eventDeletedDesc": "Događaj je uklonjen iz tvog kalendara",
-      "syncingTitle": "Sinhronizacija...",
-      "syncingDesc": "Sinhronizacija sa spoljnim kalendarima",
+      "syncingTitle": "Sinhronizujem...",
+      "syncingDesc": "Sinhronizujem sa eksternim kalendarima",
       "syncedTitle": "Sinhronizovano",
       "syncedDesc": "Kalendar je ažuran",
       "joiningEvent": "Pridruživanje događaju",
@@ -94,22 +100,26 @@
       "featureComingSoon": "Funkcija uskoro stiže",
       "inviteFollowers": "Pozovi pratioce",
       "rescheduleEvent": "Promeni termin događaja",
-      "shareToGroup": "Podeli sa grupom"
+      "shareToGroup": "Podeli sa grupom",
+      "_pending_review": {}
     },
     "error": {
-      "failedToCreate": "Neuspešno kreiranje događaja"
+      "failedToCreate": "Neuspešno kreiranje događaja",
+      "_pending_review": {}
     },
     "allDay": "Ceo dan",
     "milestoneToday": "Prekretnica",
     "focus": {
       "todaysFocus": "Današnji fokus",
       "lightDay": "Lagan dan — istraži aktivnosti ili dopuni dnevnik",
-      "moreSteps": "još koraka"
+      "moreSteps": "još koraka",
+      "_pending_review": {}
     },
     "badge": {
       "guidedStep": "Vođeni korak",
       "milestone": "Prekretnica",
-      "wellness": "Dobrobit"
+      "wellness": "Dobrobit",
+      "_pending_review": {}
     },
     "action": {
       "start": "Započni",
@@ -118,11 +128,13 @@
       "details": "Detalji",
       "viewPlan": "Pogledaj plan",
       "open": "Otvori",
-      "done": "Gotovo"
+      "done": "Gotovo",
+      "_pending_review": {}
     },
     "group": {
       "stepsRemaining": "preostalih koraka",
-      "min": "min"
+      "min": "min",
+      "_pending_review": {}
     },
     "journey": {
       "dayOf": "Dan {day} od {total}",
@@ -131,7 +143,7 @@
       "showFullAgenda": "Prikaži ceo raspored",
       "moreEvents": "još događaja",
       "onboardingPlan": "Današnji plan uvođenja",
-      "estimatedTime": "~{minutes} min",
+      "estimatedTime": "oko {minutes} min",
       "startPlan": "Započni plan",
       "tasksCompleted": "{completed}/{total} gotovo",
       "waveNames": {
@@ -140,8 +152,12 @@
         "wave-3": "Produbljivanje veza",
         "wave-4": "Zdravstvena inteligencija",
         "wave-5": "Trenuci uvida",
-        "wave-6": "Preporuke i otkrića"
-      }
-    }
-  }
+        "wave-6": "Preporuke i otkrića",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

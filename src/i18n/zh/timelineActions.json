@@ -1,0 +1,50 @@
+{
+  "timelineActions": {
+    "title": "时间线操作",
+    "items": {
+      "logHealthEvent": {
+        "title": "记录健康事件",
+        "description": "记录重要健康里程碑",
+        "_pending_review": {}
+      },
+      "markAchievement": {
+        "title": "标记成就",
+        "description": "庆祝达成的健康目标",
+        "_pending_review": {}
+      },
+      "recordLifeMoment": {
+        "title": "记录生活瞬间",
+        "description": "记录有意义的经历",
+        "_pending_review": {}
+      },
+      "addPhotoMemory": {
+        "title": "添加照片回忆",
+        "description": "健康照片视觉时间线",
+        "_pending_review": {}
+      },
+      "voiceTimelineEntry": {
+        "title": "语音时间线记录",
+        "description": "快速音频健康更新",
+        "_pending_review": {}
+      },
+      "trackProgress": {
+        "title": "追踪进度",
+        "description": "记录健康指标和趋势",
+        "_pending_review": {}
+      },
+      "activityCheckIn": {
+        "title": "活动打卡",
+        "description": "记录锻炼和活动",
+        "_pending_review": {}
+      },
+      "setTimelineGoal": {
+        "title": "设置时间线目标",
+        "description": "创建未来健康目标",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -1,0 +1,13 @@
+{
+  "walletActions": {
+    "title": "Быстрые действия",
+    "addFunds": "Внести",
+    "send": "Отправить",
+    "exchange": "Обменять",
+    "withdraw": "Вывести",
+    "buyCredits": "Купить VTNA Кредиты",
+    "stakeTokens": "Застейкать токены",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

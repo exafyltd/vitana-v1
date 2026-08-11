@@ -9,10 +9,10 @@
     "invalid": "Código de descuento inválido",
     "bannerAvailable": "Descuento de bienvenida disponible",
     "tapToApply": "Aplicar",
-    "discountAppliedAmount": "Descuento del {percent}% aplicado",
+    "discountAppliedAmount": "{percent}% Descuento aplicado",
     "remove": "Eliminar",
     "ticketsComing": "Próximamente entradas",
-    "contactOrganizer": "Contacta al organizador del evento para información sobre entradas.",
+    "contactOrganizer": "Contacta al organizador para información sobre entradas.",
     "contactOrganizerPrice": "Este evento cuesta ${price}. Contacta al organizador para disponibilidad de entradas.",
     "soldOut": "Agotado",
     "salesEnded": "Ventas finalizadas",
@@ -21,11 +21,13 @@
     "ticketsSelected": "{count} entrada(s) seleccionada(s)",
     "useAccountEmail": "Usar mi correo de la cuenta",
     "buyAsGuest": "Comprar como invitado (sin cuenta)",
-    "guestDetails": "Ingresa tus datos para recibir tu entrada. No se requiere cuenta.",
+    "guestDetails": "Introduce tus datos para obtener tu entrada. No se requiere cuenta.",
     "fullName": "Nombre completo",
     "email": "Correo electrónico",
     "ticketEmailNote": "Tu entrada y confirmación se enviarán a este correo.",
     "left": "{count} restantes",
-    "loadFailed": "Error al cargar las entradas"
-  }
+    "loadFailed": "Error al cargar las entradas",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

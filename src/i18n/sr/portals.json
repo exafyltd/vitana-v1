@@ -1,12 +1,12 @@
 {
   "portals": {
     "maxina": {
-      "title": "Maxina Health Platform",
+      "title": "Maxina Zdravstvena Platforma",
       "welcomeBack": "Dobrodošao/la nazad u Maxinu.",
       "continueJourney": "Prijavi se da nastaviš svoje putovanje.",
       "joinMaxina": "Pridruži se Maxini",
       "joinCommunity": "Pridruži se Maxina zajednici.",
-      "createAccount": "Napravi nalog i započni svoje putovanje.",
+      "createAccount": "Kreiraj svoj nalog i započni svoje putovanje.",
       "signingIn": "Prijavljivanje…",
       "creatingAccount": "Pravljenje naloga…",
       "joiningAs": "Pridružujem se kao:",
@@ -20,23 +20,30 @@
         "community": "Zajednica",
         "patient": "Pacijent",
         "professional": "Profesionalac",
-        "admin": "Administrator"
-      }
+        "admin": "Administrator",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "alkalma": {
       "joinAlkalma": "Pridruži se AlKalmi",
       "welcomeBack": "Dobrodošao/la nazad u AlKalmu.",
-      "continueJourney": "Prijavi se da nastaviš."
+      "continueJourney": "Prijavi se da nastaviš.",
+      "_pending_review": {}
     },
     "earthlinks": {
       "joinEarthlinks": "Pridruži se Earthlinksu",
       "welcomeBack": "Dobrodošao/la nazad u Earthlinks.",
-      "continueJourney": "Prijavi se da nastaviš."
+      "continueJourney": "Prijavi se da nastaviš.",
+      "_pending_review": {}
     },
     "community": {
       "joinCommunity": "Pridruži se zajednici",
       "welcomeBack": "Dobrodošao/la nazad.",
-      "continueJourney": "Prijavi se da nastaviš."
-    }
-  }
+      "continueJourney": "Prijavi se da nastaviš.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

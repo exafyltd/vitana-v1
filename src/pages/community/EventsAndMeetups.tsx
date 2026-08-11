@@ -15,6 +15,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sh
 import { ChevronDown } from 'lucide-react';
 import { useState, useEffect, useMemo, useRef, useCallback, lazy, Suspense } from "react";
 import { useSearchParams } from "react-router-dom";
+import { isPast } from "date-fns";
 import { MeetupDetailsDrawer } from "@/components/meetups/MeetupDetailsDrawer";
 import { useEventSelection } from "@/context/EventSelectionContext";
 import { useCommunityEvents } from '@/hooks/useCommunityEvents';
@@ -421,6 +422,12 @@ const EventsAndMeetups = () => {
   const maxinaEvents = useMemo(() => {
     return dbEvents
       .filter(event => event.created_by === MAXINA_CREATOR_ID || HOT_EVENT_IDS.has(event.id))
+      // Unlike the Today/Upcoming tabs (day-granularity by design), Hot is a
+      // curated highlight list — it must drop an event the moment it ends,
+      // not just at midnight. `useCommunityEvents`' query only cuts off at
+      // start-of-day, so a morning event stays in `dbEvents` (and therefore
+      // in Hot) for the rest of that same day with no time-of-day filter.
+      .filter(event => !isPast(new Date(event.end_time || event.start_time)))
       .map(event => ({ ...event, event_type: 'event' }));
   }, [dbEvents]);
 

@@ -2,7 +2,7 @@
   "eventCta": {
     "buyTicket": "Buy Ticket",
     "buyTicketWithPrice": "Buy Ticket · {price}",
-    "getFreeTicket": "Get Free Ticket",
+    "getFreeTicket": "Get your free ticket",
     "reserveSpot": "Reserve Spot",
     "reserveMySpot": "Reserve My Spot",
     "viewTicket": "View Ticket",
@@ -19,6 +19,8 @@
     "processing": "Processing...",
     "joining": "Joining...",
     "getTickets": "Get Tickets",
-    "promoteEvent": "Promote event"
-  }
+    "promoteEvent": "Promote event",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

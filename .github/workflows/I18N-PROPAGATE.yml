@@ -1,0 +1,281 @@
+name: I18N-PROPAGATE
+run-name: 'Propagate source change to every language [VTID: VTID-03509] (${{ github.ref_name }})'
+
+# NO LANGUAGE LEFT BEHIND.
+#
+# When the German source changes, every other language must follow — including
+# the 20th one added next year. This workflow is the mechanism; the blocking
+# check in i18n-check.yml ("no-language-left-behind") is the guarantee. Both
+# are needed: automation that can fail silently is how es/sr sat two months
+# stale at a reported 100% coverage.
+#
+# THE ORDERING CONSTRAINT THAT MAKES THIS TWO STAGES
+#
+# scripts/translate-keys.mjs reads `en/` as its source, so every non-German
+# locale derives from ENGLISH, and English derives from GERMAN. English is a
+# pivot, not a peer. Fanning all locales out in one matrix would translate 20
+# languages from a stale English and produce 20 confidently-wrong catalogs, so:
+#
+#   stage 1  de -> en          (pivot refresh, must finish first)
+#   stage 2  en -> everything  (fan-out, parallel)
+#
+# WHY ONE COMMIT AT THE END
+#
+# Each locale writes an artifact and a single job commits them together. With
+# 20 locales, 20 jobs pushing to the same branch is 20 racing pushes; the
+# rebase-retry loop we used before mostly survives that, but "mostly" is not a
+# property to build a guarantee on. One writer, no race.
+
+on:
+  pull_request:
+    # A PR that edits the German source is incomplete until the other languages
+    # catch up. Propagating INTO the PR is what makes "no language left behind"
+    # enforceable at merge time rather than hopefully-eventually on main.
+    paths:
+      - 'src/i18n/de/**'
+  push:
+    branches: [main]
+    paths:
+      - 'src/i18n/de/**'
+  schedule:
+    # Safety net. Catches anything that reached main without propagation —
+    # a force-push, an admin merge, a failed run nobody re-ran.
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: 'Translation provider'
+        required: false
+        default: 'gemini'
+        type: choice
+        options: [gemini, deepseek, anthropic]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  # Per-ref, and NOT cancel-in-progress: a half-finished propagation leaves
+  # some languages updated and others not, which is precisely the state this
+  # workflow exists to prevent.
+  group: i18n-propagate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.locales.outputs.matrix }}
+      drift: ${{ steps.drift.outputs.count }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+
+      # Derived from the registry, never hardcoded — see the script header.
+      # Adding language 20 requires no edit to this file.
+      - name: Resolve locale matrix
+        id: locales
+        run: echo "matrix=$(node scripts/i18n-locales.mjs --matrix)" >> "$GITHUB_OUTPUT"
+
+      - name: Measure drift
+        id: drift
+        run: |
+          node scripts/i18n-stamp-source.mjs --check-all > drift.txt 2>&1 || true
+          cat drift.txt
+          COUNT=$(grep -oE '^\[stamp\] [a-z]{2}: [0-9]+ key' drift.txt | grep -oE '[0-9]+ key' | grep -oE '^[0-9]+' | paste -sd+ | bc || echo 0)
+
+          # VTID-03576. Drift alone is the WRONG gate, and it fails in the
+          # commonest direction this catalog grows.
+          #
+          # The stamp checker walks the keys a TARGET has, so a key newly added
+          # to German and not yet present in a locale is never visited: drift
+          # reads 0 and this whole workflow skips `pivot` and `fanout`. That is
+          # not hypothetical — main added 26 keys and fr/pl/pt/ru silently fell
+          # to 99.8% while every stamp check reported a clean bill of health.
+          #
+          # Staleness and coverage are two different questions and deliberately
+          # live in two different tools. This gate needs BOTH: i18n:audit owns
+          # "does the locale have the key at all", the stamps own "was it
+          # translated from the current source".
+          #
+          # Counted for ga/beta only — ar and zh are `draft` and permanently
+          # behind by design, so including them would pin this gate open
+          # forever and propagate on every run. `|| true` because i18n:audit
+          # deliberately exits non-zero on a ga locale below 100%.
+          npm run i18n:audit > audit.txt 2>&1 || true
+          cat audit.txt
+          MISSING=$(grep -E '^\s+[a-z]{2}\s+(ga|beta)\s' audit.txt \
+            | grep -oE '\([0-9]+/[0-9]+\)' | tr -d '()' \
+            | awk -F/ '{s += $2 - $1} END {print s+0}')
+
+          TOTAL=$(( ${COUNT:-0} + ${MISSING:-0} ))
+          echo "count=${TOTAL}" >> "$GITHUB_OUTPUT"
+          echo "Drifted keys: ${COUNT:-0}; missing keys (ga/beta): ${MISSING:-0}; total: ${TOTAL}"
+
+  # STAGE 1 — refresh the pivot. Everything downstream reads en/, so this must
+  # complete before the fan-out starts or 20 locales inherit a stale English.
+  pivot:
+    needs: plan
+    if: needs.plan.outputs.drift != '0'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+
+      - name: Flag EN keys whose German source moved
+        run: node scripts/i18n-stamp-source.mjs --locale=en --check --flag || true
+
+      # continue-on-error: the script exits non-zero if ANY key failed, but it
+      # persists after every batch. Without this a run that translated 900 of
+      # 935 keys would discard all 900.
+      - name: Translate de -> en
+        id: t
+        continue-on-error: true
+        env:
+          GOOGLE_GEMINI_API_KEY: ${{ secrets.GOOGLE_GEMINI_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          node scripts/translate-keys.mjs --init \
+            --provider=${{ inputs.provider || 'gemini' }} \
+            --locale=en --source=de --batch=30
+
+      - name: Re-stamp EN against current German
+        if: always()
+        run: node scripts/i18n-stamp-source.mjs --locale=en
+
+      - name: Commit pivot
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/i18n/en i18n-source-stamps/en.json
+          git diff --cached --quiet && { echo "pivot unchanged"; exit 0; }
+          git commit -m "chore(i18n): propagate DE source change to EN pivot (VTID-03509)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin "${{ github.head_ref || github.ref_name }}" || true
+            git push origin HEAD:"${{ github.head_ref || github.ref_name }}" && exit 0
+            sleep $((5 * i))
+          done
+          exit 1
+
+  # STAGE 2 — every other language, in parallel, from the refreshed pivot.
+  fanout:
+    needs: [plan, pivot]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false          # one language failing must not strand the rest
+      max-parallel: 6           # provider rate limits; raise once measured
+      matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Explicitly the post-pivot tree, so this reads the English that
+          # stage 1 just wrote rather than the commit that triggered the run.
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+
+      - name: Skip the pivot itself
+        id: guard
+        run: |
+          if [ "${{ matrix.locale }}" = "en" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "en is the pivot, refreshed in stage 1"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Flag keys whose EN source moved
+        if: steps.guard.outputs.skip == 'false'
+        run: node scripts/i18n-stamp-source.mjs --locale=${{ matrix.locale }} --check --flag || true
+
+      - name: Translate en -> ${{ matrix.locale }}
+        if: steps.guard.outputs.skip == 'false'
+        continue-on-error: true
+        env:
+          GOOGLE_GEMINI_API_KEY: ${{ secrets.GOOGLE_GEMINI_API_KEY }}
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          node scripts/translate-keys.mjs --init \
+            --provider=${{ inputs.provider || 'gemini' }} \
+            --locale=${{ matrix.locale }} --batch=30
+
+      - name: Re-stamp
+        if: always() && steps.guard.outputs.skip == 'false'
+        run: node scripts/i18n-stamp-source.mjs --locale=${{ matrix.locale }}
+
+      # Artifacts, not pushes — see the header. One writer at the end.
+      - name: Upload translated locale
+        if: always() && steps.guard.outputs.skip == 'false'
+        uses: actions/upload-artifact@v4
+        with:
+          name: i18n-${{ matrix.locale }}
+          path: |
+            src/i18n/${{ matrix.locale }}
+            i18n-source-stamps/${{ matrix.locale }}.json
+          retention-days: 3
+
+  collect:
+    needs: [plan, fanout]
+    if: always() && needs.plan.outputs.drift != '0'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+
+      - name: Download every locale
+        uses: actions/download-artifact@v4
+        with:
+          pattern: i18n-*
+          merge-multiple: true
+          path: incoming
+
+      - name: Apply
+        run: |
+          [ -d incoming/src/i18n ] && cp -r incoming/src/i18n/. src/i18n/ || true
+          [ -d incoming/i18n-source-stamps ] && cp -r incoming/i18n-source-stamps/. i18n-source-stamps/ || true
+          rm -rf incoming
+
+      # Reports what actually happened. A partial propagation is visible here
+      # rather than being discovered weeks later by a user reading German.
+      - name: Report parity
+        run: |
+          node scripts/i18n-audit.mjs --report-only || true
+          node scripts/i18n-stamp-source.mjs --check-all || true
+          node scripts/i18n-register-check.mjs --all --report-only || true
+
+      - name: Commit all languages together
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/i18n i18n-source-stamps
+          git diff --cached --quiet && { echo "no changes"; exit 0; }
+          git commit -m "chore(i18n): propagate source change to all languages (VTID-03509)"
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin "${{ github.head_ref || github.ref_name }}" || true
+            git push origin HEAD:"${{ github.head_ref || github.ref_name }}" && exit 0
+            sleep $((5 * i))
+          done
+          exit 1
+
+      # The run must go red if any language is still behind, even though every
+      # individual translate step was allowed to fail soft. Otherwise a partial
+      # propagation reports success and the guarantee is worthless.
+      - name: Fail if any language is still behind
+        run: |
+          if ! node scripts/i18n-stamp-source.mjs --check-all; then
+            echo "::error::Propagation incomplete — at least one language is still stale."
+            echo "Re-run this workflow to drain the remainder."
+            exit 1
+          fi
+          echo "All languages are level with the source."

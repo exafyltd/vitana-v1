@@ -1,0 +1,44 @@
+{
+  "newsCard": {
+    "menu": {
+      "share": "分享",
+      "save": "收藏",
+      "saved": "已收藏",
+      "summarize": "用 Vitana 总结",
+      "copyLink": "复制链接",
+      "openInBrowser": "在浏览器中打开",
+      "hide": "隐藏这篇文章",
+      "showLess": "减少这类推荐",
+      "muteSource": "屏蔽此来源",
+      "linkCopied": "链接已复制",
+      "savedToast": "已收藏供稍后阅读",
+      "unsavedToast": "已从收藏中移除",
+      "summarizeToast": "已加入 Vitana 队列",
+      "hiddenToast": "文章已隐藏",
+      "showLessToast": "我们会减少这类推荐",
+      "mutedToast": "来源已屏蔽",
+      "undo": "撤销",
+      "unmute": "取消屏蔽",
+      "_pending_review": {}
+    },
+    "detail": {
+      "back": "返回",
+      "continueReading": "在...上继续阅读",
+      "openInBrowser": "在浏览器中打开",
+      "couldNotLoad": "此文章无法内联显示",
+      "readOn": "阅读更多",
+      "_pending_review": {}
+    },
+    "pillars": {
+      "all": "全部",
+      "nutrition": "营养",
+      "hydration": "补水",
+      "sleep": "睡眠",
+      "exercise": "运动",
+      "mental": "心理",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

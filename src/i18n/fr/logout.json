@@ -1,0 +1,9 @@
+{
+  "logout": {
+    "signingOut": "Déconnexion en cours...",
+    "signedOut": "Déconnexion réussie",
+    "redirecting": "Redirection en cours...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

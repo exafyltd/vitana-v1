@@ -1,0 +1,29 @@
+{
+  "empty": {
+    "noAppsFound": "Nie znaleziono aplikacji pasujących do Twojego wyszukiwania.",
+    "noEventsFound": "Nie znaleziono wydarzeń.",
+    "noContactsFound": "Nie znaleziono kontaktów.",
+    "noContactsFoundMatching": "Nie znaleziono kontaktów pasujących do „{query}”.",
+    "noGroupsFound": "Nie znaleziono grup.",
+    "noResultsFound": "Nie znaleziono wyników.",
+    "noReportsFound": "Nie znaleziono raportów.",
+    "noUsersFound": "Nie znaleziono użytkowników.",
+    "noTransactionsFound": "Nie znaleziono transakcji.",
+    "noEventsYet": "Brak wydarzeń. Utwórz najpierw wydarzenie.",
+    "tryAdjustingFilters": "Spróbuj dostosować swoje filtry lub zapytanie wyszukiwania.",
+    "noData": "Brak dostępnych danych.",
+    "noMessages": "Brak wiadomości.",
+    "noNotifications": "Brak powiadomień.",
+    "indexSheetNextDays": "Brak aktywnych sugestii Autopilota. Gdy coś się tu pojawi, ukończenie tego wpłynie na Twój Indeks.",
+    "indexSheetHorizon": "Potrzebujesz jeszcze kilku dni danych, aby przewidzieć Twój 30-dniowy łuk.",
+    "myJourneyPath": "Twoja ścieżka dopiero się zaczyna. Gdy Autopilot będzie miał sugestie, pojawią się one tutaj jako ścieżka, którą możesz podążać.",
+    "myJourneyOnePillar": "Wybierz jedną małą rzecz — obserwuj, jak Twój Indeks się zmienia.",
+    "autopilotPopupZero": "Wybierz działania, aby zobaczyć wzrost Indeksu.",
+    "healthEmpty": "Zaloguj swój pierwszy wpis, aby uruchomić swój Indeks.",
+    "noActionsMatchedYet": "Brak dopasowanych działań — Autopilot kształtuje sugestie.",
+    "actionsPendingOne": "{count} oczekujące działanie",
+    "actionsPendingOther": "{count} oczekujących działań",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

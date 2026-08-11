@@ -1,0 +1,21 @@
+{
+  "adminTabs": {
+    "groups": {
+      "all": "Todos os Grupos",
+      "pending": "Pendente",
+      "approved": "Aprovado",
+      "flagged": "Sinalizado",
+      "rejected": "Rejeitado",
+      "_pending_review": {}
+    },
+    "rooms": {
+      "active": "Salas Ativas",
+      "scheduled": "Agendado",
+      "analytics": "Análises",
+      "moderation": "Moderação",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

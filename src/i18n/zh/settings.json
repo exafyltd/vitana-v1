@@ -1,0 +1,46 @@
+{
+  "settings": {
+    "title": "设置",
+    "description": "管理你的账户设置、隐私和偏好",
+    "searchPlaceholder": "搜索设置、隐私控制、集成...",
+    "quickSetup": "快速设置",
+    "tabs": {
+      "overview": "概览",
+      "notifications": "通知",
+      "quickActions": "快速操作",
+      "_pending_review": {}
+    },
+    "categories": {
+      "privacy": "隐私",
+      "privacyDesc": "控制谁能看到你的个人资料和活动",
+      "notifications": "通知",
+      "notificationsDesc": "管理你的通知设置",
+      "preferences": "偏好设置",
+      "preferencesDesc": "语言、主题和显示选项",
+      "connectedApps": "已连接应用",
+      "connectedAppsDesc": "管理集成和权限",
+      "tenantRole": "租户与角色",
+      "tenantRoleDesc": "切换角色和租户",
+      "billing": "账单",
+      "billingDesc": "订阅和支付信息",
+      "support": "支持",
+      "supportDesc": "帮助、常见问题和联系方式",
+      "_pending_review": {}
+    },
+    "status": {
+      "privacyStatus": "隐私状态",
+      "subscription": "订阅",
+      "protected": "受保护",
+      "premium": "高级版",
+      "notificationsActive": "通知已启用",
+      "connectedAppsCount": "已连接应用",
+      "types": "类型",
+      "apps": "应用",
+      "_pending_review": {}
+    },
+    "vitanaOpenedSection": "Vitana 打开了 {section}",
+    "vitanaUpdated": "Vitana 更新了你的设置",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

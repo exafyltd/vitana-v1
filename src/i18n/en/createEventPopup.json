@@ -5,10 +5,10 @@
     "eventTitle": "Event Title *",
     "titlePlaceholder": "e.g., Morning Yoga Session, Cooking Workshop",
     "description": "Description",
-    "descriptionPlaceholder": "Describe your event, what attendees can expect...",
+    "descriptionPlaceholder": "Describe your event, what participants can expect...",
     "detailedDescription": "Detailed Description (Optional)",
-    "detailedDescriptionPlaceholder": "Describe the agenda, program, what's included, giveaways, sponsors...",
-    "detailedDescriptionHint": "This will be shown in the event details drawer. Use it for agenda, program details, inclusions, etc.",
+    "detailedDescriptionPlaceholder": "Describe the agenda, the program, what's included, giveaways, sponsors...",
+    "detailedDescriptionHint": "Displayed in the event details. Use it for agenda, program details, included services, etc.",
     "eventImage": "Event Image (Optional)",
     "clickToUpload": "Click to upload event image",
     "imageFormats": "PNG, JPG, WebP up to 5MB",
@@ -39,7 +39,7 @@
     "standardEntry": "Standard entry ticket",
     "paidEvent": "This is a paid event (external payment)",
     "displayPrice": "Display Price",
-    "displayPriceHint": "For display only. Enable ticket sales above for integrated payments.",
+    "displayPriceHint": "For display only. Activate ticket sales above for integrated payments.",
     "resellerOptions": "Reseller Options",
     "allowResellers": "Allow Resellers to Sell Tickets",
     "allowResellersDesc": "Let resellers promote and sell tickets for this event",
@@ -68,7 +68,8 @@
       "volunteer": "❤️ Volunteer & Service",
       "support": "🫂 Support Group",
       "entertainment": "🎭 Entertainment",
-      "other": "✨ Other"
+      "other": "✨ Other",
+      "_pending_review": {}
     },
     "durations": {
       "30min": "30 minutes",
@@ -81,7 +82,8 @@
       "8hour": "8 hours",
       "half-day": "Half day",
       "full-day": "Full day",
-      "custom": "Custom duration..."
+      "custom": "Custom duration...",
+      "_pending_review": {}
     },
     "toasts": {
       "invalidFileType": "Invalid File Type",
@@ -95,25 +97,28 @@
       "imageUploadFailed": "Image upload failed",
       "imageUploadFailedDesc": "Event will be created without an image.",
       "errorCreating": "Error Creating Event",
-      "errorCreatingDesc": "There was an issue creating your event. Please try again.",
+      "errorCreatingDesc": "A problem occurred while creating your event. Please try again.",
       "generatingImage": "Generating AI Image...",
-      "generatingImageDesc": "Creating a custom image for your event.",
+      "generatingImageDesc": "A custom image for your event is being created.",
       "imageGenerated": "Image Generated!",
-      "imageGeneratedDesc": "AI-generated image added to your event.",
+      "imageGeneratedDesc": "AI-generated image has been added to your event.",
       "rateLimitReached": "Rate Limit Reached",
-      "rateLimitDesc": "Too many image generation requests. Please try again in a moment.",
+      "rateLimitDesc": "Too many image generation requests. Please try again shortly.",
       "creditsRequired": "Credits Required",
-      "creditsDesc": "AI image generation credits depleted. Please add credits to continue.",
+      "creditsDesc": "AI image generation credits used up. Please top up credits.",
       "permissionDenied": "Permission Denied",
-      "permissionDeniedDesc": "You don't have permission to generate images for this event.",
+      "permissionDeniedDesc": "You are not authorized to generate images for this event.",
       "imageGenFailed": "Image Generation Failed",
-      "imageGenFailedDesc": "Couldn't generate AI image. Your event was created successfully without it.",
+      "imageGenFailedDesc": "AI image could not be generated. Your event was still created successfully.",
       "communityEventCreated": "Event Created!",
-      "communityEventCreatedDesc": "Your event is now visible to the community and added to your calendar.",
+      "communityEventCreatedDesc": "Your event is now visible to the community and has been added to your calendar.",
       "personalEventCreated": "Event Created!",
-      "personalEventCreatedDesc": "Event has been added to your calendar.",
+      "personalEventCreatedDesc": "The event has been added to your calendar.",
       "error": "Error",
-      "errorDesc": "Failed to create event. Please try again."
-    }
-  }
+      "errorDesc": "Event could not be created. Please try again.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

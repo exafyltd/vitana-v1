@@ -1,0 +1,21 @@
+{
+  "profilePosts": {
+    "createPost": "发帖",
+    "placeholder": "你现在在想什么？",
+    "shareCta": "和大家分享点什么",
+    "post": "发布",
+    "posted": "已发布！",
+    "deleted": "帖子已删除",
+    "emptyTitle": "还没有帖子",
+    "emptyDescription": "和大家分享你的首次动态",
+    "deleteConfirm": "删除这篇帖子吗？",
+    "error": "出错了",
+    "mentionPlaceholder": "你在想什么？输入@提及某人",
+    "background": "背景",
+    "noBackground": "无背景",
+    "searchingPeople": "正在搜索用户…",
+    "noPeopleFound": "未找到用户",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

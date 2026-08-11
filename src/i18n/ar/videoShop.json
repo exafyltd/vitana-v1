@@ -1,0 +1,45 @@
+{
+  "videoShop": {
+    "feed": {
+      "loading": "جاري تحميل متجر الفيديو…",
+      "loadingMore": "جاري تحميل المزيد من الفيديوهات…",
+      "end": "لقد وصلت إلى النهاية.",
+      "emptyTitle": "لا توجد فيديوهات بعد",
+      "emptyBody": "لا توجد فيديوهات للمتجر حاليًا. عد لاحقًا أو تصفح اكتشف.",
+      "browseDiscover": "تصفح اكتشف",
+      "errorTitle": "لم نتمكن من تحميل متجر الفيديو",
+      "errorBody": "حاول مرة أخرى بعد قليل.",
+      "retry": "حاول مرة أخرى",
+      "roleBlockedTitle": "متجر الفيديو غير متاح لك هنا",
+      "roleBlockedBody": "متجر الفيديو هو ميزة مجتمعية. انتقل إلى دور المجتمع لاستخدامه.",
+      "mute": "كتم",
+      "unmute": "إلغاء الكتم",
+      "share": "مشاركة",
+      "linkCopied": "تم نسخ الرابط",
+      "_pending_review": {}
+    },
+    "drawer": {
+      "loading": "جاري تحميل المنتج…",
+      "productFallback": "المنتج",
+      "addToCart": "أضف إلى السلة",
+      "adding": "جاري الإضافة…",
+      "addedTitle": "تمت الإضافة",
+      "addedBody": "المنتج الآن في سلتك.",
+      "addFailed": "تعذر الإضافة إلى السلة",
+      "goToCart": "اذهب إلى السلة",
+      "moreDetails": "المزيد من التفاصيل",
+      "notifyMe": "أعلمني",
+      "outOfStock": "نفد المخزون",
+      "retry": "حاول مرة أخرى",
+      "errorTitle": "تعذر تحميل المنتج",
+      "errorBody": "حاول مرة أخرى بعد قليل.",
+      "unavailableTitle": "لم يعد متاحًا",
+      "unavailableBody": "هذا المنتج لم يعد متاحًا.",
+      "roleBlockedTitle": "الشراء غير متاح هنا",
+      "roleBlockedBody": "الشراء ميزة مجتمعية. انتقل إلى دور المجتمع للمتابعة.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

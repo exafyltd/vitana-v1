@@ -1,0 +1,34 @@
+{
+  "wallet": {
+    "title": "محفظة",
+    "description": "رصيدك، الائتمانات، والمكافآت",
+    "usdBalance": "رصيد اليورو / الدولار الأمريكي",
+    "creditsBalance": "رصيد ائتمانات VTNA",
+    "creditsLabel": "ائتمانات VTNA",
+    "available": "متاح",
+    "staked": "مرهون",
+    "searchWallet": "ابحث في المحفظة...",
+    "tabs": {
+      "balances": "الأرصدة",
+      "activity": "النشاط",
+      "actions": "الإجراءات",
+      "_pending_review": {}
+    },
+    "filters": {
+      "commissions": "بِع واكسب عمولات",
+      "transfers": "التحويلات",
+      "exchanges": "التبادلات",
+      "rewards": "المكافآت",
+      "purchases": "المشتريات",
+      "pending": "دفعات معلقة",
+      "withdrawals": "السحوبات",
+      "stakes": "الرهن",
+      "_pending_review": {}
+    },
+    "noActivity": "لا يوجد نشاط بعد",
+    "noActivityDesc": "ستظهر معاملاتك هنا.",
+    "displayCurrency": "عملة العرض",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

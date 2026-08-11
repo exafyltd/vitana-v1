@@ -1,10 +1,12 @@
 {
   "createSelection": {
     "title": "Crear Nuevo",
-    "description": "Elige el tipo de reunión que quieres crear",
+    "description": "Elige el tipo de evento que quieres crear",
     "event": "Evento",
     "eventDescription": "Reuniones formales con horarios programados y programas estructurados",
-    "meetup": "MeetUp",
-    "meetupDescription": "Reuniones informales para networking y construcción de comunidad"
-  }
+    "meetup": "Quedada",
+    "meetupDescription": "Reuniones informales para networking y construcción de comunidad",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

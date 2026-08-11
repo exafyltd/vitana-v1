@@ -1,0 +1,35 @@
+{
+  "services": {
+    "title": "Pôle de services",
+    "subtitle": "Accède à des services complets de santé et de bien-être",
+    "categories": {
+      "preventive": "Dépistages préventifs",
+      "labTests": "Tests de laboratoire",
+      "coaching": "Coaching et entraînement personnel",
+      "groupPrograms": "Programmes de groupe et défis",
+      "_pending_review": {}
+    },
+    "actions": {
+      "book": "Réserver",
+      "addToPlan": "Ajouter au plan",
+      "askAI": "Demander à l'IA",
+      "joinRoom": "Rejoindre la salle",
+      "setReminder": "Définir un rappel",
+      "_pending_review": {}
+    },
+    "details": {
+      "duration": "Durée",
+      "price": "Prix",
+      "location": "Lieu",
+      "nextAvailable": "Prochain disponible",
+      "whatsIncluded": "Ce qui est inclus",
+      "healthBenefits": "Bienfaits pour la santé",
+      "availableProviders": "Prestataires disponibles",
+      "requirements": "Exigences et préparation",
+      "tags": "Mots-clés",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

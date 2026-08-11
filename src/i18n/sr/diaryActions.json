@@ -4,36 +4,47 @@
     "items": {
       "recordVoiceEntry": {
         "title": "Snimi glasovni unos",
-        "description": "Zabeleži misli i razmišljanja glasovnim snimkom"
+        "description": "Zabeleži misli i razmišljanja glasovnim snimkom",
+        "_pending_review": {}
       },
       "addPhotoEntry": {
         "title": "Dodaj fotografiju",
-        "description": "Otpremi slike kako bi dokumentovao/la svoje wellness putovanje"
+        "description": "Otpremi slike kako bi dokumentovao/la svoje wellness putovanje",
+        "_pending_review": {}
       },
       "writeTextEntry": {
         "title": "Napiši tekstualni unos",
-        "description": "Kreiraj detaljne pisane refleksije i beleške"
+        "description": "Kreiraj detaljne pisane refleksije i beleške",
+        "_pending_review": {}
       },
       "quickNote": {
         "title": "Brza beleška",
-        "description": "Zapiši kratke misli ili zapažanja"
+        "description": "Zapiši kratke misli ili zapažanja",
+        "_pending_review": {}
       },
       "videoDiary": {
         "title": "Video dnevnik",
-        "description": "Snimi video refleksije i napredak"
+        "description": "Snimi video refleksije i napredak",
+        "_pending_review": {}
       },
       "scheduleEntry": {
         "title": "Zakaži unos",
-        "description": "Planiraj buduće unose u dnevnik i podsetnike"
+        "description": "Planiraj buduće unose u dnevnik i podsetnike",
+        "_pending_review": {}
       },
       "tagMemories": {
         "title": "Obeleži uspomene",
-        "description": "Organizuj postojeće unose pomoću oznaka i kategorija"
+        "description": "Organizuj postojeće unose pomoću oznaka i kategorija",
+        "_pending_review": {}
       },
       "importFiles": {
         "title": "Uvezi datoteke",
-        "description": "Otpremi dokumente, slike ili druge wellness datoteke"
-      }
-    }
-  }
+        "description": "Otpremi dokumente, slike ili druge wellness datoteke",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,7 +1,7 @@
 {
   "vitanaIndex": {
     "title": "Índice de Salud Vitana",
-    "subtitle": "Equilibrio general de bienestar en todos los pilares de salud",
+    "subtitle": "Equilibrio de Bienestar General en todos los pilares de salud",
     "veryPoor": "Muy Malo",
     "poor": "Malo",
     "fair": "Regular",
@@ -16,12 +16,24 @@
     "viewFullReport": "Ver Informe Completo",
     "trackToday": "Registrar Hoy",
     "tiers": {
-      "starting": "Iniciando",
+      "starting": "Principiante",
       "early": "Temprano",
-      "building": "Construyendo",
+      "building": "Fortaleciéndote",
       "strong": "Fuerte",
       "reallyGood": "Muy Bueno",
-      "elite": "Élite"
-    }
-  }
+      "elite": "Élite",
+      "_pending_review": {}
+    },
+    "framings": {
+      "starting": "Recién empezando",
+      "early": "Línea base establecida",
+      "building": "Hábitos en formación",
+      "strong": "Hito de 90 días",
+      "reallyGood": "Prosperando",
+      "elite": "Élite",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

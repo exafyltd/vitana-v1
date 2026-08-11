@@ -1,0 +1,26 @@
+{
+  "packages": {
+    "confirmDelete": "هل أنت متأكد من حذف هذه الحزمة؟",
+    "types": {
+      "bundle": "حزمة",
+      "subscription": "اشتراك",
+      "program": "برنامج",
+      "_pending_review": {}
+    },
+    "status": {
+      "draft": "مسودة",
+      "published": "مباشر",
+      "archived": "مؤرشف",
+      "_pending_review": {}
+    },
+    "item": "عنصر",
+    "items": "عناصر",
+    "total": "المجموع",
+    "validDays": "صالح لمدة {days} أيام",
+    "save": "وفر {percent}%",
+    "unpublish": "إلغاء النشر",
+    "publish": "نشر",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

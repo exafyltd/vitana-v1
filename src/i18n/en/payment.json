@@ -13,11 +13,13 @@
     "insufficientBalanceDesc": "You don't have enough {currency} for this exchange",
     "transactionFailed": "Transaction Failed",
     "paymentFailed": "Payment Failed",
-    "paymentFailedDesc": "Failed to process payment. Please try again.",
+    "paymentFailedDesc": "Payment could not be processed. Please try again.",
     "balanceRefreshed": "Balance Refreshed",
     "balanceRefreshedDesc": "Wallet balance has been updated",
     "refreshFailed": "Refresh Failed",
-    "refreshFailedDesc": "Could not refresh balance. Please try again.",
-    "error": "Error"
-  }
+    "refreshFailedDesc": "Balance could not be updated. Please try again.",
+    "error": "Error",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

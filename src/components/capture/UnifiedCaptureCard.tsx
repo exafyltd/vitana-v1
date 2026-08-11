@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import {
   Mic, Square, Save, Send, Plus, X, Bug, Lightbulb,
-  CheckCircle2, Type, Camera, Image as ImageIcon, Paperclip,
+  CheckCircle2, Type, Camera, Image as ImageIcon, Paperclip, Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -12,6 +12,11 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ClientSTT } from "@/utils/clientSTT";
+import {
+  DiaryAudioRecorder,
+  shouldUseBackendSTT,
+  transcribeAudioBlob,
+} from "@/utils/diaryAudioRecorder";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTranslation } from "@/hooks/useTranslation";
 import { getLocalStorageItem } from "@/lib/localStorage";
@@ -71,6 +76,11 @@ export function UnifiedCaptureCard({
   const [transcript, setTranscript] = useState("");
   const [interimText, setInterimText] = useState("");
   const [recordingDuration, setRecordingDuration] = useState(0);
+  // iOS WKWebView (Appilix shell) reports webkitSpeechRecognition as present
+  // but start() always fails with `service-not-allowed` — see
+  // diaryAudioRecorder.ts. When true, capture goes through MediaRecorder +
+  // backend transcription instead, same as VoiceDiaryRecorder/MobileSupport.
+  const [isTranscribing, setIsTranscribing] = useState(false);
 
   // ---- Bug-mode state ----
   const [severity, setSeverity] = useState<"low" | "medium" | "high" | "critical">("medium");
@@ -82,6 +92,7 @@ export function UnifiedCaptureCard({
 
   // ---- Refs ----
   const sttRef = useRef<ClientSTT | null>(null);
+  const audioRecorderRef = useRef<DiaryAudioRecorder | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isRecordingRef = useRef(false);
   const restartTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -94,17 +105,134 @@ export function UnifiedCaptureCard({
   const { translate } = useTranslation();
   const queryClient = useQueryClient();
   const isAndroid = /Android/i.test(navigator.userAgent);
+  const useBackendSTT = shouldUseBackendSTT();
 
   // Progressive disclosure: show expanded UI when recording or transcript exists
-  const hasContent = isRecording || transcript.length > 0;
+  const hasContent = isRecording || transcript.length > 0 || isTranscribing;
 
   // Notify parent of recording state
   useEffect(() => {
     onRecordingChange?.(isRecording);
   }, [isRecording, onRecordingChange]);
 
+  // Tear down any in-flight capture on unmount so a dropped screen doesn't
+  // leave a mic stream open or a timer running.
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+      if (restartTimeoutRef.current) clearTimeout(restartTimeoutRef.current);
+      if (audioRecorderRef.current) {
+        audioRecorderRef.current.cancel();
+        audioRecorderRef.current = null;
+      }
+      if (sttRef.current) {
+        try { sttRef.current.stop(); } catch { /* noop */ }
+      }
+    };
+  }, []);
+
+  const resolveSttLanguage = () => {
+    const storedLanguage = getLocalStorageItem('global', 'language', 'selected_language');
+    return (typeof storedLanguage === 'string' ? storedLanguage : selectedLanguage)?.trim() || 'de-DE';
+  };
+
+  // ---- Backend STT (iOS WKWebView / Appilix) ----
+  const startBackendRecording = async () => {
+    if (!DiaryAudioRecorder.isSupported()) {
+      toast({
+        title: translate('capture.notSupported'),
+        description: translate('capture.notSupportedDesc'),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const recorder = new DiaryAudioRecorder({ language: resolveSttLanguage() });
+      await recorder.start();
+      audioRecorderRef.current = recorder;
+
+      setIsRecording(true);
+      isRecordingRef.current = true;
+      setRecordingDuration(0);
+      setTranscript('');
+      setInterimText('');
+      setShowConfirmation(false);
+
+      timerRef.current = setInterval(() => {
+        setRecordingDuration(prev => prev + 1);
+      }, 1000);
+
+      if (isHealthMode) {
+        toast({
+          title: translate('capture.recordingStarted'),
+          description: translate('capture.recordingStartedDesc'),
+        });
+      }
+    } catch (error) {
+      console.error('[UnifiedCapture] MediaRecorder start failed:', error);
+      audioRecorderRef.current?.cancel();
+      audioRecorderRef.current = null;
+      isRecordingRef.current = false;
+      setIsRecording(false);
+      toast({
+        title: translate('capture.recognitionError'),
+        description: translate('capture.recognitionErrorDesc'),
+        variant: "destructive",
+      });
+    }
+  };
+
+  const stopBackendRecording = async () => {
+    const recorder = audioRecorderRef.current;
+    audioRecorderRef.current = null;
+    setIsRecording(false);
+    setInterimText('');
+
+    if (!recorder) return;
+    setIsTranscribing(true);
+
+    try {
+      const blob = await recorder.stop();
+      if (!blob || blob.size === 0) {
+        toast({
+          title: translate('capture.recognitionError'),
+          description: translate('capture.recognitionErrorDesc'),
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const text = await transcribeAudioBlob(blob, resolveSttLanguage());
+      if (text) {
+        setTranscript(prev => mergeFinalTranscript(prev, text));
+      }
+
+      if (isHealthMode) {
+        toast({
+          title: translate('capture.recordingStopped'),
+          description: translate('capture.recordingStoppedDesc'),
+        });
+      }
+    } catch (error) {
+      console.error('[UnifiedCapture] Backend transcription failed:', error);
+      toast({
+        title: translate('capture.recognitionError'),
+        description: translate('capture.recognitionErrorDesc'),
+        variant: "destructive",
+      });
+    } finally {
+      setIsTranscribing(false);
+    }
+  };
+
   // ---- STT Logic ----
   const startRecording = () => {
+    if (useBackendSTT) {
+      void startBackendRecording();
+      return;
+    }
+
     if (!ClientSTT.isSupported()) {
       toast({
         title: translate('capture.notSupported'),
@@ -205,14 +333,20 @@ export function UnifiedCaptureCard({
       clearTimeout(restartTimeoutRef.current);
       restartTimeoutRef.current = null;
     }
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+
+    if (audioRecorderRef.current) {
+      void stopBackendRecording();
+      return;
+    }
+
     if (sttRef.current) {
       sttRef.current.stop();
       setIsRecording(false);
       setInterimText('');
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
       if (isHealthMode) {
         toast({
           title: translate('capture.recordingStopped'),
@@ -362,6 +496,7 @@ export function UnifiedCaptureCard({
           )}
           <button
             onClick={isRecording ? stopRecording : startRecording}
+            disabled={isTranscribing}
             className={cn(
               "relative z-10 h-20 w-20 rounded-full flex items-center justify-center transition-all shadow-lg",
               isRecording
@@ -374,6 +509,8 @@ export function UnifiedCaptureCard({
           >
             {isRecording ? (
               <Square className="h-8 w-8" />
+            ) : isTranscribing ? (
+              <Loader2 className="h-8 w-8 animate-spin" />
             ) : (
               <Mic className="h-9 w-9" />
             )}
@@ -388,6 +525,11 @@ export function UnifiedCaptureCard({
               {formatDuration(recordingDuration)}
             </span>
           </div>
+        ) : isTranscribing ? (
+          <p className="mt-4 text-sm text-muted-foreground flex items-center gap-2">
+            <Loader2 className="h-4 w-4 animate-spin" />
+            {translate('capture.transcribing', 'Transcribing your recording…')}
+          </p>
         ) : (
           !hasContent && (
             <p className="mt-4 text-sm text-muted-foreground">
@@ -420,7 +562,9 @@ export function UnifiedCaptureCard({
           <div className="space-y-1">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold text-muted-foreground">
-                {isRecording ? translate('capture.liveTranscription') : isHealthMode ? translate('capture.yourVoiceEntry') : translate('capture.yourFeedback')}
+                {isRecording
+                  ? (useBackendSTT ? translate('capture.recording') : translate('capture.liveTranscription'))
+                  : isHealthMode ? translate('capture.yourVoiceEntry') : translate('capture.yourFeedback')}
               </span>
               {!isRecording && recordingDuration > 0 && (
                 <Badge variant="outline" className="text-[10px]">
@@ -428,12 +572,19 @@ export function UnifiedCaptureCard({
                 </Badge>
               )}
             </div>
+
+            {isRecording && useBackendSTT && (
+              <div className="rounded-md border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-950/30 px-3 py-2 text-xs text-amber-900 dark:text-amber-200">
+                {translate('capture.backendRecordingHint', 'Recording — your transcription will appear after you tap Stop.')}
+              </div>
+            )}
+
             <Textarea
               value={transcript + (interimText ? ` ${interimText}` : '')}
               onChange={(e) => !isRecording && setTranscript(e.target.value)}
               placeholder={isRecording ? translate('capture.startSpeaking') : translate('capture.editOrType')}
               className="min-h-20 text-sm"
-              disabled={isRecording}
+              disabled={isRecording || isTranscribing}
             />
             {interimText && isRecording && (
               <p className="text-[10px] text-muted-foreground italic">

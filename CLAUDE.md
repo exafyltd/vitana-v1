@@ -1,5 +1,39 @@
 # Vitana V1 — Community App
 
+## 🚫 ABSOLUTE RULE — NEVER TEST AGAINST PRODUCTION (NO EXCEPTIONS)
+
+**Testing against production is FORBIDDEN at all times. There is no scenario,
+no justification, and no "I'll clean it up afterwards" that makes it OK.**
+
+This applies to Claude and to every human and every agent working in this repo.
+
+Specifically, you must **NEVER**, against any live/production service —
+including the production Supabase project (`inmkhvwdcuyhnxkgfvsb`), the
+production gateway (`gateway.vitanaland.com`), or any production Cloud Run
+service or live user-facing endpoint:
+
+- Run tests, probes, latency measurements, load tests, or "quick checks".
+- INSERT, UPDATE, DELETE, or send any data (chat messages, group messages,
+  notifications, records of any kind), even with a test account.
+- Run scripts (`scripts/*.mjs`), Playwright, curl, or SDK calls that mutate
+  state or post to real groups/users.
+- Treat the documented test user or auth snippets as permission to write —
+  they are NOT. They exist for narrow, read-only verification only.
+- Rationalize that cleanup, a temp tag, or a "self-message" makes it safe.
+  It does not. The rule is absolute.
+
+**If a change needs runtime verification:**
+1. Use an **isolated / staging / local** environment that the user has
+   explicitly designated for testing — never production.
+2. If no safe environment exists, **deliver the test script for the user to
+   run themselves** and STOP.
+3. When in any doubt, **stop and ask first.** Writing to a shared/live system
+   is a destructive, outward-facing action and requires explicit approval.
+
+> Why this rule exists: an agent ran latency "tests" against production —
+> inserting rows into the live `chat_messages` table and posting junk messages
+> into a real community group that real members could see. Never again.
+
 ## Overview
 
 VITANA community app (branded "MAXINA - Longevity Community"). React/Vite SPA with 551+ screens spanning community, health, AI, messaging, wallet, and admin features.
@@ -21,16 +55,42 @@ npm run build     # Production build → dist/
 npm run preview   # Preview production build
 ```
 
-## Deployment (Dual — Parallel)
+## Deployment — production is AWS, not Cloud Run
 
-This app currently deploys to **two** hosts simultaneously:
+**`vitanaland.com` and `www` are served by the AWS ECS service
+`vitana-community-app-awsdr`.** Cloud Run's `community-app` is a rollback
+target that no user reaches. This moved at the VTID-03419 cutover.
 
-| Host | URL | Trigger | Status |
-|------|-----|---------|--------|
-| **Cloud Run** | `community-app` service in `lovable-vitana-vers1` | `.github/workflows/DEPLOY.yml` on push to `main` | New (being verified) |
-| **Lovable CDN** | `vitana-lovable-vers1.lovable.app` | Auto-deploy on push to `main` | Legacy (fallback) |
+| Host | Serves | Role |
+|------|--------|------|
+| **AWS ECS** `vitana-community-app-awsdr` | `vitanaland.com`, `www`, `dr-app.vitanaland.com` | **Production — what users get** |
+| Cloud Run `community-app` | its own `*.run.app` URL | Rollback target, kept in sync |
+| Lovable CDN | `vitana-lovable-vers1.lovable.app` | Legacy, being decommissioned |
 
-Once Cloud Run is verified working, Lovable will be decommissioned.
+`DEPLOY.yml` deploys **both** — its `aws_prod` job calls
+`AWS-PROD-DEPLOY-FRONTEND.yml` with the same pinned commit (VTID-03483).
+Before that job existed, running `DEPLOY.yml` deployed Cloud Run, reported
+success everywhere, and left every visitor on the previous build; shipping
+anything required a second, separate, undocumented dispatch of the AWS
+workflow. **If you edit `DEPLOY.yml`, keep `aws_prod`.**
+
+### Verifying a frontend deploy actually shipped
+
+A green workflow is not evidence. Check the bytes production serves, and
+sample repeatedly — an ECS rolling deploy serves the old and new build
+side by side for a minute or two, so a single request can report either:
+
+```bash
+for i in $(seq 1 20); do
+  curl -s "https://vitanaland.com/<page>?s=$i" \
+    | grep -o 'assets/index-[A-Za-z0-9_-]*\.js' | head -1
+done | sort | uniq -c
+```
+
+Only when all samples agree on the new chunk is the deploy live. Then grep
+that chunk for a string unique to your change. Cloudflare fronts the apex
+but sends `cf-cache-status: DYNAMIC` with `no-store` for the SPA shell, so
+a stale response means the rollout is still in flight, not a cache.
 
 ### Staging-first cutover (effective Mon 8 Jun 2026, 10:00 Europe/Berlin)
 
@@ -102,6 +162,56 @@ This is the **frontend** repo. The backend is in `exafyltd/vitana-platform`:
 **Test user UUID:** `a27552a3-0257-4305-8ed0-351a80fd3701`
 Use this user when an authenticated user is needed for testing (e.g., Playwright screenshots, API calls, profile checks).
 
+### Why no host is exempt from the absolute rule above (VTID-03506)
+
+The ban at the top of this file covers **every write** as this account — a
+profile edit, an onboarding step, a settings toggle, a wallet call, not only
+community content. This section exists for the follow-up question it kept
+provoking: *"then I'll just run it against the preview instead."*
+
+**You cannot. There is no safe host for a write today, and picking a "safer" URL
+does not create one.** `PREVIEW-DEPLOY-FRONTEND.yml` (L69–81) and
+`STAGE-DEPLOY-FRONTEND.yml` (L72–93) override **only** the gateway URL and
+deliberately leave Supabase unset, so both builds inherit the **production**
+Supabase project from the committed `.env` — gateway-staging runs against prod
+Supabase too (BOOTSTRAP-ORB-STAGING-SUPABASE-ALIGN; `docs/STAGING.md` §6/§9b),
+and the frontend must match it or authed features silently degrade. A post
+created on `community-app-pr-123` lands in the same `profile_posts` rows real
+members read. **The host selects which _code_ runs; it does not select which
+database gets written.**
+
+So a PR preview is not an isolated environment — it is production with different
+frontend code in front of it. Every write lands in the same rows real members
+read, whichever URL you were pointed at. **Reading is fine everywhere; writing is
+fine nowhere**, and community content — posts, comments, likes, videos, chat
+messages — is the case with no exception clause at all, because it reaches real
+feeds and lock screens the instant it lands.
+
+Verify feed and interaction changes against content that already exists, a Vitest
+unit/integration test, or a local Supabase. If a change genuinely cannot be
+verified without new community content, **that is a blocker to raise, not a rule
+to route around** — it needs an isolated Supabase project for testing, which does
+not exist yet.
+
+On 2026-08-05 a session reproducing VTID-03503 created 5 public posts as this
+account on production between 14:54 and 15:00 UTC. Using a PR preview would have
+produced the identical rows and the identical pushes — the environment was never
+the protection anyone assumed it was. `trg_notify_community_post`
+fans out to every member of the author's tenant, so those 5 inserts became **960
+notifications and 600 delivered pushes** — real members' lock screens filled with
+"E2E Test User shared a new post". Deleting the posts afterwards fixed nothing:
+a push is unrecallable the moment it is sent.
+
+The account is a full member of the production tenant, which is what makes a
+"harmless" test write indistinguishable from a real member posting. Two guards
+now exist (migration `20260805160000`): `_notif_is_test_actor()` plus a BEFORE
+INSERT sink guard on `user_notifications` that drops any notification whose
+actor is a registered or `e2e-%`/`@vitanatest.exafy.io` account. **Treat them as
+the seatbelt, not the permission slip** — they stop notifications, not the posts,
+comments, likes, or chat messages themselves, which still land in the real feed
+in front of real people. Register any new test account in
+`notification_test_actors`.
+
 ## Key Patterns
 
 - **Mobile-first:** `useIsMobile()` hook, MobileAppShell wrapper
@@ -157,6 +267,15 @@ will flag it. After bulk translation, always run the audit workflow:
 `gh workflow run i18n-audit-llm.yml -f locale=<code> -f provider=gemini`.
 Apply the auto-confidence suggestions via:
 `node scripts/apply-audit-suggestions.mjs --locale=<code>` (≥0.80 by default).
+
+### Active locales & RTL
+
+Shipped locale shards live under `src/i18n/<code>/`: **de** (source of
+truth), **en**, **es**, **sr**, and **ar** (Arabic). Arabic is
+**right-to-left** — any new layout/component must work in RTL, not just
+LTR. Don't hardcode `left`/`right`; prefer logical properties
+(`ms-*`/`me-*`, `start`/`end`, `text-start`) and rely on `dir`-aware
+styling. Verify new screens in both directions before reporting done.
 
 ### AI-generated content — must respect user locale
 

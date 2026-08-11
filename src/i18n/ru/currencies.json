@@ -1,0 +1,9 @@
+{
+  "currencies": {
+    "usd": "Доллары США",
+    "vtna": "Токены VTNA",
+    "credits": "Кредиты платформы",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

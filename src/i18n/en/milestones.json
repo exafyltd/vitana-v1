@@ -1,10 +1,10 @@
 {
   "milestones": {
-    "title": "Life Milestones",
+    "title": "Special Moments",
     "add": "Add Milestone",
     "edit": "Edit Milestone",
-    "empty": "No milestones yet",
-    "addFirst": "Add your first milestone",
+    "empty": "No Moments Yet",
+    "addFirst": "Add Your First Moment",
     "date": "Date",
     "description": "What happened?",
     "titleLabel": "Title",
@@ -12,6 +12,8 @@
     "descPlaceholder": "Describe this moment...",
     "icon": "Icon",
     "publicLabel": "Visible to everyone",
-    "private": "Private"
-  }
+    "private": "Private",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

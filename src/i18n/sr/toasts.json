@@ -22,9 +22,9 @@
       "loggedOut": "Uspešno odjavljen",
       "loggedOutDesc": "Zbogom!",
       "subscribed": "Uspešno pretplaćen",
-      "subscribedDesc": "Sada ćeš dobijati obaveštenja.",
+      "subscribedDesc": "Sada dobijaš ažuriranja.",
       "unsubscribed": "Uspešno odjavljen",
-      "unsubscribedDesc": "Više nećeš dobijati obaveštenja.",
+      "unsubscribedDesc": "Više ne dobijaš ažuriranja.",
       "added": "Uspešno dodato",
       "addedDesc": "Stavka je dodata.",
       "removed": "Uspešno uklonjeno",
@@ -42,7 +42,8 @@
       "planGenerated": "Plan generisan",
       "planGeneratedDesc": "Tvoj personalizovani plan je kreiran.",
       "bulkEnabled": "Omogućen grupni odabir",
-      "bulkEnabledDesc": "Izaberite stavke iz vaše vremenske linije za grupne radnje."
+      "bulkEnabledDesc": "Izaberi stavke sa svoje vremenske linije za grupne radnje.",
+      "_pending_review": {}
     },
     "error": {
       "generic": "Nešto je pošlo po zlu",
@@ -50,11 +51,11 @@
       "network": "Mrežna greška",
       "networkDesc": "Molimo proverite internet vezu.",
       "notAuthenticated": "Niste prijavljeni",
-      "notAuthenticatedDesc": "Molimo prijavite se da nastavite.",
+      "notAuthenticatedDesc": "Molimo te da se prijaviš da nastaviš.",
       "notAuthorized": "Niste autorizovani",
       "notAuthorizedDesc": "Nemate dozvolu za ovu radnju.",
       "saveFailed": "Čuvanje neuspešno",
-      "saveFailedDesc": "Vaše izmene nisu mogle biti sačuvane.",
+      "saveFailedDesc": "Tvoje izmene nisu mogle biti sačuvane.",
       "loadFailed": "Učitavanje neuspešno",
       "loadFailedDesc": "Podaci nisu mogli biti učitani.",
       "uploadFailed": "Otpremanje neuspešno",
@@ -62,13 +63,13 @@
       "deleteFailed": "Brisanje neuspešno",
       "deleteFailedDesc": "Stavka nije mogla biti obrisana.",
       "sendFailed": "Slanje neuspešno",
-      "sendFailedDesc": "Vaša poruka nije mogla biti poslata.",
+      "sendFailedDesc": "Tvoja poruka nije mogla biti poslata.",
       "connectionFailed": "Povezivanje neuspešno",
       "connectionFailedDesc": "Veza nije mogla biti uspostavljena.",
       "validationFailed": "Validacija neuspešna",
-      "validationFailedDesc": "Molimo proverite svoje unose.",
+      "validationFailedDesc": "Molimo te da proveriš svoj unos.",
       "sessionExpired": "Sesija je istekla",
-      "sessionExpiredDesc": "Molimo prijavite se ponovo.",
+      "sessionExpiredDesc": "Molimo te da se ponovo prijaviš.",
       "serverError": "Greška servera",
       "serverErrorDesc": "Molimo pokušajte ponovo kasnije.",
       "notFound": "Nije pronađeno",
@@ -76,7 +77,8 @@
       "importFailed": "Uvoz neuspešan",
       "importFailedDesc": "Podaci nisu mogli biti uvezeni.",
       "exportFailed": "Izvoz neuspešan",
-      "exportFailedDesc": "Podaci nisu mogli biti izvezeni."
+      "exportFailedDesc": "Podaci nisu mogli biti izvezeni.",
+      "_pending_review": {}
     },
     "info": {
       "processing": "Obrađivanje...",
@@ -86,15 +88,17 @@
       "loading": "Učitavanje...",
       "loadingDesc": "Podaci se preuzimaju.",
       "syncing": "Sinhronizacija...",
-      "syncingDesc": "Podaci se sinhronizuju."
+      "syncingDesc": "Podaci se sinhronizuju.",
+      "_pending_review": {}
     },
     "warning": {
       "unsavedChanges": "Nesačuvane izmene",
       "unsavedChangesDesc": "Imate nesačuvane izmene. Želiš li da nastaviš?",
       "limitReached": "Dostignut limit",
-      "limitReachedDesc": "Dostigao/la si maksimalni limit.",
+      "limitReachedDesc": "Dostigao si maksimum.",
       "slowConnection": "Spora veza",
-      "slowConnectionDesc": "Tvoja internet veza deluje sporo."
+      "slowConnectionDesc": "Tvoja internet veza deluje sporo.",
+      "_pending_review": {}
     },
     "common": {
       "couldNotCompleteTask": "Nije moguće završiti zadatak",
@@ -163,7 +167,7 @@
       "connectionError": "Greška u vezi",
       "pushNotificationsReinitialized": "Push notifikacije ponovo inicijalizovane",
       "redeemPoints": "Otkupi poene",
-      "redemptionOptionsOpeningSoon": "Opcije otkupa uskoro stižu",
+      "redemptionOptionsOpeningSoon": "Opcije za iskorišćavanje stižu uskoro.",
       "exportData": "Izvezi podatke",
       "preparingYourDataExport": "Pripremam izvoz podataka...",
       "activitySavedMemory": "Aktivnost sačuvana u Memoriju",
@@ -172,12 +176,14 @@
       "weLlAnalyzeUpdateSuggestionsShortly": "Uskoro ćemo analizirati i ažurirati predloge.",
       "activityHidden": "Aktivnost sakrivena",
       "success": "Uspeh! 🎉",
-      "donTBreakStreakOneSmall": "🔥 Nemoj prekinuti niz — jedna mala akcija danas"
+      "donTBreakStreakOneSmall": "🔥 Nemoj prekinuti niz — jedna mala akcija danas",
+      "contentCreateFailed": "Nije moguće kreirati sadržaj",
+      "_pending_review": {}
     },
     "admin": {
       "companionOverridesSavedVoiceCacheRefreshes": "Prilagođavanja saputnika sačuvana — keš glasa se osvežava u roku od 30s.",
       "manualTriggerSuccessful": "✅ Ručno pokretanje uspešno",
-      "appointmentReminderFunctionHasExecuted": "Funkcija podsetnika za termin je izvršena",
+      "appointmentReminderFunctionHasExecuted": "Funkcija podsetnika za sastanak je pokrenuta.",
       "triggerFailed": "❌ Pokretanje nije uspelo",
       "failedExecuteReminderFunction": "Izvršavanje funkcije podsetnika nije uspelo",
       "copied": "Kopirano",
@@ -185,15 +191,15 @@
       "apiKeyRequired": "API ključ je potreban",
       "pleaseEnterYourGeminiApiKey": "Molimo unesite svoj Gemini API ključ",
       "apiKeyValid": "API ključ važeći",
-      "yourGeminiApiKeyWorkingCorrectly": "Vaš Gemini API ključ ispravno radi",
+      "yourGeminiApiKeyWorkingCorrectly": "Tvoj Gemini API ključ ispravno radi",
       "invalidApiKey": "Nevažeći API ključ",
       "apiKeyCouldNotVerified": "API ključ nije mogao biti verifikovan",
       "connectionError": "Greška u vezi",
       "failedTestApiKey": "Testiranje API ključa nije uspelo",
       "invalidHeaders": "Nevažeći zaglavlja",
       "headersMustValidJson": "Zaglavlja moraju biti validan JSON",
-      "invalidRequestBody": "Nevažeće telo zahteva",
-      "bodyMustValidJson": "Telo mora biti validan JSON",
+      "invalidRequestBody": "Nevažeće telo zahteva.",
+      "bodyMustValidJson": "Tekst mora biti važeći JSON.",
       "requestFailed": "Zahtev nije uspeo",
       "responseCopiedClipboard": "Odgovor kopiran u clipboard",
       "missingFields": "Nedostaju polja",
@@ -258,14 +264,14 @@
       "creditsRequired": "Potrebni krediti",
       "pleaseAddCreditsYourLovableAi": "Dodaj kredite u svoj Lovable AI radni prostor da nastaviš.",
       "analysisComplete": "Analiza završena",
-      "aiHasGeneratedAutomationSuggestionsFor": "AI je generisao predloge za automatizaciju za tvoju situaciju",
+      "aiHasGeneratedAutomationSuggestionsFor": "AI je generisao predloge automatizacije za tvoju situaciju.",
       "analysisFailed": "Analiza neuspešna",
       "automationDeployed": "Automatizacija primenjena",
       "automationHasCreatedDisabledYouCan": "Automatizacija je kreirana (onemogućena). Možeš je omogućiti iz graditelja.",
       "deploymentFailed": "Primena neuspešna",
       "voiceConfigurationSaved": "Glasovna konfiguracija sačuvana",
       "patternLoaded": "Obrazac učitan",
-      "automationPrefilledFromDiscoveredPattern": "Automatizacija popunjena iz otkrivenog obrasca",
+      "automationPrefilledFromDiscoveredPattern": "Automatizacija je unapred popunjena na osnovu otkrivenog obrasca.",
       "failedLoadPatternData": "Neuspešno učitavanje podataka obrasca",
       "nameRequired": "Ime je obavezno",
       "pleaseEnterNameForThisAutomation": "Unesi ime za ovu automatizaciju",
@@ -282,7 +288,7 @@
       "failedModerateGroup": "Neuspešno moderiranje grupe",
       "failedLoadReports": "Neuspešno učitavanje izveštaja",
       "failedResolveReport": "Neuspešno rešavanje izveštaja",
-      "approveAllFailed": "Odobri sve neuspešno",
+      "approveAllFailed": "Sva odobrenja su propala.",
       "toggleFailed": "Preklapanje neuspešno",
       "intakeSchemaMustValidJson": "Intake šema mora biti validan JSON",
       "saved": "Sačuvano",
@@ -290,7 +296,7 @@
       "kbBindingsSaved": "KB povezivanja sačuvana",
       "routingKeywordsSaved": "Ključne reči za rutiranje sačuvane",
       "reclassifyFailed": "Preklasifikacija neuspešna",
-      "generateSpecFailed": "Generisanje specifikacije neuspešno",
+      "generateSpecFailed": "Generisanje specifikacije nije uspelo.",
       "activateFailed": "Aktivacija nije uspela",
       "rejectFailed": "Odbijanje nije uspelo",
       "forwardTriggersSaved": "Prosledni okidači sačuvani",
@@ -327,7 +333,8 @@
       "removedFromActiveList": "Uklonjeno sa aktivne liste.",
       "rollbackFailed": "Povratak nije uspeo",
       "ticketRejected": "{ticketNumber} odbijen",
-      "ticketRemovedActiveList": "Uklonjeno sa aktivne liste."
+      "ticketRemovedActiveList": "Uklonjeno sa aktivne liste.",
+      "_pending_review": {}
     },
     "audio": {
       "cameraStopped": "Kamera zaustavljena",
@@ -335,44 +342,54 @@
       "failedToggleCamera": "Prebacivanje kamere nije uspelo.",
       "screenSharingStopped": "Deljenje ekrana je zaustavljeno",
       "screenSharingStarted": "Deljenje ekrana je pokrenuto",
-      "failedToggleScreenSharing": "Neuspešno uključivanje/isključivanje deljenja ekrana"
+      "failedToggleScreenSharing": "Neuspešno uključivanje/isključivanje deljenja ekrana",
+      "_pending_review": {}
     },
     "auth": {
       "confirmationEmailSentPleaseCheckYour": "Email za potvrdu je poslat! Proveri svoje pristigle poruke.",
-      "tooManyAttemptsPleaseWaitFew": "Previše pokušaja. Sačekaj nekoliko minuta."
+      "tooManyAttemptsPleaseWaitFew": "Previše pokušaja. Sačekaj nekoliko minuta.",
+      "_pending_review": {}
     },
     "billing": {
       "paymentFailed": "Plaćanje nije uspelo",
-      "paymentSuccessful": "Plaćanje uspešno!"
+      "paymentSuccessful": "Plaćanje uspešno!",
+      "_pending_review": {}
     },
     "business": {
       "noAttendeesExport": "Nema učesnika za izvoz",
       "attendeeListExported": "Lista učesnika je izvezena!",
+      "noOrdersExport": "Nema porudžbina za izvoz",
+      "ordersExported": "Podaci o prodaji izvezeni!",
       "printTickets": "Štampaj karte",
       "ticketPrintingWillAvailableSoon": "Štampanje karata će uskoro biti dostupno.",
       "confirmationSent": "Potvrda poslata",
       "refund": "Povraćaj sredstava",
-      "refundFunctionalityWillAvailableSoon": "Funkcija povraćaja sredstava će uskoro biti dostupna."
+      "refundFunctionalityWillAvailableSoon": "Funkcija povraćaja novca biće dostupna uskoro.",
+      "_pending_review": {}
     },
     "calendar": {
-      "calendarUpdated": "Kalendar ažuriran"
+      "calendarUpdated": "Kalendar ažuriran",
+      "_pending_review": {}
     },
     "cart": {
       "signRequired": "Potrebna prijava",
-      "pleaseSignAddItemsYourCart": "Prijavi se da bi dodao/la stavke u korpu"
+      "pleaseSignAddItemsYourCart": "Prijavi se da bi dodao/la stavke u korpu",
+      "_pending_review": {}
     },
     "chat": {
       "error": "Greška",
       "pleaseEnterApiKey": "Unesi API ključ",
       "success": "Uspešno",
-      "apiKeySavedSecurelyWithEncryption": "API ključ je bezbedno sačuvan uz enkripciju"
+      "apiKeySavedSecurelyWithEncryption": "API ključ je bezbedno sačuvan uz enkripciju",
+      "_pending_review": {}
     },
     "coaches": {
-      "bookingStarted": "📅 Rezervacija je pokrenuta"
+      "bookingStarted": "📅 Rezervacija je pokrenuta",
+      "_pending_review": {}
     },
     "community": {
       "thumbnailCaptured": "Sličica je snimljena",
-      "previewNewThumbnailBelow": "Pregledaj novu sličicu ispod.",
+      "previewNewThumbnailBelow": "Pogledaj pregled nove sličice ispod.",
       "captureFailed": "Snimanje nije uspelo",
       "couldNotCaptureThumbnailFromVideo": "Nije moguće snimiti sličicu iz videa. Umesto toga, probaj da otpremiš prilagođenu sliku.",
       "validationError": "Greška u validaciji",
@@ -392,12 +409,12 @@
       "eventCreated": "Događaj kreiran",
       "yourEventCreatedButCouldnT": "Tvoj događaj je kreiran, ali nije mogao da se prikaže. Osveži stranicu.",
       "roomEnded": "Soba završena",
-      "yourSessionHasEnded": "Vaša sesija je završena",
+      "yourSessionHasEnded": "Tvoja sesija je završena",
       "failedEndRoom": "Neuspešno završavanje sobe",
       "invalidAccess": "Nevažeći pristup",
       "pleaseSignJoinLiveRooms": "Prijavi se da se pridružiš živim sobama.",
       "streamEnded": "Strim završen",
-      "yourLiveStreamHasEnded": "Vaš strim je završen",
+      "yourLiveStreamHasEnded": "Tvoj strim je završen",
       "videoError": "Greška u videu",
       "signRequired": "Potrebna prijava",
       "roomNotFound": "Soba nije pronađena",
@@ -405,7 +422,7 @@
       "notYetSupported": "Još nije podržano",
       "editingSessionsWillAvailableSoon": "Uskoro će biti dostupno uređivanje sesija",
       "streamDeleted": "Strim obrisan",
-      "yourLiveStreamHasDeleted": "Vaš strim je obrisan",
+      "yourLiveStreamHasDeleted": "Tvoj strim je obrisan",
       "addDescription": "Dodaj opis",
       "tellVitanaWhatSYourMind": "Reci Vitani šta ti je na umu.",
       "thanksVitanaHasIt": "Hvala — Vitana je primila",
@@ -417,7 +434,8 @@
       "vitanaWillFollowUp": "Vitana će se javiti.",
       "couldnTReopen": "Nije moglo ponovo da se otvori",
       "demoRoom": "Demo soba",
-      "thisExampleRoomCreateYourOwn": "Ovo je primer sobe. Napravi svoju da kreneš uživo!"
+      "thisExampleRoomCreateYourOwn": "Ovo je primer sobe. Napravi svoju da kreneš uživo!",
+      "_pending_review": {}
     },
     "crossover": {
       "bookingStarted": "📅 Rezervacija započeta",
@@ -427,7 +445,8 @@
       "joined": "✓ Pridružen/a",
       "chatStarted": "💬 Ćaskanje započeto",
       "linkCopied": "Link kopiran",
-      "podcastLinkCopiedClipboard": "Link za podkast kopiran u clipboard"
+      "podcastLinkCopiedClipboard": "Link za podkast kopiran u clipboard",
+      "_pending_review": {}
     },
     "dev": {
       "createVtid": "Kreiraj VTID",
@@ -465,13 +484,14 @@
       "catalogEntryCreated": "Kataloški unos kreiran",
       "sessionNotFound": "Sesija nije pronađena",
       "sessionRestoredSuccessfully": "Sesija uspešno obnovljena",
-      "restoringSession": "Obnavljanje sesije...",
+      "restoringSession": "Sesija se obnavlja...",
       "allSessionsCleared": "Sve sesije obrisane",
       "autopilotRunTriggeredSuccessfully": "Autopilot pokretanje uspešno aktivirano",
       "documentUploaded": "Dokument otpremljen",
       "frontpageUploaded": "Naslovna strana otpremljena",
       "diagnosticsCopiedClipboard": "Dijagnostika kopirana u clipboard",
-      "error": "Greška"
+      "error": "Greška",
+      "_pending_review": {}
     },
     "diary": {
       "notSupported": "Nije podržano",
@@ -506,7 +526,8 @@
       "saveFailed": "Čuvanje neuspešno",
       "failedSaveYourEntryPleaseTry": "Neuspešno čuvanje unosa. Pokušaj ponovo.",
       "undoAvailable": "Poništavanje dostupno",
-      "deleteLastDiaryEntry": "Obriši poslednji dnevnički unos"
+      "deleteLastDiaryEntry": "Obriši poslednji dnevnički unos",
+      "_pending_review": {}
     },
     "discover": {
       "actionSelected": "Akcija izabrana",
@@ -515,18 +536,21 @@
       "appointmentBooked": "Termin zakazan! 🎉",
       "yourAppointmentHasConfirmed": "Tvoj termin je potvrđen",
       "bookingFailed": "Zakazivanje neuspešno",
-      "pleaseTryAgain": "Pokušaj ponovo"
+      "pleaseTryAgain": "Pokušaj ponovo",
+      "_pending_review": {}
     },
     "discovery": {
       "connectionRequestSent": "Zahtev za povezivanje poslat! 💚",
       "theyLlNotifiedYourInterest": "Biće obavešteni o tvom interesovanju.",
       "superConnectSent": "Super Connect poslat! ⭐",
-      "youLlAppearAtTopTheir": "Pojavićeš se na vrhu njihovih parova!"
+      "youLlAppearAtTopTheir": "Pojavićeš se na vrhu njihovih parova!",
+      "_pending_review": {}
     },
     "events": {
       "eventDeleted": "Događaj obrisan",
       "failedDeleteEvent": "Brisanje događaja nije uspelo",
-      "pleaseTryAgainLater": "Pokušaj ponovo kasnije."
+      "pleaseTryAgainLater": "Pokušaj ponovo kasnije.",
+      "_pending_review": {}
     },
     "feedback": {
       "notSupported": "Nije podržano",
@@ -540,7 +564,8 @@
       "reportDeleted": "Izveštaj obrisan",
       "feedbackReportHasRemoved": "Izveštaj sa povratnim informacijama je uklonjen.",
       "error": "Greška",
-      "failedDeleteReportPleaseTryAgain": "Brisanje izveštaja nije uspelo. Pokušaj ponovo."
+      "failedDeleteReportPleaseTryAgain": "Brisanje izveštaja nije uspelo. Pokušaj ponovo.",
+      "_pending_review": {}
     },
     "health": {
       "couldnTStartThatYetOpen": "To još ne može da se pokrene — otvori Autopilot da probaš ponovo.",
@@ -553,7 +578,7 @@
       "couldNotSave": "Nije moglo da se sačuva",
       "workoutStarted": "Trening započet! 💪",
       "workoutCompletedGreatJob": "Trening završen! Odličan posao! 🎉",
-      "reminderSettingsOpened": "Podešavanja podsetnika otvorena",
+      "reminderSettingsOpened": "Podešavanja podsetnika su otvorena.",
       "waterIntakeLogged": "Unos vode zabeležen! 💧",
       "fileTooLarge": "Fajl je prevelik",
       "maximumFileSize20mb": "Maksimalna veličina fajla je 20MB",
@@ -569,7 +594,8 @@
       "noFileAvailable": "Nema dostupne datoteke",
       "couldNotLoadFile": "Nije moguće učitati datoteku",
       "recalibrationStarted": "🔄 Ponovno kalibriranje započeto",
-      "reportGeneration": "📊 Generisanje izveštaja"
+      "reportGeneration": "📊 Generisanje izveštaja",
+      "_pending_review": {}
     },
     "intents": {
       "moreDetailNeeded": "Potrebno više detalja",
@@ -593,15 +619,16 @@
       "networkError": "Greška u mreži",
       "linkCopied": "Link kopiran",
       "couldNotCopy": "Nije moguće kopirati",
-      "passedForNow": "Propušteno za sada",
-      "couldNotPass": "Nije moguće propustiti",
+      "passedForNow": "Preskočeno za sada.",
+      "couldNotPass": "Nije moguće preskočiti.",
       "uploadFailed": "Otpremanje nije uspelo",
       "heicheifFormatNotSupportedByBrowsers": "HEIC/HEIF format nije podržan u pretraživačima. Molimo konvertuj u JPG ili PNG.",
       "coverPhotoUploaded": "Naslovna fotografija otpremljena",
       "themedCoverReady": "Tematski omot spreman",
       "youCanReplaceItAnyTime": "Možeš ga zameniti bilo kada.",
       "coverPhotoRequired": "Naslovna fotografija je obavezna",
-      "uploadOneTapGenerateForMe": "Otpremi jednu, ili tapni ✨ Generiši za mene."
+      "uploadOneTapGenerateForMe": "Otpremi jednu, ili tapni ✨ Generiši za mene.",
+      "_pending_review": {}
     },
     "liverooms": {
       "linkCopied": "Link kopiran",
@@ -609,7 +636,22 @@
       "share": "Podeli",
       "calendarExport": "Izvoz kalendara",
       "icsFileWillDownloaded": "ICS datoteka će biti preuzeta",
-      "openingCalendar": "Otvaram kalendar"
+      "openingCalendar": "Otvaram kalendar",
+      "notifyOnTitle": "Podsetnik postavljen",
+      "notifyOnDesc": "Podsetićemo te pre nego što počne",
+      "notifyOffTitle": "Podsetnik uklonjen",
+      "notifyOffDesc": "Više te nećemo podsećati",
+      "notifyError": "Nije moguće ažurirati podsetnik",
+      "reminderActionText": "Uživo \"{title}\" počinje uskoro",
+      "savedTitle": "Sačuvano!",
+      "savedDesc": "Soba sačuvana za kasnije",
+      "unsavedTitle": "Uklonjeno iz sačuvanih",
+      "unsavedDesc": "Soba uklonjena sa tvoje liste sačuvanih",
+      "followedTitle": "Pratiš!",
+      "followedDesc": "Sada pratiš {name}",
+      "unfollowedTitle": "Više ne pratiš",
+      "unfollowedDesc": "Više ne pratiš {name}",
+      "_pending_review": {}
     },
     "meetups": {
       "signRequired": "Potrebna prijava",
@@ -624,13 +666,14 @@
       "failedSendMessage": "Neuspešno slanje poruke",
       "pleaseTryAgainLater": "Pokušaj ponovo kasnije",
       "addedSmartCalendar": "Dodato u Smart Calendar ✓",
-      "eventSavedWeLlRemindYou": "Događaj sačuvan. Podsetićemo te pre nego što počne."
+      "eventSavedWeLlRemindYou": "Događaj sačuvan. Podsetićemo te pre nego što počne.",
+      "_pending_review": {}
     },
     "memory": {
       "voiceRecorded": "Glasovni snimak sačuvan",
       "invalidFile": "Nevažeći fajl",
       "pleaseSelectImageFile": "Izaberi slikovni fajl",
-      "emptyMemory": "Prazna uspomena",
+      "emptyMemory": "Podsetnik je prazan.",
       "pleaseAddSomeContentYourMemory": "Dodaj malo sadržaja u svoju uspomenu",
       "memorySaved": "Uspomena sačuvana",
       "yourMemoryHasAddedYourKnowledge": "Tvoja uspomena je dodata u bazu znanja",
@@ -650,12 +693,12 @@
       "linkCopiedClipboard": "Link kopiran u clipboard",
       "editFunctionalityComingSoon": "Funkcija uređivanja uskoro",
       "photoDeleted": "Fotografija obrisana",
-      "privacySettingsSaved": "Podešavanja privatnosti sačuvana",
-      "yourPrivacyPreferencesHaveUpdated": "Tvoje preferencije privatnosti su ažurirane.",
+      "privacySettingsSaved": "Podešavanja privatnosti su sačuvana.",
+      "yourPrivacyPreferencesHaveUpdated": "Tvoja podešavanja privatnosti su ažurirana.",
       "notSupported": "Nije podržano",
       "microphoneRecordingNotSupportedThisDevice": "Snimanje mikrofona nije podržano na ovom uređaju.",
       "recordingStarted": "Snimanje je počelo",
-      "speakNowYourAudioWillTranscribed": "Govorite sada — vaš audio će biti transkribovan kada zaustavite.",
+      "speakNowYourAudioWillTranscribed": "Govorite sada — tvoj audio će biti transkribovan kada zaustavite.",
       "recordingError": "Greška pri snimanju",
       "speechRecognitionNotSupportedThisBrowser": "Prepoznavanje govora nije podržano u ovom pregledaču.",
       "recognitionError": "Greška u prepoznavanju",
@@ -670,10 +713,11 @@
       "reviewEditYourTranscriptionBeforeSaving": "Pregledajte i uredite transkripciju pre nego što sačuvate.",
       "transcriptionFailed": "Transkripcija nije uspela",
       "noContent": "Nema sadržaja",
-      "pleaseRecordEnterSomeContentBefore": "Molimo snimite ili unesite sadržaj pre čuvanja.",
+      "pleaseRecordEnterSomeContentBefore": "Molimo te da snimiš nešto ili uneseš sadržaj pre čuvanja.",
       "entrySaved": "Unos sačuvan",
-      "yourDiaryEntryHasAddedYour": "Vaš dnevnički unos je dodat na vašu vremensku liniju sećanja.",
-      "couldNotSaveYourDiaryEntry": "Nije moguće sačuvati vaš dnevnički unos. Pokušajte ponovo."
+      "yourDiaryEntryHasAddedYour": "Tvoj dnevnički unos je dodat na tvoju vremensku liniju sećanja.",
+      "couldNotSaveYourDiaryEntry": "Nije moguće sačuvati tvoj dnevnički unos. Pokušajte ponovo.",
+      "_pending_review": {}
     },
     "messages": {
       "newResponse": "🎉 Novi odgovor!",
@@ -681,10 +725,10 @@
       "processingCalendarEvent": "Obrada kalendarskog događaja...",
       "calendarUpdated": "Kalendar ažuriran",
       "calendarEventQueued": "Kalendarski događaj u redu čekanja",
-      "eventWillAddedYourCalendarShortly": "Događaj će biti dodat u vaš kalendar uskoro",
+      "eventWillAddedYourCalendarShortly": "Događaj će biti dodat u tvoj kalendar uskoro",
       "inviteSent": "Poziv poslat",
       "signAddEventYourCalendar": "Prijavite se da biste dodali događaj u svoj kalendar.",
-      "pleaseWait": "Molimo sačekajte",
+      "pleaseWait": "Molimo te da sačekaš.",
       "stillSyncingThisMessageTryAgain": "Još uvek se sinhronizuje ova poruka. Pokušajte ponovo za trenutak.",
       "responseSent": "Odgovor poslat",
       "calendarInviteError": "Greška pri pozivu iz kalendara",
@@ -710,18 +754,21 @@
       "selectOpenConversationBeforeAttachingFiles": "Izaberi ili otvori razgovor pre nego što priložiš fajlove.",
       "uploadFailed": "Otpremanje neuspešno",
       "failedSendVoiceMessage": "Neuspešno slanje glasovne poruke",
-      "thereErrorSendingYourVoiceMessage": "Došlo je do greške prilikom slanja tvoje glasovne poruke"
+      "thereErrorSendingYourVoiceMessage": "Došlo je do greške prilikom slanja tvoje glasovne poruke",
+      "_pending_review": {}
     },
     "notifications": {
       "bookingConfirmed": "Rezervacija potvrđena! 🎉",
       "paymentReceived": "Uplata primljena! 💰",
       "creditsTransferred": "Krediti preneti! ✨",
       "newServiceBooking": "Nova rezervacija usluge! 📅",
-      "eventRegistration": "Prijava na događaj! 🎊"
+      "eventRegistration": "Prijava na događaj! 🎊",
+      "_pending_review": {}
     },
     "onboarding": {
       "networkError": "Mrežna greška",
-      "thisYourSpeakableIdAcrossVitana": "Ovo je tvoj govorni ID na Vitani. Trajan — biraj mudro!"
+      "thisYourSpeakableIdAcrossVitana": "Ovo je tvoj govorni ID na Vitani. Trajan — biraj mudro!",
+      "_pending_review": {}
     },
     "payment": {
       "missingInformation": "Nedostaju informacije",
@@ -770,7 +817,8 @@
       "paymentRequestSent": "Zahtev za plaćanje poslat! 💸",
       "failedSendPaymentRequest": "Slanje zahteva za plaćanje nije uspelo",
       "pleaseFillAllRequiredFields": "Popuni sva obavezna polja",
-      "exchangeSendRequestSent": "Zahtev za razmenu i slanje poslat! ✨"
+      "exchangeSendRequestSent": "Zahtev za razmenu i slanje poslat! ✨",
+      "_pending_review": {}
     },
     "proactive": {
       "messageGenerated": "Poruka generisana!",
@@ -779,7 +827,8 @@
       "invitationMessageCopiedClipboard": "Poruka poziva je kopirana u clipboard",
       "autoshareScheduled": "Automatsko deljenje zakazano!",
       "editPost": "Uredi objavu",
-      "postEditorComingSoon": "Uređivač objave uskoro stiže!"
+      "postEditorComingSoon": "Uređivač objave uskoro stiže!",
+      "_pending_review": {}
     },
     "profile": {
       "qrCodeDownloaded": "QR kod preuzet",
@@ -790,14 +839,14 @@
       "yourProfileHasEnrichedWithLinkedin": "Tvoj profil je obogaćen LinkedIn podacima.",
       "importFailed": "Uvoz nije uspeo",
       "accountUpdated": "Nalog ažuriran",
-      "yourPersonalDetailsHaveSaved": "Vaši lični podaci su sačuvani.",
+      "yourPersonalDetailsHaveSaved": "Tvoji lični podaci su sačuvani.",
       "couldNotSave": "Nije moguće sačuvati",
       "couldNotSavePreferences": "Nije moguće sačuvati podešavanja",
       "couldNotLoadPreferences": "Nije moguće učitati podešavanja",
       "partnerPreferencesSaved": "Podešavanja partnera sačuvana",
       "saveFailed": "Čuvanje nije uspelo",
       "couldNotLoadOfferings": "Nije moguće učitati ponude",
-      "serviceOfferingsSaved": "Ponude usluga sačuvane",
+      "serviceOfferingsSaved": "Ponude usluga su sačuvane.",
       "uploadFailed": "Otpremanje nije uspelo",
       "heicheifFormatNotSupportedByBrowsers": "HEIC/HEIF format nije podržan u pregledačima. Molimo konvertuj u JPG ili PNG.",
       "avatarUploaded": "Avatar otpremljen",
@@ -819,7 +868,7 @@
       "canTMessageYourself": "Ne možeš sebi da pišeš.",
       "youCannotSendMessagesYourOwn": "Ne možeš slati poruke svom profilu.",
       "messageSent": "Poruka poslata",
-      "yourMessageHasSentSuccessfully": "Vaša poruka je uspešno poslata",
+      "yourMessageHasSentSuccessfully": "Tvoja poruka je uspešno poslata",
       "error": "Greška",
       "failedSendMessagePleaseTryAgain": "Slanje poruke nije uspelo. Pokušaj ponovo.",
       "qrCodeSavedSuccessfully": "QR kod uspešno sačuvan",
@@ -836,7 +885,8 @@
       "universalCoverRemoved": "Univerzalna naslovna fotografija uklonjena",
       "libraryPhotoUploaded": "Fotografija dodata u biblioteku",
       "libraryPhotoRemoved": "Fotografija uklonjena",
-      "categoryRequired": "Molim te prvo izaberi kategoriju."
+      "categoryRequired": "Molim te prvo izaberi kategoriju.",
+      "_pending_review": {}
     },
     "reminders": {
       "notificationsArenTSupportedThisBrowser": "Obaveštenja nisu podržana u ovom pregledaču.",
@@ -848,14 +898,20 @@
       "invalidTime": "Neispravno vreme",
       "reminderCreated": "Podsetnik kreiran",
       "reminderDeleted": "Podsetnik obrisan",
-      "markedDone": "Označeno kao završeno"
+      "markedDone": "Označeno kao završeno",
+      "failedToCreate": "Nije uspelo kreiranje podsetnika",
+      "failedToDelete": "Nije uspelo brisanje podsetnika",
+      "failedToMarkDone": "Nije uspelo označavanje kao završeno",
+      "remindersDeleted": "{count} podsetnika obrisano",
+      "_pending_review": {}
     },
     "reseller": {
       "activatingYourResellerProfile": "Aktiviranje tvog prodajnog profila...",
       "linkCopiedClipboard": "Link kopiran u clipboard!",
       "failedCopyPleaseSelectCopyManually": "Kopiranje nije uspelo. Molim te izaberi i kopiraj ručno.",
       "linkCopiedPasteItYourInstagram": "Link kopiran! Nalepi ga u svoj Instagram bio ili story.",
-      "failedCopyLink": "Kopiranje linka nije uspelo."
+      "failedCopyLink": "Kopiranje linka nije uspelo.",
+      "_pending_review": {}
     },
     "settings": {
       "googleConnected": "Google povezan",
@@ -880,7 +936,8 @@
       "failedSwitchRolePleaseTryAgain": "Promena uloge nije uspela. Pokušaj ponovo.",
       "organizationSwitched": "Organizacija je promenjena",
       "errorSwitchingOrganization": "Greška pri promeni organizacije",
-      "failedSwitchOrganizationPleaseTryAgain": "Promena organizacije nije uspela. Pokušaj ponovo."
+      "failedSwitchOrganizationPleaseTryAgain": "Nije bilo moguće promeniti organizaciju. Pokušaj ponovo.",
+      "_pending_review": {}
     },
     "sharing": {
       "channelNotConnected": "Kanal nije povezan",
@@ -938,8 +995,8 @@
       "openingMessagingApp": "Otvaram aplikaciju za poruke...",
       "messageCopiedPasteItIntoViber": "Poruka kopirana – nalepi je u Viber",
       "linkCopiedClipboard": "Link kopiran u clipboard",
-      "privacySettingsUpdated": "Podešavanja privatnosti ažurirana",
-      "yourGlobalPrivacyControlsHaveSaved": "Tvoje globalne kontrole privatnosti su sačuvane.",
+      "privacySettingsUpdated": "Podešavanja privatnosti ažurirana.",
+      "yourGlobalPrivacyControlsHaveSaved": "Tvoja globalna podešavanja privatnosti su sačuvana.",
       "openingMessenger": "Otvaram Messenger...",
       "shareViaVitanaMessenger": "Podeli putem Vitana Messenger",
       "shareOpened": "Deljenje otvoreno",
@@ -958,7 +1015,8 @@
       "postPublished": "Objavljeno!",
       "campaignsExportedCsv": "Kampanje izvezene u CSV",
       "smartrescheduleFeatureComingSoon": "Smart-Reschedule funkcija dolazi uskoro!",
-      "viberNotDetectedLinkCopiedClipboard": "Viber nije detektovan. Link je kopiran u clipboard!"
+      "viberNotDetectedLinkCopiedClipboard": "Viber nije detektovan. Link je kopiran u clipboard!",
+      "_pending_review": {}
     },
     "tickets": {
       "ticketDownloaded": "Karta preuzeta!",
@@ -971,7 +1029,8 @@
       "ticketDownloadedOpeningEmail": "Karta preuzeta! Otvaram email...",
       "ticketDownloadedOpeningMessages": "Karta preuzeta! Otvaram poruke...",
       "ticketSaved": "Karta sačuvana!",
-      "eventDetailsCopied": "Detalji događaja kopirani!"
+      "eventDetailsCopied": "Detalji događaja kopirani!",
+      "_pending_review": {}
     },
     "wallet": {
       "invalidAmount": "Nevažeći iznos",
@@ -1008,7 +1067,7 @@
       "pleaseEnterValidAmount": "Unesite važeći iznos",
       "insufficientCreditsBalance": "Nedovoljno kredita",
       "success": "Uspešno",
-      "failedProcessSpendingPleaseTryAgain": "Obrada potrošnje nije uspela. Pokušajte ponovo.",
+      "failedProcessSpendingPleaseTryAgain": "Tvoj izlaz nije mogao biti obrađen. Pokušaj ponovo.",
       "pleaseEnterValidStakingAmount": "Unesite važeći iznos za ulog",
       "insufficientBalance": "❌ Nedovoljno sredstava",
       "youDonTHaveEnoughVtna": "Nemate dovoljno VTNA tokena za ulog",
@@ -1022,7 +1081,8 @@
       "withdrawalFailed": "Povlačenje nije uspelo",
       "somethingWentWrongPleaseTryAgain": "Nešto je pošlo po zlu. Pokušajte ponovo.",
       "pleaseSelectRecipientEnterAmount": "Izaberite primaoca i unesite iznos",
-      "exchangeSendComplete": "✅ Razmena i slanje završeni!"
+      "exchangeSendComplete": "✅ Razmena i slanje završeno!",
+      "_pending_review": {}
     },
     "hooks": {
       "error": "Greška",
@@ -1058,12 +1118,12 @@
       "failedRemoveBookmark": "Neuspešno uklanjanje obeleživača",
       "uploadComplete": "Otpremanje završeno",
       "packageCreated": "Paket kreiran",
-      "yourPackageHasCreatedSuccessfully": "Vaš paket je uspešno kreiran.",
+      "yourPackageHasCreatedSuccessfully": "Tvoj paket je uspešno kreiran.",
       "packageUpdated": "Paket ažuriran",
-      "yourPackageHasUpdatedSuccessfully": "Vaš paket je uspešno ažuriran.",
-      "yourPackageItemsHaveUpdatedSuccessfully": "Vaš paket i stavke su uspešno ažurirani.",
+      "yourPackageHasUpdatedSuccessfully": "Tvoj paket je uspešno ažuriran.",
+      "yourPackageItemsHaveUpdatedSuccessfully": "Tvoj paket i stavke su uspešno ažurirani.",
       "packageDeleted": "Paket obrisan",
-      "yourPackageHasDeleted": "Vaš paket je obrisan.",
+      "yourPackageHasDeleted": "Tvoj paket je obrisan.",
       "eventAdded": "Događaj dodat",
       "eventRemoved": "Događaj uklonjen",
       "eventHasRemovedFromYourCalendar": "Događaj je uklonjen iz vašeg kalendara",
@@ -1081,12 +1141,12 @@
       "campaignDistributionStartedSuccessfully": "Distribucija kampanje uspešno pokrenuta",
       "pleaseSignAddItemsCart": "Prijavi se da bi dodao stavke u korpu.",
       "addedCart": "Dodato u korpu",
-      "failedAddCart": "Neuspešno dodavanje u korpu",
-      "failedUpdateQuantity": "Neuspešno ažuriranje količine",
+      "failedAddCart": "Dodavanje u korpu neuspešno.",
+      "failedUpdateQuantity": "Količina nije mogla biti ažurirana.",
       "removedFromCart": "Uklonjeno iz korpe",
-      "failedRemoveFromCart": "Neuspešno uklanjanje iz korpe",
+      "failedRemoveFromCart": "Uklanjanje iz korpe neuspešno.",
       "cartCleared": "Korpa ispražnjena",
-      "failedClearCart": "Nije uspelo brisanje korpe",
+      "failedClearCart": "Pražnjenje korpe neuspešno.",
       "pleaseSignCheckout": "Prijavi se da bi nastavio",
       "yourCartEmpty": "Tvoja korpa je prazna",
       "failedStartCheckout": "Nije uspelo pokretanje kupovine",
@@ -1137,7 +1197,7 @@
       "joinedEvent": "Pridružili ste se događaju! 🎉",
       "pleaseSignGetPersonalizedRecommendations": "Prijavite se da biste dobili personalizovane preporuke",
       "generatingRecommendations": "Generisanje preporuka",
-      "aiAnalyzingYourPreferences": "AI analizira vaše preferencije...",
+      "aiAnalyzingYourPreferences": "AI analizira tvoje preferencije...",
       "recommendationsReady": "Preporuke spremne!",
       "failedLoadYourTickets": "Učitavanje vaših karata nije uspelo",
       "failedFollowUser": "Praćenje korisnika nije uspelo",
@@ -1151,20 +1211,20 @@
       "youCannotFollowYourself": "Ne možete pratiti sami sebe",
       "pleaseSignUnfollowUsers": "Prijavite se da biste otpratili korisnike",
       "glassModeActive": "Stakleni režim aktivan",
-      "aiWatchingYourScreen": "AI posmatra vaš ekran",
+      "aiWatchingYourScreen": "AI posmatra tvoj ekran",
       "glassModeFailed": "Stakleni režim nije uspeo",
       "glassModeStopped": "Stakleni režim zaustavljen",
       "screenCaptureHasDisabled": "Snimanje ekrana je onemogućeno",
       "planGeneratedSuccessfully": "Plan uspešno generisan! 🎯",
       "progressLogged": "Napredak zabeležen! 📝",
       "knowledgeDeleted": "Znanje obrisano",
-      "itemHasRemovedFromYourKnowledge": "Stavka je uklonjena iz vaše baze znanja.",
+      "itemHasRemovedFromYourKnowledge": "Stavka je uklonjena iz tvoje baze znanja.",
       "errorDeletingKnowledge": "Greška pri brisanju znanja",
       "knowledgeUpdated": "Znanje ažurirano",
-      "yourChangesHaveSaved": "Vaše izmene su sačuvane.",
+      "yourChangesHaveSaved": "Tvoje izmene su sačuvane.",
       "errorUpdatingKnowledge": "Greška pri ažuriranju znanja",
       "knowledgeCreated": "Znanje kreirano",
-      "newItemAddedYourKnowledgeBase": "Nova stavka dodata u vašu bazu znanja.",
+      "newItemAddedYourKnowledgeBase": "Nova stavka dodata u tvoju bazu znanja.",
       "errorCreatingKnowledge": "Greška pri kreiranju znanja",
       "errorLoadingKnowledgeBase": "Greška pri učitavanju baze znanja",
       "lifeCompassUpdated": "Životni kompas ažuriran",
@@ -1233,7 +1293,7 @@
       "cannotSharePrivateProfile": "Ne možeš deliti privatni profil.",
       "profileMustPublicShare": "Profil mora biti javan da bi se delio",
       "profileLinkCopied": "Link profila kopiran",
-      "shareLinkHasCopiedClipboard": "Link za deljenje je kopiran u clipboard",
+      "shareLinkHasCopiedClipboard": "Link za deljenje kopiran u klipbord.",
       "failedCopy": "Kopiranje nije uspelo",
       "pleaseTryAgain": "Pokušaj ponovo",
       "linkCopied": "Link kopiran!",
@@ -1244,7 +1304,7 @@
       "pleaseTryAnotherSharingMethod": "Pokušajte drugi način deljenja",
       "failedRequestPayout": "Zahtev za isplatu nije uspeo",
       "commissionCreditedWallet": "Provizija uplaćena u novčanik!",
-      "failedCreditPayoutWallet": "Uplata provizije u novčanik nije uspela",
+      "failedCreditPayoutWallet": "Isplata kredita u novčanik neuspešna.",
       "failedTransferWallet": "Prenos u novčanik nije uspeo",
       "postScheduledSuccessfully": "Post je uspešno zakazan",
       "scheduledPostCancelled": "Zakazani post je otkazan",
@@ -1262,15 +1322,15 @@
       "supplementAddedSuccessfully": "Suplement je uspešno dodat",
       "failedAddSupplement": "Neuspešno dodavanje suplementa",
       "supplementUpdatedSuccessfully": "Suplement je uspešno ažuriran",
-      "failedUpdateSupplement": "Neuspešno ažuriranje suplementa",
+      "failedUpdateSupplement": "Ažuriranje suplementa neuspešno.",
       "supplementDeletedSuccessfully": "Suplement je uspešno obrisan",
-      "failedDeleteSupplement": "Neuspešno brisanje suplementa",
+      "failedDeleteSupplement": "Brisanje suplementa neuspešno.",
       "screenSharingStarted": "Deljenje ekrana je pokrenuto",
-      "yourScreenContextNowAnalyzed": "Vaš ekran se sada analizira",
+      "yourScreenContextNowAnalyzed": "Tvoj ekran se sada analizira",
       "screenSharingFailed": "Deljenje ekrana nije uspelo",
       "couldNotAccessScreenSharing": "Nije moguće pristupiti deljenju ekrana",
       "cameraStarted": "Kamera je pokrenuta",
-      "yourCameraContextNowAnalyzed": "Kontekst vaše kamere se sada analizira",
+      "yourCameraContextNowAnalyzed": "Kontekst tvoje kamere se sada analizira",
       "cameraFailed": "Kamera nije uspela",
       "couldNotAccessCamera": "Nije moguće pristupiti kameri",
       "visualContextStopped": "Vizuelni kontekst je zaustavljen",
@@ -1286,58 +1346,79 @@
       "exchangeSendSuccessful": "Razmena i slanje uspešni! ✨",
       "exchangeSendFailed": "Razmena i slanje nisu uspeli",
       "linkAvailable": "Link je dostupan",
-      "errorUpdatingPreferences": "Greška pri ažuriranju podešavanja"
+      "errorUpdatingPreferences": "Greška pri ažuriranju podešavanja",
+      "failedPurchaseTicket": "Nije uspela kupovina karte",
+      "_pending_review": {}
     },
     "businesslistings": {
-      "couldNotLoadListings": "Nije moguće učitati liste"
+      "couldNotLoadListings": "Nije moguće učitati liste",
+      "_pending_review": {}
     },
     "businessopportunities": {
-      "couldNotLoadOpportunities": "Nije moguće učitati prilike"
+      "couldNotLoadOpportunities": "Nije moguće učitati prilike",
+      "_pending_review": {}
     },
     "checkoutsuccess": {
       "orderConfirmed": "Porudžbina potvrđena!",
-      "yourPaymentSuccessfulCheckYourEmail": "Uplata je uspela. Proveri e-poštu za detalje porudžbine."
+      "yourPaymentSuccessfulCheckYourEmail": "Uplata je uspela. Proveri e-poštu za detalje porudžbine.",
+      "_pending_review": {}
     },
     "intentboard": {
-      "couldNotLoadBoard": "Nije moguće učitati tablu"
+      "couldNotLoadBoard": "Nije moguće učitati tablu",
+      "_pending_review": {}
     },
     "intentmatchdetail": {
       "couldNotLoadMatchDetail": "Nije moguće učitati detalje meča",
-      "intentClosed": "Namera zatvorena",
-      "couldNotClose": "Nije moguće zatvoriti"
+      "intentClosed": "Namena završena.",
+      "couldNotClose": "Nije moguće zatvoriti",
+      "_pending_review": {}
     },
     "introexperience": {
       "audioPlaybackFailed": "Reprodukcija zvuka nije uspela",
-      "audioUnavailableNow": "Zvuk trenutno nije dostupan"
+      "audioUnavailableNow": "Zvuk trenutno nije dostupan",
+      "_pending_review": {}
     },
     "invitefriends": {
       "nameRequired": "Ime je obavezno",
       "pleaseProvideEmailPhone": "Molimo navedi e-poštu ili telefon",
       "contactAdded": "Kontakt dodat",
-      "failedSendInvites": "Slanje pozivnica nije uspelo"
+      "failedSendInvites": "Slanje pozivnica nije uspelo",
+      "_pending_review": {}
     },
     "myintents": {
-      "couldNotLoadIntents": "Nije moguće učitati namere"
+      "couldNotLoadIntents": "Nije uspelo učitavanje namena.",
+      "_pending_review": {}
     },
     "packagepurchasesuccess": {
       "paymentConfirmed": "Plaćanje potvrđeno!",
-      "yourPackagePurchaseSuccessful": "Kupovina paketa je uspela."
+      "yourPackagePurchaseSuccessful": "Kupovina paketa je uspela.",
+      "_pending_review": {}
     },
     "privacysettings": {
-      "couldNotSave": "Nije moguće sačuvati"
+      "couldNotSave": "Nije moguće sačuvati",
+      "_pending_review": {}
     },
     "home": {
-      "removedFromMemory": "Uklonjeno iz Memorije",
+      "removedFromMemory": "Uklonjeno iz skladišta.",
       "activityHasRemovedFromYourKnowledge": "Aktivnost je uklonjena iz tvoje baze znanja.",
-      "savedMemory": "Sačuvano u Memoriju",
+      "savedMemory": "Sačuvano u skladištu.",
       "activityHasSavedYourKnowledgeBase": "Aktivnost je sačuvana u tvoju bazu znanja.",
       "actionExecuted": "Akcija izvršena",
       "yourActionHasCompletedSuccessfully": "Tvoja akcija je uspešno završena.",
       "actionDismissed": "Akcija odbačena",
-      "thisActionHasRemovedFromYour": "Ova akcija je uklonjena sa tvoje liste."
+      "thisActionHasRemovedFromYour": "Ova akcija je uklonjena sa tvoje liste.",
+      "_pending_review": {}
     },
     "index": {
-      "vitanaDevGatewayUrlNotConfigured": "Vitana Dev Gateway URL nije konfigurisan"
-    }
-  }
+      "vitanaDevGatewayUrlNotConfigured": "Vitana Dev Gateway URL nije konfigurisan",
+      "_pending_review": {}
+    },
+    "dailyGoal": {
+      "title": "Čestitamo! Današnji cilj postignut 🎉",
+      "body": "Samo nastavi.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -14,6 +14,26 @@
     "hydration": "الترطيب",
     "mental": "العقلي",
     "viewFullReport": "عرض التقرير الكامل",
-    "trackToday": "تتبع اليوم"
-  }
+    "trackToday": "تتبع اليوم",
+    "tiers": {
+      "starting": "مبتدئ",
+      "early": "مبكر",
+      "building": "يتطور",
+      "strong": "قوي",
+      "reallyGood": "جيد جداً",
+      "elite": "نخبة",
+      "_pending_review": {}
+    },
+    "framings": {
+      "starting": "بدأت للتو",
+      "early": "الأساس راسخ",
+      "building": "العادات تتشكل",
+      "strong": "معلم 90 يوماً",
+      "reallyGood": "مزدهر",
+      "elite": "نخبة",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

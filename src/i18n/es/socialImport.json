@@ -1,6 +1,6 @@
 {
   "socialImport": {
-    "dialogTitle": "Importar perfil de {platform}",
+    "dialogTitle": "{platform} Importar Perfil",
     "dialogDescription": "Conecta tu perfil de {platform} para enriquecer tu identidad Vitana con información potenciada por IA.",
     "profileUrl": "URL del perfil de {platform}",
     "bioLabel": "Biografía / Sección Acerca de",
@@ -20,12 +20,15 @@
     "noAccountsConnected": "No hay cuentas sociales conectadas",
     "connectAccounts": "Conectar cuentas",
     "platformHelp": {
-      "linkedin": "Usaremos IA para extraer tu titular, resumen y habilidades profesionales.",
-      "instagram": "Analizaremos tu biografía para entender tus intereses y temas de estilo de vida.",
-      "tiktok": "Extraeremos tus temas de contenido y personalidad creativa de tu biografía.",
-      "youtube": "Identificaremos tus categorías de contenido y áreas de expertise a partir de tu descripción.",
-      "facebook": "Extraeremos tus intereses y participación comunitaria de tu biografía.",
-      "x": "Analizaremos tu biografía para entender tus temas de interés y estilo de comunicación."
-    }
-  }
+      "linkedin": "Usamos IA para extraer tu titular, resumen y habilidades profesionales.",
+      "instagram": "Analizamos tu biografía para entender tus intereses y temas de estilo de vida.",
+      "tiktok": "Extraemos tus temas de contenido y personalidad creativa de tu biografía.",
+      "youtube": "Identificamos tus categorías de contenido y áreas de experiencia de tu descripción.",
+      "facebook": "Extraemos tus intereses y participación comunitaria de tu biografía.",
+      "x": "Analizamos tu biografía para entender tus áreas temáticas y estilo de comunicación.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

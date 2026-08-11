@@ -39,11 +39,55 @@
 name: AWS Prod Deploy Frontend (ECS, DR)
 
 on:
+  # Callable by DEPLOY.yml so the documented "deploy the frontend to
+  # production" action actually reaches production (VTID-03483).
+  # vitanaland.com is served by this ECS service, not by Cloud Run, so a
+  # Cloud-Run-only deploy leaves users on the previous build while every
+  # status check reports success.
+  workflow_call:
+    inputs:
+      reason:
+        description: 'Reason for this AWS production frontend deploy — required'
+        required: true
+        type: string
+      commit_sha:
+        description: 'Exact commit to build. Empty → the calling ref.'
+        required: false
+        default: ''
+        type: string
+      gateway_url:
+        required: false
+        default: 'https://gateway.vitanaland.com'
+        type: string
+      frontend_url:
+        required: false
+        default: 'https://dr-app.vitanaland.com'
+        type: string
+      aws_region:
+        required: false
+        default: 'eu-central-1'
+        type: string
+      ecr_repository:
+        required: false
+        default: 'vitana/community-app'
+        type: string
+      ecs_cluster:
+        required: false
+        default: 'Vitana-ECS-Cluster'
+        type: string
+      ecs_service:
+        required: false
+        default: 'vitana-community-app-awsdr'
+        type: string
   workflow_dispatch:
     inputs:
       reason:
         description: 'Reason for this AWS production (DR) frontend deploy — required'
         required: true
+      commit_sha:
+        description: 'Exact commit SHA to build. Empty → main HEAD.'
+        required: false
+        default: ''
       gateway_url:
         description: 'Gateway base URL to bake into the bundle (canonical GCP prod by default)'
         required: false
@@ -88,7 +132,12 @@ jobs:
       ECS_SERVICE: ${{ inputs.ecs_service }}
       DEPLOY_REASON: ${{ inputs.reason }}
     steps:
+      # Build the exact commit the caller pinned (DEPLOY.yml passes the same
+      # commit_sha it deploys to Cloud Run, so both stacks ship one build);
+      # empty → whatever ref this run was started on.
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit_sha != '' && inputs.commit_sha || github.sha }}
 
       - name: Write .env.production with the canonical prod gateway URL
         run: |

@@ -1,0 +1,23 @@
+{
+  "editProfile": {
+    "unsavedChanges": "你有未保存的更改。你确定要离开吗？",
+    "notAuthenticated": "未登录",
+    "notAuthenticatedDesc": "请登录以保存你的个人资料。",
+    "profileUpdated": "个人资料更新成功！",
+    "profileUpdatedDesc": "你的更改已生效。你的 Vitana 个人资料看起来很棒。",
+    "error": "错误",
+    "refreshFailed": "刷新个人资料失败。",
+    "showcaseHint": "选择要置顶显示在你个人资料的帖子和内容。",
+    "showcaseTitle": "精选",
+    "manage": "管理",
+    "about": "关于",
+    "addBio": "添加个人简介...",
+    "tapToEdit": "轻触编辑",
+    "title": "标题",
+    "titlePlaceholder": "视频标题",
+    "description": "描述",
+    "descriptionPlaceholder": "可选描述...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

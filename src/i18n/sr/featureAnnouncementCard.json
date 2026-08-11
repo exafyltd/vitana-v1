@@ -1,0 +1,20 @@
+{
+  "featureAnnouncementCard": {
+    "brandNew": {
+      "eyebrow": "Nova funkcija",
+      "badge": "Novo",
+      "intro": "Od sada možeš:",
+      "cta": "Probaj i ti",
+      "closing": "Srećno testiranje 🥳",
+      "_pending_review": {}
+    },
+    "didYouKnow": {
+      "eyebrow": "Da li znaš?",
+      "intro": "Možeš:",
+      "cta": "Probaj sada",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

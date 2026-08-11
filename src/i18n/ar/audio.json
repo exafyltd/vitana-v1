@@ -1,0 +1,9 @@
+{
+  "audio": {
+    "listening": "أستمع...",
+    "processing": "لحظة واحدة...",
+    "connectionError": "مشكلة في الاتصال. حاول مرة أخرى.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

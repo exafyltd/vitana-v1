@@ -1,0 +1,33 @@
+{
+  "discount": {
+    "welcomeTitle": "هدية ترحيبك",
+    "welcomeMessage": "استخدم هذا الرمز لخصم 10% على أول حدث لك",
+    "validFor": "صالح لمدة 90 يومًا",
+    "applyCode": "تطبيق رمز الخصم",
+    "applied": "تم تطبيق الخصم!",
+    "expired": "انتهت صلاحية هذا الرمز",
+    "invalid": "رمز خصم غير صالح",
+    "bannerAvailable": "خصم ترحيبي متاح",
+    "tapToApply": "تطبيق",
+    "discountAppliedAmount": "{percent}% خصم مطبق",
+    "remove": "إزالة",
+    "ticketsComing": "التذاكر قريباً",
+    "contactOrganizer": "تواصل مع المنظم للحصول على معلومات التذاكر.",
+    "contactOrganizerPrice": "يكلف هذا الحدث ${price}. تواصل مع المنظم لمعرفة توفر التذاكر.",
+    "soldOut": "نفدت التذاكر",
+    "salesEnded": "انتهت المبيعات",
+    "salesStart": "تبدأ المبيعات {date}",
+    "free": "مجاني",
+    "ticketsSelected": "تم اختيار {count} تذكرة",
+    "useAccountEmail": "استخدم بريد حسابي الإلكتروني",
+    "buyAsGuest": "اشترِ كضيف (لا يوجد حساب)",
+    "guestDetails": "أدخل تفاصيلك للحصول على تذكرتك. لا يلزم وجود حساب.",
+    "fullName": "الاسم الكامل",
+    "email": "البريد الإلكتروني",
+    "ticketEmailNote": "سيتم إرسال تذكرتك وتأكيدها إلى هذا البريد الإلكتروني.",
+    "left": "{count} متبقٍ",
+    "loadFailed": "فشل تحميل التذاكر",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

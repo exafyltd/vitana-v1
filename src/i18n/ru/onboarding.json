@@ -1,0 +1,32 @@
+{
+  "onboarding": {
+    "welcome": "Добро пожаловать в VITANA",
+    "subtitle": "Твоя персонализированная платформа долголетия",
+    "connectApps": "Подключи Свои Приложения",
+    "connectAppsDesc": "Подключи свои приложения для здоровья и благополучия для лучшего понимания",
+    "setGoals": "Установи Свои Цели",
+    "setGoalsDesc": "Определи свои цели в области здоровья и долголетия",
+    "joinCommunity": "Присоединись к Сообществу",
+    "joinCommunityDesc": "Общайся с единомышленниками на похожих путях",
+    "getStarted": "Начни",
+    "skip": "Пропустить пока",
+    "skipIntro": "Пропустить вступление",
+    "nameForm": {
+      "title": "Давай познакомимся",
+      "subtitle": "Так другие будут видеть тебя в сообществе",
+      "displayNameLabel": "Как мне тебя называть?",
+      "displayNamePlaceholder": "Твое имя",
+      "handleLabel": "Выбери свое имя пользователя Vitanaland",
+      "handlePlaceholder": "your_username",
+      "handleTaken": "Это имя пользователя уже занято",
+      "handleInvalid": "Разрешены только буквы, цифры и нижние подчеркивания",
+      "handleAvailable": "Имя пользователя доступно!",
+      "handleMinLength": "Минимум 3 символа",
+      "saving": "Настройка...",
+      "submit": "Давай начнем!",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

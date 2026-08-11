@@ -1,0 +1,34 @@
+{
+  "wallet": {
+    "title": "Кошелёк",
+    "description": "Твой баланс, кредиты и награды",
+    "usdBalance": "Баланс EUR / USD",
+    "creditsBalance": "Баланс кредитов VTNA",
+    "creditsLabel": "Кредиты VTNA",
+    "available": "Доступно",
+    "staked": "В стейкинге",
+    "searchWallet": "Поиск по кошельку...",
+    "tabs": {
+      "balances": "Балансы",
+      "activity": "Активность",
+      "actions": "Действия",
+      "_pending_review": {}
+    },
+    "filters": {
+      "commissions": "Продавай и зарабатывай комиссии",
+      "transfers": "Переводы",
+      "exchanges": "Обмены",
+      "rewards": "Награды",
+      "purchases": "Покупки",
+      "pending": "Ожидаемые выплаты",
+      "withdrawals": "Выводы",
+      "stakes": "Стейкинг",
+      "_pending_review": {}
+    },
+    "noActivity": "Пока нет активности",
+    "noActivityDesc": "Твои транзакции появятся здесь.",
+    "displayCurrency": "Валюта отображения",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -1,0 +1,15 @@
+{
+  "menu": {
+    "home": "الرئيسية",
+    "profile": "ملفك الشخصي",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج",
+    "help": "مساعدة",
+    "about": "حول",
+    "contact": "اتصل بنا",
+    "privacy": "الخصوصية",
+    "terms": "شروط الخدمة",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

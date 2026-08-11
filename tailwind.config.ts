@@ -1,4 +1,23 @@
 import type { Config } from "tailwindcss";
+import defaultTheme from "tailwindcss/defaultTheme";
+
+// CJK fallback families (VTID-03569).
+//
+// CSS font fallback is PER CHARACTER, not per element: the browser walks the
+// stack for each glyph and uses the first family that has it. So appending
+// these costs a non-Chinese user exactly nothing — no download, no request,
+// never consulted — while giving a Chinese user a KNOWN face instead of
+// whatever the generic `sans-serif`/`serif` keyword happens to resolve to on
+// their device.
+//
+// Deliberately system fonts and NOT a webfont: a subsetted CJK webfont is
+// still 5-15 MB because the character set is ~7,000 glyphs, against ~800 KB
+// for this entire i18n catalog. Every platform already ships a good Simplified
+// face; the job is to NAME it, not to send one.
+//
+// Ordered macOS/iOS → Windows → Android/Linux.
+const CJK_SANS = ['PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Noto Sans SC'];
+const CJK_SERIF = ['Songti SC', 'SimSun', 'Noto Serif CJK SC', 'Noto Serif SC'];
 
 export default {
 	darkMode: ["class"],
@@ -26,7 +45,15 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'editorial': ['Cormorant', 'Georgia', 'serif'],
+				// Cormorant has NO CJK glyphs, and neither does Georgia. Without a
+				// named CJK serif here every Chinese heading fell through to the
+				// bare `serif` keyword — which resolves per-device and is the one
+				// place tofu was actually plausible.
+				'editorial': ['Cormorant', 'Georgia', ...CJK_SERIF, 'serif'],
+				// The base stack was never overridden, so it was Tailwind's default.
+				// Spreading that default rather than retyping it keeps this in step
+				// with Tailwind instead of silently freezing an old list.
+				sans: [...defaultTheme.fontFamily.sans, ...CJK_SANS],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

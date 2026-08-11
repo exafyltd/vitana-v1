@@ -1,0 +1,26 @@
+{
+  "eventCta": {
+    "buyTicket": "买票",
+    "buyTicketWithPrice": "买票 · {price}",
+    "getFreeTicket": "领取免费门票",
+    "reserveSpot": "预留位置",
+    "reserveMySpot": "预留我的位置",
+    "viewTicket": "查看门票",
+    "soldOut": "售罄",
+    "joinMeetup": "加入聚会",
+    "leaveMeetup": "退出聚会",
+    "cancelReservation": "取消预订",
+    "viewEvent": "查看活动",
+    "yourTicket": "你的门票",
+    "getYourTicket": "领取你的门票",
+    "joinThisEvent": "加入此活动",
+    "selectTickets": "选择门票",
+    "buyTicketsTotal": "买票 – {total}",
+    "processing": "处理中...",
+    "joining": "加入中...",
+    "getTickets": "领取门票",
+    "promoteEvent": "推广活动",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

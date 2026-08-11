@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/context/AuthProvider';
+import { applyFeedEngagementDelta } from '@/hooks/useAllNewsFeed';
 
 /**
  * Unified inline like + comment for the News / Community feed.
@@ -81,6 +82,10 @@ export function useFeedPostInteractions(source: FeedPostSource, id: string) {
         // The post author is notified by a DB trigger on the like table
         // (20260623000000_post_interaction_notifications.sql) — no client call.
       }
+      // The DB trigger has now updated the parent's likes_count. Carry the same
+      // delta into the cached feed row so a refresh doesn't restore the count
+      // from before this tap (VTID-03503).
+      applyFeedEngagementDelta(queryClient, { source, postId: id, likes: isLiked ? -1 : 1 });
     },
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: likeKey });
@@ -138,6 +143,7 @@ export function useFeedPostInteractions(source: FeedPostSource, id: string) {
       if (error) throw error;
       // The post author is notified by a DB trigger on the comment table
       // (20260623000000_post_interaction_notifications.sql) — no client call.
+      applyFeedEngagementDelta(queryClient, { source, postId: id, comments: 1 });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: commentsKey });
@@ -151,6 +157,7 @@ export function useFeedPostInteractions(source: FeedPostSource, id: string) {
         .delete()
         .eq('id', commentId);
       if (error) throw error;
+      applyFeedEngagementDelta(queryClient, { source, postId: id, comments: -1 });
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: commentsKey });

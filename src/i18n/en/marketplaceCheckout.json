@@ -4,7 +4,8 @@
       "title": "Your balance",
       "loading": "Loading balance …",
       "empty": "No balance yet",
-      "addMoney": "Add money"
+      "addMoney": "Add money",
+      "_pending_review": {}
     },
     "checkout": {
       "button": "Checkout",
@@ -16,7 +17,8 @@
       "affiliateTitle": "Complete purchase at merchant",
       "affiliateBody": "Some items are purchased directly at the merchant. Open the links below to complete the purchase.",
       "affiliateLink": "Complete purchase at merchant",
-      "affiliateOpened": "Merchant links opened in new tabs."
+      "affiliateOpened": "Merchant links opened in new tabs.",
+      "_pending_review": {}
     },
     "addMoney": {
       "title": "Add money",
@@ -29,7 +31,8 @@
       "continue": "Continue to payment",
       "processing": "Preparing …",
       "invalidAmount": "Please enter a valid amount.",
-      "failed": "Could not start the top-up."
+      "failed": "Could not start the top-up.",
+      "_pending_review": {}
     },
     "deposit": {
       "checkingTitle": "Confirming payment",
@@ -39,7 +42,8 @@
       "failedTitle": "Top-up failed",
       "failedBody": "Your top-up could not be completed. Nothing was charged.",
       "amountLabel": "Amount",
-      "backToCart": "Back to cart"
+      "backToCart": "Back to cart",
+      "_pending_review": {}
     },
     "errors": {
       "invalid_request": "The request was invalid. Please check your cart.",
@@ -57,7 +61,10 @@
       "ORDER_WRITE_FAILED": "Your order could not be saved. Please try again.",
       "WALLET_READ_FAILED": "We could not read your balance. Please try again.",
       "GATEWAY_MISCONFIGURED": "The payment service is currently unavailable. Please try again later.",
-      "unknown": "Something went wrong at checkout. Please try again."
-    }
-  }
+      "unknown": "Something went wrong at checkout. Please try again.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

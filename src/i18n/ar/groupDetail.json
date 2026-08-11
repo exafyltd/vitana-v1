@@ -1,0 +1,18 @@
+{
+  "groupDetail": {
+    "members": "أعضاء",
+    "public": "عام",
+    "private": "خاص",
+    "leaveGroup": "مغادرة المجموعة",
+    "leaving": "جاري المغادرة...",
+    "joinGroup": "الانضمام للمجموعة",
+    "joining": "جاري الانضمام...",
+    "back": "رجوع",
+    "notFound": "المجموعة غير موجودة",
+    "notFoundDesc": "ربما تمت إزالة هذه المجموعة أو أنها غير موجودة.",
+    "browseGroups": "تصفح المجموعات",
+    "support": "الدعم",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

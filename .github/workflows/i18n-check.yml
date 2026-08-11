@@ -36,6 +36,39 @@ jobs:
       - name: Catalog audit (DE↔EN parity, _pending_review check)
         run: node scripts/i18n-audit.mjs --report-only
 
+      # VTID-03519. The other checks here can only see FILES. This one covers
+      # the surface none of them can: DB-backed content. A locale that is `ga`
+      # in the picker but absent from `supported_locales` is not merely
+      # untranslated — it is unseedable (the FK rejects the rows), so the
+      # Navigator and My Journey render German inside an otherwise translated
+      # UI. es/sr/fr were all in exactly that state when this was added.
+      #
+      # No secrets: `supported_locales` is world-readable by design, and the
+      # publishable key lives in the tracked .env.
+      - name: Locale registry parity (picker ↔ supported_locales)
+        run: node scripts/check-locale-registry.mjs
+
+      # NO LANGUAGE LEFT BEHIND — the invariant half of I18N-PROPAGATE.
+      #
+      # Fails when any shipping locale is stale relative to the source it was
+      # translated from. On a PR that edits src/i18n/de/**, this is RED until
+      # I18N-PROPAGATE has pushed the other languages into the same PR, so a
+      # German-only change cannot merge and leave 19 languages behind.
+      #
+      # This is deliberately a hard gate rather than a warning. The failure it
+      # prevents is invisible by construction: a stale translation is still a
+      # present key, so coverage reports 100% and nothing else notices. es/sr
+      # sat two months behind exactly that way.
+      - name: No language left behind (source freshness)
+        run: node scripts/i18n-stamp-source.mjs --check-all
+
+      # Brand voice is informal in every language. Each locale has its OWN
+      # rule cross-checked against another language, because a pattern tuned
+      # on one language does not transfer — see the script header for the
+      # measured false-positive rates that forced that design.
+      - name: Formal-register guard (du / tu / ti / ты / ty)
+        run: node scripts/i18n-register-check.mjs --all
+
       - name: Long-word guard (DE compound-word overflow)
         # Fails the build if any DE catalog value contains a word >= 22
         # chars. Auto-fix via the i18n-long-words workflow (Gemini-driven

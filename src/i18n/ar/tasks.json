@@ -1,0 +1,21 @@
+{
+  "tasks": {
+    "noOpenTasks": "لا توجد مهام مفتوحة",
+    "confirmCancelTask": "هل أنت متأكد أنك تريد إلغاء هذه المهمة؟",
+    "postponeComingSoon": "وظيفة إعادة الجدولة قريباً",
+    "addNotePrompt": "أضف ملاحظة لهذه المهمة:",
+    "noteAdded": "تمت إضافة ملاحظة: {note}",
+    "navigateTo": "اذهب إلى: {url}",
+    "openVtid": "افتح VTID: {vtid}",
+    "description": "الوصف",
+    "activityLog": "سجل النشاط",
+    "relatedLinks": "روابط ذات صلة",
+    "complete": "إكمال",
+    "postpone": "تأجيل",
+    "addNote": "إضافة ملاحظة",
+    "openContext": "فتح السياق",
+    "assignee": "المسؤول",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

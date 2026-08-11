@@ -1,0 +1,21 @@
+{
+  "glassMode": {
+    "shareWithAI": "شارك التحديد مع الذكاء الاصطناعي؟",
+    "screenSharingComingSoon": "🖥️ مشاركة الشاشة قريباً",
+    "screenSharingDesc": "شارك شاشتك مع VITANA للحصول على دعم سياقي.",
+    "screenSharingStopped": "توقفت مشاركة الشاشة",
+    "glassModeDisabled": "وضع الزجاج معطل",
+    "cameraModeComingSoon": "📹 وضع الكاميرا قريباً",
+    "cameraModeDesc": "تفاعلات الذكاء الاصطناعي القائمة على الرؤية ستكون متاحة في التحديث القادم.",
+    "diaryReady": "اليوميات جاهزة",
+    "openingDiary": "فتح مدخل اليوميات",
+    "autopilotActivated": "الطيار الآلي مفعل",
+    "runningAutopilot": "تشغيل وضع الطيار الآلي",
+    "textInputReady": "إدخال النص جاهز",
+    "typeMessage": "يمكنك الآن إدخال رسالتك.",
+    "actionFailed": "فشل الإجراء",
+    "couldNotExecute": "تعذر تنفيذ {action}",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

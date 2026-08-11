@@ -165,6 +165,9 @@ verify_jwt = true
 [functions.credit-reseller-payout]
 verify_jwt = true
 
+[functions.approve-reseller-payout]
+verify_jwt = true
+
 [functions.verify-package-payment]
 verify_jwt = false
 

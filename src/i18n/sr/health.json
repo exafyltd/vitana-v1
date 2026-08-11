@@ -12,11 +12,11 @@
     "healthTrackerDesc": "Prati svoju dnevnu ishranu, san, vežbanje",
     "education": "Edukacija i nauka",
     "educationDesc": "Uči o zdravstvenim temama i pristupi wellness resursima",
-    "priorityFocus": "Prioritetni fokus",
-    "priorityFocusExplanation": "Ovo područje trenutno ima najveći uticaj na tvoj dugoročni zdravstveni vek.",
+    "priorityFocus": "Tvoja oblast fokusa",
+    "priorityFocusExplanation": "Ova oblast trenutno ima najveći uticaj na tvoj dugoročni životni vek.",
     "autopilotGuidance": "Autopilot smernice",
     "autopilotSuggests": "Autopilot predlaže",
-    "takeAction": "Preduzmi akciju",
+    "takeAction": "Akcija",
     "uploadBloodTest": "Otpremi krvni test",
     "orderBloodTest": "Poruči krvni test",
     "viewPlans": "Pogledaj planove",
@@ -25,38 +25,42 @@
     "topPercentile": "Najboljih {percent}%",
     "trend": {
       "improving": "Poboljšanje",
-      "declining": "Opadanje",
-      "stable": "Stabilno"
+      "declining": "Pogoršanje",
+      "stable": "Stabilno",
+      "_pending_review": {}
     },
     "suggestions": {
       "uploadBloodTestResults": "Otpremi rezultate krvnih testova",
-      "startFitnessChallenge": "Započni 30-dnevni fitnes izazov"
+      "startFitnessChallenge": "Započni 30-dnevni fitnes izazov",
+      "_pending_review": {}
     },
     "pillars": {
       "sleep": "San",
       "exercise": "Vežbanje",
       "nutrition": "Ishrana",
       "hydration": "Hidratacija",
-      "mental": "Mentalno"
+      "mental": "Mentalno",
+      "_pending_review": {}
     },
     "emptyStates": {
       "noSleepPlan": "Još uvek nema plana spavanja",
-      "noSleepPlanDesc": "Kreiraj svoj personalizovani plan spavanja sa AI-optimizovanim ciljevima prilagođenim tvom cirkadijalnom ritmu, potrebama za oporavkom i svakodnevnim performansama.",
+      "noSleepPlanDesc": "Generiši svoj personalizovani plan spavanja sa ciljevima optimizovanim veštačkom inteligencijom, prilagođenim tvom bioritmu, potrebama za oporavkom i dnevnim performansama.",
       "noExercisePlan": "Još uvek nema plana vežbanja",
-      "noExercisePlanDesc": "Kreiraj svoj personalizovani plan vežbanja sa AI-optimizovanim vežbama prilagođenim tvom nivou fitnesa, ciljevima i potrebama za oporavkom.",
+      "noExercisePlanDesc": "Generiši svoj personalizovani plan vežbanja sa vežbama optimizovanim veštačkom inteligencijom, prilagođenim tvom nivou kondicije, ciljevima i potrebama za oporavkom.",
       "noNutritionPlan": "Još uvek nema plana ishrane",
-      "noNutritionPlanDesc": "Kreiraj svoj personalizovani plan ishrane sa ukusnim, uravnoteženim receptima prilagođenim tvojim ciljevima i dijetetskim preferencijama.",
+      "noNutritionPlanDesc": "Generiši svoj personalizovani plan ishrane sa ukusnim, uravnoteženim receptima, prilagođenim tvojim ciljevima i prehrambenim preferencijama.",
       "noHydrationPlan": "Još uvek nema plana hidratacije",
-      "noHydrationPlanDesc": "Kreiraj svoj personalizovani plan hidratacije sa AI-optimizovanim dnevnim ciljevima prilagođenim tvom nivou aktivnosti, okruženju i potrebama za oporavkom.",
+      "noHydrationPlanDesc": "Generiši svoj personalizovani plan hidratacije sa dnevnim ciljevima optimizovanim veštačkom inteligencijom, prilagođenim tvom nivou aktivnosti, okruženju i potrebama za oporavkom.",
       "noMentalPlan": "Još uvek nema mentalnog plana",
-      "noMentalPlanDesc": "Kreiraj svoj personalizovani plan mentalnog blagostanja za praćenje stresa, fokusa i emocionalne ravnoteže uz AI vodič.",
+      "noMentalPlanDesc": "Generiši svoj personalizovani plan mentalnog blagostanja, za praćenje stresa, fokusa i emocionalne ravnoteže uz podršku veštačke inteligencije.",
       "generatePlan": "Kreiraj plan",
-      "generating": "Kreiram..."
+      "generating": "Kreiram...",
+      "_pending_review": {}
     },
-    "noSupplements": "Još nema suplemenata",
+    "noSupplements": "Još uvek nema suplemenata",
     "noSupplementsDesc": "Prati svoje dnevne vitamine, minerale i suplemente. Dodaj svoj prvi suplement da počneš.",
     "noReports": "Još nema zdravstvenih izveštaja",
-    "noReportsDesc": "Otpremi svoje krvne testove, laboratorijske rezultate i medicinske izveštaje da otključaš personalizovane zdravstvene uvide.",
+    "noReportsDesc": "Otpremi svoje analize krvi, laboratorijske rezultate i medicinske izveštaje da dobiješ personalizovane zdravstvene uvide.",
     "medical": "Medicina",
     "supplements": "Suplementi",
     "uploadDescription": "Krvni testovi, snimanja, laboratorijski rezultati",
@@ -65,7 +69,7 @@
     "uploadFirstReport": "Otpremi prvi izveštaj",
     "missionAlignment": {
       "title": "Usaglašenost sa misijom",
-      "subtitle": "Kako tvoje preporuke unapređuju pet stubova i ekonomiju dugovečnosti",
+      "subtitle": "Kako tvoje preporuke podržavaju pet stubova i ekonomiju dugovečnosti",
       "loading": "Učitavanje podataka misije...",
       "error": "Nije moguće učitati podatke misije",
       "noRecs": "Još uvek nema preporuka u tvom redu.",
@@ -73,22 +77,27 @@
       "summaryServedCount": "{served} od {total} preporuka usaglašeno",
       "pillarHeading": "Podržani stubovi",
       "economyHeading": "Ekonomija dugovečnosti",
-      "noPillar": "Nije usaglašeno sa stubovima",
-      "noEconomy": "Nije usaglašeno sa ekonomijom",
+      "noPillar": "Nije usklađeno sa stubovima",
+      "noEconomy": "Nije usklađeno sa ekonomijom",
       "pillars": {
         "nutrition": "Ishrana",
         "hydration": "Hidratacija",
         "exercise": "Vežbanje",
         "sleep": "Spavanje",
-        "mental": "Mentalno zdravlje"
+        "mental": "Mentalno zdravlje",
+        "_pending_review": {}
       },
       "economyAxes": {
         "find_match": "Pronađi partnera",
-        "marketplace": "Marketplace",
+        "marketplace": "Tržište",
         "income_generation": "Generisanje prihoda",
-        "business_formation": "Osnivanje biznisa"
+        "business_formation": "Osnivanje biznisa",
+        "_pending_review": {}
       },
-      "contractLink": "Pogledaj ugovor o krajnjem cilju"
-    }
-  }
+      "contractLink": "Pogledaj ugovor o krajnjem cilju",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

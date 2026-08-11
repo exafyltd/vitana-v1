@@ -1,0 +1,25 @@
+{
+  "navigation": {
+    "navigatingTo": "正在前往",
+    "hydrationTracker": "水分追踪",
+    "sleepTracker": "睡眠追踪",
+    "nutritionTracker": "营养追踪",
+    "workoutTracker": "健身追踪",
+    "biomarkers": "生物标志物",
+    "calendar": "日历",
+    "community": "社区",
+    "groups": "群组",
+    "messages": "消息",
+    "discover": "发现",
+    "supplements": "补充剂",
+    "wallet": "钱包",
+    "profile": "个人资料",
+    "settings": "设置",
+    "diary": "日记",
+    "home": "首页",
+    "myJourney": "我的旅程",
+    "news": "长寿新闻",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

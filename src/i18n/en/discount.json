@@ -1,7 +1,7 @@
 {
   "discount": {
-    "welcomeTitle": "Your Welcome Gift",
-    "welcomeMessage": "Use this code for 10% off your first event",
+    "welcomeTitle": "Your welcome gift",
+    "welcomeMessage": "Use this code for 10% discount on your first event",
     "validFor": "Valid for 90 days",
     "applyCode": "Apply discount code",
     "applied": "Discount applied!",
@@ -9,10 +9,10 @@
     "invalid": "Invalid discount code",
     "bannerAvailable": "Welcome discount available",
     "tapToApply": "Apply",
-    "discountAppliedAmount": "{percent}% discount applied",
+    "discountAppliedAmount": "{percent}% Discount applied",
     "remove": "Remove",
     "ticketsComing": "Tickets coming soon",
-    "contactOrganizer": "Contact the event organizer for ticket information.",
+    "contactOrganizer": "Contact the organizer for ticket information.",
     "contactOrganizerPrice": "This event costs ${price}. Contact the organizer for ticket availability.",
     "soldOut": "Sold Out",
     "salesEnded": "Sales ended",
@@ -21,11 +21,13 @@
     "ticketsSelected": "{count} ticket(s) selected",
     "useAccountEmail": "Use my account email",
     "buyAsGuest": "Buy as guest (no account)",
-    "guestDetails": "Enter your details to receive your ticket. No account required.",
+    "guestDetails": "Enter your details to get your ticket. No account required.",
     "fullName": "Full Name",
     "email": "Email",
     "ticketEmailNote": "Your ticket and confirmation will be sent to this email.",
     "left": "{count} left",
-    "loadFailed": "Failed to load tickets"
-  }
+    "loadFailed": "Failed to load tickets",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

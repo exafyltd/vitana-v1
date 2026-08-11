@@ -1,5 +1,7 @@
 {
   "wellnessServices": {
-    "searchPlaceholder": "Pretraži usluge, pružaoce ili programe..."
-  }
+    "searchPlaceholder": "Pretraži usluge, pružaoce ili programe...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

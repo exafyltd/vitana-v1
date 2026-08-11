@@ -1,0 +1,167 @@
+{
+  "liveRooms": {
+    "title": "غرف مباشرة",
+    "description": "انضم إلى نقاشات صوتية ومرئية مباشرة",
+    "tabs": {
+      "live": "مباشر الآن",
+      "scheduled": "مجدول",
+      "all": "كل الغرف",
+      "past": "سابقة",
+      "_pending_review": {}
+    },
+    "goLive": "انطلق مباشرة",
+    "joinRoom": "انضم للغرفة",
+    "noRooms": "لا توجد غرف مباشرة حاليًا",
+    "beFirst": "كن أول من ينطلق مباشرة",
+    "demoRoom": "غرفة تجريبية",
+    "demoRoomDesc": "هذه غرفة مثال. أنشئ غرفتك الخاصة لتنطلق مباشرة!",
+    "search": {
+      "placeholder": "ابحث عن غرف، مواضيع، أو مضيفين...",
+      "category": "الفئة",
+      "allCategories": "كل الفئات",
+      "_pending_review": {}
+    },
+    "room": {
+      "join": "انضم للغرفة",
+      "participants": "المشاركون",
+      "duration": "المدة",
+      "host": "المضيف",
+      "premium": "مميز",
+      "live": "مباشر",
+      "_pending_review": {}
+    },
+    "viewer": {
+      "leave": "مغادرة",
+      "mute": "كتم الصوت",
+      "video": "فيديو",
+      "raiseHand": "ارفع يدك",
+      "chat": "دردشة",
+      "reactions": "ردود الفعل",
+      "_pending_review": {}
+    },
+    "goLivePopup": {
+      "titleCreate": "انطلق مباشرة",
+      "titleEdit": "تعديل البث المباشر",
+      "streamTitleLabel": "عنوان البث",
+      "streamTitlePlaceholder": "مباشر مع {name}",
+      "descriptionLabel": "الوصف / النبذة (اختياري)",
+      "descriptionPlaceholder": "صِف باختصار موضوع هذا البث…",
+      "charactersCount": "{count}/500 حرفًا",
+      "streamTypeLabel": "نوع البث",
+      "streamTypeAudio": "صوت",
+      "streamTypeVideo": "فيديو",
+      "coverLabel": "صورة الغلاف / الصورة المصغرة",
+      "coverAlt": "غلاف البث",
+      "coverUploadCta": "اضغط لرفع صورة مخصصة",
+      "coverUploadHint": "أي صورة – تتعدّل تلقائيًا",
+      "aiAutoGenerateLabel": "توليد تلقائي بالذكاء الاصطناعي",
+      "aiAutoGenerateHint": "ولّد صورة في حال عدم الرفع",
+      "generatingAiImage": "جاري توليد صورة بالذكاء الاصطناعي…",
+      "tagsLabel": "الوسوم / الفئة (اختر 1-3)",
+      "tagsSelected": "{count}/3 محدد",
+      "tags": {
+        "wellness": "العافية",
+        "nutrition": "التغذية",
+        "fitness": "اللياقة",
+        "mentalHealth": "الصحة العقلية",
+        "longevity": "طول العمر",
+        "meditation": "التأمل",
+        "sleep": "النوم",
+        "motivation": "التحفيز",
+        "education": "التعليم",
+        "lifestyle": "نمط الحياة",
+        "_pending_review": {}
+      },
+      "advancedTitle": "خيارات متقدمة",
+      "cohostLabel": "مضيف مشارك / دعوة ضيف",
+      "cohostPlaceholder": "ابحث وأضف مضيف مشارك",
+      "accessLevelLabel": "مستوى الوصول",
+      "access": {
+        "public": {
+          "label": "عام",
+          "desc": "يمكن لأي شخص الانضمام",
+          "_pending_review": {}
+        },
+        "followers": {
+          "label": "للمتابعين فقط",
+          "desc": "متابعوك فقط",
+          "_pending_review": {}
+        },
+        "group": {
+          "label": "مجموعة/شخصيات مهمة",
+          "desc": "الأعضاء المدعوون فقط",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "scheduleLabel": "جدولة لوقت لاحق",
+      "goLiveNow": "انطلق مباشر الآن",
+      "selectTime": "اختر الوقت",
+      "clearSchedule": "إلغاء الجدولة (انطلق مباشر الآن)",
+      "scheduledAt": "{date} في {time}",
+      "dateNeedsTime": "{date} – اختر الوقت",
+      "time": "الوقت",
+      "engagementLabel": "الدردشة والمشاركة",
+      "enableChatTitle": "تفعيل الدردشة",
+      "enableChatDesc": "اسمح للمشاهدين بالدردشة",
+      "enablePollsTitle": "تفعيل الاستطلاعات",
+      "enablePollsDesc": "أنشئ استطلاعات مباشرة خلال البث",
+      "recordReplayTitle": "سجّل للإعادة",
+      "recordReplayDesc": "احفظ البث للمشاهدة لاحقًا",
+      "cancel": "إلغاء",
+      "starting": "جارٍ البدء…",
+      "updating": "جارٍ التحديث…",
+      "updateStream": "حدّث البث",
+      "scheduleSession": "جدوِل جلسة مباشرة",
+      "goLiveNowAction": "اذهب للبث الآن",
+      "errors": {
+        "selectStreamTypeTitle": "اختر نوع البث",
+        "selectStreamTypeDesc": "الرجاء اختيار صوت أو فيديو",
+        "notLoggedInTitle": "خطأ",
+        "notLoggedInDesc": "يجب أن تكون مسجلاً للدخول للبث المباشر",
+        "invalidFileTypeTitle": "نوع ملف غير صالح",
+        "invalidFileTypeDesc": "الرجاء اختيار ملف صورة (JPEG, PNG, WebP)",
+        "fileTooLargeTitle": "الملف كبير جداً",
+        "fileTooLargeDesc": "يجب أن تكون الصورة أصغر من 2 ميجابايت",
+        "imageUploadFailedTitle": "فشل تحميل الصورة",
+        "imageUploadFailedDesc": "سنحتفظ بالصورة الحالية.",
+        "genericTitle": "خطأ",
+        "genericDesc": "فشل إنشاء البث. الرجاء المحاولة مرة أخرى.",
+        "genericDescWithReason": "فشل إنشاء البث: {reason}. الرجاء المحاولة مرة أخرى.",
+        "_pending_review": {}
+      },
+      "success": {
+        "streamUpdatedTitle": "تم تحديث البث! ✨",
+        "streamUpdatedDesc": "تم تحديث بثك بنجاح",
+        "streamScheduledTitle": "تم جدولة البث! 📅",
+        "streamScheduledDesc": "بثك مجدول لـ {date} في {time}",
+        "youAreLiveTitle": "أنت مباشر! 🎙️",
+        "youAreLiveDesc": "جارٍ الانضمام إلى غرفة بثك…",
+        "aiImageHintTitle": "توليد الصور بالذكاء الاصطناعي",
+        "aiImageHintDesc": "سيتم توليد الصورة عند بدء البث.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "editSession": {
+      "title": "تعديل الجلسة",
+      "saving": "جارٍ الحفظ…",
+      "changeCover": "تغيير صورة الغلاف",
+      "noChanges": "لا توجد تغييرات للحفظ",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "goLivePopup": {
+    "durationLabel": "المدة",
+    "duration15": "15 دقيقة",
+    "duration30": "30 دقيقة",
+    "duration45": "45 دقيقة",
+    "duration60": "ساعة واحدة",
+    "duration90": "ساعة ونصف",
+    "duration120": "ساعتان",
+    "durationHint": "تُغلق الغرفة تلقائياً بعد هذا الوقت إذا لم تنهِها يدوياً.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -19,11 +19,13 @@
     "alreadyExists": "Već postoji",
     "notFound": "Nije pronađeno",
     "invalidSelection": "Neispravan izbor",
-    "pleaseSelect": "Molim te izaberi opciju",
-    "pleaseEnter": "Molim te unesi vrednost",
+    "pleaseSelect": "Molimo izaberi opciju.",
+    "pleaseEnter": "Molimo unesi vrednost.",
     "charactersRemaining": "Preostalo {count} karaktera",
     "fileTooBig": "Fajl je prevelik (maksimum {max})",
     "invalidFileType": "Neispravan tip fajla",
-    "uploadLimit": "Maksimum {max} fajlova je dozvoljeno"
-  }
+    "uploadLimit": "Maksimum {max} fajlova je dozvoljeno",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

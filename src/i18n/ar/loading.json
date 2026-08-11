@@ -1,0 +1,13 @@
+{
+  "loading": {
+    "default": "جاري التحميل...",
+    "groups": "جاري تحميل المجموعات...",
+    "messages": "جاري تحميل الرسائل...",
+    "uploading": "جاري الرفع...",
+    "uploadingProgress": "جاري الرفع... {progress}%",
+    "processing": "جاري المعالجة...",
+    "saving": "جاري الحفظ...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

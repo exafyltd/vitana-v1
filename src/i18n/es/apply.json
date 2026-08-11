@@ -6,7 +6,7 @@
     "headlineLine2": "Usuario de prueba de MAXINA",
     "tagline": "…¡y todo el mundo está bailando!",
     "subheadline": "Te invitamos a ser usuario de prueba de la app MAXINA y ayudarnos a mejorar su rendimiento antes del lanzamiento oficial el 18 de junio de 2026.",
-    "subheadlineTicket": "🎟️ Cada usuario de prueba verificado recibe 1 entrada gratis valorada en 99 EUR para uno de nuestros 12 eventos de verano — llenos de ritmo, movimiento, conexión y alegría.",
+    "subheadlineTicket": "🎟️ Todos los usuarios de prueba verificados reciben 1 entrada gratis valorada en 99 EUR para uno de nuestros 12 eventos de verano — lleno de ritmo, movimiento, conexión y alegría.",
     "subheadlineCommunity": "Como usuario de prueba de MAXINA, no solo exploras la app antes, sino que te conviertes en parte de la comunidad y la energía que representa la Experiencia MAXINA.",
     "chipEvents": "12 Eventos de Verano",
     "chipLocation": "Mallorca",
@@ -56,7 +56,7 @@
     "footerPrivacy": "Privacidad",
     "footerTerms": "Términos",
     "ariaApplyForm": "Formulario de solicitud",
-    "aboutEyebrow": "A lo que te unes",
+    "aboutEyebrow": "De qué se trata",
     "aboutTitle": "Más que una app",
     "aboutVitanalandLabel": "Vitanaland",
     "aboutVitanalandTag": "Destino",
@@ -75,6 +75,8 @@
     "benefitTicket": "1 entrada gratuita valorada en 99 EUR para un evento de la Experiencia MAXINA",
     "benefitEvents": "Acceso de primera ola a los 12 eventos de verano en Mallorca",
     "benefitVitana": "Guía personal de Vitana AI desde el primer día",
-    "benefitSeat": "Un asiento fundador en la mesa mientras Vitanaland evoluciona"
-  }
+    "benefitSeat": "Como miembro fundador, ayuda a dar forma al desarrollo de Vitanaland",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

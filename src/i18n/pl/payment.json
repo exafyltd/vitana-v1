@@ -1,0 +1,25 @@
+{
+  "payment": {
+    "completed": "Płatność zakończona! ✅",
+    "sentSuccess": "{amount} wysłano pomyślnie",
+    "alreadyProcessed": "Już przetworzono",
+    "requestIs": "To żądanie jest {status}.",
+    "alreadyAccepted": "To żądanie płatności zostało już zaakceptowane.",
+    "declined": "Płatność odrzucona",
+    "declinedDesc": "Żądanie płatności zostało odrzucone",
+    "exchangeSuccess": "Wymiana i wysyłka udane! ✨",
+    "exchangeSuccessDesc": "Przekonwertowano i wysłano {amount}",
+    "insufficientBalance": "Niewystarczające saldo",
+    "insufficientBalanceDesc": "Nie masz wystarczającej ilości {currency} na tę wymianę",
+    "transactionFailed": "Transakcja nieudana",
+    "paymentFailed": "Płatność nieudana",
+    "paymentFailedDesc": "Płatność nie mogła zostać przetworzona. Spróbuj ponownie.",
+    "balanceRefreshed": "Saldo odświeżone",
+    "balanceRefreshedDesc": "Saldo portfela zostało zaktualizowane",
+    "refreshFailed": "Odświeżanie nieudane",
+    "refreshFailedDesc": "Saldo nie mogło zostać zaktualizowane. Spróbuj ponownie.",
+    "error": "Błąd",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

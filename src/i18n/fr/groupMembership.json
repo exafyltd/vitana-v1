@@ -1,0 +1,12 @@
+{
+  "groupMembership": {
+    "joined": "Rejoint ! 🎉",
+    "joinedDesc": "Tu es maintenant membre de ce groupe.",
+    "left": "Groupe quitté",
+    "leftDesc": "Tu as quitté ce groupe.",
+    "errorJoin": "Impossible de rejoindre le groupe. Réessaie.",
+    "errorLeave": "Impossible de quitter le groupe. Réessaie.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -11,6 +11,8 @@
     "notFound": "Grupa nije pronađena",
     "notFoundDesc": "Ova grupa je možda uklonjena ili ne postoji.",
     "browseGroups": "Pregledaj grupe",
-    "support": "Podrška"
-  }
+    "support": "Podrška",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

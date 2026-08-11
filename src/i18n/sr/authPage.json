@@ -1,7 +1,7 @@
 {
   "authPage": {
     "welcomeTitle": "Dobrodošao/la u VITANA",
-    "subtitle": "Tvoja personalizovana platforma za zdravstvenu inteligenciju",
+    "subtitle": "Tvoja personalizovana Platforma zdravstvene inteligencije",
     "signIn": "Prijavi se",
     "signUp": "Registruj se",
     "email": "E-pošta",
@@ -14,6 +14,8 @@
     "createAccount": "Napravi nalog",
     "orContinueWith": "Ili nastavi sa",
     "backToPortals": "Nazad na sve portale",
-    "keepLoggedIn": "Ostani prijavljen/a"
-  }
+    "keepLoggedIn": "Ostani prijavljen/a",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

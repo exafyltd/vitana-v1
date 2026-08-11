@@ -1,7 +1,7 @@
 {
   "profilePosts": {
     "createPost": "Kreiraj objavu",
-    "placeholder": "Šta ti je na umu?",
+    "placeholder": "Šta ti je sada na umu?",
     "shareCta": "Podeli nešto sa zajednicom",
     "post": "Objavi",
     "posted": "Objavljeno!",
@@ -9,6 +9,13 @@
     "emptyTitle": "Još nema objava",
     "emptyDescription": "Podeli svoju prvu objavu sa zajednicom",
     "deleteConfirm": "Obriši ovu objavu?",
-    "error": "Nešto je pošlo po zlu"
-  }
+    "error": "Nešto je pošlo po zlu",
+    "mentionPlaceholder": "Šta ti je na umu? Ukucaj @ da označiš nekoga.",
+    "background": "Pozadina",
+    "noBackground": "Nema pozadine",
+    "searchingPeople": "Tražim ljude …",
+    "noPeopleFound": "Niko nije pronađen.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

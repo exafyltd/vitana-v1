@@ -1,0 +1,19 @@
+{
+  "milestones": {
+    "title": "Особые моменты",
+    "add": "Добавить веху",
+    "edit": "Редактировать веху",
+    "empty": "Пока нет моментов",
+    "addFirst": "Добавь свой первый момент",
+    "date": "Дата",
+    "description": "Что произошло?",
+    "titleLabel": "Заголовок",
+    "titlePlaceholder": "Например, окончил университет",
+    "descPlaceholder": "Опиши этот момент...",
+    "icon": "Иконка",
+    "publicLabel": "Видно всем",
+    "private": "Приватно",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -1,0 +1,17 @@
+{
+  "tableHeaders": {
+    "groupName": "اسم المجموعة",
+    "category": "فئة",
+    "members": "أعضاء",
+    "privacy": "خصوصية",
+    "status": "الحالة",
+    "actions": "إجراءات",
+    "name": "الاسم",
+    "role": "الدور",
+    "email": "البريد الإلكتروني",
+    "date": "التاريخ",
+    "amount": "المبلغ",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

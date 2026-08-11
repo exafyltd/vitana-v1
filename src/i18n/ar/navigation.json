@@ -1,0 +1,25 @@
+{
+  "navigation": {
+    "navigatingTo": "جارٍ الانتقال إلى",
+    "hydrationTracker": "متتبع الترطيب",
+    "sleepTracker": "متتبع النوم",
+    "nutritionTracker": "متتبع التغذية",
+    "workoutTracker": "متتبع التمرين",
+    "biomarkers": "المؤشرات الحيوية",
+    "calendar": "التقويم",
+    "community": "المجتمع",
+    "groups": "المجموعات",
+    "messages": "الرسائل",
+    "discover": "اكتشف",
+    "supplements": "المكملات",
+    "wallet": "المحفظة",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "diary": "المفكرة",
+    "home": "الرئيسية",
+    "myJourney": "رحلتي",
+    "news": "أخبار طول العمر",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

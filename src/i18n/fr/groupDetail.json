@@ -1,0 +1,18 @@
+{
+  "groupDetail": {
+    "members": "Membres",
+    "public": "Public",
+    "private": "Privé",
+    "leaveGroup": "Quitter le groupe",
+    "leaving": "Quitter...",
+    "joinGroup": "Rejoindre le groupe",
+    "joining": "Rejoindre...",
+    "back": "Retour",
+    "notFound": "Groupe introuvable",
+    "notFoundDesc": "Ce groupe a peut-être été supprimé ou n'existe pas.",
+    "browseGroups": "Parcourir les groupes",
+    "support": "Aide",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

@@ -15,7 +15,8 @@
       "mute": "Isključi zvuk",
       "unmute": "Uključi zvuk",
       "share": "Podeli",
-      "linkCopied": "Link kopiran"
+      "linkCopied": "Link kopiran",
+      "_pending_review": {}
     },
     "drawer": {
       "loading": "Učitavanje proizvoda …",
@@ -35,7 +36,10 @@
       "unavailableTitle": "Više nije dostupno",
       "unavailableBody": "Ovaj proizvod više nije dostupan.",
       "roleBlockedTitle": "Kupovina ovde nije dostupna",
-      "roleBlockedBody": "Kupovina je funkcija zajednice. Pređi na ulogu zajednice da bi nastavio."
-    }
-  }
+      "roleBlockedBody": "Kupovina je funkcija zajednice. Pređi na ulogu zajednice da bi nastavio.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,0 +1,167 @@
+{
+  "liveRooms": {
+    "title": "Pokoje na żywo",
+    "description": "Dołącz do dyskusji audio i wideo na żywo",
+    "tabs": {
+      "live": "Na żywo",
+      "scheduled": "Zaplanowane",
+      "all": "Wszystkie pokoje",
+      "past": "Minione",
+      "_pending_review": {}
+    },
+    "goLive": "Przejdź na żywo",
+    "joinRoom": "Dołącz do pokoju",
+    "noRooms": "Brak aktywnych pokoi",
+    "beFirst": "Bądź pierwszym, który przejdzie na żywo!",
+    "demoRoom": "Pokój demo",
+    "demoRoomDesc": "To jest przykładowy pokój. Stwórz własny, aby przejść na żywo!",
+    "search": {
+      "placeholder": "Szukaj pokoi, tematów lub prowadzących...",
+      "category": "Kategoria",
+      "allCategories": "Wszystkie kategorie",
+      "_pending_review": {}
+    },
+    "room": {
+      "join": "Dołącz do pokoju",
+      "participants": "Uczestnicy",
+      "duration": "Czas trwania",
+      "host": "Prowadzący",
+      "premium": "Premium",
+      "live": "NA ŻYWO",
+      "_pending_review": {}
+    },
+    "viewer": {
+      "leave": "Opuść",
+      "mute": "Wycisz",
+      "video": "Wideo",
+      "raiseHand": "Podnieś rękę",
+      "chat": "Czat",
+      "reactions": "Reakcje",
+      "_pending_review": {}
+    },
+    "goLivePopup": {
+      "titleCreate": "Przejdź na żywo",
+      "titleEdit": "Edytuj transmisję na żywo",
+      "streamTitleLabel": "Tytuł transmisji",
+      "streamTitlePlaceholder": "Na żywo z {name}",
+      "descriptionLabel": "Opis / Bio (Opcjonalnie)",
+      "descriptionPlaceholder": "Krótko opisz, o czym jest ten stream…",
+      "charactersCount": "{count}/500 znaków",
+      "streamTypeLabel": "Typ streamu",
+      "streamTypeAudio": "Audio",
+      "streamTypeVideo": "Wideo",
+      "coverLabel": "Obraz okładki / Miniatura",
+      "coverAlt": "Okładka streamu",
+      "coverUploadCta": "Kliknij, aby przesłać własny obraz",
+      "coverUploadHint": "Dowolny obraz – automatycznie się dopasowuje",
+      "aiAutoGenerateLabel": "Auto-generuj z AI",
+      "aiAutoGenerateHint": "Wygeneruj obraz, jeśli żaden nie został przesłany",
+      "generatingAiImage": "Generowanie obrazu AI…",
+      "tagsLabel": "Tagi / Kategoria (Wybierz 1-3)",
+      "tagsSelected": "Wybrano {count}/3",
+      "tags": {
+        "wellness": "Dobre samopoczucie",
+        "nutrition": "Odżywianie",
+        "fitness": "Fitness",
+        "mentalHealth": "Zdrowie psychiczne",
+        "longevity": "Długowieczność",
+        "meditation": "Medytacja",
+        "sleep": "Sen",
+        "motivation": "Motywacja",
+        "education": "Edukacja",
+        "lifestyle": "Styl życia",
+        "_pending_review": {}
+      },
+      "advancedTitle": "Opcje zaawansowane",
+      "cohostLabel": "Współgospodarz / Zaproszenie gościa",
+      "cohostPlaceholder": "Wyszukaj i dodaj współgospodarza",
+      "accessLevelLabel": "Poziom dostępu",
+      "access": {
+        "public": {
+          "label": "Publiczne",
+          "desc": "Każdy może dołączyć",
+          "_pending_review": {}
+        },
+        "followers": {
+          "label": "Tylko obserwujący",
+          "desc": "Tylko Twoi obserwujący",
+          "_pending_review": {}
+        },
+        "group": {
+          "label": "Grupa/VIP",
+          "desc": "Tylko zaproszeni członkowie",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
+      },
+      "scheduleLabel": "Zaplanuj na później",
+      "goLiveNow": "Rozpocznij transmisję teraz",
+      "selectTime": "Wybierz godzinę",
+      "clearSchedule": "Wyczyść harmonogram (Rozpocznij transmisję teraz)",
+      "scheduledAt": "{date} o {time}",
+      "dateNeedsTime": "{date} – wybierz godzinę",
+      "time": "Godzina",
+      "engagementLabel": "Czat i zaangażowanie",
+      "enableChatTitle": "Włącz czat",
+      "enableChatDesc": "Zezwól widzom na czatowanie",
+      "enablePollsTitle": "Włącz ankiety",
+      "enablePollsDesc": "Twórz ankiety na żywo podczas transmisji",
+      "recordReplayTitle": "Nagraj do odtworzenia",
+      "recordReplayDesc": "Zapisz transmisję do późniejszego obejrzenia",
+      "cancel": "Anuluj",
+      "starting": "Uruchamianie…",
+      "updating": "Aktualizowanie…",
+      "updateStream": "Zaktualizuj transmisję",
+      "scheduleSession": "Zaplanuj sesję na żywo",
+      "goLiveNowAction": "Rozpocznij transmisję teraz",
+      "errors": {
+        "selectStreamTypeTitle": "Wybierz typ transmisji",
+        "selectStreamTypeDesc": "Wybierz audio lub wideo",
+        "notLoggedInTitle": "Błąd",
+        "notLoggedInDesc": "Musisz być zalogowany, aby rozpocząć transmisję",
+        "invalidFileTypeTitle": "Nieprawidłowy typ pliku",
+        "invalidFileTypeDesc": "Wybierz plik obrazu (JPEG, PNG, WebP)",
+        "fileTooLargeTitle": "Plik za duży",
+        "fileTooLargeDesc": "Obraz musi być mniejszy niż 2MB",
+        "imageUploadFailedTitle": "Nie udało się przesłać obrazu",
+        "imageUploadFailedDesc": "Zachowamy istniejący obraz.",
+        "genericTitle": "Błąd",
+        "genericDesc": "Nie udało się utworzyć strumienia. Spróbuj ponownie.",
+        "genericDescWithReason": "Nie udało się utworzyć strumienia: {reason}. Spróbuj ponownie.",
+        "_pending_review": {}
+      },
+      "success": {
+        "streamUpdatedTitle": "Strumień zaktualizowany! ✨",
+        "streamUpdatedDesc": "Stream zaktualizowany!",
+        "streamScheduledTitle": "Strumień zaplanowany! 📅",
+        "streamScheduledDesc": "Twój strumień jest zaplanowany na {date} o {time}",
+        "youAreLiveTitle": "Jesteś na żywo! 🎙️",
+        "youAreLiveDesc": "Dołączanie do Twojego pokoju strumienia…",
+        "aiImageHintTitle": "Generowanie obrazu AI",
+        "aiImageHintDesc": "Obraz zostanie wygenerowany po rozpoczęciu strumienia.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "editSession": {
+      "title": "Edytuj sesję",
+      "saving": "Zapisywanie…",
+      "changeCover": "Zmień obraz okładki",
+      "noChanges": "Brak zmian do zapisania",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "goLivePopup": {
+    "durationLabel": "Czas trwania",
+    "duration15": "15 minut",
+    "duration30": "30 minut",
+    "duration45": "45 minut",
+    "duration60": "1 godzina",
+    "duration90": "1,5 godziny",
+    "duration120": "2 godziny",
+    "durationHint": "Pokój zamknie się automatycznie po tym czasie, jeśli nie zakończysz go ręcznie.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

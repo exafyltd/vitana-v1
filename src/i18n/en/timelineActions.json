@@ -4,36 +4,47 @@
     "items": {
       "logHealthEvent": {
         "title": "Log Health Event",
-        "description": "Record important health milestones"
+        "description": "Record important health milestones",
+        "_pending_review": {}
       },
       "markAchievement": {
         "title": "Mark Achievement",
-        "description": "Celebrate wellness goals reached"
+        "description": "Celebrate wellness goals reached",
+        "_pending_review": {}
       },
       "recordLifeMoment": {
         "title": "Record Life Moment",
-        "description": "Capture meaningful experiences"
+        "description": "Capture meaningful experiences",
+        "_pending_review": {}
       },
       "addPhotoMemory": {
         "title": "Add Photo Memory",
-        "description": "Visual timeline with health photos"
+        "description": "Visual timeline with health photos",
+        "_pending_review": {}
       },
       "voiceTimelineEntry": {
         "title": "Voice Timeline Entry",
-        "description": "Quick audio health updates"
+        "description": "Quick audio health updates",
+        "_pending_review": {}
       },
       "trackProgress": {
         "title": "Track Progress",
-        "description": "Log wellness metrics and trends"
+        "description": "Log wellness metrics and trends",
+        "_pending_review": {}
       },
       "activityCheckIn": {
         "title": "Activity Check-in",
-        "description": "Record workouts and activities"
+        "description": "Record workouts and activities",
+        "_pending_review": {}
       },
       "setTimelineGoal": {
         "title": "Set Timeline Goal",
-        "description": "Create future health targets"
-      }
-    }
-  }
+        "description": "Create future health targets",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

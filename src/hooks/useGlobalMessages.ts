@@ -34,8 +34,22 @@ interface SendMessageArgs {
 }
 
 // ── Cache timing constants ──────────────────────────────────────────
-const STALE_TIME = 10 * 60 * 1000;  // 10 minutes — data shown without refetch
+const STALE_TIME = 10 * 60 * 1000;  // 10 minutes — thread list shown without refetch
 const GC_TIME = 30 * 60 * 1000;     // 30 minutes — cache kept in memory after unmount
+// Messages are realtime-critical: keep their staleTime at 0 so opening (or
+// switching back into) a conversation ALWAYS refetches the latest tail rather
+// than serving a cache that could be up to 10 minutes old when realtime missed
+// an event. placeholderData still renders the cached messages instantly, so
+// there is no loading spinner — we just reconcile against the server on open.
+const MESSAGES_STALE_TIME = 0;
+
+// How many messages one page of history holds. The gateway's
+// GET /conversation/:peerId hard-caps `limit` at 100, so never raise this
+// above that or the "did we get a full page?" has-older check silently lies.
+const MESSAGE_PAGE_SIZE = 50;
+
+// Stable identity so "no older pages loaded" never re-triggers memos.
+const EMPTY_MESSAGES: GlobalMessage[] = [];
 
 // ── SCROLL FIX: In-memory profile cache (prevents redundant Supabase queries) ──
 // `_missing` flags peers that have no row in global_community_profiles or
@@ -269,6 +283,31 @@ async function enrichProfiles(
 }
 
 /**
+ * Synchronous, network-free read of already-cached profiles. Used on the
+ * realtime hot path so an incoming message renders instantly with whatever
+ * identity we already know; enrichProfiles() then fills any gaps in the
+ * background. Returns an empty entry-less map for unknown ids (toGlobalMessage
+ * tolerates a missing entry → sender: null).
+ */
+function getCachedProfiles(
+  userIds: string[]
+): Record<string, { display_name: string; avatar_url: string | null }> {
+  const now = Date.now();
+  const map: Record<string, { display_name: string; avatar_url: string | null }> = {};
+  for (const uid of Array.from(new Set(userIds)).filter(Boolean)) {
+    if (isVitanaBot(uid)) {
+      map[uid] = { display_name: VITANA_BOT_DISPLAY_NAME, avatar_url: VITANA_BOT_AVATAR_URL };
+      continue;
+    }
+    const cached = profileCache.get(uid);
+    if (cached && now - cached.cachedAt < PROFILE_CACHE_TTL) {
+      map[uid] = { display_name: cached.display_name, avatar_url: cached.avatar_url };
+    }
+  }
+  return map;
+}
+
+/**
  * Decide whether a direct-thread peer is a real user we should surface in the
  * inbox. Peers with no row in either profile table create phantom
  * "Unknown User" entries that confuse users — drop them. The Vitana bot is
@@ -428,26 +467,46 @@ async function fetchLegacyThreads(userId: string, groupUnreadMap?: Record<string
 }
 
 /**
- * Fetch messages from legacy global_messages table for a given legacy thread id.
+ * Fetch one page of messages from the legacy global_messages table for a given
+ * legacy thread id, newest-first internally and returned oldest-first.
+ *
+ * The ordering matters: this used to select `ascending: true` with a limit,
+ * which returns the OLDEST 100 messages of a thread — so a busy group chat
+ * showed its first-ever 100 messages and never the recent ones. Always page
+ * backwards from the newest end, then reverse for render order.
+ *
+ * `before` is an exclusive ISO cursor — pass the created_at of the oldest
+ * message already on screen to fetch the page preceding it.
  */
-async function fetchLegacyMessages(legacyThreadId: string): Promise<GlobalMessage[]> {
+async function fetchLegacyMessages(
+  legacyThreadId: string,
+  opts: { before?: string; limit?: number } = {}
+): Promise<GlobalMessage[]> {
+  const limit = opts.limit ?? MESSAGE_PAGE_SIZE;
   try {
-    const { data, error } = await supabase
+    let query = supabase
       .from("global_messages")
       .select("id, thread_id, sender_id, body, message_type, content_data, created_at, updated_at")
       .eq("thread_id", legacyThreadId)
-      .order("created_at", { ascending: true })
-      .limit(100) as any;
+      .order("created_at", { ascending: false })
+      .limit(limit) as any;
+
+    if (opts.before) query = query.lt("created_at", opts.before);
+
+    const { data, error } = await query;
 
     if (error || !data) {
       console.warn("Legacy messages fallback failed:", error?.message);
       return [];
     }
 
-    const senderIds = Array.from(new Set(data.map((m: any) => m.sender_id).filter(Boolean)));
+    // Fetched newest-first for correct paging; render order is oldest-first.
+    const rows = [...data].reverse();
+
+    const senderIds = Array.from(new Set(rows.map((m: any) => m.sender_id).filter(Boolean)));
     const profileMap = await enrichProfiles(senderIds as string[]);
 
-    return data.map((m: any) => ({
+    return rows.map((m: any) => ({
       id: m.id,
       thread_id: m.thread_id,
       sender_id: m.sender_id,
@@ -478,12 +537,21 @@ const VITANA_BOT_USER_ID = '00000000-0000-0000-0000-000000000001';
  */
 async function fetchDirectFromChatMessages(userId: string, directUnreadMap: Record<string, number>): Promise<GlobalMessageThread[]> {
   try {
+    // Counts MESSAGES, but the dedup below collapses them to conversations —
+    // one chatty peer can eat hundreds of rows, so a tight limit here silently
+    // drops whole conversations from the inbox (VTID-03493). Mirrors the
+    // gateway's own fallback multiple.
     const { data, error } = await supabase
       .from("chat_messages")
       .select("*")
       .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
+      // DM rows only — mirrors the gateway RPC. Group messages share this
+      // table with receiver_id NULL + group_id set; without this they dedup
+      // to an undefined peer and surface as a peerless inbox entry.
+      .not("receiver_id", "is", null)
+      .is("group_id", null)
       .order("created_at", { ascending: false })
-      .limit(200) as any;
+      .limit(2000) as any;
 
     console.log("[chat:debug] chat_messages query:", { rows: data?.length ?? 0, error: error?.message ?? null, errorCode: error?.code ?? null });
     if (error || !data || data.length === 0) {
@@ -735,8 +803,12 @@ export async function buildGlobalThreadsQueryFn(
 export async function buildGlobalMessagesQueryFn(
   userId: string,
   activeThreadId: string,
-  queryClient: QueryClient
+  queryClient: QueryClient,
+  opts: { before?: string; limit?: number } = {}
 ): Promise<GlobalMessage[]> {
+  const limit = opts.limit ?? MESSAGE_PAGE_SIZE;
+  const { before } = opts;
+
   // Check if active thread is a group thread
   const cachedThreads = queryClient.getQueryData<GlobalMessageThread[]>(["global-threads", userId]) || [];
   const activeThread = cachedThreads.find((t) => t.id === activeThreadId);
@@ -744,13 +816,14 @@ export async function buildGlobalMessagesQueryFn(
 
   // Group threads: always load from global_messages directly (thread UUID = thread_id)
   if (isGroupThread) {
-    return fetchLegacyMessages(activeThreadId);
+    return fetchLegacyMessages(activeThreadId, { before, limit });
   }
 
   // Direct threads: activeThreadId is the peer's user ID — try gateway first
   let gatewayMessages: GlobalMessage[] = [];
+  let gatewayOk = false;
   try {
-    const rawMessages = await fetchConversation(activeThreadId);
+    const rawMessages = await fetchConversation(activeThreadId, limit, before);
     const sorted = [...rawMessages].sort((a, b) =>
       new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
     );
@@ -761,6 +834,7 @@ export async function buildGlobalMessagesQueryFn(
     gatewayMessages = sorted.map((m) =>
       toGlobalMessage(m, activeThreadId, profileMap)
     );
+    gatewayOk = true;
   } catch (err) {
     console.warn("Gateway fetchConversation failed, trying legacy:", (err as Error).message);
   }
@@ -768,19 +842,32 @@ export async function buildGlobalMessagesQueryFn(
   // If gateway returned messages, use them
   if (gatewayMessages.length > 0) return gatewayMessages;
 
+  // Paging backwards: an empty page from a HEALTHY gateway means "no more
+  // history", not "gateway is down". Falling through to the fallbacks here
+  // would re-run the same cursor against the same rows and return empty
+  // anyway — but it would also let a legacy-table hit resurrect messages the
+  // cursor had already walked past, duplicating them at the top of the thread.
+  if (before && gatewayOk) return [];
+
   // Fallback 1: read directly from chat_messages table (direct DMs live here)
   try {
-    const { data: dmRows, error: dmErr } = await supabase
+    let dmQuery = supabase
       .from("chat_messages")
       .select("*")
       .or(`and(sender_id.eq.${userId},receiver_id.eq.${activeThreadId}),and(sender_id.eq.${activeThreadId},receiver_id.eq.${userId})`)
-      .order("created_at", { ascending: true })
-      .limit(100) as any;
+      .order("created_at", { ascending: false })
+      .limit(limit) as any;
+
+    if (before) dmQuery = dmQuery.lt("created_at", before);
+
+    const { data: dmRows, error: dmErr } = await dmQuery;
 
     if (!dmErr && dmRows && dmRows.length > 0) {
-      const senderIds = Array.from(new Set(dmRows.map((m: any) => m.sender_id).filter(Boolean)));
+      // Fetched newest-first for correct paging; render order is oldest-first.
+      const rows = [...dmRows].reverse();
+      const senderIds = Array.from(new Set(rows.map((m: any) => m.sender_id).filter(Boolean)));
       const profileMap = await enrichProfiles(senderIds as string[]);
-      return dmRows.map((m: any) => toGlobalMessage(m, activeThreadId, profileMap));
+      return rows.map((m: any) => toGlobalMessage(m, activeThreadId, profileMap));
     }
   } catch (err) {
     console.warn("[chat] chat_messages fallback failed:", (err as Error).message);
@@ -791,10 +878,10 @@ export async function buildGlobalMessagesQueryFn(
   const legacyThreadId = (legacyThread as any)?._legacyThreadId;
 
   if (legacyThreadId) {
-    return fetchLegacyMessages(legacyThreadId);
+    return fetchLegacyMessages(legacyThreadId, { before, limit });
   }
 
-  return fetchLegacyMessages(activeThreadId);
+  return fetchLegacyMessages(activeThreadId, { before, limit });
 }
 
 // ── Hook ─────────────────────────────────────────────────────────────
@@ -867,7 +954,7 @@ export function useGlobalMessages(
       return buildGlobalMessagesQueryFn(user.id, activeThreadId, queryClient);
     },
     enabled: !!user && !!activeThreadId && isGlobalContext,
-    staleTime: STALE_TIME,
+    staleTime: MESSAGES_STALE_TIME,
     gcTime: GC_TIME,
     // Show last-known messages from localStorage instantly while refetching
     placeholderData: (prev) => prev ?? (activeThreadId ? getCachedMessages(activeThreadId) ?? undefined : undefined),
@@ -879,6 +966,122 @@ export function useGlobalMessages(
       debouncedPersistMessages(activeThreadId, messages);
     }
   }, [activeThreadId, messages, isMessagesLoading]);
+
+  // ── Older-history paging (scrollback) ─────────────────────────────
+  //
+  // The query above only ever holds the NEWEST page of a thread. Older pages
+  // are accumulated here, per thread, rather than being pushed back into the
+  // query cache: realtime invalidation refetches that cache on every incoming
+  // message, which would otherwise throw away everything the user had
+  // scrolled back through mid-conversation.
+
+  const [olderByThread, setOlderByThread] = useState<Record<string, GlobalMessage[]>>({});
+  const [exhaustedThreads, setExhaustedThreads] = useState<Record<string, boolean>>({});
+  const [isLoadingOlder, setIsLoadingOlder] = useState(false);
+
+  const olderMessages = (activeThreadId && olderByThread[activeThreadId]) || EMPTY_MESSAGES;
+
+  const mergedMessages = useMemo(() => {
+    if (olderMessages.length === 0) return messages;
+    const seen = new Set(messages.map((m) => m.id));
+    const prefix = olderMessages.filter((m) => !seen.has(m.id));
+    if (prefix.length === 0) return messages;
+    return [...prefix, ...messages].sort(
+      (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    );
+  }, [messages, olderMessages]);
+
+  // A short thread never filled its first page, so there is nothing behind it.
+  const hasOlderMessages =
+    !!activeThreadId &&
+    !exhaustedThreads[activeThreadId] &&
+    mergedMessages.length >= MESSAGE_PAGE_SIZE;
+
+  /**
+   * Fetch one page of older history. Returns how many NEW messages were
+   * actually prepended — callers use that to tell a real prepend apart from a
+   * no-op (empty page, duplicate page, or a failed request), which matters
+   * because the consumer's scroll-anchor restore only runs when the rendered
+   * count changes.
+   */
+  const loadOlderMessages = useCallback(async (): Promise<number> => {
+    if (!user || !activeThreadId || !isGlobalContext) return 0;
+    if (isLoadingOlder || exhaustedThreads[activeThreadId]) return 0;
+
+    const oldest = mergedMessages[0];
+    if (!oldest) return 0;
+
+    setIsLoadingOlder(true);
+    try {
+      const older = await buildGlobalMessagesQueryFn(user.id, activeThreadId, queryClient, {
+        before: oldest.created_at,
+        limit: MESSAGE_PAGE_SIZE,
+      });
+
+      // A short page means we reached the beginning of the thread.
+      if (older.length < MESSAGE_PAGE_SIZE) {
+        setExhaustedThreads((prev) => ({ ...prev, [activeThreadId]: true }));
+      }
+      if (older.length === 0) return 0;
+
+      const known = new Set(mergedMessages.map((m) => m.id));
+      const fresh = older.filter((m) => !known.has(m.id));
+      if (fresh.length === 0) return 0;
+
+      setOlderByThread((prev) => {
+        const existing = prev[activeThreadId] || [];
+        const seen = new Set(existing.map((m) => m.id));
+        const add = fresh.filter((m) => !seen.has(m.id));
+        if (add.length === 0) return prev;
+        return { ...prev, [activeThreadId]: [...add, ...existing] };
+      });
+      return fresh.length;
+    } catch (err) {
+      console.warn("[chat] loadOlderMessages failed:", (err as Error).message);
+      return 0;
+    } finally {
+      setIsLoadingOlder(false);
+    }
+  }, [
+    user,
+    activeThreadId,
+    isGlobalContext,
+    isLoadingOlder,
+    exhaustedThreads,
+    mergedMessages,
+    queryClient,
+  ]);
+
+  // Keep scrollback continuous across a base-page refetch.
+  //
+  // `messages` only ever holds the NEWEST page. When realtime invalidation or
+  // a visibility-change refetch replaces it, any rows that were in the old
+  // base page but fall outside the new one were never copied into
+  // `olderByThread` — so once enough new messages arrive to push a full page
+  // out, the merged view would jump from the loaded prefix straight to the
+  // new page, leaving a permanent hole in the middle. Absorb the displaced
+  // rows instead. Only does anything once the user has actually paged back;
+  // otherwise dropping them is correct and keeps memory flat.
+  const lastBaseRef = useRef<Record<string, GlobalMessage[]>>({});
+  useEffect(() => {
+    if (!activeThreadId) return;
+    const prevBase = lastBaseRef.current[activeThreadId] || [];
+    lastBaseRef.current[activeThreadId] = messages;
+    if (prevBase.length === 0 || messages.length === 0) return;
+
+    const baseIds = new Set(messages.map((m) => m.id));
+    const displaced = prevBase.filter((m) => !baseIds.has(m.id));
+    if (displaced.length === 0) return;
+
+    setOlderByThread((prev) => {
+      const existing = prev[activeThreadId];
+      if (!existing || existing.length === 0) return prev;
+      const seen = new Set(existing.map((m) => m.id));
+      const add = displaced.filter((m) => !seen.has(m.id));
+      if (add.length === 0) return prev;
+      return { ...prev, [activeThreadId]: [...existing, ...add] };
+    });
+  }, [activeThreadId, messages]);
 
   // ── Optimistic cache helpers ──────────────────────────────────────
 
@@ -1309,9 +1512,17 @@ export function useGlobalMessages(
 
   // FIX 2: ADD GUARANTEED CONVERGENCE PATH - web-only periodic refresh as safety net
   const conversationOpenRef = useRef(false);
+  // Set whenever realtime drops (error/closed) so the next successful
+  // (re)subscribe knows to backfill any messages missed during the gap.
+  const needsBackfillRef = useRef(false);
+  // Mirror of activeThreadId for use inside the realtime subscribe closure,
+  // whose effect intentionally does NOT depend on activeThreadId (so the
+  // channel is not torn down on every thread switch).
+  const activeThreadIdRef = useRef<string | null>(null);
 
   useEffect(() => {
     conversationOpenRef.current = !!activeThreadId;
+    activeThreadIdRef.current = activeThreadId ?? null;
   }, [activeThreadId]);
 
   useEffect(() => {
@@ -1329,29 +1540,38 @@ export function useGlobalMessages(
           table: "chat_messages",
           filter: `receiver_id=eq.${user.id}`,
         },
-        async (payload) => {
+        (payload) => {
           const raw = payload.new as ChatMessage;
           const peerId = raw.sender_id;
 
-          try {
-            const profileMap = await enrichProfiles([raw.sender_id]);
-            const msg = toGlobalMessage(raw, peerId, profileMap);
-
-            // FIX 2.1: Update both active thread messages cache AND threads cache
+          // LATENCY FIX: render the incoming message IMMEDIATELY. Previously this
+          // callback `await`ed enrichProfiles() (a network round-trip) BEFORE
+          // touching the cache, adding 0.5–2s of delay per message on mobile.
+          // We now write the message into the cache synchronously with whatever
+          // profile data is already available, then enrich + patch in the
+          // background so the sender name/avatar fills in a moment later.
+          const applyToCaches = (msg: GlobalMessage, isPatch: boolean) => {
             queryClient.setQueryData(
               ["global-messages", peerId],
               (prev: GlobalMessage[] | undefined) => {
                 if (!prev) return [msg];
-                if (prev.some((m) => m.id === msg.id)) return prev;
+                const idx = prev.findIndex((m) => m.id === msg.id);
+                if (idx >= 0) {
+                  // Already present — replace (used by the enrichment patch).
+                  const next = prev.slice();
+                  next[idx] = msg;
+                  return next;
+                }
                 return [...prev, msg];
               }
             );
 
+            // Only bump the thread/unread state on first insert, not on the patch.
+            if (isPatch) return;
             queryClient.setQueryData(
               ["global-threads", user.id],
               (prev: GlobalMessageThread[] | undefined) => {
                 if (!prev) {
-                  // FIX 2.2: Fallback refetch when cache is missing/stale
                   queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
                   return prev;
                 }
@@ -1369,38 +1589,59 @@ export function useGlobalMessages(
                   ];
                 }
 
-                // Trigger thread refetch for new conversation — badge will update via thread persistence effect
-                // (no manual dispatch needed; invalidation triggers re-render → useEffect dispatches count)
-
-                // New conversation - trigger refetch
+                // New conversation - trigger refetch so it appears in the list
                 queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
                 return prev;
               }
             );
+          };
 
-            // Show local browser notification when app is backgrounded
-            const senderName = msg.sender?.display_name || 'Someone';
-            const preview = raw.content || '';
-            notifyNewMessage(senderName, preview, peerId);
-          } catch (error) {
-            console.error("[useGlobalMessages] Realtime event processing error:", error);
-            // FIX 1.3: On realtime failure, trigger targeted query invalidation
-            queryClient.invalidateQueries({ queryKey: ["global-messages", peerId] });
-            queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
-          }
+          // 1) Instant render with any cached profile (no await).
+          const cachedProfiles = getCachedProfiles([raw.sender_id]);
+          const instantMsg = toGlobalMessage(raw, peerId, cachedProfiles);
+          applyToCaches(instantMsg, false);
+
+          // Show local browser notification when app is backgrounded.
+          const senderName = instantMsg.sender?.display_name || 'Someone';
+          notifyNewMessage(senderName, raw.content || '', peerId);
+
+          // 2) Enrich the sender profile in the background and patch the bubble.
+          enrichProfiles([raw.sender_id])
+            .then((profileMap) => {
+              const enriched = toGlobalMessage(raw, peerId, profileMap);
+              if (enriched.sender?.display_name) applyToCaches(enriched, true);
+            })
+            .catch((error) => {
+              console.warn("[useGlobalMessages] Realtime profile enrichment failed:", error);
+            });
         }
       )
       .subscribe((status) => {
         // FIX 1.3: Add subscription status/error handling
         if (status === 'SUBSCRIBED') {
           setRealtimeStatus('connected');
+          // BACKFILL ON RECONNECT: realtime only delivers events that occur
+          // while subscribed, so anything that arrived during a drop is missed.
+          // After a (re)connect that followed a drop, do a one-shot real
+          // refetch of the open conversation + thread list to catch up.
+          if (needsBackfillRef.current) {
+            needsBackfillRef.current = false;
+            queryClient.refetchQueries({ queryKey: ["global-threads", user.id] });
+            if (conversationOpenRef.current && activeThreadIdRef.current) {
+              queryClient.refetchQueries({ queryKey: ["global-messages", activeThreadIdRef.current] });
+            }
+          }
         } else if (status === 'CHANNEL_ERROR') {
           setRealtimeStatus('error');
+          needsBackfillRef.current = true;
           console.error('[useGlobalMessages] Realtime subscription error - falling back to polling');
-          // On channel failure, invalidate queries to trigger refetch
-          queryClient.invalidateQueries({ queryKey: ["global-threads", user.id] });
-        } else if (status === 'CLOSED') {
+        } else if (status === 'CLOSED' || status === 'TIMED_OUT') {
+          // CLOSED/TIMED_OUT are silent drops (common on mobile background /
+          // network handoff). Mark disconnected so the fallback poll engages —
+          // previously only CHANNEL_ERROR did, so a silent drop meant messages
+          // stalled until the user re-focused the tab.
           setRealtimeStatus('disconnected');
+          needsBackfillRef.current = true;
         }
       });
 
@@ -1409,23 +1650,30 @@ export function useGlobalMessages(
     };
   }, [user, isGlobalContext, queryClient]); // FIX 1.2: Remove unstable dependencies (updateMessagesOptimistically, updateThreadsOptimistically, refetchThreads)
 
-  // SCROLL FIX: Only poll as fallback when realtime is broken (NOT during normal operation)
-  // The 10-second polling was the PRIMARY cause of scroll freeze — it triggered refetches
-  // during scroll, causing re-renders that disrupted scroll position.
+  // FALLBACK POLL: engage whenever realtime is NOT actively connected. Two
+  // bugs were fixed here:
+  //   1. The gate was `!== 'error'`, so a SILENT drop (CLOSED/TIMED_OUT →
+  //      'disconnected') never started the poll — messages stalled for up to a
+  //      minute until the tab regained focus. It now runs for any non-connected
+  //      state ('disconnected' | 'error').
+  //   2. It used invalidateQueries({ refetchType: 'none' }), which only MARKS
+  //      the open conversation stale and never actually refetches it. It now
+  //      does a real refetchQueries() so new messages are pulled.
+  // Interval dropped 30s → 6s: still gentle enough to avoid the scroll-freeze
+  // the old 10s loop caused (that loop ran during NORMAL operation; this only
+  // runs while realtime is down), but 5× faster to converge.
   useEffect(() => {
     if (!user || !isGlobalContext || typeof window === 'undefined') return;
-    // Only enable polling when realtime subscription has failed
-    if (realtimeStatus !== 'error') return;
+    if (realtimeStatus === 'connected') return;
 
-    console.warn('[useGlobalMessages] Realtime failed, falling back to 30s polling');
+    console.warn('[useGlobalMessages] Realtime not connected — engaging 6s fallback poll');
     const interval = setInterval(() => {
+      if (document.visibilityState !== 'visible') return;
+      queryClient.refetchQueries({ queryKey: ["global-threads", user.id] });
       if (conversationOpenRef.current && activeThreadId) {
-        queryClient.invalidateQueries({
-          queryKey: ["global-messages", activeThreadId],
-          refetchType: 'none'
-        });
+        queryClient.refetchQueries({ queryKey: ["global-messages", activeThreadId] });
       }
-    }, 30000); // 30 seconds (was 10s — that was far too aggressive)
+    }, 6000);
 
     return () => clearInterval(interval);
   }, [user, isGlobalContext, activeThreadId, queryClient, realtimeStatus]);
@@ -1463,10 +1711,10 @@ export function useGlobalMessages(
   const stopTyping = useCallback(async (_threadId?: string) => {}, []);
 
   // ── SCROLL FIX: Stable message reference (prevent re-renders when array content hasn't changed) ──
-  const stableMessages = useMemo(() => messages, [
+  const stableMessages = useMemo(() => mergedMessages, [
     // Only update reference when message IDs or count change
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    messages.map((m) => m.id).join(","),
+    mergedMessages.map((m) => m.id).join(","),
   ]);
 
   // ── Return ────────────────────────────────────────────────────────
@@ -1492,6 +1740,10 @@ export function useGlobalMessages(
     startTyping,
     stopTyping,
     isGlobalContext,
+    // Scrollback: older pages of this thread's history
+    loadOlderMessages,
+    hasOlderMessages,
+    isLoadingOlder,
     realtimeStatus, // Expose realtime status for debugging
   };
 }

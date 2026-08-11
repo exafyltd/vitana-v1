@@ -1,0 +1,20 @@
+{
+  "qrShare": {
+    "title": "رمز QR",
+    "scanToView": "امسح لترى ملفك الشخصي.",
+    "scanToDownload": "امسح لتنزيل MAXINA",
+    "shareProfile": "مشاركة الملف الشخصي",
+    "shareApp": "مشاركة MAXINA",
+    "copyLink": "نسخ الرابط",
+    "download": "تنزيل",
+    "linkCopied": "تم نسخ الرابط!",
+    "modeProfile": "ملفي الشخصي",
+    "modeInvite": "احصل على MAXINA",
+    "appName": "MAXINA",
+    "appTagline": "مجتمع طول العمر",
+    "inviteShareTitle": "MAXINA – مجتمع طول العمر",
+    "inviteShareText": "احصل على MAXINA وابدأ رحلة طول العمر الخاصة بك:",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

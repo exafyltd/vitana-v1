@@ -1,10 +1,10 @@
 {
   "profileEditor": {
-    "editAbout": "Editar tu información",
+    "editAbout": "Editar Sobre mí",
     "aboutTitle": "Acerca de",
     "aboutDescription": "Comparte más sobre ti. Puedes controlar quién ve cada campo.",
     "bio": "Biografía",
-    "bioPlaceholder": "Comparte tu viaje de bienestar, pasiones y lo que te hace único...\n\nEjemplos:\n• 'Entusiasta del bienestar apasionado por la vida consciente y la comunidad 🌱'\n• 'Nutricionista certificado ayudando a otros a descubrir su yo más saludable'\n• 'Corredor de maratón, profesor de meditación y defensor de una vida equilibrada'",
+    "bioPlaceholder": "Comparte tu viaje de bienestar, tus pasiones y lo que te hace único...\n\nEjemplos:\n• 'Entusiasta del bienestar con pasión por la vida consciente y la construcción de comunidad 🌱'\n• 'Nutricionista certificada que ayuda a otros a descubrir su yo más saludable'\n• 'Corredor de maratones, profesor de meditación y defensor de una vida equilibrada'",
     "location": "Ubicación",
     "locationPlaceholder": "p. ej., San Francisco, CA • Londres, UK • Remoto",
     "links": "Enlaces",
@@ -20,7 +20,8 @@
     "visibility": {
       "public": "Público",
       "followers": "Seguidores",
-      "private": "Privado"
+      "private": "Privado",
+      "_pending_review": {}
     },
     "languageOptions": {
       "english": "Inglés",
@@ -32,13 +33,14 @@
       "russian": "Ruso",
       "arabic": "Árabe",
       "chinese": "Chino",
-      "japanese": "Japonés"
+      "japanese": "Japonés",
+      "_pending_review": {}
     },
     "cancel": "Cancelar",
     "save": "Guardar cambios",
     "saving": "Guardando...",
     "profileUpdated": "Perfil actualizado",
-    "profileUpdatedDesc": "Tu información de 'Acerca de' se ha guardado correctamente.",
+    "profileUpdatedDesc": "Tu información se ha guardado correctamente.",
     "saveFailed": "Error al guardar",
     "saveFailedDesc": "No se pudo guardar el perfil. Inténtalo de nuevo.",
     "autopilot": {
@@ -46,21 +48,22 @@
       "makeShorter": "Hacer más corto",
       "moreProfessional": "Más profesional",
       "moreInspirational": "Más inspirador",
-      "suggestion": "Sugerencia de piloto automático"
+      "suggestion": "Sugerencia de piloto automático",
+      "_pending_review": {}
     },
     "identity": {
       "editIdentity": "Editar identidad",
       "title": "Identidad",
-      "description": "Gestiona tu nombre, usuario e imágenes de perfil.",
+      "description": "Gestiona tu nombre de visualización, identificador y fotos de perfil.",
       "profilePicture": "Foto de perfil",
       "displayName": "Nombre",
-      "displayNamePlaceholder": "Tu nombre",
+      "displayNamePlaceholder": "Tu Nombre de Visualización",
       "handle": "Usuario",
       "handlePlaceholder": "tuusuario",
-      "handleDescription": "Tu usuario se usará en tu URL de perfil público: /u/@{handle}",
-      "personalityDescriptor": "Descriptor de personalidad",
-      "personalityDescriptorPlaceholder": "Ej.: El Caminante Consciente, El Guerrero Zen",
-      "personalityDescriptorDescription": "Una frase corta que caracteriza tu estilo de bienestar",
+      "handleDescription": "Tu identificador se usa en la URL de tu perfil público: /u/@{handle}",
+      "personalityDescriptor": "Descripción de Personalidad",
+      "personalityDescriptorPlaceholder": "Ej. The Mindful Mover, The Zen Warrior",
+      "personalityDescriptorDescription": "Una descripción corta que caracteriza tu estilo de bienestar",
       "upload": "Subir",
       "uploading": "Subiendo...",
       "remove": "Eliminar",
@@ -69,15 +72,16 @@
       "uploadFailed": "Error al subir",
       "uploadFailedDesc": "No se pudo subir la imagen. Intenta de nuevo.",
       "identityUpdated": "Identidad actualizada",
-      "identityUpdatedDesc": "Tu información de identidad se ha guardado correctamente."
+      "identityUpdatedDesc": "Tu información de identidad se ha guardado correctamente.",
+      "_pending_review": {}
     },
     "coverLibrary": {
       "title": "Biblioteca de portadas",
       "tileTitle": "Biblioteca de portadas",
-      "tileSubtitle": "Sube tus propias fotos para publicaciones de Find-a-Match",
+      "tileSubtitle": "Sube tus propias fotos para publicaciones de 'Encuentra una Pareja'",
       "drawerTitle": "Fotos de portada para tus publicaciones",
       "universalSection": "Foto de portada universal",
-      "universalDescription": "Se usa cuando ninguna de tus fotos específicas de actividad coincide con la categoría de una publicación, en lugar de una imagen generada por IA. Normalmente un retrato tuyo.",
+      "universalDescription": "Se usa cuando ninguna de tus fotos específicas de actividad coincide con la categoría de una publicación — y en lugar de una imagen generada por IA. Normalmente un retrato tuyo.",
       "universalAdd": "Añadir foto universal",
       "universalReplace": "Reemplazar foto",
       "universalRemove": "Eliminar",
@@ -96,7 +100,10 @@
       "universalRemoved": "Foto de portada universal eliminada",
       "uploadFailed": "Error al subir",
       "categoryRequired": "Primero elige una categoría para esta foto.",
-      "saveError": "No se pudo guardar. Inténtalo de nuevo."
-    }
-  }
+      "saveError": "No se pudo guardar. Inténtalo de nuevo.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

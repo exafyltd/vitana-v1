@@ -4,13 +4,17 @@
  * Split out of NewsFeedItemCard so the like/comment hook can be called
  * unconditionally (it is only mounted for kind === "post"). The card body still
  * navigates to the author's profile; the heart and the comment affordance are
- * inline — tapping the heart toggles a like, long-pressing it opens the "who
- * liked this" list (mirrors Instagram's long-press-to-see-likers gesture),
- * tapping the comment count expands an inline list of comments plus an input
- * to post a new one. Every interactive control stops propagation so it never
- * triggers the card's navigation.
+ * inline — tapping the heart toggles a like, tapping the comment count expands
+ * an inline list of comments plus an input to post a new one. The "who liked
+ * this" list opens from its own full-width "{count} Likes" row below the icon
+ * row (VTID-03554) — a prior version hid this behind a long-press on the heart
+ * button, which was both undiscoverable and unreliable inside a scrollable
+ * feed (a touch-move during the hold cancels the pointer sequence before the
+ * 500ms threshold), so the list was effectively unreachable for most users.
+ * Every interactive control stops propagation so it never triggers the card's
+ * navigation.
  */
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Send, Trash2 } from "lucide-react";
@@ -67,53 +71,45 @@ export function CommunityPostCard({
   const [likeCount, setLikeCount] = useState(item.likes_count);
   const [commentCount, setCommentCount] = useState(item.comments_count);
 
+  // ...but only if we actually adopt the reconciled values (VTID-03503). These
+  // were seeded from props once and then never resynced, so once the card had
+  // rendered, a newer count arriving from the feed — a background refetch, or
+  // this viewer's own action being written into the feed cache — was ignored
+  // for the lifetime of the mount. Adjusting state during render (rather than
+  // in an effect) is React's documented pattern for prop-derived state: it
+  // re-renders before paint, so no stale number is ever shown.
+  const [syncedCounts, setSyncedCounts] = useState({
+    likes: item.likes_count,
+    comments: item.comments_count,
+  });
+  if (
+    syncedCounts.likes !== item.likes_count ||
+    syncedCounts.comments !== item.comments_count
+  ) {
+    setSyncedCounts({ likes: item.likes_count, comments: item.comments_count });
+    setLikeCount(item.likes_count);
+    setCommentCount(item.comments_count);
+  }
+
   const openProfile = () => {
     onOpen?.(item);
     navigate(`/u/${item.user_id}`);
   };
 
-  // Long-press-to-see-likers: a press held past LONG_PRESS_MS opens the
-  // "who liked this" list instead of toggling the like on release.
-  const LONG_PRESS_MS = 500;
-  const longPressTimer = useRef<number | null>(null);
-  const longPressTriggered = useRef(false);
-
-  const clearLongPressTimer = () => {
-    if (longPressTimer.current !== null) {
-      window.clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
-    }
-  };
-  useEffect(() => clearLongPressTimer, []);
-
-  const handleLikePointerDown = (e: React.PointerEvent) => {
-    e.stopPropagation();
-    longPressTriggered.current = false;
-    clearLongPressTimer();
-    longPressTimer.current = window.setTimeout(() => {
-      longPressTriggered.current = true;
-      setShowLikers(true);
-    }, LONG_PRESS_MS);
-  };
-
-  const handleLikePointerRelease = (e: React.PointerEvent) => {
-    e.stopPropagation();
-    clearLongPressTimer();
-  };
-
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (longPressTriggered.current) {
-      // The long press already opened the likers list — don't also toggle.
-      longPressTriggered.current = false;
-      return;
-    }
     if (!user) {
       notify("screens.home.signInToInteract");
       return;
     }
-    setLikeCount((c) => Math.max(0, c + (isLiked ? -1 : 1)));
-    toggleLike();
+    const delta = isLiked ? -1 : 1;
+    setLikeCount((c) => Math.max(0, c + delta));
+    // Roll the optimistic count back if the write fails — otherwise a phantom
+    // +1 sits there until the next feed refetch, which is the same class of
+    // "the number lies" bug as VTID-03503 itself, just in the other direction.
+    toggleLike(undefined, {
+      onError: () => setLikeCount((c) => Math.max(0, c - delta)),
+    });
   };
 
   const handleAddComment = async () => {
@@ -200,15 +196,10 @@ export function CommunityPostCard({
             <button
               type="button"
               onClick={handleLike}
-              onPointerDown={handleLikePointerDown}
-              onPointerUp={handleLikePointerRelease}
-              onPointerLeave={handleLikePointerRelease}
-              onPointerCancel={handleLikePointerRelease}
-              onContextMenu={(e) => e.preventDefault()}
               aria-label={t("screens.profile.likePost")}
               aria-pressed={isLiked}
               className={cn(
-                "flex select-none items-center gap-1 text-xs transition-colors touch-manipulation",
+                "flex items-center gap-1 text-xs transition-colors",
                 isLiked ? "text-pink-500" : "text-muted-foreground hover:text-pink-500",
               )}
             >
@@ -231,16 +222,33 @@ export function CommunityPostCard({
               <MessageCircle className="h-3.5 w-3.5" />
               {commentCount}
             </button>
-            {item.source === "post" && (
-              <NewsPostModerationMenu
-                postId={item.post_id}
-                authorId={item.user_id}
-                authorName={item.author_name}
-                postContent={item.content}
-              />
-            )}
+            {/* VTID-03468: rendered for BOTH backing sources. This used to be
+                gated on `source === "post"`, which left media_uploads-backed
+                cards with no kebab at all — an author could not delete their
+                own uploaded video from the feed, and no one could report it.
+                The menu targets the right table via the `source` prop. */}
+            <NewsPostModerationMenu
+              postId={item.post_id}
+              authorId={item.user_id}
+              authorName={item.author_name}
+              postContent={item.content}
+              source={item.source}
+            />
           </div>
         </div>
+
+        {likeCount > 0 && (
+          <button
+            type="button"
+            onClick={(e) => {
+              stop(e);
+              setShowLikers(true);
+            }}
+            className="mt-1.5 block py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {t("screens.home.likesCount", { count: likeCount })}
+          </button>
+        )}
 
         {showComments && (
           <div className="mt-3 space-y-3 border-t border-border/40 pt-3" onClick={stop}>

@@ -1,6 +1,13 @@
-name: Deploy Community App to Cloud Run
+name: Deploy Community App to Production (AWS + Cloud Run)
 
-# Deploys vitana-v1 (React/Vite SPA) to Cloud Run service 'community-app' (LIVE).
+# Deploys vitana-v1 (React/Vite SPA) to PRODUCTION.
+#
+# WHERE PRODUCTION ACTUALLY IS (VTID-03483): vitanaland.com and www are
+# served by the AWS ECS service 'vitana-community-app-awsdr' (see the
+# aws_prod job), NOT by Cloud Run. Cloud Run's 'community-app' is kept in
+# sync as a rollback target only. If you change this workflow, keep the
+# aws_prod job — without it this workflow deploys, goes green, and changes
+# nothing that any user can see.
 #
 # STAGING-FIRST CUTOVER (effective Mon 8 Jun 2026, 10:00 Europe/Berlin):
 # BEFORE the cutover, a push to `main` deploys to the LIVE community-app as
@@ -28,8 +35,14 @@ permissions:
   id-token: write
 
 concurrency:
-  group: deploy-community-app
-  cancel-in-progress: true
+  # Push deploys share one cancellable group so only the newest push builds.
+  # Manual workflow_dispatch deploys to PROD each get a UNIQUE group and are
+  # NEVER cancelled — otherwise an unrelated push to `main` (which post-cutover
+  # only hits the frozen `cutover_gate` and no-ops) cancels an in-flight manual
+  # prod deploy. That happened on 2026-06-23: a manual prod deploy was killed
+  # mid-run by routine pushes landing seconds later.
+  group: deploy-community-app-${{ github.event_name == 'workflow_dispatch' && github.run_id || 'push' }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 
 jobs:
   # Staging-first cutover gate. Freezes the AUTOMATIC (push) deploy of the live
@@ -63,6 +76,32 @@ jobs:
             echo "frozen=false" >> "$GITHUB_OUTPUT"
           fi
 
+  # THE JOB THAT ACTUALLY REACHES USERS (VTID-03483).
+  #
+  # vitanaland.com and www are served by the AWS ECS service
+  # vitana-community-app-awsdr, not by Cloud Run — that moved at the
+  # VTID-03419 cutover. Before this job existed, running this workflow
+  # deployed Cloud Run, reported success everywhere, and left every visitor
+  # on the previous build; shipping anything took a second, separate,
+  # undocumented dispatch of AWS-PROD-DEPLOY-FRONTEND.yml. That gap burned a
+  # whole afternoon of "deployed" fixes that were not live.
+  #
+  # Deliberately depends on cutover_gate ONLY, not on the Cloud Run `deploy`
+  # job: production must not be held hostage by the legacy rollback stack.
+  # Both are handed the same commit, so the two stacks stay identical.
+  aws_prod:
+    needs: cutover_gate
+    if: needs.cutover_gate.outputs.frozen != 'true'
+    uses: ./.github/workflows/AWS-PROD-DEPLOY-FRONTEND.yml
+    secrets: inherit
+    with:
+      reason: >-
+        Via DEPLOY.yml (${{ github.event_name }}):
+        ${{ github.event.inputs.reason || 'automatic deploy' }}
+      commit_sha: ${{ github.event.inputs.commit_sha || '' }}
+
+  # GCP Cloud Run. No longer user-facing — kept current so it stays a viable
+  # rollback target if AWS has to be abandoned in a hurry.
   deploy:
     needs: cutover_gate
     if: needs.cutover_gate.outputs.frozen != 'true'

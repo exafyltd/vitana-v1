@@ -2,6 +2,8 @@
   "logout": {
     "signingOut": "Cerrando sesión...",
     "signedOut": "Sesión cerrada correctamente",
-    "redirecting": "Redirigiendo..."
-  }
+    "redirecting": "Redirigiendo...",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

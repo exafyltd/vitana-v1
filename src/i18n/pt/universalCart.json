@@ -1,0 +1,86 @@
+{
+  "universalCart": {
+    "page": {
+      "title": "Carrinho",
+      "subtitle": "Produtos, pacotes e recomendações do Discover — tudo em um só lugar.",
+      "emptyTitle": "Teu carrinho está vazio",
+      "emptyBody": "Toca em “Adicionar ao carrinho” em qualquer item do Discover para adicioná-lo aqui.",
+      "loading": "A carregar teu carrinho…",
+      "roleBlockedTitle": "O carrinho não está disponível para esta função",
+      "roleBlockedBody": "O carrinho é um recurso da comunidade. Muda para tua função de comunidade para usá-lo.",
+      "errorTitle": "Não conseguimos carregar teu carrinho",
+      "errorBody": "Por favor, tenta novamente em um momento.",
+      "removeAction": "Remover",
+      "quantityLabel": "Quantidade",
+      "completeAction": "Marcar como concluído",
+      "alreadyCompleted": "Já concluído",
+      "linkToDiscover": "Explorar Discover",
+      "close": "Fechar",
+      "_pending_review": {}
+    },
+    "tabs": {
+      "cart": "Carrinho",
+      "saved": "Guardado",
+      "_pending_review": {}
+    },
+    "saved": {
+      "moveToCart": "Adicionar ao carrinho",
+      "saveForLater": "Guardar para mais tarde",
+      "emptyTitle": "Nada guardado ainda",
+      "emptyBody": "Guarda produtos para mais tarde tocando em “Guardar para mais tarde” no teu carrinho.",
+      "_pending_review": {}
+    },
+    "item": {
+      "viewProduct": "Ver produto",
+      "_pending_review": {}
+    },
+    "agent": {
+      "promptLabel": "O que estás a comprar?",
+      "promptPlaceholder": "Descreve o que estás a comprar — ex: \"mais energia de manhã\"",
+      "proposeCta": "Perguntar à Vitana",
+      "proposing": "A Vitana está a encontrar produtos correspondentes…",
+      "sectionTitle": "A Vitana sugere",
+      "sectionSubtitle": "As sugestões ficam no teu carrinho. Revisa-as, mantém ou remove — só compras com \"Aprovar e Pagar\".",
+      "rationaleLabel": "Porque a Vitana sugere isto",
+      "safetyTitle": "Nota de segurança — por favor, lê",
+      "confidenceLabel": "Confiança: {value}",
+      "keep": "Manter",
+      "remove": "Remover",
+      "unavailable": "Vitana está temporariamente indisponível. Por favor, tenta novamente em um momento.",
+      "roleBlocked": "As sugestões da Vitana estão disponíveis apenas no teu papel na comunidade.",
+      "empty": "Ainda sem sugestões. Diz à Vitana acima o que estás a procurar.",
+      "reviewNote": "Por favor, revê as notas: algumas sugestões têm notas de segurança. Verifica-as antes de continuares.",
+      "reorderCta": "Comprar novamente",
+      "reorderLabel": "Comprado antes",
+      "reorderSectionTitle": "Comprar novamente",
+      "reorderSectionSubtitle": "Itens que compraste antes estão no teu carrinho. Revê-os, mantém ou remove — só compras com \"Aprovar e Pagar\".",
+      "reordering": "Vitana está a adicionar os teus itens de volta…",
+      "overCapAdvisory": "Estes itens fazem-te ultrapassar o teu orçamento mensal.",
+      "nearCapAdvisory": "Estes itens aproximam-te do teu orçamento mensal.",
+      "error": "Algo correu mal. Por favor, tenta novamente.",
+      "_pending_review": {}
+    },
+    "budget": {
+      "title": "Orçamento deste mês",
+      "spentOfCap": "{spent} de {cap} este mês",
+      "statusUnder": "Dentro do orçamento",
+      "statusNear": "Quase no orçamento",
+      "statusOver": "Acima do orçamento",
+      "noCapHint": "Define um orçamento mensal para controlares os teus gastos.",
+      "_pending_review": {}
+    },
+    "addButton": {
+      "label": "Adicionar ao carrinho",
+      "added": "No carrinho",
+      "addAria": "Adicionar ao carrinho",
+      "addedAria": "Já no carrinho",
+      "signRequired": "Inicia sessão para adicionares ao teu carrinho.",
+      "roleBlocked": "O carrinho está disponível apenas no teu papel na comunidade.",
+      "failed": "Não foi possível adicionar ao carrinho",
+      "success": "Adicionado ao carrinho",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

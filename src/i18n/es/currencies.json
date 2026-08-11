@@ -2,6 +2,8 @@
   "currencies": {
     "usd": "Dólares estadounidenses",
     "vtna": "Tokens VTNA",
-    "credits": "Créditos de la plataforma"
-  }
+    "credits": "Créditos de la plataforma",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

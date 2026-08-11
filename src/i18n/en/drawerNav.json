@@ -16,6 +16,8 @@
     "inbox": "Inbox",
     "support": "Support",
     "settings": "Settings",
-    "logout": "Log Out"
-  }
+    "logout": "Log Out",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

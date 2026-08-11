@@ -1,0 +1,20 @@
+{
+  "featureAnnouncementCard": {
+    "brandNew": {
+      "eyebrow": "ميزة جديدة",
+      "badge": "جديد",
+      "intro": "من الآن فصاعدًا، يمكنك:",
+      "cta": "جرّبها بنفسك",
+      "closing": "اختبار سعيد 🥳",
+      "_pending_review": {}
+    },
+    "didYouKnow": {
+      "eyebrow": "هل تعلم؟",
+      "intro": "يمكنك:",
+      "cta": "جرّبها الآن",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

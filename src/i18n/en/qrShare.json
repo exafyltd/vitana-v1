@@ -1,7 +1,7 @@
 {
   "qrShare": {
     "title": "QR Code",
-    "scanToView": "Scan to view profile",
+    "scanToView": "Scan to view your profile.",
     "scanToDownload": "Scan to download MAXINA",
     "shareProfile": "Share Profile",
     "shareApp": "Share MAXINA",
@@ -13,6 +13,8 @@
     "appName": "MAXINA",
     "appTagline": "Longevity Community",
     "inviteShareTitle": "MAXINA – Longevity Community",
-    "inviteShareText": "Get MAXINA and start your longevity journey:"
-  }
+    "inviteShareText": "Get MAXINA and start your longevity journey:",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

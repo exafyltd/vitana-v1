@@ -1,0 +1,31 @@
+{
+  "validation": {
+    "required": "此字段必填",
+    "invalidEmail": "邮箱地址无效",
+    "invalidUrl": "URL无效",
+    "invalidPhone": "手机号码无效",
+    "tooShort": "最少需要 {min} 个字符",
+    "tooLong": "最多允许 {max} 个字符",
+    "passwordMismatch": "密码不匹配",
+    "passwordTooWeak": "密码太弱",
+    "invalidDate": "日期无效",
+    "invalidNumber": "数字无效",
+    "mustBePositive": "必须是正数",
+    "mustBeNegative": "必须是负数",
+    "mustBeInteger": "必须是整数",
+    "minValue": "最小值为 {min}",
+    "maxValue": "最大值为 {max}",
+    "invalidFormat": "格式无效",
+    "alreadyExists": "已存在",
+    "notFound": "未找到",
+    "invalidSelection": "选择无效",
+    "pleaseSelect": "请选择一个选项",
+    "pleaseEnter": "请输入一个值",
+    "charactersRemaining": "还剩 {count} 个字符",
+    "fileTooBig": "文件太大（最大 {max}）",
+    "invalidFileType": "文件类型无效",
+    "uploadLimit": "最多允许 {max} 个文件",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

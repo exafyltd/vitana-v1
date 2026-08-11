@@ -12,11 +12,11 @@
     "healthTrackerDesc": "Track your daily nutrition, sleep, exercise",
     "education": "Education & Science",
     "educationDesc": "Learn about health topics and access wellness resources",
-    "priorityFocus": "Priority Focus",
-    "priorityFocusExplanation": "This area currently has the biggest impact on your long-term healthspan.",
+    "priorityFocus": "Your focus area",
+    "priorityFocusExplanation": "This area currently has the greatest impact on your long-term healthspan.",
     "autopilotGuidance": "Autopilot Guidance",
     "autopilotSuggests": "Autopilot Suggests",
-    "takeAction": "Take Action",
+    "takeAction": "Action",
     "uploadBloodTest": "Upload Blood Test",
     "orderBloodTest": "Order Blood Test",
     "viewPlans": "View Plans",
@@ -25,70 +25,49 @@
     "topPercentile": "Top {percent}%",
     "trend": {
       "improving": "Improving",
-      "declining": "Declining",
-      "stable": "Stable"
+      "declining": "Worsening",
+      "stable": "Stable",
+      "_pending_review": {}
     },
     "suggestions": {
       "uploadBloodTestResults": "Upload blood test results",
-      "startFitnessChallenge": "Start 30-Day Fitness Challenge"
+      "startFitnessChallenge": "Start 30-Day Fitness Challenge",
+      "_pending_review": {}
     },
     "pillars": {
       "sleep": "Sleep",
       "exercise": "Exercise",
       "nutrition": "Nutrition",
       "hydration": "Hydration",
-      "mental": "Mental"
+      "mental": "Mental",
+      "_pending_review": {}
     },
     "emptyStates": {
       "noSleepPlan": "No Sleep Plan Yet",
-      "noSleepPlanDesc": "Generate your personalized sleep plan with AI-optimized targets tuned to your circadian rhythm, recovery needs, and daily performance.",
+      "noSleepPlanDesc": "Generate your personalized sleep plan with AI-optimized goals, tailored to your biorhythm, recovery needs, and daily performance.",
       "noExercisePlan": "No Exercise Plan Yet",
-      "noExercisePlanDesc": "Generate your personalized workout plan with AI-optimized exercises tailored to your fitness level, goals, and recovery needs.",
+      "noExercisePlanDesc": "Generate your personalized workout plan with AI-optimized exercises, tailored to your fitness level, goals, and recovery needs.",
       "noNutritionPlan": "No Nutrition Plan Yet",
-      "noNutritionPlanDesc": "Generate your personalized meal plan with delicious, balanced recipes tailored to your goals and dietary preferences.",
+      "noNutritionPlanDesc": "Generate your personalized nutrition plan with delicious, balanced recipes, tailored to your goals and dietary preferences.",
       "noHydrationPlan": "No Hydration Plan Yet",
-      "noHydrationPlanDesc": "Generate your personalized hydration plan with AI-optimized daily targets tailored to your activity level, environment, and recovery needs.",
+      "noHydrationPlanDesc": "Generate your personalized hydration plan with AI-optimized daily goals, tailored to your activity level, environment, and recovery needs.",
       "noMentalPlan": "No Mental Plan Yet",
-      "noMentalPlanDesc": "Generate your personalized mental wellness plan to track stress, focus, and emotional balance with AI guidance.",
+      "noMentalPlanDesc": "Generate your personalized mental wellness plan, to track stress, focus, and emotional balance with AI support.",
       "generatePlan": "Generate Plan",
-      "generating": "Generating..."
+      "generating": "Generating...",
+      "_pending_review": {}
     },
-    "noSupplements": "No Supplements Yet",
+    "noSupplements": "No supplements yet",
     "noSupplementsDesc": "Track your daily vitamins, minerals, and supplements. Add your first supplement to get started.",
     "noReports": "No Health Reports Yet",
-    "noReportsDesc": "Upload your blood tests, lab results, and medical reports to unlock personalized health insights.",
+    "noReportsDesc": "Upload your blood tests, lab results, and medical reports to get personalized health insights.",
     "medical": "Medical",
     "supplements": "Supplements",
     "uploadDescription": "Blood tests, imaging, lab results",
     "unknownProvider": "Unknown provider",
     "addSupplement": "Add Supplement",
     "uploadFirstReport": "Upload First Report",
-    "missionAlignment": {
-      "title": "Mission Alignment",
-      "subtitle": "How your recommendations advance the five pillars and the longevity economy",
-      "loading": "Loading mission data…",
-      "error": "Could not load mission data",
-      "noRecs": "No recommendations in your queue yet.",
-      "summaryServed": "{pct}% of your recommendations advance the mission",
-      "summaryServedCount": "{served} of {total} recommendations aligned",
-      "pillarHeading": "Pillars served",
-      "economyHeading": "Longevity economy",
-      "noPillar": "Not pillar-aligned",
-      "noEconomy": "Not economy-aligned",
-      "pillars": {
-        "nutrition": "Nutrition",
-        "hydration": "Hydration",
-        "exercise": "Exercise",
-        "sleep": "Sleep",
-        "mental": "Mental Health"
-      },
-      "economyAxes": {
-        "find_match": "Find a Match",
-        "marketplace": "Marketplace",
-        "income_generation": "Income generation",
-        "business_formation": "Business formation"
-      },
-      "contractLink": "View the Ultimate Goal contract"
-    }
-  }
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

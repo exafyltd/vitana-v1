@@ -1,0 +1,86 @@
+{
+  "universalCart": {
+    "page": {
+      "title": "Koszyk",
+      "subtitle": "Produkty, pakiety i rekomendacje z Discover — wszystko w jednym miejscu.",
+      "emptyTitle": "Twój koszyk jest pusty",
+      "emptyBody": "Stuknij „Dodaj do koszyka” przy dowolnym elemencie z Discover, aby dodać go tutaj.",
+      "loading": "Ładowanie koszyka…",
+      "roleBlockedTitle": "Koszyk nie jest dostępny dla tej roli",
+      "roleBlockedBody": "Koszyk to funkcja społecznościowa. Przełącz się na swoją rolę społecznościową, aby z niego korzystać.",
+      "errorTitle": "Nie udało nam się załadować Twojego koszyka",
+      "errorBody": "Spróbuj ponownie za chwilę.",
+      "removeAction": "Usuń",
+      "quantityLabel": "Ilość",
+      "completeAction": "Oznacz jako ukończone",
+      "alreadyCompleted": "Już ukończone",
+      "linkToDiscover": "Przeglądaj Discover",
+      "close": "Zamknij",
+      "_pending_review": {}
+    },
+    "tabs": {
+      "cart": "Koszyk",
+      "saved": "Zapisane",
+      "_pending_review": {}
+    },
+    "saved": {
+      "moveToCart": "Dodaj do koszyka",
+      "saveForLater": "Zapisz na później",
+      "emptyTitle": "Nic jeszcze nie zapisano",
+      "emptyBody": "Zapisz produkty na później, stukając „Zapisz na później” w swoim koszyku.",
+      "_pending_review": {}
+    },
+    "item": {
+      "viewProduct": "Zobacz produkt",
+      "_pending_review": {}
+    },
+    "agent": {
+      "promptLabel": "Czego szukasz?",
+      "promptPlaceholder": "Opisz, czego szukasz — np. „więcej energii rano”",
+      "proposeCta": "Zapytaj Vitanę",
+      "proposing": "Vitana szuka pasujących produktów…",
+      "sectionTitle": "Vitana sugeruje",
+      "sectionSubtitle": "Sugestie znajdują się w Twoim koszyku. Przejrzyj je, zachowaj lub usuń — kupujesz tylko za pomocą „Zatwierdź i zapłać”.",
+      "rationaleLabel": "Dlaczego Vitana to sugeruje",
+      "safetyTitle": "Uwaga dotycząca bezpieczeństwa — przeczytaj",
+      "confidenceLabel": "Pewność: {value}",
+      "keep": "Zachowaj",
+      "remove": "Usuń",
+      "unavailable": "Vitana jest tymczasowo niedostępna. Spróbuj ponownie za chwilę.",
+      "roleBlocked": "Sugestie Vitany są dostępne tylko w Twojej roli społecznościowej.",
+      "empty": "Brak sugestii. Powiedz Vitanie powyżej, czego szukasz.",
+      "reviewNote": "Przejrzyj uwagi: niektóre sugestie mają uwagi dotyczące bezpieczeństwa. Sprawdź je, zanim kontynuujesz.",
+      "reorderCta": "Kup ponownie",
+      "reorderLabel": "Kupiono wcześniej",
+      "reorderSectionTitle": "Kup ponownie",
+      "reorderSectionSubtitle": "Produkty, które kupiłeś wcześniej, czekają w koszyku. Przejrzyj je, zachowaj lub usuń — kupujesz tylko przyciskiem „Zatwierdź i zapłań”.",
+      "reordering": "Vitana dodaje Twoje produkty z powrotem…",
+      "overCapAdvisory": "Te produkty przekraczają Twój miesięczny budżet.",
+      "nearCapAdvisory": "Te produkty zbliżają Cię do miesięcznego budżetu.",
+      "error": "Coś poszło nie tak. Spróbuj ponownie.",
+      "_pending_review": {}
+    },
+    "budget": {
+      "title": "Budżet na ten miesiąc",
+      "spentOfCap": "{spent} z {cap} w tym miesiącu",
+      "statusUnder": "W ramach budżetu",
+      "statusNear": "Blisko budżetu",
+      "statusOver": "Przekroczono budżet",
+      "noCapHint": "Ustaw miesięczny budżet, aby śledzić swoje wydatki.",
+      "_pending_review": {}
+    },
+    "addButton": {
+      "label": "Dodaj do koszyka",
+      "added": "W koszyku",
+      "addAria": "Dodaj do koszyka",
+      "addedAria": "Już w koszyku",
+      "signRequired": "Zaloguj się, aby dodać do koszyka.",
+      "roleBlocked": "Koszyk jest dostępny tylko w Twojej roli społecznościowej.",
+      "failed": "Nie udało się dodać do koszyka",
+      "success": "Dodano do koszyka",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

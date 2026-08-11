@@ -1,0 +1,29 @@
+{
+  "empty": {
+    "noAppsFound": "Aucune application trouvée correspondant à ta recherche.",
+    "noEventsFound": "Aucun événement trouvé",
+    "noContactsFound": "Aucun contact trouvé",
+    "noContactsFoundMatching": "Aucun contact trouvé correspondant à \"{query}\"",
+    "noGroupsFound": "Aucun groupe trouvé",
+    "noResultsFound": "Aucun résultat trouvé",
+    "noReportsFound": "Aucun rapport trouvé",
+    "noUsersFound": "Aucun utilisateur trouvé",
+    "noTransactionsFound": "Aucune transaction trouvée",
+    "noEventsYet": "Aucun événement pour l'instant. Crée d'abord un événement.",
+    "tryAdjustingFilters": "Essaie d'ajuster tes filtres ou ta requête de recherche.",
+    "noData": "Aucune donnée disponible",
+    "noMessages": "Aucun message",
+    "noNotifications": "Aucune notification",
+    "indexSheetNextDays": "Aucune suggestion Autopilot active. Quand quelque chose apparaît ici, le compléter fera bouger ton Index.",
+    "indexSheetHorizon": "Besoin de quelques jours de données supplémentaires pour projeter ton arc de 30 jours.",
+    "myJourneyPath": "Ton chemin ne fait que commencer. Quand Autopilot aura des suggestions, elles apparaîtront ici comme un chemin que tu peux suivre.",
+    "myJourneyOnePillar": "Choisis une petite chose — regarde ton Index bouger.",
+    "autopilotPopupZero": "Sélectionne des actions pour voir ton Index s'améliorer.",
+    "healthEmpty": "Enregistre ta première entrée pour démarrer ton Index.",
+    "noActionsMatchedYet": "Aucune action encore trouvée — Autopilot est en train de façonner des suggestions.",
+    "actionsPendingOne": "{count} action en attente",
+    "actionsPendingOther": "{count} actions en attente",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

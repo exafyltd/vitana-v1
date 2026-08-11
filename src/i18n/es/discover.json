@@ -1,23 +1,23 @@
 {
   "discover": {
-    "title": "Descubre tu Mercado de Longevidad",
+    "title": "Descubre tu mercado para la longevidad",
     "mobileTitle": "Descubre",
     "mobileDescription": "Explora experiencias, personas y bienestar",
-    "description": "Encuentra médicos, servicios de bienestar y grupos comunitarios perfectamente adaptados a tu viaje de envejecimiento saludable.",
+    "description": "Encuentra médicos, servicios de bienestar y grupos comunitarios que se adaptan perfectamente a tu viaje hacia un envejecimiento saludable.",
     "searchPlaceholder": "¿Qué estás buscando? (ej., clases de yoga, médico de longevidad, reuniones)",
     "doctorsCoaches": "Doctores y Coaches",
     "doctorsCoachesDesc": "Encuentra especialistas en longevidad, coaches de salud y expertos médicos",
     "wellnessServices": "Servicios de Bienestar",
     "wellnessServicesDesc": "Descubre yoga, masajes, baile, terapia y servicios de recuperación",
     "communityGroups": "Grupos Comunitarios",
-    "communityGroupsDesc": "Únete a reuniones, grupos y conéctate con personas afines",
+    "communityGroupsDesc": "Únete a encuentros y grupos y conecta con personas afines",
     "explore": "Explora",
-    "aiPicksForYou": "Selecciones de IA para ti",
+    "aiPicksForYou": "Recomendaciones de IA para ti",
     "vitanaPicksLabel": "Selección Vitana",
-    "recommendedForYou": "Vitana recomienda",
+    "recommendedForYou": "Recomendado para ti",
     "moreToExplore": "Más para explorar",
     "seeAll": "Ver todo",
-    "suggestedForYou": "Sugerido para ti",
+    "suggestedForYou": "Recomendado para ti",
     "browseCategories": "Explorar Categorías",
     "skincareCosmetics": "Cuidado de la Piel y Cosméticos",
     "healthTests": "Pruebas de Salud",
@@ -35,7 +35,7 @@
     "reasonGeneric": "Coincide con tu viaje",
     "viewProduct": "Ver producto",
     "noResults": "No se encontraron resultados",
-    "noResultsDesc": "Prueba diferentes términos de búsqueda o explora categorías.",
+    "noResultsDesc": "Prueba otros términos de búsqueda o explora las categorías.",
     "back": "Atrás",
     "productsFound": "{count} productos",
     "recommendProduct": "Recomendar",
@@ -51,7 +51,8 @@
       "movement": "Movimiento",
       "mind": "Mente",
       "supplements": "Suplementos",
-      "experts": "Expertos"
+      "experts": "Expertos",
+      "_pending_review": {}
     },
     "subcategories": {
       "longevity": "Longevidad",
@@ -78,7 +79,8 @@
       "sexualHealth": "Salud Sexual",
       "prevention": "Prevención y Detección Temprana",
       "generalHealth": "Salud General",
-      "dnaAnalysis": "Análisis de ADN"
+      "dnaAnalysis": "Análisis de ADN",
+      "_pending_review": {}
     },
     "quickActions": {
       "title": "Acciones Rápidas",
@@ -89,36 +91,43 @@
       "reorderPrevious": "Reordena lo anterior",
       "managePayment": "Gestionar Pago",
       "findServicesNearMe": "Buscar Servicios Cerca de Mí",
-      "viewSavedItems": "Ver Artículos Guardados"
+      "viewSavedItems": "Ver Artículos Guardados",
+      "_pending_review": {}
     },
     "aiPicks": {
-      "title": "Selecciones de IA para Ti",
+      "title": "Recomendaciones de IA para ti",
       "description": "Recomendaciones personalizadas basadas en tu Índice Vitana, biomarcadores y metas de salud",
-      "backToDiscover": "Volver a Descubrir",
+      "backToDiscover": "Volver a descubrimiento",
       "loading": "Cargando recomendaciones de IA...",
       "unavailable": "Selecciones de IA no disponibles",
       "unavailableDesc": "No pudimos cargar tus recomendaciones personalizadas en este momento",
       "recommendationsFound": "{count} recomendaciones encontradas",
       "noRecommendations": "No se encontraron recomendaciones",
-      "noRecommendationsDesc": "Prueba seleccionando un filtro diferente para ver más recomendaciones",
-      "viewAllPicks": "Ver Todas las Selecciones"
+      "noRecommendationsDesc": "Elige un filtro diferente para ver más recomendaciones",
+      "viewAllPicks": "Ver Todas las Selecciones",
+      "_pending_review": {}
     },
     "filters": {
       "all": "Todo",
       "services": "Servicios",
       "supplements": "Suplementos",
       "experts": "Expertos",
-      "deals": "Ofertas"
+      "deals": "Ofertas",
+      "_pending_review": {}
     },
     "toast": {
       "actionSelected": "Acción Seleccionada",
-      "comingSoon": "¡Función de {action} próximamente!"
+      "comingSoon": "¡Función de {action} próximamente!",
+      "_pending_review": {}
     },
     "guest": {
       "bannerTitle": "Inicia sesión para ganar recompensas Vitana en cada compra",
       "bannerSubtitle": "Explora libremente: inicia sesión (es gratis) para comprar y empezar a ganar recompensas.",
       "bannerCta": "Iniciar sesión",
-      "signIn": "Iniciar sesión"
-    }
-  }
+      "signIn": "Iniciar sesión",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

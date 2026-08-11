@@ -1,10 +1,10 @@
 {
   "milestones": {
-    "title": "Životne prekretnice",
+    "title": "Posebni trenuci",
     "add": "Dodaj prekretnicu",
     "edit": "Izmeni prekretnicu",
-    "empty": "Još uvek nema prekretnica",
-    "addFirst": "Dodaj svoju prvu prekretnicu",
+    "empty": "Nemaš još trenutaka",
+    "addFirst": "Dodaj svoj prvi trenutak",
     "date": "Datum",
     "description": "Šta se desilo?",
     "titleLabel": "Naslov",
@@ -12,6 +12,8 @@
     "descPlaceholder": "Opiši ovaj trenutak...",
     "icon": "Ikona",
     "publicLabel": "Vidljivo svima",
-    "private": "Privatno"
-  }
+    "private": "Privatno",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,0 +1,21 @@
+{
+  "adminTabs": {
+    "groups": {
+      "all": "Все группы",
+      "pending": "Ожидающие",
+      "approved": "Одобрено",
+      "flagged": "Помечено",
+      "rejected": "Отклонено",
+      "_pending_review": {}
+    },
+    "rooms": {
+      "active": "Активные комнаты",
+      "scheduled": "Запланировано",
+      "analytics": "Аналитика",
+      "moderation": "Модерация",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}
