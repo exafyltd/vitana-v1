@@ -17,8 +17,7 @@
       "hostAndSell": "Organiza e vende bilhetes",
       "resellAndEarn": "Revende e ganha",
       "offerBookings": "Oferece reservas",
-      "boostVisibility": "Aumenta a visibilidade",
-      "_pending_review": {}
+      "boostVisibility": "Aumenta a visibilidade"
     },
     "history": {
       "all": "Tudo",
@@ -39,8 +38,7 @@
       "allTime": "Tempo total",
       "details": "Detalhes",
       "earningsActivity": "Atividade de Ganhos",
-      "noEarningsStartSelling": "Ainda não tens ganhos. Começa a vender para veres a atividade aqui.",
-      "_pending_review": {}
+      "noEarningsStartSelling": "Ainda não tens ganhos. Começa a vender para veres a atividade aqui."
     },
     "kpi": {
       "totalEarnings": "Ganhos Totais",
@@ -63,8 +61,7 @@
       "resellerCommissions": "Comissões de Revendedor",
       "goToSellEarn": "Vende e Ganha",
       "totalEarned": "Total ganho",
-      "earningsBySource": "Ganhos por Origem",
-      "_pending_review": {}
+      "earningsBySource": "Ganhos por Origem"
     },
     "reseller": {
       "upcomingEvents": "Próximos Eventos",
@@ -87,18 +84,16 @@
       "noPayoutsYet": "Sem pagamentos ainda",
       "attributedSales": "Vendas Atribuídas por Evento",
       "noSalesMatchFilter": "Nenhuma venda corresponde aos filtros atuais",
-      "mockDataActive": "Dados de teste ativos",
-      "_pending_review": {}
+      "mockDataActive": "Dados de teste ativos"
     },
     "transfer": {
-      "title": "Transferir para a Carteira",
-      "description": "Transfira suas comissões de revendedor pendentes para sua Carteira VITANA.",
+      "title": "Solicitar Levantamento",
+      "description": "Solicita o levantamento das tuas comissões de revendedor pendentes para a tua Carteira VITANA.",
       "pending": "Pendente",
       "wallet": "Carteira",
-      "instantCredit": "Isto irá creditar instantaneamente os teus ganhos no saldo da tua Carteira.",
-      "transferring": "Transferindo...",
-      "transfer": "Transferir",
-      "_pending_review": {}
+      "instantCredit": "O teu pedido será analisado pela nossa equipa antes de ser creditado no teu saldo da carteira.",
+      "transferring": "A solicitar...",
+      "transfer": "Solicitar"
     },
     "typeSelector": {
       "title": "Começar um Negócio",
@@ -111,8 +106,7 @@
       "badgeNew": "Novo",
       "badgeActive": "Ativo",
       "alreadyReseller": "Já és um revendedor! Vê o separador \"Vende e Ganha\".",
-      "cancel": "Cancelar",
-      "_pending_review": {}
+      "cancel": "Cancelar"
     },
     "missionOpportunities": {
       "title": "Oportunidades de Missão",
@@ -125,12 +119,8 @@
         "find_match": "Encontrar uma Correspondência",
         "marketplace": "Mercado",
         "income_generation": "Geração de renda",
-        "business_formation": "Formação de negócios",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "business_formation": "Formação de negócios"
+      }
+    }
+  }
 }

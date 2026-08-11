@@ -17,8 +17,7 @@
       "hostAndSell": "استضف وبع التذاكر",
       "resellAndEarn": "أعد البيع واكسب",
       "offerBookings": "قدم حجوزات",
-      "boostVisibility": "عزز الظهور",
-      "_pending_review": {}
+      "boostVisibility": "عزز الظهور"
     },
     "history": {
       "all": "الكل",
@@ -39,8 +38,7 @@
       "allTime": "إجمالي الوقت",
       "details": "التفاصيل",
       "earningsActivity": "نشاط الأرباح",
-      "noEarningsStartSelling": "لا توجد أرباح بعد. ابدأ البيع لترى النشاط هنا.",
-      "_pending_review": {}
+      "noEarningsStartSelling": "لا توجد أرباح بعد. ابدأ البيع لترى النشاط هنا."
     },
     "kpi": {
       "totalEarnings": "إجمالي الأرباح",
@@ -63,8 +61,7 @@
       "resellerCommissions": "عمولات الموزع",
       "goToSellEarn": "بيع واكسب",
       "totalEarned": "إجمالي المكتسب",
-      "earningsBySource": "الأرباح حسب المصدر",
-      "_pending_review": {}
+      "earningsBySource": "الأرباح حسب المصدر"
     },
     "reseller": {
       "upcomingEvents": "الفعاليات القادمة",
@@ -87,18 +84,16 @@
       "noPayoutsYet": "لا توجد دفعات بعد",
       "attributedSales": "المبيعات المنسوبة حسب الفعالية",
       "noSalesMatchFilter": "لا توجد مبيعات تطابق الفلاتر الحالية",
-      "mockDataActive": "بيانات وهمية نشطة",
-      "_pending_review": {}
+      "mockDataActive": "بيانات وهمية نشطة"
     },
     "transfer": {
-      "title": "تحويل إلى المحفظة",
-      "description": "حوّل عمولات الموزع المعلقة إلى محفظة VITANA الخاصة بك.",
+      "title": "طلب صرف",
+      "description": "اطلب صرف عمولاتك المعلقة كبائع إلى محفظة VITANA الخاصة بك.",
       "pending": "معلق",
       "wallet": "المحفظة",
-      "instantCredit": "سيتم إضافة أرباحك فورًا إلى رصيد محفظتك.",
-      "transferring": "جاري التحويل...",
-      "transfer": "تحويل",
-      "_pending_review": {}
+      "instantCredit": "سيتم مراجعة طلبك من قبل فريقنا قبل إضافته إلى رصيد محفظتك.",
+      "transferring": "جاري الطلب...",
+      "transfer": "طلب"
     },
     "typeSelector": {
       "title": "ابدأ عملًا تجاريًا",
@@ -111,8 +106,7 @@
       "badgeNew": "جديد",
       "badgeActive": "نشط",
       "alreadyReseller": "أنت بالفعل موزع! تحقق من علامة تبويب \"بيع واكسب\".",
-      "cancel": "إلغاء",
-      "_pending_review": {}
+      "cancel": "إلغاء"
     },
     "missionOpportunities": {
       "title": "فرص المهام",
@@ -125,12 +119,8 @@
         "find_match": "ابحث عن تطابق",
         "marketplace": "السوق",
         "income_generation": "توليد الدخل",
-        "business_formation": "تكوين الأعمال",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "business_formation": "تكوين الأعمال"
+      }
+    }
+  }
 }

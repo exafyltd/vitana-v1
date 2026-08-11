@@ -17,8 +17,7 @@
       "hostAndSell": "Organise et vends des billets",
       "resellAndEarn": "Revends et gagne",
       "offerBookings": "Propose des réservations",
-      "boostVisibility": "Augmente la visibilité",
-      "_pending_review": {}
+      "boostVisibility": "Augmente la visibilité"
     },
     "history": {
       "all": "Tout",
@@ -39,8 +38,7 @@
       "allTime": "Temps total",
       "details": "Détails",
       "earningsActivity": "Activité des gains",
-      "noEarningsStartSelling": "Pas encore de gains. Commence à vendre pour voir l'activité ici.",
-      "_pending_review": {}
+      "noEarningsStartSelling": "Pas encore de gains. Commence à vendre pour voir l'activité ici."
     },
     "kpi": {
       "totalEarnings": "Gains totaux",
@@ -63,8 +61,7 @@
       "resellerCommissions": "Commissions de revendeur",
       "goToSellEarn": "Vendre et Gagner",
       "totalEarned": "Total gagné",
-      "earningsBySource": "Gains par source",
-      "_pending_review": {}
+      "earningsBySource": "Gains par source"
     },
     "reseller": {
       "upcomingEvents": "Événements à venir",
@@ -87,18 +84,16 @@
       "noPayoutsYet": "Aucun versement pour l'instant",
       "attributedSales": "Ventes attribuées par événement",
       "noSalesMatchFilter": "Aucune vente ne correspond aux filtres actuels",
-      "mockDataActive": "Données de test actives",
-      "_pending_review": {}
+      "mockDataActive": "Données de test actives"
     },
     "transfer": {
-      "title": "Transférer vers le portefeuille",
-      "description": "Transfère tes commissions revendeur en attente vers ton portefeuille VITANA.",
+      "title": "Demander un versement",
+      "description": "Demande le versement de tes commissions de revendeur en attente vers ton portefeuille VITANA.",
       "pending": "En attente",
       "wallet": "Portefeuille",
-      "instantCredit": "Cela créditera instantanément tes gains à ton solde de Portefeuille.",
-      "transferring": "Transfert en cours...",
-      "transfer": "Transférer",
-      "_pending_review": {}
+      "instantCredit": "Ta demande sera examinée par notre équipe avant qu'elle ne soit créditée sur le solde de ton portefeuille.",
+      "transferring": "Demande en cours...",
+      "transfer": "Demander"
     },
     "typeSelector": {
       "title": "Lance une entreprise",
@@ -111,8 +106,7 @@
       "badgeNew": "Nouveau",
       "badgeActive": "Actif",
       "alreadyReseller": "Tu es déjà revendeur ! Consulte l'onglet « Vendre et Gagner ».",
-      "cancel": "Annuler",
-      "_pending_review": {}
+      "cancel": "Annuler"
     },
     "missionOpportunities": {
       "title": "Opportunités de mission",
@@ -125,12 +119,8 @@
         "find_match": "Trouver une correspondance",
         "marketplace": "Marché",
         "income_generation": "Génération de revenus",
-        "business_formation": "Création d'entreprise",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "business_formation": "Création d'entreprise"
+      }
+    }
+  }
 }
