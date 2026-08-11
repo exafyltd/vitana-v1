@@ -34,6 +34,7 @@ import {
   Pause,
   Mic
 } from 'lucide-react';
+import { VitanaMessageActions } from './VitanaMessageActions';
 import { ImageZoomModal } from './ImageZoomModal';
 import { formatFileSize, isImageType, getSignedAttachmentUrl } from '@/lib/fileUpload';
 import { useMessageReactions } from '@/hooks/useMessageReactions';
@@ -903,7 +904,16 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         );
 
       default: // 'text' and other types
-        return renderLinkedText(optimisticContent ?? message.body, undefined, textTimestampSpacer);
+        // VTID-03587: a Vitana reply can carry actionable tool calls (e.g. open
+        // a screen). They used to be dropped by the gateway entirely, so the
+        // assistant narrated an action it could never perform. Render them as
+        // explicit controls beneath the text.
+        return (
+          <>
+            {renderLinkedText(optimisticContent ?? message.body, undefined, textTimestampSpacer)}
+            <VitanaMessageActions contentData={message.content_data} />
+          </>
+        );
     }
   };
 
