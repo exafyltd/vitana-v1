@@ -1,0 +1,40 @@
+-- SECURITY FIX: reseller_payouts client-side INSERT policy let a reseller
+-- bypass the admin-approval gate entirely.
+--
+-- Background
+-- ==========
+-- A prior fix (VTID-SECURITY-AUDIT) made credit-reseller-payout only credit
+-- payouts in status='approved', with a new exafy_admin-gated
+-- approve-reseller-payout edge function as the only intended way to flip a
+-- payout pending -> approved.
+--
+-- That fix only touched the edge functions. The original INSERT policy on
+-- this table (20251212132118_c84a9a55...sql) was never tightened:
+--
+--   CREATE POLICY "Users can request their own payouts"
+--     ON public.reseller_payouts FOR INSERT
+--     WITH CHECK (reseller_profile_id IN (
+--       SELECT id FROM public.reseller_profiles WHERE user_id = auth.uid()
+--     ));
+--
+-- This checks only profile ownership -- NOT status or amount. Any
+-- authenticated reseller could bypass both edge functions entirely by
+-- calling the Supabase client SDK directly:
+--
+--   supabase.from('reseller_payouts').insert({
+--     reseller_profile_id: myProfileId,
+--     total_commission_amount: 999999,
+--     status: 'approved',   -- skips approve-reseller-payout entirely
+--   })
+--
+-- ...then calling credit-reseller-payout, which only checks
+-- status==='approved' and trusts total_commission_amount as-is.
+--
+-- Fix: no legitimate code path inserts into reseller_payouts directly --
+-- create-reseller-payout is the only writer, and it uses the service-role
+-- key (createClient with SUPABASE_SERVICE_ROLE_KEY), which bypasses RLS
+-- regardless of what policy exists here for `authenticated`. The
+-- reseller-facing INSERT policy therefore serves no legitimate purpose and
+-- is pure attack surface -- drop it. service_role retains full access via
+-- the existing "Service role can manage payouts" policy.
+DROP POLICY IF EXISTS "Users can request their own payouts" ON public.reseller_payouts;

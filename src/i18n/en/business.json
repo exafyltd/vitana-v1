@@ -17,8 +17,7 @@
       "hostAndSell": "Host & sell tickets",
       "resellAndEarn": "Resell & earn",
       "offerBookings": "Offer bookings",
-      "boostVisibility": "Boost visibility",
-      "_pending_review": {}
+      "boostVisibility": "Boost visibility"
     },
     "history": {
       "all": "All",
@@ -39,8 +38,7 @@
       "allTime": "Total time",
       "details": "Details",
       "earningsActivity": "Earnings Activity",
-      "noEarningsStartSelling": "No earnings yet. Start selling to see activity here.",
-      "_pending_review": {}
+      "noEarningsStartSelling": "No earnings yet. Start selling to see activity here."
     },
     "kpi": {
       "totalEarnings": "Total Earnings",
@@ -63,8 +61,7 @@
       "resellerCommissions": "Reseller Commissions",
       "goToSellEarn": "Sell & Earn",
       "totalEarned": "Total earned",
-      "earningsBySource": "Earnings by Source",
-      "_pending_review": {}
+      "earningsBySource": "Earnings by Source"
     },
     "reseller": {
       "upcomingEvents": "Upcoming Events",
@@ -87,18 +84,16 @@
       "noPayoutsYet": "No payouts yet",
       "attributedSales": "Attributed Sales by Event",
       "noSalesMatchFilter": "No sales match the current filters",
-      "mockDataActive": "Mock data active",
-      "_pending_review": {}
+      "mockDataActive": "Mock data active"
     },
     "transfer": {
-      "title": "Transfer to Wallet",
-      "description": "Transfer your pending reseller commissions to your VITANA Wallet.",
+      "title": "Request Payout",
+      "description": "Request the payout of your outstanding reseller commissions to your VITANA Wallet.",
       "pending": "Pending",
       "wallet": "Wallet",
-      "instantCredit": "This will instantly credit your earnings to your Wallet balance.",
-      "transferring": "Transferring...",
-      "transfer": "Transfer",
-      "_pending_review": {}
+      "instantCredit": "Your request will be reviewed by our team before it is credited to your wallet balance.",
+      "transferring": "Requesting...",
+      "transfer": "Request"
     },
     "typeSelector": {
       "title": "Start a Business",
@@ -111,8 +106,7 @@
       "badgeNew": "New",
       "badgeActive": "Active",
       "alreadyReseller": "You're already a reseller! Check the \"Sell & Earn\" tab.",
-      "cancel": "Cancel",
-      "_pending_review": {}
+      "cancel": "Cancel"
     },
     "missionOpportunities": {
       "title": "Mission Opportunities",
@@ -125,12 +119,8 @@
         "find_match": "Find a Match",
         "marketplace": "Marketplace",
         "income_generation": "Income generation",
-        "business_formation": "Business formation",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "business_formation": "Business formation"
+      }
+    }
+  }
 }
