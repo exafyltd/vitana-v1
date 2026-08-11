@@ -10249,6 +10249,13 @@
         "geminiStep1": "Für die Gemini-CLI: Trage die MCP-Server-Adresse oben in ~/.gemini/settings.json unter deinen MCP-Servern ein.",
         "geminiStep2": "Für Gemini Enterprise (Business Edition): Einstellungen & Hilfe → Team → Team verwalten → Verbundene Apps → \"MCP-Server hinzufügen\".",
         "geminiNote": "Die Consumer-Gemini-App bietet aktuell keinen dokumentierten Weg, einen eigenen MCP-Server direkt hinzuzufügen — das gilt bislang nur für die Gemini-CLI und Gemini Enterprise."
+      },
+      "detectPlatform": {
+        "urlPlaceholder": "Shop-URL (optional) — z. B. https://dein-shop.de",
+        "hint": "Wir prüfen die URL und füllen Connector- und Anbieter-ID automatisch aus, wenn wir die Plattform erkennen.",
+        "detected": "{platform} erkannt — Felder wurden ausgefüllt.",
+        "notDetected": "Plattform nicht erkannt. Bitte Connector- und Anbieter-ID manuell eintragen.",
+        "failed": "Die Adresse konnte nicht geprüft werden. Bitte Connector- und Anbieter-ID manuell eintragen."
       }
     },
     "oauthconsent": {

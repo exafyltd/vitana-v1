@@ -10355,6 +10355,13 @@
         "geminiStep2": "For Gemini Enterprise (Business Edition): Settings & help → Team → Manage team → Connected apps → \"Add MCP Server\".",
         "geminiNote": "The consumer Gemini app currently has no documented way to add a custom MCP server directly — that's only available today via Gemini CLI and Gemini Enterprise."
       },
+      "detectPlatform": {
+        "urlPlaceholder": "Store URL (optional) — e.g. https://your-shop.com",
+        "hint": "We'll check the URL and fill in the connector and provider ID automatically if we recognize the platform.",
+        "detected": "{platform} detected — fields filled in.",
+        "notDetected": "Platform not recognized. Please fill in the connector and provider ID manually.",
+        "failed": "Couldn't check that address. Please fill in the connector and provider ID manually."
+      },
       "_pending_review": {}
     },
     "oauthconsent": {
