@@ -5998,7 +5998,8 @@
       "value0Members": "{value0}名成员",
       "chooseConversationFromLeftStartMessaging": "在左侧选择一个对话来发送消息。",
       "anonymous": "匿名",
-      "vitanaOpenScreen": "打开屏幕"
+      "vitanaOpenScreen": "打开屏幕",
+      "viewFullscreen": "全屏查看"
     },
     "mobile": {
       "searching": "正在搜索…",
