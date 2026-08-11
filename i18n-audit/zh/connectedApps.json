@@ -1,0 +1,187 @@
+{
+  "verdicts": {
+    "connectedApps.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.addApp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.connected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.syncing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.sections.social": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.sections.fitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.sections.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.sections.other": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.status.connected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.status.notConnected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.status.comingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.status.soon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.actions.connect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.actions.disconnect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.actions.configure": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.actions.manage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.lastSync": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.dataSync": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.comingSoonMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.categories.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.categories.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.categories.social": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.availableApps": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.verified": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.connected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.settings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.disconnect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.connect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.done": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.noResults": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.connectionSuccess": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "connectedApps.popup.connectionPlaceholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The phrase '即将推出' (about to launch/release) is typically used for products. For a feature or connection becoming available, '即将上线' (about to go online/be available) or '即将可用' (about to be available) is more appropriate.",
+      "suggested": "{appName} 连接即将上线",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T04:53:44.778Z"
+}

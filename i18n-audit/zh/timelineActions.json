@@ -1,0 +1,92 @@
+{
+  "verdicts": {
+    "timelineActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.logHealthEvent.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.logHealthEvent.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.markAchievement.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.markAchievement.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.recordLifeMoment.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.recordLifeMoment.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.addPhotoMemory.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.addPhotoMemory.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "Phrasing is a bit clunky and not perfectly natural for 'Visual timeline with health photos'.",
+      "suggested": "带有健康照片的视觉时间线",
+      "phase": "llm"
+    },
+    "timelineActions.items.voiceTimelineEntry.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.voiceTimelineEntry.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.trackProgress.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.trackProgress.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.activityCheckIn.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.activityCheckIn.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.setTimelineGoal.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.setTimelineGoal.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T06:33:07.002Z"
+}
