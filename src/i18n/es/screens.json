@@ -5993,7 +5993,8 @@
       "inspirationTpl_celebrate3": "Tu progreso es inspirador - ¡sigue haciendo un trabajo fantástico! 🌟",
       "loadingOlderMessages": "Cargando mensajes antiguos…",
       "conversationStart": "Inicio de la conversación",
-      "anonymous": "Anónimo"
+      "anonymous": "Anónimo",
+      "vitanaOpenScreen": "Abre pantalla"
     },
     "mobile": {
       "searching": "Buscando…",

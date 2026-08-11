@@ -5997,7 +5997,8 @@
       "value0Participants": "{value0} участников",
       "value0Members": "{value0} участников",
       "chooseConversationFromLeftStartMessaging": "Выбери беседу слева, чтобы отправить сообщения.",
-      "anonymous": "Анонимный"
+      "anonymous": "Анонимный",
+      "vitanaOpenScreen": "Открой экран"
     },
     "mobile": {
       "searching": "Поиск…",
