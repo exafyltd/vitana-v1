@@ -17,7 +17,8 @@
       "hostAndSell": "Проводи и продавай билеты",
       "resellAndEarn": "Перепродавай и зарабатывай",
       "offerBookings": "Предлагай бронирования",
-      "boostVisibility": "Повысь видимость"
+      "boostVisibility": "Повысь видимость",
+      "_pending_review": {}
     },
     "history": {
       "all": "Все",
@@ -38,7 +39,8 @@
       "allTime": "Общее время",
       "details": "Подробнее",
       "earningsActivity": "Активность заработка",
-      "noEarningsStartSelling": "Пока нет заработка. Начни продавать, чтобы увидеть активность здесь."
+      "noEarningsStartSelling": "Пока нет заработка. Начни продавать, чтобы увидеть активность здесь.",
+      "_pending_review": {}
     },
     "kpi": {
       "totalEarnings": "Общий заработок",
@@ -61,7 +63,8 @@
       "resellerCommissions": "Комиссии реселлера",
       "goToSellEarn": "Продавай и зарабатывай",
       "totalEarned": "Всего заработано",
-      "earningsBySource": "Заработок по источникам"
+      "earningsBySource": "Заработок по источникам",
+      "_pending_review": {}
     },
     "reseller": {
       "upcomingEvents": "Предстоящие мероприятия",
@@ -84,7 +87,8 @@
       "noPayoutsYet": "Пока нет выплат",
       "attributedSales": "Приписанные продажи по событию",
       "noSalesMatchFilter": "Нет продаж, соответствующих текущим фильтрам",
-      "mockDataActive": "Тестовые данные активны"
+      "mockDataActive": "Тестовые данные активны",
+      "_pending_review": {}
     },
     "transfer": {
       "title": "Запросить выплату",
@@ -93,7 +97,8 @@
       "wallet": "Кошелек",
       "instantCredit": "Твоя заявка будет рассмотрена нашей командой, прежде чем она будет зачислена на баланс твоего кошелька.",
       "transferring": "Идет запрос...",
-      "transfer": "Запросить"
+      "transfer": "Запросить",
+      "_pending_review": {}
     },
     "typeSelector": {
       "title": "Начать бизнес",
@@ -106,7 +111,8 @@
       "badgeNew": "Новое",
       "badgeActive": "Активно",
       "alreadyReseller": "Ты уже реселлер! Проверь вкладку «Продавай и зарабатывай».",
-      "cancel": "Отмена"
+      "cancel": "Отмена",
+      "_pending_review": {}
     },
     "missionOpportunities": {
       "title": "Возможности для миссий",
@@ -119,8 +125,12 @@
         "find_match": "Найти пару",
         "marketplace": "Маркетплейс",
         "income_generation": "Получение дохода",
-        "business_formation": "Создание бизнеса"
-      }
-    }
-  }
+        "business_formation": "Создание бизнеса",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

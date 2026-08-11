@@ -5997,7 +5997,8 @@
       "value0Participants": "{value0} مشاركين",
       "value0Members": "{value0} أعضاء",
       "chooseConversationFromLeftStartMessaging": "اختر محادثة من اليسار لإرسال الرسائل.",
-      "anonymous": "مجهول"
+      "anonymous": "مجهول",
+      "vitanaOpenScreen": "افتح الشاشة"
     },
     "mobile": {
       "searching": "جاري البحث…",

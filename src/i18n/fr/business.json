@@ -17,7 +17,8 @@
       "hostAndSell": "Organise et vends des billets",
       "resellAndEarn": "Revends et gagne",
       "offerBookings": "Propose des réservations",
-      "boostVisibility": "Augmente la visibilité"
+      "boostVisibility": "Augmente la visibilité",
+      "_pending_review": {}
     },
     "history": {
       "all": "Tout",
@@ -38,7 +39,8 @@
       "allTime": "Temps total",
       "details": "Détails",
       "earningsActivity": "Activité des gains",
-      "noEarningsStartSelling": "Pas encore de gains. Commence à vendre pour voir l'activité ici."
+      "noEarningsStartSelling": "Pas encore de gains. Commence à vendre pour voir l'activité ici.",
+      "_pending_review": {}
     },
     "kpi": {
       "totalEarnings": "Gains totaux",
@@ -61,7 +63,8 @@
       "resellerCommissions": "Commissions de revendeur",
       "goToSellEarn": "Vendre et Gagner",
       "totalEarned": "Total gagné",
-      "earningsBySource": "Gains par source"
+      "earningsBySource": "Gains par source",
+      "_pending_review": {}
     },
     "reseller": {
       "upcomingEvents": "Événements à venir",
@@ -84,7 +87,8 @@
       "noPayoutsYet": "Aucun versement pour l'instant",
       "attributedSales": "Ventes attribuées par événement",
       "noSalesMatchFilter": "Aucune vente ne correspond aux filtres actuels",
-      "mockDataActive": "Données de test actives"
+      "mockDataActive": "Données de test actives",
+      "_pending_review": {}
     },
     "transfer": {
       "title": "Demander un versement",
@@ -93,7 +97,8 @@
       "wallet": "Portefeuille",
       "instantCredit": "Ta demande sera examinée par notre équipe avant qu'elle ne soit créditée sur le solde de ton portefeuille.",
       "transferring": "Demande en cours...",
-      "transfer": "Demander"
+      "transfer": "Demander",
+      "_pending_review": {}
     },
     "typeSelector": {
       "title": "Lance une entreprise",
@@ -106,7 +111,8 @@
       "badgeNew": "Nouveau",
       "badgeActive": "Actif",
       "alreadyReseller": "Tu es déjà revendeur ! Consulte l'onglet « Vendre et Gagner ».",
-      "cancel": "Annuler"
+      "cancel": "Annuler",
+      "_pending_review": {}
     },
     "missionOpportunities": {
       "title": "Opportunités de mission",
@@ -119,8 +125,12 @@
         "find_match": "Trouver une correspondance",
         "marketplace": "Marché",
         "income_generation": "Génération de revenus",
-        "business_formation": "Création d'entreprise"
-      }
-    }
-  }
+        "business_formation": "Création d'entreprise",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
