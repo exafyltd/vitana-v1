@@ -17,8 +17,7 @@
       "hostAndSell": "Organizuj i prodaj karte",
       "resellAndEarn": "Preprodaj i zaradi",
       "offerBookings": "Ponudi rezervacije",
-      "boostVisibility": "Povećaj vidljivost",
-      "_pending_review": {}
+      "boostVisibility": "Povećaj vidljivost"
     },
     "history": {
       "all": "Sve",
@@ -39,8 +38,7 @@
       "allTime": "Ukupno vreme",
       "details": "Detalji",
       "earningsActivity": "Aktivnost zarade",
-      "noEarningsStartSelling": "Još uvek nema zarade. Počni sa prodajom da bi video/la aktivnost ovde.",
-      "_pending_review": {}
+      "noEarningsStartSelling": "Još uvek nema zarade. Počni sa prodajom da bi video/la aktivnost ovde."
     },
     "kpi": {
       "totalEarnings": "Ukupna zarada",
@@ -63,8 +61,7 @@
       "resellerCommissions": "Provizije preprodavaca",
       "goToSellEarn": "Prodaj i zaradi",
       "totalEarned": "Ukupno zarađeno",
-      "earningsBySource": "Zarada po izvoru",
-      "_pending_review": {}
+      "earningsBySource": "Zarada po izvoru"
     },
     "reseller": {
       "upcomingEvents": "Predstojeći događaji",
@@ -87,18 +84,16 @@
       "noPayoutsYet": "Još nema isplata",
       "attributedSales": "Pripisana prodaja po događaju",
       "noSalesMatchFilter": "Nema prodaje koja odgovara trenutnim filterima",
-      "mockDataActive": "Lažni podaci aktivni",
-      "_pending_review": {}
+      "mockDataActive": "Lažni podaci aktivni"
     },
     "transfer": {
-      "title": "Prenesi u novčanik",
-      "description": "Prenesi svoje provizije preprodavaca na čekanju u svoj VITANA novčanik.",
+      "title": "Zatraži isplatu",
+      "description": "Zatraži isplatu tvojih neisplaćenih provizija preprodavca u tvoj VITANA Novčanik.",
       "pending": "Na čekanju",
       "wallet": "Novčanik",
-      "instantCredit": "Ovo će ti odmah pripisati zaradu na stanje u Novčaniku.",
-      "transferring": "Prenosim...",
-      "transfer": "Prenesi",
-      "_pending_review": {}
+      "instantCredit": "Tvoj zahtev će pregledati naš tim pre nego što bude uplaćen na stanje tvog Novčanika.",
+      "transferring": "Slanje zahteva...",
+      "transfer": "Zatraži"
     },
     "typeSelector": {
       "title": "Pokreni biznis",
@@ -111,8 +106,7 @@
       "badgeNew": "Novo",
       "badgeActive": "Aktivno",
       "alreadyReseller": "Već si partner! Proveri karticu „Prodaj i zaradi“.",
-      "cancel": "Otkaži",
-      "_pending_review": {}
+      "cancel": "Otkaži"
     },
     "missionOpportunities": {
       "title": "Prilike za misije",
@@ -125,12 +119,8 @@
         "find_match": "Pronađi spoj",
         "marketplace": "Tržište",
         "income_generation": "Generisanje prihoda",
-        "business_formation": "Osnivanje biznisa",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "business_formation": "Osnivanje biznisa"
+      }
+    }
+  }
 }

@@ -17,8 +17,7 @@
       "hostAndSell": "举办并销售门票",
       "resellAndEarn": "转售并赚钱",
       "offerBookings": "提供预订",
-      "boostVisibility": "提高曝光度",
-      "_pending_review": {}
+      "boostVisibility": "提高曝光度"
     },
     "history": {
       "all": "全部",
@@ -39,8 +38,7 @@
       "allTime": "总时长",
       "details": "详情",
       "earningsActivity": "收入活动",
-      "noEarningsStartSelling": "还没收入呢。开始销售就能在这里看到活动啦。",
-      "_pending_review": {}
+      "noEarningsStartSelling": "还没收入呢。开始销售就能在这里看到活动啦。"
     },
     "kpi": {
       "totalEarnings": "总收入",
@@ -63,8 +61,7 @@
       "resellerCommissions": "经销商佣金",
       "goToSellEarn": "销售赚钱",
       "totalEarned": "总赚取",
-      "earningsBySource": "收入来源",
-      "_pending_review": {}
+      "earningsBySource": "收入来源"
     },
     "reseller": {
       "upcomingEvents": "即将到来的活动",
@@ -87,18 +84,16 @@
       "noPayoutsYet": "暂无提现记录",
       "attributedSales": "活动归属销售额",
       "noSalesMatchFilter": "暂无符合当前筛选条件的销售额",
-      "mockDataActive": "模拟数据已启用",
-      "_pending_review": {}
+      "mockDataActive": "模拟数据已启用"
     },
     "transfer": {
-      "title": "转入钱包",
-      "description": "将你待处理的分销佣金转入你的 VITANA 钱包。",
+      "title": "请求提现",
+      "description": "请求将你未结清的经销商佣金提现到你的 VITANA 钱包。",
       "pending": "待处理",
       "wallet": "钱包",
-      "instantCredit": "这会将你的收入即时存入你的钱包余额。",
-      "transferring": "正在转账...",
-      "transfer": "转账",
-      "_pending_review": {}
+      "instantCredit": "你的请求将由我们的团队审核，然后才会存入你的钱包余额。",
+      "transferring": "请求中...",
+      "transfer": "请求"
     },
     "typeSelector": {
       "title": "开始创业",
@@ -111,8 +106,7 @@
       "badgeNew": "新",
       "badgeActive": "活跃",
       "alreadyReseller": "你已经是分销商了！查看“销售与赚取”标签页。",
-      "cancel": "取消",
-      "_pending_review": {}
+      "cancel": "取消"
     },
     "missionOpportunities": {
       "title": "任务机会",
@@ -125,12 +119,8 @@
         "find_match": "寻找匹配",
         "marketplace": "市场",
         "income_generation": "创收",
-        "business_formation": "业务创建",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "business_formation": "业务创建"
+      }
+    }
+  }
 }

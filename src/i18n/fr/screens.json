@@ -6692,7 +6692,7 @@
       "potentialPotentialformatted": "Potentiel : {potentialFormatted}",
       "onceYouAddEventsYourInventory": "Une fois que tu auras ajouté des événements à ton inventaire, tu pourras les promouvoir, partager des liens de revendeur et gagner sur chaque billet vendu.",
       "viewWallet": "Voir dans le portefeuille",
-      "transferWallet": "Transférer au portefeuille",
+      "transferWallet": "Demander un paiement",
       "ticketssoldTicketsValue1SalesCommissionrateCommiss": "{ticketsSold} billets · {value1} ventes · {commissionRate}% de commission",
       "value0Earned": "{value0} gagnés",
       "lastSaleValue0Ago": "Dernière vente il y a {value0}",

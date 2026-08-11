@@ -17,8 +17,7 @@
       "hostAndSell": "Organizar y vender entradas",
       "resellAndEarn": "Revender y ganar",
       "offerBookings": "Ofrecer reservas",
-      "boostVisibility": "Aumentar visibilidad",
-      "_pending_review": {}
+      "boostVisibility": "Aumentar visibilidad"
     },
     "history": {
       "all": "Todo",
@@ -39,8 +38,7 @@
       "allTime": "Tiempo total",
       "details": "Detalles",
       "earningsActivity": "Actividad de Ganancias",
-      "noEarningsStartSelling": "Aún sin ganancias. Empieza a vender para ver actividad aquí.",
-      "_pending_review": {}
+      "noEarningsStartSelling": "Aún sin ganancias. Empieza a vender para ver actividad aquí."
     },
     "kpi": {
       "totalEarnings": "Ganancias Totales",
@@ -63,8 +61,7 @@
       "resellerCommissions": "Comisiones de revendedor",
       "goToSellEarn": "Vende y Gana",
       "totalEarned": "Total ganado",
-      "earningsBySource": "Ganancias por fuente",
-      "_pending_review": {}
+      "earningsBySource": "Ganancias por fuente"
     },
     "reseller": {
       "upcomingEvents": "Próximos eventos",
@@ -87,18 +84,16 @@
       "noPayoutsYet": "Aún sin pagos",
       "attributedSales": "Ventas atribuidas por evento",
       "noSalesMatchFilter": "Ninguna venta coincide con los filtros actuales",
-      "mockDataActive": "Datos simulados activos",
-      "_pending_review": {}
+      "mockDataActive": "Datos simulados activos"
     },
     "transfer": {
-      "title": "Transferir a la billetera",
-      "description": "Transfiere tus comisiones de revendedor pendientes a tu billetera de VITANA.",
+      "title": "Solicitar pago",
+      "description": "Solicita el pago de tus comisiones de revendedor pendientes a tu Monedero VITANA.",
       "pending": "Pendiente",
       "wallet": "Billetera",
-      "instantCredit": "Esto acreditará tus ganancias instantáneamente a tu saldo de Wallet.",
-      "transferring": "Transfiriendo...",
-      "transfer": "Transferir",
-      "_pending_review": {}
+      "instantCredit": "Tu solicitud será revisada por nuestro equipo antes de que se acredite a tu saldo del Monedero.",
+      "transferring": "Solicitando...",
+      "transfer": "Solicitar"
     },
     "typeSelector": {
       "title": "Iniciar un Negocio",
@@ -111,8 +106,7 @@
       "badgeNew": "Nuevo",
       "badgeActive": "Activo",
       "alreadyReseller": "¡Ya eres revendedor! Revisa la pestaña \"Vende y Gana\".",
-      "cancel": "Cancelar",
-      "_pending_review": {}
+      "cancel": "Cancelar"
     },
     "missionOpportunities": {
       "title": "Oportunidades de Misión",
@@ -125,12 +119,8 @@
         "find_match": "Encontrar una Coincidencia",
         "marketplace": "Mercado",
         "income_generation": "Generación de ingresos",
-        "business_formation": "Formación empresarial",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "business_formation": "Formación empresarial"
+      }
+    }
+  }
 }

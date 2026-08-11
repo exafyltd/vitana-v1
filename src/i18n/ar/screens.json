@@ -6692,7 +6692,7 @@
       "potentialPotentialformatted": "محتمل: {potentialFormatted}",
       "onceYouAddEventsYourInventory": "بمجرد إضافة أحداث إلى مخزونك، ستتمكن من الترويج لها ومشاركة روابط الموزعين وكسب المال من كل تذكرة مباعة.",
       "viewWallet": "اعرض في المحفظة",
-      "transferWallet": "حوّل إلى المحفظة",
+      "transferWallet": "اطلب سحب",
       "ticketssoldTicketsValue1SalesCommissionrateCommiss": "{ticketsSold} تذاكر · {value1} مبيعات · {commissionRate}% عمولة",
       "value0Earned": "{value0} كسبت",
       "lastSaleValue0Ago": "آخر بيع منذ {value0}",
