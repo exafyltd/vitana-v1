@@ -253,8 +253,8 @@
     "eventDrawer.leftMeetup": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Gender-specific verb 'Покинул' is not ideal for general UI; a gender-neutral noun phrase is preferred.",
-      "suggested": "Выход из MeetUp",
+      "issue": "Gender-specific translation ('he left') for a potentially gender-neutral or user-specific UI string. 'Left MeetUp' likely refers to the current user's action or a general status.",
+      "suggested": "Вы покинули MeetUp",
       "phase": "llm"
     },
     "eventDrawer.reservationCancelled": {
@@ -298,5 +298,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:33:53.310Z"
+  "generatedAt": "2026-08-11T04:48:41.937Z"
 }

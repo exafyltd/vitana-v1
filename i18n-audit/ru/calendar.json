@@ -317,9 +317,9 @@
     },
     "calendar.autopilot.reminderLaterToday": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing nuance of 'later'. 'На сегодня' means 'for today', not specifically 'later today'.",
-      "suggested": "Напоминание установлено на сегодня позже",
+      "confidence": 1,
+      "issue": "Missing 'later' nuance. 'на сегодня' means 'for today', not 'for later today'.",
+      "suggested": "Напоминание установлено на сегодня, позже",
       "phase": "llm"
     },
     "calendar.autopilot.reminderTomorrow": {
@@ -578,5 +578,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:29:03.808Z"
+  "generatedAt": "2026-08-11T04:48:07.683Z"
 }

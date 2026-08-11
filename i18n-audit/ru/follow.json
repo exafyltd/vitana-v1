@@ -8,10 +8,10 @@
     "follow.noFollowing": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Gender mismatch: English 'You' is gender-neutral, but Russian 'подписан' is masculine. The translation should be gender-neutral or adapt to user's gender.",
-      "suggested": "У тебя пока нет подписок на других пользователей.",
+      "issue": "Gender default for unknown user gender; can be more inclusive.",
+      "suggested": "У тебя пока нет подписок.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:34:26.712Z"
+  "generatedAt": "2026-08-11T04:48:53.524Z"
 }

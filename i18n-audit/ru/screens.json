@@ -1913,17 +1913,13 @@
       "phase": "llm"
     },
     "screens.common.howtoGuide": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The Russian translation is a clause, not a noun phrase, making it less suitable as a title for a 'guide'.",
-      "suggested": "Руководство",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.researchStudies": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The word 'работы' is too general; 'studies' in this context refers to academic or scientific studies.",
-      "suggested": "Исследования и научные работы",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.shareMedia": {
@@ -2657,10 +2653,8 @@
       "phase": "llm"
     },
     "screens.common.enterLabFacilityAddressName": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: 'Введите' is formal (Вы-form) imperative, but the app uses informal (ты-form).",
-      "suggested": "Введи адрес или название лаборатории",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.enterAnySpecialInstructionsMedicalConditions": {
@@ -2890,9 +2884,9 @@
     },
     "screens.common.overallPrivacyHealth": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing; literal translation of a metaphorical concept. 'Privacy health' implies the state or well-being of one's privacy, not 'privacy of health'.",
-      "suggested": "Здоровье твоей приватности",
+      "confidence": 0.8,
+      "issue": "Awkward phrasing, not idiomatic. 'Privacy health' is a marketing term, better translated as 'data privacy related to health'.",
+      "suggested": "Конфиденциальность твоих данных о здоровье",
       "phase": "llm"
     },
     "screens.common.publicProfileVisibility": {
@@ -2993,7 +2987,7 @@
     "screens.common.sharingDetails": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Translation of 'Sharing' as 'доступ' (access) is inaccurate; 'обмен' (exchange/sharing) is more appropriate for data sharing context.",
+      "issue": "Slight meaning shift. 'Детали доступа' means 'access details', while 'Sharing Details' implies 'details about sharing'.",
       "suggested": "Детали обмена",
       "phase": "llm"
     },
@@ -3298,10 +3292,8 @@
       "phase": "llm"
     },
     "screens.common.advancedAiInsightsUnlimitedStoragePriority": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The term 'AI-анализы' (AI analyses) is too literal for 'AI insights' and can be ambiguous. 'Insights' implies deeper understanding or valuable conclusions, which is better conveyed by the loanword 'инсайты' in a tech context.",
-      "suggested": "Расширенные AI-инсайты, безлимитное хранилище, приоритетная поддержка",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.upgradeNow": {
@@ -3580,10 +3572,8 @@
       "phase": "llm"
     },
     "screens.common.createLiveRoom": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Literal translation of 'Live room' sounds unnatural; 'онлайн-комната' or 'комната для прямого эфира' is more idiomatic for a video session.",
-      "suggested": "Создать онлайн-комнату",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.enablePayments": {
@@ -3607,10 +3597,8 @@
       "phase": "llm"
     },
     "screens.common.custom": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Свой' means 'one's own' and is less common for 'Custom' in UI settings. 'Настраиваемый' or 'Пользовательский' is more appropriate.",
-      "suggested": "Настраиваемый",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.createHealthDataPackage": {
@@ -3629,10 +3617,8 @@
       "phase": "llm"
     },
     "screens.common.sharing": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Обмен' means 'exchange'. For 'Sharing' in a UI context (e.g., data sharing), 'Общий доступ' or 'Доступ' is more common and clear.",
-      "suggested": "Общий доступ",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.packageInformation": {
@@ -3886,10 +3872,8 @@
       "phase": "llm"
     },
     "screens.common.controlYourDataSharingPreferencesManage": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'разрешениями на согласие' (permissions for consent) is awkward and not idiomatic for 'consent permissions'. It should refer to permissions granted by consent.",
-      "suggested": "Контролируй свои настройки обмена данными и управляй разрешениями на обработку данных",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.grantNewAccess": {
@@ -4023,10 +4007,8 @@
       "phase": "llm"
     },
     "screens.common.matchFiltersSettings": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The translation 'Фильтры и настройки совпадений' (Filters and settings of coincidences/matches) is awkward. 'Совпадений' implies 'of matches' rather than 'matching' or 'for matching'.",
-      "suggested": "Фильтры и настройки соответствия",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.interestsActivities": {
@@ -4151,8 +4133,8 @@
     },
     "screens.common.checkingHelpDocumentation": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Awkward phrasing; 'документацию по помощи' is not idiomatic for 'help documentation'.",
+      "confidence": 0.8,
+      "issue": "Awkward phrasing. 'Документация по помощи' is not idiomatic for 'help documentation'.",
       "suggested": "Проверить справочную документацию",
       "phase": "llm"
     },
@@ -4197,10 +4179,8 @@
       "phase": "llm"
     },
     "screens.common.fixNow": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Imperative form missing, 'Исправить' is infinitive. Should be du-form imperative.",
-      "suggested": "Исправь",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.mediumRisk": {
@@ -4214,10 +4194,8 @@
       "phase": "llm"
     },
     "screens.common.reviewSettings": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Imperative form missing, 'Проверить' is infinitive. Should be du-form imperative.",
-      "suggested": "Проверь настройки",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.lowRisk": {
@@ -4276,24 +4254,18 @@
       "phase": "llm"
     },
     "screens.common.closeReport": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Imperative form missing, 'Закрыть' is infinitive. Should be du-form imperative.",
-      "suggested": "Закрой отчет",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.applyAllFixes": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Imperative form missing, 'Применить' is infinitive. Should be du-form imperative.",
-      "suggested": "Примени все исправления",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.recheck": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Imperative form missing, 'Перепроверить' is infinitive. Should be du-form imperative.",
-      "suggested": "Перепроверь",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.quickSetupWizard": {
@@ -4337,10 +4309,8 @@
       "phase": "llm"
     },
     "screens.common.skipSetup": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Imperative form missing, 'Пропустить' is infinitive. Should be du-form imperative.",
-      "suggested": "Пропусти настройку",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.applySettings": {
@@ -4679,10 +4649,8 @@
       "phase": "llm"
     },
     "screens.common.pasteDisplay_nameApiKeyWeStore": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect verb form for du-form (informal). 'Вставьте' is formal/plural, should be informal singular 'Вставь'.",
-      "suggested": "Вставь ключ API {display_name}. Мы храним его зашифрованным (AES-256-GCM) и\n              никогда не раскрываем снова — только последние 4 символа видны после проверки.",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.getYourApiKeyAtKey_url_label": {
@@ -4881,17 +4849,15 @@
       "phase": "llm"
     },
     "screens.common.virtualValue0": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Adjective 'Виртуальный' (masculine) might not agree with the gender of the noun represented by {value0}.",
-      "suggested": "Онлайн- {value0}",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.5,
+      "issue": "Adjective 'Виртуальный' (masculine) might not match the gender of the placeholder {value0}. Without context for {value0}, it's ambiguous.",
       "phase": "llm"
     },
     "screens.common.thisValue0WillHeldOnline": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Demonstrative pronoun 'Этот' (masculine) might not agree with the gender of the noun represented by {value0}.",
-      "suggested": "{value0} будет проходить онлайн",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.5,
+      "issue": "Demonstrative pronoun 'Этот' (masculine) might not match the gender of the placeholder {value0}. Without context for {value0}, it's ambiguous.",
       "phase": "llm"
     },
     "screens.common.energyLevelValue0": {
@@ -5046,8 +5012,8 @@
     },
     "screens.common.lastLength": {
       "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "The gender/number of 'Последние' (Last, plural) might not always match the noun implied by '{length}' without further context (e.g., 'Last week' would be 'Последняя неделя'). However, it's a reasonable default for plural contexts.",
+      "confidence": 0.5,
+      "issue": "Adjective 'Последние' (plural) might not match the number/gender of the placeholder {length}. Without context for {length}, it's ambiguous.",
       "phase": "llm"
     },
     "screens.common.notInterested": {
@@ -5091,10 +5057,8 @@
       "phase": "llm"
     },
     "screens.common.mental": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Ментальное' is an adjective and sounds incomplete as a standalone category label. It should be a noun phrase.",
-      "suggested": "Ментальное здоровье",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.common.next3": {
@@ -5198,10 +5162,8 @@
       "phase": "llm"
     },
     "screens.admin.livePreview": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect spelling/hyphenation for 'предпросмотр'.",
-      "suggested": "Живой предпросмотр",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.admin.now": {
@@ -5882,7 +5844,7 @@
     "screens.admin.generateComplianceReportsForRegulatoryAudits": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect imperative form for du-form register. 'Создавайте' is formal/plural, should be informal singular 'Создавай'.",
+      "issue": "Incorrect register. 'Создавайте' is plural/formal imperative, but the app uses du-form (informal singular).",
       "suggested": "Создавай отчеты о соответствии для регуляторных аудитов.",
       "phase": "llm"
     },
@@ -5909,7 +5871,7 @@
     "screens.admin.createNewWorkflows": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect imperative form for du-form register. 'Создавайте' is formal/plural, should be informal singular 'Создавай'.",
+      "issue": "Incorrect register. 'Создавайте' is plural/formal imperative, but the app uses du-form (informal singular).",
       "suggested": "Создавай новые рабочие процессы",
       "phase": "llm"
     },
@@ -6914,10 +6876,8 @@
       "phase": "llm"
     },
     "screens.admin.reportsPending": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly clunky phrasing; 'в ожидании' is less idiomatic for 'pending reports' than a more direct translation.",
-      "suggested": "Ожидающие отчеты",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.admin.complianceRate": {
@@ -8826,10 +8786,8 @@
       "phase": "llm"
     },
     "screens.admin.yourTenantDocs": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly awkward phrasing; 'Твои документы арендатора' can be interpreted as 'Your documents, which are documents of a tenant'. A more direct link between 'your' and 'tenant' is preferable for 'Your Tenant Docs'.",
-      "suggested": "Документы твоего арендатора",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.admin.knowledgeBaseDocuments": {
@@ -8893,10 +8851,9 @@
       "phase": "llm"
     },
     "screens.admin.stillActive": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Gender/number mismatch possible without context. 'Активен' is masculine singular. For a general status label, a neuter form is often preferred.",
-      "suggested": "Активно",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Adjective 'активен' (masculine short form) might not match the gender of the implied subject. Without context, it's ambiguous.",
       "phase": "llm"
     },
     "screens.admin.sessions": {
@@ -9820,10 +9777,8 @@
       "phase": "llm"
     },
     "screens.admin.abandoned": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Отменено\" means \"cancelled\", which is slightly different from \"abandoned\" in a funnel context. \"Брошено\" (abandoned) or \"Не завершено\" (not completed) would be more accurate.",
-      "suggested": "Брошено",
+      "verdict": "OK",
+      "confidence": 0.5,
       "phase": "llm"
     },
     "screens.admin.live": {
@@ -9979,8 +9934,8 @@
     "screens.admin.individual": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Grammatical form: 'Отдельный' is an adjective. In the context of recipient selection (e.g., 'By Role', 'Individual'), an adverb or noun phrase is more appropriate.",
-      "suggested": "Индивидуально",
+      "issue": "The translation 'Отдельный' means 'separate' or 'distinct'. For 'Individual' in the context of a wellness app, implying 'personalized' or 'custom', 'Индивидуальный' is more appropriate.",
+      "suggested": "Индивидуальный",
       "phase": "llm"
     },
     "screens.admin.sendInvitation": {
@@ -10075,9 +10030,9 @@
     },
     "screens.admin.healthy": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incorrect meaning. 'Исправно' means 'in working order,' not 'healthy' in a biological/wellness sense.",
-      "suggested": "Здоровое",
+      "confidence": 1,
+      "issue": "The translation 'Исправно' is an adverb meaning 'in good working order' or 'properly'. The English 'Healthy' is an adjective. The correct adjective is 'Здоровый'.",
+      "suggested": "Здоровый",
       "phase": "llm"
     },
     "screens.admin.degraded": {
@@ -10221,10 +10176,8 @@
       "phase": "llm"
     },
     "screens.admin.dismiss": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Too formal/strong for a general UI 'Dismiss' action; 'Закрыть' or 'Скрыть' is more common and appropriate for a friendly app.",
-      "suggested": "Закрыть",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "screens.admin.engagedWithProactiveAssistant": {
@@ -10660,7 +10613,7 @@
     "screens.admin.configureWeightEachHealthMetricVitana": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect imperative form (formal 'вы' instead of informal 'ты').",
+      "issue": "The imperative 'Настройте' is in the formal 'вы-form'. The app requires the informal 'du-form'.",
       "suggested": "Настрой вес каждой метрики здоровья в расчете индекса Vitana",
       "phase": "llm"
     },
@@ -11395,10 +11348,8 @@
       "phase": "llm"
     },
     "screens.admin.joined": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation 'Присоединился' is masculine singular. For a general UI label like 'Joined' (e.g., a status or date field), a gender-neutral form is usually preferred.",
-      "suggested": "Присоединено",
+      "verdict": "OK",
+      "confidence": 0.8,
       "phase": "llm"
     },
     "screens.admin.inviteMember": {
@@ -11588,8 +11539,8 @@
     },
     "screens.admin.active2": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The English 'active' is an adjective, but the Russian 'активно' is an adverb. For a standalone label or status, an adjective is more appropriate.",
+      "confidence": 1,
+      "issue": "The translation 'активно' is an adverb ('actively'). The English 'active' is an adjective. The correct adjective form is 'активный' (masculine singular, assuming default).",
       "suggested": "активный",
       "phase": "llm"
     },
@@ -11690,8 +11641,8 @@
     },
     "screens.admin.activeActive": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The English 'active' is an adjective modifying a count, but the Russian 'активно' is an adverb. It should be an adjective in the genitive plural to agree with the implied count.",
+      "confidence": 1,
+      "issue": "The translation 'активно' is an adverb. If '{active}' is a number, the adjective form 'активных' (plural genitive) is needed to agree with the implied noun (e.g., 'пользователей').",
       "suggested": "{active} активных",
       "phase": "llm"
     },
@@ -11916,10 +11867,8 @@
       "phase": "llm"
     },
     "screens.admin.lengthToolValue1AvailableServerurl": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Number agreement. The current translation uses singular forms ('инструмент', 'доступен'), which is only correct if '{length}' is always 1. If '{length}' can be greater than 1, the noun and verb need to be pluralized and declined correctly.",
-      "suggested": "{length} инструментов {value1} доступны на {serverUrl}",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.p95P95latencyMsP99P99latencyMs": {
@@ -12258,17 +12207,13 @@
       "phase": "llm"
     },
     "screens.admin.joinedValue0": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 0.9,
-      "issue": "Gender-specific verb 'Присоединился' (masculine) used for a general 'Joined' label. A more neutral and common phrasing for a label is preferred.",
-      "suggested": "Дата присоединения: {value0}",
       "phase": "llm"
     },
     "screens.admin.youSureYouWantRevokeRole": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender-specific adjective 'уверен' (masculine) used in a 'du-form' question. Should be gender-neutral.",
-      "suggested": "Ты уверен(а), что хочешь отозвать роль {role} у {email} в {name}? Это действие нельзя отменить.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.quick5Tests20s": {
@@ -12357,10 +12302,8 @@
       "phase": "llm"
     },
     "screens.admin.enterYourTenantspecificSystemPrompt": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The term 'клиента' for 'tenant' is ambiguous and sounds like 'customer'. 'Экземпляра' (instance) or 'аккаунта' (account) would be more precise for a technical 'tenant'.",
-      "suggested": "Введи системную подсказку для своего экземпляра...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.sendMessageStartTesting": {
@@ -12374,10 +12317,8 @@
       "phase": "llm"
     },
     "screens.admin.messagesSentGatewayConversationEndpointWith": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The term 'клиента' for 'tenant' is ambiguous and sounds like 'customer'. 'Экземпляра' (instance) or 'аккаунта' (account) would be more precise for a technical 'tenant'.",
-      "suggested": "Сообщения отправляются на конечную точку разговора шлюза с твоим токеном администратора.\n          Ответы отражают текущую личность экземпляра, инструменты и конфигурацию маршрутизации.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.custom2": {
@@ -12432,9 +12373,9 @@
     },
     "screens.admin.completedCompletedFailedFailed": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Сбой' is a noun (failure), not an adjective or participle. It should be 'не выполнено' (not completed) for parallelism with 'выполнено', or 'сбоев' (failures, genitive plural).",
-      "suggested": "{completed} выполнено · {failed} не выполнено",
+      "confidence": 0.9,
+      "issue": "'сбой' is a singular noun meaning 'failure' or 'malfunction'. It's awkward next to a number placeholder and inconsistent with the participle 'выполнено'. 'Провалено' (failed, neuter participle) or 'сбоев' (genitive plural noun) would be more appropriate.",
+      "suggested": "{completed} выполнено · {failed} провалено",
       "phase": "llm"
     },
     "screens.admin.avgValue0Runsday": {
@@ -13095,7 +13036,7 @@
     "screens.admin.shortDescriptionYourOrganization": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent (formal 'вашей' instead of informal 'твоей').",
+      "issue": "The possessive 'вашей' is in the formal 'вы-form'. The app requires the informal 'du-form'.",
       "suggested": "Краткое описание твоей организации",
       "phase": "llm"
     },
@@ -13455,10 +13396,8 @@
       "phase": "llm"
     },
     "screens.admin.paSuggestionHighRepeat": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward phrasing for 'repeat interest'; 'повторяющийся' is less idiomatic than 'повторный' in this context.",
-      "suggested": "Высокий повторный интерес — предложи более глубокий контент или программы по этой теме.",
       "phase": "llm"
     },
     "screens.admin.paSuggestionAssistantHeavy": {
@@ -13479,7 +13418,7 @@
     "screens.admin.paJourneysDesc": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "'Отвалы' is overly technical and harsh for a friendly app; 'уходы' is more appropriate.",
+      "issue": "The translation 'отвалы' literally means 'dumps' or 'tailings' (mining waste), which is incorrect for 'drop-offs' in the context of user behavior in an app. 'Уходы' (departures) is a more suitable translation.",
       "suggested": "Как пользователи перемещаются по приложению: входы, пути и уходы.",
       "phase": "llm"
     },
@@ -14334,10 +14273,8 @@
       "phase": "llm"
     },
     "screens.auth.thankYouForJoiningVitana": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Not gender-neutral; 'присоединился' is masculine.",
-      "suggested": "Спасибо за присоединение к VITANA!",
       "phase": "llm"
     },
     "screens.auth.yourEmailHasSuccessfullyConfirmed": {
@@ -14346,24 +14283,20 @@
       "phase": "llm"
     },
     "screens.auth.youLlRedirectedYourDashboardFew": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Not gender-neutral; 'перенаправлен' is masculine.",
-      "suggested": "Тебя перенаправят на панель управления через несколько секунд...",
       "phase": "llm"
     },
     "screens.auth.welcomeYourPersonalizedHealthIntelligencePlatform": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Translation of 'health intelligence' is not precise; 'здоровья и интеллекта' sounds like two separate concepts.",
+      "confidence": 0.9,
+      "issue": "Nuance of 'health intelligence' is slightly off; 'здоровья и интеллекта' sounds like two separate concepts rather than a unified 'intelligent health' platform.",
       "suggested": "Добро пожаловать на твою персонализированную платформу интеллектуального здоровья",
       "phase": "llm"
     },
     "screens.auth.continueDashboard": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect preposition usage; 'к' is not idiomatic with 'продолжить' in this context.",
-      "suggested": "Продолжить на панель управления",
       "phase": "llm"
     },
     "screens.auth.returnVitana": {
@@ -14432,10 +14365,8 @@
       "phase": "llm"
     },
     "screens.billing.bill": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Плательщик' means 'Payer', but 'Bill To' refers to the recipient of the bill.",
-      "suggested": "Получатель счета:",
       "phase": "llm"
     },
     "screens.billing.invoiceDetails": {
@@ -14469,10 +14400,8 @@
       "phase": "llm"
     },
     "screens.billing.subtotal": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Not the most idiomatic term for 'subtotal' in a financial context.",
-      "suggested": "Промежуточная сумма",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.billing.tax": {
@@ -15071,10 +15000,8 @@
       "phase": "llm"
     },
     "screens.business.createCoachingSessionsConsultationsOtherServices": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'to offer'. 'Для предложения' is grammatically correct but less idiomatic than 'которые можно предложить' in this context.",
-      "suggested": "Создай коуч-сессии, консультации или другие услуги, которые можно предложить.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.business.createService": {
@@ -16589,9 +16516,9 @@
     },
     "screens.community.noGroupsDiscover": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The phrase 'для открытия' is a bit too literal and sounds awkward in this context. 'Для поиска' or 'для изучения' would be more natural.",
-      "suggested": "Нет групп для поиска",
+      "confidence": 0.9,
+      "issue": "'для открытия' is a bit literal and can be ambiguous (opening vs discovering). 'Для изучения' fits 'discover' better.",
+      "suggested": "Нет групп для изучения",
       "phase": "llm"
     },
     "screens.community.firstStartCommunity": {
@@ -17100,10 +17027,8 @@
       "phase": "llm"
     },
     "screens.community.shorts": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect meaning; 'Шорты' refers to clothing, not short-form videos. This is a common mistranslation for video 'Shorts'.",
-      "suggested": "Короткие видео",
       "phase": "llm"
     },
     "screens.community.editDetails": {
@@ -17182,10 +17107,8 @@
       "phase": "llm"
     },
     "screens.community.mental": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The English 'Mental' is likely a category label, but 'Ментальное' is an adjective (neuter singular) and feels incomplete as a standalone label. A noun would be more appropriate for consistency with other categories like 'Exercise' (Упражнения) and 'Nutrition' (Питание).",
-      "suggested": "Психика",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.community.letAiAnalyzeYourWellnessGoals": {
@@ -17499,10 +17422,8 @@
       "phase": "llm"
     },
     "screens.community.uploadingcountUploading": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical agreement: 'загружается' is singular, but '{uploadingCount}' implies a plural subject when count > 1. 'Загружаются' (plural) is more appropriate.",
-      "suggested": "{uploadingCount} загружаются",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.community.donecountDone": {
@@ -18313,14 +18234,14 @@
     "screens.contacts.invitedValue0": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Gender mismatch for placeholder {value0}. 'Приглашен' is masculine. If {value0} is a female name, it should be 'Приглашена'.",
-      "suggested": "Приглашен(а) {value0}",
+      "issue": "'Приглашен' is masculine singular. If {value0} can be a female name or a group, this is not gender-neutral.",
+      "suggested": "Приглашение для {value0}",
       "phase": "llm"
     },
     "screens.contacts.youSureYouWantDeleteDisplayname": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Gender mismatch for the user. 'Ты уверен' is masculine. If the user is female, it should be 'Ты уверена'.",
+      "issue": "'Ты уверен' assumes the user is masculine. The du-form should be gender-flexible.",
       "suggested": "Ты уверен(а), что хочешь удалить {displayName}? Это действие нельзя отменить.",
       "phase": "llm"
     },
@@ -18391,10 +18312,8 @@
       "phase": "llm"
     },
     "screens.contacts.sendingValue0": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The 'to' nuance is missing, and the grammatical case for {value0} would be incorrect if it represents a recipient or destination. 'Отправка {value0}' means 'Sending {value0}' (accusative), not 'Sending to {value0}' (dative/prepositional).",
-      "suggested": "Отправка: {value0}",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.contacts.writeYourInviteMessage": {
@@ -20910,7 +20829,7 @@
     "screens.dev.phase1ReadonlyModeActiveSet": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent: 'Установите' is formal (Вы-form), but du-form (informal) is requested.",
+      "issue": "Register inconsistent (formal 'Установите' instead of informal 'Установи')",
       "suggested": "Фаза 1: активен режим только для чтения. Установи DEV_HUB_READONLY=false, чтобы включить команды.",
       "phase": "llm"
     },
@@ -20962,7 +20881,7 @@
     "screens.dev.value0Value1Value2Value3ClickVtid": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch: 'Нажмите' is formal, should be informal 'Нажми' for du-form consistency.",
+      "issue": "Register inconsistent (formal 'Нажмите' instead of informal 'Нажми')",
       "suggested": "{value0}{value1}{value2}{value3}Нажми VTID, чтобы открыть подробности",
       "phase": "llm"
     },
@@ -21042,10 +20961,8 @@
       "phase": "llm"
     },
     "screens.dev.activecountActive": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical agreement: 'Активно' (adverb) should likely be 'активных' (adjective, genitive plural) to modify an implied plural noun.",
-      "suggested": "{activeCount} активных",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.dev.activecountConnectionValue1Detected": {
@@ -21479,10 +21396,8 @@
       "phase": "llm"
     },
     "screens.discover.wsCategory_hospitality_desc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Plurality mismatch for 'experiences' and slightly awkward phrasing.",
-      "suggested": "Ретриты, спа и иммерсивные велнес-впечатления",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.discover.wsFeatured_healthAssessments": {
@@ -21693,7 +21608,7 @@
     "screens.discover.providerBadge_topRated": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Translation is grammatically correct but not idiomatic for 'Top Rated' as a descriptor for an item/service. 'Лучший рейтинг' refers to the rating itself, not something that has a high rating.",
+      "issue": "Meaning slightly off; 'Лучший рейтинг' means 'the best rating' (noun), not 'top-rated' (adjective/participle).",
       "suggested": "С высоким рейтингом",
       "phase": "llm"
     },
@@ -21738,10 +21653,8 @@
       "phase": "llm"
     },
     "screens.discover.providerBadge_holistic": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The adjective 'Холистический' is masculine. In a general UI context for a standalone adjective, the neuter form is usually preferred if no specific noun is implied.",
-      "suggested": "Холистическое",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.discover.providerBadge_expert": {
@@ -21815,10 +21728,8 @@
       "phase": "llm"
     },
     "screens.discover.quickBookActions": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Действия бронирования' is grammatically correct but sounds slightly less natural than using a preposition. 'Действия по бронированию' or 'Действия для бронирования' are more idiomatic.",
-      "suggested": "Быстрые действия по бронированию",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.discover.orderActions": {
@@ -21899,7 +21810,7 @@
     "screens.discover.dealsOffersDiscover": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register inconsistent: 'Откройте' is formal/plural imperative, should be informal singular 'Открой' for du-form.",
+      "issue": "Register inconsistent (formal 'Откройте' instead of informal 'Открой')",
       "suggested": "Акции и предложения | Открой",
       "phase": "llm"
     },
@@ -22104,10 +22015,8 @@
       "phase": "llm"
     },
     "screens.discover.verifiedProviders": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The word 'поставщики' (suppliers/providers) is technically correct but sounds more formal/business-like. 'Специалисты' (specialists) is more natural and fitting for a friendly wellness app when referring to people providing services.",
-      "suggested": "Проверенные специалисты",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.discover.serviceCategories": {
@@ -22608,8 +22517,8 @@
     "screens.discover.about": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incomplete for a standalone section title. 'О' is a preposition and requires a noun.",
-      "suggested": "О приложении",
+      "issue": "Ambiguous phrasing; 'О' is a preposition. As a menu item, 'About' typically translates to 'О нас' (About Us).",
+      "suggested": "О нас",
       "phase": "llm"
     },
     "screens.discover.services": {
@@ -22818,10 +22727,8 @@
       "phase": "llm"
     },
     "screens.discover.exploreTitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Изучи' is more 'study' or 'examine' than 'explore' in a UI context. 'Исследуй' is more appropriate.",
-      "suggested": "Исследуй {title}",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.discover.value0Reviews": {
@@ -23100,10 +23007,8 @@
       "phase": "llm"
     },
     "screens.events.youSureYouWantDeleteTitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The adjective 'уверен' is masculine. For a general user, a gender-neutral phrasing is preferred while maintaining the informal 'ты' (du-form).",
-      "suggested": "Ты точно хочешь удалить «{title}»? Это действие нельзя отменить. Все участники, билеты и связанные данные будут удалены безвозвратно.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.events.sent_countSentResponse_countResponded": {
@@ -23532,10 +23437,8 @@
       "phase": "llm"
     },
     "screens.health.svc_serviceHistory_count": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly formal/impersonal phrasing for a friendly app. 'Завершено' is a neuter singular passive participle, while '12 completed' implies plural items.",
-      "suggested": "12 завершенных",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.health.svc_myProviders_title": {
@@ -23849,10 +23752,8 @@
       "phase": "llm"
     },
     "screens.health.allCaughtUpCheckBackLater": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation 'Все готово!' means 'Everything is ready!' which doesn't accurately convey 'All caught up!' in the context of having completed tasks or viewed all new content. A more appropriate phrase is needed.",
-      "suggested": "Вы все просмотрели! Загляни позже за новыми открытиями.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.health.overallHealth": {
@@ -24381,10 +24282,8 @@
       "phase": "llm"
     },
     "screens.health.mental": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The Russian translation 'Ментальное' is an adjective. For a category title, the noun phrase 'Ментальное здоровье' (Mental Health) is more appropriate and idiomatic.",
-      "suggested": "🧠 Ментальное здоровье",
       "phase": "llm"
     },
     "screens.health.personalizedHealthPlansVitana": {
@@ -24823,10 +24722,8 @@
       "phase": "llm"
     },
     "screens.health.properHydrationBoostingYourEnergyRecovery": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect term for 'hydration'; 'увлажнение' means moisturizing/humidification, not internal hydration.",
-      "suggested": "Правильная гидратация повышает твою энергию и показатели восстановления",
       "phase": "llm"
     },
     "screens.health.current": {
@@ -24850,10 +24747,8 @@
       "phase": "llm"
     },
     "screens.health.hydrationTimeline": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect term for 'hydration'; 'увлажнения' means moisturizing/humidification, not internal hydration.",
-      "suggested": "Хронология гидратации",
       "phase": "llm"
     },
     "screens.health.setReminder": {
@@ -24862,10 +24757,8 @@
       "phase": "llm"
     },
     "screens.health.logWater": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Less idiomatic for 'log intake'; 'увлажнение' means moisturizing, not hydration.",
-      "suggested": "Внести воду",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.health.smartHydrationGuidanceTailoredYourLifestyle": {
@@ -24879,10 +24772,8 @@
       "phase": "llm"
     },
     "screens.health.recalibrationAdjustsHydrationGoalsBasedTemperature": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Увлажнение' refers to moisturizing, not body hydration. 'Гидратация' is the correct term.",
-      "suggested": "Перекалибровка корректирует цели по гидратации на основе температуры, активности и сна",
       "phase": "llm"
     },
     "screens.health.mindfulness": {
@@ -25446,10 +25337,8 @@
       "phase": "llm"
     },
     "screens.health.value0YouDLandAround": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Verb 'достиг' is masculine, but the user's gender is unknown. Needs a gender-neutral phrasing.",
-      "suggested": "{value0}Твой результат был бы примерно",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.health.atYourCurrentPace": {
@@ -25989,8 +25878,8 @@
     },
     "screens.home.vitanaIndexStableSubtext": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gender mismatch in direct address (masculine 'последовательным' used for unknown gender).",
+      "confidence": 0.9,
+      "issue": "Assumes male user ('последовательным'); better to be gender-neutral in informal address.",
       "suggested": "Сохраняй последовательность.",
       "phase": "llm"
     },
@@ -26006,9 +25895,9 @@
     },
     "screens.home.longevityJourneyAllDone": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gender mismatch in statement about user's achievement (masculine 'завершил' used for unknown gender).",
-      "suggested": "Все сессии завершены. Отлично.",
+      "confidence": 0.9,
+      "issue": "Assumes male user ('завершил'); should account for female users.",
+      "suggested": "Ты завершил/завершила все сессии. Отлично.",
       "phase": "llm"
     },
     "screens.home.longevityJourneyNextStepHeadline": {
@@ -26058,15 +25947,15 @@
     },
     "screens.home.dailyPriority_hydration_action": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gender mismatch in direct address (masculine 'увлажненным' used for unknown gender).",
+      "confidence": 0.9,
+      "issue": "Assumes male user ('увлажненным'); better idiomatic and gender-neutral phrasing for 'stay hydrated'.",
       "suggested": "Поддерживай водный баланс для оптимальной производительности.",
       "phase": "llm"
     },
     "screens.home.dailyPriority_exercise_msg": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Ambiguous abbreviation 'мин.' at the beginning; should be 'Минимум' for clarity.",
+      "confidence": 0.9,
+      "issue": "Ambiguous abbreviation; 'мин.' can mean 'minimum' or 'minutes'. Clarify 'minimum'.",
       "suggested": "Минимум 30 мин. упражнений",
       "phase": "llm"
     },
@@ -26363,7 +26252,7 @@
     "screens.home.mostImproved": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Meaning is slightly off; 'прогрессивный' implies ideological progress, not personal improvement.",
+      "issue": "Meaning slightly off; 'прогрессивный' means 'progressive' (forward-thinking), not 'improved'.",
       "suggested": "Наиболее улучшившийся",
       "phase": "llm"
     },
@@ -26894,9 +26783,9 @@
     },
     "screens.home.active": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Активно is an adverb ('actively'), not an adjective ('active'). For a UI label/filter, an adjective is more appropriate.",
-      "suggested": "Активные",
+      "confidence": 0.9,
+      "issue": "Adverb ('Активно') used instead of adjective ('Active') for a status/label.",
+      "suggested": "Активный",
       "phase": "llm"
     },
     "screens.home.centralFeedEverythingAiDoesFeels": {
@@ -27155,10 +27044,9 @@
       "phase": "llm"
     },
     "screens.intents.anonymousMatch": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Inconsistent terminology for 'match'; 'совпадение' is used elsewhere for the result of a match. 'Подбор' implies the process.",
-      "suggested": "Анонимное совпадение",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.7,
+      "issue": "'Подбор' means 'selection' or 'matching process', which is plausible, but 'совпадение' might be more direct for 'match' as a noun (e.g., a person or item that matches).",
       "phase": "llm"
     },
     "screens.intents.mutualReveal": {
@@ -28322,10 +28210,8 @@
       "phase": "llm"
     },
     "screens.memory.firstRespondersAccess": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Literal translation for 'first responders'; less idiomatic than alternatives.",
-      "suggested": "Доступ для служб быстрого реагирования",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.memory.familyMembers": {
@@ -28339,17 +28225,13 @@
       "phase": "llm"
     },
     "screens.memory.memoryPermissionsVitanaMemory": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incorrect word choice for 'Permissions'. 'Доступы' (accesses) is less idiomatic than 'Разрешения' (permissions) in this context.",
-      "suggested": "Разрешения для напоминаний | VITANA Memory",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.memory.memoryPermissions": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incorrect word choice for 'Permissions'. 'Доступы' (accesses) is less idiomatic than 'Разрешения' (permissions) in this context.",
-      "suggested": "Разрешения для напоминаний",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.memory.searchPrivacySecuritySettings": {
@@ -28370,20 +28252,18 @@
     "screens.memory.quickRecall": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Отзыв' means 'review' or 'feedback', not 'memory recall'. 'Воспоминание' is more appropriate for memory.",
+      "issue": "'Отзыв' is incorrect for 'memory recall'; it means 'review' or 'feedback'.",
       "suggested": "⚡ Быстрое воспоминание",
       "phase": "llm"
     },
     "screens.memory.aiMemoryRecallVitanaMemory": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "'Воспоминания ИИ' (AI's memories) is a slightly ambiguous translation for 'AI Memory Recall' (the act of recalling memory with AI). While it might be an acceptable UI simplification, it's not a direct semantic match.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.memory.aiMemoryRecall": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "'Воспоминания ИИ' (AI's memories) is a slightly ambiguous translation for 'AI Memory Recall' (the act of recalling memory with AI). While it might be an acceptable UI simplification, it's not a direct semantic match.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.memory.askAiAboutYourWellnessJourney": {
@@ -28812,9 +28692,8 @@
       "phase": "llm"
     },
     "screens.memory.countItems": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.5,
-      "issue": "Russian pluralization rules are not fully accounted for with the {count} placeholder. The current form 'элементов' (genitive plural) is only grammatically correct for certain numbers (e.g., 5+, numbers ending in 0, 5-9, 11-19), but incorrect for others (e.g., 1, 2-4, 21, 22-24). A single string cannot universally satisfy Russian grammar for all counts without pluralization logic.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.memory.categoriesWithExistingItemsCannotDeleted": {
@@ -28833,9 +28712,8 @@
       "phase": "llm"
     },
     "screens.memory.value0TotalMemoriesAcrossAllCategories": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.5,
-      "issue": "Russian pluralization rules are not fully accounted for with the {value0} placeholder. The current form 'воспоминаний' (genitive plural) is only grammatically correct for certain numbers (e.g., 5+, numbers ending in 0, 5-9, 11-19), but incorrect for others (e.g., 1, 2-4, 21, 22-24). A single string cannot universally satisfy Russian grammar for all counts without pluralization logic.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.memory.enterMemoryContent": {
@@ -28909,9 +28787,8 @@
       "phase": "llm"
     },
     "screens.memory.averageDailyActivityValue0Items": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.5,
-      "issue": "Russian pluralization rules are not fully accounted for with the {value0} placeholder. The current form 'элементов' (genitive plural) is only grammatically correct for certain numbers (e.g., 5+, numbers ending in 0, 5-9, 11-19), but incorrect for others (e.g., 1, 2-4, 21, 22-24). A single string cannot universally satisfy Russian grammar for all counts without pluralization logic.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.memory.weeklyTrendValue0": {
@@ -29545,10 +29422,9 @@
       "phase": "llm"
     },
     "screens.messages.enter": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Meaning wrong. 'Отправить' means 'Send'. 'Enter' as a UI button usually means 'Войти' (to enter/log in) or 'Ввести' (to input).",
-      "suggested": "Войти",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.8,
+      "issue": "'Отправить' (submit/send) is common for an 'Enter' button, but 'Войти' (enter/log in) would be more appropriate if it means to navigate into a section.",
       "phase": "llm"
     },
     "screens.messages.press": {
@@ -29727,17 +29603,13 @@
       "phase": "llm"
     },
     "screens.messages.importArchives": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent with 'Export Archives' (verb vs noun), incorrect capitalization.",
-      "suggested": "Импортировать архивы",
       "phase": "llm"
     },
     "screens.messages.templateActions": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect capitalization of 'Шаблонами'.",
-      "suggested": "Действия с шаблонами",
       "phase": "llm"
     },
     "screens.messages.templates": {
@@ -29781,10 +29653,8 @@
       "phase": "llm"
     },
     "screens.messages.groupMembersLength": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect capitalization of 'Группы'.",
-      "suggested": "Участники группы ({length})",
       "phase": "llm"
     },
     "screens.messages.noConversationsMatchingInboxsearchquery": {
@@ -31561,9 +31431,9 @@
     },
     "screens.profile.tooMuchTimeSpentPlanningWhen": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The adjective 'занят' (busy) is masculine singular, making the phrase gender-specific. A more neutral phrasing is needed for general app usage.",
-      "suggested": "Слишком много времени на планирование, когда много дел",
+      "confidence": 0.9,
+      "issue": "Gender specific ('занят' - masculine). Should be gender-neutral or account for gender.",
+      "suggested": "Слишком много времени на планирование, когда ты занят(а)",
       "phase": "llm"
     },
     "screens.profile.tooManyAppsForOnePurpose": {
@@ -32372,9 +32242,8 @@
       "phase": "llm"
     },
     "screens.profile.lengthUnlocked": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Ambiguous English source 'of {length}unlocked'. Russian 'из {length} разблокировано' is a plausible interpretation for 'of {length} unlocked'.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.profile.value0ViewAsValue1": {
@@ -32548,10 +32417,8 @@
       "phase": "llm"
     },
     "screens.profile.somePersonalInformationUsedPersonalizeYour2": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'публикуется' (is published) implies an active action, whereas 'is shared publicly' refers to the state of being publicly available. 'общедоступным' (publicly available) is a more accurate translation for the state.",
-      "suggested": "Некоторая личная информация используется для персонализации твоего опыта, повышения доверия и поддержки соответствующих услуг. Ты контролируешь, что является общедоступным.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.profile.labelTopVitanapercentile": {
@@ -32627,7 +32494,7 @@
     "screens.profile.joinedLength": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The Russian translation 'Присоединился' is masculine singular past tense, which is too specific for a general label like 'Joined ({length})'. It should be plural or neutral to refer to a count of joined items or people.",
+      "issue": "Gender specific ('Присоединился' - masculine singular). Should be plural or gender-neutral for a count.",
       "suggested": "Присоединились ({length})",
       "phase": "llm"
     },
@@ -32733,9 +32600,9 @@
     },
     "screens.reminders.subtitleDefault": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The word 'естественно' (naturally) is ambiguous here. It can mean 'of course' or 'in a natural way'. The English 'add naturally' likely implies ease or fitting in, which 'естественно' doesn't fully convey in this context.",
-      "suggested": "Что Vitana планирует для тебя. Поговори с ORB, чтобы легко добавить.",
+      "confidence": 0.8,
+      "issue": "Awkward phrasing for 'add naturally'. 'естественно' at the end is clunky.",
+      "suggested": "Что Vitana планирует для тебя. Поговори с ORB, чтобы естественно добавить.",
       "phase": "llm"
     },
     "screens.reminders.showingFilteredView": {
@@ -33406,8 +33273,8 @@
     "screens.settings.liveRoomNotifications": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing; 'вживую' is not the most idiomatic translation for 'Live Room' in this context. 'Live' is often kept as a loanword.",
-      "suggested": "Уведомления о Live-комнатах",
+      "issue": "Awkward phrasing for 'Live Room'. 'комнатах вживую' is too literal.",
+      "suggested": "Уведомления о прямых эфирах",
       "phase": "llm"
     },
     "screens.settings.roomStartingInvitesSummaries": {
@@ -33627,9 +33494,9 @@
     },
     "screens.settings.autoshare": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Awkward phrasing, incorrect grammatical construction. 'Авто-поделиться' is not idiomatic; it combines a prefix with an infinitive verb. Should be a noun phrase.",
-      "suggested": "Автообмен",
+      "confidence": 0.9,
+      "issue": "Grammatically awkward. 'поделиться' is an infinitive verb, not suitable as a noun phrase for a setting.",
+      "suggested": "Автоматический обмен",
       "phase": "llm"
     },
     "screens.settings.autoshareEnabled": {
@@ -34100,8 +33967,8 @@
     "screens.settings.notPregnant": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Gender-specific translation ('Не беременна' is feminine singular). For a general app, a gender-neutral option is preferred.",
-      "suggested": "Не беременны",
+      "issue": "Gender specific ('беременна' - feminine). Should be gender-neutral or account for gender.",
+      "suggested": "Не беремен(на)",
       "phase": "llm"
     },
     "screens.settings.preferNotSay": {
@@ -34185,10 +34052,8 @@
       "phase": "llm"
     },
     "screens.settings.reduceMotion": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Infinitive form ('Уменьшить движение') is less idiomatic for a UI setting title than a noun phrase.",
-      "suggested": "Уменьшение движения",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.minimizeAnimationsTransitions": {
@@ -34857,10 +34722,8 @@
       "phase": "llm"
     },
     "screens.settings.configureYourNotificationPreferences": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Redundant and awkward phrasing. 'Настрой свои настройки' (configure your settings) is clunky. 'Предпочтения' is a more accurate translation for 'preferences'.",
-      "suggested": "Настрой свои предпочтения уведомлений",
       "phase": "llm"
     },
     "screens.settings.notificationsSettingsSection_chat": {
@@ -35576,8 +35439,8 @@
     "screens.settings.socialCommunity": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.8,
-      "issue": "Awkward phrasing; 'Социальное' (neuter adjective) feels incomplete without a noun. Better to specify 'social functions' or 'social features'.",
-      "suggested": "Социальные функции и сообщество",
+      "issue": "'Социальное' is an adjective without a noun, making it grammatically awkward as a standalone term.",
+      "suggested": "Социальные сети и сообщество",
       "phase": "llm"
     },
     "screens.settings.intelligence": {
@@ -35621,17 +35484,15 @@
       "phase": "llm"
     },
     "screens.settings.public": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward phrasing; 'Публичный' (masculine adjective) is incomplete as a standalone setting label. An adverb or a noun phrase would be more appropriate.",
-      "suggested": "Общедоступно",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Ambiguous context. 'Публичный' is masculine singular. Could be 'Публично' (adverb) or 'Общедоступно' depending on usage (e.g., 'Public Profile' vs. 'Set to Public').",
       "phase": "llm"
     },
     "screens.settings.private": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward phrasing; 'Приватный' (masculine adjective) is incomplete as a standalone setting label. An adverb or a noun phrase would be more appropriate.",
-      "suggested": "Приватно",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Ambiguous context. 'Приватный' is masculine singular. Could be 'Приватно' (adverb) or 'Частный' (more common native word) depending on usage.",
       "phase": "llm"
     },
     "screens.settings.billingActions": {
@@ -35677,15 +35538,15 @@
     "screens.settings.limitedAiInsights": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Анализы' can sound medical (e.g., lab tests). 'Аналитика' or 'инсайты' (loanword) would be more appropriate for 'insights' in a tech context.",
-      "suggested": "Ограниченная ИИ-аналитика",
+      "issue": "'анализы' typically refers to medical tests, not 'insights' in this context.",
+      "suggested": "Ограниченные ИИ-выводы",
       "phase": "llm"
     },
     "screens.settings.advancedAiInsights": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Анализы' can sound medical (e.g., lab tests). 'Аналитика' or 'инсайты' (loanword) would be more appropriate for 'insights' in a tech context.",
-      "suggested": "Расширенная ИИ-аналитика",
+      "issue": "'анализы' typically refers to medical tests, not 'insights' in this context.",
+      "suggested": "Расширенные ИИ-выводы",
       "phase": "llm"
     },
     "screens.settings.unlimitedStorage": {
@@ -35731,8 +35592,8 @@
     "screens.settings.upgrade": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Обновить' typically means 'update' or 'refresh'. For a subscription or plan upgrade, 'Обновиться' (reflexive) or 'Повысить уровень' would be more precise.",
-      "suggested": "Обновиться",
+      "issue": "'Обновить' means 'update' or 'refresh', not 'upgrade' in the sense of getting a better version or plan.",
+      "suggested": "Повысить уровень",
       "phase": "llm"
     },
     "screens.settings.paymentMethods": {
@@ -35898,8 +35759,8 @@
     "screens.settings.clinicalLabs": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Grammatical mismatch (adjective vs noun) and awkward phrasing. 'Клинические' (adj) and 'Лаборатории' (noun) don't pair naturally as categories.",
-      "suggested": "Клиника и Лаборатории",
+      "issue": "'Клинические' is an adjective without a noun, making it grammatically incomplete.",
+      "suggested": "Клинические данные и Лаборатории",
       "phase": "llm"
     },
     "screens.settings.mentalHealthMindfulness": {
@@ -36408,10 +36269,8 @@
       "phase": "llm"
     },
     "screens.settings.nameIntegrationComingSoon2": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing space between placeholder and word, making it awkward.",
-      "suggested": "{name} интеграция скоро появится!",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.all": {
@@ -36442,8 +36301,8 @@
     "screens.settings.weWillNeverRecommendProductsContaining": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The nuance of 'period' (as in 'no exceptions') is missing. 'Это' (singular) is used for 'these' (plural), which might be inaccurate depending on context.",
-      "suggested": "Мы никогда не порекомендуем продукты, содержащие их, точка. Последнее подтверждение: {value0}{value1}.",
+      "issue": "Missing the nuance of 'period.' to emphasize finality.",
+      "suggested": "Мы никогда не порекомендуем продукты, содержащие это, и точка. Последнее подтверждение:{value0}{value1}.",
       "phase": "llm"
     },
     "screens.settings.eGPeanutsShellfishLatex": {
@@ -36837,10 +36696,8 @@
       "phase": "llm"
     },
     "screens.sharing.directMessagingPersonalShare": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "«Личный обмен» implies an exchange, not a personal share/sending of content.",
-      "suggested": "Прямые сообщения (Личная отправка)",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.sharing.availableAfterYouCreateCampaignVia": {
@@ -36881,7 +36738,7 @@
     "screens.sharing.selectCampaignGoal": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register: «Выберите» is formal (вы-form), but informal (ты-form) «Выбери» is required.",
+      "issue": "Inconsistent register. Uses formal 'Вы' form ('Выберите') instead of informal 'ты' form.",
       "suggested": "Выбери цель кампании...",
       "phase": "llm"
     },
@@ -37227,8 +37084,8 @@
     },
     "screens.sharing.tapShareInstagramOpenYourShare": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'share menu'. 'Меню поделиться' is not idiomatic.",
+      "confidence": 0.8,
+      "issue": "'меню поделиться' is slightly awkward. 'меню обмена' is more idiomatic.",
       "suggested": "Нажми «Поделиться в Instagram», чтобы открыть меню обмена",
       "phase": "llm"
     },
@@ -37689,8 +37546,8 @@
     },
     "screens.sharing.t14DaysSaveDateAnnouncement": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Register inconsistency ('вы' form for 'Сохраните дату') and slightly awkward phrasing for 'announcement'.",
+      "confidence": 1,
+      "issue": "Inconsistent register. Uses formal 'Вы' form ('Сохраните') instead of informal 'ты' form.",
       "suggested": "Т-14 дней: Анонс: Сохрани дату",
       "phase": "llm"
     },
@@ -38460,17 +38317,13 @@
       "phase": "llm"
     },
     "screens.sharing.featuredIntegrations": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect capitalization for a common noun in a title/heading.",
-      "suggested": "Рекомендуемые интеграции",
       "phase": "llm"
     },
     "screens.sharing.myConnections": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect capitalization for a common noun in a title/heading.",
-      "suggested": "Мои подключения",
       "phase": "llm"
     },
     "screens.sharing.epicMychartIntegration": {
@@ -38490,9 +38343,9 @@
     },
     "screens.sharing.readyConnect": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect gender. 'Готов' (masculine) implies the user is ready. If referring to the integration/feature, 'Готово' (neuter) is more appropriate.",
-      "suggested": "Готово к подключению",
+      "confidence": 0.9,
+      "issue": "Gender specific ('Готов' - masculine). Should be gender-neutral or account for gender.",
+      "suggested": "Готов(а) к подключению",
       "phase": "llm"
     },
     "screens.sharing.highlyRated": {
@@ -38521,10 +38374,8 @@
       "phase": "llm"
     },
     "screens.sharing.healthcareMedical": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect capitalization for a common noun in a title/heading.",
-      "suggested": "Здравоохранение и медицина",
       "phase": "llm"
     },
     "screens.sharing.healthcarePlatforms": {
@@ -38548,10 +38399,8 @@
       "phase": "llm"
     },
     "screens.sharing.telemedicinePlatforms": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect capitalization for a common noun in a title/heading.",
-      "suggested": "Платформы телемедицины",
       "phase": "llm"
     },
     "screens.sharing.text8Apps": {
@@ -38566,10 +38415,8 @@
       "phase": "llm"
     },
     "screens.sharing.medicalResearch": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect capitalization for a common noun in a title/heading.",
-      "suggested": "Медицинские исследования",
       "phase": "llm"
     },
     "screens.sharing.text18Studies": {
@@ -38578,10 +38425,8 @@
       "phase": "llm"
     },
     "screens.sharing.clinicalTrials": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect capitalization for a common noun in a title/heading.",
-      "suggested": "Клинические испытания",
       "phase": "llm"
     },
     "screens.sharing.text7Studies": {
@@ -38811,9 +38656,9 @@
     },
     "screens.sharing.sharedWith": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect tense/gender for a general UI label. 'Поделился с' is past tense, masculine singular. A more general and appropriate phrasing is needed.",
-      "suggested": "Общий доступ с",
+      "confidence": 0.9,
+      "issue": "Incorrect tense/person for a UI label. 'Поделился с' means 'he shared with'. For a label indicating something was shared, a passive form or infinitive is better.",
+      "suggested": "Поделено с",
       "phase": "llm"
     },
     "screens.sharing.includedDataTypes": {
@@ -40429,8 +40274,8 @@
     "screens.sharing.text24PostsAutoscheduled": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing; 'авто-планированием' is not standard. 'Автопланированием' (one word) is more common for this compound.",
-      "suggested": "24 поста с автопланированием",
+      "issue": "The translation 'с авто-планированием' means 'with auto-scheduling', implying a feature. The English 'auto-scheduled' is a past participle, indicating a state.",
+      "suggested": "24 поста запланированы автоматически",
       "phase": "llm"
     },
     "screens.sharing.text32VsManualPosts": {
@@ -40729,24 +40574,18 @@
       "phase": "llm"
     },
     "screens.tickets.scanForEntry": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Infinitive form used; informal imperative (du-form) is more appropriate for a direct command in a friendly app.",
-      "suggested": "Сканируй для входа",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.tickets.download": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Infinitive form used; informal imperative (du-form) is more appropriate for a direct command in a friendly app.",
-      "suggested": "Скачай",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.tickets.share": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Infinitive form used; informal imperative (du-form) is more appropriate for a direct command in a friendly app.",
-      "suggested": "Поделись",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.tickets.sendYourTicketFriendsSaveFor": {
@@ -40760,10 +40599,8 @@
       "phase": "llm"
     },
     "screens.tickets.addTicket": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Infinitive form used; informal imperative (du-form) is more appropriate for a direct command in a friendly app.",
-      "suggested": "Добавь билет",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.tickets.description": {
@@ -40847,10 +40684,8 @@
       "phase": "llm"
     },
     "screens.ui.selectMode": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Infinitive form used; informal imperative (du-form) is more appropriate for a direct command in a friendly app.",
-      "suggested": "Выбери режим",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.ui.breadcrumb": {
@@ -41114,9 +40949,8 @@
       "phase": "llm"
     },
     "screens.downloadFlyer.brandSubline": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Ambiguous English source 'Experience' as a standalone title. 'Опыт' is a direct translation but might be too generic depending on context (e.g., 'Your Experience' vs. 'Experience [something]').",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.downloadFlyer.headline": {
@@ -42582,8 +42416,8 @@
     "screens.wallet.earningIntelligence": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing; 'Earning Intelligence' as a feature name is better conveyed as 'Intelligent Earning' rather than 'Earning of Intelligence'.",
-      "suggested": "Интеллектуальный заработок",
+      "issue": "'Заработок Интеллекта' is a bit clunky ('Earning of Intelligence'). An imperative verb form would be more active and fit the app's friendly, du-form tone.",
+      "suggested": "🧠 Зарабатывай интеллект",
       "phase": "llm"
     },
     "screens.wallet.quickActions": {
@@ -42692,10 +42526,8 @@
       "phase": "llm"
     },
     "screens.wallet.addFunds": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of a common noun.",
-      "suggested": "Добавить средства",
       "phase": "llm"
     },
     "screens.wallet.details": {
@@ -42714,24 +42546,20 @@
       "phase": "llm"
     },
     "screens.wallet.economyHealth": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of a common noun.",
-      "suggested": "Здоровье экономики",
       "phase": "llm"
     },
     "screens.wallet.healthy": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Ambiguous and not idiomatic for a status label. 'Здорово' can mean 'great' or 'healthy' (adverb). For a status, an adjective or a more general positive phrase is better.",
-      "suggested": "В норме",
+      "confidence": 0.9,
+      "issue": "'Здорово' is an adverb ('healthily') or colloquial 'great/cool'. For a general label 'Healthy' (as a concept or category), 'Здоровье' (Health) is more appropriate.",
+      "suggested": "Здоровье",
       "phase": "llm"
     },
     "screens.wallet.viewTokenomics": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of a common noun.",
-      "suggested": "Посмотреть токеномику",
       "phase": "llm"
     },
     "screens.wallet.updatedNow": {
@@ -42740,17 +42568,13 @@
       "phase": "llm"
     },
     "screens.wallet.text5Bonus": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of a common noun.",
-      "suggested": "+5% бонус",
       "phase": "llm"
     },
     "screens.wallet.labWallet": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of a common noun.",
-      "suggested": "Лабораторный кошелек",
       "phase": "llm"
     },
     "screens.wallet.processing": {
@@ -42774,31 +42598,23 @@
       "phase": "llm"
     },
     "screens.wallet.viewAnalytics": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of a common noun.",
-      "suggested": "Посмотреть аналитику",
       "phase": "llm"
     },
     "screens.wallet.pendingRewards": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of a common noun.",
-      "suggested": "Ожидаемые награды",
       "phase": "llm"
     },
     "screens.wallet.claimAllRewards": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of a common noun.",
-      "suggested": "Получить все награды",
       "phase": "llm"
     },
     "screens.wallet.quickExchange": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of a common noun.",
-      "suggested": "Быстрый обмен",
       "phase": "llm"
     },
     "screens.wallet.from": {
@@ -42822,10 +42638,8 @@
       "phase": "llm"
     },
     "screens.wallet.shareLink": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of a common noun.",
-      "suggested": "Поделиться ссылкой",
       "phase": "llm"
     },
     "screens.wallet.staked": {
@@ -42849,10 +42663,8 @@
       "phase": "llm"
     },
     "screens.wallet.addPlan": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Unnecessary capitalization of a common noun.",
-      "suggested": "Добавить план",
       "phase": "llm"
     },
     "screens.wallet.thisMonthCommissions": {
@@ -42866,10 +42678,8 @@
       "phase": "llm"
     },
     "screens.wallet.viewDetails": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Capitalization of 'Детали' is unusual for a button label; should be lowercase.",
-      "suggested": "Посмотреть детали",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.wallet.walletActions": {
@@ -42978,10 +42788,8 @@
       "phase": "llm"
     },
     "screens.wallet.basedYour": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'ваших' is formal/plural. For a friendly, du-form app addressing a single user, 'твоих' (informal singular) is more appropriate.",
-      "suggested": "На основе твоих",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.wallet.liveOpportunities": {
@@ -43025,10 +42833,8 @@
       "phase": "llm"
     },
     "screens.wallet.combineAllThreeInsightsForPotential": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'вывода' is not the best translation for 'insights' in this context; 'инсайта' is more appropriate and consistent with other entries.",
-      "suggested": "Объедини все три инсайта для потенциального множителя дохода в 725%.",
       "phase": "llm"
     },
     "screens.wallet.activateAll": {
@@ -43277,10 +43083,8 @@
       "phase": "llm"
     },
     "screens.wallet.increaseYourCollaborationRateBy15": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"скорость сотрудничества\" is not idiomatic for \"collaboration rate\"; \"самых зарабатывающих\" is clunky.",
-      "suggested": "Увеличь свой уровень сотрудничества на 15%, чтобы попасть в топ-25 по заработку",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.wallet.focusHere": {
@@ -43319,10 +43123,9 @@
       "phase": "llm"
     },
     "screens.wallet.tokenIntelligence": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Meaning slightly off; 'Умные токены' sounds like a description of tokens rather than a feature/concept.",
-      "suggested": "Аналитика токенов",
+      "verdict": "OK",
+      "confidence": 0.9,
+      "issue": "While 'Умные токены' (Smart tokens) is a plausible interpretation in a crypto context, a more literal translation for 'Token Intelligence' could be 'Интеллект токенов'. However, 'Smart tokens' is a common and acceptable concept.",
       "phase": "llm"
     },
     "screens.wallet.marketInsights": {
@@ -43377,9 +43180,9 @@
     },
     "screens.wallet.stakeVtnaTokens": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Стейк' as an imperative verb is awkward; 'Токены' should be lowercase.",
-      "suggested": "Застейкай токены VTNA",
+      "confidence": 0.9,
+      "issue": "'Стейк' is a noun (stake). For a command, a verb form is needed. The current translation is grammatically incorrect for an imperative.",
+      "suggested": "Стейкай токены VTNA",
       "phase": "llm"
     },
     "screens.wallet.max": {
@@ -43388,10 +43191,8 @@
       "phase": "llm"
     },
     "screens.wallet.withdrawFunds": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Capitalization of 'Средства'.",
-      "suggested": "Вывести средства",
       "phase": "llm"
     },
     "screens.wallet.amount": {
@@ -43415,31 +43216,23 @@
       "phase": "llm"
     },
     "screens.wallet.purchaseCredits": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Capitalization of 'Кредиты'.",
-      "suggested": "Купить кредиты",
       "phase": "llm"
     },
     "screens.wallet.purchaseStakeVtnaTokensForGovernance": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Стейк' as an imperative verb is awkward.",
-      "suggested": "Купи или застейкай токены VTNA для управления и наград за стейкинг.",
       "phase": "llm"
     },
     "screens.wallet.stakeTokens": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Стейк' as an imperative verb is awkward; 'Токены' should be lowercase.",
-      "suggested": "Застейкай токены",
       "phase": "llm"
     },
     "screens.wallet.continuePurchase": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Capitalization of 'Покупку'.",
-      "suggested": "Продолжить покупку",
       "phase": "llm"
     },
     "screens.wallet.upgradePlatinumTierFor90Coverage": {
@@ -43448,10 +43241,8 @@
       "phase": "llm"
     },
     "screens.wallet.upgradeNow": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Capitalization of 'Сейчас'.",
-      "suggested": "Обнови сейчас",
       "phase": "llm"
     },
     "screens.wallet.claim": {
@@ -43470,10 +43261,8 @@
       "phase": "llm"
     },
     "screens.wallet.addSubscription": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Capitalization of 'Подписку'.",
-      "suggested": "Добавить подписку",
       "phase": "llm"
     },
     "screens.wallet.subscribe": {
@@ -43562,10 +43351,8 @@
       "phase": "llm"
     },
     "screens.wallet.confidenceConfidence": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect case for 'уверенность' after percentage; should be genitive.",
-      "suggested": "{confidence}% уверенности",
       "phase": "llm"
     },
     "screens.wallet.payoutNextpayout": {
@@ -43589,10 +43376,8 @@
       "phase": "llm"
     },
     "screens.wallet.confidenceConfidenceTimeframe": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect case for 'уверенность' after percentage; should be genitive.",
-      "suggested": "{confidence}% уверенности • {timeframe}",
       "phase": "llm"
     },
     "screens.wallet.predictionCredits": {
@@ -43626,17 +43411,13 @@
       "phase": "llm"
     },
     "screens.wallet.synergySynergy": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect case for 'синергия' after percentage; should be genitive.",
-      "suggested": "{synergy}% синергии",
       "phase": "llm"
     },
     "screens.wallet.impactImpact2": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect case for 'влияние' after percentage; should be genitive.",
-      "suggested": "+{impact}% влияния",
       "phase": "llm"
     },
     "screens.wallet.applyStrategy": {
@@ -43846,9 +43627,9 @@
     },
     "screens.wallet.actionable": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Meaning slightly off; 'Действующий' means 'active/valid', not 'actionable' in the UI sense of 'can be acted upon'.",
-      "suggested": "Можно действовать",
+      "confidence": 1,
+      "issue": "Nuance missing; 'Действующий' means 'active/current', not 'actionable/practical'.",
+      "suggested": "Применимый",
       "phase": "llm"
     },
     "screens.wallet.recommended": {
@@ -43927,10 +43708,8 @@
       "phase": "llm"
     },
     "screens.wallet.lengthTransactionValue1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incorrect noun declension for plural values of {length}. 'транзакция' is singular, but {length} implies plural forms are needed.",
-      "suggested": "{length} транзакций{value1}",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.wallet.addFundsBalance": {
@@ -43946,8 +43725,8 @@
     "screens.wallet.cardPaymentViaStripe": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Grammatical agreement: 'обработано' (neuter) does not agree with 'оплата' (feminine).",
-      "suggested": "Оплата картой, безопасно обработанная Stripe",
+      "issue": "Gender agreement: 'Оплата' (feminine) requires 'обработана' (feminine).",
+      "suggested": "Оплата картой, безопасно обработана Stripe",
       "phase": "llm"
     },
     "screens.wallet.currentBalanceLabel": {
@@ -44061,10 +43840,8 @@
       "phase": "llm"
     },
     "screens.ai.subtitle_progressTracking": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Серии самочувствия' is slightly awkward; 'серии по самочувствию' is more idiomatic for 'wellness streaks'.",
-      "suggested": "Отслеживай свои серии по самочувствию и импульс достижений",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.ai.subtitle_mentalHealth": {
@@ -44118,10 +43895,8 @@
       "phase": "llm"
     },
     "screens.ai.coachAction_scheduleCheckin": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Проверка\" is a bit generic and can sound formal for \"check-in\" in a wellness context. \"Отметка\" or \"контрольная точка\" would be more appropriate for a progress check-in.",
-      "suggested": "Запланируй отметку",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.ai.coachAction_reviewGoals": {
@@ -44136,9 +43911,9 @@
     },
     "screens.ai.coachCtx_trackHydration": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Увлажнение\" (moistening) is technically correct but sounds unnatural for tracking body hydration in this context. \"Гидратация\" is the commonly used term.",
-      "suggested": "Отслеживай свою гидратацию",
+      "confidence": 1,
+      "issue": "Incorrect term for 'hydration' in a wellness context. 'Увлажнение' means 'moisturizing'.",
+      "suggested": "Отслеживай мою гидратацию",
       "phase": "llm"
     },
     "screens.ai.coachCtx_mealPlans": {
@@ -44188,8 +43963,8 @@
     },
     "screens.ai.insightContent_hydrationWeekly": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Увлажнение\" (moistening) is technically correct but sounds unnatural for body hydration. \"Гидратация\" is the commonly used term.",
+      "confidence": 1,
+      "issue": "Incorrect term for 'hydration'. 'Увлажнение' means 'moisturizing'.",
       "suggested": "Твоя гидратация улучшается на 40% в будни по сравнению с выходными. Система напоминаний на выходные может помочь поддерживать постоянство.",
       "phase": "llm"
     },
@@ -44240,9 +44015,9 @@
     },
     "screens.ai.insightTitle_newGroups": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The verb \"присоединился\" is masculine. For a gender-neutral or adaptable UI, it should account for female users (\"присоединилась\").",
-      "suggested": "Ты присоединился/присоединилась к {n} новым велнес-группам.",
+      "confidence": 1,
+      "issue": "Gender specificity: 'присоединился' is masculine, but the English is gender-neutral. For du-form, both genders should be accommodated.",
+      "suggested": "Ты присоединился(-ась) к {n} новым велнес-группам.",
       "phase": "llm"
     },
     "screens.ai.actionLabel_optimize": {
@@ -44353,8 +44128,8 @@
     "screens.ai.storyDesc_thisWeeksJourney": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Gendered verb form 'добился' for a general user. Should be gender-neutral.",
-      "suggested": "У тебя заметный прогресс в гидратации и качестве сна. Твоя приверженность утренней медитации создала позитивный каскадный эффект во всех аспектах благополучия.",
+      "issue": "Gender specificity: 'добился' is masculine, but the English is gender-neutral. For du-form, both genders should be accommodated.",
+      "suggested": "Ты добился(-ась) заметного прогресса в гидратации и качестве сна. Твоя приверженность утренней медитации создала позитивный каскадный эффект во всех аспектах благополучия.",
       "phase": "llm"
     },
     "screens.ai.storyTitle_patternDiscovery": {
@@ -44723,10 +44498,8 @@
       "phase": "llm"
     },
     "screens.ai.insightsAiIntelligence": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "More idiomatic to use a hyphen for 'AI Intelligence' when 'AI' acts as an adjective.",
-      "suggested": "Инсайты | ИИ-Интеллект",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.ai.patternRecognition": {
@@ -44750,24 +44523,18 @@
       "phase": "llm"
     },
     "screens.ai.aiIntelligenceHubPhase5": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "More idiomatic to use a hyphen for 'AI Intelligence' when 'AI' acts as an adjective.",
-      "suggested": "Хаб ИИ-Интеллекта - Фаза 5",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.ai.personalAiTimelineVitana": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "More idiomatic to use a hyphen for 'AI Timeline' when 'AI' acts as an adjective.",
-      "suggested": "Персональная ИИ-Хроника | VITANA",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.ai.personalAiTimeline": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "More idiomatic to use a hyphen for 'AI Timeline' when 'AI' acts as an adjective.",
-      "suggested": "Персональная ИИ-Хроника",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.ai.agentTemplates": {
@@ -44806,17 +44573,13 @@
       "phase": "llm"
     },
     "screens.ai.thisReadonlyPlaceholderForAgentPrompt": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "More idiomatic to use a hyphen for 'AI agent' when 'AI' acts as an adjective.",
-      "suggested": "Это заглушка только для чтения для Центра промптов агента. Будущие фазы позволят полную настройку ИИ-агента и тестирование в реальном времени.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.ai.thisReadonlyPlaceholderForPersonalAi": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "More idiomatic to use a hyphen for 'AI Timeline' when 'AI' acts as an adjective.",
-      "suggested": "Это заглушка только для чтения для Персональной ИИ-Хроники. Будущие фазы подключатся к реальным данным активности ИИ и предоставят интерактивные инсайты.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.authpages.fullName": {
@@ -45311,9 +45074,9 @@
     },
     "screens.autopilotdashboard.planSheetEmpty": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The verb 'достиг' is masculine, making the phrase gender-specific. A more gender-neutral phrasing is preferred for a general audience in a friendly app.",
-      "suggested": "Vitana составит для тебя план на каждый день для достижения твоей цели.",
+      "confidence": 1,
+      "issue": "Gender specificity: 'достиг' is masculine, but the English is gender-neutral. For du-form, both genders should be accommodated.",
+      "suggested": "Vitana составит для тебя план на каждый день, чтобы ты достиг(-ла) своей цели.",
       "phase": "llm"
     },
     "screens.autopilotdashboard.planGenerate": {
@@ -46082,10 +45845,8 @@
       "phase": "llm"
     },
     "screens.healthtracker.mental": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incomplete phrase; 'Ментальное' is an adjective without a noun. As a standalone UI label, it's awkward.",
-      "suggested": "Психика",
       "phase": "llm"
     },
     "screens.healthtracker.vitanaIndex": {
@@ -46944,9 +46705,10 @@
       "phase": "llm"
     },
     "screens.mytickets.checked": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Translation 'Отмечено' (marked/checked) is a general passive participle. If 'Checked In' refers to a user's action (e.g., 'You have checked in'), a more active or personal phrasing might be preferred (e.g., 'Ты отметился/отметилась'). As a status for an item (e.g., a ticket), it's acceptable but could be more specific.",
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "Tone is too passive/impersonal for a friendly, du-form app. 'Отмечено' means 'marked' (impersonal passive).",
+      "suggested": "Ты отметился",
       "phase": "llm"
     },
     "screens.mytickets.lengthTicketValue1Purchased": {
@@ -46985,10 +46747,8 @@
       "phase": "llm"
     },
     "screens.notauthorized.youDonTHavePermissionAccess": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The term 'персоналу' (personnel) is too formal for a friendly wellness app. 'Пользователям' (users) is more appropriate.",
-      "suggested": "Эта область доступна только авторизованным пользователям.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.notauthorized.error403Forbidden": {
@@ -47102,10 +46862,8 @@
       "phase": "llm"
     },
     "screens.privacysettings.serverEnforcesTheseTiersEveryCrossuser": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The phrase 'межведомственном запросе' (cross-departmental retrieval) is overly formal and technical for a friendly wellness app. The entire sentence's tone is inconsistent with the app's register.",
-      "suggested": "Сервер применяет эти уровни при каждом запросе данных внутри системы – твой выбор обязателен, а не рекомендателен.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.privacysettings.back": {
@@ -47239,9 +46997,8 @@
       "phase": "llm"
     },
     "screens.publiceventlanding.participant_countValue1People": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.4,
-      "issue": "Russian pluralization for 'people' depends on the preceding number. 'Человек' is correct for 1 and 5+, but 'человека' is needed for 2, 3, 4. Without knowing the app's pluralization mechanism, it's unclear if this string is a base form or a literal translation that would be grammatically incorrect for certain counts.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.publiceventlanding.fromPricelabel": {
@@ -47466,9 +47223,9 @@
     },
     "screens.ticketdemo.attendeeNameQuantity": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Grammatical error in 'количество посетителя'; should be plural genitive 'количество посетителей'.",
-      "suggested": "Имя и количество посетителей",
+      "confidence": 0.9,
+      "issue": "Grammatically awkward. 'Количество посетителя' implies 'quantity of the attendee' (singular) rather than 'quantity of attendees'.",
+      "suggested": "Имя посетителя и количество",
       "phase": "llm"
     },
     "screens.ticketdemo.scannableQrCodeForCheckin": {
@@ -47812,10 +47569,9 @@
       "phase": "llm"
     },
     "screens.legal.powerInappAiAssistantRelatedAi": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0,
-      "issue": "auditor returned no result",
-      "phase": "llm-empty"
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     },
     "screens.legal.affiliatesSubsidiaries": {
       "verdict": "OK",
@@ -47888,10 +47644,8 @@
       "phase": "llm"
     },
     "screens.legal.youCanRequestThatWeLimit": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly awkward phrasing; 'запросить ограничить' is less idiomatic than 'запросить ограничение'.",
-      "suggested": "Ты можешь запросить ограничение обработки твоих персональных данных.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.legal.rightDataPortability": {
@@ -48350,17 +48104,13 @@
       "phase": "llm"
     },
     "screens.legal.thankYouForChoosingUseMaxina": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The initial 'выбрал' (chose) is gender-specific (masculine). For a friendly, du-form app, it should be gender-neutral or include both options.",
-      "suggested": "Спасибо, что выбрал(а) Maxina Mobile. Maxina Mobile разработан и предоставляется компанией Exafy LTD, базирующейся в Абу-Даби, Объединенные Арабские Эмираты. Эта Политика конфиденциальности объясняет, как мы собираем, используем, передаем и защищаем твои персональные данные, когда ты используешь Maxina Mobile. Она также информирует тебя о твоих правах в соответствии с Общим регламентом по защите данных ЕС (GDPR), применимыми положениями о защите данных Объединенных Арабских Эмиратов и наших мерах по соблюдению требований Apple App Store и Google Play Store.",
       "phase": "llm"
     },
     "screens.legal.byDownloadingAccessingUsingMaxinaMobile": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The phrase 'не согласен' (do not agree) is gender-specific (masculine). It should be gender-neutral or include both options.",
-      "suggested": "Загружая, получая доступ или используя Maxina Mobile, ты подтверждаешь согласие с практиками, описанными в этой Политике конфиденциальности. Если ты не согласен(на) с этими условиями, пожалуйста, не используй приложение.",
       "phase": "llm"
     },
     "screens.legal.exafyLtdIncorporatedAbuDhabiUae": {
@@ -48404,10 +48154,8 @@
       "phase": "llm"
     },
     "screens.legal.maxinaMobileNotIntendedForUse": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Gender agreement error: 'Maxina Mobile' is masculine in Russian, so 'не предназначено' (neuter) should be 'не предназначен' (masculine).",
-      "suggested": "Maxina Mobile не предназначен для использования детьми младше 16 лет или любого другого минимального возраста, установленного местным законодательством. Мы сознательно не собираем персональные данные детей. Если ты считаешь, что ребенок младше 16 лет предоставил нам персональные данные, пожалуйста, немедленно свяжись с нами. Мы примем соответствующие меры для удаления этой информации.",
       "phase": "llm"
     },
     "screens.legal.maxinaMobileMayContainLinksThirdparty": {
@@ -48456,10 +48204,8 @@
       "phase": "llm"
     },
     "screens.legal.youGrantExafyWorldwideNonexclusiveRoyaltyfree": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect hyphenation: 'не-исключительную' should be written as one word 'неисключительную'.",
-      "suggested": "Ты предоставляешь Exafy всемирную, неисключительную, безвозмездную лицензию на размещение, отображение, адаптацию и распространение твоего UGC исключительно для эксплуатации, продвижения и улучшения Сервиса.",
       "phase": "llm"
     },
     "screens.legal.weReserveRightButHaveNo": {
@@ -49725,15 +49471,13 @@
     "screens.actions.doNow": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Infinitive used instead of imperative du-form.",
+      "issue": "Incorrect verb form. 'Сделать сейчас' is an infinitive ('to do now'), not an imperative ('do now').",
       "suggested": "Сделай сейчас",
       "phase": "llm"
     },
     "screens.actions.edit": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Infinitive used instead of imperative du-form.",
-      "suggested": "Редактируй",
       "phase": "llm"
     },
     "screens.actions.details": {
@@ -49840,7 +49584,747 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "screens.admin.paOverview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paOverviewDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paActiveUsers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paRecommendationClicks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paUnresolvedConversations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paTopRoutes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paViewDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paEventExplorer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paEventsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAllTypes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paEventNameFilter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paProperties": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paShowingLatest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paOpensVsCompletions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAssistedVsDirect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAssisted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paDirect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paResolutionSplit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAbandoned": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paOpenConversations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFeedbackSplit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paPositive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paNegative": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFeedbackTotal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFeatureOpens": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paEngagementDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.videoRoomUnavailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.videoRoomUnavailableHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.autopilotSuggestionsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.autopilotSuggestionsBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.autopilotSuggestionBadge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.noRecs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.summaryServed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.summaryServedCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.pillarHeading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.economyHeading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.noPillar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.noEconomy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.pillars.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.pillars.hydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.pillars.exercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.pillars.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.pillars.mental": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.economyAxes.find_match": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.7,
+      "issue": "Literal translation of 'match' ('совпадение') might be too general; 'Найти пару' or 'Найти подходящего' might be more natural if referring to a person.",
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.economyAxes.marketplace": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.economyAxes.income_generation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.economyAxes.business_formation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.contractLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.likesCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.index.commercePortal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.index.merchantSelfServiceMarketplace": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.index.connectYourBusinessToDiscoverYourself": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.connections": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.newConnection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.businessName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.connectorId": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.providerId": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.jurisdiction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.openapiDocument": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.openapiHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.create": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.creating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.loadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.state": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.updated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.detailTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.mappingPreview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.sourceField": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.canonicalField": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.confidence": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.decidedBy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.sensitive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.pendingReview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.approve": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.reject": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.awaitingFactory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.awaitingSpec": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.runSandboxTests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.runningTests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.activationSummary": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.certification": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.approveActivation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.activationHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.pause": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.resume": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.reauthorize": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.revoke": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.revokeConfirm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.actionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.discovered": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.authorization_required": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.mapping": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.testing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.approval_required": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.certified": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.active": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.degraded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.suspended": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.revoked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.heroTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.heroSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.cta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.step1Title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.step1Body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.step2Title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.step2Body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.step3Title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.step3Body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.footNote": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.connectionsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.connectionsSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.awaitingApproval": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.activationHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.loginSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.loginIntro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.loginButton": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.loginError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.clientWants": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopesIntro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.approve": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.deny": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.working": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.noSession": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.invalidRequest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.decisionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.nothingSelected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:catalog:read": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:cart:read": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:cart:write": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:orders:read": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:orders:write": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:wallet:read": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:rewards:read": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:partners:read": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:connections:write": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:grants:write": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Inconsistent UI label pattern (infinitive instead of noun phrase/gerund for an action label).",
+      "suggested": "Предложение предоставления данных (согласие остается с тобой)",
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:settlement:write": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Inconsistent UI label pattern (infinitive instead of noun phrase/gerund for an action label).",
+      "suggested": "Запуск подготовленных расчетов Vitana",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T02:05:53.904Z"
+  "generatedAt": "2026-08-11T04:54:28.565Z"
 }

@@ -1,10 +1,8 @@
 {
   "verdicts": {
     "liveRooms.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The translation 'Прямые комнаты' is not idiomatic for 'Live Rooms'. 'Live' in this context refers to real-time broadcasting, not 'direct' or 'straight'.",
-      "suggested": "Прямые эфиры",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "liveRooms.description": {
@@ -598,5 +596,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:38:28.580Z"
+  "generatedAt": "2026-08-11T04:49:28.248Z"
 }

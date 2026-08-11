@@ -3,10 +3,10 @@
     "groups.searchPlaceholder": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "English is plural ('groups'), Russian is singular ('группы' - genitive singular).",
+      "issue": "English implies plural 'groups', Russian uses singular 'group'.",
       "suggested": "Поиск групп...",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:35:11.672Z"
+  "generatedAt": "2026-08-11T04:49:02.857Z"
 }

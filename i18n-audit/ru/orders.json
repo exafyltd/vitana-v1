@@ -306,10 +306,8 @@
       "phase": "llm"
     },
     "orders.status.pending": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The verb 'Ожидает' (is waiting) is less idiomatic for a status than a passive form or noun phrase.",
-      "suggested": "Ожидается",
       "phase": "llm"
     },
     "orders.status.processing": {
@@ -328,5 +326,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:42:14.161Z"
+  "generatedAt": "2026-08-11T04:49:54.799Z"
 }

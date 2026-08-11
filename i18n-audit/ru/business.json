@@ -502,9 +502,9 @@
     },
     "business.missionOpportunities.empty": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Phrasing 'соответствующих экономике' is grammatically correct but sounds a bit formal/clunky for a friendly app. 'Связанных с экономикой' is more natural.",
-      "suggested": "Пока нет рекомендаций, связанных с экономикой. Загляни позже.",
+      "confidence": 0.8,
+      "issue": "The phrase 'economy-aligned recommendations' is translated too literally as 'соответствующих экономике', which sounds like recommendations related to the national economy rather than personal finance or budget-friendliness, which is more likely in a wellness app context.",
+      "suggested": "Пока нет экономичных рекомендаций. Загляни позже.",
       "phase": "llm"
     },
     "business.missionOpportunities.viewAll": {
@@ -533,5 +533,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:27:41.417Z"
+  "generatedAt": "2026-08-11T04:48:02.536Z"
 }

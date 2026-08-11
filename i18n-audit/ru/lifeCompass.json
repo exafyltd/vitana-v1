@@ -146,19 +146,17 @@
       "phase": "llm"
     },
     "lifeCompass.goals.longevity.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'продли долголетие' (extend longevity) is slightly redundant. 'Продли жизнь' (extend life) is more natural.",
-      "suggested": "Улучши качество жизни и продли жизнь",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "lifeCompass.goals.longevity.description": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Redundancy in 'долголетии' and less precise distinction between 'healthspan' and 'longevity'. 'Здоровое долголетие' already implies 'longevity'.",
+      "confidence": 0.9,
+      "issue": "Repetitive use of 'долголетие' (longevity) for both 'healthspan' and 'longevity', making the phrase awkward. 'Healthspan' is better translated as 'продолжительность здоровой жизни' to distinguish it from general 'longevity'.",
       "suggested": "Сосредоточься на продолжительности здоровой жизни, энергии и долголетии — миссия Vitanaland",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:37:36.491Z"
+  "generatedAt": "2026-08-11T04:49:24.781Z"
 }

@@ -21,10 +21,8 @@
       "phase": "llm"
     },
     "intro.playWelcome": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Infinitive form 'Играть' is not idiomatic for a UI action button. Should be an imperative or a more appropriate infinitive for media playback.",
-      "suggested": "Запусти приветствие",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "intro.preparing": {
@@ -43,5 +41,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:37:15.699Z"
+  "generatedAt": "2026-08-11T04:49:16.737Z"
 }
