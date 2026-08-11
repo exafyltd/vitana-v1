@@ -5984,7 +5984,8 @@
       "inspirationTpl_celebrate2": "¡Muy orgullosos de tu dedicación a tus metas de salud! 👏",
       "inspirationTpl_celebrate3": "Tu progreso es inspirador - ¡sigue haciendo un trabajo fantástico! 🌟",
       "loadingOlderMessages": "Cargando mensajes antiguos…",
-      "conversationStart": "Inicio de la conversación"
+      "conversationStart": "Inicio de la conversación",
+      "anonymous": "Anónimo"
     },
     "mobile": {
       "searching": "Buscando…",

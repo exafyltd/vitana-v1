@@ -5988,7 +5988,8 @@
       "participantcountMembers": "{participantCount} участников",
       "value0Participants": "{value0} участников",
       "value0Members": "{value0} участников",
-      "chooseConversationFromLeftStartMessaging": "Выбери беседу слева, чтобы отправить сообщения."
+      "chooseConversationFromLeftStartMessaging": "Выбери беседу слева, чтобы отправить сообщения.",
+      "anonymous": "Анонимный"
     },
     "mobile": {
       "searching": "Поиск…",

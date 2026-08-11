@@ -5988,7 +5988,8 @@
       "participantcountMembers": "{participantCount}名成员",
       "value0Participants": "{value0}名参与者",
       "value0Members": "{value0}名成员",
-      "chooseConversationFromLeftStartMessaging": "在左侧选择一个对话来发送消息。"
+      "chooseConversationFromLeftStartMessaging": "在左侧选择一个对话来发送消息。",
+      "anonymous": "匿名"
     },
     "mobile": {
       "searching": "正在搜索…",

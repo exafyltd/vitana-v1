@@ -5988,7 +5988,8 @@
       "participantcountMembers": "{participantCount} أعضاء",
       "value0Participants": "{value0} مشاركين",
       "value0Members": "{value0} أعضاء",
-      "chooseConversationFromLeftStartMessaging": "اختر محادثة من اليسار لإرسال الرسائل."
+      "chooseConversationFromLeftStartMessaging": "اختر محادثة من اليسار لإرسال الرسائل.",
+      "anonymous": "مجهول"
     },
     "mobile": {
       "searching": "جاري البحث…",

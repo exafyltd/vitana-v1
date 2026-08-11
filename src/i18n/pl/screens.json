@@ -5988,7 +5988,8 @@
       "participantcountMembers": "{participantCount} członków",
       "value0Participants": "{value0} uczestników",
       "value0Members": "{value0} członków",
-      "chooseConversationFromLeftStartMessaging": "Wybierz rozmowę po lewej, aby wysłać wiadomości."
+      "chooseConversationFromLeftStartMessaging": "Wybierz rozmowę po lewej, aby wysłać wiadomości.",
+      "anonymous": "Anonimowy"
     },
     "mobile": {
       "searching": "Szukam…",
