@@ -2585,7 +2585,15 @@
       "paNegative": "消极",
       "paFeedbackTotal": "总反馈",
       "paFeatureOpens": "功能打开量",
-      "paEngagementDesc": "成员活动和参与度指标"
+      "paEngagementDesc": "成员活动和参与度指标",
+      "navRoleLabel": "角色",
+      "navRole_community": "社区",
+      "navRole_patient": "患者",
+      "navRole_professional": "专业人士",
+      "navRole_staff": "员工",
+      "navRole_admin": "管理员",
+      "navRole_developer": "开发者",
+      "navRole_infra": "运维"
     },
     "ai-feed": {
       "noEventsFound": "未找到事件",

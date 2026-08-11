@@ -2581,7 +2581,15 @@
       "devicePreviewOpenNewTab": "Otvori u novoj kartici",
       "devicePreviewEnterUrl": "Izaberi okruženje ili unesi URL da započneš pregled.",
       "devicePreviewShellNote": "Samo UI pregled — izvorna Appilix ljuska (push obaveštenja, izvorni bezbedni okviri, ponašanje WebView-a) nije reprodukovana. Koristi Appilix testnu verziju za to.",
-      "devicePreviewFrameBlockedNote": "Okvir se ne učitava? Neke stranice blokiraju ugrađivanje — umesto toga koristi \"Otvori u novoj kartici\"."
+      "devicePreviewFrameBlockedNote": "Okvir se ne učitava? Neke stranice blokiraju ugrađivanje — umesto toga koristi \"Otvori u novoj kartici\".",
+      "navRoleLabel": "Uloga",
+      "navRole_community": "Zajednica",
+      "navRole_patient": "Pacijent",
+      "navRole_professional": "Profesionalac",
+      "navRole_staff": "Osoblje",
+      "navRole_admin": "Administrator",
+      "navRole_developer": "Programer",
+      "navRole_infra": "Infrastruktura"
     },
     "ai-feed": {
       "noEventsFound": "Nema pronađenih događaja",

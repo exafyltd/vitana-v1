@@ -2581,7 +2581,15 @@
       "devicePreviewOpenNewTab": "Abrir en nueva pestaña",
       "devicePreviewEnterUrl": "Elige un entorno o introduce una URL para iniciar la vista previa.",
       "devicePreviewShellNote": "Solo vista previa de la interfaz de usuario — la shell nativa de Appilix (push, insets nativos de área segura, comportamiento de WebView) no se reproduce. Usa una compilación de prueba de Appilix para eso.",
-      "devicePreviewFrameBlockedNote": "¿No carga el marco? Algunas páginas bloquean la incrustación — usa \"Abrir en nueva pestaña\" en su lugar."
+      "devicePreviewFrameBlockedNote": "¿No carga el marco? Algunas páginas bloquean la incrustación — usa \"Abrir en nueva pestaña\" en su lugar.",
+      "navRoleLabel": "Rol",
+      "navRole_community": "Comunidad",
+      "navRole_patient": "Paciente",
+      "navRole_professional": "Profesional",
+      "navRole_staff": "Personal",
+      "navRole_admin": "Administrador",
+      "navRole_developer": "Desarrollador",
+      "navRole_infra": "Infraestructura"
     },
     "ai-feed": {
       "noEventsFound": "No se encontraron eventos",
