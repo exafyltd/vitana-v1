@@ -169,7 +169,24 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "common.follow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.getMaxina": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.uploading": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Too personal, 'I am uploading' instead of neutral 'Uploading' process.",
+      "suggested": "Otpremanje...",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:00.536Z"
+  "generatedAt": "2026-08-11T04:49:00.075Z"
 }
