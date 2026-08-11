@@ -10333,6 +10333,28 @@
       "loginIntro": "Sign in to manage your business.",
       "loginButton": "Sign in",
       "loginError": "Sign-in failed",
+      "agentConnect": {
+        "back": "Back to my connections",
+        "title": "Connect via AI Agent",
+        "subtitle": "Point your own Claude, ChatGPT, or Gemini agent directly at the Vitanaland MCP server — your agent can then manage your catalog, orders, and availability for you instead of you filling in the manual form.",
+        "notReachableYet": "The MCP server is already built, but not yet publicly reachable at this address (DNS exposure is still pending). Once it's live, the steps below work unchanged.",
+        "mcpUrlLabel": "MCP server URL",
+        "copyUrl": "Copy URL",
+        "copied": "Copied to clipboard",
+        "claudeTitle": "Connect with Claude",
+        "claudeStep1": "In Claude, open Settings → Connectors.",
+        "claudeStep2": "Click \"+\" then \"Add custom connector\".",
+        "claudeStep3": "Paste the MCP server URL above and click \"Add\".",
+        "chatgptTitle": "Connect with ChatGPT",
+        "chatgptStep1": "In ChatGPT, open Settings → Apps and Connectors → Advanced Settings and turn on Developer mode.",
+        "chatgptStep2": "Click \"Create new app\" and give it a name.",
+        "chatgptStep3": "Paste the MCP server URL above and save.",
+        "chatgptNote": "Developer mode is currently available on Plus/Pro accounts; on Business/Enterprise accounts a workspace admin can turn it on or off.",
+        "geminiTitle": "Connect with Gemini",
+        "geminiStep1": "For Gemini CLI: add the MCP server URL above to ~/.gemini/settings.json under your MCP servers.",
+        "geminiStep2": "For Gemini Enterprise (Business Edition): Settings & help → Team → Manage team → Connected apps → \"Add MCP Server\".",
+        "geminiNote": "The consumer Gemini app currently has no documented way to add a custom MCP server directly — that's only available today via Gemini CLI and Gemini Enterprise."
+      },
       "_pending_review": {}
     },
     "oauthconsent": {

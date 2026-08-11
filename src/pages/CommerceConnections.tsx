@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Loader2, Plug } from 'lucide-react';
+import { Loader2, Plug, Bot } from 'lucide-react';
 import { adminFetch } from '@/lib/admin-api';
 import { t, notifyError } from '@/lib/i18n-toast';
 import { fmtDateTime } from '@/lib/locale-format';
@@ -86,67 +86,73 @@ export default function CommerceConnections() {
           <h1 className="text-2xl font-semibold text-foreground">{t('screens.commerceportal.connectionsTitle')}</h1>
           <p className="text-sm text-muted-foreground">{t('screens.commerceportal.connectionsSubtitle')}</p>
         </div>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plug className="mr-2 h-4 w-4" />
-              {t('screens.partnerportal.newConnection')}
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-lg">
-            <DialogHeader>
-              <DialogTitle>{t('screens.partnerportal.newConnection')}</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-3">
-              <Input
-                value={form.name}
-                onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                placeholder={t('screens.partnerportal.businessName')}
-                aria-label={t('screens.partnerportal.businessName')}
-              />
-              <Input
-                value={form.connector_id}
-                onChange={(e) => setForm((f) => ({ ...f, connector_id: e.target.value }))}
-                placeholder={t('screens.partnerportal.connectorId')}
-                aria-label={t('screens.partnerportal.connectorId')}
-              />
-              <Input
-                value={form.provider_id}
-                onChange={(e) => setForm((f) => ({ ...f, provider_id: e.target.value }))}
-                placeholder={t('screens.partnerportal.providerId')}
-                aria-label={t('screens.partnerportal.providerId')}
-              />
-              <Input
-                value={form.jurisdiction}
-                onChange={(e) => setForm((f) => ({ ...f, jurisdiction: e.target.value }))}
-                placeholder={t('screens.partnerportal.jurisdiction')}
-                aria-label={t('screens.partnerportal.jurisdiction')}
-              />
-              <Textarea
-                value={form.openapi}
-                onChange={(e) => setForm((f) => ({ ...f, openapi: e.target.value }))}
-                placeholder={t('screens.partnerportal.openapiDocument')}
-                aria-label={t('screens.partnerportal.openapiDocument')}
-                rows={5}
-              />
-              <p className="text-xs text-muted-foreground">{t('screens.partnerportal.openapiHint')}</p>
-              <Button
-                className="w-full"
-                onClick={() => void create()}
-                disabled={creating || !form.name.trim() || !form.connector_id.trim() || !form.provider_id.trim()}
-              >
-                {creating ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {t('screens.partnerportal.creating')}
-                  </>
-                ) : (
-                  t('screens.partnerportal.create')
-                )}
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" onClick={() => navigate('/commerce/agent-connect')}>
+            <Bot className="mr-2 h-4 w-4" />
+            {t('screens.commerceportal.agentConnect.title')}
+          </Button>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plug className="mr-2 h-4 w-4" />
+                {t('screens.partnerportal.newConnection')}
               </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+            </DialogTrigger>
+            <DialogContent className="max-w-lg">
+              <DialogHeader>
+                <DialogTitle>{t('screens.partnerportal.newConnection')}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-3">
+                <Input
+                  value={form.name}
+                  onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                  placeholder={t('screens.partnerportal.businessName')}
+                  aria-label={t('screens.partnerportal.businessName')}
+                />
+                <Input
+                  value={form.connector_id}
+                  onChange={(e) => setForm((f) => ({ ...f, connector_id: e.target.value }))}
+                  placeholder={t('screens.partnerportal.connectorId')}
+                  aria-label={t('screens.partnerportal.connectorId')}
+                />
+                <Input
+                  value={form.provider_id}
+                  onChange={(e) => setForm((f) => ({ ...f, provider_id: e.target.value }))}
+                  placeholder={t('screens.partnerportal.providerId')}
+                  aria-label={t('screens.partnerportal.providerId')}
+                />
+                <Input
+                  value={form.jurisdiction}
+                  onChange={(e) => setForm((f) => ({ ...f, jurisdiction: e.target.value }))}
+                  placeholder={t('screens.partnerportal.jurisdiction')}
+                  aria-label={t('screens.partnerportal.jurisdiction')}
+                />
+                <Textarea
+                  value={form.openapi}
+                  onChange={(e) => setForm((f) => ({ ...f, openapi: e.target.value }))}
+                  placeholder={t('screens.partnerportal.openapiDocument')}
+                  aria-label={t('screens.partnerportal.openapiDocument')}
+                  rows={5}
+                />
+                <p className="text-xs text-muted-foreground">{t('screens.partnerportal.openapiHint')}</p>
+                <Button
+                  className="w-full"
+                  onClick={() => void create()}
+                  disabled={creating || !form.name.trim() || !form.connector_id.trim() || !form.provider_id.trim()}
+                >
+                  {creating ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {t('screens.partnerportal.creating')}
+                    </>
+                  ) : (
+                    t('screens.partnerportal.create')
+                  )}
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       <Card>

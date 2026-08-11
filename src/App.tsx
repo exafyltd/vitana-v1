@@ -80,6 +80,7 @@ const CommercePortalLogin = lazy(() => import("./pages/portals/CommercePortalLog
 const CommerceLanding = lazy(() => import("./pages/CommerceLanding"));
 const CommerceConnections = lazy(() => import("./pages/CommerceConnections"));
 const CommerceConnectionDetail = lazy(() => import("./pages/CommerceConnectionDetail"));
+const CommerceAgentConnect = lazy(() => import("./pages/CommerceAgentConnect"));
 const OAuthConsent = lazy(() => import("./pages/OAuthConsent"));
 const Logout = lazy(() => import("./pages/Logout"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
@@ -1698,6 +1699,7 @@ const App = () => {
           <Route path="/commerce" element={<AuthGuard><CommerceLanding /></AuthGuard>} />
           <Route path="/commerce/connections" element={<AuthGuard><CommerceConnections /></AuthGuard>} />
           <Route path="/commerce/connections/:id" element={<AuthGuard><CommerceConnectionDetail /></AuthGuard>} />
+          <Route path="/commerce/agent-connect" element={<AuthGuard><CommerceAgentConnect /></AuthGuard>} />
           {/* MCP OAuth consent (BLK-007): the embedded AS 302s here; any
               signed-in user consents for themselves. */}
           <Route path="/oauth/consent" element={
