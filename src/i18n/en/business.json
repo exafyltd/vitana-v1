@@ -87,11 +87,11 @@
       "mockDataActive": "Mock data active"
     },
     "transfer": {
-      "title": "Request Payout",
+      "title": "Request payout",
       "description": "Request the payout of your outstanding reseller commissions to your VITANA Wallet.",
       "pending": "Pending",
       "wallet": "Wallet",
-      "instantCredit": "Your request will be reviewed by our team before it is credited to your wallet balance.",
+      "instantCredit": "Your request will be reviewed by our team before it is credited to your Wallet balance.",
       "transferring": "Requesting...",
       "transfer": "Request"
     },
