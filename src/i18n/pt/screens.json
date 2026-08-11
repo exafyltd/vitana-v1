@@ -2585,7 +2585,15 @@
       "paNegative": "Negativo",
       "paFeedbackTotal": "Total de feedback",
       "paFeatureOpens": "Aberturas de funcionalidades",
-      "paEngagementDesc": "Métricas de atividade e envolvimento de membros"
+      "paEngagementDesc": "Métricas de atividade e envolvimento de membros",
+      "navRoleLabel": "Função",
+      "navRole_community": "Comunidade",
+      "navRole_patient": "Paciente",
+      "navRole_professional": "Profissional",
+      "navRole_staff": "Equipa",
+      "navRole_admin": "Admin",
+      "navRole_developer": "Programador",
+      "navRole_infra": "Infra"
     },
     "ai-feed": {
       "noEventsFound": "Nenhum evento encontrado",

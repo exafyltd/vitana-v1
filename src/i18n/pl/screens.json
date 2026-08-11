@@ -2585,7 +2585,15 @@
       "paNegative": "Negatywne",
       "paFeedbackTotal": "Całkowita liczba opinii",
       "paFeatureOpens": "Otworzenia funkcji",
-      "paEngagementDesc": "Aktywność członków i wskaźniki zaangażowania"
+      "paEngagementDesc": "Aktywność członków i wskaźniki zaangażowania",
+      "navRoleLabel": "Rola",
+      "navRole_community": "Społeczność",
+      "navRole_patient": "Pacjent",
+      "navRole_professional": "Profesjonalista",
+      "navRole_staff": "Personel",
+      "navRole_admin": "Administrator",
+      "navRole_developer": "Deweloper",
+      "navRole_infra": "Infrastruktura"
     },
     "ai-feed": {
       "noEventsFound": "Nie znaleziono wydarzeń",
