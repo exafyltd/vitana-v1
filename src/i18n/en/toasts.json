@@ -1436,7 +1436,8 @@
       "listingCreated": "Listing published",
       "listingCreatedFailed": "Couldn't publish the listing.",
       "listingUpdated": "Listing updated",
-      "listingUpdatedFailed": "Couldn't update the listing."
+      "listingUpdatedFailed": "Couldn't update the listing.",
+      "_pending_review": {}
     },
     "_pending_review": {}
   },
