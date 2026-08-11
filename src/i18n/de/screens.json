@@ -5927,7 +5927,8 @@
       "participantcountMembers": "{participantCount}Mitglieder",
       "value0Participants": "{value0}Teilnehmer",
       "value0Members": "{value0}Mitglieder",
-      "chooseConversationFromLeftStartMessaging": "Wähle links eine Unterhaltung aus, um mit dem Schreiben zu beginnen"
+      "chooseConversationFromLeftStartMessaging": "Wähle links eine Unterhaltung aus, um mit dem Schreiben zu beginnen",
+      "vitanaOpenScreen": "Bildschirm öffnen"
     },
     "mobile": {
       "searching": "Suche läuft…",

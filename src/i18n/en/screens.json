@@ -5927,7 +5927,8 @@
       "participantcountMembers": "{participantCount}members",
       "value0Participants": "{value0}participants",
       "value0Members": "{value0}members",
-      "chooseConversationFromLeftStartMessaging": "Choose a conversation from the left to start messaging"
+      "chooseConversationFromLeftStartMessaging": "Choose a conversation from the left to start messaging",
+      "vitanaOpenScreen": "Open screen"
     },
     "mobile": {
       "searching": "Searching…",
