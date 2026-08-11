@@ -169,7 +169,24 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "common.follow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.getMaxina": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing for an app feature/service; 'holen' is too literal/colloquial.",
+      "suggested": "MAXINA nutzen",
+      "phase": "llm"
+    },
+    "common.uploading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:06:56.655Z"
+  "generatedAt": "2026-08-11T04:49:57.674Z"
 }

@@ -11,10 +11,8 @@
       "phase": "identical"
     },
     "profileTabs.about": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "German translation is too specific ('About Me') and phrased as a first-person statement for a general 'About' menu item. If it refers to a personal profile, 'Mein Profil' or 'Über dich' would be more appropriate.",
-      "suggested": "Mein Profil",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "profileTabs.media": {
@@ -43,12 +41,10 @@
       "phase": "llm"
     },
     "profileTabs.milestones": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Meaning changed; 'Magic Moments' does not convey the concept of 'Milestones' (achievements or significant points in progress).",
-      "suggested": "Meilensteine",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:19:40.002Z"
+  "generatedAt": "2026-08-11T04:55:00.932Z"
 }

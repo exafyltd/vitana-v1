@@ -1,385 +1,306 @@
 {
   "verdicts": {
-    "apply.overline": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.headlineLine2": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.chipLocation": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.phonePlaceholder": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.deviceIos": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.deviceAndroid": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.googleEmailPlaceholder": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.footerCopy": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.aboutVitanalandLabel": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.aboutVitanalandTag": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.aboutVitanaLabel": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.aboutMaxinaLabel": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.aboutMaxinaTag": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.aboutMaxinaExperienceLabel": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.aboutMaxinaExperienceTag": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.seoTitle": {
+    "universalCart.page.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.headlineLine1": {
+    "universalCart.page.subtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.tagline": {
+    "universalCart.page.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.subheadline": {
+    "universalCart.page.emptyBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Missing nuance/precision. The English 'it' and 'here' are not fully conveyed.",
+      "suggested": "Tippe in Discover auf „In den Warenkorb“, um es hier hinzuzufügen.",
+      "phase": "llm"
+    },
+    "universalCart.page.loading": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Grammatically incorrect/abrupt. 'Lade Warenkorb' is an imperative, not a continuous action.",
+      "suggested": "Dein Warenkorb wird geladen …",
+      "phase": "llm"
+    },
+    "universalCart.page.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.subheadlineTicket": {
+    "universalCart.page.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.subheadlineCommunity": {
+    "universalCart.page.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.chipEvents": {
+    "universalCart.page.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.chipTicket": {
+    "universalCart.page.removeAction": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.ctaScroll": {
+    "universalCart.page.quantityLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.valueAccessTitle": {
+    "universalCart.page.completeAction": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.valueAccessBody": {
+    "universalCart.page.alreadyCompleted": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.valueTicketTitle": {
+    "universalCart.page.linkToDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.valueTicketBody": {
-      "verdict": "OK",
-      "confidence": 0.8,
-      "phase": "llm"
-    },
-    "apply.valueMovementTitle": {
+    "universalCart.page.close": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.valueMovementBody": {
+    "universalCart.tabs.cart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.formEyebrow": {
+    "universalCart.tabs.saved": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.formTitle": {
+    "universalCart.saved.moveToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.formIntro": {
+    "universalCart.saved.saveForLater": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.nameLabel": {
+    "universalCart.saved.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.namePlaceholder": {
+    "universalCart.saved.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.emailLabel": {
+    "universalCart.item.viewProduct": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.emailPlaceholder": {
+    "universalCart.agent.promptLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.phoneLabel": {
+    "universalCart.agent.promptPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.instagramLabel": {
+    "universalCart.agent.proposeCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.instagramPlaceholder": {
+    "universalCart.agent.proposing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.instagramHelp": {
+    "universalCart.agent.sectionTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.deviceLabel": {
+    "universalCart.agent.sectionSubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.googleEmailLabel": {
+    "universalCart.agent.rationaleLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.googleEmailHelp": {
+    "universalCart.agent.safetyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.locationLabel": {
+    "universalCart.agent.confidenceLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.locationPlaceholder": {
+    "universalCart.agent.keep": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.availabilityLabel": {
+    "universalCart.agent.remove": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.consentAgeLabel": {
+    "universalCart.agent.unavailable": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.consentTermsLabel": {
+    "universalCart.agent.roleBlocked": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.submit": {
+    "universalCart.agent.empty": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.submitting": {
+    "universalCart.agent.reviewNote": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.errorRequired": {
+    "universalCart.agent.reorderCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.errorInvalidEmail": {
+    "universalCart.agent.reorderLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.errorInvalidInstagram": {
+    "universalCart.agent.reorderSectionTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.errorAndroidGoogleRequired": {
+    "universalCart.agent.reorderSectionSubtitle": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "universalCart.agent.reordering": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.errorAlreadyApplied": {
+    "universalCart.agent.overCapAdvisory": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.errorGeneric": {
+    "universalCart.agent.nearCapAdvisory": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.successTitle": {
+    "universalCart.agent.error": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.successBody": {
+    "universalCart.budget.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.successHint": {
+    "universalCart.budget.spentOfCap": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.footerPrivacy": {
+    "universalCart.budget.statusUnder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.footerTerms": {
+    "universalCart.budget.statusNear": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.ariaApplyForm": {
+    "universalCart.budget.statusOver": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutEyebrow": {
+    "universalCart.budget.noCapHint": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutTitle": {
+    "universalCart.addButton.label": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutVitanalandDescription": {
+    "universalCart.addButton.added": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutVitanaTag": {
+    "universalCart.addButton.addAria": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutVitanaDescription": {
+    "universalCart.addButton.addedAria": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutMaxinaDescription": {
+    "universalCart.addButton.signRequired": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutMaxinaExperienceDescription": {
+    "universalCart.addButton.roleBlocked": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.benefitsEyebrow": {
-      "verdict": "OK",
+    "universalCart.addButton.failed": {
+      "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
+      "issue": "Awkward phrasing; more natural German would be a passive construction or a different verb.",
+      "suggested": "Konnte nicht zum Warenkorb hinzugefügt werden",
       "phase": "llm"
     },
-    "apply.benefitsTitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "apply.benefitTicket": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "apply.benefitEvents": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "apply.benefitVitana": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "apply.benefitSeat": {
+    "universalCart.addButton.success": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-11T04:46:59.012Z"
+  "generatedAt": "2026-08-11T05:10:54.893Z"
 }
