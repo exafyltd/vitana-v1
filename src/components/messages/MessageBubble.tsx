@@ -19,7 +19,7 @@ import {
   FileText,
   Image as ImageIcon,
   Download,
-  ExternalLink,
+  Maximize2,
   Reply,
   Calendar,
   MapPin,
@@ -664,11 +664,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               className="h-7 w-7 p-0"
               onClick={(e) => {
                 e.stopPropagation();
-                handleFileClick(attachment);
+                handleImageClick(attachment);
               }}
-              aria-label={t('screens.messages.openNewTab')}
+              aria-label={t('screens.messages.viewFullscreen')}
             >
-              <ExternalLink className="w-3 h-3" />
+              <Maximize2 className="w-3 h-3" />
             </Button>
           </div>
         </div>

@@ -5998,7 +5998,8 @@
       "value0Members": "{value0} membros",
       "chooseConversationFromLeftStartMessaging": "Seleciona uma conversa à esquerda para enviar mensagens.",
       "anonymous": "Anónimo",
-      "vitanaOpenScreen": "Abre ecrã"
+      "vitanaOpenScreen": "Abre ecrã",
+      "viewFullscreen": "Ver ecrã inteiro"
     },
     "mobile": {
       "searching": "A pesquisar…",
