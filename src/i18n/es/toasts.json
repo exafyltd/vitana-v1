@@ -42,8 +42,7 @@
       "planGenerated": "Plan generado",
       "planGeneratedDesc": "Tu plan personalizado se ha creado.",
       "bulkEnabled": "Selección múltiple activada",
-      "bulkEnabledDesc": "Elige elementos de tu línea de tiempo para acciones masivas.",
-      "_pending_review": {}
+      "bulkEnabledDesc": "Elige elementos de tu línea de tiempo para acciones masivas."
     },
     "error": {
       "generic": "Algo salió mal",
@@ -77,8 +76,7 @@
       "importFailed": "Error al importar",
       "importFailedDesc": "No se pudieron importar los datos.",
       "exportFailed": "Error al exportar",
-      "exportFailedDesc": "No se pudieron exportar los datos.",
-      "_pending_review": {}
+      "exportFailedDesc": "No se pudieron exportar los datos."
     },
     "info": {
       "processing": "Procesando...",
@@ -88,8 +86,7 @@
       "loading": "Cargando...",
       "loadingDesc": "Obteniendo datos.",
       "syncing": "Sincronizando...",
-      "syncingDesc": "Los datos se están sincronizando.",
-      "_pending_review": {}
+      "syncingDesc": "Los datos se están sincronizando."
     },
     "warning": {
       "unsavedChanges": "Cambios sin guardar",
@@ -97,8 +94,7 @@
       "limitReached": "Límite alcanzado",
       "limitReachedDesc": "Has alcanzado el máximo.",
       "slowConnection": "Conexión lenta",
-      "slowConnectionDesc": "Tu conexión a internet parece lenta.",
-      "_pending_review": {}
+      "slowConnectionDesc": "Tu conexión a internet parece lenta."
     },
     "common": {
       "couldNotCompleteTask": "No se pudo completar la tarea",
@@ -177,8 +173,7 @@
       "activityHidden": "Actividad oculta",
       "success": "¡Éxito! 🎉",
       "donTBreakStreakOneSmall": "🔥 No rompas la racha — una pequeña acción hoy",
-      "contentCreateFailed": "No se pudo crear el contenido",
-      "_pending_review": {}
+      "contentCreateFailed": "No se pudo crear el contenido"
     },
     "admin": {
       "companionOverridesSavedVoiceCacheRefreshes": "Anulaciones de compañero guardadas — la caché de voz se actualiza en 30s.",
@@ -334,7 +329,11 @@
       "rollbackFailed": "Error al revertir",
       "ticketRejected": "{ticketNumber} rechazado",
       "ticketRemovedActiveList": "Eliminado de la lista activa.",
-      "_pending_review": {}
+      "noListingsSelected": "Ningún anuncio seleccionado",
+      "communityMarketplaceReasonRequired": "Se requiere un motivo para rechazar.",
+      "communityMarketplaceBulkActionApplied": "Acción aplicada: {count} anuncios actualizados",
+      "communityMarketplaceReportUpdated": "Informe actualizado",
+      "communityMarketplaceReportUpdateFailed": "No se pudo actualizar el informe."
     },
     "audio": {
       "cameraStopped": "Cámara detenida",
@@ -342,18 +341,15 @@
       "failedToggleCamera": "Error al alternar cámara",
       "screenSharingStopped": "Compartir pantalla detenido",
       "screenSharingStarted": "Compartir pantalla iniciado",
-      "failedToggleScreenSharing": "Error al activar compartir pantalla",
-      "_pending_review": {}
+      "failedToggleScreenSharing": "Error al activar compartir pantalla"
     },
     "auth": {
       "confirmationEmailSentPleaseCheckYour": "¡Correo de confirmación enviado! Revisa tu bandeja de entrada.",
-      "tooManyAttemptsPleaseWaitFew": "Demasiados intentos. Espera unos minutos.",
-      "_pending_review": {}
+      "tooManyAttemptsPleaseWaitFew": "Demasiados intentos. Espera unos minutos."
     },
     "billing": {
       "paymentFailed": "Pago fallido",
-      "paymentSuccessful": "¡Pago exitoso!",
-      "_pending_review": {}
+      "paymentSuccessful": "¡Pago exitoso!"
     },
     "business": {
       "noAttendeesExport": "No hay asistentes para exportar",
@@ -364,28 +360,23 @@
       "ticketPrintingWillAvailableSoon": "La impresión de boletos estará disponible pronto.",
       "confirmationSent": "Confirmación enviada",
       "refund": "Reembolso",
-      "refundFunctionalityWillAvailableSoon": "La función de reembolso estará disponible pronto.",
-      "_pending_review": {}
+      "refundFunctionalityWillAvailableSoon": "La función de reembolso estará disponible pronto."
     },
     "calendar": {
-      "calendarUpdated": "Calendario actualizado",
-      "_pending_review": {}
+      "calendarUpdated": "Calendario actualizado"
     },
     "cart": {
       "signRequired": "Inicio de sesión requerido",
-      "pleaseSignAddItemsYourCart": "Inicia sesión para agregar artículos a tu carrito",
-      "_pending_review": {}
+      "pleaseSignAddItemsYourCart": "Inicia sesión para agregar artículos a tu carrito"
     },
     "chat": {
       "error": "Error",
       "pleaseEnterApiKey": "Ingresa una clave API",
       "success": "Éxito",
-      "apiKeySavedSecurelyWithEncryption": "Clave API guardada de forma segura con encriptación",
-      "_pending_review": {}
+      "apiKeySavedSecurelyWithEncryption": "Clave API guardada de forma segura con encriptación"
     },
     "coaches": {
-      "bookingStarted": "📅 Reserva iniciada",
-      "_pending_review": {}
+      "bookingStarted": "📅 Reserva iniciada"
     },
     "community": {
       "thumbnailCaptured": "Miniatura capturada",
@@ -434,8 +425,7 @@
       "vitanaWillFollowUp": "Vitana hará seguimiento.",
       "couldnTReopen": "No se pudo reabrir",
       "demoRoom": "Sala de demostración",
-      "thisExampleRoomCreateYourOwn": "Esta es una sala de ejemplo. ¡Crea la tuya para salir en vivo!",
-      "_pending_review": {}
+      "thisExampleRoomCreateYourOwn": "Esta es una sala de ejemplo. ¡Crea la tuya para salir en vivo!"
     },
     "crossover": {
       "bookingStarted": "📅 Reserva iniciada",
@@ -445,8 +435,7 @@
       "joined": "✓ Unido",
       "chatStarted": "💬 Chat iniciado",
       "linkCopied": "Enlace copiado",
-      "podcastLinkCopiedClipboard": "Enlace del podcast copiado al portapapeles",
-      "_pending_review": {}
+      "podcastLinkCopiedClipboard": "Enlace del podcast copiado al portapapeles"
     },
     "dev": {
       "createVtid": "Crear VTID",
@@ -490,8 +479,7 @@
       "documentUploaded": "Documento subido",
       "frontpageUploaded": "Portada subida",
       "diagnosticsCopiedClipboard": "Diagnósticos copiados al portapapeles",
-      "error": "Error",
-      "_pending_review": {}
+      "error": "Error"
     },
     "diary": {
       "notSupported": "No compatible",
@@ -526,8 +514,7 @@
       "saveFailed": "Error al guardar",
       "failedSaveYourEntryPleaseTry": "Error al guardar tu entrada. Inténtalo de nuevo.",
       "undoAvailable": "Deshacer disponible",
-      "deleteLastDiaryEntry": "Eliminar la última entrada del diario",
-      "_pending_review": {}
+      "deleteLastDiaryEntry": "Eliminar la última entrada del diario"
     },
     "discover": {
       "actionSelected": "Acción seleccionada",
@@ -536,21 +523,18 @@
       "appointmentBooked": "¡Cita reservada! 🎉",
       "yourAppointmentHasConfirmed": "Tu cita ha sido confirmada",
       "bookingFailed": "Error al reservar",
-      "pleaseTryAgain": "Inténtalo de nuevo",
-      "_pending_review": {}
+      "pleaseTryAgain": "Inténtalo de nuevo"
     },
     "discovery": {
       "connectionRequestSent": "¡Solicitud de conexión enviada! 💚",
       "theyLlNotifiedYourInterest": "Les notificarán tu interés.",
       "superConnectSent": "¡Super Connect enviado! ⭐",
-      "youLlAppearAtTopTheir": "¡Aparecerás al principio de sus coincidencias!",
-      "_pending_review": {}
+      "youLlAppearAtTopTheir": "¡Aparecerás al principio de sus coincidencias!"
     },
     "events": {
       "eventDeleted": "Evento eliminado",
       "failedDeleteEvent": "Error al eliminar el evento",
-      "pleaseTryAgainLater": "Inténtalo de nuevo más tarde.",
-      "_pending_review": {}
+      "pleaseTryAgainLater": "Inténtalo de nuevo más tarde."
     },
     "feedback": {
       "notSupported": "No compatible",
@@ -564,8 +548,7 @@
       "reportDeleted": "Reporte eliminado",
       "feedbackReportHasRemoved": "El reporte de comentarios ha sido eliminado.",
       "error": "Error",
-      "failedDeleteReportPleaseTryAgain": "Error al eliminar el reporte. Inténtalo de nuevo.",
-      "_pending_review": {}
+      "failedDeleteReportPleaseTryAgain": "Error al eliminar el reporte. Inténtalo de nuevo."
     },
     "health": {
       "couldnTStartThatYetOpen": "No se pudo iniciar aún — abre Autopilot para intentarlo de nuevo.",
@@ -594,8 +577,7 @@
       "noFileAvailable": "No hay archivo disponible",
       "couldNotLoadFile": "No se pudo cargar el archivo",
       "recalibrationStarted": "🔄 Recalibración iniciada",
-      "reportGeneration": "📊 Generación de informe",
-      "_pending_review": {}
+      "reportGeneration": "📊 Generación de informe"
     },
     "intents": {
       "moreDetailNeeded": "Se necesita más detalle",
@@ -627,8 +609,7 @@
       "themedCoverReady": "Portada temática lista",
       "youCanReplaceItAnyTime": "Puedes reemplazarla en cualquier momento.",
       "coverPhotoRequired": "Foto de portada requerida",
-      "uploadOneTapGenerateForMe": "Sube una, o toca ✨ Generar para mí.",
-      "_pending_review": {}
+      "uploadOneTapGenerateForMe": "Sube una, o toca ✨ Generar para mí."
     },
     "liverooms": {
       "linkCopied": "Enlace copiado",
@@ -650,8 +631,7 @@
       "followedTitle": "¡Siguiendo!",
       "followedDesc": "Ahora sigues a {name}",
       "unfollowedTitle": "Dejaste de seguir",
-      "unfollowedDesc": "Dejaste de seguir a {name}",
-      "_pending_review": {}
+      "unfollowedDesc": "Dejaste de seguir a {name}"
     },
     "meetups": {
       "signRequired": "Inicio de sesión requerido",
@@ -666,8 +646,7 @@
       "failedSendMessage": "Error al enviar mensaje",
       "pleaseTryAgainLater": "Inténtalo de nuevo más tarde",
       "addedSmartCalendar": "Añadido al Calendario Inteligente ✓",
-      "eventSavedWeLlRemindYou": "Evento guardado. Te recordaremos antes de que empiece.",
-      "_pending_review": {}
+      "eventSavedWeLlRemindYou": "Evento guardado. Te recordaremos antes de que empiece."
     },
     "memory": {
       "voiceRecorded": "Voz grabada",
@@ -716,8 +695,7 @@
       "pleaseRecordEnterSomeContentBefore": "Por favor, graba algo o introduce contenido antes de guardar.",
       "entrySaved": "Entrada guardada",
       "yourDiaryEntryHasAddedYour": "Tu entrada de diario se ha añadido a tu línea de tiempo de recuerdos.",
-      "couldNotSaveYourDiaryEntry": "No se pudo guardar tu entrada de diario. Inténtalo de nuevo.",
-      "_pending_review": {}
+      "couldNotSaveYourDiaryEntry": "No se pudo guardar tu entrada de diario. Inténtalo de nuevo."
     },
     "messages": {
       "newResponse": "🎉 ¡Nueva respuesta!",
@@ -754,21 +732,18 @@
       "selectOpenConversationBeforeAttachingFiles": "Selecciona o abre una conversación antes de adjuntar archivos.",
       "uploadFailed": "Subida fallida",
       "failedSendVoiceMessage": "No se pudo enviar el mensaje de voz",
-      "thereErrorSendingYourVoiceMessage": "Hubo un error al enviar tu mensaje de voz",
-      "_pending_review": {}
+      "thereErrorSendingYourVoiceMessage": "Hubo un error al enviar tu mensaje de voz"
     },
     "notifications": {
       "bookingConfirmed": "¡Reserva Confirmada! 🎉",
       "paymentReceived": "¡Pago Recibido! 💰",
       "creditsTransferred": "¡Créditos Transferidos! ✨",
       "newServiceBooking": "¡Nueva Reserva de Servicio! 📅",
-      "eventRegistration": "¡Registro de Evento! 🎊",
-      "_pending_review": {}
+      "eventRegistration": "¡Registro de Evento! 🎊"
     },
     "onboarding": {
       "networkError": "Error de red",
-      "thisYourSpeakableIdAcrossVitana": "Este es tu ID de voz en Vitana. ¡Permanente, elige con cuidado!",
-      "_pending_review": {}
+      "thisYourSpeakableIdAcrossVitana": "Este es tu ID de voz en Vitana. ¡Permanente, elige con cuidado!"
     },
     "payment": {
       "missingInformation": "Información faltante",
@@ -817,8 +792,7 @@
       "paymentRequestSent": "¡Solicitud de pago enviada! 💸",
       "failedSendPaymentRequest": "No se pudo enviar la solicitud de pago",
       "pleaseFillAllRequiredFields": "Completa todos los campos obligatorios",
-      "exchangeSendRequestSent": "¡Solicitud de intercambio y envío enviada! ✨",
-      "_pending_review": {}
+      "exchangeSendRequestSent": "¡Solicitud de intercambio y envío enviada! ✨"
     },
     "proactive": {
       "messageGenerated": "¡Mensaje generado!",
@@ -827,8 +801,7 @@
       "invitationMessageCopiedClipboard": "Mensaje de invitación copiado al portapapeles",
       "autoshareScheduled": "¡Publicación automática programada!",
       "editPost": "Editar publicación",
-      "postEditorComingSoon": "¡Editor de publicaciones próximamente!",
-      "_pending_review": {}
+      "postEditorComingSoon": "¡Editor de publicaciones próximamente!"
     },
     "profile": {
       "qrCodeDownloaded": "Código QR descargado",
@@ -885,8 +858,7 @@
       "universalCoverRemoved": "Foto de portada universal eliminada",
       "libraryPhotoUploaded": "Foto añadida a la biblioteca",
       "libraryPhotoRemoved": "Foto eliminada",
-      "categoryRequired": "Primero elige una categoría.",
-      "_pending_review": {}
+      "categoryRequired": "Primero elige una categoría."
     },
     "reminders": {
       "notificationsArenTSupportedThisBrowser": "Este navegador no soporta notificaciones.",
@@ -902,16 +874,14 @@
       "failedToCreate": "Fallo al crear recordatorio",
       "failedToDelete": "Fallo al eliminar recordatorio",
       "failedToMarkDone": "No se pudo marcar como hecho",
-      "remindersDeleted": "{count} recordatorios eliminados",
-      "_pending_review": {}
+      "remindersDeleted": "{count} recordatorios eliminados"
     },
     "reseller": {
       "activatingYourResellerProfile": "Activando tu perfil de revendedor...",
       "linkCopiedClipboard": "¡Enlace copiado al portapapeles!",
       "failedCopyPleaseSelectCopyManually": "No se pudo copiar. Selecciona y copia manualmente.",
       "linkCopiedPasteItYourInstagram": "¡Enlace copiado! Pégalo en tu biografía o historia de Instagram.",
-      "failedCopyLink": "No se pudo copiar el enlace.",
-      "_pending_review": {}
+      "failedCopyLink": "No se pudo copiar el enlace."
     },
     "settings": {
       "googleConnected": "Google conectado",
@@ -936,8 +906,7 @@
       "failedSwitchRolePleaseTryAgain": "No se pudo cambiar de rol. Inténtalo de nuevo.",
       "organizationSwitched": "Organización cambiada",
       "errorSwitchingOrganization": "Error al cambiar de organización",
-      "failedSwitchOrganizationPleaseTryAgain": "No se pudo cambiar la organización. Por favor, inténtalo de nuevo.",
-      "_pending_review": {}
+      "failedSwitchOrganizationPleaseTryAgain": "No se pudo cambiar la organización. Por favor, inténtalo de nuevo."
     },
     "sharing": {
       "channelNotConnected": "Canal no conectado",
@@ -1015,8 +984,7 @@
       "postPublished": "¡Publicación publicada!",
       "campaignsExportedCsv": "Campañas exportadas a CSV",
       "smartrescheduleFeatureComingSoon": "¡Función Smart-Reschedule próximamente!",
-      "viberNotDetectedLinkCopiedClipboard": "¡Viber no detectado! ¡Enlace copiado al portapapeles!",
-      "_pending_review": {}
+      "viberNotDetectedLinkCopiedClipboard": "¡Viber no detectado! ¡Enlace copiado al portapapeles!"
     },
     "tickets": {
       "ticketDownloaded": "¡Entrada descargada!",
@@ -1029,8 +997,7 @@
       "ticketDownloadedOpeningEmail": "¡Entrada descargada! Abriendo correo...",
       "ticketDownloadedOpeningMessages": "¡Entrada descargada! Abriendo mensajes...",
       "ticketSaved": "¡Entrada guardada!",
-      "eventDetailsCopied": "¡Detalles del evento copiados!",
-      "_pending_review": {}
+      "eventDetailsCopied": "¡Detalles del evento copiados!"
     },
     "wallet": {
       "invalidAmount": "Monto inválido",
@@ -1081,8 +1048,7 @@
       "withdrawalFailed": "Retiro Fallido",
       "somethingWentWrongPleaseTryAgain": "Algo salió mal. Inténtalo de nuevo.",
       "pleaseSelectRecipientEnterAmount": "Por favor, selecciona un destinatario e ingresa un monto",
-      "exchangeSendComplete": "✅ ¡Intercambio y envío completados!",
-      "_pending_review": {}
+      "exchangeSendComplete": "✅ ¡Intercambio y envío completados!"
     },
     "hooks": {
       "error": "Error",
@@ -1347,56 +1313,45 @@
       "exchangeSendFailed": "Intercambio y envío fallido",
       "linkAvailable": "Enlace disponible",
       "errorUpdatingPreferences": "Error al actualizar preferencias",
-      "failedPurchaseTicket": "No se pudo comprar el boleto",
-      "_pending_review": {}
+      "failedPurchaseTicket": "No se pudo comprar el boleto"
     },
     "businesslistings": {
-      "couldNotLoadListings": "No se pudieron cargar los listados",
-      "_pending_review": {}
+      "couldNotLoadListings": "No se pudieron cargar los listados"
     },
     "businessopportunities": {
-      "couldNotLoadOpportunities": "No se pudieron cargar las oportunidades",
-      "_pending_review": {}
+      "couldNotLoadOpportunities": "No se pudieron cargar las oportunidades"
     },
     "checkoutsuccess": {
       "orderConfirmed": "¡Pedido confirmado!",
-      "yourPaymentSuccessfulCheckYourEmail": "Tu pago fue exitoso. Revisa tu correo para los detalles del pedido.",
-      "_pending_review": {}
+      "yourPaymentSuccessfulCheckYourEmail": "Tu pago fue exitoso. Revisa tu correo para los detalles del pedido."
     },
     "intentboard": {
-      "couldNotLoadBoard": "No se pudo cargar el tablero",
-      "_pending_review": {}
+      "couldNotLoadBoard": "No se pudo cargar el tablero"
     },
     "intentmatchdetail": {
       "couldNotLoadMatchDetail": "No se pudo cargar el detalle del match",
       "intentClosed": "Intención completada",
-      "couldNotClose": "No se pudo cerrar",
-      "_pending_review": {}
+      "couldNotClose": "No se pudo cerrar"
     },
     "introexperience": {
       "audioPlaybackFailed": "Error al reproducir audio",
-      "audioUnavailableNow": "Audio no disponible ahora",
-      "_pending_review": {}
+      "audioUnavailableNow": "Audio no disponible ahora"
     },
     "invitefriends": {
       "nameRequired": "El nombre es obligatorio",
       "pleaseProvideEmailPhone": "Por favor, proporciona correo o teléfono",
       "contactAdded": "Contacto agregado",
-      "failedSendInvites": "Error al enviar invitaciones",
-      "_pending_review": {}
+      "failedSendInvites": "Error al enviar invitaciones"
     },
     "myintents": {
-      "couldNotLoadIntents": "No se pudieron cargar las intenciones",
-      "_pending_review": {}
+      "couldNotLoadIntents": "No se pudieron cargar las intenciones"
     },
     "packagepurchasesuccess": {
       "paymentConfirmed": "¡Pago confirmado!",
-      "yourPackagePurchaseSuccessful": "Tu compra del paquete fue exitosa.",
-      "_pending_review": {}
+      "yourPackagePurchaseSuccessful": "Tu compra del paquete fue exitosa."
     },
     "privacysettings": {
-      "couldNotSave": "No se pudo guardar",
-      "_pending_review": {}
+      "couldNotSave": "No se pudo guardar"
     },
     "home": {
       "removedFromMemory": "Eliminado del almacenamiento",
@@ -1406,19 +1361,29 @@
       "actionExecuted": "Acción ejecutada",
       "yourActionHasCompletedSuccessfully": "Tu acción se ha completado con éxito.",
       "actionDismissed": "Acción descartada",
-      "thisActionHasRemovedFromYour": "Esta acción ha sido eliminada de tu lista.",
-      "_pending_review": {}
+      "thisActionHasRemovedFromYour": "Esta acción ha sido eliminada de tu lista."
     },
     "index": {
-      "vitanaDevGatewayUrlNotConfigured": "URL de Vitana Dev Gateway no configurada",
-      "_pending_review": {}
+      "vitanaDevGatewayUrlNotConfigured": "URL de Vitana Dev Gateway no configurada"
     },
     "dailyGoal": {
       "title": "¡Felicidades! Meta de hoy lograda 🎉",
-      "body": "Sigue adelante.",
-      "_pending_review": {}
+      "body": "Sigue adelante."
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "communityMarketplace": {
+      "messageSent": "Mensaje enviado",
+      "contactSellerFailed": "No se pudo contactar al vendedor. Por favor, inténtalo de nuevo.",
+      "reportSubmitted": "Anuncio reportado. Gracias por tus comentarios.",
+      "reportAlreadySubmitted": "Ya has reportado este anuncio.",
+      "reportFailed": "No se pudo reportar el anuncio.",
+      "sellerBlocked": "Vendedor bloqueado.",
+      "sellerBlockFailed": "No se pudo bloquear al vendedor.",
+      "tooManyImages": "10 fotos máximo por anuncio.",
+      "imageUploadFailed": "Una o más fotos no se pudieron subir.",
+      "listingCreated": "Anuncio publicado",
+      "listingCreatedFailed": "No se pudo publicar el anuncio.",
+      "listingUpdated": "Anuncio actualizado",
+      "listingUpdatedFailed": "No se pudo actualizar el anuncio."
+    }
+  }
 }
