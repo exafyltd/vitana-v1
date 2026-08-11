@@ -17,8 +17,7 @@
       "hostAndSell": "Organizuj i sprzedawaj bilety",
       "resellAndEarn": "Odsprzedawaj i zarabiaj",
       "offerBookings": "Oferuj rezerwacje",
-      "boostVisibility": "Zwiększ widoczność",
-      "_pending_review": {}
+      "boostVisibility": "Zwiększ widoczność"
     },
     "history": {
       "all": "Wszystkie",
@@ -39,8 +38,7 @@
       "allTime": "Całkowity czas",
       "details": "Szczegóły",
       "earningsActivity": "Aktywność zarobków",
-      "noEarningsStartSelling": "Brak zarobków. Zacznij sprzedawać, aby zobaczyć tutaj aktywność.",
-      "_pending_review": {}
+      "noEarningsStartSelling": "Brak zarobków. Zacznij sprzedawać, aby zobaczyć tutaj aktywność."
     },
     "kpi": {
       "totalEarnings": "Całkowite zarobki",
@@ -63,8 +61,7 @@
       "resellerCommissions": "Prowizje odsprzedawcy",
       "goToSellEarn": "Sprzedawaj i zarabiaj",
       "totalEarned": "Całkowite zarobki",
-      "earningsBySource": "Zarobki według źródła",
-      "_pending_review": {}
+      "earningsBySource": "Zarobki według źródła"
     },
     "reseller": {
       "upcomingEvents": "Nadchodzące wydarzenia",
@@ -87,18 +84,16 @@
       "noPayoutsYet": "Brak wypłat",
       "attributedSales": "Sprzedaż przypisana do wydarzenia",
       "noSalesMatchFilter": "Brak sprzedaży pasującej do bieżących filtrów",
-      "mockDataActive": "Dane testowe aktywne",
-      "_pending_review": {}
+      "mockDataActive": "Dane testowe aktywne"
     },
     "transfer": {
-      "title": "Przelej do Portfela",
-      "description": "Przelej swoje oczekujące prowizje sprzedawcy do Portfela VITANA.",
+      "title": "Zażądaj wypłaty",
+      "description": "Zażądaj wypłaty swoich zaległych prowizji sprzedawcy do swojego portfela VITANA.",
       "pending": "Oczekujące",
       "wallet": "Portfel",
-      "instantCredit": "To natychmiastowo zasili Twoje zarobki na saldo Portfela.",
-      "transferring": "Przelewanie...",
-      "transfer": "Przelej",
-      "_pending_review": {}
+      "instantCredit": "Twoje żądanie zostanie sprawdzone przez nasz zespół, zanim zostanie zaksięgowane na saldzie Twojego portfela.",
+      "transferring": "Żądanie...",
+      "transfer": "Zażądaj"
     },
     "typeSelector": {
       "title": "Rozpocznij Biznes",
@@ -111,8 +106,7 @@
       "badgeNew": "Nowe",
       "badgeActive": "Aktywne",
       "alreadyReseller": "Jesteś już sprzedawcą! Sprawdź zakładkę „Sprzedawaj i zarabiaj”.",
-      "cancel": "Anuluj",
-      "_pending_review": {}
+      "cancel": "Anuluj"
     },
     "missionOpportunities": {
       "title": "Możliwości Misji",
@@ -125,12 +119,8 @@
         "find_match": "Znajdź Parę",
         "marketplace": "Rynek",
         "income_generation": "Generowanie dochodu",
-        "business_formation": "Tworzenie biznesu",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "business_formation": "Tworzenie biznesu"
+      }
+    }
+  }
 }
