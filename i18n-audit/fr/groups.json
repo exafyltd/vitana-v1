@@ -1,0 +1,10 @@
+{
+  "verdicts": {
+    "groups.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T04:57:01.876Z"
+}

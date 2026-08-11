@@ -1,0 +1,42 @@
+{
+  "verdicts": {
+    "mobileNav.news": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.inbox": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.events": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.business": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.7,
+      "issue": "Too generic/formal for friendly app context; lacks specific nuance for 'Business' section.",
+      "suggested": "Entreprise",
+      "phase": "llm"
+    },
+    "mobileNav.live": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.myJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T05:01:35.971Z"
+}

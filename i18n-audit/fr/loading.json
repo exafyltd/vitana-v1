@@ -1,0 +1,44 @@
+{
+  "verdicts": {
+    "loading.default": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "loading.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "loading.messages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "loading.uploading": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Slightly too formal for a friendly app register.",
+      "suggested": "Envoi...",
+      "phase": "llm"
+    },
+    "loading.uploadingProgress": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Slightly too formal for a friendly app register.",
+      "suggested": "Envoi... {progress}%",
+      "phase": "llm"
+    },
+    "loading.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "loading.saving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T04:59:48.472Z"
+}
