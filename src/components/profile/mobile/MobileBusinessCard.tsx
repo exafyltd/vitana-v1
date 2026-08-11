@@ -9,6 +9,7 @@ import { Briefcase, MousePointerClick, ShoppingBag, Share2 } from "lucide-react"
 import { useMyRecommendations, formatPrice, MyRecommendationItem } from "@/hooks/useMarketplace";
 import { useNativeShare } from "@/hooks/useNativeShare";
 import { t, notifySuccess, notifyError } from "@/lib/i18n-toast";
+import { BusinessListingsSection } from "../shared/BusinessListingsSection";
 
 export function MobileBusinessCard() {
   const { data, isLoading } = useMyRecommendations();
@@ -92,6 +93,8 @@ export function MobileBusinessCard() {
           ))}
         </div>
       )}
+
+      <BusinessListingsSection variant="owner" className="mt-5 pt-5 border-t border-border/40" />
     </div>
   );
 }
