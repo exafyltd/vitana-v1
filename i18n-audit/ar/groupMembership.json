@@ -1,0 +1,43 @@
+{
+  "verdicts": {
+    "groupMembership.joined": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "The verb \"انضممت\" (inḍamamta) is second person masculine singular (\"you joined\"). The English \"Joined!\" is gender-neutral. For a female user, the verb should be \"انضممتِ\" (inḍamamti) to maintain accuracy in du-form.",
+      "suggested": "انضممتِ! 🎉",
+      "phase": "llm"
+    },
+    "groupMembership.joinedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "The pronoun \"أنت\" (anta) is second person masculine singular (\"you\"). The English \"You're\" is gender-neutral. For a female user, it should be \"أنتِ\" (anti), and the noun \"عضو\" (ʿuḍw - member, masculine) could optionally be feminized to \"عضوة\" (ʿuḍwa) for full gender accuracy.",
+      "suggested": "أنتِ الآن عضوة في هذه المجموعة.",
+      "phase": "llm"
+    },
+    "groupMembership.left": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "The verb \"غادرت\" (ghādarta) is second person masculine singular (\"you left\"). The English \"Left group\" is gender-neutral. For a female user, the verb should be \"غادرتِ\" (ghādarti) to maintain accuracy in du-form.",
+      "suggested": "غادرتِ المجموعة",
+      "phase": "llm"
+    },
+    "groupMembership.leftDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "The verb \"غادرت\" (ghādarta) is second person masculine singular (\"you left\"). The English \"You've left\" is gender-neutral. For a female user, the verb should be \"غادرتِ\" (ghādarti) to maintain accuracy in du-form.",
+      "suggested": "لقد غادرتِ هذه المجموعة.",
+      "phase": "llm"
+    },
+    "groupMembership.errorJoin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.errorLeave": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T05:00:02.922Z"
+}

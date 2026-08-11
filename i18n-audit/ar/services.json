@@ -1,0 +1,107 @@
+{
+  "verdicts": {
+    "services.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.categories.preventive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.categories.labTests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.categories.coaching": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The adjective 'شخصي' (personal) in the Arabic translation applies only to 'توجيه' (guidance/coaching), implying 'personal guidance'. However, in English, 'Personal Training' is a distinct compound, and 'Coaching' is also a separate service. The current translation implies 'training (general) and personal guidance'.",
+      "suggested": "توجيه وتدريب شخصي",
+      "phase": "llm"
+    },
+    "services.categories.groupPrograms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.actions.book": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.actions.addToPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.actions.askAI": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.actions.joinRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.actions.setReminder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.duration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.price": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.location": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.nextAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.whatsIncluded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.healthBenefits": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.availableProviders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.requirements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.tags": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T06:44:27.139Z"
+}

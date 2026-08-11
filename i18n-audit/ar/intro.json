@@ -1,0 +1,50 @@
+{
+  "verdicts": {
+    "intro.welcomeTo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.experience": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Ambiguous English source. 'Experience' could be a noun (تجربة) or an imperative verb (جرّب). Assuming it's a noun/title, the translation is correct, but if it's an action, it's incorrect.",
+      "phase": "llm"
+    },
+    "intro.taglineMain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.taglineSub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.playWelcome": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The Arabic uses a noun phrase ('Playback of the Welcome') instead of an imperative verb, which is more appropriate for an action button like 'Play Welcome'.",
+      "suggested": "شغّل الترحيب",
+      "phase": "llm"
+    },
+    "intro.preparing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.playing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.goToLogin": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The Arabic uses a noun phrase ('The transfer to login') instead of an imperative verb, which is more appropriate for an action button like 'Go to Login'.",
+      "suggested": "اذهب إلى تسجيل الدخول",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T05:01:56.779Z"
+}

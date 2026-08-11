@@ -1,0 +1,22 @@
+{
+  "verdicts": {
+    "densityOptions.cozy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "densityOptions.compact": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Nuance. 'مضغوط' implies compressed/squeezed, which might not be the intended meaning of 'compact' in a UI context (e.g., space-saving, integrated).",
+      "suggested": "مدمج",
+      "phase": "llm"
+    },
+    "densityOptions.gallery": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T04:55:49.797Z"
+}
