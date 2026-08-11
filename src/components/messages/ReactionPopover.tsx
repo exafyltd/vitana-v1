@@ -16,52 +16,55 @@ interface ReactionPopoverProps {
   children: React.ReactNode;
 }
 
-export function ReactionPopover({ 
-  reactions, 
-  open, 
-  onOpenChange, 
-  children 
+export function ReactionPopover({
+  reactions,
+  open,
+  onOpenChange,
+  children
 }: ReactionPopoverProps) {
-  const allUsers = reactions.flatMap(reaction => 
-    reaction.users.map(user => ({
-      ...user,
-      emoji: reaction.emoji
-    }))
-  );
+  const groups = reactions.filter(reaction => reaction.users.length > 0);
+  const totalUsers = groups.reduce((sum, group) => sum + group.users.length, 0);
 
-  if (allUsers.length === 0) return <>{children}</>;
+  if (totalUsers === 0) return <>{children}</>;
 
   return (
     <ResponsivePopover open={open} onOpenChange={onOpenChange}>
       <ResponsivePopoverTrigger asChild>
         {children}
       </ResponsivePopoverTrigger>
-      <ResponsivePopoverContent 
+      <ResponsivePopoverContent
         title={t('screens.messages.reactions')}
-        className="w-64 p-3" 
+        className="w-64 p-3"
         align="start"
         side="top"
       >
-        <div className="space-y-2">
-          <div className="space-y-2 max-h-48 overflow-y-auto">
-            {allUsers.map((user, index) => (
-              <div
-                key={`${user.user_id}-${user.emoji}-${index}`}
-                className="flex items-center gap-3 py-2 min-h-[44px]"
-              >
-                <Avatar className="w-6 h-6">
-                  <AvatarImage src={user.avatar_url} />
-                  <AvatarFallback className="text-xs">
-                    {user.display_name?.charAt(0).toUpperCase() || '?'}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="text-sm text-foreground flex-1">
-                  {user.display_name || 'Anonymous'}
+        <div className="space-y-3 max-h-[50vh] overflow-y-auto">
+          {groups.map((group) => (
+            <div key={group.emoji} className="space-y-1">
+              <div className="flex items-center gap-2 px-1">
+                <span className="text-lg">{group.emoji}</span>
+                <span className="text-xs font-medium text-muted-foreground tabular-nums">
+                  {group.count}
                 </span>
-                <span className="text-lg">{user.emoji}</span>
               </div>
-            ))}
-          </div>
+              {group.users.map((user, index) => (
+                <div
+                  key={`${group.emoji}-${user.user_id}-${index}`}
+                  className="flex items-center gap-3 py-1.5 pl-1 min-h-[44px]"
+                >
+                  <Avatar className="w-6 h-6">
+                    <AvatarImage src={user.avatar_url} />
+                    <AvatarFallback className="text-xs">
+                      {user.display_name?.charAt(0).toUpperCase() || '?'}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm text-foreground flex-1 truncate">
+                    {user.display_name || t('screens.messages.anonymous')}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       </ResponsivePopoverContent>
     </ResponsivePopover>
