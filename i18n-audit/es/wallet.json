@@ -94,7 +94,29 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "wallet.creditsLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.filters.withdrawals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.filters.stakes": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The term 'Participación' (participation) is too general and does not accurately convey the specific technical meaning of 'Staking' in a financial or crypto context. 'Staking' is often used as a loanword in Spanish in this domain.",
+      "suggested": "Staking",
+      "phase": "llm"
+    },
+    "wallet.displayCurrency": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:09:09.058Z"
+  "generatedAt": "2026-08-11T05:03:03.510Z"
 }

@@ -529,7 +529,72 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "liveRooms.goLivePopup.errors.genericDescWithReason": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.editSession.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.editSession.saving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.editSession.changeCover": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "liveRooms.editSession.noChanges": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.durationLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration15": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration30": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration45": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration60": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration90": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.duration120": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "goLivePopup.durationHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:14.549Z"
+  "generatedAt": "2026-08-11T04:49:27.807Z"
 }

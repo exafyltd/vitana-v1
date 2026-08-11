@@ -1,0 +1,47 @@
+{
+  "verdicts": {
+    "featureAnnouncementCard.brandNew.eyebrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.badge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.cta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.closing": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing, not idiomatic for a friendly tone. 'Feliz prueba' is too literal.",
+      "suggested": "¡A probar! 🥳",
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.didYouKnow.eyebrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.didYouKnow.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.didYouKnow.cta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T04:49:01.046Z"
+}
