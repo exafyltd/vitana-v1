@@ -1,0 +1,75 @@
+{
+  "verdicts": {
+    "campaigns.delete.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "campaigns.delete.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "campaigns.delete.dontAskAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "campaigns.delete.deletePermanently": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "campaigns.creation.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "campaigns.creation.stepOf": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "campaigns.creation.yourCampaigns": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "campaigns.creation.drafts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "campaigns.creation.live": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "campaigns.creation.proTip": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "campaigns.creation.tips.1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "campaigns.creation.tips.2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "campaigns.creation.tips.3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "campaigns.creation.tips.4": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T04:53:09.832Z"
+}

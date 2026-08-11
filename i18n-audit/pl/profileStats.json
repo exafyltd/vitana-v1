@@ -1,0 +1,32 @@
+{
+  "verdicts": {
+    "profileStats.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "profileStats.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.followers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.following": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The English 'Following' in this context (paired with 'Followers') typically refers to the list of people one follows (a noun). The Polish 'Obserwujesz' is a verb ('you follow').",
+      "suggested": "Obserwowani",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T05:08:32.520Z"
+}

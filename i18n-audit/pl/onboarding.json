@@ -1,0 +1,124 @@
+{
+  "verdicts": {
+    "onboarding.welcome": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.connectApps": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.connectAppsDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "'wnioski' (conclusions) is not the best translation for 'insights' in this context; 'wgląd' (insight) is more appropriate.",
+      "suggested": "Połącz swoje aplikacje zdrowotne i wellness, aby uzyskać lepszy wgląd",
+      "phase": "llm"
+    },
+    "onboarding.setGoals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.setGoalsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.joinCommunity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.joinCommunityDesc": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "onboarding.getStarted": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'Zacznijmy' means 'Let's start' (we), while 'Get Started' is typically an imperative instruction for the user (you).",
+      "suggested": "Zacznij",
+      "phase": "llm"
+    },
+    "onboarding.skip": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.skipIntro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.displayNameLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.displayNamePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handlePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleTaken": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleInvalid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleMinLength": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.saving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.submit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T05:05:32.514Z"
+}

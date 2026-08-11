@@ -1,0 +1,43 @@
+{
+  "verdicts": {
+    "groupMembership.joined": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation is impersonal ('Dołączono!') instead of friendly, du-form ('You joined!').",
+      "suggested": "Udało Ci się dołączyć! 🎉",
+      "phase": "llm"
+    },
+    "groupMembership.joinedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.left": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation is impersonal ('Opuszczono grupę') instead of friendly, du-form ('You left group!').",
+      "suggested": "Opuściłeś grupę",
+      "phase": "llm"
+    },
+    "groupMembership.leftDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.errorJoin": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "First part of the translation is impersonal ('Nie udało się dołączyć') instead of friendly, du-form ('You could not join').",
+      "suggested": "Nie udało Ci się dołączyć do grupy. Spróbuj ponownie.",
+      "phase": "llm"
+    },
+    "groupMembership.errorLeave": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "First part of the translation is impersonal ('Nie udało się opuścić') instead of friendly, du-form ('You could not leave').",
+      "suggested": "Nie udało Ci się opuścić grupy. Spróbuj ponownie.",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T04:59:00.685Z"
+}

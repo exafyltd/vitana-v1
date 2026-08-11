@@ -1,0 +1,82 @@
+{
+  "verdicts": {
+    "authPage.welcomeTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.signIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.signUp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.email": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.password": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.fullName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.enterEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.enterPassword": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.enterFullName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.createPassword": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.createAccount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.orContinueWith": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.backToPortals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.keepLoggedIn": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender-specific (masculine) form used for a general instruction; should be gender-neutral or account for female users.",
+      "suggested": "Nie wylogowuj mnie",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T04:48:06.146Z"
+}

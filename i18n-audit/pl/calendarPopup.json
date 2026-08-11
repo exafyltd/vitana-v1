@@ -1,0 +1,90 @@
+{
+  "verdicts": {
+    "calendarPopup.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.nextEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.conflicts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.upcomingSchedule": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.addNewEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.noUpcomingEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.createFirstEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.aiSuggestions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.findBetterSlot": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.prepareBrief": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.shareAvailability": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.syncExternal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.addEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.quickAdd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.eventFormComingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.externalSync": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.connectingCalendars": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T04:53:02.261Z"
+}

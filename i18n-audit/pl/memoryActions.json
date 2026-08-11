@@ -1,0 +1,74 @@
+{
+  "verdicts": {
+    "memoryActions.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The current translation 'Akcje Wspomnień' literally means 'Actions of Memories', implying memories are performing actions. 'Memory Actions' refers to actions related to or performed with memories.",
+      "suggested": "Działania ze wspomnieniami",
+      "phase": "llm"
+    },
+    "memoryActions.items.recordVoiceDiary.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.recordVoiceDiary.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.addMemoryNote.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'Notatkę Wspomnienia' means 'Note of a memory'. 'Memory Note' as a type of note is more idiomatically translated using an adjective.",
+      "suggested": "Dodaj Notatkę Wspomnieniową",
+      "phase": "llm"
+    },
+    "memoryActions.items.addMemoryNote.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.viewTimeline.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.viewTimeline.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.searchMemories.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.searchMemories.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.photoMemory.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.photoMemory.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.aiMemoryAnalysis.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.aiMemoryAnalysis.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T05:03:55.996Z"
+}

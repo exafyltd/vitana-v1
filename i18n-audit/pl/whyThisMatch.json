@@ -1,0 +1,69 @@
+{
+  "verdicts": {
+    "whyThisMatch.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.interpretedAs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.consideredSignals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.showSomeoneElse": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.dismiss": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.ethicsNote": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Literal translation of 'shines' is not idiomatic for 'journey' in Polish; sounds awkward.",
+      "suggested": "Vitana nie ocenia członków na podstawie wyglądu ani majątku — ale oto ktoś, czyja podróż teraz inspiruje.",
+      "phase": "llm"
+    },
+    "whyThisMatch.loadingRecipe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.recipeUnavailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.4": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "Literal translation 'Przekierowanie sprawiedliwości' sounds like 'rerouting of justice' rather than a 'fair reroute' or 'reroute for fairness'. It's too abstract and not idiomatic for a feature name.",
+      "suggested": "Sprawiedliwe przekierowanie",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-11T06:50:00.531Z"
+}
