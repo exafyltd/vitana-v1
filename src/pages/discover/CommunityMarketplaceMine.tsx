@@ -6,16 +6,20 @@
  * are deliberately out of scope here — Chunk 9 adds those buttons.
  */
 
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppLayout from "@/components/AppLayout";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Plus, ShoppingBag } from "lucide-react";
+import { ArrowLeft, Loader2, Plus, ShoppingBag } from "lucide-react";
 import { CommunityListingImage } from "@/components/discover/CommunityListingImage";
 import { useMyCommunityListings, formatListingPrice, type CommunityListing } from "@/hooks/useCommunityMarketplace";
 import { categoryLabel } from "@/lib/community-marketplace-categories";
 import { t } from "@/lib/i18n-toast";
+
+const PAGE_SIZE = 50;
+const IMMUTABLE_STATUSES = new Set(["sold", "removed"]);
 
 const STATUS_BADGE_KEY: Record<string, string> = {
   draft: "screens.communityMarketplace.statusDraft",
@@ -26,8 +30,17 @@ const STATUS_BADGE_KEY: Record<string, string> = {
 
 export default function CommunityMarketplaceMine() {
   const navigate = useNavigate();
-  const { data, isLoading } = useMyCommunityListings({ limit: 50 });
-  const listings = data?.listings ?? [];
+  const [items, setItems] = useState<CommunityListing[]>([]);
+  const [offset, setOffset] = useState(0);
+  const { data, isLoading, isFetching } = useMyCommunityListings({ limit: PAGE_SIZE, offset });
+  const listings = offset === 0 ? data?.listings ?? [] : [...items, ...(data?.listings ?? [])];
+  const totalCount = data?.meta?.total_count ?? 0;
+  const canLoadMore = listings.length < totalCount;
+
+  const handleLoadMore = () => {
+    setItems(listings);
+    setOffset(listings.length);
+  };
 
   return (
     <AppLayout>
@@ -46,7 +59,7 @@ export default function CommunityMarketplaceMine() {
 
         <h1 className="text-xl font-semibold mb-4">{t("screens.communityMarketplace.myListings")}</h1>
 
-        {isLoading ? (
+        {isLoading && offset === 0 ? (
           <div className="space-y-2">
             {Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="h-20 rounded-xl bg-muted/40 animate-pulse" />
@@ -61,18 +74,37 @@ export default function CommunityMarketplaceMine() {
             </div>
           </div>
         ) : (
-          <div className="space-y-2">
-            {listings.map((listing) => (
-              <MyListingRow key={listing.id} listing={listing} onEdit={() => navigate(`/discover/community-marketplace/${listing.id}/edit`)} />
-            ))}
-          </div>
+          <>
+            <div className="space-y-2">
+              {listings.map((listing) => (
+                <MyListingRow
+                  key={listing.id}
+                  listing={listing}
+                  onEdit={
+                    IMMUTABLE_STATUSES.has(listing.status)
+                      ? undefined
+                      : () => navigate(`/discover/community-marketplace/${listing.id}/edit`)
+                  }
+                />
+              ))}
+            </div>
+
+            {canLoadMore && (
+              <div className="flex justify-center mt-4">
+                <Button variant="outline" onClick={handleLoadMore} disabled={isFetching}>
+                  {isFetching ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                  {t("screens.communityMarketplace.loadMore")}
+                </Button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </AppLayout>
   );
 }
 
-function MyListingRow({ listing, onEdit }: { listing: CommunityListing; onEdit: () => void }) {
+function MyListingRow({ listing, onEdit }: { listing: CommunityListing; onEdit?: () => void }) {
   const priceText = formatListingPrice(listing);
   const statusKey = STATUS_BADGE_KEY[listing.status];
 
@@ -93,9 +125,11 @@ function MyListingRow({ listing, onEdit }: { listing: CommunityListing; onEdit: 
           )}
         </div>
       </div>
-      <Button variant="outline" size="sm" onClick={onEdit} className="shrink-0">
-        {t("screens.communityMarketplace.editButton")}
-      </Button>
+      {onEdit && (
+        <Button variant="outline" size="sm" onClick={onEdit} className="shrink-0">
+          {t("screens.communityMarketplace.editButton")}
+        </Button>
+      )}
     </div>
   );
 }

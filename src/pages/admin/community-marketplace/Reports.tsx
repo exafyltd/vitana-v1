@@ -20,9 +20,17 @@ import { notify, notifyError, t } from "@/lib/i18n-toast";
 import { formatDistanceToNow } from "@/lib/locale-format";
 import { fmtNumber } from "@/lib/locale-format";
 
-const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
+// VITE_GATEWAY_URL already ends in /api/v1 (e.g. "https://gateway.vitanaland.com/api/v1"),
+// so it can't be the prefix for these `${GATEWAY_URL}/api/v1/admin/...` calls below —
+// prefer the suffix-free VITE_GATEWAY_BASE, falling back to stripping the suffix.
+const GATEWAY_URL = (
+  import.meta.env.VITE_GATEWAY_BASE ||
+  (import.meta.env.VITE_GATEWAY_URL || "").replace(/\/api\/v1\/?$/, "")
+).replace(/\/+$/, "");
 
 type ReportReason = "prohibited_item" | "misleading" | "counterfeit" | "spam" | "offensive" | "scam" | "other";
+
+const PAGE_SIZE = 50;
 
 interface AdminReport {
   id: string;
@@ -64,39 +72,46 @@ async function authHeaders(): Promise<HeadersInit> {
 export default function AdminCommunityMarketplaceReports() {
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [items, setItems] = useState<AdminReport[]>([]);
   const [total, setTotal] = useState(0);
 
   const statusFilter = searchParams.get("status");
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (offset: number) => {
     if (!GATEWAY_URL) {
       notifyError("toasts.admin.gatewayUrlNotConfigured");
       setLoading(false);
       return;
     }
-    setLoading(true);
+    if (offset === 0) setLoading(true);
+    else setLoadingMore(true);
     try {
       const headers = await authHeaders();
       const params = new URLSearchParams();
       if (statusFilter) params.set("status", statusFilter);
-      params.set("limit", "50");
+      params.set("limit", String(PAGE_SIZE));
+      params.set("offset", String(offset));
       const resp = await fetch(`${GATEWAY_URL}/api/v1/admin/community-marketplace/reports?${params.toString()}`, { headers });
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const json = await resp.json();
-      setItems(json.items ?? []);
+      setItems((prev) => (offset === 0 ? json.items ?? [] : [...prev, ...(json.items ?? [])]));
       setTotal(json.total ?? 0);
     } catch {
       notifyError("toasts.admin.loadFailed");
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
   }, [statusFilter]);
 
   useEffect(() => {
-    load();
+    load(0);
   }, [load]);
+
+  const canLoadMore = items.length < total;
+  const handleLoadMore = () => load(items.length);
 
   async function resolveReport(id: string, status: "actioned" | "dismissed") {
     if (!GATEWAY_URL) return;
@@ -110,7 +125,7 @@ export default function AdminCommunityMarketplaceReports() {
       });
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       notify("toasts.admin.communityMarketplaceReportUpdated");
-      await load();
+      await load(0);
     } catch {
       notifyError("toasts.admin.communityMarketplaceReportUpdateFailed");
     } finally {
@@ -135,7 +150,7 @@ export default function AdminCommunityMarketplaceReports() {
 
           <Card>
             <CardContent className="pt-6 flex flex-wrap gap-3 items-center">
-              <Button size="sm" variant="outline" onClick={load}>
+              <Button size="sm" variant="outline" onClick={() => load(0)}>
                 <RefreshCw className="w-4 h-4" />
               </Button>
               <span className="text-xs text-muted-foreground ml-auto">{t("screens.admin.value0Total", { value0: fmtNumber(total) })}</span>
@@ -202,6 +217,15 @@ export default function AdminCommunityMarketplaceReports() {
                 </table>
               </CardContent>
             </Card>
+          )}
+
+          {!loading && canLoadMore && (
+            <div className="flex justify-center">
+              <Button variant="outline" onClick={handleLoadMore} disabled={loadingMore}>
+                {loadingMore ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                {t("screens.communityMarketplace.loadMore")}
+              </Button>
+            </div>
           )}
         </div>
       </div>

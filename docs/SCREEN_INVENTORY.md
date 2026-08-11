@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 301
-- **Distinct i18n keys consumed:** 4535
+- **Distinct i18n keys consumed:** 4538
 - **Namespaces in use:** 43
 - **Hardcoded string suspects (regex heuristic):** 67
 
@@ -759,20 +759,20 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/admin/community-marketplace/Listings.tsx
 
-**Status:** ✅ clean — keys consumed: 32, namespaces: 2
+**Status:** ✅ clean — keys consumed: 33, namespaces: 2
 
 **i18n namespaces:**
 
-- `screens` — used: 26, total in shard: 10169
+- `screens` — used: 27, total in shard: 10169
 - `toasts` — used: 6, total in shard: 1277
 
 ### src/pages/admin/community-marketplace/Reports.tsx
 
-**Status:** ✅ clean — keys consumed: 16, namespaces: 2
+**Status:** ✅ clean — keys consumed: 17, namespaces: 2
 
 **i18n namespaces:**
 
-- `screens` — used: 12, total in shard: 10169
+- `screens` — used: 13, total in shard: 10169
 - `toasts` — used: 4, total in shard: 1277
 
 ### src/pages/admin/community/Creators.tsx
@@ -2132,11 +2132,11 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/discover/CommunityMarketplaceMine.tsx
 
-**Status:** ✅ clean — keys consumed: 7, namespaces: 1
+**Status:** ✅ clean — keys consumed: 8, namespaces: 1
 
 **i18n namespaces:**
 
-- `screens` — used: 7, total in shard: 10169
+- `screens` — used: 8, total in shard: 10169
 
 ### src/pages/discover/CommunityMarketplaceNew.tsx
 

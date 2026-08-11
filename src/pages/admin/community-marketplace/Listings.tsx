@@ -6,7 +6,7 @@
  * admin-community-marketplace.ts routes.
  */
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
@@ -25,7 +25,13 @@ import { fmtNumber } from "@/lib/locale-format";
 import { categoryLabel } from "@/lib/community-marketplace-categories";
 import { formatListingPrice } from "@/hooks/useCommunityMarketplace";
 
-const GATEWAY_URL = (import.meta.env.VITE_GATEWAY_URL || import.meta.env.VITE_GATEWAY_BASE || "").replace(/\/+$/, "");
+// VITE_GATEWAY_URL already ends in /api/v1 (e.g. "https://gateway.vitanaland.com/api/v1"),
+// so it can't be the prefix for these `${GATEWAY_URL}/api/v1/admin/...` calls below —
+// prefer the suffix-free VITE_GATEWAY_BASE, falling back to stripping the suffix.
+const GATEWAY_URL = (
+  import.meta.env.VITE_GATEWAY_BASE ||
+  (import.meta.env.VITE_GATEWAY_URL || "").replace(/\/api\/v1\/?$/, "")
+).replace(/\/+$/, "");
 
 interface AdminListing {
   id: string;
@@ -48,6 +54,8 @@ interface AdminListing {
 
 type BulkAction = "hide" | "reject" | "suspend_listing" | "clear_review" | "flag_review" | "reactivate";
 
+const PAGE_SIZE = 50;
+
 const STATUS_LABEL_KEYS: Record<string, string> = {
   draft: "screens.admin.communityMarketplaceStatusDraft",
   active: "screens.admin.active",
@@ -66,46 +74,62 @@ async function authHeaders(): Promise<HeadersInit> {
 export default function AdminCommunityMarketplaceListings() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [busy, setBusy] = useState(false);
   const [items, setItems] = useState<AdminListing[]>([]);
   const [total, setTotal] = useState(0);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState("");
+  const [appliedSearch, setAppliedSearch] = useState("");
   const [reason, setReason] = useState("");
+  // Guards against a slow response for an earlier query overwriting the
+  // results of a query issued after it (e.g. a stale search prefix landing
+  // after the final keystroke's request already resolved).
+  const requestIdRef = useRef(0);
 
   const reviewOnly = searchParams.get("requires_admin_review") === "true";
   const statusFilter = searchParams.get("status");
 
-  const load = useCallback(async () => {
+  const load = useCallback(async (offset: number) => {
     if (!GATEWAY_URL) {
       notifyError("toasts.admin.gatewayUrlNotConfigured");
       setLoading(false);
       return;
     }
-    setLoading(true);
+    const requestId = ++requestIdRef.current;
+    if (offset === 0) setLoading(true);
+    else setLoadingMore(true);
     try {
       const headers = await authHeaders();
       const params = new URLSearchParams();
       if (reviewOnly) params.set("requires_admin_review", "true");
       if (statusFilter) params.set("status", statusFilter);
-      if (search.trim()) params.set("search", search.trim());
-      params.set("limit", "50");
+      if (appliedSearch.trim()) params.set("search", appliedSearch.trim());
+      params.set("limit", String(PAGE_SIZE));
+      params.set("offset", String(offset));
       const resp = await fetch(`${GATEWAY_URL}/api/v1/admin/community-marketplace/listings?${params.toString()}`, { headers });
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const json = await resp.json();
-      setItems(json.items ?? []);
+      if (requestId !== requestIdRef.current) return; // superseded by a newer request
+      setItems((prev) => (offset === 0 ? json.items ?? [] : [...prev, ...(json.items ?? [])]));
       setTotal(json.total ?? 0);
-      setSelected(new Set());
+      if (offset === 0) setSelected(new Set());
     } catch {
-      notifyError("toasts.admin.loadFailed");
+      if (requestId === requestIdRef.current) notifyError("toasts.admin.loadFailed");
     } finally {
-      setLoading(false);
+      if (requestId === requestIdRef.current) {
+        setLoading(false);
+        setLoadingMore(false);
+      }
     }
-  }, [reviewOnly, statusFilter, search]);
+  }, [reviewOnly, statusFilter, appliedSearch]);
 
   useEffect(() => {
-    load();
+    load(0);
   }, [load]);
+
+  const canLoadMore = items.length < total;
+  const handleLoadMore = () => load(items.length);
 
   async function bulkAction(action: BulkAction) {
     if (selected.size === 0) {
@@ -129,7 +153,7 @@ export default function AdminCommunityMarketplaceListings() {
       const json = await resp.json();
       notify("toasts.admin.communityMarketplaceBulkActionApplied", undefined, { count: json.updated ?? 0 });
       setReason("");
-      await load();
+      await load(0);
     } catch {
       notifyError("toasts.admin.bulkActionFailed");
     } finally {
@@ -184,7 +208,7 @@ export default function AdminCommunityMarketplaceListings() {
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder={t("screens.admin.searchTitle")}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") load();
+                    if (e.key === "Enter") setAppliedSearch(search);
                   }}
                 />
               </div>
@@ -202,7 +226,7 @@ export default function AdminCommunityMarketplaceListings() {
               >
                 {t("screens.admin.communityMarketplaceStatusSuspended")}
               </Button>
-              <Button size="sm" variant="outline" onClick={load}>
+              <Button size="sm" variant="outline" onClick={() => load(0)}>
                 <RefreshCw className="w-4 h-4" />
               </Button>
               <span className="text-xs text-muted-foreground ml-auto">{t("screens.admin.value0Total", { value0: fmtNumber(total) })}</span>
@@ -311,6 +335,15 @@ export default function AdminCommunityMarketplaceListings() {
                 </table>
               </CardContent>
             </Card>
+          )}
+
+          {!loading && canLoadMore && (
+            <div className="flex justify-center">
+              <Button variant="outline" onClick={handleLoadMore} disabled={loadingMore}>
+                {loadingMore ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
+                {t("screens.communityMarketplace.loadMore")}
+              </Button>
+            </div>
           )}
         </div>
       </div>

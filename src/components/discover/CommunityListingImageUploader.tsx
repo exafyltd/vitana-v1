@@ -22,6 +22,12 @@ interface CommunityListingImageUploaderProps {
 export function CommunityListingImageUploader({ value, onChange }: CommunityListingImageUploaderProps) {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // URLs already part of the listing when this field mounted (edit mode) — removing
+  // one of these must not delete the storage object immediately: the parent form
+  // might still be cancelled, or its PATCH could fail, and the listing would be left
+  // permanently referencing a deleted image. Only URLs uploaded fresh in this
+  // session (never persisted anywhere) are safe to delete right away.
+  const persistedUrlsRef = useRef<Set<string>>(new Set(value));
 
   const remainingSlots = MAX_IMAGES - value.length;
 
@@ -53,7 +59,9 @@ export function CommunityListingImageUploader({ value, onChange }: CommunityList
   const removeAt = (index: number) => {
     const url = value[index];
     onChange(value.filter((_, i) => i !== index));
-    void deleteCommunityListingImage(url);
+    if (!persistedUrlsRef.current.has(url)) {
+      void deleteCommunityListingImage(url);
+    }
   };
 
   return (
