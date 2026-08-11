@@ -310,6 +310,11 @@
       "gatewayUrlNotConfigured": "Gateway URL not configured",
       "noProductsSelected": "No products selected",
       "bulkActionFailed": "Bulk action failed",
+      "noListingsSelected": "No listings selected",
+      "communityMarketplaceReasonRequired": "A reason is required to reject.",
+      "communityMarketplaceBulkActionApplied": "Action applied: {count} listings updated",
+      "communityMarketplaceReportUpdated": "Report updated",
+      "communityMarketplaceReportUpdateFailed": "Couldn't update the report",
       "failedUpdateStatus": "Failed to update status",
       "success": "Success",
       "failedDeleteMusic": "Failed to delete music",
@@ -1416,6 +1421,22 @@
     "dailyGoal": {
       "title": "Congratulations! Today's goal achieved 🎉",
       "body": "Just keep going.",
+      "_pending_review": {}
+    },
+    "communityMarketplace": {
+      "messageSent": "Message sent",
+      "contactSellerFailed": "Couldn't contact the seller. Please try again.",
+      "reportSubmitted": "Listing reported. Thanks for the feedback.",
+      "reportAlreadySubmitted": "You've already reported this listing.",
+      "reportFailed": "Couldn't report the listing.",
+      "sellerBlocked": "Seller blocked.",
+      "sellerBlockFailed": "Couldn't block the seller.",
+      "tooManyImages": "10 photos maximum per listing.",
+      "imageUploadFailed": "One or more photos couldn't be uploaded.",
+      "listingCreated": "Listing published",
+      "listingCreatedFailed": "Couldn't publish the listing.",
+      "listingUpdated": "Listing updated",
+      "listingUpdatedFailed": "Couldn't update the listing.",
       "_pending_review": {}
     },
     "_pending_review": {}

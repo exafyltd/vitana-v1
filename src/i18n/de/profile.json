@@ -75,7 +75,10 @@
       "publicTitle": "Empfehlungen",
       "publicSubtitle": "Produkte, die dieses Profil empfiehlt",
       "publicEmpty": "Noch keine Empfehlungen",
-      "viewProduct": "Ansehen"
+      "viewProduct": "Ansehen",
+      "marketplaceTitle": "Meine Anzeigen",
+      "marketplaceManage": "Verwalten",
+      "marketplaceEmpty": "Erstelle deine erste Anzeige im Marktplatz"
     }
   }
 }

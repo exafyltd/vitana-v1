@@ -84,6 +84,9 @@
       "publicSubtitle": "Products recommended by this profile",
       "publicEmpty": "No recommendations yet",
       "viewProduct": "View",
+      "marketplaceTitle": "My Listings",
+      "marketplaceManage": "Manage",
+      "marketplaceEmpty": "Post your first marketplace listing",
       "_pending_review": {}
     },
     "_pending_review": {}

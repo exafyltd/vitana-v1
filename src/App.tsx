@@ -205,6 +205,13 @@ const DealsOffers = lazy(() => import("./pages/discover/DealsOffers"));
 const Orders = lazy(() => import("./pages/discover/Orders"));
 const AIPicksPage = lazy(() => import("./pages/discover/AIPicksPage"));
 const DiscoverMarketplace = lazy(() => import("./pages/discover/Marketplace"));
+// BOOTSTRAP-COMMUNITY-MARKETPLACE: peer-to-peer classifieds (distinct from
+// the commercial-intent board above — listings, not matched buy/sell intents)
+const CommunityMarketplace = lazy(() => import("./pages/discover/CommunityMarketplace"));
+const CommunityMarketplaceDetail = lazy(() => import("./pages/discover/CommunityMarketplaceDetail"));
+const CommunityMarketplaceNew = lazy(() => import("./pages/discover/CommunityMarketplaceNew"));
+const CommunityMarketplaceEdit = lazy(() => import("./pages/discover/CommunityMarketplaceEdit"));
+const CommunityMarketplaceMine = lazy(() => import("./pages/discover/CommunityMarketplaceMine"));
 
 // Health sub-pages
 const PillarsOfHealth = lazy(() => import("./pages/health/PillarsOfHealth"));
@@ -281,6 +288,9 @@ const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
 // VTID-02000: Marketplace admin (Maxina)
 const AdminMarketplaceOverview = lazy(() => import("./pages/admin/marketplace/Overview"));
 const AdminMarketplaceProducts = lazy(() => import("./pages/admin/marketplace/Products"));
+// BOOTSTRAP-COMMUNITY-MARKETPLACE (Chunk 7): admin review queue
+const AdminCommunityMarketplaceListings = lazy(() => import("./pages/admin/community-marketplace/Listings"));
+const AdminCommunityMarketplaceReports = lazy(() => import("./pages/admin/community-marketplace/Reports"));
 // Overview Dashboard (replaces legacy dashboard)
 const OverviewDashboard = lazy(() => import("./pages/admin/overview/Dashboard"));
 const OverviewActivity = lazy(() => import("./pages/admin/overview/Activity"));
@@ -940,6 +950,32 @@ const App = () => {
           <Route path="/discover/marketplace" element={
             <AuthGuard>
               <DiscoverMarketplace />
+            </AuthGuard>
+          } />
+          {/* BOOTSTRAP-COMMUNITY-MARKETPLACE — peer-to-peer classifieds listings */}
+          <Route path="/discover/community-marketplace" element={
+            <AuthGuard>
+              <CommunityMarketplace />
+            </AuthGuard>
+          } />
+          <Route path="/discover/community-marketplace/new" element={
+            <AuthGuard>
+              <CommunityMarketplaceNew />
+            </AuthGuard>
+          } />
+          <Route path="/discover/community-marketplace/mine" element={
+            <AuthGuard>
+              <CommunityMarketplaceMine />
+            </AuthGuard>
+          } />
+          <Route path="/discover/community-marketplace/:id" element={
+            <AuthGuard>
+              <CommunityMarketplaceDetail />
+            </AuthGuard>
+          } />
+          <Route path="/discover/community-marketplace/:id/edit" element={
+            <AuthGuard>
+              <CommunityMarketplaceEdit />
             </AuthGuard>
           } />
           <Route path="/discover/supplements" element={
@@ -1731,6 +1767,14 @@ const App = () => {
           } />
           <Route path="/admin/marketplace/products" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><AdminMarketplaceProducts /></ProtectedRoute></AuthGuard>
+          } />
+
+          {/* BOOTSTRAP-COMMUNITY-MARKETPLACE (Chunk 7): admin review queue */}
+          <Route path="/admin/community-marketplace/listings" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminCommunityMarketplaceListings /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/community-marketplace/reports" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><AdminCommunityMarketplaceReports /></ProtectedRoute></AuthGuard>
           } />
 
           {/* 2. Users & Growth Section (legacy — redirects to new Members section) */}
