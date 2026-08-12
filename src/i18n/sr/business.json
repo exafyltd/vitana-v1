@@ -91,13 +91,13 @@
       "_pending_review": {}
     },
     "transfer": {
-      "title": "Prenesi u novčanik",
-      "description": "Prenesi svoje provizije preprodavaca na čekanju u svoj VITANA novčanik.",
+      "title": "Zatraži isplatu",
+      "description": "Zatraži isplatu tvojih neisplaćenih provizija preprodavca u tvoj VITANA Novčanik.",
       "pending": "Na čekanju",
       "wallet": "Novčanik",
-      "instantCredit": "Ovo će ti odmah pripisati zaradu na stanje u Novčaniku.",
-      "transferring": "Prenosim...",
-      "transfer": "Prenesi",
+      "instantCredit": "Tvoj zahtev će pregledati naš tim pre nego što bude uplaćen na stanje tvog Novčanika.",
+      "transferring": "Slanje zahteva...",
+      "transfer": "Zatraži",
       "_pending_review": {}
     },
     "typeSelector": {

@@ -2585,7 +2585,15 @@
       "paNegative": "Négatif",
       "paFeedbackTotal": "Total des retours",
       "paFeatureOpens": "Ouvertures de fonctionnalités",
-      "paEngagementDesc": "Métriques d'activité et d'engagement des membres"
+      "paEngagementDesc": "Métriques d'activité et d'engagement des membres",
+      "navRoleLabel": "Rôle",
+      "navRole_community": "Communauté",
+      "navRole_patient": "Patient",
+      "navRole_professional": "Professionnel",
+      "navRole_staff": "Personnel",
+      "navRole_admin": "Admin",
+      "navRole_developer": "Développeur",
+      "navRole_infra": "Infra"
     },
     "ai-feed": {
       "noEventsFound": "Aucun événement trouvé",
@@ -5988,7 +5996,10 @@
       "participantcountMembers": "{participantCount} membres",
       "value0Participants": "{value0} participants",
       "value0Members": "{value0} membres",
-      "chooseConversationFromLeftStartMessaging": "Sélectionne une conversation à gauche pour envoyer des messages."
+      "chooseConversationFromLeftStartMessaging": "Sélectionne une conversation à gauche pour envoyer des messages.",
+      "anonymous": "Anonyme",
+      "vitanaOpenScreen": "Ouvrir l'écran",
+      "viewFullscreen": "Afficher en plein écran"
     },
     "mobile": {
       "searching": "Recherche…",
@@ -5999,7 +6010,7 @@
       "openLiveRooms": "Ouvrir les Salons en direct",
       "search": "Recherche",
       "calendar": "Calendrier",
-      "alerts": "Notifications",
+      "alerts": "Info",
       "autopilot": "Pilote automatique",
       "cart": "Panier",
       "openMyProfile": "Ouvrir mon profil",
@@ -6683,7 +6694,7 @@
       "potentialPotentialformatted": "Potentiel : {potentialFormatted}",
       "onceYouAddEventsYourInventory": "Une fois que tu auras ajouté des événements à ton inventaire, tu pourras les promouvoir, partager des liens de revendeur et gagner sur chaque billet vendu.",
       "viewWallet": "Voir dans le portefeuille",
-      "transferWallet": "Transférer au portefeuille",
+      "transferWallet": "Demander un paiement",
       "ticketssoldTicketsValue1SalesCommissionrateCommiss": "{ticketsSold} billets · {value1} ventes · {commissionRate}% de commission",
       "value0Earned": "{value0} gagnés",
       "lastSaleValue0Ago": "Dernière vente il y a {value0}",

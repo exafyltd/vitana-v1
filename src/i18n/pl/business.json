@@ -91,13 +91,13 @@
       "_pending_review": {}
     },
     "transfer": {
-      "title": "Przelej do Portfela",
-      "description": "Przelej swoje oczekujące prowizje sprzedawcy do Portfela VITANA.",
+      "title": "Poproś o wypłatę",
+      "description": "Poproś o wypłatę Twoich zaległych prowizji sprzedawcy do Twojego Portfela VITANA.",
       "pending": "Oczekujące",
       "wallet": "Portfel",
-      "instantCredit": "To natychmiastowo zasili Twoje zarobki na saldo Portfela.",
-      "transferring": "Przelewanie...",
-      "transfer": "Przelej",
+      "instantCredit": "Twoja prośba zostanie rozpatrzona przez nasz zespół, zanim zostanie zaksięgowana na saldo Twojego Portfela.",
+      "transferring": "Wysyłanie prośby...",
+      "transfer": "Poproś",
       "_pending_review": {}
     },
     "typeSelector": {

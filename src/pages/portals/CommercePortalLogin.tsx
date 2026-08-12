@@ -75,7 +75,7 @@ const CommercePortalLogin = () => {
             <div className="flex justify-center mb-3">
               <ShoppingBag className="h-10 w-10 text-amber-400" />
             </div>
-            <h1 className="text-3xl font-bold text-amber-400">VITANA</h1>
+            <h1 className="text-3xl font-bold text-amber-400">VITANALAND</h1>
             <p className="text-slate-400">{t('screens.commerceportal.loginSubtitle')}</p>
           </div>
 

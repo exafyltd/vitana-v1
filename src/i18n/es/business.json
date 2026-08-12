@@ -91,13 +91,13 @@
       "_pending_review": {}
     },
     "transfer": {
-      "title": "Transferir a la billetera",
-      "description": "Transfiere tus comisiones de revendedor pendientes a tu billetera de VITANA.",
+      "title": "Solicitar pago",
+      "description": "Solicita el pago de tus comisiones de revendedor pendientes a tu Monedero VITANA.",
       "pending": "Pendiente",
       "wallet": "Billetera",
-      "instantCredit": "Esto acreditará tus ganancias instantáneamente a tu saldo de Wallet.",
-      "transferring": "Transfiriendo...",
-      "transfer": "Transferir",
+      "instantCredit": "Tu solicitud será revisada por nuestro equipo antes de que se acredite a tu saldo del Monedero.",
+      "transferring": "Solicitando...",
+      "transfer": "Solicitar",
       "_pending_review": {}
     },
     "typeSelector": {

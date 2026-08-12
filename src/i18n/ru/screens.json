@@ -2585,7 +2585,15 @@
       "paNegative": "Отрицательные",
       "paFeedbackTotal": "Всего отзывов",
       "paFeatureOpens": "Открытия функций",
-      "paEngagementDesc": "Метрики активности и вовлеченности участников"
+      "paEngagementDesc": "Метрики активности и вовлеченности участников",
+      "navRoleLabel": "Роль",
+      "navRole_community": "Сообщество",
+      "navRole_patient": "Пациент",
+      "navRole_professional": "Профессионал",
+      "navRole_staff": "Персонал",
+      "navRole_admin": "Админ",
+      "navRole_developer": "Разработчик",
+      "navRole_infra": "Инфра"
     },
     "ai-feed": {
       "noEventsFound": "Событий не найдено",
@@ -5988,7 +5996,10 @@
       "participantcountMembers": "{participantCount} участников",
       "value0Participants": "{value0} участников",
       "value0Members": "{value0} участников",
-      "chooseConversationFromLeftStartMessaging": "Выбери беседу слева, чтобы отправить сообщения."
+      "chooseConversationFromLeftStartMessaging": "Выбери беседу слева, чтобы отправить сообщения.",
+      "anonymous": "Анонимный",
+      "vitanaOpenScreen": "Открой экран",
+      "viewFullscreen": "Посмотреть на весь экран"
     },
     "mobile": {
       "searching": "Поиск…",
@@ -5999,7 +6010,7 @@
       "openLiveRooms": "Открыть Живые комнаты",
       "search": "Поиск",
       "calendar": "Календарь",
-      "alerts": "Уведомления",
+      "alerts": "Информация",
       "autopilot": "Автопилот",
       "cart": "Корзина",
       "openMyProfile": "Открыть мой профиль",
@@ -6683,7 +6694,7 @@
       "potentialPotentialformatted": "Потенциал: {potentialFormatted}",
       "onceYouAddEventsYourInventory": "Как только ты добавишь события в свой инвентарь, ты сможешь продвигать их, делиться ссылками реселлера и зарабатывать с каждого проданного билета.",
       "viewWallet": "Посмотреть в Кошельке",
-      "transferWallet": "Перевести в Кошелек",
+      "transferWallet": "Запросить выплату",
       "ticketssoldTicketsValue1SalesCommissionrateCommiss": "{ticketsSold} билетов · {value1} продаж · {commissionRate}% комиссии",
       "value0Earned": "{value0} заработано",
       "lastSaleValue0Ago": "Последняя продажа {value0} назад",

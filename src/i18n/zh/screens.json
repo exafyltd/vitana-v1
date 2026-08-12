@@ -2585,7 +2585,15 @@
       "paNegative": "消极",
       "paFeedbackTotal": "总反馈",
       "paFeatureOpens": "功能打开量",
-      "paEngagementDesc": "成员活动和参与度指标"
+      "paEngagementDesc": "成员活动和参与度指标",
+      "navRoleLabel": "角色",
+      "navRole_community": "社区",
+      "navRole_patient": "患者",
+      "navRole_professional": "专业人士",
+      "navRole_staff": "员工",
+      "navRole_admin": "管理员",
+      "navRole_developer": "开发者",
+      "navRole_infra": "运维"
     },
     "ai-feed": {
       "noEventsFound": "未找到事件",
@@ -5988,7 +5996,10 @@
       "participantcountMembers": "{participantCount}名成员",
       "value0Participants": "{value0}名参与者",
       "value0Members": "{value0}名成员",
-      "chooseConversationFromLeftStartMessaging": "在左侧选择一个对话来发送消息。"
+      "chooseConversationFromLeftStartMessaging": "在左侧选择一个对话来发送消息。",
+      "anonymous": "匿名",
+      "vitanaOpenScreen": "打开屏幕",
+      "viewFullscreen": "全屏查看"
     },
     "mobile": {
       "searching": "正在搜索…",
@@ -5999,7 +6010,7 @@
       "openLiveRooms": "打开直播间",
       "search": "搜索",
       "calendar": "日历",
-      "alerts": "通知",
+      "alerts": "信息",
       "autopilot": "自动驾驶",
       "cart": "购物车",
       "openMyProfile": "打开我的个人资料",
@@ -6683,7 +6694,7 @@
       "potentialPotentialformatted": "潜在收益：{potentialFormatted}",
       "onceYouAddEventsYourInventory": "一旦你将活动添加到库存，就可以推广它们，分享分销链接，并从每张售出的票中赚取收益。",
       "viewWallet": "在钱包中查看",
-      "transferWallet": "转入钱包",
+      "transferWallet": "申请提现",
       "ticketssoldTicketsValue1SalesCommissionrateCommiss": "{ticketsSold}张票 · {value1}次销售 · {commissionRate}% 佣金",
       "value0Earned": "赚到{value0}",
       "lastSaleValue0Ago": "上次销售在{value0}前",

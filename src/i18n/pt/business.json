@@ -91,13 +91,13 @@
       "_pending_review": {}
     },
     "transfer": {
-      "title": "Transferir para a Carteira",
-      "description": "Transfira suas comissões de revendedor pendentes para sua Carteira VITANA.",
+      "title": "Solicitar levantamento",
+      "description": "Solicita o levantamento das tuas comissões de revendedor pendentes para a tua Carteira VITANA.",
       "pending": "Pendente",
       "wallet": "Carteira",
-      "instantCredit": "Isso vai creditar instantaneamente seus ganhos no seu saldo da Carteira.",
-      "transferring": "Transferindo...",
-      "transfer": "Transferir",
+      "instantCredit": "Seu pedido será analisado pela nossa equipe antes de ser creditado no seu saldo da Carteira.",
+      "transferring": "Solicitando...",
+      "transfer": "Solicitar",
       "_pending_review": {}
     },
     "typeSelector": {

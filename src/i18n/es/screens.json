@@ -2581,7 +2581,15 @@
       "devicePreviewOpenNewTab": "Abrir en nueva pestaña",
       "devicePreviewEnterUrl": "Elige un entorno o introduce una URL para iniciar la vista previa.",
       "devicePreviewShellNote": "Solo vista previa de la interfaz de usuario — la shell nativa de Appilix (push, insets nativos de área segura, comportamiento de WebView) no se reproduce. Usa una compilación de prueba de Appilix para eso.",
-      "devicePreviewFrameBlockedNote": "¿No carga el marco? Algunas páginas bloquean la incrustación — usa \"Abrir en nueva pestaña\" en su lugar."
+      "devicePreviewFrameBlockedNote": "¿No carga el marco? Algunas páginas bloquean la incrustación — usa \"Abrir en nueva pestaña\" en su lugar.",
+      "navRoleLabel": "Rol",
+      "navRole_community": "Comunidad",
+      "navRole_patient": "Paciente",
+      "navRole_professional": "Profesional",
+      "navRole_staff": "Personal",
+      "navRole_admin": "Administrador",
+      "navRole_developer": "Desarrollador",
+      "navRole_infra": "Infraestructura"
     },
     "ai-feed": {
       "noEventsFound": "No se encontraron eventos",
@@ -5825,6 +5833,7 @@
       "you": "(Tú)",
       "downloadImage": "Descargar imagen",
       "openNewTab": "Abrir en nueva pestaña",
+      "viewFullscreen": "Ver en pantalla completa",
       "close": "Cerrar",
       "composeMessage": "Redactar mensaje",
       "newGroupChat": "Nuevo chat grupal",
@@ -5984,7 +5993,9 @@
       "inspirationTpl_celebrate2": "¡Muy orgullosos de tu dedicación a tus metas de salud! 👏",
       "inspirationTpl_celebrate3": "Tu progreso es inspirador - ¡sigue haciendo un trabajo fantástico! 🌟",
       "loadingOlderMessages": "Cargando mensajes antiguos…",
-      "conversationStart": "Inicio de la conversación"
+      "conversationStart": "Inicio de la conversación",
+      "anonymous": "Anónimo",
+      "vitanaOpenScreen": "Abrir pantalla"
     },
     "mobile": {
       "searching": "Buscando…",
@@ -5995,7 +6006,7 @@
       "openLiveRooms": "Abrir salas en vivo",
       "search": "Buscar",
       "calendar": "Calendario",
-      "alerts": "Notificaciones",
+      "alerts": "Información",
       "autopilot": "Piloto automático",
       "cart": "Carrito",
       "openMyProfile": "Abrir mi perfil",
@@ -6679,7 +6690,7 @@
       "potentialPotentialformatted": "Potencial: {potentialFormatted}",
       "onceYouAddEventsYourInventory": "Una vez que agregues eventos a tu inventario, podrás promocionarlos, compartir enlaces de revendedor y ganar por cada entrada vendida.",
       "viewWallet": "Ver en Cartera",
-      "transferWallet": "Transferir a Cartera",
+      "transferWallet": "Solicitar pago",
       "ticketssoldTicketsValue1SalesCommissionrateCommiss": "{ticketsSold}entradas · {value1}ventas · {commissionRate}% comisión",
       "value0Earned": "{value0}ganados",
       "lastSaleValue0Ago": "Última venta hace {value0}",

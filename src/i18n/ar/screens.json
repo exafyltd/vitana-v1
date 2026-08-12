@@ -2585,7 +2585,15 @@
       "paNegative": "سلبي",
       "paFeedbackTotal": "إجمالي الملاحظات",
       "paFeatureOpens": "فتح الميزات",
-      "paEngagementDesc": "مقاييس نشاط الأعضاء ومشاركتهم"
+      "paEngagementDesc": "مقاييس نشاط الأعضاء ومشاركتهم",
+      "navRoleLabel": "دور",
+      "navRole_community": "مجتمع",
+      "navRole_patient": "مريض",
+      "navRole_professional": "محترف",
+      "navRole_staff": "طاقم",
+      "navRole_admin": "مسؤول",
+      "navRole_developer": "مطور",
+      "navRole_infra": "بنية تحتية"
     },
     "ai-feed": {
       "noEventsFound": "لا توجد أحداث",
@@ -5847,6 +5855,7 @@
       "you": "(أنت)",
       "downloadImage": "تنزيل الصورة",
       "openNewTab": "فتح في علامة تبويب جديدة",
+      "viewFullscreen": "عرض بملء الشاشة",
       "close": "إغلاق",
       "composeMessage": "إنشاء رسالة",
       "newGroupChat": "محادثة جماعية جديدة",
@@ -5988,7 +5997,9 @@
       "participantcountMembers": "{participantCount} أعضاء",
       "value0Participants": "{value0} مشاركين",
       "value0Members": "{value0} أعضاء",
-      "chooseConversationFromLeftStartMessaging": "اختر محادثة من اليسار لإرسال الرسائل."
+      "chooseConversationFromLeftStartMessaging": "اختر محادثة من اليسار لإرسال الرسائل.",
+      "anonymous": "مجهول",
+      "vitanaOpenScreen": "افتح الشاشة"
     },
     "mobile": {
       "searching": "جاري البحث…",
@@ -5999,7 +6010,7 @@
       "openLiveRooms": "افتح الغرف المباشرة",
       "search": "بحث",
       "calendar": "التقويم",
-      "alerts": "الإشعارات",
+      "alerts": "معلومات",
       "autopilot": "الطيار الآلي",
       "cart": "السلة",
       "openMyProfile": "افتح ملفي الشخصي",
@@ -6683,7 +6694,7 @@
       "potentialPotentialformatted": "محتمل: {potentialFormatted}",
       "onceYouAddEventsYourInventory": "بمجرد إضافة أحداث إلى مخزونك، ستتمكن من الترويج لها ومشاركة روابط الموزعين وكسب المال من كل تذكرة مباعة.",
       "viewWallet": "اعرض في المحفظة",
-      "transferWallet": "حوّل إلى المحفظة",
+      "transferWallet": "اطلب سحب",
       "ticketssoldTicketsValue1SalesCommissionrateCommiss": "{ticketsSold} تذاكر · {value1} مبيعات · {commissionRate}% عمولة",
       "value0Earned": "{value0} كسبت",
       "lastSaleValue0Ago": "آخر بيع منذ {value0}",

@@ -2581,7 +2581,15 @@
       "devicePreviewOpenNewTab": "Otvori u novoj kartici",
       "devicePreviewEnterUrl": "Izaberi okruženje ili unesi URL da započneš pregled.",
       "devicePreviewShellNote": "Samo UI pregled — izvorna Appilix ljuska (push obaveštenja, izvorni bezbedni okviri, ponašanje WebView-a) nije reprodukovana. Koristi Appilix testnu verziju za to.",
-      "devicePreviewFrameBlockedNote": "Okvir se ne učitava? Neke stranice blokiraju ugrađivanje — umesto toga koristi \"Otvori u novoj kartici\"."
+      "devicePreviewFrameBlockedNote": "Okvir se ne učitava? Neke stranice blokiraju ugrađivanje — umesto toga koristi \"Otvori u novoj kartici\".",
+      "navRoleLabel": "Uloga",
+      "navRole_community": "Zajednica",
+      "navRole_patient": "Pacijent",
+      "navRole_professional": "Profesionalac",
+      "navRole_staff": "Osoblje",
+      "navRole_admin": "Administrator",
+      "navRole_developer": "Programer",
+      "navRole_infra": "Infrastruktura"
     },
     "ai-feed": {
       "noEventsFound": "Nema pronađenih događaja",
@@ -5825,6 +5833,7 @@
       "you": "(Ti)",
       "downloadImage": "Preuzmi sliku",
       "openNewTab": "Otvori u novom tabu",
+      "viewFullscreen": "Prikaži preko celog ekrana",
       "close": "Zatvori",
       "composeMessage": "Sastavi poruku",
       "newGroupChat": "Novi grupni čet",
@@ -5984,7 +5993,9 @@
       "inspirationTpl_celebrate2": "Tako ponosan/na na tvoju posvećenost zdravstvenim ciljevima! 👏",
       "inspirationTpl_celebrate3": "Tvoj napredak je inspirativan – nastavi sa fantastičnim radom! 🌟",
       "loadingOlderMessages": "Učitavanje starijih poruka…",
-      "conversationStart": "Početak razgovora"
+      "conversationStart": "Početak razgovora",
+      "anonymous": "Anoniman",
+      "vitanaOpenScreen": "Otvori ekran"
     },
     "mobile": {
       "searching": "Pretražujem…",
@@ -5995,7 +6006,7 @@
       "openLiveRooms": "Otvori uživo sobe",
       "search": "Pretraga",
       "calendar": "Kalendar",
-      "alerts": "Obaveštenja",
+      "alerts": "Info",
       "autopilot": "Autopilot",
       "cart": "Korpa",
       "openMyProfile": "Otvori moj profil",
@@ -6679,7 +6690,7 @@
       "potentialPotentialformatted": "Potencijal: {potentialFormatted}",
       "onceYouAddEventsYourInventory": "Kada dodaš događaje u svoj inventar, moći ćeš da ih promovišeš, deliš reseller linkove i zarađuješ od svake prodate karte.",
       "viewWallet": "Pogledaj u novčaniku",
-      "transferWallet": "Prenesi u novčanik",
+      "transferWallet": "Zatraži isplatu",
       "ticketssoldTicketsValue1SalesCommissionrateCommiss": "{ticketsSold} karata · {value1} prodaja · {commissionRate}% provizije",
       "value0Earned": "Zarađeno {value0}",
       "lastSaleValue0Ago": "Poslednja prodaja pre {value0}",

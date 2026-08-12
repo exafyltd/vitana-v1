@@ -202,6 +202,18 @@ export async function fetchJourneyState(userId: string | null): Promise<JourneyS
   const json = await resp.json();
   if (resp.ok && json?.ok && json.state) {
     const rawState = json.state as Record<string, unknown>;
+    // Durable, account-scoped progress: `currentSession` is the session the
+    // user is ON, so sessions 1..(currentSession-1) are listened/complete.
+    // This is what makes the ring survive a localStorage clear and stay
+    // consistent across devices/origins (staging vs production) — the server
+    // is now the source of truth, with localStorage only as an optimistic
+    // overlay for the just-tapped session.
+    const currentSession =
+      typeof rawState.currentSession === 'number' ? rawState.currentSession : 0;
+    const fromCurrentSession =
+      currentSession > 1
+        ? Array.from({ length: currentSession - 1 }, (_, i) => i + 1)
+        : [];
     return {
       completedTopicIds: stringArray(rawState.completedTopicIds),
       completedListenedTopicIds: [
@@ -210,6 +222,7 @@ export async function fetchJourneyState(userId: string | null): Promise<JourneyS
         ...stringArray(rawState.sessionListenedTopicIds),
       ],
       completedSessionNumbers: [
+        ...fromCurrentSession,
         ...numberArray(rawState.completedSessionNumbers),
         ...numberArray(rawState.completedSessions),
         ...numberArray(rawState.listenedSessions),

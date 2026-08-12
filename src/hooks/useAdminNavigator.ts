@@ -66,11 +66,32 @@ export interface NavOverrideTrigger {
 // BOOTSTRAP-NAV-PLATFORM: the two MAXINA catalogs the Navigator manages.
 export type NavPlatform = "mobile" | "desktop";
 
+// BOOTSTRAP-NAV-ROLE: the role-surface a catalog entry belongs to. The desktop
+// sidebar is role-based (getRoleNavigation), so each role has its own catalog.
+export type NavRole =
+  | "community"
+  | "patient"
+  | "professional"
+  | "staff"
+  | "admin"
+  | "developer"
+  | "infra";
+export const NAV_ROLES: NavRole[] = [
+  "community",
+  "patient",
+  "professional",
+  "staff",
+  "admin",
+  "developer",
+  "infra",
+];
+
 export interface NavCatalogRow {
   id: string;
   screen_id: string;
   tenant_id: string | null;
   platform: NavPlatform;
+  role: NavRole;
   route: string;
   category: string;
   access: "public" | "authenticated";
@@ -161,13 +182,15 @@ export function useNavCatalogList(params: {
   category?: string;
   q?: string;
   platform?: NavPlatform;
+  role?: NavRole;
 } = {}) {
-  const { tenantId, category, q, platform = "mobile" } = params;
+  const { tenantId, category, q, platform = "mobile", role = "community" } = params;
   return useQuery({
-    queryKey: ["nav-catalog", { tenantId, category, q, platform }],
+    queryKey: ["nav-catalog", { tenantId, category, q, platform, role }],
     queryFn: async () => {
       const qs = new URLSearchParams();
       qs.set("platform", platform);
+      qs.set("role", role);
       if (tenantId === null) qs.set("tenant_id", "__shared__");
       else if (tenantId) qs.set("tenant_id", tenantId);
       if (category) qs.set("category", category);
@@ -201,12 +224,17 @@ export function useSpaRoutes() {
   });
 }
 
-export function useNavCoverage(tenantId: string | null | undefined, platform: NavPlatform = "mobile") {
+export function useNavCoverage(
+  tenantId: string | null | undefined,
+  platform: NavPlatform = "mobile",
+  role: NavRole = "community",
+) {
   return useQuery({
-    queryKey: ["nav-coverage", tenantId || "all", platform],
+    queryKey: ["nav-coverage", tenantId || "all", platform, role],
     queryFn: async () => {
       const qs = new URLSearchParams();
       qs.set("platform", platform);
+      qs.set("role", role);
       if (tenantId) qs.set("tenant_id", tenantId);
       const json = await authFetch(`/coverage?${qs.toString()}`);
       return json as { ok: boolean } & CoverageReport;
