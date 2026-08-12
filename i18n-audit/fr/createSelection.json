@@ -1,0 +1,39 @@
+{
+  "verdicts": {
+    "createSelection.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Grammatically incomplete; 'nouveau' is an adjective. Needs an article and implied noun.",
+      "suggested": "Créer un nouveau",
+      "phase": "llm"
+    },
+    "createSelection.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.event": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.eventDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.meetup": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "MeetUp is often treated as a brand name or tech loanword. Translating it to 'Rendez-vous' loses its specific connotation and goes against the rule for brand names/tech loanwords.",
+      "suggested": "MeetUp",
+      "phase": "llm"
+    },
+    "createSelection.meetupDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:18:06.855Z"
+}

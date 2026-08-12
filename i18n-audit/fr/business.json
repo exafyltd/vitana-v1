@@ -1,0 +1,537 @@
+{
+  "verdicts": {
+    "business.reseller.commission": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "business.earning.readyToEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.choosePathGuide": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.startEarning": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.howToEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.pickOne": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createEventDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.addToInventory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.addToInventoryDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createService": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createServiceDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createPromotion": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createPromotionDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.hostAndSell": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.resellAndEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.offerBookings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.boostVisibility": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.directSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.reseller": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.noEarningsYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.startSellingToSee": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.ticketsSold": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.grossAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.youEarned": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.paidToWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.pendingPayout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.transactionId": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.viewInWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.last7Days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.last30Days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.last90Days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.allTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.details": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.earningsActivity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.noEarningsStartSelling": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.totalEarnings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.last30Days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.pendingPayout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.inWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.revenue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.thisMonth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.activeClients": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.totalActive": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Grammatical agreement: 'Total' likely refers to 'clients' (plural) from 'Active Clients'.",
+      "suggested": "Total actifs",
+      "phase": "llm"
+    },
+    "business.kpi.upcomingSessions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.thisWeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.topPerformer": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "business.kpi.noDataYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.createServiceToStart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.bookings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.myEventSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.viewMyEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.totalGrossSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.resellerCommissions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.goToSellEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.totalEarned": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.earningsBySource": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.upcomingEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.next": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.resellerCode": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.codeCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.noSalesYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.shareLinkToStart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.tickets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.shareResellerLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.createPromotion": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.shareLinkOrPromotion": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.selectEventToShare": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.pickEventForLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.noEventsToSell": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.commissionEarned": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.inWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.lastPayout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.noPayoutsYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.attributedSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.noSalesMatchFilter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.mockDataActive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.pending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.wallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.instantCredit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.transferring": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.transfer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.createEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.createEventDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.offerService": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.offerServiceDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.sellTickets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.sellTicketsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.badgeNew": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.badgeActive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.alreadyReseller": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.viewAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.axisBadge.find_match": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.axisBadge.marketplace": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.axisBadge.income_generation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.axisBadge.business_formation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:14:50.764Z"
+}

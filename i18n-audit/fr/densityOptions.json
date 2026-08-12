@@ -1,0 +1,20 @@
+{
+  "verdicts": {
+    "densityOptions.compact": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "densityOptions.cozy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "densityOptions.gallery": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:18:12.536Z"
+}
