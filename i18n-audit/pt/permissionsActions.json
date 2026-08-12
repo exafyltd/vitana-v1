@@ -1,0 +1,91 @@
+{
+  "verdicts": {
+    "permissionsActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.privacySettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.privacySettings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.manageAccess.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.manageAccess.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.securitySettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.securitySettings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.apiKeysAccess.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.apiKeysAccess.description": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.8,
+      "issue": "The 'tu' imperative for 'gerir' (Gere) is common in PT-PT, but 'Gerencie' (from 'gerenciar') is more common for the 'tu' imperative in PT-BR. Without a specified regional variant, it's ambiguous.",
+      "phase": "llm"
+    },
+    "permissionsActions.items.dataRights.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.dataRights.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.auditLogs.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.auditLogs.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.permissionSettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.permissionSettings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.exportData.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.exportData.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:28:48.036Z"
+}

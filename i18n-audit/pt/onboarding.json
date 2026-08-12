@@ -1,0 +1,136 @@
+{
+  "verdicts": {
+    "onboarding.welcome": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.subtitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'Sua' instead of informal 'Tua'.",
+      "suggested": "Tua plataforma de longevidade personalizada",
+      "phase": "llm"
+    },
+    "onboarding.connectApps": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'Conecte Seus' instead of informal 'Conecta Teus'.",
+      "suggested": "Conecta Teus Apps",
+      "phase": "llm"
+    },
+    "onboarding.connectAppsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.setGoals": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'Defina Seus' instead of informal 'Define Teus'.",
+      "suggested": "Define Teus Objetivos",
+      "phase": "llm"
+    },
+    "onboarding.setGoalsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.joinCommunity": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'Junte-se' instead of informal 'Junta-te'.",
+      "suggested": "Junta-te à Comunidade",
+      "phase": "llm"
+    },
+    "onboarding.joinCommunityDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'Conecte-se' instead of informal 'Conecta-te'.",
+      "suggested": "Conecta-te com pessoas com ideias semelhantes em jornadas parecidas",
+      "phase": "llm"
+    },
+    "onboarding.getStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.skip": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.skipIntro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.displayNameLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.displayNamePlaceholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'Seu' instead of informal 'Teu'.",
+      "suggested": "Teu nome",
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleLabel": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'Escolha seu' instead of informal 'Escolhe teu'.",
+      "suggested": "Escolhe teu nome de usuário Vitanaland",
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handlePlaceholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'seu_nome_de_usuário' instead of informal 'teu_nome_de_usuário' for a placeholder.",
+      "suggested": "teu_nome_de_usuário",
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleTaken": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleInvalid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleMinLength": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.saving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.submit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:27:37.017Z"
+}

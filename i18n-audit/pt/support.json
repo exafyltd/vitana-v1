@@ -1,0 +1,185 @@
+{
+  "verdicts": {
+    "support.maxina.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categoriesTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.gettingStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.account": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.events": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.payments": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.technical": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.createAccount.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.createAccount.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.resetPassword.question": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent person. FAQ titles should use 'tu' form for consistency with instructions and other titles.",
+      "suggested": "Como repões a tua palavra-passe?",
+      "phase": "llm"
+    },
+    "support.maxina.faq.resetPassword.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.joinEvents.question": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent person and PT-BR vs PT-PT usage. Should use 'tu' form and 'participar em' for PT-PT.",
+      "suggested": "Como participas em eventos e encontros?",
+      "phase": "llm"
+    },
+    "support.maxina.faq.joinEvents.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.updateProfile.question": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent person. FAQ titles should use 'tu' form for consistency with instructions and other titles.",
+      "suggested": "Como atualizas as informações do teu perfil?",
+      "phase": "llm"
+    },
+    "support.maxina.faq.updateProfile.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.deleteAccount.question": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent person. FAQ titles should use 'tu' form for consistency with instructions and other titles.",
+      "suggested": "Como podes apagar a tua conta?",
+      "phase": "llm"
+    },
+    "support.maxina.faq.deleteAccount.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.paymentMethods.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.paymentMethods.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.contactOrganizers.question": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent person. FAQ titles should use 'tu' form for consistency with instructions and other titles.",
+      "suggested": "Como contactas os organizadores de eventos?",
+      "phase": "llm"
+    },
+    "support.maxina.faq.contactOrganizers.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.dataSecure.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.dataSecure.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.contact.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.contact.email": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.contact.responseTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.usefulLinks.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.usefulLinks.privacy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.usefulLinks.deleteAccount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.usefulLinks.portal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.footer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T06:48:24.737Z"
+}

@@ -1,0 +1,42 @@
+{
+  "verdicts": {
+    "walletActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.addFunds": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.send": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.exchange": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.withdraw": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.buyCredits": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.stakeTokens": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The term 'apostar' (to bet/gamble) doesn't fully convey the technical meaning of 'staking' in a crypto context. A loanword or more descriptive phrase is commonly used.",
+      "suggested": "Fazer Staking de Tokens",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T06:59:37.340Z"
+}

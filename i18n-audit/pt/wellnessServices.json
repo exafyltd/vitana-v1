@@ -1,0 +1,10 @@
+{
+  "verdicts": {
+    "wellnessServices.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T06:59:39.198Z"
+}

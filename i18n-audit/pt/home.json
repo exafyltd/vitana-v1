@@ -1,0 +1,48 @@
+{
+  "verdicts": {
+    "home.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.welcomeBack": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.todaysSchedule": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.mediaContent": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Missing accent on 'Mídia' for 'media' content.",
+      "suggested": "Mídia para ti",
+      "phase": "llm"
+    },
+    "home.eventsAndMeetups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.communityNews": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.inspiration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.dailyMatches": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "The meaning of 'Matches' is ambiguous in a wellness app context. 'Combinações' is a literal translation but might not be the most idiomatic for all possible interpretations (e.g., content recommendations, user connections, activity pairings).",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:22:43.475Z"
+}

@@ -1,0 +1,15 @@
+{
+  "verdicts": {
+    "follow.noFollowers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "follow.noFollowing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:21:13.720Z"
+}
