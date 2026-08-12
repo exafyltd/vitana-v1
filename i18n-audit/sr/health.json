@@ -12,9 +12,9 @@
     },
     "health.description": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"tabla\" is too literal and not idiomatic for \"dashboard\" in this context. \"Pregled\" (overview) is more natural.",
-      "suggested": "Tvoj lični zdravstveni pregled",
+      "confidence": 1,
+      "issue": "The term 'zdravstveni pregled' primarily means 'medical check-up', which misrepresents 'health dashboard'. 'Dashboard' implies an interactive interface, not just an overview.",
+      "suggested": "Tvoja lična zdravstvena kontrolna tabla",
       "phase": "llm"
     },
     "health.overview": {
@@ -24,9 +24,9 @@
     },
     "health.overviewDesc": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Repetitive use of \"pregled\". Can be combined for better flow.",
-      "suggested": "Tvoj sveobuhvatni zdravstveni i wellness pregled",
+      "confidence": 1,
+      "issue": "The translation conflates 'dashboard' and 'overview' into a single 'pregled', losing the distinction. Also, 'zdravstveni pregled' is misleading as in entry 0.",
+      "suggested": "Tvoja sveobuhvatna zdravstvena kontrolna tabla i pregled wellnessa",
       "phase": "llm"
     },
     "health.servicesHub": {
@@ -390,5 +390,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:03:52.912Z"
+  "generatedAt": "2026-08-12T05:14:57.464Z"
 }

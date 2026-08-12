@@ -26,10 +26,8 @@
       "phase": "llm"
     },
     "mediaHub.discoverContent": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register (uses formal Vi-form instead of informal du-form).",
-      "suggested": "Otkrij i deli inspirativni wellness sadržaj sa svojom zajednicom.",
       "phase": "llm"
     },
     "mediaHub.tabs.music": {
@@ -323,10 +321,8 @@
       "phase": "llm"
     },
     "mediaHub.noMusicDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Inconsistent register (uses formal Vi-form instead of informal du-form).",
-      "suggested": "Budi prvi koji će podeliti muziku sa zajednicom!",
       "phase": "llm"
     },
     "mediaHub.noPodcasts": {
@@ -583,7 +579,72 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "mediaHub.toast.commentError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.commentErrorDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.placeholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.beFirst": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.signIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.send": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.member": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.reply": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.replyingTo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.cancelReply": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.like": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:04:41.114Z"
+  "generatedAt": "2026-08-12T05:15:58.960Z"
 }

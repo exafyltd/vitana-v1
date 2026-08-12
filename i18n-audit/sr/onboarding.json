@@ -3,8 +3,8 @@
     "onboarding.welcome": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Register mismatch: 'Dobrodošli' is plural/formal (vi-form), but the app requires informal singular (du-form).",
-      "suggested": "Dobrodošao u VITANA",
+      "issue": "Gender mismatch for a general welcome. 'Dobrodošao' is masculine singular. For a general welcome, the plural form 'Dobrodošli' is preferred as it's gender-neutral in this context.",
+      "suggested": "Dobrodošli u VITANA",
       "phase": "llm"
     },
     "onboarding.subtitle": {
@@ -118,5 +118,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:05:13.427Z"
+  "generatedAt": "2026-08-12T05:16:54.835Z"
 }
