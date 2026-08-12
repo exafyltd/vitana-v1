@@ -10237,7 +10237,51 @@
       "loginSubtitle": "商务门户",
       "loginIntro": "登录以管理你的业务。",
       "loginButton": "登录",
-      "loginError": "登录失败"
+      "loginError": "登录失败",
+      "agentConnect": {
+        "back": "返回我的连接",
+        "title": "通过 AI 代理连接",
+        "subtitle": "将你自己的 Claude、ChatGPT 或 Gemini 代理直接指向 Vitanaland MCP 服务器 — 你的代理可以为你管理商品目录、订单和可用性，而无需你手动填写表格。",
+        "notReachableYet": "MCP 服务器已建成，但尚未在此地址公开访问（DNS 暴露仍在等待中）。一旦上线，以下步骤将保持不变。",
+        "mcpUrlLabel": "MCP 服务器 URL",
+        "copyUrl": "复制 URL",
+        "copied": "已复制到剪贴板",
+        "claudeTitle": "连接 Claude",
+        "claudeStep1": "在 Claude 中，打开“设置”→“连接器”。",
+        "claudeStep2": "点击“+”，然后点击“添加自定义连接器”。",
+        "claudeStep3": "粘贴上述 MCP 服务器 URL，然后点击“添加”。",
+        "chatgptTitle": "连接 ChatGPT",
+        "chatgptStep1": "在 ChatGPT 中，打开“设置”→“应用和连接器”→“高级设置”，然后开启“开发者模式”。",
+        "chatgptStep2": "点击“创建新应用”并为其命名。",
+        "chatgptStep3": "粘贴上述 MCP 服务器 URL 并保存。",
+        "chatgptNote": "开发者模式目前适用于 Plus/Pro 账户；在 Business/Enterprise 账户上，工作区管理员可以开启或关闭它。",
+        "geminiTitle": "连接 Gemini",
+        "geminiStep1": "对于 Gemini CLI：将上述 MCP 服务器 URL 添加到 ~/.gemini/settings.json 中你的 MCP 服务器下。",
+        "geminiStep2": "对于 Gemini Enterprise (Business Edition)：设置与帮助 → 团队 → 管理团队 → 已连接应用 → “添加 MCP 服务器”。",
+        "geminiNote": "消费者 Gemini 应用目前没有直接添加自定义 MCP 服务器的官方文档方法 — 目前仅通过 Gemini CLI 和 Gemini Enterprise 提供此功能。"
+      },
+      "detectPlatform": {
+        "urlPlaceholder": "商店 URL（可选）— 例如 https://your-shop.com",
+        "hint": "如果识别出平台，我们将检查 URL 并自动填写连接器和提供商 ID。",
+        "detected": "{platform} 已检测到 — 字段已填写。",
+        "notDetected": "平台未识别。请手动填写连接器和提供商 ID。",
+        "failed": "无法检查该地址。请手动填写连接器和提供商 ID。"
+      },
+      "connectOauth": {
+        "title": "连接",
+        "shopifyHint": "连接你的 Shopify 商店以同步你的商品目录和订单。",
+        "shopifyDomainPlaceholder": "your-shop.myshopify.com",
+        "shopifyButton": "连接 Shopify",
+        "fhirHint": "通过 SMART on FHIR 连接你的 FHIR 服务器（例如 Epic、Cerner/Oracle Health、Athenahealth）。",
+        "fhirBaseUrlPlaceholder": "FHIR 服务器 URL — 例如 https://ehr.example.com/fhir/r4",
+        "fhirClientIdPlaceholder": "客户端 ID（由你的 EHR 颁发）",
+        "fhirClientSecretPlaceholder": "客户端密钥（可选，仅限保密客户端）",
+        "fhirScopePlaceholder": "范围（可选，默认：openid fhirUser patient/*.read）",
+        "fhirButton": "连接 FHIR 服务器",
+        "connecting": "连接中...",
+        "notConfigured": "此连接类型尚未启用。请稍后再试。",
+        "failed": "无法启动连接。请检查你的详细信息。"
+      }
     },
     "oauthconsent": {
       "title": "允许访问？",
