@@ -55,7 +55,14 @@ const SCALES = [1, 0.75, 0.5] as const;
 
 export default function DevicePreview() {
   const [deviceId, setDeviceId] = useState<string>(DEVICES[0].id);
-  const [env, setEnv] = useState<EnvKey>("staging");
+  // VTID-03611: default to Staging (AWS), not plain "staging"
+  // (preview.vitanaland.com). The plain staging build is the pre-cutover
+  // GCP-era environment -- it never received the Nova Sonic / Bedrock
+  // provider work, so ORB voice there is silently still Vertex. An admin
+  // opening this page (even from preview-aws.vitanaland.com itself) got a
+  // simulator whose iframe silently loaded a DIFFERENT, stale origin than
+  // the page they were on, and had no way to tell from the UI.
+  const [env, setEnv] = useState<EnvKey>("stagingAws");
   const [customUrl, setCustomUrl] = useState("");
   const [path, setPath] = useState("/");
   const [landscape, setLandscape] = useState(false);
