@@ -10363,14 +10363,16 @@
         "geminiTitle": "Connect with Gemini",
         "geminiStep1": "For Gemini CLI: add the MCP server URL above to ~/.gemini/settings.json under your MCP servers.",
         "geminiStep2": "For Gemini Enterprise (Business Edition): Settings & help → Team → Manage team → Connected apps → \"Add MCP Server\".",
-        "geminiNote": "The consumer Gemini app currently has no documented way to add a custom MCP server directly — that's only available today via Gemini CLI and Gemini Enterprise."
+        "geminiNote": "The consumer Gemini app currently has no documented way to add a custom MCP server directly — that's only available today via Gemini CLI and Gemini Enterprise.",
+        "_pending_review": {}
       },
       "detectPlatform": {
         "urlPlaceholder": "Store URL (optional) — e.g. https://your-shop.com",
         "hint": "We'll check the URL and fill in the connector and provider ID automatically if we recognize the platform.",
         "detected": "{platform} detected — fields filled in.",
         "notDetected": "Platform not recognized. Please fill in the connector and provider ID manually.",
-        "failed": "Couldn't check that address. Please fill in the connector and provider ID manually."
+        "failed": "Couldn't check that address. Please fill in the connector and provider ID manually.",
+        "_pending_review": {}
       },
       "connectOauth": {
         "title": "Connect",
@@ -10385,7 +10387,8 @@
         "fhirButton": "Connect FHIR server",
         "connecting": "Connecting...",
         "notConfigured": "This connection type isn't enabled yet. Please try again later.",
-        "failed": "Couldn't start the connection. Please check your details."
+        "failed": "Couldn't start the connection. Please check your details.",
+        "_pending_review": {}
       },
       "_pending_review": {}
     },
