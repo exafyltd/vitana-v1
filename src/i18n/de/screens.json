@@ -10256,6 +10256,21 @@
         "detected": "{platform} erkannt — Felder wurden ausgefüllt.",
         "notDetected": "Plattform nicht erkannt. Bitte Connector- und Anbieter-ID manuell eintragen.",
         "failed": "Die Adresse konnte nicht geprüft werden. Bitte Connector- und Anbieter-ID manuell eintragen."
+      },
+      "connectOauth": {
+        "title": "Verbinden",
+        "shopifyHint": "Verbinde deinen Shopify-Shop, um Katalog und Bestellungen zu synchronisieren.",
+        "shopifyDomainPlaceholder": "dein-shop.myshopify.com",
+        "shopifyButton": "Mit Shopify verbinden",
+        "fhirHint": "Verbinde deinen FHIR-Server (z. B. Epic, Cerner/Oracle Health, Athenahealth) über SMART on FHIR.",
+        "fhirBaseUrlPlaceholder": "FHIR-Server-Adresse — z. B. https://ehr.beispiel.de/fhir/r4",
+        "fhirClientIdPlaceholder": "Client-ID (von deinem EHR vergeben)",
+        "fhirClientSecretPlaceholder": "Client-Secret (optional, nur für vertrauliche Clients)",
+        "fhirScopePlaceholder": "Berechtigungsbereich (optional, Standard: openid fhirUser patient/*.read)",
+        "fhirButton": "FHIR-Server verbinden",
+        "connecting": "Verbinde...",
+        "notConfigured": "Diese Verbindungsart ist noch nicht freigeschaltet. Bitte versuche es später erneut.",
+        "failed": "Die Verbindung konnte nicht gestartet werden. Bitte überprüfe deine Angaben."
       }
     },
     "oauthconsent": {

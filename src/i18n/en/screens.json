@@ -10362,6 +10362,21 @@
         "notDetected": "Platform not recognized. Please fill in the connector and provider ID manually.",
         "failed": "Couldn't check that address. Please fill in the connector and provider ID manually."
       },
+      "connectOauth": {
+        "title": "Connect",
+        "shopifyHint": "Connect your Shopify store to sync your catalog and orders.",
+        "shopifyDomainPlaceholder": "your-shop.myshopify.com",
+        "shopifyButton": "Connect with Shopify",
+        "fhirHint": "Connect your FHIR server (e.g. Epic, Cerner/Oracle Health, Athenahealth) via SMART on FHIR.",
+        "fhirBaseUrlPlaceholder": "FHIR server URL — e.g. https://ehr.example.com/fhir/r4",
+        "fhirClientIdPlaceholder": "Client ID (issued by your EHR)",
+        "fhirClientSecretPlaceholder": "Client secret (optional, confidential clients only)",
+        "fhirScopePlaceholder": "Scope (optional, default: openid fhirUser patient/*.read)",
+        "fhirButton": "Connect FHIR server",
+        "connecting": "Connecting...",
+        "notConfigured": "This connection type isn't enabled yet. Please try again later.",
+        "failed": "Couldn't start the connection. Please check your details."
+      },
       "_pending_review": {}
     },
     "oauthconsent": {

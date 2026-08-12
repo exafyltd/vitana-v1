@@ -10,6 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import { ArrowLeft, Clock, Loader2 } from 'lucide-react';
 import { adminFetch } from '@/lib/admin-api';
 import { t, notifyError } from '@/lib/i18n-toast';
@@ -58,6 +59,12 @@ export default function CommerceConnectionDetail() {
   const [preview, setPreview] = useState<Preview | null>(null);
   const [activation, setActivation] = useState<Activation | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
+  const [shopDomain, setShopDomain] = useState('');
+  const [fhirBaseUrl, setFhirBaseUrl] = useState('');
+  const [fhirClientId, setFhirClientId] = useState('');
+  const [fhirClientSecret, setFhirClientSecret] = useState('');
+  const [fhirScope, setFhirScope] = useState('');
+  const [connecting, setConnecting] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -95,6 +102,42 @@ export default function CommerceConnectionDetail() {
       body: JSON.stringify({ mapping_id: mappingId, decision }),
     });
 
+  // Track 2 (VTID-03603) / Track 3 (VTID-03605): kicks off the connector's
+  // OAuth flow and redirects the browser to the returned authorize_url —
+  // both connectors are dormant server-side until an operator configures
+  // real credentials, so a not_configured response is expected today.
+  const connectOauth = async (path: string, body: Record<string, unknown>) => {
+    setConnecting(true);
+    try {
+      const res = await adminFetch(`${MY_PORTAL_API}/connections/${id}${path}`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+      if (res?.data?.authorize_url) {
+        window.location.href = res.data.authorize_url;
+        return;
+      }
+      notifyError('screens.commerceportal.connectOauth.failed');
+    } catch (err) {
+      if (err instanceof Error && err.message === 'not_configured') {
+        notifyError('screens.commerceportal.connectOauth.notConfigured');
+      } else {
+        notifyError('screens.commerceportal.connectOauth.failed');
+      }
+    } finally {
+      setConnecting(false);
+    }
+  };
+
+  const connectShopify = () => connectOauth('/shopify/authorize', { shop: shopDomain.trim() });
+  const connectFhir = () =>
+    connectOauth('/fhir/authorize', {
+      fhir_base_url: fhirBaseUrl.trim(),
+      client_id: fhirClientId.trim(),
+      client_secret: fhirClientSecret.trim() || undefined,
+      scope: fhirScope.trim() || undefined,
+    });
+
   if (!detail) {
     return (
       <div className="flex justify-center py-16">
@@ -105,6 +148,9 @@ export default function CommerceConnectionDetail() {
 
   const state = detail.state;
   const canTest = state === 'mapping' || state === 'testing' || state === 'approval_required' || state === 'failed';
+  const needsOauthConnect =
+    (state === 'discovered' || state === 'authorization_required') &&
+    (detail.connector_id === 'shopify' || detail.connector_id === 'smart_fhir');
 
   return (
     <div className="mx-auto w-full max-w-4xl space-y-4 p-4">
@@ -125,6 +171,66 @@ export default function CommerceConnectionDetail() {
         </div>
         <Badge variant={stateBadgeVariant(state)}>{stateLabel(state)}</Badge>
       </div>
+
+      {needsOauthConnect && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">{t('screens.commerceportal.connectOauth.title')}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {detail.connector_id === 'shopify' && (
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">{t('screens.commerceportal.connectOauth.shopifyHint')}</p>
+                <Input
+                  value={shopDomain}
+                  onChange={(e) => setShopDomain(e.target.value)}
+                  placeholder={t('screens.commerceportal.connectOauth.shopifyDomainPlaceholder')}
+                  aria-label={t('screens.commerceportal.connectOauth.shopifyDomainPlaceholder')}
+                />
+                <Button disabled={connecting || !shopDomain.trim()} onClick={() => void connectShopify()}>
+                  {connecting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                  {connecting ? t('screens.commerceportal.connectOauth.connecting') : t('screens.commerceportal.connectOauth.shopifyButton')}
+                </Button>
+              </div>
+            )}
+            {detail.connector_id === 'smart_fhir' && (
+              <div className="space-y-2">
+                <p className="text-sm text-muted-foreground">{t('screens.commerceportal.connectOauth.fhirHint')}</p>
+                <Input
+                  value={fhirBaseUrl}
+                  onChange={(e) => setFhirBaseUrl(e.target.value)}
+                  placeholder={t('screens.commerceportal.connectOauth.fhirBaseUrlPlaceholder')}
+                  aria-label={t('screens.commerceportal.connectOauth.fhirBaseUrlPlaceholder')}
+                  type="url"
+                />
+                <Input
+                  value={fhirClientId}
+                  onChange={(e) => setFhirClientId(e.target.value)}
+                  placeholder={t('screens.commerceportal.connectOauth.fhirClientIdPlaceholder')}
+                  aria-label={t('screens.commerceportal.connectOauth.fhirClientIdPlaceholder')}
+                />
+                <Input
+                  value={fhirClientSecret}
+                  onChange={(e) => setFhirClientSecret(e.target.value)}
+                  placeholder={t('screens.commerceportal.connectOauth.fhirClientSecretPlaceholder')}
+                  aria-label={t('screens.commerceportal.connectOauth.fhirClientSecretPlaceholder')}
+                  type="password"
+                />
+                <Input
+                  value={fhirScope}
+                  onChange={(e) => setFhirScope(e.target.value)}
+                  placeholder={t('screens.commerceportal.connectOauth.fhirScopePlaceholder')}
+                  aria-label={t('screens.commerceportal.connectOauth.fhirScopePlaceholder')}
+                />
+                <Button disabled={connecting || !fhirBaseUrl.trim() || !fhirClientId.trim()} onClick={() => void connectFhir()}>
+                  {connecting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                  {connecting ? t('screens.commerceportal.connectOauth.connecting') : t('screens.commerceportal.connectOauth.fhirButton')}
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardHeader>
