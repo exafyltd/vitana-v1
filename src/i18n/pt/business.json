@@ -91,8 +91,8 @@
       "_pending_review": {}
     },
     "transfer": {
-      "title": "Solicitar levantamento",
-      "description": "Solicita o levantamento das tuas comissões de revendedor pendentes para a tua Carteira VITANA.",
+      "title": "Solicitar saque",
+      "description": "Solicite o saque das suas comissões de revendedor pendentes para a sua Carteira VITANA.",
       "pending": "Pendente",
       "wallet": "Carteira",
       "instantCredit": "Seu pedido será analisado pela nossa equipe antes de ser creditado no seu saldo da Carteira.",
