@@ -28,7 +28,7 @@ import {
   sr as dfSr,
   ar as dfAr,
   fr as dfFr,
-  pt as dfPt,
+  ptBR as dfPtBR,
   ru as dfRu,
   zhCN as dfZh,
   pl as dfPl,
@@ -42,8 +42,11 @@ const DATE_FNS_BY_BCP47: Record<string, Locale> = {
   'sr-RS': dfSr,
   'ar-SA': dfAr,
   'fr-FR': dfFr,
-  'pt-PT': dfPt,
-  'pt-BR': dfPt,
+  // Brazilian gets date-fns ptBR, not pt (VTID-03577). The two differ in
+  // date wording, and mapping pt-BR at the European locale would render
+  // European month/relative strings inside an otherwise Brazilian UI — the
+  // exact mixed-variant output this VTID exists to remove.
+  'pt-BR': dfPtBR,
   'ru-RU': dfRu,
   'zh-CN': dfZh,
   'pl-PL': dfPl,

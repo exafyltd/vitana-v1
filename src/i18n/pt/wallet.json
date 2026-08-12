@@ -1,7 +1,7 @@
 {
   "wallet": {
     "title": "Carteira",
-    "description": "Teu Saldo, Créditos e Recompensas",
+    "description": "Seu Saldo, Créditos e Recompensas",
     "usdBalance": "Saldo EUR / USD",
     "creditsBalance": "Saldo de Créditos VTNA",
     "creditsLabel": "Créditos VTNA",
@@ -21,12 +21,12 @@
       "rewards": "Recompensas",
       "purchases": "Compras",
       "pending": "Pagamentos Pendentes",
-      "withdrawals": "Levantamentos",
+      "withdrawals": "Saques",
       "stakes": "Aposta",
       "_pending_review": {}
     },
     "noActivity": "Nenhuma atividade ainda",
-    "noActivityDesc": "Tuas transações aparecerão aqui.",
+    "noActivityDesc": "Suas transações aparecerão aqui.",
     "displayCurrency": "Moeda de exibição",
     "_pending_review": {}
   },

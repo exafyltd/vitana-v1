@@ -2,12 +2,12 @@
   "business": {
     "earning": {
       "readyToEarn": "Pronto para ganhar com VITANA?",
-      "choosePathGuide": "Escolhe um caminho e vamos guiar-te para a tua primeira fonte de rendimento.",
+      "choosePathGuide": "Escolha um caminho e vamos guiar você para sua primeira fonte de renda.",
       "startEarning": "Começa a ganhar",
-      "howToEarn": "Como queres ganhar?",
-      "pickOne": "Escolhe uma opção — podes explorar as outras mais tarde.",
+      "howToEarn": "Como você gostaria de ganhar?",
+      "pickOne": "Escolha uma opção — você pode explorar as outras depois.",
       "createEvent": "Cria um Evento",
-      "createEventDesc": "Organiza o teu próprio evento e vende bilhetes.",
+      "createEventDesc": "Organize seu próprio evento e venda ingressos.",
       "addToInventory": "Adiciona Eventos ao Inventário",
       "addToInventoryDesc": "Revende eventos selecionados e ganha comissão.",
       "createService": "Cria um Serviço",
@@ -25,7 +25,7 @@
       "directSales": "Vendas Diretas",
       "reseller": "Revendedor",
       "noEarningsYet": "Ainda não há histórico de ganhos",
-      "startSellingToSee": "Começa a vender para veres as tuas transações aqui.",
+      "startSellingToSee": "Comece a vender para ver suas transações aqui.",
       "ticketsSold": "Bilhetes Vendidos",
       "grossAmount": "Valor Bruto",
       "youEarned": "Ganhaste",
@@ -39,7 +39,7 @@
       "allTime": "Tempo total",
       "details": "Detalhes",
       "earningsActivity": "Atividade de Ganhos",
-      "noEarningsStartSelling": "Ainda não tens ganhos. Começa a vender para veres a atividade aqui.",
+      "noEarningsStartSelling": "Nenhum ganho ainda. Comece a vender para ver a atividade aqui.",
       "_pending_review": {}
     },
     "kpi": {
@@ -76,9 +76,9 @@
       "tickets": "ingressos",
       "shareResellerLink": "Compartilhar link de revendedor",
       "createPromotion": "Criar promoção",
-      "shareLinkOrPromotion": "Partilha os teus links de revendedor ou cria uma promoção para ganhar comissões.",
+      "shareLinkOrPromotion": "Compartilhe seus links de revendedor ou crie uma promoção para ganhar comissões.",
       "selectEventToShare": "Selecione um evento para compartilhar",
-      "pickEventForLink": "Escolhe um evento para gerar o teu link de revendedor.",
+      "pickEventForLink": "Escolha um evento para gerar seu link de revendedor.",
       "noEventsToSell": "Nenhum evento disponível para vender",
       "commission": "comissão",
       "commissionEarned": "Comissão Ganha",
@@ -91,12 +91,12 @@
       "_pending_review": {}
     },
     "transfer": {
-      "title": "Solicitar levantamento",
-      "description": "Solicita o levantamento das tuas comissões de revendedor pendentes para a tua Carteira VITANA.",
+      "title": "Solicitar saque",
+      "description": "Solicite o saque das suas comissões de revendedor pendentes para a sua Carteira VITANA.",
       "pending": "Pendente",
       "wallet": "Carteira",
-      "instantCredit": "O teu pedido será analisado pela nossa equipa antes de ser creditado no teu saldo da Carteira.",
-      "transferring": "A solicitar...",
+      "instantCredit": "Seu pedido será analisado pela nossa equipe antes de ser creditado no seu saldo da Carteira.",
+      "transferring": "Solicitando...",
       "transfer": "Solicitar",
       "_pending_review": {}
     },

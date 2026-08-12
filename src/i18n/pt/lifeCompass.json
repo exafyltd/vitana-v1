@@ -1,13 +1,13 @@
 {
   "lifeCompass": {
     "title": "Bússola da Vida",
-    "description": "A tua Bússola da Vida guia todas as recomendações e decisões da IA. Escolhe um objetivo principal que mais te importa agora. A IA priorizará sugestões que se alinhem com esta direção.",
+    "description": "Sua Bússola da Vida guia todas as recomendações e decisões da IA. Escolha um objetivo principal que seja mais importante para você agora. A IA priorizará sugestões que se alinhem com esta direção.",
     "currentCompass": "Bússola Atual",
     "alignment": "Alinhamento: {value}%",
     "confidence": "Confiança: {value}%",
     "suggestedGoals": "Objetivos Sugeridos",
     "customGoal": "Objetivo Personalizado",
-    "customGoalPlaceholder": "Descreve o teu objetivo principal com as tuas próprias palavras...",
+    "customGoalPlaceholder": "Descreva seu objetivo principal em suas próprias palavras...",
     "setCustomGoal": "Definir Objetivo Personalizado",
     "closeAria": "Fechar",
     "categoryLabels": {

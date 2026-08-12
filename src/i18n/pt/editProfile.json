@@ -1,13 +1,13 @@
 {
   "editProfile": {
-    "unsavedChanges": "Tens alterações não guardadas. Tens a certeza de que queres sair?",
+    "unsavedChanges": "Você tem alterações não salvas. Tem certeza que deseja sair?",
     "notAuthenticated": "Não autenticado",
     "notAuthenticatedDesc": "Por favor, faça login para salvar seu perfil.",
     "profileUpdated": "Perfil atualizado com sucesso!",
-    "profileUpdatedDesc": "Tuas mudanças estão agora ativas. Teu perfil VITANA está ótimo.",
+    "profileUpdatedDesc": "Suas alterações estão ativas agora. Seu perfil VITANA está ótimo.",
     "error": "Erro",
     "refreshFailed": "Falha ao atualizar dados do perfil.",
-    "showcaseHint": "Seleciona publicações e conteúdo para serem destacados no topo do teu perfil.",
+    "showcaseHint": "Selecione publicações e conteúdo para serem destacados no topo do seu perfil.",
     "showcaseTitle": "Destaques",
     "manage": "Gerenciar",
     "about": "Sobre",

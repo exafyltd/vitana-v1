@@ -1,6 +1,6 @@
 {
   "packages": {
-    "confirmDelete": "Tens certeza que queres eliminar este pacote?",
+    "confirmDelete": "Você tem certeza que deseja excluir este pacote?",
     "types": {
       "bundle": "Pacote",
       "subscription": "Subscrição",

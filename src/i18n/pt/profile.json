@@ -2,10 +2,10 @@
   "profile": {
     "defaultBio": "Entusiasta do bem-estar apaixonado(a) por saúde holística e construção de comunidade. 🌱",
     "autopilot": {
-      "polishBio": "Aprimora o teu Bio, Arquétipo e Destaques",
+      "polishBio": "Aprimore sua Bio, Arquétipo e Destaques",
       "editHighlights": "Editar Destaques",
       "saveHighlights": "Salvar Destaques",
-      "highlightsDesc": "Escolhe as tuas melhores publicações e multimédia para exibir no topo do teu perfil. Conteúdo destacado aparece na secção de Destaques e atrai mais seguidores.",
+      "highlightsDesc": "Escolha seus melhores posts e mídias para exibir no topo do seu perfil. Conteúdo em destaque aparece na seção Destaques e atrai mais seguidores.",
       "try": "Experimenta",
       "_pending_review": {}
     },
@@ -74,7 +74,7 @@
       "title": "Minhas Recomendações",
       "subtitle": "Produtos que recomendaste e o que ganhaste com eles",
       "empty": "Nenhuma recomendação ainda",
-      "emptyDesc": "Recomenda um produto do Discover para veres os teus cliques, compras e comissões aqui.",
+      "emptyDesc": "Recomende um produto do Discover para ver seus cliques, compras e comissões aqui.",
       "clicks": "{count} cliques",
       "conversions": "{count} compras",
       "totalEarned": "Total ganho",
