@@ -6,9 +6,8 @@
       "phase": "llm"
     },
     "intro.experience": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.5,
-      "issue": "Ambiguous English source. 'Experience' can be a noun or an imperative verb. Spanish 'Experiencia' is only a noun. If the English was intended as an imperative verb (e.g., 'Experience our app'), the translation is inaccurate and should be 'Experimenta'.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "intro.tagline": {
@@ -35,7 +34,22 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "intro.taglineMain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.taglineSub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.goToLogin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:04.743Z"
+  "generatedAt": "2026-08-12T05:13:53.974Z"
 }

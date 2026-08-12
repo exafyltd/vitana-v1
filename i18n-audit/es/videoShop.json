@@ -1,140 +1,172 @@
 {
   "verdicts": {
-    "vitanaIndex.mental": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "vitanaIndex.title": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "vitanaIndex.subtitle": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "vitanaIndex.veryPoor": {
+    "videoShop.feed.end": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "vitanaIndex.poor": {
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "vitanaIndex.fair": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "vitanaIndex.improving": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "vitanaIndex.good": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "vitanaIndex.excellent": {
+    "videoShop.feed.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "vitanaIndex.sleep": {
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "vitanaIndex.exercise": {
+    "videoShop.feed.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "vitanaIndex.nutrition": {
+    "videoShop.feed.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "vitanaIndex.hydration": {
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "vitanaIndex.viewFullReport": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "vitanaIndex.trackToday": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "vitanaIndex.tiers.starting": {
+    "videoShop.feed.linkCopied": {
       "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.productFallback": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.adding": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addedBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.goToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.moreDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.notifyMe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.outOfStock": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.retry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.errorTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.errorBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.roleBlockedTitle": {
+      "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
+      "issue": "Slightly unnatural phrasing for a friendly app; 'La compra' feels a bit stiff. Using the infinitive as a noun or an impersonal construction would be more idiomatic.",
+      "suggested": "Comprar no está disponible aquí",
       "phase": "llm"
     },
-    "vitanaIndex.tiers.early": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "vitanaIndex.tiers.building": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "vitanaIndex.tiers.strong": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "vitanaIndex.tiers.reallyGood": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "vitanaIndex.tiers.elite": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "vitanaIndex.framings.starting": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "vitanaIndex.framings.early": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "vitanaIndex.framings.building": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "vitanaIndex.framings.strong": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "vitanaIndex.framings.reallyGood": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "vitanaIndex.framings.elite": {
+    "videoShop.drawer.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-12T05:27:12.556Z"
+  "generatedAt": "2026-08-12T05:27:08.787Z"
 }

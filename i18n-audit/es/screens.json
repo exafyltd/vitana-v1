@@ -1666,10 +1666,8 @@
       "phase": "llm"
     },
     "screens.common.careTeam": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "More natural phrasing for 'Care Team' in a wellness context.",
-      "suggested": "Equipo de atención",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.yourHealthcareProvidersSpecialists": {
@@ -1968,10 +1966,8 @@
       "phase": "llm"
     },
     "screens.common.upgradePlan": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Mejorar plan' sounds like 'improve a plan' rather than 'upgrade a plan'.",
-      "suggested": "Actualizar plan",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.usageStats": {
@@ -2415,10 +2411,8 @@
       "phase": "llm"
     },
     "screens.common.consentPackageCreatedSuccessfully": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Exitosamente' is a bit formal and clunky for a friendly app.",
-      "suggested": "¡Paquete de Consentimiento Creado con éxito!",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.yourBiomarkerConsentPackageHasCreated": {
@@ -3007,9 +3001,8 @@
       "phase": "llm"
     },
     "screens.common.tenantOnly": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "'Inquilino' refers to a property renter, which is likely incorrect for 'tenant' in a software/system context. More context is needed.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.defaultCommissionRate": {
@@ -3453,10 +3446,8 @@
       "phase": "llm"
     },
     "screens.common.overallPrivacyHealth": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Phrasing 'Salud de Privacidad General' is a bit awkward.",
-      "suggested": "Salud general de la privacidad",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.publicProfileVisibility": {
@@ -4390,10 +4381,8 @@
       "phase": "llm"
     },
     "screens.common.eachShareTrackedSoWhenFriend": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Cada compartir' is grammatically acceptable but 'Cada vez que compartes' is more natural.",
-      "suggested": "Cada vez que compartes se rastrea, así que cuando un amigo se registra, tu crédito de recompensa llega automáticamente.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.common.orderNow": {
@@ -5242,10 +5231,8 @@
       "phase": "llm"
     },
     "screens.common.addCaptionYourMedia": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Pie' is a literal translation of 'foot'; 'caption' for media is 'leyenda' or 'descripción'.",
-      "suggested": "Añade una leyenda a tu multimedia...",
       "phase": "llm"
     },
     "screens.common.eGMorningRunnersHealthyCooking": {
@@ -6269,10 +6256,8 @@
       "phase": "llm"
     },
     "screens.admin.hipaaCompliant": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Cumplimiento HIPAA' is the noun 'compliance', not the adjective 'compliant'.",
-      "suggested": "Compatible con HIPAA",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.auditEvents": {
@@ -6776,10 +6761,8 @@
       "phase": "llm"
     },
     "screens.admin.liveStreamManagement": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'En vivo y en directo' is redundant. 'Stream' is often kept as a loanword or translated as 'transmisión'.",
-      "suggested": "Gestión de transmisiones en vivo",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.activeVertexSessions": {
@@ -6923,10 +6906,8 @@
       "phase": "llm"
     },
     "screens.admin.hipaacompliantAccessLogsAuditTrail": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Pista de auditoría' is a literal translation; 'historial de auditoría' or 'ruta de auditoría' are more common.",
-      "suggested": "Registros de acceso e historial de auditoría compatibles con HIPAA.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.patientRecordsAdmin": {
@@ -7540,10 +7521,8 @@
       "phase": "llm"
     },
     "screens.admin.sessionTimeout": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Tiempo de Sesión' means 'Session Time', not 'Session Timeout'.",
-      "suggested": "Tiempo de espera de la sesión",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.autologoutAfter30MinutesInactivity": {
@@ -8107,21 +8086,18 @@
       "phase": "llm"
     },
     "screens.admin.loadingSpeeches": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "'Discursos' implies formal addresses, which might not be the intended meaning for 'speeches' in an app (e.g., voice prompts, messages). More context is needed.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.noSpeechesConfigured": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "'Discursos' implies formal addresses, which might not be the intended meaning for 'speeches' in an app (e.g., voice prompts, messages). More context is needed.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.assistantSpeeches": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "'Discursos' implies formal addresses, which might not be the intended meaning for 'speeches' in an app (e.g., voice prompts, messages). More context is needed.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.noToolsConfigured": {
@@ -8410,10 +8386,8 @@
       "phase": "llm"
     },
     "screens.admin.guardrails": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Guardarraíles' is too literal for 'guardrails' in a software/AI context.",
-      "suggested": "Límites de seguridad",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.journeyTimeline": {
@@ -8562,10 +8536,8 @@
       "phase": "llm"
     },
     "screens.admin.allReports": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Reportes' is a common Spanglish loanword; 'informes' is the standard Spanish term.",
-      "suggested": "Todos los Informes",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.loadingReports": {
@@ -10379,10 +10351,8 @@
       "phase": "llm"
     },
     "screens.admin.failed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Falló' is a past tense verb ('it failed'); 'Fallido' (adjective) or 'Error' are more common for a status.",
-      "suggested": "Fallido",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.warning": {
@@ -11487,8 +11457,8 @@
     },
     "screens.admin.saveForwardTriggers": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Literal translation of 'forward' makes it sound clunky; 'de avance' is more idiomatic for progress in this context.",
+      "confidence": 0.9,
+      "issue": "Literal translation of 'forward triggers'; 'disparadores de avance' is more idiomatic for navigation/progress.",
       "suggested": "Guardar disparadores de avance",
       "phase": "llm"
     },
@@ -11638,10 +11608,8 @@
       "phase": "llm"
     },
     "screens.admin.inviteMember": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Missing article, sounds too terse for a friendly app. 'Invitar a un miembro' is more natural.",
-      "suggested": "Invitar a un miembro",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.admin.expires": {
@@ -12001,9 +11969,9 @@
     },
     "screens.admin.lengthToolValue1AvailableServerurl": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'herramienta' should be plural if '{length}' represents a count greater than one.",
-      "suggested": "{length} herramientas {value1} disponible en {serverUrl}",
+      "confidence": 1,
+      "issue": "Grammatical agreement: 'herramientas' (plural) requires 'disponibles' (plural), not 'disponible' (singular).",
+      "suggested": "{length} herramientas {value1} disponibles en {serverUrl}",
       "phase": "llm"
     },
     "screens.admin.activeconnectionsActiveConnections": {
@@ -14314,8 +14282,8 @@
     "screens.business.noTopPerformerYet": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Inconsistent with 'Top Performer' translation (entry 29) and likely refers to performance, not a person.",
-      "suggested": "Aún no hay mejor rendimiento",
+      "issue": "Mejor rendimiento translates to 'best performance,' not 'best performer.'",
+      "suggested": "Aún no hay un destacado",
       "phase": "llm"
     },
     "screens.business.yourReferralCatalog": {
@@ -14784,10 +14752,8 @@
       "phase": "llm"
     },
     "screens.business.leadsFromSharingCampaignsResellerLinks": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'campañas de compartir' is a bit awkward; 'de compartir' sounds like 'of sharing'.",
-      "suggested": "Los leads de campañas para compartir y enlaces de revendedores aparecerán aquí.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.business.lengthTransactionValue1": {
@@ -14926,10 +14892,8 @@
       "phase": "llm"
     },
     "screens.calendar.eGLunchWithAnaTomorrow": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'recordar 30m' is an awkward fragment; 'recordatorio' or 'recordar en' would be more natural for an example.",
-      "suggested": "ej., Almuerzo con Ana mañana 1–2pm @ HQ, recordatorio 30m, etiqueta: Trabajo",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.calendar.todaySEvents": {
@@ -14953,10 +14917,8 @@
       "phase": "llm"
     },
     "screens.calendar.yourGoalAchievementsThisWeek": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'logros de objetivos' is slightly redundant and less idiomatic than 'logros de la semana' or 'metas alcanzadas'.",
-      "suggested": "Tus logros de la semana",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.calendar.quickAccess": {
@@ -15090,10 +15052,8 @@
       "phase": "llm"
     },
     "screens.calendar.jumpNow": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Ir a ahora' is a literal translation and not idiomatic; 'Saltar a ahora' or 'Ir a hoy' are more common.",
-      "suggested": "Saltar a ahora",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.calendar.averageAcrossAllGoals": {
@@ -15157,9 +15117,10 @@
       "phase": "llm"
     },
     "screens.calendar.todaySIndexPulseCompletingYour": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "Ambiguity in English source regarding '{totalCount}' and 'event' singular/plural. If '{totalCount}' is a quantity, Spanish needs pluralization of 'evento' and 'tu'.",
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The translation of '{totalCount}pillar-tagged event' is inaccurate and changes the meaning.",
+      "suggested": "El pulso del Índice de hoy: completar tu evento etiquetado con {totalCount} pilares\n                              {value1} moverá tu Índice.",
       "phase": "llm"
     },
     "screens.calendar.urgent": {
@@ -15678,10 +15639,8 @@
       "phase": "llm"
     },
     "screens.community.alltime": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Todo el tiempo' means 'all the time' or 'always', not 'all-time' (as in historical record).",
-      "suggested": "De todos los tiempos",
       "phase": "llm"
     },
     "screens.community.scope": {
@@ -15750,10 +15709,8 @@
       "phase": "llm"
     },
     "screens.community.aiRecommendedForYou": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Recomendó' is a past tense verb; 'Recommended' here is an adjective.",
-      "suggested": "Recomendado por IA para Ti",
       "phase": "llm"
     },
     "screens.community.featuredContent": {
@@ -16357,10 +16314,8 @@
       "phase": "llm"
     },
     "screens.community.openAsksCommunity": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Abre' is an imperative verb; 'Open asks' is a noun phrase.",
-      "suggested": "Solicitudes abiertas en la comunidad",
       "phase": "llm"
     },
     "screens.community.yourReports": {
@@ -16919,10 +16874,8 @@
       "phase": "llm"
     },
     "screens.community.whatSYourMind": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'¿Qué estás pensando?' means 'What are you thinking?', which is less idiomatic for 'What's on your mind?'.",
-      "suggested": "¿Qué tienes en mente?",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.community.vitanaDevonSageAtlasMiraAi": {
@@ -16941,17 +16894,13 @@
       "phase": "llm"
     },
     "screens.community.donecountDone": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'listo' is singular; needs to be pluralized for '{doneCount}' > 1.",
-      "suggested": "{doneCount} listos",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.community.failedcountFailed": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'falló' is a singular past tense verb; should be an adjective or noun phrase.",
-      "suggested": "{failedCount} fallidos",
       "phase": "llm"
     },
     "screens.community.uploadQueueLength": {
@@ -17530,9 +17479,10 @@
       "phase": "llm"
     },
     "screens.contacts.invitedValue0": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "Ambiguity of '{value0}' (name vs. count) and gender agreement for 'Invitado'.",
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender agreement for placeholder {value0} is not inclusive; should match gender or be neutral.",
+      "suggested": "Invitado/a {value0}",
       "phase": "llm"
     },
     "screens.contacts.youSureYouWantDeleteDisplayname": {
@@ -17991,10 +17941,8 @@
       "phase": "llm"
     },
     "screens.crossover.readyForMeaningfulConnections": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Listo' is masculine singular; needs to be gender-neutral or adaptable for the user. 'Preparado/a' is a good alternative.",
-      "suggested": "Preparado/a para conexiones significativas",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.crossover.topPeople": {
@@ -18258,10 +18206,8 @@
       "phase": "llm"
     },
     "screens.debug.value0SAgo": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'s' is not a valid time unit in Spanish in this context; 'segundos' is needed.",
-      "suggested": "hace {value0} segundos",
       "phase": "llm"
     },
     "screens.dev.currentStep": {
@@ -19250,10 +19196,8 @@
       "phase": "llm"
     },
     "screens.dev.assignee": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Asignado a' means 'Assigned to', not the noun 'Assignee'.",
-      "suggested": "Asignado/a",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.dev.reopen": {
@@ -19322,10 +19266,8 @@
       "phase": "llm"
     },
     "screens.dev.phase1ViewonlyAccessWriteOperations": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Solo vista' is not idiomatic for 'View-only access'.",
-      "suggested": "Fase 1: Solo lectura. Operaciones de escritura disponibles en Fase 2.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.dev.autopilot": {
@@ -20644,10 +20586,8 @@
       "phase": "llm"
     },
     "screens.discover.myStack": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Pila' is too literal and doesn't convey the meaning of a wellness 'stack' (e.g., supplement regimen).",
-      "suggested": "💛 Mi Régimen",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.discover.filterSearch": {
@@ -21341,10 +21281,8 @@
       "phase": "llm"
     },
     "screens.discovery.value0NewTodayViewedcountTotalcount": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender/number agreement for 'nuevo'. It should likely be plural 'nuevos' to match implied items.",
-      "suggested": "{value0}nuevos hoy · {viewedCount}/{totalCount}vistos",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.discovery.clearFilters": {
@@ -21743,10 +21681,8 @@
       "phase": "llm"
     },
     "screens.health.allCaughtUpCheckBackLater": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Consejos' (advice/tips) is a slightly weaker translation for 'insights' (perspectives/understandings).",
-      "suggested": "¡Todo al día! Vuelve más tarde para nuevas perspectivas.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.health.overallHealth": {
@@ -23035,10 +22971,8 @@
       "phase": "llm"
     },
     "screens.health.myMedical": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Mi Médico' means 'My Doctor', not 'My Medical (information/records)'.",
-      "suggested": "🧪 Mi Historial Médico",
       "phase": "llm"
     },
     "screens.health.myOmics": {
@@ -23282,10 +23216,8 @@
       "phase": "llm"
     },
     "screens.health.completeLengthActionValue1AutopilotSuggests": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing 'la acción de {length}{value1}'. The 'de' is unnecessary.",
-      "suggested": "Completa la acción {length}{value1} que Autopilot sugiere esta semana",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.health.value0YouDLandAround": {
@@ -23354,10 +23286,8 @@
       "phase": "llm"
     },
     "screens.health.completeLengthActionValue1AutopilotSuggests2": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing 'la acción de {length}{value1}'. The 'de' is unnecessary.",
-      "suggested": "Completa la acción {length}{value1} que Autopilot sugiere",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.health.yourVitanaIndexTrajectoryWillAppear": {
@@ -23586,9 +23516,8 @@
       "phase": "llm"
     },
     "screens.health.lengthTestValue1Available": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "Ambiguity regarding number agreement for 'prueba' and 'disponible' depending on what {length} represents (quantity vs. adjective). If {length} is a quantity, 'pruebas disponibles' would be needed.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.health.hide": {
@@ -23672,10 +23601,8 @@
       "phase": "llm"
     },
     "screens.health.pointsAwayFromThrivingZoneEvery": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Thriving zone' is mistranslated as 'zona de estancamiento' (stagnation zone), which is the opposite meaning.",
-      "suggested": "puntos para alcanzar la zona de prosperidad. Cada finalización en el pilar {value0} te mueve más rápido hacia adelante.",
       "phase": "llm"
     },
     "screens.health.fromYourOnboardingSurvey": {
@@ -24369,9 +24296,10 @@
       "phase": "llm"
     },
     "screens.intents.lengthValidValue1": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "Ambiguity regarding gender and number agreement for 'válido' due to placeholders {length} and {value1}. It should agree with the implied noun/quantity.",
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "Missing space and incorrect word order. The adjective 'válido' should typically follow {value1} and agree in gender and number.",
+      "suggested": "{length} {value1} válido",
       "phase": "llm"
     },
     "screens.intents.send": {
@@ -24380,10 +24308,8 @@
       "phase": "llm"
     },
     "screens.intents.tracksWhoClickedFromYourShare": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Tu compartido' for 'your share' is grammatically possible but sounds a bit awkward/less natural.",
-      "suggested": "Rastrea quién hizo clic desde lo que compartiste. Las publicaciones públicas están abiertas a todos; las privadas piden a los espectadores iniciar sesión.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.intents.scorepctMatch": {
@@ -24792,10 +24718,8 @@
       "phase": "llm"
     },
     "screens.memory.dateOldestFirst": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Gender agreement. 'Antiguo' should be 'antigua' to match 'Fecha' (feminine noun).",
-      "suggested": "Fecha (más antigua primero)",
       "phase": "llm"
     },
     "screens.memory.searchActivityContent": {
@@ -25609,10 +25533,8 @@
       "phase": "llm"
     },
     "screens.memory.clickBelowUploadPhotoMemory": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'photo memory'.",
-      "suggested": "Haz clic abajo para subir un recuerdo fotográfico",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.memory.choosePhoto": {
@@ -25631,10 +25553,8 @@
       "phase": "llm"
     },
     "screens.memory.archivedItemsHiddenFromRegularViews": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Buscables' is a literal but less natural translation for 'searchable' in this context.",
-      "suggested": "Los elementos archivados están ocultos de las vistas normales, pero se pueden restaurar en cualquier momento. No se eliminan y se pueden seguir buscando.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.memory.allLength": {
@@ -26243,10 +26163,8 @@
       "phase": "llm"
     },
     "screens.messages.tryAgain": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Not idiomatic for a button/action; should be imperative du-form.",
-      "suggested": "Inténtalo de nuevo",
       "phase": "llm"
     },
     "screens.messages.createYourFirstGroup": {
@@ -26460,10 +26378,8 @@
       "phase": "llm"
     },
     "screens.messages.recentlyUsed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Grammatical agreement and natural phrasing for a category title. 'Usado' is singular, but 'Recently Used' often implies multiple items or a general concept.",
-      "suggested": "⏰ Uso reciente",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.messages.customMessages": {
@@ -26572,10 +26488,8 @@
       "phase": "llm"
     },
     "screens.messages.totalresponsesResponseValue1Received": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Pluralization of 'recibida' is missing if '{totalResponses}' is greater than one and '{value1}' is intended as a plural marker.",
-      "suggested": "{totalResponses} respuesta{value1} recibida{value1}",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.messages.downloadFile": {
@@ -26594,10 +26508,8 @@
       "phase": "llm"
     },
     "screens.messages.messageComposer": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Redactor de mensajes' sounds like a job title, not a UI component.",
-      "suggested": "Editor de mensajes",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.messages.recordVoiceMessage": {
@@ -26686,10 +26598,8 @@
       "phase": "llm"
     },
     "screens.mobile.closeDrawer": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "'Cajón' refers to a physical drawer, not a UI navigation drawer.",
-      "suggested": "Cerrar panel",
       "phase": "llm"
     },
     "screens.mobile.openSearch": {
@@ -27038,10 +26948,9 @@
       "phase": "llm"
     },
     "screens.payment.requestRecipient": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Misinterpretation of noun phrase vs. verb phrase. 'Solicitar destinatario' means 'to request a recipient'.",
-      "suggested": "Destinatario de la solicitud",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Ambiguous English phrase 'Request recipient'. Translation 'Destinatario de la solicitud' implies 'Recipient of the request', but could also mean 'Request a recipient' (action).",
       "phase": "llm"
     },
     "screens.payment.dueDateOptional": {
@@ -27060,17 +26969,13 @@
       "phase": "llm"
     },
     "screens.payment.fromCurrency": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Too literal, awkward phrasing. 'De Moneda' means 'Of Currency'.",
-      "suggested": "Moneda de origen",
       "phase": "llm"
     },
     "screens.payment.currency": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Too literal, awkward phrasing. 'A Moneda' means 'To Currency'.",
-      "suggested": "Moneda de destino",
       "phase": "llm"
     },
     "screens.payment.youExchange": {
@@ -27389,10 +27294,8 @@
       "phase": "llm"
     },
     "screens.proactive.grow8xFasterWithAutosharing": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Compartición' is less common/natural than 'uso compartido' for 'sharing' in a tech context.",
-      "suggested": "Crece 8x más rápido con el uso compartido automático",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.proactive.noPlatformsConnected": {
@@ -28181,10 +28084,8 @@
       "phase": "llm"
     },
     "screens.profile.nowPlayingDock": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Dock' (UI element) is omitted from the translation.",
-      "suggested": "Barra de reproducción actual",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.profile.comingSoon": {
@@ -29039,8 +28940,8 @@
     },
     "screens.profile.tenantValue0": {
       "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.5,
-      "issue": "Ambiguous meaning of 'Tenant' without context (tech/multi-tenant system vs. housing renter). 'Inquilino' implies a renter.",
+      "confidence": 0.6,
+      "issue": "The term 'Tenant' (Inquilino) is unusual for a wellness app and its technical meaning might differ from the literal translation.",
       "phase": "llm"
     },
     "screens.profile.switchRole": {
@@ -29254,10 +29155,8 @@
       "phase": "llm"
     },
     "screens.profile.joinedLength": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Se unió' is a verb in the past tense, not a descriptive label for a status or count.",
-      "suggested": "Unido/a ({length})",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.profile.joinEvent": {
@@ -30352,10 +30251,8 @@
       "phase": "llm"
     },
     "screens.settings.doNow": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Not idiomatic for a button/action; should be imperative du-form.",
-      "suggested": "Hazlo ahora",
       "phase": "llm"
     },
     "screens.settings.communityEngagement": {
@@ -30389,10 +30286,8 @@
       "phase": "llm"
     },
     "screens.settings.redeemNow": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Not idiomatic for a button/action; should be imperative du-form.",
-      "suggested": "Canjéalo ahora",
       "phase": "llm"
     },
     "screens.settings.text10SubscriptionCredit": {
@@ -30908,10 +30803,8 @@
       "phase": "llm"
     },
     "screens.settings.searchPreferencesThemesLanguageSettings": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Idioma' is singular, but 'language settings' implies plural or a specific configuration term.",
-      "suggested": "Buscar preferencias, temas, ajustes de idioma...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.themeSettings": {
@@ -32230,10 +32123,8 @@
       "phase": "llm"
     },
     "screens.settings.connectApp": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly awkward phrasing for a UI label; adding the article makes it more natural.",
-      "suggested": "Conectar la app",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.settings.availableIntegrations": {
@@ -32882,10 +32773,8 @@
       "phase": "llm"
     },
     "screens.settings.saveBudget": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Misinterpretation of 'save' (economize vs. store). 'Guardar' means to store, 'Ahorrar' means to economize.",
-      "suggested": "Ahorrar presupuesto",
       "phase": "llm"
     },
     "screens.settings.eGLiquidformLargelabel": {
@@ -34186,8 +34075,8 @@
     "screens.sharing.week3LimitedtimeOfferPush": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "'Empuje' is too literal for 'push' in a marketing/promotional context. 'Promoción' or 'campaña' would be more idiomatic.",
-      "suggested": "Semana 3: Promoción de oferta por tiempo limitado",
+      "issue": "Awkward/verbose phrasing for 'offer push'. 'Promoción de oferta' is somewhat redundant, and 'push' implies a campaign or notification.",
+      "suggested": "Campaña de oferta por tiempo limitado",
       "phase": "llm"
     },
     "screens.sharing.urgencyTactics": {
@@ -34301,10 +34190,8 @@
       "phase": "llm"
     },
     "screens.sharing.criteria": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Plural/singular mismatch. 'Criteria' is plural in English, 'Criterio' is singular in Spanish.",
-      "suggested": "Criterios:",
       "phase": "llm"
     },
     "screens.sharing.postsWithGt100Engagements": {
@@ -35853,10 +35740,8 @@
       "phase": "llm"
     },
     "screens.sharing.makeAvailableForPurchaseRightAway": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "English implies an action ('Make available'), while the Spanish is a status ('Available').",
-      "suggested": "Hacer disponible para compra de inmediato",
       "phase": "llm"
     },
     "screens.sharing.next": {
@@ -39300,10 +39185,8 @@
       "phase": "llm"
     },
     "screens.wallet.actTopRecommendation": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect verb form (infinitive instead of du-form imperative).",
-      "suggested": "Actúa según la mejor recomendación",
       "phase": "llm"
     },
     "screens.wallet.earningForecast": {
@@ -39324,8 +39207,8 @@
     "screens.wallet.timingIntelligence": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing; 'tiempo' is too literal for 'timing'.",
-      "suggested": "Inteligencia de sincronización",
+      "issue": "Awkward phrasing; 'sincronización' implies coordination, not necessarily optimal timing.",
+      "suggested": "Inteligencia de tiempos",
       "phase": "llm"
     },
     "screens.wallet.byTimingYourSubscriptionsOptimally": {
@@ -39749,10 +39632,8 @@
       "phase": "llm"
     },
     "screens.wallet.activestreaksActiveStreaks": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Number agreement: 'Streaks' is plural, but 'Racha activa' is singular.",
-      "suggested": "{activeStreaks} Rachas activas",
       "phase": "llm"
     },
     "screens.wallet.currentstreakDaysBestBeststreakDays": {
@@ -39781,10 +39662,8 @@
       "phase": "llm"
     },
     "screens.wallet.dayRecord": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing and word order. More natural to say 'Récord de X días'.",
-      "suggested": "Récord de - días",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.wallet.totalsavingsVtnaSavingsAvailable": {
@@ -40698,10 +40577,8 @@
       "phase": "llm"
     },
     "screens.creatoronboarded.earn90EveryPaidLiveRoom": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Awkward phrasing and missing 'platform' for 'platform fee'.",
-      "suggested": "Gana el 90% de cada venta de entrada pagada para Live Room, con solo una tarifa de plataforma del 10%.",
       "phase": "llm"
     },
     "screens.creatoronboarded.startCreatingPaidRoomsImmediately": {
@@ -40755,10 +40632,8 @@
       "phase": "llm"
     },
     "screens.healthtracker.letSTrackYourProgressTogether": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Grammatical error: 'Sigue' (singular imperative) does not agree with 'juntos' (plural). 'Let's' implies a collective action.",
-      "suggested": "¡Sigamos tu progreso juntos! 📊",
       "phase": "llm"
     },
     "screens.healthtracker.monitorYourPersonalHealthDataTrack": {
@@ -41882,10 +41757,8 @@
       "phase": "llm"
     },
     "screens.publiccampaignlanding.getTicketsForValue0": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Incorrect verb form (infinitive instead of du-form imperative).",
-      "suggested": "Consigue entradas para {value0}",
       "phase": "llm"
     },
     "screens.publiceventlanding.eventNotFound": {
@@ -43049,10 +42922,8 @@
       "phase": "llm"
     },
     "screens.legal.text5DiscoverShop": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for a section title or call to action (infinitive).",
-      "suggested": "5. Descubre la Tienda",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.legal.text6CommunityAmpUsergeneratedContentUgc": {
@@ -43511,9 +43382,8 @@
       "phase": "llm"
     },
     "screens.patient.upcoming": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Gender and number ambiguity without context. 'Próximas' is feminine plural, but 'Upcoming' could refer to masculine or singular items.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.patient.reschedule": {
@@ -43547,9 +43417,10 @@
       "phase": "llm"
     },
     "screens.patient.completed": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.7,
-      "issue": "Gender and number ambiguity without context. 'Completada' is singular feminine, but 'Completed' could refer to masculine or plural items.",
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender/number mismatch for a general section title. 'Completada' is feminine singular, but 'Completed' as a standalone title usually implies a masculine plural or neutral form in Spanish.",
+      "suggested": "Completados",
       "phase": "llm"
     },
     "screens.patient.yourPersonalizedHealthManagementCenter": {
@@ -43598,10 +43469,8 @@
       "phase": "llm"
     },
     "screens.patient.trackManageYourHealthMetricsWellness": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing 'journey' from 'wellness journey'.",
-      "suggested": "Sigue y gestiona tus métricas de salud y tu camino de bienestar",
       "phase": "llm"
     },
     "screens.patient.vitalSigns": {
@@ -43650,10 +43519,8 @@
       "phase": "llm"
     },
     "screens.portals.welcomeBack": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender specificity: 'Bienvenido' is masculine. Should be gender-neutral or adaptable.",
-      "suggested": "¡Qué bueno verte de nuevo!",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.portals.signYourAlkalmaAccount": {
@@ -43847,10 +43714,8 @@
       "phase": "llm"
     },
     "screens.portals.youLlRedirectedYourDashboardFew": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender specificity: 'redirigido' is masculine. Should be gender-neutral or adaptable.",
-      "suggested": "Te redirigiremos a tu panel en unos segundos...",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "screens.portals.connectingHealthWithEnvironmentalSustainability": {
@@ -44467,7 +44332,6108 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "screens.guidedCatalog.sessionProgress": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.common.mental": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.admin.devicePreviewCustomUrlPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.admin.devicePreviewPathPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.community.openAsksKind_socialSeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.community.interestYoga": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.community.interestPilates": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.crossover.matchCatFitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.discover.wsCategory_biohacking_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.discover.providerBadge_popular": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.liverooms.timeChip": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.liverooms.whenDated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.liverooms.past.heldAt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.liverooms.past.heldRange": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.liverooms.durationMin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.liverooms.durationHour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.liverooms.durationHourMin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.settings.notificationsSettingsSection_chat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.downloadFlyer.brandName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.vitanaIdentity.vitana": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.vitanaIdentity.orbAlt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.wallet.vtnaCreditsAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.ai.eduCategory_fitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.ai.eduReadTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "screens.guidedMode.guidedLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedMode.fullLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.allChapters": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.chapter_basics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.chapter_daily_use": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.chapter_community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.chapter_health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.chapter_intelligence": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.chapter_discovery": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Noun 'Discovery' translated as infinitive verb 'Descubrir'. Should be the noun form.",
+      "suggested": "Descubrimiento",
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.howItWorksTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.howItWorksJourneyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.howItWorksJourneyBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.howItWorksCatalogTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.howItWorksCatalogBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.clickSessionTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.clickSessionBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.clickSessionPill": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.sessionN": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.statusReady": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.statusDone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.sessionComplete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.whatItIs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.userBenefit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.whenToUse": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.tryThis": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.replay": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.startPractice": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.backToJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.close": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.congratsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.congratsSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.reward": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.rewardCaption": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.practiceHeader": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.openFeature": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.markDone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.skip": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.doneToast": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.guidedCatalog.doneError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.common.sharePost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.common.publishArticle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.common.posting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.common.hydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.common.exercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.common.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.common.next3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.common.month": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.common.future": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modCenterDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modReports": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modBans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modAudit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modAuthor": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modPost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modView": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modRemovePost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modBanAuthor": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modUnban": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modContentUnavailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modNoReportsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modNoBans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modNoBansDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modNoAudit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modNoAuditDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modTarget": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modPostRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modAuthorBanned": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modReportDismissed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modUserUnbanned": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.modActionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.navigatorMobileCatalog": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.navigatorDesktopCatalog": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.navRoleLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.navRole_community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.navRole_patient": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.navRole_professional": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.navRole_staff": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.navRole_admin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.navRole_developer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.navRole_infra": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.vitanaNavigatorDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.selectedScreenTopPick": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.selectedScreenRanked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.selectedScreenNotInPicks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewEnvironment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewEnvStaging": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewEnvStagingAws": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Inconsistent translation of 'Staging' compared to entry 19. 'Preparación' is not the most common or idiomatic term for a staging environment in tech; 'Staging' as a loanword or 'Preproducción' would be preferred.",
+      "suggested": "Staging (AWS)",
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewEnvProduction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewEnvCustom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewDevice": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewPath": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewView": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewRotate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewPortrait": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewLandscape": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewReload": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewOpenNewTab": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewEnterUrl": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewShellNote": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.devicePreviewFrameBlockedNote": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.supportQueue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.noAnalyticsData": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.analyticsPrivacyNote": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.analyticsMetadataNote": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paConversations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAssistantUsers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paMessages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paResolutionRate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAbandonmentRate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paNegativeFeedback": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paP95ResponseTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paToolFailureRate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paTopIntents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paTopTopics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paToolUsage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paRecentUnresolved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAssistantFunnel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFunnelResponses": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFunnelRecommendationClicks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFunnelResolved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paToolName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paCalls": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFailures": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paIntent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paTopic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paLastActivity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paUserJourneys": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paSessions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paScreenViews": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAvgScreensPerSession": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paTopEntryRoutes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paTopExitRoutes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paTopPaths": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paDropoffScreens": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paExits": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paExitRate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAssistantToFeature": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAssistedOpens": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paDirectOpens": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paRoute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFeatureUsage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFeaturesOpened": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFeatureCompletions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paRepeatUsers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAssistantDrivenOpens": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paTopFeatures": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFeatureTrends": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paLowAdoption": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paOpens": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paCompletions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paCompletionRate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFeature": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paDate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paUserInterests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paDetectedTopics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paRepeatedInterestUsers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paTopTopic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paTopicSources": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paSuggestedAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paUsers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paSource": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paSuggestionHighRepeat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paSuggestionAssistantHeavy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paSuggestionGeneral": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAssistantUsageDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paJourneysDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFeaturesDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paInterestsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paOverview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paOverviewDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paActiveUsers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paRecommendationClicks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paUnresolvedConversations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paTopRoutes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paViewDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paEventExplorer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paEventsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAllTypes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paEventNameFilter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paProperties": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paShowingLatest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paOpensVsCompletions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAssistedVsDirect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAssisted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paDirect": {
+      "verdict": "OK",
+      "confidence": 0.8,
+      "phase": "llm"
+    },
+    "screens.admin.paResolutionSplit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paAbandoned": {
+      "verdict": "OK",
+      "confidence": 0.8,
+      "phase": "llm"
+    },
+    "screens.admin.paOpenConversations": {
+      "verdict": "OK",
+      "confidence": 0.8,
+      "phase": "llm"
+    },
+    "screens.admin.paFeedbackSplit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paPositive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paNegative": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFeedbackTotal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paFeatureOpens": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.admin.paEngagementDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.assistant.voiceProviderHint_googleSpeech": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.assistant.voiceProviderHint_geminiChirp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.assistant.voiceProviderHint_noVoicesAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.assistant.voiceProviderHint_browserVoices": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.audio.mute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.audio.unmute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.auth.sendResetLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_commercialBuy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_commercialSell": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_activitySeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_activity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_partnerSeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_mutualAid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_learningSeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksKind_mentorSeek": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Conjugated verb instead of infinitive for UI label.",
+      "suggested": "Ofrecer enseñar",
+      "phase": "llm"
+    },
+    "screens.community.openAsksFilter_all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksDance_everything": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksDance_only": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksTime_justNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksTime_minutes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksTime_hours": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksTime_days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksSummary_loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksSummary_empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksSummary_count": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksEmpty_dance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openAsksEmpty_filter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.loadMore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.videoRoomUnavailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.videoRoomUnavailableHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.viewMatches": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.viewBoard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.viewPosts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.viewMembers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.matchesEmptyBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.postNewWish": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.boardEmptyBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.postYours": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.postsEmptyBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.membersEmptyBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.openMembers": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Too literal, not idiomatic for UI labels. 'Abrir' implies opening a file or a physical object, less common for a section or list.",
+      "suggested": "Ver Miembros",
+      "phase": "llm"
+    },
+    "screens.community.findMatchDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.autopilotSuggestionsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.autopilotSuggestionsBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.autopilotSuggestionBadge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.membersEmptyInvite": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterMatches": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterAge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterAgeValue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterAgePending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterDistance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterDistanceValue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterDistanceAny": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterDistancePending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterInterests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterGoals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterOnlineOnly": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterHideViewed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterClearAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterShowResults": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterShowingOfTotal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.filterReset": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.noMatchesForFilters": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.noMatchesForFiltersBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.interestDance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.interestRunning": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.interestMeditation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.interestStrength": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.goalPartner": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.goalSocial": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.goalActivity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.goalWeightLoss": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.goalMentalWellness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.community.goalValues": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonRoutine": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonActivity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonFitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonLifestyle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonGoals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonInterests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonGeneric": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonGreatAlignment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.findingMatches": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.sayHi": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.highCompatibilityMatches": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.startChat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.autoIntro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.communityMember": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.vitanaCommunityMember": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonSharedInterests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonDailyRoutines": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonFitnessGoals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonActivityTimes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonNearby": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonJourneyStage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonSharedPillar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonPillarSleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonPillarNutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonPillarExercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonPillarHydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonPillarMental": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonSimilarIndex": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonMutualConnectionsOne": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonMutualConnectionsOther": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonSameLocation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchReasonActiveMember": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchCatInterests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchCatLocation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchCatActivity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchCatSports": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchCatGoals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchCatFriends": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchCatBusiness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchCatRoutine": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchCatLifestyle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchCatLongevity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchCatCommunity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.crossover.matchCatWellness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.saveEntry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.saving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.uploading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.today": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.yesterday": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.thisWeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.textEntry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.voiceRecording": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.photo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.entry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.delete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.deleting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.tagLabel_diary": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.tagLabel_photo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.tagLabel_voice": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.tagLabel_text": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.voiceTranscriptCaptured": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.diary.writeYourThoughts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.marketplaceView_open": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.marketplaceView_mine": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.marketplaceEmpty_body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.marketplaceEmpty_cta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_longevity_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_longevity_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_fitness_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_fitness_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_mental_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_mental_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_recovery_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_recovery_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_nutrition_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_nutrition_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_sleep_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_sleep_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_biohacking_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_hospitality_name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsCategory_hospitality_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_healthAssessments": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_ivTherapy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_hormoneOptimization": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_biomarkerAnalysis": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_functionalFitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_mobilityTraining": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_strengthBuilding": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_flexibilityPrograms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_meditation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_stressManagement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_cognitiveTraining": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_therapySessions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_massageTherapy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_coldPlunge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_infraredSauna": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_redLightTherapy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_mealPlanning": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_nutritionalCounseling": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_supplementPlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_dietaryAnalysis": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_sleepStudies": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_sleepCoaching": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_circadianRhythm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_sleepEnvironment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_wearableTech": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_performanceTesting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_optimizationPlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_trackingSystems": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_wellnessRetreats": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_spaExperiences": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_destinationWellness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.wsFeatured_immersivePrograms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerTitle_longevitySpecialist": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerTitle_functionalFitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerTitle_holisticWellnessCenter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerTitle_biohackingOptimization": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerTitle_holisticHealthCoaching": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerTitle_sleepExpert": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerSpecialty_longevity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerSpecialty_recoveryTherapy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerSpecialty_sleepMedicine": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_topRated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_verified": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_trending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_certified": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_nearYou": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_premium": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_new": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_innovative": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_holistic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerBadge_expert": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerExperience": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAvailable_today2pm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAvailable_today4pm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAvailable_tomorrow9am": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAvailable_friday10am": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAvailable_monday1pm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAvailable_nextWeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAbout_sarah": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAbout_marcus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAbout_luna": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAbout_peak": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAbout_maya": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.discover.providerAbout_michael": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_hydration_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_hydration_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_nutrition_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_nutrition_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_exercise_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_exercise_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_sleep_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_sleep_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_mental_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.pillar_mental_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.vitanaIndexPillar_food": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.vitanaIndexPillar_water": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.vitanaIndexPillar_recovery": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.vitanaIndexPillar_exercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.vitanaIndexPillar_mental": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.conditionsSubtitle_riskTools": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.conditionsTitle_preventivePlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.conditionsSubtitle_preventivePlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.riskAssessments": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_annualPhysical_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_annualPhysical_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_cancerScreening_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_cancerScreening_desc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Less idiomatic phrasing for 'screenings'. 'Detecciones tempranas' is grammatically correct but 'pruebas de detección temprana' is more common for the concept.",
+      "suggested": "Pruebas de detección temprana para varios tipos de cáncer",
+      "phase": "llm"
+    },
+    "screens.health.svc_cardio_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_cardio_desc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'y riesgo' is incomplete for 'and risk assessment'. It should explicitly state 'evaluación de riesgos'.",
+      "suggested": "Evaluación de la salud cardíaca y evaluación de riesgos",
+      "phase": "llm"
+    },
+    "screens.health.svc_metabolic_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_metabolic_desc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'metabólicos' is an adjective without a noun. It should be 'marcadores metabólicos'.",
+      "suggested": "Marcadores de diabetes, colesterol y marcadores metabólicos",
+      "phase": "llm"
+    },
+    "screens.health.svc_specialist_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_specialist_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_telemedicine_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_telemedicine_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_labTests_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_labTests_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_prescription_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_prescription_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_nutritionCoaching_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_nutritionCoaching_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_fitnessTraining_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_fitnessTraining_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_mentalCoach_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_mentalCoach_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_wellnessChallenge_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_wellnessChallenge_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_wellnessChallenge_suggestion": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_claimsProcessing_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_claimsProcessing_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_coverageVerification_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_coverageVerification_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_preAuth_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_preAuth_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_paymentPlans_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_paymentPlans_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_appointments_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_appointments_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_appointments_count": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_serviceHistory_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_serviceHistory_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_serviceHistory_count": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_myProviders_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_myProviders_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_myProviders_count": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_healthRecords_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.svc_healthRecords_desc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_nutrition_metrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_nutrition_insight1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_nutrition_insight2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_nutrition_footer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_exercise_metrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_exercise_insight1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_exercise_insight2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_exercise_footer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_hydration_metrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_hydration_insight1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_hydration_insight2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_hydration_footer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_sleep_metrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_sleep_insight1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_sleep_insight2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_sleep_footer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_mental_metrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_mental_insight1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_mental_insight2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_mental_footer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_supplement_metrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_supplement_insight1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_supplement_insight2": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The original Spanish implies doses belong to AI, not that AI is tracking. 'de IA' modifies 'dosis' instead of indicating AI as the tracker.",
+      "suggested": "Sincronización del horario de dosificación por IA",
+      "phase": "llm"
+    },
+    "screens.health.planSummary_supplement_footer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.planSummary_default_metrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.range7d": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.range30d": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.range90d": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.statBest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.statWorst": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.statAverage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.stat7d": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.todayDot": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.todayWithDay": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.goalLineLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.lastNDays": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.whatDrivesIndex": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.trajectoryAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.insightUp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.insightDown": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.insightFlat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.noRecs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.summaryServed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.summaryServedCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.pillarHeading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.economyHeading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.noPillar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.noEconomy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.pillars.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.pillars.hydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.pillars.exercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.pillars.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.pillars.mental": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.economyAxes.find_match": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation is too literal and formal for a friendly app context; 'Coincidencia' lacks the nuance of finding a suitable fit or connection.",
+      "suggested": "Encontrar tu conexión",
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.economyAxes.marketplace": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.economyAxes.income_generation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.economyAxes.business_formation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.health.missionAlignment.contractLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.priorityOfTheDay": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.forYouRightNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.thereFallbackName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.vitanaIndexEyebrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.vitanaIndexUpHeadline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.vitanaIndexDownHeadline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.vitanaIndexStableHeadline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.vitanaIndexUpSubtext": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.vitanaIndexDownSubtext": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.vitanaIndexStableSubtext": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.longevityJourneyEyebrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.longevityJourneyContinue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.longevityJourneyAllDone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.longevityJourneyNextStepHeadline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.longevityJourneySubtext": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.longevityJourneyStartSession": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.longevityJourneyDoneLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.longevityJourneyNowLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.longevityJourneyGoalLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.findAMatchEyebrow": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "''Coincidencia'' is not the most appropriate translation for 'match' in a social/pairing context; 'match' as a loanword is common and consistent with entry 28.",
+      "suggested": "ENCUENTRA UN MATCH",
+      "phase": "llm"
+    },
+    "screens.home.findAMatchSubtext": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "''Coincidencia'' is not the most appropriate translation for 'match' in a social/pairing context; 'match' as a loanword is common and consistent with entry 28.",
+      "suggested": "¡Esto podría ser un match!",
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_hydration_msg": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_hydration_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_exercise_msg": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_exercise_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_nutrition_msg": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_nutrition_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_sleep_msg": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_sleep_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_social_msg": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_social_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_learning_msg": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_learning_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_planning_msg": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_planning_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_healthPlan_msg": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.dailyPriority_healthPlan_action": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.searchShort": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.searchNewsTopicsSources": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.whyMatch": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.whySpotlight": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.motivationQuestion": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.motivationChallenge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.motivationAchievement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.motivationProgress": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.motivationDance": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Loses nuance of 'along', too direct for friendly tone.",
+      "suggested": "Simplemente baila",
+      "phase": "llm"
+    },
+    "screens.home.motivationWorkout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.motivationMeal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.motivationRelax": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.motivationTravelNature": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.motivationEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.motivationEducational": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.motivationEmotional": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.motivationFollowed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.motivationGreeting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.motivationDefault": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.writeComment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.noCommentsYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.loadingComments": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.postComment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.deleteComment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.signInToInteract": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.unmuteVideo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.muteVideo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.enterFullscreen": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.exitFullscreen": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.commentError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.communityMember": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.likesTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.noLikesYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.loadingLikes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.likesCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.whyPublic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.matchScore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.matchPercent": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Unnecessary space before percentage sign, inconsistent with English source and common Spanish UI practice.",
+      "suggested": "{score}%",
+      "phase": "llm"
+    },
+    "screens.home.matchLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.viewProfile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.mostImproved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.improvementPts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.spotlightConsentTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.spotlightConsentDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'foco de 'mayor mejora'' is a literal translation of 'spotlight' that sounds clunky; 'destacado' is more idiomatic for a featured section/person.",
+      "suggested": "Permite que tu Índice Vitana te considere para el destacado de 'mayor mejora' en el feed de noticias. Las puntuaciones exactas nunca se comparten.",
+      "phase": "llm"
+    },
+    "screens.home.reportSexual": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportHate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportSpam": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportOther": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportHarassment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportMisinfo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportViolence": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportThanks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportPost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportSheetTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportSheetDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportDetailsLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportDetailsPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportSubmit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.reportCancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.hidePost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.postHidden": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.muteAuthor": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.authorMuted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.blockAuthor": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.authorBlocked": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.home.editPost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.editPostTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.editPostSave": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.postUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.deletePost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.deletePostConfirm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.postDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.modRemove": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.modRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.modBan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.modBanned": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.modBanConfirm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.modFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.home.createPost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_dance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_learningSeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_mentorSeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_commercialBuy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_commercialSell": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_activitySeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_socialSeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindFilter_mutualAid": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "screens.intents.kindOptionCommercialBuy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindOptionCommercialSell": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindOptionActivitySeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindOptionSocialSeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.intents.kindOptionMutualAid": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'pedir' alone is not precise enough for 'borrow'; it usually means 'to ask for'. 'Pedir prestado' or 'tomar prestado' is more accurate.",
+      "suggested": "Prestar / pedir prestado / dar",
+      "phase": "llm"
+    },
+    "screens.intents.kindOptionPartnerSeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.scheduled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.notifyMe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.notifying": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.follow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.following": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.showUtc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.showLocal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.scheduledAt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.scheduledAtUtc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.manage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.join": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'Unirte' (to join you) is an infinitive with a pronoun. For a standalone action or button in du-form, the imperative 'Únete' is more appropriate.",
+      "suggested": "Únete",
+      "phase": "llm"
+    },
+    "screens.liverooms.free": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.willJoinCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.you": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.anonymousHost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.notifyAriaOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.notifyAriaOff": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.manageAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.joinAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.whenToday": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.whenTomorrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.endedBadge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.watchRecording": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.endedValue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.peakListeners": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.messages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.plannedMinutes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.noRecording": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.delete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.deleteTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.deleteDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.deleteCancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.deleteConfirm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.emptyHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.liverooms.past.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.memory.updatedAgo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.memory.memorySubnav_overview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.memory.memorySubnav_timeline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.memory.memorySubnav_diary": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.memory.memorySubnav_recall": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.memory.memorySubnav_permissions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.memory.wellnessDiaryMultimediaDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationCategory_morningMotivation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationCategory_goalSupport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationCategory_healthCheckins": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationCategory_celebrations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_morning1": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The verb 'arrasar' (to devastate/sweep away) is too strong for 'crush wellness goals' in a friendly wellness app context. 'Alcanzar' or 'lograr' (to achieve) are more appropriate.",
+      "suggested": "¡Buenos días! ¿Listo para alcanzar tus metas de bienestar hoy? 💪",
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_morning2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_morning3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_goal1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_goal2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_goal3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_checkin1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_checkin2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_checkin3": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "App's voice should be singular ('I hope') instead of plural ('we hope').",
+      "suggested": "Espero que hoy te tomes tiempo para cuidarte. ¡Te lo mereces! 🌿",
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_celebrate1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_celebrate2": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "App's voice should be singular ('I am proud') or a neutral expression, not plural ('we are proud').",
+      "suggested": "¡Qué orgullo tu dedicación a tus metas de salud! 👏",
+      "phase": "llm"
+    },
+    "screens.messages.inspirationTpl_celebrate3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.loadingOlderMessages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.conversationStart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.viewFullscreen": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.anonymous": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.messages.vitanaOpenScreen": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.mobile.openLiveRooms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.profile.postVideo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.profile.removeMedia": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.profile.compressingVideoPct": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.reminders.subtitleDefault": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.reminders.showingFilteredView": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.reminders.filterUpcoming": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.reminders.filterCompleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.reminders.filterMissed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.reminders.noUpcoming": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.reminders.noCompleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.reminders.noMissed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.reminders.creating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.reminders.createReminder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.shoppingRewards": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.configureYourNotificationPreferences": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.notificationsSettingsSection_calendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.notificationsSettingsSection_community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_overview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_privacy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_notifications": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_preferences": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_connectedApps": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_billing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_support": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_limitations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_socialAccounts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.settings.settingsSubnav_connectedAppsAndIntegrations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.brandSubline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.headline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.tagline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.featureJourneysTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.featureJourneysBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.featureHealthTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.featureHealthBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.featureCommunityTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.featureCommunityBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.featureLifestyleTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.featureLifestyleBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.joinTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.joinSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.badgeAppStoreAlt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.badgeGooglePlayAlt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.seoTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.seoDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.inviteCardEyebrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.inviteCardTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.inviteCardBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.inviteCardCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.inviteShareTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.downloadFlyer.inviteShareText": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.vitanaIdentity.vitanaIndex": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.vitanaIdentity.guidedJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.vitanaIdentity.findAMatch": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.vitanaIdentity.inviteFriend": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.vitanaIdentity.viewIndex": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.vitanaIdentity.viewJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.vitanaIdentity.viewMatch": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.vitanaIdentity.dismissCard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.wallet.rateValue0PerCredit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.wallet.addFundsBalance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.wallet.continueToSecureCheckout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.wallet.cardPaymentViaStripe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.wallet.currentBalanceLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.wallet.amountAddCurrency": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_priorityActions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.button_viewAllTasks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_autopilotStatus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.button_viewAutopilotLog": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_aiInsights": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_weeklyTrends": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_correlations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_aiForecasts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_recentAiActions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.button_viewFullLog": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_seeDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_seeProgress": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_viewDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_logProgress": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_openCalendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_moreInspiration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_readFullStory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_viewBreakdown": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_learnMore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_smartSchedule": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_progressTracking": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_mentalHealth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.subtitle_inspiration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.otherStreaks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.keepItUp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.companionSugg_breathing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.companionSugg_water": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.companionSugg_posture": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.companionSugg_workout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachAction_logSymptoms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachAction_updateMood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachAction_scheduleCheckin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachAction_reviewGoals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_waterIntake": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_trackHydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_mealPlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_logFood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_workoutPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_trackActivity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_improveSleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_logSleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_moodTracking": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.coachCtx_stressTips": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightContent_energyPeak": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightContent_hydrationWeekly": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightContent_sleepMood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightContent_fitnessGoal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightDesc_detectedImprovement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightDesc_weeklyImprovement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightDesc_bestImprovementDriver": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightDesc_growingConnection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightDesc_expandingNetwork": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightDesc_aiDiscoveredPattern": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightTitle_newFollowers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.insightTitle_newGroups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_optimize": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_connect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_exploreGroups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_completeTask": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_watchNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_applyInsight": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.recoDesc_eta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.recoDesc_contentDuration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.recoTitle_sleepPattern": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.recoDesc_sleepPattern": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.recoTitle_nutritionTiming": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.recoDesc_nutritionTiming": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.offerTitle_wellnessAssessment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.offerDesc_wellnessAssessment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.labName_healthPanel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.labDesc_healthPanel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.biomarker_cholesterol": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.biomarker_glucose": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.biomarker_vitamins": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.sampleType_blood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.storyTitle_thisWeeksJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.storyDesc_thisWeeksJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.storyTitle_patternDiscovery": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.storyDesc_patternDiscovery": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_explorePattern": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduArticle_vitanaIndex_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduArticle_nutritionScience_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduArticle_sleepRecovery_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduArticle_exercisePhysiology_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduArticle_mentalHealth_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduArticle_preventiveCare_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduCategory_healthMetrics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduCategory_sleepHealth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduCategory_psychology": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.eduCategory_prevention": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.actionLabel_tryNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_nutrition_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_nutrition_subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_nutrition_goal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_nutrition_nextAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_hydration_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_hydration_subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_hydration_goal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_hydration_nextAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_exercise_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_exercise_subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_exercise_goal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_exercise_nextAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_sleep_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_sleep_subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_sleep_goal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_sleep_nextAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_mental_title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_mental_goal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.lifestylePlan_mental_nextAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.unit_servings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.unit_glasses": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.unit_minutes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.unit_hours": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.ai.unit_moments": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.openIndexDrawerAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.startYourSession": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.clickHere": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.sessionNumber": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.startSessionAria": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Should be imperative 'Empieza' for a call to action, consistent with other entries.",
+      "suggested": "Empieza la sesión {n}",
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.myGuidedJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.sessionsLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.sessionsCompletedOf": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Missing 'de' to convey 'of {total}' meaning. Assumes 'sessions' is the implied noun.",
+      "suggested": "de {total} completadas",
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.stepsLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.stepsCompletedOf": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Missing 'de' to convey 'of {total}' meaning. Assumes 'steps' is the implied noun.",
+      "suggested": "de {total} completados",
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.guidedGoalTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.guidedGoalSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.nextStepLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.startSessionShort": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.stepDone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.stepUpNext": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.stepGoalLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.dailyGoalMetLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.northStarLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.northStarTagline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.daysLeftLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.dayOfGoal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.goalDateOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.setGoalTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.setGoalSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.setGoalCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.noDeadlineHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.onboardingDaysLeftCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.onboardingDaysLeftShort": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.adjustGoalCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.setDeadlineCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.todaysGoal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.todayDoneOfTotal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.todayAllDone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.seeTodaysPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.yourPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planStepsWaiting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planAllClear": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.openPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.autopilotCardTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.autopilotCardSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.autopilotSeeAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.howYoureDoing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.keepCheckingIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.motivation0": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.motivation1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.motivation2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.motivation3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.motivation4": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.motivation5": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.matchesTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.matchesSeeAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.matchesEmpty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.matchReasonDefault": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.matchesPageDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.eventsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.eventsSeeAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.eventsOnline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.eventsAttending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.eventsEmpty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.goalDialogTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.goalDialogSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.goalFieldLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.goalFieldPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.deadlineFieldLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.targetValueLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.targetUnitLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.goalDialogSave": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.journeyLoadErrorTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.journeyLoadErrorBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.retry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planSheetTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planSheetEmpty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planGenerate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planBuilding": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planRegenerate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planDayOfTotal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planEveryDay": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planByDay": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planToday": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.tapForPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.dayLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.daysLeftCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.daysToGoalShort": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.dreamTagline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.futureSelfTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.futureSelfHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.futureSelfStronger": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.futureSelfCalmer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.futureSelfVision": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.futureSelfInMonths": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.futureSelfBecoming": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.futureSelfStrongerTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.futureSelfStrongerSub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.futureSelfCalmerTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.futureSelfCalmerSub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.futureSelfEnergyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.futureSelfEnergySub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.pctThroughJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.trendOnTrack": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.trendStagnating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.trendBehind": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planClarifyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planClarifyIntro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planClarifyPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planEveryWeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planMilestones": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planNextUp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planNextMilestone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planDailyProgress": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planInDays": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.planTomorrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.seoDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.headerDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.goalLabels.improveQualityExtendLifespan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.goalLabels.buildFinancialFreedom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.goalLabels.transformHealth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.goalLabels.findLifePartner": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.goalLabels.advanceCareer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.goalLabels.masterNewSkills": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.goalLabels.spiritualLife": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotdashboard.goalLabels.earnFromRecommendations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.index.commercePortal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.index.merchantSelfServiceMarketplace": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.index.connectYourBusinessToDiscoverYourself": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.maxinaAppRedirect.seoTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.maxinaAppRedirect.redirecting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.maxinaAppRedirect.fallbackBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.maxinaAppRedirect.tapToDownload": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.maxinaAppRedirect.ctaAppStore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.maxinaAppRedirect.ctaPlayStore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.maxinaAppRedirect.inAppHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.maxinaAppRedirect.copyLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.maxinaAppRedirect.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.maxinaAppRedirect.copyFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.maxinaAppRedirect.iosOpenInBrowser": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.mobilesettings.modeNotifications": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.mobilesettings.modePrivacy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.mobilesettings.modePrivacyVisibility": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.mobilesettings.modePrivacyData": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.mobilesettings.modePrivacySecurity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.mobilesettings.modePreferences": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.mobilesettings.modePreferencesAppearance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.mobilesettings.modePreferencesLanguage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.mobilesettings.modeBilling": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.mobilesettings.modeBillingPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.mobilesettings.modeBillingPayment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.mobilesettings.modeBillingInvoices": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.mobilesettings.modeBillingCreator": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.improveApp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.improveAppDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.communicateWithYou": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.communicateWithYouDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.personalizeUserExperience": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.personalizeUserExperienceDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.provideAiFeatures": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.provideAiFeaturesDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.complyLegalObligations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.complyLegalObligationsDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.legalRetentionObligations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.securityFraudPreventionReasons": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.legalClaimsDefense": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.legal.retentionAnonymizeDelete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotpopup.indexLoading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotpopup.checkingForNewSuggestions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotpopup.yourAutopilotRecommendations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotpopup.selectedSuggestionsCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotpopup.allSelectedTasksCompleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotpopup.preparingNextSteps": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotpopup.allCaughtUpForToday": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotpopup.nothingNewRightNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.autopilotpopup.checkForNew": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.postDetail.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.postDetail.notFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.postDetail.back": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.connections": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.newConnection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.businessName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.connectorId": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.providerId": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.jurisdiction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.openapiDocument": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.openapiHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.create": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.creating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.loadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.state": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.updated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.detailTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.mappingPreview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.sourceField": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.canonicalField": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.confidence": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.decidedBy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.sensitive": {
+      "verdict": "OK",
+      "confidence": 0.8,
+      "phase": "llm"
+    },
+    "screens.partnerportal.pendingReview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.approve": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.reject": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.awaitingFactory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.awaitingSpec": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.runSandboxTests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.runningTests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.activationSummary": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.certification": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.approveActivation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.activationHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.pause": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.resume": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.reauthorize": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.revoke": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.revokeConfirm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.actionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.discovered": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.authorization_required": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.mapping": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.testing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.approval_required": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.certified": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.active": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.degraded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.suspended": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.revoked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.partnerportal.states.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.heroTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.heroSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.cta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.step1Title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.step1Body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.step2Title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.step2Body": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Literal translation of 'factory pipeline' (cadena de fábrica) is not idiomatic in a tech context; 'tú mismo' is redundant after 'Tú apruebas'.",
+      "suggested": "El pipeline de la fábrica propone mapeos de campos. Tú apruebas los campos sensibles.",
+      "phase": "llm"
+    },
+    "screens.commerceportal.step3Title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.step3Body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.footNote": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.connectionsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.connectionsSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.awaitingApproval": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.activationHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.loginSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.loginIntro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.loginButton": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.commerceportal.loginError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.clientWants": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopesIntro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.approve": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.deny": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.working": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.noSession": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.invalidRequest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.decisionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.nothingSelected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:catalog:read": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:cart:read": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:cart:write": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:orders:read": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:orders:write": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:wallet:read": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:rewards:read": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:partners:read": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:connections:write": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:grants:write": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "screens.oauthconsent.scopes.vitana:settlement:write": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:08:21.409Z"
+  "generatedAt": "2026-08-12T05:26:02.011Z"
 }

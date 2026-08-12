@@ -1,235 +1,254 @@
 {
   "verdicts": {
-    "sidebar.admin": {
+    "marketplaceCheckout.addMoney.amountPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "sidebar.home": {
+    "marketplaceCheckout.addMoney.currencyEur": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.currencyUsd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.balance.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.news": {
+    "marketplaceCheckout.balance.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.community": {
+    "marketplaceCheckout.balance.empty": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.discover": {
+    "marketplaceCheckout.balance.addMoney": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.inbox": {
+    "marketplaceCheckout.checkout.button": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.health": {
+    "marketplaceCheckout.checkout.processing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.wallet": {
+    "marketplaceCheckout.checkout.successTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.sharing": {
+    "marketplaceCheckout.checkout.successBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Awkward phrasing; 'Se cargó a tu saldo' is less natural than 'Se cargó tu saldo'.",
+      "suggested": "Se cargó tu saldo y se creó tu pedido.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.duplicateTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.memory": {
-      "verdict": "OK",
-      "confidence": 0.9,
-      "phase": "llm"
-    },
-    "sidebar.settings": {
+    "marketplaceCheckout.checkout.duplicateBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.businessHub": {
+    "marketplaceCheckout.checkout.affiliateTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.aiAssistant": {
+    "marketplaceCheckout.checkout.affiliateBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.dashboard": {
+    "marketplaceCheckout.checkout.affiliateLink": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.myHealth": {
+    "marketplaceCheckout.checkout.affiliateOpened": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.appointments": {
+    "marketplaceCheckout.addMoney.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.testResults": {
+    "marketplaceCheckout.addMoney.description": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.careTeam": {
+    "marketplaceCheckout.addMoney.amountLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.healthGoals": {
+    "marketplaceCheckout.addMoney.currencyLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.insurance": {
+    "marketplaceCheckout.addMoney.continue": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.notifications": {
+    "marketplaceCheckout.addMoney.processing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.myPatients": {
+    "marketplaceCheckout.addMoney.invalidAmount": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.schedule": {
+    "marketplaceCheckout.addMoney.failed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.clinicalTools": {
+    "marketplaceCheckout.deposit.checkingTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.referrals": {
+    "marketplaceCheckout.deposit.checkingBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.billing": {
+    "marketplaceCheckout.deposit.succeededTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.professionalProfile": {
+    "marketplaceCheckout.deposit.succeededBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.education": {
+    "marketplaceCheckout.deposit.failedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.patientQueue": {
+    "marketplaceCheckout.deposit.failedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.dailyTasks": {
+    "marketplaceCheckout.deposit.amountLabel": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent terminology for 'Amount'; 'Cantidad' was used in entry 16. For UI consistency, one term should be chosen.",
+      "suggested": "Cantidad",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.backToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.reports": {
+    "marketplaceCheckout.errors.invalid_request": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.communications": {
+    "marketplaceCheckout.errors.CART_EMPTY": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.staffTools": {
+    "marketplaceCheckout.errors.PRODUCT_UNAVAILABLE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.timeTracking": {
+    "marketplaceCheckout.errors.PRICE_UNAVAILABLE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.userManagement": {
+    "marketplaceCheckout.errors.MIXED_CURRENCY": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.communitySupervision": {
+    "marketplaceCheckout.errors.UNSUPPORTED_WALLET_CURRENCY": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.mediaManagement": {
+    "marketplaceCheckout.errors.WALLET_ACCOUNT_MISSING": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.automation": {
+    "marketplaceCheckout.errors.WALLET_ACCOUNT_INACTIVE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.liveStream": {
-      "verdict": "OK",
-      "confidence": 0.9,
-      "phase": "llm"
-    },
-    "sidebar.tenantManagement": {
+    "marketplaceCheckout.errors.INSUFFICIENT_BALANCE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.systemAdmin": {
+    "marketplaceCheckout.errors.TENANT_REQUIRED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.clinicalOps": {
+    "marketplaceCheckout.errors.WALLET_DEBIT_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.monitoring": {
+    "marketplaceCheckout.errors.CART_READ_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.logout": {
+    "marketplaceCheckout.errors.ORDER_WRITE_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.connectors": {
+    "marketplaceCheckout.errors.WALLET_READ_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "sidebar.support": {
+    "marketplaceCheckout.errors.GATEWAY_MISCONFIGURED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.unknown": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-12T05:26:09.746Z"
+  "generatedAt": "2026-08-12T05:14:22.384Z"
 }

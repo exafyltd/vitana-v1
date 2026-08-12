@@ -169,7 +169,22 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "common.follow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.getMaxina": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.uploading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:07.593Z"
+  "generatedAt": "2026-08-12T05:13:03.185Z"
 }
