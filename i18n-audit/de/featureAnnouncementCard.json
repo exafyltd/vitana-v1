@@ -1,57 +1,45 @@
 {
   "verdicts": {
-    "intro.experience": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "intro.welcomeTo": {
+    "featureAnnouncementCard.brandNew.eyebrow": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "intro.tagline": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing 'guided' part of the translation.",
-      "suggested": "Deine geführte Langlebigkeitsreise",
-      "phase": "llm"
-    },
-    "intro.playWelcome": {
+    "featureAnnouncementCard.brandNew.badge": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "intro.preparing": {
+    "featureAnnouncementCard.brandNew.intro": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "intro.playing": {
+    "featureAnnouncementCard.brandNew.cta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "intro.skipIntro": {
+    "featureAnnouncementCard.brandNew.closing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "intro.taglineMain": {
+    "featureAnnouncementCard.didYouKnow.eyebrow": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "intro.taglineSub": {
+    "featureAnnouncementCard.didYouKnow.intro": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "intro.goToLogin": {
+    "featureAnnouncementCard.didYouKnow.cta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-12T05:16:35.385Z"
+  "generatedAt": "2026-08-12T05:15:52.602Z"
 }

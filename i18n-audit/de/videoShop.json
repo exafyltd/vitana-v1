@@ -1,190 +1,178 @@
 {
   "verdicts": {
-    "common.ok": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "common.search": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.save": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.cancel": {
+    "videoShop.feed.end": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.loading": {
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.back": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.next": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.submit": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "common.delete": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.edit": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.create": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.close": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.actions": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.yes": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.no": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.done": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.apply": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.reset": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.filter": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.sort": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.more": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.less": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.all": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.none": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.select": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.selectAll": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.deselectAll": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.copy": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.paste": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.share": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.download": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.upload": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.refresh": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.retry": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.follow": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "common.getMaxina": {
-      "verdict": "OK",
+    "videoShop.feed.errorBody": {
+      "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
+      "issue": "Awkward phrasing; 'in einem Moment' is less idiomatic for 'in a moment' (meaning 'shortly').",
+      "suggested": "Bitte versuche es gleich noch einmal.",
       "phase": "llm"
     },
-    "common.uploading": {
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.roleBlockedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.roleBlockedBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.mute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.unmute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.share": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.feed.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.productFallback": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.adding": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addedBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.addFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.goToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.moreDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.notifyMe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.outOfStock": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.retry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.errorTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.errorBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; 'in einem Moment' is less idiomatic for 'in a moment' (meaning 'shortly').",
+      "suggested": "Bitte versuche es gleich noch einmal.",
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "videoShop.drawer.roleBlockedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Phrasing is too terse and not idiomatic for a friendly app. 'Kauf' (noun) is less natural than 'Kaufen' (gerund) for the act of buying.",
+      "suggested": "Kaufen ist hier nicht verfügbar.",
+      "phase": "llm"
+    },
+    "videoShop.drawer.roleBlockedBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'Käufe' (purchases, plural noun) is less accurate than 'Kaufen' (the act of buying, gerund) in this context, which refers to the ability/action of buying.",
+      "suggested": "Kaufen ist ein Community-Feature. Wechsle in die Community-Rolle, um fortzufahren.",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-12T05:14:05.839Z"
+  "generatedAt": "2026-08-12T05:36:34.166Z"
 }
