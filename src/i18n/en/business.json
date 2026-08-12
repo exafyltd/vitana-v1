@@ -91,13 +91,13 @@
       "_pending_review": {}
     },
     "transfer": {
-      "title": "Transfer to Wallet",
-      "description": "Transfer your pending reseller commissions to your VITANA Wallet.",
+      "title": "Request payout",
+      "description": "Request the payout of your outstanding reseller commissions to your VITANA Wallet.",
       "pending": "Pending",
       "wallet": "Wallet",
-      "instantCredit": "This will instantly credit your earnings to your Wallet balance.",
-      "transferring": "Transferring...",
-      "transfer": "Transfer",
+      "instantCredit": "Your request will be reviewed by our team before it is credited to your Wallet balance.",
+      "transferring": "Requesting...",
+      "transfer": "Request",
       "_pending_review": {}
     },
     "typeSelector": {

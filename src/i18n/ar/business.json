@@ -91,13 +91,13 @@
       "_pending_review": {}
     },
     "transfer": {
-      "title": "تحويل إلى المحفظة",
-      "description": "حوّل عمولات الموزع المعلقة إلى محفظة VITANA الخاصة بك.",
+      "title": "طلب صرف",
+      "description": "اطلب صرف عمولاتك المعلقة كبائع إلى محفظة VITANA الخاصة بك.",
       "pending": "معلق",
       "wallet": "المحفظة",
-      "instantCredit": "سيتم إضافة أرباحك فورًا إلى رصيد محفظتك.",
-      "transferring": "جاري التحويل...",
-      "transfer": "تحويل",
+      "instantCredit": "سيتم مراجعة طلبك من قبل فريقنا قبل إضافته إلى رصيد محفظتك.",
+      "transferring": "جاري الطلب...",
+      "transfer": "طلب",
       "_pending_review": {}
     },
     "typeSelector": {

@@ -91,13 +91,13 @@
       "_pending_review": {}
     },
     "transfer": {
-      "title": "Transférer vers le portefeuille",
-      "description": "Transfère tes commissions revendeur en attente vers ton portefeuille VITANA.",
+      "title": "Demander un versement",
+      "description": "Demande le versement de tes commissions de revendeur en attente vers ton portefeuille VITANA.",
       "pending": "En attente",
       "wallet": "Portefeuille",
-      "instantCredit": "Cela créditera instantanément tes gains à ton solde de Portefeuille.",
-      "transferring": "Transfert en cours...",
-      "transfer": "Transférer",
+      "instantCredit": "Ta demande sera examinée par notre équipe avant qu'elle ne soit créditée sur le solde de ton portefeuille.",
+      "transferring": "Demande en cours...",
+      "transfer": "Demander",
       "_pending_review": {}
     },
     "typeSelector": {

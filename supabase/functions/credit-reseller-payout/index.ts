@@ -95,10 +95,16 @@ serve(async (req) => {
       );
     }
 
-    // Check payout status - only allow pending or approved
-    if (payout.status !== "pending" && payout.status !== "approved") {
+    // SECURITY (post-audit hardening): only 'approved' payouts may be credited.
+    // Previously also accepted 'pending' — since create-reseller-payout lets a
+    // reseller self-request a payout (status='pending') for their own
+    // attributions with no staff review, that meant a reseller could
+    // self-request-and-self-credit real wallet money in one round trip with
+    // zero oversight. A payout must now be explicitly flipped to 'approved'
+    // by an exafy_admin via approve-reseller-payout before it can be credited.
+    if (payout.status !== "approved") {
       return new Response(
-        JSON.stringify({ error: `Cannot credit payout with status: ${payout.status}` }),
+        JSON.stringify({ error: `Cannot credit payout with status: ${payout.status}. Payout must be approved by an admin first.` }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }

@@ -26,7 +26,7 @@ const IGNORED_FILE_PATTERNS = [
 
 // Brand/short tokens that don't need translation.
 const BRAND_ALLOWLIST = new Set([
-  'Vitana', 'VITANA', 'MAXINA', 'Maxina', 'Lovable', 'Exafy', 'EXAFY',
+  'Vitana', 'VITANA', 'Vitanaland', 'VITANALAND', 'MAXINA', 'Maxina', 'Lovable', 'Exafy', 'EXAFY',
   'OK', 'Ok', 'AI', 'API', 'URL', 'ID', 'UUID', 'PDF', 'CSV', 'JSON',
   'EN', 'DE', 'AR', 'ES', 'FR', 'PT', 'PL', 'RU', 'ZH', 'SR',
 ]);

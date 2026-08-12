@@ -38,6 +38,8 @@ import {
   useNavCoverage,
   NavCatalogRow,
   NavPlatform,
+  NavRole,
+  NAV_ROLES,
 } from "@/hooks/useAdminNavigator";
 import { TriggerEditor } from "./components/TriggerEditor";
 import { SimulatorPanel } from "./components/SimulatorPanel";
@@ -63,6 +65,9 @@ type TenantSelection = "shared" | "all" | string;
 export default function NavigatorCatalog() {
   // BOOTSTRAP-NAV-PLATFORM: the two separate MAXINA catalogs the Navigator manages.
   const [platform, setPlatform] = useState<NavPlatform>("mobile");
+  // BOOTSTRAP-NAV-ROLE: the desktop sidebar is role-based, so each role has its
+  // own catalog. Community is the default (today's only catalog).
+  const [role, setRole] = useState<NavRole>("community");
   const [tenantFilter, setTenantFilter] = useState<TenantSelection>("shared");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -70,14 +75,20 @@ export default function NavigatorCatalog() {
 
   const tenantQuery = tenantFilter === "all" ? undefined : tenantFilter === "shared" ? null : tenantFilter;
 
-  const catalogQuery = useNavCatalogList({ tenantId: tenantQuery, q: query.trim(), platform });
-  const coverageQuery = useNavCoverage(tenantQuery || null, platform);
+  const catalogQuery = useNavCatalogList({ tenantId: tenantQuery, q: query.trim(), platform, role });
+  const coverageQuery = useNavCoverage(tenantQuery || null, platform, role);
 
   // Switching catalogs clears any open editor so we never edit a screen from
-  // the other surface.
+  // the other surface (platform OR role).
   function switchPlatform(next: NavPlatform) {
     if (next === platform) return;
     setPlatform(next);
+    setSelectedId(null);
+    setCreating(false);
+  }
+  function switchRole(next: NavRole) {
+    if (next === role) return;
+    setRole(next);
     setSelectedId(null);
     setCreating(false);
   }
@@ -170,6 +181,23 @@ export default function NavigatorCatalog() {
             <Monitor className="h-4 w-4" />
             {t('screens.admin.navigatorDesktopCatalog')}
           </button>
+        </div>
+
+        {/* ── Role switch: each role-surface is its own catalog (BOOTSTRAP-NAV-ROLE) ── */}
+        <div className="inline-flex items-center gap-2">
+          <span className="text-sm font-medium text-muted-foreground">{t('screens.admin.navRoleLabel')}</span>
+          <Select value={role} onValueChange={(v) => switchRole(v as NavRole)}>
+            <SelectTrigger className="h-9 w-[180px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {NAV_ROLES.map((r) => (
+                <SelectItem key={r} value={r}>
+                  {t(`screens.admin.navRole_${r}`)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Summary strip */}
@@ -308,6 +336,7 @@ export default function NavigatorCatalog() {
                 <TriggerEditor
                   entry={creating ? null : selectedEntry}
                   platform={platform}
+                  role={role}
                   onSaved={() => onSaved()}
                   onClose={() => {
                     setCreating(false);

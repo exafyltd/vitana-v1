@@ -16,6 +16,17 @@
 # Dispatch-only for now. Post-verify checks the LIVE hostname serves a
 # bundle that bakes the requested gateway URL — the deploy fails loudly if
 # the wiring didn't take.
+#
+# VTID-03602: the previous ECS service (vitana-community-app) was created
+# without a load-balancer/target-group attachment, so it never had a path
+# for traffic — every deploy "succeeded" (image pushed, task stable) while
+# preview-aws.vitanaland.com 503'd because the ALB's target group for that
+# host rule (vitana-tg-community-prod) had zero registered targets. ECS
+# does not allow attaching a load balancer to a service after creation, and
+# this workflow's credentials don't have ecs:DeleteService, so the service
+# name below moved to vitana-community-app-staging and the deploy step is
+# now idempotent create-with-LB-or-update rather than assuming the service
+# already exists correctly wired.
 
 name: AWS Stage Deploy Community App (ECS)
 
@@ -61,7 +72,7 @@ on:
       ecs_service:
         description: 'ECS service name'
         required: false
-        default: 'vitana-community-app'
+        default: 'vitana-community-app-staging'
 
 permissions:
   contents: read
@@ -83,7 +94,18 @@ jobs:
       TARGET_AWS_REGION: ${{ inputs.aws_region || 'eu-central-1' }}
       ECR_REPOSITORY: ${{ inputs.ecr_repository || 'vitana/community-app' }}
       ECS_CLUSTER: ${{ inputs.ecs_cluster || 'Vitana-ECS-Cluster' }}
-      ECS_SERVICE: ${{ inputs.ecs_service || 'vitana-community-app' }}
+      ECS_SERVICE: ${{ inputs.ecs_service || 'vitana-community-app-staging' }}
+      # Task-definition FAMILY to clone forward each deploy — decoupled from
+      # ECS_SERVICE on purpose, since a service name can change (see
+      # VTID-03602) while the family holding the actual container config
+      # should not.
+      ECS_TASK_DEF_FAMILY: 'vitana-community-app'
+      # Only used the first time ECS_SERVICE doesn't exist yet — the ALB
+      # host rule for preview-aws.vitanaland.com already forwards to this
+      # target group; a new service just needs to register into it.
+      STAGING_TARGET_GROUP_ARN: 'arn:aws:elasticloadbalancing:eu-central-1:472838866351:targetgroup/vitana-tg-community-prod/601d84c416a0e7ca'
+      STAGING_SUBNETS: 'subnet-0ff45a2051c5e5482,subnet-0c786864a28a5a821'
+      STAGING_SECURITY_GROUP: 'sg-0fbcf7b59b1f0d685'
       DEPLOY_REASON: ${{ inputs.reason || 'auto-deploy on push to main' }}
     steps:
       - uses: actions/checkout@v4
@@ -113,7 +135,7 @@ jobs:
         id: ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Preflight — verify ECR repo + ECS service exist
+      - name: Preflight — verify ECR repo + ECS cluster exist
         run: |
           set -e
           if ! aws ecr describe-repositories --repository-names "${{ env.ECR_REPOSITORY }}" >/dev/null 2>&1; then
@@ -121,12 +143,15 @@ jobs:
             aws ecr describe-repositories --query 'repositories[].repositoryName' --output table
             exit 1
           fi
-          if ! aws ecs describe-services --cluster "${{ env.ECS_CLUSTER }}" --services "${{ env.ECS_SERVICE }}" \
-               --query 'services[0].status' --output text 2>/dev/null | grep -q ACTIVE; then
-            echo "::error::ECS service '${{ env.ECS_SERVICE }}' not ACTIVE in cluster '${{ env.ECS_CLUSTER }}'. Services:"
-            aws ecs list-services --cluster "${{ env.ECS_CLUSTER }}" --output table
+          if ! aws ecs describe-clusters --clusters "${{ env.ECS_CLUSTER }}" \
+               --query 'clusters[0].status' --output text 2>/dev/null | grep -q ACTIVE; then
+            echo "::error::ECS cluster '${{ env.ECS_CLUSTER }}' not found/ACTIVE."
             exit 1
           fi
+          # ECS_SERVICE itself is deliberately NOT checked here — see
+          # VTID-03602. The deploy step below creates it (with the ALB
+          # load-balancer attached) on first run if it doesn't exist yet,
+          # so a not-yet-created service is expected, not an error.
 
       - name: Build and push image
         id: build
@@ -142,14 +167,17 @@ jobs:
           echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
           echo "Pushed $IMAGE"
 
-      - name: Register task-definition revision + roll the service
+      - name: Register task-definition revision + create-or-roll the service
         run: |
           set -e
           IMAGE="${{ steps.build.outputs.image }}"
-          TD_ARN=$(aws ecs describe-services --cluster "${{ env.ECS_CLUSTER }}" --services "${{ env.ECS_SERVICE }}" \
-            --query 'services[0].taskDefinition' --output text)
-          echo "Current task definition: $TD_ARN"
-          NEW_DEF=$(aws ecs describe-task-definition --task-definition "$TD_ARN" --query taskDefinition \
+
+          # Always clone forward from the task-def FAMILY (not from the
+          # current service's active revision) — on a first-ever run there
+          # is no service yet to read a task def from, and the family
+          # holds the correct container config regardless of which service
+          # (if any) is currently using it.
+          NEW_DEF=$(aws ecs describe-task-definition --task-definition "${{ env.ECS_TASK_DEF_FAMILY }}" --query taskDefinition \
             | jq --arg IMG "$IMAGE" '
                 .containerDefinitions[0].image = $IMG
                 | del(.taskDefinitionArn, .revision, .status, .requiresAttributes,
@@ -157,8 +185,30 @@ jobs:
           NEW_ARN=$(aws ecs register-task-definition --cli-input-json "$NEW_DEF" \
             --query 'taskDefinition.taskDefinitionArn' --output text)
           echo "Registered $NEW_ARN"
-          aws ecs update-service --cluster "${{ env.ECS_CLUSTER }}" --service "${{ env.ECS_SERVICE }}" \
-            --task-definition "$NEW_ARN" >/dev/null
+
+          SERVICE_STATUS=$(aws ecs describe-services --cluster "${{ env.ECS_CLUSTER }}" --services "${{ env.ECS_SERVICE }}" \
+            --query 'services[0].status' --output text 2>/dev/null || echo "MISSING")
+
+          if [ "$SERVICE_STATUS" = "ACTIVE" ]; then
+            echo "Rolling existing service ${{ env.ECS_SERVICE }} (status: $SERVICE_STATUS)"
+            aws ecs update-service --cluster "${{ env.ECS_CLUSTER }}" --service "${{ env.ECS_SERVICE }}" \
+              --task-definition "$NEW_ARN" >/dev/null
+          else
+            echo "Service ${{ env.ECS_SERVICE }} not ACTIVE (status: $SERVICE_STATUS) — creating with the ALB load-balancer attached (VTID-03602)."
+            aws ecs create-service \
+              --cluster "${{ env.ECS_CLUSTER }}" \
+              --service-name "${{ env.ECS_SERVICE }}" \
+              --task-definition "$NEW_ARN" \
+              --desired-count 1 \
+              --launch-type FARGATE \
+              --platform-version LATEST \
+              --network-configuration "awsvpcConfiguration={subnets=[${{ env.STAGING_SUBNETS }}],securityGroups=[${{ env.STAGING_SECURITY_GROUP }}],assignPublicIp=DISABLED}" \
+              --load-balancers "targetGroupArn=${{ env.STAGING_TARGET_GROUP_ARN }},containerName=community-app,containerPort=8080" \
+              --deployment-configuration "deploymentCircuitBreaker={enable=true,rollback=true},maximumPercent=200,minimumHealthyPercent=100" \
+              --tags key=Project,value=vitana key=Environment,value=staging key=ManagedBy,value=github-actions key=Name,value="${{ env.ECS_SERVICE }}" \
+              >/dev/null
+          fi
+
           echo "Waiting for service to stabilize (up to ~10 min)…"
           aws ecs wait services-stable --cluster "${{ env.ECS_CLUSTER }}" --services "${{ env.ECS_SERVICE }}"
           echo "Service stable on $NEW_ARN"

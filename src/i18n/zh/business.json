@@ -91,13 +91,13 @@
       "_pending_review": {}
     },
     "transfer": {
-      "title": "转入钱包",
-      "description": "将你待处理的分销佣金转入你的 VITANA 钱包。",
+      "title": "请求提现",
+      "description": "请求将你未结清的经销商佣金提现到你的 VITANA 钱包。",
       "pending": "待处理",
       "wallet": "钱包",
-      "instantCredit": "这会将你的收入即时存入你的钱包余额。",
-      "transferring": "正在转账...",
-      "transfer": "转账",
+      "instantCredit": "你的请求将由我们的团队审核，然后才会存入你的钱包余额。",
+      "transferring": "请求中...",
+      "transfer": "请求",
       "_pending_review": {}
     },
     "typeSelector": {
