@@ -1,0 +1,94 @@
+{
+  "verdicts": {
+    "editProfile.unsavedChanges": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.notAuthenticated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.notAuthenticatedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.profileUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.profileUpdatedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.refreshFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.showcaseHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.showcaseTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation 'المميزات' (features/advantages) is not the most precise for 'Highlights' in a profile context, which refers to selected content.",
+      "suggested": "المحتوى المميز",
+      "phase": "llm"
+    },
+    "editProfile.manage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.about": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "'حول' (about, preposition) is less idiomatic as a standalone section title than 'نبذة' (bio/summary) for a profile.",
+      "suggested": "نبذة",
+      "phase": "llm"
+    },
+    "editProfile.addBio": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.tapToEdit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.titlePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.descriptionPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:22:04.487Z"
+}

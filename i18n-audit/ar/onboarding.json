@@ -1,0 +1,129 @@
+{
+  "verdicts": {
+    "onboarding.welcome": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"VITANA\" missing from target",
+      "phase": "static"
+    },
+    "onboarding.subtitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The phrase 'الخاصة بك' is somewhat redundant and makes the sentence less concise and natural. 'الشخصية' already conveys 'personalized'.",
+      "suggested": "منصتك الشخصية لطول العمر",
+      "phase": "llm"
+    },
+    "onboarding.connectApps": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "'ربط' is a verbal noun (masdar), but the English 'Connect' is an imperative verb. It should be translated as an imperative.",
+      "suggested": "اربط تطبيقاتك",
+      "phase": "llm"
+    },
+    "onboarding.connectAppsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.setGoals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.setGoalsDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The phrase 'الخاصة بك' is somewhat redundant and makes the sentence less concise and natural. A more idiomatic phrasing is preferred.",
+      "suggested": "حدد أهدافك في الصحة وطول العمر",
+      "phase": "llm"
+    },
+    "onboarding.joinCommunity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.joinCommunityDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.getStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.skip": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.skipIntro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.displayNameLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.displayNamePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handlePlaceholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "This appears to be a literal string or example, not a phrase to be translated. Placeholders/literal strings should remain as is.",
+      "suggested": "your_username",
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleTaken": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleInvalid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.handleMinLength": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.saving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "onboarding.nameForm.submit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:31:12.518Z"
+}

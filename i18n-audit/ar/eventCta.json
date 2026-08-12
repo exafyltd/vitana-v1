@@ -1,0 +1,105 @@
+{
+  "verdicts": {
+    "eventCta.buyTicket": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.buyTicketWithPrice": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.getFreeTicket": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.reserveSpot": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.reserveMySpot": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.viewTicket": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.soldOut": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.joinMeetup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.leaveMeetup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.cancelReservation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.viewEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.yourTicket": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.getYourTicket": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.joinThisEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.selectTickets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.buyTicketsTotal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.joining": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.getTickets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventCta.promoteEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:22:32.497Z"
+}

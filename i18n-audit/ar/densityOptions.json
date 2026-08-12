@@ -1,0 +1,22 @@
+{
+  "verdicts": {
+    "densityOptions.cozy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "densityOptions.compact": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The Arabic word 'مضغوط' primarily means 'compressed' or 'under pressure', which doesn't fully capture the 'small and efficiently arranged' or 'condensed' nuance of 'Compact' in a UI context. 'مدمج' (integrated/compact) or 'مكثف' (condensed) would be more appropriate.",
+      "suggested": "مدمج",
+      "phase": "llm"
+    },
+    "densityOptions.gallery": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:20:14.797Z"
+}

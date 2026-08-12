@@ -1,0 +1,47 @@
+{
+  "verdicts": {
+    "publicProfile.viewFull": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "publicProfile.sendMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "publicProfile.follow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "publicProfile.milestones": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "publicProfile.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "publicProfile.followers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "publicProfile.following": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect participle used. 'المتابَعون' (the followed ones) is passive. For 'Following' (people one follows), the active participle 'متابِع' is more appropriate and commonly used in UI.",
+      "suggested": "متابِع",
+      "phase": "llm"
+    },
+    "publicProfile.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:34:52.597Z"
+}

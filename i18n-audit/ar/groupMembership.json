@@ -1,0 +1,35 @@
+{
+  "verdicts": {
+    "groupMembership.joined": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.joinedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.left": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.leftDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.errorJoin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.errorLeave": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:24:09.761Z"
+}
