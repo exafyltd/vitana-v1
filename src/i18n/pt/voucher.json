@@ -41,7 +41,7 @@
     },
     "success": {
       "title": "Voucher Comprado!",
-      "ready": "O teu voucher {tier} está pronto",
+      "ready": "Seu voucher {tier} está pronto",
       "download": "Descarregar Voucher",
       "sendEmail": "Enviar ao Destinatário por E-mail",
       "viewOrders": "Ver nas Encomendas",
@@ -60,7 +60,7 @@
       "_pending_review": {}
     },
     "preview": {
-      "title": "O teu Voucher",
+      "title": "Seu Voucher",
       "giftVoucher": "Voucher Presente",
       "validUntil": "Válido até {date}",
       "voucherCode": "Código do Voucher",

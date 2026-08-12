@@ -1,7 +1,7 @@
 {
   "tasks": {
     "noOpenTasks": "Sem tarefas abertas",
-    "confirmCancelTask": "Queres mesmo cancelar esta tarefa?",
+    "confirmCancelTask": "Você tem certeza que deseja cancelar esta tarefa?",
     "postponeComingSoon": "Função de reagendamento em breve",
     "addNotePrompt": "Adicionar uma nota a esta tarefa:",
     "noteAdded": "Nota adicionada: {note}",

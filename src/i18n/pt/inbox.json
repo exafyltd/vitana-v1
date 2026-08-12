@@ -1,10 +1,10 @@
 {
   "inbox": {
     "title": "Caixa de entrada",
-    "subtitle": "Fica conectado com a tua comunidade!",
-    "description": "As tuas conversas, atualizações e notificações",
+    "subtitle": "Fique conectado com sua comunidade!",
+    "description": "Suas conversas, atualizações e notificações",
     "desktopTitle": "Mensagens",
-    "desktopDescription": "Conecta-te com a tua comunidade e rede",
+    "desktopDescription": "Conecte-se com sua comunidade e rede",
     "tabs": {
       "all": "Tudo",
       "groups": "Grupos",
@@ -28,7 +28,7 @@
       "_pending_review": {}
     },
     "composer": {
-      "placeholder": "Escreve a tua mensagem...",
+      "placeholder": "Digite sua mensagem...",
       "send": "Enviar",
       "attachments": "Anexos",
       "recipients": "Para:",
@@ -69,7 +69,7 @@
       "addMembers": "Adicionar Membros",
       "searchPlaceholder": "Procurar utilizadores...",
       "groupNameRequired": "Nome do grupo é obrigatório",
-      "groupNameRequiredDesc": "Por favor, insere um nome para o teu grupo.",
+      "groupNameRequiredDesc": "Por favor, digite um nome para seu grupo.",
       "addMembersRequired": "Adicionar membros",
       "addMembersRequiredDesc": "Por favor, adiciona pelo menos um membro.",
       "groupExists": "Grupo já existe",
@@ -101,7 +101,7 @@
     "createGroupAction": "Criar Novo Grupo",
     "newConversationAction": "Nova Conversa",
     "noGroups": "Ainda sem grupos",
-    "noGroupsDesc": "Os grupos ajudam-te a colaborar com várias pessoas ao mesmo tempo.",
+    "noGroupsDesc": "Grupos ajudam você a colaborar com várias pessoas ao mesmo tempo.",
     "createFirstGroup": "Cria o primeiro grupo",
     "loading": "A carregar mensagens...",
     "searchConversations": "Pesquisar conversas...",
@@ -110,9 +110,9 @@
     "noMessagesDesc": "Começa uma conversa para começar.",
     "startConversation": "Iniciar Conversa",
     "emptyState": {
-      "title": "A tua caixa de entrada ainda está vazia.",
-      "globalDescription": "Inicia uma conversa ou junta-te a uma comunidade para te conectares com outros.",
-      "tenantDescription": "Conecta-te com colegas e membros da equipa na tua rede profissional.",
+      "title": "Sua caixa de entrada ainda está vazia.",
+      "globalDescription": "Inicie uma conversa ou junte-se a uma comunidade para se conectar com outras pessoas.",
+      "tenantDescription": "Conecte-se com colegas e membros da equipe em sua rede profissional.",
       "startConversation": "Iniciar uma conversa",
       "discoverPeople": "Descobrir pessoas",
       "_pending_review": {}

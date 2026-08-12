@@ -1,7 +1,7 @@
 {
   "businessHub": {
     "title": "Centro de Negócios",
-    "description": "Cresça o teu negócio de bem-estar",
+    "description": "Desenvolva seu negócio de bem-estar",
     "tabs": {
       "snapshot": "Resumo",
       "services": "Serviços",
@@ -14,12 +14,12 @@
     "analytics": "Análises",
     "searchBusiness": "Pesquisar negócio...",
     "noServices": "Sem serviços ainda",
-    "noServicesDesc": "Cria o teu primeiro serviço para atrair clientes.",
+    "noServicesDesc": "Crie seu primeiro serviço para atrair clientes.",
     "createService": "Criar Serviço",
     "noClients": "Sem clientes ainda",
-    "noClientsDesc": "Os teus clientes irão aparecer aqui.",
+    "noClientsDesc": "Seus clientes aparecerão aqui.",
     "noSales": "Sem vendas ainda",
-    "noSalesDesc": "O teu histórico de vendas aparecerá aqui.",
+    "noSalesDesc": "Seu histórico de vendas aparecerá aqui.",
     "_pending_review": {}
   },
   "_pending_review": {}

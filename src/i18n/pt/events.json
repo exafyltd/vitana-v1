@@ -14,7 +14,7 @@
     "checkBack": "Volta em breve para ver os próximos eventos da comunidade!",
     "emptyStates": {
       "noEventsToday": "Nenhum Evento Hoje",
-      "noEventsTodayDesc": "Nenhum evento está planejado para hoje. Confere os próximos eventos ou cria o teu próprio!",
+      "noEventsTodayDesc": "Não há eventos planejados para hoje. Confira os próximos eventos ou crie o seu próprio!",
       "createEvent": "Criar Evento",
       "viewUpcoming": "Ver Próximos Eventos",
       "followingTitle": "Publicações de pessoas que segues",

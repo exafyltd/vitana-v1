@@ -4,7 +4,7 @@
     "items": {
       "askAiQuestion": {
         "title": "Perguntar à IA",
-        "description": "Consulta tuas memórias com pesquisa de IA em linguagem natural",
+        "description": "Pesquise suas memórias com pesquisa de IA em linguagem natural",
         "_pending_review": {}
       },
       "advancedSearch": {
@@ -14,12 +14,12 @@
       },
       "patternAnalysis": {
         "title": "Análise de Padrões",
-        "description": "Descobre tendências e padrões nos teus dados de bem-estar",
+        "description": "Descubra tendências e padrões em seus dados de bem-estar",
         "_pending_review": {}
       },
       "memoryInsights": {
         "title": "Insights de Memória",
-        "description": "Obtém insights impulsionados por IA da tua jornada de saúde",
+        "description": "Obtenha insights com IA da sua jornada de saúde",
         "_pending_review": {}
       },
       "searchByDate": {

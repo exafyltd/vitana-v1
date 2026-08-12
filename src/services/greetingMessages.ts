@@ -76,7 +76,7 @@ const getTimeGreeting = (timeOfDay: string, language: string = 'en-US'): string 
       evening: 'Bonsoir',
       default: 'Bonjour'
     },
-    'pt-PT': {
+    'pt-BR': {
       morning: 'Bom dia',
       afternoon: 'Boa tarde',
       evening: 'Boa noite',
@@ -162,10 +162,12 @@ const getLocalizedText = (key: string, language: string = 'en-US', params?: Reco
       action: '',
       actions_plural: 's'
     },
-    'pt-PT': {
-      appointment: `Não te esqueças do teu {title} às {time}.`,
-      actions: `Tens {count} ação{s} de saúde pronta{s} no teu Autopilot.`,
-      scoreImproved: `A tua pontuação Vitana melhorou {change} pontos desde a tua última visita.`,
+    // pt-BR (VTID-03577). Was European tu-form: "Não te esqueças do teu",
+    // "Tens", "A tua". Brazilian uses você agreement and proclisis.
+    'pt-BR': {
+      appointment: `Não se esqueça do seu {title} às {time}.`,
+      actions: `Você tem {count} ação{s} de saúde pronta{s} no seu Autopilot.`,
+      scoreImproved: `Sua pontuação Vitana melhorou {change} pontos desde a sua última visita.`,
       milestone: `Parabéns por atingir um novo marco: {achievement}.`,
       welcome: `Bem-vindo ao Vitana.`,
       action: '',

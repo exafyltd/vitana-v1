@@ -31,7 +31,7 @@ const getLanguageLabel = (languageCode: string): string => {
     'de-DE': 'German',
     'es-ES': 'Spanish',
     'fr-FR': 'French',
-    'pt-PT': 'Portuguese',
+    'pt-BR': 'Portuguese',
     'ru-RU': 'Russian',
     'zh-CN': 'Chinese',
     'ar-XA': 'Arabic',

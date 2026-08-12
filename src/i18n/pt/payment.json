@@ -10,7 +10,7 @@
     "exchangeSuccess": "Troca e Envio com Sucesso! ✨",
     "exchangeSuccessDesc": "Convertido e enviado {amount}",
     "insufficientBalance": "Saldo Insuficiente",
-    "insufficientBalanceDesc": "Não tens {currency} suficiente para esta troca",
+    "insufficientBalanceDesc": "Você não tem {currency} suficiente para esta troca",
     "transactionFailed": "Transação Falhou",
     "paymentFailed": "Pagamento Falhou",
     "paymentFailedDesc": "O pagamento não pôde ser processado. Por favor, tenta novamente.",
