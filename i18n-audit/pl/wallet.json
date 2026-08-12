@@ -1,0 +1,119 @@
+{
+  "verdicts": {
+    "wallet.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.usdBalance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.creditsBalance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.creditsLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.available": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.staked": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Less common term for crypto staking; 'Stakowane' is more idiomatic in this context.",
+      "suggested": "Stakowane",
+      "phase": "llm"
+    },
+    "wallet.searchWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.tabs.balances": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.tabs.activity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.tabs.actions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.filters.commissions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.filters.transfers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.filters.exchanges": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.filters.rewards": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.filters.purchases": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.filters.pending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.filters.withdrawals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.filters.stakes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.noActivity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.noActivityDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.displayCurrency": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation is an imperative; a noun phrase is more appropriate for a setting label.",
+      "suggested": "Waluta wyświetlania",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T07:15:12.169Z"
+}

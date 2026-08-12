@@ -1,0 +1,176 @@
+{
+  "verdicts": {
+    "support.maxina.faq.createAccount.question": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "target 10.2× longer than EN",
+      "phase": "static"
+    },
+    "support.maxina.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categoriesTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.gettingStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.account": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.events": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.payments": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.technical": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.createAccount.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.resetPassword.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.resetPassword.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.joinEvents.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.joinEvents.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.updateProfile.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.updateProfile.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.deleteAccount.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.deleteAccount.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.paymentMethods.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.paymentMethods.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.contactOrganizers.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.contactOrganizers.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.dataSecure.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.dataSecure.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.contact.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.contact.email": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.contact.responseTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.usefulLinks.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.usefulLinks.privacy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.usefulLinks.deleteAccount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.usefulLinks.portal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.footer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T07:01:35.221Z"
+}

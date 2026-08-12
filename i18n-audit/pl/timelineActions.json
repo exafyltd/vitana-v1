@@ -1,0 +1,92 @@
+{
+  "verdicts": {
+    "timelineActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.logHealthEvent.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.logHealthEvent.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "'momenty zdrowia' is less precise than 'milestones'; 'etapy zdrowotne' is more appropriate for significant progress points.",
+      "suggested": "Zapisuj ważne etapy zdrowotne",
+      "phase": "llm"
+    },
+    "timelineActions.items.markAchievement.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.markAchievement.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.recordLifeMoment.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.recordLifeMoment.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.addPhotoMemory.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.addPhotoMemory.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.voiceTimelineEntry.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.voiceTimelineEntry.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.trackProgress.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.trackProgress.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.activityCheckIn.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.activityCheckIn.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.setTimelineGoal.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "timelineActions.items.setTimelineGoal.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T07:02:06.325Z"
+}
