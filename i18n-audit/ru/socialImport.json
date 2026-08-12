@@ -53,7 +53,7 @@
     "socialImport.importSuccess": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Grammatically incorrect; 'успешно' is an adverb, should be an adjective or noun phrase.",
+      "issue": "Grammatically incorrect. 'успешно' is an adverb, but an adjective or a verb phrase is needed here.",
       "suggested": "Импорт успешен",
       "phase": "llm"
     },
@@ -128,5 +128,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T02:07:06.663Z"
+  "generatedAt": "2026-08-12T05:20:50.982Z"
 }

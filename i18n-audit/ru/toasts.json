@@ -296,10 +296,8 @@
       "phase": "llm"
     },
     "toasts.error.uploadFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Ambiguous translation for 'uploaded'; inconsistent with previous 'Выгрузка'. 'Загрузить' can mean both upload and download. 'Выгрузить' is more specific for upload.",
-      "suggested": "Файл не удалось выгрузить.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.error.deleteFailed": {
@@ -448,10 +446,8 @@
       "phase": "llm"
     },
     "toasts.warning.limitReachedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender-specific verb form ('достиг' is masculine). For a general user, it should be gender-neutral or adapt to user's gender. 'Максимум достигнут' is a common gender-neutral UI alternative.",
-      "suggested": "Максимум достигнут.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.warning.slowConnection": {
@@ -725,10 +721,8 @@
       "phase": "llm"
     },
     "toasts.common.youVeMatchedWithSomeoneCheck": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The verb 'совпал' is masculine. If the user is female, it should be 'совпала'. A gender-neutral phrasing is preferred for UI strings when user gender is unknown or not handled dynamically.",
-      "suggested": "У тебя есть совпадение с кем-то! Проверь свои совпадения.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.common.noAnswer": {
@@ -1539,8 +1533,8 @@
     "toasts.admin.acceptLinkCopiedClipboard": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing for 'Accept link'. 'Ссылка для принятия' is too literal and less idiomatic than 'link for agreement/confirmation'.",
-      "suggested": "Ссылка для согласия скопирована в буфер обмена",
+      "issue": "Awkward phrasing, 'для принятия' is a bit stiff for 'accept link'.",
+      "suggested": "Ссылка для подтверждения скопирована в буфер обмена",
       "phase": "llm"
     },
     "toasts.admin.invitationRevoked": {
@@ -2630,9 +2624,9 @@
     },
     "toasts.health.sleepInsightsOpened": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation 'данные о сне' means 'sleep data', which is less nuanced than 'sleep insights'. 'Insights' implies useful information or analysis.",
-      "suggested": "Полезные сведения о сне открыты",
+      "confidence": 1,
+      "issue": "Meaning slightly off, 'данные' (data) is too generic for 'insights'.",
+      "suggested": "Открыта аналитика сна",
       "phase": "llm"
     },
     "toasts.health.sleepDataLogged": {
@@ -2891,31 +2885,23 @@
       "phase": "llm"
     },
     "toasts.liverooms.followedTitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Gender-specific. Should be gender-neutral for a general message.",
-      "suggested": "Подписка оформлена!",
       "phase": "llm"
     },
     "toasts.liverooms.followedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Gender-specific. Should be gender-neutral for a general message.",
-      "suggested": "Подписка на {name} оформлена!",
       "phase": "llm"
     },
     "toasts.liverooms.unfollowedTitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Gender-specific. Should be gender-neutral for a general message.",
-      "suggested": "Отписка оформлена.",
       "phase": "llm"
     },
     "toasts.liverooms.unfollowedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Gender-specific. Should be gender-neutral for a general message.",
-      "suggested": "Отписка от {name} оформлена.",
       "phase": "llm"
     },
     "toasts.meetups.signRequired": {
@@ -2934,10 +2920,8 @@
       "phase": "llm"
     },
     "toasts.meetups.youVeLeftThisMeetup": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Gender-specific and 'покинул' is a bit formal. Rephrased to be gender-neutral and more natural.",
-      "suggested": "Ты больше не участвуешь во встрече.",
       "phase": "llm"
     },
     "toasts.meetups.failedAddEvent": {
@@ -3091,10 +3075,8 @@
       "phase": "llm"
     },
     "toasts.memory.editFunctionalityComingSoon": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is too abrupt; 'скоро' alone for 'coming soon' is less natural than implying availability.",
-      "suggested": "Функция редактирования скоро будет доступна",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.memory.photoDeleted": {
@@ -4294,9 +4276,9 @@
     },
     "toasts.sharing.noValidContactsFoundCsv": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, not idiomatic Russian word order for 'No X found'.",
-      "suggested": "Действительных контактов не найдено в CSV",
+      "confidence": 1,
+      "issue": "Awkward word order. 'Найдено' should typically precede 'в CSV' or be structured differently.",
+      "suggested": "Действительные контакты не найдены в CSV",
       "phase": "llm"
     },
     "toasts.sharing.importCleared": {
@@ -4381,9 +4363,9 @@
     },
     "toasts.sharing.sharedSuccessfully": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The verb 'поделились' (they shared) is not appropriate for a passive UI message indicating a successful action. A passive construction is needed.",
-      "suggested": "Успешно отправлено!",
+      "confidence": 1,
+      "issue": "Incorrect subject. 'Поделились' is plural, but the notification is for a single user.",
+      "suggested": "Ты успешно поделился!",
       "phase": "llm"
     },
     "toasts.sharing.linkSharedDownloadImageIncludeIt": {
@@ -4469,7 +4451,7 @@
     "toasts.sharing.openingMessenger": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "The Russian translation 'Открываю Мессенджер...' uses the first-person singular ('I am opening'), which is too personal for an impersonal system message. It should be an impersonal noun phrase or passive construction.",
+      "issue": "Incorrect verb form. 'Открываю' (I am opening) is first-person singular, should be impersonal.",
       "suggested": "Открытие Мессенджера...",
       "phase": "llm"
     },
@@ -4481,7 +4463,7 @@
     "toasts.sharing.shareOpened": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "The Russian translation 'Поделиться открыто' means 'To share openly' (verb + adverb), not 'Share (feature/dialog) opened'. It's grammatically incorrect for the intended meaning.",
+      "issue": "Grammatically incorrect. 'Поделиться' is an infinitive verb, not a noun for the share feature/window.",
       "suggested": "Окно поделиться открыто",
       "phase": "llm"
     },
@@ -4592,16 +4574,16 @@
     },
     "toasts.tickets.ticketDownloadedOpeningEmail": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Using 'загружен' instead of 'скачан' for 'downloaded' is less precise. 'Скачан' is more common and accurate for file downloads.",
-      "suggested": "Билет скачан! Открываю почту...",
+      "confidence": 1,
+      "issue": "Incorrect verb form. 'Открываю' (I am opening) is first-person singular, should be impersonal.",
+      "suggested": "Билет загружен! Открытие почты...",
       "phase": "llm"
     },
     "toasts.tickets.ticketDownloadedOpeningMessages": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Using 'загружен' instead of 'скачан' for 'downloaded' is less precise. 'Скачан' is more common and accurate for file downloads.",
-      "suggested": "Билет скачан! Открываю сообщения...",
+      "confidence": 1,
+      "issue": "Incorrect verb form. 'Открываю' (I am opening) is first-person singular, should be impersonal.",
+      "suggested": "Билет загружен! Открытие сообщений...",
       "phase": "llm"
     },
     "toasts.tickets.ticketSaved": {
@@ -5400,17 +5382,15 @@
       "phase": "llm"
     },
     "toasts.hooks.youVeSuccessfullyLeftThisEvent": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender-specific verb ('покинул') used for a general 'You'. A gender-neutral phrasing is preferred for UI.",
-      "suggested": "Выход из события успешен.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.joinedEvent": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender-specific verb ('Присоединился') used for a general user. A gender-neutral phrasing is preferred for UI.",
-      "suggested": "Присоединение к событию! 🎉",
+      "confidence": 1,
+      "issue": "Not gender-neutral. 'Присоединился' assumes a male user.",
+      "suggested": "К событию присоединено! 🎉",
       "phase": "llm"
     },
     "toasts.hooks.pleaseSignGetPersonalizedRecommendations": {
@@ -5454,10 +5434,8 @@
       "phase": "llm"
     },
     "toasts.hooks.youNowFollowingThisUser": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender-specific adjective ('подписан') used for a general 'You'. A gender-neutral phrasing is preferred for UI.",
-      "suggested": "Подписка на пользователя оформлена.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.failedUnfollowUser": {
@@ -5633,8 +5611,8 @@
     "toasts.hooks.joinedRoom": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Assumes male user; should be gender-neutral for a general app. The app uses 'ты' form, so a passive construction is appropriate here.",
-      "suggested": "Вход в комнату выполнен!",
+      "issue": "Not gender-neutral. 'Присоединился' assumes a male user.",
+      "suggested": "К комнате присоединено!",
       "phase": "llm"
     },
     "toasts.hooks.failedJoinRoom": {
@@ -5645,8 +5623,8 @@
     "toasts.hooks.leftRoom": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Assumes male user; should be gender-neutral for a general app. The app uses 'ты' form, so a passive construction is appropriate here.",
-      "suggested": "Выход из комнаты выполнен!",
+      "issue": "Not gender-neutral. 'Покинул' assumes a male user.",
+      "suggested": "Комната покинута",
       "phase": "llm"
     },
     "toasts.hooks.failedLeaveRoom": {
@@ -5667,7 +5645,7 @@
     "toasts.hooks.openingCheckout": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Phrasing is a bit clunky; a more natural continuous action verb is preferred.",
+      "issue": "Slightly awkward phrasing. 'Открытие оформления заказа' is grammatically correct but a bit stiff for a process.",
       "suggested": "Открывается оформление заказа...",
       "phase": "llm"
     },
@@ -6284,7 +6262,7 @@
     "toasts.home.activityHasRemovedFromYourKnowledge": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Inconsistent register: 'вашей' (formal/plural 'your') should be 'твоей' (informal singular 'your') to match du-form.",
+      "issue": "Incorrect register. 'Вашей' (formal 'your') should be 'твоей' (informal 'your').",
       "suggested": "Действие удалено из твоей базы знаний.",
       "phase": "llm"
     },
@@ -6296,7 +6274,7 @@
     "toasts.home.activityHasSavedYourKnowledgeBase": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Inconsistent register: 'вашей' (formal/plural 'your') should be 'твоей' (informal singular 'your') to match du-form.",
+      "issue": "Incorrect register. 'Вашей' (formal 'your') should be 'твоей' (informal 'your').",
       "suggested": "Действие сохранено в твоей базе знаний.",
       "phase": "llm"
     },
@@ -6318,7 +6296,7 @@
     "toasts.home.thisActionHasRemovedFromYour": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Inconsistent register: 'вашего' (formal/plural 'your') should be 'твоего' (informal singular 'your') to match du-form.",
+      "issue": "Incorrect register. 'Вашего' (formal 'your') should be 'твоего' (informal 'your').",
       "suggested": "Это действие удалено из твоего списка.",
       "phase": "llm"
     },
@@ -6336,7 +6314,17 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "toasts.business.noOrdersExport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.business.ordersExported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T02:19:46.952Z"
+  "generatedAt": "2026-08-12T05:21:23.045Z"
 }

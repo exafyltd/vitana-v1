@@ -52,9 +52,9 @@
     },
     "navigation.discover": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Обзор means 'overview' or 'review', not 'discover'.",
-      "suggested": "Открытия",
+      "confidence": 1,
+      "issue": "Meaning mismatch. 'Обзор' means 'overview' or 'review', not 'discover'.",
+      "suggested": "Откройте для себя",
       "phase": "llm"
     },
     "navigation.supplements": {
@@ -98,5 +98,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:41:23.569Z"
+  "generatedAt": "2026-08-12T05:13:39.027Z"
 }

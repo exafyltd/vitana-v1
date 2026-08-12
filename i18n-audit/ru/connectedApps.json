@@ -178,10 +178,10 @@
     "connectedApps.popup.connectionPlaceholder": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing, missing preposition 'к' (to) for natural flow.",
-      "suggested": "Подключение к {appName} скоро",
+      "issue": "Slightly abrupt and missing nuance of 'coming soon'. More natural phrasing would include 'к' (to) and a verb indicating availability.",
+      "suggested": "Скоро будет доступно подключение к {appName}",
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:30:22.533Z"
+  "generatedAt": "2026-08-12T05:12:09.864Z"
 }

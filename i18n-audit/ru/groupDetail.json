@@ -21,10 +21,8 @@
       "phase": "llm"
     },
     "groupDetail.leaving": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The verb 'Покидаем' (we are leaving) is plural. For a single user's action in a du-form app, an impersonal noun or 'Покидаю' (I am leaving) would be more appropriate for a status message.",
-      "suggested": "Выход...",
       "phase": "llm"
     },
     "groupDetail.joinGroup": {
@@ -33,10 +31,8 @@
       "phase": "llm"
     },
     "groupDetail.joining": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The verb 'Присоединяемся' (we are joining) is plural. For a single user's action in a du-form app, an impersonal noun or 'Присоединяюсь' (I am joining) would be more appropriate for a status message.",
-      "suggested": "Вход...",
       "phase": "llm"
     },
     "groupDetail.back": {
@@ -65,5 +61,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:34:49.120Z"
+  "generatedAt": "2026-08-12T05:12:37.019Z"
 }

@@ -188,15 +188,15 @@
     "historyManagement.confirmClearOld": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The adjective 'уверен' (sure) is masculine. For a gender-neutral app, a gender-neutral phrasing is preferred for direct questions to the user.",
+      "issue": "Gender mismatch: English 'Are you sure' is gender-neutral, but Russian 'Ты уверен' is masculine. For a modern app, a gender-neutral phrasing is more appropriate.",
       "suggested": "Ты точно хочешь удалить историю старше 90 дней?",
       "phase": "llm"
     },
     "historyManagement.confirmDeleteAll": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The adjective 'уверен' (sure) is masculine. For a gender-neutral app, a gender-neutral phrasing is preferred for direct questions to the user.",
-      "suggested": "⚠️ ВНИМАНИЕ: Это безвозвратно удалит ВСЮ твою историю. Это действие нельзя отменить. Ты абсолютно точно хочешь этого?",
+      "issue": "Gender mismatch: English 'Are you absolutely sure?' is gender-neutral, but Russian 'Ты абсолютно уверен?' is masculine. For a modern app, a gender-neutral phrasing is more appropriate.",
+      "suggested": "Ты абсолютно точно?",
       "phase": "llm"
     },
     "historyManagement.beta": {
@@ -210,5 +210,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:36:19.434Z"
+  "generatedAt": "2026-08-12T05:12:59.465Z"
 }

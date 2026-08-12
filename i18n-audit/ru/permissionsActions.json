@@ -3,7 +3,7 @@
     "permissionsActions.title": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing and incorrect capitalization. 'Действия' at the end feels like an afterthought. Standard Russian headings capitalize only the first word.",
+      "issue": "Awkward phrasing and incorrect capitalization. The current translation is too literal and not idiomatic for a UI string. 'Действия' should be placed before the nouns it refers to, and only the first word should be capitalized.",
       "suggested": "Действия с конфиденциальностью и разрешениями",
       "phase": "llm"
     },
@@ -35,7 +35,7 @@
     "permissionsActions.items.securitySettings.description": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Incorrect capitalization. Standard Russian headings capitalize only the first word.",
+      "issue": "Incorrect capitalization. In Russian UI, typically only the first word of a phrase is capitalized unless subsequent words are proper nouns.",
       "suggested": "Обновить настройки аутентификации и безопасности",
       "phase": "llm"
     },
@@ -72,7 +72,7 @@
     "permissionsActions.items.permissionSettings.title": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Incorrect capitalization. Standard Russian headings capitalize only the first word.",
+      "issue": "Incorrect capitalization. In Russian UI, typically only the first word of a phrase is capitalized unless subsequent words are proper nouns.",
       "suggested": "Настройки разрешений",
       "phase": "llm"
     },
@@ -92,5 +92,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:42:42.938Z"
+  "generatedAt": "2026-08-12T05:13:54.906Z"
 }
