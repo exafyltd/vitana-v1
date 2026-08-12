@@ -1,0 +1,60 @@
+{
+  "verdicts": {
+    "groupFeed.placeholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupFeed.post": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupFeed.noMessages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupFeed.beFirst": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupFeed.joinToPost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupFeed.messageSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupFeed.deleteConfirm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupFeed.messageDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupFeed.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupFeed.errorSend": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupFeed.errorDelete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:23:08.526Z"
+}

@@ -1,0 +1,32 @@
+{
+  "verdicts": {
+    "profileStats.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.media": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The term '媒体' (media) often refers to mass media or news media. In a social app context, 'Media' usually refers to user-uploaded photos and videos, for which '照片和视频' or '多媒体' would be more appropriate and less ambiguous.",
+      "suggested": "照片和视频",
+      "phase": "llm"
+    },
+    "profileStats.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.followers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.following": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:32:19.244Z"
+}

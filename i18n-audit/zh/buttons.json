@@ -1,0 +1,280 @@
+{
+  "verdicts": {
+    "buttons.save": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.delete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.edit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.create": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.close": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.confirm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.submit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.next": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.back": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.previous": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.retry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.refresh": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.viewAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.seeMore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.seeLess": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.learnMore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.getStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.continue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.done": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.apply": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.reset": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.clear": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.filter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.sort": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.search": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.add": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.remove": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.update": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.upload": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.download": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.export": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.import": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.share": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.copy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.paste": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.send": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.reply": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.forward": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.connect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.disconnect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.enable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.disable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.show": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.hide": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.expand": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.collapse": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.select": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.selectAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.deselectAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.yes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.no": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.ok": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.generate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "buttons.generating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:16:20.026Z"
+}

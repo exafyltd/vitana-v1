@@ -1,0 +1,160 @@
+{
+  "verdicts": {
+    "settings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.quickSetup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.tabs.overview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.tabs.notifications": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.tabs.quickActions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.categories.privacy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.categories.privacyDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.categories.notifications": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.categories.notificationsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.categories.preferences": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.categories.preferencesDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.categories.connectedApps": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.categories.connectedAppsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.categories.tenantRole": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.categories.tenantRoleDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.categories.billing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.categories.billingDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.categories.support": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.categories.supportDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.status.privacyStatus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.status.subscription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.status.protected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.status.premium": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.status.notificationsActive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.status.connectedAppsCount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.status.types": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.status.apps": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.vitanaOpenedSection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.vitanaUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T06:56:48.344Z"
+}

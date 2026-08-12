@@ -1,0 +1,286 @@
+{
+  "verdicts": {
+    "health.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.overview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.overviewDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.servicesHub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.servicesHubDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.biomarkers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.biomarkersDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.healthTracker": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.healthTrackerDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.education": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.educationDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.priorityFocus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.priorityFocusExplanation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.autopilotGuidance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.autopilotSuggests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.takeAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.uploadBloodTest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.orderBloodTest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.viewPlans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.vitanaIndex": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.healthSnapshot": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.topPercentile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.trend.improving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.trend.declining": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.trend.stable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.suggestions.uploadBloodTestResults": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.suggestions.startFitnessChallenge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.exercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.hydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.pillars.mental": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noSleepPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noSleepPlanDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The phrase '由AI优化目标' is grammatically correct but sounds a bit clunky and formal for a friendly app. 'AI优化目标' is more concise and natural as an adjective phrase.",
+      "suggested": "根据你的生物节律、恢复需求和日常表现，生成一份AI优化目标、为你量身定制的个性化睡眠计划。",
+      "phase": "llm"
+    },
+    "health.emptyStates.noExercisePlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noExercisePlanDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Similar to entry 4, '由AI优化运动' is clunky. 'AI优化运动' is more concise and natural.",
+      "suggested": "根据你的健身水平、目标和恢复需求，生成一份AI优化运动、为你量身定制的个性化训练计划。",
+      "phase": "llm"
+    },
+    "health.emptyStates.noNutritionPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noNutritionPlanDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noHydrationPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noHydrationPlanDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Similar to entry 4, '由AI优化每日目标' is clunky. 'AI优化每日目标' is more concise and natural.",
+      "suggested": "根据你的活动水平、环境和恢复需求，生成一份AI优化每日目标、为你量身定制的个性化补水计划。",
+      "phase": "llm"
+    },
+    "health.emptyStates.noMentalPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.noMentalPlanDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.generatePlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.emptyStates.generating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.noSupplements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.noSupplementsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.noReports": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.noReportsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.medical": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.supplements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.uploadDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.unknownProvider": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.addSupplement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "health.uploadFirstReport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:23:46.979Z"
+}

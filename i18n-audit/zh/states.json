@@ -1,0 +1,105 @@
+{
+  "verdicts": {
+    "states.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.saving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.sending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.uploading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.downloading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.signingIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.signingOut": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.signingUp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.importing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.exporting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.syncing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.generating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.connecting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.disconnecting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.refreshing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.searching": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.deleting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.creating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "states.updating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T06:57:39.792Z"
+}

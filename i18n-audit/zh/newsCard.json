@@ -1,0 +1,150 @@
+{
+  "verdicts": {
+    "newsCard.menu.share": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.save": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.saved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.summarize": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.copyLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.openInBrowser": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.hide": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.showLess": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.muteSource": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.savedToast": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.unsavedToast": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.summarizeToast": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.hiddenToast": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.showLessToast": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.mutedToast": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.undo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.menu.unmute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.detail.back": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.detail.continueReading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.detail.openInBrowser": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.detail.couldNotLoad": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.detail.readOn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.pillars.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.pillars.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.pillars.hydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.pillars.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.pillars.exercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "newsCard.pillars.mental": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-12T05:29:16.089Z"
+}
