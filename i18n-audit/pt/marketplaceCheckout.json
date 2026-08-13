@@ -1,0 +1,284 @@
+{
+  "verdicts": {
+    "marketplaceCheckout.addMoney.currencyEur": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.currencyUsd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.balance.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses 'seu' (formal/Brazilian) instead of 'teu' (informal European Portuguese 'tu' form).",
+      "suggested": "Teu saldo",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.balance.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.balance.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.balance.addMoney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.button": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.successTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.successBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses 'seu' instead of 'teu'. Also, 'pedido' is more common in Brazil, 'encomenda' is preferred for European Portuguese and for consistency with other entries.",
+      "suggested": "Teu saldo foi cobrado e a tua encomenda foi criada.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.duplicateTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.duplicateBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.affiliateTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.affiliateBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.affiliateLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.affiliateOpened": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses 'Recarregue' (formal 'você' imperative) and 'seu' instead of 'Recarrega' (informal 'tu' imperative) and 'teu'.",
+      "suggested": "Recarrega o teu saldo com cartão via Stripe.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.amountLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.amountPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.currencyLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.continue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.invalidAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.checkingTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.checkingBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses 'seu' instead of 'teu'. Also, 'aguardando' is Brazilian Portuguese; 'à espera de' or 'a aguardar' is more common in European Portuguese.",
+      "suggested": "Estamos à espera da confirmação do teu pagamento. Isso pode levar um momento.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.succeededTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.succeededBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses 'Seu' instead of 'O teu'.",
+      "suggested": "O teu saldo foi recarregado com sucesso.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.failedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.failedBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses 'Sua' instead of 'O teu'. Also, 'carregamento' is used consistently for 'top-up' in other entries.",
+      "suggested": "O teu carregamento não pôde ser concluído. Nada foi cobrado.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.amountLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.backToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.invalid_request": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register (você instead of tu-form)",
+      "suggested": "A solicitação foi inválida. Por favor, verifica teu carrinho.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.CART_EMPTY": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register (seu instead of teu-form)",
+      "suggested": "Teu carrinho está vazio.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.PRODUCT_UNAVAILABLE": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register (seu instead of teu-form)",
+      "suggested": "Um produto no teu carrinho não está mais disponível.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.PRICE_UNAVAILABLE": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.MIXED_CURRENCY": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register (você instead of tu-form)",
+      "suggested": "Teu carrinho contém itens em moedas diferentes. Por favor, separa-os.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.UNSUPPORTED_WALLET_CURRENCY": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register (seu instead of teu-form)",
+      "suggested": "Esta moeda não é suportada pelo teu saldo.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.WALLET_ACCOUNT_MISSING": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.WALLET_ACCOUNT_INACTIVE": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register (sua instead of tua-form)",
+      "suggested": "Tua conta de saldo está atualmente inativa.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.INSUFFICIENT_BALANCE": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register (você instead of tu-form)",
+      "suggested": "Teu saldo não é suficiente para esta compra. Por favor, adiciona dinheiro.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.TENANT_REQUIRED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.WALLET_DEBIT_FAILED": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register (você instead of tu-form)",
+      "suggested": "A cobrança do teu saldo falhou. Por favor, tenta novamente.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.CART_READ_FAILED": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register (você instead of tu-form)",
+      "suggested": "Não conseguimos ler teu carrinho. Por favor, tenta novamente.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.ORDER_WRITE_FAILED": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register (você instead of tu-form)",
+      "suggested": "Teu pedido não pôde ser salvo. Por favor, tenta novamente.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.WALLET_READ_FAILED": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register (você instead of tu-form)",
+      "suggested": "Não conseguimos ler teu saldo. Por favor, tenta novamente.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.GATEWAY_MISCONFIGURED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.unknown": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:31:33.608Z"
+}

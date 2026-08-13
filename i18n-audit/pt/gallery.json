@@ -1,0 +1,94 @@
+{
+  "verdicts": {
+    "gallery.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.upload": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.caption": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.captionPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.uploadFirst": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: 'sua' is formal, should be informal 'tua'.",
+      "suggested": "Adicionar a tua primeira foto",
+      "phase": "llm"
+    },
+    "gallery.photo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.dropzone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.publicLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.videos": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.uploadVideo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.noVideos": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.addFirstVideo": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: 'seu' is formal, should be informal 'teu'.",
+      "suggested": "Adicionar o teu primeiro vídeo",
+      "phase": "llm"
+    },
+    "gallery.invalidFormat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.fileTooLarge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.maxSize": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.maxSizeHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:27:24.254Z"
+}

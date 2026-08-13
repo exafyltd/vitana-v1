@@ -1,0 +1,32 @@
+{
+  "verdicts": {
+    "profileGroups.emptyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileGroups.emptyDescription": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent: uses 'você' form instead of 'tu' form for imperative and possessive, as specified by 'du-form' informal register.",
+      "suggested": "Participa de comunidades que combinam com teus interesses",
+      "phase": "llm"
+    },
+    "profileGroups.discoverCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileGroups.viewAllCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileGroups.membersLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:36:54.064Z"
+}

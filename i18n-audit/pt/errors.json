@@ -1,0 +1,79 @@
+{
+  "verdicts": {
+    "errors.somethingWentWrong": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.tryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.pageNotFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.pageNotFoundDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.serverError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.serverErrorDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.networkError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.networkErrorDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal imperative ('Verifique') instead of informal ('Verifica') for du-form.",
+      "suggested": "Verifica sua conexão com a internet.",
+      "phase": "llm"
+    },
+    "errors.unauthorized": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.unauthorizedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal imperative ('faça') instead of informal ('faz') for du-form.",
+      "suggested": "Por favor, faz login para continuar.",
+      "phase": "llm"
+    },
+    "errors.forbidden": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.forbiddenDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.notFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "errors.notFoundDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:26:20.990Z"
+}

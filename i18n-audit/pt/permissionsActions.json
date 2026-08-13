@@ -1,0 +1,100 @@
+{
+  "verdicts": {
+    "permissionsActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.privacySettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.privacySettings.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Inconsistent terminology. 'Definições' is common in Portugal, while 'Configurações' (used in other entries) is common in Brazil. Given the overall Brazilian Portuguese informal register, 'Configurações' should be used for consistency.",
+      "suggested": "Configurar Configurações de Privacidade e Partilha",
+      "phase": "llm"
+    },
+    "permissionsActions.items.manageAccess.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Inconsistent terminology. 'Gerir' is common in Portugal, while 'Gerenciar' is common in Brazil. Given the overall Brazilian Portuguese informal register, 'Gerenciar' should be used for consistency.",
+      "suggested": "Gerenciar Acesso",
+      "phase": "llm"
+    },
+    "permissionsActions.items.manageAccess.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.securitySettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.securitySettings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.apiKeysAccess.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.apiKeysAccess.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Inconsistent verb form. 'Gere' is the informal imperative (você/tu) of 'gerir' (PT-PT), while 'Gerencie' is the equivalent for 'gerenciar' (PT-BR). Given the overall Brazilian Portuguese informal register, 'Gerencie' should be used for consistency.",
+      "suggested": "Gerencie as integrações de apps de terceiros e o acesso à API",
+      "phase": "llm"
+    },
+    "permissionsActions.items.dataRights.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.dataRights.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.auditLogs.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Inconsistent terminology. 'Registos' is common in Portugal, while 'Registros' is common in Brazil. Given the overall Brazilian Portuguese informal register, 'Registros' should be used for consistency.",
+      "suggested": "Registros de Auditoria",
+      "phase": "llm"
+    },
+    "permissionsActions.items.auditLogs.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Inconsistent terminology. 'Rasto' is common in Portugal, while 'Rastro' is common in Brazil. Given the overall Brazilian Portuguese informal register, 'Rastro' should be used for consistency.",
+      "suggested": "Revisa o histórico de acesso e o rastro de auditoria de segurança",
+      "phase": "llm"
+    },
+    "permissionsActions.items.permissionSettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.permissionSettings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.exportData.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.exportData.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:35:14.722Z"
+}

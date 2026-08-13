@@ -1,0 +1,80 @@
+{
+  "verdicts": {
+    "packages.item": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "packages.total": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "packages.confirmDelete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.types.bundle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.types.subscription": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "While 'subscrição' is technically correct, 'assinatura' is far more common and natural for 'subscription' in a mobile app context, especially in Brazilian Portuguese, which is often the default for global apps.",
+      "suggested": "Assinatura",
+      "phase": "llm"
+    },
+    "packages.types.program": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.status.draft": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.status.published": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "The meaning of 'Live' is ambiguous without further context. 'Ativo' means 'active' (e.g., an active program), but if 'Live' refers to a live stream or session, 'Ao vivo' would be more appropriate.",
+      "phase": "llm"
+    },
+    "packages.status.archived": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.items": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.validDays": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.save": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'Poupa' is the 'tu' form (informal, second person singular). For consistency with the 'você' form used in other entries (e.g., 'Você tem certeza'), the 'você' imperative form 'Poupe' would be more appropriate for a friendly, informal register.",
+      "suggested": "Poupe {percent}%",
+      "phase": "llm"
+    },
+    "packages.unpublish": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.publish": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:34:51.217Z"
+}

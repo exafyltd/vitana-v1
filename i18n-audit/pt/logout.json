@@ -1,0 +1,20 @@
+{
+  "verdicts": {
+    "logout.signingOut": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "logout.signedOut": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "logout.redirecting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:30:46.567Z"
+}

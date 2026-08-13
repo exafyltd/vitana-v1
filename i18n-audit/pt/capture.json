@@ -1,0 +1,247 @@
+{
+  "verdicts": {
+    "capture.notSupported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.notSupportedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recording": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.tapToRecord": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.tapToDescribe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.liveTranscription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.yourVoiceEntry": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register. Uses 'Sua' (você/formal possessive) instead of 'Tua' (tu/informal possessive), while other verbs are in 'tu' form.",
+      "suggested": "Tua entrada de voz",
+      "phase": "llm"
+    },
+    "capture.yourFeedback": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register. Uses 'Seu' (você/formal possessive) instead of 'Teu' (tu/informal possessive).",
+      "suggested": "Teu feedback",
+      "phase": "llm"
+    },
+    "capture.startSpeaking": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.editOrType": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.interimHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.attach": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.bugReport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.uxImprovement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.severity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.affectedScreen": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.select": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.low": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.medium": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.high": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.critical": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.saveEntry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.sending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.sendToTeam": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.reportSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.reportSentDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register and regional variant. Uses 'equipe' (Brazilian Portuguese) instead of 'equipa' (European Portuguese, consistent with 'Ecrã' and 'cinzento'), and 'seu apoio' (você/formal possessive) instead of 'o teu apoio' (tu/informal possessive).",
+      "suggested": "A equipa Exafy agradece o teu apoio para tornar Vitanaland melhor a cada dia.",
+      "phase": "llm"
+    },
+    "capture.sendAnother": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recordingStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recordingStartedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register. Uses 'Fale' (você/formal imperative) and 'suas' (você/formal possessive) instead of 'Fala' (tu/informal imperative) and 'as tuas' (tu/informal possessive).",
+      "suggested": "Fala claramente – as tuas palavras aparecem em tempo real.",
+      "phase": "llm"
+    },
+    "capture.recordingStopped": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recordingStoppedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency (formal 'você' instead of informal 'tu').",
+      "suggested": "Revisa e edita tua transcrição antes de salvar.",
+      "phase": "llm"
+    },
+    "capture.noContent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.noContentDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.noContentBugDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency (formal 'você' instead of informal 'tu').",
+      "suggested": "Por favor, grava teu feedback ou digita-o antes de enviá-lo.",
+      "phase": "llm"
+    },
+    "capture.entrySaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.entrySavedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency (formal 'sua' instead of informal 'tua').",
+      "suggested": "Tua entrada de diário foi adicionada à tua linha do tempo da memória.",
+      "phase": "llm"
+    },
+    "capture.saveFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.saveFailedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency (formal 'sua' and 'tente' instead of informal 'tua' and 'tenta').",
+      "suggested": "Tua entrada de diário não pôde ser salva. Por favor, tenta novamente.",
+      "phase": "llm"
+    },
+    "capture.sendFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.sendFailedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency (formal 'seu' and 'tente' instead of informal 'teu' and 'tenta').",
+      "suggested": "Teu feedback não pôde ser enviado. Por favor, tenta novamente.",
+      "phase": "llm"
+    },
+    "capture.recognitionError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recognitionErrorDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.transcribing": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency (formal 'sua' instead of informal 'tua').",
+      "suggested": "Transcrevendo tua gravação…",
+      "phase": "llm"
+    },
+    "capture.backendRecordingHint": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency (formal 'sua' and 'você tocar' instead of informal 'tua' and 'tu tocares').",
+      "suggested": "Gravando — tua transcrição aparecerá depois que tu tocares em Parar.",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:22:28.443Z"
+}

@@ -1,0 +1,78 @@
+{
+  "verdicts": {
+    "memoryActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.recordVoiceDiary.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.recordVoiceDiary.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect imperative form for informal register ('du' form). 'Capture' is formal.",
+      "suggested": "Captura pensamentos e reflexões com a voz",
+      "phase": "llm"
+    },
+    "memoryActions.items.addMemoryNote.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.addMemoryNote.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.viewTimeline.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.viewTimeline.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect imperative form and possessive for informal register ('du' form). 'Veja' is formal, 'sua' is formal.",
+      "suggested": "Vê tua jornada de bem-estar completa",
+      "phase": "llm"
+    },
+    "memoryActions.items.searchMemories.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.searchMemories.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.photoMemory.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.photoMemory.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect imperative form and possessive for informal register ('du' form). 'Adicione' is formal, 'sua' is formal.",
+      "suggested": "Adiciona memórias visuais à tua jornada",
+      "phase": "llm"
+    },
+    "memoryActions.items.aiMemoryAnalysis.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.aiMemoryAnalysis.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect imperative form and possessive for informal register ('du' form). 'Obtenha' is formal, 'seus' is formal.",
+      "suggested": "Obtém insights dos teus padrões de memória",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:32:42.403Z"
+}

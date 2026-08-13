@@ -1,0 +1,42 @@
+{
+  "verdicts": {
+    "walletActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.addFunds": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.send": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.exchange": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.withdraw": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.buyCredits": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.stakeTokens": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The term 'Apostar' (to bet) can carry a gambling connotation that might not accurately reflect the technical meaning of 'staking' in a blockchain context. Keeping 'Stake' as a loanword is more common and precise for this tech term.",
+      "suggested": "Stake Tokens",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T07:15:26.509Z"
+}

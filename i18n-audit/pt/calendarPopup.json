@@ -1,0 +1,96 @@
+{
+  "verdicts": {
+    "calendarPopup.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.nextEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.conflicts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.upcomingSchedule": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: 'Seus' is ambiguous (formal/informal plural) while 'teus' is explicitly informal singular, fitting 'du-form'.",
+      "suggested": "Teus próximos agendamentos e compromissos",
+      "phase": "llm"
+    },
+    "calendarPopup.addNewEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.noUpcomingEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.createFirstEvent": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: 'Crie seu' uses formal imperative and ambiguous possessive. 'Cria teu' is explicitly informal singular, fitting 'du-form'.",
+      "suggested": "Cria teu primeiro compromisso",
+      "phase": "llm"
+    },
+    "calendarPopup.aiSuggestions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.findBetterSlot": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.prepareBrief": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.shareAvailability": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.syncExternal": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Awkward phrasing: 'Sincronizar Externo' is too literal and not idiomatic as a verb phrase. 'Sincronizar com Externos' or 'Sincronizar Calendários Externos' would be more natural.",
+      "suggested": "Sincronizar com Externos",
+      "phase": "llm"
+    },
+    "calendarPopup.addEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.quickAdd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.eventFormComingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.externalSync": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.connectingCalendars": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:21:38.892Z"
+}

@@ -1,0 +1,96 @@
+{
+  "verdicts": {
+    "recallActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.askAiQuestion.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.askAiQuestion.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect verb conjugation for informal 'tu' form. 'Pesquise' is formal 'você'.",
+      "suggested": "Pesquisa suas memórias com pesquisa de IA em linguagem natural",
+      "phase": "llm"
+    },
+    "recallActions.items.advancedSearch.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.advancedSearch.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.patternAnalysis.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.patternAnalysis.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect verb conjugation for informal 'tu' form. 'Descubra' is formal 'você'.",
+      "suggested": "Descobre tendências e padrões em seus dados de bem-estar",
+      "phase": "llm"
+    },
+    "recallActions.items.memoryInsights.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.memoryInsights.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect verb conjugation for informal 'tu' form. 'Obtenha' is formal 'você'.",
+      "suggested": "Obtém insights com IA da sua jornada de saúde",
+      "phase": "llm"
+    },
+    "recallActions.items.searchByDate.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.searchByDate.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.locationMemories.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.locationMemories.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.filterByCategory.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.filterByCategory.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.quickRecalls.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "recallActions.items.quickRecalls.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:37:34.057Z"
+}
