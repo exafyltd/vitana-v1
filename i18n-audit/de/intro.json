@@ -36,7 +36,27 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "intro.taglineMain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.taglineSub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.goToLogin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.chooseLanguage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:14:00.374Z"
+  "generatedAt": "2026-08-13T05:20:41.496Z"
 }

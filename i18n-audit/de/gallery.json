@@ -37,9 +37,9 @@
     },
     "gallery.dropzone": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Missing 'to select' context; German is too terse.",
-      "suggested": "Ziehen & ablegen oder zum Auswählen klicken",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; not the most idiomatic or natural imperative for a friendly app instruction.",
+      "suggested": "Ziehe und lege ab oder klicke, um auszuwählen.",
       "phase": "llm"
     },
     "gallery.publicLabel": {
@@ -66,7 +66,27 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "gallery.maxSizeHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "gallery.invalidFormat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.fileTooLarge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.maxSize": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:11:40.120Z"
+  "generatedAt": "2026-08-13T05:19:55.672Z"
 }
