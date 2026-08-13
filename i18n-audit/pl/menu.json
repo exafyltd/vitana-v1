@@ -1,0 +1,50 @@
+{
+  "verdicts": {
+    "menu.home": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "menu.profile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "menu.settings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "menu.logout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "menu.help": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "menu.about": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "menu.contact": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "menu.privacy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "menu.terms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:32:05.943Z"
+}

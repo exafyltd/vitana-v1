@@ -1,0 +1,90 @@
+{
+  "verdicts": {
+    "gallery.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.upload": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.caption": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.captionPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.uploadFirst": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.photo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.dropzone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.publicLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.videos": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.uploadVideo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.noVideos": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.addFirstVideo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.invalidFormat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.fileTooLarge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.maxSize": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.maxSizeHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:26:53.737Z"
+}

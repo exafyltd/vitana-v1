@@ -1,0 +1,70 @@
+{
+  "verdicts": {
+    "whyThisMatch.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "The phrase 'Dlaczego ten członek?' is grammatically correct but sounds a bit stiff and less natural for a friendly app asking for the reason a specific person is shown. 'Członek' can be formal.",
+      "suggested": "Dlaczego ta osoba?",
+      "phase": "llm"
+    },
+    "whyThisMatch.interpretedAs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.consideredSignals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.showSomeoneElse": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.dismiss": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.ethicsNote": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The phrase 'czyja podróż świeci teraz' is a very literal translation and sounds unnatural/awkward in Polish. 'Podróż świeci' is not an idiomatic expression.",
+      "suggested": "Vitana nie ocenia członków na podstawie wyglądu ani majątku — ale oto ktoś, czyja historia teraz błyszczy.",
+      "phase": "llm"
+    },
+    "whyThisMatch.loadingRecipe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.recipeUnavailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.4": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.5,
+      "issue": "The literal translation 'Przekierowanie sprawiedliwości' sounds somewhat clunky and potentially misleading as a feature name in a friendly app. Without context on what 'Fairness Reroute' actually does, it's hard to judge if this translation conveys the intended meaning or if a more idiomatic or descriptive name is needed.",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T07:20:43.637Z"
+}
