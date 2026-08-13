@@ -18,13 +18,18 @@ import { SCREEN_IDS, withScreenId } from "@/lib/screen-id";
 import { MotivationalBanner } from "@/components/MotivationalBanner";
 import { StandardCard } from "@/components/templates/StandardCard";
 import { ResetDefaultsPopup } from "@/components/ResetDefaultsPopup";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage, getVisibleLanguageOptions } from "@/contexts/LanguageContext";
 import { t } from '@/lib/i18n-toast';
 
 function Preferences() {
   const [activeTab, setActiveTab] = useUrlTab("section", "appearance");
   const [actionPopupOpen, setActionPopupOpen] = useState(false);
-  const { selectedLanguage, setSelectedLanguage, languageOptions } = useLanguage();
+  // VTID-03640: was destructuring the raw (unfiltered) languageOptions off
+  // useLanguage(), which bypassed the GA gate getVisibleLanguageOptions()
+  // exists to enforce — beta/draft locales (pt/ru/pl today) were selectable
+  // here even though the landing-page picker (VTID-03580) already hides them.
+  const { selectedLanguage, setSelectedLanguage } = useLanguage();
+  const languageOptions = getVisibleLanguageOptions();
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [themeMounted, setThemeMounted] = useState(false);
   useEffect(() => setThemeMounted(true), []);

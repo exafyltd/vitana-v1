@@ -27,7 +27,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAIConsent } from "@/hooks/useAIConsent";
 import { AIDataConsentDialog } from "@/components/ai/AIDataConsentDialog";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage, getVisibleLanguageOptions } from "@/contexts/LanguageContext";
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
 import { t } from '@/lib/i18n-toast';
@@ -67,7 +67,12 @@ export default function MobileSettings() {
     }
   }, [searchParams, setSearchParams]);
   const { hasConsent, dialogOpen: consentDialogOpen, setDialogOpen: setConsentDialogOpen, grantConsent, revokeConsent } = useAIConsent();
-  const { selectedLanguage, setSelectedLanguage, languageOptions } = useLanguage();
+  // VTID-03640: was destructuring the raw (unfiltered) languageOptions off
+  // useLanguage(), which bypassed the GA gate getVisibleLanguageOptions()
+  // exists to enforce — beta/draft locales (pt/ru/pl today) were selectable
+  // here even though the landing-page picker (VTID-03580) already hides them.
+  const { selectedLanguage, setSelectedLanguage } = useLanguage();
+  const languageOptions = getVisibleLanguageOptions();
   const { theme, setTheme } = useTheme();
   const [themeMounted, setThemeMounted] = useState(false);
   useEffect(() => setThemeMounted(true), []);

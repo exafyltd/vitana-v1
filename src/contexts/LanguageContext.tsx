@@ -42,9 +42,19 @@ export const languageOptions: Array<{ label: string; value: string; status: 'ga'
   { label: "Spanish (ES)", value: "es-ES", status: 'ga' },
   { label: "Serbian (SR)", value: "sr-RS", status: 'ga' },
   { label: "French (FR)", value: "fr-FR", status: 'ga' },
-  { label: "Portuguese (BR)", value: "pt-BR", status: 'ga' },
-  { label: "Russian (RU)", value: "ru-RU", status: 'ga' },
-  { label: "Polish (PL)", value: "pl-PL", status: 'ga' },
+  // VTID-03640 — demoted back to 'beta'. Catalog coverage was never the
+  // problem (these three still pass i18n:audit); the ORB Live voice backend
+  // is: Nova Sonic only speaks en/de/fr/es, and Vertex/Gemini Live's fallback
+  // has no configured voice for pl/pt at all, so selecting either silently
+  // spoke English (VTID-03641 fixes the backend; this keeps the picker
+  // honest until that ships). RU works today via Vertex's fallback voice,
+  // but is demoted alongside PT/PL rather than left GA-but-alone, because a
+  // user should get one consistent "these three are still being finished"
+  // story, not a picker that quietly treats siblings differently for reasons
+  // no UI text explains.
+  { label: "Portuguese (BR)", value: "pt-BR", status: 'beta' },
+  { label: "Russian (RU)", value: "ru-RU", status: 'beta' },
+  { label: "Polish (PL)", value: "pl-PL", status: 'beta' },
   // Deferred past 18 Aug. AR needs RTL layout work (RTLProvider is not wired
   // to the selected language); ZH needs a CJK font stack + line-break audit.
   { label: "Arabic (AR)", value: "ar-XA", status: 'draft' },

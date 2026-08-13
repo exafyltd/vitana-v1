@@ -45,15 +45,17 @@ vi.mock('@/hooks/useTranslation', () => ({
 import { LanguageToggleButton } from './language-toggle-button';
 import { languageOptions } from '@/contexts/LanguageContext';
 
+// VTID-03640: pt-BR/ru-RU/pl-PL were demoted back to 'beta' — the ORB Live
+// voice backend doesn't support them yet (Nova Sonic only speaks en/de/fr/es,
+// and Vertex's fallback has no pl/pt voice at all), so selecting one silently
+// spoke English. Catalog coverage was never the gap; the list here tracks the
+// current GA set, not the full 8-language target.
 const GA_ENDONYMS = [
   'Deutsch',
   'English',
   'Español',
   'Srpski',
   'Français',
-  'Português (BR)',
-  'Русский',
-  'Polski',
 ];
 
 function openPicker() {
@@ -98,11 +100,12 @@ describe('VTID-03580 landing-page language picker', () => {
   it('reaches a language that the old DE<->EN toggle could not', () => {
     // The regression guard proper. Under the old component every click
     // produced 'en-US' or 'de-DE' and nothing else, so this assertion is the
-    // one that fails if anyone reintroduces a two-way toggle.
+    // one that fails if anyone reintroduces a two-way toggle. Uses Serbian
+    // (still GA post-VTID-03640) rather than Polish, which is 'beta' now.
     openPicker();
-    fireEvent.click(screen.getByRole('option', { name: /Polski/ }));
+    fireEvent.click(screen.getByRole('option', { name: /Srpski/ }));
     const [[picked]] = setSelectedLanguage.mock.calls;
-    expect(picked).toBe('pl-PL');
+    expect(picked).toBe('sr-RS');
     expect(['de-DE', 'en-US']).not.toContain(picked);
   });
 
