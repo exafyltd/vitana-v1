@@ -1,0 +1,10 @@
+{
+  "verdicts": {
+    "timeline.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T06:50:10.712Z"
+}

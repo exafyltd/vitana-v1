@@ -1,0 +1,39 @@
+{
+  "verdicts": {
+    "createSelection.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Grammatically incomplete; 'nouveau' is an adjective. Should be 'Créer un nouveau' or 'Nouveau' as a noun.",
+      "suggested": "Créer un nouveau",
+      "phase": "llm"
+    },
+    "createSelection.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.event": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.eventDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createSelection.meetup": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'MeetUp' is often used as a specific type of event or a loanword in this context, and 'Rendez-vous' is too generic and loses the specific connotation of community-building gatherings.",
+      "suggested": "MeetUp",
+      "phase": "llm"
+    },
+    "createSelection.meetupDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:22:29.863Z"
+}

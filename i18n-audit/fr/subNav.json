@@ -1,0 +1,215 @@
+{
+  "verdicts": {
+    "subNav.actions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "subNav.services": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "subNav.clients": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "subNav.inspiration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "subNav.distribution": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "subNav.overview": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.context": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.matches": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.aiFeed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.insights": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.recommendations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.dailySummary": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.companion": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.eventsMeetups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.liveRooms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.mediaHub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.sellEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.analytics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.supplements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.wellnessServices": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.doctorsCoaches": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.dealsOffers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.orders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.reminder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.archived": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.servicesHub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.myBiology": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.plans": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.educationScience": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.balance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.subscriptions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.rewards": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.campaigns": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.dataConsent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.timeline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.diary": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.recall": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.permissions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.preferences": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.privacy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.connectedApps": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "subNav.support": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T06:49:39.805Z"
+}

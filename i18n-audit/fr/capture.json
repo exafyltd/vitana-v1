@@ -1,0 +1,225 @@
+{
+  "verdicts": {
+    "capture.notSupported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.notSupportedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recording": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.tapToRecord": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.tapToDescribe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.liveTranscription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.yourVoiceEntry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.yourFeedback": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.startSpeaking": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.editOrType": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.interimHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.attach": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.bugReport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.uxImprovement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.severity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.affectedScreen": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.select": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.low": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.medium": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.high": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.critical": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.saveEntry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.sending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.sendToTeam": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.reportSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.reportSentDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.sendAnother": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recordingStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recordingStartedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recordingStopped": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recordingStoppedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.noContent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.noContentDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.noContentBugDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.entrySaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.entrySavedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.saveFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.saveFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.sendFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.sendFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recognitionError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recognitionErrorDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.transcribing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.backendRecordingHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:21:05.979Z"
+}
