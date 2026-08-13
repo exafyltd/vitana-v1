@@ -1,13 +1,13 @@
 # i18n Audit — Russian (ru)
 
-Generated: 2026-08-07T00:23:03.154Z via **gemini**
+Generated: 2026-08-13T05:15:35.793Z via **gemini**
 
 ## Summary
 
-- **OK:** 13860
-- **EDIT_SUGGESTED:** 288
-- **LOW_CONFIDENCE:** 12
-- **Pass rate:** 97.9%
+- **OK:** 14210
+- **EDIT_SUGGESTED:** 103
+- **LOW_CONFIDENCE:** 10
+- **Pass rate:** 99.2%
 - **Threshold:** 10% flagged max
 
 ## Per-shard breakdown
@@ -17,33 +17,33 @@ Generated: 2026-08-07T00:23:03.154Z via **gemini**
 | actionBar.json | 5 | 0 | 0 | 5 |
 | admin.json | 19 | 0 | 0 | 19 |
 | adminTabs.json | 9 | 0 | 0 | 9 |
-| apply.json | 72 | 3 | 1 | 76 |
+| apply.json | 75 | 1 | 0 | 76 |
 | archives.json | 1 | 0 | 0 | 1 |
 | audio.json | 3 | 0 | 0 | 3 |
 | auth.json | 4 | 0 | 0 | 4 |
 | authPage.json | 15 | 0 | 0 | 15 |
-| autopilot.json | 88 | 3 | 0 | 91 |
-| billing.json | 166 | 12 | 0 | 178 |
+| autopilot.json | 88 | 2 | 1 | 91 |
+| billing.json | 175 | 1 | 2 | 178 |
 | business.json | 105 | 1 | 0 | 106 |
 | businessHub.json | 17 | 0 | 0 | 17 |
-| buttons.json | 53 | 2 | 0 | 55 |
+| buttons.json | 55 | 0 | 0 | 55 |
 | calendar.json | 114 | 1 | 0 | 115 |
 | calendarPopup.json | 17 | 0 | 0 | 17 |
 | campaigns.json | 14 | 0 | 0 | 14 |
-| capture.json | 42 | 0 | 0 | 42 |
+| capture.json | 44 | 0 | 0 | 44 |
 | challenges.json | 1 | 0 | 0 | 1 |
 | common.json | 37 | 0 | 0 | 37 |
 | confirm.json | 16 | 0 | 0 | 16 |
-| connectedApps.json | 35 | 1 | 0 | 36 |
+| connectedApps.json | 36 | 0 | 0 | 36 |
 | consent.json | 1 | 0 | 0 | 1 |
-| createEventPopup.json | 106 | 3 | 0 | 109 |
+| createEventPopup.json | 108 | 1 | 0 | 109 |
 | createSelection.json | 6 | 0 | 0 | 6 |
 | currencies.json | 3 | 0 | 0 | 3 |
 | densityOptions.json | 3 | 0 | 0 | 3 |
 | diary.json | 9 | 0 | 0 | 9 |
-| diaryActions.json | 16 | 1 | 0 | 17 |
+| diaryActions.json | 17 | 0 | 0 | 17 |
 | discount.json | 27 | 0 | 0 | 27 |
-| discover.json | 104 | 2 | 0 | 106 |
+| discover.json | 105 | 1 | 0 | 106 |
 | drawerNav.json | 16 | 1 | 0 | 17 |
 | editProfile.json | 17 | 0 | 0 | 17 |
 | empty.json | 22 | 1 | 0 | 23 |
@@ -51,35 +51,35 @@ Generated: 2026-08-07T00:23:03.154Z via **gemini**
 | eventCta.json | 20 | 0 | 0 | 20 |
 | eventDrawer.json | 58 | 1 | 0 | 59 |
 | events.json | 20 | 0 | 0 | 20 |
-| featureAnnouncementCard.json | 7 | 1 | 0 | 8 |
-| follow.json | 1 | 1 | 0 | 2 |
+| featureAnnouncementCard.json | 8 | 0 | 0 | 8 |
+| follow.json | 2 | 0 | 0 | 2 |
 | gallery.json | 17 | 0 | 0 | 17 |
 | glassMode.json | 15 | 0 | 0 | 15 |
-| groupDetail.json | 10 | 2 | 0 | 12 |
+| groupDetail.json | 12 | 0 | 0 | 12 |
 | groupFeed.json | 11 | 0 | 0 | 11 |
 | groupMembership.json | 4 | 2 | 0 | 6 |
-| groups.json | 0 | 1 | 0 | 1 |
-| health.json | 75 | 1 | 0 | 76 |
-| historyManagement.json | 39 | 2 | 0 | 41 |
+| groups.json | 1 | 0 | 0 | 1 |
+| health.json | 76 | 0 | 0 | 55 |
+| historyManagement.json | 41 | 0 | 0 | 41 |
 | home.json | 8 | 0 | 0 | 8 |
-| inbox.json | 98 | 1 | 0 | 99 |
-| intro.json | 7 | 1 | 0 | 8 |
-| lifeCompass.json | 29 | 2 | 0 | 31 |
+| inbox.json | 99 | 0 | 0 | 99 |
+| intro.json | 9 | 0 | 0 | 9 |
+| lifeCompass.json | 30 | 1 | 0 | 31 |
 | liveRooms.json | 118 | 1 | 0 | 119 |
 | loading.json | 7 | 0 | 0 | 7 |
 | logout.json | 3 | 0 | 0 | 3 |
 | marketplaceCheckout.json | 49 | 0 | 0 | 49 |
-| mediaHub.json | 122 | 7 | 0 | 129 |
-| memoryActions.json | 12 | 1 | 0 | 13 |
+| mediaHub.json | 127 | 2 | 0 | 129 |
+| memoryActions.json | 13 | 0 | 0 | 13 |
 | menu.json | 9 | 0 | 0 | 9 |
-| milestones.json | 12 | 1 | 0 | 13 |
+| milestones.json | 13 | 0 | 0 | 13 |
 | mobileNav.json | 7 | 0 | 0 | 7 |
 | mobileSupport.json | 75 | 0 | 0 | 75 |
 | navigation.json | 18 | 1 | 0 | 19 |
 | newsCard.json | 29 | 0 | 0 | 29 |
-| onboarding.json | 22 | 1 | 0 | 23 |
+| onboarding.json | 23 | 0 | 0 | 23 |
 | orbHint.json | 1 | 0 | 0 | 1 |
-| orders.json | 64 | 1 | 0 | 65 |
+| orders.json | 65 | 0 | 0 | 65 |
 | packages.json | 14 | 0 | 0 | 14 |
 | payment.json | 19 | 0 | 0 | 19 |
 | permissionsActions.json | 14 | 3 | 0 | 17 |
@@ -95,11 +95,11 @@ Generated: 2026-08-07T00:23:03.154Z via **gemini**
 | publicProfile.json | 8 | 0 | 0 | 8 |
 | qrShare.json | 14 | 0 | 0 | 14 |
 | recallActions.json | 16 | 1 | 0 | 17 |
-| screens.json | 9690 | 189 | 11 | 9890 |
+| screens.json | 9980 | 61 | 7 | 10048 |
 | services.json | 20 | 0 | 0 | 20 |
 | settings.json | 31 | 0 | 0 | 31 |
 | share.json | 8 | 0 | 0 | 8 |
-| sidebar.json | 44 | 2 | 0 | 46 |
+| sidebar.json | 45 | 1 | 0 | 46 |
 | socialImport.json | 24 | 1 | 0 | 25 |
 | states.json | 20 | 0 | 0 | 20 |
 | subNav.json | 40 | 2 | 0 | 42 |
@@ -108,7 +108,7 @@ Generated: 2026-08-07T00:23:03.154Z via **gemini**
 | tasks.json | 15 | 0 | 0 | 15 |
 | timeline.json | 1 | 0 | 0 | 1 |
 | timelineActions.json | 17 | 0 | 0 | 17 |
-| toasts.json | 1231 | 26 | 0 | 1257 |
+| toasts.json | 1247 | 12 | 0 | 1259 |
 | universalCart.json | 59 | 0 | 0 | 59 |
 | validation.json | 25 | 0 | 0 | 25 |
 | videoShop.json | 31 | 2 | 0 | 33 |
@@ -117,66 +117,62 @@ Generated: 2026-08-07T00:23:03.154Z via **gemini**
 | wallet.json | 22 | 0 | 0 | 22 |
 | walletActions.json | 7 | 0 | 0 | 7 |
 | wellnessServices.json | 1 | 0 | 0 | 1 |
-| whyThisMatch.json | 11 | 1 | 0 | 12 |
+| whyThisMatch.json | 12 | 0 | 0 | 12 |
 
 ## Sample of flagged keys
 
-- `apply.json:apply.valueMovementTitle` — **EDIT_SUGGESTED** (1.00) — «Связь» is too general; «общение» better conveys human connection in this context.
-  - suggested: `Движение и общение`
-- `apply.json:apply.footerCopy` — **EDIT_SUGGESTED** (0.90) — Nuance of 'Experience' as a program/event name is lost; direct translation 'опыт' implies gained knowledge rather than a specific offering. Transliteration is common for branded program names.
-  - suggested: `MAXINA Экспириенс`
-- `apply.json:apply.aboutVitanalandTag` — **LOW_CONFIDENCE** (0.60) — 'Назначение' can be ambiguous; could mean purpose, appointment, or physical destination. Without more context (e.g., if it refers to a goal or a physical place), it's hard to be certain.
-- `apply.json:apply.aboutMaxinaExperienceDescription` — **EDIT_SUGGESTED** (0.90) — The phrase 'MAXINA Experience' is left untranslated/untransliterated, which is inconsistent with providing a Russian translation and with common practice for branded program names.
-  - suggested: `Где сообщество оживает — 12 летних событий на Майорке с июня по сентябрь, первая волна MAXINA Экспириенс.`
-- `autopilot.json:autopilot.suggestions.archetypeTitle` — **EDIT_SUGGESTED** (0.90) — The translation 'Идеи' (ideas) is too weak for 'Insights', which implies deeper understanding or revelations.
+- `apply.json:apply.aboutVitanalandTag` — **EDIT_SUGGESTED** (0.80) — 'Назначение' often means 'purpose' or 'appointment', which can be ambiguous for 'Destination' in a wellness context. 'Цель' (goal) or 'Пункт назначения' (physical destination) would be clearer.
+  - suggested: `Цель`
+- `autopilot.json:autopilot.suggestions.archetypeTitle` — **EDIT_SUGGESTED** (0.90) — The Russian word 'Идеи' (ideas) does not fully capture the meaning of 'Insights' (deep understanding, revelations).
   - suggested: `Озарения архетипа`
-- `autopilot.json:autopilot.popup.moreActions` — **EDIT_SUGGESTED** (0.90) — Awkward phrasing for 'more actions'. 'Больше действий' is less natural than 'ещё действий' in this context.
-  - suggested: `ещё {count} действий`
-- `autopilot.json:autopilot.widget.active` — **EDIT_SUGGESTED** (0.90) — Grammatical form mismatch. 'Активно' is an adverb or neuter short adjective. For 'Autopilot' (masculine), the masculine short adjective 'Активен' is appropriate for a status.
-  - suggested: `Активен`
-- `billing.json:billing.promises.anchorHeading` — **EDIT_SUGGESTED** (1.00) — The phrase 'Приватно по дизайну' is not idiomatic. 'Private by design' refers to a concept, better translated as 'privacy by default' or 'privacy by design'.
-  - suggested: `Приватность по умолчанию`
-- `billing.json:billing.promises.earn.body` — **EDIT_SUGGESTED** (1.00) — The phrase 'раскрытый прозрачно' (disclosed transparently) is grammatically correct but sounds a bit clunky. A verbal construction would be more natural.
-  - suggested: `Когда твоя рекомендация приводит к продаже через Sell and Earn, или когда ты проводишь платную Live Room, доход твой — раскрывается прозрачно.`
-- `billing.json:billing.earnings.net` — **EDIT_SUGGESTED** (0.90) — Gender mismatch. 'Net' likely refers to 'Net earnings' ('Чистый заработок'), so the adjective should be masculine.
-  - suggested: `Чистый`
-- `billing.json:billing.launchGrant.body` — **EDIT_SUGGESTED** (0.90) — Gender mismatch (assumes male user). 'Ты получил' is gendered, 'You've received' is neutral. Better to use a gender-neutral phrasing for UI.
-  - suggested: `Тебе предоставлено 12 месяцев Vitana Premium в благодарность за то, что ты с нами с самого начала. Действует до {endsAt}.`
-- `billing.json:billing.state.upgrade` — **EDIT_SUGGESTED** (0.90) — 'Обновить' means 'update' or 'refresh', not 'upgrade' in the sense of moving to a higher tier plan. This can be ambiguous.
-  - suggested: `Повысить`
-- `billing.json:billing.state.activeBadge` — **EDIT_SUGGESTED** (0.90) — Grammatical form mismatch. 'Активно' is an adverb or neuter short adjective. For a status label like 'Active' referring to a subscription (feminine noun 'подписка'), 'Активна' (feminine short adjective) is more appropriate.
-  - suggested: `Активна`
-- `billing.json:billing.faq.a1` — **EDIT_SUGGESTED** (0.90) — The phrase 'живого общения' (live communication) is too broad for 'live voice time'. 'Голосового общения' (voice communication) is more precise.
-  - suggested: `Больше времени голосового общения с ORB, больше хостинга в Live Rooms, больше места для хранения и более быстрые личные дайджесты.`
-- `billing.json:paywall.match_posts.body` — **EDIT_SUGGESTED** (1.00) — Gendered verb 'использовал' should be gender-neutral or inclusive.
-  - suggested: `Ты использовал(а) свои бесплатные посты в этом месяце. Премиум дает тебе больше.`
-- `billing.json:paywall.match_reveals.body` — **EDIT_SUGGESTED** (1.00) — Gendered verb 'использовал' should be gender-neutral or inclusive.
-  - suggested: `Ты использовал(а) свои бесплатные открытия. Используй {credits} кредитов или обновись до Премиум.`
-- `billing.json:paywall.lab_analyses.body` — **EDIT_SUGGESTED** (1.00) — Gendered verb 'использовал' should be gender-neutral or inclusive.
-  - suggested: `Ты использовал(а) свои лабораторные анализы в этом месяце.`
-- `billing.json:paywall.photo_uploads.body` — **EDIT_SUGGESTED** (1.00) — Gendered verb 'использовал' should be gender-neutral or inclusive.
-  - suggested: `Ты использовал(а) свои загрузки фото в этом месяце.`
-- `billing.json:paywall.default.body` — **EDIT_SUGGESTED** (1.00) — Gendered verb 'использовал' should be gender-neutral or inclusive.
-  - suggested: `Ты использовал(а) свою бесплатную квоту за этот период.`
-- `business.json:business.missionOpportunities.empty` — **EDIT_SUGGESTED** (1.00) — Phrasing 'соответствующих экономике' is grammatically correct but sounds a bit formal/clunky for a friendly app. 'Связанных с экономикой' is more natural.
-  - suggested: `Пока нет рекомендаций, связанных с экономикой. Загляни позже.`
-- `buttons.json:buttons.filter` — **EDIT_SUGGESTED** (0.90) — Translation is a noun, should be a verb for consistency with other UI actions.
-  - suggested: `Фильтровать`
-- `buttons.json:buttons.search` — **EDIT_SUGGESTED** (0.90) — Translation is a noun, should be a verb for consistency with other UI actions.
-  - suggested: `Искать`
-- `calendar.json:calendar.autopilot.reminderLaterToday` — **EDIT_SUGGESTED** (0.90) — Missing nuance of 'later'. 'На сегодня' means 'for today', not specifically 'later today'.
+- `autopilot.json:autopilot.popup.moreActions` — **EDIT_SUGGESTED** (0.90) — The phrasing '+{count} больше действий' is grammatically awkward and unnatural in Russian. 'Еще {count} действий' is the standard and most natural way to express 'X more actions'.
+  - suggested: `Еще {count} действий`
+- `autopilot.json:autopilot.widget.active` — **LOW_CONFIDENCE** (0.60) — Without context, it's unclear if 'Active' is meant as an adjective (e.g., 'Active status') or an adverb (e.g., 'Actively working'). 'Активно' is an adverb or short-form neuter adjective. If it's a status label, an adjective like 'Активный' (masculine), 'Активная' (feminine), or 'Активное' (neuter) would be more appropriate depending on the implied noun.
+- `billing.json:billing.promises.earn.body` — **EDIT_SUGGESTED** (0.90) — Awkward phrasing for 'transparently disclosed'. The full passive participle 'раскрытый' is used adjectivally, but here it functions as a predicate. The short form participle is more appropriate.
+  - suggested: `Когда твоя рекомендация приводит к продаже через Sell and Earn, или когда ты проводишь платную Live Room, доход твой — раскрыт прозрачно.`
+- `billing.json:billing.earnings.net` — **LOW_CONFIDENCE** (0.60) — The gender of 'Чистая' (feminine) depends on the implied noun for 'Net', which is missing. Without context (e.g., 'Net income' - Чистая прибыль, 'Net amount' - Чистая сумма), it's a guess.
+- `billing.json:billing.state.activeBadge` — **LOW_CONFIDENCE** (0.60) — The gender of 'Активно' (neuter) depends on the implied noun for 'Active'. If it refers to a feminine noun (e.g., 'Subscription' - Подписка), it should be 'Активна'. If masculine (e.g., 'Plan' - План), it should be 'Активен'.
+- `business.json:business.missionOpportunities.empty` — **EDIT_SUGGESTED** (0.90) — The phrase 'соответствующих экономике' is an overly literal and awkward translation of 'economy-aligned', sounding formal and out of place for a wellness app. It likely misinterprets the intended meaning, which is probably 'efficient' or 'budget-friendly'.
+  - suggested: `Пока нет эффективных рекомендаций. Загляни позже.`
+- `calendar.json:calendar.autopilot.reminderLaterToday` — **EDIT_SUGGESTED** (0.90) — Missing nuance of 'later'. 'На сегодня' means 'for today', not 'for later today'.
   - suggested: `Напоминание установлено на сегодня позже`
-- `connectedApps.json:connectedApps.popup.connectionPlaceholder` — **EDIT_SUGGESTED** (0.90) — Awkward phrasing, missing preposition 'к' (to) for natural flow.
-  - suggested: `Подключение к {appName} скоро`
-- `createEventPopup.json:createEventPopup.categories.social` — **EDIT_SUGGESTED** (0.90) — Nuance of 'Networking' is lost; 'Социальные связи' is more passive than the active 'Networking'.
-  - suggested: `🤝 Социальное общение`
-- `createEventPopup.json:createEventPopup.durations.half-day` — **EDIT_SUGGESTED** (0.90) — Less idiomatic spelling; 'Полдня' (one word) is the standard and more natural form.
+- `createEventPopup.json:createEventPopup.durations.half-day` — **EDIT_SUGGESTED** (1.00) — Incorrect hyphenation. 'Half day' as a duration is one word in Russian.
   - suggested: `Полдня`
-- `createEventPopup.json:createEventPopup.durations.custom` — **EDIT_SUGGESTED** (0.90) — Nuance of 'Custom' is lost; 'Другая длительность' is too generic, 'Custom' implies user-defined.
-  - suggested: `Произвольная длительность...`
-- `diaryActions.json:diaryActions.items.recordVoiceEntry.title` — **EDIT_SUGGESTED** (0.90) — Inconsistent with 'фотозапись' and 'текстовая запись'. 'Записать голосовую запись' is grammatically correct but sounds clunky due to repetition of the root. 'Создать голосовую запись' is more idiomatic.
-  - suggested: `Создать голосовую запись`
-- `discover.json:discover.reasonForCategory` — **EDIT_SUGGESTED** (0.90) — The phrase 'в категории' (in category) is a bit clunky for a goal. 'В области' (in the area of) or a simpler construction would be more natural.
-  - suggested: `Для твоей цели в области {category}`
-- `discover.json:discover.recommendProduct` — **EDIT_SUGGESTED** (0.90) — For consistency with the du-form (informal 'ты') used throughout the app and in the next entry ('Рекомендуй и Зарабатывай'), the imperative form 'Рекомендуй' is more appropriate than the infinitive 'Рекомендовать' for a button or action label.
+- `discover.json:discover.recommendProduct` — **EDIT_SUGGESTED** (1.00) — Infinitive form used instead of imperative for a likely action button in du-form.
   - suggested: `Рекомендуй`
+- `drawerNav.json:drawerNav.discover` — **EDIT_SUGGESTED** (1.00) — Incorrect register. 'Исследуйте' is formal singular or informal plural. For a friendly, du-form app addressing a single user, 'Исследуй' (informal singular) is appropriate.
+  - suggested: `Исследуй`
+- `empty.json:empty.noAppsFound` — **EDIT_SUGGESTED** (1.00) — Incorrect register: uses formal 'вашему' instead of informal 'твоему'.
+  - suggested: `Приложения не найдены по твоему запросу.`
+- `eventDrawer.json:eventDrawer.leftMeetup` — **EDIT_SUGGESTED** (0.90) — Gender-specific verb form ('Покинул' is masculine) for a potentially gender-neutral context. For a UI string, it should accommodate both genders or be gender-neutral.
+  - suggested: `Покинул(а) MeetUp`
+- `groupMembership.json:groupMembership.joined` — **EDIT_SUGGESTED** (1.00) — The Russian translation uses a noun ('Присоединение!') instead of a verb, which doesn't convey the sense of a completed action by the user. The English 'Joined!' is a past participle used as an exclamation.
+  - suggested: `Вы присоединились! 🎉`
+- `groupMembership.json:groupMembership.left` — **EDIT_SUGGESTED** (1.00) — The Russian translation uses a noun phrase ('Выход из группы.') instead of a verb phrase, which doesn't convey the sense of a completed action by the user. The English 'Left group' is a past tense verb phrase.
+  - suggested: `Вы покинули группу.`
+- `lifeCompass.json:lifeCompass.goals.longevity.description` — **EDIT_SUGGESTED** (0.90) — Redundant use of 'долголетие' after 'здоровом долголетии'; the English 'healthspan' and 'longevity' are distinct concepts.
+  - suggested: `Сосредоточься на здоровом долголетии, энергии и продолжительности жизни — миссия Vitanaland`
+- `liveRooms.json:liveRooms.title` — **EDIT_SUGGESTED** (0.90) — The translation "Прямые комнаты" literally means "direct rooms" or "straight rooms", which doesn't accurately convey the meaning of "Live Rooms" (as in live streaming/interactive sessions) in an app context. It's not idiomatic.
+  - suggested: `Комнаты в прямом эфире`
+- `mediaHub.json:mediaHub.actions.viewAllShorts` — **EDIT_SUGGESTED** (1.00) — Incorrect noun declension after number placeholder. 'Шорты' (plural-only noun, likely referring to short videos) should be in the genitive plural form 'шорт' when preceded by a number greater than four, or 'шорта' for 2-4 (though this is awkward for plural-only nouns). The current nominative plural 'шорты' is incorrect.
+  - suggested: `Посмотреть все {count} шорт`
+- `mediaHub.json:mediaHub.comments.like` — **EDIT_SUGGESTED** (1.00) — Grammatically incorrect for an action/button. 'Нравится комментарий' means 'The comment is liked' or 'He/She/It likes the comment', which is a statement, not an imperative or infinitive for an action. For an action, an infinitive verb is needed.
+  - suggested: `Лайкнуть комментарий`
+- `navigation.json:navigation.discover` — **EDIT_SUGGESTED** (1.00) — Inaccurate meaning. 'Обзор' means 'overview' or 'review', not 'discover'.
+  - suggested: `Открой для себя`
+- `permissionsActions.json:permissionsActions.title` — **EDIT_SUGGESTED** (0.90) — Awkward phrasing and incorrect capitalization. The direct translation 'Разрешения Действия' is not idiomatic; 'Действия с разрешениями' is more natural. All words except the first should be lowercase in a standard heading.
+  - suggested: `Действия с конфиденциальностью и разрешениями`
+- `permissionsActions.json:permissionsActions.items.securitySettings.description` — **EDIT_SUGGESTED** (0.90) — Incorrect capitalization. In Russian, only the first word of a phrase or sentence is capitalized unless other words are proper nouns. The word order is also slightly less natural than the suggested.
+  - suggested: `Обновить настройки аутентификации и безопасности`
+- `permissionsActions.json:permissionsActions.items.permissionSettings.title` — **EDIT_SUGGESTED** (0.90) — Incorrect capitalization. In Russian, only the first word of a phrase or sentence is capitalized unless other words are proper nouns.
+  - suggested: `Настройки разрешений`
+- `profileEditor.json:profileEditor.identity.handlePlaceholder` — **EDIT_SUGGESTED** (1.00) — Should be two separate words, not a single compound.
+  - suggested: `твой никнейм`
+- `profileMedia.json:profileMedia.emptyDescription` — **EDIT_SUGGESTED** (0.90) — The word "путем" (path/way) is too literal and stiff for "wellness journey" in a friendly app context. "Путешествием" (journey/trip) or "историей" (story) would be more idiomatic and natural.
+  - suggested: `Поделись своим оздоровительным путешествием`
+- `recallActions.json:recallActions.items.quickRecalls.title` — **EDIT_SUGGESTED** (0.90) — Inaccurate meaning. 'Вызовы' means 'calls' or 'challenges,' not 'recalls' in the sense of memory or past events/information.
+  - suggested: `Быстрые воспоминания`
+- `screens.json:screens.health.fiveQuickQuestionsSetYourDay0` — **EDIT_SUGGESTED** (1.00) — brand token "Vitana" missing from target
+- `screens.json:screens.health.vitanaIndexValue0` — **EDIT_SUGGESTED** (1.00) — brand token "Vitana" missing from target
+- `screens.json:screens.common.overallPrivacyHealth` — **EDIT_SUGGESTED** (0.80) — Awkward phrasing, not idiomatic. 'Приватность здоровья' is too literal and sounds clunky. 'Конфиденциальность данных' is more natural for 'privacy' in a data context.
+  - suggested: `Твоя конфиденциальность данных`

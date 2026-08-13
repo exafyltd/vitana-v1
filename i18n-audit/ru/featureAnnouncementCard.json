@@ -16,10 +16,8 @@
       "phase": "llm"
     },
     "featureAnnouncementCard.brandNew.cta": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Gender mismatch. 'Сам' is masculine; should be 'сама' for female users or 'сам/сама' for general use.",
-      "suggested": "Попробуй сам/сама",
       "phase": "llm"
     },
     "featureAnnouncementCard.brandNew.closing": {
@@ -43,5 +41,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:34:13.760Z"
+  "generatedAt": "2026-08-13T05:16:58.196Z"
 }

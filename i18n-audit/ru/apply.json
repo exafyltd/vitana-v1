@@ -136,10 +136,8 @@
       "phase": "llm"
     },
     "apply.valueMovementTitle": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "«Связь» is too general; «общение» better conveys human connection in this context.",
-      "suggested": "Движение и общение",
       "phase": "llm"
     },
     "apply.valueMovementBody": {
@@ -283,10 +281,8 @@
       "phase": "llm"
     },
     "apply.footerCopy": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Nuance of 'Experience' as a program/event name is lost; direct translation 'опыт' implies gained knowledge rather than a specific offering. Transliteration is common for branded program names.",
-      "suggested": "MAXINA Экспириенс",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "apply.footerPrivacy": {
@@ -315,9 +311,10 @@
       "phase": "llm"
     },
     "apply.aboutVitanalandTag": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.6,
-      "issue": "'Назначение' can be ambiguous; could mean purpose, appointment, or physical destination. Without more context (e.g., if it refers to a goal or a physical place), it's hard to be certain.",
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "'Назначение' often means 'purpose' or 'appointment', which can be ambiguous for 'Destination' in a wellness context. 'Цель' (goal) or 'Пункт назначения' (physical destination) would be clearer.",
+      "suggested": "Цель",
       "phase": "llm"
     },
     "apply.aboutVitanalandDescription": {
@@ -351,10 +348,8 @@
       "phase": "llm"
     },
     "apply.aboutMaxinaExperienceDescription": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'MAXINA Experience' is left untranslated/untransliterated, which is inconsistent with providing a Russian translation and with common practice for branded program names.",
-      "suggested": "Где сообщество оживает — 12 летних событий на Майорке с июня по сентябрь, первая волна MAXINA Экспириенс.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "apply.benefitsEyebrow": {
@@ -388,5 +383,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:24:05.939Z"
+  "generatedAt": "2026-08-13T05:15:43.185Z"
 }

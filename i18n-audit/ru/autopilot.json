@@ -48,7 +48,7 @@
     "autopilot.suggestions.archetypeTitle": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The translation 'Идеи' (ideas) is too weak for 'Insights', which implies deeper understanding or revelations.",
+      "issue": "The Russian word 'Идеи' (ideas) does not fully capture the meaning of 'Insights' (deep understanding, revelations).",
       "suggested": "Озарения архетипа",
       "phase": "llm"
     },
@@ -175,8 +175,8 @@
     "autopilot.popup.moreActions": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing for 'more actions'. 'Больше действий' is less natural than 'ещё действий' in this context.",
-      "suggested": "ещё {count} действий",
+      "issue": "The phrasing '+{count} больше действий' is grammatically awkward and unnatural in Russian. 'Еще {count} действий' is the standard and most natural way to express 'X more actions'.",
+      "suggested": "Еще {count} действий",
       "phase": "llm"
     },
     "autopilot.popup.toastExecutedTitle": {
@@ -220,10 +220,9 @@
       "phase": "llm"
     },
     "autopilot.widget.active": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical form mismatch. 'Активно' is an adverb or neuter short adjective. For 'Autopilot' (masculine), the masculine short adjective 'Активен' is appropriate for a status.",
-      "suggested": "Активен",
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Without context, it's unclear if 'Active' is meant as an adjective (e.g., 'Active status') or an adverb (e.g., 'Actively working'). 'Активно' is an adverb or short-form neuter adjective. If it's a status label, an adjective like 'Активный' (masculine), 'Активная' (feminine), or 'Активное' (neuter) would be more appropriate depending on the implied noun.",
       "phase": "llm"
     },
     "autopilot.widget.paused": {
@@ -462,5 +461,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:25:10.893Z"
+  "generatedAt": "2026-08-13T05:15:49.041Z"
 }
