@@ -1,0 +1,41 @@
+{
+  "verdicts": {
+    "groupMembership.joined": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Verb conjugation is incorrect. 'انضممت' (inḍamamtu) means 'I joined', not 'You joined'.",
+      "suggested": "لقد انضممت! 🎉",
+      "phase": "llm"
+    },
+    "groupMembership.joinedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.left": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Verb conjugation is incorrect. 'غادرت' (ghādarat) means 'She left', not a general 'Left group' status or 'You left'.",
+      "suggested": "تم مغادرة المجموعة",
+      "phase": "llm"
+    },
+    "groupMembership.leftDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Verb conjugation is incorrect. 'غادرت' (ghādarat) means 'She left', not 'You left'.",
+      "suggested": "لقد غادرتَ هذه المجموعة.",
+      "phase": "llm"
+    },
+    "groupMembership.errorJoin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.errorLeave": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:28:40.373Z"
+}

@@ -1,0 +1,47 @@
+{
+  "verdicts": {
+    "featureAnnouncementCard.brandNew.eyebrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.badge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.cta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.closing": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Literal translation 'Happy test' lacks the idiomatic, encouraging tone of 'Happy testing!' for a friendly app.",
+      "suggested": "استمتع بالاختبار! 🥳",
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.didYouKnow.eyebrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.didYouKnow.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.didYouKnow.cta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:27:50.550Z"
+}

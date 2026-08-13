@@ -1,0 +1,32 @@
+{
+  "verdicts": {
+    "profileStats.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.followers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.following": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The Arabic translation uses the passive participle ('those who are being followed') instead of the active participle ('those who are following') which is typically meant in a social media context for 'Following' (i.e., people you follow).",
+      "suggested": "متابِعون",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:38:59.825Z"
+}

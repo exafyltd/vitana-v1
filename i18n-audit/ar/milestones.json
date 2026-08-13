@@ -1,0 +1,73 @@
+{
+  "verdicts": {
+    "milestones.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.add": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.edit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.addFirst": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.date": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.titleLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.titlePlaceholder": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "issue": "Example uses first-person ('I graduated') instead of a more neutral phrase, but is acceptable for user input examples.",
+      "phase": "llm"
+    },
+    "milestones.descPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.icon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.publicLabel": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "issue": "Grammatically, 'مرئية' (feminine) would agree with 'لحظة' (moment), but 'مرئي' (masculine) is commonly used as a general label in UI and is understood.",
+      "phase": "llm"
+    },
+    "milestones.private": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "issue": "Grammatically, 'خاصة' (feminine) would agree with 'لحظة' (moment), but 'خاص' (masculine) is commonly used as a general label in UI and is understood.",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:34:20.937Z"
+}

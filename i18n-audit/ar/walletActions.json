@@ -1,0 +1,42 @@
+{
+  "verdicts": {
+    "walletActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.addFunds": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.send": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.exchange": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.withdraw": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.buyCredits": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "walletActions.stakeTokens": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The term 'تخزين' (storing) is too generic and doesn't fully capture the active 'pledging' or 'locking' nuance of 'staking' in a crypto context. 'رهن' is more precise.",
+      "suggested": "رهن الرموز",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T07:35:25.119Z"
+}

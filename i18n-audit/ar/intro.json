@@ -1,0 +1,53 @@
+{
+  "verdicts": {
+    "intro.welcomeTo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.experience": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Ambiguous English source. 'Experience' could be a noun (section title) or an imperative verb (call to action). 'تجربة' is the noun form. If intended as an imperative, it would be 'جرّب' (jarrab) or 'ابدأ التجربة' (ibda' at-tajriba).",
+      "phase": "llm"
+    },
+    "intro.taglineMain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.taglineSub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.playWelcome": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The current translation 'تشغيل الترحيب' is a noun phrase ('The playing of the welcome'), which sounds less natural for a UI action than an imperative verb. For a button or action, an imperative is more direct.",
+      "suggested": "شغّل الترحيب",
+      "phase": "llm"
+    },
+    "intro.preparing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.playing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.goToLogin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.chooseLanguage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:30:42.540Z"
+}
