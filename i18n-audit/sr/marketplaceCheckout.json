@@ -1,300 +1,254 @@
 {
   "verdicts": {
-    "profile.defaultBio": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.autopilot.polishBio": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.autopilot.editHighlights": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.autopilot.saveHighlights": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.autopilot.highlightsDesc": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.autopilot.try": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.identity.vitanaIndex": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.identity.basedOnActivity": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.identity.viewLongevityId": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.identity.brandFooter": {
+    "marketplaceCheckout.addMoney.currencyEur": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "profile.identity.follow": {
+    "marketplaceCheckout.addMoney.currencyUsd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.balance.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.identity.followingState": {
+    "marketplaceCheckout.balance.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.identity.understandIndex": {
+    "marketplaceCheckout.balance.empty": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.tabs.identity": {
+    "marketplaceCheckout.balance.addMoney": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.tabs.social": {
+    "marketplaceCheckout.checkout.button": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.tabs.account": {
+    "marketplaceCheckout.checkout.processing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.tabs.business": {
+    "marketplaceCheckout.checkout.successTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.notSet": {
+    "marketplaceCheckout.checkout.successBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.editField": {
+    "marketplaceCheckout.checkout.duplicateTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.visibilityToggle": {
+    "marketplaceCheckout.checkout.duplicateBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.visibility.private": {
+    "marketplaceCheckout.checkout.affiliateTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.visibility.connections": {
+    "marketplaceCheckout.checkout.affiliateBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.visibility.public": {
+    "marketplaceCheckout.checkout.affiliateLink": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.sections.publicProfile": {
+    "marketplaceCheckout.checkout.affiliateOpened": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.sections.publicProfileSubtitle": {
+    "marketplaceCheckout.addMoney.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.sections.basicInfo": {
+    "marketplaceCheckout.addMoney.description": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.sections.basicInfoSubtitle": {
+    "marketplaceCheckout.addMoney.amountLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.sections.contactInfo": {
+    "marketplaceCheckout.addMoney.amountPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.sections.accountDetails": {
+    "marketplaceCheckout.addMoney.currencyLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.avatar": {
+    "marketplaceCheckout.addMoney.continue": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.handle": {
+    "marketplaceCheckout.addMoney.processing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.longevityArchetype": {
+    "marketplaceCheckout.addMoney.invalidAmount": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.firstName": {
+    "marketplaceCheckout.addMoney.failed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.lastName": {
+    "marketplaceCheckout.deposit.checkingTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.dateOfBirth": {
+    "marketplaceCheckout.deposit.checkingBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.gender": {
+    "marketplaceCheckout.deposit.succeededTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.maritalStatus": {
+    "marketplaceCheckout.deposit.succeededBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.email": {
+    "marketplaceCheckout.deposit.failedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.phone": {
+    "marketplaceCheckout.deposit.failedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.address": {
+    "marketplaceCheckout.deposit.amountLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.country": {
+    "marketplaceCheckout.deposit.backToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.city": {
+    "marketplaceCheckout.errors.invalid_request": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The imperative 'Molimo' is formal. For du-form, it should be 'Molimo te proveri' or simply 'Proveri'.",
+      "suggested": "Zahtev je bio nevažeći. Molimo te proveri svoju korpu.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.CART_EMPTY": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.memberSince": {
+    "marketplaceCheckout.errors.PRODUCT_UNAVAILABLE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.accountType": {
+    "marketplaceCheckout.errors.PRICE_UNAVAILABLE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.verificationStatus": {
+    "marketplaceCheckout.errors.MIXED_CURRENCY": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.values.uploaded": {
+    "marketplaceCheckout.errors.UNSUPPORTED_WALLET_CURRENCY": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "The phrase 'podržana tvojim stanjem' (supported by your balance, instrumental case) is awkward. 'Podržana za tvoje stanje' or 'na tvom stanju' would be more natural.",
+      "suggested": "Ova valuta nije podržana za tvoje stanje.",
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.WALLET_ACCOUNT_MISSING": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.title": {
+    "marketplaceCheckout.errors.WALLET_ACCOUNT_INACTIVE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.subtitle": {
+    "marketplaceCheckout.errors.INSUFFICIENT_BALANCE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.empty": {
+    "marketplaceCheckout.errors.TENANT_REQUIRED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.emptyDesc": {
+    "marketplaceCheckout.errors.WALLET_DEBIT_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.clicks": {
+    "marketplaceCheckout.errors.CART_READ_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.conversions": {
+    "marketplaceCheckout.errors.ORDER_WRITE_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.totalEarned": {
+    "marketplaceCheckout.errors.WALLET_READ_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.statusActive": {
+    "marketplaceCheckout.errors.GATEWAY_MISCONFIGURED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.shareRow": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.business.publicTitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.business.publicSubtitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.business.publicEmpty": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.business.viewProduct": {
+    "marketplaceCheckout.errors.unknown": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-13T05:21:58.579Z"
+  "generatedAt": "2026-08-13T05:20:17.429Z"
 }

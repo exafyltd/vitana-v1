@@ -1,50 +1,45 @@
 {
   "verdicts": {
-    "diary.title": {
+    "featureAnnouncementCard.brandNew.eyebrow": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "diary.description": {
+    "featureAnnouncementCard.brandNew.badge": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "diary.healthTab": {
+    "featureAnnouncementCard.brandNew.intro": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "diary.bugTab": {
+    "featureAnnouncementCard.brandNew.cta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "diary.text": {
+    "featureAnnouncementCard.brandNew.closing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "diary.photo": {
+    "featureAnnouncementCard.didYouKnow.eyebrow": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "diary.textEntry": {
+    "featureAnnouncementCard.didYouKnow.intro": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "diary.photoEntry": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "diary.searchPlaceholder": {
+    "featureAnnouncementCard.didYouKnow.cta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-13T05:17:49.935Z"
+  "generatedAt": "2026-08-13T05:19:08.827Z"
 }

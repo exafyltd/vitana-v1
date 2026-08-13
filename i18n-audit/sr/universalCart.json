@@ -1,300 +1,303 @@
 {
   "verdicts": {
-    "profile.defaultBio": {
+    "universalCart.agent.proposeCta": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"Vitana\" missing from target",
+      "phase": "static"
+    },
+    "universalCart.agent.roleBlocked": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"Vitana\" missing from target",
+      "phase": "static"
+    },
+    "universalCart.agent.empty": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"Vitana\" missing from target",
+      "phase": "static"
+    },
+    "universalCart.page.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.autopilot.polishBio": {
+    "universalCart.page.subtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.autopilot.editHighlights": {
+    "universalCart.page.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.autopilot.saveHighlights": {
+    "universalCart.page.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.autopilot.highlightsDesc": {
+    "universalCart.page.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.autopilot.try": {
+    "universalCart.page.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.identity.vitanaIndex": {
+    "universalCart.page.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.identity.basedOnActivity": {
+    "universalCart.page.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.identity.viewLongevityId": {
+    "universalCart.page.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.identity.brandFooter": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "profile.identity.follow": {
+    "universalCart.page.removeAction": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.identity.followingState": {
+    "universalCart.page.quantityLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.identity.understandIndex": {
+    "universalCart.page.completeAction": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.tabs.identity": {
+    "universalCart.page.alreadyCompleted": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.tabs.social": {
+    "universalCart.page.linkToDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.tabs.account": {
+    "universalCart.page.close": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.tabs.business": {
+    "universalCart.tabs.cart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.notSet": {
+    "universalCart.tabs.saved": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.editField": {
+    "universalCart.saved.moveToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.visibilityToggle": {
+    "universalCart.saved.saveForLater": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.visibility.private": {
+    "universalCart.saved.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.visibility.connections": {
+    "universalCart.saved.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.visibility.public": {
+    "universalCart.item.viewProduct": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.sections.publicProfile": {
+    "universalCart.agent.promptLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.sections.publicProfileSubtitle": {
+    "universalCart.agent.promptPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.sections.basicInfo": {
+    "universalCart.agent.proposing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.sections.basicInfoSubtitle": {
+    "universalCart.agent.sectionTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.sections.contactInfo": {
+    "universalCart.agent.sectionSubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.sections.accountDetails": {
+    "universalCart.agent.rationaleLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.avatar": {
+    "universalCart.agent.safetyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.handle": {
+    "universalCart.agent.confidenceLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.longevityArchetype": {
+    "universalCart.agent.keep": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.firstName": {
+    "universalCart.agent.remove": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.lastName": {
+    "universalCart.agent.unavailable": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.dateOfBirth": {
+    "universalCart.agent.reviewNote": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.gender": {
+    "universalCart.agent.reorderCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.maritalStatus": {
+    "universalCart.agent.reorderLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.email": {
+    "universalCart.agent.reorderSectionTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.phone": {
+    "universalCart.agent.reorderSectionSubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.address": {
+    "universalCart.agent.reordering": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "universalCart.agent.overCapAdvisory": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.country": {
+    "universalCart.agent.nearCapAdvisory": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.city": {
+    "universalCart.agent.error": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.memberSince": {
+    "universalCart.budget.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.accountType": {
+    "universalCart.budget.spentOfCap": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.fields.verificationStatus": {
+    "universalCart.budget.statusUnder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.account.values.uploaded": {
+    "universalCart.budget.statusNear": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.title": {
+    "universalCart.budget.statusOver": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.subtitle": {
+    "universalCart.budget.noCapHint": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.empty": {
+    "universalCart.addButton.label": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.emptyDesc": {
+    "universalCart.addButton.added": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.clicks": {
+    "universalCart.addButton.addAria": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.conversions": {
+    "universalCart.addButton.addedAria": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.totalEarned": {
+    "universalCart.addButton.signRequired": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.statusActive": {
+    "universalCart.addButton.roleBlocked": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.shareRow": {
+    "universalCart.addButton.failed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "profile.business.publicTitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.business.publicSubtitle": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.business.publicEmpty": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "profile.business.viewProduct": {
+    "universalCart.addButton.success": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-13T05:21:58.579Z"
+  "generatedAt": "2026-08-13T05:42:01.316Z"
 }
