@@ -1,0 +1,44 @@
+{
+  "verdicts": {
+    "mobileNav.news": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.inbox": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.events": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.business": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Too formal/generic for friendly app register; lacks specific context implied by 'Business' in an app.",
+      "suggested": "商家",
+      "phase": "llm"
+    },
+    "mobileNav.live": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.myJourney": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Too formal for friendly app register; '历程' implies a grander, more historical journey.",
+      "suggested": "旅程",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-13T05:31:59.977Z"
+}
