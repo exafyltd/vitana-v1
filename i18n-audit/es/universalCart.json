@@ -1,245 +1,300 @@
 {
   "verdicts": {
-    "voucher.modal.title": {
+    "universalCart.page.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.modal.subtitle": {
+    "universalCart.page.subtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.modal.buyVoucher": {
+    "universalCart.page.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.modal.openingCheckout": {
+    "universalCart.page.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.tiers.test.name": {
+    "universalCart.page.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.tiers.experience.name": {
+    "universalCart.page.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.tiers.exclusive.name": {
+    "universalCart.page.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.success.title": {
+    "universalCart.page.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.success.ready": {
+    "universalCart.page.errorBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.success.download": {
+    "universalCart.page.removeAction": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.success.sendEmail": {
+    "universalCart.page.quantityLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.success.viewOrders": {
+    "universalCart.page.completeAction": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.success.done": {
+    "universalCart.page.alreadyCompleted": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.title": {
+    "universalCart.page.linkToDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.subtitle": {
+    "universalCart.page.close": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.recipientEmail": {
+    "universalCart.tabs.cart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.recipientName": {
+    "universalCart.tabs.saved": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.personalMessage": {
+    "universalCart.saved.moveToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.messagePlaceholder": {
+    "universalCart.saved.saveForLater": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.back": {
+    "universalCart.saved.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.send": {
+    "universalCart.saved.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.title": {
+    "universalCart.item.viewProduct": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.giftVoucher": {
+    "universalCart.agent.promptLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.validUntil": {
+    "universalCart.agent.promptPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.voucherCode": {
+    "universalCart.agent.proposeCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.whatsIncluded": {
+    "universalCart.agent.proposing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.downloadPdf": {
+    "universalCart.agent.sectionTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.downloadDirect": {
+    "universalCart.agent.sectionSubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.openInBrowser": {
+    "universalCart.agent.rationaleLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.copyLink": {
+    "universalCart.agent.safetyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.share": {
+    "universalCart.agent.confidenceLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.shareHint": {
+    "universalCart.agent.keep": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.downloadHint": {
+    "universalCart.agent.remove": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.downloadStarted": {
+    "universalCart.agent.unavailable": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.downloadFailed": {
+    "universalCart.agent.roleBlocked": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.linkCopied": {
+    "universalCart.agent.empty": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.linkCopiedDesc": {
+    "universalCart.agent.reviewNote": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.voucherSent": {
+    "universalCart.agent.reorderCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.voucherShared": {
+    "universalCart.agent.reorderLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.checkoutFailed": {
+    "universalCart.agent.reorderSectionTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.generatingVoucher": {
+    "universalCart.agent.reorderSectionSubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.failedToLoadVoucher": {
+    "universalCart.agent.reordering": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.downloadFailedCopyLink": {
+    "universalCart.agent.overCapAdvisory": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.useTicketView": {
+    "universalCart.agent.nearCapAdvisory": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.pdfNotAvailable": {
+    "universalCart.agent.error": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.enterRecipientEmail": {
+    "universalCart.budget.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.emailOnlyForVouchers": {
+    "universalCart.budget.spentOfCap": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.sendingVoucherEmail": {
+    "universalCart.budget.statusUnder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.statusNear": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.statusOver": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.noCapHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.label": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.added": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.addAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.addedAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.signRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.roleBlocked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.success": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-13T05:31:43.873Z"
+  "generatedAt": "2026-08-13T05:31:25.310Z"
 }

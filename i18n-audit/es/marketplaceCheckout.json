@@ -1,245 +1,250 @@
 {
   "verdicts": {
-    "voucher.modal.title": {
+    "marketplaceCheckout.addMoney.amountPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.currencyEur": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.currencyUsd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.balance.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.modal.subtitle": {
+    "marketplaceCheckout.balance.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.modal.buyVoucher": {
+    "marketplaceCheckout.balance.empty": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.modal.openingCheckout": {
+    "marketplaceCheckout.balance.addMoney": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.tiers.test.name": {
+    "marketplaceCheckout.checkout.button": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.tiers.experience.name": {
+    "marketplaceCheckout.checkout.processing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.tiers.exclusive.name": {
+    "marketplaceCheckout.checkout.successTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.success.title": {
+    "marketplaceCheckout.checkout.successBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.success.ready": {
+    "marketplaceCheckout.checkout.duplicateTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.success.download": {
+    "marketplaceCheckout.checkout.duplicateBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.success.sendEmail": {
+    "marketplaceCheckout.checkout.affiliateTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.success.viewOrders": {
+    "marketplaceCheckout.checkout.affiliateBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.success.done": {
+    "marketplaceCheckout.checkout.affiliateLink": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.title": {
+    "marketplaceCheckout.checkout.affiliateOpened": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.subtitle": {
+    "marketplaceCheckout.addMoney.title": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.recipientEmail": {
+    "marketplaceCheckout.addMoney.description": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.recipientName": {
+    "marketplaceCheckout.addMoney.amountLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.personalMessage": {
+    "marketplaceCheckout.addMoney.currencyLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.messagePlaceholder": {
+    "marketplaceCheckout.addMoney.continue": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.back": {
+    "marketplaceCheckout.addMoney.processing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.email.send": {
+    "marketplaceCheckout.addMoney.invalidAmount": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.title": {
+    "marketplaceCheckout.addMoney.failed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.giftVoucher": {
+    "marketplaceCheckout.deposit.checkingTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.validUntil": {
+    "marketplaceCheckout.deposit.checkingBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.voucherCode": {
+    "marketplaceCheckout.deposit.succeededTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.whatsIncluded": {
+    "marketplaceCheckout.deposit.succeededBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.downloadPdf": {
+    "marketplaceCheckout.deposit.failedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.downloadDirect": {
+    "marketplaceCheckout.deposit.failedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.openInBrowser": {
+    "marketplaceCheckout.deposit.amountLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.copyLink": {
+    "marketplaceCheckout.deposit.backToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.share": {
+    "marketplaceCheckout.errors.invalid_request": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.shareHint": {
+    "marketplaceCheckout.errors.CART_EMPTY": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.preview.downloadHint": {
+    "marketplaceCheckout.errors.PRODUCT_UNAVAILABLE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.downloadStarted": {
+    "marketplaceCheckout.errors.PRICE_UNAVAILABLE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.downloadFailed": {
+    "marketplaceCheckout.errors.MIXED_CURRENCY": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.linkCopied": {
+    "marketplaceCheckout.errors.UNSUPPORTED_WALLET_CURRENCY": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.linkCopiedDesc": {
+    "marketplaceCheckout.errors.WALLET_ACCOUNT_MISSING": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.voucherSent": {
+    "marketplaceCheckout.errors.WALLET_ACCOUNT_INACTIVE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.voucherShared": {
+    "marketplaceCheckout.errors.INSUFFICIENT_BALANCE": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.checkoutFailed": {
+    "marketplaceCheckout.errors.TENANT_REQUIRED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.generatingVoucher": {
+    "marketplaceCheckout.errors.WALLET_DEBIT_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.failedToLoadVoucher": {
+    "marketplaceCheckout.errors.CART_READ_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.downloadFailedCopyLink": {
+    "marketplaceCheckout.errors.ORDER_WRITE_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.useTicketView": {
+    "marketplaceCheckout.errors.WALLET_READ_FAILED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.pdfNotAvailable": {
+    "marketplaceCheckout.errors.GATEWAY_MISCONFIGURED": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "voucher.toast.enterRecipientEmail": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "voucher.toast.emailOnlyForVouchers": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "voucher.toast.sendingVoucherEmail": {
+    "marketplaceCheckout.errors.unknown": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-13T05:31:43.873Z"
+  "generatedAt": "2026-08-13T05:18:52.333Z"
 }

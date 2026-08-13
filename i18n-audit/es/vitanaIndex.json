@@ -104,7 +104,37 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "vitanaIndex.framings.starting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.early": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.building": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.strong": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.reallyGood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.elite": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:09:04.216Z"
+  "generatedAt": "2026-08-13T05:31:42.002Z"
 }
