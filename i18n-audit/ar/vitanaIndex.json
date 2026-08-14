@@ -1,0 +1,145 @@
+{
+  "verdicts": {
+    "vitanaIndex.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"Vitana\" missing from target",
+      "phase": "static"
+    },
+    "vitanaIndex.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.veryPoor": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.poor": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.fair": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.improving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.good": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.excellent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.exercise": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.hydration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.mental": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The Arabic translation 'العقلي' is an adjective ('the mental') and is incomplete as a standalone category label for a health pillar. It should be a noun phrase.",
+      "suggested": "الصحة العقلية",
+      "phase": "llm"
+    },
+    "vitanaIndex.viewFullReport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.trackToday": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.tiers.starting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.tiers.early": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.tiers.building": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "vitanaIndex.tiers.strong": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.tiers.reallyGood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.tiers.elite": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.starting": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The verb 'بدأت' is conjugated for 'I started' or 'You (feminine singular) started'. For a general status or stage, a more impersonal noun phrase is appropriate.",
+      "suggested": "في البداية",
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.early": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.building": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.strong": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.reallyGood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.elite": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T07:28:41.939Z"
+}

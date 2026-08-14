@@ -1,0 +1,105 @@
+{
+  "verdicts": {
+    "services.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.categories.preventive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.categories.labTests": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.categories.coaching": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.categories.groupPrograms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.actions.book": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.actions.addToPlan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.actions.askAI": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.actions.joinRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.actions.setReminder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.duration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.price": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.location": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.nextAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.whatsIncluded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.healthBenefits": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.availableProviders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.requirements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.tags": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T07:13:25.075Z"
+}

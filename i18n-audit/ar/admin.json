@@ -1,0 +1,102 @@
+{
+  "verdicts": {
+    "admin.media.updateSuccess": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.updateFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.deleteSuccess": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.deleteFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.podcastStatus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.podcastDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.musicDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.videoDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.searchPodcasts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.searchMusic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.searchVideos": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.filterByStatus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.allStatus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.pending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.approved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.rejected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.flagged": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.podcastManagement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "admin.media.podcastManagementDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The Arabic word 'تعديل' (modification/editing) is less precise than 'الإشراف' (supervision/moderation) for 'moderate' in the context of content review, which typically implies oversight rather than direct editing.",
+      "suggested": "مراجعة والإشراف على تحميلات البودكاست",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:13:13.742Z"
+}

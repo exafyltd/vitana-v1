@@ -1,0 +1,54 @@
+{
+  "verdicts": {
+    "intro.welcomeTo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.experience": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.taglineMain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.taglineSub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.playWelcome": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Awkward phrasing for a UI action button; uses noun instead of imperative verb.",
+      "suggested": "شغّل الترحيب",
+      "phase": "llm"
+    },
+    "intro.preparing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.playing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.goToLogin": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Awkward phrasing for a UI action button; uses noun instead of imperative verb.",
+      "suggested": "اذهب إلى تسجيل الدخول",
+      "phase": "llm"
+    },
+    "intro.chooseLanguage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:27:41.418Z"
+}

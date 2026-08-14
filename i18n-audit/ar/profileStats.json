@@ -1,0 +1,32 @@
+{
+  "verdicts": {
+    "profileStats.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.followers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.following": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Incorrect passive form; 'Following' refers to people the user actively follows, not people who are passively followed.",
+      "suggested": "متابعة",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:35:49.821Z"
+}

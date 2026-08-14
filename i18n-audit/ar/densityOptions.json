@@ -1,0 +1,22 @@
+{
+  "verdicts": {
+    "densityOptions.cozy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "densityOptions.compact": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "While 'مضغوط' means compressed, 'مدمج' is a more common and appropriate translation for 'compact' in a UI/design context, conveying the idea of being integrated or efficiently small without implying physical pressure.",
+      "suggested": "مدمج",
+      "phase": "llm"
+    },
+    "densityOptions.gallery": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:21:56.211Z"
+}
