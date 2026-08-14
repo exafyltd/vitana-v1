@@ -316,10 +316,8 @@
       "phase": "llm"
     },
     "createEventPopup.categories.social": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Nuance of 'Networking' is lost; 'Социальные связи' is more passive than the active 'Networking'.",
-      "suggested": "🤝 Социальное общение",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "createEventPopup.categories.volunteer": {
@@ -383,10 +381,8 @@
       "phase": "llm"
     },
     "createEventPopup.durations.half-day": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Less idiomatic spelling; 'Полдня' (one word) is the standard and more natural form.",
-      "suggested": "Полдня",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "createEventPopup.durations.full-day": {
@@ -397,8 +393,8 @@
     "createEventPopup.durations.custom": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Nuance of 'Custom' is lost; 'Другая длительность' is too generic, 'Custom' implies user-defined.",
-      "suggested": "Произвольная длительность...",
+      "issue": "Translation 'Другая' (Other) is not as precise as 'Custom'. 'Своя' or 'Пользовательская' would be more accurate.",
+      "suggested": "Своя длительность...",
       "phase": "llm"
     },
     "createEventPopup.toasts.invalidFileType": {
@@ -552,5 +548,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:31:16.488Z"
+  "generatedAt": "2026-08-14T05:14:04.218Z"
 }

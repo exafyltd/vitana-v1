@@ -3,8 +3,8 @@
     "groupMembership.joined": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Grammatically incorrect; 'Присоединение' is a noun (the act of joining), not a completed action.",
-      "suggested": "Присоединились! 🎉",
+      "issue": "The Russian translation uses a noun ('Присоединение' - 'joining') instead of a verb indicating a completed action, which 'Joined!' implies. It doesn't convey the celebratory, completed action.",
+      "suggested": "Вы присоединились! 🎉",
       "phase": "llm"
     },
     "groupMembership.joinedDesc": {
@@ -15,8 +15,8 @@
     "groupMembership.left": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Grammatically incorrect; 'Выход из группы' is a noun phrase (exit from group), not a completed action/status.",
-      "suggested": "Покинул группу",
+      "issue": "The Russian translation uses a noun phrase ('Выход из группы' - 'exit from the group') instead of a verb phrase indicating a completed action, which 'Left group' implies.",
+      "suggested": "Вы покинули группу.",
       "phase": "llm"
     },
     "groupMembership.leftDesc": {
@@ -35,5 +35,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:35:07.749Z"
+  "generatedAt": "2026-08-14T05:14:43.500Z"
 }

@@ -47,9 +47,9 @@
     },
     "autopilot.suggestions.archetypeTitle": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation 'Идеи' (ideas) is too weak for 'Insights', which implies deeper understanding or revelations.",
-      "suggested": "Озарения архетипа",
+      "confidence": 1,
+      "issue": "Meaning of 'Insights' is lost; 'Идеи' means 'ideas', not 'insights'. Also, 'архетипа' should be plural or part of a prepositional phrase.",
+      "suggested": "Озарения об архетипах",
       "phase": "llm"
     },
     "autopilot.suggestions.archetypeBadge": {
@@ -174,9 +174,9 @@
     },
     "autopilot.popup.moreActions": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'more actions'. 'Больше действий' is less natural than 'ещё действий' in this context.",
-      "suggested": "ещё {count} действий",
+      "confidence": 1,
+      "issue": "Phrasing for 'X more Y' is unnatural. 'Больше действий' sounds clunky.",
+      "suggested": "Еще {count} действий",
       "phase": "llm"
     },
     "autopilot.popup.toastExecutedTitle": {
@@ -220,10 +220,8 @@
       "phase": "llm"
     },
     "autopilot.widget.active": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical form mismatch. 'Активно' is an adverb or neuter short adjective. For 'Autopilot' (masculine), the masculine short adjective 'Активен' is appropriate for a status.",
-      "suggested": "Активен",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "autopilot.widget.paused": {
@@ -462,5 +460,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:25:10.893Z"
+  "generatedAt": "2026-08-14T05:13:19.965Z"
 }

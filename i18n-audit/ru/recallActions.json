@@ -77,9 +77,9 @@
     },
     "recallActions.items.quickRecalls.title": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The term 'вызовы' typically refers to phone calls or challenges, not memory retrieval or quick access to information. It's not idiomatic for 'recalls' in this context.",
-      "suggested": "Быстрый доступ",
+      "confidence": 0.9,
+      "issue": "Meaning of 'Recalls' is misinterpreted. 'Вызовы' means 'calls' (phone calls, challenges), not 'memories' or 'recollections'.",
+      "suggested": "Быстрые воспоминания",
       "phase": "llm"
     },
     "recallActions.items.quickRecalls.description": {
@@ -88,5 +88,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:44:58.980Z"
+  "generatedAt": "2026-08-14T05:16:01.692Z"
 }

@@ -22,9 +22,9 @@
     },
     "onboarding.connectAppsDesc": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Literal translation of 'better insights'; 'понимания' is too general. 'Insights' implies more valuable data or deeper analysis.",
-      "suggested": "Подключи свои приложения для здоровья и благополучия для получения более ценных данных",
+      "confidence": 0.8,
+      "issue": "The translation of 'insights' as 'понимания' (understanding) is too literal and doesn't fully capture the nuance of actionable data or derived knowledge in a tech/wellness app context.",
+      "suggested": "Подключи свои приложения для здоровья и благополучия для более глубоких выводов",
       "phase": "llm"
     },
     "onboarding.setGoals": {
@@ -118,5 +118,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:41:44.040Z"
+  "generatedAt": "2026-08-14T05:15:39.748Z"
 }

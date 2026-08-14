@@ -147,8 +147,8 @@
     },
     "inbox.newConversation.groupNamePlaceholder": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent: formal 'вы' form used instead of informal 'ты' form.",
+      "confidence": 0.9,
+      "issue": "Register mismatch: 'Введите' is formal singular or informal plural imperative; 'Введи' is the correct informal singular imperative for a 'du-form' app.",
       "suggested": "Введи название группы...",
       "phase": "llm"
     },
@@ -498,5 +498,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:37:08.381Z"
+  "generatedAt": "2026-08-14T05:14:58.889Z"
 }

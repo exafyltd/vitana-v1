@@ -248,7 +248,7 @@
     "profileEditor.identity.handlePlaceholder": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Concatenation of 'твой' and 'никнейм' into a single word is unnatural; they should be separate.",
+      "issue": "Grammatically incorrect; should be two separate words.",
       "suggested": "твой никнейм",
       "phase": "llm"
     },
@@ -443,5 +443,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:44:02.891Z"
+  "generatedAt": "2026-08-14T05:15:52.183Z"
 }

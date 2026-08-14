@@ -8,7 +8,7 @@
     "profileMedia.emptyDescription": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Slightly literal and less idiomatic phrasing for 'wellness journey' in a friendly app context.",
+      "issue": "The word \"путь\" (path/way) is a bit too literal and less idiomatic than \"путешествие\" (journey/trip) for \"journey\" in the context of sharing an experience in a wellness app.",
       "suggested": "Поделись своим оздоровительным путешествием",
       "phase": "llm"
     },
@@ -28,5 +28,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:44:12.723Z"
+  "generatedAt": "2026-08-14T05:15:55.897Z"
 }
