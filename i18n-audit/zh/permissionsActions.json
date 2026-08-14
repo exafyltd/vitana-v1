@@ -1,0 +1,92 @@
+{
+  "verdicts": {
+    "permissionsActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.privacySettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.privacySettings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.manageAccess.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.manageAccess.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.securitySettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.securitySettings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.apiKeysAccess.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.apiKeysAccess.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.dataRights.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.dataRights.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Slightly awkward phrasing for 'data portability and deletion rights'. The original combines two nouns ('可移植性' and '删除') directly before '权利', which is less idiomatic than using '的权利' to clarify the relationship.",
+      "suggested": "行使你的数据可移植和删除的权利",
+      "phase": "llm"
+    },
+    "permissionsActions.items.auditLogs.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.auditLogs.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.permissionSettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.permissionSettings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.exportData.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.exportData.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:32:13.064Z"
+}

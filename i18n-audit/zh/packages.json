@@ -1,0 +1,77 @@
+{
+  "verdicts": {
+    "packages.confirmDelete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.types.bundle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.types.subscription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.types.program": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "项目 is too generic; 计划 (plan) or 方案 (scheme/plan) would be more specific and appropriate for 'Program' in a wellness context.",
+      "suggested": "计划",
+      "phase": "llm"
+    },
+    "packages.status.draft": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.status.published": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.status.archived": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.item": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.items": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.total": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.validDays": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.save": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.unpublish": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "packages.publish": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:31:47.238Z"
+}
