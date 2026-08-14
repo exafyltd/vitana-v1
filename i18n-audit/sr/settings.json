@@ -144,7 +144,17 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "settings.vitanaOpenedSection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "settings.vitanaUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:29:31.269Z"
+  "generatedAt": "2026-08-14T05:39:58.216Z"
 }
