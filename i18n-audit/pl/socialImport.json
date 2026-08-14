@@ -1,0 +1,130 @@
+{
+  "verdicts": {
+    "socialImport.dialogTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.dialogDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.profileUrl": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.bioLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.bioOptional": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.importProfile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.importing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.urlRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.urlRequiredDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.importSuccess": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.importSuccessDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.importFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.connect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.socialPresence": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.verifiedConnections": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.tapToVisit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.noAccountsConnected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.connectAccounts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.platformHelp.linkedin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.platformHelp.instagram": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.platformHelp.tiktok": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.platformHelp.youtube": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.platformHelp.facebook": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "socialImport.platformHelp.x": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T07:01:02.834Z"
+}

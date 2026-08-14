@@ -1,0 +1,94 @@
+{
+  "verdicts": {
+    "permissionsActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.privacySettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.privacySettings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.manageAccess.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.manageAccess.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Capitalization of 'Twoje' should be 'twoje' for consistent informal register.",
+      "suggested": "Kontroluj, kto może przeglądać twoje wspomnienia zdrowotne",
+      "phase": "llm"
+    },
+    "permissionsActions.items.securitySettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.securitySettings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.apiKeysAccess.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Capitalization of 'Dostęp' is incorrect for a common noun in a title/list.",
+      "suggested": "Klucze API i dostęp",
+      "phase": "llm"
+    },
+    "permissionsActions.items.apiKeysAccess.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.dataRights.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.dataRights.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.auditLogs.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.auditLogs.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.permissionSettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.permissionSettings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.exportData.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.exportData.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:32:04.709Z"
+}

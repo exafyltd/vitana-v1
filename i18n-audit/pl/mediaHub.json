@@ -1,0 +1,660 @@
+{
+  "verdicts": {
+    "mediaHub.min": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mediaHub.menu.podcast": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mediaHub.upload.predefinedTags.fitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mediaHub.upload.predefinedTags.wellness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "mediaHub.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.discoverContent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.tabs.music": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.tabs.podcasts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.tabs.shorts": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent with previous translation of 'shorts' (entry 1) and 'krótkie filmy' is more descriptive and appropriate for a wellness app.",
+      "suggested": "Krótkie filmy",
+      "phase": "llm"
+    },
+    "mediaHub.tabs.videos": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.sections.trendingShorts": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent with previous translation of 'shorts' (entry 1) and 'krótkie filmy' is more descriptive and appropriate for a wellness app.",
+      "suggested": "Popularne krótkie filmy",
+      "phase": "llm"
+    },
+    "mediaHub.sections.trendingMusic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.sections.musicPlaylists": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.sections.latestEpisodes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.sections.popularShows": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.actions.upload": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.actions.watchShorts": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent with previous translation of 'shorts' (entry 1) and 'krótkie filmy' is more descriptive and appropriate for a wellness app.",
+      "suggested": "Oglądaj krótkie filmy",
+      "phase": "llm"
+    },
+    "mediaHub.actions.viewAllShorts": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent with previous translation of 'shorts' (entry 1) and 'krótkich filmów' is more descriptive and grammatically correct after a number.",
+      "suggested": "Zobacz wszystkie {count} krótkich filmów",
+      "phase": "llm"
+    },
+    "mediaHub.actions.playPlaylist": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.actions.clearFilters": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.shortsAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.filteredBy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.noMatchingShorts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.viewAllShorts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.tracks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.by": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.episodes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.subscribers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.unknownArtist": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.unknownHost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.latestActions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.moreActions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.subscribed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.subscribe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.menu.video": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.menu.music": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.menu.singleUpload": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.menu.bulkUpload": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.menu.addToPlaylist": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.menu.viewArtist": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.linkCopiedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.filtersCleared": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.filtersClearedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.podcastDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.podcastDeletedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.videoDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.videoDeletedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.videoUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.videoUpdatedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.uploadSuccess": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.uploadSuccessDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.deleteError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.deleteErrorDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.commentError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.toast.commentErrorDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.placeholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.beFirst": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.signIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.send": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.member": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.reply": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.replyingTo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.cancelReply": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.comments.like": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.deletePodcast.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.deletePodcast.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.deletePodcast.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.deletePodcast.confirm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.deleteVideo.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.deleteVideo.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.deleteVideo.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.deleteVideo.confirm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.noMusic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.noMusicDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.noPodcasts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.noPodcastsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.noShorts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.noShortsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.noVideos": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.noVideosDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.uploadMusic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.uploadPodcast": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.uploadVideo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.titleWithType": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.mediaType": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.selectMediaType": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.selectMediaTypeFirst": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.file": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.clickToUpload": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.orDragDrop": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.remove": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.titleLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.titlePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.descriptionLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.descriptionPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.genre": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.genrePlaceholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender mismatch for 'Klasyczna' with 'Gatunek'. 'Klasyczny' (masculine) would be more consistent with 'Gatunek' (masculine noun) when listing genres.",
+      "suggested": "np. Klasyczny, Jazz",
+      "phase": "llm"
+    },
+    "mediaHub.upload.mood": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.moodPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.hostGuest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.hostGuestPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.language": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.languagePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.topic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.topicPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.tags": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.visibility": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.public": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.private": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.thumbnail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.uploadThumbnail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.thumbnailHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.uploading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.submit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.predefinedTags.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.predefinedTags.sleep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.predefinedTags.longevity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.predefinedTags.motivation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.predefinedTags.mindfulness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.predefinedTags.mentalHealth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.predefinedTags.education": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mediaHub.upload.predefinedTags.lifestyle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:29:20.026Z"
+}

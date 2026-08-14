@@ -1,0 +1,32 @@
+{
+  "verdicts": {
+    "profileStats.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "profileStats.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.followers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.following": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translated as a verb ('you follow') instead of a noun ('people you follow').",
+      "suggested": "Obserwowani",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:33:53.576Z"
+}

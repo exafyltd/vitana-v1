@@ -1,0 +1,332 @@
+{
+  "verdicts": {
+    "orders.myOrders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.trackDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.tabs.active": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.tabs.history": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.tabs.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.tabs.completed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.tabs.cancelled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.filters.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.filters.events": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.filters.products": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.filters.vouchers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.filters.services": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.filters.refunds": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.previewNotice": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.sampleData": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.emptyActive.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.emptyActive.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.emptyHistory.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.emptyHistory.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.noOrders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.noOrdersDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.browseProducts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.findEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.startShopping": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.noFilter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.noFilterDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.orderDate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.orderNumber": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.viewDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.trackOrder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.reorder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.orderInfo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.orderReference": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.purchaseDate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.eventDate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.location": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.quantity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.tickets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.yourTicket": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.giftVoucher": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.code": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.sendToRecipient": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.recipientEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.recipientName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.personalMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.send": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.downloadPdf": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.upcoming": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.attended": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation is gender-specific and too personal for a general category label. Should be a neutral plural adjective.",
+      "suggested": "Uczestniczone",
+      "phase": "llm"
+    },
+    "orders.status.expired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.completed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.delivered": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.cancelled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.refunded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.shipped": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.confirmed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.pending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.paid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.active": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:31:39.811Z"
+}

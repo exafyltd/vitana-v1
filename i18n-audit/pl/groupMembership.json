@@ -1,0 +1,39 @@
+{
+  "verdicts": {
+    "groupMembership.joined": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.joinedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Missing 'member' nuance; 'w tej grupie' (in this group) is less precise than 'członkiem tej grupy' (a member of this group).",
+      "suggested": "Jesteś teraz członkiem tej grupy.",
+      "phase": "llm"
+    },
+    "groupMembership.left": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.leftDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Gender-specific translation ('Opuściłeś' is male). Needs to be gender-neutral for general UI.",
+      "suggested": "Nie jesteś już członkiem tej grupy.",
+      "phase": "llm"
+    },
+    "groupMembership.errorJoin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.errorLeave": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:25:18.104Z"
+}
