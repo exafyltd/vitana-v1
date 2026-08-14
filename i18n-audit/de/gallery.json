@@ -36,10 +36,8 @@
       "phase": "llm"
     },
     "gallery.dropzone": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Missing 'to select' context; German is too terse.",
-      "suggested": "Ziehen & ablegen oder zum Auswählen klicken",
       "phase": "llm"
     },
     "gallery.publicLabel": {
@@ -66,7 +64,27 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "gallery.maxSizeHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "gallery.invalidFormat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.fileTooLarge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "gallery.maxSize": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:11:40.120Z"
+  "generatedAt": "2026-08-14T05:18:10.462Z"
 }

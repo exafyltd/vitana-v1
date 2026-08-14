@@ -1,175 +1,178 @@
 {
   "verdicts": {
-    "support.maxina.title": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "support.maxina.categories.events": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "support.maxina.subtitle": {
+    "videoShop.feed.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.description": {
+    "videoShop.feed.loadingMore": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.categoriesTitle": {
+    "videoShop.feed.end": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.categories.gettingStarted": {
+    "videoShop.feed.emptyTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.categories.account": {
+    "videoShop.feed.emptyBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.categories.payments": {
+    "videoShop.feed.browseDiscover": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.categories.technical": {
+    "videoShop.feed.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.title": {
+    "videoShop.feed.errorBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; 'in einem Moment' is not idiomatic for 'in a moment' meaning 'after a short while'.",
+      "suggested": "Bitte versuche es gleich noch einmal.",
+      "phase": "llm"
+    },
+    "videoShop.feed.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.createAccount.question": {
+    "videoShop.feed.roleBlockedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.createAccount.answer": {
+    "videoShop.feed.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.resetPassword.question": {
+    "videoShop.feed.mute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.resetPassword.answer": {
+    "videoShop.feed.unmute": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.joinEvents.question": {
+    "videoShop.feed.share": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.joinEvents.answer": {
+    "videoShop.feed.linkCopied": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.updateProfile.question": {
+    "videoShop.drawer.loading": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.updateProfile.answer": {
+    "videoShop.drawer.productFallback": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.deleteAccount.question": {
+    "videoShop.drawer.addToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.deleteAccount.answer": {
+    "videoShop.drawer.adding": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.paymentMethods.question": {
+    "videoShop.drawer.addedTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.paymentMethods.answer": {
+    "videoShop.drawer.addedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.contactOrganizers.question": {
+    "videoShop.drawer.addFailed": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.contactOrganizers.answer": {
+    "videoShop.drawer.goToCart": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.dataSecure.question": {
+    "videoShop.drawer.moreDetails": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.faq.dataSecure.answer": {
+    "videoShop.drawer.notifyMe": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.contact.title": {
+    "videoShop.drawer.outOfStock": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.contact.email": {
+    "videoShop.drawer.retry": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.contact.responseTime": {
+    "videoShop.drawer.errorTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.usefulLinks.title": {
+    "videoShop.drawer.errorBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; 'in einem Moment' is not idiomatic for 'in a moment' meaning 'after a short while'.",
+      "suggested": "Bitte versuche es gleich noch einmal.",
+      "phase": "llm"
+    },
+    "videoShop.drawer.unavailableTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "support.maxina.usefulLinks.privacy": {
-      "verdict": "OK",
-      "confidence": 1,
+    "videoShop.drawer.unavailableBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'gerade' adds a nuance of temporariness not present in the original 'no longer'.",
+      "suggested": "Dieses Produkt ist nicht mehr erhältlich.",
       "phase": "llm"
     },
-    "support.maxina.usefulLinks.deleteAccount": {
-      "verdict": "OK",
-      "confidence": 1,
+    "videoShop.drawer.roleBlockedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Ungrammatical and awkward phrasing; 'Kauf' as a standalone subject is unusual.",
+      "suggested": "Kaufen ist hier nicht möglich.",
       "phase": "llm"
     },
-    "support.maxina.usefulLinks.portal": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "support.maxina.footer": {
+    "videoShop.drawer.roleBlockedBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-14T05:35:38.078Z"
+  "generatedAt": "2026-08-14T05:37:38.978Z"
 }
