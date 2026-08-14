@@ -1,0 +1,88 @@
+{
+  "verdicts": {
+    "profilePosts.createPost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.placeholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses 'você' form possessive ('sua') instead of 'tu' form possessive ('tua') for informal 'du-form'.",
+      "suggested": "O que está na tua mente agora?",
+      "phase": "llm"
+    },
+    "profilePosts.shareCta": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses 'você' form imperative ('Compartilhe') instead of 'tu' form imperative ('Compartilha') for informal 'du-form'.",
+      "suggested": "Compartilha algo com a comunidade",
+      "phase": "llm"
+    },
+    "profilePosts.post": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.posted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.deleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.emptyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.emptyDescription": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses 'você' form imperative ('Compartilhe') and possessive ('sua') instead of 'tu' form ('Compartilha', 'tua') for informal 'du-form'.",
+      "suggested": "Compartilha tua primeira atualização com a comunidade",
+      "phase": "llm"
+    },
+    "profilePosts.deleteConfirm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.mentionPlaceholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses 'você' form possessive ('sua') and imperative ('Digite') instead of 'tu' form ('tua', 'Digita') for informal 'du-form'.",
+      "suggested": "O que está na tua mente? Digita @ para marcar alguém",
+      "phase": "llm"
+    },
+    "profilePosts.background": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.noBackground": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.searchingPeople": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profilePosts.noPeopleFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:35:30.844Z"
+}

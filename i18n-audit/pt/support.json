@@ -1,0 +1,187 @@
+{
+  "verdicts": {
+    "support.maxina.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categoriesTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.gettingStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.account": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.events": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.payments": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.categories.technical": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.createAccount.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.createAccount.answer": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'você' forms instead of informal 'tu' forms.",
+      "suggested": "Baixa o aplicativo Maxina ou visita o nosso portal em vitanaland.com/maxina. Toca em 'Cadastrar' e insere o teu endereço de e-mail. Receberás um e-mail de confirmação para verificar a tua conta. Após a confirmação, completa o teu perfil para descobrir eventos de bem-estar e recursos da comunidade.",
+      "phase": "llm"
+    },
+    "support.maxina.faq.resetPassword.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.resetPassword.answer": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'você' forms instead of informal 'tu' forms.",
+      "suggested": "Na tela de login, toca em 'Esqueci a Senha' e insere o teu endereço de e-mail cadastrado. Receberás um link para redefinir a senha em poucos minutos. Verifica a tua caixa de spam se não vires o e-mail. Por razões de segurança, o link expira após 24 horas.",
+      "phase": "llm"
+    },
+    "support.maxina.faq.joinEvents.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.joinEvents.answer": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'você' forms instead of informal 'tu' forms.",
+      "suggested": "Navega pelos eventos disponíveis na seção Eventos e Encontros. Toca num evento para ver detalhes como data, local e preço. Para eventos gratuitos, basta tocar em 'Participar' ou 'RSVP'. Para eventos pagos, podes comprar ingressos com segurança através do nosso sistema de pagamento integrado.",
+      "phase": "llm"
+    },
+    "support.maxina.faq.updateProfile.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.updateProfile.answer": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'você' forms instead of informal 'tu' forms.",
+      "suggested": "Vai para a tua aba Perfil e toca no ícone Editar ou em 'Editar Perfil'. Podes atualizar o teu nome de exibição, biografia, foto de perfil e interesses de bem-estar. As alterações são salvas automaticamente. O teu perfil ajuda-nos a personalizar recomendações de eventos para ti.",
+      "phase": "llm"
+    },
+    "support.maxina.faq.deleteAccount.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.deleteAccount.answer": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'você' forms instead of informal 'tu' forms.",
+      "suggested": "Para excluíres a tua conta Maxina e dados associados, por favor, envia um e-mail para support@exafy.io com o assunto 'Exclusão de Conta – Maxina'. Fornece o endereço de e-mail vinculado à tua conta. Processamos solicitações de exclusão em até 30 dias.",
+      "phase": "llm"
+    },
+    "support.maxina.faq.paymentMethods.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.paymentMethods.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.contactOrganizers.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.contactOrganizers.answer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.dataSecure.question": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.faq.dataSecure.answer": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'você' forms instead of informal 'tu' forms.",
+      "suggested": "Sim, a tua privacidade e segurança são a nossa principal prioridade. Usamos criptografia padrão da indústria, autenticação segura e cumprimos as diretrizes do GDPR. Nunca compartilhamos os teus dados pessoais com terceiros sem o teu consentimento. Lê a nossa política de privacidade completa para mais detalhes.",
+      "phase": "llm"
+    },
+    "support.maxina.contact.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.contact.email": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.contact.responseTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.usefulLinks.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.usefulLinks.privacy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.usefulLinks.deleteAccount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.usefulLinks.portal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "support.maxina.footer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T07:00:57.842Z"
+}

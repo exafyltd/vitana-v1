@@ -1,0 +1,49 @@
+{
+  "verdicts": {
+    "featureAnnouncementCard.brandNew.eyebrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.badge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.cta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.closing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.didYouKnow.eyebrow": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Inconsistent register: uses 'tu' form ('sabias') while other entries use 'você' form. For consistency in a 'você'-based informal register, the 'você' form should be used.",
+      "suggested": "Sabia que?",
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.didYouKnow.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.didYouKnow.cta": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Inconsistent register: uses 'tu' imperative ('experimenta') while other entries use 'você' form. For consistency in a 'você'-based informal register, the 'você' imperative should be used.",
+      "suggested": "Experimente agora",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:24:35.906Z"
+}

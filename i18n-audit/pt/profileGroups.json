@@ -1,0 +1,32 @@
+{
+  "verdicts": {
+    "profileGroups.emptyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileGroups.emptyDescription": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Register inconsistent; uses formal 'Participe' and 'seus' instead of informal 'Participa' and 'teus'.",
+      "suggested": "Participa de comunidades que combinam com teus interesses",
+      "phase": "llm"
+    },
+    "profileGroups.discoverCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileGroups.viewAllCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileGroups.membersLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:35:13.472Z"
+}

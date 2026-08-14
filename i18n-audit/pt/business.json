@@ -1,0 +1,577 @@
+{
+  "verdicts": {
+    "business.earning.readyToEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.choosePathGuide": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register: Imperative verb 'Escolha' is formal ('você' form), should be informal ('tu' form).",
+      "suggested": "Escolhe um caminho e vamos guiar você para sua primeira fonte de renda.",
+      "phase": "llm"
+    },
+    "business.earning.startEarning": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.howToEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.pickOne": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register: Imperative verb 'Escolha' is formal ('você' form), should be informal ('tu' form).",
+      "suggested": "Escolhe uma opção — você pode explorar as outras depois.",
+      "phase": "llm"
+    },
+    "business.earning.createEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createEventDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register: Imperative verbs 'Organize' and 'venda' are formal ('você' form), should be informal ('tu' form).",
+      "suggested": "Organiza seu próprio evento e vende ingressos.",
+      "phase": "llm"
+    },
+    "business.earning.addToInventory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.addToInventoryDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createService": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createServiceDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createPromotion": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.createPromotionDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.hostAndSell": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Regional variant: 'bilhetes' is common in European Portuguese, 'ingressos' is more common in Brazilian Portuguese. Assuming Brazilian Portuguese for consistency with other entries.",
+      "suggested": "Organiza e vende ingressos",
+      "phase": "llm"
+    },
+    "business.earning.resellAndEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.offerBookings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.earning.boostVisibility": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.directSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.reseller": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.noEarningsYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.startSellingToSee": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register: Imperative verb 'Comece' is formal ('você' form), should be informal ('tu' form).",
+      "suggested": "Começa a vender para ver suas transações aqui.",
+      "phase": "llm"
+    },
+    "business.history.ticketsSold": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Regional variant: 'Bilhetes' is common in European Portuguese, 'Ingressos' is more common in Brazilian Portuguese. Assuming Brazilian Portuguese for consistency with other entries.",
+      "suggested": "Ingressos Vendidos",
+      "phase": "llm"
+    },
+    "business.history.grossAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.youEarned": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.paidToWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.pendingPayout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.transactionId": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.viewInWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.last7Days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.last30Days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.last90Days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.allTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.details": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.earningsActivity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.history.noEarningsStartSelling": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent (formal imperative used instead of informal).",
+      "suggested": "Nenhum ganho ainda. Começa a vender para ver a atividade aqui.",
+      "phase": "llm"
+    },
+    "business.kpi.totalEarnings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.last30Days": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.pendingPayout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.inWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.revenue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.thisMonth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.activeClients": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.totalActive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.upcomingSessions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.thisWeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.topPerformer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.noDataYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.createServiceToStart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.bookings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.myEventSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.viewMyEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.totalGrossSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.resellerCommissions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.goToSellEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.totalEarned": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.kpi.earningsBySource": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.upcomingEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.next": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.resellerCode": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.codeCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.noSalesYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.shareLinkToStart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.tickets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.shareResellerLink": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses infinitive instead of informal 'tu' imperative for an action.",
+      "suggested": "Compartilha link de revendedor",
+      "phase": "llm"
+    },
+    "business.reseller.createPromotion": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses infinitive instead of informal 'tu' imperative for an action.",
+      "suggested": "Cria promoção",
+      "phase": "llm"
+    },
+    "business.reseller.shareLinkOrPromotion": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'você' imperative and possessive instead of informal 'tu' forms.",
+      "suggested": "Compartilha teus links de revendedor ou cria uma promoção para ganhar comissões.",
+      "phase": "llm"
+    },
+    "business.reseller.selectEventToShare": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'você' imperative instead of informal 'tu' form.",
+      "suggested": "Seleciona um evento para compartilhar",
+      "phase": "llm"
+    },
+    "business.reseller.pickEventForLink": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'você' imperative and possessive instead of informal 'tu' forms.",
+      "suggested": "Escolhe um evento para gerar teu link de revendedor.",
+      "phase": "llm"
+    },
+    "business.reseller.noEventsToSell": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.commission": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.commissionEarned": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.inWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.lastPayout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.noPayoutsYet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.attributedSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.noSalesMatchFilter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.reseller.mockDataActive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses infinitive instead of informal 'tu' imperative for an action.",
+      "suggested": "Solicita saque",
+      "phase": "llm"
+    },
+    "business.transfer.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'você' imperative and possessive instead of informal 'tu' forms.",
+      "suggested": "Solicita o saque das tuas comissões de revendedor pendentes para a tua Carteira VITANA.",
+      "phase": "llm"
+    },
+    "business.transfer.pending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.wallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.instantCredit": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'você' possessive instead of informal 'tu' form.",
+      "suggested": "Teu pedido será analisado pela nossa equipe antes de ser creditado no teu saldo da Carteira.",
+      "phase": "llm"
+    },
+    "business.transfer.transferring": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.transfer.transfer": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses infinitive instead of informal 'tu' imperative for an action.",
+      "suggested": "Solicita",
+      "phase": "llm"
+    },
+    "business.typeSelector.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses infinitive instead of informal 'tu' imperative for an action.",
+      "suggested": "Começa um Negócio",
+      "phase": "llm"
+    },
+    "business.typeSelector.createEvent": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses infinitive instead of informal 'tu' imperative for an action.",
+      "suggested": "Cria Evento",
+      "phase": "llm"
+    },
+    "business.typeSelector.createEventDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses formal 'você' imperative instead of informal 'tu' form.",
+      "suggested": "Organiza workshops, aulas ou encontros",
+      "phase": "llm"
+    },
+    "business.typeSelector.offerService": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses infinitive instead of informal 'tu' imperative for an action.",
+      "suggested": "Oferece Serviço",
+      "phase": "llm"
+    },
+    "business.typeSelector.offerServiceDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.sellTickets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.sellTicketsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.badgeNew": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.badgeActive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.alreadyReseller": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.typeSelector.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.empty": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses 'você' form ('Volte') instead of 'tu' form ('Volta') for the imperative.",
+      "suggested": "Nenhuma recomendação alinhada à economia ainda. Volta mais tarde.",
+      "phase": "llm"
+    },
+    "business.missionOpportunities.viewAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.axisBadge.find_match": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.axisBadge.marketplace": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.axisBadge.income_generation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "business.missionOpportunities.axisBadge.business_formation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:17:47.597Z"
+}

@@ -1,0 +1,175 @@
+{
+  "verdicts": {
+    "portals.maxina.roles.professional": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "portals.maxina.roles.admin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "portals.maxina.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.welcomeBack": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Gender agreement: 'Bem-vindo' is masculine. For a friendly app, it should be gender-inclusive or specific.",
+      "suggested": "Bem-vindo(a) de volta à Maxina.",
+      "phase": "llm"
+    },
+    "portals.maxina.continueJourney": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses 'você' form ('Faça', 'sua') instead of 'tu' form for informal address.",
+      "suggested": "Faz login para continuares a tua jornada.",
+      "phase": "llm"
+    },
+    "portals.maxina.joinMaxina": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses 'você' form ('Junte-se') instead of 'tu' form for informal address.",
+      "suggested": "Junta-te à Maxina",
+      "phase": "llm"
+    },
+    "portals.maxina.joinCommunity": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses 'você' form ('Junte-se') instead of 'tu' form for informal address.",
+      "suggested": "Junta-te à comunidade Maxina.",
+      "phase": "llm"
+    },
+    "portals.maxina.createAccount": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses 'você' form ('Crie', 'comece', 'sua') instead of 'tu' form for informal address.",
+      "suggested": "Cria a tua conta e começa a tua jornada.",
+      "phase": "llm"
+    },
+    "portals.maxina.signingIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.creatingAccount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.joiningAs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.yourFullName": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses 'você' possessive ('Seu') instead of 'tu' possessive for informal address.",
+      "suggested": "O teu nome completo",
+      "phase": "llm"
+    },
+    "portals.maxina.forgotPassword": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses 'você' form ('Esqueceu') instead of 'tu' form for informal address.",
+      "suggested": "Esqueceste a senha?",
+      "phase": "llm"
+    },
+    "portals.maxina.partOfVitana": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.allPortals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.emailConfirmed": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Gender agreement: 'Bem-vindo' is masculine. For a friendly app, it should be gender-inclusive or specific.",
+      "suggested": "Email confirmado! Bem-vindo(a) à Maxina.",
+      "phase": "llm"
+    },
+    "portals.maxina.checkEmail": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses 'você' form ('verifique', 'seu', 'sua') instead of 'tu' form for informal address.",
+      "suggested": "Por favor, verifica o teu e-mail para confirmares a tua conta.",
+      "phase": "llm"
+    },
+    "portals.maxina.roles.community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.roles.patient": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.alkalma.joinAlkalma": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses 'você' form ('Junte-se') instead of 'tu' form for informal address.",
+      "suggested": "Junta-te ao AlKalma",
+      "phase": "llm"
+    },
+    "portals.alkalma.welcomeBack": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Gender agreement: 'Bem-vindo' is masculine. For a friendly app, it should be gender-inclusive or specific.",
+      "suggested": "Bem-vindo(a) de volta ao AlKalma.",
+      "phase": "llm"
+    },
+    "portals.alkalma.continueJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.earthlinks.joinEarthlinks": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses 'você' form ('Junte-se') instead of 'tu' form for informal address.",
+      "suggested": "Junta-te ao Earthlinks",
+      "phase": "llm"
+    },
+    "portals.earthlinks.welcomeBack": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Gender agreement: 'Bem-vindo' is masculine. For a friendly app, it should be gender-inclusive or specific.",
+      "suggested": "Bem-vindo(a) de volta ao Earthlinks.",
+      "phase": "llm"
+    },
+    "portals.earthlinks.continueJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.community.joinCommunity": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses 'você' form ('Junte-se') instead of 'tu' form for informal address.",
+      "suggested": "Junta-te à Comunidade",
+      "phase": "llm"
+    },
+    "portals.community.welcomeBack": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Gender agreement: 'Bem-vindo' is masculine. For a friendly app, it should be gender-inclusive or specific.",
+      "suggested": "Bem-vindo(a) de volta.",
+      "phase": "llm"
+    },
+    "portals.community.continueJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:33:48.982Z"
+}

@@ -1,0 +1,465 @@
+{
+  "verdicts": {
+    "profileEditor.bio": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "profileEditor.links": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "profileEditor.editAbout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.aboutTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.aboutDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.bioPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.location": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.locationPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.addLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.linkLabelPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.linkUrlPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.addLanguage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.characters": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.words": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.almostFull": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.goodLength": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.visibility.public": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.visibility.followers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.visibility.private": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.english": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.german": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.spanish": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.french": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.italian": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.portuguese": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.russian": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.arabic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.chinese": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.languageOptions.japanese": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.save": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.saving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.profileUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.profileUpdatedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses 'você' form ('Suas') instead of 'tu' form for informal address.",
+      "suggested": "Tuas informações foram salvas com sucesso.",
+      "phase": "llm"
+    },
+    "profileEditor.saveFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.saveFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.autopilot.quickSuggestions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.autopilot.makeShorter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.autopilot.moreProfessional": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.autopilot.moreInspirational": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.autopilot.suggestion": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.editIdentity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses 'você' form ('Gerencie', 'seu') instead of 'tu' form for informal address.",
+      "suggested": "Gere o teu nome de exibição, identificador e fotos de perfil.",
+      "phase": "llm"
+    },
+    "profileEditor.identity.profilePicture": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.displayName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.displayNamePlaceholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses 'você' form ('Seu') instead of 'tu' form for informal address.",
+      "suggested": "Teu Nome de Exibição",
+      "phase": "llm"
+    },
+    "profileEditor.identity.handle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.handlePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.handleDescription": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses 'você' form ('Seu', 'seu') instead of 'tu' form for informal address.",
+      "suggested": "Teu identificador é usado na URL do teu perfil público: /u/@{handle}",
+      "phase": "llm"
+    },
+    "profileEditor.identity.personalityDescriptor": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.personalityDescriptorPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.personalityDescriptorDescription": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses 'você' form ('seu') instead of 'tu' form for informal address.",
+      "suggested": "Uma breve descrição que caracteriza o teu estilo de bem-estar",
+      "phase": "llm"
+    },
+    "profileEditor.identity.upload": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.uploading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.remove": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.avatarUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.avatarUploadedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses 'você' form ('Sua') instead of 'tu' form for informal address.",
+      "suggested": "A tua foto de perfil foi atualizada.",
+      "phase": "llm"
+    },
+    "profileEditor.identity.uploadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.uploadFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.identityUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.identity.identityUpdatedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'Suas' (formal/plural possessive) should be 'Tuas' (informal singular possessive) for 'du-form' consistency.",
+      "suggested": "Tuas informações de identidade foram salvas com sucesso.",
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.tileTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.tileSubtitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'Carregue' (formal imperative) should be 'Carrega' (informal imperative), and 'suas' should be 'tuas' for 'du-form' consistency.",
+      "suggested": "Carrega as tuas próprias fotos para posts de 'Encontrar um Par'",
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.drawerTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'suas' (formal/plural possessive) should be 'tuas' (informal singular possessive) for 'du-form' consistency.",
+      "suggested": "Fotos de capa para as tuas publicações",
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalSection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalDescription": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'suas' and 'seu' (formal/plural possessives) should be 'tuas' and 'teu' (informal singular possessives) for 'du-form' consistency.",
+      "suggested": "Usado quando nenhuma das tuas fotos específicas de atividade corresponde à categoria de uma publicação — e em vez de uma imagem gerada por IA. Geralmente um retrato teu.",
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalAdd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalReplace": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalRemove": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalEmptyHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.librarySection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryAddPhoto": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryEmpty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryCategoryLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryCategoryPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryUploadButton": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryRemoveButton": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryPhotoUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.libraryPhotoRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.universalRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.uploadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.categoryRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileEditor.coverLibrary.saveError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:35:07.088Z"
+}

@@ -1,0 +1,107 @@
+{
+  "verdicts": {
+    "events.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.tabs.today": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.tabs.upcoming": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.tabs.following": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.tabs.recommended": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.noEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.checkBack": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.emptyStates.noEventsToday": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.emptyStates.noEventsTodayDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: uses 'você' command forms ('Confira', 'crie') and possessive ('o seu próprio') instead of the requested 'tu' forms ('Confere', 'cria') and possessive ('o teu próprio').",
+      "suggested": "Não há eventos planejados para hoje. Confere os próximos eventos ou cria o teu próprio!",
+      "phase": "llm"
+    },
+    "events.emptyStates.createEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.emptyStates.viewUpcoming": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.emptyStates.followingTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.emptyStates.followingDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.emptyStates.findPeople": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.emptyStates.noPostsFromFollowing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.emptyStates.noPostsFromFollowingDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.emptyStates.youFollow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "events.emptyStates.loadingFollowing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:24:26.861Z"
+}

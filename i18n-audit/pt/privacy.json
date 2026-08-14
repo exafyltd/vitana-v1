@@ -1,0 +1,15 @@
+{
+  "verdicts": {
+    "privacy.public": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "privacy.private": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:33:50.578Z"
+}

@@ -1,0 +1,247 @@
+{
+  "verdicts": {
+    "capture.notSupported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.notSupportedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recording": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.tapToRecord": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.tapToDescribe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.liveTranscription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.yourVoiceEntry": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Possessive 'Sua' is ambiguous; 'Tua' is more consistently informal 'tu' form.",
+      "suggested": "Tua entrada de voz",
+      "phase": "llm"
+    },
+    "capture.yourFeedback": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Possessive 'Seu' is ambiguous; 'Teu' is more consistently informal 'tu' form.",
+      "suggested": "Teu feedback",
+      "phase": "llm"
+    },
+    "capture.startSpeaking": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.editOrType": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.interimHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.attach": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.bugReport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.uxImprovement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.severity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.affectedScreen": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.select": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.low": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.medium": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.high": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.critical": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.saveEntry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.sending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.sendToTeam": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.reportSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.reportSentDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'equipe' is Brazilian Portuguese; 'equipa' is European Portuguese. 'Seu' is ambiguous; 'teu' is more consistently informal 'tu' form.",
+      "suggested": "A equipa Exafy agradece o teu apoio para tornar Vitanaland melhor a cada dia.",
+      "phase": "llm"
+    },
+    "capture.sendAnother": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recordingStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recordingStartedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Imperative 'Fale' is formal; 'Fala' is informal 'tu' form. Possessive 'suas' is ambiguous; 'tuas' is more consistently informal 'tu' form.",
+      "suggested": "Fala claramente – as tuas palavras aparecem em tempo real.",
+      "phase": "llm"
+    },
+    "capture.recordingStopped": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recordingStoppedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses 'você' form instead of 'tu' form for informal register.",
+      "suggested": "Revisa e edita a tua transcrição antes de salvares.",
+      "phase": "llm"
+    },
+    "capture.noContent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.noContentDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.noContentBugDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses 'você' form instead of 'tu' form for informal register.",
+      "suggested": "Por favor, grava o teu feedback ou digita-o antes de o enviares.",
+      "phase": "llm"
+    },
+    "capture.entrySaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.entrySavedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses ambiguous 'sua' instead of explicit 'a tua' for informal register.",
+      "suggested": "A tua entrada de diário foi adicionada à tua linha do tempo da memória.",
+      "phase": "llm"
+    },
+    "capture.saveFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.saveFailedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses ambiguous 'sua' and 'você' form 'tente' instead of 'tu' form.",
+      "suggested": "A tua entrada de diário não pôde ser salva. Por favor, tenta novamente.",
+      "phase": "llm"
+    },
+    "capture.sendFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.sendFailedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses ambiguous 'seu' and 'você' form 'tente' instead of 'tu' form.",
+      "suggested": "O teu feedback não pôde ser enviado. Por favor, tenta novamente.",
+      "phase": "llm"
+    },
+    "capture.recognitionError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.recognitionErrorDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.transcribing": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses ambiguous 'sua' instead of explicit 'a tua' for informal register.",
+      "suggested": "Transcrevendo a tua gravação…",
+      "phase": "llm"
+    },
+    "capture.backendRecordingHint": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistency: uses ambiguous 'sua' and explicit 'você' instead of 'tu' form.",
+      "suggested": "Gravando — a tua transcrição aparecerá depois que tu tocares em Parar.",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:19:57.158Z"
+}
