@@ -1,0 +1,44 @@
+{
+  "verdicts": {
+    "loading.default": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "loading.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "loading.messages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "loading.uploading": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation is technically correct but 'Téléversement' is a bit formal for a friendly, informal app register. 'Envoi' or 'Mise en ligne' would be more common.",
+      "suggested": "Envoi...",
+      "phase": "llm"
+    },
+    "loading.uploadingProgress": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation is technically correct but 'Téléversement' is a bit formal for a friendly, informal app register. 'Envoi' or 'Mise en ligne' would be more common.",
+      "suggested": "Envoi... {progress}%",
+      "phase": "llm"
+    },
+    "loading.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "loading.saving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:26:28.142Z"
+}

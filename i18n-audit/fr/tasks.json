@@ -1,0 +1,80 @@
+{
+  "verdicts": {
+    "tasks.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "tasks.noOpenTasks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tasks.confirmCancelTask": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tasks.postponeComingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tasks.addNotePrompt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tasks.noteAdded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tasks.navigateTo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tasks.openVtid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tasks.activityLog": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tasks.relatedLinks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tasks.complete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tasks.postpone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tasks.addNote": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tasks.openContext": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "tasks.assignee": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T06:48:37.865Z"
+}

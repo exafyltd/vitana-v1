@@ -1,0 +1,300 @@
+{
+  "verdicts": {
+    "universalCart.page.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.emptyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.emptyBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.roleBlockedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.roleBlockedBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.errorTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.errorBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.removeAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.quantityLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.completeAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.alreadyCompleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.linkToDiscover": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.close": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.tabs.cart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.tabs.saved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.saved.moveToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.saved.saveForLater": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.saved.emptyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.saved.emptyBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.item.viewProduct": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.promptLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.promptPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.proposeCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.proposing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.sectionTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.sectionSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.rationaleLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.safetyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.confidenceLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.keep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.remove": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.unavailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.roleBlocked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.reviewNote": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.reorderCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.reorderLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.reorderSectionTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.reorderSectionSubtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.reordering": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.overCapAdvisory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.nearCapAdvisory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.spentOfCap": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.statusUnder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.statusNear": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.statusOver": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.noCapHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.label": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.added": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.addAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.addedAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.signRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.roleBlocked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.success": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T06:58:19.264Z"
+}

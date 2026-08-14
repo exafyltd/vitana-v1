@@ -1,0 +1,343 @@
+{
+  "verdicts": {
+    "orders.filters.services": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "orders.detailSheet.code": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "orders.myOrders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.trackDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.tabs.active": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender/number agreement. 'Active' likely refers to 'commandes' (feminine plural).",
+      "suggested": "Actives",
+      "phase": "llm"
+    },
+    "orders.tabs.history": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.tabs.all": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender/number agreement. 'All' likely refers to 'commandes' (feminine plural).",
+      "suggested": "Toutes",
+      "phase": "llm"
+    },
+    "orders.tabs.completed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.tabs.cancelled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.filters.all": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender/number agreement. 'All' likely refers to 'commandes' (feminine plural).",
+      "suggested": "Toutes",
+      "phase": "llm"
+    },
+    "orders.filters.events": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.filters.products": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.filters.vouchers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.filters.refunds": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.previewNotice": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "Awkward phrasing for 'preview orders'. 'Commandes d'exemple' is more natural.",
+      "suggested": "Ce sont des commandes d'exemple. Tes commandes réelles apparaîtront ici.",
+      "phase": "llm"
+    },
+    "orders.sampleData": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.emptyActive.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.emptyActive.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.emptyHistory.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.emptyHistory.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.noOrders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.noOrdersDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.browseProducts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.findEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.startShopping": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.noFilter": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Placeholder '{filter}' gender/number ambiguity. 'Aucun' implies masculine singular, which might not always be correct depending on the filter value (e.g., 'Aucune commande').",
+      "phase": "llm"
+    },
+    "orders.noFilterDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.7,
+      "issue": "Placeholder '{filter}' gender/number agreement. 'Aucun {filter} trouvé' implies {filter} is masculine singular. A more generic phrasing is needed if {filter} can be feminine or plural.",
+      "suggested": "Aucun élément {filter} trouvé dans ton historique.",
+      "phase": "llm"
+    },
+    "orders.orderDate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.orderNumber": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.viewDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.trackOrder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.reorder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Ambiguous; 'Recommander' usually means 'to recommend'. For 'reorder' (place an order again), a clearer phrase is needed.",
+      "suggested": "Commander à nouveau",
+      "phase": "llm"
+    },
+    "orders.detailSheet.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.orderInfo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.orderReference": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.purchaseDate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.eventDate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.location": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.quantity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.tickets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.yourTicket": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.giftVoucher": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.sendToRecipient": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.recipientEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.recipientName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.personalMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.send": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.detailSheet.downloadPdf": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.upcoming": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.attended": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.expired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.completed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.delivered": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.cancelled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.refunded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.shipped": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.confirmed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.pending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.paid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "orders.status.active": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:29:41.201Z"
+}
