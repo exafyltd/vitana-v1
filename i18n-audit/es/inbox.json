@@ -306,10 +306,8 @@
       "phase": "llm"
     },
     "inbox.toast.noTenantContext": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The term 'inquilino' (renter/lodger) is technically correct for 'tenant' in a multi-tenant system, but it's highly confusing and inappropriate for a user-facing message in a wellness app. The message itself is too technical for an end-user.",
-      "suggested": "No se pudo cargar tu información.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "inbox.toast.searchFailed": {
@@ -431,7 +429,72 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "inbox.actions.markAllRead": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.actions.menu": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.allMarkedRead": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.markAllReadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.cantOpen": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.backToInbox": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.back": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.memberOne": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.memberOther": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.officialBadge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.composerPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:53.356Z"
+  "generatedAt": "2026-08-14T05:15:34.774Z"
 }

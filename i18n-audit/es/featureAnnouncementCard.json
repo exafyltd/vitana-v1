@@ -1,0 +1,49 @@
+{
+  "verdicts": {
+    "featureAnnouncementCard.brandNew.eyebrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.badge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.cta": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender inclusivity: 'tú mismo' is masculine, 'yourself' is neutral. Should be inclusive.",
+      "suggested": "Pruébalo tú mismo/a",
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.brandNew.closing": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing: 'Feliz prueba' is too literal and not idiomatic for 'Happy testing'.",
+      "suggested": "¡Disfruta probando! 🥳",
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.didYouKnow.eyebrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.didYouKnow.intro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "featureAnnouncementCard.didYouKnow.cta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-14T05:15:20.708Z"
+}

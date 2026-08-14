@@ -64,7 +64,27 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "editProfile.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.titlePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.descriptionPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:30.331Z"
+  "generatedAt": "2026-08-14T05:15:10.842Z"
 }
