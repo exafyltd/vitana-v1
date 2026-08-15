@@ -36,10 +36,8 @@
       "phase": "llm"
     },
     "sidebar.sharing": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The Russian translation 'Поделиться' is an infinitive verb ('to share'), which is grammatically awkward for a section or tab title. A noun form is expected.",
-      "suggested": "Обмен",
       "phase": "llm"
     },
     "sidebar.memory": {
@@ -159,8 +157,8 @@
     },
     "sidebar.communications": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The singular 'Связь' is too general and less appropriate for 'Communications' as a UI section, which implies multiple forms or a broader category. 'Коммуникации' (plural loanword) is more common and accurate in this context.",
+      "confidence": 0.8,
+      "issue": "Singular 'Связь' is less appropriate for the plural 'Communications' in a UI context. 'Коммуникации' (plural loanword) or 'Настройки связи' (Communication settings) would be more precise.",
       "suggested": "Коммуникации",
       "phase": "llm"
     },
@@ -235,5 +233,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T02:06:53.932Z"
+  "generatedAt": "2026-08-15T04:10:11.479Z"
 }

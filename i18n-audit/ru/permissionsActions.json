@@ -3,7 +3,7 @@
     "permissionsActions.title": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing and incorrect capitalization. 'Действия' at the end feels like an afterthought. Standard Russian headings capitalize only the first word.",
+      "issue": "Awkward phrasing; 'Действия' at the end is not idiomatic for 'X Actions'.",
       "suggested": "Действия с конфиденциальностью и разрешениями",
       "phase": "llm"
     },
@@ -33,10 +33,8 @@
       "phase": "llm"
     },
     "permissionsActions.items.securitySettings.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incorrect capitalization. Standard Russian headings capitalize only the first word.",
-      "suggested": "Обновить настройки аутентификации и безопасности",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "permissionsActions.items.apiKeysAccess.title": {
@@ -70,10 +68,8 @@
       "phase": "llm"
     },
     "permissionsActions.items.permissionSettings.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incorrect capitalization. Standard Russian headings capitalize only the first word.",
-      "suggested": "Настройки разрешений",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "permissionsActions.items.permissionSettings.description": {
@@ -92,5 +88,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:42:42.938Z"
+  "generatedAt": "2026-08-15T04:02:57.572Z"
 }

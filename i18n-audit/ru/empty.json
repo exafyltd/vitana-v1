@@ -3,7 +3,7 @@
     "empty.noAppsFound": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'вашему' instead of informal 'твоему'.",
+      "issue": "Incorrect register: uses formal 'вашему' instead of informal 'твоему'.",
       "suggested": "Приложения не найдены по твоему запросу.",
       "phase": "llm"
     },
@@ -118,5 +118,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:33:09.948Z"
+  "generatedAt": "2026-08-15T04:01:34.807Z"
 }

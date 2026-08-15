@@ -316,10 +316,8 @@
       "phase": "llm"
     },
     "createEventPopup.categories.social": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Nuance of 'Networking' is lost; 'Социальные связи' is more passive than the active 'Networking'.",
-      "suggested": "🤝 Социальное общение",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "createEventPopup.categories.volunteer": {
@@ -384,9 +382,9 @@
     },
     "createEventPopup.durations.half-day": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Less idiomatic spelling; 'Полдня' (one word) is the standard and more natural form.",
-      "suggested": "Полдня",
+      "confidence": 1,
+      "issue": "Incorrect hyphenation for 'полдня'.",
+      "suggested": "полдня",
       "phase": "llm"
     },
     "createEventPopup.durations.full-day": {
@@ -397,7 +395,7 @@
     "createEventPopup.durations.custom": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Nuance of 'Custom' is lost; 'Другая длительность' is too generic, 'Custom' implies user-defined.",
+      "issue": "Translation 'Другая' (other/different) doesn't fully capture 'Custom' (user-defined/arbitrary).",
       "suggested": "Произвольная длительность...",
       "phase": "llm"
     },
@@ -552,5 +550,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:31:16.488Z"
+  "generatedAt": "2026-08-15T04:01:21.766Z"
 }

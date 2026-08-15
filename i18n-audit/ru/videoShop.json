@@ -6,16 +6,14 @@
       "phase": "llm"
     },
     "videoShop.feed.loadingMore": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Awkward phrasing; 'больше видео' is not idiomatic in this context. 'Дополнительных видео' or 'других видео' sounds more natural.",
-      "suggested": "Загрузка дополнительных видео…",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     },
     "videoShop.feed.end": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Gender-specific phrasing ('дошёл' is masculine). UI strings should be gender-neutral if the user's gender is unknown.",
+      "issue": "Gender-specific verb 'дошёл' (masculine) used for a general user, which is inappropriate. Should be gender-neutral or adaptable.",
       "suggested": "Это конец.",
       "phase": "llm"
     },
@@ -170,5 +168,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T02:20:46.559Z"
+  "generatedAt": "2026-08-15T04:10:57.790Z"
 }

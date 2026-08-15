@@ -26,10 +26,8 @@
       "phase": "llm"
     },
     "mediaHub.tabs.shorts": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Using 'шорты' for short videos is ambiguous (can mean clothing) and inconsistent with other translations like entry 1, 18, 21.",
-      "suggested": "Короткие видео",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "mediaHub.tabs.videos": {
@@ -38,10 +36,8 @@
       "phase": "llm"
     },
     "mediaHub.sections.trendingShorts": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Using 'шорты' for short videos is ambiguous and inconsistent.",
-      "suggested": "Популярные короткие видео",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "mediaHub.sections.trendingMusic": {
@@ -70,17 +66,15 @@
       "phase": "llm"
     },
     "mediaHub.actions.watchShorts": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Using 'шорты' for short videos is ambiguous and inconsistent.",
-      "suggested": "Смотреть короткие видео",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "mediaHub.actions.viewAllShorts": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Using 'шорты' for short videos is ambiguous and inconsistent. Also, 'шорты' is plural and doesn't handle number agreement for singular '{count}' well. 'Коротких видео' is more flexible.",
-      "suggested": "Посмотреть все {count} коротких видео",
+      "confidence": 1,
+      "issue": "Incorrect noun-number agreement. 'Шорты' is a plural-only noun and requires genitive plural 'шорт' when used with numbers (2, 3, 4, 5+).",
+      "suggested": "Посмотреть все {count} шорт",
       "phase": "llm"
     },
     "mediaHub.actions.playPlaylist": {
@@ -164,10 +158,8 @@
       "phase": "llm"
     },
     "mediaHub.subscribed": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Impersonal/awkward phrasing for user status. 'Подписано' means 'it was signed/subscribed' rather than 'you are subscribed'.",
-      "suggested": "Вы подписаны",
       "phase": "llm"
     },
     "mediaHub.subscribe": {
@@ -251,10 +243,8 @@
       "phase": "llm"
     },
     "mediaHub.toast.videoUpdated": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Wrong part of speech; 'Успешно' is an adverb ('successfully'), not a noun ('success').",
-      "suggested": "Успех!",
       "phase": "llm"
     },
     "mediaHub.toast.videoUpdatedDesc": {
@@ -344,8 +334,8 @@
     },
     "mediaHub.comments.like": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for an action; sounds like a statement rather than an imperative/infinitive for a button.",
+      "confidence": 1,
+      "issue": "The current translation 'Нравится комментарий' means 'The comment is liked' or 'It likes the comment', which is a statement, not an action. For an action like 'Like comment' (e.g., a button), an infinitive verb form is needed.",
       "suggested": "Лайкнуть комментарий",
       "phase": "llm"
     },
@@ -660,5 +650,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:39:58.587Z"
+  "generatedAt": "2026-08-15T04:02:32.706Z"
 }

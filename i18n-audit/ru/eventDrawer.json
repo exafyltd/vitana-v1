@@ -251,10 +251,8 @@
       "phase": "llm"
     },
     "eventDrawer.leftMeetup": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender-specific verb 'Покинул' is not ideal for general UI; a gender-neutral noun phrase is preferred.",
-      "suggested": "Выход из MeetUp",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "eventDrawer.reservationCancelled": {
@@ -298,5 +296,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:33:53.310Z"
+  "generatedAt": "2026-08-15T04:01:37.218Z"
 }
