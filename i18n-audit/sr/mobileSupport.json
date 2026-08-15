@@ -1,385 +1,380 @@
 {
   "verdicts": {
-    "apply.overline": {
+    "mobilesupport.quickContactEmailSub": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "apply.emailLabel": {
+    "mobilesupport.communityStatsResponseValue": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "identical"
     },
-    "apply.phonePlaceholder": {
+    "mobilesupport.title": {
       "verdict": "OK",
       "confidence": 1,
-      "phase": "identical"
-    },
-    "apply.deviceIos": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
+      "phase": "llm"
     },
-    "apply.deviceAndroid": {
+    "mobilesupport.description": {
       "verdict": "OK",
       "confidence": 1,
-      "phase": "identical"
+      "phase": "llm"
     },
-    "apply.footerCopy": {
+    "mobilesupport.tabContact": {
       "verdict": "OK",
       "confidence": 1,
-      "phase": "identical"
+      "phase": "llm"
     },
-    "apply.aboutVitanalandLabel": {
+    "mobilesupport.tabFaqs": {
       "verdict": "OK",
       "confidence": 1,
-      "phase": "identical"
+      "phase": "llm"
     },
-    "apply.aboutVitanaLabel": {
+    "mobilesupport.tabCommunity": {
       "verdict": "OK",
       "confidence": 1,
-      "phase": "identical"
+      "phase": "llm"
     },
-    "apply.aboutMaxinaLabel": {
+    "mobilesupport.hint": {
       "verdict": "OK",
       "confidence": 1,
-      "phase": "identical"
+      "phase": "llm"
     },
-    "apply.aboutMaxinaExperienceLabel": {
+    "mobilesupport.recordButtonStart": {
       "verdict": "OK",
       "confidence": 1,
-      "phase": "identical"
+      "phase": "llm"
     },
-    "apply.seoTitle": {
+    "mobilesupport.recordButtonStop": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.headlineLine1": {
+    "mobilesupport.recording": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.headlineLine2": {
+    "mobilesupport.listening": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.tagline": {
+    "mobilesupport.tapToSpeak": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.subheadline": {
+    "mobilesupport.speakNaturally": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.subheadlineTicket": {
+    "mobilesupport.transcriptTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.subheadlineCommunity": {
+    "mobilesupport.transcriptPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.chipEvents": {
+    "mobilesupport.searchPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.chipLocation": {
+    "mobilesupport.categoryLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.chipTicket": {
+    "mobilesupport.categoryPlaceholder": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.ctaScroll": {
+    "mobilesupport.categoryAccount": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.valueAccessTitle": {
+    "mobilesupport.categoryBilling": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.valueAccessBody": {
+    "mobilesupport.categoryTechnical": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.valueTicketTitle": {
+    "mobilesupport.categoryFeature": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.valueTicketBody": {
+    "mobilesupport.categoryPrivacy": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.valueMovementTitle": {
+    "mobilesupport.categoryOther": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.valueMovementBody": {
+    "mobilesupport.attachLabel": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.formEyebrow": {
+    "mobilesupport.submitButton": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.formTitle": {
+    "mobilesupport.submitting": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.formIntro": {
+    "mobilesupport.sentTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.nameLabel": {
+    "mobilesupport.sentBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.namePlaceholder": {
+    "mobilesupport.sendAnother": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.emailPlaceholder": {
+    "mobilesupport.quickContactTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.phoneLabel": {
+    "mobilesupport.quickContactEmail": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.instagramLabel": {
+    "mobilesupport.quickContactChat": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.instagramPlaceholder": {
+    "mobilesupport.quickContactChatSub": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.instagramHelp": {
+    "mobilesupport.quickContactCall": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.deviceLabel": {
+    "mobilesupport.quickContactCallSub": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.googleEmailLabel": {
+    "mobilesupport.responseTime": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.googleEmailPlaceholder": {
+    "mobilesupport.faqsTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.googleEmailHelp": {
+    "mobilesupport.faqsSubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.locationLabel": {
+    "mobilesupport.faqsOpenHelpCenter": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.locationPlaceholder": {
+    "mobilesupport.faqCreateAccountQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.availabilityLabel": {
+    "mobilesupport.faqCreateAccountA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.consentAgeLabel": {
+    "mobilesupport.faqResetPasswordQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.consentTermsLabel": {
+    "mobilesupport.faqResetPasswordA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.submit": {
+    "mobilesupport.faqUpdateProfileQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.submitting": {
+    "mobilesupport.faqUpdateProfileA": {
       "verdict": "OK",
-      "confidence": 0.9,
+      "confidence": 1,
       "phase": "llm"
     },
-    "apply.errorRequired": {
+    "mobilesupport.faqPaymentMethodsQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.errorInvalidEmail": {
+    "mobilesupport.faqPaymentMethodsA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.errorInvalidInstagram": {
+    "mobilesupport.faqDataSecureQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.errorAndroidGoogleRequired": {
+    "mobilesupport.faqDataSecureA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.errorAlreadyApplied": {
+    "mobilesupport.faqDeleteAccountQ": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.errorGeneric": {
+    "mobilesupport.faqDeleteAccountA": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.successTitle": {
+    "mobilesupport.communityTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.successBody": {
+    "mobilesupport.communitySubtitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.successHint": {
+    "mobilesupport.communityGroupTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.footerPrivacy": {
+    "mobilesupport.communityGroupBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.footerTerms": {
+    "mobilesupport.communityGroupCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.ariaApplyForm": {
+    "mobilesupport.communityForumTitle": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutEyebrow": {
+    "mobilesupport.communityForumBody": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutTitle": {
+    "mobilesupport.communityForumCta": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutVitanalandTag": {
+    "mobilesupport.communityStatsActive": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutVitanalandDescription": {
+    "mobilesupport.communityStatsAnswered": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutVitanaTag": {
+    "mobilesupport.communityStatsResponse": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutVitanaDescription": {
+    "mobilesupport.errorNotSupported": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutMaxinaTag": {
+    "mobilesupport.errorEmpty": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutMaxinaDescription": {
+    "mobilesupport.errorSend": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutMaxinaExperienceTag": {
+    "mobilesupport.errorMicPermission": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.aboutMaxinaExperienceDescription": {
+    "mobilesupport.errorMicNotFound": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.benefitsEyebrow": {
+    "mobilesupport.errorMicInUse": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.benefitsTitle": {
+    "mobilesupport.errorMicGeneric": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.benefitTicket": {
+    "mobilesupport.errorNoAudio": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.benefitEvents": {
+    "mobilesupport.errorTranscription": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.benefitVitana": {
+    "mobilesupport.transcribing": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     },
-    "apply.benefitSeat": {
+    "mobilesupport.backendRecordingHint": {
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-15T04:00:11.561Z"
+  "generatedAt": "2026-08-15T04:06:13.360Z"
 }

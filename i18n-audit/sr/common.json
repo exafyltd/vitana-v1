@@ -169,7 +169,24 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "common.follow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.getMaxina": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.uploading": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "More common to use the noun form for a progress indicator like 'Uploading...'. 'Otpremam...' means 'I am uploading...'.",
+      "suggested": "Otpremanje...",
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:00.536Z"
+  "generatedAt": "2026-08-15T04:02:50.391Z"
 }
