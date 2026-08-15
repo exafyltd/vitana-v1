@@ -1,0 +1,186 @@
+{
+  "verdicts": {
+    "lifeCompass.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Phrasing for 'matters most to you right now' could be more natural and idiomatic.",
+      "suggested": "بوصلة حياتك توجه جميع توصيات وقرارات الذكاء الاصطناعي. اختر هدفًا رئيسيًا هو الأكثر أهمية لك الآن. سيعطي الذكاء الاصطناعي الأولوية للاقتراحات التي تتماشى مع هذا الاتجاه.",
+      "phase": "llm"
+    },
+    "lifeCompass.currentCompass": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.alignment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.confidence": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.suggestedGoals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.customGoal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.customGoalPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.setCustomGoal": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation uses a verbal noun (masdar) instead of an imperative verb for a button action.",
+      "suggested": "عيّن هدفًا مخصصًا",
+      "phase": "llm"
+    },
+    "lifeCompass.closeAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.categoryLabels.wealth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.categoryLabels.relationship": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.categoryLabels.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.categoryLabels.career": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.categoryLabels.learning": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.categoryLabels.spiritual": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.categoryLabels.longevity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.wealth.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation uses a verbal noun (masdar) instead of an imperative verb for a goal/action.",
+      "suggested": "ابنِ الحرية المالية",
+      "phase": "llm"
+    },
+    "lifeCompass.goals.wealth.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation uses a verbal noun (masdar) instead of an imperative verb for a goal/action.",
+      "suggested": "حقق الاستقلال المالي والثروة",
+      "phase": "llm"
+    },
+    "lifeCompass.goals.relationship.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation uses a verbal noun (masdar) instead of an imperative verb for a goal/action.",
+      "suggested": "اعثر على شريك الحياة",
+      "phase": "llm"
+    },
+    "lifeCompass.goals.relationship.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation uses a verbal noun (masdar) instead of an imperative verb for a goal/action.",
+      "suggested": "ابنِ علاقات رومانسية هادفة",
+      "phase": "llm"
+    },
+    "lifeCompass.goals.health.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation uses a verbal noun (masdar) instead of an imperative verb for a goal/action. Also, 'your health' is more natural.",
+      "suggested": "حسّن صحتك",
+      "phase": "llm"
+    },
+    "lifeCompass.goals.health.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation uses a verbal noun (masdar) instead of an imperative verb for a goal/action.",
+      "suggested": "حقق العافية البدنية والعقلية المثلى",
+      "phase": "llm"
+    },
+    "lifeCompass.goals.career.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation uses a verbal noun (masdar) instead of an imperative verb for a goal/action. Also, 'your career' is more natural.",
+      "suggested": "طوّر مسيرتك المهنية",
+      "phase": "llm"
+    },
+    "lifeCompass.goals.career.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation uses a verbal noun (masdar) instead of an imperative verb for a goal/action.",
+      "suggested": "ابنِ مسيرة مهنية مُرضية وناجحة",
+      "phase": "llm"
+    },
+    "lifeCompass.goals.learning.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation uses a verbal noun (masdar) instead of an imperative verb for a goal/action.",
+      "suggested": "أتقن مهارات جديدة",
+      "phase": "llm"
+    },
+    "lifeCompass.goals.learning.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.spiritual.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "lifeCompass.goals.spiritual.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation uses a verbal noun (masdar) instead of an imperative verb for a goal/action.",
+      "suggested": "عمّق الهدف، الحضور، والسلام الداخلي",
+      "phase": "llm"
+    },
+    "lifeCompass.goals.longevity.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation uses a verbal noun (masdar) instead of an imperative verb for a goal/action.",
+      "suggested": "حسّن جودة الحياة وأطل العمر",
+      "phase": "llm"
+    },
+    "lifeCompass.goals.longevity.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:15:18.888Z"
+}

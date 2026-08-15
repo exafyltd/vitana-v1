@@ -1,0 +1,51 @@
+{
+  "verdicts": {
+    "profileTabs.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.about": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.events": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.services": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileTabs.insight": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "issue": "The English 'Insight' is singular, while the Arabic 'رؤى' is plural ('Insights'). However, in UI contexts, 'Insight' often refers to a section containing multiple insights, making the plural translation appropriate and common.",
+      "phase": "llm"
+    },
+    "profileTabs.milestones": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:22:33.686Z"
+}

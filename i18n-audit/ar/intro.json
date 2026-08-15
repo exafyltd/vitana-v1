@@ -1,0 +1,55 @@
+{
+  "verdicts": {
+    "intro.welcomeTo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.experience": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0.6,
+      "issue": "Ambiguous English source. 'Experience' can be a noun or an imperative verb. 'تجربة' is the noun form. If an imperative verb was intended, it should be 'جرّب'.",
+      "phase": "llm"
+    },
+    "intro.taglineMain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.taglineSub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.playWelcome": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "For a UI action, an imperative verb is more natural and direct than a noun phrase.",
+      "suggested": "شغّل الترحيب",
+      "phase": "llm"
+    },
+    "intro.preparing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.playing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "intro.goToLogin": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "For a UI action, an imperative verb is more natural and direct than a noun phrase.",
+      "suggested": "اذهب إلى تسجيل الدخول",
+      "phase": "llm"
+    },
+    "intro.chooseLanguage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:14:48.889Z"
+}

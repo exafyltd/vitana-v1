@@ -1,0 +1,32 @@
+{
+  "verdicts": {
+    "profileStats.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.followers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.following": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The Arabic translation 'متابَعون' (mutābaʿūn) is a passive participle meaning 'those who are being followed'. For 'Following' (as in, the people *you* follow), the active participle 'متابِع' (mutābiʿ) or the verb 'أتابع' (atābiʿ - I follow) is more appropriate and commonly used in social media UI to distinguish from 'Followers'.",
+      "suggested": "متابِع",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:22:28.221Z"
+}
