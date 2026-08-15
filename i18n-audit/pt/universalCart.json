@@ -1,0 +1,336 @@
+{
+  "verdicts": {
+    "universalCart.page.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.emptyTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'Seu' (formal/neutral) should be 'Teu' (informal 'du-form').",
+      "suggested": "Teu carrinho está vazio",
+      "phase": "llm"
+    },
+    "universalCart.page.emptyBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.loading": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'seu' (formal/neutral) should be 'teu' (informal 'du-form').",
+      "suggested": "Carregando teu carrinho…",
+      "phase": "llm"
+    },
+    "universalCart.page.roleBlockedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.roleBlockedBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'seu' (formal/neutral) should be 'teu' (informal 'du-form').",
+      "suggested": "O carrinho é um recurso da comunidade. Mude para teu papel na comunidade para usá-lo.",
+      "phase": "llm"
+    },
+    "universalCart.page.errorTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'seu' (formal/neutral) should be 'teu' (informal 'du-form').",
+      "suggested": "Não conseguimos carregar teu carrinho",
+      "phase": "llm"
+    },
+    "universalCart.page.errorBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.removeAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.quantityLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.completeAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.alreadyCompleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.linkToDiscover": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.page.close": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.tabs.cart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.tabs.saved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.saved.moveToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.saved.saveForLater": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.saved.emptyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.saved.emptyBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'Salve' (formal 'você' imperative) should be 'Salva' (informal 'tu' imperative), and 'seu' should be 'teu'.",
+      "suggested": "Salva produtos para mais tarde tocando em “Salvar para mais tarde” no teu carrinho.",
+      "phase": "llm"
+    },
+    "universalCart.item.viewProduct": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.promptLabel": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'você está comprando' is not the 'du-form' (tu).",
+      "suggested": "O que estás a comprar?",
+      "phase": "llm"
+    },
+    "universalCart.agent.promptPlaceholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'Descreva' (formal 'você' imperative) should be 'Descreve' (informal 'tu' imperative), and 'você está comprando' should be 'estás a comprar'.",
+      "suggested": "Descreve o que estás a comprar — por exemplo, \"mais energia pela manhã\"",
+      "phase": "llm"
+    },
+    "universalCart.agent.proposeCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.proposing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.sectionTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.sectionSubtitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'seu', 'Revise-as', 'mantenha', and 'você só compra' are not in the informal 'du-form' (tu).",
+      "suggested": "As sugestões ficam no teu carrinho. Revisa-as, mantém ou remove — tu só compras com \"Aprovar e Pagar\".",
+      "phase": "llm"
+    },
+    "universalCart.agent.rationaleLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.safetyTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.confidenceLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.keep": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.remove": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.unavailable": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Awkward phrasing for 'in a moment'. 'Em um momento' is too literal; 'daqui a pouco' is more natural for 'try again in a moment'.",
+      "suggested": "Vitana está temporariamente indisponível. Por favor, tenta novamente daqui a pouco.",
+      "phase": "llm"
+    },
+    "universalCart.agent.roleBlocked": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'seu' (você-form) should be 'teu' (tu-form).",
+      "suggested": "As sugestões da Vitana estão disponíveis apenas no teu papel na comunidade.",
+      "phase": "llm"
+    },
+    "universalCart.agent.empty": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Awkward phrasing for 'Tell Vitana above' and inconsistent register. 'Diga' and 'você está comprando' are você-form. 'Acima' needs context, assuming a field.",
+      "suggested": "Nenhuma sugestão ainda. Diz à Vitana o que estás a comprar no campo acima.",
+      "phase": "llm"
+    },
+    "universalCart.agent.reviewNote": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.reorderCta": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.reorderLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.reorderSectionTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.agent.reorderSectionSubtitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'você comprou', 'seu carrinho', 'Revise-os', 'você só compra' are all você-form.",
+      "suggested": "Itens que tu compraste antes ficam no teu carrinho. Revê-os, mantém ou remove — tu só compras com \"Aprovar e Pagar\".",
+      "phase": "llm"
+    },
+    "universalCart.agent.reordering": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'seus' (você-form) should be 'os teus' (tu-form). Also, 'adicionando' is Brazilian Portuguese; 'a adicionar' is European Portuguese.",
+      "suggested": "A Vitana está a adicionar os teus itens de volta…",
+      "phase": "llm"
+    },
+    "universalCart.agent.overCapAdvisory": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'seu' (você-form) should be 'o teu' (tu-form).",
+      "suggested": "Esses itens excedem o teu orçamento mensal.",
+      "phase": "llm"
+    },
+    "universalCart.agent.nearCapAdvisory": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'você' and 'seu' (você-form) should be 'te' and 'o teu' (tu-form).",
+      "suggested": "Esses itens aproximam-te do teu orçamento mensal.",
+      "phase": "llm"
+    },
+    "universalCart.agent.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.spentOfCap": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.statusUnder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.statusNear": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.statusOver": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.budget.noCapHint": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'Defina' and 'seus' (você-form) should be 'Define' and 'os teus' (tu-form).",
+      "suggested": "Define um orçamento mensal para controlares os teus gastos.",
+      "phase": "llm"
+    },
+    "universalCart.addButton.label": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.added": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.addAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.addedAria": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.signRequired": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'Faça' and 'seu' (você-form) should be 'Faz' and 'o teu' (tu-form).",
+      "suggested": "Faz login para adicionares ao teu carrinho.",
+      "phase": "llm"
+    },
+    "universalCart.addButton.roleBlocked": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Inconsistent register: 'seu' (você-form) should be 'teu' (tu-form).",
+      "suggested": "O carrinho está disponível apenas no teu papel na comunidade.",
+      "phase": "llm"
+    },
+    "universalCart.addButton.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "universalCart.addButton.success": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T05:48:25.232Z"
+}

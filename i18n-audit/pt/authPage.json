@@ -1,0 +1,80 @@
+{
+  "verdicts": {
+    "authPage.welcomeTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.signIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.signUp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.email": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.password": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.fullName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.enterEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.enterPassword": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.enterFullName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.createPassword": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.createAccount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.orContinueWith": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.backToPortals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "authPage.keepLoggedIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:01:25.923Z"
+}

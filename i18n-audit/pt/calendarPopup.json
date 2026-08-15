@@ -1,0 +1,94 @@
+{
+  "verdicts": {
+    "calendarPopup.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.nextEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.conflicts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.upcomingSchedule": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.addNewEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.noUpcomingEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.createFirstEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.aiSuggestions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.findBetterSlot": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.prepareBrief": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.shareAvailability": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.syncExternal": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing for a verb command; 'Sincronizar Externo' is not idiomatic.",
+      "suggested": "Sincronizar com Externos",
+      "phase": "llm"
+    },
+    "calendarPopup.addEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.quickAdd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.eventFormComingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.externalSync": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "calendarPopup.connectingCalendars": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Incorrect verb conjugation for informal imperative ('você' form). 'Conecta' is 'tu' form.",
+      "suggested": "Conecte com calendários externos...",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:06:17.564Z"
+}

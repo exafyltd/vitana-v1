@@ -1,0 +1,423 @@
+{
+  "verdicts": {
+    "apply.overline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "apply.chipLocation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "apply.emailPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "apply.phonePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "apply.instagramPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "apply.deviceIos": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "apply.deviceAndroid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "apply.googleEmailPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "apply.aboutVitanaLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "apply.aboutMaxinaLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "apply.seoTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses formal 'você' imperative instead of informal 'tu'.",
+      "suggested": "MAXINA Experiência — Inscreve-te Agora",
+      "phase": "llm"
+    },
+    "apply.headlineLine1": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses formal 'você' imperative instead of informal 'tu'.",
+      "suggested": "Torna-te um(a)",
+      "phase": "llm"
+    },
+    "apply.headlineLine2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.tagline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.subheadline": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses formal 'você' and 'aplicativo' (Brazilian Portuguese) instead of informal 'tu' and 'app' (European Portuguese).",
+      "suggested": "Estamos a convidar-te para te tornares um(a) utilizador(a) de teste da app MAXINA e nos ajudares a melhorar o desempenho da app antes do seu lançamento oficial em 18 de junho de 2026.",
+      "phase": "llm"
+    },
+    "apply.subheadlineTicket": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Grammar: 'cheio' should agree in number with 'eventos' (plural).",
+      "suggested": "🎟️ Todos os Usuários de Teste verificados recebem 1 bilhete grátis no valor de 99 EUR para um dos nossos 12 eventos de verão — cheios de ritmo, movimento, conexão e alegria.",
+      "phase": "llm"
+    },
+    "apply.subheadlineCommunity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.chipEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.chipTicket": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.ctaScroll": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses formal 'você' imperative instead of informal 'tu'.",
+      "suggested": "Cadastra-te Agora",
+      "phase": "llm"
+    },
+    "apply.valueAccessTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.valueAccessBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.valueTicketTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.valueTicketBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.valueMovementTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.valueMovementBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.formEyebrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.formTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.formIntro": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.nameLabel": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses formal 'seu' instead of informal 'teu'.",
+      "suggested": "O teu nome",
+      "phase": "llm"
+    },
+    "apply.namePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.emailLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.phoneLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.instagramLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.instagramHelp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.deviceLabel": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses formal 'você' instead of informal 'tu'.",
+      "suggested": "Qual telefone vais usar?",
+      "phase": "llm"
+    },
+    "apply.googleEmailLabel": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses formal 'sua' instead of informal 'tua'.",
+      "suggested": "E-mail vinculado à tua Google Play",
+      "phase": "llm"
+    },
+    "apply.googleEmailHelp": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses formal 'você' and 'aplicativos' instead of informal 'tu' and 'apps'.",
+      "suggested": "Para que possamos conceder-te acesso à loja de apps do teu dispositivo.",
+      "phase": "llm"
+    },
+    "apply.locationLabel": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent: uses formal 'você' instead of informal 'tu'.",
+      "suggested": "De onde és?",
+      "phase": "llm"
+    },
+    "apply.locationPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.availabilityLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.consentAgeLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.consentTermsLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.submit": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent (uses 'você' form instead of 'tu' form).",
+      "suggested": "Cadastra-te Agora",
+      "phase": "llm"
+    },
+    "apply.submitting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.errorRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.errorInvalidEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.errorInvalidInstagram": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.errorAndroidGoogleRequired": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent (uses 'você' form instead of 'tu' form).",
+      "suggested": "Por favor, adiciona o e-mail vinculado à tua conta Google Play.",
+      "phase": "llm"
+    },
+    "apply.errorAlreadyApplied": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent (uses 'você' form instead of 'tu' form).",
+      "suggested": "Parece que já te inscreveste — entraremos em contato em breve.",
+      "phase": "llm"
+    },
+    "apply.errorGeneric": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.successTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent (uses 'você' form instead of 'tu' form).",
+      "suggested": "Estás na lista",
+      "phase": "llm"
+    },
+    "apply.successBody": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent (uses 'você' possessive instead of 'tu' possessive).",
+      "suggested": "Analisaremos a tua inscrição e enviaremos os teus próximos passos para {email} em breve.",
+      "phase": "llm"
+    },
+    "apply.successHint": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent (uses 'você' form and possessive instead of 'tu' form and possessive).",
+      "suggested": "Fica de olho na tua caixa de entrada e no WhatsApp.",
+      "phase": "llm"
+    },
+    "apply.footerCopy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.footerPrivacy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.footerTerms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.ariaApplyForm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.aboutEyebrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.aboutTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.aboutVitanalandLabel": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Brand name translated, should remain unchanged.",
+      "suggested": "Vitanaland",
+      "phase": "llm"
+    },
+    "apply.aboutVitanalandTag": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.aboutVitanalandDescription": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent (uses 'você' possessive instead of 'tu' possessive).",
+      "suggested": "Ecossistema impulsionado por IA, construído para elevar a tua saúde, a tua qualidade de vida e a tua independência econômica.",
+      "phase": "llm"
+    },
+    "apply.aboutVitanaTag": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.aboutVitanaDescription": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Register inconsistent (uses 'você' possessive and pronoun instead of 'tu' possessive and pronoun).",
+      "suggested": "Teu guia e companheiro(a) de IA na jornada da longevidade — Vitana trabalha para ti 24/7, planejando, organizando, lembrando e executando tarefas em teu nome, para que o caminho a seguir seja sempre claro.",
+      "phase": "llm"
+    },
+    "apply.aboutMaxinaTag": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.aboutMaxinaDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.aboutMaxinaExperienceLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.aboutMaxinaExperienceTag": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.aboutMaxinaExperienceDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.benefitsEyebrow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.benefitsTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.benefitTicket": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.benefitEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.benefitVitana": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "apply.benefitSeat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:01:09.711Z"
+}

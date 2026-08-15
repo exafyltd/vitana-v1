@@ -1,0 +1,100 @@
+{
+  "verdicts": {
+    "permissionsActions.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.privacySettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.privacySettings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.manageAccess.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.manageAccess.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Verb and possessive pronoun are in formal (você) register, should be informal (tu).",
+      "suggested": "Controla quem pode ver as tuas memórias de saúde",
+      "phase": "llm"
+    },
+    "permissionsActions.items.securitySettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.securitySettings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.apiKeysAccess.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.apiKeysAccess.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Verb 'Gere' is formal (você) or PT-PT informal; should be PT-BR informal (tu) for consistency with other informal suggestions.",
+      "suggested": "Gerencia as integrações de apps de terceiros e o acesso à API",
+      "phase": "llm"
+    },
+    "permissionsActions.items.dataRights.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.dataRights.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Verb and possessive pronoun are in formal (você) register, should be informal (tu).",
+      "suggested": "Exerce os teus direitos à portabilidade de dados e exclusão",
+      "phase": "llm"
+    },
+    "permissionsActions.items.auditLogs.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.auditLogs.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Regional variant inconsistency: 'rasto' (PT-PT) should be 'rastro' (PT-BR) for consistency with informal 'Revisa'.",
+      "suggested": "Revisa o histórico de acesso e o rastro de auditoria de segurança",
+      "phase": "llm"
+    },
+    "permissionsActions.items.permissionSettings.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.permissionSettings.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.exportData.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "permissionsActions.items.exportData.description": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Verb and possessive pronoun are in formal (você) register, should be informal (tu).",
+      "suggested": "Baixa as tuas memórias e dados de saúde com segurança",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:19:21.726Z"
+}
