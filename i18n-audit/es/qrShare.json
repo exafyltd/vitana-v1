@@ -29,7 +29,47 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "qrShare.appName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "qrShare.scanToDownload": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "qrShare.shareApp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "qrShare.modeProfile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "qrShare.modeInvite": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "qrShare.appTagline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "qrShare.inviteShareTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "qrShare.inviteShareText": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:03:30.756Z"
+  "generatedAt": "2026-08-15T04:04:57.192Z"
 }

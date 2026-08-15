@@ -94,7 +94,29 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "wallet.creditsLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.filters.withdrawals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "wallet.filters.stakes": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "Translation is too general and lacks the specific technical meaning of 'Staking'. 'Participación' means 'participation' but doesn't convey the concept of locking assets for rewards.",
+      "suggested": "Staking",
+      "phase": "llm"
+    },
+    "wallet.displayCurrency": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:09:09.058Z"
+  "generatedAt": "2026-08-15T04:16:06.810Z"
 }

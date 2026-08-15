@@ -19,7 +19,24 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "mobileNav.news": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "mobileNav.inbox": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Less precise for a digital inbox; 'Bandeja de entrada' is more common and accurate.",
+      "suggested": "Bandeja de entrada",
+      "phase": "llm"
+    },
+    "mobileNav.myJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:33.846Z"
+  "generatedAt": "2026-08-15T04:03:33.379Z"
 }
