@@ -1,0 +1,74 @@
+{
+  "verdicts": {
+    "memoryActions.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The phrasing 'Actions souvenirs' is less idiomatic than 'Actions de mémoire' for 'Memory Actions'.",
+      "suggested": "Actions de mémoire",
+      "phase": "llm"
+    },
+    "memoryActions.items.recordVoiceDiary.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.recordVoiceDiary.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.addMemoryNote.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Similar to entry 0, 'note souvenir' is less precise than 'note de mémoire' for 'Memory Note'.",
+      "suggested": "Ajouter une note de mémoire",
+      "phase": "llm"
+    },
+    "memoryActions.items.addMemoryNote.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.viewTimeline.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.viewTimeline.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.searchMemories.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.searchMemories.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.photoMemory.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.photoMemory.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.aiMemoryAnalysis.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "memoryActions.items.aiMemoryAnalysis.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:14:39.779Z"
+}

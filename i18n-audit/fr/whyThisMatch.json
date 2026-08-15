@@ -1,0 +1,65 @@
+{
+  "verdicts": {
+    "whyThisMatch.tierLabel.2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "whyThisMatch.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.interpretedAs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.consideredSignals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.showSomeoneElse": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.dismiss": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "whyThisMatch.ethicsNote": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.loadingRecipe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.recipeUnavailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.4": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T05:39:25.332Z"
+}

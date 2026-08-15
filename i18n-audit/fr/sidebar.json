@@ -1,0 +1,235 @@
+{
+  "verdicts": {
+    "sidebar.admin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "sidebar.notifications": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "sidebar.communications": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "sidebar.home": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.news": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.discover": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.inbox": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.wallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.sharing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.memory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.settings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.businessHub": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.aiAssistant": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.dashboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.myHealth": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.appointments": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.testResults": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.careTeam": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.healthGoals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.insurance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.myPatients": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.schedule": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "sidebar.clinicalTools": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.referrals": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "sidebar.billing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.professionalProfile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.education": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.patientQueue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.dailyTasks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.reports": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.staffTools": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.timeTracking": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.userManagement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.communitySupervision": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.mediaManagement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.automation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.liveStream": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.tenantManagement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.systemAdmin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.clinicalOps": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.monitoring": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.logout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.connectors": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "sidebar.support": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T05:27:32.084Z"
+}

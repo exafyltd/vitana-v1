@@ -1,0 +1,550 @@
+{
+  "verdicts": {
+    "createEventPopup.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "createEventPopup.date": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "createEventPopup.durations.30min": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "createEventPopup.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.eventDetails": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.eventTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.titlePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.descriptionPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.detailedDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.detailedDescriptionPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.detailedDescriptionHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.eventImage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.clickToUpload": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.imageFormats": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.autoGenerateImage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.category": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.selectCategory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.duration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.selectDuration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.customDurationPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.endTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.selectEndTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.customTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.overridesDuration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.virtualEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.virtualEventDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.scheduleLocation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.time": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.selectTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.location": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.locationPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.maxAttendees": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.unlimitedPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.ticketSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.enableTicketSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.enableTicketSalesDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.generalAdmission": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.standardEntry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.paidEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.displayPrice": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.displayPriceHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.resellerOptions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.allowResellers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.allowResellersDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.resaleVisibility": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.communityOnly": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.allResellers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.whoCanResell": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.resellerCommission": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.commissionHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.createEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.creating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.longevity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.fitness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.wellness": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.nutrition": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.mental-health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.outdoor": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.sports": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.adventure": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.workshop": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.professional": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.creative": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.social": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.volunteer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.support": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.entertainment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.categories.other": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.durations.1hour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.durations.2hour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.durations.3hour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.durations.4hour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.durations.5hour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.durations.6hour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.durations.8hour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.durations.half-day": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.durations.full-day": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.durations.custom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.invalidFileType": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.invalidFileTypeDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.fileTooLarge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.fileTooLargeDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.missingFields": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.missingFieldsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.invalidDate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.invalidDateDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.imageUploadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.imageUploadFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.errorCreating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.errorCreatingDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.generatingImage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.generatingImageDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.imageGenerated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.imageGeneratedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.rateLimitReached": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.rateLimitDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.creditsRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.creditsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.permissionDenied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.permissionDeniedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.imageGenFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.imageGenFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.communityEventCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.communityEventCreatedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.personalEventCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.personalEventCreatedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "createEventPopup.toasts.errorDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:07:18.567Z"
+}

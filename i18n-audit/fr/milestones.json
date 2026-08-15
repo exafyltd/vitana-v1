@@ -1,0 +1,72 @@
+{
+  "verdicts": {
+    "milestones.date": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "milestones.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.add": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.edit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.addFirst": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.titleLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.titlePlaceholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation uses masculine form 'Diplômé'; a more gender-neutral phrasing is preferred for a general example in a friendly app.",
+      "suggested": "ex: Obtention du diplôme universitaire",
+      "phase": "llm"
+    },
+    "milestones.descPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.icon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.publicLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "milestones.private": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:14:52.018Z"
+}

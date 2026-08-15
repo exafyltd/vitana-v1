@@ -1,13 +1,13 @@
 # i18n Audit — French (fr)
 
-Generated: 2026-08-06T22:31:38.047Z via **gemini**
+Generated: 2026-08-15T04:00:03.696Z via **gemini**
 
 ## Summary
 
-- **OK:** 13856
-- **EDIT_SUGGESTED:** 298
-- **LOW_CONFIDENCE:** 6
-- **Pass rate:** 97.9%
+- **OK:** 14036
+- **EDIT_SUGGESTED:** 254
+- **LOW_CONFIDENCE:** 12
+- **Pass rate:** 98.1%
 - **Threshold:** 10% flagged max
 
 ## Per-shard breakdown
@@ -22,22 +22,22 @@ Generated: 2026-08-06T22:31:38.047Z via **gemini**
 | audio.json | 3 | 0 | 0 | 3 |
 | auth.json | 4 | 0 | 0 | 4 |
 | authPage.json | 15 | 0 | 0 | 15 |
-| autopilot.json | 88 | 3 | 0 | 91 |
-| billing.json | 178 | 0 | 0 | 178 |
-| business.json | 105 | 1 | 0 | 106 |
+| autopilot.json | 82 | 9 | 0 | 91 |
+| billing.json | 176 | 2 | 0 | 178 |
+| business.json | 106 | 0 | 0 | 106 |
 | businessHub.json | 17 | 0 | 0 | 17 |
 | buttons.json | 55 | 0 | 0 | 55 |
-| calendar.json | 112 | 3 | 0 | 115 |
+| calendar.json | 113 | 2 | 0 | 115 |
 | calendarPopup.json | 16 | 1 | 0 | 17 |
 | campaigns.json | 13 | 1 | 0 | 14 |
-| capture.json | 42 | 0 | 0 | 42 |
+| capture.json | 44 | 0 | 0 | 44 |
 | challenges.json | 1 | 0 | 0 | 1 |
 | common.json | 37 | 0 | 0 | 37 |
 | confirm.json | 16 | 0 | 0 | 16 |
-| connectedApps.json | 35 | 1 | 0 | 36 |
+| connectedApps.json | 34 | 2 | 0 | 36 |
 | consent.json | 1 | 0 | 0 | 1 |
-| createEventPopup.json | 106 | 3 | 0 | 109 |
-| createSelection.json | 4 | 2 | 0 | 6 |
+| createEventPopup.json | 109 | 0 | 0 | 109 |
+| createSelection.json | 4 | 1 | 1 | 6 |
 | currencies.json | 3 | 0 | 0 | 3 |
 | densityOptions.json | 3 | 0 | 0 | 3 |
 | diary.json | 9 | 0 | 0 | 9 |
@@ -49,37 +49,37 @@ Generated: 2026-08-06T22:31:38.047Z via **gemini**
 | empty.json | 23 | 0 | 0 | 23 |
 | errors.json | 14 | 0 | 0 | 14 |
 | eventCta.json | 19 | 1 | 0 | 20 |
-| eventDrawer.json | 55 | 4 | 0 | 59 |
+| eventDrawer.json | 56 | 3 | 0 | 59 |
 | events.json | 20 | 0 | 0 | 20 |
 | featureAnnouncementCard.json | 8 | 0 | 0 | 8 |
 | follow.json | 2 | 0 | 0 | 2 |
 | gallery.json | 17 | 0 | 0 | 17 |
 | glassMode.json | 15 | 0 | 0 | 15 |
-| groupDetail.json | 10 | 2 | 0 | 12 |
+| groupDetail.json | 12 | 0 | 0 | 12 |
 | groupFeed.json | 11 | 0 | 0 | 11 |
-| groupMembership.json | 6 | 0 | 0 | 6 |
+| groupMembership.json | 5 | 1 | 0 | 6 |
 | groups.json | 1 | 0 | 0 | 1 |
-| health.json | 72 | 4 | 0 | 76 |
+| health.json | 52 | 3 | 0 | 55 |
 | historyManagement.json | 41 | 0 | 0 | 41 |
 | home.json | 8 | 0 | 0 | 8 |
-| inbox.json | 95 | 4 | 0 | 99 |
-| intro.json | 8 | 0 | 0 | 8 |
+| inbox.json | 98 | 1 | 0 | 99 |
+| intro.json | 9 | 0 | 0 | 9 |
 | lifeCompass.json | 31 | 0 | 0 | 31 |
-| liveRooms.json | 117 | 2 | 0 | 119 |
+| liveRooms.json | 118 | 1 | 0 | 119 |
 | loading.json | 7 | 0 | 0 | 7 |
 | logout.json | 3 | 0 | 0 | 3 |
 | marketplaceCheckout.json | 49 | 0 | 0 | 49 |
-| mediaHub.json | 125 | 4 | 0 | 129 |
-| memoryActions.json | 13 | 0 | 0 | 13 |
+| mediaHub.json | 126 | 3 | 0 | 129 |
+| memoryActions.json | 11 | 2 | 0 | 13 |
 | menu.json | 9 | 0 | 0 | 9 |
-| milestones.json | 13 | 0 | 0 | 13 |
-| mobileNav.json | 6 | 1 | 0 | 7 |
+| milestones.json | 12 | 1 | 0 | 13 |
+| mobileNav.json | 7 | 0 | 0 | 7 |
 | mobileSupport.json | 74 | 1 | 0 | 75 |
 | navigation.json | 19 | 0 | 0 | 19 |
 | newsCard.json | 29 | 0 | 0 | 29 |
 | onboarding.json | 23 | 0 | 0 | 23 |
 | orbHint.json | 1 | 0 | 0 | 1 |
-| orders.json | 60 | 3 | 2 | 65 |
+| orders.json | 55 | 7 | 3 | 65 |
 | packages.json | 14 | 0 | 0 | 14 |
 | payment.json | 19 | 0 | 0 | 19 |
 | permissionsActions.json | 17 | 0 | 0 | 17 |
@@ -91,11 +91,11 @@ Generated: 2026-08-06T22:31:38.047Z via **gemini**
 | profileMedia.json | 5 | 0 | 0 | 5 |
 | profilePosts.json | 15 | 0 | 0 | 15 |
 | profileStats.json | 5 | 0 | 0 | 5 |
-| profileTabs.json | 9 | 0 | 0 | 9 |
+| profileTabs.json | 8 | 0 | 1 | 9 |
 | publicProfile.json | 8 | 0 | 0 | 8 |
 | qrShare.json | 14 | 0 | 0 | 14 |
 | recallActions.json | 17 | 0 | 0 | 17 |
-| screens.json | 9697 | 190 | 3 | 9890 |
+| screens.json | 9859 | 182 | 7 | 10048 |
 | services.json | 20 | 0 | 0 | 20 |
 | settings.json | 31 | 0 | 0 | 31 |
 | share.json | 8 | 0 | 0 | 8 |
@@ -105,15 +105,15 @@ Generated: 2026-08-06T22:31:38.047Z via **gemini**
 | subNav.json | 42 | 0 | 0 | 42 |
 | support.json | 34 | 0 | 0 | 34 |
 | tableHeaders.json | 11 | 0 | 0 | 11 |
-| tasks.json | 15 | 0 | 0 | 15 |
+| tasks.json | 14 | 1 | 0 | 15 |
 | timeline.json | 1 | 0 | 0 | 1 |
 | timelineActions.json | 17 | 0 | 0 | 17 |
-| toasts.json | 1201 | 55 | 1 | 1257 |
-| universalCart.json | 59 | 0 | 0 | 59 |
+| toasts.json | 1245 | 14 | 0 | 1259 |
+| universalCart.json | 57 | 2 | 0 | 59 |
 | validation.json | 25 | 0 | 0 | 25 |
 | videoShop.json | 32 | 1 | 0 | 33 |
 | vitanaIndex.json | 27 | 0 | 0 | 27 |
-| voucher.json | 47 | 1 | 0 | 48 |
+| voucher.json | 46 | 2 | 0 | 48 |
 | wallet.json | 22 | 0 | 0 | 22 |
 | walletActions.json | 7 | 0 | 0 | 7 |
 | wellnessServices.json | 1 | 0 | 0 | 1 |
@@ -121,63 +121,62 @@ Generated: 2026-08-06T22:31:38.047Z via **gemini**
 
 ## Sample of flagged keys
 
-- `apply.json:apply.benefitEvents` — **EDIT_SUGGESTED** (0.90) — Awkward phrasing; 'accès à la première vague' is too literal and less idiomatic than alternatives.
-  - suggested: `Accès prioritaire aux 12 événements estivaux de Majorque.`
-- `autopilot.json:autopilot.popup.selectedOf` — **EDIT_SUGGESTED** (1.00) — Gender agreement for 'selected' should match 'actions' (feminine plural) based on context.
-  - suggested: `{selected} sur {total} sélectionnées`
-- `autopilot.json:autopilot.profilePopup.styleProfile` — **EDIT_SUGGESTED** (0.80) — Verb form is infinitive instead of imperative for an action title.
-  - suggested: `Stylise ton profil`
-- `autopilot.json:autopilot.actions.action4Title` — **EDIT_SUGGESTED** (0.80) — Awkward phrasing; 'auto' is not natural as an adverb in this context.
+- `apply.json:apply.benefitEvents` — **EDIT_SUGGESTED** (0.90) — Phrasing is a bit literal and formal for the friendly register. 'Accès à la première vague' is less idiomatic than 'Accès en avant-première', and 'à l'ensemble des' is more formal than 'à tous les'.
+  - suggested: `Accès en avant-première à tous les 12 événements estivaux de Majorque.`
+- `autopilot.json:autopilot.widget.enableToSee` — **EDIT_SUGGESTED** (1.00) — Inconsistent translation of 'Autopilot'. Should be 'Pilote automatique' for consistency with other entries.
+  - suggested: `Active le Pilote automatique pour voir les suggestions.`
+- `autopilot.json:autopilot.widget.completeForRewards` — **EDIT_SUGGESTED** (1.00) — Inconsistent translation of 'Autopilot'. Should be 'Pilote automatique' for consistency with other entries.
+  - suggested: `Termine les suggestions du Pilote automatique pour obtenir des récompenses.`
+- `autopilot.json:autopilot.widget.enableForCredits` — **EDIT_SUGGESTED** (1.00) — Inconsistent translation of 'Autopilot'. Should be 'Pilote automatique' for consistency with other entries.
+  - suggested: `Active le Pilote automatique pour des crédits.`
+- `autopilot.json:autopilot.insightBanner.description` — **EDIT_SUGGESTED** (1.00) — Inconsistent translation of 'Autopilot'. Should be 'Pilote automatique' for consistency with other entries.
+  - suggested: `Ton Pilote automatique Vitana a analysé tes plans récents et ta régularité.`
+- `autopilot.json:autopilot.profilePopup.title` — **EDIT_SUGGESTED** (1.00) — Inconsistent translation of 'Autopilot'. Should be 'Pilote automatique' for consistency with other entries.
+  - suggested: `Laisse le Pilote automatique optimiser ton profil ✨`
+- `autopilot.json:autopilot.profilePopup.styleProfile` — **EDIT_SUGGESTED** (1.00) — The English is an imperative, but the French uses an infinitive. Also, 'Profil' should be lowercase.
+  - suggested: `Style ton profil`
+- `autopilot.json:autopilot.profilePopup.runAutopilot` — **EDIT_SUGGESTED** (1.00) — The English is an imperative, but the French uses an infinitive. Also, 'Pilote automatique' should be lowercase.
+  - suggested: `Lance le pilote automatique`
+- `autopilot.json:autopilot.actions.action4Title` — **EDIT_SUGGESTED** (1.00) — 'Invite auto' is an awkward phrasing. 'Automatiquement' is more natural.
   - suggested: `Invite automatiquement ta Tribu à un rassemblement épique ce week-end`
-- `business.json:business.kpi.topPerformer` — **EDIT_SUGGESTED** (0.90) — Translation is masculine; should be gender-neutral for a friendly app.
-  - suggested: `La personne la plus performante`
-- `calendar.json:calendar.autopilot.badge` — **EDIT_SUGGESTED** (1.00) — Feature name should remain unchanged for consistency with other entries and rules.
+- `autopilot.json:autopilot.actions.action4Reason` — **EDIT_SUGGESTED** (1.00) — 'tribu' should be lowercase as it's not a proper noun in this context.
+  - suggested: `Sarah, Luna et Marcus sont des correspondances parfaites pour ta tribu de longévité`
+- `billing.json:billing.state.renewsAt` — **EDIT_SUGGESTED** (0.90) — Phrasing is a bit abrupt; a verb phrase is more natural for a status update.
+  - suggested: `Se renouvelle le {date}`
+- `billing.json:billing.state.cancelAtPeriodEnd` — **EDIT_SUGGESTED** (0.90) — Phrasing is a bit abrupt; a verb phrase is more natural for a status update.
+  - suggested: `Se termine à la fin de la période`
+- `calendar.json:calendar.bookedEvents.nextUp` — **EDIT_SUGGESTED** (1.00) — 'Prochainement' is more 'soon' or 'in the near future' rather than 'next up' in a schedule context. 'À venir' is more direct and consistent with entry 21.
+  - suggested: `À venir`
+- `calendar.json:calendar.autopilot.badge` — **EDIT_SUGGESTED** (0.90) — Feature name 'Autopilot' should remain untranslated for consistency and brand recognition, similar to other brand names.
   - suggested: `Autopilot`
-- `calendar.json:calendar.autopilot.reminderLaterToday` — **EDIT_SUGGESTED** (0.90) — Slightly formal phrasing; 'défini' is less common for reminders than 'programmé'.
-  - suggested: `Rappel programmé pour plus tard aujourd'hui`
-- `calendar.json:calendar.autopilot.reminderTomorrow` — **EDIT_SUGGESTED** (0.90) — Slightly formal phrasing; 'défini' is less common for reminders than 'programmé'.
-  - suggested: `Rappel programmé pour demain`
-- `calendarPopup.json:calendarPopup.syncExternal` — **EDIT_SUGGESTED** (1.00) — Awkward phrasing; 'Synchroniser externe' is not idiomatic as a UI label or feature name. It should be a noun phrase like 'External Sync'.
+- `calendarPopup.json:calendarPopup.syncExternal` — **EDIT_SUGGESTED** (1.00) — Grammatically awkward; inconsistent with similar term 'External Sync'. Should be a noun phrase.
   - suggested: `Synchronisation externe`
-- `campaigns.json:campaigns.delete.dontAskAgain` — **EDIT_SUGGESTED** (1.00) — Awkward phrasing: 'campagnes brouillon' is not idiomatic. Should be 'campagnes en brouillon' or 'brouillons de campagne'.
+- `campaigns.json:campaigns.delete.dontAskAgain` — **EDIT_SUGGESTED** (1.00) — Awkward phrasing; 'campagnes brouillon' is not idiomatic. Should be 'campagnes en brouillon' or 'brouillons de campagnes'.
   - suggested: `Ne me demande plus pour les campagnes en brouillon`
-- `connectedApps.json:connectedApps.popup.connect` — **EDIT_SUGGESTED** (0.90) — Less idiomatic for a user action button; 'Se connecter' is more common for connecting oneself/an account.
+- `connectedApps.json:connectedApps.popup.categories.health` — **EDIT_SUGGESTED** (0.90) — 'Bien-être' means 'well-being', which is broader than 'Fitness'. 'Fitness' is a common loanword in French for this context, or 'Forme physique' would be more precise.
+  - suggested: `Santé et Fitness`
+- `connectedApps.json:connectedApps.popup.connect` — **EDIT_SUGGESTED** (1.00) — More idiomatic reflexive form needed for user action.
   - suggested: `Se connecter`
-- `createEventPopup.json:createEventPopup.toasts.invalidFileTypeDesc` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: 'Veuillez' (vous-form) used instead of du-form.
-  - suggested: `Merci de sélectionner un fichier image (JPEG, PNG, WebP)`
-- `createEventPopup.json:createEventPopup.toasts.missingFieldsDesc` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: 'Veuillez' (vous-form) used instead of du-form.
-  - suggested: `Merci de fournir le titre, la date et l'heure de l'événement.`
-- `createEventPopup.json:createEventPopup.toasts.invalidDateDesc` — **EDIT_SUGGESTED** (1.00) — Inconsistent register: Mix of du-form ('Tu ne peux pas') and vous-form ('Veuillez').
-  - suggested: `Tu ne peux pas créer un événement dans le passé. Merci de sélectionner une date et une heure futures.`
-- `createSelection.json:createSelection.title` — **EDIT_SUGGESTED** (0.90) — Grammatically incomplete and awkward phrasing. 'Nouveau' is an adjective and needs a noun or article.
+- `createSelection.json:createSelection.title` — **EDIT_SUGGESTED** (1.00) — Grammatically incorrect; 'nouveau' is an adjective and needs an article or noun.
   - suggested: `Créer un nouveau`
-- `createSelection.json:createSelection.meetup` — **EDIT_SUGGESTED** (0.80) — While 'Rendez-vous' is a correct translation, 'MeetUp' is often used as a specific feature name or recognized loanword in app contexts, similar to other tech terms. Keeping the original term can enhance recognition and consistency.
-  - suggested: `MeetUp`
-- `discover.json:discover.quickActions.reorderPrevious` — **EDIT_SUGGESTED** (0.90) — Ambiguous translation for 'Reorder Previous'. 'Recommander' can mean 'to recommend' or 'to order again'. 'un précédent' is vague. 'Commander à nouveau' is clearer for 'Reorder'.
+- `createSelection.json:createSelection.meetup` — **LOW_CONFIDENCE** (0.70) — Ambiguous if 'MeetUp' is a specific feature/brand name (should remain untranslated) or a generic term. 'Rendez-vous' is a plausible translation for a generic meeting, but 'MeetUp' is often kept as a loanword in tech contexts, especially if it refers to a specific type of event or platform.
+- `discover.json:discover.quickActions.reorderPrevious` — **EDIT_SUGGESTED** (0.90) — Vague and potentially ambiguous with 'recommend'; 'un précédent' is unclear.
   - suggested: `Commander à nouveau`
-- `eventCta.json:eventCta.joining` — **EDIT_SUGGESTED** (0.90) — The infinitive 'Rejoindre...' does not convey an ongoing action status. 'Participation en cours...' is more appropriate for 'Joining...' as a status.
+- `eventCta.json:eventCta.joining` — **EDIT_SUGGESTED** (0.80) — Infinitive used for continuous action, less idiomatic than noun form for '...ing' status.
   - suggested: `Participation en cours...`
-- `eventDrawer.json:eventDrawer.following` — **EDIT_SUGGESTED** (0.90) — Incorrect meaning for 'Following' as a status. 'Suivi' means 'followed' (past participle), not 'currently following' or 'subscribed'.
+- `eventDrawer.json:eventDrawer.following` — **EDIT_SUGGESTED** (0.90) — Less idiomatic for the active 'following' state in a social context.
   - suggested: `Abonné`
-- `eventDrawer.json:eventDrawer.followingLoading` — **EDIT_SUGGESTED** (0.90) — Incorrect tense/meaning for an ongoing action. 'Suivi...' means 'followed...' (past participle), not 'following...' (in progress).
-  - suggested: `Abonnement en cours…`
-- `eventDrawer.json:eventDrawer.followingToast` — **EDIT_SUGGESTED** (0.90) — Incorrect tense/meaning for a confirmation of following. 'Suivi!' means 'followed!' (past participle).
+- `eventDrawer.json:eventDrawer.followingLoading` — **EDIT_SUGGESTED** (0.90) — Ambiguous/less idiomatic for 'following in progress'.
+  - suggested: `Abonnement en cours...`
+- `eventDrawer.json:eventDrawer.followingToast` — **EDIT_SUGGESTED** (0.90) — Less idiomatic for confirmation of 'following'.
   - suggested: `Abonné !`
-- `eventDrawer.json:eventDrawer.removedFromEvent` — **EDIT_SUGGESTED** (1.00) — Gender agreement for 'retiré' is missing for female users. The 'tu' form implies direct address to a user whose gender is unknown.
-  - suggested: `Tu as été retiré(e) de cet événement.`
-- `groupDetail.json:groupDetail.leaving` — **EDIT_SUGGESTED** (1.00) — Infinitive 'Quitter...' is not idiomatic for a progressive action like 'Leaving...'.
-  - suggested: `Départ en cours...`
-- `groupDetail.json:groupDetail.joining` — **EDIT_SUGGESTED** (1.00) — Infinitive 'Rejoindre...' is not idiomatic for a progressive action like 'Joining...'.
-  - suggested: `Adhésion en cours...`
-- `health.json:health.healthTrackerDesc` — **EDIT_SUGGESTED** (1.00) — Grammatical agreement of 'quotidiens' is incorrect for the list of nouns. It should be an adverb or applied to each noun.
-  - suggested: `Suis ta nutrition, ton sommeil et ton exercice au quotidien.`
-- `health.json:health.topPercentile` — **EDIT_SUGGESTED** (1.00) — Awkward phrasing; 'Meilleur' is singular and doesn't idiomatically convey 'Top X%'.
-  - suggested: `Dans le top {percent}%`
-- `health.json:health.trend.declining` — **EDIT_SUGGESTED** (1.00) — Noun 'Aggravation' used instead of a verb/status equivalent to 'Improving'.
+- `groupMembership.json:groupMembership.joined` — **EDIT_SUGGESTED** (0.90) — Awkward phrasing; 'Rejoint !' is a passive participle and grammatically incomplete for an exclamation. It should be an active confirmation.
+  - suggested: `Tu as rejoint ! 🎉`
+- `health.json:health.topPercentile` — **EDIT_SUGGESTED** (0.90) — Grammatically awkward. 'Meilleur' is singular, but 'Top {percent}%' implies a plural group or a range.
+  - suggested: `Les meilleurs {percent}%`
+- `health.json:health.trend.declining` — **EDIT_SUGGESTED** (0.90) — 'Aggravation' is a noun. For a status, a verb form is more appropriate and parallels 'S'améliore'.
   - suggested: `S'aggrave`
-- `health.json:health.missionAlignment.economyAxes.find_match` — **EDIT_SUGGESTED** (0.90) — Slightly formal/awkward for app context; 'match' is often used as a loanword or phrased differently for finding people/profiles in apps.
-  - suggested: `Trouver un match`
-- `inbox.json:inbox.createGroup.groupNameRequiredDesc` — **EDIT_SUGGESTED** (1.00) — Inconsistent register (uses 'Veuillez' which is formal, should be informal 'du-form').
-  - suggested: `Saisis un nom pour ton groupe.`
-- `inbox.json:inbox.createGroup.failedDesc` — **EDIT_SUGGESTED** (1.00) — Inconsistent register (uses 'Veuillez' which is formal, should be informal 'du-form').
-  - suggested: `Essaie à nouveau.`
+- `health.json:health.emptyStates.noMentalPlanDesc` — **EDIT_SUGGESTED** (0.90) — 'focus' is less idiomatic than 'concentration' for mental focus in this context.
+  - suggested: `Génère ton plan de bien-être mental personnalisé, pour suivre le stress, la concentration et l'équilibre émotionnel avec le soutien de l'IA.`
+- `inbox.json:inbox.toast.noTenantContext` — **EDIT_SUGGESTED** (1.00) — 'locataire' is incorrect for 'tenant' in a software/IT context. It refers to a property renter.
+  - suggested: `Aucun contexte client disponible`

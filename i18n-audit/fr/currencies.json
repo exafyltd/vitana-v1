@@ -1,0 +1,20 @@
+{
+  "verdicts": {
+    "currencies.usd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "currencies.vtna": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "currencies.credits": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:07:29.102Z"
+}

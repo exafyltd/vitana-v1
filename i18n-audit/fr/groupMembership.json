@@ -1,0 +1,37 @@
+{
+  "verdicts": {
+    "groupMembership.joined": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; 'Rejoint !' is a passive participle and grammatically incomplete for an exclamation. It should be an active confirmation.",
+      "suggested": "Tu as rejoint ! 🎉",
+      "phase": "llm"
+    },
+    "groupMembership.joinedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.left": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.leftDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.errorJoin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "groupMembership.errorLeave": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:10:33.734Z"
+}
