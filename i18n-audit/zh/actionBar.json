@@ -1,0 +1,30 @@
+{
+  "verdicts": {
+    "actionBar.search": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "actionBar.calendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "actionBar.giftVoucher": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "actionBar.autopilot": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "actionBar.vitanaIndex": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:00:12.903Z"
+}

@@ -1,0 +1,45 @@
+{
+  "verdicts": {
+    "share.shareProfile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "share.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "share.copyProfileLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "share.showQRCode": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "share.downloadQR": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "share.shareToSocial": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "share.alsoShareTo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "share.viewPublicProfile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T05:40:11.369Z"
+}

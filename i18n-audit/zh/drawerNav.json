@@ -1,0 +1,94 @@
+{
+  "verdicts": {
+    "drawerNav.journey": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.news": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.events": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.findPartner": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Too literal; '找匹配' is not idiomatic for finding a person/partner in a social context. It sounds more like finding a matching item.",
+      "suggested": "寻找配对",
+      "phase": "llm"
+    },
+    "drawerNav.live": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.business": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.discover": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.orders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.wallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.health": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.diary": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.connectors": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "'联系' (contact/connect) is ambiguous as a noun for 'Connectors' in a UI context. It doesn't clearly convey 'people who connect' or 'connections'.",
+      "suggested": "连接",
+      "phase": "llm"
+    },
+    "drawerNav.inbox": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.support": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.settings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "drawerNav.logout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:10:09.058Z"
+}
