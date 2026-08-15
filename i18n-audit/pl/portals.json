@@ -1,0 +1,145 @@
+{
+  "verdicts": {
+    "portals.maxina.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.welcomeBack": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.continueJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.joinMaxina": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.joinCommunity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.createAccount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.signingIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.creatingAccount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.joiningAs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.yourFullName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.forgotPassword": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.partOfVitana": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.allPortals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.emailConfirmed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.checkEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.roles.community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.roles.patient": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.roles.professional": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.maxina.roles.admin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.alkalma.joinAlkalma": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.alkalma.welcomeBack": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.alkalma.continueJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.earthlinks.joinEarthlinks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.earthlinks.welcomeBack": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.earthlinks.continueJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.community.joinCommunity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.community.welcomeBack": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "portals.community.continueJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:18:47.031Z"
+}

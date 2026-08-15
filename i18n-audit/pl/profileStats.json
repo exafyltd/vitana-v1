@@ -1,0 +1,32 @@
+{
+  "verdicts": {
+    "profileStats.media": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "profileStats.posts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.followers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "profileStats.following": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Grammatical mismatch. 'Following' as a UI label typically refers to the people one follows (noun), not the act of following (verb). 'Obserwujesz' means 'you follow'.",
+      "suggested": "Obserwowani",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:20:23.301Z"
+}

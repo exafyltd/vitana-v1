@@ -1,0 +1,6336 @@
+{
+  "verdicts": {
+    "toasts.profile.mp3WavFlacAacOggM4a": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "toasts.profile.mp4WebmMov": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "toasts.sharing.youtube": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "toasts.sharing.tiktok": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "toasts.success.saved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.savedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.created": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.createdDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.deleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.deletedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.copied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.copiedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.sent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.sentDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.uploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.uploadedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.profileUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.profileUpdatedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.settingsSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.settingsSavedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.loggedIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.loggedInDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.loggedOut": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.loggedOutDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.subscribed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.subscribedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.unsubscribed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.unsubscribedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.added": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.addedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.removed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.removedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.updated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.updatedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.imported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.importedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.exported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.exportedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.connected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.connectedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.disconnected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.disconnectedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.planGenerated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.planGeneratedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.success.bulkEnabled": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'Wybór wielu' is less idiomatic for 'Bulk selection enabled'; 'Wybór zbiorczy' is more precise.",
+      "suggested": "Włączono wybór zbiorczy",
+      "phase": "llm"
+    },
+    "toasts.success.bulkEnabledDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.generic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.genericDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.network": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.networkDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.notAuthenticated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.notAuthenticatedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.notAuthorized": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.notAuthorizedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.saveFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.saveFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.loadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.loadFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.uploadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.uploadFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.deleteFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.deleteFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.sendFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.sendFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.connectionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.connectionFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.validationFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.validationFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.sessionExpired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.sessionExpiredDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.serverError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.serverErrorDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.notFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.notFoundDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.importFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.importFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.exportFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.error.exportFailedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.info.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.info.processingDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.info.updating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.info.updatingDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.info.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.info.loadingDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.info.syncing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.info.syncingDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.warning.unsavedChanges": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.warning.unsavedChangesDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.warning.limitReached": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.warning.limitReachedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.warning.slowConnection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.warning.slowConnectionDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.couldNotCompleteTask": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.incomingCall": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.contentCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.contentCreateFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.nameRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.pleaseEnterGroupName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.notLogged": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.pleaseLogCreateGroup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.groupCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.roomNameRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.pleaseEnterNameForYourLive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.paymentSetupRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.pleaseEnablePaymentsSettingsBeforeCreating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.priceRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.pleaseEnterPriceAtLeast1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.liveRoomCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.failedCreateRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.pleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.formIncomplete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.pleaseFillAllRequiredFields": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.invalidDate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.youCannotCreateMeetupPastPlease": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.imageUploadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.weLlUseAutomaticFallbackImage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.meetupCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.yourMeetupHasSuccessfullyCreatedWill": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.errorCreatingMeetup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.thereIssueCreatingYourMeetupPlease": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.packageCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.draftSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.yourServiceDraftHasSavedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.servicePublished": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.yourServiceNowLiveAcceptingBookings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.imageGenerated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.aiHasCreatedCustomImageFor": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.generationFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.weLlKeepExistingImage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.warning": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.eventUpdatedButTicketSyncFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.meetupUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.yourMeetupHasSuccessfullyUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.errorUpdatingMeetup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.thereIssueUpdatingYourMeetupPlease": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.inviteLinkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.couldnTCopyPleaseCopyLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.authenticationRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.pleaseSignPlaceOrder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.orderPlacedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.orderFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.failedJoinRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.newMatch": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.youVeMatchedWithSomeoneCheck": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.noAnswer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.connectionIssue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.unableConnectCallServicePleaseCheck": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.audioBlocked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.pleaseAllowAudioHearCallSounds": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.calling": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "toasts.common.callFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.unableStartCallPleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.unableStartVideoCallPleaseTry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.connectionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.couldNotEstablishConnectionPleaseTry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.connectionError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.pushNotificationsReinitialized": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.redeemPoints": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.redemptionOptionsOpeningSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.exportData": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.preparingYourDataExport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.activitySavedMemory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.addedYourKnowledgeBase": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.improvementRequested": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.weLlAnalyzeUpdateSuggestionsShortly": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.activityHidden": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.success": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.common.donTBreakStreakOneSmall": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.companionOverridesSavedVoiceCacheRefreshes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.manualTriggerSuccessful": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.appointmentReminderFunctionHasExecuted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.triggerFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedExecuteReminderFunction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.copied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.textCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.apiKeyRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.pleaseEnterYourGeminiApiKey": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.apiKeyValid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.yourGeminiApiKeyWorkingCorrectly": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.invalidApiKey": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.apiKeyCouldNotVerified": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.connectionError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedTestApiKey": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.invalidHeaders": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.headersMustValidJson": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.invalidRequestBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.bodyMustValidJson": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.requestFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.responseCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.missingFields": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.pleaseProvideBothNameValue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.credentialAdded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.credentialHasSecurelyStored": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedAddCredential": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.credentialDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.credentialHasRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedDeleteCredential": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.missingRequiredParameters": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.toolExecutedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.toolExecutionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.rulesUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.engagementRulesHaveSavedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.updateFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.templatesUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.greetingTemplatesHaveSavedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.settingsUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.systemPersonalitySettingsHaveSavedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.discoveringIntegrations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.scanningSystemForApisEdgeFunctions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.discoveryCompletedWithErrors": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.discoveryComplete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.discoveryFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.couldNotScanIntegrations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.testingIntegration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.runningHealthCheck": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.testCompleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.testFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.couldNotCompleteHealthCheck": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.adminsLoaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.errorLoadingAdmins": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedLoadCurrentAdministrators": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.adminRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.errorRemovingAdmin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.invalidEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.pleaseEnterValidEmailAddress": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.emailAlreadyAdded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.thisEmailAlreadyList": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.noEmailsProcess": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.pleaseAddAtLeastOneEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.bootstrapCompleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.bootstrapFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.copied2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.sqlScriptCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.settingsSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.streamSettingsHaveUpdatedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.tenantSwitchedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.youNowManagingSelectedOrganization": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedSwitchTenant": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.youDonTHavePermissionAccess": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.roleAssigned": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.roleRevoked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.roleUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.testFailed2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.logsExported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.debugLogsDownloadedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.rateLimitReached": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.tooManyRequestsPleaseWaitMoment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.creditsRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.pleaseAddCreditsYourLovableAi": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.analysisComplete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.aiHasGeneratedAutomationSuggestionsFor": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.analysisFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.automationDeployed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.automationHasCreatedDisabledYouCan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.deploymentFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.voiceConfigurationSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.patternLoaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.automationPrefilledFromDiscoveredPattern": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedLoadPatternData": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.nameRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.pleaseEnterNameForThisAutomation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.triggerRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.pleaseSelectTriggerEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.actionsRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.pleaseConfigureAtLeastOneAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.authenticationRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.pleaseSignCreateAutomations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedSaveAutomationRule": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedLoadEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedModerateEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedLoadGroups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedModerateGroup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedLoadReports": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedResolveReport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.approveAllFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.toggleFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.intakeSchemaMustValidJson": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.saved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.saveFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.kbBindingsSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.routingKeywordsSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.reclassifyFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.generateSpecFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.activateFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.rejectFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.forwardTriggersSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.stayinlineOverridesSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.systemDocUpdatedAppliesAcrossAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.baselineDocUpdatedAppliesAllNonoptedout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.documentDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.reindexTriggered": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.documentCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.loadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.gatewayUrlNotConfigured": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.noProductsSelected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.bulkActionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedUpdateStatus": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.success": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedDeleteMusic": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.musicDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.failedDeleteVideo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.videoDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.pleaseEnterValidEmailAddress2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.selectAtLeastOneRole": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.acceptLinkCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.invitationRevoked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.cannotRevokeCommunityRoleItS": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.categoryUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.categoryCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.categoryRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.testSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.sendFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.notificationSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.sendFailed2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.brandingSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.profileSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.removedFromActiveList": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.rollbackFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.ticketRejected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.admin.ticketRemovedActiveList": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.audio.cameraStopped": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.audio.cameraStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.audio.failedToggleCamera": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.audio.screenSharingStopped": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.audio.screenSharingStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.audio.failedToggleScreenSharing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.auth.confirmationEmailSentPleaseCheckYour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.auth.tooManyAttemptsPleaseWaitFew": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.billing.paymentFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.billing.paymentSuccessful": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.business.noAttendeesExport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.business.attendeeListExported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.business.noOrdersExport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.business.ordersExported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.business.printTickets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.business.ticketPrintingWillAvailableSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.business.confirmationSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.business.refund": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.business.refundFunctionalityWillAvailableSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.calendar.calendarUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.cart.signRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.cart.pleaseSignAddItemsYourCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.chat.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.chat.pleaseEnterApiKey": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.chat.success": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.chat.apiKeySavedSecurelyWithEncryption": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.coaches.bookingStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.thumbnailCaptured": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.previewNewThumbnailBelow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.captureFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.couldNotCaptureThumbnailFromVideo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.validationError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.titleRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.success": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.videoUpdatedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.failedUpdateVideoPleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.musicLinkCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.shortLinkCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.couldNotShare": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.pleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.thisDemoProfileFollowFunctionalityAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.pleaseSignFollowUsers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.failedUpdateFollowStatusPleaseTry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.eventCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.yourEventCreatedButCouldnT": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.roomEnded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.yourSessionHasEnded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.failedEndRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.invalidAccess": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.pleaseSignJoinLiveRooms": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.streamEnded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.yourLiveStreamHasEnded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.videoError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.signRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.roomNotFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.thisLiveRoomNoLongerExists": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.notYetSupported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.editingSessionsWillAvailableSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.streamDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.yourLiveStreamHasDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.addDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.tellVitanaWhatSYourMind": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.thanksVitanaHasIt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.couldnTSubmit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.thanks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.weLlKeepEyeIt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.couldnTConfirm": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.reopened": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.vitanaWillFollowUp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.couldnTReopen": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.demoRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.community.thisExampleRoomCreateYourOwn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.crossover.bookingStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.crossover.smartNudgesAdded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.crossover.added2OptimizedActionsYourActions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.crossover.eventSelected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.crossover.joined": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.crossover.chatStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.crossover.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.crossover.podcastLinkCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.createVtid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.vtidCreationWillAvailablePhase2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.selectVtid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.vtidSelectionWillAvailablePhase2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.devActionsExecuted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.executionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.somethingWentWrongPleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.connectionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.usingMockDataLiveFeedUnavailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.sessionExpired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.pleaseSign": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.connectionLost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.attemptingReconnect": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.reconnected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.liveEventStreamRestored": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.connectionFailed2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.switchedPollingMode5sRefresh": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.smokeTestReceived": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.eventArrivedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.reconnecting": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.attemptingRestoreLiveConnection": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.smokeTestSent": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "toasts.dev.waitingForEvent": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "First-person verb 'Czekam' is too personal for a general status message. An impersonal noun phrase is more appropriate.",
+      "suggested": "Oczekiwanie na zdarzenie...",
+      "phase": "llm"
+    },
+    "toasts.dev.failedSendSmokeTest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.failedSendMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.roleViewAdded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.pleaseFillAllRequiredFields": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.commandCreatedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.taskCreatedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.pleaseSelectDateRange": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.screenListImported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.screenDefinitionsHaveImportedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.catalogEntryCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.sessionNotFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.sessionRestoredSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.restoringSession": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.allSessionsCleared": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.autopilotRunTriggeredSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.documentUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.frontpageUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.diagnosticsCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dev.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.notSupported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.voiceDictationIsnTSupportedThis": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.recordingError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.noSpeech": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.noSpeechDetectedTryAgainCloser": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.notAuthenticated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.pleaseLogSaveDiaryEntries": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.failedSaveDiaryEntry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.success": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.diaryEntryDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.failedDeleteDiaryEntry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.entryDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.diaryEntryHasRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.failedDeleteEntryPleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.pleaseSignSaveDiaryEntries": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.diaryEntrySaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.noPhotosSelected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.pleaseSelectAtLeastOnePhoto": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.photosUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.yourPhotoDiaryEntryHasSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.uploadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.failedSaveYourPhotoEntryPlease": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.linkCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.sharingNotAvailableThisDevice": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.emptyEntry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.pleaseWriteSomethingBeforeSaving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.entrySaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.yourDiaryEntryHasSavedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.saveFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.failedSaveYourEntryPleaseTry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.diary.undoAvailable": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; 'Cofnij' is an imperative verb, 'dostępne' is an adjective. A noun phrase would be more natural for a status.",
+      "suggested": "Cofnięcie dostępne",
+      "phase": "llm"
+    },
+    "toasts.diary.deleteLastDiaryEntry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.discover.actionSelected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.discover.matchNotFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.discover.thisMatchNoLongerAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.discover.appointmentBooked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.discover.yourAppointmentHasConfirmed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.discover.bookingFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.discover.pleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.discovery.connectionRequestSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.discovery.theyLlNotifiedYourInterest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.discovery.superConnectSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.discovery.youLlAppearAtTopTheir": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.events.eventDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.events.failedDeleteEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.events.pleaseTryAgainLater": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.feedback.notSupported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.feedback.speechRecognitionNotSupportedThisBrowser": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.feedback.recognitionError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.feedback.speechRecognitionEncounteredErrorPleaseTry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.feedback.noContent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.feedback.pleaseRecordTypeYourFeedbackBefore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.feedback.sendFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.feedback.couldNotSendYourFeedbackPlease": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.feedback.reportDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.feedback.feedbackReportHasRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.feedback.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.feedback.failedDeleteReportPleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.couldnTStartThatYetOpen": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.activatedFindItAutopilotWhenYou": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.networkHiccupOpenAutopilotTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.yourVitanaIndexLive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.couldNotSaveYourBaseline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.enterNumber": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.loggedYourIndexRecomputing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.couldNotSave": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.workoutStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.workoutCompletedGreatJob": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.reminderSettingsOpened": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.waterIntakeLogged": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.fileTooLarge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.maximumFileSize20mb": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.reportUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.yourHealthReportHasSavedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.uploadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.addedShoppingList": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.recipeSavedFavorites": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.findingSimilarRecipes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.addedFoodDiary": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.sleepInsightsOpened": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.sleepDataLogged": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.noFileAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.couldNotLoadFile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.recalibrationStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.health.reportGeneration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.moreDetailNeeded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.minimum10Characters": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.disputeRaised": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.ourSupportTeamWillReviewFollow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.couldNotRaiseDispute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.titleRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.message3140Characters": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.scopeTooShort": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.minimum20Characters": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.postedCommunity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.couldNotPost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.couldNotPostReason": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.interestRecorded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.ifTheyReInterestedTooWe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.couldNotRecordInterest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.declined": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.couldNotDecline": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.addAtLeastOneVitanaid": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.networkError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.couldNotCopy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.passedForNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.couldNotPass": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.uploadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.heicheifFormatNotSupportedByBrowsers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.coverPhotoUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.themedCoverReady": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.youCanReplaceItAnyTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.coverPhotoRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intents.uploadOneTapGenerateForMe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.roomLinkCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.share": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.calendarExport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.icsFileWillDownloaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.openingCalendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.notifyOnTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.notifyOnDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.notifyOffTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.notifyOffDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.notifyError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.reminderActionText": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.savedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.savedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.unsavedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.unsavedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.followedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.followedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.liverooms.unfollowedTitle": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender specificity. 'Przestałeś' is masculine. A gender-neutral informal option is preferred.",
+      "suggested": "Nie obserwujesz już",
+      "phase": "llm"
+    },
+    "toasts.liverooms.unfollowedDesc": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender specificity. 'Przestałeś' is masculine. A gender-neutral informal option is preferred.",
+      "suggested": "Nie obserwujesz już {name}",
+      "phase": "llm"
+    },
+    "toasts.meetups.signRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.meetups.pleaseSignJoinEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.meetups.removedFromCalendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.meetups.youVeLeftThisMeetup": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gender specificity. 'Opuściłeś' is masculine. For a gender-neutral app, a combined form is more appropriate.",
+      "suggested": "Opuściłeś(-aś) to spotkanie.",
+      "phase": "llm"
+    },
+    "toasts.meetups.failedAddEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.meetups.pleaseTryAgainCheckYourCalendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.meetups.openingCalendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.meetups.calendarExport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.meetups.icalFileDownloaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.meetups.failedSendMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.meetups.pleaseTryAgainLater": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.meetups.addedSmartCalendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.meetups.eventSavedWeLlRemindYou": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.voiceRecorded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.invalidFile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.pleaseSelectImageFile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.emptyMemory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.pleaseAddSomeContentYourMemory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.memorySaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.yourMemoryHasAddedYourKnowledge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.saveFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.settingsSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.archiveSettingsHaveUpdatedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.categoryNameRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.categoryAdded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.categoryDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.comingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.editFunctionalityWillAvailableSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.memoryGardenUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.savedKnowledgeBase": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.activityDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.addedFavorites": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.linkCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.editFunctionalityComingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.photoDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.privacySettingsSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.yourPrivacyPreferencesHaveUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.notSupported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.microphoneRecordingNotSupportedThisDevice": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.recordingStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.speakNowYourAudioWillTranscribed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.recordingError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.speechRecognitionNotSupportedThisBrowser": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.recognitionError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.speechRecognitionEncounteredErrorPleaseTry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.speakClearlyYouLlSee": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.couldNotStartSpeechRecognitionPlease": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.noAudioCaptured": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.weDidnTCaptureAnyAudio": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.noSpeechDetected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.weCouldnTHearAnySpeech": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.recordingStopped": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.reviewEditYourTranscriptionBeforeSaving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.transcriptionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.noContent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.pleaseRecordEnterSomeContentBefore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.entrySaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.yourDiaryEntryHasAddedYour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.memory.couldNotSaveYourDiaryEntry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.newResponse": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.calendarInviteSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.processingCalendarEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.calendarUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.calendarEventQueued": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.eventWillAddedYourCalendarShortly": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.inviteSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.signAddEventYourCalendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.pleaseWait": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.stillSyncingThisMessageTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.responseSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.calendarInviteError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.failedProcessAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.updateFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.failedUpdateMessagePleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.messageDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.deleteFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.failedDeleteMessagePleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.failedLoadMembers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.pleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.memberAdded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.failedAddMember": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.memberRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.failedRemoveMember": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.leftGroup": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The verb 'Opuściłeś' is masculine. For a friendly app, it should be gender-specific (Opuściłaś for female users) or a gender-neutral phrasing if the user's gender is unknown.",
+      "suggested": "Opuściłeś/Opuściłaś grupę",
+      "phase": "llm"
+    },
+    "toasts.messages.youHaveLeftGroupYouCan": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The verb 'Opuściłeś' is masculine. For a friendly app, it should be gender-specific (Opuściłaś for female users) or a gender-neutral phrasing if the user's gender is unknown.",
+      "suggested": "Opuściłeś/Opuściłaś grupę. Nadal możesz przeglądać historię wiadomości.",
+      "phase": "llm"
+    },
+    "toasts.messages.failedLeaveGroup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.messageFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.fileNotAllowed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.openConversation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.selectOpenConversationBeforeAttachingFiles": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.uploadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.failedSendVoiceMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.messages.thereErrorSendingYourVoiceMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.notifications.bookingConfirmed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.notifications.paymentReceived": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.notifications.creditsTransferred": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.notifications.newServiceBooking": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.notifications.eventRegistration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.onboarding.networkError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.onboarding.thisYourSpeakableIdAcrossVitana": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "'identyfikator głosowy' is a literal translation but 'speakable ID' usually implies an ID that is easy to pronounce or remember, not necessarily related to voice commands. The current translation is a bit clunky and potentially misleading.",
+      "suggested": "To jest twój łatwy do wymówienia identyfikator w Vitana. Jest stały — wybierz mądrze!",
+      "phase": "llm"
+    },
+    "toasts.payment.missingInformation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.pleaseSelectDateTimeForYour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.insufficientBalance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.redirectingPayment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.completeYourPaymentPopupWindow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.bookingConfirmed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.bookingFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.invalidTransfer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.pleaseEnterValidAmountWithinYour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.transferCompleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.transferFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.pleaseTryAgainContactSupport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.pleaseFillAmountDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.exchangeError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.unableCalculateExchangeRate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.exchangeSendCompleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.transactionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.searchError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.failedSearchUsersPleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.pleaseSelectRecipientEnterAmountChoose": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.invalidAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.pleaseEnterValidAmountGreaterThan": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.requestFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.failedSendPaymentRequestPleaseTry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.noRecipientSelected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.pleaseSelectWhoSendPayment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.paymentSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.paymentFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.failedProcessPaymentPleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.balanceRefreshed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.walletBalanceHasUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.refreshFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.couldNotRefreshBalancePleaseTry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.alreadyProcessed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.alreadyAccepted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.thisPaymentRequestAlreadyAccepted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.paymentCompleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.thisPaymentRequestHasAlreadyProcessed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.paymentDeclined": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.paymentRequestHasDeclined": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.thisRequestAlreadyAccepted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.exchangeSendSuccessful": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.paymentRequestSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.failedSendPaymentRequest": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.pleaseFillAllRequiredFields": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.payment.exchangeSendRequestSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.proactive.messageGenerated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.proactive.feelFreeCustomizeItBeforeSending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.proactive.copied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.proactive.invitationMessageCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.proactive.autoshareScheduled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.proactive.editPost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.proactive.postEditorComingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.qrCodeDownloaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.yourVitanaIdQrCodeHas": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.linkedinUrlRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.pleaseEnterYourLinkedinProfileUrl": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.linkedinDataImported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.yourProfileHasEnrichedWithLinkedin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.importFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.accountUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.yourPersonalDetailsHaveSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.couldNotSave": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.couldNotSavePreferences": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.couldNotLoadPreferences": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.partnerPreferencesSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.saveFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.couldNotLoadOfferings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.serviceOfferingsSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.uploadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.heicheifFormatNotSupportedByBrowsers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.avatarUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.repositionImageIfNeeded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.onlyImagesAllowed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.imageMustUnder10mb": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.couldNotReadSelectedImage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.onlyImagesOrVideosAllowed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.videoMustUnder50mb": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.couldNotReadSelectedFile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.videoTooLargeToCompress": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.videoCompressionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.failedCopy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.shareFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.qrCodeDownloaded2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.couldNotLoadPartnerPreferences": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.authenticationRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.pleaseSignSendMessages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.canTMessageYourself": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.youCannotSendMessagesYourOwn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.messageSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.yourMessageHasSentSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.failedSendMessagePleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.qrCodeSavedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.shareItAnywhereYouLike": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.couldNotShare": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.pleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.couldNotUpdateVisibility": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.dancePreferencesSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.displayNameRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.universalCoverUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.universalCoverRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.libraryPhotoUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.libraryPhotoRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.profile.categoryRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.notificationsArenTSupportedThisBrowser": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.remindersEnabledYouLlGetNotified": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.notificationsBlockedYouCanReenableThem": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.couldnTEnableNotificationsTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.pleaseEnterWhatRemindYouAbout": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Meaning is slightly ambiguous; original Polish could imply 'what thing should remind you' rather than 'what content to remind you about'.",
+      "suggested": "Wpisz, o czym Ci przypomnieć.",
+      "phase": "llm"
+    },
+    "toasts.reminders.pleasePickTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.invalidTime": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.reminderCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.reminderDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.markedDone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.failedToCreate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.failedToDelete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.failedToMarkDone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reminders.remindersDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reseller.activatingYourResellerProfile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reseller.linkCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reseller.failedCopyPleaseSelectCopyManually": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reseller.linkCopiedPasteItYourInstagram": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.reseller.failedCopyLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.googleConnected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.youtubeConnected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.couldnTStartGoogleSignin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.couldnTStartYoutubeSignin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.settingsUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.yourNotificationPreferencesHaveSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.failedUpdateSettings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.yourQuietHoursHaveSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.failedUpdateQuietHours": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.gatewayUrlNotConfigured": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.couldNotLoadLimitations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.saved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.saveFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.settingsUpdated2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.yourNotificationPreferencesHaveSaved2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.yourQuietHoursHaveUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.roleSwitched": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.errorSwitchingRole": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.failedSwitchRolePleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.organizationSwitched": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.errorSwitchingOrganization": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.settings.failedSwitchOrganizationPleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.channelNotConnected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.notAuthenticated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseLogBlastPosts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.missingFields": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseFillTitleDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.noChannelsSelected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseSelectAtLeastOneChannel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseLogSaveDrafts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseLogSchedulePosts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseSelectAtLeastOneChannel2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.brandGuidelineCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.analyticsReportDownloadedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.failedUploadImage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.campaignSavedActivated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.failedActivateCampaign": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseSelectImageFile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.imageMustSmallerThan5mb": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.failedUploadImagePleaseEnsurePackageimages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.imageUploaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseLogCreatePosts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.postSavedAsDraft": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.postScheduledSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseUploadCsvFile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.noValidContactsFoundCsv": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.importCleared": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.accessGranted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseEnterYourProfileUrl": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.failedConnectChannel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseFillAllEmailFields": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.emailConfigurationLooksGoodTestEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseFillAllTwilioFields": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.twilioConfigurationValidated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseFillAllWhatsappFields": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.whatsappBusinessApiConfigurationValidated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.connectionTestFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseFillSenderNameEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseFillAllTwilioCredentials": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseFillMetaApiCredentials": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.directSharingNotSupportedThisDevice": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.failedGenerateImage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.sharedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.linkSharedDownloadImageIncludeIt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.sharingFailedTryDownloadingInstead": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.linkCopiedPasteItYourInstagram": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.imageDownloadedReadyShareInstagram": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.linkCopiedForLinkSticker": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.failedCopyLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.openingWhatsapp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.openingViber": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.viberNotDetectedPleaseCopyLink": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Grammatically awkward phrasing and redundant 'Proszę' for du-form.",
+      "suggested": "Nie wykryto Vibera. Skopiuj link ręcznie.",
+      "phase": "llm"
+    },
+    "toasts.sharing.openingEmailClient": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.openingMessagingApp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.messageCopiedPasteItIntoViber": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.linkCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.privacySettingsUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.yourGlobalPrivacyControlsHaveSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.openingMessenger": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.shareViaVitanaMessenger": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.shareOpened": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Slightly unnatural phrasing for a UI message; more idiomatic to use impersonal past tense.",
+      "suggested": "Otwarto udostępnianie",
+      "phase": "llm"
+    },
+    "toasts.sharing.connectAccount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.linkCopiedShareYoutube": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.linkCopiedShareTiktok": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.shareFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.selectDistributionChannels": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.pleaseSelectAtLeastOneChannel3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.blastSuccessful": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.shareFailed2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.failedShareContentPleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.postPublished": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.campaignsExportedCsv": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.smartrescheduleFeatureComingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.sharing.viberNotDetectedLinkCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.tickets.ticketDownloaded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.tickets.failedDownloadTicket": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.tickets.unableGenerateTicketImage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.tickets.failedGenerateTicketImage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.tickets.ticketDownloadedOpeningWhatsapp": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.tickets.ticketDownloadedMessageCopiedPasteIt": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.tickets.ticketDownloadedOpeningViber": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.tickets.ticketDownloadedOpeningEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.tickets.ticketDownloadedOpeningMessages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.tickets.ticketSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.tickets.eventDetailsCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.invalidAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.pleaseEnterValidAmountExchange": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.exchangeCompleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.exchangeFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.pleaseTryAgainContactSupport": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.actionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.pleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.creditsPurchased": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.added100CreditsYourWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.tokensPurchased": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.added50VtnaTokensYourWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.rewardsClaimed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.added25VtnaRewardsYourWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.withdrawalInitiated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.withdrawalRequestSubmittedForProcessing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.actionFailed2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.invalidAmount2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.pleaseEnterValidAmountAdd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.fundsAddedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.transactionFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.depositCanceled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.redirectingToCheckout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.insufficientUsdBalance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.youDonTHaveEnoughUsd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.creditsPurchasedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.purchaseFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.pleaseEnterValidNumberCredits": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.youDonTHaveEnoughUsd2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.vtnaTokensPurchasedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.pleaseEnterValidNumberTokens": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.pleaseEnterValidAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.insufficientCreditsBalance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.success": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.failedProcessSpendingPleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.pleaseEnterValidStakingAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.insufficientBalance": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.youDonTHaveEnoughVtna": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.tokensStakedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.stakingFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.missingInformation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.pleaseEnterAmountSelectWithdrawalMethod": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.pleaseEnterValidWithdrawalAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.insufficientBalance2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.withdrawalInitiated2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.withdrawalFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.somethingWentWrongPleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.pleaseSelectRecipientEnterAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.wallet.exchangeSendComplete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.youMustLoggedActivateResellerMode": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.resellerModeActive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourResellerDashboardNowAvailableMy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.welcomeReseller": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.youCanNowPromoteEventsEarn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.activationFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.errorLoadingActivityHistory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.activityDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.activityItemHasRemovedFromYour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedDeleteActivity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.activityLoggingFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.appointmentConfirmed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.appointmentCancelled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.appointmentRescheduled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.autosaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourChangesHaveSavedAutomatically": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.autosaveFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourChangesCouldnTSavedPlease": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.automationRuleCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.ruleUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedLoadBookmarks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.signRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseSignBookmarkItems": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.alreadyBookmarked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.thisItemAlreadyYourBookmarks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.bookmarked": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedBookmarkItem": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.removed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.itemRemovedFromBookmarks": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedRemoveBookmark": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.uploadComplete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.packageCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourPackageHasCreatedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.packageUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourPackageHasUpdatedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourPackageItemsHaveUpdatedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.packageDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourPackageHasDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.eventAdded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.eventRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.eventHasRemovedFromYourCalendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.partialSuccess": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.responseRecordedButFailedUpdateYour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.allScheduledPostsPaused": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.recipientsAddedCampaign": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.campaignCreatedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.campaignUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.campaignActivated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.campaignPaused": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.campaignCompletedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.campaignDuplicatedSuccessfullyNewDraftCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.campaignDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.campaignDistributionStartedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseSignAddItemsCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.addedCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedAddCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedUpdateQuantity": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.removedFromCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedRemoveFromCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.cartCleared": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedClearCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseSignCheckout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourCartEmpty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedStartCheckout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.channelConnectedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.channelDisconnected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.meetupCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedCreateMeetupPleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.meetupUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedUpdateMeetupPleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.comingSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.googleContactsImportWillAvailableSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.icloudImportWillAvailableSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.whatsappImportWillAvailableSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.errorLoadingContacts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.noConversationsFound": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.youHavenTMessagedAnyoneYet": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Gendered translation (masculine form) for a general audience. 'Messaged' is better translated as 'wysłałeś wiadomość' rather than 'rozmawiałeś'. A gender-neutral rephrasing is more appropriate for a friendly app.",
+      "suggested": "Nie masz jeszcze żadnych wiadomości.",
+      "phase": "llm"
+    },
+    "toasts.hooks.alreadyAdded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.allConversationParticipantsAlreadyYourContacts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.contactsImported": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.importFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedAddContact": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.contactUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.contactInformationHasUpdatedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedUpdateContact": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.contactDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.contactHasRemovedFromYourList": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedDeleteContact": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.inviteSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedSendInvite": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.contactJoinedVitana": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.onboardingFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.dashboardUnavailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.videoRoomReady": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedCreateVideoRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.videoRoomDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedDeleteVideoRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.postCreatedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.postUpdatedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.postDeletedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.blastingNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.invitesSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedSendInvites": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseTryAgainLater": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.authenticationRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseLogJoinEvents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.leftEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.youVeSuccessfullyLeftThisEvent": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Translation assumes masculine user ('opuściłeś'). For a gender-neutral message, an impersonal form is preferred.",
+      "suggested": "Pomyślnie opuszczono to wydarzenie",
+      "phase": "llm"
+    },
+    "toasts.hooks.joinedEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseSignGetPersonalizedRecommendations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.generatingRecommendations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.aiAnalyzingYourPreferences": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.recommendationsReady": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedLoadYourTickets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedPurchaseTicket": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedFollowUser": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "'Zaobserwować' implies 'to notice/spot' rather than 'to follow' in a social context. 'Obserwować' is the correct verb for 'to follow a user'.",
+      "suggested": "Nie udało się obserwować użytkownika",
+      "phase": "llm"
+    },
+    "toasts.hooks.success": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.youNowFollowingThisUser": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedUnfollowUser": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.youHaveUnfollowedThisUser": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Not gender-neutral (masculine form used).",
+      "suggested": "Nie obserwujesz już tego użytkownika",
+      "phase": "llm"
+    },
+    "toasts.hooks.authenticationRequired2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseSignFollowUsers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.invalidAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.youCannotFollowYourself": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseSignUnfollowUsers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.glassModeActive": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.aiWatchingYourScreen": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.glassModeFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.glassModeStopped": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.screenCaptureHasDisabled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.planGeneratedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.progressLogged": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.knowledgeDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.itemHasRemovedFromYourKnowledge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.errorDeletingKnowledge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.knowledgeUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourChangesHaveSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.errorUpdatingKnowledge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.knowledgeCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.newItemAddedYourKnowledgeBase": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.errorCreatingKnowledge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.errorLoadingKnowledgeBase": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.lifeCompassUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourAiGuidanceHasUpdatedAlign": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedUpdate": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.subgoalAdded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourSubgoalHasAddedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedAddSubgoal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.roomStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedStartRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.roomEnded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedEndRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.joinedRoom": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation is gender-specific (masculine) while English is neutral. For general UI, a gender-neutral form is preferred.",
+      "suggested": "Dołączono do pokoju!",
+      "phase": "llm"
+    },
+    "toasts.hooks.failedJoinRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.leftRoom": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Translation is gender-specific (masculine) while English is neutral. For general UI, a gender-neutral form is preferred.",
+      "suggested": "Opuszczono pokój",
+      "phase": "llm"
+    },
+    "toasts.hooks.failedLeaveRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.roomCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedCreateRoom": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.openingCheckout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.uploadSuccessful": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourMediaPendingModeration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.uploadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.memoryUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.updateFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.memoryDeleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.memoryHasPermanentlyRemoved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.deleteFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.memoryCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourNewMemoryHasAdded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.createFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedSendMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedCreateConversation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedCreateSession": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourSessionHasEnded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.sessionCancelled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedCancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.analysisComplete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.rateLimitReached": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.tooManyRequestsPleaseWaitMoment": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.creditsRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseAddCreditsYourLovableAi": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.analysisFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.patternReviewed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.patternMarkedAsReviewed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.reviewFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.patternImplemented": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.patternLinkedAutomationRule": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.implementationFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.patternDismissed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.patternMarkedAsNotRelevant": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.dismissFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.aiConsentRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseGrantAiDataSharingConsent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseWait": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.rateLimitReached2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseWaitFewSecondsTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.aiUsageLimit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseAddCreditsLovableAiWorkspace": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.sessionNotDetected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.logForPersonalizedTipsShowingGeneric": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.configurationError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.aiServiceNotConfiguredPleaseContact": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.unableGenerateMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.greatChoice": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedExecuteAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.cannotSharePrivateProfile": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.profileMustPublicShare": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.profileLinkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.shareLinkHasCopiedClipboard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedCopy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseTryAgain": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.linkCopied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pasteItYourInstagramStoryPost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pasteItYourTiktokBioVideo": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pasteItYourYoutubeVideoDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.shareFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.pleaseTryAnotherSharingMethod": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedRequestPayout": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.commissionCreditedWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedCreditPayoutWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedTransferWallet": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.postScheduledSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.scheduledPostCancelled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.scheduledPostPaused": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.scheduledPostResumed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.recordingErrorOccurred": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.recordingStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.couldNotStartRecording": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.recordingSavedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedSaveRecording": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.paymentFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.templateSaved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.templateUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedLoadSupplements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.supplementAddedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedAddSupplement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.supplementUpdatedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedUpdateSupplement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.supplementDeletedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.failedDeleteSupplement": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.screenSharingStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourScreenContextNowAnalyzed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.screenSharingFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.couldNotAccessScreenSharing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.cameraStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.yourCameraContextNowAnalyzed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.cameraFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.couldNotAccessCamera": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.visualContextStopped": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.contextCaptureHasDisabled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.vitanaIndexConfigUpdated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.systemConfigurationHasSavedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.errorUpdatingConfig": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.balanceUpdateFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.exchangeCompleted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.exchangeFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.transferSuccessful": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.transferFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.exchangeSendSuccessful": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.exchangeSendFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.linkAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.hooks.errorUpdatingPreferences": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.businesslistings.couldNotLoadListings": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.businessopportunities.couldNotLoadOpportunities": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.checkoutsuccess.orderConfirmed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.checkoutsuccess.yourPaymentSuccessfulCheckYourEmail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intentboard.couldNotLoadBoard": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intentmatchdetail.couldNotLoadMatchDetail": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intentmatchdetail.intentClosed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.intentmatchdetail.couldNotClose": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.introexperience.audioPlaybackFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.introexperience.audioUnavailableNow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.invitefriends.nameRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.invitefriends.pleaseProvideEmailPhone": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.invitefriends.contactAdded": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.invitefriends.failedSendInvites": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.myintents.couldNotLoadIntents": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.packagepurchasesuccess.paymentConfirmed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.packagepurchasesuccess.yourPackagePurchaseSuccessful": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.privacysettings.couldNotSave": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.home.removedFromMemory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.home.activityHasRemovedFromYourKnowledge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.home.savedMemory": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.home.activityHasSavedYourKnowledgeBase": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.home.actionExecuted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.home.yourActionHasCompletedSuccessfully": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.home.actionDismissed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.home.thisActionHasRemovedFromYour": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.index.vitanaDevGatewayUrlNotConfigured": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dailyGoal.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "toasts.dailyGoal.body": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T05:51:26.375Z"
+}

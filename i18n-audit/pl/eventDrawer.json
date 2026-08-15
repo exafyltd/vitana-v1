@@ -1,0 +1,302 @@
+{
+  "verdicts": {
+    "eventDrawer.utc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventDrawer.outlook": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "eventDrawer.host": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.follow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.following": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.followingLoading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.unfollowed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.followingToast": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.communityHost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.meetup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.accessible": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.followersGoing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.followBack": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.whenWhere": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.local": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.startsIn": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.durationMinutes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.virtualEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.joinLinkOpens": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.getDirections": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.attending": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "Grammatical number agreement with placeholder {current} is incorrect for numbers 2, 3, 4. Using a noun in genitive plural is more robust.",
+      "suggested": "{current} / {capacity} uczestników",
+      "phase": "llm"
+    },
+    "eventDrawer.spotsLeft": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.autopilotSuggestions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.fitIntoWeek": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.resolveConflict": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.planCommute": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.about": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.noDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.agenda": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.organizer": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.message": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.sending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.attendees": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.tickets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.viewSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.hideSales": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.freeTickets": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.fromPrice": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.policies": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.requirements": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.cancellation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.authRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.signInToMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.cannotMessageHost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.hostNotAvailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.cannotMessageSelf": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.youAreHost": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.messageSent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.messageSentDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.leftMeetup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.reservationCancelled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.removedFromEvent": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.leaveError": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.addToCalendar": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.googleCal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.appleCal": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "eventDrawer.downloadIcs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:11:06.149Z"
+}

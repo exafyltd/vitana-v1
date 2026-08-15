@@ -1,0 +1,190 @@
+{
+  "verdicts": {
+    "common.ok": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "common.follow": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.search": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.save": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.back": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.next": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.submit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.delete": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.edit": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.create": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.close": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.actions": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.yes": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.no": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.done": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.apply": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.reset": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.filter": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.sort": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.more": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.less": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.none": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.select": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.selectAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.deselectAll": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.copy": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.paste": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.share": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.getMaxina": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.download": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.upload": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.refresh": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.retry": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "common.uploading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:07:11.220Z"
+}

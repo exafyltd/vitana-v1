@@ -1,0 +1,71 @@
+{
+  "verdicts": {
+    "whyThisMatch.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The term 'członek' (member) is correct but 'Dlaczego ten członek?' sounds a bit blunt/formal. 'Osoba' (person) is more common and friendly in this context for an app.",
+      "suggested": "Dlaczego ta osoba?",
+      "phase": "llm"
+    },
+    "whyThisMatch.interpretedAs": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.consideredSignals": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.showSomeoneElse": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.dismiss": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.ethicsNote": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "The phrase 'czyja podróż świeci teraz' is a literal translation of 'whose journey shines right now' but is not idiomatic in Polish. A journey doesn't 'shine' in this context; it can be inspiring or remarkable.",
+      "suggested": "Vitana nie ocenia członków na podstawie wyglądu ani majątku — ale oto ktoś, czyja podróż jest teraz inspirująca.",
+      "phase": "llm"
+    },
+    "whyThisMatch.loadingRecipe": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.recipeUnavailable": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.1": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.2": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.3": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "whyThisMatch.tierLabel.4": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "'Przekierowanie sprawiedliwości' (Redirection of fairness) is a very literal translation that sounds abstract and unnatural as a feature name. 'Sprawiedliwe przekierowanie' (Fair rerouting) is more idiomatic and sounds like a feature.",
+      "suggested": "Sprawiedliwe przekierowanie",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T05:53:13.374Z"
+}

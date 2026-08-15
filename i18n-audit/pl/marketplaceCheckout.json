@@ -1,0 +1,250 @@
+{
+  "verdicts": {
+    "marketplaceCheckout.addMoney.currencyEur": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.addMoney.currencyUsd": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
+    },
+    "marketplaceCheckout.balance.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.balance.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.balance.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.balance.addMoney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.button": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.successTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.successBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.duplicateTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.duplicateBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.affiliateTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.affiliateBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.affiliateLink": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.checkout.affiliateOpened": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.amountLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.amountPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.currencyLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.continue": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.invalidAmount": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.addMoney.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.checkingTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.checkingBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.succeededTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.succeededBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.failedTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.failedBody": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.amountLabel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.deposit.backToCart": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.invalid_request": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.CART_EMPTY": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.PRODUCT_UNAVAILABLE": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.PRICE_UNAVAILABLE": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.MIXED_CURRENCY": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.UNSUPPORTED_WALLET_CURRENCY": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.WALLET_ACCOUNT_MISSING": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.WALLET_ACCOUNT_INACTIVE": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.INSUFFICIENT_BALANCE": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.TENANT_REQUIRED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.WALLET_DEBIT_FAILED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.CART_READ_FAILED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.ORDER_WRITE_FAILED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.WALLET_READ_FAILED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.GATEWAY_MISCONFIGURED": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "marketplaceCheckout.errors.unknown": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-15T04:15:09.386Z"
+}
