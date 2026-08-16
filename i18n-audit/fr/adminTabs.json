@@ -1,0 +1,50 @@
+{
+  "verdicts": {
+    "adminTabs.groups.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.groups.pending": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.groups.approved": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.groups.flagged": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.groups.rejected": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.rooms.active": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.rooms.scheduled": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.rooms.analytics": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "adminTabs.rooms.moderation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-16T04:06:10.367Z"
+}
