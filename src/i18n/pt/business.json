@@ -39,7 +39,7 @@
       "allTime": "Tempo total",
       "details": "Detalhes",
       "earningsActivity": "Atividade de Ganhos",
-      "noEarningsStartSelling": "Nenhum ganho ainda. Comece a vender para ver a atividade aqui.",
+      "noEarningsStartSelling": "Ainda não tens ganhos. Começa a vender para veres a atividade aqui.",
       "_pending_review": {}
     },
     "kpi": {
@@ -95,8 +95,8 @@
       "description": "Solicite o saque das suas comissões de revendedor pendentes para a sua Carteira VITANA.",
       "pending": "Pendente",
       "wallet": "Carteira",
-      "instantCredit": "Seu pedido será analisado pela nossa equipe antes de ser creditado no seu saldo da Carteira.",
-      "transferring": "Solicitando...",
+      "instantCredit": "O teu pedido será analisado pela nossa equipa antes de ser creditado no teu saldo da Carteira.",
+      "transferring": "A solicitar...",
       "transfer": "Solicitar",
       "_pending_review": {}
     },
