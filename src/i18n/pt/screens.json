@@ -2650,8 +2650,8 @@
       "match_scoreMatch": "{match_score}% de compatibilidade"
     },
     "assistant": {
-      "voiceProviderHint_googleSpeech": "A API de Fala do Google oferece síntese de fala de alta qualidade",
-      "voiceProviderHint_geminiChirp": "As vozes Gemini Chirp 3 HD entregam fala premium e natural com ressonância emocional",
+      "voiceProviderHint_polly": "A Amazon Polly oferece síntese de fala de alta qualidade e som natural",
+      "voiceProviderLabel_polly": "Amazon Polly (recomendado)",
       "voiceProviderHint_noVoicesAvailable": "Nenhuma voz disponível para {lang}. Instala uma voz nas configurações do teu SO/navegador.",
       "voiceProviderHint_browserVoices": "Usando vozes baseadas no navegador",
       "aiModelPreferences": "Preferências do Modelo de IA",

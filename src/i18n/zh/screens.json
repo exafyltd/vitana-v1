@@ -2650,8 +2650,8 @@
       "match_scoreMatch": "{match_score}% 匹配"
     },
     "assistant": {
-      "voiceProviderHint_googleSpeech": "Google语音API提供高质量语音合成",
-      "voiceProviderHint_geminiChirp": "Gemini Chirp 3 HD语音提供优质、自然且富有情感的语音",
+      "voiceProviderHint_polly": "Amazon Polly 提供高质量、自然流畅的语音合成",
+      "voiceProviderLabel_polly": "Amazon Polly（推荐）",
       "voiceProviderHint_noVoicesAvailable": "{lang}没有可用语音。请在你的操作系统/浏览器设置中安装语音。",
       "voiceProviderHint_browserVoices": "正在使用浏览器内置语音",
       "aiModelPreferences": "AI模型偏好设置",

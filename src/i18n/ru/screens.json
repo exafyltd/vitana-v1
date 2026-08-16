@@ -2650,8 +2650,8 @@
       "match_scoreMatch": "{match_score}% совпадение"
     },
     "assistant": {
-      "voiceProviderHint_googleSpeech": "Google Speech API обеспечивает высококачественный синтез речи",
-      "voiceProviderHint_geminiChirp": "Голоса Gemini Chirp 3 HD обеспечивают премиальную, естественнозвучащую речь с эмоциональным резонансом",
+      "voiceProviderHint_polly": "Amazon Polly обеспечивает высококачественный, естественно звучащий синтез речи",
+      "voiceProviderLabel_polly": "Amazon Polly (рекомендуется)",
       "voiceProviderHint_noVoicesAvailable": "Нет голосов для {lang}. Установи голос в настройках ОС/браузера.",
       "voiceProviderHint_browserVoices": "Используются голоса браузера",
       "aiModelPreferences": "Настройки модели ИИ",

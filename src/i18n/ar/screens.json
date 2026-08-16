@@ -2650,8 +2650,8 @@
       "match_scoreMatch": "{match_score}% توافق"
     },
     "assistant": {
-      "voiceProviderHint_googleSpeech": "Google Speech API توفر تركيب كلام عالي الجودة",
-      "voiceProviderHint_geminiChirp": "أصوات Gemini Chirp 3 HD تقدم كلامًا طبيعيًا ومميزًا بصدى عاطفي",
+      "voiceProviderHint_polly": "توفر Amazon Polly تركيب كلام عالي الجودة وطبيعي الصوت",
+      "voiceProviderLabel_polly": "Amazon Polly (موصى به)",
       "voiceProviderHint_noVoicesAvailable": "لا توجد أصوات متاحة لـ {lang}. ثبّت صوتًا في إعدادات نظام التشغيل/المتصفح الخاص بك.",
       "voiceProviderHint_browserVoices": "باستخدام أصوات المتصفح",
       "aiModelPreferences": "تفضيلات نموذج الذكاء الاصطناعي",

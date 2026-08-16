@@ -8,11 +8,41 @@ import { Volume2, Loader2 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from '@/lib/i18n-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface VoiceSettingsPanelProps {
   preferences: any;
   isUpdating: boolean;
   updatePreferences: (updates: any) => void;
+}
+
+// VTID-03651: GCP billing was disabled 2026-08-16. This panel used to offer
+// 3-4 named Google voices per language (Chirp 3 HD / Standard / Wavenet) and
+// preview them via two Supabase edge functions calling Google Cloud APIs
+// directly — both now permanently error. The gateway's Polly provider
+// (services/gateway/src/services/tts/polly.ts) is ONE voice per language,
+// not a multi-voice catalog, so the replacement is a single "cloud voice"
+// choice per language rather than a like-for-like swap. `sr` has no Polly
+// voice in any engine (documented gap, tracked in CLAUDE.md §2c) — Serbian
+// users see only browser voices here, same as any language with none.
+const POLLY_CLOUD_VOICE_ID = '__polly__';
+const POLLY_SUPPORTED_LANGS = new Set([
+  'en-US', 'de-DE', 'es-ES', 'ar-XA', 'ru-RU', 'zh-CN', 'fr-FR', 'pt-PT', 'pl-PL',
+]);
+
+const GATEWAY_URL = (
+  import.meta.env.VITE_GATEWAY_BASE ||
+  (import.meta.env.VITE_GATEWAY_URL || '').replace(/\/api\/v1\/?$/, '') ||
+  ''
+).replace(/\/+$/, '');
+
+async function authHeaders(): Promise<HeadersInit> {
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  return {
+    'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
 }
 
 export default function VoiceSettingsPanel({ preferences, isUpdating, updatePreferences }: VoiceSettingsPanelProps) {
@@ -78,13 +108,11 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
 
   useEffect(() => {
     if (!preferences || availableVoices.length === 0) return;
-    
+
     const currentVoice = preferences.tts_voice;
-    const isCloudVoice = currentVoice?.includes('Chirp3-HD') || 
-                         currentVoice?.includes('-Standard-') || 
-                         currentVoice?.includes('-Wavenet-');
-    
-    // Don't auto-switch if user has selected a cloud voice
+    const isCloudVoice = currentVoice === POLLY_CLOUD_VOICE_ID;
+
+    // Don't auto-switch if user has selected the cloud (Polly) voice
     if (isCloudVoice) return;
     
     const currentBrowserVoice = availableVoices.find(v => v.name === currentVoice);
@@ -114,69 +142,13 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
     }
   }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences, setSelectedLanguage]);
 
-  const cloudVoices: Record<string, Array<{ name: string; label: string }>> = {
-    'sr-RS': [
-      { name: 'sr-RS-Standard-B', label: 'Serbian Female (Google Speech)' }
-    ],
-    'en-US': [
-      { name: 'en-US-Chirp3-HD-Leda', label: 'Leda (Gemini Chirp 3 HD)' },
-      { name: 'en-US-Chirp3-HD-Aoede', label: 'Aoede (Gemini Chirp 3 HD)' },
-      { name: 'en-US-Chirp3-HD-Callirrhoe', label: 'Callirrhoe (Gemini Chirp 3 HD)' },
-      { name: 'en-US-Chirp3-HD-Zephyr', label: 'Zephyr (Gemini Chirp 3 HD)' },
-    ],
-    'de-DE': [
-      { name: 'de-DE-Chirp3-HD-Achernar', label: 'Achernar (Gemini Chirp 3 HD)' },
-      { name: 'de-DE-Chirp3-HD-Gacrux', label: 'Gacrux (Gemini Chirp 3 HD)' },
-      { name: 'de-DE-Chirp3-HD-Laomedeia', label: 'Laomedeia (Gemini Chirp 3 HD)' },
-    ],
-    'ar-XA': [
-      { name: 'ar-XA-Chirp3-HD-Aoede', label: 'Aoede (Gemini Chirp 3 HD)' },
-      { name: 'ar-XA-Chirp3-HD-Kore', label: 'Kore (Gemini Chirp 3 HD)' },
-    ],
-    'es-ES': [
-      { name: 'es-ES-Chirp3-HD-Gacrux', label: 'Gacrux (Gemini Chirp 3 HD)' },
-      { name: 'es-ES-Chirp3-HD-Vindemiatrix', label: 'Vindemiatrix (Gemini Chirp 3 HD)' },
-      { name: 'es-ES-Chirp3-HD-Despina', label: 'Despina (Gemini Chirp 3 HD)' },
-    ],
-    'ru-RU': [
-      { name: 'ru-RU-Chirp3-HD-Kore', label: 'Kore (Gemini Chirp 3 HD)' },
-      { name: 'ru-RU-Chirp3-HD-Leda', label: 'Leda (Gemini Chirp 3 HD)' },
-    ],
-    'zh-CN': [
-      { name: 'cmn-CN-Chirp3-HD-Leda', label: 'Leda (Gemini Chirp 3 HD)' },
-      { name: 'cmn-CN-Chirp3-HD-Callirrhoe', label: 'Callirrhoe (Gemini Chirp 3 HD)' },
-    ],
-    'fr-FR': [
-      { name: 'fr-FR-Chirp3-HD-Pulcherrima', label: 'Pulcherrima (Gemini Chirp 3 HD)' },
-      { name: 'fr-FR-Chirp3-HD-Aoede', label: 'Aoede (Gemini Chirp 3 HD)' },
-      { name: 'fr-FR-Chirp3-HD-Sulafat', label: 'Sulafat (Gemini Chirp 3 HD)' },
-    ],
-    'pt-PT': [
-      { name: 'pt-PT-Chirp3-HD-Zephyr', label: 'Zephyr (Gemini Chirp 3 HD)' },
-      { name: 'pt-PT-Chirp3-HD-Laomedeia', label: 'Laomedeia (Gemini Chirp 3 HD)' },
-    ],
-    'pl-PL': [
-      { name: 'pl-PL-Chirp3-HD-Despina', label: 'Despina (Gemini Chirp 3 HD)' },
-      { name: 'pl-PL-Standard-A', label: 'Standard A (Google Speech)' },
-      { name: 'pl-PL-Standard-B', label: 'Standard B (Google Speech)' },
-      { name: 'pl-PL-Standard-C', label: 'Standard C (Google Speech)' },
-      { name: 'pl-PL-Standard-D', label: 'Standard D (Google Speech)' },
-      { name: 'pl-PL-Standard-E', label: 'Standard E (Google Speech)' },
-      { name: 'pl-PL-Wavenet-A', label: 'Wavenet A (Google Speech)' },
-      { name: 'pl-PL-Wavenet-B', label: 'Wavenet B (Google Speech)' },
-      { name: 'pl-PL-Wavenet-C', label: 'Wavenet C (Google Speech)' },
-      { name: 'pl-PL-Wavenet-D', label: 'Wavenet D (Google Speech)' },
-      { name: 'pl-PL-Wavenet-E', label: 'Wavenet E (Google Speech)' },
-    ],
-  };
-
   const filteredVoices = availableVoices.filter(voice => {
     const langCode = baseLang(preferences.stt_language);
     const voiceLang = baseLang(voice.lang);
     return voiceLang === langCode;
   });
 
-  const currentCloudVoices = cloudVoices[preferences.stt_language] || [];
+  const hasPollyVoice = POLLY_SUPPORTED_LANGS.has(preferences.stt_language);
 
   const getTestPhrase = (language: string): string => {
     const phrases: Record<string, string> = {
@@ -197,28 +169,25 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
   const handlePreviewVoice = async () => {
     const testPhrase = getTestPhrase(preferences.stt_language || 'en-US');
     const voiceName = preferences.tts_voice;
-    const isChirp3Voice = voiceName?.includes('Chirp3-HD');
-    const isGoogleSpeechVoice = voiceName?.includes('-Standard-') || voiceName?.includes('-Wavenet-');
-    const isCloudVoice = isChirp3Voice || isGoogleSpeechVoice;
+    const isCloudVoice = voiceName === POLLY_CLOUD_VOICE_ID;
     setIsTesting(true);
 
     try {
       if (isCloudVoice) {
-        const { supabase } = await import('@/integrations/supabase/client');
-        
-        // Route to appropriate TTS function
-        const functionName = isChirp3Voice ? 'google-gemini-tts' : 'google-cloud-tts';
-        
-        const { data, error } = await supabase.functions.invoke(functionName, {
-          body: {
+        if (!GATEWAY_URL) throw new Error('Gateway not configured');
+        const resp = await fetch(`${GATEWAY_URL}/api/v1/orb/tts`, {
+          method: 'POST',
+          headers: await authHeaders(),
+          body: JSON.stringify({
             text: testPhrase,
-            voiceId: voiceName,
-            languageCode: preferences.stt_language || 'en-US',
-          },
+            lang: baseLang(preferences.stt_language || 'en-US'),
+          }),
         });
-        if (error) throw error;
-        if (!data?.audioContent) throw new Error('No audio content received');
-        const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
+        const data = await resp.json().catch(() => null);
+        if (!resp.ok || !data?.ok || !data?.audio_b64) {
+          throw new Error(data?.error || `gateway TTS failed (${resp.status})`);
+        }
+        const audio = new Audio(`data:${data.mime || 'audio/mp3'};base64,${data.audio_b64}`);
         audio.volume = preferences.tts_volume / 100;
         audio.onended = () => setIsTesting(false);
         audio.onerror = () => setIsTesting(false);
@@ -304,23 +273,14 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
               <SelectValue placeholder={t('screens.assistant.selectVoice')} />
             </SelectTrigger>
             <SelectContent>
-              {currentCloudVoices.length > 0 && (
-                <>
-                  <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
-                    {preferences.stt_language === 'sr-RS' 
-                      ? 'Google Speech API (High Quality)' 
-                      : 'Google Gemini Chirp 3 HD (Premium)'}
-                  </div>
-                  {currentCloudVoices.map((voice) => (
-                    <SelectItem key={voice.name} value={voice.name}>
-                      {voice.label}
-                    </SelectItem>
-                  ))}
-                </>
+              {hasPollyVoice && (
+                <SelectItem value={POLLY_CLOUD_VOICE_ID}>
+                  {t('screens.assistant.voiceProviderLabel_polly')}
+                </SelectItem>
               )}
               {filteredVoices.filter(v => !v.name.toLowerCase().includes('microsoft')).length > 0 && (
                 <>
-                  {currentCloudVoices.length > 0 && (
+                  {hasPollyVoice && (
                     <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-2 pt-2">
                       {t('screens.assistant.browserVoices')}
                     </div>
@@ -334,8 +294,8 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
                     ))}
                 </>
               )}
-              {filteredVoices.filter(v => !v.name.toLowerCase().includes('microsoft')).length === 0 && 
-               currentCloudVoices.length === 0 && (
+              {filteredVoices.filter(v => !v.name.toLowerCase().includes('microsoft')).length === 0 &&
+               !hasPollyVoice && (
                 <SelectItem value="" disabled>
                   {t('screens.assistant.noVoicesAvailable')}
                 </SelectItem>
@@ -343,10 +303,8 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
-            {currentCloudVoices.length > 0
-              ? preferences.stt_language === 'sr-RS'
-                ? t('screens.assistant.voiceProviderHint_googleSpeech')
-                : t('screens.assistant.voiceProviderHint_geminiChirp')
+            {preferences.tts_voice === POLLY_CLOUD_VOICE_ID
+              ? t('screens.assistant.voiceProviderHint_polly')
               : filteredVoices.length === 0
               ? t('screens.assistant.voiceProviderHint_noVoicesAvailable', { lang: baseLang(preferences.stt_language).toUpperCase() })
               : t('screens.assistant.voiceProviderHint_browserVoices')

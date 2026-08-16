@@ -2729,8 +2729,8 @@
       "referrals": "Preporuke",
       "creativityValue0": "Kreativnost: {value0}",
       "languageSettingControlsWhatLanguageText": "Podešavanje „Jezik“ kontroliše na kom jeziku se generiše tekst. Podešavanje „Glas“ kontroliše koji glas za pretvaranje teksta u govor ga čita naglas. Automatski su sinhronizovani radi jednostavnosti.",
-      "voiceProviderHint_googleSpeech": "Google Speech API pruža visokokvalitetnu sintezu govora",
-      "voiceProviderHint_geminiChirp": "Gemini Chirp 3 HD glasovi pružaju vrhunski, prirodan govor sa emocionalnom rezonancijom",
+      "voiceProviderHint_polly": "Amazon Polly pruža visokokvalitetnu, prirodno zvučeću sintezu govora",
+      "voiceProviderLabel_polly": "Amazon Polly (preporučeno)",
       "voiceProviderHint_noVoicesAvailable": "Nema dostupnih glasova za {lang}. Instaliraj glas u podešavanjima OS-a/pregledača.",
       "voiceProviderHint_browserVoices": "Korišćenje glasova zasnovanih na pregledaču"
     },

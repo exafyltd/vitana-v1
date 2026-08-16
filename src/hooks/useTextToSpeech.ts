@@ -1,12 +1,74 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useUserPreferences } from './useUserPreferences';
+import { useUserPreferences, type UserPreferences } from './useUserPreferences';
 import { useAIConsent } from './useAIConsent';
 import { supabase } from '@/integrations/supabase/client';
+
+// VTID-03651: GCP billing was disabled 2026-08-16. This hook used to call
+// two Supabase edge functions (`google-gemini-tts`, `google-cloud-tts`) that
+// reach Google Cloud APIs directly — a path the gateway's own TTS provider
+// flag (TTS_PROVIDER=polly) never covered, because this hook never went
+// through the gateway at all. With GCP dead those two edge functions now
+// error on every call, so every user with AI consent enabled got silence
+// (no browser-TTS fallback existed on this branch).
+//
+// Fixed by routing through the gateway's existing Polly-backed
+// POST /api/v1/orb/tts (routes/orb-live.ts) instead — it already tries
+// Amazon Polly first when TTS_PROVIDER=polly (live in prod) and only reads
+// the now-dead Google Cloud TTS client as a fallback that will itself never
+// fire. Same pattern as useMarketplace.ts: normalize VITE_GATEWAY_URL to a
+// bare origin so this file doesn't need its own env var.
+const GATEWAY_URL = (
+  import.meta.env.VITE_GATEWAY_BASE ||
+  (import.meta.env.VITE_GATEWAY_URL || '').replace(/\/api\/v1\/?$/, '') ||
+  ''
+).replace(/\/+$/, '');
+
+async function authHeaders(): Promise<HeadersInit> {
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  return {
+    'Content-Type': 'application/json',
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+}
+
+/** langCode like 'de-DE' / 'sr-RS' -> the gateway's bare 'de' / 'sr'. */
+function toGatewayLang(sttLanguage: string): string {
+  return (sttLanguage.split('-')[0] || 'en').toLowerCase();
+}
 
 export interface TTSOptions {
   onStart?: () => void;
   onEnd?: () => void;
   onError?: (error: Error) => void;
+}
+
+/** The one TTS path with zero external dependencies — used for no-consent
+ *  sessions and as the fallback whenever the gateway/Polly call fails. */
+function speakViaBrowser(
+  text: string,
+  preferences: UserPreferences,
+  lang: string,
+  setIsSpeaking: (v: boolean) => void,
+  options?: TTSOptions,
+): void {
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = preferences.tts_speed || 1.0;
+  utterance.pitch = preferences.tts_pitch || 1.0;
+  utterance.volume = preferences.tts_volume / 100;
+  utterance.lang = lang;
+
+  utterance.onend = () => {
+    setIsSpeaking(false);
+    options?.onEnd?.();
+  };
+
+  utterance.onerror = () => {
+    setIsSpeaking(false);
+    options?.onError?.(new Error('Speech synthesis failed'));
+  };
+
+  window.speechSynthesis.speak(utterance);
 }
 
 export function useTextToSpeech() {
@@ -40,79 +102,33 @@ export function useTextToSpeech() {
       options?.onStart?.();
       
       const sttLanguage = preferences.stt_language || 'en-US';
-      const userVoice = preferences.tts_voice;
-      
-      // Determine which TTS service to use
-      const isSerbian = sttLanguage === 'sr-RS';
-      const isChirp3Voice = userVoice?.includes('Chirp3-HD');
-      const isGoogleSpeechVoice = userVoice?.includes('-Standard-') || userVoice?.includes('-Wavenet-');
-      
-      // GEMINI VOICE MAP: For Chirp 3 HD voices
-      const GEMINI_VOICE_MAP: Record<string, string> = {
-        'en-US': 'en-US-Chirp3-HD-Leda',
-        'de-DE': 'de-DE-Chirp3-HD-Achernar',
-        'ar-XA': 'ar-XA-Chirp3-HD-Aoede',
-        'es-ES': 'es-ES-Chirp3-HD-Gacrux',
-        'ru-RU': 'ru-RU-Chirp3-HD-Kore',
-        'zh-CN': 'cmn-CN-Chirp3-HD-Leda',
-        'cmn-CN': 'cmn-CN-Chirp3-HD-Leda',
-        'fr-FR': 'fr-FR-Chirp3-HD-Pulcherrima',
-        'pt-PT': 'pt-PT-Chirp3-HD-Zephyr',
-        'pl-PL': 'pl-PL-Chirp3-HD-Despina',
-      };
-
-      // GOOGLE SPEECH VOICE MAP: Only for Serbian
-      const GOOGLE_SPEECH_VOICE_MAP: Record<string, string> = {
-        'sr-RS': 'sr-RS-Standard-B',
-      };
 
       // Route to appropriate TTS service
       // If no AI consent, skip cloud TTS and fall back to browser speechSynthesis
       if (!hasConsent) {
         console.log('[TTS] No AI consent — falling back to browser TTS');
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = preferences.tts_speed || 1.0;
-        utterance.pitch = preferences.tts_pitch || 1.0;
-        utterance.volume = preferences.tts_volume / 100;
-        utterance.lang = sttLanguage;
-
-        utterance.onend = () => {
-          setIsSpeaking(false);
-          options?.onEnd?.();
-        };
-
-        utterance.onerror = () => {
-          setIsSpeaking(false);
-          options?.onError?.(new Error('Speech synthesis failed'));
-        };
-
-        window.speechSynthesis.speak(utterance);
+        speakViaBrowser(text, preferences, sttLanguage, setIsSpeaking, options);
         return;
       }
 
-      if (isChirp3Voice || (!isGoogleSpeechVoice && !isSerbian)) {
-        // Use Gemini TTS (Chirp 3 HD)
-        const voiceId = isChirp3Voice ? userVoice : GEMINI_VOICE_MAP[sttLanguage];
-        
-        if (!voiceId) {
-          setIsSpeaking(false);
-          throw new Error(`Gemini TTS voice unavailable for ${sttLanguage}`);
+      if (!GATEWAY_URL) {
+        speakViaBrowser(text, preferences, sttLanguage, setIsSpeaking, options);
+        return;
+      }
+
+      try {
+        console.log('[TTS] Requesting gateway TTS (Polly), lang=', sttLanguage);
+        const resp = await fetch(`${GATEWAY_URL}/api/v1/orb/tts`, {
+          method: 'POST',
+          headers: await authHeaders(),
+          body: JSON.stringify({ text, lang: toGatewayLang(sttLanguage) }),
+        });
+        const data = await resp.json().catch(() => null);
+        if (!resp.ok || !data?.ok || !data?.audio_b64) {
+          throw new Error(data?.error || `gateway TTS failed (${resp.status})`);
         }
 
-        console.log('[TTS] Using Gemini Chirp 3 HD:', voiceId, 'lang=', sttLanguage);
-        
-        const { data, error } = await supabase.functions.invoke('google-gemini-tts', {
-          body: {
-            text,
-            voiceId,
-            languageCode: sttLanguage
-          }
-        });
-
-        if (error) throw error;
-        if (!data?.audioContent) throw new Error('No audio content received');
-
-        const audio = new Audio(`data:audio/wav;base64,${data.audioContent}`);
+        const audio = new Audio(`data:${data.mime || 'audio/mp3'};base64,${data.audio_b64}`);
         audio.volume = preferences.tts_volume / 100;
 
         audio.onended = () => {
@@ -126,62 +142,13 @@ export function useTextToSpeech() {
         };
 
         await audio.play();
-      } else if (isSerbian || isGoogleSpeechVoice) {
-        // Use Google Speech API (only for Serbian or explicitly selected Google Speech voices)
-        const voiceId = isGoogleSpeechVoice ? userVoice : GOOGLE_SPEECH_VOICE_MAP[sttLanguage];
-        
-        if (!voiceId) {
-          setIsSpeaking(false);
-          throw new Error(`Google Speech voice unavailable for ${sttLanguage}`);
-        }
-
-        console.log('[TTS] Using Google Speech API:', voiceId, 'lang=', sttLanguage);
-        
-        const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
-          body: {
-            text,
-            voiceId,
-            languageCode: sttLanguage
-          }
-        });
-
-        if (error) throw error;
-        if (!data?.audioContent) throw new Error('No audio content received');
-
-        const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
-        audio.volume = preferences.tts_volume / 100;
-
-        audio.onended = () => {
-          setIsSpeaking(false);
-          options?.onEnd?.();
-        };
-
-        audio.onerror = () => {
-          setIsSpeaking(false);
-          options?.onError?.(new Error('Audio playback failed'));
-        };
-
-        await audio.play();
-      } else {
-        // Fallback to browser TTS
-        console.log('[TTS] Fallback to browser TTS');
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = preferences.tts_speed || 1.0;
-        utterance.pitch = preferences.tts_pitch || 1.0;
-        utterance.volume = preferences.tts_volume / 100;
-        utterance.lang = sttLanguage;
-        
-        utterance.onend = () => {
-          setIsSpeaking(false);
-          options?.onEnd?.();
-        };
-        
-        utterance.onerror = () => {
-          setIsSpeaking(false);
-          options?.onError?.(new Error('Speech synthesis failed'));
-        };
-        
-        window.speechSynthesis.speak(utterance);
+      } catch (gatewayError) {
+        // VTID-03651: never leave the user in silence because the network
+        // call failed — degrade to browser TTS same as the no-consent path,
+        // rather than surfacing only an onError callback most call sites
+        // don't render anything for.
+        console.warn('[TTS] Gateway TTS failed, falling back to browser TTS:', (gatewayError as Error).message);
+        speakViaBrowser(text, preferences, sttLanguage, setIsSpeaking, options);
       }
     } catch (error) {
       setIsSpeaking(false);
