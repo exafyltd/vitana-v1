@@ -5833,6 +5833,7 @@
       "you": "(Tú)",
       "downloadImage": "Descargar imagen",
       "openNewTab": "Abrir en nueva pestaña",
+      "viewFullscreen": "Ver en pantalla completa",
       "close": "Cerrar",
       "composeMessage": "Redactar mensaje",
       "newGroupChat": "Nuevo chat grupal",
@@ -5993,7 +5994,8 @@
       "inspirationTpl_celebrate3": "Tu progreso es inspirador - ¡sigue haciendo un trabajo fantástico! 🌟",
       "loadingOlderMessages": "Cargando mensajes antiguos…",
       "conversationStart": "Inicio de la conversación",
-      "anonymous": "Anónimo"
+      "anonymous": "Anónimo",
+      "vitanaOpenScreen": "Abrir pantalla"
     },
     "mobile": {
       "searching": "Buscando…",
@@ -6004,7 +6006,7 @@
       "openLiveRooms": "Abrir salas en vivo",
       "search": "Buscar",
       "calendar": "Calendario",
-      "alerts": "Notificaciones",
+      "alerts": "Información",
       "autopilot": "Piloto automático",
       "cart": "Carrito",
       "openMyProfile": "Abrir mi perfil",

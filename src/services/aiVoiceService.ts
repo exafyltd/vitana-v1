@@ -242,7 +242,7 @@ export class AIVoiceService {
     console.info('[streaming] Sending text message:', text.substring(0, 50));
     
     // RULE 8: Assert language is valid before sending
-    const ALLOWED_LANGUAGES = ['en-US', 'sr-RS', 'de-DE', 'ar-XA', 'es-ES', 'ru-RU', 'zh-CN', 'fr-FR', 'pt-PT', 'pl-PL'];
+    const ALLOWED_LANGUAGES = ['en-US', 'sr-RS', 'de-DE', 'ar-XA', 'es-ES', 'ru-RU', 'zh-CN', 'fr-FR', 'pt-BR', 'pl-PL'];
     if (language && !ALLOWED_LANGUAGES.includes(language)) {
       console.error('[streaming] Invalid language:', language);
       throw new Error(`Invalid language: ${language}`);

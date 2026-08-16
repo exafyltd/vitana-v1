@@ -5997,7 +5997,9 @@
       "value0Participants": "{value0}名参与者",
       "value0Members": "{value0}名成员",
       "chooseConversationFromLeftStartMessaging": "在左侧选择一个对话来发送消息。",
-      "anonymous": "匿名"
+      "anonymous": "匿名",
+      "vitanaOpenScreen": "打开屏幕",
+      "viewFullscreen": "全屏查看"
     },
     "mobile": {
       "searching": "正在搜索…",
@@ -6008,7 +6010,7 @@
       "openLiveRooms": "打开直播间",
       "search": "搜索",
       "calendar": "日历",
-      "alerts": "通知",
+      "alerts": "信息",
       "autopilot": "自动驾驶",
       "cart": "购物车",
       "openMyProfile": "打开我的个人资料",

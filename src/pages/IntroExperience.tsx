@@ -335,7 +335,9 @@ export default function IntroExperience() {
               )}
             </Button>
             
-            {/* Language Toggle - circular, shows opposite flag */}
+            {/* Language picker - circular, shows the CURRENT language's flag and
+                opens the full GA language list (VTID-03580; was a DE<->EN toggle
+                showing the opposite flag, which could only reach 2 of 8). */}
             <LanguageToggleButton size="md" />
           </div>
 

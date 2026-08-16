@@ -40,7 +40,7 @@ const languages = [
   { label: "Russian", value: "ru-RU" },
   { label: "Chinese", value: "zh-CN" },
   { label: "French", value: "fr-FR" },
-  { label: "Portuguese", value: "pt-PT" },
+  { label: "Portuguese (BR)", value: "pt-BR" },
   { label: "Polish", value: "pl-PL" }
 ];
 

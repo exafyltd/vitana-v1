@@ -17,7 +17,8 @@
       "hostAndSell": "استضف وبع التذاكر",
       "resellAndEarn": "أعد البيع واكسب",
       "offerBookings": "قدم حجوزات",
-      "boostVisibility": "عزز الظهور"
+      "boostVisibility": "عزز الظهور",
+      "_pending_review": {}
     },
     "history": {
       "all": "الكل",
@@ -38,7 +39,8 @@
       "allTime": "إجمالي الوقت",
       "details": "التفاصيل",
       "earningsActivity": "نشاط الأرباح",
-      "noEarningsStartSelling": "لا توجد أرباح بعد. ابدأ البيع لترى النشاط هنا."
+      "noEarningsStartSelling": "لا توجد أرباح بعد. ابدأ البيع لترى النشاط هنا.",
+      "_pending_review": {}
     },
     "kpi": {
       "totalEarnings": "إجمالي الأرباح",
@@ -61,7 +63,8 @@
       "resellerCommissions": "عمولات الموزع",
       "goToSellEarn": "بيع واكسب",
       "totalEarned": "إجمالي المكتسب",
-      "earningsBySource": "الأرباح حسب المصدر"
+      "earningsBySource": "الأرباح حسب المصدر",
+      "_pending_review": {}
     },
     "reseller": {
       "upcomingEvents": "الفعاليات القادمة",
@@ -84,7 +87,8 @@
       "noPayoutsYet": "لا توجد دفعات بعد",
       "attributedSales": "المبيعات المنسوبة حسب الفعالية",
       "noSalesMatchFilter": "لا توجد مبيعات تطابق الفلاتر الحالية",
-      "mockDataActive": "بيانات وهمية نشطة"
+      "mockDataActive": "بيانات وهمية نشطة",
+      "_pending_review": {}
     },
     "transfer": {
       "title": "طلب صرف",
@@ -93,7 +97,8 @@
       "wallet": "المحفظة",
       "instantCredit": "سيتم مراجعة طلبك من قبل فريقنا قبل إضافته إلى رصيد محفظتك.",
       "transferring": "جاري الطلب...",
-      "transfer": "طلب"
+      "transfer": "طلب",
+      "_pending_review": {}
     },
     "typeSelector": {
       "title": "ابدأ عملًا تجاريًا",
@@ -106,7 +111,8 @@
       "badgeNew": "جديد",
       "badgeActive": "نشط",
       "alreadyReseller": "أنت بالفعل موزع! تحقق من علامة تبويب \"بيع واكسب\".",
-      "cancel": "إلغاء"
+      "cancel": "إلغاء",
+      "_pending_review": {}
     },
     "missionOpportunities": {
       "title": "فرص المهام",
@@ -119,8 +125,12 @@
         "find_match": "ابحث عن تطابق",
         "marketplace": "السوق",
         "income_generation": "توليد الدخل",
-        "business_formation": "تكوين الأعمال"
-      }
-    }
-  }
+        "business_formation": "تكوين الأعمال",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

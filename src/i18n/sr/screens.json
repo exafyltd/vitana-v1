@@ -5833,6 +5833,7 @@
       "you": "(Ti)",
       "downloadImage": "Preuzmi sliku",
       "openNewTab": "Otvori u novom tabu",
+      "viewFullscreen": "Prikaži preko celog ekrana",
       "close": "Zatvori",
       "composeMessage": "Sastavi poruku",
       "newGroupChat": "Novi grupni čet",
@@ -5993,7 +5994,8 @@
       "inspirationTpl_celebrate3": "Tvoj napredak je inspirativan – nastavi sa fantastičnim radom! 🌟",
       "loadingOlderMessages": "Učitavanje starijih poruka…",
       "conversationStart": "Početak razgovora",
-      "anonymous": "Anoniman"
+      "anonymous": "Anoniman",
+      "vitanaOpenScreen": "Otvori ekran"
     },
     "mobile": {
       "searching": "Pretražujem…",
@@ -6004,7 +6006,7 @@
       "openLiveRooms": "Otvori uživo sobe",
       "search": "Pretraga",
       "calendar": "Kalendar",
-      "alerts": "Obaveštenja",
+      "alerts": "Info",
       "autopilot": "Autopilot",
       "cart": "Korpa",
       "openMyProfile": "Otvori moj profil",

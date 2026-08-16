@@ -27,7 +27,7 @@ interface VoiceSettingsPanelProps {
 // users see only browser voices here, same as any language with none.
 const POLLY_CLOUD_VOICE_ID = '__polly__';
 const POLLY_SUPPORTED_LANGS = new Set([
-  'en-US', 'de-DE', 'es-ES', 'ar-XA', 'ru-RU', 'zh-CN', 'fr-FR', 'pt-PT', 'pl-PL',
+  'en-US', 'de-DE', 'es-ES', 'ar-XA', 'ru-RU', 'zh-CN', 'fr-FR', 'pt-BR', 'pl-PL',
 ]);
 
 const GATEWAY_URL = (
@@ -160,7 +160,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
       'ru-RU': 'Привет, это предварительный просмотр выбранных настроек голоса.',
       'zh-CN': '您好，这是您所选语音设置的预览。',
       'fr-FR': 'Bonjour, ceci est un aperçu de vos paramètres vocaux sélectionnés.',
-      'pt-PT': 'Olá, esta é uma prévia das configurações de voz selecionadas.',
+      'pt-BR': 'Olá, esta é uma prévia das configurações de voz selecionadas.',
       'pl-PL': 'Cześć, to jest podgląd wybranych ustawień głosu.',
     };
     return phrases[language] || phrases['en-US'];
@@ -245,7 +245,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
               <SelectItem value="ru-RU">{t('screens.assistant.russianRu')}</SelectItem>
               <SelectItem value="zh-CN">{t('screens.assistant.chineseCn')}</SelectItem>
               <SelectItem value="fr-FR">{t('screens.assistant.frenchFr')}</SelectItem>
-              <SelectItem value="pt-PT">{t('screens.assistant.portuguesePt')}</SelectItem>
+              <SelectItem value="pt-BR">{t('screens.assistant.portuguesePt')}</SelectItem>
               <SelectItem value="pl-PL">{t('screens.assistant.polishPl')}</SelectItem>
             </SelectContent>
           </Select>

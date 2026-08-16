@@ -4,23 +4,23 @@
       "anchorHeading": "Privado por design.",
       "subheading": "Quatro promessas, em todos os planos — grátis ou pagos.",
       "owned": {
-        "title": "Tu és dono do que partilhas.",
+        "title": "Você é dono do que compartilha.",
         "body": "Memória, perfil, recomendações — tudo visível, exportável, eliminável a qualquer momento.",
         "_pending_review": {}
       },
       "noSell": {
-        "title": "Nunca vendemos os teus dados.",
+        "title": "Nunca vendemos seus dados.",
         "body": "Nem a redes de anúncios, nem a corretores de dados, nem a parceiros. Imposto em código.",
         "_pending_review": {}
       },
       "earn": {
-        "title": "As tuas recomendações podem render-te.",
-        "body": "Quando a tua recomendação fecha uma venda através de Vende e Ganha, ou quando hospedas uma Sala ao Vivo paga, o rendimento é teu — divulgado transparentemente.",
+        "title": "Suas recomendações podem render para você.",
+        "body": "Quando sua recomendação fecha uma venda através do Venda e Ganhe, ou quando você hospeda uma Sala ao Vivo paga, a renda é sua — divulgada de forma transparente.",
         "_pending_review": {}
       },
       "control": {
-        "title": "Tu decides o que Vende e Ganha faz por ti.",
-        "body": "Três interruptores nas tuas definições de Conexão dão-te controlo total.",
+        "title": "Você decide o que o Venda e Ganhe faz por você.",
+        "body": "Três chaves nas suas configurações de Conectar dão a você controle total.",
         "_pending_review": {}
       },
       "_pending_review": {}
@@ -104,14 +104,14 @@
       "credits": "{credits} créditos",
       "creditsWithBonus": "{credits} créditos +{bonus} bônus",
       "buy": "Comprar",
-      "yourBalance": "Teu saldo: {amount} créditos",
+      "yourBalance": "Seu saldo: {amount} créditos",
       "starterShort": "Inicial",
       "boostShort": "Impulso",
       "powerShort": "Potência",
       "_pending_review": {}
     },
     "redeemCard": {
-      "title": "Tens um código?",
+      "title": "Tem um código?",
       "placeholder": "VITANA-XXXX-XXXX",
       "button": "Resgatar",
       "redeeming": "Resgatando…",
@@ -123,7 +123,7 @@
         "expired": "Código expirado",
         "maxUsed": "Código foi usado demasiadas vezes",
         "alreadyRedeemed": "Já resgataste este código",
-        "stripeActive": "Já tens Premium — guarda este código para mais tarde",
+        "stripeActive": "Você já tem Premium — guarde este código para depois.",
         "budgetExhausted": "Campanha pausada — por favor, tenta novamente mais tarde",
         "generic": "Não foi possível resgatar o código",
         "_pending_review": {}
@@ -131,9 +131,9 @@
       "_pending_review": {}
     },
     "earnings": {
-      "title": "Teus ganhos (este ano)",
+      "title": "Seus ganhos (este ano)",
       "youPaid": "Pagaste à Vitana",
-      "youEarned": "A Vitana ajudou-te a ganhar (Vende e Ganha)",
+      "youEarned": "Vitana ajudou você a ganhar (Venda e Ganhe)",
       "net": "Líquido",
       "withdraw": "Retirar",
       "empty": "Nenhum ganho ainda",
@@ -170,14 +170,14 @@
       "_pending_review": {}
     },
     "state": {
-      "freeStatus": "Estás no Vitana Free",
+      "freeStatus": "Você está no Vitana Grátis",
       "freeBody": "Experimente Premium grátis por 14 dias.",
       "premiumActive": "Vitana Premium",
       "renewsAt": "Renova em {date}",
       "autoGrantUntil": "Concedido automaticamente no lançamento · até {date}",
       "cancelAtPeriodEnd": "Será cancelado no fim do período",
       "pastDue": "Pagamento falhou",
-      "pastDueBody": "Atualiza o teu método de pagamento para manteres o Premium.",
+      "pastDueBody": "Atualize seu método de pagamento para manter o Premium.",
       "manage": "Gerir",
       "viewPlans": "Ver Premium",
       "upgrade": "Atualizar",
@@ -188,9 +188,9 @@
     },
     "subscriptionsPage": {
       "title": "Subscrições",
-      "subtitle": "Gere o teu Vitana Premium e créditos",
+      "subtitle": "Gerencie seu Vitana Premium e créditos",
       "tabs": {
-        "yourPlan": "O teu plano",
+        "yourPlan": "Seu plano",
         "billing": "Faturação",
         "_pending_review": {}
       },
@@ -201,16 +201,16 @@
       "q1": "O que ganho com o Premium?",
       "a1": "Mais tempo de voz ao vivo com ORB, mais alojamento em Salas ao Vivo, mais armazenamento e resumos pessoais mais rápidos.",
       "q2": "Qual a diferença vs. créditos?",
-      "a2": "Os créditos são para uso ocasional. O Premium dá-te mais de tudo continuamente — desenhado para uso diário.",
+      "a2": "Os créditos são para uso ocasional. O Premium te dá mais de tudo continuamente — desenhado para uso diário.",
       "q3": "Posso cancelar a qualquer altura?",
       "a3": "Sim, sem contrato. Manténs o Premium até ao fim do período atual.",
       "q4": "Vendes os meus dados?",
-      "a4": "Nunca. Nunca vendemos os teus dados a redes de anúncios, corretores de dados ou parceiros.",
+      "a4": "Nunca. Nunca vendemos seus dados para redes de anúncios, corretores de dados ou parceiros.",
       "_pending_review": {}
     },
     "checkoutErrors": {
       "stripeNotConfigured": "Os pagamentos ainda não estão totalmente configurados. Tenta novamente mais tarde.",
-      "alreadySubscribed": "Já tens uma subscrição ativa. Gere-a no portal de faturação.",
+      "alreadySubscribed": "Você já tem uma assinatura ativa. Gerencie-a no portal de cobrança.",
       "noStripeCustomer": "Subscreve primeiro antes de usares o portal.",
       "checkoutFailed": "Pagamento falhou",
       "portalFailed": "Não foi possível abrir o portal de faturação",
@@ -220,11 +220,11 @@
   },
   "paywall": {
     "title": "Desbloquear Premium",
-    "softExtension": "Prolonguei o teu tempo grátis para hoje.",
+    "softExtension": "Eu estendi seu tempo grátis para hoje.",
     "creditsUsed": "Crédito usado — aproveita",
     "voice_live_minutes": {
       "title": "Tempo de voz ao vivo esgotado",
-      "body": "O teu tempo de voz ao vivo incluído foi usado. O ORB continuará no modo Padrão. Adiciona minutos ao vivo ou faz upgrade a qualquer momento.",
+      "body": "Seu tempo de voz ao vivo incluído foi usado. ORB continuará no modo Padrão. Adicione minutos ao vivo ou faça upgrade a qualquer momento.",
       "stayInStandard": "Continuar no modo Padrão",
       "addMinutes": "Adicionar minutos ao vivo",
       "_pending_review": {}
@@ -238,37 +238,37 @@
     },
     "match_posts": {
       "title": "Todas as publicações gratuitas usadas",
-      "body": "Usaste as tuas publicações gratuitas deste mês. O Premium dá-te mais.",
+      "body": "Você usou suas postagens grátis este mês. Premium oferece mais a você.",
       "_pending_review": {}
     },
     "match_reveals": {
       "title": "Revelar correspondência",
-      "body": "Usaste as tuas revelações gratuitas. Usa {credits} créditos ou faz upgrade para Premium.",
+      "body": "Você usou suas revelações grátis. Use {credits} créditos ou faça upgrade para Premium.",
       "_pending_review": {}
     },
     "lab_analyses": {
       "title": "Análises de laboratório usadas",
-      "body": "Usaste as tuas análises de laboratório este mês.",
+      "body": "Você usou suas análises de laboratório este mês.",
       "_pending_review": {}
     },
     "photo_uploads": {
       "title": "Carregamentos de fotos usados",
-      "body": "Usaste os teus carregamentos de fotos este mês.",
+      "body": "Você usou seus uploads de fotos este mês.",
       "_pending_review": {}
     },
     "memory_garden": {
       "title": "Jardim da memória cheio",
-      "body": "O Premium dá-te mais espaço.",
+      "body": "O Premium te dá mais espaço.",
       "_pending_review": {}
     },
     "autopilot": {
       "title": "Mais recomendações de Piloto Automático",
-      "body": "O Premium aumenta a tua contagem de recomendações ativas.",
+      "body": "Premium aumenta sua contagem de recomendações ativas.",
       "_pending_review": {}
     },
     "default": {
       "title": "Desbloquear Premium",
-      "body": "Usaste a tua quota gratuita para este período.",
+      "body": "Você usou sua cota grátis para este período.",
       "_pending_review": {}
     },
     "ctaUpgrade": "Desbloquear Premium",

@@ -5855,6 +5855,7 @@
       "you": "(أنت)",
       "downloadImage": "تنزيل الصورة",
       "openNewTab": "فتح في علامة تبويب جديدة",
+      "viewFullscreen": "عرض بملء الشاشة",
       "close": "إغلاق",
       "composeMessage": "إنشاء رسالة",
       "newGroupChat": "محادثة جماعية جديدة",
@@ -5997,7 +5998,8 @@
       "value0Participants": "{value0} مشاركين",
       "value0Members": "{value0} أعضاء",
       "chooseConversationFromLeftStartMessaging": "اختر محادثة من اليسار لإرسال الرسائل.",
-      "anonymous": "مجهول"
+      "anonymous": "مجهول",
+      "vitanaOpenScreen": "افتح الشاشة"
     },
     "mobile": {
       "searching": "جاري البحث…",
@@ -6008,7 +6010,7 @@
       "openLiveRooms": "افتح الغرف المباشرة",
       "search": "بحث",
       "calendar": "التقويم",
-      "alerts": "الإشعارات",
+      "alerts": "معلومات",
       "autopilot": "الطيار الآلي",
       "cart": "السلة",
       "openMyProfile": "افتح ملفي الشخصي",

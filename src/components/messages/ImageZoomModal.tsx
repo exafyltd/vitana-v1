@@ -1,6 +1,6 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContentNoAnimation } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { X, Download, ExternalLink } from "lucide-react";
+import { X, Download } from "lucide-react";
 import { t } from '@/lib/i18n-toast';
 
 interface ImageZoomModalProps {
@@ -20,13 +20,9 @@ export function ImageZoomModal({ isOpen, onClose, imageUrl, filename }: ImageZoo
     document.body.removeChild(link);
   };
 
-  const handleOpenInNewTab = () => {
-    window.open(imageUrl, '_blank');
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] p-0 overflow-hidden">
+      <DialogContentNoAnimation className="max-w-4xl max-h-[90vh] p-0 overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <h3 className="font-semibold truncate flex-1 mr-4">{filename}</h3>
@@ -38,14 +34,6 @@ export function ImageZoomModal({ isOpen, onClose, imageUrl, filename }: ImageZoo
               aria-label={t('screens.messages.downloadImage')}
             >
               <Download className="w-4 h-4" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleOpenInNewTab}
-              aria-label={t('screens.messages.openNewTab')}
-            >
-              <ExternalLink className="w-4 h-4" />
             </Button>
             <Button
               variant="ghost"
@@ -67,7 +55,7 @@ export function ImageZoomModal({ isOpen, onClose, imageUrl, filename }: ImageZoo
             loading="lazy"
           />
         </div>
-      </DialogContent>
+      </DialogContentNoAnimation>
     </Dialog>
   );
 }

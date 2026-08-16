@@ -5997,7 +5997,9 @@
       "value0Participants": "{value0} участников",
       "value0Members": "{value0} участников",
       "chooseConversationFromLeftStartMessaging": "Выбери беседу слева, чтобы отправить сообщения.",
-      "anonymous": "Анонимный"
+      "anonymous": "Анонимный",
+      "vitanaOpenScreen": "Открой экран",
+      "viewFullscreen": "Посмотреть на весь экран"
     },
     "mobile": {
       "searching": "Поиск…",
@@ -6008,7 +6010,7 @@
       "openLiveRooms": "Открыть Живые комнаты",
       "search": "Поиск",
       "calendar": "Календарь",
-      "alerts": "Уведомления",
+      "alerts": "Информация",
       "autopilot": "Автопилот",
       "cart": "Корзина",
       "openMyProfile": "Открыть мой профиль",
