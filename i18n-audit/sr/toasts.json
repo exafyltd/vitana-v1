@@ -120,19 +120,19 @@
     "toasts.success.loggedIn": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.success.loggedInDesc": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.success.loggedOut": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.success.loggedOutDesc": {
@@ -143,7 +143,7 @@
     "toasts.success.subscribed": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.success.subscribedDesc": {
@@ -154,7 +154,7 @@
     "toasts.success.unsubscribed": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.success.unsubscribedDesc": {
@@ -250,7 +250,7 @@
     "toasts.success.bulkEnabledDesc": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.error.generic": {
@@ -261,7 +261,7 @@
     "toasts.error.genericDesc": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.error.network": {
@@ -272,31 +272,31 @@
     "toasts.error.networkDesc": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.error.notAuthenticated": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.error.notAuthenticatedDesc": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.error.notAuthorized": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.error.notAuthorizedDesc": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.error.saveFailed": {
@@ -307,7 +307,7 @@
     "toasts.error.saveFailedDesc": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.error.loadFailed": {
@@ -348,7 +348,7 @@
     "toasts.error.sendFailedDesc": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.error.connectionFailed": {
@@ -369,7 +369,7 @@
     "toasts.error.validationFailedDesc": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.error.sessionExpired": {
@@ -380,7 +380,7 @@
     "toasts.error.sessionExpiredDesc": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.error.serverError": {
@@ -391,7 +391,7 @@
     "toasts.error.serverErrorDesc": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.error.notFound": {
@@ -432,7 +432,7 @@
     "toasts.info.processingDesc": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.info.updating": {
@@ -473,7 +473,7 @@
     "toasts.warning.unsavedChangesDesc": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.warning.limitReached": {
@@ -524,7 +524,7 @@
     "toasts.common.notLogged": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.common.pleaseLogCreateGroup": {
@@ -840,7 +840,7 @@
     "toasts.common.preparingYourDataExport": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.common.activitySavedMemory": {
@@ -921,7 +921,7 @@
     "toasts.admin.pleaseEnterYourGeminiApiKey": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.admin.apiKeyValid": {
@@ -932,7 +932,7 @@
     "toasts.admin.yourGeminiApiKeyWorkingCorrectly": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.admin.invalidApiKey": {
@@ -958,7 +958,7 @@
     "toasts.admin.invalidHeaders": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.admin.headersMustValidJson": {
@@ -994,7 +994,7 @@
     "toasts.admin.pleaseProvideBothNameValue": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.admin.credentialAdded": {
@@ -1380,7 +1380,7 @@
     "toasts.admin.pleaseSignCreateAutomations": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.admin.failedSaveAutomationRule": {
@@ -1416,13 +1416,13 @@
     "toasts.admin.failedResolveReport": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.admin.approveAllFailed": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.admin.toggleFailed": {
@@ -1483,7 +1483,7 @@
     "toasts.admin.stayinlineOverridesSaved": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.admin.systemDocUpdatedAppliesAcrossAll": {
@@ -1564,15 +1564,14 @@
     "toasts.admin.pleaseEnterValidEmailAddress2": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
-      "issue": "audit failed: Expected ',' or '}' after property value in JSON at position 767",
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
     "toasts.admin.selectAtLeastOneRole": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Izaberi bar jednu ulogu.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.admin.acceptLinkCopiedClipboard": {
       "verdict": "OK",
@@ -1665,11 +1664,10 @@
       "phase": "llm"
     },
     "toasts.audio.failedToggleCamera": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation is specific to 'turning on' (uključivanje) and misses the 'toggle' nuance (on/off or switch state).",
-      "suggested": "Prebacivanje kamere nije uspelo.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.audio.screenSharingStopped": {
       "verdict": "OK",
@@ -1877,11 +1875,10 @@
       "phase": "llm"
     },
     "toasts.community.yourEventCreatedButCouldnT": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Tvoj događaj je kreiran, ali nije mogao da se prikaže. Osveži stranicu.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.community.roomEnded": {
       "verdict": "OK",
@@ -1904,11 +1901,10 @@
       "phase": "llm"
     },
     "toasts.community.pleaseSignJoinLiveRooms": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Prijavi se da se pridružiš živim sobama.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.community.streamEnded": {
       "verdict": "OK",
@@ -2011,11 +2007,10 @@
       "phase": "llm"
     },
     "toasts.community.thisExampleRoomCreateYourOwn": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Ovo je primer sobe. Napravi svoju da kreneš uživo!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.crossover.bookingStarted": {
       "verdict": "OK",
@@ -2123,11 +2118,10 @@
       "phase": "llm"
     },
     "toasts.dev.reconnected": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Missing feminine form for the past participle.",
-      "suggested": "✅ Ponovo povezan/a",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.dev.liveEventStreamRestored": {
       "verdict": "OK",
@@ -2295,11 +2289,10 @@
       "phase": "llm"
     },
     "toasts.diary.notAuthenticated": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) and missing feminine form.",
-      "suggested": "Nisi autentifikovan/a",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.diary.pleaseLogSaveDiaryEntries": {
       "verdict": "OK",
@@ -2477,11 +2470,10 @@
       "phase": "llm"
     },
     "toasts.discovery.theyLlNotifiedYourInterest": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The Serbian 'Obavestiće se' is impersonal/passive reflexive, implying 'it will inform itself' or 'it will be informed'. The English 'They'll be notified' implies an active notification by someone/something else.",
-      "suggested": "Biće obavešteni o tvom interesovanju.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.discovery.superConnectSent": {
       "verdict": "OK",
@@ -2719,11 +2711,10 @@
       "phase": "llm"
     },
     "toasts.intents.ourSupportTeamWillReviewFollow": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation 'pratiti' (to follow/monitor) does not fully capture the nuance of 'follow up' (to take further action, to get back to someone).",
-      "suggested": "Naš tim podrške će pregledati i javiti ti se.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.intents.couldNotRaiseDispute": {
       "verdict": "OK",
@@ -2766,11 +2757,10 @@
       "phase": "llm"
     },
     "toasts.intents.ifTheyReInterestedTooWe": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Ako su i oni zainteresovani, povezaćemo te.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.intents.couldNotRecordInterest": {
       "verdict": "OK",
@@ -2788,11 +2778,10 @@
       "phase": "llm"
     },
     "toasts.intents.addAtLeastOneVitanaid": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Dodaj bar jedan @vitana-id",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.intents.networkError": {
       "verdict": "OK",
@@ -2825,11 +2814,10 @@
       "phase": "llm"
     },
     "toasts.intents.heicheifFormatNotSupportedByBrowsers": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "HEIC/HEIF format nije podržan u pretraživačima. Molimo konvertuj u JPG ili PNG.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.intents.coverPhotoUploaded": {
       "verdict": "OK",
@@ -2842,11 +2830,10 @@
       "phase": "llm"
     },
     "toasts.intents.youCanReplaceItAnyTime": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Možeš ga zameniti bilo kada.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.intents.coverPhotoRequired": {
       "verdict": "OK",
@@ -2854,11 +2841,10 @@
       "phase": "llm"
     },
     "toasts.intents.uploadOneTapGenerateForMe": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: formal verbs ('Otpremite', 'tapnite') with an informal command ('Generiši').",
-      "suggested": "Otpremi jednu, ili tapni ✨ Generiši za mene.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.liverooms.linkCopied": {
       "verdict": "OK",
@@ -3266,11 +3252,10 @@
       "phase": "llm"
     },
     "toasts.messages.failedUpdateMessagePleaseTryAgain": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Ažuriranje poruke nije uspelo. Pokušaj ponovo.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.messages.messageDeleted": {
       "verdict": "OK",
@@ -3283,11 +3268,10 @@
       "phase": "llm"
     },
     "toasts.messages.failedDeleteMessagePleaseTryAgain": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Brisanje poruke nije uspelo. Pokušaj ponovo.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.messages.failedLoadMembers": {
       "verdict": "OK",
@@ -3685,11 +3669,10 @@
       "phase": "llm"
     },
     "toasts.profile.pleaseEnterYourLinkedinProfileUrl": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Molimo unesi URL svog LinkedIn profila.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.profile.linkedinDataImported": {
       "verdict": "OK",
@@ -3697,11 +3680,10 @@
       "phase": "llm"
     },
     "toasts.profile.yourProfileHasEnrichedWithLinkedin": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Tvoj profil je obogaćen LinkedIn podacima.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.profile.importFailed": {
       "verdict": "OK",
@@ -3759,11 +3741,10 @@
       "phase": "llm"
     },
     "toasts.profile.heicheifFormatNotSupportedByBrowsers": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form). 'Pregledačima' is a good alternative to 'pretraživačima'.",
-      "suggested": "HEIC/HEIF format nije podržan u pregledačima. Molimo konvertuj u JPG ili PNG.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.profile.avatarUploaded": {
       "verdict": "OK",
@@ -3771,11 +3752,10 @@
       "phase": "llm"
     },
     "toasts.profile.repositionImageIfNeeded": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Pomeri sliku ako je potrebno.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.profile.onlyImagesAllowed": {
       "verdict": "OK",
@@ -3818,25 +3798,22 @@
       "phase": "llm"
     },
     "toasts.profile.pleaseSignSendMessages": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Prijavi se da šalješ poruke.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.profile.canTMessageYourself": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Ne možeš sebi da pišeš.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.profile.youCannotSendMessagesYourOwn": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Ne možeš slati poruke svom profilu.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.profile.messageSent": {
       "verdict": "OK",
@@ -3854,11 +3831,10 @@
       "phase": "llm"
     },
     "toasts.profile.failedSendMessagePleaseTryAgain": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Slanje poruke nije uspelo. Pokušaj ponovo.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.profile.qrCodeSavedSuccessfully": {
       "verdict": "OK",
@@ -3871,11 +3847,10 @@
       "phase": "llm"
     },
     "toasts.profile.shareItAnywhereYouLike": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register (Vi-form) used instead of informal (du-form).",
-      "suggested": "Podeli ga gde god želiš.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.profile.couldNotShare": {
       "verdict": "OK",
@@ -3883,11 +3858,10 @@
       "phase": "llm"
     },
     "toasts.profile.pleaseTryAgain": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Pokušaj ponovo.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.profile.couldNotUpdateVisibility": {
       "verdict": "OK",
@@ -3925,11 +3899,10 @@
       "phase": "llm"
     },
     "toasts.profile.categoryRequired": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Molim te prvo izaberi kategoriju.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.reminders.notificationsArenTSupportedThisBrowser": {
       "verdict": "OK",
@@ -3937,39 +3910,34 @@
       "phase": "llm"
     },
     "toasts.reminders.remindersEnabledYouLlGetNotified": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Podsetnici su omogućeni — dobićeš obaveštenje čak i kada je aplikacija zatvorena.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.reminders.notificationsBlockedYouCanReenableThem": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Obaveštenja su blokirana. Možeš ih ponovo omogućiti u podešavanjima pregledača.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.reminders.couldnTEnableNotificationsTryAgain": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Nije moguće omogućiti obaveštenja. Pokušaj ponovo za trenutak.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.reminders.pleaseEnterWhatRemindYouAbout": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Molim te unesi na šta da te podsetimo.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.reminders.pleasePickTime": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Molim te izaberi vreme.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.reminders.invalidTime": {
       "verdict": "OK",
@@ -3992,11 +3960,10 @@
       "phase": "llm"
     },
     "toasts.reseller.activatingYourResellerProfile": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Aktiviranje tvog prodajnog profila...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.reseller.linkCopiedClipboard": {
       "verdict": "OK",
@@ -4004,18 +3971,16 @@
       "phase": "llm"
     },
     "toasts.reseller.failedCopyPleaseSelectCopyManually": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Kopiranje nije uspelo. Molim te izaberi i kopiraj ručno.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.reseller.linkCopiedPasteItYourInstagram": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Link kopiran! Nalepi ga u svoj Instagram bio ili story.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.reseller.failedCopyLink": {
       "verdict": "OK",
@@ -4048,11 +4013,10 @@
       "phase": "llm"
     },
     "toasts.settings.yourNotificationPreferencesHaveSaved": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Tvoja podešavanja obaveštenja su sačuvana.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.settings.error": {
       "verdict": "OK",
@@ -4065,11 +4029,10 @@
       "phase": "llm"
     },
     "toasts.settings.yourQuietHoursHaveSaved": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Tvoji tihi sati su sačuvani.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.settings.failedUpdateQuietHours": {
       "verdict": "OK",
@@ -4102,18 +4065,16 @@
       "phase": "llm"
     },
     "toasts.settings.yourNotificationPreferencesHaveSaved2": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Tvoja podešavanja obaveštenja su sačuvana",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.settings.yourQuietHoursHaveUpdated": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Tvoji tihi sati su ažurirani",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.settings.roleSwitched": {
       "verdict": "OK",
@@ -4151,11 +4112,10 @@
       "phase": "llm"
     },
     "toasts.sharing.notAuthenticated": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Nisi autentifikovan.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.pleaseLogBlastPosts": {
       "verdict": "OK",
@@ -4323,25 +4283,22 @@
       "phase": "llm"
     },
     "toasts.sharing.pleaseFillSenderNameEmail": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Molim te popuni ime pošiljaoca i email.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.pleaseFillAllTwilioCredentials": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Molim te popuni sve Twilio akreditive.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.pleaseFillMetaApiCredentials": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Molim te popuni Meta API akreditive.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.directSharingNotSupportedThisDevice": {
       "verdict": "OK",
@@ -4359,25 +4316,22 @@
       "phase": "llm"
     },
     "toasts.sharing.linkSharedDownloadImageIncludeIt": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Link podeljen! Preuzmi sliku da bi je uključio.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.sharingFailedTryDownloadingInstead": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Deljenje nije uspelo. Pokušaj sa preuzimanjem.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.linkCopiedPasteItYourInstagram": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Link kopiran! Nalepi ga u svoj Instagram post.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.imageDownloadedReadyShareInstagram": {
       "verdict": "OK",
@@ -4410,11 +4364,10 @@
       "phase": "llm"
     },
     "toasts.sharing.viberNotDetectedPleaseCopyLink": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Viber nije detektovan. Molim te kopiraj link ručno.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.openingEmailClient": {
       "verdict": "OK",
@@ -4427,11 +4380,10 @@
       "phase": "llm"
     },
     "toasts.sharing.messageCopiedPasteItIntoViber": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Poruka kopirana – nalepi je u Viber",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.linkCopiedClipboard": {
       "verdict": "OK",
@@ -4444,11 +4396,10 @@
       "phase": "llm"
     },
     "toasts.sharing.yourGlobalPrivacyControlsHaveSaved": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Tvoje globalne kontrole privatnosti su sačuvane.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.openingMessenger": {
       "verdict": "OK",
@@ -4471,18 +4422,16 @@
       "phase": "llm"
     },
     "toasts.sharing.linkCopiedShareYoutube": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Link kopiran! Podeli na YouTube",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.linkCopiedShareTiktok": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Link kopiran! Podeli na TikTok",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.shareFailed": {
       "verdict": "OK",
@@ -4490,25 +4439,22 @@
       "phase": "llm"
     },
     "toasts.sharing.pleaseTryAgain": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Molim te pokušaj ponovo.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.selectDistributionChannels": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Izaberi kanale distribucije",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.pleaseSelectAtLeastOneChannel3": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Molim te izaberi bar jedan kanal za distribuciju.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.blastSuccessful": {
       "verdict": "OK",
@@ -4521,11 +4467,10 @@
       "phase": "llm"
     },
     "toasts.sharing.failedShareContentPleaseTryAgain": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal 'vi' instead of informal 'ti').",
-      "suggested": "Deljenje sadržaja nije uspelo. Molim te pokušaj ponovo.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.postPublished": {
       "verdict": "OK",
@@ -4643,11 +4588,10 @@
       "phase": "llm"
     },
     "toasts.wallet.added100CreditsYourWallet": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'vaš' (formal) should be 'tvoj' (informal).",
-      "suggested": "Dodato 100 CREDITS u tvoj novčanik",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.wallet.tokensPurchased": {
       "verdict": "OK",
@@ -4655,11 +4599,10 @@
       "phase": "llm"
     },
     "toasts.wallet.added50VtnaTokensYourWallet": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'vaš' (formal) should be 'tvoj' (informal).",
-      "suggested": "Dodato 50 VTNA tokena u tvoj novčanik",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.wallet.rewardsClaimed": {
       "verdict": "OK",
@@ -4667,11 +4610,10 @@
       "phase": "llm"
     },
     "toasts.wallet.added25VtnaRewardsYourWallet": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'vaš' (formal) should be 'tvoj' (informal).",
-      "suggested": "Dodato 25 VTNA nagrada u tvoj novčanik",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.wallet.withdrawalInitiated": {
       "verdict": "OK",
@@ -4849,11 +4791,10 @@
       "phase": "llm"
     },
     "toasts.hooks.youMustLoggedActivateResellerMode": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: formal 'vi' forms ('Morate', 'prijavljeni', 'da biste aktivirali') should be informal 'ti' forms.",
-      "suggested": "Moraš biti prijavljen da bi aktivirao režim preprodavca.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.resellerModeActive": {
       "verdict": "OK",
@@ -4861,25 +4802,22 @@
       "phase": "llm"
     },
     "toasts.hooks.yourResellerDashboardNowAvailableMy": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'Vaša' (formal) should be 'Tvoja' (informal).",
-      "suggested": "Tvoja kontrolna tabla za preprodavce je sada dostupna u Mom biznisu.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.welcomeReseller": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'Dobrodošli' (formal/plural) should be 'Dobrodošao' (informal/singular, masculine default).",
-      "suggested": "Dobrodošao, preprodavče! 🎉",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.youCanNowPromoteEventsEarn": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: formal 'vi' forms ('možete', 'Pogledajte') should be informal 'ti' forms.",
-      "suggested": "Sada možeš promovisati događaje i zarađivati provizije. Pogledaj svoju Prodaj i zaradi kontrolnu tablu.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.activationFailed": {
       "verdict": "OK",
@@ -4897,11 +4835,10 @@
       "phase": "llm"
     },
     "toasts.hooks.activityItemHasRemovedFromYour": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'vaše' (formal) should be 'tvoje' (informal).",
-      "suggested": "Stavka aktivnosti je uklonjena iz tvoje istorije.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.failedDeleteActivity": {
       "verdict": "OK",
@@ -4934,11 +4871,10 @@
       "phase": "llm"
     },
     "toasts.hooks.yourChangesHaveSavedAutomatically": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'Vaše' (formal) should be 'Tvoje' (informal).",
-      "suggested": "Tvoje izmene su automatski sačuvane",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.autosaveFailed": {
       "verdict": "OK",
@@ -4946,11 +4882,10 @@
       "phase": "llm"
     },
     "toasts.hooks.yourChangesCouldnTSavedPlease": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: formal 'vi' forms ('Vaše', 'Pokušajte') should be informal 'ti' forms.",
-      "suggested": "Tvoje izmene nisu mogle biti sačuvane. Pokušaj ponovo.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.automationRuleCreated": {
       "verdict": "OK",
@@ -4973,11 +4908,10 @@
       "phase": "llm"
     },
     "toasts.hooks.pleaseSignBookmarkItems": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: formal 'vi' forms ('Prijavite se', 'da biste obeležili') should be informal 'ti' forms.",
-      "suggested": "Prijavi se da bi obeležio stavke.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.alreadyBookmarked": {
       "verdict": "OK",
@@ -4985,11 +4919,10 @@
       "phase": "llm"
     },
     "toasts.hooks.thisItemAlreadyYourBookmarks": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'vašim' (formal) should be 'tvojim' (informal).",
-      "suggested": "Ova stavka je već u tvojim obeleživačima.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.bookmarked": {
       "verdict": "OK",
@@ -5077,11 +5010,10 @@
       "phase": "llm"
     },
     "toasts.hooks.responseRecordedButFailedUpdateYour": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'Možete' (formal) should be 'Možeš' (informal).",
-      "suggested": "Odgovor zabeležen, ali ažuriranje kalendara nije uspelo. Možeš ga dodati ručno.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.allScheduledPostsPaused": {
       "verdict": "OK",
@@ -5134,11 +5066,10 @@
       "phase": "llm"
     },
     "toasts.hooks.pleaseSignAddItemsCart": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: formal 'vi' forms ('Prijavite se', 'da biste dodali') should be informal 'ti' forms.",
-      "suggested": "Prijavi se da bi dodao stavke u korpu.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.addedCart": {
       "verdict": "OK",
@@ -5211,11 +5142,10 @@
       "phase": "llm"
     },
     "toasts.hooks.meetupUpdated": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Typo: 'Sastank' should be 'Sastanak'.",
-      "suggested": "Sastanak ažuriran! ✏️",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.failedUpdateMeetupPleaseTryAgain": {
       "verdict": "OK",
@@ -5423,11 +5353,10 @@
       "phase": "llm"
     },
     "toasts.hooks.generatingRecommendations": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Grammatical subject mismatch: 'Generišem' means 'I am generating', but the context implies a neutral status or passive voice.",
-      "suggested": "Generisanje preporuka",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.aiAnalyzingYourPreferences": {
       "verdict": "OK",
@@ -5830,18 +5759,16 @@
       "phase": "llm"
     },
     "toasts.hooks.pleaseGrantAiDataSharingConsent": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: formal 'vi' forms ('odobrite', 'da biste koristili') should be informal 'ti' forms.",
-      "suggested": "Molimo te da odobriš deljenje podataka sa AI-jem u Podešavanja > Privatnost da bi koristio ovu funkciju.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.pleaseWait": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'Sačekajte' (formal) should be 'Sačekaj' (informal).",
-      "suggested": "Sačekaj",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.rateLimitReached2": {
       "verdict": "OK",
@@ -5849,11 +5776,10 @@
       "phase": "llm"
     },
     "toasts.hooks.pleaseWaitFewSecondsTryAgain": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: formal 'vi' forms ('Sačekajte', 'pokušajte') should be informal 'ti' forms.",
-      "suggested": "Sačekaj nekoliko sekundi i pokušaj ponovo.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.aiUsageLimit": {
       "verdict": "OK",
@@ -5861,11 +5787,10 @@
       "phase": "llm"
     },
     "toasts.hooks.pleaseAddCreditsLovableAiWorkspace": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'Dodajte' (formal) should be 'Dodaj' (informal).",
-      "suggested": "Dodaj kredite u Lovable AI radni prostor.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.sessionNotDetected": {
       "verdict": "OK",
@@ -5873,11 +5798,10 @@
       "phase": "llm"
     },
     "toasts.hooks.logForPersonalizedTipsShowingGeneric": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'Prijavite se' (formal) should be 'Prijavi se' (informal).",
-      "suggested": "Prijavi se za personalizovane savete. Prikazujemo opšte smernice.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.configurationError": {
       "verdict": "OK",
@@ -5885,11 +5809,10 @@
       "phase": "llm"
     },
     "toasts.hooks.aiServiceNotConfiguredPleaseContact": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'Kontaktirajte' (formal) should be 'Kontaktiraj' (informal).",
-      "suggested": "AI servis nije konfigurisan. Kontaktiraj podršku.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.unableGenerateMessage": {
       "verdict": "OK",
@@ -5907,11 +5830,10 @@
       "phase": "llm"
     },
     "toasts.hooks.cannotSharePrivateProfile": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'Ne možete' (formal) should be 'Ne možeš' (informal).",
-      "suggested": "Ne možeš deliti privatni profil.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.profileMustPublicShare": {
       "verdict": "OK",
@@ -5934,11 +5856,10 @@
       "phase": "llm"
     },
     "toasts.hooks.pleaseTryAgain": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistency: 'Pokušajte' (formal) should be 'Pokušaj' (informal).",
-      "suggested": "Pokušaj ponovo",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.linkCopied": {
       "verdict": "OK",
@@ -6111,11 +6032,10 @@
       "phase": "llm"
     },
     "toasts.hooks.yourCameraContextNowAnalyzed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Awkward phrasing for 'camera context'. 'Kamerin kontekst' is grammatically possible but unnatural. More idiomatic to use 'kontekst vaše kamere'.",
-      "suggested": "Kontekst vaše kamere se sada analizira",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.cameraFailed": {
       "verdict": "OK",
@@ -6331,7 +6251,193 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "toasts.common.contentCreateFailed": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.business.noOrdersExport": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.business.ordersExported": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.liverooms.notifyOnTitle": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.liverooms.notifyOnDesc": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.liverooms.notifyOffTitle": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.liverooms.notifyOffDesc": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.liverooms.notifyError": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.liverooms.reminderActionText": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.liverooms.savedTitle": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.liverooms.savedDesc": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.liverooms.unsavedTitle": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.liverooms.unsavedDesc": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.liverooms.followedTitle": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.liverooms.followedDesc": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.liverooms.unfollowedTitle": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.liverooms.unfollowedDesc": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.profile.onlyImagesOrVideosAllowed": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.profile.videoMustUnder50mb": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.profile.couldNotReadSelectedFile": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.profile.videoTooLargeToCompress": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.profile.videoCompressionFailed": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.reminders.failedToCreate": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.reminders.failedToDelete": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.reminders.failedToMarkDone": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.reminders.remindersDeleted": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.wallet.depositCanceled": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.wallet.redirectingToCheckout": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.hooks.failedPurchaseTicket": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.dailyGoal.title": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.dailyGoal.body": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-05-20T07:33:31.091Z"
+  "generatedAt": "2026-08-16T04:14:46.750Z"
 }
