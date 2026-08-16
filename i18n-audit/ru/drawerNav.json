@@ -38,7 +38,7 @@
     "drawerNav.discover": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "Incorrect register: 'Исследуйте' is formal/plural, should be informal singular 'Исследуй'.",
+      "issue": "Incorrect register (вы-form instead of du-form)",
       "suggested": "Исследуй",
       "phase": "llm"
     },
@@ -88,5 +88,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:32:52.592Z"
+  "generatedAt": "2026-08-16T04:06:43.575Z"
 }

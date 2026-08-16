@@ -36,11 +36,10 @@
       "phase": "llm"
     },
     "sidebar.sharing": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The Russian translation 'Поделиться' is an infinitive verb ('to share'), which is grammatically awkward for a section or tab title. A noun form is expected.",
-      "suggested": "Обмен",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "sidebar.memory": {
       "verdict": "OK",
@@ -158,11 +157,10 @@
       "phase": "llm"
     },
     "sidebar.communications": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The singular 'Связь' is too general and less appropriate for 'Communications' as a UI section, which implies multiple forms or a broader category. 'Коммуникации' (plural loanword) is more common and accurate in this context.",
-      "suggested": "Коммуникации",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "sidebar.staffTools": {
       "verdict": "OK",
@@ -235,5 +233,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T02:06:53.932Z"
+  "generatedAt": "2026-08-16T04:09:32.212Z"
 }
