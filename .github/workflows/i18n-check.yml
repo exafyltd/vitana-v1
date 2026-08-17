@@ -15,6 +15,12 @@ on:
       - 'eslint.config.js'
       - 'docs/SCREEN_INVENTORY.md'
       - '.github/workflows/i18n-check.yml'
+      # VTID-03657: the locale-chunking guard reads the BUILD, so the file that
+      # decides the chunking has to be able to trigger it. Deleting the
+      # manualChunks rule touches nothing under src/, and without these two
+      # entries the one check that would catch it never runs.
+      - 'vite.config.ts'
+      - 'scripts/check-locale-chunking.mjs'
   push:
     branches: [main]
 
@@ -35,6 +41,23 @@ jobs:
 
       - name: Catalog audit (DE↔EN parity, _pending_review check)
         run: node scripts/i18n-audit.mjs --report-only
+
+      # VTID-03657 — a switch to any non-German locale must cost ONE request.
+      #
+      # `import.meta.glob` without `eager` emits a chunk per FILE, so before the
+      # manualChunks rule each locale shipped as ~104 chunks and `ensureCatalog`
+      # awaited all of them before merging any. Choosing Spanish meant 104
+      # fetches before one Spanish word appeared — which is what "only English
+      # and German switch instantly" actually was.
+      #
+      # Checked against the emitted bundle rather than the config, because the
+      # config states intent and the chunks are the fact. This is the only check
+      # that can see the regression at all: removing the rule breaks no test,
+      # changes no rendered string, and shows up solely as the UI feeling slow.
+      - name: Locale chunking (one chunk per lazy locale, de stays eager)
+        run: |
+          npm run build
+          node scripts/check-locale-chunking.mjs
 
       # VTID-03519. The other checks here can only see FILES. This one covers
       # the surface none of them can: DB-backed content. A locale that is `ga`
