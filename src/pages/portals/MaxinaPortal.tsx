@@ -297,33 +297,56 @@ const MaxinaPortal = () => {
     setLoading(true);
     setError("");
 
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+    // VTID-03652: neither signInWithPassword() nor the tenant-switch RPC
+    // after it carries a timeout, so a stalled connection to Supabase (the
+    // same unguarded-promise shape as AuthProvider's initial auth check)
+    // leaves this button spinning forever with nothing the user can do but
+    // reload — reported live as "login only endless spinning". Race the
+    // whole sequence against a bounded deadline so it always resolves.
+    let timedOut = false;
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => {
+        timedOut = true;
+        reject(new Error('sign-in timed out'));
+      }, 15_000);
+    });
 
-      if (error) {
-        setError(error.message);
-      } else {
-        // Preload demo images in background while user waits
-        preloadDemoImages().catch(console.error);
-        
-        // After successful sign-in, switch to the current tenant context
-        // This ensures users can access different tenants after login
-        try {
-          await supabase.rpc('switch_to_tenant_by_slug', {
-            p_tenant_slug: 'maxina'
+    try {
+      await Promise.race([
+        (async () => {
+          const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
           });
-          // Refresh session to get updated metadata
-          await supabase.auth.refreshSession();
-        } catch (switchError) {
-          console.error('Error switching tenant after login:', switchError);
-          // Continue with login even if tenant switch fails
-        }
-      }
+
+          if (error) {
+            setError(error.message);
+          } else {
+            // Preload demo images in background while user waits
+            preloadDemoImages().catch(console.error);
+
+            // After successful sign-in, switch to the current tenant context
+            // This ensures users can access different tenants after login
+            try {
+              await supabase.rpc('switch_to_tenant_by_slug', {
+                p_tenant_slug: 'maxina'
+              });
+              // Refresh session to get updated metadata
+              await supabase.auth.refreshSession();
+            } catch (switchError) {
+              console.error('Error switching tenant after login:', switchError);
+              // Continue with login even if tenant switch fails
+            }
+          }
+        })(),
+        timeoutPromise,
+      ]);
     } catch (err) {
-      setError("An unexpected error occurred");
+      if (timedOut) {
+        setError(t('screens.portals.signinTakingLongerThanExpected'));
+      } else {
+        setError("An unexpected error occurred");
+      }
     } finally {
       setLoading(false);
     }
@@ -334,29 +357,48 @@ const MaxinaPortal = () => {
     setLoading(true);
     setError("");
 
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: getEmailRedirectUrl(CONFIRMATION_PATHS.maxina),
-          data: {
-            full_name: fullName,
-            tenant_slug: "maxina",
-            preferred_role: selectedRole
-          }
-        }
-      });
+    // VTID-03652: same bounded-deadline reasoning as handleSignIn above —
+    // signUp() has no timeout of its own.
+    let timedOut = false;
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => {
+        timedOut = true;
+        reject(new Error('sign-up timed out'));
+      }, 15_000);
+    });
 
-      if (error) {
-        setError(error.message);
-      } else {
-        setSignupEmail(email);
-        setSignupSuccess(true);
-        setError("");
-      }
+    try {
+      await Promise.race([
+        (async () => {
+          const { error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              emailRedirectTo: getEmailRedirectUrl(CONFIRMATION_PATHS.maxina),
+              data: {
+                full_name: fullName,
+                tenant_slug: "maxina",
+                preferred_role: selectedRole
+              }
+            }
+          });
+
+          if (error) {
+            setError(error.message);
+          } else {
+            setSignupEmail(email);
+            setSignupSuccess(true);
+            setError("");
+          }
+        })(),
+        timeoutPromise,
+      ]);
     } catch (err) {
-      setError("An unexpected error occurred");
+      if (timedOut) {
+        setError(t('screens.portals.signinTakingLongerThanExpected'));
+      } else {
+        setError("An unexpected error occurred");
+      }
     } finally {
       setLoading(false);
     }
