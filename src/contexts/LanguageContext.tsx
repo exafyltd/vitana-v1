@@ -88,10 +88,24 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     return initial;
   });
 
-  // Bumped when a lazily-loaded locale catalog (en/ar) finishes loading, to
-  // re-render the tree so consumers re-read the now-populated catalog. Only the
-  // default (de) is bundled; non-default locales arrive asynchronously.
-  const [, setCatalogVersion] = useState(0);
+  // Bumped when a lazily-loaded locale catalog finishes loading, so consumers
+  // re-read the now-populated catalog. Only the default (de) is bundled; every
+  // other locale arrives asynchronously.
+  //
+  // VTID-03660 — the value used to be DISCARDED (`const [, setCatalogVersion]`)
+  // and left out of the contextValue useMemo below. Re-rendering the provider
+  // is not enough: the memo returned the SAME object, so React bailed out of
+  // re-rendering every context consumer and `useTranslation` never looked at
+  // the catalog again. `catalogs[locale]` is filled IN PLACE, so the data was
+  // sitting right there, correct and complete, behind a tree that had stopped
+  // asking. Measured in a real browser: switching to Spanish rendered the
+  // hardcoded English fallback and stayed there indefinitely, while switching
+  // to German and back to Spanish rendered Spanish immediately — proof the
+  // catalog had loaded and only the re-render was missing.
+  //
+  // This must stay in the memo deps. It is the ONLY signal that a catalog
+  // arrived; `selectedLanguage` already changed before the fetch resolved.
+  const [catalogVersion, setCatalogVersion] = useState(0);
   useEffect(() => {
     const unsubscribe = onCatalogLoaded(() => setCatalogVersion((v) => v + 1));
     return unsubscribe;
@@ -221,6 +235,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   // Memoized so this root-level provider doesn't hand every consumer a fresh
   // object (and thus a re-render) each time the provider itself re-renders.
+  //
+  // `catalogVersion` is a dependency even though it appears in none of the
+  // fields (VTID-03660). That reads like a mistake and is the opposite: the
+  // catalogs are mutated IN PLACE, so nothing in this object can ever change
+  // when one arrives. Without the dep the memo is stable, React bails out, and
+  // the freshly-loaded language never reaches the screen. Removing it looks
+  // like removing an unused variable and silently restores that bug.
   const contextValue = useMemo(
     () => ({
       selectedLanguage,
@@ -228,7 +249,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       languageOptions,
       isLoading,
     }),
-    [selectedLanguage, setSelectedLanguage, isLoading]
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- catalogVersion is
+    // deliberately a dep without being a field; see the comment above.
+    [selectedLanguage, setSelectedLanguage, isLoading, catalogVersion]
   );
 
   return (
