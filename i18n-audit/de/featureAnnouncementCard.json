@@ -1,141 +1,53 @@
 {
   "verdicts": {
-    "socialImport.bioOptional": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "socialImport.dialogTitle": {
+    "featureAnnouncementCard.brandNew.eyebrow": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "socialImport.dialogDescription": {
+    "featureAnnouncementCard.brandNew.badge": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "socialImport.profileUrl": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "socialImport.bioLabel": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "socialImport.cancel": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "socialImport.importProfile": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "socialImport.importing": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "socialImport.urlRequired": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "socialImport.urlRequiredDesc": {
+    "featureAnnouncementCard.brandNew.intro": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "socialImport.importSuccess": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "socialImport.importSuccessDesc": {
+    "featureAnnouncementCard.brandNew.cta": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "socialImport.importFailed": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "socialImport.connect": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "socialImport.socialPresence": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "socialImport.verifiedConnections": {
+    "featureAnnouncementCard.brandNew.closing": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "socialImport.tapToVisit": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "socialImport.noAccountsConnected": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "socialImport.connectAccounts": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "socialImport.platformHelp.linkedin": {
+    "featureAnnouncementCard.didYouKnow.eyebrow": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "socialImport.platformHelp.instagram": {
+    "featureAnnouncementCard.didYouKnow.intro": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "socialImport.platformHelp.tiktok": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0,
-      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
-      "phase": "llm-error"
-    },
-    "socialImport.platformHelp.youtube": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0,
-      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
-      "phase": "llm-error"
-    },
-    "socialImport.platformHelp.facebook": {
-      "verdict": "LOW_CONFIDENCE",
-      "confidence": 0,
-      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
-      "phase": "llm-error"
-    },
-    "socialImport.platformHelp.x": {
+    "featureAnnouncementCard.didYouKnow.cta": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-08-17T04:18:42.415Z"
+  "generatedAt": "2026-08-17T04:12:00.745Z"
 }
