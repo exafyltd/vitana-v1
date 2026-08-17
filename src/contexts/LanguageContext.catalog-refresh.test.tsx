@@ -1,9 +1,6 @@
 /**
- * VTID-03657 — "only English and German work flawlessly! All others should
+ * VTID-03660 — "only English and German work flawlessly! All others should
  * switch instantly."
- *
- * Both halves of that report are explained by one defect, and the second half
- * is not what it looks like.
  *
  * `de` is the only locale bundled eagerly (`import.meta.glob(..., {eager:true})`).
  * Every other locale is lazy: on switch, `catalogs[locale]` is `{}` until the
@@ -13,17 +10,36 @@
  * whether or not the `en` catalog ever loaded. "English works" was a
  * coincidence of the fallback language, not evidence the pipeline worked.
  *
- * When the shards do arrive, `onCatalogLoaded` bumps `catalogVersion` to
- * "re-render the tree so consumers re-read the now-populated catalog" — its
- * own words. But the value was discarded (`const [, setCatalogVersion]`) and
- * left out of the `useMemo` deps, so `contextValue` kept the same object
- * identity. React bails out of re-rendering context consumers when the value
- * is identical, so the re-render never reached `useTranslation` and the screen
- * stayed on the English fallbacks permanently.
+ * When the shards arrive, `onCatalogLoaded` bumps `catalogVersion` to
+ * "re-render the tree so consumers re-read the now-populated catalog" — its own
+ * words. But the value was discarded (`const [, setCatalogVersion]`) and left
+ * out of the `useMemo` deps, so `contextValue` kept the same object identity,
+ * React bailed out of re-rendering consumers, and the screen stayed on the
+ * English fallback permanently.
  *
- * This test drives the real provider and the real `useTranslation`, and fails
- * on the pre-fix code.
+ * ============================================================================
+ * WHY THE CONSUMER IS WRAPPED IN React.memo, AND WHY THAT IS NOT A CONTRIVANCE
+ * ============================================================================
+ * An earlier version of this file drove a BARE consumer as a direct child of
+ * the provider. It passed on the broken code — and that false negative is why
+ * the defect shipped: it was read as evidence the theory was wrong, when a real
+ * browser was failing the whole time.
+ *
+ * The reason is React's bailout rules. When the provider re-renders with an
+ * IDENTICAL context value, whether a consumer re-renders anyway depends on
+ * whether anything else in the path forces it. In a flat two-node test tree
+ * nothing stops the render from propagating, so the consumer re-reads the
+ * populated catalog and the test goes green. In the real app every consumer
+ * sits behind route boundaries and memoised subtrees, so the render does NOT
+ * propagate and the stale value is what the user gets.
+ *
+ * `React.memo` here is the smallest faithful model of that: it makes the
+ * bailout the deterministic thing it is in production instead of an accident of
+ * tree depth. Without it this test asserts a scenario no user is ever in.
+ *
+ * Mutation-verified: reverting the `catalogVersion` memo dep fails both tests.
  */
+import { memo } from 'react';
 import { render, screen, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
@@ -42,6 +58,19 @@ const h = vi.hoisted(() => ({
   } as Record<string, Record<string, unknown>>,
   notify: null as (() => void) | null,
   deliver: null as (() => void) | null,
+  // STABLE across renders, and that is the entire point. The first version of
+  // this mock returned `updatePreferences: vi.fn()` from the hook body, minting
+  // a NEW function on every render. `setSelectedLanguage` is a useCallback that
+  // depends on it, so its identity churned, so `contextValue` changed identity
+  // on EVERY provider render — including the catalogVersion bump. The memo was
+  // never actually stable, the consumer always re-rendered, and the test went
+  // green against code that was broken in the browser.
+  //
+  // In the real app this function comes from React Query and IS stable, so the
+  // memo really does hold and the consumer really does not re-render. An
+  // unstable test double did not make the test stricter — it removed the only
+  // condition under which the bug can occur.
+  updatePreferences: vi.fn(),
 }));
 
 // The arrival is DEFERRED under the test's control rather than resolved inside
@@ -69,7 +98,11 @@ vi.mock('@/i18n', () => ({
 }));
 
 vi.mock('@/hooks/useUserPreferences', () => ({
-  useUserPreferences: () => ({ preferences: null, updatePreferences: vi.fn(), isLoading: false }),
+  useUserPreferences: () => ({
+    preferences: null,
+    updatePreferences: h.updatePreferences, // stable — see the note on h above
+    isLoading: false,
+  }),
 }));
 vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: null }) }));
 vi.mock('@/lib/i18n-toast', () => ({ setI18nLocale: vi.fn(), t: (k: string) => k }));
@@ -81,7 +114,10 @@ vi.mock('@/lib/localStorage', () => ({
 import { LanguageProvider, useLanguage } from './LanguageContext';
 import { useTranslation } from '@/hooks/useTranslation';
 
-function Screen() {
+// memo, for the reason set out at the top of this file: it reproduces the
+// bailout that the real (deep, route-split) tree has and a flat test tree does
+// not. Take it off and this file goes green against the broken code.
+const Screen = memo(function Screen() {
   const { setSelectedLanguage } = useLanguage();
   const { t } = useTranslation();
   return (
@@ -91,9 +127,9 @@ function Screen() {
       <button onClick={() => setSelectedLanguage('es-ES')}>go-es</button>
     </div>
   );
-}
+});
 
-describe('VTID-03657 lazy catalogs must reach the screen', () => {
+describe('VTID-03660 lazy catalogs must reach the screen', () => {
   beforeEach(() => {
     h.catalogs['es-ES'] = {};
     h.notify = null;
