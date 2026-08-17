@@ -1,0 +1,148 @@
+/**
+ * VTID-03657 — "only English and German work flawlessly! All others should
+ * switch instantly."
+ *
+ * Both halves of that report are explained by one defect, and the second half
+ * is not what it looks like.
+ *
+ * `de` is the only locale bundled eagerly (`import.meta.glob(..., {eager:true})`).
+ * Every other locale is lazy: on switch, `catalogs[locale]` is `{}` until the
+ * shards resolve, so `t.intro?.welcomeTo` is `undefined` and the JSX falls back
+ * to its hardcoded literal — and those literals are ENGLISH. So a user picking
+ * Spanish sees English, and a user picking English sees the same English
+ * whether or not the `en` catalog ever loaded. "English works" was a
+ * coincidence of the fallback language, not evidence the pipeline worked.
+ *
+ * When the shards do arrive, `onCatalogLoaded` bumps `catalogVersion` to
+ * "re-render the tree so consumers re-read the now-populated catalog" — its
+ * own words. But the value was discarded (`const [, setCatalogVersion]`) and
+ * left out of the `useMemo` deps, so `contextValue` kept the same object
+ * identity. React bails out of re-rendering context consumers when the value
+ * is identical, so the re-render never reached `useTranslation` and the screen
+ * stayed on the English fallbacks permanently.
+ *
+ * This test drives the real provider and the real `useTranslation`, and fails
+ * on the pre-fix code.
+ */
+import { render, screen, act } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+// Catalog objects are filled IN PLACE by the real i18n module, so the fake
+// mirrors that: `ensureCatalog` populates the same object reference the
+// component already holds, then notifies. That is precisely the shape that
+// makes a stale context value undetectable — the data is there, and the tree
+// simply never looks again.
+// vi.mock factories are hoisted above the module body, so the shared state has
+// to be created inside vi.hoisted or it is still in the temporal dead zone when
+// the factory runs.
+const h = vi.hoisted(() => ({
+  catalogs: {
+    'de-DE': { intro: { welcomeTo: 'WILLKOMMEN IN VITANALAND' } },
+    'es-ES': {},
+  } as Record<string, Record<string, unknown>>,
+  notify: null as (() => void) | null,
+  deliver: null as (() => void) | null,
+}));
+
+// The arrival is DEFERRED under the test's control rather than resolved inside
+// ensureCatalog. Resolving immediately lets React batch the language-change
+// render together with the catalog arrival into a single flush, which renders
+// Spanish and hides the defect — a real dynamic import lands many ms after that
+// render has already committed. The first version of this test passed on the
+// broken code for exactly that reason.
+vi.mock('@/i18n', () => ({
+  catalogs: h.catalogs,
+  ensureCatalog: vi.fn(async (locale: string) => {
+    if (locale === 'es-ES' && !('intro' in h.catalogs['es-ES'])) {
+      h.deliver = () => {
+        h.catalogs['es-ES'].intro = { welcomeTo: 'BIENVENIDO A VITANALAND' };
+        h.notify?.();
+      };
+    }
+  }),
+  onCatalogLoaded: (cb: () => void) => {
+    h.notify = cb;
+    return () => {
+      h.notify = null;
+    };
+  },
+}));
+
+vi.mock('@/hooks/useUserPreferences', () => ({
+  useUserPreferences: () => ({ preferences: null, updatePreferences: vi.fn(), isLoading: false }),
+}));
+vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: null }) }));
+vi.mock('@/lib/i18n-toast', () => ({ setI18nLocale: vi.fn(), t: (k: string) => k }));
+vi.mock('@/lib/localStorage', () => ({
+  getLocalStorageItem: () => null,
+  setLocalStorageItem: vi.fn(),
+}));
+
+import { LanguageProvider, useLanguage } from './LanguageContext';
+import { useTranslation } from '@/hooks/useTranslation';
+
+function Screen() {
+  const { setSelectedLanguage } = useLanguage();
+  const { t } = useTranslation();
+  return (
+    <div>
+      {/* The same shape IntroExperience uses: catalog value, else an English literal. */}
+      <span data-testid="headline">{(t.intro as any)?.welcomeTo || 'WELCOME TO VITANALAND'}</span>
+      <button onClick={() => setSelectedLanguage('es-ES')}>go-es</button>
+    </div>
+  );
+}
+
+describe('VTID-03657 lazy catalogs must reach the screen', () => {
+  beforeEach(() => {
+    h.catalogs['es-ES'] = {};
+    h.notify = null;
+    h.deliver = null;
+  });
+
+  it('renders Spanish once the lazily-loaded catalog arrives', async () => {
+    render(
+      <LanguageProvider>
+        <Screen />
+      </LanguageProvider>,
+    );
+    expect(screen.getByTestId('headline').textContent).toBe('WILLKOMMEN IN VITANALAND');
+
+    await act(async () => {
+      screen.getByText('go-es').click();
+    });
+    await act(async () => { await Promise.resolve(); });
+
+    // Intermediate state, asserted rather than skipped past: the language has
+    // changed, the catalog has not arrived, so the screen shows the ENGLISH
+    // literal. This is what a Spanish user sees for the load's duration, and
+    // pre-fix it is also what they see forever.
+    expect(screen.getByTestId('headline').textContent).toBe('WELCOME TO VITANALAND');
+
+    // Now the shards land, strictly after the language-change render committed.
+    await act(async () => { h.deliver?.(); });
+
+    // Pre-fix this is still the English fallback: the context value never
+    // changed identity, so no consumer re-rendered to read the populated
+    // catalog.
+    expect(screen.getByTestId('headline').textContent).toBe('BIENVENIDO A VITANALAND');
+  });
+
+  it('does not leave a non-German locale showing the English fallback', async () => {
+    render(
+      <LanguageProvider>
+        <Screen />
+      </LanguageProvider>,
+    );
+    await act(async () => {
+      screen.getByText('go-es').click();
+    });
+    await act(async () => { await Promise.resolve(); });
+    await act(async () => { h.deliver?.(); });
+
+    // Stated as its own assertion because this is the user-visible symptom:
+    // "only English and German work". Spanish landing on the English literal
+    // is the whole bug, and it is silent — nothing errors, nothing is missing.
+    expect(screen.getByTestId('headline').textContent).not.toBe('WELCOME TO VITANALAND');
+  });
+});
