@@ -111,10 +111,33 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     return unsubscribe;
   }, []);
 
-  // Keep i18n-toast singleton + <html lang> in sync with React state, and make
-  // sure the selected locale's catalog is loaded (no-op for de / draft locales).
+  // VTID-03662 — this MUST happen during render, not in an effect.
+  //
+  // `lookup()` / `t()` from i18n-toast are plain function calls made DURING
+  // render, and they read this module-level locale. An effect runs AFTER the
+  // render it belongs to, so every lookup in the render that a language change
+  // triggers resolved against the PREVIOUS locale — and nothing re-rendered
+  // afterwards to correct it, because setI18nLocale writes a module variable
+  // and schedules nothing.
+  //
+  // The bug hid behind VTID-03660's catalog event: the FIRST visit to a locale
+  // fires onCatalogLoaded, which forces exactly one extra render, in which the
+  // module locale is finally current. Every subsequent visit to an
+  // already-loaded locale has no such event, so those strings stayed one
+  // language behind. Measured: es -> de -> es rendered Spanish, Spanish,
+  // German; adding French in between made a later es render FRENCH. A user
+  // browsing more than two languages sees a page in two languages at once.
+  //
+  // Writing during render is correct here rather than a shortcut: this is a
+  // cache mirroring React state that is READ during render, so it has to be
+  // WRITTEN during render to agree with the output. It is idempotent and
+  // derives only from state, so a double invoke or a discarded render is
+  // harmless.
+  setI18nLocale(selectedLanguage);
+
+  // These two ARE side effects and stay in an effect: one touches the DOM
+  // outside React's tree, the other starts a fetch.
   useEffect(() => {
-    setI18nLocale(selectedLanguage);
     if (typeof document !== 'undefined') {
       document.documentElement.lang = selectedLanguage.split('-')[0] || 'de';
     }
