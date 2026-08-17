@@ -146,19 +146,17 @@
       "phase": "llm"
     },
     "lifeCompass.goals.longevity.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'продли долголетие' (extend longevity) is slightly redundant. 'Продли жизнь' (extend life) is more natural.",
-      "suggested": "Улучши качество жизни и продли жизнь",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "lifeCompass.goals.longevity.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Redundancy in 'долголетии' and less precise distinction between 'healthspan' and 'longevity'. 'Здоровое долголетие' already implies 'longevity'.",
-      "suggested": "Сосредоточься на продолжительности здоровой жизни, энергии и долголетии — миссия Vitanaland",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-08-07T00:37:36.491Z"
+  "generatedAt": "2026-08-17T04:11:17.584Z"
 }
