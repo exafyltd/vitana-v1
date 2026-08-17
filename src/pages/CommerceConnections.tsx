@@ -12,9 +12,9 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Loader2, Plug } from 'lucide-react';
+import { Loader2, Plug, Bot, Search } from 'lucide-react';
 import { adminFetch } from '@/lib/admin-api';
-import { t, notifyError } from '@/lib/i18n-toast';
+import { t, notify, notifyError } from '@/lib/i18n-toast';
 import { fmtDateTime } from '@/lib/locale-format';
 import { stateBadgeVariant } from '@/lib/partner-portal';
 import { MY_PORTAL_API } from '@/lib/commerce-host';
@@ -36,6 +36,8 @@ export default function CommerceConnections() {
   const [rows, setRows] = useState<ConnectionRow[] | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [detecting, setDetecting] = useState(false);
+  const [storeUrl, setStoreUrl] = useState('');
   const [form, setForm] = useState({ name: '', connector_id: '', provider_id: '', jurisdiction: '', openapi: '' });
 
   const load = useCallback(async () => {
@@ -51,6 +53,42 @@ export default function CommerceConnections() {
   useEffect(() => {
     void load();
   }, [load]);
+
+  // Storefront platform sniff (VTID-03601, Track 4): pre-fill connector_id /
+  // provider_id from a pasted store URL instead of requiring manual entry.
+  // Read-only on the gateway side — never creates a connection by itself.
+  const detect = async () => {
+    const url = storeUrl.trim();
+    if (!url) return;
+    setDetecting(true);
+    try {
+      const res = await adminFetch(`${MY_PORTAL_API}/connections/detect-platform`, {
+        method: 'POST',
+        body: JSON.stringify({ url }),
+      });
+      if (res.connector_id) {
+        let hostname = url;
+        try {
+          hostname = new URL(url).hostname;
+        } catch {
+          // url already passed the gateway's own parse — this is defensive only.
+        }
+        setForm((f) => ({
+          ...f,
+          connector_id: res.connector_id,
+          provider_id: res.provider_id ?? f.provider_id,
+          name: f.name || (res.name_hint ? `${res.name_hint} (${hostname})` : f.name),
+        }));
+        notify('screens.commerceportal.detectPlatform.detected', undefined, { platform: res.name_hint ?? res.connector_id });
+      } else {
+        notify('screens.commerceportal.detectPlatform.notDetected');
+      }
+    } catch {
+      notify('screens.commerceportal.detectPlatform.failed');
+    } finally {
+      setDetecting(false);
+    }
+  };
 
   const create = async () => {
     setCreating(true);
@@ -71,6 +109,7 @@ export default function CommerceConnections() {
       });
       setDialogOpen(false);
       setForm({ name: '', connector_id: '', provider_id: '', jurisdiction: '', openapi: '' });
+      setStoreUrl('');
       await load();
     } catch {
       notifyError('screens.partnerportal.actionFailed');
@@ -86,67 +125,88 @@ export default function CommerceConnections() {
           <h1 className="text-2xl font-semibold text-foreground">{t('screens.commerceportal.connectionsTitle')}</h1>
           <p className="text-sm text-muted-foreground">{t('screens.commerceportal.connectionsSubtitle')}</p>
         </div>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plug className="mr-2 h-4 w-4" />
-              {t('screens.partnerportal.newConnection')}
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-lg">
-            <DialogHeader>
-              <DialogTitle>{t('screens.partnerportal.newConnection')}</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-3">
-              <Input
-                value={form.name}
-                onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-                placeholder={t('screens.partnerportal.businessName')}
-                aria-label={t('screens.partnerportal.businessName')}
-              />
-              <Input
-                value={form.connector_id}
-                onChange={(e) => setForm((f) => ({ ...f, connector_id: e.target.value }))}
-                placeholder={t('screens.partnerportal.connectorId')}
-                aria-label={t('screens.partnerportal.connectorId')}
-              />
-              <Input
-                value={form.provider_id}
-                onChange={(e) => setForm((f) => ({ ...f, provider_id: e.target.value }))}
-                placeholder={t('screens.partnerportal.providerId')}
-                aria-label={t('screens.partnerportal.providerId')}
-              />
-              <Input
-                value={form.jurisdiction}
-                onChange={(e) => setForm((f) => ({ ...f, jurisdiction: e.target.value }))}
-                placeholder={t('screens.partnerportal.jurisdiction')}
-                aria-label={t('screens.partnerportal.jurisdiction')}
-              />
-              <Textarea
-                value={form.openapi}
-                onChange={(e) => setForm((f) => ({ ...f, openapi: e.target.value }))}
-                placeholder={t('screens.partnerportal.openapiDocument')}
-                aria-label={t('screens.partnerportal.openapiDocument')}
-                rows={5}
-              />
-              <p className="text-xs text-muted-foreground">{t('screens.partnerportal.openapiHint')}</p>
-              <Button
-                className="w-full"
-                onClick={() => void create()}
-                disabled={creating || !form.name.trim() || !form.connector_id.trim() || !form.provider_id.trim()}
-              >
-                {creating ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {t('screens.partnerportal.creating')}
-                  </>
-                ) : (
-                  t('screens.partnerportal.create')
-                )}
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" onClick={() => navigate('/commerce/agent-connect')}>
+            <Bot className="mr-2 h-4 w-4" />
+            {t('screens.commerceportal.agentConnect.title')}
+          </Button>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plug className="mr-2 h-4 w-4" />
+                {t('screens.partnerportal.newConnection')}
               </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
+            </DialogTrigger>
+            <DialogContent className="max-w-lg">
+              <DialogHeader>
+                <DialogTitle>{t('screens.partnerportal.newConnection')}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-3">
+                <div className="space-y-1.5">
+                  <div className="flex gap-2">
+                    <Input
+                      value={storeUrl}
+                      onChange={(e) => setStoreUrl(e.target.value)}
+                      placeholder={t('screens.commerceportal.detectPlatform.urlPlaceholder')}
+                      aria-label={t('screens.commerceportal.detectPlatform.urlPlaceholder')}
+                      type="url"
+                    />
+                    <Button type="button" variant="outline" onClick={() => void detect()} disabled={detecting || !storeUrl.trim()}>
+                      {detecting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">{t('screens.commerceportal.detectPlatform.hint')}</p>
+                </div>
+                <Input
+                  value={form.name}
+                  onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                  placeholder={t('screens.partnerportal.businessName')}
+                  aria-label={t('screens.partnerportal.businessName')}
+                />
+                <Input
+                  value={form.connector_id}
+                  onChange={(e) => setForm((f) => ({ ...f, connector_id: e.target.value }))}
+                  placeholder={t('screens.partnerportal.connectorId')}
+                  aria-label={t('screens.partnerportal.connectorId')}
+                />
+                <Input
+                  value={form.provider_id}
+                  onChange={(e) => setForm((f) => ({ ...f, provider_id: e.target.value }))}
+                  placeholder={t('screens.partnerportal.providerId')}
+                  aria-label={t('screens.partnerportal.providerId')}
+                />
+                <Input
+                  value={form.jurisdiction}
+                  onChange={(e) => setForm((f) => ({ ...f, jurisdiction: e.target.value }))}
+                  placeholder={t('screens.partnerportal.jurisdiction')}
+                  aria-label={t('screens.partnerportal.jurisdiction')}
+                />
+                <Textarea
+                  value={form.openapi}
+                  onChange={(e) => setForm((f) => ({ ...f, openapi: e.target.value }))}
+                  placeholder={t('screens.partnerportal.openapiDocument')}
+                  aria-label={t('screens.partnerportal.openapiDocument')}
+                  rows={5}
+                />
+                <p className="text-xs text-muted-foreground">{t('screens.partnerportal.openapiHint')}</p>
+                <Button
+                  className="w-full"
+                  onClick={() => void create()}
+                  disabled={creating || !form.name.trim() || !form.connector_id.trim() || !form.provider_id.trim()}
+                >
+                  {creating ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {t('screens.partnerportal.creating')}
+                    </>
+                  ) : (
+                    t('screens.partnerportal.create')
+                  )}
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       <Card>

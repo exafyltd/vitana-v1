@@ -10237,7 +10237,51 @@
       "loginSubtitle": "Portail Commerce",
       "loginIntro": "Connecte-toi pour gérer ton entreprise.",
       "loginButton": "Se connecter",
-      "loginError": "Échec de la connexion"
+      "loginError": "Échec de la connexion",
+      "agentConnect": {
+        "back": "Retour à mes connexions",
+        "title": "Connecte-toi via un agent IA",
+        "subtitle": "Dirige ton propre agent Claude, ChatGPT ou Gemini directement vers le serveur MCP de Vitanaland — ton agent pourra alors gérer ton catalogue, tes commandes et ta disponibilité pour toi, au lieu que tu remplisses le formulaire manuel.",
+        "notReachableYet": "Le serveur MCP est déjà construit, mais pas encore accessible publiquement à cette adresse (l'exposition DNS est toujours en attente). Une fois qu'il sera en ligne, les étapes ci-dessous fonctionneront sans changement.",
+        "mcpUrlLabel": "URL du serveur MCP",
+        "copyUrl": "Copie l'URL",
+        "copied": "Copié dans le presse-papiers",
+        "claudeTitle": "Connecte-toi avec Claude",
+        "claudeStep1": "Dans Claude, ouvre Paramètres → Connecteurs.",
+        "claudeStep2": "Clique sur « + » puis sur « Ajoute un connecteur personnalisé ».",
+        "claudeStep3": "Colle l'URL du serveur MCP ci-dessus et clique sur « Ajouter ».",
+        "chatgptTitle": "Connecte-toi avec ChatGPT",
+        "chatgptStep1": "Dans ChatGPT, ouvre Paramètres → Applications et Connecteurs → Paramètres avancés et active le mode Développeur.",
+        "chatgptStep2": "Clique sur « Crée une nouvelle application » et donne-lui un nom.",
+        "chatgptStep3": "Colle l'URL du serveur MCP ci-dessus et enregistre.",
+        "chatgptNote": "Le mode Développeur est actuellement disponible sur les comptes Plus/Pro ; sur les comptes Business/Enterprise, un admin d'espace de travail peut l'activer ou le désactiver.",
+        "geminiTitle": "Connecte-toi avec Gemini",
+        "geminiStep1": "Pour Gemini CLI : ajoute l'URL du serveur MCP ci-dessus à ~/.gemini/settings.json sous tes serveurs MCP.",
+        "geminiStep2": "Pour Gemini Enterprise (Édition Business) : Paramètres et aide → Équipe → Gère l'équipe → Applications connectées → « Ajoute un serveur MCP ».",
+        "geminiNote": "L'application grand public Gemini n'a actuellement aucun moyen documenté d'ajouter directement un serveur MCP personnalisé — c'est uniquement disponible aujourd'hui via Gemini CLI et Gemini Enterprise."
+      },
+      "detectPlatform": {
+        "urlPlaceholder": "URL du magasin (facultatif) — ex. https://ton-magasin.com",
+        "hint": "Nous vérifierons l'URL et remplirons automatiquement l'ID du connecteur et du fournisseur si nous reconnaissons la plateforme.",
+        "detected": "{platform} détectée — champs remplis.",
+        "notDetected": "Plateforme non reconnue. Merci de remplir manuellement l'ID du connecteur et du fournisseur.",
+        "failed": "Impossible de vérifier cette adresse. Merci de remplir manuellement l'ID du connecteur et du fournisseur."
+      },
+      "connectOauth": {
+        "title": "Connecte-toi",
+        "shopifyHint": "Connecte ta boutique Shopify pour synchroniser ton catalogue et tes commandes.",
+        "shopifyDomainPlaceholder": "ton-magasin.myshopify.com",
+        "shopifyButton": "Connecte-toi avec Shopify",
+        "fhirHint": "Connecte ton serveur FHIR (ex. Epic, Cerner/Oracle Health, Athenahealth) via SMART on FHIR.",
+        "fhirBaseUrlPlaceholder": "URL du serveur FHIR — ex. : https://ehr.example.com/fhir/r4",
+        "fhirClientIdPlaceholder": "ID client (émis par ton DSE)",
+        "fhirClientSecretPlaceholder": "Secret client (facultatif, clients confidentiels uniquement)",
+        "fhirScopePlaceholder": "Portée (facultatif, par défaut : openid fhirUser patient/*.read)",
+        "fhirButton": "Connecter le serveur FHIR",
+        "connecting": "Connexion en cours...",
+        "notConfigured": "Ce type de connexion n'est pas encore activé. Réessaie plus tard.",
+        "failed": "Impossible de démarrer la connexion. Vérifie tes informations."
+      }
     },
     "oauthconsent": {
       "title": "Autoriser l'accès ?",

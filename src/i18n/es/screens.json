@@ -10237,7 +10237,51 @@
       "loginSubtitle": "Portal de Comercio",
       "loginIntro": "Inicia sesión para gestionar tu negocio.",
       "loginButton": "Inicia sesión",
-      "loginError": "Error al iniciar sesión"
+      "loginError": "Error al iniciar sesión",
+      "agentConnect": {
+        "back": "Volver a mis conexiones",
+        "title": "Conectar vía Agente de IA",
+        "subtitle": "Dirige tu propio agente de Claude, ChatGPT o Gemini directamente al servidor MCP de Vitanaland — tu agente podrá gestionar tu catálogo, pedidos y disponibilidad por ti, en lugar de que rellenes el formulario manual.",
+        "notReachableYet": "El servidor MCP ya está construido, pero aún no es accesible públicamente en esta dirección (la exposición DNS aún está pendiente). Una vez que esté activo, los pasos a continuación funcionarán sin cambios.",
+        "mcpUrlLabel": "URL del servidor MCP",
+        "copyUrl": "Copiar URL",
+        "copied": "Copiado al portapapeles",
+        "claudeTitle": "Conectar con Claude",
+        "claudeStep1": "En Claude, abre Ajustes → Conectores.",
+        "claudeStep2": "Haz clic en \"+\" y luego en \"Añadir conector personalizado\".",
+        "claudeStep3": "Pega la URL del servidor MCP de arriba y haz clic en \"Añadir\".",
+        "chatgptTitle": "Conectar con ChatGPT",
+        "chatgptStep1": "En ChatGPT, abre Ajustes → Aplicaciones y Conectores → Ajustes Avanzados y activa el modo Desarrollador.",
+        "chatgptStep2": "Haz clic en \"Crear nueva app\" y ponle un nombre.",
+        "chatgptStep3": "Pega la URL del servidor MCP de arriba y guarda.",
+        "chatgptNote": "El modo Desarrollador está actualmente disponible en cuentas Plus/Pro; en cuentas Business/Enterprise, un administrador del espacio de trabajo puede activarlo o desactivarlo.",
+        "geminiTitle": "Conectar con Gemini",
+        "geminiStep1": "Para Gemini CLI: añade la URL del servidor MCP de arriba a ~/.gemini/settings.json bajo tus servidores MCP.",
+        "geminiStep2": "Para Gemini Enterprise (Business Edition): Ajustes y ayuda → Equipo → Gestionar equipo → Aplicaciones conectadas → \"Añadir servidor MCP\".",
+        "geminiNote": "La aplicación de consumidor de Gemini actualmente no tiene una forma documentada de añadir un servidor MCP personalizado directamente — eso solo está disponible hoy a través de Gemini CLI y Gemini Enterprise."
+      },
+      "detectPlatform": {
+        "urlPlaceholder": "URL de la tienda (opcional) — ej. https://your-shop.com",
+        "hint": "Verificaremos la URL y rellenaremos automáticamente el conector y el ID de proveedor si reconocemos la plataforma.",
+        "detected": "{platform} detectada — campos rellenados.",
+        "notDetected": "Plataforma no reconocida. Por favor, rellena el conector y el ID de proveedor manualmente.",
+        "failed": "No se pudo verificar esa dirección. Por favor, rellena el conector y el ID de proveedor manualmente."
+      },
+      "connectOauth": {
+        "title": "Conectar",
+        "shopifyHint": "Conecta tu tienda Shopify para sincronizar tu catálogo y pedidos.",
+        "shopifyDomainPlaceholder": "your-shop.myshopify.com",
+        "shopifyButton": "Conectar con Shopify",
+        "fhirHint": "Conecta tu servidor FHIR (ej. Epic, Cerner/Oracle Health, Athenahealth) vía SMART on FHIR.",
+        "fhirBaseUrlPlaceholder": "URL del servidor FHIR — ej. https://ehr.example.com/fhir/r4",
+        "fhirClientIdPlaceholder": "ID de cliente (emitido por tu EHR)",
+        "fhirClientSecretPlaceholder": "Secreto de cliente (opcional, solo para clientes confidenciales)",
+        "fhirScopePlaceholder": "Alcance (opcional, predeterminado: openid fhirUser patient/*.read)",
+        "fhirButton": "Conectar servidor FHIR",
+        "connecting": "Conectando...",
+        "notConfigured": "Este tipo de conexión aún no está habilitado. Por favor, inténtalo de nuevo más tarde.",
+        "failed": "No se pudo iniciar la conexión. Por favor, verifica tus datos."
+      }
     },
     "oauthconsent": {
       "title": "¿Permitir acceso?",

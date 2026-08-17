@@ -10237,7 +10237,51 @@
       "loginSubtitle": "Portal de Comércio",
       "loginIntro": "Faça login para gerenciar seu negócio.",
       "loginButton": "Iniciar sessão",
-      "loginError": "Falha ao iniciar sessão"
+      "loginError": "Falha ao iniciar sessão",
+      "agentConnect": {
+        "back": "Voltar para minhas conexões",
+        "title": "Conectar via agente de IA",
+        "subtitle": "Conecte seu próprio agente Claude, ChatGPT ou Gemini diretamente ao servidor MCP da Vitanaland — seu agente poderá então cuidar do catálogo, dos pedidos e da disponibilidade para você, em vez de você preencher tudo manualmente no formulário.",
+        "notReachableYet": "O servidor MCP já está pronto, mas ainda não está publicamente acessível neste endereço (a liberação de DNS ainda está pendente). Assim que estiver no ar, os passos abaixo funcionam sem alterações.",
+        "mcpUrlLabel": "Endereço do servidor MCP",
+        "copyUrl": "Copiar endereço",
+        "copied": "Copiado para a área de transferência",
+        "claudeTitle": "Conectar com o Claude",
+        "claudeStep1": "No Claude, abra Configurações → Conectores.",
+        "claudeStep2": "Clique em \"+\" e depois em \"Adicionar conector personalizado\".",
+        "claudeStep3": "Cole o endereço do servidor MCP acima e clique em \"Adicionar\".",
+        "chatgptTitle": "Conectar com o ChatGPT",
+        "chatgptStep1": "No ChatGPT, abra Configurações → Aplicativos e Conectores → Configurações Avançadas e ative o modo desenvolvedor.",
+        "chatgptStep2": "Clique em \"Criar novo app\" e dê um nome a ele.",
+        "chatgptStep3": "Cole o endereço do servidor MCP acima e salve.",
+        "chatgptNote": "O modo desenvolvedor está disponível atualmente em contas Plus/Pro; em contas Business/Enterprise, um administrador do workspace pode ativá-lo ou desativá-lo.",
+        "geminiTitle": "Conectar com o Gemini",
+        "geminiStep1": "Para o Gemini CLI: adicione o endereço do servidor MCP acima em ~/.gemini/settings.json, na lista de seus servidores MCP.",
+        "geminiStep2": "Para o Gemini Enterprise (edição empresarial): Configurações e ajuda → Equipe → Gerenciar equipe → Aplicativos conectados → \"Adicionar servidor MCP\".",
+        "geminiNote": "O app Gemini para consumidores atualmente não tem uma forma documentada de adicionar um servidor MCP personalizado diretamente — isso só está disponível hoje via Gemini CLI e Gemini Enterprise."
+      },
+      "detectPlatform": {
+        "urlPlaceholder": "URL da loja (opcional) — ex.: https://your-shop.com",
+        "hint": "Vamos verificar a URL e preencher o ID do conector e do fornecedor automaticamente se reconhecermos a plataforma.",
+        "detected": "{platform} detectada — campos preenchidos.",
+        "notDetected": "Plataforma não reconhecida. Preencha o ID do conector e do fornecedor manualmente.",
+        "failed": "Não foi possível verificar esse endereço. Preencha o ID do conector e do fornecedor manualmente."
+      },
+      "connectOauth": {
+        "title": "Conectar",
+        "shopifyHint": "Conecte sua loja Shopify para sincronizar catálogo e pedidos.",
+        "shopifyDomainPlaceholder": "your-shop.myshopify.com",
+        "shopifyButton": "Conectar com o Shopify",
+        "fhirHint": "Conecte seu servidor FHIR (ex.: Epic, Cerner/Oracle Health, Athenahealth) via SMART on FHIR.",
+        "fhirBaseUrlPlaceholder": "URL do servidor FHIR — ex.: https://ehr.example.com/fhir/r4",
+        "fhirClientIdPlaceholder": "ID do cliente (emitido pelo seu EHR)",
+        "fhirClientSecretPlaceholder": "Segredo do cliente (opcional, apenas para clientes confidenciais)",
+        "fhirScopePlaceholder": "Escopo (opcional, padrão: openid fhirUser patient/*.read)",
+        "fhirButton": "Conectar servidor FHIR",
+        "connecting": "Conectando...",
+        "notConfigured": "Este tipo de conexão ainda não está disponível. Tente novamente mais tarde.",
+        "failed": "Não foi possível iniciar a conexão. Verifique seus dados."
+      }
     },
     "oauthconsent": {
       "title": "Permitir acesso?",

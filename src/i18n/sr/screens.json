@@ -10237,7 +10237,51 @@
       "loginSubtitle": "Portal za trgovinu",
       "loginIntro": "Prijavi se za upravljanje svojim poslom.",
       "loginButton": "Prijavi se",
-      "loginError": "Prijava neuspešna"
+      "loginError": "Prijava neuspešna",
+      "agentConnect": {
+        "back": "Nazad na moje konekcije",
+        "title": "Poveži se putem AI Agenta",
+        "subtitle": "Uperi svog Claude, ChatGPT, ili Gemini agenta direktno na Vitanaland MCP server — tvoj agent tada može da upravlja tvojim katalogom, narudžbinama i dostupnošću umesto da ti popunjavaš ručni obrazac.",
+        "notReachableYet": "MCP server je već izgrađen, ali još uvek nije javno dostupan na ovoj adresi (DNS izloženost je još uvek u toku). Kada bude aktivan, koraci ispod funkcionišu nepromenjeno.",
+        "mcpUrlLabel": "URL MCP servera",
+        "copyUrl": "Kopiraj URL",
+        "copied": "Kopirano u klipbord",
+        "claudeTitle": "Poveži se sa Claude-om",
+        "claudeStep1": "U Claude-u, otvori Podešavanja → Konektori.",
+        "claudeStep2": "Klikni \"+\" zatim \"Dodaj prilagođeni konektor\".",
+        "claudeStep3": "Nalepi URL MCP servera iznad i klikni \"Dodaj\".",
+        "chatgptTitle": "Poveži se sa ChatGPT-om",
+        "chatgptStep1": "U ChatGPT-u, otvori Podešavanja → Aplikacije i Konektori → Napredna Podešavanja i uključi Režim za programere.",
+        "chatgptStep2": "Klikni \"Kreiraj novu aplikaciju\" i daj joj ime.",
+        "chatgptStep3": "Nalepi URL MCP servera iznad i sačuvaj.",
+        "chatgptNote": "Režim za programere je trenutno dostupan na Plus/Pro nalozima; na Business/Enterprise nalozima administrator radnog prostora ga može uključiti ili isključiti.",
+        "geminiTitle": "Poveži se sa Gemini",
+        "geminiStep1": "Za Gemini CLI: dodaj URL MCP servera iznad u ~/.gemini/settings.json pod tvoje MCP servere.",
+        "geminiStep2": "Za Gemini Enterprise (Business Edition): Podešavanja i pomoć → Tim → Upravljaj timom → Povezane aplikacije → „Dodaj MCP Server“.",
+        "geminiNote": "Gemini aplikacija za korisnike trenutno nema dokumentovan način za direktno dodavanje prilagođenog MCP servera — to je danas dostupno samo putem Gemini CLI i Gemini Enterprise."
+      },
+      "detectPlatform": {
+        "urlPlaceholder": "URL prodavnice (opciono) — npr. https://your-shop.com",
+        "hint": "Proverićemo URL i automatski popuniti ID konektora i provajdera ako prepoznamo platformu.",
+        "detected": "{platform} detektovan — polja su popunjena.",
+        "notDetected": "Platforma nije prepoznata. Molimo te da ručno popuniš ID konektora i provajdera.",
+        "failed": "Nismo mogli da proverimo tu adresu. Molimo te da ručno popuniš ID konektora i provajdera."
+      },
+      "connectOauth": {
+        "title": "Poveži",
+        "shopifyHint": "Poveži svoju Shopify prodavnicu da sinhronizuješ svoj katalog i porudžbine.",
+        "shopifyDomainPlaceholder": "your-shop.myshopify.com",
+        "shopifyButton": "Poveži se sa Shopify",
+        "fhirHint": "Poveži svoj FHIR server (npr. Epic, Cerner/Oracle Health, Athenahealth) putem SMART on FHIR.",
+        "fhirBaseUrlPlaceholder": "URL FHIR servera — npr. https://ehr.example.com/fhir/r4",
+        "fhirClientIdPlaceholder": "ID klijenta (izdao tvoj EHR)",
+        "fhirClientSecretPlaceholder": "Tajna klijenta (opciono, samo za poverljive klijente)",
+        "fhirScopePlaceholder": "Opseg (opciono, podrazumevano: openid fhirUser patient/*.read)",
+        "fhirButton": "Poveži FHIR server",
+        "connecting": "Povezivanje...",
+        "notConfigured": "Ovaj tip veze još uvek nije omogućen. Pokušaj ponovo kasnije.",
+        "failed": "Nije uspelo uspostavljanje veze. Proveri svoje podatke."
+      }
     },
     "oauthconsent": {
       "title": "Dozvoli pristup?",

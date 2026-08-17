@@ -10237,7 +10237,51 @@
       "loginSubtitle": "Portal Handlowy",
       "loginIntro": "Zaloguj się, aby zarządzać swoją firmą.",
       "loginButton": "Zaloguj się",
-      "loginError": "Logowanie nie powiodło się"
+      "loginError": "Logowanie nie powiodło się",
+      "agentConnect": {
+        "back": "Powrót do moich połączeń",
+        "title": "Połącz przez agenta AI",
+        "subtitle": "Skieruj swojego agenta Claude, ChatGPT lub Gemini bezpośrednio na serwer MCP Vitanaland — twój agent będzie mógł zarządzać twoim katalogiem, zamówieniami i dostępnością za ciebie, zamiast wypełniać ręczny formularz.",
+        "notReachableYet": "Serwer MCP jest już zbudowany, ale jeszcze nie jest publicznie dostępny pod tym adresem (ekspozycja DNS jest wciąż w toku). Gdy będzie aktywny, poniższe kroki będą działać bez zmian.",
+        "mcpUrlLabel": "Adres URL serwera MCP",
+        "copyUrl": "Kopiuj URL",
+        "copied": "Skopiowano do schowka",
+        "claudeTitle": "Połącz z Claude",
+        "claudeStep1": "W Claude otwórz Ustawienia → Konektory.",
+        "claudeStep2": "Kliknij „+”, a następnie „Dodaj własny konektor”.",
+        "claudeStep3": "Wklej powyższy adres URL serwera MCP i kliknij „Dodaj”.",
+        "chatgptTitle": "Połącz z ChatGPT",
+        "chatgptStep1": "W ChatGPT otwórz Ustawienia → Aplikacje i Konektory → Ustawienia zaawansowane i włącz Tryb dewelopera.",
+        "chatgptStep2": "Kliknij „Utwórz nową aplikację” i nadaj jej nazwę.",
+        "chatgptStep3": "Wklej powyższy adres URL serwera MCP i zapisz.",
+        "chatgptNote": "Tryb dewelopera jest obecnie dostępny na kontach Plus/Pro; na kontach Business/Enterprise administrator przestrzeni roboczej może go włączyć lub wyłączyć.",
+        "geminiTitle": "Połącz z Gemini",
+        "geminiStep1": "Dla Gemini CLI: dodaj powyższy adres URL serwera MCP do ~/.gemini/settings.json w sekcji twoich serwerów MCP.",
+        "geminiStep2": "Dla Gemini Enterprise (Business Edition): Ustawienia i pomoc → Zespół → Zarządzaj zespołem → Połączone aplikacje → „Dodaj serwer MCP”.",
+        "geminiNote": "Konsumencka aplikacja Gemini nie ma obecnie udokumentowanego sposobu na bezpośrednie dodanie własnego serwera MCP — jest to dostępne tylko dziś przez Gemini CLI i Gemini Enterprise."
+      },
+      "detectPlatform": {
+        "urlPlaceholder": "Adres URL sklepu (opcjonalnie) — np. https://your-shop.com",
+        "hint": "Sprawdzimy adres URL i automatycznie uzupełnimy identyfikator konektora i dostawcy, jeśli rozpoznamy platformę.",
+        "detected": "{platform} wykryto — pola uzupełniono.",
+        "notDetected": "Platforma nierozpoznana. Wypełnij ręcznie identyfikator konektora i dostawcy.",
+        "failed": "Nie udało się sprawdzić tego adresu. Wypełnij ręcznie identyfikator konektora i dostawcy."
+      },
+      "connectOauth": {
+        "title": "Połącz",
+        "shopifyHint": "Połącz swój sklep Shopify, aby zsynchronizować swój katalog i zamówienia.",
+        "shopifyDomainPlaceholder": "your-shop.myshopify.com",
+        "shopifyButton": "Połącz z Shopify",
+        "fhirHint": "Połącz swój serwer FHIR (np. Epic, Cerner/Oracle Health, Athenahealth) przez SMART on FHIR.",
+        "fhirBaseUrlPlaceholder": "Adres URL serwera FHIR — np. https://ehr.example.com/fhir/r4",
+        "fhirClientIdPlaceholder": "ID klienta (wydany przez twój EHR)",
+        "fhirClientSecretPlaceholder": "Sekret klienta (opcjonalnie, tylko dla klientów poufnych)",
+        "fhirScopePlaceholder": "Zakres (opcjonalnie, domyślnie: openid fhirUser patient/*.read)",
+        "fhirButton": "Połącz serwer FHIR",
+        "connecting": "Łączenie...",
+        "notConfigured": "Ten typ połączenia nie jest jeszcze włączony. Spróbuj ponownie później.",
+        "failed": "Nie udało się nawiązać połączenia. Sprawdź swoje dane."
+      }
     },
     "oauthconsent": {
       "title": "Zezwolić na dostęp?",
