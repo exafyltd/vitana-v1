@@ -1,21 +1,26 @@
-# Per-PR preview deployments (independent staging per branch):
+# PREVIEW-DEPLOY-FRONTEND — per-PR preview of the community app, on S3 +
+# CloudFront (VTID-03658).
 #
-# Every open PR that touches frontend files gets its OWN Cloud Run service
-# (community-app-pr-<number>), auto-deployed on every push and auto-deleted
-# by PREVIEW-TEARDOWN-FRONTEND.yml when the PR closes. This exists because
-# community-app-staging (STAGE-DEPLOY-FRONTEND.yml) is a single shared
-# service — two branches manually redeploying it back-to-back clobber each
-# other's verification. With this workflow, nobody should need to manually
-# workflow_dispatch STAGE-DEPLOY-FRONTEND.yml against a feature branch again;
-# every PR gets its own isolated, automatically-updating preview instead.
+# Replaces the Cloud Run implementation (`community-app-pr-<n>`), which died
+# when GCP billing was deliberately disabled: every run failed with
+# `BILLING_DISABLED` from Artifact Registry, so PRs shipped with no preview at
+# all.
 #
-# Same build pattern as STAGE-DEPLOY-FRONTEND.yml (WIF auth, .env.production
-# override, gcloud run deploy --source=.) so it stays consistent with that
-# workflow. No custom preview.vitanaland.com subdomain is provisioned — the
-# Cloud Run auto-generated *.run.app URL (posted as a PR comment) is enough
-# to test a branch in isolation; the Cloudflare Worker that fronts
-# preview.vitanaland.com has a static, hand-maintained route map and isn't
-# meant for N dynamic hostnames (see vitana-platform docs/STAGING.md §0).
+# WHY S3 AND NOT A PER-PR ECS SERVICE
+# -----------------------------------
+# The app is a static SPA — nginx in a container was never doing anything a CDN
+# does not. The ECS route would need a task definition, service, target group
+# AND an ALB listener rule per pull request, and listener-rule PRIORITY has
+# already caused one silent misroute in this estate (CLAUDE.md §1b: the
+# path-based rules at priority 10 match before higher-numbered host rules
+# regardless of Host). Creating and destroying those per PR would invite that
+# on a schedule. S3 prefixes have no ordering to get wrong.
+#
+# ONE-TIME SETUP: scripts/aws/setup-pr-previews.sh (bucket, SPA-fallback
+# CloudFront function, scoped IAM). Requires the PREVIEW_CF_DISTRIBUTION_ID and
+# PREVIEW_CF_DOMAIN repo secrets that script tells the operator to set. Until
+# they exist this workflow fails FAST with a named reason rather than half
+# deploying — see the preflight step.
 
 name: Preview Deploy Frontend (per-PR)
 
@@ -26,16 +31,14 @@ on:
       - 'src/**'
       - 'public/**'
       - 'index.html'
-      - 'Dockerfile'
-      - 'nginx.conf'
       - 'package.json'
       - 'package-lock.json'
       - 'bun.lock'
+      - 'vite.config.ts'
       - '.github/workflows/PREVIEW-DEPLOY-FRONTEND.yml'
 
 permissions:
   contents: read
-  id-token: write
   pull-requests: write
 
 concurrency:
@@ -43,82 +46,107 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  GCP_PROJECT: lovable-vitana-vers1
-  GCP_REGION: us-central1
-  CLOUD_RUN_SERVICE: community-app-pr-${{ github.event.pull_request.number }}
-  STAGING_GATEWAY_URL: https://preview-gateway.vitanaland.com
+  AWS_REGION: eu-central-1
+  PREVIEW_BUCKET: vitana-pr-previews
+  PR_PREFIX: pr-${{ github.event.pull_request.number }}
+  # Previews talk to the AWS STAGING gateway, never production. Vite bakes this
+  # at build time — there is no runtime env var to correct it afterwards.
+  STAGING_GATEWAY_URL: https://preview-aws-gateway.vitanaland.com
 
 jobs:
   preview-deploy:
-    # Skip forks — they can't see repo secrets, so a fork PR would just fail
-    # loudly on GCP auth instead of deploying anything.
+    # Forks cannot read repo secrets, so a fork PR would fail on AWS auth
+    # rather than deploy anything. Skipping is the honest outcome.
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Auth to GCP (WIF)
-        uses: google-github-actions/auth@v2
+      - name: Preflight — required secrets
+        run: |
+          missing=""
+          [ -n "${{ secrets.PREVIEW_CF_DISTRIBUTION_ID }}" ] || missing="$missing PREVIEW_CF_DISTRIBUTION_ID"
+          [ -n "${{ secrets.PREVIEW_CF_DOMAIN }}" ] || missing="$missing PREVIEW_CF_DOMAIN"
+          [ -n "${{ secrets.AWS_STAGING_ACCESS_KEY_ID }}" ] || missing="$missing AWS_STAGING_ACCESS_KEY_ID"
+          if [ -n "$missing" ]; then
+            echo "::error::Missing secret(s):$missing — run scripts/aws/setup-pr-previews.sh and set them. Previews are unavailable until then."
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
         with:
-          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
-          service_account: ${{ secrets.GCP_WIF_SA_EMAIL }}
-          project_id: lovable-vitana-vers1
+          node-version: 20
+          cache: 'npm'
 
-      - uses: google-github-actions/setup-gcloud@v2
+      - name: Install
+        run: npm ci
 
-      - name: Write .env.production with staging URLs
+      - name: Write .env.production (staging gateway, never prod)
         run: |
-          # Same override as STAGE-DEPLOY-FRONTEND.yml: only the gateway URL
-          # points at staging. Supabase is left unset so the build inherits
-          # the PROD project from the committed .env — gateway-staging itself
-          # runs against prod Supabase (BOOTSTRAP-ORB-STAGING-SUPABASE-ALIGN),
-          # so the frontend must authenticate against the same project or
-          # authed features silently degrade. See docs/STAGING.md §6/§9b.
-          cat > .env.production <<EOF
-          # Generated by PREVIEW-DEPLOY-FRONTEND.yml — do not commit.
-          VITE_GATEWAY_BASE=${STAGING_GATEWAY_URL}
-          VITE_GATEWAY_URL=${STAGING_GATEWAY_URL}/api/v1
-          EOF
-          echo "wrote .env.production:"
-          sed 's/=.*/=<value>/' .env.production
+          # Same reasoning as AWS-STAGE-DEPLOY-FRONTEND.yml: only the gateway
+          # URL is overridden. Supabase is deliberately left inherited from the
+          # committed .env, because gateway-staging runs against the prod
+          # Supabase project and a mismatched project makes every authed
+          # feature silently degrade (CLAUDE.md / docs/STAGING.md §6).
+          {
+            echo "VITE_GATEWAY_BASE=${STAGING_GATEWAY_URL}"
+            echo "VITE_GATEWAY_URL=${STAGING_GATEWAY_URL}/api/v1"
+          } > .env.production
+          cat .env.production
 
-      - name: Deploy to Cloud Run
-        id: deploy
+      - name: Build
         run: |
-          gcloud run deploy "${CLOUD_RUN_SERVICE}" \
-            --source=. \
-            --region="${GCP_REGION}" \
-            --project="${GCP_PROJECT}" \
-            --allow-unauthenticated \
-            --min-instances=0 \
-            --max-instances=2 \
-            --update-env-vars=GIT_COMMIT_SHA=${{ github.event.pull_request.head.sha }},COMMIT_SHA=${{ github.event.pull_request.head.sha }},PR_NUMBER=${{ github.event.pull_request.number }} \
-            --quiet
+          # --base is load-bearing: the preview is served from /pr-<n>/, and
+          # without it every asset URL would be absolute ("/assets/x.js") and
+          # 404 against the CDN root. The symptom is a white page with a
+          # working index.html, which reads like a broken build rather than a
+          # broken path.
+          npm run build -- --base=/${PR_PREFIX}/
 
-          URL=$(gcloud run services describe "${CLOUD_RUN_SERVICE}" \
-            --region="${GCP_REGION}" --project="${GCP_PROJECT}" \
-            --format='value(status.url)')
-          REV=$(gcloud run services describe "${CLOUD_RUN_SERVICE}" \
-            --region="${GCP_REGION}" --project="${GCP_PROJECT}" \
-            --format='value(status.latestReadyRevisionName)')
-          echo "deploy_url=$URL" >> "$GITHUB_OUTPUT"
-          echo "revision=$REV" >> "$GITHUB_OUTPUT"
-          echo "Deployed: ${CLOUD_RUN_SERVICE}@${REV} → $URL"
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_STAGING_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_STAGING_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
-      - name: Health check
-        env:
-          URL: ${{ steps.deploy.outputs.deploy_url }}
+      - name: Sync to S3
         run: |
-          for i in 1 2 3 4 5 6; do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL/" 2>/dev/null || echo "000")
-            if [ "$STATUS" = "200" ]; then
-              echo "Health check passed (attempt $i)"
+          set -e
+          # Hashed assets are immutable and safe to cache hard; index.html must
+          # never be cached, or a pushed fix keeps serving the previous bundle
+          # and the reviewer reviews the wrong code.
+          aws s3 sync dist/ "s3://${PREVIEW_BUCKET}/${PR_PREFIX}/" \
+            --delete \
+            --exclude 'index.html' \
+            --cache-control 'public,max-age=31536000,immutable'
+          aws s3 cp dist/index.html "s3://${PREVIEW_BUCKET}/${PR_PREFIX}/index.html" \
+            --cache-control 'no-cache,no-store,must-revalidate'
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ secrets.PREVIEW_CF_DISTRIBUTION_ID }}" \
+            --paths "/${PR_PREFIX}/*" >/dev/null
+
+      - name: Verify the preview actually serves this commit
+        id: verify
+        run: |
+          set -e
+          URL="https://${{ secrets.PREVIEW_CF_DOMAIN }}/${PR_PREFIX}/"
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          # A green sync is not evidence the CDN serves it. Poll until the
+          # invalidation lands, and assert the shipped index references the
+          # prefix — a 200 alone would also be returned by a stale object.
+          for i in 1 2 3 4 5 6 7 8; do
+            BODY=$(curl -fsS --max-time 20 "$URL" 2>/dev/null || echo '')
+            if echo "$BODY" | grep -q "/${PR_PREFIX}/assets/"; then
+              echo "Preview live and serving ${PR_PREFIX} assets"
               exit 0
             fi
-            echo "Attempt $i: HTTP $STATUS — retry in 10s"
-            sleep 10
+            echo "attempt $i: not ready yet"; sleep 15
           done
-          echo "::error::Health check failed after 6 attempts"
+          echo "::error::Preview did not serve ${PR_PREFIX} assets after 8 attempts"
           exit 1
 
       - name: Comment preview URL on PR
@@ -126,18 +154,16 @@ jobs:
         with:
           script: |
             const marker = '<!-- preview-deploy-bot -->';
-            const url = '${{ steps.deploy.outputs.deploy_url }}';
-            const revision = '${{ steps.deploy.outputs.revision }}';
+            const url = '${{ steps.verify.outputs.url }}';
             const sha = context.payload.pull_request.head.sha.slice(0, 7);
             const body = [
               marker,
               `### 🔍 Preview deployed`,
               ``,
               `**URL:** ${url}`,
-              `**Revision:** ${revision}`,
               `**Commit:** ${sha}`,
               ``,
-              `_Auto-deployed on every push to this PR; torn down when it closes._`,
+              `_Static preview on S3 + CloudFront. Auto-deployed on every push to this PR; removed when it closes._`,
             ].join('\n');
 
             const { data: comments } = await github.rest.issues.listComments({

@@ -97,9 +97,9 @@ a stale response means the rollout is still in flight, not a cache.
 Auto deploy-to-live is **time-gated**. Before the cutover instant, a push to
 `main` deploys the **live** `community-app` as before. At/after it, the
 automatic (push) path in `DEPLOY.yml` is **frozen** (via its `cutover_gate`
-job): frontend changes auto-deploy to **staging** (`community-app-staging` via
-`STAGE-DEPLOY-FRONTEND.yml`, on `preview.vitanaland.com`), and production is
-reached only via:
+job): frontend changes auto-deploy to **staging** (ECS
+`vitana-community-app-staging` via `AWS-STAGE-DEPLOY-FRONTEND.yml`, on
+**`preview-aws.vitanaland.com`**), and production is reached only via:
 
 1. the single **PUBLISH** button in the backend Command Hub, or
 2. a deliberate manual `workflow_dispatch` of `DEPLOY.yml` (requires a `reason`)
@@ -110,23 +110,57 @@ auto-deploy yet, so it is freeze-only on the auto path post-cutover; ship via
 manual dispatch). `STAGE-DEPLOY-FRONTEND.yml` is **not** gated — staging deploys
 always run. The backend half of the cutover lives in `exafyltd/vitana-platform`.
 
-### Per-PR preview deploys
+### GCP billing is OFF — where staging and previews live now (VTID-03658)
 
-Every open PR that touches frontend files gets its **own** Cloud Run service
-(`community-app-pr-<number>`), independent of `community-app-staging`:
+GCP billing on `lovable-vitana-vers1` was **deliberately disabled**. Anything
+that deploys Cloud Run or pushes to Artifact Registry now fails with
+`BILLING_DISABLED`, and **`preview.vitanaland.com` returns 500**. It is not
+coming back; do not send anyone there and do not "fix" a red Cloud Run deploy.
 
-- `.github/workflows/PREVIEW-DEPLOY-FRONTEND.yml` auto-deploys on every push
-  to the PR and posts/updates a PR comment with the preview URL.
-- `.github/workflows/PREVIEW-TEARDOWN-FRONTEND.yml` deletes the service when
-  the PR closes (merged or not).
+**Staging did not have to move — it was already on AWS in parallel.**
+`AWS-STAGE-DEPLOY-FRONTEND.yml` has been auto-deploying every push to `main`
+onto ECS `vitana-community-app-staging` the whole time. That is now the only
+staging frontend:
 
-**Do not manually `workflow_dispatch` `STAGE-DEPLOY-FRONTEND.yml` against a
-feature branch.** That deploys the *shared* `community-app-staging` /
-`preview.vitanaland.com` service — if two branches do this back-to-back,
-each overwrites the other's verification (this happened and reverted a
-merged fix on staging). Use the PR's own preview URL instead; it can't be
-clobbered by other branches. `STAGE-DEPLOY-FRONTEND.yml` should only ever
-run via its normal push-to-`main` trigger.
+| Surface | URL |
+|---|---|
+| **Staging frontend** | **`https://preview-aws.vitanaland.com`** |
+| Staging gateway | `https://preview-aws-gateway.vitanaland.com` |
+| ~~Cloud Run staging~~ | ~~`preview.vitanaland.com`~~ — dead, 500 |
+
+`STAGE-DEPLOY-FRONTEND.yml` is **retired**: its push trigger is removed and
+only `workflow_dispatch` remains, so it can be revived unchanged if billing
+ever returns. The file is kept rather than deleted because
+`preview.vitanaland.com` still appears in older docs, bookmarks and PR
+comments, and whoever lands on it needs to find out where staging went.
+
+### Per-PR preview deploys — S3 + CloudFront
+
+Every open PR touching frontend files gets its own prefix on a shared bucket,
+served over CloudFront at `/<pr-number>/`:
+
+- `PREVIEW-DEPLOY-FRONTEND.yml` builds with `--base=/pr-<n>/`, syncs to
+  `s3://vitana-pr-previews/pr-<n>/`, invalidates, verifies the CDN actually
+  serves that commit's assets, and posts/updates a PR comment.
+- `PREVIEW-TEARDOWN-FRONTEND.yml` removes the prefix when the PR closes. A
+  30-day bucket lifecycle rule is the backstop for teardowns that never ran.
+- One-time provisioning: **`scripts/aws/setup-pr-previews.sh`** (bucket,
+  SPA-fallback CloudFront function, scoped IAM). Needs the
+  `PREVIEW_CF_DISTRIBUTION_ID` / `PREVIEW_CF_DOMAIN` repo secrets it prints;
+  without them the deploy workflow fails fast with a named reason instead of
+  half-deploying.
+
+**Why not a per-PR ECS service:** it would need a task definition, service,
+target group AND an ALB listener rule per PR — and listener-rule *priority*
+has already caused one silent misroute here (§1b in the platform repo: the
+path rules at priority 10 match before higher-numbered host rules regardless
+of `Host`). Churning those per pull request invites that failure on a
+schedule. S3 prefixes have no ordering to get wrong. The app is a static SPA;
+the container was never doing anything a CDN does not.
+
+**Still do not point a feature branch at the shared staging service.** Two
+branches doing that back-to-back overwrite each other's verification — that
+happened and reverted a merged fix on staging. Use the PR's own preview URL.
 
 ## Project Structure
 
