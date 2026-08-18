@@ -21,6 +21,11 @@ on:
       # entries the one check that would catch it never runs.
       - 'vite.config.ts'
       - 'scripts/check-locale-chunking.mjs'
+      # VTID-03663: `scripts/i18n-*` above does NOT match this filename, so
+      # without its own entry an edit to the guard could not trigger the guard.
+      # Same shape as VTID-03659 — the file whose edit causes the regression has
+      # to be able to trigger the thing that observes it.
+      - 'scripts/check-i18n-subscriptions.mjs'
   push:
     branches: [main]
 
@@ -58,6 +63,22 @@ jobs:
         run: |
           npm run build
           node scripts/check-locale-chunking.mjs
+
+      # VTID-03663 — a React.memo'd component that renders catalog strings must
+      # subscribe to the locale.
+      #
+      # LanguageProvider cascades a re-render through its subtree on a language
+      # change, which covers 613 of the 614 components that render t()/lookup()
+      # without subscribing. React.memo is the one thing that stops the cascade:
+      # it bails out on shallow-equal props, and the locale is not a prop. Such a
+      # component renders its strings once and never looks again, leaving the
+      # page in two languages at once.
+      #
+      # Nothing else can catch it: nothing throws, no key is missing, no test
+      # fails, coverage is 100%, and the FIRST language a user picks looks
+      # perfect — it only breaks on the second.
+      - name: i18n subscriptions (memo'd components must subscribe to the locale)
+        run: node scripts/check-i18n-subscriptions.mjs
 
       # VTID-03519. The other checks here can only see FILES. This one covers
       # the surface none of them can: DB-backed content. A locale that is `ga`
