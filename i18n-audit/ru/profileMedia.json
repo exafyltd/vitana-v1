@@ -6,11 +6,10 @@
       "phase": "llm"
     },
     "profileMedia.emptyDescription": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly literal and less idiomatic phrasing for 'wellness journey' in a friendly app context.",
-      "suggested": "Поделись своим оздоровительным путешествием",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "profileMedia.uploadCta": {
       "verdict": "OK",
@@ -28,5 +27,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:44:12.723Z"
+  "generatedAt": "2026-08-18T04:07:06.665Z"
 }
