@@ -225,33 +225,38 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       return;
     }
     
-    // Auto-update TTS voice when language changes
+    // VTID-03671 — clear the voice OVERRIDE when it no longer matches the
+    // chosen language. Do not write a replacement.
+    //
+    // This block used to map each language to a hardcoded Google Chirp3-HD id
+    // ('de-DE-Chirp3-HD-Achernar', 'pt-BR-Chirp3-HD-Zephyr', …), so every
+    // language change persisted a GOOGLE voice against the user's profile —
+    // while the platform was moving voice to Polly and Nova on AWS.
+    //
+    // `tts_voice` is only an override. useTextToSpeech already derives a voice
+    // from `stt_language` when it is absent, and reads it with optional
+    // chaining throughout, so null is a supported state rather than a hole:
+    //   - de/en/es/fr/pt/ru/pl → the Gemini map
+    //   - sr                   → the Google Speech map (Polly has NO Serbian
+    //                            voice in any engine, so Serbian stays on
+    //                            Google by standing decision)
+    //
+    // So today's audible behaviour is unchanged — the derived default resolves
+    // to the same voice the old code wrote. What changes is that it is no
+    // longer WRITTEN. Persisting a provider-specific id is exactly what turns a
+    // future provider switch into a per-user data migration instead of a
+    // config change (CLAUDE.md §2c), and this stops that pile growing.
+    //
+    // Clearing rather than writing a Polly id on purpose: the frontend still
+    // calls the Google edge functions directly, so a Polly voice name here
+    // would name a voice nothing can currently play.
     const currentVoice = preferences?.tts_voice;
-    const shouldUpdateVoice = !currentVoice || !currentVoice.startsWith(language);
-    
-    if (shouldUpdateVoice) {
-      const defaultVoices: Record<string, string> = {
-        'de-DE': 'de-DE-Chirp3-HD-Achernar',
-        'en-US': 'en-US-Chirp3-HD-Leda',
-        'sr-RS': 'sr-RS-Standard-B',
-        'ar-XA': 'ar-XA-Chirp3-HD-Aoede',
-        'es-ES': 'es-ES-Chirp3-HD-Gacrux',
-        'ru-RU': 'ru-RU-Chirp3-HD-Kore',
-        'zh-CN': 'cmn-CN-Chirp3-HD-Leda',
-        'fr-FR': 'fr-FR-Chirp3-HD-Pulcherrima',
-        'pt-BR': 'pt-BR-Chirp3-HD-Zephyr',
-        'pl-PL': 'pl-PL-Chirp3-HD-Despina',
-      };
-      
-      const newVoice = defaultVoices[language] || `${language}-Standard-A`;
-      console.log('[LANG] Auto-updating TTS voice:', currentVoice, '->', newVoice);
-      
-      updatePreferences({ 
-        stt_language: language,
-        tts_voice: newVoice
-      });
+    const voiceMatchesLanguage = !!currentVoice && currentVoice.startsWith(language);
+
+    if (currentVoice && !voiceMatchesLanguage) {
+      console.log('[LANG] Clearing stale voice override:', currentVoice, '→ derive from', language);
+      updatePreferences({ stt_language: language, tts_voice: null });
     } else {
-      console.log('[LANG] Keeping existing voice:', currentVoice);
       updatePreferences({ stt_language: language });
     }
   }, [user, preferences?.tts_voice, updatePreferences]);

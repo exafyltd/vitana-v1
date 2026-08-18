@@ -299,8 +299,12 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
               {t('screens.assistant.refreshBrowserVoices')}
             </Button>
           </div>
+          {/* `?? undefined` (VTID-03671): tts_voice is nullable — null means "no
+              override, derive from the language". Radix treats null as a
+              controlled empty value and would pin the trigger blank; undefined
+              leaves it uncontrolled so the placeholder renders instead. */}
           <Select
-            value={preferences.tts_voice}
+            value={preferences.tts_voice ?? undefined}
             onValueChange={(value) => updatePreferences({ tts_voice: value })}
             disabled={isUpdating}
           >
