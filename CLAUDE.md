@@ -55,24 +55,30 @@ npm run build     # Production build → dist/
 npm run preview   # Preview production build
 ```
 
-## Deployment — production is AWS, not Cloud Run
+## Deployment — production is AWS. GCP is fully decommissioned, not a rollback target.
 
 **`vitanaland.com` and `www` are served by the AWS ECS service
-`vitana-community-app-awsdr`.** Cloud Run's `community-app` is a rollback
-target that no user reaches. This moved at the VTID-03419 cutover.
+`vitana-community-app-awsdr`.** This moved at the VTID-03419 cutover
+(2026-07-27) and became the *only* option 2026-08-16, when GCP project
+`lovable-vitana-vers1` had billing disabled and its `gateway` Cloud Run
+service was deleted outright (VTID-03599/VTID-03649, see
+`exafyltd/vitana-platform` CLAUDE.md §1). **Cloud Run's `community-app` is
+no longer a usable rollback target — GCP billing is off, so nothing
+deployed there can serve traffic even if the service object still exists.**
+There is no cloud to roll back to but AWS.
 
 | Host | Serves | Role |
 |------|--------|------|
-| **AWS ECS** `vitana-community-app-awsdr` | `vitanaland.com`, `www`, `dr-app.vitanaland.com` | **Production — what users get** |
-| Cloud Run `community-app` | its own `*.run.app` URL | Rollback target, kept in sync |
+| **AWS ECS** `vitana-community-app-awsdr` | `vitanaland.com`, `www`, `dr-app.vitanaland.com` | **Production — the only place that serves traffic** |
+| ~~Cloud Run `community-app`~~ | ~~its own `*.run.app` URL~~ | **Dead — GCP billing is off. Do not treat as a rollback target.** |
 | Lovable CDN | `vitana-lovable-vers1.lovable.app` | Legacy, being decommissioned |
 
-`DEPLOY.yml` deploys **both** — its `aws_prod` job calls
-`AWS-PROD-DEPLOY-FRONTEND.yml` with the same pinned commit (VTID-03483).
-Before that job existed, running `DEPLOY.yml` deployed Cloud Run, reported
-success everywhere, and left every visitor on the previous build; shipping
-anything required a second, separate, undocumented dispatch of the AWS
-workflow. **If you edit `DEPLOY.yml`, keep `aws_prod`.**
+`DEPLOY.yml`'s `aws_prod` job (calling `AWS-PROD-DEPLOY-FRONTEND.yml`) is
+now the only leg that matters. If it still has a GCP/Cloud Run deploy job
+alongside it, that job is dead weight — it will fail against
+disabled billing, not silently succeed, so at least it won't be mistaken
+for a working rollback. **If you edit `DEPLOY.yml`, keep `aws_prod`** and
+treat removing the dead GCP job as a safe, low-priority cleanup.
 
 ### Verifying a frontend deploy actually shipped
 
@@ -180,9 +186,21 @@ src/
 
 `.env` contains `VITE_*` vars baked at build time (public keys only):
 - `VITE_SUPABASE_URL` / `VITE_SUPABASE_PUBLISHABLE_KEY` — Supabase connection
-- `VITE_GATEWAY_URL` — Backend API (`gateway-*.run.app`)
+- `VITE_GATEWAY_URL` — Backend API (`gateway.vitanaland.com`, AWS ECS since
+  VTID-03419; the old `gateway-*.run.app` Cloud Run form is dead — GCP is
+  decommissioned, see the Deployment section above)
 - `VITE_OPERATOR_BASE_URL` — Operator API
 - `VITE_DEV_HUB_ENABLED` — Dev Hub feature flag
+
+**⚠️ Known live gap (checked against `exafyltd/vitana-platform` CLAUDE.md
+§2c, 2026-08-18):** `src/hooks/useTextToSpeech.ts` and
+`VoiceSettingsPanel.tsx` call the Supabase edge functions
+`google-gemini-tts`/`google-cloud-tts` directly — this never went through
+the gateway's AWS Polly migration. With GCP billing off, these calls have
+nothing to reach: any user with a stored Google `tts_voice` preference, and
+every Serbian-locale user (Polly has no Serbian voice at all), gets silence
+or an error. This needs a Polly-backed edge function plus a stored-preference
+migration — not fixed by this doc pass, flagged so it isn't lost.
 
 ## Multi-Repo Context
 
