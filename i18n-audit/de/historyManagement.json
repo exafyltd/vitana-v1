@@ -136,11 +136,10 @@
       "phase": "llm"
     },
     "historyManagement.exportCompleteDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihr' instead of informal 'Dein').",
-      "suggested": "Dein Verlauf wurde erfolgreich exportiert.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "historyManagement.exportFailed": {
       "verdict": "OK",
@@ -148,11 +147,10 @@
       "phase": "llm"
     },
     "historyManagement.exportFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihres' instead of informal 'deines').",
-      "suggested": "Beim Exportieren deines Verlaufs ist ein Fehler aufgetreten.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "historyManagement.historyCleared": {
       "verdict": "OK",
@@ -180,11 +178,10 @@
       "phase": "llm"
     },
     "historyManagement.allHistoryDeletedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Dein gesamter Verlauf wurde dauerhaft entfernt.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "historyManagement.deleteFailed": {
       "verdict": "OK",
@@ -192,25 +189,22 @@
       "phase": "llm"
     },
     "historyManagement.deleteFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Beim Löschen deines Verlaufs ist ein Fehler aufgetreten.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "historyManagement.confirmClearOld": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "Bist du sicher, dass du den Verlauf älter als 90 Tage löschen möchtest?",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "historyManagement.confirmDeleteAll": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form)",
-      "suggested": "⚠️ WARNUNG: Dies wird deinen GESAMTEN Verlauf dauerhaft löschen. Diese Aktion kann nicht rückgängig gemacht werden. Bist du absolut sicher?",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "historyManagement.danger": {
       "verdict": "OK",
@@ -218,5 +212,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:13:13.534Z"
+  "generatedAt": "2026-08-18T04:07:31.134Z"
 }
