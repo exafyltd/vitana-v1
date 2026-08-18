@@ -51,4 +51,44 @@ export default defineConfig(({ mode }) => ({
   worker: {
     format: "es",
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // VTID-03657 — one chunk per locale, instead of one per SHARD.
+        //
+        // Reported as "only English and German switch instantly". Both halves
+        // had the same cause. `de` is bundled eagerly, so it is already in
+        // memory. Every other locale is lazy, and `import.meta.glob` without
+        // `eager` emits a separate chunk per file — 104 shards per locale, and
+        // `ensureCatalog` awaits `Promise.all` over all of them before merging
+        // any. So choosing Spanish fired 104 requests before one Spanish word
+        // could appear; measured on a real build, es/fr/pt/ru lived only in
+        // their own lazy chunks while the total build carried 1504 of them.
+        //
+        // English merely LOOKED instant: the intro screen's fallbacks are
+        // hardcoded English (`t.intro?.welcomeTo || 'WELCOME TO VITANALAND'`),
+        // so it renders identical text whether or not the `en` catalog ever
+        // arrives. That coincidence is what made this read as "EN and DE work".
+        //
+        // Grouping by locale makes a switch ONE request.
+        //
+        // Why this is safe where VTID-03255's attempt was not (see the note at
+        // the top of this file): that attempt split interdependent VENDOR JS —
+        // recharts/d3 + react — and hit a TDZ error from a cross-chunk circular
+        // import. These are JSON data modules. They import nothing, export a
+        // default object, and cannot participate in an initialization cycle, so
+        // the failure mode being warned about is not reachable here. The rule
+        // still stands for JS: do not extend this to code without a browser check.
+        manualChunks(id: string) {
+          const m = /[\\/]src[\\/]i18n[\\/]([a-z]{2})[\\/][^\\/]+\.json$/.exec(id);
+          // `de` is deliberately excluded: it is eagerly imported into the main
+          // bundle, and naming it here would pull it OUT into a lazy chunk —
+          // turning the one locale that is currently instant into a network
+          // round trip. That would be a regression dressed as an optimisation.
+          if (m && m[1] !== 'de') return `locale-${m[1]}`;
+          return undefined;
+        },
+      },
+    },
+  },
 }));

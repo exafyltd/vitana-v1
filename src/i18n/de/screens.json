@@ -10134,7 +10134,7 @@
       "later": "Später"
     },
     "introexperience": {
-      "space": "Bereich",
+      "space": "Leertaste",
       "esc": "Esc",
       "press": "Drücken",
       "play": "zum Abspielen •",
@@ -10237,7 +10237,51 @@
       "loginSubtitle": "Commerce Portal",
       "loginIntro": "Melde dich an, um dein Business zu verwalten.",
       "loginButton": "Anmelden",
-      "loginError": "Anmeldung fehlgeschlagen"
+      "loginError": "Anmeldung fehlgeschlagen",
+      "agentConnect": {
+        "back": "Zurück zu meinen Verbindungen",
+        "title": "Per KI-Agent verbinden",
+        "subtitle": "Verbinde deinen eigenen Claude-, ChatGPT- oder Gemini-Agenten direkt mit dem Vitanaland-MCP-Server — dein Agent kann dann Katalog, Bestellungen und Verfügbarkeit für dich pflegen, statt alles manuell im Formular einzutragen.",
+        "notReachableYet": "Der MCP-Server ist bereits fertig gebaut, aber noch nicht öffentlich unter dieser Adresse erreichbar (DNS-Freischaltung steht noch aus). Sobald sie live ist, funktionieren die Schritte unten unverändert.",
+        "mcpUrlLabel": "MCP-Server-Adresse",
+        "copyUrl": "Adresse kopieren",
+        "copied": "In die Zwischenablage kopiert",
+        "claudeTitle": "Mit Claude verbinden",
+        "claudeStep1": "Öffne in Claude: Einstellungen → Connectors.",
+        "claudeStep2": "Klicke auf \"+\" und dann \"Benutzerdefinierten Connector hinzufügen\".",
+        "claudeStep3": "Füge die MCP-Server-Adresse oben ein und klicke auf \"Hinzufügen\".",
+        "chatgptTitle": "Mit ChatGPT verbinden",
+        "chatgptStep1": "Öffne in ChatGPT: Einstellungen → Apps und Connectors → Erweiterte Einstellungen und aktiviere den Entwicklermodus.",
+        "chatgptStep2": "Klicke auf \"Neue App erstellen\" und vergib einen Namen.",
+        "chatgptStep3": "Füge die MCP-Server-Adresse oben ein und speichere.",
+        "chatgptNote": "Der Entwicklermodus steht aktuell für Plus-/Pro-Konten zur Verfügung; auf Business-/Enterprise-Konten kann er von der Workspace-Administration ein- oder ausgeschaltet werden.",
+        "geminiTitle": "Mit Gemini verbinden",
+        "geminiStep1": "Für die Gemini-CLI: Trage die MCP-Server-Adresse oben in ~/.gemini/settings.json unter deinen MCP-Servern ein.",
+        "geminiStep2": "Für Gemini Enterprise (Business Edition): Einstellungen & Hilfe → Team → Team verwalten → Verbundene Apps → \"MCP-Server hinzufügen\".",
+        "geminiNote": "Die Consumer-Gemini-App bietet aktuell keinen dokumentierten Weg, einen eigenen MCP-Server direkt hinzuzufügen — das gilt bislang nur für die Gemini-CLI und Gemini Enterprise."
+      },
+      "detectPlatform": {
+        "urlPlaceholder": "Shop-URL (optional) — z. B. https://dein-shop.de",
+        "hint": "Wir prüfen die URL und füllen Connector- und Anbieter-ID automatisch aus, wenn wir die Plattform erkennen.",
+        "detected": "{platform} erkannt — Felder wurden ausgefüllt.",
+        "notDetected": "Plattform nicht erkannt. Bitte Connector- und Anbieter-ID manuell eintragen.",
+        "failed": "Die Adresse konnte nicht geprüft werden. Bitte Connector- und Anbieter-ID manuell eintragen."
+      },
+      "connectOauth": {
+        "title": "Verbinden",
+        "shopifyHint": "Verbinde deinen Shopify-Shop, um Katalog und Bestellungen zu synchronisieren.",
+        "shopifyDomainPlaceholder": "dein-shop.myshopify.com",
+        "shopifyButton": "Mit Shopify verbinden",
+        "fhirHint": "Verbinde deinen FHIR-Server (z. B. Epic, Cerner/Oracle Health, Athenahealth) über SMART on FHIR.",
+        "fhirBaseUrlPlaceholder": "FHIR-Server-Adresse — z. B. https://ehr.beispiel.de/fhir/r4",
+        "fhirClientIdPlaceholder": "Client-ID (von deinem EHR vergeben)",
+        "fhirClientSecretPlaceholder": "Client-Secret (optional, nur für vertrauliche Clients)",
+        "fhirScopePlaceholder": "Berechtigungsbereich (optional, Standard: openid fhirUser patient/*.read)",
+        "fhirButton": "FHIR-Server verbinden",
+        "connecting": "Verbinde...",
+        "notConfigured": "Diese Verbindungsart ist noch nicht freigeschaltet. Bitte versuche es später erneut.",
+        "failed": "Die Verbindung konnte nicht gestartet werden. Bitte überprüfe deine Angaben."
+      }
     },
     "oauthconsent": {
       "title": "Zugriff erlauben?",

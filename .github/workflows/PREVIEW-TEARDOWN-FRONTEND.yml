@@ -1,8 +1,15 @@
-# Deletes the per-PR preview Cloud Run service created by
-# PREVIEW-DEPLOY-FRONTEND.yml once the PR closes (merged or not) — keeps
-# ephemeral preview services from accumulating. Safe to run even if a PR
-# never got a preview deployed (e.g. it never touched frontend paths): the
-# existence check makes this a no-op instead of a failed job.
+# PREVIEW-TEARDOWN-FRONTEND — remove a PR's preview when the PR closes
+# (VTID-03658).
+#
+# S3 twin of the Cloud Run teardown this replaces. Deleting a prefix is the
+# whole job: there is no service, target group or listener rule to unwind,
+# which is most of why the S3 design was chosen over per-PR ECS.
+#
+# Deliberately best-effort. A teardown that fails the workflow on an already
+# absent prefix would go red on every re-closed or re-merged PR and be muted
+# within a week; the bucket's 30-day lifecycle rule (see
+# scripts/aws/setup-pr-previews.sh) is the backstop for anything this misses,
+# so a missed delete costs storage for a month, not forever.
 
 name: Preview Teardown Frontend (per-PR)
 
@@ -12,34 +19,60 @@ on:
 
 permissions:
   contents: read
-  id-token: write
+
+concurrency:
+  group: preview-teardown-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
 
 env:
-  GCP_PROJECT: lovable-vitana-vers1
-  GCP_REGION: us-central1
-  CLOUD_RUN_SERVICE: community-app-pr-${{ github.event.pull_request.number }}
+  AWS_REGION: eu-central-1
+  PREVIEW_BUCKET: vitana-pr-previews
+  PR_PREFIX: pr-${{ github.event.pull_request.number }}
 
 jobs:
   preview-teardown:
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
-      - name: Auth to GCP (WIF)
-        uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
-          service_account: ${{ secrets.GCP_WIF_SA_EMAIL }}
-          project_id: lovable-vitana-vers1
-
-      - uses: google-github-actions/setup-gcloud@v2
-
-      - name: Delete preview service (if it exists)
+      # The `secrets` context is not dependable inside step-level `if:`
+      # expressions, so presence is resolved once here into plain step OUTPUTS
+      # and every later condition reads those instead. Testing a secret
+      # directly in an `if:` can evaluate as though it were absent and skip a
+      # step that should have run — a teardown that silently does nothing.
+      - name: Resolve which preview resources are configured
+        id: gate
+        env:
+          HAS_AWS: ${{ secrets.AWS_STAGING_ACCESS_KEY_ID != '' }}
+          HAS_CF: ${{ secrets.PREVIEW_CF_DISTRIBUTION_ID != '' }}
         run: |
-          if gcloud run services describe "${CLOUD_RUN_SERVICE}" \
-              --region="${GCP_REGION}" --project="${GCP_PROJECT}" >/dev/null 2>&1; then
-            gcloud run services delete "${CLOUD_RUN_SERVICE}" \
-              --region="${GCP_REGION}" --project="${GCP_PROJECT}" --quiet
-            echo "Deleted ${CLOUD_RUN_SERVICE}"
+          if [ "$HAS_AWS" = "true" ]; then
+            echo "skip=false" >> "$GITHUB_OUTPUT"
           else
-            echo "${CLOUD_RUN_SERVICE} does not exist — nothing to delete (PR never got a preview deploy)"
+            echo "Preview infrastructure not configured — nothing to tear down."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
           fi
+          echo "has_cf=$HAS_CF" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS credentials
+        if: steps.gate.outputs.skip == 'false'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_STAGING_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_STAGING_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Remove the PR's preview objects
+        if: steps.gate.outputs.skip == 'false'
+        run: |
+          # `|| true`: an absent prefix is the expected outcome when a PR is
+          # closed without ever having produced a preview (docs-only changes
+          # do not match the deploy workflow's path filter).
+          aws s3 rm "s3://${PREVIEW_BUCKET}/${PR_PREFIX}/" --recursive || true
+          echo "Removed s3://${PREVIEW_BUCKET}/${PR_PREFIX}/"
+
+      - name: Invalidate the removed paths
+        if: steps.gate.outputs.skip == 'false' && steps.gate.outputs.has_cf == 'true'
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ secrets.PREVIEW_CF_DISTRIBUTION_ID }}" \
+            --paths "/${PR_PREFIX}/*" >/dev/null || true

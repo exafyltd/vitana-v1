@@ -15,6 +15,17 @@ on:
       - 'eslint.config.js'
       - 'docs/SCREEN_INVENTORY.md'
       - '.github/workflows/i18n-check.yml'
+      # VTID-03657: the locale-chunking guard reads the BUILD, so the file that
+      # decides the chunking has to be able to trigger it. Deleting the
+      # manualChunks rule touches nothing under src/, and without these two
+      # entries the one check that would catch it never runs.
+      - 'vite.config.ts'
+      - 'scripts/check-locale-chunking.mjs'
+      # VTID-03663: `scripts/i18n-*` above does NOT match this filename, so
+      # without its own entry an edit to the guard could not trigger the guard.
+      # Same shape as VTID-03659 — the file whose edit causes the regression has
+      # to be able to trigger the thing that observes it.
+      - 'scripts/check-i18n-subscriptions.mjs'
   push:
     branches: [main]
 
@@ -35,6 +46,39 @@ jobs:
 
       - name: Catalog audit (DE↔EN parity, _pending_review check)
         run: node scripts/i18n-audit.mjs --report-only
+
+      # VTID-03657 — a switch to any non-German locale must cost ONE request.
+      #
+      # `import.meta.glob` without `eager` emits a chunk per FILE, so before the
+      # manualChunks rule each locale shipped as ~104 chunks and `ensureCatalog`
+      # awaited all of them before merging any. Choosing Spanish meant 104
+      # fetches before one Spanish word appeared — which is what "only English
+      # and German switch instantly" actually was.
+      #
+      # Checked against the emitted bundle rather than the config, because the
+      # config states intent and the chunks are the fact. This is the only check
+      # that can see the regression at all: removing the rule breaks no test,
+      # changes no rendered string, and shows up solely as the UI feeling slow.
+      - name: Locale chunking (one chunk per lazy locale, de stays eager)
+        run: |
+          npm run build
+          node scripts/check-locale-chunking.mjs
+
+      # VTID-03663 — a React.memo'd component that renders catalog strings must
+      # subscribe to the locale.
+      #
+      # LanguageProvider cascades a re-render through its subtree on a language
+      # change, which covers 613 of the 614 components that render t()/lookup()
+      # without subscribing. React.memo is the one thing that stops the cascade:
+      # it bails out on shallow-equal props, and the locale is not a prop. Such a
+      # component renders its strings once and never looks again, leaving the
+      # page in two languages at once.
+      #
+      # Nothing else can catch it: nothing throws, no key is missing, no test
+      # fails, coverage is 100%, and the FIRST language a user picks looks
+      # perfect — it only breaks on the second.
+      - name: i18n subscriptions (memo'd components must subscribe to the locale)
+        run: node scripts/check-i18n-subscriptions.mjs
 
       # VTID-03519. The other checks here can only see FILES. This one covers
       # the surface none of them can: DB-backed content. A locale that is `ga`

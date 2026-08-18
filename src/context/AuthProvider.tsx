@@ -89,9 +89,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const prevUserIdRef = useRef<string | null>(null);
 
   useEffect(() => {
+    // VTID-03652: neither onAuthStateChange's initial fire nor
+    // getSession().then() below carries a timeout — if the Supabase project
+    // is transiently unreachable at mount (e.g. mid network-restriction
+    // propagation, a brief 5xx, a stalled TCP handshake), the fetch inside
+    // getSession() can hang indefinitely and `loading` never leaves its
+    // initial `true`. Index.tsx renders a fullscreen spinner for as long as
+    // `loading` is true, with no redirect to login and nothing else on
+    // screen — this is exactly what turned a transient backend blip into an
+    // unrecoverable stuck landing page on 2026-08-16 (traced to the
+    // network-restrictions/apply CIDR update made during the oasis-projector
+    // AWS fix). `resolved` is flipped by whichever of the two auth paths
+    // settles first; the timeout below is a backstop that only fires if
+    // NEITHER does. Worst case the UI briefly shows signed-out state, which
+    // self-corrects the moment onAuthStateChange fires for real — strictly
+    // better than a permanent spinner.
+    let resolved = false;
+    const authBootstrapTimeout = setTimeout(() => {
+      if (!resolved) {
+        console.warn('[AuthProvider] Initial auth check did not resolve within 10s — unblocking UI as signed-out');
+        setLoading(false);
+      }
+    }, 10_000);
+
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        resolved = true;
         if (event === 'SIGNED_OUT') {
           // Log logout BEFORE clearing state so we still have the prior user_id.
           if (prevUserIdRef.current) {
@@ -166,6 +190,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Check for existing session
     supabase.auth.getSession().then(({ data: { session: existingSession } }) => {
+      resolved = true;
       setSession(existingSession);
       setUser(existingSession?.user ?? null);
       setLoading(false);
@@ -418,6 +443,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       subscription.unsubscribe();
       clearInterval(sessionCheckInterval);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      clearTimeout(authBootstrapTimeout);
     };
   }, []);
 

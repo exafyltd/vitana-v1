@@ -24,7 +24,15 @@ export interface UserPreferences {
   stt_auto_punctuation: boolean;
   stt_sensitivity: number;
   // Voice TTS settings
-  tts_voice: string;
+  //
+  // NULLABLE, and the column always was (VTID-03671) — this type said `string`
+  // and was simply wrong about the database. Null means "no override: derive
+  // the voice from stt_language", which is what useTextToSpeech already does
+  // and what the language picker now writes when the stored voice belongs to a
+  // language the user has switched away from. Declaring it non-null forced
+  // every caller to invent a provider-specific id to write, which is how
+  // Google voice ids ended up persisted against profiles.
+  tts_voice: string | null;
   tts_gender: 'male' | 'female' | 'neutral';
   tts_character: string;
   tts_speed: number;

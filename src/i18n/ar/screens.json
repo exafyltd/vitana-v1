@@ -10134,7 +10134,7 @@
       "later": "لاحقًا"
     },
     "introexperience": {
-      "space": "منطقة",
+      "space": "مسافة",
       "esc": "Esc",
       "press": "اضغط",
       "play": "للعب •",
@@ -10237,7 +10237,51 @@
       "loginSubtitle": "بوابة التجارة",
       "loginIntro": "سجل الدخول لإدارة عملك.",
       "loginButton": "سجل الدخول",
-      "loginError": "فشل تسجيل الدخول"
+      "loginError": "فشل تسجيل الدخول",
+      "agentConnect": {
+        "back": "عودة إلى اتصالاتي",
+        "title": "اتصل عبر وكيل الذكاء الاصطناعي",
+        "subtitle": "وجّه وكيلك الخاص من Claude أو ChatGPT أو Gemini مباشرةً إلى خادم MCP الخاص بـ Vitanaland — يمكن لوكيلك حينها إدارة كتالوجك وطلباتك وتوافرك بدلاً من ملء النموذج اليدوي.",
+        "notReachableYet": "خادم MCP مبني بالفعل، لكنه لم يصبح متاحًا للعامة بعد على هذا العنوان (لا يزال كشف DNS معلقًا). بمجرد أن يصبح مباشرًا، ستعمل الخطوات أدناه دون تغيير.",
+        "mcpUrlLabel": "عنوان URL لخادم MCP",
+        "copyUrl": "انسخ عنوان URL",
+        "copied": "تم النسخ إلى الحافظة",
+        "claudeTitle": "اتصل بـ Claude",
+        "claudeStep1": "في Claude، افتح الإعدادات ← الموصلات.",
+        "claudeStep2": "انقر على \"+\" ثم \"أضف موصلاً مخصصًا\".",
+        "claudeStep3": "الصق عنوان URL لخادم MCP أعلاه وانقر على \"إضافة\".",
+        "chatgptTitle": "اتصل بـ ChatGPT",
+        "chatgptStep1": "في ChatGPT، افتح الإعدادات ← التطبيقات والموصلات ← الإعدادات المتقدمة وفعّل وضع المطور.",
+        "chatgptStep2": "انقر على \"إنشاء تطبيق جديد\" وأعطه اسمًا.",
+        "chatgptStep3": "الصق عنوان URL لخادم MCP أعلاه واحفظ.",
+        "chatgptNote": "وضع المطور متاح حاليًا في حسابات Plus/Pro؛ في حسابات Business/Enterprise، يمكن لمشرف مساحة العمل تشغيله أو إيقافه.",
+        "geminiTitle": "اتصل بـ Gemini",
+        "geminiStep1": "لـ Gemini CLI: أضف عنوان URL لخادم MCP أعلاه إلى ~/.gemini/settings.json ضمن خوادم MCP الخاصة بك.",
+        "geminiStep2": "لـ Gemini Enterprise (إصدار الأعمال): الإعدادات والمساعدة → الفريق → إدارة الفريق → التطبيقات المتصلة → \"إضافة خادم MCP\".",
+        "geminiNote": "لا يوجد حاليًا طريقة موثقة في تطبيق Gemini للمستهلك لإضافة خادم MCP مخصص مباشرة — هذا متاح اليوم فقط عبر Gemini CLI و Gemini Enterprise."
+      },
+      "detectPlatform": {
+        "urlPlaceholder": "عنوان URL للمتجر (اختياري) — مثال: https://your-shop.com",
+        "hint": "سنتحقق من عنوان URL ونملأ معرف الموصل والمزود تلقائيًا إذا تعرفنا على المنصة.",
+        "detected": "تم اكتشاف {platform} — تم ملء الحقول.",
+        "notDetected": "لم يتم التعرف على المنصة. يرجى ملء معرف الموصل والمزود يدويًا.",
+        "failed": "تعذر التحقق من هذا العنوان. يرجى ملء معرف الموصل والمزود يدويًا."
+      },
+      "connectOauth": {
+        "title": "اتصل",
+        "shopifyHint": "اربط متجر Shopify الخاص بك لمزامنة الكتالوج والطلبات الخاصة بك.",
+        "shopifyDomainPlaceholder": "your-shop.myshopify.com",
+        "shopifyButton": "اتصل بـ Shopify",
+        "fhirHint": "اربط خادم FHIR الخاص بك (مثال: Epic, Cerner/Oracle Health, Athenahealth) عبر SMART on FHIR.",
+        "fhirBaseUrlPlaceholder": "عنوان URL لخادم FHIR — مثال: https://ehr.example.com/fhir/r4",
+        "fhirClientIdPlaceholder": "معرّف العميل (صادر عن نظام السجلات الصحية الإلكترونية الخاص بك)",
+        "fhirClientSecretPlaceholder": "سر العميل (اختياري، للعملاء السريين فقط)",
+        "fhirScopePlaceholder": "النطاق (اختياري، افتراضي: openid fhirUser patient/*.read)",
+        "fhirButton": "ربط خادم FHIR",
+        "connecting": "جارٍ الاتصال...",
+        "notConfigured": "نوع الاتصال هذا غير مفعّل بعد. يُرجى المحاولة مرة أخرى لاحقًا.",
+        "failed": "تعذّر بدء الاتصال. يُرجى التحقق من التفاصيل الخاصة بك."
+      }
     },
     "oauthconsent": {
       "title": "هل تسمح بالوصول؟",

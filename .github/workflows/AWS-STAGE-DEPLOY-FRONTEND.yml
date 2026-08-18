@@ -42,6 +42,15 @@ on:
       - 'package.json'
       - 'package-lock.json'
       - 'bun.lock'
+      # VTID-03659: vite.config.ts decides what the bundle IS, so a change
+      # confined to it (VTID-03657's locale manualChunks is the worked
+      # example) alters every shipped byte while touching nothing under
+      # src/. Without this entry that change never deploys — and the
+      # failure is silent in the worst way, because the workflow does not
+      # RUN: there is no red check to notice, just a staging site quietly
+      # serving the old bundle. PREVIEW-DEPLOY-FRONTEND.yml already lists
+      # it; this closes the gap on the path that reviewers actually look at.
+      - 'vite.config.ts'
       - '.github/workflows/AWS-STAGE-DEPLOY-FRONTEND.yml'
   workflow_dispatch:
     inputs:

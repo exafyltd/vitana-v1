@@ -1,3 +1,29 @@
+# ⛔ RETIRED (VTID-03658) — this deployed Cloud Run, and GCP billing is off.
+#
+# GCP billing on `lovable-vitana-vers1` was disabled deliberately. Every run of
+# this workflow now fails at Artifact Registry with `BILLING_DISABLED`, and
+# `preview.vitanaland.com` returns 500.
+#
+# THE STAGING FRONTEND DID NOT MOVE — IT WAS ALREADY ON AWS.
+# `AWS-STAGE-DEPLOY-FRONTEND.yml` has been auto-deploying every push to `main`
+# onto ECS `vitana-community-app-staging` in parallel with this one, serving
+# https://preview-aws.vitanaland.com. That is now the only staging frontend,
+# and it is verified healthy.
+#
+#   staging frontend : https://preview-aws.vitanaland.com   (AWS, canonical)
+#   staging gateway  : https://preview-aws-gateway.vitanaland.com
+#
+# The automatic trigger is REMOVED rather than the file deleted. Deleting it
+# would erase the record of which URL used to be canonical, and
+# `preview.vitanaland.com` still appears in docs, bookmarks and older PR
+# comments — someone will hit it and need to find out where staging went. The
+# manual dispatch is kept so the workflow can be revived unchanged if GCP
+# billing is ever restored.
+#
+# DO NOT re-add `on: push` without restoring billing first: it would put a
+# permanently-red required-looking check on every merge to main.
+#
+# --- original header ---------------------------------------------------------
 # Phase 0 staging preview (handoff brief P0.2, Lovable-style preview URLs):
 #
 # Deploys community-app-staging Cloud Run service on every push to main and
@@ -18,18 +44,8 @@
 name: Stage Deploy Community App (community-app-staging)
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'src/**'
-      - 'public/**'
-      - 'index.html'
-      - 'Dockerfile'
-      - 'nginx.conf'
-      - 'package.json'
-      - 'package-lock.json'
-      - 'bun.lock'
-      - '.github/workflows/STAGE-DEPLOY-FRONTEND.yml'
+  # push trigger REMOVED (VTID-03658) — Cloud Run is unbillable, so every
+  # automatic run failed. AWS-STAGE-DEPLOY-FRONTEND.yml carries staging now.
   workflow_dispatch:
     inputs:
       reason:

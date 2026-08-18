@@ -1,8 +1,8 @@
-import { createContext, useContext, ReactNode, useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { createContext, useContext, ReactNode, useState, useEffect, useRef, useMemo, useCallback, Children, cloneElement, isValidElement } from 'react';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { useAuth } from '@/context/AuthProvider';
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
-import { setI18nLocale } from '@/lib/i18n-toast';
+import { setI18nLocale, notifyI18nLocaleChanged } from '@/lib/i18n-toast';
 import { ensureCatalog, onCatalogLoaded } from '@/i18n';
 
 interface LanguageContextType {
@@ -88,19 +88,56 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     return initial;
   });
 
-  // Bumped when a lazily-loaded locale catalog (en/ar) finishes loading, to
-  // re-render the tree so consumers re-read the now-populated catalog. Only the
-  // default (de) is bundled; non-default locales arrive asynchronously.
-  const [, setCatalogVersion] = useState(0);
+  // Bumped when a lazily-loaded locale catalog finishes loading, so consumers
+  // re-read the now-populated catalog. Only the default (de) is bundled; every
+  // other locale arrives asynchronously.
+  //
+  // VTID-03660 — the value used to be DISCARDED (`const [, setCatalogVersion]`)
+  // and left out of the contextValue useMemo below. Re-rendering the provider
+  // is not enough: the memo returned the SAME object, so React bailed out of
+  // re-rendering every context consumer and `useTranslation` never looked at
+  // the catalog again. `catalogs[locale]` is filled IN PLACE, so the data was
+  // sitting right there, correct and complete, behind a tree that had stopped
+  // asking. Measured in a real browser: switching to Spanish rendered the
+  // hardcoded English fallback and stayed there indefinitely, while switching
+  // to German and back to Spanish rendered Spanish immediately — proof the
+  // catalog had loaded and only the re-render was missing.
+  //
+  // This must stay in the memo deps. It is the ONLY signal that a catalog
+  // arrived; `selectedLanguage` already changed before the fetch resolved.
+  const [catalogVersion, setCatalogVersion] = useState(0);
   useEffect(() => {
     const unsubscribe = onCatalogLoaded(() => setCatalogVersion((v) => v + 1));
     return unsubscribe;
   }, []);
 
-  // Keep i18n-toast singleton + <html lang> in sync with React state, and make
-  // sure the selected locale's catalog is loaded (no-op for de / draft locales).
+  // VTID-03662 — this MUST happen during render, not in an effect.
+  //
+  // `lookup()` / `t()` from i18n-toast are plain function calls made DURING
+  // render, and they read this module-level locale. An effect runs AFTER the
+  // render it belongs to, so every lookup in the render that a language change
+  // triggers resolved against the PREVIOUS locale — and nothing re-rendered
+  // afterwards to correct it, because setI18nLocale writes a module variable
+  // and schedules nothing.
+  //
+  // The bug hid behind VTID-03660's catalog event: the FIRST visit to a locale
+  // fires onCatalogLoaded, which forces exactly one extra render, in which the
+  // module locale is finally current. Every subsequent visit to an
+  // already-loaded locale has no such event, so those strings stayed one
+  // language behind. Measured: es -> de -> es rendered Spanish, Spanish,
+  // German; adding French in between made a later es render FRENCH. A user
+  // browsing more than two languages sees a page in two languages at once.
+  //
+  // Writing during render is correct here rather than a shortcut: this is a
+  // cache mirroring React state that is READ during render, so it has to be
+  // WRITTEN during render to agree with the output. It is idempotent and
+  // derives only from state, so a double invoke or a discarded render is
+  // harmless.
+  setI18nLocale(selectedLanguage);
+
+  // These two ARE side effects and stay in an effect: one touches the DOM
+  // outside React's tree, the other starts a fetch.
   useEffect(() => {
-    setI18nLocale(selectedLanguage);
     if (typeof document !== 'undefined') {
       document.documentElement.lang = selectedLanguage.split('-')[0] || 'de';
     }
@@ -203,39 +240,51 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       return;
     }
     
-    // Auto-update TTS voice when language changes
+    // VTID-03671 — clear the voice OVERRIDE when it no longer matches the
+    // chosen language. Do not write a replacement.
+    //
+    // This block used to map each language to a hardcoded Google Chirp3-HD id
+    // ('de-DE-Chirp3-HD-Achernar', 'pt-BR-Chirp3-HD-Zephyr', …), so every
+    // language change persisted a GOOGLE voice against the user's profile —
+    // while the platform was moving voice to Polly and Nova on AWS.
+    //
+    // `tts_voice` is only an override. useTextToSpeech already derives a voice
+    // from `stt_language` when it is absent, and reads it with optional
+    // chaining throughout, so null is a supported state rather than a hole:
+    //   - de/en/es/fr/pt/ru/pl → the Gemini map
+    //   - sr                   → the Google Speech map (Polly has NO Serbian
+    //                            voice in any engine, so Serbian stays on
+    //                            Google by standing decision)
+    //
+    // So today's audible behaviour is unchanged — the derived default resolves
+    // to the same voice the old code wrote. What changes is that it is no
+    // longer WRITTEN. Persisting a provider-specific id is exactly what turns a
+    // future provider switch into a per-user data migration instead of a
+    // config change (CLAUDE.md §2c), and this stops that pile growing.
+    //
+    // Clearing rather than writing a Polly id on purpose: the frontend still
+    // calls the Google edge functions directly, so a Polly voice name here
+    // would name a voice nothing can currently play.
     const currentVoice = preferences?.tts_voice;
-    const shouldUpdateVoice = !currentVoice || !currentVoice.startsWith(language);
-    
-    if (shouldUpdateVoice) {
-      const defaultVoices: Record<string, string> = {
-        'de-DE': 'de-DE-Chirp3-HD-Achernar',
-        'en-US': 'en-US-Chirp3-HD-Leda',
-        'sr-RS': 'sr-RS-Standard-B',
-        'ar-XA': 'ar-XA-Chirp3-HD-Aoede',
-        'es-ES': 'es-ES-Chirp3-HD-Gacrux',
-        'ru-RU': 'ru-RU-Chirp3-HD-Kore',
-        'zh-CN': 'cmn-CN-Chirp3-HD-Leda',
-        'fr-FR': 'fr-FR-Chirp3-HD-Pulcherrima',
-        'pt-BR': 'pt-BR-Chirp3-HD-Zephyr',
-        'pl-PL': 'pl-PL-Chirp3-HD-Despina',
-      };
-      
-      const newVoice = defaultVoices[language] || `${language}-Standard-A`;
-      console.log('[LANG] Auto-updating TTS voice:', currentVoice, '->', newVoice);
-      
-      updatePreferences({ 
-        stt_language: language,
-        tts_voice: newVoice
-      });
+    const voiceMatchesLanguage = !!currentVoice && currentVoice.startsWith(language);
+
+    if (currentVoice && !voiceMatchesLanguage) {
+      console.log('[LANG] Clearing stale voice override:', currentVoice, '→ derive from', language);
+      updatePreferences({ stt_language: language, tts_voice: null });
     } else {
-      console.log('[LANG] Keeping existing voice:', currentVoice);
       updatePreferences({ stt_language: language });
     }
   }, [user, preferences?.tts_voice, updatePreferences]);
 
   // Memoized so this root-level provider doesn't hand every consumer a fresh
   // object (and thus a re-render) each time the provider itself re-renders.
+  //
+  // `catalogVersion` is a dependency even though it appears in none of the
+  // fields (VTID-03660). That reads like a mistake and is the opposite: the
+  // catalogs are mutated IN PLACE, so nothing in this object can ever change
+  // when one arrives. Without the dep the memo is stable, React bails out, and
+  // the freshly-loaded language never reaches the screen. Removing it looks
+  // like removing an unused variable and silently restores that bug.
   const contextValue = useMemo(
     () => ({
       selectedLanguage,
@@ -243,12 +292,69 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       languageOptions,
       isLoading,
     }),
-    [selectedLanguage, setSelectedLanguage, isLoading]
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- catalogVersion is
+    // deliberately a dep without being a field; see the comment above.
+    [selectedLanguage, setSelectedLanguage, isLoading, catalogVersion]
   );
+
+  // VTID-03663 — cascade the language change into the whole subtree.
+  //
+  // `lookup()` / `t()` from i18n-toast are plain function calls, not hooks, so a
+  // component that renders them without also calling useTranslation/useLanguage
+  // subscribes to nothing. 614 of the 701 components that render catalog
+  // strings are in exactly that shape. React only re-renders CONSUMERS when a
+  // context value changes, so those 614 kept the outgoing language until
+  // something unrelated re-rendered them — a page in two languages at once.
+  //
+  // The children element is created once in main.tsx and handed in as a prop,
+  // so on a provider re-render `oldProps.children === newProps.children` and
+  // React bails out of the entire subtree before reaching any of them. Cloning
+  // with a prop that changes gives the child new props, which defeats that
+  // bailout; the child's own render then produces fresh elements for ITS
+  // children, and the re-render cascades down naturally.
+  //
+  // Cloning is NOT a remount: same element type and key, so React reuses the
+  // fibers and every component keeps its state, scroll position and in-progress
+  // form input. Keying the subtree on the locale would have been the one-line
+  // version and would have destroyed all three.
+  //
+  // The tick includes catalogVersion so a lazily-arriving catalog cascades too,
+  // not just an explicit language switch.
+  //
+  // Cost is one full re-render per language change or catalog arrival — a rare,
+  // deliberate user action, and precisely the work that has to happen for the
+  // new language to appear.
+  //
+  // What this does NOT reach: a component behind React.memo, which bails on
+  // shallow-equal props regardless of what its parent does. Those must call
+  // useI18nLocale() from i18n-toast to subscribe directly.
+  // scripts/check-i18n-subscriptions.mjs fails CI if one forgets.
+  const localeTick = `${selectedLanguage}:${catalogVersion}`;
+  const cascadingChildren = useMemo(
+    () =>
+      Children.map(children, (child) =>
+        isValidElement(child)
+          ? cloneElement(child as React.ReactElement<Record<string, unknown>>, {
+              'data-locale-tick': localeTick,
+            })
+          : child,
+      ),
+    [children, localeTick],
+  );
+
+  // Wake the components the cascade cannot reach (memo'd subscribers). This
+  // runs in an EFFECT on purpose: notifying sets state in other components, and
+  // doing that during render — where setI18nLocale is deliberately called — is
+  // exactly the "cannot update a component while rendering a different
+  // component" error. By the time this fires, subscribers re-reading the module
+  // locale already see the new value.
+  useEffect(() => {
+    notifyI18nLocaleChanged();
+  }, [localeTick]);
 
   return (
     <LanguageContext.Provider value={contextValue}>
-      {children}
+      {cascadingChildren}
     </LanguageContext.Provider>
   );
 }
