@@ -128,8 +128,19 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       } else {
         console.log('[LANG] Initial sync from server:', preferences.stt_language);
         setLocalLanguage(preferences.stt_language);
+        // VTID-03670: the ORB voice widget (command-hub/orb-widget.js) reads
+        // the raw `vitana.lang` localStorage key directly — it has no access
+        // to this Context, so it never sees `selectedLanguage` corrections.
+        // Without this write, a browser/device that never went through
+        // setSelectedLanguage() (a fresh profile, cleared storage, a second
+        // device) leaves `vitana.lang` unset even after this effect
+        // correctly resolves the React app's own language from the server —
+        // and the widget falls back to navigator.language instead of the
+        // user's actual saved preference. Every other consumer here reads
+        // React state or the namespaced key; only the widget reads this one.
+        localStorage.setItem('vitana.lang', preferences.stt_language);
       }
-      
+
       setHasInitializedFromServer(true);
     }
   }, [preferences?.stt_language, hasInitializedFromServer]);
@@ -164,6 +175,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       console.log('[LANG] Syncing runtime language from preferences:', preferences.stt_language);
       setLocalLanguage(preferences.stt_language);
       setLocalStorageItem('global', 'language', LANGUAGE_STORAGE_KEY, preferences.stt_language);
+      // VTID-03670: see the matching write in the initial-sync effect above —
+      // the ORB widget reads this raw key directly and never sees a
+      // React-state-only correction.
+      localStorage.setItem('vitana.lang', preferences.stt_language);
     }
   }, [user, hasInitializedFromServer, preferences?.stt_language, selectedLanguage]);
 
