@@ -1,8 +1,8 @@
-import { createContext, useContext, ReactNode, useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { createContext, useContext, ReactNode, useState, useEffect, useRef, useMemo, useCallback, Children, cloneElement, isValidElement } from 'react';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { useAuth } from '@/context/AuthProvider';
 import { getLocalStorageItem, setLocalStorageItem } from '@/lib/localStorage';
-import { setI18nLocale } from '@/lib/i18n-toast';
+import { setI18nLocale, notifyI18nLocaleChanged } from '@/lib/i18n-toast';
 import { ensureCatalog, onCatalogLoaded } from '@/i18n';
 
 interface LanguageContextType {
@@ -277,9 +277,64 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     [selectedLanguage, setSelectedLanguage, isLoading, catalogVersion]
   );
 
+  // VTID-03663 — cascade the language change into the whole subtree.
+  //
+  // `lookup()` / `t()` from i18n-toast are plain function calls, not hooks, so a
+  // component that renders them without also calling useTranslation/useLanguage
+  // subscribes to nothing. 614 of the 701 components that render catalog
+  // strings are in exactly that shape. React only re-renders CONSUMERS when a
+  // context value changes, so those 614 kept the outgoing language until
+  // something unrelated re-rendered them — a page in two languages at once.
+  //
+  // The children element is created once in main.tsx and handed in as a prop,
+  // so on a provider re-render `oldProps.children === newProps.children` and
+  // React bails out of the entire subtree before reaching any of them. Cloning
+  // with a prop that changes gives the child new props, which defeats that
+  // bailout; the child's own render then produces fresh elements for ITS
+  // children, and the re-render cascades down naturally.
+  //
+  // Cloning is NOT a remount: same element type and key, so React reuses the
+  // fibers and every component keeps its state, scroll position and in-progress
+  // form input. Keying the subtree on the locale would have been the one-line
+  // version and would have destroyed all three.
+  //
+  // The tick includes catalogVersion so a lazily-arriving catalog cascades too,
+  // not just an explicit language switch.
+  //
+  // Cost is one full re-render per language change or catalog arrival — a rare,
+  // deliberate user action, and precisely the work that has to happen for the
+  // new language to appear.
+  //
+  // What this does NOT reach: a component behind React.memo, which bails on
+  // shallow-equal props regardless of what its parent does. Those must call
+  // useI18nLocale() from i18n-toast to subscribe directly.
+  // scripts/check-i18n-subscriptions.mjs fails CI if one forgets.
+  const localeTick = `${selectedLanguage}:${catalogVersion}`;
+  const cascadingChildren = useMemo(
+    () =>
+      Children.map(children, (child) =>
+        isValidElement(child)
+          ? cloneElement(child as React.ReactElement<Record<string, unknown>>, {
+              'data-locale-tick': localeTick,
+            })
+          : child,
+      ),
+    [children, localeTick],
+  );
+
+  // Wake the components the cascade cannot reach (memo'd subscribers). This
+  // runs in an EFFECT on purpose: notifying sets state in other components, and
+  // doing that during render — where setI18nLocale is deliberately called — is
+  // exactly the "cannot update a component while rendering a different
+  // component" error. By the time this fires, subscribers re-reading the module
+  // locale already see the new value.
+  useEffect(() => {
+    notifyI18nLocaleChanged();
+  }, [localeTick]);
+
   return (
     <LanguageContext.Provider value={contextValue}>
-      {children}
+      {cascadingChildren}
     </LanguageContext.Provider>
   );
 }

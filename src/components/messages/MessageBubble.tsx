@@ -43,7 +43,7 @@ import { ReactionCluster } from './ReactionCluster';
 import { ReactionPopover } from './ReactionPopover';
 import { ReplyQuote } from './ReplyQuote';
 import { PaymentMessageHandler } from '@/components/payment/PaymentMessageHandler';
-import { t } from '@/lib/i18n-toast';
+import { t, useI18nLocale } from '@/lib/i18n-toast';
 import { isVitanaBot, VITANA_BOT_DISPLAY_NAME, VITANA_BOT_AVATAR_URL } from '@/lib/vitanaBotIdentity';
 
 import { formatDate } from '@/lib/locale-format';
@@ -172,6 +172,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   onDeleteMessage,
   onSendReply
 }) => {
+  // VTID-03663 — this component is React.memo'd (see the default export), so it
+  // bails out on shallow-equal props and the LanguageProvider re-render cascade
+  // cannot reach it. Without this subscription its t() strings stay in the
+  // outgoing language while the rest of the thread switches. The returned value
+  // is unused on purpose: the subscription is the point.
+  useI18nLocale();
+
   const isMobile = useIsMobile();
   const { user } = useAuth();
   const messageRef = useRef<HTMLDivElement>(null);

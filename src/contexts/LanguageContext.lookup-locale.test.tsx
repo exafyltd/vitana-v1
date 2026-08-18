@@ -62,6 +62,11 @@ vi.mock('@/lib/i18n-toast', () => ({
   setI18nLocale: (l: string) => {
     h.state.locale = l;
   },
+  // VTID-03663 — LanguageProvider calls this from an effect to wake memo'd
+  // subscribers. This file has none (its Screen is memo'd but re-rendered by
+  // the cascade), so a no-op is faithful; it is here because the provider
+  // imports it.
+  notifyI18nLocaleChanged: vi.fn(),
   // Same resolution shape as the real lookupRaw: primary locale, else de.
   t: (key: string) => {
     const path = key.split('.');

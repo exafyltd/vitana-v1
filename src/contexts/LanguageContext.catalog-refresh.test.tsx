@@ -105,7 +105,14 @@ vi.mock('@/hooks/useUserPreferences', () => ({
   }),
 }));
 vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: null }) }));
-vi.mock('@/lib/i18n-toast', () => ({ setI18nLocale: vi.fn(), t: (k: string) => k }));
+vi.mock('@/lib/i18n-toast', () => ({
+  setI18nLocale: vi.fn(),
+  // VTID-03663 — LanguageProvider calls this from an effect to wake memo'd
+  // subscribers. No memo'd subscriber exists in this file, so a no-op is
+  // faithful; it is here because the provider imports it.
+  notifyI18nLocaleChanged: vi.fn(),
+  t: (k: string) => k,
+}));
 vi.mock('@/lib/localStorage', () => ({
   getLocalStorageItem: () => null,
   setLocalStorageItem: vi.fn(),
@@ -117,6 +124,16 @@ import { useTranslation } from '@/hooks/useTranslation';
 // memo, for the reason set out at the top of this file: it reproduces the
 // bailout that the real (deep, route-split) tree has and a flat test tree does
 // not. Take it off and this file goes green against the broken code.
+//
+// NESTED under Wrapper, and that nesting is load-bearing (VTID-03663). The
+// provider now cascades a re-render by cloning its immediate child with a
+// changing prop. A memo'd component that IS that immediate child therefore gets
+// new props and re-renders for free — which quietly made both tests in this
+// file pass against the reverted VTID-03660 fix, i.e. they stopped testing
+// anything at all. One level of nesting puts Screen back where the real app
+// keeps it: the cascade re-renders Wrapper, Wrapper re-creates <Screen /> with
+// shallow-equal props, memo bails, and only the context value can reach it.
+// Verified by re-running the VTID-03660 mutation after this change.
 const Screen = memo(function Screen() {
   const { setSelectedLanguage } = useLanguage();
   const { t } = useTranslation();
@@ -129,6 +146,12 @@ const Screen = memo(function Screen() {
   );
 });
 
+// One level of indirection so the provider's cascade lands on Wrapper, not on
+// Screen. See the note on Screen above.
+function Wrapper() {
+  return <Screen />;
+}
+
 describe('VTID-03660 lazy catalogs must reach the screen', () => {
   beforeEach(() => {
     h.catalogs['es-ES'] = {};
@@ -139,7 +162,7 @@ describe('VTID-03660 lazy catalogs must reach the screen', () => {
   it('renders Spanish once the lazily-loaded catalog arrives', async () => {
     render(
       <LanguageProvider>
-        <Screen />
+        <Wrapper />
       </LanguageProvider>,
     );
     expect(screen.getByTestId('headline').textContent).toBe('WILLKOMMEN IN VITANALAND');
@@ -167,7 +190,7 @@ describe('VTID-03660 lazy catalogs must reach the screen', () => {
   it('does not leave a non-German locale showing the English fallback', async () => {
     render(
       <LanguageProvider>
-        <Screen />
+        <Wrapper />
       </LanguageProvider>,
     );
     await act(async () => {
