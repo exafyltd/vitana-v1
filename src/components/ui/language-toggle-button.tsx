@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { useLanguage, getVisibleLanguageOptions } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/hooks/useTranslation';
 import { cn } from '@/lib/utils';
@@ -68,9 +69,21 @@ const LOCALE_PRESENTATION: Record<string, { flag: string; endonym: string }> = {
 interface LanguageToggleButtonProps {
   className?: string;
   size?: 'sm' | 'md';
+  /**
+   * 'icon' — the original circular flag-only badge.
+   * 'bar' — a full-width glass bar showing flag + language name + chevron,
+   * used on the intro screen's landing area — replaces the former "Play
+   * Welcome" button, since Vitana speaks the welcome once the user taps
+   * the Orb, not from a separate control here.
+   */
+  variant?: 'icon' | 'bar';
 }
 
-export function LanguageToggleButton({ className, size = 'md' }: LanguageToggleButtonProps) {
+export function LanguageToggleButton({
+  className,
+  size = 'md',
+  variant = 'icon',
+}: LanguageToggleButtonProps) {
   const { selectedLanguage, setSelectedLanguage } = useLanguage();
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
@@ -106,8 +119,9 @@ export function LanguageToggleButton({ className, size = 'md' }: LanguageToggleB
 
   const sizeClasses = size === 'sm' ? 'w-9 h-9' : 'w-11 h-11';
   const flagSizeClasses = size === 'sm' ? 'w-5 h-5' : 'w-6 h-6';
+  const isBar = variant === 'bar';
 
-  const glass = cn(
+  const glassIcon = cn(
     'flex-shrink-0 rounded-full flex items-center justify-center',
     'bg-white/10 backdrop-blur-xl border border-white/30',
     'shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]',
@@ -120,32 +134,59 @@ export function LanguageToggleButton({ className, size = 'md' }: LanguageToggleB
     className,
   );
 
+  // Wide glass pill: flag + language name + chevron, filling the width of
+  // whatever occupies its row (the intro screen's former "Play Welcome" slot).
+  const glassBar = cn(
+    'w-full flex items-center justify-center gap-2.5',
+    'bg-white/10 backdrop-blur-xl border border-white/30 rounded-2xl',
+    'px-8 py-5 text-base font-medium text-white',
+    'shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]',
+    'transition-all duration-300',
+    isInteractive && 'hover:bg-white/20',
+    isInteractive &&
+      'hover:shadow-[0_12px_40px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.15)]',
+    'focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent',
+    className,
+  );
+
   return (
-    <div ref={rootRef} className="relative flex-shrink-0">
+    <div ref={rootRef} className={cn('relative', isBar ? 'w-full' : 'flex-shrink-0')}>
       <button
         type="button"
         onClick={() => isInteractive && setOpen((v) => !v)}
-        className={glass}
+        className={isBar ? glassBar : glassIcon}
         aria-label={t.intro?.chooseLanguage || 'Choose language'}
         aria-haspopup={isInteractive ? 'listbox' : undefined}
         aria-expanded={isInteractive ? open : undefined}
         disabled={!isInteractive}
       >
-        <img src={current.flag} alt="" className={cn('rounded-full object-cover', flagSizeClasses)} />
+        <img
+          src={current.flag}
+          alt=""
+          className={cn('rounded-full object-cover', isBar ? 'w-5 h-5' : flagSizeClasses)}
+        />
+        {isBar && (
+          <>
+            <span>{current.endonym}</span>
+            <ChevronDown className="w-4 h-4 text-white/70" aria-hidden="true" />
+          </>
+        )}
       </button>
 
       {open && (
         <div
           role="listbox"
           aria-label={t.intro?.chooseLanguage || 'Choose language'}
-          // Anchored to the button's right edge and opening UPWARD: this sits
-          // low on the intro screen next to "Play Welcome", so a downward menu
-          // would open off the bottom of a phone viewport.
+          // Opens UPWARD: this sits low on the intro screen, so a downward
+          // menu would open off the bottom of a phone viewport. The icon
+          // variant anchors to the button's right edge; the bar variant
+          // spans the same full width as its trigger.
           className={cn(
-            'absolute bottom-full right-0 mb-2 z-50 min-w-[11rem] py-1.5',
+            'absolute bottom-full mb-2 z-50 py-1.5',
             'rounded-2xl bg-black/70 backdrop-blur-xl border border-white/20',
             'shadow-[0_8px_32px_rgba(0,0,0,0.45)]',
             'max-h-[60vh] overflow-y-auto',
+            isBar ? 'left-0 right-0' : 'right-0 min-w-[11rem]',
           )}
         >
           {options.map((opt) => {
