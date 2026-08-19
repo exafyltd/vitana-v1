@@ -48,7 +48,7 @@
     "autopilot.suggestions.archetypeTitle": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The translation 'Идеи' (ideas) is too weak for 'Insights', which implies deeper understanding or revelations.",
+      "issue": "Translation of 'Insights' as 'Идеи' (ideas) is too superficial; 'insights' implies deeper understanding or revelations.",
       "suggested": "Озарения архетипа",
       "phase": "llm"
     },
@@ -174,9 +174,9 @@
     },
     "autopilot.popup.moreActions": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'more actions'. 'Больше действий' is less natural than 'ещё действий' in this context.",
-      "suggested": "ещё {count} действий",
+      "confidence": 0.85,
+      "issue": "The use of 'больше' is grammatically correct but 'еще' is more natural and idiomatic for 'more' in the sense of 'additional' actions.",
+      "suggested": "Еще {count} действий",
       "phase": "llm"
     },
     "autopilot.popup.toastExecutedTitle": {
@@ -222,8 +222,8 @@
     "autopilot.widget.active": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Grammatical form mismatch. 'Активно' is an adverb or neuter short adjective. For 'Autopilot' (masculine), the masculine short adjective 'Активен' is appropriate for a status.",
-      "suggested": "Активен",
+      "issue": "'Активно' is an adverb or neuter short-form adjective. For a UI label 'Active' (e.g., status, filter), the masculine singular adjective 'Активный' is typically used as a default.",
+      "suggested": "Активный",
       "phase": "llm"
     },
     "autopilot.widget.paused": {
@@ -462,5 +462,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:25:10.893Z"
+  "generatedAt": "2026-08-19T04:05:30.574Z"
 }

@@ -1,11 +1,10 @@
 {
   "verdicts": {
     "liveRooms.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The translation 'Прямые комнаты' is not idiomatic for 'Live Rooms'. 'Live' in this context refers to real-time broadcasting, not 'direct' or 'straight'.",
-      "suggested": "Прямые эфиры",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "liveRooms.description": {
       "verdict": "OK",
@@ -598,5 +597,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:38:28.580Z"
+  "generatedAt": "2026-08-19T04:08:26.240Z"
 }

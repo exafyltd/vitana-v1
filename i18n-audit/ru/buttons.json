@@ -116,10 +116,8 @@
       "phase": "llm"
     },
     "buttons.filter": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is a noun, should be a verb for consistency with other UI actions.",
-      "suggested": "Фильтровать",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "buttons.sort": {
@@ -128,10 +126,8 @@
       "phase": "llm"
     },
     "buttons.search": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is a noun, should be a verb for consistency with other UI actions.",
-      "suggested": "Искать",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "buttons.add": {
@@ -280,5 +276,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:28:15.010Z"
+  "generatedAt": "2026-08-19T04:06:47.810Z"
 }
