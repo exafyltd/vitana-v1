@@ -320,7 +320,20 @@ export function GuidedJourneyCatalog({
                   className="absolute left-[22px] top-3 bottom-3 w-px bg-gradient-to-b from-border via-border/60 to-transparent"
                 />
                 {s.topics.map((topic) => {
-                  const done = sessionComplete || completedSet.has(topic.topicId);
+                  // VTID-03679: per-topic checkmark must be per-topic completion
+                  // ONLY (completedSet, from completePractice()'s explicit
+                  // "mark as done" action) — NOT sessionComplete. sessionComplete
+                  // is the coarse, intentional "listened to ANY topic in this
+                  // session" signal (recordSessionListened, +2 Vitana Index,
+                  // advances the next-session CTA — see useGuidedJourneyProgress's
+                  // own docstring: "Topic completion remains available for
+                  // individual practice checkmarks"). Falling back to it here
+                  // meant tapping ONE topic (e.g. T019 "Ask Vitana") painted
+                  // EVERY other topic in the same session (e.g. T020 "Open
+                  // Screen") as done too, though the user never touched it —
+                  // reported live: "both steps within that session marked
+                  // done... I didn't start the 2nd one".
+                  const done = completedSet.has(topic.topicId);
                   return (
                     <button
                       key={topic.topicId}
