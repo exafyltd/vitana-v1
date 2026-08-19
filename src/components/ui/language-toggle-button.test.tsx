@@ -133,3 +133,32 @@ describe('VTID-03580 landing-page language picker', () => {
     expect(screen.getAllByRole('option')).toHaveLength(gaCount);
   });
 });
+
+describe('"bar" variant — the intro screen\'s former "Play Welcome" slot', () => {
+  beforeEach(() => {
+    setSelectedLanguage.mockClear();
+    currentLanguage = 'de-DE';
+  });
+
+  it('shows the current flag, its endonym, and a chevron — not just a bare flag', () => {
+    currentLanguage = 'en-US';
+    render(<LanguageToggleButton variant="bar" />);
+    const trigger = screen.getByRole('button', { name: 'Sprache wählen' });
+    expect(trigger.textContent).toContain('English');
+  });
+
+  it('still opens the full GA list and still lets a language be chosen', () => {
+    render(<LanguageToggleButton variant="bar" />);
+    fireEvent.click(screen.getByRole('button', { name: 'Sprache wählen' }));
+    fireEvent.click(screen.getByRole('option', { name: exact('Français') }));
+    expect(setSelectedLanguage).toHaveBeenCalledWith('fr-FR');
+  });
+
+  it('still closes on Escape', () => {
+    render(<LanguageToggleButton variant="bar" />);
+    fireEvent.click(screen.getByRole('button', { name: 'Sprache wählen' }));
+    expect(screen.queryByRole('listbox')).toBeTruthy();
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(screen.queryByRole('listbox')).toBeNull();
+  });
+});

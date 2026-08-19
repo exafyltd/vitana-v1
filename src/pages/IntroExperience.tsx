@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Play, Pause, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 
 import { useSoundscape } from '@/context/SoundscapeContext';
@@ -11,11 +10,7 @@ import OrbDiscoveryHint from '@/components/vitanaland/OrbDiscoveryHint';
 import { useTranslation } from '@/hooks/useTranslation';
 // `t` from i18n-toast would shadow the local `const { t } = useTranslation()` below;
 // using `lookup` (the same singleton, different name) avoids the conflict.
-import { lookup, notifyError } from '@/lib/i18n-toast';
-
-// Pre-recorded welcome audio paths
-const WELCOME_AUDIO_EN = '/sounds/intro/maxina-welcome-en.wav';
-const WELCOME_AUDIO_DE = '/sounds/intro/maxina-welcome-de.wav';
+import { lookup } from '@/lib/i18n-toast';
 
 export default function IntroExperience() {
   const { tenantSlug } = useParams<{ tenantSlug: string }>();
@@ -28,19 +23,11 @@ export default function IntroExperience() {
       document.body.classList.remove('maxina-signin-page');
     };
   }, []);
-  const { startFresh, setVolume } = useSoundscape();
+  const { startFresh } = useSoundscape();
   const [videoSrc, setVideoSrc] = useState<string>('');
   const [showContent, setShowContent] = useState(false);
-  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
-  const [isPreparingAudio, setIsPreparingAudio] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  // Helper to ensure soundscape starts playing (for user interaction)
-  const ensureSoundscapePlaying = useCallback(() => {
-    startFresh();
-  }, [startFresh]);
 
   // Load video source
   useEffect(() => {
@@ -77,15 +64,6 @@ export default function IntroExperience() {
     };
   }, [startFresh]);
 
-  // Fade soundscape volume when TTS is playing
-  useEffect(() => {
-    if (isPlayingAudio) {
-      setVolume(0.015);
-    } else {
-      setVolume(0.04);
-    }
-  }, [isPlayingAudio, setVolume]);
-
   const continueToMaxina = useCallback(() => {
     if (tenantSlug) {
       markIntroAsSeen(tenantSlug);
@@ -102,82 +80,19 @@ export default function IntroExperience() {
   }, [tenantSlug, navigate]);
 
   const handleSkip = useCallback(() => {
-    // Stop TTS audio if playing
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-    
     continueToMaxina();
   }, [continueToMaxina]);
 
+  // We need BOTH the catalog object `t` (for `t.intro?.X` dotted access below)
+  // AND the function-call form (`lookup('screens.foo.bar')`) for newer i18n
+  // keys. The function form is imported as `lookup` (not `t`) so the local
+  // destructured `t` doesn't shadow it.
+  const { t } = useTranslation();
 
-  // Get current language for TTS and translations.
-  // We need BOTH the catalog object `t` (for `t.intro?.preparing` etc dotted
-  // access in the play/pause button below) AND the function-call form
-  // (`lookup('screens.foo.bar')`) for newer i18n keys. The function form is
-  // imported as `lookup` (not `t`) so the local destructured `t` doesn't
-  // shadow it. Don't drop `t` from this destructure — 5 JSX sites below
-  // reference `t.intro?.X` and crash the whole screen if `t` is undefined.
-  const { t, isGerman } = useTranslation();
-
-  const handlePlayPauseAudio = useCallback(async () => {
-    // Ensure soundscape starts on user click
-    ensureSoundscapePlaying();
-    
-    // If currently playing, pause it
-    if (isPlayingAudio && audioRef.current) {
-      audioRef.current.pause();
-      setIsPlayingAudio(false);
-      return;
-    }
-    
-    // If audio exists and was paused, resume it
-    if (audioRef.current && audioRef.current.paused && audioRef.current.currentTime > 0) {
-      audioRef.current.play();
-      setIsPlayingAudio(true);
-      return;
-    }
-    
-    // Otherwise, play pre-recorded welcome audio
-    setIsPreparingAudio(true);
-    
-    const audioSrc = isGerman ? WELCOME_AUDIO_DE : WELCOME_AUDIO_EN;
-    
-    try {
-      const audio = new Audio(audioSrc);
-      audioRef.current = audio;
-      
-      audio.onended = () => {
-        setIsPlayingAudio(false);
-        continueToMaxina();
-      };
-
-      audio.onerror = () => {
-        setIsPlayingAudio(false);
-        notifyError('toasts.introexperience.audioPlaybackFailed');
-      };
-
-      setIsPreparingAudio(false);
-      setIsPlayingAudio(true);
-      await audio.play();
-      
-    } catch (error) {
-      console.error('Welcome audio error:', error);
-      setIsPreparingAudio(false);
-      notifyError('toasts.introexperience.audioUnavailableNow');
-    }
-  }, [isPlayingAudio, continueToMaxina, ensureSoundscapePlaying, isGerman]);
-
-  // Keyboard shortcuts - must be after function declarations
+  // Keyboard shortcut - must be after function declarations
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault();
-        if (!isPreparingAudio) {
-          handlePlayPauseAudio();
-        }
-      } else if (e.key === 'Escape') {
+      if (e.key === 'Escape') {
         e.preventDefault();
         handleSkip();
       }
@@ -185,7 +100,7 @@ export default function IntroExperience() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isPreparingAudio, handlePlayPauseAudio, handleSkip]);
+  }, [handleSkip]);
 
   if (!videoSrc) {
     return (
@@ -288,60 +203,21 @@ export default function IntroExperience() {
           {t.intro?.taglineSub || 'together with us!'}
         </p>
 
-        {/* CTA Stack - Premium glass buttons */}
-        <div 
+        {/* CTA Stack: language selector (occupies the former Play Welcome slot)
+            + Go to Login. The Orb itself is a separate, globally-positioned
+            widget (see OrbDiscoveryHint) — tapping it is now the only way to
+            hear Vitana speak the welcome, so no play/audio control lives here
+            any more. */}
+        <div
           className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
-          {/* Button row: Play Welcome + Language Toggle */}
-          <div className="flex items-center gap-2.5 w-full">
-            {/* Primary Play/Pause Button - Premium glass style */}
-            <Button
-              onClick={handlePlayPauseAudio}
-              disabled={isPreparingAudio}
-              size="lg"
-              className="relative flex-1 bg-white/10 backdrop-blur-xl hover:bg-white/20 text-white border border-white/30 rounded-2xl px-8 py-5 text-base font-medium shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.15)] transition-all duration-300"
-            >
-              {isPreparingAudio ? (
-                <>
-                  <Loader2 className="w-5 h-5 mr-2.5 animate-spin" />
-                  {t.intro?.preparing || 'Preparing...'}
-                </>
-              ) : isPlayingAudio ? (
-                <>
-                  <Pause className="w-5 h-5 mr-2.5" />
-                  {t.intro?.playing || 'Playing'}
-                  {/* Animated Equalizer Bars */}
-                  <div className="flex gap-0.5 items-end h-4 ml-3">
-                    <div 
-                      className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0s_infinite]"
-                      style={{ height: '4px' }}
-                    />
-                    <div 
-                      className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0.15s_infinite]"
-                      style={{ height: '4px' }}
-                    />
-                    <div 
-                      className="w-1 bg-white rounded-full animate-[equalizer_0.8s_ease-in-out_0.3s_infinite]"
-                      style={{ height: '4px' }}
-                    />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <Play className="w-5 h-5 mr-2.5 fill-current" />
-                  {t.intro?.playWelcome || 'Play Welcome'}
-                </>
-              )}
-            </Button>
-            
-            {/* Language picker - circular, shows the CURRENT language's flag and
-                opens the full GA language list (VTID-03580; was a DE<->EN toggle
-                showing the opposite flag, which could only reach 2 of 8). */}
-            <LanguageToggleButton size="md" />
-          </div>
+          {/* Language selector - subtle glass bar showing the current flag,
+              language name, and a chevron (VTID-03580's full GA language list,
+              in a wider "bar" presentation instead of the old circular badge). */}
+          <LanguageToggleButton variant="bar" />
 
-          {/* Go to Login - secondary text button, bright ivory + permanent underline, still subordinate to Play Welcome */}
+          {/* Go to Login - independent secondary text action, unchanged */}
           <button
             onClick={handleSkip}
             className="text-[#F5ECD8] hover:text-white text-sm font-semibold [text-shadow:0_1px_4px_rgba(0,0,0,0.55)] transition-colors duration-200 underline underline-offset-4"
@@ -349,20 +225,12 @@ export default function IntroExperience() {
             {t.intro?.goToLogin || 'Go to Login'}
           </button>
         </div>
-
-        {/* Equalizer animation keyframes */}
-        <style>{`
-          @keyframes equalizer {
-            0%, 100% { height: 4px; }
-            50% { height: 16px; }
-          }
-        `}</style>
       </div>
 
       {/* Keyboard Hints - Desktop only */}
       <div className="absolute bottom-6 left-0 right-0 text-center hidden md:block">
         <p className="text-white/40 text-xs">
-          {lookup('screens.introexperience.press')} <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">{lookup('screens.introexperience.space')}</kbd>{lookup('screens.introexperience.play')} <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">{lookup('screens.introexperience.esc')}</kbd>{lookup('screens.introexperience.skip')}
+          {lookup('screens.introexperience.press')} <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">{lookup('screens.introexperience.esc')}</kbd>{lookup('screens.introexperience.skip')}
         </p>
       </div>
 
