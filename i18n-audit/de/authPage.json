@@ -6,11 +6,10 @@
       "phase": "llm"
     },
     "authPage.subtitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect possessive pronoun (formal instead of informal) and missing 'intelligence' from the translation.",
-      "suggested": "Deine personalisierte Gesundheitsintelligenz-Plattform",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "authPage.signIn": {
       "verdict": "OK",
@@ -78,5 +77,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:24.568Z"
+  "generatedAt": "2026-08-19T04:05:33.634Z"
 }

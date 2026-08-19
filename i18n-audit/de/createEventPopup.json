@@ -26,11 +26,10 @@
       "phase": "llm"
     },
     "createEventPopup.descriptionPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form). Should be du-form.",
-      "suggested": "Beschreibe dein Event, was Teilnehmer erwartet...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.detailedDescription": {
       "verdict": "OK",
@@ -38,18 +37,16 @@
       "phase": "llm"
     },
     "createEventPopup.detailedDescriptionPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form). Should be du-form.",
-      "suggested": "Beschreibe die Agenda, das Programm, was enthalten ist, Gewinnspiele, Sponsoren...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.detailedDescriptionHint": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form). Should be du-form.",
-      "suggested": "Wird in den Event-Details angezeigt. Nutze es für Agenda, Programmdetails, Inklusivleistungen usw.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.eventImage": {
       "verdict": "OK",
@@ -202,11 +199,10 @@
       "phase": "llm"
     },
     "createEventPopup.displayPriceHint": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form) for imperative.",
-      "suggested": "Nur zur Anzeige. Aktiviere den Ticketverkauf oben für integrierte Zahlungen.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.resellerOptions": {
       "verdict": "OK",
@@ -219,11 +215,10 @@
       "phase": "llm"
     },
     "createEventPopup.allowResellersDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form) for imperative.",
-      "suggested": "Lass Reseller Tickets für dieses Event bewerben und verkaufen",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.resaleVisibility": {
       "verdict": "OK",
@@ -411,11 +406,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.invalidFileTypeDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Bitte wähle eine Bilddatei (JPEG, PNG, WebP)",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.toasts.fileTooLarge": {
       "verdict": "OK",
@@ -433,11 +427,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.missingFieldsDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Bitte gib Eventtitel, Datum und Uhrzeit an.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.toasts.invalidDate": {
       "verdict": "OK",
@@ -445,11 +438,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.invalidDateDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Du kannst kein Event in der Vergangenheit erstellen. Bitte wähle ein zukünftiges Datum und eine Uhrzeit.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.toasts.imageUploadFailed": {
       "verdict": "OK",
@@ -467,11 +459,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.errorCreatingDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "Beim Erstellen deines Events ist ein Problem aufgetreten. Bitte versuche es erneut.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.toasts.generatingImage": {
       "verdict": "OK",
@@ -479,11 +470,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.generatingImageDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "Ein individuelles Bild für dein Event wird erstellt.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.toasts.imageGenerated": {
       "verdict": "OK",
@@ -491,11 +481,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.imageGeneratedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "KI-generiertes Bild wurde deinem Event hinzugefügt.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.toasts.rateLimitReached": {
       "verdict": "OK",
@@ -503,11 +492,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.rateLimitDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form). 'in einem Moment' is a bit literal.",
-      "suggested": "Zu viele Bildgenerierungsanfragen. Bitte versuche es gleich noch einmal.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.toasts.creditsRequired": {
       "verdict": "OK",
@@ -515,11 +503,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.creditsDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "KI-Bildgenerierungs-Credits aufgebraucht. Bitte lade Credits auf.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.toasts.permissionDenied": {
       "verdict": "OK",
@@ -527,11 +514,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.permissionDeniedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "Du hast keine Berechtigung, Bilder für dieses Event zu generieren.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.toasts.imageGenFailed": {
       "verdict": "OK",
@@ -539,11 +525,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.imageGenFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "KI-Bild konnte nicht generiert werden. Dein Event wurde trotzdem erfolgreich erstellt.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.toasts.communityEventCreated": {
       "verdict": "OK",
@@ -551,11 +536,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.communityEventCreatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "Dein Event ist jetzt für die Community sichtbar und wurde deinem Kalender hinzugefügt.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.toasts.personalEventCreated": {
       "verdict": "OK",
@@ -563,11 +547,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.personalEventCreatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "Das Event wurde deinem Kalender hinzugefügt.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.toasts.error": {
       "verdict": "OK",
@@ -575,12 +558,11 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.errorDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (Sie-form instead of du-form).",
-      "suggested": "Event konnte nicht erstellt werden. Bitte versuche es erneut.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-05-20T07:08:29.780Z"
+  "generatedAt": "2026-08-19T04:07:28.700Z"
 }
