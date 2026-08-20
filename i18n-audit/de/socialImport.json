@@ -6,18 +6,16 @@
       "phase": "identical"
     },
     "socialImport.dialogTitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent terminology with 'Import Profile' (entry 5). 'Verbinden' means 'connect', while 'Import' is 'importieren'.",
-      "suggested": "{platform} Profil importieren",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "socialImport.dialogDescription": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Sie' form instead of informal 'du' form.",
-      "suggested": "Verbinde dein {platform}-Profil, um deine Vitana-Identität mit KI-gestützten Einblicken zu bereichern.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "socialImport.profileUrl": {
       "verdict": "OK",
@@ -50,11 +48,10 @@
       "phase": "llm"
     },
     "socialImport.urlRequiredDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Sie' form instead of informal 'du' form.",
-      "suggested": "Bitte gib deine {platform} Profil-URL ein",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "socialImport.importSuccess": {
       "verdict": "OK",
@@ -62,11 +59,10 @@
       "phase": "llm"
     },
     "socialImport.importSuccessDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Ihr' form instead of informal 'dein' form.",
-      "suggested": "Dein {platform}-Profil wurde importiert und mit KI-Einblicken angereichert.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "socialImport.importFailed": {
       "verdict": "OK",
@@ -84,11 +80,10 @@
       "phase": "llm"
     },
     "socialImport.verifiedConnections": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Ihrem' form instead of informal 'deinem' form.",
-      "suggested": "Verifizierte Verbindungen in deinem digitalen Leben",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "socialImport.tapToVisit": {
       "verdict": "OK",
@@ -106,47 +101,41 @@
       "phase": "llm"
     },
     "socialImport.platformHelp.linkedin": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Ihre' form instead of informal 'deine' form.",
-      "suggested": "Wir verwenden KI, um deine Überschrift, Zusammenfassung und beruflichen Fähigkeiten zu extrahieren.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "socialImport.platformHelp.instagram": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Ihre' form instead of informal 'deine' form.",
-      "suggested": "Wir analysieren deine Bio, um deine Interessen und Lifestyle-Themen zu verstehen.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "socialImport.platformHelp.tiktok": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Ihre' form instead of informal 'deine' form.",
-      "suggested": "Wir extrahieren deine Content-Themen und kreative Persönlichkeit aus deiner Bio.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "socialImport.platformHelp.youtube": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Ihre' form instead of informal 'deine' form.",
-      "suggested": "Wir identifizieren deine Content-Kategorien und Fachbereiche aus deiner Beschreibung.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "socialImport.platformHelp.facebook": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Ihre' form instead of informal 'deine' form.",
-      "suggested": "Wir extrahieren deine Interessen und Community-Beteiligung aus deiner Bio.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "socialImport.platformHelp.x": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Ihre' form instead of informal 'deine' form, and incorrect case for 'Kommunikationsstil'.",
-      "suggested": "Wir analysieren deine Bio, um deine Themengebiete und deinen Kommunikationsstil zu verstehen.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-05-20T08:31:59.721Z"
+  "generatedAt": "2026-08-20T04:14:24.083Z"
 }
