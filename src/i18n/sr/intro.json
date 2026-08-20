@@ -9,7 +9,8 @@
     "playing": "Pušta se",
     "goToLogin": "Idi na prijavu",
     "chooseLanguage": "Izaberi jezik",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "tapOrbHint": "Dodirni Orb da upoznaš Vitanu",
+    "chooseLanguageTitle": "Izaberi svoj jezik",
+    "chooseLanguageSubtitle": "Vitana će govoriti i odgovarati na ovom jeziku."
+  }
 }
