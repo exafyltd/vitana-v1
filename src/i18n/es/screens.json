@@ -5388,7 +5388,11 @@
       "modBanConfirm": "¿Vetar a {name}? Sus publicaciones se ocultarán y no podrá volver a publicar.",
       "modFailed": "Acción fallida.",
       "createPost": "Publicación",
-      "likesCount": "{count} Me gusta"
+      "likesCount": "{count} Me gusta",
+      "replyToComment": "Responder",
+      "replyingTo": "Respondiendo a {name}",
+      "cancelReply": "Cancelar respuesta",
+      "likeComment": "Me gusta el comentario"
     },
     "icons": {
       "xFormerlyTwitter": "X (antes Twitter)"

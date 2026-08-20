@@ -5392,7 +5392,11 @@
       "text4NewIdeas": "4 nowe pomysły",
       "executeAllValue0": "Wykonaj wszystkie {value0}",
       "noValue0ActionsAvailable": "Brak dostępnych {value0} działań",
-      "likesCount": "{count} Polubień"
+      "likesCount": "{count} Polubień",
+      "replyToComment": "Odpowiedz",
+      "replyingTo": "Odpowiadasz {name}",
+      "cancelReply": "Anuluj odpowiedź",
+      "likeComment": "Polub komentarz"
     },
     "icons": {
       "xFormerlyTwitter": "X (dawniej Twitter)"

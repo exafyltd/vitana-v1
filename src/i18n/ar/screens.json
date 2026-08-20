@@ -5392,7 +5392,11 @@
       "noRoutinesYetCreateYourFirst": "لا توجد روتينات بعد. أنشئ روتينك الأول لتبدأ!",
       "text4NewIdeas": "4 أفكار جديدة",
       "executeAllValue0": "نفّذ كل {value0}",
-      "noValue0ActionsAvailable": "لا توجد {value0}إجراءات متاحة"
+      "noValue0ActionsAvailable": "لا توجد {value0}إجراءات متاحة",
+      "replyToComment": "رد",
+      "replyingTo": "ترد على {name}",
+      "cancelReply": "إلغاء الرد",
+      "likeComment": "أعجبني التعليق"
     },
     "icons": {
       "xFormerlyTwitter": "X (تويتر سابقًا)"

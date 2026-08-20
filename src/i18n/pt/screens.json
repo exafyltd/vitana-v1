@@ -5392,7 +5392,11 @@
       "text4NewIdeas": "4 novas ideias",
       "executeAllValue0": "Executar Tudo {value0}",
       "noValue0ActionsAvailable": "Nenhuma {value0}ação disponível",
-      "likesCount": "{count} Gostos"
+      "likesCount": "{count} Gostos",
+      "replyToComment": "Responder",
+      "replyingTo": "Respondendo a {name}",
+      "cancelReply": "Cancelar resposta",
+      "likeComment": "Curtir comentário"
     },
     "icons": {
       "xFormerlyTwitter": "X (antigo Twitter)"

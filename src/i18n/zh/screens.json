@@ -5392,7 +5392,11 @@
       "noRoutinesYetCreateYourFirst": "还没有日常。创建你的第一个日常来开始吧！",
       "text4NewIdeas": "4 个新想法",
       "executeAllValue0": "执行所有 {value0}",
-      "noValue0ActionsAvailable": "没有 {value0}行动可用"
+      "noValue0ActionsAvailable": "没有 {value0}行动可用",
+      "replyToComment": "回复",
+      "replyingTo": "回复 {name}",
+      "cancelReply": "取消回复",
+      "likeComment": "赞评论"
     },
     "icons": {
       "xFormerlyTwitter": "X (前身为 Twitter)"

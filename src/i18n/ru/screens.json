@@ -5392,7 +5392,11 @@
       "text4NewIdeas": "4 новые идеи",
       "executeAllValue0": "Выполнить все {value0}",
       "noValue0ActionsAvailable": "Нет доступных {value0}-действий",
-      "likesCount": "{count} Лайков"
+      "likesCount": "{count} Лайков",
+      "replyToComment": "Ответить",
+      "replyingTo": "Отвечаешь {name}",
+      "cancelReply": "Отменить ответ",
+      "likeComment": "Лайкнуть комментарий"
     },
     "icons": {
       "xFormerlyTwitter": "X (ранее Twitter)"

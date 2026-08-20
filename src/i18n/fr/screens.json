@@ -5392,7 +5392,11 @@
       "text4NewIdeas": "4 nouvelles idées",
       "executeAllValue0": "Exécuter tout {value0}",
       "noValue0ActionsAvailable": "Aucune action {value0} disponible",
-      "likesCount": "{count} J'aime"
+      "likesCount": "{count} J'aime",
+      "replyToComment": "Répondre",
+      "replyingTo": "Répondre à {name}",
+      "cancelReply": "Annuler la réponse",
+      "likeComment": "Aimer le commentaire"
     },
     "icons": {
       "xFormerlyTwitter": "X (anciennement Twitter)"
