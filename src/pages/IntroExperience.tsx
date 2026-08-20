@@ -6,7 +6,6 @@ import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 import { useSoundscape } from '@/context/SoundscapeContext';
 
 import { LanguageToggleButton } from '@/components/ui/language-toggle-button';
-import OrbDiscoveryHint from '@/components/vitanaland/OrbDiscoveryHint';
 import { useTranslation } from '@/hooks/useTranslation';
 // `t` from i18n-toast would shadow the local `const { t } = useTranslation()` below;
 // using `lookup` (the same singleton, different name) avoids the conflict.
@@ -16,11 +15,14 @@ export default function IntroExperience() {
   const { tenantSlug } = useParams<{ tenantSlug: string }>();
   const navigate = useNavigate();
 
-  // Add body class for Maxina-specific orb positioning
+  // Add body classes for Maxina-specific orb positioning. `maxina-intro-page`
+  // is more specific than `maxina-signin-page` (also carried by the sign-in
+  // page, MaxinaPortal.tsx) so this screen alone can float the orb near the
+  // vertical center instead of docking it to the bottom edge.
   useEffect(() => {
-    document.body.classList.add('maxina-signin-page');
+    document.body.classList.add('maxina-signin-page', 'maxina-intro-page');
     return () => {
-      document.body.classList.remove('maxina-signin-page');
+      document.body.classList.remove('maxina-signin-page', 'maxina-intro-page');
     };
   }, []);
   const { startFresh } = useSoundscape();
@@ -203,19 +205,26 @@ export default function IntroExperience() {
           {t.intro?.taglineSub || 'together with us!'}
         </p>
 
+        {/* Static caption under the (separately, globally-positioned) Orb —
+            replaces the old pulsing "tap here" hint pill on this screen only.
+            Tapping the Orb is the only way to hear Vitana speak the welcome;
+            no play/audio control lives in this stack any more. */}
+        <p
+          className="text-sm md:text-base font-medium text-white/70 text-center mb-6 animate-fade-in"
+          style={{ animationDelay: '2400ms', animationFillMode: 'both' }}
+        >
+          {t.intro?.tapOrbHint || 'Tap the Orb to meet Vitana'}
+        </p>
+
         {/* CTA Stack: language selector (occupies the former Play Welcome slot)
-            + Go to Login. The Orb itself is a separate, globally-positioned
-            widget (see OrbDiscoveryHint) — tapping it is now the only way to
-            hear Vitana speak the welcome, so no play/audio control lives here
-            any more. */}
+            + Go to Login. */}
         <div
           className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
-          {/* Language selector - subtle glass bar showing the current flag,
-              language name, and a chevron (VTID-03580's full GA language list,
-              in a wider "bar" presentation instead of the old circular badge). */}
-          <LanguageToggleButton variant="bar" />
+          {/* Language selector - glass bar with a globe icon, the current
+              language name, and a chevron; opens a full-screen picker. */}
+          <LanguageToggleButton />
 
           {/* Go to Login - independent secondary text action, unchanged */}
           <button
@@ -233,8 +242,6 @@ export default function IntroExperience() {
           {lookup('screens.introexperience.press')} <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">{lookup('screens.introexperience.esc')}</kbd>{lookup('screens.introexperience.skip')}
         </p>
       </div>
-
-      <OrbDiscoveryHint />
     </div>
   );
 }
