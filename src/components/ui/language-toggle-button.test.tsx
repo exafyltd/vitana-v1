@@ -19,7 +19,7 @@
  * model, but the core promise (every GA language reachable, one tap away)
  * is unchanged.
  */
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // vaul/Radix's Drawer measures its content for drag/snap-point behavior via
@@ -186,13 +186,20 @@ describe('landing-page language picker', () => {
   it('closes when Done is pressed', async () => {
     await openDrawer();
     fireEvent.click(screen.getByRole('button', { name: 'Done' }));
-    expect(screen.queryByText('Choose your language')).toBeNull();
+    // vaul unmounts the drawer after its own exit transition, not
+    // synchronously with the click — wait for it rather than asserting
+    // the DOM node is already gone on the same tick.
+    await waitFor(() => {
+      expect(screen.queryByText('Choose your language')).toBeNull();
+    });
   });
 
   it('closes on Escape, so the picker cannot trap a visitor on the first screen', async () => {
     await openDrawer();
     fireEvent.keyDown(document, { key: 'Escape' });
-    expect(screen.queryByText('Choose your language')).toBeNull();
+    await waitFor(() => {
+      expect(screen.queryByText('Choose your language')).toBeNull();
+    });
   });
 
   it('keeps the picker in step with the GA list instead of hardcoding it', async () => {
