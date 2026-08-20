@@ -9,7 +9,8 @@
     "playing": "قيد التشغيل",
     "goToLogin": "الانتقال إلى تسجيل الدخول",
     "chooseLanguage": "اختر اللغة",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "tapOrbHint": "انقر على الكرة لمقابلة Vitana",
+    "chooseLanguageTitle": "اختر لغتك",
+    "chooseLanguageSubtitle": "Vitana ستتحدث وتستجيب بهذه اللغة."
+  }
 }

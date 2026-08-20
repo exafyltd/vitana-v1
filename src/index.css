@@ -764,6 +764,25 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
     bottom: calc(env(safe-area-inset-bottom, 0px) + 16px) !important;
   }
 
+  /* Intro screen only (NOT .maxina-signin-page, which MaxinaPortal.tsx's
+     sign-in/sign-up page also carries and must keep bottom-docked): float
+     the orb near the vertical middle of the screen instead of the bottom
+     edge, so it reads as the page's centerpiece rather than a docked FAB.
+     Declared after the .maxina-signin-page rule above so it wins on the
+     shared selectors for pages that carry both classes. */
+  body.maxina-intro-page .vtorb-fab,
+  body.maxina-intro-page .vitana-orb,
+  body.maxina-intro-page [data-vitana-orb="true"],
+  body.maxina-intro-page #vitana-orb,
+  body.maxina-intro-page .OrbFloatingButton,
+  body.maxina-intro-page #vitana-orb-fab,
+  body.maxina-intro-page [id^="vitana-orb"],
+  body.maxina-intro-page [class^="vtorb-fab"] {
+    top: 58% !important;
+    bottom: auto !important;
+    transform: translate(-50%, -50%) !important;
+  }
+
   /* Hide irrelevant tenant links for Maxina app users */
   [data-maxina-app="true"] .tenant-footer-links,
   [data-maxina-app="true"] [data-tenant-switcher],

@@ -2,7 +2,8 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "رحلة موجهة",
-      "fullLabel": "التطبيق الكامل"
+      "fullLabel": "التطبيق الكامل",
+      "_pending_review": {}
     },
     "guidedCatalog": {
       "allChapters": "الكل",
@@ -44,7 +45,8 @@
       "markDone": "تمييز كمكتمل",
       "skip": "تخطي الآن",
       "doneToast": "اكتمل التمرين!",
-      "doneError": "تعذر الحفظ."
+      "doneError": "تعذر الحفظ.",
+      "_pending_review": {}
     },
     "common": {
       "languageToggleAriaLabel": "اللغة",
@@ -855,7 +857,8 @@
       "mental": "العقلية",
       "next3": "الأيام الثلاثة القادمة",
       "month": "30 يومًا",
-      "future": "المستقبل"
+      "future": "المستقبل",
+      "_pending_review": {}
     },
     "admin": {
       "usingDefaults": "باستخدام الإعدادات الافتراضية",
@@ -2593,7 +2596,8 @@
       "navRole_staff": "طاقم",
       "navRole_admin": "مسؤول",
       "navRole_developer": "مطور",
-      "navRole_infra": "بنية تحتية"
+      "navRole_infra": "بنية تحتية",
+      "_pending_review": {}
     },
     "ai-feed": {
       "noEventsFound": "لا توجد أحداث",
@@ -2619,7 +2623,8 @@
       "confidenceConfident": "{confidence}% ثقة",
       "later": "لاحقًا",
       "value0Trends": "{value0} اتجاهات",
-      "lengthEventsShown": "{length} أحداث معروضة"
+      "lengthEventsShown": "{length} أحداث معروضة",
+      "_pending_review": {}
     },
     "analysis": {
       "topMatchFactors": "أهم عوامل المطابقة",
@@ -2647,7 +2652,8 @@
       "explore": "استكشف →",
       "viewSchedule": "شاهد الجدول →",
       "findCoaches": "ابحث عن مدربين →",
-      "match_scoreMatch": "{match_score}% توافق"
+      "match_scoreMatch": "{match_score}% توافق",
+      "_pending_review": {}
     },
     "assistant": {
       "voiceProviderHint_googleSpeech": "Google Speech API توفر تركيب كلام عالي الجودة",
@@ -2736,7 +2742,8 @@
       "proactive": "استباقي",
       "referrals": "إحالات",
       "creativityValue0": "الإبداع: {value0}",
-      "languageSettingControlsWhatLanguageText": "يتحكّم إعداد \"اللغة\" في اللغة التي يتم بها إنشاء النص. يتحكّم إعداد \"الصوت\" في صوت تحويل النص إلى كلام الذي يقرأه بصوت عالٍ. تتم مزامنتهما تلقائيًا للتبسيط."
+      "languageSettingControlsWhatLanguageText": "يتحكّم إعداد \"اللغة\" في اللغة التي يتم بها إنشاء النص. يتحكّم إعداد \"الصوت\" في صوت تحويل النص إلى كلام الذي يقرأه بصوت عالٍ. تتم مزامنتهما تلقائيًا للتبسيط.",
+      "_pending_review": {}
     },
     "audio": {
       "volume": "مستوى الصوت",
@@ -2748,7 +2755,8 @@
       "soundscapeValue0": "مشهد صوتي {value0}",
       "vitanaAudioMode": "وضع صوت VITANA",
       "typeYourMessage": "اكتب رسالتك...",
-      "returnVoice": "العودة إلى الصوت"
+      "returnVoice": "العودة إلى الصوت",
+      "_pending_review": {}
     },
     "auth": {
       "bundle": "حزمة:",
@@ -2793,7 +2801,8 @@
       "sendResetLink": "أرسل رابط إعادة التعيين",
       "resendAvailableCooldownS": "إعادة الإرسال متاحة خلال {cooldown} ثانية",
       "ifYouArenTSentBack": "إذا لم تتم إعادة توجيهك تلقائيًا، اضغط أدناه – أو ببساطة انتقل إلى تطبيق Vitana، وسيتحدث في غضون ثوانٍ.",
-      "updating": "جارٍ التحديث…"
+      "updating": "جارٍ التحديث…",
+      "_pending_review": {}
     },
     "billing": {
       "from": "من:",
@@ -2814,7 +2823,8 @@
       "invoiceId": "فاتورة رقم {id}",
       "invoiceDateDate": "تاريخ الفاتورة: {date}",
       "healthCityHc12345": "مدينة الصحة، HC 12345",
-      "paymentMethodPaymentmethod": "طريقة الدفع: {paymentMethod}"
+      "paymentMethodPaymentmethod": "طريقة الدفع: {paymentMethod}",
+      "_pending_review": {}
     },
     "business": {
       "performance": "📊 الأداء",
@@ -2971,7 +2981,8 @@
       "eGLongevitySleepSupplements": "مثلاً: طول العمر، النوم، المكملات",
       "autopilotHasLengthReferralDraftValue1": "الطيار الآلي لديه {length}مسودة إحالة{value1} لك",
       "scoreValue0": "نقاط {value0}",
-      "viewSource": "عرض المصدر"
+      "viewSource": "عرض المصدر",
+      "_pending_review": {}
     },
     "calendar": {
       "noUpcomingEvents": "لا توجد أحداث قادمة",
@@ -3029,7 +3040,8 @@
       "suggestedValue0": "مقترح: {value0}",
       "todaySIndexPulseCompletingYour": "نبض مؤشر اليوم: إكمال حدثك الموسوم بـ {totalCount} ركيزة {value1} سيحرك مؤشرك.",
       "urgent": "عاجل",
-      "highPriority": "أولوية قصوى"
+      "highPriority": "أولوية قصوى",
+      "_pending_review": {}
     },
     "cart": {
       "yourCart": "سلتك",
@@ -3053,7 +3065,8 @@
       "secureCheckoutPoweredByStripe": "دفع آمن مدعوم من Stripe",
       "startAddingItemsFromDiscoverMarketplace": "ابدأ بإضافة عناصر من متجر Discover",
       "value0Each": "${value0} لكل واحد",
-      "byProvider": "بواسطة {provider}"
+      "byProvider": "بواسطة {provider}",
+      "_pending_review": {}
     },
     "chat": {
       "googleCloudApiKey": "مفتاح API لـ Google Cloud",
@@ -3067,7 +3080,8 @@
       "yourApiKeyStoredSecurelyOnly": "مفتاح API الخاص بك مخزن بأمان ويُستخدم فقط لميزات الصوت بالذكاء الاصطناعي.",
       "cancel": "إلغاء",
       "go": "اذهب إلى",
-      "saveApiKey": "احفظ مفتاح API"
+      "saveApiKey": "احفظ مفتاح API",
+      "_pending_review": {}
     },
     "coaches": {
       "topMatchFactors": "أهم عوامل المطابقة",
@@ -3082,7 +3096,8 @@
       "fromSessions_from": "ابتداءً من {sessions_from} يورو",
       "bookSession": "احجز جلسة",
       "member_countMembers": "{member_count} أعضاء",
-      "participant_countAttending": "{participant_count} حاضرون"
+      "participant_countAttending": "{participant_count} حاضرون",
+      "_pending_review": {}
     },
     "community": {
       "openAsksKind_commercialBuy": "شراء",
@@ -3551,7 +3566,8 @@
       "goalActivity": "رفيق نشاط",
       "goalWeightLoss": "خسارة الوزن",
       "goalMentalWellness": "العافية النفسية",
-      "goalValues": "قيم متوافقة"
+      "goalValues": "قيم متوافقة",
+      "_pending_review": {}
     },
     "contacts": {
       "addContact": "إضافة جهة اتصال",
@@ -3617,7 +3633,8 @@
       "tipUseValue0IncludeYourPersonal": "نصيحة: استخدم {value0}لتضمين رابط دعوتك الشخصي",
       "sendInvites": "إرسال الدعوات",
       "weFoundTotalimportedContactsMatchedThem": "وجدنا {totalImported}جهات اتصال وطابقناها مع VITANA",
-      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound}من أصدقائك هم بالفعل على VITANA!"
+      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound}من أصدقائك هم بالفعل على VITANA!",
+      "_pending_review": {}
     },
     "context": {
       "aiSpotlight": "تسليط الضوء على الذكاء الاصطناعي 🔮",
@@ -3633,7 +3650,8 @@
       "meditationSuggestion": "اقتراح تأمل 🧘",
       "sleepReadiness": "جاهزية النوم 🌙",
       "social": "اجتماعي 👥",
-      "todaySPlan": "خطة اليوم 🗓️"
+      "todaySPlan": "خطة اليوم 🗓️",
+      "_pending_review": {}
     },
     "creator": {
       "paymentStatus": "حالة الدفع",
@@ -3656,7 +3674,8 @@
       "notEnabled": "غير مفعّل",
       "completeYourPaymentSetupStartReceiving": "أكمل إعدادات الدفع الخاصة بك لبدء تلقي الأرباح من غرف البث المباشر المدفوعة.",
       "enablePaymentsCreatePaidLiveRooms": "فعّل المدفوعات لإنشاء غرف بث مباشر مدفوعة واستلام 90% من الإيرادات. إعداد سريع في دقيقتين مع Stripe Connect.",
-      "checkingStatus": "جارٍ التحقق من الحالة..."
+      "checkingStatus": "جارٍ التحقق من الحالة...",
+      "_pending_review": {}
     },
     "crossover": {
       "keyFactors": "عوامل رئيسية:",
@@ -3789,7 +3808,8 @@
       "matchCatFitness": "لياقة",
       "matchCatLongevity": "مرحلة طول العمر",
       "matchCatCommunity": "مجتمع",
-      "matchCatWellness": "عافية مشتركة"
+      "matchCatWellness": "عافية مشتركة",
+      "_pending_review": {}
     },
     "debug": {
       "presenceDebug": "تصحيح وجود",
@@ -3799,7 +3819,8 @@
       "connected": "متصل:",
       "latency": "زمن الاستجابة:",
       "realtimelatencyMs": "{realtimeLatency} ملي ثانية",
-      "value0SAgo": "قبل {value0} ثانية"
+      "value0SAgo": "قبل {value0} ثانية",
+      "_pending_review": {}
     },
     "dev": {
       "currentStep": "الخطوة الحالية",
@@ -4182,7 +4203,8 @@
       "briefDescriptionDocument": "وصف موجز للمستند",
       "whatSNewThisFrontpageVersion": "ما الجديد في هذا الإصدار من الصفحة الرئيسية؟",
       "tryAdjustingYourFiltersWaitFor": "حاول تعديل فلاترك أو انتظر وصول أحداث جديدة.",
-      "statusLastcode": "الحالة: {lastCode}"
+      "statusLastcode": "الحالة: {lastCode}",
+      "_pending_review": {}
     },
     "diary": {
       "startRecordingYourWellnessJourney": "ابدأ بتسجيل رحلة عافيتك",
@@ -4235,7 +4257,8 @@
       "tagLabel_voice": "صوت",
       "tagLabel_text": "نص",
       "voiceTranscriptCaptured": "تم التقاط النص الصوتي. حرر واحفظ مدخلك.",
-      "writeYourThoughts": "اكتب أفكارك..."
+      "writeYourThoughts": "اكتب أفكارك...",
+      "_pending_review": {}
     },
     "discover": {
       "marketplaceView_open": "افتح السوق",
@@ -4531,7 +4554,8 @@
       "bookmarkedValue0": "🔖 {value0} إشارات مرجعية",
       "exploreName": "استكشف {name}",
       "exploreItem_name": "استكشف {item_name}",
-      "value0Services": "{value0} خدمات"
+      "value0Services": "{value0} خدمات",
+      "_pending_review": {}
     },
     "discovery": {
       "filters": "الفلاتر:",
@@ -4563,7 +4587,8 @@
       "value0NewTodayViewedcountTotalcount": "{value0}جديد اليوم · {viewedCount}/{totalCount}تمت مشاهدته",
       "clearFilters": "مسح الفلاتر",
       "checkBackTomorrowFor10New": "عُد غدًا لـ 10 تطابقات جديدة ✨",
-      "vitanaIndexVitana_index": "مؤشر Vitana: {vitana_index}"
+      "vitanaIndexVitana_index": "مؤشر Vitana: {vitana_index}",
+      "_pending_review": {}
     },
     "events": {
       "searchByNameEmail": "ابحث بالاسم أو البريد الإلكتروني...",
@@ -4586,7 +4611,8 @@
       "youSureYouWantDeleteTitle": "هل أنت متأكد أنك تريد حذف \"{title}\"؟ لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع المشاركين والتذاكر والبيانات المرتبطة نهائيًا.",
       "sent_countSentResponse_countResponded": "{sent_count}مرسل • {response_count}استجاب",
       "attendeesTotal": "الحاضرون ({total})",
-      "noInvitationsSentYetStartInviting": "لم يتم إرسال أي دعوات بعد. ابدأ بدعوة الأشخاص لرؤية الردود هنا."
+      "noInvitationsSentYetStartInviting": "لم يتم إرسال أي دعوات بعد. ابدأ بدعوة الأشخاص لرؤية الردود هنا.",
+      "_pending_review": {}
     },
     "feedback": {
       "reportSent": "أُرسل التقرير!",
@@ -4613,7 +4639,8 @@
       "interimTextAppearsGrayUntilFinalized": "النص المؤقت يظهر باللون الرمادي حتى يتم الانتهاء منه...",
       "myReportsLength": "تقاريري ({length})",
       "lengthAttachmentS": "📎 {length} مرفقات",
-      "loadMoreValue0Remaining": "تحميل المزيد ({value0} متبقٍ)"
+      "loadMoreValue0Remaining": "تحميل المزيد ({value0} متبقٍ)",
+      "_pending_review": {}
     },
     "health": {
       "pillar_hydration_title": "الترطيب",
@@ -5172,16 +5199,20 @@
           "hydration": "الترطيب",
           "exercise": "التمرين",
           "sleep": "النوم",
-          "mental": "الصحة العقلية"
+          "mental": "الصحة العقلية",
+          "_pending_review": {}
         },
         "economyAxes": {
           "find_match": "ابحث عن تطابق",
           "marketplace": "السوق",
           "income_generation": "توليد الدخل",
-          "business_formation": "تأسيس الأعمال"
+          "business_formation": "تأسيس الأعمال",
+          "_pending_review": {}
         },
-        "contractLink": "عرض عقد الهدف الأسمى"
-      }
+        "contractLink": "عرض عقد الهدف الأسمى",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "home": {
       "priorityOfTheDay": "أولوية اليوم:",
@@ -5396,10 +5427,12 @@
       "replyToComment": "رد",
       "replyingTo": "ترد على {name}",
       "cancelReply": "إلغاء الرد",
-      "likeComment": "أعجبني التعليق"
+      "likeComment": "أعجبني التعليق",
+      "_pending_review": {}
     },
     "icons": {
-      "xFormerlyTwitter": "X (تويتر سابقًا)"
+      "xFormerlyTwitter": "X (تويتر سابقًا)",
+      "_pending_review": {}
     },
     "intents": {
       "kindFilter_all": "الكل (مع مراعاة الاتجاه)",
@@ -5479,7 +5512,8 @@
       "kindOptionActivitySeek": "شريك نشاط",
       "kindOptionSocialSeek": "دردشة قهوة / توجيه",
       "kindOptionMutualAid": "أقرض / أستعير / أعطي",
-      "kindOptionPartnerSeek": "شريك حياة"
+      "kindOptionPartnerSeek": "شريك حياة",
+      "_pending_review": {}
     },
     "layout": {
       "contentRequiresConsent": "المحتوى يتطلب موافقة",
@@ -5487,7 +5521,8 @@
       "reviewSettings": "مراجعة الإعدادات",
       "tapReviewPrivacySettingsForThis": "اضغط لمراجعة إعدادات الخصوصية لهذا النوع من المحتوى",
       "kindKind": "النوع: {kind}",
-      "idId": "المعرف: {id}"
+      "idId": "المعرف: {id}",
+      "_pending_review": {}
     },
     "liverooms": {
       "createLiveRoom": "إنشاء غرفة بث مباشر",
@@ -5578,17 +5613,20 @@
         "emptyHint": "تظهر الغرف المنتهية هنا — مع ملخص، وأبرز اللحظات، وتسجيل.",
         "loading": "جارٍ تحميل الغرف السابقة…",
         "heldAt": "{date} · {time}",
-        "heldRange": "{date} · {start}–{end}"
+        "heldRange": "{date} · {start}–{end}",
+        "_pending_review": {}
       },
       "durationMin": "{value0} دقيقة",
       "durationHour": "{value0} ساعة",
-      "durationHourMin": "{value0} ساعة {value1} دقيقة"
+      "durationHourMin": "{value0} ساعة {value1} دقيقة",
+      "_pending_review": {}
     },
     "meetups": {
       "detailsProgram": "التفاصيل والبرنامج",
       "undo": "تراجع",
       "closeEventDetails": "إغلاق تفاصيل الحدث",
-      "shareMeetup": "مشاركة اللقاء"
+      "shareMeetup": "مشاركة اللقاء",
+      "_pending_review": {}
     },
     "memory": {
       "updatedAgo": "تم التحديث {distance}",
@@ -5816,7 +5854,8 @@
       "memorySubnav_diary": "مذكرات يومية",
       "memorySubnav_recall": "استدعاء وبحث",
       "memorySubnav_permissions": "أذونات",
-      "wellnessDiaryMultimediaDescription": "سجّل وراجع رحلتك الصحية من خلال إدخالات الوسائط المتعددة."
+      "wellnessDiaryMultimediaDescription": "سجّل وراجع رحلتك الصحية من خلال إدخالات الوسائط المتعددة.",
+      "_pending_review": {}
     },
     "messages": {
       "inspirationCategory_morningMotivation": "تحفيز صباحي",
@@ -6003,7 +6042,8 @@
       "value0Members": "{value0} أعضاء",
       "chooseConversationFromLeftStartMessaging": "اختر محادثة من اليسار لإرسال الرسائل.",
       "anonymous": "مجهول",
-      "vitanaOpenScreen": "افتح الشاشة"
+      "vitanaOpenScreen": "افتح الشاشة",
+      "_pending_review": {}
     },
     "mobile": {
       "searching": "جاري البحث…",
@@ -6022,7 +6062,8 @@
       "openSearch": "افتح البحث",
       "openCalendar": "افتح التقويم",
       "openAutopilot": "افتح الطيار الآلي",
-      "closeSearch": "أغلق البحث"
+      "closeSearch": "أغلق البحث",
+      "_pending_review": {}
     },
     "notifications": {
       "markAllAsRead": "وضع الكل كمقروء",
@@ -6040,7 +6081,8 @@
       "deleteThisNotification": "حذف هذا الإشعار",
       "delete": "حذف",
       "close": "إغلاق",
-      "closeNotifications": "إغلاق الإشعارات"
+      "closeNotifications": "إغلاق الإشعارات",
+      "_pending_review": {}
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "اختر جزء الاسم لمعرف Vitana الخاص بك",
@@ -6056,11 +6098,13 @@
       "typeYourOwnName": "أو اكتب اسمك الخاص",
       "eGAlex": "مثال: alex",
       "welcomeMaxina": "مرحباً بك في Maxina",
-      "yourLongevityJourneyBeginsNow": "رحلتك نحو طول العمر تبدأ الآن"
+      "yourLongevityJourneyBeginsNow": "رحلتك نحو طول العمر تبدأ الآن",
+      "_pending_review": {}
     },
     "orders": {
       "friendExampleCom": "friend@example.com",
-      "friendSName": "اسم الصديق"
+      "friendSName": "اسم الصديق",
+      "_pending_review": {}
     },
     "payment": {
       "selectDate": "اختر التاريخ",
@@ -6161,7 +6205,8 @@
       "conversationspecificPaymentActionWith": "إجراء دفع خاص بالمحادثة مع",
       "alreadyActivePleaseCompleteCloseThat": "نشط بالفعل. \n                    الرجاء إكمال أو إغلاق هذا الإجراء أولاً.",
       "anotherWalletActionCurrentlyProgressPlease": "إجراء آخر للمحفظة قيد التقدم حاليًا. يرجى إكمال أو إغلاق هذا الإجراء أولاً.",
-      "paymenttypePaymentRequest": "{paymentType} طلب دفع"
+      "paymenttypePaymentRequest": "{paymentType} طلب دفع",
+      "_pending_review": {}
     },
     "proactive": {
       "proTip": "نصيحة احترافية:",
@@ -6191,7 +6236,8 @@
       "personalInvitesGet3xMoreResponses": "تحصل الدعوات الشخصية على استجابات أكثر بـ 3 مرات من الرسائل العامة. يصنع ذكاؤنا الاصطناعي دعوات حقيقية تعكس رحلتك الصحية!",
       "dismissTip": "تجاهل النصيحة",
       "seeNextValue0More": "شاهد التالي ({value0} المزيد)",
-      "membersWhoAutoshareTheirWellnessWins": "الأعضاء الذين يشاركون إنجازاتهم الصحية تلقائيًا يلهمون 5-10 أصدقاء للانضمام كل شهر، مما يخلق تأثيرًا مضاعفًا قويًا في شبكتهم."
+      "membersWhoAutoshareTheirWellnessWins": "الأعضاء الذين يشاركون إنجازاتهم الصحية تلقائيًا يلهمون 5-10 أصدقاء للانضمام كل شهر، مما يخلق تأثيرًا مضاعفًا قويًا في شبكتهم.",
+      "_pending_review": {}
     },
     "profile": {
       "adminAccess": "وصول إداري",
@@ -6589,7 +6635,8 @@
       "licensedVerifiedHealthcareProvider": "مقدم خدمة صحية مرخص وموثق",
       "media": "الوسائط",
       "events": "الفعاليات",
-      "health": "الصحة"
+      "health": "الصحة",
+      "_pending_review": {}
     },
     "reminders": {
       "subtitleDefault": "ما يجدوله لك Vitana. تحدث إلى ORB لإضافة بشكل طبيعي.",
@@ -6641,7 +6688,8 @@
       "noCompleted": "لا توجد تذكيرات مكتملة بعد.",
       "noMissed": "لا توجد تذكيرات فائتة — أنت على اطلاع دائم.",
       "creating": "جاري الإنشاء…",
-      "createReminder": "إنشاء تذكير"
+      "createReminder": "إنشاء تذكير",
+      "_pending_review": {}
     },
     "reseller": {
       "noEventsYourInventory": "لا توجد أحداث في مخزونك.",
@@ -6705,7 +6753,8 @@
       "viewDetails": "اعرض التفاصيل",
       "perTicketSoldViaYourReseller": "لكل تذكرة مباعة عبر رابط الموزع الخاص بك. يتم احتساب العمولة على سعر التذكرة الإجمالي قبل رسوم المنصة.",
       "viewWallet2": "اعرض في المحفظة →",
-      "ticketquantityTicketValue1Value2": "{ticketQuantity} تذكرة {value1} · {value2}"
+      "ticketquantityTicketValue1Value2": "{ticketQuantity} تذكرة {value1} · {value2}",
+      "_pending_review": {}
     },
     "settings": {
       "googleConnectionLiveCheck": "اتصال جوجل - فحص مباشر",
@@ -7356,7 +7405,8 @@
       "youExafySuperAdministratorYouCan": "أنت مسؤول Exafy فائق. يمكنك التبديل بين المؤسسات وإدارة جميع المستأجرين.",
       "roleValue0": "الدور: {value0}",
       "refreshBrowserVoices": "تحديث أصوات المتصفح",
-      "creativityValue0": "الإبداع: {value0}"
+      "creativityValue0": "الإبداع: {value0}",
+      "_pending_review": {}
     },
     "sharing": {
       "activateCampaign": "تفعيل الحملة",
@@ -8166,7 +8216,8 @@
       "imageSpecsHashtagStrategyPostingTimes": "مواصفات الصورة، استراتيجية الهاشتاج، أوقات النشر",
       "canvaFigmaDirectlyInapp": "Canva, Figma, أو مباشرة داخل التطبيق",
       "copypasteCustomizeForYourNeeds": "انسخ والصق أو خصص حسب احتياجاتك",
-      "createCustomDataPackageBySelecting": "أنشئ حزمة بيانات مخصصة باختيار مقاييس صحية محددة، نطاقات تاريخ، وأنواع بيانات، مصممة لتلبية متطلبات مزود خدمتك الصحية أو للمشاركة في دراسات بحثية."
+      "createCustomDataPackageBySelecting": "أنشئ حزمة بيانات مخصصة باختيار مقاييس صحية محددة، نطاقات تاريخ، وأنواع بيانات، مصممة لتلبية متطلبات مزود خدمتك الصحية أو للمشاركة في دراسات بحثية.",
+      "_pending_review": {}
     },
     "supplements": {
       "supplementName": "اسم المكمل*",
@@ -8183,7 +8234,8 @@
       "notes": "ملاحظات",
       "cancel": "إلغاء",
       "value0Supplement": "{value0} مكمل",
-      "inactive": "غير نشط"
+      "inactive": "غير نشط",
+      "_pending_review": {}
     },
     "templates": {
       "sendMessages": "أرسل إلى الرسائل",
@@ -8197,7 +8249,8 @@
       "noDataAvailable": "لا توجد بيانات متاحة",
       "withWith": "مع {with}",
       "spotsSpots": "{spots} أماكن",
-      "viewAllLengthRecommendations": "عرض كل {length} التوصيات"
+      "viewAllLengthRecommendations": "عرض كل {length} التوصيات",
+      "_pending_review": {}
     },
     "tickets": {
       "ticketsSold": "التذاكر المباعة",
@@ -8242,7 +8295,8 @@
       "ticketValue0": "تذكرة {value0}",
       "eGGeneralAdmission": "مثال: دخول عام",
       "priceValue0": "السعر ({value0}) *",
-      "whatSIncludedWithThisTicket": "ماذا يشمل مع هذه التذكرة؟"
+      "whatSIncludedWithThisTicket": "ماذا يشمل مع هذه التذكرة؟",
+      "_pending_review": {}
     },
     "ui": {
       "reconnecting": "إعادة الاتصال...",
@@ -8274,7 +8328,8 @@
       "learnMore": "معرفة المزيد",
       "noItemsDisplay": "لا توجد عناصر لعرضها",
       "pointsCredits": "+{points} رصيد",
-      "moreActions": "المزيد من الإجراءات"
+      "moreActions": "المزيد من الإجراءات",
+      "_pending_review": {}
     },
     "vertex": {
       "debugConsole": "وحدة تحكم التصحيح",
@@ -8301,11 +8356,13 @@
       "recording": "جارٍ التسجيل...",
       "aiSpeaking": "الذكاء الاصطناعي يتحدث...",
       "you": "أنت",
-      "transcriptWillAppearHere": "سيظهر النص هنا..."
+      "transcriptWillAppearHere": "سيظهر النص هنا...",
+      "_pending_review": {}
     },
     "vitanaland": {
       "enterVitanalandK": "ادخل فيتانالاند (⌘K)",
-      "enterVitanalandCmdK": "ادخل فيتانالاند (Cmd+K)"
+      "enterVitanalandCmdK": "ادخل فيتانالاند (Cmd+K)",
+      "_pending_review": {}
     },
     "downloadFlyer": {
       "brandName": "MAXINA",
@@ -8331,7 +8388,8 @@
       "inviteCardBody": "شارك نشرة التحميل وابدأ معًا.",
       "inviteCardCta": "ادعُ الأصدقاء",
       "inviteShareTitle": "MAXINA – مجتمع طول العمر",
-      "inviteShareText": "انضم إليّ على MAXINA – مجتمع طول العمر! احصل على التطبيق من هنا:"
+      "inviteShareText": "انضم إليّ على MAXINA – مجتمع طول العمر! احصل على التطبيق من هنا:",
+      "_pending_review": {}
     },
     "vitanaIdentity": {
       "vitana": "Vitana",
@@ -8343,7 +8401,8 @@
       "viewIndex": "عرض المؤشر",
       "viewJourney": "عرض رحلتي",
       "viewMatch": "عرض التطابق",
-      "dismissCard": "تجاهل البطاقة"
+      "dismissCard": "تجاهل البطاقة",
+      "_pending_review": {}
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -8366,7 +8425,8 @@
       "giftFrom": "هدية من",
       "claiming": "جارٍ الاستلام...",
       "fromBuyer_name": "من {buyer_name}",
-      "createAccount": "إنشاء حساب"
+      "createAccount": "إنشاء حساب",
+      "_pending_review": {}
     },
     "wallet": {
       "currentSubscriptionPerks": "مزايا الاشتراك الحالي",
@@ -8889,7 +8949,8 @@
       "continueToSecureCheckout": "متابعة إلى الدفع الآمن",
       "cardPaymentViaStripe": "الدفع بالبطاقة، معالج بشكل آمن بواسطة Stripe",
       "currentBalanceLabel": "رصيد {currency} الحالي",
-      "amountAddCurrency": "المبلغ المراد إضافته ({currency})"
+      "amountAddCurrency": "المبلغ المراد إضافته ({currency})",
+      "_pending_review": {}
     },
     "ai": {
       "subtitle_priorityActions": "مهام منسقة بالذكاء الاصطناعي لأقصى تأثير على العافية",
@@ -9058,7 +9119,8 @@
       "impactImpact": "التأثير: {impact}",
       "defineHowYourAiAgentShould": "حدد كيف يجب أن يتصرف وكيل الذكاء الاصطناعي الخاص بك، وماذا يجب أن يركز عليه، وكيف يجب أن يتواصل معك...",
       "thisReadonlyPlaceholderForAgentPrompt": "هذا عنصر نائب للقراءة فقط لمركز موجه الوكيل. ستتيح المراحل المستقبلية تخصيصًا كاملاً لوكيل الذكاء الاصطناعي واختبارًا في الوقت الفعلي.",
-      "thisReadonlyPlaceholderForPersonalAi": "هذا عنصر نائب للقراءة فقط للجدول الزمني الشخصي للذكاء الاصطناعي. ستتصل المراحل المستقبلية ببيانات نشاط الذكاء الاصطناعي الحقيقية وستوفر رؤى تفاعلية."
+      "thisReadonlyPlaceholderForPersonalAi": "هذا عنصر نائب للقراءة فقط للجدول الزمني الشخصي للذكاء الاصطناعي. ستتصل المراحل المستقبلية ببيانات نشاط الذكاء الاصطناعي الحقيقية وستوفر رؤى تفاعلية.",
+      "_pending_review": {}
     },
     "authpages": {
       "fullName": "الاسم الكامل",
@@ -9069,7 +9131,8 @@
       "login": "تسجيل الدخول",
       "signUp": "التسجيل",
       "alreadyHaveAccountValue0": "هل لديك حساب بالفعل؟ {value0}",
-      "donAposTHaveAccountValue0": "أليس لديك حساب؟ {value0}"
+      "donAposTHaveAccountValue0": "أليس لديك حساب؟ {value0}",
+      "_pending_review": {}
     },
     "autopilotdashboard": {
       "text999": "من 999",
@@ -9212,8 +9275,10 @@
         "advanceCareer": "طوّر مسيرتك المهنية",
         "masterNewSkills": "أتقن مهارات جديدة",
         "spiritualLife": "الحياة الروحية",
-        "earnFromRecommendations": "اربح من التوصيات"
-      }
+        "earnFromRecommendations": "اربح من التوصيات",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "businesshub": {
       "noServicesYet": "لا توجد خدمات بعد",
@@ -9233,7 +9298,8 @@
       "businessHub": "مركز الأعمال 💼",
       "growYourWellnessBusinessManageClients": "نمِّ عملك في مجال العافية وأدر العملاء بسهولة.",
       "business": "أعمال",
-      "value0MoreActions": "+{value0} المزيد من الإجراءات"
+      "value0MoreActions": "+{value0} المزيد من الإجراءات",
+      "_pending_review": {}
     },
     "businesslistings": {
       "myListings": "قوائمي",
@@ -9243,7 +9309,8 @@
       "backBusinessHub": "العودة إلى مركز الأعمال",
       "listingsAvailableForProAccounts": "العروض متاحة للحسابات الاحترافية.",
       "noListingsYetClick": "لا توجد عروض بعد. اضغط",
-      "addOneOpenOrbJustSay": "لإضافة واحدة – أو افتح ORB وقل فقط"
+      "addOneOpenOrbJustSay": "لإضافة واحدة – أو افتح ORB وقل فقط",
+      "_pending_review": {}
     },
     "businessopportunities": {
       "myListings": "قوائمي",
@@ -9251,7 +9318,8 @@
       "opportunitiesAvailableForProAccountsUpgrade": "الفرص متاحة للحسابات الاحترافية. قم بالترقية للوصول إلى العملاء المحتملين الواردين.",
       "opportunities": "الفرص",
       "incomingLeadsMatchingYourOfferingsExpress": "عملاء محتملون واردون يطابقون عروضك. عبّر عن اهتمامك لبدء محادثة.",
-      "noLeadsYetWeLlNotify": "لا توجد عملاء محتملون بعد. سنخطرك عندما يصل الطلب المطابق. تأكد من أن لديك عرض بيع تجاري واحد على الأقل ضمن"
+      "noLeadsYetWeLlNotify": "لا توجد عملاء محتملون بعد. سنخطرك عندما يصل الطلب المطابق. تأكد من أن لديك عرض بيع تجاري واحد على الأقل ضمن",
+      "_pending_review": {}
     },
     "checkoutsuccess": {
       "whatSNext": "ماذا بعد؟",
@@ -9267,7 +9335,8 @@
       "continueShopping": "متابعة التسوق",
       "ifYouHaveAnyQuestionsAbout": "إذا كان لديك أي أسئلة حول طلبك، فإن فريق الدعم لدينا هنا للمساعدة.",
       "contactSupport": "اتصل بالدعم",
-      "viewMyOrders": "عرض طلباتي"
+      "viewMyOrders": "عرض طلباتي",
+      "_pending_review": {}
     },
     "creatoronboarded": {
       "checkingYourPaymentStatus": "حالة دفعك قيد المراجعة...",
@@ -9290,10 +9359,12 @@
       "createYourFirstPaidRoom": "أنشئ غرفتك المدفوعة الأولى",
       "viewPaymentSettings": "عرض إعدادات الدفع",
       "value0PaymentSetupComplete": "اكتمل إعداد دفع {value0}!",
-      "youReAllSetStartEarning": "أنت جاهز تمامًا للبدء في الكسب من غرف البث المباشر الخاصة بك"
+      "youReAllSetStartEarning": "أنت جاهز تمامًا للبدء في الكسب من غرف البث المباشر الخاصة بك",
+      "_pending_review": {}
     },
     "editprofilepage": {
-      "editProfileVitana": "تعديل الملف الشخصي – VITANA"
+      "editProfileVitana": "تعديل الملف الشخصي – VITANA",
+      "_pending_review": {}
     },
     "healthtracker": {
       "letSTrackYourProgressTogether": "لنتتبع تقدمك معًا! 📊",
@@ -9343,7 +9414,8 @@
       "weeklyActivity": "نشاط أسبوعي",
       "mentalWellness": "عافية نفسية",
       "mindfulness": "يقظة ذهنية",
-      "vitanaIndexOverview": "نظرة عامة على مؤشر Vitana"
+      "vitanaIndexOverview": "نظرة عامة على مؤشر Vitana",
+      "_pending_review": {}
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "منصة صحة وعافية شاملة",
@@ -9366,7 +9438,8 @@
       "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA هي منصة صحية رقمية شاملة تقدم بيئات متخصصة متعددة \n              لمجتمعات العافية المختلفة وإدارة الرعاية الصحية الاحترافية.",
       "commercePortal": "بوابة التجارة",
       "merchantSelfServiceMarketplace": "سوق الخدمة الذاتية للتجار",
-      "connectYourBusinessToDiscoverYourself": "اربط عملك بسوق Discover بنفسك — لا مشاريع تكامل، ولا انتظار للمهندسين."
+      "connectYourBusinessToDiscoverYourself": "اربط عملك بسوق Discover بنفسك — لا مشاريع تكامل، ولا انتظار للمهندسين.",
+      "_pending_review": {}
     },
     "intentboard": {
       "communityBoard": "منتدى مجتمعي",
@@ -9376,14 +9449,16 @@
       "style": "نمط",
       "lookingForYourOwnIntents": "هل تبحث عن نواياك الخاصة؟",
       "whatOthersLookingFor": "ما يبحث عنه الآخرون.",
-      "surfacedForYour": "معروض لك"
+      "surfacedForYour": "معروض لك",
+      "_pending_review": {}
     },
     "intentmatchdetail": {
       "intentNotFound": "لم يتم العثور على النية.",
       "backMyIntents": "العودة إلى نواياي",
       "closeIntent": "إغلاق النية",
       "noMatchesYetWeLlKeep": "لا توجد تطابقات بعد. سنستمر في البحث ونُعلمك عندما يتطابق شخص ما.",
-      "matchesLength": "تطابقات ({length})"
+      "matchesLength": "تطابقات ({length})",
+      "_pending_review": {}
     },
     "invitefriends": {
       "phoneContacts": "جهات اتصال الهاتف",
@@ -9408,10 +9483,12 @@
       "noContactsMatchSearch": "لا توجد جهات اتصال تطابق \"{search}\"",
       "importContacts": "استيراد جهات الاتصال",
       "selectedcountSelected": "{selectedCount} محددة",
-      "sendInvitesSelectedcount": "إرسال الدعوات ({selectedCount})"
+      "sendInvitesSelectedcount": "إرسال الدعوات ({selectedCount})",
+      "_pending_review": {}
     },
     "logout": {
-      "signingOut": "تسجيل الخروج..."
+      "signingOut": "تسجيل الخروج...",
+      "_pending_review": {}
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – جاري تحويلك إلى متجر التطبيقات",
@@ -9424,7 +9501,8 @@
       "copyLink": "انسخ الرابط",
       "linkCopied": "تم نسخ الرابط — الصقه في Safari",
       "copyFailed": "تعذر نسخ الرابط",
-      "iosOpenInBrowser": "اضغط على \"...\" في أعلى اليمين، ثم \"فتح في المتصفح\" — سيفتح متجر التطبيقات هناك على الفور."
+      "iosOpenInBrowser": "اضغط على \"...\" في أعلى اليمين، ثم \"فتح في المتصفح\" — سيفتح متجر التطبيقات هناك على الفور.",
+      "_pending_review": {}
     },
     "mobilesettings": {
       "pushNotifications": "إشعارات الدفع",
@@ -9511,7 +9589,8 @@
       "modeBillingPlan": "الخطة الحالية",
       "modeBillingPayment": "طريقة الدفع",
       "modeBillingInvoices": "الفواتير والإيصالات",
-      "modeBillingCreator": "مدفوعات المبدعين"
+      "modeBillingCreator": "مدفوعات المبدعين",
+      "_pending_review": {}
     },
     "myintents": {
       "myIntents": "أهدافي",
@@ -9522,7 +9601,8 @@
       "browseWhatOthersLookingFor": "تصفّح ما يبحث عنه الآخرون:",
       "lengthOpenUpPer_kind_slot_capPerCategory": "{length} مفتوح · حتى {PER_KIND_SLOT_CAP} لكل فئة",
       "lengthPer_kind_slot_capSlotsUsed": "{length} من {PER_KIND_SLOT_CAP} فتحة مستخدمة",
-      "capReachedCloseOnePostNew": "الحد الأقصى، أغلق واحدة لنشر جديد."
+      "capReachedCloseOnePostNew": "الحد الأقصى، أغلق واحدة لنشر جديد.",
+      "_pending_review": {}
     },
     "mytickets": {
       "myTickets": "تذاكري",
@@ -9534,7 +9614,8 @@
       "upcomingLength": "قادمة ({length})",
       "pastLength": "سابقة ({length})",
       "noUpcomingEvents": "لا توجد فعاليات قادمة",
-      "noPastEvents": "لا توجد فعاليات سابقة"
+      "noPastEvents": "لا توجد فعاليات سابقة",
+      "_pending_review": {}
     },
     "notauthorized": {
       "accessDenied": "الوصول مرفوض",
@@ -9542,11 +9623,13 @@
       "youDonTHavePermissionAccess": "هذه المنطقة متاحة فقط للأشخاص المصرح لهم.",
       "error403Forbidden": "خطأ 403: ممنوع",
       "returnDashboard": "العودة إلى لوحة التحكم",
-      "contactSupport": "تواصل مع الدعم"
+      "contactSupport": "تواصل مع الدعم",
+      "_pending_review": {}
     },
     "notfound": {
       "oopsPageNotFound": "عذرًا! الصفحة غير موجودة",
-      "returnHome": "العودة إلى الرئيسية"
+      "returnHome": "العودة إلى الرئيسية",
+      "_pending_review": {}
     },
     "packagepurchasesuccess": {
       "missingPurchaseInformation": "معلومات الشراء مفقودة",
@@ -9562,7 +9645,8 @@
       "viewMyOrders": "عرض طلباتي",
       "redeemNow": "استرد الآن",
       "viewOrders": "عرض الطلبات",
-      "confirmationHasSent": "تم إرسال تأكيد إلى"
+      "confirmationHasSent": "تم إرسال تأكيد إلى",
+      "_pending_review": {}
     },
     "privacysettings": {
       "privacyVisibility": "الخصوصية والرؤية",
@@ -9570,7 +9654,8 @@
       "pleaseSignManageYourPrivacySettings": "يرجى تسجيل الدخول لإدارة إعدادات خصوصيتك.",
       "serverEnforcesTheseTiersEveryCrossuser": "يفرض الخادم هذه المستويات على كل استرجاع بين الأقسام – تبديلك ملزم، وليس استشاريًا.",
       "back": "رجوع",
-      "tapAnyTierBadgeCyclePrivate": "اضغط على أي شارة مستوى للتنقل بين خاص → اتصالات → عام.\nالإعدادات الافتراضية تميل إلى جانب الخصوصية — أنت تقرر ما ستشاركه."
+      "tapAnyTierBadgeCyclePrivate": "اضغط على أي شارة مستوى للتنقل بين خاص → اتصالات → عام.\nالإعدادات الافتراضية تميل إلى جانب الخصوصية — أنت تقرر ما ستشاركه.",
+      "_pending_review": {}
     },
     "publiccampaignlanding": {
       "campaignNotFound": "الحملة غير موجودة",
@@ -9586,7 +9671,8 @@
       "lengthChannelValue1": "{length} قناة {value1}",
       "youLlSignCreateAccountNext": "ستسجل الدخول أو تنشئ حسابًا في الخطوة التالية.",
       "YourLongevityCommunity": "- مجتمعك لطول العمر",
-      "getTicketsForValue0": "احصل على تذاكر لـ {value0}"
+      "getTicketsForValue0": "احصل على تذاكر لـ {value0}",
+      "_pending_review": {}
     },
     "publiceventlanding": {
       "eventNotFound": "لم يتم العثور على الفعالية",
@@ -9603,12 +9689,14 @@
       "fromPricelabel": "من {priceLabel}",
       "youLlSignCreateAccountNext": "ستسجل الدخول أو تنشئ حسابًا في الخطوة التالية.",
       "YourLongevityCommunity": "- مجتمعك لطول العمر",
-      "getTicketsForTitle": "احصل على تذاكر لـ {title}"
+      "getTicketsForTitle": "احصل على تذاكر لـ {title}",
+      "_pending_review": {}
     },
     "publicprofilepage": {
       "loadingProfile": "جارٍ تحميل الملف الشخصي...",
       "userNotFound": "لم يتم العثور على المستخدم",
-      "returnHome": "العودة إلى الرئيسية"
+      "returnHome": "العودة إلى الرئيسية",
+      "_pending_review": {}
     },
     "redeemvoucher": {
       "invalidLink": "رابط غير صالح",
@@ -9624,7 +9712,8 @@
       "thisVoucherHasExpiredCanNo": "انتهت صلاحية هذه القسيمة ولا يمكن استردادها بعد الآن. اتصل بالدعم إذا كنت بحاجة إلى مساعدة.",
       "yourValue0VoucherHasAddedYour": "قسيمتك {value0}تمت إضافتها إلى حسابك. \n            استكشف الفعاليات والتجارب لاستخدام مزاياك.",
       "viewWallet": "عرض المحفظة",
-      "browseEvents": "تصفح الفعاليات"
+      "browseEvents": "تصفح الفعاليات",
+      "_pending_review": {}
     },
     "search": {
       "viewProfile": "عرض الملف الشخصي",
@@ -9641,7 +9730,8 @@
       "content": "🎬 محتوى",
       "health": "❤️ صحة",
       "value0Members": "{value0}أعضاء",
-      "showingResultsFor": "عرض النتائج لـ \""
+      "showingResultsFor": "عرض النتائج لـ \"",
+      "_pending_review": {}
     },
     "ticketdemo": {
       "ticketPreview": "معاينة التذكرة",
@@ -9658,7 +9748,8 @@
       "downloadAsPngShareOptions": "تنزيل بصيغة PNG أو خيارات المشاركة",
       "multitenantBoardingPassDesign": "تصميم بطاقة صعود متعددة المستأجرين",
       "thisDemoTicketPreview": "🎫 هذه معاينة تذكرة تجريبية",
-      "actualTicketsWillDisplayYourReal": "التذاكر الفعلية ستعرض حدثك الحقيقي وتفاصيل الشراء"
+      "actualTicketsWillDisplayYourReal": "التذاكر الفعلية ستعرض حدثك الحقيقي وتفاصيل الشراء",
+      "_pending_review": {}
     },
     "ticketpurchasesuccess": {
       "invalidRequest": "طلب غير صالح",
@@ -9670,7 +9761,8 @@
       "paymentSuccessful": "الدفع ناجح!",
       "viewAllMyTickets": "عرض كل تذاكري",
       "discoverMoreEvents": "اكتشف المزيد من الفعاليات",
-      "yourTicketHasConfirmedConfirmationEmail": "تم تأكيد تذكرتك. تم إرسال بريد إلكتروني للتأكيد إلى {value0}"
+      "yourTicketHasConfirmedConfirmationEmail": "تم تأكيد تذكرتك. تم إرسال بريد إلكتروني للتأكيد إلى {value0}",
+      "_pending_review": {}
     },
     "legal": {
       "deleteAccount": "حذف الحساب",
@@ -9878,7 +9970,8 @@
       "legalRetentionObligations": "التزامات الاحتفاظ القانونية؛",
       "securityFraudPreventionReasons": "لأسباب تتعلق بالأمان، ومنع الاحتيال، وحماية من إساءة الاستخدام؛",
       "legalClaimsDefense": "الحاجة إلى إثبات المطالبات القانونية أو ممارستها أو الدفاع عنها.",
-      "retentionAnonymizeDelete": "عندما لا تعود البيانات الشخصية ضرورية، نحذفها أو نجعلها مجهولة، ما لم تتطلب التزامات الاحتفاظ القانونية خلاف ذلك."
+      "retentionAnonymizeDelete": "عندما لا تعود البيانات الشخصية ضرورية، نحذفها أو نجعلها مجهولة، ما لم تتطلب التزامات الاحتفاظ القانونية خلاف ذلك.",
+      "_pending_review": {}
     },
     "patient": {
       "myAppointments": "مواعيدي",
@@ -9949,7 +10042,8 @@
       "activity": "النشاط",
       "progress": "التقدم",
       "trend": "الاتجاه",
-      "text5FromLastMonth": "+5 من الشهر الماضي"
+      "text5FromLastMonth": "+5 من الشهر الماضي",
+      "_pending_review": {}
     },
     "portals": {
       "confirmationError": "خطأ في التأكيد",
@@ -10020,7 +10114,8 @@
       "useDifferentEmail": "← استخدم بريدًا إلكترونيًا آخر",
       "creatingAccount": "جاري إنشاء الحساب...",
       "tryAppleSigninAgain": "حاول تسجيل الدخول باستخدام Apple مرة أخرى",
-      "backLogin": "العودة إلى تسجيل الدخول"
+      "backLogin": "العودة إلى تسجيل الدخول",
+      "_pending_review": {}
     },
     "professional": {
       "professionalDashboard": "لوحة تحكم المحترف",
@@ -10069,7 +10164,8 @@
       "hypertension": "ارتفاع ضغط الدم",
       "sj": "SJ",
       "mw": "MW",
-      "text12FromLastMonth": "+12% من الشهر الماضي"
+      "text12FromLastMonth": "+12% من الشهر الماضي",
+      "_pending_review": {}
     },
     "staff": {
       "staffDashboard": "لوحة قيادة الموظفين",
@@ -10129,27 +10225,32 @@
       "urgent2": "عاجل",
       "sj": "SJ",
       "waiting2": "انتظار",
-      "mw": "MW"
+      "mw": "MW",
+      "_pending_review": {}
     },
     "actions": {
       "doNow": "افعل الآن",
       "edit": "تعديل",
       "details": "تفاصيل",
-      "later": "لاحقًا"
+      "later": "لاحقًا",
+      "_pending_review": {}
     },
     "introexperience": {
       "space": "مسافة",
       "esc": "Esc",
       "press": "اضغط",
       "play": "للعب •",
-      "skip": "للتخطي"
+      "skip": "للتخطي",
+      "_pending_review": {}
     },
     "groups": {
       "match_scoreMatch": "{match_score}% تطابق",
-      "join": "انضم"
+      "join": "انضم",
+      "_pending_review": {}
     },
     "rewards": {
-      "earnValue0Pts": "اربح {value0} نقطة"
+      "earnValue0Pts": "اربح {value0} نقطة",
+      "_pending_review": {}
     },
     "autopilotpopup": {
       "indexLoading": "جارٍ تحميل الفهرس…",
@@ -10160,12 +10261,14 @@
       "preparingNextSteps": "جارٍ تحضير خطواتك التالية…",
       "allCaughtUpForToday": "كل شيء محدّث لليوم",
       "nothingNewRightNow": "لا يوجد شيء جديد لك الآن.",
-      "checkForNew": "تحقق من الجديد"
+      "checkForNew": "تحقق من الجديد",
+      "_pending_review": {}
     },
     "postDetail": {
       "title": "نشر",
       "notFound": "المنشور غير موجود",
-      "back": "رجوع"
+      "back": "رجوع",
+      "_pending_review": {}
     },
     "partnerportal": {
       "title": "بوابة الشركاء",
@@ -10219,8 +10322,10 @@
         "degraded": "متدهور",
         "suspended": "متوقف مؤقتًا",
         "revoked": "ملغى",
-        "failed": "فشل"
-      }
+        "failed": "فشل",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "commerceportal": {
       "heroTitle": "أحضر عملك إلى Vitanaland",
@@ -10262,14 +10367,16 @@
         "geminiTitle": "اتصل بـ Gemini",
         "geminiStep1": "لـ Gemini CLI: أضف عنوان URL لخادم MCP أعلاه إلى ~/.gemini/settings.json ضمن خوادم MCP الخاصة بك.",
         "geminiStep2": "لـ Gemini Enterprise (إصدار الأعمال): الإعدادات والمساعدة → الفريق → إدارة الفريق → التطبيقات المتصلة → \"إضافة خادم MCP\".",
-        "geminiNote": "لا يوجد حاليًا طريقة موثقة في تطبيق Gemini للمستهلك لإضافة خادم MCP مخصص مباشرة — هذا متاح اليوم فقط عبر Gemini CLI و Gemini Enterprise."
+        "geminiNote": "لا يوجد حاليًا طريقة موثقة في تطبيق Gemini للمستهلك لإضافة خادم MCP مخصص مباشرة — هذا متاح اليوم فقط عبر Gemini CLI و Gemini Enterprise.",
+        "_pending_review": {}
       },
       "detectPlatform": {
         "urlPlaceholder": "عنوان URL للمتجر (اختياري) — مثال: https://your-shop.com",
         "hint": "سنتحقق من عنوان URL ونملأ معرف الموصل والمزود تلقائيًا إذا تعرفنا على المنصة.",
         "detected": "تم اكتشاف {platform} — تم ملء الحقول.",
         "notDetected": "لم يتم التعرف على المنصة. يرجى ملء معرف الموصل والمزود يدويًا.",
-        "failed": "تعذر التحقق من هذا العنوان. يرجى ملء معرف الموصل والمزود يدويًا."
+        "failed": "تعذر التحقق من هذا العنوان. يرجى ملء معرف الموصل والمزود يدويًا.",
+        "_pending_review": {}
       },
       "connectOauth": {
         "title": "اتصل",
@@ -10284,8 +10391,10 @@
         "fhirButton": "ربط خادم FHIR",
         "connecting": "جارٍ الاتصال...",
         "notConfigured": "نوع الاتصال هذا غير مفعّل بعد. يُرجى المحاولة مرة أخرى لاحقًا.",
-        "failed": "تعذّر بدء الاتصال. يُرجى التحقق من التفاصيل الخاصة بك."
-      }
+        "failed": "تعذّر بدء الاتصال. يُرجى التحقق من التفاصيل الخاصة بك.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "oauthconsent": {
       "title": "هل تسمح بالوصول؟",
@@ -10309,8 +10418,12 @@
         "vitana:partners:read": "عرض معلومات الشريك",
         "vitana:connections:write": "إدارة روابط العمل",
         "vitana:grants:write": "اقترح منح البيانات (الموافقة تبقى معك)",
-        "vitana:settlement:write": "تفعيل تسويات VTNA المجهزة"
-      }
-    }
-  }
+        "vitana:settlement:write": "تفعيل تسويات VTNA المجهزة",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
