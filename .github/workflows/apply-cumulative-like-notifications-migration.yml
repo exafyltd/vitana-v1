@@ -1,0 +1,92 @@
+name: Apply cumulative like notifications migration
+
+# Applies supabase/migrations/20260819120000_vtid_03684_cumulative_like_notifications.sql
+# to the live Supabase project via the Management API query endpoint using the
+# existing SUPABASE_ACCESS_TOKEN secret. Idempotent (CREATE OR REPLACE only),
+# safe to re-run. Merging the .sql file to git does not itself change the live
+# trigger functions — this workflow is what actually applies it, mirroring the
+# established pattern of the other apply-*-migration.yml workflows in this repo
+# (e.g. apply-post-notification-deeplink-migration.yml).
+#
+# Triggers:
+#   - Auto:   push to main that touches the migration file or this workflow.
+#   - Manual: Actions tab -> "Run workflow".
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/20260819120000_vtid_03684_cumulative_like_notifications.sql'
+      - '.github/workflows/apply-cumulative-like-notifications-migration.yml'
+
+concurrency:
+  group: apply-cumulative-like-notifications-migration
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_REF: inmkhvwdcuyhnxkgfvsb
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply migration via Supabase Management API
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_ACCESS_TOKEN:-}" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN secret is not set"; exit 1
+          fi
+          python3 - <<'PY'
+          import os, json, urllib.request, urllib.error
+          ref = os.environ['PROJECT_REF']
+          tok = os.environ['SUPABASE_ACCESS_TOKEN']
+          sql = open('supabase/migrations/20260819120000_vtid_03684_cumulative_like_notifications.sql').read()
+          req = urllib.request.Request(
+              f'https://api.supabase.com/v1/projects/{ref}/database/query',
+              data=json.dumps({'query': sql}).encode(),
+              headers={'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json',
+                       'User-Agent': 'Mozilla/5.0 (vitana-ci) supabase-management-api'},
+              method='POST',
+          )
+          try:
+              r = urllib.request.urlopen(req)
+              print('Apply OK, status', r.status)
+              print((r.read().decode() or '[]')[:1000])
+          except urllib.error.HTTPError as e:
+              print('Apply FAILED, HTTP', e.code)
+              print(e.read().decode())
+              raise SystemExit(1)
+          PY
+
+      - name: Verify both functions carry the cumulative-likes logic
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os, json, urllib.request
+          ref = os.environ['PROJECT_REF']
+          tok = os.environ['SUPABASE_ACCESS_TOKEN']
+          sql = ("select count(*)::int as n from pg_proc where proname in "
+                 "('notify_on_profile_post_like','notify_on_media_upload_like') "
+                 "and prosrc like '%actor_ids%';")
+          req = urllib.request.Request(
+              f'https://api.supabase.com/v1/projects/{ref}/database/query',
+              data=json.dumps({'query': sql}).encode(),
+              headers={'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json',
+                       'User-Agent': 'Mozilla/5.0 (vitana-ci) supabase-management-api'},
+              method='POST',
+          )
+          r = urllib.request.urlopen(req)
+          body = r.read().decode()
+          print('Verify:', body)
+          rows = json.loads(body or '[]')
+          n = (rows[0] if rows else {}).get('n', 0)
+          if n != 2:
+              raise SystemExit(f"::error::Expected 2 cumulative-likes-aware functions, found {n}")
+          print('Verify OK: both like-notification functions carry the cumulative-likes logic.')
+          PY
