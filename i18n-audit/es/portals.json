@@ -16,11 +16,10 @@
       "phase": "llm"
     },
     "portals.maxina.welcomeBack": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is gender-specific (masculine) while a gender-neutral option is preferred for general UI messages to ensure inclusivity.",
-      "suggested": "¡Qué bueno verte de nuevo en Maxina!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "portals.maxina.continueJourney": {
       "verdict": "OK",
@@ -78,11 +77,10 @@
       "phase": "llm"
     },
     "portals.maxina.emailConfirmed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is gender-specific (masculine) while a gender-neutral option is preferred for general UI messages to ensure inclusivity.",
-      "suggested": "¡Correo confirmado! ¡Te damos la bienvenida a Maxina!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "portals.maxina.checkEmail": {
       "verdict": "OK",
@@ -105,11 +103,10 @@
       "phase": "llm"
     },
     "portals.alkalma.welcomeBack": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is gender-specific (masculine) while a gender-neutral option is preferred for general UI messages to ensure inclusivity.",
-      "suggested": "¡Qué bueno verte de nuevo en AlKalma!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "portals.alkalma.continueJourney": {
       "verdict": "OK",
@@ -122,11 +119,10 @@
       "phase": "llm"
     },
     "portals.earthlinks.welcomeBack": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is gender-specific (masculine) while a gender-neutral option is preferred for general UI messages to ensure inclusivity.",
-      "suggested": "¡Qué bueno verte de nuevo en Earthlinks!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "portals.earthlinks.continueJourney": {
       "verdict": "OK",
@@ -139,11 +135,10 @@
       "phase": "llm"
     },
     "portals.community.welcomeBack": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is gender-specific (masculine) while a gender-neutral option is preferred for general UI messages to ensure inclusivity.",
-      "suggested": "¡Qué bueno verte de nuevo!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "portals.community.continueJourney": {
       "verdict": "OK",
@@ -151,5 +146,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:58.687Z"
+  "generatedAt": "2026-08-20T04:07:47.617Z"
 }
