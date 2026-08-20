@@ -180,17 +180,22 @@ describe('landing-page language picker', () => {
   it('selecting a language does not close the drawer — Done is a separate, deliberate dismiss', async () => {
     await openDrawer();
     fireEvent.click(screen.getByRole('option', { name: /Español/ }));
-    expect(screen.getByText('Choose your language')).toBeTruthy();
+    // Text presence alone doesn't prove this — see the note below on why
+    // the drawer's DOM node never truly unmounts in jsdom either way.
+    expect(screen.getByRole('dialog').getAttribute('data-state')).toBe('open');
   });
 
+  // vaul only actually unmounts the drawer's DOM node after its own exit
+  // CSS transition finishes — an event jsdom never fires, so the node stays
+  // in the document (with data-state flipped to "closed") no matter how
+  // long a test waits for it to disappear. Assert on the documented
+  // open/closed contract (the `role="dialog"` element's `data-state`
+  // attribute, which vaul/Radix update promptly) instead of DOM removal.
   it('closes when Done is pressed', async () => {
     await openDrawer();
     fireEvent.click(screen.getByRole('button', { name: 'Done' }));
-    // vaul unmounts the drawer after its own exit transition, not
-    // synchronously with the click — wait for it rather than asserting
-    // the DOM node is already gone on the same tick.
     await waitFor(() => {
-      expect(screen.queryByText('Choose your language')).toBeNull();
+      expect(screen.getByRole('dialog').getAttribute('data-state')).toBe('closed');
     });
   });
 
@@ -198,7 +203,7 @@ describe('landing-page language picker', () => {
     await openDrawer();
     fireEvent.keyDown(document, { key: 'Escape' });
     await waitFor(() => {
-      expect(screen.queryByText('Choose your language')).toBeNull();
+      expect(screen.getByRole('dialog').getAttribute('data-state')).toBe('closed');
     });
   });
 
