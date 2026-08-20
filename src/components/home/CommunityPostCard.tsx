@@ -14,16 +14,16 @@
  * Every interactive control stops propagation so it never triggers the card's
  * navigation.
  */
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart, MessageCircle, Send, Trash2 } from "lucide-react";
+import { Heart, MessageCircle, Send, Trash2, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { formatDistanceToNow } from "@/lib/locale-format";
 import { t, notify, notifyError } from "@/lib/i18n-toast";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthProvider";
-import { useFeedPostInteractions } from "@/hooks/useFeedPostInteractions";
+import { useFeedPostInteractions, type FeedComment } from "@/hooks/useFeedPostInteractions";
 import { NewsPostModerationMenu } from "@/components/home/NewsPostModerationMenu";
 import { PostLikersDialog } from "@/components/home/PostLikersDialog";
 import { FeedMedia } from "@/components/media/FeedMedia";
@@ -61,11 +61,13 @@ export function CommunityPostCard({
     addComment,
     isAddingComment,
     deleteComment,
+    toggleCommentLike,
   } = useFeedPostInteractions(item.source, item.post_id);
 
   const [showComments, setShowComments] = useState(false);
   const [showLikers, setShowLikers] = useState(false);
   const [commentText, setCommentText] = useState("");
+  const [replyTo, setReplyTo] = useState<{ parentId: string; name: string } | null>(null);
   // Optimistic local counts — avoids re-ranking the whole feed on every action.
   // The trigger-maintained canonical counts reconcile via the feed's refetch.
   const [likeCount, setLikeCount] = useState(item.likes_count);
@@ -116,17 +118,98 @@ export function CommunityPostCard({
     const text = commentText.trim();
     if (!text) return;
     try {
-      await addComment(text);
+      await addComment({ content: text, parentId: replyTo?.parentId ?? null });
       setCommentText("");
+      setReplyTo(null);
       setCommentCount((c) => c + 1);
     } catch {
       notifyError("screens.home.commentError");
     }
   };
 
+  // Group into top-level comments and their (one level of) replies.
+  const { topLevelComments, repliesByParent } = useMemo(() => {
+    const top: FeedComment[] = [];
+    const byParent = new Map<string, FeedComment[]>();
+    for (const c of comments) {
+      if (c.parent_id) {
+        const list = byParent.get(c.parent_id) || [];
+        list.push(c);
+        byParent.set(c.parent_id, list);
+      } else {
+        top.push(c);
+      }
+    }
+    return { topLevelComments: top, repliesByParent: byParent };
+  }, [comments]);
+
   const handleDeleteComment = (commentId: string) => {
     deleteComment(commentId);
-    setCommentCount((c) => Math.max(0, c - 1));
+    // Deleting a top-level comment cascades to its replies in the DB
+    // (ON DELETE CASCADE) — count the cascade so the visible badge doesn't
+    // go stale until the next feed refetch.
+    const removed = 1 + (repliesByParent.get(commentId)?.length ?? 0);
+    setCommentCount((c) => Math.max(0, c - removed));
+  };
+
+  const renderComment = (comment: FeedComment, isReply: boolean) => {
+    const name = comment.display_name || t("screens.home.communityMember");
+    // One-level threading: replying to a reply still attaches to its top-level parent.
+    const parentId = comment.parent_id ?? comment.id;
+    return (
+      <div key={comment.id} className={cn("flex items-start gap-2", isReply && "ml-8")}>
+        <Avatar className={cn("shrink-0", isReply ? "h-5 w-5" : "h-6 w-6")}>
+          {comment.avatar_url && <AvatarImage src={comment.avatar_url} alt="" />}
+          <AvatarFallback className="text-[10px]">{name.charAt(0).toUpperCase()}</AvatarFallback>
+        </Avatar>
+        <div className="flex-1 min-w-0">
+          <div className="rounded-xl bg-muted/50 px-3 py-2">
+            <span className="text-xs font-semibold text-foreground">{name}</span>
+            <p className="text-sm text-foreground/90 break-words">{comment.content}</p>
+          </div>
+          <div className="flex items-center gap-3 px-1 mt-0.5">
+            <span className="text-[10px] text-muted-foreground">{timeAgo(comment.created_at)}</span>
+            <button
+              type="button"
+              onClick={() => {
+                if (!user) return;
+                toggleCommentLike({ commentId: comment.id, liked: comment.liked_by_me });
+              }}
+              disabled={!user}
+              aria-label={t("screens.home.likeComment")}
+              aria-pressed={comment.liked_by_me}
+              className={cn(
+                "flex items-center gap-1 text-[10px] transition-colors",
+                comment.liked_by_me ? "text-pink-500" : "text-muted-foreground hover:text-pink-500",
+                !user && "opacity-50 cursor-not-allowed",
+              )}
+            >
+              <Heart className={cn("h-3 w-3", comment.liked_by_me && "fill-current")} />
+              {comment.likes_count > 0 && <span>{comment.likes_count}</span>}
+            </button>
+            {user && (
+              <button
+                type="button"
+                onClick={() => setReplyTo({ parentId, name })}
+                className="text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {t("screens.home.replyToComment")}
+              </button>
+            )}
+            {user?.id === comment.user_id && (
+              <button
+                type="button"
+                onClick={() => handleDeleteComment(comment.id)}
+                aria-label={t("screens.home.deleteComment")}
+                className="text-muted-foreground/60 hover:text-destructive transition-colors"
+              >
+                <Trash2 className="h-3 w-3" />
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
   };
 
   const stop = (e: React.MouseEvent) => e.stopPropagation();
@@ -254,41 +337,30 @@ export function CommunityPostCard({
           <div className="mt-3 space-y-3 border-t border-border/40 pt-3" onClick={stop}>
             {commentsLoading ? (
               <p className="text-xs text-muted-foreground">{t("screens.home.loadingComments")}</p>
-            ) : comments.length === 0 ? (
+            ) : topLevelComments.length === 0 ? (
               <p className="text-xs text-muted-foreground">{t("screens.home.noCommentsYet")}</p>
             ) : (
               <div className="space-y-2 max-h-60 overflow-y-auto">
-                {comments.map((comment) => (
-                  <div key={comment.id} className="flex items-start gap-2">
-                    <Avatar className="h-6 w-6 shrink-0">
-                      {comment.avatar_url && <AvatarImage src={comment.avatar_url} alt="" />}
-                      <AvatarFallback className="text-[10px]">
-                        {(comment.display_name || "?").charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 min-w-0">
-                      <div className="rounded-xl bg-muted/50 px-3 py-2">
-                        <span className="text-xs font-semibold text-foreground">
-                          {comment.display_name || t("screens.home.communityMember")}
-                        </span>
-                        <p className="text-sm text-foreground/90 break-words">{comment.content}</p>
-                      </div>
-                      <div className="flex items-center gap-2 px-1 mt-0.5">
-                        <span className="text-[10px] text-muted-foreground">{timeAgo(comment.created_at)}</span>
-                        {user?.id === comment.user_id && (
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteComment(comment.id)}
-                            aria-label={t("screens.home.deleteComment")}
-                            className="text-muted-foreground/60 hover:text-destructive transition-colors"
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </button>
-                        )}
-                      </div>
-                    </div>
+                {topLevelComments.map((comment) => (
+                  <div key={comment.id} className="space-y-2">
+                    {renderComment(comment, false)}
+                    {(repliesByParent.get(comment.id) || []).map((reply) => renderComment(reply, true))}
                   </div>
                 ))}
+              </div>
+            )}
+
+            {replyTo && (
+              <div className="flex items-center justify-between rounded-lg bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground">
+                <span className="truncate">{t("screens.home.replyingTo", { name: replyTo.name })}</span>
+                <button
+                  type="button"
+                  onClick={() => setReplyTo(null)}
+                  aria-label={t("screens.home.cancelReply")}
+                  className="h-5 w-5 shrink-0 rounded-full flex items-center justify-center hover:bg-muted transition-colors"
+                >
+                  <X className="h-3 w-3" />
+                </button>
               </div>
             )}
 
