@@ -156,11 +156,10 @@
       "phase": "llm"
     },
     "discover.reasonForCategory": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'в категории' (in category) is a bit clunky for a goal. 'В области' (in the area of) or a simpler construction would be more natural.",
-      "suggested": "Для твоей цели в области {category}",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "discover.reasonGeneric": {
       "verdict": "OK",
@@ -193,11 +192,10 @@
       "phase": "llm"
     },
     "discover.recommendProduct": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "For consistency with the du-form (informal 'ты') used throughout the app and in the next entry ('Рекомендуй и Зарабатывай'), the imperative form 'Рекомендуй' is more appropriate than the infinitive 'Рекомендовать' for a button or action label.",
-      "suggested": "Рекомендуй",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "discover.recommendAndEarn": {
       "verdict": "OK",
@@ -535,5 +533,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:32:45.784Z"
+  "generatedAt": "2026-08-20T04:05:32.930Z"
 }
