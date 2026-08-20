@@ -37,12 +37,20 @@ BEGIN
   SELECT tenant_id INTO v_tenant FROM user_tenants
     WHERE user_id = v_author ORDER BY is_primary DESC NULLS LAST LIMIT 1;
   IF v_tenant IS NULL THEN RETURN NEW; END IF;
-  SELECT NULLIF(TRIM(display_name), '') INTO v_name FROM profiles WHERE user_id = NEW.user_id;
+  SELECT COALESCE(NULLIF(TRIM(display_name), ''), '@' || NULLIF(TRIM(vitana_id), ''))
+    INTO v_name FROM profiles WHERE user_id = NEW.user_id;
   v_locale := _notif_user_locale(v_author);
   v_url := '/post/post/' || NEW.post_id::text;
 
   -- Fold into an existing UNREAD like notification for this post, if any.
-  SELECT id, COALESCE(data -> 'actor_ids', '[]'::jsonb) INTO v_existing_id, v_actor_ids
+  -- A row written by the pre-VTID-03684 trigger carries data.actor_id but no
+  -- data.actor_ids (that key simply doesn't exist yet) — seed the array from
+  -- the legacy actor_id in that case, or the first post-deploy like on an
+  -- already-unread post would silently drop the earlier liker from the count.
+  SELECT id, COALESCE(
+      data -> 'actor_ids',
+      CASE WHEN data ->> 'actor_id' IS NOT NULL THEN jsonb_build_array(data ->> 'actor_id') ELSE '[]'::jsonb END
+    ) INTO v_existing_id, v_actor_ids
     FROM user_notifications
     WHERE user_id = v_author AND type = 'post_like' AND read_at IS NULL
       AND data ->> 'entity_id' = NEW.post_id::text AND data ->> 'source' = 'post'
@@ -111,11 +119,15 @@ BEGIN
   SELECT tenant_id INTO v_tenant FROM user_tenants
     WHERE user_id = v_author ORDER BY is_primary DESC NULLS LAST LIMIT 1;
   IF v_tenant IS NULL THEN RETURN NEW; END IF;
-  SELECT NULLIF(TRIM(display_name), '') INTO v_name FROM profiles WHERE user_id = NEW.user_id;
+  SELECT COALESCE(NULLIF(TRIM(display_name), ''), '@' || NULLIF(TRIM(vitana_id), ''))
+    INTO v_name FROM profiles WHERE user_id = NEW.user_id;
   v_locale := _notif_user_locale(v_author);
   v_url := '/post/media/' || NEW.upload_id::text;
 
-  SELECT id, COALESCE(data -> 'actor_ids', '[]'::jsonb) INTO v_existing_id, v_actor_ids
+  SELECT id, COALESCE(
+      data -> 'actor_ids',
+      CASE WHEN data ->> 'actor_id' IS NOT NULL THEN jsonb_build_array(data ->> 'actor_id') ELSE '[]'::jsonb END
+    ) INTO v_existing_id, v_actor_ids
     FROM user_notifications
     WHERE user_id = v_author AND type = 'post_like' AND read_at IS NULL
       AND data ->> 'entity_id' = NEW.upload_id::text AND data ->> 'source' = 'media'
