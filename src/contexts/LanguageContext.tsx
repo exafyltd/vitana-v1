@@ -45,8 +45,34 @@ export const languageOptions: Array<{ label: string; value: string; status: 'ga'
   { label: "Portuguese (BR)", value: "pt-BR", status: 'ga' },
   { label: "Russian (RU)", value: "ru-RU", status: 'ga' },
   { label: "Polish (PL)", value: "pl-PL", status: 'ga' },
-  // Deferred past 18 Aug. AR needs RTL layout work (RTLProvider is not wired
-  // to the selected language); ZH needs a CJK font stack + line-break audit.
+  // BOOTSTRAP-AR-ZH-EXPANSION — both original deferral reasons are now CLOSED,
+  // and both are recorded here because the old note was stale in one direction
+  // and correct in the other, which is worth not repeating.
+  //
+  //   "AR needs RTL layout work (RTLProvider is not wired to the selected
+  //    language)" — WAS TRUE, now fixed. `isRTL` was `useState(false)` mutated
+  //    only by a `toggleRTL()` nothing ever called, so Arabic could not render
+  //    RTL under any circumstance. It is now derived from `selectedLanguage`.
+  //
+  //   "ZH needs a CJK font stack + line-break audit" — WAS ALREADY STALE when
+  //    written here. `tailwind.config.ts` defines CJK_SANS/CJK_SERIF and wires
+  //    both into `fontFamily`, and `index.css` sets hyphens/overflow-wrap with
+  //    `word-break: normal`, which is the correct setting for CJK.
+  //
+  // Catalog coverage is 100% for both (14,346/14,346).
+  //
+  // STILL 'draft', and the remaining gate is NOT layout — it is content:
+  //   1. Each carries 3 `_pending_review` values (the voucher tier benefit
+  //      arrays), which the parity gate fails a ga/beta locale on.
+  //   2. DB-backed content is at ZERO rows for both — `nav_catalog_i18n` and
+  //      `journey_checklist_translations` have never been seeded for ar/zh.
+  //      A locale can pass every file-based check and still serve German
+  //      Navigator titles; that is the whole reason the db-content surface
+  //      exists, and it cannot even be measured while Supabase is paused.
+  //   3. Neither has had a native-speaker review pass.
+  //
+  // Promote only when the gate reports a real PASS on all six surfaces —
+  // including db-content, not UNKNOWN.
   { label: "Arabic (AR)", value: "ar-XA", status: 'draft' },
   { label: "Chinese (ZH)", value: "zh-CN", status: 'draft' },
 ];

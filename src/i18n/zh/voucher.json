@@ -10,15 +10,38 @@
     "tiers": {
       "test": {
         "name": "测试",
-        "_pending_review": {}
+        "_pending_review": {
+          "benefits": true
+        },
+        "benefits": [
+          "仅用于支付流程测试",
+          "并非真实礼券",
+          "用于开发测试"
+        ]
       },
       "experience": {
         "name": "体验",
-        "_pending_review": {}
+        "_pending_review": {
+          "benefits": true
+        },
+        "benefits": [
+          "1 次高级社区活动入场",
+          "专属健康咨询",
+          "包含 30 天 Vitana+ 试用",
+          "精心设计的电子礼券"
+        ]
       },
       "exclusive": {
         "name": "专属",
-        "_pending_review": {}
+        "_pending_review": {
+          "benefits": true
+        },
+        "benefits": [
+          "3 次高级社区活动",
+          "1 对 1 专家指导课程",
+          "90 天 Vitana+ 订阅",
+          "优先预订 + VIP 权益"
+        ]
       },
       "_pending_review": {}
     },
