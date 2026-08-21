@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useLayoutEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
@@ -39,13 +39,22 @@ export default function IntroExperience() {
   // FAB), that gap read as broken. Poll for the same FAB selector
   // OrbDiscoveryHint uses elsewhere on this app, and show a soft placeholder
   // glow in its place until it actually appears.
+  //
+  // A live screenshot round showed the placeholder itself being mistaken for
+  // "the redesigned Orb" — the detection interval never fired in that
+  // session, so the placeholder simply never went away. Two changes address
+  // that: a hard timeout so it can never linger indefinitely regardless of
+  // whether detection succeeds, and treating a `vtorb-hidden` FAB (the
+  // widget's own "not actually visible yet" state, same check
+  // OrbDiscoveryHint's sync() uses) as not ready either.
   const [orbReady, setOrbReady] = useState(false);
   useEffect(() => {
     const FAB_SELECTOR =
       '.vtorb-fab, [class^="vtorb-fab"], .vitana-orb, #vitana-orb-fab, [data-vitana-orb="true"]';
+    const READY_TIMEOUT_MS = 3000;
     const checkReady = () => {
       const fab = document.querySelector<HTMLElement>(FAB_SELECTOR);
-      if (!fab) return false;
+      if (!fab || fab.classList.contains('vtorb-hidden')) return false;
       const rect = fab.getBoundingClientRect();
       return rect.width > 0 && rect.height > 0;
     };
@@ -59,7 +68,56 @@ export default function IntroExperience() {
         window.clearInterval(interval);
       }
     }, 200);
-    return () => window.clearInterval(interval);
+    const timeout = window.setTimeout(() => {
+      window.clearInterval(interval);
+      setOrbReady(true);
+    }, READY_TIMEOUT_MS);
+    return () => {
+      window.clearInterval(interval);
+      window.clearTimeout(timeout);
+    };
+  }, []);
+
+  // The Orb is positioned via a fixed-position CSS override (it's an
+  // external widget with no JS positioning API — see index.css), which
+  // previously used a static `top: 50%` guess. That guess doesn't know
+  // where the surrounding text actually ends up (the two content blocks
+  // aren't the same height), so it has repeatedly landed the Orb either in
+  // dead empty space or on top of the language pill. Instead, reserve real
+  // layout space for the Orb with this spacer and measure ITS rendered
+  // center, then feed that back to the CSS as custom properties. The Orb's
+  // target position now always matches wherever this spacer actually is,
+  // for any content length, viewport size, or breakpoint — no more guessing.
+  const orbSpacerRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const spacer = orbSpacerRef.current;
+    if (!spacer) return;
+
+    const syncOrbTarget = () => {
+      const rect = spacer.getBoundingClientRect();
+      document.body.style.setProperty(
+        '--maxina-orb-target-left',
+        `${rect.left + rect.width / 2}px`,
+      );
+      document.body.style.setProperty(
+        '--maxina-orb-target-top',
+        `${rect.top + rect.height / 2}px`,
+      );
+    };
+
+    syncOrbTarget();
+    const resizeObserver = new ResizeObserver(syncOrbTarget);
+    resizeObserver.observe(spacer);
+    window.addEventListener('resize', syncOrbTarget);
+    window.addEventListener('orientationchange', syncOrbTarget);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', syncOrbTarget);
+      window.removeEventListener('orientationchange', syncOrbTarget);
+      document.body.style.removeProperty('--maxina-orb-target-left');
+      document.body.style.removeProperty('--maxina-orb-target-top');
+    };
   }, []);
 
   // Load video source
@@ -168,16 +226,18 @@ export default function IntroExperience() {
       {/* Subtle vignette effect */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.3)_100%)]" />
 
-      {/* Content - branding anchored near the top, caption/selector/login
-          anchored near the bottom (justify-between), leaving a real, open
-          band in the middle of the viewport for the separately-positioned
-          Orb. A single justify-center column used to cluster everything
-          (including the language selector) in the same vertical band the
-          Orb was centered in, so the Orb sat directly on top of the pill
-          on every device — this split is the fix, not another guessed
-          offset. */}
+      {/* Content - a single centered column with a reserved spacer between
+          the two text blocks for the separately-positioned Orb (see the
+          orbSpacerRef effect above). Two earlier layouts both failed: a
+          plain justify-center clustered everything, including the language
+          selector, into the same band a fixed-position Orb also targeted,
+          so the Orb sat directly on top of the pill; a justify-between
+          split fixed the collision but flung both blocks to the viewport
+          edges, producing large, disconnected empty gaps on tall phones.
+          Centering the whole column with a modest, explicit gap keeps the
+          composition as one cohesive block, matching the reference. */}
       <div
-        className={`relative z-10 flex flex-col items-center justify-between min-h-screen px-6 pt-16 pb-10 md:pt-20 md:pb-10 transition-opacity duration-[1000ms] maxina-page-content ${
+        className={`relative z-10 flex flex-col items-center justify-center gap-6 md:gap-8 min-h-screen px-6 py-12 transition-opacity duration-[1000ms] maxina-page-content ${
           showContent ? 'opacity-100' : 'opacity-0'
         }`}
 
@@ -246,9 +306,16 @@ export default function IntroExperience() {
           </p>
         </div>
 
-        {/* Bottom block: static Orb caption, language selector, Go to Login.
-            Anchored to the bottom of the viewport (not the middle) so it
-            never competes with the Orb for the same vertical band. */}
+        {/* Reserved space for the Orb — no visible content. Its rendered
+            center is measured (see orbSpacerRef above) and fed to the CSS
+            that positions the actual, separately-mounted Orb widget, so the
+            two blocks below never have to guess where it will land. Sized
+            to roughly the Orb's own footprint plus breathing room; tune
+            this height, not a percentage in index.css, if the Orb still
+            looks too cramped or too far from the surrounding text. */}
+        <div ref={orbSpacerRef} aria-hidden="true" className="h-28 w-px md:h-36" />
+
+        {/* Bottom block: static Orb caption, language selector, Go to Login. */}
         <div
           className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
@@ -282,16 +349,25 @@ export default function IntroExperience() {
         </p>
       </div>
 
-      {/* Soft placeholder glow at the Orb's target spot (see the orbReady
-          effect above) — fades out once the real widget is detected, so the
-          center of the screen never reads as an empty void while the
-          deferred external script loads. */}
+      {/* Loading placeholder at the Orb's target spot (see the orbReady
+          effect above) — disappears once the real widget is detected, or
+          after a fixed timeout regardless, so the center of the screen
+          never reads as an empty void while the deferred external script
+          loads. Deliberately an outlined, spinning ring rather than a
+          filled disc: a solid shape at this exact spot risks being read as
+          "the Orb" itself rather than a loading state, which is what
+          happened with the earlier filled-gradient version. */}
       {!orbReady && (
         <div
-          className="fixed left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+          className="fixed z-30 pointer-events-none"
+          style={{
+            left: 'var(--maxina-orb-target-left, 50%)',
+            top: 'var(--maxina-orb-target-top, 50%)',
+            transform: 'translate(-50%, -50%)',
+          }}
           aria-hidden="true"
         >
-          <div className="h-16 w-16 rounded-full bg-gradient-to-br from-sky-200/60 to-blue-500/50 blur-[2px] animate-pulse" />
+          <div className="h-10 w-10 rounded-full border-2 border-white/30 border-t-white/80 animate-spin" />
         </div>
       )}
     </div>
