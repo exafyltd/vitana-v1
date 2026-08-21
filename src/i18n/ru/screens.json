@@ -5424,6 +5424,10 @@
       "executeAllValue0": "Выполнить все {value0}",
       "noValue0ActionsAvailable": "Нет доступных {value0}-действий",
       "likesCount": "{count} Лайков",
+      "replyToComment": "Ответить",
+      "replyingTo": "Отвечаешь {name}",
+      "cancelReply": "Отменить ответ",
+      "likeComment": "Лайкнуть комментарий",
       "_pending_review": {}
     },
     "icons": {

@@ -13,6 +13,10 @@ import { render, screen, fireEvent, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 const toggleLikeMock = vi.fn();
+const addCommentMock = vi.fn();
+const toggleCommentLikeMock = vi.fn();
+const deleteCommentMock = vi.fn();
+let mockComments: any[] = [];
 
 vi.mock('react-router-dom', () => ({ useNavigate: () => vi.fn() }));
 vi.mock('@/context/AuthProvider', () => ({ useAuth: () => ({ user: { id: 'viewer' } }) }));
@@ -35,11 +39,12 @@ vi.mock('@/hooks/useFeedPostInteractions', () => ({
   useFeedPostInteractions: () => ({
     isLiked: false,
     toggleLike: toggleLikeMock,
-    comments: [],
+    comments: mockComments,
     commentsLoading: false,
-    addComment: vi.fn(),
+    addComment: addCommentMock,
     isAddingComment: false,
-    deleteComment: vi.fn(),
+    deleteComment: deleteCommentMock,
+    toggleCommentLike: toggleCommentLikeMock,
   }),
 }));
 
@@ -72,7 +77,10 @@ const likeButton = () => screen.getByLabelText('screens.profile.likePost');
 const commentButton = () => screen.getByLabelText('screens.profile.comment');
 
 describe('CommunityPostCard counts', () => {
-  beforeEach(() => toggleLikeMock.mockClear());
+  beforeEach(() => {
+    toggleLikeMock.mockClear();
+    mockComments = [];
+  });
 
   it('renders the counts it is given', () => {
     render(<CommunityPostCard item={item()} />);
@@ -125,8 +133,125 @@ describe('CommunityPostCard counts', () => {
   });
 });
 
+describe('CommunityPostCard comment reactions + replies (VTID-03690)', () => {
+  const comments = () => [
+    {
+      id: 'c1',
+      user_id: 'author',
+      content: 'Top-level comment',
+      created_at: '2026-08-05T11:00:00Z',
+      parent_id: null,
+      likes_count: 2,
+      liked_by_me: false,
+      display_name: 'Autor',
+      avatar_url: null,
+    },
+    {
+      id: 'c2',
+      user_id: 'viewer',
+      content: 'A reply',
+      created_at: '2026-08-05T11:05:00Z',
+      parent_id: 'c1',
+      likes_count: 0,
+      liked_by_me: false,
+      display_name: 'Betrachter',
+      avatar_url: null,
+    },
+  ];
+
+  beforeEach(() => {
+    toggleLikeMock.mockClear();
+    addCommentMock.mockClear();
+    toggleCommentLikeMock.mockClear();
+    deleteCommentMock.mockClear();
+    mockComments = comments();
+  });
+
+  const openComments = (overrides: Partial<PostFeedItem> = {}) => {
+    render(<CommunityPostCard item={item(overrides)} />);
+    fireEvent.click(commentButton());
+  };
+
+  it('renders a reply nested under its top-level comment', () => {
+    openComments();
+
+    expect(screen.getByText('Top-level comment')).toBeInTheDocument();
+    expect(screen.getByText('A reply')).toBeInTheDocument();
+  });
+
+  it('shows the like count on a comment and toggles it on tap', () => {
+    openComments();
+
+    const likeButtons = screen.getAllByLabelText('screens.home.likeComment');
+    fireEvent.click(likeButtons[0]);
+
+    expect(toggleCommentLikeMock).toHaveBeenCalledWith({ commentId: 'c1', liked: false });
+  });
+
+  it('shows a "replying to" banner naming the comment author when Reply is tapped', () => {
+    openComments();
+
+    expect(screen.queryByText('screens.home.replyingTo')).not.toBeInTheDocument();
+
+    const replyButtons = screen.getAllByText('screens.home.replyToComment');
+    fireEvent.click(replyButtons[0]);
+
+    expect(screen.getByText('screens.home.replyingTo')).toBeInTheDocument();
+  });
+
+  it('clears the reply banner when cancel is tapped', () => {
+    openComments();
+
+    fireEvent.click(screen.getAllByText('screens.home.replyToComment')[0]);
+    expect(screen.getByText('screens.home.replyingTo')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByLabelText('screens.home.cancelReply'));
+    expect(screen.queryByText('screens.home.replyingTo')).not.toBeInTheDocument();
+  });
+
+  it('attaches the parent comment id when submitting while replying', () => {
+    openComments();
+
+    fireEvent.click(screen.getAllByText('screens.home.replyToComment')[0]);
+
+    const input = screen.getByPlaceholderText('screens.home.writeComment');
+    fireEvent.change(input, { target: { value: 'my reply text' } });
+    fireEvent.click(screen.getByLabelText('screens.home.postComment'));
+
+    expect(addCommentMock).toHaveBeenCalledWith({ content: 'my reply text', parentId: 'c1' });
+  });
+
+  it('replying to a reply still threads under the top-level comment', () => {
+    openComments();
+
+    // c2 is the reply from 'viewer' — replying to it should still target c1.
+    fireEvent.click(screen.getAllByText('screens.home.replyToComment')[1]);
+
+    const input = screen.getByPlaceholderText('screens.home.writeComment');
+    fireEvent.change(input, { target: { value: 'nested reply' } });
+    fireEvent.click(screen.getByLabelText('screens.home.postComment'));
+
+    expect(addCommentMock).toHaveBeenCalledWith({ content: 'nested reply', parentId: 'c1' });
+  });
+
+  it('lets the comment author delete their own comment but not others', () => {
+    openComments();
+
+    // c1's author is 'author', not the signed-in 'viewer' — no delete button for it.
+    // c2's author IS 'viewer' — delete button present.
+    const deleteButtons = screen.getAllByLabelText('screens.home.deleteComment');
+    expect(deleteButtons).toHaveLength(1);
+
+    fireEvent.click(deleteButtons[0]);
+    expect(deleteCommentMock).toHaveBeenCalledWith('c2');
+  });
+});
+
 describe('CommunityPostCard likers list (VTID-03554)', () => {
-  beforeEach(() => toggleLikeMock.mockClear());
+  beforeEach(() => {
+    toggleLikeMock.mockClear();
+    mockComments = [];
+  });
 
   it('opens the likers dialog from a single tap on the "{count} Likes" row', () => {
     render(<CommunityPostCard item={item({ likes_count: 4 })} />);

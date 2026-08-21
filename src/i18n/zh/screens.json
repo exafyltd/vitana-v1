@@ -5424,6 +5424,10 @@
       "text4NewIdeas": "4 个新想法",
       "executeAllValue0": "执行所有 {value0}",
       "noValue0ActionsAvailable": "没有 {value0}行动可用",
+      "replyToComment": "回复",
+      "replyingTo": "回复 {name}",
+      "cancelReply": "取消回复",
+      "likeComment": "赞评论",
       "_pending_review": {}
     },
     "icons": {

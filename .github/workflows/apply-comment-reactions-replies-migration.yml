@@ -1,0 +1,105 @@
+name: Apply comment reactions + replies migration
+
+# Applies supabase/migrations/20260820120000_vtid_03690_comment_reactions_replies.sql
+# to the live Supabase project via the Management API query endpoint using the
+# existing SUPABASE_ACCESS_TOKEN secret. Idempotent (ADD COLUMN IF NOT EXISTS /
+# CREATE TABLE IF NOT EXISTS / CREATE OR REPLACE / DROP TRIGGER IF EXISTS), so
+# it is safe to re-run. Merging the .sql file to git does not itself change the
+# live schema/triggers — this workflow is what actually applies it, mirroring
+# the established pattern of the other apply-*-migration.yml workflows in this
+# repo (e.g. apply-cumulative-like-notifications-migration.yml).
+#
+# Triggers:
+#   - Auto:   push to main that touches the migration file or this workflow.
+#   - Manual: Actions tab -> "Run workflow".
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/migrations/20260820120000_vtid_03690_comment_reactions_replies.sql'
+      - '.github/workflows/apply-comment-reactions-replies-migration.yml'
+
+concurrency:
+  group: apply-comment-reactions-replies-migration
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_REF: inmkhvwdcuyhnxkgfvsb
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply migration via Supabase Management API
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${SUPABASE_ACCESS_TOKEN:-}" ]; then
+            echo "::error::SUPABASE_ACCESS_TOKEN secret is not set"; exit 1
+          fi
+          python3 - <<'PY'
+          import os, json, urllib.request, urllib.error
+          ref = os.environ['PROJECT_REF']
+          tok = os.environ['SUPABASE_ACCESS_TOKEN']
+          sql = open('supabase/migrations/20260820120000_vtid_03690_comment_reactions_replies.sql').read()
+          req = urllib.request.Request(
+              f'https://api.supabase.com/v1/projects/{ref}/database/query',
+              data=json.dumps({'query': sql}).encode(),
+              headers={'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json',
+                       'User-Agent': 'Mozilla/5.0 (vitana-ci) supabase-management-api'},
+              method='POST',
+          )
+          try:
+              r = urllib.request.urlopen(req)
+              print('Apply OK, status', r.status)
+              print((r.read().decode() or '[]')[:1000])
+          except urllib.error.HTTPError as e:
+              print('Apply FAILED, HTTP', e.code)
+              print(e.read().decode())
+              raise SystemExit(1)
+          PY
+
+      - name: Verify tables + columns + triggers exist
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os, json, urllib.request
+          ref = os.environ['PROJECT_REF']
+          tok = os.environ['SUPABASE_ACCESS_TOKEN']
+          sql = (
+              "select "
+              "to_regclass('public.profile_post_comment_likes') is not null as profile_likes_table, "
+              "to_regclass('public.media_upload_comment_likes') is not null as media_likes_table, "
+              "exists(select 1 from information_schema.columns where table_schema='public' "
+              "and table_name='profile_post_comments' and column_name='parent_id') as profile_parent_col, "
+              "exists(select 1 from information_schema.columns where table_schema='public' "
+              "and table_name='media_upload_comments' and column_name='parent_id') as media_parent_col, "
+              "(select count(*) from pg_trigger where tgname in "
+              "('trg_notify_profile_post_comment_like','trg_notify_profile_post_comment_reply', "
+              "'trg_notify_media_upload_comment_like','trg_notify_media_upload_comment_reply'))::int as notif_triggers;"
+          )
+          req = urllib.request.Request(
+              f'https://api.supabase.com/v1/projects/{ref}/database/query',
+              data=json.dumps({'query': sql}).encode(),
+              headers={'Authorization': f'Bearer {tok}', 'Content-Type': 'application/json',
+                       'User-Agent': 'Mozilla/5.0 (vitana-ci) supabase-management-api'},
+              method='POST',
+          )
+          r = urllib.request.urlopen(req)
+          body = r.read().decode()
+          print('Verify:', body)
+          rows = json.loads(body or '[]')
+          row = rows[0] if rows else {}
+          ok = (row.get('profile_likes_table') and row.get('media_likes_table')
+                and row.get('profile_parent_col') and row.get('media_parent_col')
+                and row.get('notif_triggers') == 4)
+          if not ok:
+              raise SystemExit(f"::error::Migration did not take effect fully: {row}")
+          print('Verify OK: tables + columns + 4 notification triggers present.')
+          PY
