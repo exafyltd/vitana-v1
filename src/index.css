@@ -627,7 +627,17 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
 /* ORB — intro screen, desktop widths: this route has no sidebar, so the
    left:8rem sidebar-vestige position above puts the orb in the bottom-left
    corner. Center it instead, matching the mobile treatment below. Placed
-   after the sidebar rules above so it wins on the shared selectors. */
+   after the sidebar rules above so it wins on the shared selectors.
+
+   The target position comes from --maxina-orb-target-left/-top, two CSS
+   custom properties IntroExperience.tsx sets on <body> from the measured
+   center of an in-flow spacer element reserved for the Orb (see
+   orbSpacerRef in that file). A static 50%/50% guess repeatedly landed the
+   Orb either in empty space or on top of the language pill, because it has
+   no idea where the surrounding text actually ends up; this always matches
+   wherever the reserved space really is, for any content length or
+   viewport size. 50% is kept as the fallback for the brief window before
+   that effect runs on first paint. */
 body.maxina-intro-page .vtorb-fab,
 body.maxina-intro-page .vitana-orb,
 body.maxina-intro-page [data-vitana-orb="true"],
@@ -636,8 +646,8 @@ body.maxina-intro-page .OrbFloatingButton,
 body.maxina-intro-page #vitana-orb-fab,
 body.maxina-intro-page [id^="vitana-orb"],
 body.maxina-intro-page [class^="vtorb-fab"] {
-  left: 50% !important;
-  top: 50% !important;
+  left: var(--maxina-orb-target-left, 50%) !important;
+  top: var(--maxina-orb-target-top, 50%) !important;
   bottom: auto !important;
   transform: translate(-50%, -50%) !important;
 }
@@ -787,7 +797,13 @@ body.maxina-intro-page [class^="vtorb-fab"] {
      the orb near the vertical middle of the screen instead of the bottom
      edge, so it reads as the page's centerpiece rather than a docked FAB.
      Declared after the .maxina-signin-page rule above so it wins on the
-     shared selectors for pages that carry both classes. */
+     shared selectors for pages that carry both classes.
+
+     Same measured-target approach as the desktop rule above — see its
+     comment for why this isn't a static percentage. left is repeated here
+     (not just top) because the base mobile rule earlier in this block
+     already sets left:50% unconditionally, and this block needs to win on
+     both axes, not only override top. */
   body.maxina-intro-page .vtorb-fab,
   body.maxina-intro-page .vitana-orb,
   body.maxina-intro-page [data-vitana-orb="true"],
@@ -796,7 +812,8 @@ body.maxina-intro-page [class^="vtorb-fab"] {
   body.maxina-intro-page #vitana-orb-fab,
   body.maxina-intro-page [id^="vitana-orb"],
   body.maxina-intro-page [class^="vtorb-fab"] {
-    top: 50% !important;
+    left: var(--maxina-orb-target-left, 50%) !important;
+    top: var(--maxina-orb-target-top, 50%) !important;
     bottom: auto !important;
     transform: translate(-50%, -50%) !important;
   }
