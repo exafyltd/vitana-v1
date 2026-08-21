@@ -624,6 +624,24 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
   bottom: 1rem !important;
 }
 
+/* ORB — intro screen, desktop widths: this route has no sidebar, so the
+   left:8rem sidebar-vestige position above puts the orb in the bottom-left
+   corner. Center it instead, matching the mobile treatment below. Placed
+   after the sidebar rules above so it wins on the shared selectors. */
+body.maxina-intro-page .vtorb-fab,
+body.maxina-intro-page .vitana-orb,
+body.maxina-intro-page [data-vitana-orb="true"],
+body.maxina-intro-page #vitana-orb,
+body.maxina-intro-page .OrbFloatingButton,
+body.maxina-intro-page #vitana-orb-fab,
+body.maxina-intro-page [id^="vitana-orb"],
+body.maxina-intro-page [class^="vtorb-fab"] {
+  left: 50% !important;
+  top: 58% !important;
+  bottom: auto !important;
+  transform: translate(-50%, -50%) !important;
+}
+
 /* MOBILE / TABLET — ORB fixed positioning above bottom nav */
 @media (max-width: 1023px) {
   .vtorb-fab,
