@@ -236,11 +236,10 @@
       "phase": "llm"
     },
     "business.kpi.topPerformer": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The term 'izvođač' (performer/executor) is a bit generic and can sound formal for a person excelling in a wellness app. 'Najuspešniji' (most successful) or 'Najbolji učesnik' (best participant) would be more natural.",
-      "suggested": "Najuspešniji",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "business.kpi.noDataYet": {
       "verdict": "OK",
@@ -403,11 +402,10 @@
       "phase": "llm"
     },
     "business.transfer.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.95,
-      "issue": "While 'pending' is sometimes used as a loanword, 'na čekanju' is the native and more natural Serbian equivalent, fitting better with a friendly app's tone.",
-      "suggested": "Prenesi svoje provizije preprodavaca na čekanju u svoj VITANA novčanik.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "business.transfer.pending": {
       "verdict": "OK",
@@ -490,11 +488,10 @@
       "phase": "llm"
     },
     "business.missionOpportunities.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Misione prilike' is grammatically correct but sounds somewhat formal or specific (e.g., religious missions). 'Prilike za misije' (opportunities for missions) is a more common and natural phrasing for tasks/challenges in an app context.",
-      "suggested": "Prilike za misije",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "business.missionOpportunities.subtitle": {
       "verdict": "OK",
@@ -523,9 +520,9 @@
     },
     "business.missionOpportunities.axisBadge.find_match": {
       "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.5,
-      "issue": "'Pronađi spoj' strongly implies finding a romantic date. In a wellness/longevity app, 'Find a Match' could refer to a compatible workout partner, a matching challenge, or other non-romantic contexts. Without further context, it's ambiguous and potentially misleading.",
-      "phase": "llm"
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "business.missionOpportunities.axisBadge.income_generation": {
       "verdict": "OK",
@@ -538,5 +535,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:34.788Z"
+  "generatedAt": "2026-08-21T04:08:34.140Z"
 }
