@@ -134,6 +134,41 @@ export const REGISTER_RULES = {
       'Do NOT return Traditional characters. ' +
       'Keep the tone direct and friendly, as between peers.',
   },
+  ar: {
+    name: 'Arabic',
+    // BOOTSTRAP-AR-ZH-EXPANSION — Arabic had NO entry here at all, so it fell
+    // to the generic instruction while every other shipped locale got specific
+    // guidance. That is the same gap that produced the pt Brazilian/European
+    // split (VTID-03523): a translator told only "be informal" picks a variety
+    // on its own, and nothing downstream notices which one it picked.
+    //
+    // Arabic needs three axes stated, not one:
+    //
+    //  1. VARIETY. Modern Standard Arabic, not a regional dialect. The product
+    //     serves speakers across many countries; Egyptian or Gulf colloquial
+    //     reads as wrong-country rather than as informal, and no register
+    //     check can detect that.
+    //
+    //  2. GENDER. Arabic verbs and adjectives inflect for the addressee's
+    //     gender, which the app does not know. Prefer phrasings that avoid
+    //     direct address entirely (noun phrases, verbal nouns / masdar) over
+    //     defaulting to the masculine — defaulting is a real choice that
+    //     misgenders half the audience on every screen, and it is invisible
+    //     to a coverage check because the string is present and fluent.
+    //
+    //  3. NUMERALS. Western digits (0-9), not Eastern Arabic-Indic (٠-٩).
+    //     The UI mixes catalog strings with numbers formatted by
+    //     `@/lib/locale-format`, and two numeral systems side by side in one
+    //     sentence looks broken.
+    instruction:
+      'Use MODERN STANDARD ARABIC (MSA), never a regional dialect. ' +
+      'The reader\'s gender is unknown: prefer noun phrases and verbal nouns ' +
+      'that avoid addressing them directly, rather than defaulting to ' +
+      'masculine forms. Where direct address is unavoidable, keep it plain ' +
+      'and warm (أنت), never the deferential حضرتك. ' +
+      'Use Western digits (0-9), not Arabic-Indic numerals. ' +
+      'Keep brand names such as Vitana+ in Latin script.',
+  },
 };
 
 /**

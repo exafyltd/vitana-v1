@@ -192,15 +192,38 @@ src/
 - `VITE_OPERATOR_BASE_URL` — Operator API
 - `VITE_DEV_HUB_ENABLED` — Dev Hub feature flag
 
-**⚠️ Known live gap (checked against `exafyltd/vitana-platform` CLAUDE.md
-§2c, 2026-08-18):** `src/hooks/useTextToSpeech.ts` and
-`VoiceSettingsPanel.tsx` call the Supabase edge functions
-`google-gemini-tts`/`google-cloud-tts` directly — this never went through
-the gateway's AWS Polly migration. With GCP billing off, these calls have
-nothing to reach: any user with a stored Google `tts_voice` preference, and
-every Serbian-locale user (Polly has no Serbian voice at all), gets silence
-or an error. This needs a Polly-backed edge function plus a stored-preference
-migration — not fixed by this doc pass, flagged so it isn't lost.
+### ✅ RESOLVED 2026-08-20 — frontend TTS now goes through the gateway (Polly)
+
+This section previously flagged a live outage: `useTextToSpeech.ts` and
+`VoiceSettingsPanel.tsx` called two Google TTS Supabase edge functions
+directly, never went through the gateway's Polly migration, and had nothing
+to reach once GCP billing went off.
+
+**Fixed.** Both now call `src/lib/gateway-tts.ts` →
+`POST {VITE_GATEWAY_URL}/orb/tts`, the gateway's Polly-first route
+(`optionalAuth`, so anonymous callers work too).
+
+Three things to know before touching this:
+
+1. **The client no longer names a voice.** The gateway resolves it from the
+   LANGUAGE. `tts_voice` is now only the BROWSER-fallback voice — it is not
+   read for cloud speech at all. A provider-specific id on the client is what
+   turns the next provider switch into a per-user data migration (platform
+   CLAUDE.md §2c); VTID-03671 stopped writing them and this stops reading them.
+2. **The frontend does NOT know which languages Polly can speak, on purpose.**
+   It asks the gateway and treats a failure as "not servable → browser
+   speech." A second copy of that table here would drift from
+   `POLLY_UNSUPPORTED_LANGS` exactly the way five copies of a language-name
+   map drifted in VTID-03644. Cost: one wasted round trip per unservable
+   language per page load, capped by an in-module cache.
+3. **Serbian still has no cloud voice** and now falls back to browser speech
+   rather than erroring. Polly has no Serbian voice in any engine — confirmed
+   against the live API 2026-08-20 (106 voices, 42 language codes, no
+   `sr`/`hr`/`bs`/`sh`). That is a product gap needing a third provider, not
+   a bug in this path.
+
+A tree-wide guard in `src/lib/gateway-tts.test.ts` fails the build if any
+non-test source file references those Google edge functions again.
 
 ## Multi-Repo Context
 

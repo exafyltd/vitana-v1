@@ -9,13 +9,9 @@
     "playing": "Играет",
     "goToLogin": "Перейти к логину",
     "chooseLanguage": "Выбрать язык",
-    "_pending_review": {
-      "tapOrbHint": true,
-      "chooseLanguageTitle": true,
-      "chooseLanguageSubtitle": true
-    },
-    "tapOrbHint": "Tap the Orb to meet Vitana",
-    "chooseLanguageTitle": "Choose your language",
-    "chooseLanguageSubtitle": "Vitana will speak and respond in this language."
+    "_pending_review": {},
+    "tapOrbHint": "Нажми на Orb, чтобы познакомиться с Vitana",
+    "chooseLanguageTitle": "Выбери свой язык",
+    "chooseLanguageSubtitle": "Vitana будет говорить и отвечать на этом языке."
   }
 }

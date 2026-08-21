@@ -9,13 +9,9 @@
     "playing": "播放中",
     "goToLogin": "前往登录",
     "chooseLanguage": "选择语言",
-    "_pending_review": {
-      "tapOrbHint": true,
-      "chooseLanguageTitle": true,
-      "chooseLanguageSubtitle": true
-    },
-    "tapOrbHint": "Tap the Orb to meet Vitana",
-    "chooseLanguageTitle": "Choose your language",
-    "chooseLanguageSubtitle": "Vitana will speak and respond in this language."
+    "_pending_review": {},
+    "tapOrbHint": "点击 Orb，认识 Vitana",
+    "chooseLanguageTitle": "选择你的语言",
+    "chooseLanguageSubtitle": "Vitana 将用这种语言与你交流。"
   }
 }

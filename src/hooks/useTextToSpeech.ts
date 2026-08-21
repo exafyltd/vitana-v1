@@ -1,7 +1,10 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useUserPreferences } from './useUserPreferences';
 import { useAIConsent } from './useAIConsent';
-import { supabase } from '@/integrations/supabase/client';
+// BOOTSTRAP-FRONTEND-TTS-POLLY: the `supabase` client import is gone with the
+// two `functions.invoke('google-*-tts')` calls it existed for. Cloud speech now
+// goes through the gateway's Polly-first route.
+import { synthesizeViaGateway } from '@/lib/gateway-tts';
 
 export interface TTSOptions {
   onStart?: () => void;
@@ -40,41 +43,60 @@ export function useTextToSpeech() {
       options?.onStart?.();
       
       const sttLanguage = preferences.stt_language || 'en-US';
-      const userVoice = preferences.tts_voice;
-      
-      // Determine which TTS service to use
-      const isSerbian = sttLanguage === 'sr-RS';
-      const isChirp3Voice = userVoice?.includes('Chirp3-HD');
-      const isGoogleSpeechVoice = userVoice?.includes('-Standard-') || userVoice?.includes('-Wavenet-');
-      
-      // GEMINI VOICE MAP: For Chirp 3 HD voices
-      const GEMINI_VOICE_MAP: Record<string, string> = {
-        'en-US': 'en-US-Chirp3-HD-Leda',
-        'de-DE': 'de-DE-Chirp3-HD-Achernar',
-        'ar-XA': 'ar-XA-Chirp3-HD-Aoede',
-        'es-ES': 'es-ES-Chirp3-HD-Gacrux',
-        'ru-RU': 'ru-RU-Chirp3-HD-Kore',
-        'zh-CN': 'cmn-CN-Chirp3-HD-Leda',
-        'cmn-CN': 'cmn-CN-Chirp3-HD-Leda',
-        'fr-FR': 'fr-FR-Chirp3-HD-Pulcherrima',
-        'pt-BR': 'pt-BR-Chirp3-HD-Zephyr',
-        'pl-PL': 'pl-PL-Chirp3-HD-Despina',
-      };
 
-      // GOOGLE SPEECH VOICE MAP: Only for Serbian
-      const GOOGLE_SPEECH_VOICE_MAP: Record<string, string> = {
-        'sr-RS': 'sr-RS-Standard-B',
-      };
+      // BOOTSTRAP-FRONTEND-TTS-POLLY — the two voice maps that used to live
+      // here are gone, along with the branching that chose between them.
+      //
+      // They named Google voice ids ('de-DE-Chirp3-HD-Achernar',
+      // 'sr-RS-Standard-B', …) and fed two Supabase edge functions that call
+      // Google Cloud — decommissioned 2026-08-16. Every cloud-TTS request from
+      // this hook has failed since.
+      //
+      // The gateway resolves the voice from the LANGUAGE (Polly-first,
+      // VTID-03495), so the client no longer names a voice at all. That is the
+      // point: a provider-specific id on the client is what turns the next
+      // provider switch into a per-user data migration instead of a config
+      // change (CLAUDE.md §2c), and VTID-03671 already stopped writing them.
+      //
+      // `preferences.tts_voice` is therefore deliberately NOT read here. Any
+      // value still stored on a profile is a Google id naming a voice nothing
+      // can play; honouring it would resurrect the outage this fixes. It stays
+      // in the schema because VTID-03671 clears it lazily on language change.
 
-      // Route to appropriate TTS service
-      // If no AI consent, skip cloud TTS and fall back to browser speechSynthesis
-      if (!hasConsent) {
-        console.log('[TTS] No AI consent — falling back to browser TTS');
+      // Browser speech synthesis — the fallback for three distinct cases:
+      // no AI consent, a language the gateway cannot serve (Serbian has no
+      // Polly voice in any engine), and a transport failure. Defined once
+      // because it previously appeared verbatim twice and this change would
+      // have made it three copies.
+      const speakInBrowser = (why: string) => {
+        console.log(`[TTS] browser speech synthesis — ${why}`);
+        if (!isSupported) {
+          setIsSpeaking(false);
+          options?.onError?.(new Error('Speech synthesis is not available'));
+          return;
+        }
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.rate = preferences.tts_speed || 1.0;
         utterance.pitch = preferences.tts_pitch || 1.0;
         utterance.volume = preferences.tts_volume / 100;
         utterance.lang = sttLanguage;
+
+        // `tts_voice` selects WHICH browser voice the fallback uses. This is
+        // the one place it is still read, and it is what keeps the settings
+        // panel's preview honest: the panel previews the gateway first and
+        // this same browser voice second, matching what actually happens here.
+        // A stored Google id simply will not match any installed voice, so it
+        // is ignored rather than needing a special case.
+        const preferredVoiceName = preferences.tts_voice;
+        if (preferredVoiceName) {
+          const match = window.speechSynthesis
+            .getVoices()
+            .find((v) => v.name === preferredVoiceName);
+          if (match) {
+            utterance.voice = match;
+            utterance.lang = match.lang;
+          }
+        }
 
         utterance.onend = () => {
           setIsSpeaking(false);
@@ -87,102 +109,48 @@ export function useTextToSpeech() {
         };
 
         window.speechSynthesis.speak(utterance);
+      };
+
+      // If no AI consent, skip cloud TTS entirely.
+      if (!hasConsent) {
+        speakInBrowser('no AI consent');
         return;
       }
 
-      if (isChirp3Voice || (!isGoogleSpeechVoice && !isSerbian)) {
-        // Use Gemini TTS (Chirp 3 HD)
-        const voiceId = isChirp3Voice ? userVoice : GEMINI_VOICE_MAP[sttLanguage];
-        
-        if (!voiceId) {
-          setIsSpeaking(false);
-          throw new Error(`Gemini TTS voice unavailable for ${sttLanguage}`);
-        }
+      // BOOTSTRAP-FRONTEND-TTS-POLLY — one gateway call replaces the two
+      // Google edge-function branches that used to live here.
+      //
+      // The gateway is the single authority on what can be synthesized: it
+      // runs Polly-first and resolves the voice from the language. A null
+      // result means "not servable" (Serbian today — Polly has no Serbian
+      // voice in any engine) and is an ordinary outcome, not an error, so it
+      // degrades to browser speech rather than throwing.
+      const cloud = await synthesizeViaGateway(text, sttLanguage);
 
-        console.log('[TTS] Using Gemini Chirp 3 HD:', voiceId, 'lang=', sttLanguage);
-        
-        const { data, error } = await supabase.functions.invoke('google-gemini-tts', {
-          body: {
-            text,
-            voiceId,
-            languageCode: sttLanguage
-          }
-        });
-
-        if (error) throw error;
-        if (!data?.audioContent) throw new Error('No audio content received');
-
-        const audio = new Audio(`data:audio/wav;base64,${data.audioContent}`);
-        audio.volume = preferences.tts_volume / 100;
-
-        audio.onended = () => {
-          setIsSpeaking(false);
-          options?.onEnd?.();
-        };
-
-        audio.onerror = () => {
-          setIsSpeaking(false);
-          options?.onError?.(new Error('Audio playback failed'));
-        };
-
-        await audio.play();
-      } else if (isSerbian || isGoogleSpeechVoice) {
-        // Use Google Speech API (only for Serbian or explicitly selected Google Speech voices)
-        const voiceId = isGoogleSpeechVoice ? userVoice : GOOGLE_SPEECH_VOICE_MAP[sttLanguage];
-        
-        if (!voiceId) {
-          setIsSpeaking(false);
-          throw new Error(`Google Speech voice unavailable for ${sttLanguage}`);
-        }
-
-        console.log('[TTS] Using Google Speech API:', voiceId, 'lang=', sttLanguage);
-        
-        const { data, error } = await supabase.functions.invoke('google-cloud-tts', {
-          body: {
-            text,
-            voiceId,
-            languageCode: sttLanguage
-          }
-        });
-
-        if (error) throw error;
-        if (!data?.audioContent) throw new Error('No audio content received');
-
-        const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
-        audio.volume = preferences.tts_volume / 100;
-
-        audio.onended = () => {
-          setIsSpeaking(false);
-          options?.onEnd?.();
-        };
-
-        audio.onerror = () => {
-          setIsSpeaking(false);
-          options?.onError?.(new Error('Audio playback failed'));
-        };
-
-        await audio.play();
-      } else {
-        // Fallback to browser TTS
-        console.log('[TTS] Fallback to browser TTS');
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = preferences.tts_speed || 1.0;
-        utterance.pitch = preferences.tts_pitch || 1.0;
-        utterance.volume = preferences.tts_volume / 100;
-        utterance.lang = sttLanguage;
-        
-        utterance.onend = () => {
-          setIsSpeaking(false);
-          options?.onEnd?.();
-        };
-        
-        utterance.onerror = () => {
-          setIsSpeaking(false);
-          options?.onError?.(new Error('Speech synthesis failed'));
-        };
-        
-        window.speechSynthesis.speak(utterance);
+      if (!cloud) {
+        speakInBrowser(`gateway cannot serve ${sttLanguage}`);
+        return;
       }
+
+      console.log('[TTS] gateway:', cloud.voiceType, cloud.voice, 'lang=', sttLanguage);
+
+      // MIME comes from the response, never hardcoded — the gateway chooses
+      // the format, and assuming it is the bug class that played 16kHz PCM
+      // 1.5x fast when 24kHz was assumed (CLAUDE.md §2c).
+      const audio = new Audio(`data:${cloud.mime};base64,${cloud.audioB64}`);
+      audio.volume = preferences.tts_volume / 100;
+
+      audio.onended = () => {
+        setIsSpeaking(false);
+        options?.onEnd?.();
+      };
+
+      audio.onerror = () => {
+        setIsSpeaking(false);
+        options?.onError?.(new Error('Audio playback failed'));
+      };
+
+      await audio.play();
     } catch (error) {
       setIsSpeaking(false);
       options?.onError?.(error as Error);

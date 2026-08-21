@@ -10,15 +10,38 @@
     "tiers": {
       "test": {
         "name": "اختبار",
-        "_pending_review": {}
+        "_pending_review": {
+          "benefits": true
+        },
+        "benefits": [
+          "لاختبار عملية الدفع فقط",
+          "ليست قسيمة حقيقية",
+          "لأغراض اختبار التطوير"
+        ]
       },
       "experience": {
         "name": "تجربة",
-        "_pending_review": {}
+        "_pending_review": {
+          "benefits": true
+        },
+        "benefits": [
+          "دخول إلى فعالية مجتمع مميّزة واحدة",
+          "استشارة صحية مخصّصة",
+          "تجربة ‎Vitana+‎ لمدة 30 يومًا مشمولة",
+          "قسيمة إلكترونية بتصميم أنيق"
+        ]
       },
       "exclusive": {
         "name": "حصري",
-        "_pending_review": {}
+        "_pending_review": {
+          "benefits": true
+        },
+        "benefits": [
+          "3 فعاليات مجتمع مميّزة",
+          "جلسة تدريب فردية مع خبير",
+          "اشتراك ‎Vitana+‎ لمدة 90 يومًا",
+          "أولوية في الحجز + مزايا VIP"
+        ]
       },
       "_pending_review": {}
     },

@@ -9,13 +9,9 @@
     "playing": "Reproduzindo",
     "goToLogin": "Ir para Entrar",
     "chooseLanguage": "Escolher idioma",
-    "_pending_review": {
-      "tapOrbHint": true,
-      "chooseLanguageTitle": true,
-      "chooseLanguageSubtitle": true
-    },
-    "tapOrbHint": "Tap the Orb to meet Vitana",
-    "chooseLanguageTitle": "Choose your language",
-    "chooseLanguageSubtitle": "Vitana will speak and respond in this language."
+    "_pending_review": {},
+    "tapOrbHint": "Toque no Orb para conhecer a Vitana",
+    "chooseLanguageTitle": "Escolha seu idioma",
+    "chooseLanguageSubtitle": "A Vitana vai falar e responder neste idioma."
   }
 }

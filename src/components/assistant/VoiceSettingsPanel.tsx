@@ -8,6 +8,11 @@ import { Volume2, Loader2 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from '@/lib/i18n-toast';
+// BOOTSTRAP-FRONTEND-TTS-POLLY: preview goes through the gateway's Polly-first
+// route, same path the real `speak()` uses, so a preview cannot claim a voice
+// the user will not actually hear.
+import { synthesizeViaGateway } from '@/lib/gateway-tts';
+import { useAIConsent } from '@/hooks/useAIConsent';
 
 interface VoiceSettingsPanelProps {
   preferences: any;
@@ -19,6 +24,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
   const [isTesting, setIsTesting] = useState(false);
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const { setSelectedLanguage } = useLanguage();
+  const { hasConsent } = useAIConsent();
 
   const baseLang = useCallback((l: string) => (l || '').toLowerCase().replace('_', '-').split('-')[0], []);
 
@@ -80,13 +86,20 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
     if (!preferences || availableVoices.length === 0) return;
     
     const currentVoice = preferences.tts_voice;
-    const isCloudVoice = currentVoice?.includes('Chirp3-HD') || 
-                         currentVoice?.includes('-Standard-') || 
-                         currentVoice?.includes('-Wavenet-');
-    
-    // Don't auto-switch if user has selected a cloud voice
-    if (isCloudVoice) return;
-    
+
+    // BOOTSTRAP-FRONTEND-TTS-POLLY — the "don't auto-switch away from a cloud
+    // voice" guard that used to sit here is gone, and removing it is a fix
+    // rather than a simplification.
+    //
+    // It protected a selection that no longer exists: cloud voices are not
+    // selectable any more (see `cloudVoices` below), and any Chirp3-HD /
+    // -Standard- / -Wavenet- id still on a profile names a Google voice
+    // nothing can play. Keeping the guard meant such an id would block
+    // assignment of a real browser voice FOREVER — which matters precisely
+    // where it hurts most, because the browser is the only remaining path for
+    // Serbian, and it would have been left with no voice selected.
+    //
+    // A stale id now simply fails the `find` below and gets replaced.
     const currentBrowserVoice = availableVoices.find(v => v.name === currentVoice);
     const currentVoiceLangCode = currentBrowserVoice ? baseLang(currentBrowserVoice.lang) : undefined;
     const selectedLangCode = baseLang(preferences.stt_language);
@@ -114,65 +127,25 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
     }
   }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences, setSelectedLanguage]);
 
-  const cloudVoices: Record<string, Array<{ name: string; label: string }>> = {
-    'sr-RS': [
-      { name: 'sr-RS-Standard-B', label: 'Serbian Female (Google Speech)' }
-    ],
-    'en-US': [
-      { name: 'en-US-Chirp3-HD-Leda', label: 'Leda (Gemini Chirp 3 HD)' },
-      { name: 'en-US-Chirp3-HD-Aoede', label: 'Aoede (Gemini Chirp 3 HD)' },
-      { name: 'en-US-Chirp3-HD-Callirrhoe', label: 'Callirrhoe (Gemini Chirp 3 HD)' },
-      { name: 'en-US-Chirp3-HD-Zephyr', label: 'Zephyr (Gemini Chirp 3 HD)' },
-    ],
-    'de-DE': [
-      { name: 'de-DE-Chirp3-HD-Achernar', label: 'Achernar (Gemini Chirp 3 HD)' },
-      { name: 'de-DE-Chirp3-HD-Gacrux', label: 'Gacrux (Gemini Chirp 3 HD)' },
-      { name: 'de-DE-Chirp3-HD-Laomedeia', label: 'Laomedeia (Gemini Chirp 3 HD)' },
-    ],
-    'ar-XA': [
-      { name: 'ar-XA-Chirp3-HD-Aoede', label: 'Aoede (Gemini Chirp 3 HD)' },
-      { name: 'ar-XA-Chirp3-HD-Kore', label: 'Kore (Gemini Chirp 3 HD)' },
-    ],
-    'es-ES': [
-      { name: 'es-ES-Chirp3-HD-Gacrux', label: 'Gacrux (Gemini Chirp 3 HD)' },
-      { name: 'es-ES-Chirp3-HD-Vindemiatrix', label: 'Vindemiatrix (Gemini Chirp 3 HD)' },
-      { name: 'es-ES-Chirp3-HD-Despina', label: 'Despina (Gemini Chirp 3 HD)' },
-    ],
-    'ru-RU': [
-      { name: 'ru-RU-Chirp3-HD-Kore', label: 'Kore (Gemini Chirp 3 HD)' },
-      { name: 'ru-RU-Chirp3-HD-Leda', label: 'Leda (Gemini Chirp 3 HD)' },
-    ],
-    'zh-CN': [
-      { name: 'cmn-CN-Chirp3-HD-Leda', label: 'Leda (Gemini Chirp 3 HD)' },
-      { name: 'cmn-CN-Chirp3-HD-Callirrhoe', label: 'Callirrhoe (Gemini Chirp 3 HD)' },
-    ],
-    'fr-FR': [
-      { name: 'fr-FR-Chirp3-HD-Pulcherrima', label: 'Pulcherrima (Gemini Chirp 3 HD)' },
-      { name: 'fr-FR-Chirp3-HD-Aoede', label: 'Aoede (Gemini Chirp 3 HD)' },
-      { name: 'fr-FR-Chirp3-HD-Sulafat', label: 'Sulafat (Gemini Chirp 3 HD)' },
-    ],
-    // pt-BR, not pt-PT (VTID-03577). These are Google Cloud TTS voice IDs and
-    // the locale prefix selects the ACCENT — a pt-PT voice reading Brazilian
-    // text is fluent European Portuguese, which is audible to any Brazilian
-    // user and invisible to every text-level check we have.
-    'pt-BR': [
-      { name: 'pt-BR-Chirp3-HD-Zephyr', label: 'Zephyr (Gemini Chirp 3 HD)' },
-      { name: 'pt-BR-Chirp3-HD-Laomedeia', label: 'Laomedeia (Gemini Chirp 3 HD)' },
-    ],
-    'pl-PL': [
-      { name: 'pl-PL-Chirp3-HD-Despina', label: 'Despina (Gemini Chirp 3 HD)' },
-      { name: 'pl-PL-Standard-A', label: 'Standard A (Google Speech)' },
-      { name: 'pl-PL-Standard-B', label: 'Standard B (Google Speech)' },
-      { name: 'pl-PL-Standard-C', label: 'Standard C (Google Speech)' },
-      { name: 'pl-PL-Standard-D', label: 'Standard D (Google Speech)' },
-      { name: 'pl-PL-Standard-E', label: 'Standard E (Google Speech)' },
-      { name: 'pl-PL-Wavenet-A', label: 'Wavenet A (Google Speech)' },
-      { name: 'pl-PL-Wavenet-B', label: 'Wavenet B (Google Speech)' },
-      { name: 'pl-PL-Wavenet-C', label: 'Wavenet C (Google Speech)' },
-      { name: 'pl-PL-Wavenet-D', label: 'Wavenet D (Google Speech)' },
-      { name: 'pl-PL-Wavenet-E', label: 'Wavenet E (Google Speech)' },
-    ],
-  };
+  // BOOTSTRAP-FRONTEND-TTS-POLLY — deliberately EMPTY, not deleted.
+  //
+  // This used to list ~30 selectable Google voices: Gemini Chirp 3 HD per
+  // language, plus 'sr-RS-Standard-B' for Serbian. Every one of them named a
+  // Google Cloud voice, and GCP was decommissioned 2026-08-16 — so the picker
+  // was offering the user choices that could not produce a single second of
+  // audio, and selecting one persisted a dead id onto their profile.
+  //
+  // Cloud speech is now the gateway's Polly-first route, which resolves the
+  // voice from the LANGUAGE and exposes no voice parameter (CLAUDE.md §2c pins
+  // one voice per language on purpose). So there is no per-voice choice to
+  // offer: the picker lists browser voices, and "no browser voice selected"
+  // means the user gets Polly.
+  //
+  // Kept as an empty map rather than ripped out because the render below
+  // already handles length===0 correctly, and because this is the seam where
+  // selectable cloud voices would return if the gateway ever exposes them.
+  // Populating it again requires the route to accept a voice id first.
+  const cloudVoices: Record<string, Array<{ name: string; label: string }>> = {};
 
   const filteredVoices = availableVoices.filter(voice => {
     const langCode = baseLang(preferences.stt_language);
@@ -201,33 +174,68 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
   const handlePreviewVoice = async () => {
     const testPhrase = getTestPhrase(preferences.stt_language || 'en-US');
     const voiceName = preferences.tts_voice;
-    const isChirp3Voice = voiceName?.includes('Chirp3-HD');
-    const isGoogleSpeechVoice = voiceName?.includes('-Standard-') || voiceName?.includes('-Wavenet-');
-    const isCloudVoice = isChirp3Voice || isGoogleSpeechVoice;
     setIsTesting(true);
 
+    // BOOTSTRAP-FRONTEND-TTS-POLLY — the branch condition changed meaning.
+    //
+    // It used to ask "does the stored voice id LOOK like a Google voice?"
+    // (Chirp3-HD / -Standard- / -Wavenet-) and, if so, call one of two Google
+    // edge functions. Those reach GCP, decommissioned 2026-08-16, so that
+    // branch has produced nothing but errors since — and VTID-03671 stopped
+    // writing Google ids anyway, so it is increasingly never taken either.
+    //
+    // A PREVIEW MUST MATCH REALITY, so this follows BOTH of the hook's rules:
+    // cloud speech requires AI consent, and it requires a language the gateway
+    // can actually serve. Fall back to browser speech otherwise.
+    //
+    // An earlier version of this comment claimed to follow the hook "exactly"
+    // while implementing only the language rule — see the consent check below.
+    //
+    // Gating this on "did the user pick a browser voice?" was tempting and
+    // wrong. The effect above AUTO-ASSIGNS a browser voice name to `tts_voice`
+    // whenever it does not match the chosen language, so most profiles carry
+    // one — and `useTextToSpeech` ignores `tts_voice` entirely and plays Polly.
+    // Previewing the browser voice would therefore have demonstrated a voice
+    // the user never actually hears.
+    //
+    // `tts_voice` still matters: it selects WHICH browser voice the fallback
+    // uses, in both this preview and the hook.
     try {
-      if (isCloudVoice) {
-        const { supabase } = await import('@/integrations/supabase/client');
-        
-        // Route to appropriate TTS function
-        const functionName = isChirp3Voice ? 'google-gemini-tts' : 'google-cloud-tts';
-        
-        const { data, error } = await supabase.functions.invoke(functionName, {
-          body: {
-            text: testPhrase,
-            voiceId: voiceName,
-            languageCode: preferences.stt_language || 'en-US',
-          },
-        });
-        if (error) throw error;
-        if (!data?.audioContent) throw new Error('No audio content received');
-        const audio = new Audio(`data:audio/mp3;base64,${data.audioContent}`);
-        audio.volume = preferences.tts_volume / 100;
-        audio.onended = () => setIsTesting(false);
-        audio.onerror = () => setIsTesting(false);
-        await audio.play();
+      // AI consent gates cloud speech, exactly as it does in useTextToSpeech.
+      //
+      // This was missed when the preview was moved onto the gateway: the panel
+      // copied the hook's LANGUAGE rule but not its CONSENT rule, so a user who
+      // had withheld or revoked AI-data consent still had their test phrase
+      // sent to the cloud the moment they pressed Preview. The comment above
+      // claiming this "follows the hook's rule exactly" was therefore false.
+      //
+      // Skipping straight to browser speech here is also the honest preview:
+      // browser speech is precisely what such a user hears in real use.
+      if (!hasConsent) {
+        console.log('[VOICE-PREVIEW] no AI consent — previewing browser speech');
       } else {
+        const cloud = await synthesizeViaGateway(
+          testPhrase,
+          preferences.stt_language || 'en-US',
+        );
+        if (cloud) {
+          // MIME from the response, not hardcoded — same reasoning as the hook.
+          const audio = new Audio(`data:${cloud.mime};base64,${cloud.audioB64}`);
+          audio.volume = preferences.tts_volume / 100;
+          audio.onended = () => setIsTesting(false);
+          audio.onerror = () => setIsTesting(false);
+          await audio.play();
+          return;
+        }
+        // Fell through: the gateway cannot serve this language (Serbian has no
+        // Polly voice in any engine). Preview the browser voice instead, which
+        // is exactly what the user will get in real use.
+        console.log(
+          `[VOICE-PREVIEW] gateway cannot serve ${preferences.stt_language} — previewing browser speech`,
+        );
+      }
+
+      {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(testPhrase);
         utterance.rate = preferences.tts_speed;
