@@ -39,9 +39,10 @@
  * "this language is not servable, fall back to the browser." If Serbian ever
  * gains a voice behind that same seam, this file needs no change at all.
  *
- * The cost of that choice is one wasted round trip per unservable language,
- * which `unservableLangs` below caps at one per page load rather than one per
- * utterance.
+ * The cost of that choice is one wasted round trip per utterance in a language
+ * the gateway cannot serve. That is bounded, and it only affects Serbian —
+ * which has no cloud voice in any engine and is on browser speech regardless.
+ * See the block below on why this is NOT cached.
  */
 
 import { supabase } from '@/integrations/supabase/client';
@@ -61,19 +62,33 @@ export interface GatewayTtsResult {
   voiceType: string;
 }
 
-/**
- * Languages this session has already proven the gateway cannot serve.
+/*
+ * THERE IS DELIBERATELY NO unservable-language CACHE HERE.
  *
- * Module-scoped rather than per-hook so every caller shares one answer, and
- * reset on reload so a server-side fix (a new provider, an IAM grant) takes
- * effect without anyone clearing anything.
+ * There used to be one: any failed response added the base language to a
+ * module-scoped set, and every later request for that language short-circuited
+ * to browser speech for the rest of the page session.
+ *
+ * That conflated two different things. An HTTP error means "this REQUEST
+ * failed", not "this LANGUAGE cannot be served", and they only coincide when
+ * the failure is permanent. A 401 during token trouble, a 429 while throttled,
+ * or a 500 during an outage would strand a perfectly serviceable language on
+ * browser speech until the user reloaded — silently, with no recovery path.
+ *
+ * The cache could not simply be narrowed to "definitely unsupported", because
+ * the gateway has no signal for that case: `/orb/tts` returns 400 only for
+ * text-validation problems, and an unservable language (`resolvePollyVoice`
+ * returning null for Serbian) falls through to a generic 500/503 that is
+ * byte-identical to an outage. There is nothing to key a permanent decision on.
+ *
+ * Keeping an empty set plus its guard would be worse than removing it: a
+ * mechanism that looks live and can never fire is exactly the defect class
+ * VTID-03692 was about.
+ *
+ * TO REINSTATE: give the gateway a definite signal (HTTP 415, or
+ * `error: 'unsupported_language'`), then cache on THAT case only — never on a
+ * bare non-2xx.
  */
-const unservableLangs = new Set<string>();
-
-/** Exported for tests — there is no other way to clear module state. */
-export function resetUnservableLangsForTests(): void {
-  unservableLangs.clear();
-}
 
 /**
  * Normalise the app's `stt_language` ('de-DE', 'sr-RS') to the base tag the
@@ -100,7 +115,6 @@ export async function synthesizeViaGateway(
   if (!trimmed) return null;
 
   const base = baseLang(lang);
-  if (unservableLangs.has(base)) return null;
 
   try {
     // optionalAuth on the route: a token is sent when we have one, and its
@@ -124,23 +138,50 @@ export async function synthesizeViaGateway(
     });
 
     if (!res.ok) {
-      // 4xx/5xx here means the gateway could not synthesize it. Cache the
-      // refusal so an unservable language costs one round trip per page load
-      // instead of one per utterance.
-      unservableLangs.add(base);
+      // Do NOT cache this. An HTTP error does not mean "this LANGUAGE cannot
+      // be served" — it means "this REQUEST failed", and the two are only the
+      // same if the failure is permanent.
+      //
+      // The original code cached on any non-2xx, so a 401 during token
+      // trouble, a 429 while throttled, or a 500 during a gateway outage
+      // marked the language unservable for the REST OF THE PAGE SESSION. Every
+      // later utterance in that language then silently skipped a
+      // fully-recovered gateway and used browser speech, with no way back
+      // short of a reload. That is not hypothetical: the Supabase/gateway
+      // outage on 2026-08-21 produced exactly these statuses.
+      //
+      // Caching is disabled here rather than narrowed to "definitely
+      // unsupported", because the gateway currently has NO distinct signal for
+      // that case: `/orb/tts` returns 400 only for text-validation problems,
+      // and an unservable language (`resolvePollyVoice('sr')` → null) falls
+      // through to a generic 500/503 — byte-identical to an outage. There is
+      // nothing here to key a permanent decision on.
+      //
+      // Cost of this choice: an unservable language now costs one round trip
+      // per utterance instead of one per page load. That is bounded and only
+      // affects Serbian, which has no cloud voice in any engine and is on
+      // browser speech regardless. Silently stranding a working language on
+      // browser speech for a whole session is the worse failure.
+      //
+      // To restore the cache, give the gateway a definite signal (e.g. 415 or
+      // `error: 'unsupported_language'`) and reinstate caching for that case
+      // ONLY — see the `unservableLangs` comment above.
       console.warn(
         `[TTS] gateway could not synthesize lang=${base} (HTTP ${res.status}) — ` +
-          `falling back to browser speech for the rest of this session.`,
+          `falling back to browser speech for THIS utterance; will retry next time.`,
       );
       return null;
     }
 
     const data = await res.json();
     if (!data?.ok || !data?.audio_b64) {
-      unservableLangs.add(base);
+      // Also not cached, for the same reason as the non-2xx branch above: a
+      // 200 carrying no audio is an anomaly, not proof that this language is
+      // permanently unservable.
       console.warn(
         `[TTS] gateway returned no audio for lang=${base} ` +
-          `(${data?.error ?? 'no reason given'}) — falling back to browser speech.`,
+          `(${data?.error ?? 'no reason given'}) — falling back to browser ` +
+          `speech for THIS utterance; will retry next time.`,
       );
       return null;
     }

@@ -12,6 +12,7 @@ import { t } from '@/lib/i18n-toast';
 // route, same path the real `speak()` uses, so a preview cannot claim a voice
 // the user will not actually hear.
 import { synthesizeViaGateway } from '@/lib/gateway-tts';
+import { useAIConsent } from '@/hooks/useAIConsent';
 
 interface VoiceSettingsPanelProps {
   preferences: any;
@@ -23,6 +24,7 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
   const [isTesting, setIsTesting] = useState(false);
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const { setSelectedLanguage } = useLanguage();
+  const { hasConsent } = useAIConsent();
 
   const baseLang = useCallback((l: string) => (l || '').toLowerCase().replace('_', '-').split('-')[0], []);
 
@@ -182,9 +184,12 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
     // branch has produced nothing but errors since — and VTID-03671 stopped
     // writing Google ids anyway, so it is increasingly never taken either.
     //
-    // A PREVIEW MUST MATCH REALITY, so this follows the hook's rule exactly:
-    // try the gateway first, always, and fall back to browser speech only when
-    // it cannot serve the language.
+    // A PREVIEW MUST MATCH REALITY, so this follows BOTH of the hook's rules:
+    // cloud speech requires AI consent, and it requires a language the gateway
+    // can actually serve. Fall back to browser speech otherwise.
+    //
+    // An earlier version of this comment claimed to follow the hook "exactly"
+    // while implementing only the language rule — see the consent check below.
     //
     // Gating this on "did the user pick a browser voice?" was tempting and
     // wrong. The effect above AUTO-ASSIGNS a browser voice name to `tts_voice`
@@ -196,7 +201,19 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
     // `tts_voice` still matters: it selects WHICH browser voice the fallback
     // uses, in both this preview and the hook.
     try {
-      {
+      // AI consent gates cloud speech, exactly as it does in useTextToSpeech.
+      //
+      // This was missed when the preview was moved onto the gateway: the panel
+      // copied the hook's LANGUAGE rule but not its CONSENT rule, so a user who
+      // had withheld or revoked AI-data consent still had their test phrase
+      // sent to the cloud the moment they pressed Preview. The comment above
+      // claiming this "follows the hook's rule exactly" was therefore false.
+      //
+      // Skipping straight to browser speech here is also the honest preview:
+      // browser speech is precisely what such a user hears in real use.
+      if (!hasConsent) {
+        console.log('[VOICE-PREVIEW] no AI consent — previewing browser speech');
+      } else {
         const cloud = await synthesizeViaGateway(
           testPhrase,
           preferences.stt_language || 'en-US',

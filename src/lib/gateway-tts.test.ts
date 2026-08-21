@@ -19,7 +19,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import {
   synthesizeViaGateway,
-  resetUnservableLangsForTests,
 } from './gateway-tts';
 
 vi.mock('@/integrations/supabase/client', () => ({
@@ -47,7 +46,6 @@ function mockFetch(impl: any) {
 }
 
 beforeEach(() => {
-  resetUnservableLangsForTests();
   vi.restoreAllMocks();
   vi.spyOn(console, 'warn').mockImplementation(() => {});
   vi.spyOn(console, 'log').mockImplementation(() => {});
@@ -113,12 +111,62 @@ describe('synthesizeViaGateway', () => {
     expect(await synthesizeViaGateway('Zdravo', 'sr')).toBeNull();
   });
 
-  it('caches a refusal so an unservable language costs ONE round trip, not one per utterance', async () => {
-    const fetchFn = mockFetch(async () => ({ ok: false, status: 400, json: async () => ({}) }));
+  // The suite used to assert the opposite of these: that ANY failed response
+  // cached the language for the rest of the session. That cached a transient
+  // failure as if it were a permanent capability fact, so a 401/429/500 left a
+  // perfectly serviceable language on browser speech until the user reloaded.
+  // An HTTP error means "this REQUEST failed", not "this LANGUAGE cannot be
+  // served"; only a permanent failure makes those the same thing.
+
+  it('does NOT cache a 500 — a gateway outage must not strand the language for the session', async () => {
+    const fetchFn = mockFetch(async () => ({ ok: false, status: 500, json: async () => ({}) }));
+    await synthesizeViaGateway('a', 'de-DE');
+    await synthesizeViaGateway('b', 'de-DE');
+    await synthesizeViaGateway('c', 'de-DE');
+    expect(fetchFn).toHaveBeenCalledTimes(3);
+  });
+
+  it('does NOT cache a 401 — token trouble is recoverable', async () => {
+    const fetchFn = mockFetch(async () => ({ ok: false, status: 401, json: async () => ({}) }));
+    await synthesizeViaGateway('a', 'de');
+    await synthesizeViaGateway('b', 'de');
+    expect(fetchFn).toHaveBeenCalledTimes(2);
+  });
+
+  it('does NOT cache a 429 — throttling is by definition temporary', async () => {
+    const fetchFn = mockFetch(async () => ({ ok: false, status: 429, json: async () => ({}) }));
+    await synthesizeViaGateway('a', 'fr');
+    await synthesizeViaGateway('b', 'fr');
+    expect(fetchFn).toHaveBeenCalledTimes(2);
+  });
+
+  it('recovers on the very next call once the gateway comes back', async () => {
+    // The behaviour the old cache made impossible without a page reload.
+    let call = 0;
+    mockFetch(async () => {
+      call += 1;
+      return call === 1
+        ? { ok: false, status: 503, json: async () => ({}) }
+        : {
+            ok: true,
+            status: 200,
+            json: async () => ({ ok: true, audio_b64: 'QUJD', mime: 'audio/mpeg', voice: 'Vicki', voice_type: 'Polly' }),
+          };
+    });
+    expect(await synthesizeViaGateway('a', 'de')).toBeNull();
+    const second = await synthesizeViaGateway('b', 'de');
+    expect(second?.audioB64).toBe('QUJD');
+  });
+
+  it('does NOT cache a 200 that carries no audio — an empty response is an anomaly, not a capability fact', async () => {
+    const fetchFn = mockFetch(async () => ({
+      ok: true,
+      status: 200,
+      json: async () => ({ ok: false, error: 'no voice for lang' }),
+    }));
     await synthesizeViaGateway('a', 'sr-RS');
     await synthesizeViaGateway('b', 'sr-RS');
-    await synthesizeViaGateway('c', 'sr-RS');
-    expect(fetchFn).toHaveBeenCalledTimes(1);
+    expect(fetchFn).toHaveBeenCalledTimes(2);
   });
 
   it('does NOT cache a transport failure — the network may recover', async () => {
@@ -148,6 +196,79 @@ describe('synthesizeViaGateway', () => {
     const fetchFn = mockFetch(async () => ({ ok: true, status: 200, json: async () => okBody }));
     expect(await synthesizeViaGateway('   ', 'de')).toBeNull();
     expect(fetchFn).not.toHaveBeenCalled();
+  });
+});
+
+/**
+ * Tree-wide consent guard.
+ *
+ * Cloud speech sends the user's text to a third-party provider, so it is
+ * gated on AI-data consent. `useTextToSpeech` checks `hasConsent` and uses
+ * browser synthesis when it is absent — but `VoiceSettingsPanel` was moved
+ * onto the gateway WITHOUT that check, so pressing "Preview Voice" sent the
+ * phrase to the cloud even for a user who had withheld or revoked consent.
+ *
+ * Pinning that one component would only re-prove the fix. The defect was that
+ * a SECOND call site appeared and did not inherit the rule, which is the same
+ * shape as the Google-edge-function guard below: the per-module test passed
+ * while two other files bypassed it entirely.
+ *
+ * So this asserts the invariant across the tree — every caller of
+ * `synthesizeViaGateway` must also consult consent — and therefore covers call
+ * sites that do not exist yet.
+ */
+describe('every caller of the cloud TTS gateway honours AI consent', () => {
+  it('finds no call site that reaches the gateway without checking consent', async () => {
+    const { readdirSync, readFileSync, statSync } = await import('fs');
+    const { join } = await import('path');
+
+    const offenders: string[] = [];
+    const walk = (dir: string) => {
+      for (const entry of readdirSync(dir)) {
+        const full = join(dir, entry);
+        if (statSync(full).isDirectory()) {
+          if (entry === 'node_modules' || entry.startsWith('.')) continue;
+          walk(full);
+          continue;
+        }
+        if (!/\.(ts|tsx)$/.test(entry)) continue;
+        if (entry.includes('.test.')) continue;
+        // The module that DEFINES the call is not a caller of it. It is
+        // deliberately consent-agnostic: it is a transport, and the decision
+        // belongs to the call sites that know the user context.
+        if (full.endsWith(join('src', 'lib', 'gateway-tts.ts'))) continue;
+
+        const src = readFileSync(full, 'utf8');
+        if (!src.includes('synthesizeViaGateway')) continue;
+        if (!/hasConsent/.test(src)) offenders.push(full);
+      }
+    };
+    walk('src');
+
+    expect(offenders).toEqual([]);
+  });
+
+  it('actually found the known call sites — a guard that scans nothing passes forever', async () => {
+    const { readdirSync, readFileSync, statSync } = await import('fs');
+    const { join } = await import('path');
+    const callers: string[] = [];
+    const walk = (dir: string) => {
+      for (const entry of readdirSync(dir)) {
+        const full = join(dir, entry);
+        if (statSync(full).isDirectory()) {
+          if (entry === 'node_modules' || entry.startsWith('.')) continue;
+          walk(full);
+          continue;
+        }
+        if (!/\.(ts|tsx)$/.test(entry)) continue;
+        if (entry.includes('.test.')) continue;
+        if (full.endsWith(join('src', 'lib', 'gateway-tts.ts'))) continue;
+        if (readFileSync(full, 'utf8').includes('synthesizeViaGateway')) callers.push(full);
+      }
+    };
+    walk('src');
+    // useTextToSpeech.ts and VoiceSettingsPanel.tsx, at minimum.
+    expect(callers.length).toBeGreaterThanOrEqual(2);
   });
 });
 
