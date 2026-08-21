@@ -1,11 +1,10 @@
 {
   "verdicts": {
     "empty.noAppsFound": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register ('Ihrer') instead of informal ('deiner').",
-      "suggested": "Keine Apps gefunden, die deiner Suche entsprechen.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "empty.noEventsFound": {
       "verdict": "OK",
@@ -48,18 +47,16 @@
       "phase": "llm"
     },
     "empty.noEventsYet": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register ('Erstellen Sie') instead of informal ('Erstelle').",
-      "suggested": "Noch keine Veranstaltungen. Erstelle zuerst eine Veranstaltung.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "empty.tryAdjustingFilters": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Formal register ('Versuchen Sie', 'Ihre') instead of informal ('Versuche', 'deine').",
-      "suggested": "Versuche, deine Filter oder Suchanfrage anzupassen.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "empty.noData": {
       "verdict": "OK",
@@ -122,5 +119,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:10:19.509Z"
+  "generatedAt": "2026-08-21T04:09:48.711Z"
 }
