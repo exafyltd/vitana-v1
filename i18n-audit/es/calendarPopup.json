@@ -56,11 +56,10 @@
       "phase": "llm"
     },
     "calendarPopup.syncExternal": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatically awkward; 'externo' is an adjective without a noun to modify. It sounds incomplete.",
-      "suggested": "Sincronizar con externos",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "calendarPopup.addEvent": {
       "verdict": "OK",
@@ -88,5 +87,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:01.562Z"
+  "generatedAt": "2026-08-21T04:08:23.316Z"
 }
