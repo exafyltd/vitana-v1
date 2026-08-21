@@ -131,6 +131,19 @@ export const NOTIFICATION_TYPES: Record<string, NotificationTypeDef> = {
     icon: '💬', label: 'New Comment', category: 'community',
     channel: 'push_and_inapp', priority: 'p1', route: '/home',
   },
+  // Emitted by notify_on_profile_post_comment_like()/notify_on_media_upload_comment_like()
+  // and notify_on_profile_post_comment_reply()/notify_on_media_upload_comment_reply()
+  // (20260820120000_vtid_03690_comment_reactions_replies.sql). Always ships with an
+  // explicit data.url (the specific /post/<source>/<id>), so no `route` template here —
+  // resolveNotificationRoute() honors data.url before falling back to this registry.
+  comment_like: {
+    icon: '❤️', label: 'Comment Liked', category: 'community',
+    channel: 'push_and_inapp', priority: 'p2',
+  },
+  comment_reply: {
+    icon: '↩️', label: 'Comment Reply', category: 'community',
+    channel: 'push_and_inapp', priority: 'p1',
+  },
   // Emitted by the notify_on_post_mention_insert()/_update() DB triggers on
   // profile_posts inserts/updates. Always ships with an explicit data.url
   // (the specific /post/post/<id>), so no `route` template here —

@@ -5419,6 +5419,10 @@
       "modFailed": "Acción fallida.",
       "createPost": "Publicación",
       "likesCount": "{count} Me gusta",
+      "replyToComment": "Responder",
+      "replyingTo": "Respondiendo a {name}",
+      "cancelReply": "Cancelar respuesta",
+      "likeComment": "Me gusta el comentario",
       "_pending_review": {}
     },
     "icons": {

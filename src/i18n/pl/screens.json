@@ -5424,6 +5424,10 @@
       "executeAllValue0": "Wykonaj wszystkie {value0}",
       "noValue0ActionsAvailable": "Brak dostępnych {value0} działań",
       "likesCount": "{count} Polubień",
+      "replyToComment": "Odpowiedz",
+      "replyingTo": "Odpowiadasz {name}",
+      "cancelReply": "Anuluj odpowiedź",
+      "likeComment": "Polub komentarz",
       "_pending_review": {}
     },
     "icons": {

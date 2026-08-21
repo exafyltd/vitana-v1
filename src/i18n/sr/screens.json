@@ -5419,7 +5419,16 @@
       "modFailed": "Akcija neuspešna.",
       "createPost": "Objava",
       "likesCount": "{count} Sviđanja",
-      "_pending_review": {}
+      "_pending_review": {
+        "replyToComment": true,
+        "replyingTo": true,
+        "cancelReply": true,
+        "likeComment": true
+      },
+      "replyToComment": "Reply",
+      "replyingTo": "Replying to {name}",
+      "cancelReply": "Cancel reply",
+      "likeComment": "Like comment"
     },
     "icons": {
       "xFormerlyTwitter": "X (bivši Twitter)",
