@@ -1,11 +1,10 @@
 {
   "verdicts": {
     "milestones.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation 'Magic Moments' does not accurately convey 'Life Milestones'. It's a creative reinterpretation, but not a direct translation of significant life events. Also inconsistent with 'Moment' used for singular 'Milestone' later.",
-      "suggested": "Besondere Momente",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "milestones.add": {
       "verdict": "OK",
@@ -18,18 +17,16 @@
       "phase": "llm"
     },
     "milestones.empty": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Inconsistent with 'Moment' used for singular 'Milestone' in other entries. If 'Milestone' is 'Moment', then the plural should be 'Momente'.",
-      "suggested": "Noch keine Momente",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "milestones.addFirst": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Inconsistent with 'Moment' used for singular 'Milestone' in other entries. 'Magic' is an unnecessary addition. 'Your' is also missing.",
-      "suggested": "Deinen ersten Moment hinzufügen",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "milestones.date": {
       "verdict": "OK",
@@ -72,5 +69,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:16:15.741Z"
+  "generatedAt": "2026-08-22T04:11:11.053Z"
 }

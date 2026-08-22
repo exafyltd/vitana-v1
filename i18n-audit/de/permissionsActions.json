@@ -1,11 +1,10 @@
 {
   "verdicts": {
     "permissionsActions.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward hyphenation in compound noun.",
-      "suggested": "Datenschutz- & Berechtigungsaktionen",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "permissionsActions.items.privacySettings.title": {
       "verdict": "OK",
@@ -13,11 +12,10 @@
       "phase": "llm"
     },
     "permissionsActions.items.privacySettings.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Compound noun 'Freigabe-Einstellungen' should be one word.",
-      "suggested": "Datenschutz- und Freigabeeinstellungen konfigurieren",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "permissionsActions.items.manageAccess.title": {
       "verdict": "OK",
@@ -25,11 +23,10 @@
       "phase": "llm"
     },
     "permissionsActions.items.manageAccess.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Compound noun 'Gesundheits-Erinnerungen' should be one word.",
-      "suggested": "Steuern, wer deine Gesundheitserinnerungen sehen darf",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "permissionsActions.items.securitySettings.title": {
       "verdict": "OK",
@@ -92,5 +89,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:18:00.997Z"
+  "generatedAt": "2026-08-22T04:12:06.580Z"
 }
