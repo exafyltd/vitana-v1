@@ -12,27 +12,15 @@
  * Fallback: when no topicId is given, or the widget is an older build without
  * `focusGuidedTopic`, we just open the ORB generically (click the FAB / show()).
  *
- * VTID-03292 (#4): a guided-topic open should AUTO-CLOSE the overlay once Vitana
- * finishes the teaching turn, so the underlying Topic drawer's next-step buttons
- * are usable. activateOrb(topicId) arms a one-shot flag the ORB-widget hook
- * consumes in its onTurnComplete handler (see useOrbVoiceWidget).
+ * VTID-03292 (#4)'s "auto-close after the teaching turn" flag was removed
+ * under VTID-03680 — it fired after just the short opener line (turn 1),
+ * cutting the session before the actual multi-turn GUIDE-MODE teaching ever
+ * ran. See useOrbVoiceWidget.ts / orb-widget.js for the full incident.
  */
 
 interface VitanaOrbApi {
   focusGuidedTopic?: (topicId: string) => void;
   show?: () => void;
-}
-
-// VTID-03292 (#4): one-shot "close after the teaching turn" flag, set when the
-// ORB was opened by tapping a guided topic. Consumed by the widget's
-// onTurnComplete handler in useOrbVoiceWidget.
-let _guidedAutoClose = false;
-
-/** Consume (read + reset) the one-shot guided auto-close flag. */
-export function consumeGuidedAutoClose(): boolean {
-  const v = _guidedAutoClose;
-  _guidedAutoClose = false;
-  return v;
 }
 
 export function activateOrb(topicId?: string): boolean {
@@ -42,7 +30,6 @@ export function activateOrb(topicId?: string): boolean {
 
   // Preferred path: focus the orb on the tapped topic so Vitana teaches it.
   if (topicId && orb && typeof orb.focusGuidedTopic === 'function') {
-    _guidedAutoClose = true; // arm auto-close after the teaching turn (#4)
     orb.focusGuidedTopic(topicId);
     return true;
   }

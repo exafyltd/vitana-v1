@@ -9,8 +9,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { setOrbWidgetAuthenticated } from "@/lib/orbWidgetReady";
 import { setOrbWidgetSessionActive } from "@/lib/orbWidgetSession";
-// VTID-03292 (#4): consume the one-shot "close after the guided teaching turn" flag.
-import { consumeGuidedAutoClose } from "@/lib/orbActivate";
 
 /** Check whether the external ORB widget is actually alive in the DOM */
 function isOrbAlive(): boolean {
@@ -305,18 +303,15 @@ export function useOrbVoiceWidget() {
           // the Soundscape manager's media listeners can't see otherwise.
           onSessionStart: () => setOrbWidgetSessionActive(true),
           onSessionEnd: () => setOrbWidgetSessionActive(false),
-          // VTID-03292 (#4): when the ORB was opened by tapping a guided topic,
-          // auto-close the overlay after the teaching turn finishes so the Topic
-          // drawer's next-step buttons are usable. Only fires for guided opens
-          // (the one-shot flag is armed by activateOrb(topicId)); normal voice
-          // sessions are unaffected.
-          onTurnComplete: (info: { was_greeting?: boolean }) => {
-            if (info?.was_greeting && consumeGuidedAutoClose()) {
-              try {
-                (window as unknown as { VitanaOrb?: { hide?: () => void } }).VitanaOrb?.hide?.();
-              } catch { /* ignore */ }
-            }
-          },
+          // VTID-03292 (#4)'s onTurnComplete-driven auto-close was removed
+          // under VTID-03680: it closed the overlay (revealing the Topic
+          // drawer) the instant the guided-topic OPENER line finished, which
+          // — since VTID-03650 turned turn 1 into a short opener instead of
+          // the full lesson — cut the session before the actual teaching
+          // (GUIDE MODE, turns 2+) ever ran. See orb-widget.js's matching
+          // removal for the full incident writeup. The overlay now stays
+          // open and behaves like any other ORB conversation; the user
+          // closes it themselves once Vitana is done teaching.
           initialContext: {
             // BOOTSTRAP-ORB-SCREEN-TRACKING: read the LIVE route via the ref, not
             // the closure-captured `location.pathname` (stale by the time the
