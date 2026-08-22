@@ -56,10 +56,8 @@
       "phase": "llm"
     },
     "calendarPopup.syncExternal": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatically awkward; 'externo' is an adjective without a noun to modify. It sounds incomplete.",
-      "suggested": "Sincronizar con externos",
+      "verdict": "OK",
+      "confidence": 0.95,
       "phase": "llm"
     },
     "calendarPopup.addEvent": {
@@ -88,5 +86,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:01.562Z"
+  "generatedAt": "2026-08-22T04:02:58.607Z"
 }
