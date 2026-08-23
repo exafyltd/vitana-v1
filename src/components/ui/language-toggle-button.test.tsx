@@ -70,10 +70,16 @@ vi.mock('@/hooks/useTranslation', () => ({
 }));
 
 // Separate from useTranslation's `t` — this is the function-call lookup the
-// component uses (aliased `i18nT`) for the Done button, matching the real
-// `screens.common.done` key.
+// component uses (aliased `i18nT`) for the footer button. VTID-03705 moved
+// that button from `screens.common.done` (a confirm) to
+// `screens.common.close` (a dismissal); both are mapped so a regression back
+// to the confirm wording fails on the assertion rather than on a missing mock.
 vi.mock('@/lib/i18n-toast', () => ({
-  t: (key: string) => (key === 'screens.common.done' ? 'Done' : key),
+  t: (key: string) => {
+    if (key === 'screens.common.close') return 'Close';
+    if (key === 'screens.common.done') return 'Done';
+    return key;
+  },
 }));
 
 import { LanguageToggleButton } from './language-toggle-button';
@@ -177,12 +183,30 @@ describe('landing-page language picker', () => {
     expect(germanOption.querySelector('svg')).toBeNull();
   });
 
-  it('selecting a language does not close the drawer — Done is a separate, deliberate dismiss', async () => {
+  // VTID-03705 — INVERTED deliberately. This used to assert that picking a
+  // language left the drawer open behind a "Done" button. That is the
+  // behaviour that was reported as bad UX: the choice had already been
+  // applied, but leaving the sheet open made it look pending, so people
+  // pressed a second button to confirm something already done. Picking is
+  // now committing.
+  it('selecting a language closes the drawer — picking IS committing', async () => {
     await openDrawer();
     fireEvent.click(screen.getByRole('option', { name: /Español/ }));
-    // Text presence alone doesn't prove this — see the note below on why
-    // the drawer's DOM node never truly unmounts in jsdom either way.
-    expect(screen.getByRole('dialog').getAttribute('data-state')).toBe('open');
+    // See the note below on why this asserts data-state rather than DOM
+    // removal: in jsdom the node never unmounts either way.
+    await waitFor(() => {
+      expect(screen.getByRole('dialog').getAttribute('data-state')).toBe('closed');
+    });
+  });
+
+  it('applies the language on the same tap that closes it', async () => {
+    // The close must not race the commit — if the drawer shut without the
+    // selection landing, the picker would look like it silently did nothing.
+    await openDrawer();
+    fireEvent.click(screen.getByRole('option', { name: /Español/ }));
+    await waitFor(() => {
+      expect(setSelectedLanguage).toHaveBeenCalledWith('es-ES');
+    });
   });
 
   // vaul only actually unmounts the drawer's DOM node after its own exit
@@ -191,9 +215,14 @@ describe('landing-page language picker', () => {
   // long a test waits for it to disappear. Assert on the documented
   // open/closed contract (the `role="dialog"` element's `data-state`
   // attribute, which vaul/Radix update promptly) instead of DOM removal.
-  it('closes when Done is pressed', async () => {
+  // VTID-03705 — the footer is now a plain dismissal ("Close"), not a
+  // confirm ("Done"): someone who opens the picker and decides to keep their
+  // current language still needs a way out that does not depend on a
+  // swipe-down gesture.
+  it('closes when the dismiss button is pressed, without changing the language', async () => {
     await openDrawer();
-    fireEvent.click(screen.getByRole('button', { name: 'Done' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    expect(setSelectedLanguage).not.toHaveBeenCalled();
     await waitFor(() => {
       expect(screen.getByRole('dialog').getAttribute('data-state')).toBe('closed');
     });
