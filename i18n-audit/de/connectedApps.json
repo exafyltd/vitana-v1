@@ -16,11 +16,10 @@
       "phase": "llm"
     },
     "connectedApps.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register inconsistent (formal Sie-form instead of informal du-form).",
-      "suggested": "Verwalte deine verbundenen Geräte und Dienste",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "connectedApps.searchPlaceholder": {
       "verdict": "OK",
@@ -38,11 +37,10 @@
       "phase": "llm"
     },
     "connectedApps.syncing": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Meaning slightly off; 'synchronisiert' means 'synced' (past participle/state), not 'syncing' (present participle/ongoing action).",
-      "suggested": "Synchronisierung läuft",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "connectedApps.sections.social": {
       "verdict": "OK",
@@ -100,18 +98,16 @@
       "phase": "llm"
     },
     "connectedApps.lastSync": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement for 'Sync' (usually masculine in German tech slang).",
-      "suggested": "Letzter Sync",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "connectedApps.dataSync": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Synchronisation' is the noun, not the ongoing action implied by 'syncing'.",
-      "suggested": "Daten-Synchronisierung läuft",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "connectedApps.comingSoonMessage": {
       "verdict": "OK",
@@ -189,5 +185,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:07:27.260Z"
+  "generatedAt": "2026-08-23T04:08:39.225Z"
 }

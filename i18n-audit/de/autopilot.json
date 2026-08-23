@@ -21,11 +21,10 @@
       "phase": "llm"
     },
     "autopilot.suggestions.bannerDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Missing 'complete' and incorrect register (Sie-form).",
-      "suggested": "Erhalte KI-gestützte Vorschläge, um dein Profil ansprechender und vollständiger zu gestalten.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.suggestions.enable": {
       "verdict": "OK",
@@ -38,11 +37,10 @@
       "phase": "llm"
     },
     "autopilot.suggestions.showcaseDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form).",
-      "suggested": "Basierend auf deiner Aktivität könnten diese Beiträge gut als Featured-Inhalte funktionieren:",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.suggestions.suggestPopular": {
       "verdict": "OK",
@@ -65,11 +63,10 @@
       "phase": "llm"
     },
     "autopilot.suggestions.archetypeDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form).",
-      "suggested": "Deine Wellness-Aktivitäten deuten darauf hin, dass du \"The Mindful Mover\" sein könntest - möchtest du aktualisieren?",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.suggestions.updateArchetype": {
       "verdict": "OK",
@@ -77,18 +74,16 @@
       "phase": "llm"
     },
     "autopilot.suggestions.profileSectionTitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form).",
-      "suggested": "Autopilot kann dein Profil aufpolieren ✨",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.suggestions.profileSectionDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form).",
-      "suggested": "Erhalte KI-gestützte Vorschläge für deine Biografie, deinen Archetyp und deine Highlights.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.suggestions.tryAutopilot": {
       "verdict": "OK",
@@ -146,11 +141,10 @@
       "phase": "llm"
     },
     "autopilot.popup.readyToExecute": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form).",
-      "suggested": "Bereit, {count} Aktion(en) auszuführen, die dein KI-Assistent vorbereitet hat.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.popup.executingTitle": {
       "verdict": "OK",
@@ -158,11 +152,10 @@
       "phase": "llm"
     },
     "autopilot.popup.executingDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form).",
-      "suggested": "Bitte warte, während die KI deine Anfragen bearbeitet",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.popup.complete": {
       "verdict": "OK",
@@ -210,11 +203,10 @@
       "phase": "llm"
     },
     "autopilot.popup.toastFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.priorities.high": {
       "verdict": "OK",
@@ -252,25 +244,22 @@
       "phase": "llm"
     },
     "autopilot.widget.enableToSee": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form instead of du-form).",
-      "suggested": "Aktiviere Autopilot, um Vorschläge zu sehen",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.widget.completeForRewards": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, less idiomatic. 'abschließen für' is less natural than 'abschließen, um zu erhalten'.",
-      "suggested": "Schließe Autopilot-Vorschläge ab, um Belohnungen zu erhalten",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.widget.enableForCredits": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing imperative conjugation for du-form. 'Autopilot aktivieren' is an infinitive, not a command.",
-      "suggested": "Aktiviere Autopilot für Credits",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.insightBanner.title": {
       "verdict": "OK",
@@ -278,11 +267,10 @@
       "phase": "llm"
     },
     "autopilot.insightBanner.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form possessive 'Ihr' instead of du-form 'Dein').",
-      "suggested": "Dein Vitana Autopilot hat aktuelle Pläne und Konsistenz analysiert.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.insightBanner.synergyIndex": {
       "verdict": "OK",
@@ -305,18 +293,16 @@
       "phase": "llm"
     },
     "autopilot.profilePopup.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Meaning changed ('polish' vs 'expand'). Also, capitalization of 'Erweitern'.",
-      "suggested": "Lass Autopilot dein Profil optimieren ✨",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.profilePopup.polishBio": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (Sie-form 'ihr' instead of du-form 'deine'). 'Bio' translated as 'Profil' (loss of specificity).",
-      "suggested": "Optimiere deine Bio",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.profilePopup.polishBioDesc": {
       "verdict": "OK",
@@ -324,25 +310,22 @@
       "phase": "llm"
     },
     "autopilot.profilePopup.refreshArchetype": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Meaning changed ('refresh' vs 'adjust', 'archetype' vs 'profile').",
-      "suggested": "Aktualisiere deinen Archetyp",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.profilePopup.refreshArchetypeDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Meaning changed ('Longevity Archetype' vs 'Profile').",
-      "suggested": "Aktualisierung des Longevity-Archetyps basierend auf Aktivität vorschlagen",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.profilePopup.highlightShowcase": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Grammatical structure and intent changed (command 'Highlight my Profile' vs noun phrase 'Meine Highlights').",
-      "suggested": "Hebe dein Profil hervor",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.profilePopup.highlightShowcaseDesc": {
       "verdict": "OK",
@@ -380,11 +363,10 @@
       "phase": "llm"
     },
     "autopilot.profilePopup.suggestedArchetype": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Profil' is too generic for 'Archetype'; 'Archetyp' is a more accurate and direct translation.",
-      "suggested": "Vorgeschlagener Archetyp",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.profilePopup.currentValue": {
       "verdict": "OK",
@@ -427,11 +409,10 @@
       "phase": "llm"
     },
     "autopilot.actions.action1Reason": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Uses formal 'Ihren' instead of informal 'deinen'. 'Vibes' can be kept as a loanword.",
-      "suggested": "Perfekt passend zu deinen Bewegungszielen + sozialen Wellness-Vibes",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.actions.action2Title": {
       "verdict": "OK",
@@ -439,11 +420,10 @@
       "phase": "llm"
     },
     "autopilot.actions.action2Reason": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Uses formal 'Ihr/Ihren' instead of informal 'Dein/deinen'.",
-      "suggested": "Dein digitaler Zwilling hat etwas Faszinierendes in deinen Mustern entdeckt",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.actions.action3Title": {
       "verdict": "OK",
@@ -451,11 +431,10 @@
       "phase": "llm"
     },
     "autopilot.actions.action3Reason": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Uses formal 'Ihrer' instead of informal 'deiner'.",
-      "suggested": "Noch ein Schluck näher an deiner wöchentlichen Hydrationsmeisterschaft",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.actions.action4Title": {
       "verdict": "OK",
@@ -468,18 +447,16 @@
       "phase": "llm"
     },
     "autopilot.actions.action5Title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Uses formal 'Ihre' instead of informal 'Deine'.",
-      "suggested": "Deine Biomarker-Geschichte wartet",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.actions.action5Reason": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Uses formal 'Ihrem' instead of informal 'deinem'.",
-      "suggested": "Dr. Chen hat spannende Erkenntnisse aus deinem letzten Panel entschlüsselt",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.actions.action6Title": {
       "verdict": "OK",
@@ -487,11 +464,10 @@
       "phase": "llm"
     },
     "autopilot.actions.action6Reason": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Uses formal 'Ihre' instead of informal 'Deine'.",
-      "suggested": "Deine Seele ruft nach diesen stressschmelzenden Techniken",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.actions.newActionTitle": {
       "verdict": "OK",
@@ -504,5 +480,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:03:26.674Z"
+  "generatedAt": "2026-08-23T04:07:17.677Z"
 }
