@@ -36,11 +36,10 @@
       "phase": "identical"
     },
     "billing.promises.anchorHeading": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The phrase 'Приватно по дизайну' is not idiomatic. 'Private by design' refers to a concept, better translated as 'privacy by default' or 'privacy by design'.",
-      "suggested": "Приватность по умолчанию",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "billing.promises.subheading": {
       "verdict": "OK",
@@ -73,11 +72,10 @@
       "phase": "llm"
     },
     "billing.promises.earn.body": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The phrase 'раскрытый прозрачно' (disclosed transparently) is grammatically correct but sounds a bit clunky. A verbal construction would be more natural.",
-      "suggested": "Когда твоя рекомендация приводит к продаже через Sell and Earn, или когда ты проводишь платную Live Room, доход твой — раскрывается прозрачно.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "billing.promises.control.title": {
       "verdict": "OK",
@@ -470,11 +468,10 @@
       "phase": "llm"
     },
     "billing.earnings.net": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender mismatch. 'Net' likely refers to 'Net earnings' ('Чистый заработок'), so the adjective should be masculine.",
-      "suggested": "Чистый",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "billing.earnings.withdraw": {
       "verdict": "OK",
@@ -507,11 +504,10 @@
       "phase": "llm"
     },
     "billing.launchGrant.body": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender mismatch (assumes male user). 'Ты получил' is gendered, 'You've received' is neutral. Better to use a gender-neutral phrasing for UI.",
-      "suggested": "Тебе предоставлено 12 месяцев Vitana Premium в благодарность за то, что ты с нами с самого начала. Действует до {endsAt}.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "billing.launchGrant.noAction": {
       "verdict": "OK",
@@ -639,11 +635,10 @@
       "phase": "llm"
     },
     "billing.state.upgrade": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Обновить' means 'update' or 'refresh', not 'upgrade' in the sense of moving to a higher tier plan. This can be ambiguous.",
-      "suggested": "Повысить",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "billing.state.trialEndsAt": {
       "verdict": "OK",
@@ -656,11 +651,10 @@
       "phase": "llm"
     },
     "billing.state.activeBadge": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical form mismatch. 'Активно' is an adverb or neuter short adjective. For a status label like 'Active' referring to a subscription (feminine noun 'подписка'), 'Активна' (feminine short adjective) is more appropriate.",
-      "suggested": "Активна",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "billing.subscriptionsPage.title": {
       "verdict": "OK",
@@ -693,11 +687,10 @@
       "phase": "llm"
     },
     "billing.faq.a1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'живого общения' (live communication) is too broad for 'live voice time'. 'Голосового общения' (voice communication) is more precise.",
-      "suggested": "Больше времени голосового общения с ORB, больше хостинга в Live Rooms, больше места для хранения и более быстрые личные дайджесты.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "billing.faq.q2": {
       "verdict": "OK",
@@ -815,11 +808,10 @@
       "phase": "llm"
     },
     "paywall.match_posts.body": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свои бесплатные посты в этом месяце. Премиум дает тебе больше.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "paywall.match_reveals.title": {
       "verdict": "OK",
@@ -827,11 +819,10 @@
       "phase": "llm"
     },
     "paywall.match_reveals.body": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свои бесплатные открытия. Используй {credits} кредитов или обновись до Премиум.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "paywall.lab_analyses.title": {
       "verdict": "OK",
@@ -839,11 +830,10 @@
       "phase": "llm"
     },
     "paywall.lab_analyses.body": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свои лабораторные анализы в этом месяце.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "paywall.photo_uploads.title": {
       "verdict": "OK",
@@ -851,11 +841,10 @@
       "phase": "llm"
     },
     "paywall.photo_uploads.body": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свои загрузки фото в этом месяце.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "paywall.memory_garden.title": {
       "verdict": "OK",
@@ -883,11 +872,10 @@
       "phase": "llm"
     },
     "paywall.default.body": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gendered verb 'использовал' should be gender-neutral or inclusive.",
-      "suggested": "Ты использовал(а) свою бесплатную квоту за этот период.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "paywall.ctaUpgrade": {
       "verdict": "OK",
@@ -915,5 +903,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:26:53.584Z"
+  "generatedAt": "2026-08-23T04:07:18.234Z"
 }

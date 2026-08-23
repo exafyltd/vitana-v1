@@ -2,8 +2,8 @@
   "verdicts": {
     "empty.noAppsFound": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: uses formal 'вашему' instead of informal 'твоему'.",
+      "confidence": 0.9,
+      "issue": "Register inconsistency: 'вашему' (formal/plural 'your') should be 'твоему' (informal singular 'your') for a du-form app.",
       "suggested": "Приложения не найдены по твоему запросу.",
       "phase": "llm"
     },
@@ -118,5 +118,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:33:09.948Z"
+  "generatedAt": "2026-08-23T04:08:04.302Z"
 }

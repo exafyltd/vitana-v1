@@ -48,8 +48,8 @@
     "autopilot.suggestions.archetypeTitle": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The translation 'Идеи' (ideas) is too weak for 'Insights', which implies deeper understanding or revelations.",
-      "suggested": "Озарения архетипа",
+      "issue": "The translation of 'Insights' as 'Идеи' (ideas) is inaccurate. 'Insights' implies deeper understanding or revelations.",
+      "suggested": "Понимание архетипа",
       "phase": "llm"
     },
     "autopilot.suggestions.archetypeBadge": {
@@ -173,10 +173,8 @@
       "phase": "llm"
     },
     "autopilot.popup.moreActions": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'more actions'. 'Больше действий' is less natural than 'ещё действий' in this context.",
-      "suggested": "ещё {count} действий",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "autopilot.popup.toastExecutedTitle": {
@@ -222,8 +220,8 @@
     "autopilot.widget.active": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Grammatical form mismatch. 'Активно' is an adverb or neuter short adjective. For 'Autopilot' (masculine), the masculine short adjective 'Активен' is appropriate for a status.",
-      "suggested": "Активен",
+      "issue": "'Active' (adjective) is translated as 'Активно' (adverb). In UI, 'Active' typically functions as an adjective describing a state or category.",
+      "suggested": "Активный",
       "phase": "llm"
     },
     "autopilot.widget.paused": {
@@ -462,5 +460,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:25:10.893Z"
+  "generatedAt": "2026-08-23T04:07:13.476Z"
 }
