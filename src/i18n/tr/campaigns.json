@@ -1,27 +1,29 @@
 {
- "campaigns": {
-  "delete": {
-   "_pending_review": {},
-   "title": "Kampanya Silinsin mi?",
-   "description": "\"{name}\" öğesini silmek, ilgili tüm taslakları ve analizleri kalıcı olarak kaldırır. Bu işlem geri alınamaz.",
-   "dontAskAgain": "Taslak kampanyalar için bir daha sorma",
-   "deletePermanently": "Kalıcı Olarak Sil"
-  },
-  "creation": {
-   "_pending_review": {},
-   "title": "Kampanya Oluştur",
-   "stepOf": "Adım {current} / {total}",
-   "yourCampaigns": "Kampanyaların",
-   "drafts": "taslak",
-   "live": "canlı",
-   "proTip": "Uzman İpucu",
-   "tips": {
-    "1": "Net isimler kampanyaları sonra bulmana yardımcı olur",
-    "2": "Anında planlama için kanalları şimdi bağla",
-    "3": "Lansman şablonu çoğu duyuru için işe yarar",
-    "4": "Akıllı planlama geçmiş etkileşim verilerini kullanır",
+  "campaigns": {
+    "delete": {
+      "_pending_review": {},
+      "title": "Kampanya Silinsin mi?",
+      "description": "\"{name}\" öğesini silmek, ilgili tüm taslakları ve analizleri kalıcı olarak kaldırır. Bu işlem geri alınamaz.",
+      "dontAskAgain": "Taslak kampanyalar için bir daha sorma",
+      "deletePermanently": "Kalıcı Olarak Sil"
+    },
+    "creation": {
+      "_pending_review": {},
+      "title": "Kampanya Oluştur",
+      "stepOf": "Adım {current} / {total}",
+      "yourCampaigns": "Kampanyaların",
+      "drafts": "taslak",
+      "live": "canlı",
+      "proTip": "Uzman İpucu",
+      "tips": {
+        "1": "Net isimler kampanyaları sonra bulmana yardımcı olur",
+        "2": "Anında planlama için kanalları şimdi bağla",
+        "3": "Lansman şablonu çoğu duyuru için işe yarar",
+        "4": "Akıllı planlama geçmiş etkileşim verilerini kullanır",
+        "_pending_review": {}
+      }
+    },
     "_pending_review": {}
-   }
-  }
- }
+  },
+  "_pending_review": {}
 }

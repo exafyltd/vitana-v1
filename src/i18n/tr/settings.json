@@ -1,46 +1,48 @@
 {
- "_pending_review": {},
- "settings": {
   "_pending_review": {},
-  "title": "Ayarlar",
-  "description": "Hesap ayarlarını, gizliliğini ve tercihlerini yönet",
-  "searchPlaceholder": "Ayarlarda, gizlilik kontrollerinde, entegrasyonlarda ara...",
-  "quickSetup": "Hızlı Kurulum",
-  "tabs": {
-   "_pending_review": {},
-   "overview": "Genel Bakış",
-   "notifications": "Bildirimler",
-   "quickActions": "Hızlı İşlemler"
-  },
-  "categories": {
-   "_pending_review": {},
-   "privacy": "Gizlilik",
-   "privacyDesc": "Profilini ve aktivitelerini kimin görebileceğini kontrol et",
-   "notifications": "Bildirimler",
-   "notificationsDesc": "Bildirim ayarlarını yönet",
-   "preferences": "Tercihler",
-   "preferencesDesc": "Dil, tema ve görüntüleme seçenekleri",
-   "connectedApps": "Bağlı Uygulamalar",
-   "connectedAppsDesc": "Entegrasyonları ve izinleri yönet",
-   "tenantRole": "Kiracı ve Rol",
-   "tenantRoleDesc": "Roller ve kiracılar arasında geçiş yap",
-   "billing": "Faturalandırma",
-   "billingDesc": "Abonelik ve ödeme bilgileri",
-   "support": "Destek",
-   "supportDesc": "Yardım, SSS ve iletişim seçenekleri"
-  },
-  "status": {
-   "_pending_review": {},
-   "privacyStatus": "Gizlilik Durumu",
-   "subscription": "Abonelik",
-   "protected": "Korumalı",
-   "premium": "Premium",
-   "notificationsActive": "Bildirimler Aktif",
-   "connectedAppsCount": "Bağlı Uygulamalar",
-   "types": "tür",
-   "apps": "uygulama"
-  },
-  "vitanaOpenedSection": "Vitana {section} bölümünü açtı",
-  "vitanaUpdated": "Vitana ayarını güncelledi"
- }
+  "settings": {
+    "_pending_review": {},
+    "title": "Ayarlar",
+    "description": "Hesap ayarlarını, gizliliğini ve tercihlerini yönet",
+    "searchPlaceholder": "Ayarlarda, gizlilik kontrollerinde, entegrasyonlarda ara...",
+    "quickSetup": "Hızlı Kurulum",
+    "tabs": {
+      "_pending_review": {},
+      "overview": "Genel Bakış",
+      "notifications": "Bildirimler",
+      "quickActions": "Hızlı İşlemler"
+    },
+    "categories": {
+      "_pending_review": {},
+      "privacy": "Gizlilik",
+      "privacyDesc": "Profilini ve aktivitelerini kimin görebileceğini kontrol et",
+      "notifications": "Bildirimler",
+      "notificationsDesc": "Bildirim ayarlarını yönet",
+      "preferences": "Tercihler",
+      "preferencesDesc": "Dil, tema ve görüntüleme seçenekleri",
+      "connectedApps": "Bağlı Uygulamalar",
+      "connectedAppsDesc": "Entegrasyonları ve izinleri yönet",
+      "tenantRole": "Kiracı ve Rol",
+      "tenantRoleDesc": "Roller ve kiracılar arasında geçiş yap",
+      "billing": "Faturalandırma",
+      "billingDesc": "Abonelik ve ödeme bilgileri",
+      "support": "Destek",
+      "supportDesc": "Yardım, SSS ve iletişim seçenekleri"
+    },
+    "status": {
+      "_pending_review": {
+        "premium": true
+      },
+      "privacyStatus": "Gizlilik Durumu",
+      "subscription": "Abonelik",
+      "protected": "Korumalı",
+      "premium": "Premium",
+      "notificationsActive": "Bildirimler Aktif",
+      "connectedAppsCount": "Bağlı Uygulamalar",
+      "types": "tür",
+      "apps": "uygulama"
+    },
+    "vitanaOpenedSection": "Vitana {section} bölümünü açtı",
+    "vitanaUpdated": "Vitana ayarını güncelledi"
+  }
 }

@@ -1,38 +1,40 @@
 {
- "memoryActions": {
-  "_pending_review": {},
-  "title": "Hafıza Eylemleri",
-  "items": {
-   "recordVoiceDiary": {
+  "memoryActions": {
     "_pending_review": {},
-    "title": "Sesli Günlük Kaydet",
-    "description": "Düşüncelerini ve yansımalarını sesle yakala"
-   },
-   "addMemoryNote": {
-    "_pending_review": {},
-    "title": "Hafıza Notu Ekle",
-    "description": "Önemli sağlık anlarını yaz"
-   },
-   "viewTimeline": {
-    "_pending_review": {},
-    "title": "Zaman Çizelgesini Görüntüle",
-    "description": "Tüm wellness yolculuğunu gör"
-   },
-   "searchMemories": {
-    "_pending_review": {},
-    "title": "Anılarda Ara",
-    "description": "Belirli anları ve öngörüleri bul"
-   },
-   "photoMemory": {
-    "_pending_review": {},
-    "title": "Fotoğraf Anısı",
-    "description": "Yolculuğuna görsel anılar ekle"
-   },
-   "aiMemoryAnalysis": {
-    "_pending_review": {},
-    "title": "AI Hafıza Analizi",
-    "description": "Hafıza kalıplarından öngörüler al"
-   }
-  }
- }
+    "title": "Hafıza Eylemleri",
+    "items": {
+      "recordVoiceDiary": {
+        "_pending_review": {},
+        "title": "Sesli Günlük Kaydet",
+        "description": "Düşüncelerini ve yansımalarını sesle yakala"
+      },
+      "addMemoryNote": {
+        "_pending_review": {},
+        "title": "Hafıza Notu Ekle",
+        "description": "Önemli sağlık anlarını yaz"
+      },
+      "viewTimeline": {
+        "_pending_review": {},
+        "title": "Zaman Çizelgesini Görüntüle",
+        "description": "Tüm wellness yolculuğunu gör"
+      },
+      "searchMemories": {
+        "_pending_review": {},
+        "title": "Anılarda Ara",
+        "description": "Belirli anları ve öngörüleri bul"
+      },
+      "photoMemory": {
+        "_pending_review": {},
+        "title": "Fotoğraf Anısı",
+        "description": "Yolculuğuna görsel anılar ekle"
+      },
+      "aiMemoryAnalysis": {
+        "_pending_review": {},
+        "title": "AI Hafıza Analizi",
+        "description": "Hafıza kalıplarından öngörüler al"
+      },
+      "_pending_review": {}
+    }
+  },
+  "_pending_review": {}
 }

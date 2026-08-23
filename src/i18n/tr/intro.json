@@ -1,14 +1,15 @@
 {
- "intro": {
-  "_pending_review": {},
-  "welcomeTo": "VITANALAND'E HOŞ GELDİN",
-  "experience": "Deneyim",
-  "taglineMain": "Uzun Ömür Yolculuğuna Başla",
-  "taglineSub": "bizimle birlikte!",
-  "playWelcome": "Karşılamayı Oynat",
-  "preparing": "Hazırlanıyor...",
-  "playing": "Oynatılıyor",
-  "goToLogin": "Girişe Git",
-  "chooseLanguage": "Dil seç"
- }
+  "intro": {
+    "_pending_review": {},
+    "welcomeTo": "VITANALAND'E HOŞ GELDİN",
+    "experience": "Deneyim",
+    "taglineMain": "Uzun Ömür Yolculuğuna Başla",
+    "taglineSub": "bizimle birlikte!",
+    "playWelcome": "Karşılamayı Oynat",
+    "preparing": "Hazırlanıyor...",
+    "playing": "Oynatılıyor",
+    "goToLogin": "Girişe Git",
+    "chooseLanguage": "Dil seç"
+  },
+  "_pending_review": {}
 }

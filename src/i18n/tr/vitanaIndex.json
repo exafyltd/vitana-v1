@@ -1,39 +1,39 @@
 {
- "_pending_review": {},
- "vitanaIndex": {
   "_pending_review": {},
-  "title": "Vitana Sağlık Endeksi",
-  "subtitle": "Tüm sağlık sütunlarında Genel Wellness Dengesi",
-  "veryPoor": "Çok Kötü",
-  "poor": "Kötü",
-  "fair": "Orta",
-  "improving": "İyileşiyor",
-  "good": "İyi",
-  "excellent": "Mükemmel",
-  "sleep": "Uyku",
-  "exercise": "Egzersiz",
-  "nutrition": "Beslenme",
-  "hydration": "Sıvı Alımı",
-  "mental": "Zihinsel",
-  "viewFullReport": "Tam Raporu Görüntüle",
-  "trackToday": "Bugünü Kaydet",
-  "tiers": {
-   "_pending_review": {},
-   "starting": "Başlangıç",
-   "early": "Erken",
-   "building": "Gelişiyor",
-   "strong": "Güçlü",
-   "reallyGood": "Gerçekten iyi",
-   "elite": "Elit"
-  },
-  "framings": {
-   "_pending_review": {},
-   "starting": "Yeni başlıyor",
-   "early": "Başlangıç noktası belirlendi",
-   "building": "Alışkanlıklar oluşuyor",
-   "strong": "90 günlük kilometre taşı",
-   "reallyGood": "Gelişiyor",
-   "elite": "Elit"
+  "vitanaIndex": {
+    "_pending_review": {},
+    "title": "Vitana Sağlık Endeksi",
+    "subtitle": "Tüm sağlık sütunlarında Genel Wellness Dengesi",
+    "veryPoor": "Çok Kötü",
+    "poor": "Kötü",
+    "fair": "Orta",
+    "improving": "İyileşiyor",
+    "good": "İyi",
+    "excellent": "Mükemmel",
+    "sleep": "Uyku",
+    "exercise": "Egzersiz",
+    "nutrition": "Beslenme",
+    "hydration": "Sıvı Alımı",
+    "mental": "Zihinsel",
+    "viewFullReport": "Tam Raporu Görüntüle",
+    "trackToday": "Bugünü Kaydet",
+    "tiers": {
+      "_pending_review": {},
+      "starting": "Başlangıç",
+      "early": "Erken",
+      "building": "Gelişiyor",
+      "strong": "Güçlü",
+      "reallyGood": "Gerçekten iyi",
+      "elite": "Elit"
+    },
+    "framings": {
+      "_pending_review": {},
+      "starting": "Yeni başlıyor",
+      "early": "Başlangıç noktası belirlendi",
+      "building": "Alışkanlıklar oluşuyor",
+      "strong": "90 günlük kilometre taşı",
+      "reallyGood": "Gelişiyor",
+      "elite": "Elit"
+    }
   }
- }
 }

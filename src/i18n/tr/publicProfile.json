@@ -1,13 +1,14 @@
 {
- "publicProfile": {
-  "_pending_review": {},
-  "viewFull": "Tam Profili Görüntüle",
-  "sendMessage": "Mesaj",
-  "follow": "Takip Et",
-  "milestones": "Yaşam kilometre taşları",
-  "posts": "Gönderiler",
-  "followers": "Takipçiler",
-  "following": "Takip Edilenler",
-  "groups": "Gruplar"
- }
+  "publicProfile": {
+    "_pending_review": {},
+    "viewFull": "Tam Profili Görüntüle",
+    "sendMessage": "Mesaj",
+    "follow": "Takip Et",
+    "milestones": "Yaşam kilometre taşları",
+    "posts": "Gönderiler",
+    "followers": "Takipçiler",
+    "following": "Takip Edilenler",
+    "groups": "Gruplar"
+  },
+  "_pending_review": {}
 }

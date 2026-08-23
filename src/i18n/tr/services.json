@@ -1,35 +1,35 @@
 {
- "_pending_review": {},
- "services": {
   "_pending_review": {},
-  "title": "Hizmetler MERKEZİ",
-  "subtitle": "Kapsamlı sağlık ve wellness hizmetlerine eriş",
-  "categories": {
-   "_pending_review": {},
-   "preventive": "Önleyici Taramalar",
-   "labTests": "Laboratuvar Testleri",
-   "coaching": "Koçluk ve Kişisel Antrenörlük",
-   "groupPrograms": "Grup Programları ve Meydan Okumalar"
-  },
-  "actions": {
-   "_pending_review": {},
-   "book": "Randevu Al",
-   "addToPlan": "Plana Ekle",
-   "askAI": "AI'a Sor",
-   "joinRoom": "Odaya Katıl",
-   "setReminder": "Hatırlatıcı Kur"
-  },
-  "details": {
-   "_pending_review": {},
-   "duration": "Süre",
-   "price": "Fiyat",
-   "location": "Konum",
-   "nextAvailable": "Sonraki müsait zaman",
-   "whatsIncluded": "Nelerin Dahil Olduğu",
-   "healthBenefits": "Sağlık Faydaları",
-   "availableProviders": "Müsait Sağlayıcılar",
-   "requirements": "Gereksinimler ve Hazırlık",
-   "tags": "Etiketler"
+  "services": {
+    "_pending_review": {},
+    "title": "Hizmetler MERKEZİ",
+    "subtitle": "Kapsamlı sağlık ve wellness hizmetlerine eriş",
+    "categories": {
+      "_pending_review": {},
+      "preventive": "Önleyici Taramalar",
+      "labTests": "Laboratuvar Testleri",
+      "coaching": "Koçluk ve Kişisel Antrenörlük",
+      "groupPrograms": "Grup Programları ve Meydan Okumalar"
+    },
+    "actions": {
+      "_pending_review": {},
+      "book": "Randevu Al",
+      "addToPlan": "Plana Ekle",
+      "askAI": "AI'a Sor",
+      "joinRoom": "Odaya Katıl",
+      "setReminder": "Hatırlatıcı Kur"
+    },
+    "details": {
+      "_pending_review": {},
+      "duration": "Süre",
+      "price": "Fiyat",
+      "location": "Konum",
+      "nextAvailable": "Sonraki müsait zaman",
+      "whatsIncluded": "Nelerin Dahil Olduğu",
+      "healthBenefits": "Sağlık Faydaları",
+      "availableProviders": "Müsait Sağlayıcılar",
+      "requirements": "Gereksinimler ve Hazırlık",
+      "tags": "Etiketler"
+    }
   }
- }
 }

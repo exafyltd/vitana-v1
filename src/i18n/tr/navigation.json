@@ -1,24 +1,25 @@
 {
- "navigation": {
-  "_pending_review": {},
-  "navigatingTo": "Şuraya gidiliyor",
-  "hydrationTracker": "Su Tüketimi Takipçisi",
-  "sleepTracker": "Uyku Takipçisi",
-  "nutritionTracker": "Beslenme Takipçisi",
-  "workoutTracker": "Antrenman Takipçisi",
-  "biomarkers": "Biyobelirteçler",
-  "calendar": "Takvim",
-  "community": "Topluluk",
-  "groups": "Gruplar",
-  "messages": "Mesajlar",
-  "discover": "Keşfet",
-  "supplements": "Takviyeler",
-  "wallet": "Cüzdan",
-  "profile": "Profil",
-  "settings": "Ayarlar",
-  "diary": "Günlük",
-  "home": "Ana Sayfa",
-  "myJourney": "Yolculuğum",
-  "news": "Uzun Ömür Haberleri"
- }
+  "navigation": {
+    "_pending_review": {},
+    "navigatingTo": "Şuraya gidiliyor",
+    "hydrationTracker": "Su Tüketimi Takipçisi",
+    "sleepTracker": "Uyku Takipçisi",
+    "nutritionTracker": "Beslenme Takipçisi",
+    "workoutTracker": "Antrenman Takipçisi",
+    "biomarkers": "Biyobelirteçler",
+    "calendar": "Takvim",
+    "community": "Topluluk",
+    "groups": "Gruplar",
+    "messages": "Mesajlar",
+    "discover": "Keşfet",
+    "supplements": "Takviyeler",
+    "wallet": "Cüzdan",
+    "profile": "Profil",
+    "settings": "Ayarlar",
+    "diary": "Günlük",
+    "home": "Ana Sayfa",
+    "myJourney": "Yolculuğum",
+    "news": "Uzun Ömür Haberleri"
+  },
+  "_pending_review": {}
 }

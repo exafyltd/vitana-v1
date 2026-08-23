@@ -1,17 +1,17 @@
 {
- "_pending_review": {},
- "tableHeaders": {
   "_pending_review": {},
-  "groupName": "Grup Adı",
-  "category": "Kategori",
-  "members": "Üyeler",
-  "privacy": "Gizlilik",
-  "status": "Durum",
-  "actions": "İşlemler",
-  "name": "Ad",
-  "role": "Rol",
-  "email": "E-posta",
-  "date": "Tarih",
-  "amount": "Tutar"
- }
+  "tableHeaders": {
+    "_pending_review": {},
+    "groupName": "Grup Adı",
+    "category": "Kategori",
+    "members": "Üyeler",
+    "privacy": "Gizlilik",
+    "status": "Durum",
+    "actions": "İşlemler",
+    "name": "Ad",
+    "role": "Rol",
+    "email": "E-posta",
+    "date": "Tarih",
+    "amount": "Tutar"
+  }
 }

@@ -1,11 +1,12 @@
 {
- "groupMembership": {
-  "_pending_review": {},
-  "joined": "Katıldın! 🎉",
-  "joinedDesc": "Artık bu grubun bir üyesisin.",
-  "left": "Gruptan ayrıldın",
-  "leftDesc": "Bu gruptan ayrıldın.",
-  "errorJoin": "Gruba katılamadı. Lütfen tekrar dene.",
-  "errorLeave": "Gruptan ayrılamadı. Lütfen tekrar dene."
- }
+  "groupMembership": {
+    "_pending_review": {},
+    "joined": "Katıldın! 🎉",
+    "joinedDesc": "Artık bu grubun bir üyesisin.",
+    "left": "Gruptan ayrıldın",
+    "leftDesc": "Bu gruptan ayrıldın.",
+    "errorJoin": "Gruba katılamadı. Lütfen tekrar dene.",
+    "errorLeave": "Gruptan ayrılamadı. Lütfen tekrar dene."
+  },
+  "_pending_review": {}
 }

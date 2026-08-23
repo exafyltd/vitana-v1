@@ -1,7 +1,8 @@
 {
- "follow": {
-  "_pending_review": {},
-  "noFollowers": "Henüz takipçi yok",
-  "noFollowing": "Henüz kimseyi takip etmiyorsun"
- }
+  "follow": {
+    "_pending_review": {},
+    "noFollowers": "Henüz takipçi yok",
+    "noFollowing": "Henüz kimseyi takip etmiyorsun"
+  },
+  "_pending_review": {}
 }

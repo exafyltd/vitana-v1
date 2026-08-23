@@ -1,12 +1,13 @@
 {
- "mobileNav": {
-  "_pending_review": {},
-  "news": "Haberler",
-  "inbox": "Gelen Kutusu",
-  "events": "Etkinlikler",
-  "business": "İş",
-  "live": "Canlı",
-  "media": "Medya",
-  "myJourney": "Yolculuk"
- }
+  "mobileNav": {
+    "_pending_review": {},
+    "news": "Haberler",
+    "inbox": "Gelen Kutusu",
+    "events": "Etkinlikler",
+    "business": "İş",
+    "live": "Canlı",
+    "media": "Medya",
+    "myJourney": "Yolculuk"
+  },
+  "_pending_review": {}
 }

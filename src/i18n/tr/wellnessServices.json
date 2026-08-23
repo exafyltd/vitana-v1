@@ -1,7 +1,7 @@
 {
- "_pending_review": {},
- "wellnessServices": {
   "_pending_review": {},
-  "searchPlaceholder": "Hizmetlerde, sağlayıcılarda veya programlarda ara..."
- }
+  "wellnessServices": {
+    "_pending_review": {},
+    "searchPlaceholder": "Hizmetlerde, sağlayıcılarda veya programlarda ara..."
+  }
 }

@@ -1,22 +1,23 @@
 {
- "calendarPopup": {
-  "_pending_review": {},
-  "title": "Takvim",
-  "nextEvents": "Sıradaki {count} Etkinlik",
-  "conflicts": "{count} Çakışma",
-  "upcomingSchedule": "Yaklaşan programın ve randevuların",
-  "addNewEvent": "Yeni Etkinlik Ekle",
-  "noUpcomingEvents": "Yaklaşan etkinlik yok",
-  "createFirstEvent": "İlk randevunu oluştur",
-  "aiSuggestions": "AI Önerileri",
-  "findBetterSlot": "Daha iyi zaman bul",
-  "prepareBrief": "Özet hazırla",
-  "shareAvailability": "Müsaitliğini paylaş",
-  "syncExternal": "Harici Senkronizasyon",
-  "addEvent": "Etkinlik Ekle",
-  "quickAdd": "Hızlı Ekle",
-  "eventFormComingSoon": "Etkinlik oluşturma formu yakında geliyor",
-  "externalSync": "Harici Senkronizasyon",
-  "connectingCalendars": "Harici takvimlerle bağlanılıyor..."
- }
+  "calendarPopup": {
+    "_pending_review": {},
+    "title": "Takvim",
+    "nextEvents": "Sıradaki {count} Etkinlik",
+    "conflicts": "{count} Çakışma",
+    "upcomingSchedule": "Yaklaşan programın ve randevuların",
+    "addNewEvent": "Yeni Etkinlik Ekle",
+    "noUpcomingEvents": "Yaklaşan etkinlik yok",
+    "createFirstEvent": "İlk randevunu oluştur",
+    "aiSuggestions": "AI Önerileri",
+    "findBetterSlot": "Daha iyi zaman bul",
+    "prepareBrief": "Özet hazırla",
+    "shareAvailability": "Müsaitliğini paylaş",
+    "syncExternal": "Harici Senkronizasyon",
+    "addEvent": "Etkinlik Ekle",
+    "quickAdd": "Hızlı Ekle",
+    "eventFormComingSoon": "Etkinlik oluşturma formu yakında geliyor",
+    "externalSync": "Harici Senkronizasyon",
+    "connectingCalendars": "Harici takvimlerle bağlanılıyor..."
+  },
+  "_pending_review": {}
 }

@@ -1,8 +1,9 @@
 {
- "logout": {
-  "_pending_review": {},
-  "signingOut": "Çıkış yapılıyor...",
-  "signedOut": "Başarıyla çıkış yapıldı",
-  "redirecting": "Yönlendiriliyor..."
- }
+  "logout": {
+    "_pending_review": {},
+    "signingOut": "Çıkış yapılıyor...",
+    "signedOut": "Başarıyla çıkış yapıldı",
+    "redirecting": "Yönlendiriliyor..."
+  },
+  "_pending_review": {}
 }

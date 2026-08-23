@@ -1,79 +1,79 @@
 {
- "_pending_review": {},
- "support": {
   "_pending_review": {},
-  "maxina": {
-   "_pending_review": {},
-   "title": "Maxina Destek",
-   "subtitle": "Sana bugün nasıl yardımcı olabiliriz?",
-   "description": "Sık sorulan sorulara yanıt bul veya destek ekibimizle iletişime geç.",
-   "categoriesTitle": "Yardım Konularına Göz At",
-   "categories": {
+  "support": {
     "_pending_review": {},
-    "gettingStarted": "Başlarken",
-    "account": "Hesap ve Profil",
-    "events": "Etkinlikler ve Buluşmalar",
-    "payments": "Ödemeler ve Faturalandırma",
-    "technical": "Teknik Yardım"
-   },
-   "faq": {
-    "_pending_review": {},
-    "title": "Sık Sorulan Sorular",
-    "createAccount": {
-     "_pending_review": {},
-     "question": "Maxina hesabı nasıl oluştururum?",
-     "answer": "Maxina uygulamasını indir veya vitanaland.com/maxina adresindeki portalımızı ziyaret et. 'Kayıt Ol'a dokun ve e-posta adresini gir. Hesabını doğrulamak için bir onay e-postası alacaksın. Onaydan sonra wellness etkinliklerini ve topluluk özelliklerini keşfetmek için profilini tamamla."
-    },
-    "resetPassword": {
-     "_pending_review": {},
-     "question": "Şifremi nasıl sıfırlarım?",
-     "answer": "Giriş ekranında 'Şifremi Unuttum'a dokun ve kayıtlı e-posta adresini gir. Birkaç dakika içinde bir şifre sıfırlama bağlantısı alacaksın. E-postayı görmüyorsan spam klasörünü kontrol et. Güvenlik nedeniyle bağlantı 24 saat sonra geçerliliğini yitirir."
-    },
-    "joinEvents": {
-     "_pending_review": {},
-     "question": "Etkinliklere ve buluşmalara nasıl katılırım?",
-     "answer": "Etkinlikler ve Buluşmalar bölümünde mevcut etkinliklere göz at. Tarih, konum ve fiyat gibi ayrıntıları görmek için bir etkinliğe dokun. Ücretsiz etkinlikler için sadece 'Katıl' veya 'RSVP'ye dokun. Ücretli etkinlikler için entegre ödeme sistemimiz üzerinden güvenli bir şekilde bilet satın alabilirsin."
-    },
-    "updateProfile": {
-     "_pending_review": {},
-     "question": "Profil bilgilerimi nasıl güncellerim?",
-     "answer": "Profil sekmene git ve Düzenle simgesine veya 'Profili Düzenle'ye dokun. Görünen adını, biyografini, profil fotoğrafını ve wellness ilgi alanlarını güncelleyebilirsin. Değişiklikler otomatik olarak kaydedilir. Profilin, senin için etkinlik önerilerini kişiselleştirmemize yardımcı olur."
-    },
-    "deleteAccount": {
-     "_pending_review": {},
-     "question": "Hesabımı nasıl silebilirim?",
-     "answer": "Maxina hesabını ve ilişkili verilerini silmek için lütfen support@exafy.io adresine 'Hesap Silme – Maxina' konu başlığıyla bir e-posta gönder. Hesabına bağlı e-posta adresini belirt. Silme taleplerini 30 gün içinde işleme alıyoruz."
-    },
-    "paymentMethods": {
-     "_pending_review": {},
-     "question": "Hangi ödeme yöntemleri kabul ediliyor?",
-     "answer": "Güvenli Stripe ödeme entegrasyonumuz aracılığıyla başlıca kredi ve banka kartlarını (Visa, Mastercard, American Express) kabul ediyoruz. Desteklenen cihazlarda Apple Pay ve Google Pay da kullanılabilir. Tüm işlemler şifrelenir ve PCI-DSS uyumludur."
-    },
-    "contactOrganizers": {
-     "_pending_review": {},
-     "question": "Etkinlik organizatörleriyle nasıl iletişime geçerim?",
-     "answer": "Her etkinlik sayfasında organizatörün profilini bulacaksın. Profili görüntülemek ve mesajlaşma seçeneklerine erişmek için isme dokun. Belirli etkinliklerle ilgili sorular için etkinliğin Soru-Cevap bölümünü kullan veya organizatörle uygulama içi mesajlaşma yoluyla doğrudan iletişime geç."
-    },
-    "dataSecure": {
-     "_pending_review": {},
-     "question": "Kişisel verilerim güvende mi?",
-     "answer": "Evet, gizliliğin ve güvenliğin en büyük önceliğimiz. Endüstri standardı şifreleme, güvenli kimlik doğrulama kullanıyoruz ve GDPR yönergelerine uyuyoruz. Kişisel verilerini senin onayın olmadan asla üçüncü taraflarla paylaşmıyoruz. Daha fazla ayrıntı için tam gizlilik politikamızı oku."
+    "maxina": {
+      "_pending_review": {},
+      "title": "Maxina Destek",
+      "subtitle": "Sana bugün nasıl yardımcı olabiliriz?",
+      "description": "Sık sorulan sorulara yanıt bul veya destek ekibimizle iletişime geç.",
+      "categoriesTitle": "Yardım Konularına Göz At",
+      "categories": {
+        "_pending_review": {},
+        "gettingStarted": "Başlarken",
+        "account": "Hesap ve Profil",
+        "events": "Etkinlikler ve Buluşmalar",
+        "payments": "Ödemeler ve Faturalandırma",
+        "technical": "Teknik Yardım"
+      },
+      "faq": {
+        "_pending_review": {},
+        "title": "Sık Sorulan Sorular",
+        "createAccount": {
+          "_pending_review": {},
+          "question": "Maxina hesabı nasıl oluştururum?",
+          "answer": "Maxina uygulamasını indir veya vitanaland.com/maxina adresindeki portalımızı ziyaret et. 'Kayıt Ol'a dokun ve e-posta adresini gir. Hesabını doğrulamak için bir onay e-postası alacaksın. Onaydan sonra wellness etkinliklerini ve topluluk özelliklerini keşfetmek için profilini tamamla."
+        },
+        "resetPassword": {
+          "_pending_review": {},
+          "question": "Şifremi nasıl sıfırlarım?",
+          "answer": "Giriş ekranında 'Şifremi Unuttum'a dokun ve kayıtlı e-posta adresini gir. Birkaç dakika içinde bir şifre sıfırlama bağlantısı alacaksın. E-postayı görmüyorsan spam klasörünü kontrol et. Güvenlik nedeniyle bağlantı 24 saat sonra geçerliliğini yitirir."
+        },
+        "joinEvents": {
+          "_pending_review": {},
+          "question": "Etkinliklere ve buluşmalara nasıl katılırım?",
+          "answer": "Etkinlikler ve Buluşmalar bölümünde mevcut etkinliklere göz at. Tarih, konum ve fiyat gibi ayrıntıları görmek için bir etkinliğe dokun. Ücretsiz etkinlikler için sadece 'Katıl' veya 'RSVP'ye dokun. Ücretli etkinlikler için entegre ödeme sistemimiz üzerinden güvenli bir şekilde bilet satın alabilirsin."
+        },
+        "updateProfile": {
+          "_pending_review": {},
+          "question": "Profil bilgilerimi nasıl güncellerim?",
+          "answer": "Profil sekmene git ve Düzenle simgesine veya 'Profili Düzenle'ye dokun. Görünen adını, biyografini, profil fotoğrafını ve wellness ilgi alanlarını güncelleyebilirsin. Değişiklikler otomatik olarak kaydedilir. Profilin, senin için etkinlik önerilerini kişiselleştirmemize yardımcı olur."
+        },
+        "deleteAccount": {
+          "_pending_review": {},
+          "question": "Hesabımı nasıl silebilirim?",
+          "answer": "Maxina hesabını ve ilişkili verilerini silmek için lütfen support@exafy.io adresine 'Hesap Silme – Maxina' konu başlığıyla bir e-posta gönder. Hesabına bağlı e-posta adresini belirt. Silme taleplerini 30 gün içinde işleme alıyoruz."
+        },
+        "paymentMethods": {
+          "_pending_review": {},
+          "question": "Hangi ödeme yöntemleri kabul ediliyor?",
+          "answer": "Güvenli Stripe ödeme entegrasyonumuz aracılığıyla başlıca kredi ve banka kartlarını (Visa, Mastercard, American Express) kabul ediyoruz. Desteklenen cihazlarda Apple Pay ve Google Pay da kullanılabilir. Tüm işlemler şifrelenir ve PCI-DSS uyumludur."
+        },
+        "contactOrganizers": {
+          "_pending_review": {},
+          "question": "Etkinlik organizatörleriyle nasıl iletişime geçerim?",
+          "answer": "Her etkinlik sayfasında organizatörün profilini bulacaksın. Profili görüntülemek ve mesajlaşma seçeneklerine erişmek için isme dokun. Belirli etkinliklerle ilgili sorular için etkinliğin Soru-Cevap bölümünü kullan veya organizatörle uygulama içi mesajlaşma yoluyla doğrudan iletişime geç."
+        },
+        "dataSecure": {
+          "_pending_review": {},
+          "question": "Kişisel verilerim güvende mi?",
+          "answer": "Evet, gizliliğin ve güvenliğin en büyük önceliğimiz. Endüstri standardı şifreleme, güvenli kimlik doğrulama kullanıyoruz ve GDPR yönergelerine uyuyoruz. Kişisel verilerini senin onayın olmadan asla üçüncü taraflarla paylaşmıyoruz. Daha fazla ayrıntı için tam gizlilik politikamızı oku."
+        }
+      },
+      "contact": {
+        "_pending_review": {},
+        "title": "Destekle İletişime Geç",
+        "email": "Bize E-posta Gönder",
+        "responseTime": "Genellikle 24 saat içinde yanıt veriyoruz"
+      },
+      "usefulLinks": {
+        "_pending_review": {},
+        "title": "Faydalı Bağlantılar",
+        "privacy": "Gizlilik Politikası",
+        "deleteAccount": "Hesabı Sil",
+        "portal": "Maxina Portalına Dön"
+      },
+      "footer": "Tüm hakları saklıdır."
     }
-   },
-   "contact": {
-    "_pending_review": {},
-    "title": "Destekle İletişime Geç",
-    "email": "Bize E-posta Gönder",
-    "responseTime": "Genellikle 24 saat içinde yanıt veriyoruz"
-   },
-   "usefulLinks": {
-    "_pending_review": {},
-    "title": "Faydalı Bağlantılar",
-    "privacy": "Gizlilik Politikası",
-    "deleteAccount": "Hesabı Sil",
-    "portal": "Maxina Portalına Dön"
-   },
-   "footer": "Tüm hakları saklıdır."
   }
- }
 }

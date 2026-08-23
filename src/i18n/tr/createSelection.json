@@ -1,11 +1,12 @@
 {
- "createSelection": {
-  "_pending_review": {},
-  "title": "Yeni Oluştur",
-  "description": "Oluşturmak istediğin etkinlik türünü seç",
-  "event": "Etkinlik",
-  "eventDescription": "Planlı zamanlar ve yapılandırılmış programlarla resmi buluşmalar",
-  "meetup": "Buluşma",
-  "meetupDescription": "Ağ kurma ve topluluk oluşturma için gündelik buluşmalar"
- }
+  "createSelection": {
+    "_pending_review": {},
+    "title": "Yeni Oluştur",
+    "description": "Oluşturmak istediğin etkinlik türünü seç",
+    "event": "Etkinlik",
+    "eventDescription": "Planlı zamanlar ve yapılandırılmış programlarla resmi buluşmalar",
+    "meetup": "Buluşma",
+    "meetupDescription": "Ağ kurma ve topluluk oluşturma için gündelik buluşmalar"
+  },
+  "_pending_review": {}
 }

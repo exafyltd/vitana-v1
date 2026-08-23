@@ -1,56 +1,57 @@
 {
- "connectedApps": {
-  "_pending_review": {},
-  "title": "Bağlı Uygulamalar",
-  "description": "Bağlı cihazlarını ve hizmetlerini yönet",
-  "searchPlaceholder": "Uygulama ara...",
-  "addApp": "Uygulama Ekle",
-  "connected": "bağlı",
-  "syncing": "Senkronize Ediliyor",
-  "sections": {
-   "_pending_review": {},
-   "social": "Sosyal & Paylaşım",
-   "fitness": "Fitness & Giyilebilirler",
-   "health": "Sağlık & Laboratuvar",
-   "other": "Diğer"
-  },
-  "status": {
-   "_pending_review": {},
-   "connected": "Bağlı",
-   "notConnected": "Bağlı değil",
-   "comingSoon": "Yakında",
-   "soon": "Yakında"
-  },
-  "actions": {
-   "_pending_review": {},
-   "connect": "Bağlan",
-   "disconnect": "Bağlantıyı Kes",
-   "configure": "Senkronizasyonu Yapılandır",
-   "manage": "Yönet"
-  },
-  "lastSync": "Son Senkronizasyon",
-  "dataSync": "Veri Senkronizasyonu",
-  "comingSoonMessage": "{appName} entegrasyonu yakında geliyor",
-  "popup": {
-   "_pending_review": {},
-   "title": "Uygulama & Hizmet Bağla",
-   "searchPlaceholder": "Uygulama ve hizmet ara...",
-   "categories": {
+  "connectedApps": {
     "_pending_review": {},
-    "all": "Tüm Uygulamalar",
-    "health": "Sağlık & Fitness",
-    "social": "Sosyal"
-   },
-   "availableApps": "Kullanılabilir Uygulamalar",
-   "verified": "Doğrulandı",
-   "connected": "Bağlı",
-   "settings": "Ayarlar",
-   "disconnect": "Bağlantıyı Kes",
-   "connect": "Bağlan",
-   "done": "Bitti",
-   "noResults": "Uygulama bulunamadı",
-   "connectionSuccess": "Bağlantı başarılı",
-   "connectionPlaceholder": "{appName} bağlantısı yakında geliyor"
-  }
- }
+    "title": "Bağlı Uygulamalar",
+    "description": "Bağlı cihazlarını ve hizmetlerini yönet",
+    "searchPlaceholder": "Uygulama ara...",
+    "addApp": "Uygulama Ekle",
+    "connected": "bağlı",
+    "syncing": "Senkronize Ediliyor",
+    "sections": {
+      "_pending_review": {},
+      "social": "Sosyal & Paylaşım",
+      "fitness": "Fitness & Giyilebilirler",
+      "health": "Sağlık & Laboratuvar",
+      "other": "Diğer"
+    },
+    "status": {
+      "_pending_review": {},
+      "connected": "Bağlı",
+      "notConnected": "Bağlı değil",
+      "comingSoon": "Yakında",
+      "soon": "Yakında"
+    },
+    "actions": {
+      "_pending_review": {},
+      "connect": "Bağlan",
+      "disconnect": "Bağlantıyı Kes",
+      "configure": "Senkronizasyonu Yapılandır",
+      "manage": "Yönet"
+    },
+    "lastSync": "Son Senkronizasyon",
+    "dataSync": "Veri Senkronizasyonu",
+    "comingSoonMessage": "{appName} entegrasyonu yakında geliyor",
+    "popup": {
+      "_pending_review": {},
+      "title": "Uygulama & Hizmet Bağla",
+      "searchPlaceholder": "Uygulama ve hizmet ara...",
+      "categories": {
+        "_pending_review": {},
+        "all": "Tüm Uygulamalar",
+        "health": "Sağlık & Fitness",
+        "social": "Sosyal"
+      },
+      "availableApps": "Kullanılabilir Uygulamalar",
+      "verified": "Doğrulandı",
+      "connected": "Bağlı",
+      "settings": "Ayarlar",
+      "disconnect": "Bağlantıyı Kes",
+      "connect": "Bağlan",
+      "done": "Bitti",
+      "noResults": "Uygulama bulunamadı",
+      "connectionSuccess": "Bağlantı başarılı",
+      "connectionPlaceholder": "{appName} bağlantısı yakında geliyor"
+    }
+  },
+  "_pending_review": {}
 }

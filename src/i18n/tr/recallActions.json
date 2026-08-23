@@ -1,48 +1,50 @@
 {
- "recallActions": {
-  "_pending_review": {},
-  "title": "Hatırlatıcı Arama ve Getirme İşlemleri",
-  "items": {
-   "askAiQuestion": {
+  "recallActions": {
     "_pending_review": {},
-    "title": "AI'a Soru Sor",
-    "description": "Anılarını doğal dil AI aramasıyla sorgula"
-   },
-   "advancedSearch": {
-    "_pending_review": {},
-    "title": "Gelişmiş Arama",
-    "description": "Anıları bulmak için filtreler, etiketler ve tarih aralıkları kullan"
-   },
-   "patternAnalysis": {
-    "_pending_review": {},
-    "title": "Örüntü Analizi",
-    "description": "Wellness verilerindeki eğilimleri ve örüntüleri keşfet"
-   },
-   "memoryInsights": {
-    "_pending_review": {},
-    "title": "Hafıza İçgörüleri",
-    "description": "Sağlık yolculuğundan AI destekli içgörüler edin"
-   },
-   "searchByDate": {
-    "_pending_review": {},
-    "title": "Tarihe Göre Ara",
-    "description": "Belirli zaman dilimlerindeki anılara göz at"
-   },
-   "locationMemories": {
-    "_pending_review": {},
-    "title": "Konum Anıları",
-    "description": "Ziyaret edilen yerlere ve konumlara göre girişleri bul"
-   },
-   "filterByCategory": {
-    "_pending_review": {},
-    "title": "Kategoriye Göre Filtrele",
-    "description": "Anılara wellness sütunlarına ve kategorilere göre göz at"
-   },
-   "quickRecalls": {
-    "_pending_review": {},
-    "title": "Hızlı Hatırlatmalar",
-    "description": "Sık aranan anılara ve sorgulara eriş"
-   }
-  }
- }
+    "title": "Hatırlatıcı Arama ve Getirme İşlemleri",
+    "items": {
+      "askAiQuestion": {
+        "_pending_review": {},
+        "title": "AI'a Soru Sor",
+        "description": "Anılarını doğal dil AI aramasıyla sorgula"
+      },
+      "advancedSearch": {
+        "_pending_review": {},
+        "title": "Gelişmiş Arama",
+        "description": "Anıları bulmak için filtreler, etiketler ve tarih aralıkları kullan"
+      },
+      "patternAnalysis": {
+        "_pending_review": {},
+        "title": "Örüntü Analizi",
+        "description": "Wellness verilerindeki eğilimleri ve örüntüleri keşfet"
+      },
+      "memoryInsights": {
+        "_pending_review": {},
+        "title": "Hafıza İçgörüleri",
+        "description": "Sağlık yolculuğundan AI destekli içgörüler edin"
+      },
+      "searchByDate": {
+        "_pending_review": {},
+        "title": "Tarihe Göre Ara",
+        "description": "Belirli zaman dilimlerindeki anılara göz at"
+      },
+      "locationMemories": {
+        "_pending_review": {},
+        "title": "Konum Anıları",
+        "description": "Ziyaret edilen yerlere ve konumlara göre girişleri bul"
+      },
+      "filterByCategory": {
+        "_pending_review": {},
+        "title": "Kategoriye Göre Filtrele",
+        "description": "Anılara wellness sütunlarına ve kategorilere göre göz at"
+      },
+      "quickRecalls": {
+        "_pending_review": {},
+        "title": "Hızlı Hatırlatmalar",
+        "description": "Sık aranan anılara ve sorgulara eriş"
+      },
+      "_pending_review": {}
+    }
+  },
+  "_pending_review": {}
 }

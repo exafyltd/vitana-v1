@@ -1,10 +1,11 @@
 {
- "profileGroups": {
-  "_pending_review": {},
-  "emptyTitle": "Henüz grup yok",
-  "emptyDescription": "İlgi alanlarına uygun topluluklara katıl",
-  "discoverCta": "Grupları keşfet",
-  "viewAllCta": "Tüm grupları görüntüle",
-  "membersLabel": "üye"
- }
+  "profileGroups": {
+    "_pending_review": {},
+    "emptyTitle": "Henüz grup yok",
+    "emptyDescription": "İlgi alanlarına uygun topluluklara katıl",
+    "discoverCta": "Grupları keşfet",
+    "viewAllCta": "Tüm grupları görüntüle",
+    "membersLabel": "üye"
+  },
+  "_pending_review": {}
 }

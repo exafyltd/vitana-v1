@@ -1,50 +1,50 @@
 {
- "_pending_review": {},
- "timelineActions": {
   "_pending_review": {},
-  "title": "Zaman Çizelgesi İşlemleri",
-  "items": {
-   "_pending_review": {},
-   "logHealthEvent": {
+  "timelineActions": {
     "_pending_review": {},
-    "title": "Sağlık Olayı Kaydet",
-    "description": "Önemli sağlık kilometre taşlarını kaydet"
-   },
-   "markAchievement": {
-    "_pending_review": {},
-    "title": "Başarıyı İşaretle",
-    "description": "Ulaşılan wellness hedeflerini kutla"
-   },
-   "recordLifeMoment": {
-    "_pending_review": {},
-    "title": "Yaşam Anını Kaydet",
-    "description": "Anlamlı deneyimleri yakala"
-   },
-   "addPhotoMemory": {
-    "_pending_review": {},
-    "title": "Fotoğraf Anısı Ekle",
-    "description": "Sağlık fotoğraflarıyla görsel zaman çizelgesi"
-   },
-   "voiceTimelineEntry": {
-    "_pending_review": {},
-    "title": "Sesli Zaman Çizelgesi Girişi",
-    "description": "Hızlı sesli sağlık güncellemeleri"
-   },
-   "trackProgress": {
-    "_pending_review": {},
-    "title": "İlerlemeyi Takip Et",
-    "description": "Wellness metriklerini ve eğilimlerini kaydet"
-   },
-   "activityCheckIn": {
-    "_pending_review": {},
-    "title": "Aktivite Check-in",
-    "description": "Antrenmanları ve aktiviteleri kaydet"
-   },
-   "setTimelineGoal": {
-    "_pending_review": {},
-    "title": "Zaman Çizelgesi Hedefi Belirle",
-    "description": "Gelecekteki sağlık hedefleri oluştur"
-   }
+    "title": "Zaman Çizelgesi İşlemleri",
+    "items": {
+      "_pending_review": {},
+      "logHealthEvent": {
+        "_pending_review": {},
+        "title": "Sağlık Olayı Kaydet",
+        "description": "Önemli sağlık kilometre taşlarını kaydet"
+      },
+      "markAchievement": {
+        "_pending_review": {},
+        "title": "Başarıyı İşaretle",
+        "description": "Ulaşılan wellness hedeflerini kutla"
+      },
+      "recordLifeMoment": {
+        "_pending_review": {},
+        "title": "Yaşam Anını Kaydet",
+        "description": "Anlamlı deneyimleri yakala"
+      },
+      "addPhotoMemory": {
+        "_pending_review": {},
+        "title": "Fotoğraf Anısı Ekle",
+        "description": "Sağlık fotoğraflarıyla görsel zaman çizelgesi"
+      },
+      "voiceTimelineEntry": {
+        "_pending_review": {},
+        "title": "Sesli Zaman Çizelgesi Girişi",
+        "description": "Hızlı sesli sağlık güncellemeleri"
+      },
+      "trackProgress": {
+        "_pending_review": {},
+        "title": "İlerlemeyi Takip Et",
+        "description": "Wellness metriklerini ve eğilimlerini kaydet"
+      },
+      "activityCheckIn": {
+        "_pending_review": {},
+        "title": "Aktivite Check-in",
+        "description": "Antrenmanları ve aktiviteleri kaydet"
+      },
+      "setTimelineGoal": {
+        "_pending_review": {},
+        "title": "Zaman Çizelgesi Hedefi Belirle",
+        "description": "Gelecekteki sağlık hedefleri oluştur"
+      }
+    }
   }
- }
 }

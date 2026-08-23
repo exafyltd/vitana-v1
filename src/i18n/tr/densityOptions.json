@@ -1,8 +1,9 @@
 {
- "densityOptions": {
-  "_pending_review": {},
-  "cozy": "Rahat",
-  "compact": "Kompakt",
-  "gallery": "Galeri"
- }
+  "densityOptions": {
+    "_pending_review": {},
+    "cozy": "Rahat",
+    "compact": "Kompakt",
+    "gallery": "Galeri"
+  },
+  "_pending_review": {}
 }

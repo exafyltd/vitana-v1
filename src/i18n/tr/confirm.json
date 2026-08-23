@@ -1,21 +1,22 @@
 {
- "confirm": {
-  "_pending_review": {},
-  "delete": "Bunu silmek istediğinden emin misin?",
-  "deleteDesc": "Bu işlem geri alınamaz.",
-  "cancel": "İptal etmek istediğinden emin misin?",
-  "cancelDesc": "Değişikliklerin kaybolacak.",
-  "unsavedChanges": "Kaydedilmemiş değişikliklerin var",
-  "unsavedChangesDesc": "Gerçekten çıkmak istiyor musun? Değişikliklerin kaybolacak.",
-  "leave": "Bu sayfadan gerçekten çıkmak istiyor musun?",
-  "leaveDesc": "Kaydedilmemiş değişiklikler kaybolacak.",
-  "logout": "Gerçekten çıkış yapmak istiyor musun?",
-  "logoutDesc": "Tekrar giriş yapman gerekecek.",
-  "remove": "Bu öğeyi gerçekten kaldırmak istiyor musun?",
-  "removeDesc": "Öğe listeden kaldırılacak.",
-  "disconnect": "Bu bağlantıyı gerçekten kesmek istiyor musun?",
-  "disconnectDesc": "Daha sonra yeniden bağlanabilirsin.",
-  "proceed": "Devam etmek istiyor musun?",
-  "proceedDesc": "Bu işlem gerçekleştirilecek."
- }
+  "confirm": {
+    "_pending_review": {},
+    "delete": "Bunu silmek istediğinden emin misin?",
+    "deleteDesc": "Bu işlem geri alınamaz.",
+    "cancel": "İptal etmek istediğinden emin misin?",
+    "cancelDesc": "Değişikliklerin kaybolacak.",
+    "unsavedChanges": "Kaydedilmemiş değişikliklerin var",
+    "unsavedChangesDesc": "Gerçekten çıkmak istiyor musun? Değişikliklerin kaybolacak.",
+    "leave": "Bu sayfadan gerçekten çıkmak istiyor musun?",
+    "leaveDesc": "Kaydedilmemiş değişiklikler kaybolacak.",
+    "logout": "Gerçekten çıkış yapmak istiyor musun?",
+    "logoutDesc": "Tekrar giriş yapman gerekecek.",
+    "remove": "Bu öğeyi gerçekten kaldırmak istiyor musun?",
+    "removeDesc": "Öğe listeden kaldırılacak.",
+    "disconnect": "Bu bağlantıyı gerçekten kesmek istiyor musun?",
+    "disconnectDesc": "Daha sonra yeniden bağlanabilirsin.",
+    "proceed": "Devam etmek istiyor musun?",
+    "proceedDesc": "Bu işlem gerçekleştirilecek."
+  },
+  "_pending_review": {}
 }

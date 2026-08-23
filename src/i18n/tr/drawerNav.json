@@ -1,22 +1,23 @@
 {
- "drawerNav": {
-  "_pending_review": {},
-  "journey": "Yolculuğum",
-  "news": "Haberler",
-  "events": "Etkinlikler & Buluşmalar",
-  "findPartner": "Eşleşme Bul",
-  "live": "Canlı Odalar",
-  "media": "Medya MERKEZİ",
-  "business": "İş MERKEZİ",
-  "discover": "Keşfet",
-  "orders": "Siparişler",
-  "wallet": "Cüzdan",
-  "health": "Sağlık",
-  "diary": "Günlük Yazı",
-  "connectors": "Bağlayıcılar",
-  "inbox": "Gelen Kutusu",
-  "support": "Destek",
-  "settings": "Ayarlar",
-  "logout": "Çıkış Yap"
- }
+  "drawerNav": {
+    "_pending_review": {},
+    "journey": "Yolculuğum",
+    "news": "Haberler",
+    "events": "Etkinlikler & Buluşmalar",
+    "findPartner": "Eşleşme Bul",
+    "live": "Canlı Odalar",
+    "media": "Medya MERKEZİ",
+    "business": "İş MERKEZİ",
+    "discover": "Keşfet",
+    "orders": "Siparişler",
+    "wallet": "Cüzdan",
+    "health": "Sağlık",
+    "diary": "Günlük Yazı",
+    "connectors": "Bağlayıcılar",
+    "inbox": "Gelen Kutusu",
+    "support": "Destek",
+    "settings": "Ayarlar",
+    "logout": "Çıkış Yap"
+  },
+  "_pending_review": {}
 }

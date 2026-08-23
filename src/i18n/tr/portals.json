@@ -1,47 +1,49 @@
 {
- "portals": {
-  "maxina": {
-   "_pending_review": {},
-   "title": "Maxina Sağlık Platformu",
-   "welcomeBack": "Maxina'ya tekrar hoş geldin.",
-   "continueJourney": "Yolculuğuna devam etmek için giriş yap.",
-   "joinMaxina": "Maxina'ya Katıl",
-   "joinCommunity": "Maxina topluluğuna katıl.",
-   "createAccount": "Hesabını oluştur ve yolculuğuna başla.",
-   "signingIn": "Giriş yapılıyor…",
-   "creatingAccount": "Hesap oluşturuluyor…",
-   "joiningAs": "Şu şekilde katılıyorum:",
-   "yourFullName": "Ad soyadın",
-   "forgotPassword": "Şifreni mi unuttun?",
-   "partOfVitana": "Maxina, VITANA ekosisteminin bir parçasıdır.",
-   "allPortals": "Tüm Portallar",
-   "emailConfirmed": "E-posta onaylandı! Maxina'ya hoş geldin.",
-   "checkEmail": "Hesabını onaylamak için lütfen e-postanı kontrol et.",
-   "roles": {
-    "_pending_review": {},
-    "community": "Topluluk",
-    "patient": "Hasta",
-    "professional": "Uzman",
-    "admin": "Yönetici"
-   }
+  "portals": {
+    "maxina": {
+      "_pending_review": {},
+      "title": "Maxina Sağlık Platformu",
+      "welcomeBack": "Maxina'ya tekrar hoş geldin.",
+      "continueJourney": "Yolculuğuna devam etmek için giriş yap.",
+      "joinMaxina": "Maxina'ya Katıl",
+      "joinCommunity": "Maxina topluluğuna katıl.",
+      "createAccount": "Hesabını oluştur ve yolculuğuna başla.",
+      "signingIn": "Giriş yapılıyor…",
+      "creatingAccount": "Hesap oluşturuluyor…",
+      "joiningAs": "Şu şekilde katılıyorum:",
+      "yourFullName": "Ad soyadın",
+      "forgotPassword": "Şifreni mi unuttun?",
+      "partOfVitana": "Maxina, VITANA ekosisteminin bir parçasıdır.",
+      "allPortals": "Tüm Portallar",
+      "emailConfirmed": "E-posta onaylandı! Maxina'ya hoş geldin.",
+      "checkEmail": "Hesabını onaylamak için lütfen e-postanı kontrol et.",
+      "roles": {
+        "_pending_review": {},
+        "community": "Topluluk",
+        "patient": "Hasta",
+        "professional": "Uzman",
+        "admin": "Yönetici"
+      }
+    },
+    "alkalma": {
+      "_pending_review": {},
+      "joinAlkalma": "AlKalma'ya Katıl",
+      "welcomeBack": "AlKalma'ya tekrar hoş geldin.",
+      "continueJourney": "Devam etmek için giriş yap."
+    },
+    "earthlinks": {
+      "_pending_review": {},
+      "joinEarthlinks": "Earthlinks'e Katıl",
+      "welcomeBack": "Earthlinks'e tekrar hoş geldin.",
+      "continueJourney": "Devam etmek için giriş yap."
+    },
+    "community": {
+      "_pending_review": {},
+      "joinCommunity": "Topluluğa Katıl",
+      "welcomeBack": "Tekrar hoş geldin.",
+      "continueJourney": "Devam etmek için giriş yap."
+    },
+    "_pending_review": {}
   },
-  "alkalma": {
-   "_pending_review": {},
-   "joinAlkalma": "AlKalma'ya Katıl",
-   "welcomeBack": "AlKalma'ya tekrar hoş geldin.",
-   "continueJourney": "Devam etmek için giriş yap."
-  },
-  "earthlinks": {
-   "_pending_review": {},
-   "joinEarthlinks": "Earthlinks'e Katıl",
-   "welcomeBack": "Earthlinks'e tekrar hoş geldin.",
-   "continueJourney": "Devam etmek için giriş yap."
-  },
-  "community": {
-   "_pending_review": {},
-   "joinCommunity": "Topluluğa Katıl",
-   "welcomeBack": "Tekrar hoş geldin.",
-   "continueJourney": "Devam etmek için giriş yap."
-  }
- }
+  "_pending_review": {}
 }
