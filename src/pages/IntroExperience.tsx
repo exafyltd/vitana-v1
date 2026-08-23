@@ -78,6 +78,20 @@ export default function IntroExperience() {
     };
   }, []);
 
+  // We need BOTH the catalog object `t` (for `t.intro?.X` dotted access below)
+  // AND the function-call form (`lookup('screens.foo.bar')`) for newer i18n
+  // keys. The function form is imported as `lookup` (not `t`) so the local
+  // destructured `t` doesn't shadow it.
+  const { t } = useTranslation();
+
+  // Hoisted above the Orb-placement effect below, which depends on these
+  // strings: a language switch re-wraps the headline and moves the reserved
+  // spacer, so the measurement has to be redone. Declaration order is the
+  // only reason this sits here rather than with the other hooks.
+  const taglineMain = t.intro?.taglineMain;
+  const taglineSub = t.intro?.taglineSub;
+  const tapOrbHint = t.intro?.tapOrbHint;
+
   // The Orb is positioned via a fixed-position CSS override (it's an
   // external widget with no JS positioning API — see index.css), which
   // previously used a static `top: 50%` guess. That guess doesn't know
@@ -88,6 +102,21 @@ export default function IntroExperience() {
   // center, then feed that back to the CSS as custom properties. The Orb's
   // target position now always matches wherever this spacer actually is,
   // for any content length, viewport size, or breakpoint — no more guessing.
+  //
+  // BOOTSTRAP-INTRO-ORB-SYMMETRY: this effect was correct in design and
+  // COULD NEVER RUN. Its dependency array was `[]`, and this component
+  // returns a bare loader until `videoSrc` resolves — so on the one pass it
+  // ever made, the spacer was not in the tree, `orbSpacerRef.current` was
+  // null, it bailed at the guard below, and nothing re-ran it. Neither
+  // custom property was ever set, so the CSS fell through to its
+  // `top: 50%` fallback: the exact static guess this effect exists to
+  // replace. Measured on staging, where the Orb sat at 50.4% of the
+  // viewport and landed on the Serbian sub-tagline.
+  //
+  // `videoSrc` in the deps is what makes it fire. The rest of the deps
+  // cover reflows the ResizeObserver cannot see: the observer fires on the
+  // spacer's own SIZE changing, but a longer translation moves the spacer
+  // without resizing it.
   const orbSpacerRef = useRef<HTMLDivElement>(null);
   useLayoutEffect(() => {
     const spacer = orbSpacerRef.current;
@@ -95,6 +124,10 @@ export default function IntroExperience() {
 
     const syncOrbTarget = () => {
       const rect = spacer.getBoundingClientRect();
+      // A zero-size read means "not laid out yet" (or the page is hidden).
+      // Publishing it would fling the Orb into the top-left corner, so keep
+      // the last good value instead.
+      if (rect.width === 0 && rect.height === 0) return;
       document.body.style.setProperty(
         '--maxina-orb-target-left',
         `${rect.left + rect.width / 2}px`,
@@ -111,14 +144,23 @@ export default function IntroExperience() {
     window.addEventListener('resize', syncOrbTarget);
     window.addEventListener('orientationchange', syncOrbTarget);
 
+    // Webfonts land after first paint and re-wrap the headline, which moves
+    // the spacer. Without this the Orb is placed against fallback-font
+    // metrics and stays there.
+    let cancelled = false;
+    if (typeof document !== 'undefined' && 'fonts' in document) {
+      document.fonts.ready.then(() => { if (!cancelled) syncOrbTarget(); }).catch(() => {});
+    }
+
     return () => {
+      cancelled = true;
       resizeObserver.disconnect();
       window.removeEventListener('resize', syncOrbTarget);
       window.removeEventListener('orientationchange', syncOrbTarget);
       document.body.style.removeProperty('--maxina-orb-target-left');
       document.body.style.removeProperty('--maxina-orb-target-top');
     };
-  }, []);
+  }, [videoSrc, taglineMain, taglineSub, tapOrbHint]);
 
   // Load video source
   useEffect(() => {
@@ -173,12 +215,6 @@ export default function IntroExperience() {
   const handleSkip = useCallback(() => {
     continueToMaxina();
   }, [continueToMaxina]);
-
-  // We need BOTH the catalog object `t` (for `t.intro?.X` dotted access below)
-  // AND the function-call form (`lookup('screens.foo.bar')`) for newer i18n
-  // keys. The function form is imported as `lookup` (not `t`) so the local
-  // destructured `t` doesn't shadow it.
-  const { t } = useTranslation();
 
   // Keyboard shortcut - must be after function declarations
   useEffect(() => {
@@ -309,11 +345,17 @@ export default function IntroExperience() {
         {/* Reserved space for the Orb — no visible content. Its rendered
             center is measured (see orbSpacerRef above) and fed to the CSS
             that positions the actual, separately-mounted Orb widget, so the
-            two blocks below never have to guess where it will land. Sized
-            to roughly the Orb's own footprint plus breathing room; tune
-            this height, not a percentage in index.css, if the Orb still
-            looks too cramped or too far from the surrounding text. */}
-        <div ref={orbSpacerRef} aria-hidden="true" className="h-28 w-px md:h-36" />
+            two blocks below never have to guess where it will land.
+
+            Its height is DERIVED (`--maxina-orb-slot` = orb + 2 × gap), not
+            hand-tuned. It used to be `h-28 md:h-36` with a note saying to
+            tune the number if the spacing looked wrong — but a hand-set
+            height and a separately-set orb size drift apart the moment
+            either changes, and the drift shows up as asymmetric spacing.
+            Deriving it means the gap above the Orb and the gap below it are
+            the same number by construction, in every language. Change
+            `--maxina-orb-size`/`--maxina-orb-gap` in index.css, not this. */}
+        <div ref={orbSpacerRef} aria-hidden="true" className="maxina-orb-slot w-full" />
 
         {/* Bottom block: static Orb caption, language selector, Go to Login. */}
         <div

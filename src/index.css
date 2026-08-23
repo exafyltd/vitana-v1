@@ -637,7 +637,36 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
    no idea where the surrounding text actually ends up; this always matches
    wherever the reserved space really is, for any content length or
    viewport size. 50% is kept as the fallback for the brief window before
-   that effect runs on first paint. */
+   that effect runs on first paint.
+
+   BOOTSTRAP-INTRO-ORB-SYMMETRY — that effect could not run at all until
+   this change (its dependency array was `[]` and it read a ref that is
+   null behind the component's loading early-return), so what production
+   actually served was the 50%/50% fallback: the very static guess this
+   comment describes replacing. See the effect's own note in
+   IntroExperience.tsx. */
+
+/* Orb footprint on this screen, and the reserved slot derived from it.
+   The widget's own base size is 64px (56px under 600px wide); these are
+   deliberately LARGER, never smaller — here the Orb is the page's
+   centrepiece and its primary call to action, not a docked FAB.
+   `--maxina-orb-slot` is DERIVED so the reserved space and the rendered
+   Orb cannot drift apart. */
+body.maxina-intro-page {
+  --maxina-orb-size: 112px;
+  --maxina-orb-gap: 32px;
+  --maxina-orb-slot: calc(var(--maxina-orb-size) + 2 * var(--maxina-orb-gap));
+}
+
+/* The reserved in-flow slot. Renders nothing; it exists to hold open
+   symmetric space in the centred column and give the Orb something real to
+   be measured against. */
+body.maxina-intro-page .maxina-orb-slot {
+  height: var(--maxina-orb-slot);
+  flex: 0 0 auto;
+  pointer-events: none;
+}
+
 body.maxina-intro-page .vtorb-fab,
 body.maxina-intro-page .vitana-orb,
 body.maxina-intro-page [data-vitana-orb="true"],
@@ -649,6 +678,9 @@ body.maxina-intro-page [class^="vtorb-fab"] {
   left: var(--maxina-orb-target-left, 50%) !important;
   top: var(--maxina-orb-target-top, 50%) !important;
   bottom: auto !important;
+  right: auto !important;
+  width: var(--maxina-orb-size) !important;
+  height: var(--maxina-orb-size) !important;
   transform: translate(-50%, -50%) !important;
 }
 
@@ -804,6 +836,17 @@ body.maxina-intro-page [class^="vtorb-fab"] {
      (not just top) because the base mobile rule earlier in this block
      already sets left:50% unconditionally, and this block needs to win on
      both axes, not only override top. */
+
+  /* Mobile is the primary target for this screen, so the sizing is set here
+     explicitly rather than inherited: 96px against the widget's 56px mobile
+     base. Still larger, never smaller — just proportioned for a 390px-wide
+     viewport, where the 112px desktop value crowds the headline. The slot
+     recalculates from these automatically. */
+  body.maxina-intro-page {
+    --maxina-orb-size: 96px;
+    --maxina-orb-gap: 28px;
+  }
+
   body.maxina-intro-page .vtorb-fab,
   body.maxina-intro-page .vitana-orb,
   body.maxina-intro-page [data-vitana-orb="true"],
@@ -815,6 +858,8 @@ body.maxina-intro-page [class^="vtorb-fab"] {
     left: var(--maxina-orb-target-left, 50%) !important;
     top: var(--maxina-orb-target-top, 50%) !important;
     bottom: auto !important;
+    width: var(--maxina-orb-size) !important;
+    height: var(--maxina-orb-size) !important;
     transform: translate(-50%, -50%) !important;
   }
 
