@@ -1,8 +1,5 @@
 {
   "mobilesupport": {
-    "_pending_review": {
-      "quickContactEmailSub": true
-    },
     "title": "Destek",
     "description": "Ne konuda yardıma ihtiyacın olduğunu söyle",
     "tabContact": "İletişim",
@@ -78,6 +75,5 @@
     "errorTranscription": "Yazıya dökme başarısız. Lütfen tekrar dene.",
     "transcribing": "Kaydın yazıya dökülüyor…",
     "backendRecordingHint": "Durdur'a dokunduktan sonra yazıya dökümün görünecek."
-  },
-  "_pending_review": {}
+  }
 }

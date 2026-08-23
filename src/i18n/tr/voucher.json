@@ -1,33 +1,23 @@
 {
-  "_pending_review": {},
   "voucher": {
-    "_pending_review": {},
     "modal": {
-      "_pending_review": {},
       "title": "Maxina Kuponu Hediye Et",
       "subtitle": "Wellness ve Topluluk Bağlantısı Hediye Et",
       "buyVoucher": "Kupon Satın Al",
       "openingCheckout": "Güvenli ödeme açılıyor..."
     },
     "tiers": {
-      "_pending_review": {},
       "test": {
-        "_pending_review": {
-          "name": true
-        },
         "name": "Test"
       },
       "experience": {
-        "_pending_review": {},
         "name": "Deneyim"
       },
       "exclusive": {
-        "_pending_review": {},
         "name": "Özel"
       }
     },
     "success": {
-      "_pending_review": {},
       "title": "Kupon Satın Alındı!",
       "ready": "{tier} kuponun hazır",
       "download": "Kuponu İndir",
@@ -36,7 +26,6 @@
       "done": "Bitti"
     },
     "email": {
-      "_pending_review": {},
       "title": "Kuponu E-posta ile Gönder",
       "subtitle": "Kuponla birlikte güzel tasarlanmış bir e-posta göndereceğiz",
       "recipientEmail": "Alıcı E-postası *",
@@ -47,7 +36,6 @@
       "send": "Kuponu Gönder"
     },
     "preview": {
-      "_pending_review": {},
       "title": "Kuponun",
       "giftVoucher": "Hediye Kuponu",
       "validUntil": "{date} tarihine kadar geçerli",
@@ -62,7 +50,6 @@
       "downloadHint": "İndirme boş açılırsa Tarayıcıda Aç'a dokun"
     },
     "toast": {
-      "_pending_review": {},
       "downloadStarted": "İndirme başladı!",
       "downloadFailed": "İndirme başarısız",
       "linkCopied": "Bağlantı kopyalandı!",

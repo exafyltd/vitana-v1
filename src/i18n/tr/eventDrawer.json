@@ -1,9 +1,5 @@
 {
   "eventDrawer": {
-    "_pending_review": {
-      "utc": true,
-      "outlook": true
-    },
     "host": "Düzenleyen",
     "follow": "Takip Et",
     "following": "Takip Ediliyor",
@@ -63,6 +59,5 @@
     "outlook": "Outlook",
     "appleCal": "Apple Takvim",
     "downloadIcs": "ICS İndir"
-  },
-  "_pending_review": {}
+  }
 }

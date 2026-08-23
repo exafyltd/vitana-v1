@@ -1,10 +1,8 @@
 {
   "liveRooms": {
-    "_pending_review": {},
     "title": "Canlı Odalar",
     "description": "Canlı sesli ve görüntülü tartışmalara katıl",
     "tabs": {
-      "_pending_review": {},
       "live": "Şimdi canlı",
       "scheduled": "Planlanmış",
       "all": "Tüm Odalar",
@@ -17,15 +15,11 @@
     "demoRoom": "Demo Oda",
     "demoRoomDesc": "Bu bir örnek oda. Canlı yayına geçmek için kendinkini oluştur!",
     "search": {
-      "_pending_review": {},
       "placeholder": "Oda, konu veya sunucu ara...",
       "category": "Kategori",
       "allCategories": "Tüm Kategoriler"
     },
     "room": {
-      "_pending_review": {
-        "premium": true
-      },
       "join": "Odaya Katıl",
       "participants": "Katılımcılar",
       "duration": "Süre",
@@ -34,9 +28,6 @@
       "live": "CANLI"
     },
     "viewer": {
-      "_pending_review": {
-        "video": true
-      },
       "leave": "Ayrıl",
       "mute": "Sessize Al",
       "video": "Video",
@@ -45,9 +36,6 @@
       "reactions": "Tepkiler"
     },
     "goLivePopup": {
-      "_pending_review": {
-        "streamTypeVideo": true
-      },
       "titleCreate": "Canlı Yayına Geç",
       "titleEdit": "Canlı Yayını Düzenle",
       "streamTitleLabel": "Yayın Başlığı",
@@ -68,10 +56,6 @@
       "tagsLabel": "Etiket / Kategori (1-3 Seç)",
       "tagsSelected": "{count}/3 seçildi",
       "tags": {
-        "_pending_review": {
-          "wellness": true,
-          "fitness": true
-        },
         "wellness": "Wellness",
         "nutrition": "Beslenme",
         "fitness": "Fitness",
@@ -89,21 +73,17 @@
       "accessLevelLabel": "Erişim Düzeyi",
       "access": {
         "public": {
-          "_pending_review": {},
           "label": "Herkese Açık",
           "desc": "Herkes katılabilir"
         },
         "followers": {
-          "_pending_review": {},
           "label": "Yalnızca Takipçiler",
           "desc": "Yalnızca takipçilerin"
         },
         "group": {
-          "_pending_review": {},
           "label": "Grup/VIP",
           "desc": "Yalnızca davetli üyeler"
-        },
-        "_pending_review": {}
+        }
       },
       "scheduleLabel": "Daha Sonrası İçin Planla",
       "goLiveNow": "Şimdi Canlı Yayına Geç",
@@ -126,7 +106,6 @@
       "scheduleSession": "Canlı Seansı Planla",
       "goLiveNowAction": "Şimdi Canlı Yayına Geç",
       "errors": {
-        "_pending_review": {},
         "selectStreamTypeTitle": "Yayın Türü Seç",
         "selectStreamTypeDesc": "Lütfen Ses veya Video seç",
         "notLoggedInTitle": "Hata",
@@ -142,7 +121,6 @@
         "genericDescWithReason": "Yayın oluşturulamadı: {reason}. Lütfen tekrar dene."
       },
       "success": {
-        "_pending_review": {},
         "streamUpdatedTitle": "Yayın Güncellendi! ✨",
         "streamUpdatedDesc": "Yayının başarıyla güncellendi",
         "streamScheduledTitle": "Yayın Planlandı! 📅",
@@ -154,7 +132,6 @@
       }
     },
     "editSession": {
-      "_pending_review": {},
       "title": "Seansı Düzenle",
       "saving": "Kaydediliyor …",
       "changeCover": "Kapak görselini değiştir",
@@ -162,7 +139,6 @@
     }
   },
   "goLivePopup": {
-    "_pending_review": {},
     "durationLabel": "Süre",
     "duration15": "15 dakika",
     "duration30": "30 dakika",
@@ -171,6 +147,5 @@
     "duration90": "1,5 saat",
     "duration120": "2 saat",
     "durationHint": "Manuel olarak sonlandırmazsan, oda bu süreden sonra otomatik olarak kapanır."
-  },
-  "_pending_review": {}
+  }
 }

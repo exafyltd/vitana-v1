@@ -1,18 +1,15 @@
 {
   "mediaHub": {
-    "_pending_review": {},
     "title": "Medya Merkezi",
     "description": "Müzik, podcast, kısa videolar ve daha fazlası",
     "discoverContent": "İlham verici wellness içeriklerini topluluğunla keşfet ve paylaş.",
     "tabs": {
-      "_pending_review": {},
       "music": "Müzik",
       "podcasts": "Podcastler",
       "shorts": "Kısa Videolar",
       "videos": "Videolar"
     },
     "sections": {
-      "_pending_review": {},
       "trendingShorts": "Trend Kısa Videolar",
       "trendingMusic": "Trend Müzik",
       "musicPlaylists": "Müzik Çalma Listeleri",
@@ -20,7 +17,6 @@
       "popularShows": "Popüler Programlar"
     },
     "actions": {
-      "_pending_review": {},
       "upload": "Yükle",
       "watchShorts": "Kısa Videoları İzle",
       "viewAllShorts": "{count} kısa videonun tümünü gör",
@@ -44,10 +40,6 @@
     "subscribed": "Abone Olundu",
     "subscribe": "Abone Ol",
     "menu": {
-      "_pending_review": {
-        "video": true,
-        "podcast": true
-      },
       "video": "Video",
       "music": "Müzik",
       "podcast": "Podcast",
@@ -57,7 +49,6 @@
       "viewArtist": "Sanatçıyı Görüntüle"
     },
     "toast": {
-      "_pending_review": {},
       "linkCopied": "Bağlantı kopyalandı",
       "linkCopiedDesc": "Müzik bağlantısı panoya kopyalandı",
       "filtersCleared": "Filtreler temizlendi",
@@ -76,7 +67,6 @@
       "commentErrorDesc": "Yorum gönderilemedi. Lütfen tekrar dene."
     },
     "comments": {
-      "_pending_review": {},
       "title": "Yorumlar",
       "placeholder": "Yorum yaz...",
       "empty": "Henüz yorum yok",
@@ -90,14 +80,12 @@
       "like": "Yorumu beğen"
     },
     "deletePodcast": {
-      "_pending_review": {},
       "title": "Podcast'i Sil",
       "description": "Bu podcasti silmek istediğinden emin misin? Bu işlem geri alınamaz.",
       "cancel": "İptal",
       "confirm": "Sil"
     },
     "deleteVideo": {
-      "_pending_review": {},
       "title": "Video Sil",
       "description": "Bu videoyu silmek istediğinden emin misin? Bu işlem geri alınamaz ve video depolamadan kaldırılır.",
       "cancel": "İptal",
@@ -115,7 +103,6 @@
     "uploadPodcast": "Podcast Yükle",
     "uploadVideo": "Video Yükle",
     "upload": {
-      "_pending_review": {},
       "title": "Medya Yükle",
       "titleWithType": "{type} Yükle",
       "mediaType": "Medya Türü *",
@@ -150,10 +137,6 @@
       "cancel": "İptal",
       "submit": "Yükle",
       "predefinedTags": {
-        "_pending_review": {
-          "fitness": true,
-          "wellness": true
-        },
         "nutrition": "Beslenme",
         "sleep": "Uyku",
         "longevity": "Uzun Ömür",
@@ -166,6 +149,5 @@
         "lifestyle": "Yaşam Tarzı"
       }
     }
-  },
-  "_pending_review": {}
+  }
 }

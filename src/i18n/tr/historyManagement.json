@@ -1,8 +1,5 @@
 {
   "historyManagement": {
-    "_pending_review": {
-      "beta": true
-    },
     "title": "Geçmiş Yönetimi",
     "viewAnalyze": "Görüntüle & Analiz Et",
     "organizeManage": "Düzenle & Yönet",
@@ -44,6 +41,5 @@
     "confirmDeleteAll": "⚠️ UYARI: Bu, TÜM geçmişini kalıcı olarak silecek. Bu işlem geri alınamaz. Gerçekten emin misin?",
     "beta": "Beta",
     "danger": "Tehlike"
-  },
-  "_pending_review": {}
+  }
 }

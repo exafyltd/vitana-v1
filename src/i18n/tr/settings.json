@@ -1,19 +1,15 @@
 {
-  "_pending_review": {},
   "settings": {
-    "_pending_review": {},
     "title": "Ayarlar",
     "description": "Hesap ayarlarını, gizliliğini ve tercihlerini yönet",
     "searchPlaceholder": "Ayarlarda, gizlilik kontrollerinde, entegrasyonlarda ara...",
     "quickSetup": "Hızlı Kurulum",
     "tabs": {
-      "_pending_review": {},
       "overview": "Genel Bakış",
       "notifications": "Bildirimler",
       "quickActions": "Hızlı İşlemler"
     },
     "categories": {
-      "_pending_review": {},
       "privacy": "Gizlilik",
       "privacyDesc": "Profilini ve aktivitelerini kimin görebileceğini kontrol et",
       "notifications": "Bildirimler",
@@ -30,9 +26,6 @@
       "supportDesc": "Yardım, SSS ve iletişim seçenekleri"
     },
     "status": {
-      "_pending_review": {
-        "premium": true
-      },
       "privacyStatus": "Gizlilik Durumu",
       "subscription": "Abonelik",
       "protected": "Korumalı",

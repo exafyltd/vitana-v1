@@ -1,7 +1,5 @@
 {
-  "_pending_review": {},
   "wallet": {
-    "_pending_review": {},
     "title": "Cüzdan",
     "description": "Bakiyen, Kredilerin ve Ödüllerin",
     "usdBalance": "EUR / USD Bakiyesi",
@@ -11,15 +9,11 @@
     "staked": "Stake Edilmiş",
     "searchWallet": "Cüzdanda ara...",
     "tabs": {
-      "_pending_review": {},
       "balances": "Bakiyeler",
       "activity": "Aktivite",
       "actions": "İşlemler"
     },
     "filters": {
-      "_pending_review": {
-        "stakes": true
-      },
       "commissions": "Sat ve kazan komisyonları",
       "transfers": "Transferler",
       "exchanges": "Değişimler",

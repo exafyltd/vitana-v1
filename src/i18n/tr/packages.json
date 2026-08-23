@@ -1,17 +1,12 @@
 {
   "packages": {
-    "_pending_review": {},
     "confirmDelete": "Bu paketi silmek istediğine emin misin?",
     "types": {
-      "_pending_review": {
-        "program": true
-      },
       "bundle": "Paket",
       "subscription": "Abonelik",
       "program": "Program"
     },
     "status": {
-      "_pending_review": {},
       "draft": "Taslak",
       "published": "Yayında",
       "archived": "Arşivlendi"
@@ -23,6 +18,5 @@
     "save": "%{percent} tasarruf et",
     "unpublish": "Yayından kaldır",
     "publish": "Yayınla"
-  },
-  "_pending_review": {}
+  }
 }

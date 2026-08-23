@@ -1,8 +1,5 @@
 {
   "qrShare": {
-    "_pending_review": {
-      "appName": true
-    },
     "title": "QR Kod",
     "scanToView": "Profilini görüntülemek için tara.",
     "scanToDownload": "MAXINA'yı indirmek için tara",
@@ -17,6 +14,5 @@
     "appTagline": "Uzun Yaşam Topluluğu",
     "inviteShareTitle": "MAXINA – Uzun Yaşam Topluluğu",
     "inviteShareText": "MAXINA'yı al ve uzun yaşam yolculuğuna başla:"
-  },
-  "_pending_review": {}
+  }
 }

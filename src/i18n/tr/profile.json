@@ -1,9 +1,7 @@
 {
   "profile": {
-    "_pending_review": {},
     "defaultBio": "Bütünsel sağlık ve topluluk oluşturma konusunda tutkulu bir wellness meraklısı. 🌱",
     "autopilot": {
-      "_pending_review": {},
       "polishBio": "Biyografini, Arketipini ve Öne Çıkanlarını Cilalayın",
       "editHighlights": "Öne Çıkanları Düzenle",
       "saveHighlights": "Öne Çıkanları Kaydet",
@@ -11,9 +9,6 @@
       "try": "Dene"
     },
     "identity": {
-      "_pending_review": {
-        "brandFooter": true
-      },
       "vitanaIndex": "Vitana Endeksi",
       "basedOnActivity": "Aktiviteye, sağlık etkileşimine ve katkıya dayalı",
       "viewLongevityId": "Uzun Ömür Kimliğimi Görüntüle",
@@ -23,25 +18,21 @@
       "brandFooter": "MAXINA × VITANA"
     },
     "tabs": {
-      "_pending_review": {},
       "identity": "Kimlik",
       "social": "Sosyal",
       "account": "Hesap",
       "business": "İş"
     },
     "account": {
-      "_pending_review": {},
       "notSet": "Ayarlanmadı",
       "editField": "{field} Düzenle",
       "visibilityToggle": "Görünürlük: {label}. Değiştirmek için dokun.",
       "visibility": {
-        "_pending_review": {},
         "private": "Özel",
         "connections": "Bağlantılar",
         "public": "Herkese Açık"
       },
       "sections": {
-        "_pending_review": {},
         "publicProfile": "Herkese açık profil",
         "publicProfileSubtitle": "Kimlikte gösterilir",
         "basicInfo": "Temel Kişisel Bilgiler",
@@ -50,9 +41,6 @@
         "accountDetails": "Hesap Ayrıntıları"
       },
       "fields": {
-        "_pending_review": {
-          "avatar": true
-        },
         "avatar": "Avatar",
         "handle": "Kullanıcı adı",
         "longevityArchetype": "Uzun ömür arketipi",
@@ -71,12 +59,10 @@
         "verificationStatus": "Doğrulama durumu"
       },
       "values": {
-        "_pending_review": {},
         "uploaded": "Yüklendi"
       }
     },
     "business": {
-      "_pending_review": {},
       "title": "Önerilerim",
       "subtitle": "Önerdiğin ürünler ve bunlardan kazandıkların",
       "empty": "Henüz öneri yok",
@@ -91,6 +77,5 @@
       "publicEmpty": "Henüz öneri yok",
       "viewProduct": "Görüntüle"
     }
-  },
-  "_pending_review": {}
+  }
 }

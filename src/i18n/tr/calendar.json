@@ -1,6 +1,5 @@
 {
   "calendar": {
-    "_pending_review": {},
     "smartCalendar": "Akıllı Takvim",
     "myCalendar": "Takvimim",
     "bookedActivities": "VITANA'daki rezervasyonlu etkinliklerin",
@@ -27,14 +26,12 @@
     "exploreActivities": "Takvimin için etkinlikler keşfet",
     "browseActivities": "Etkinliklere Göz At",
     "bookedEvents": {
-      "_pending_review": {},
       "title": "Rezervasyonlu etkinliklerin",
       "todayLabel": "Bugün",
       "nextUp": "Sıradaki",
       "noEventsToday": "Bugün etkinlik yok"
     },
     "filters": {
-      "_pending_review": {},
       "personal": "Kişisel",
       "community": "Topluluk",
       "work": "İş",
@@ -42,9 +39,6 @@
       "workout": "Antrenman"
     },
     "categories": {
-      "_pending_review": {
-        "fitness": true
-      },
       "community": "Topluluk",
       "fitness": "Fitness",
       "health": "Sağlık",
@@ -54,21 +48,18 @@
       "training": "Antrenman"
     },
     "bookingStatus": {
-      "_pending_review": {},
       "booked": "Rezerve Edildi",
       "rsvp": "Katılım Onayı",
       "ticket": "Bilet",
       "reserved": "Ayrıldı"
     },
     "timeGroups": {
-      "_pending_review": {},
       "today": "Bugün",
       "tomorrow": "Yarın",
       "thisWeek": "Bu Hafta",
       "later": "Daha Sonra"
     },
     "autopilot": {
-      "_pending_review": {},
       "suggestions": "Otomatik Pilot Önerileri",
       "badge": "Otomatik Pilot",
       "accept": "Kabul Et",
@@ -89,7 +80,6 @@
       "focusBlockDesc": "90 dakikalık boş bir zaman dilimin var. Odaklanmış çalışma için mükemmel."
     },
     "toasts": {
-      "_pending_review": {},
       "eventCreated": "Etkinlik oluşturuldu",
       "eventCreatedDesc": "Etkinliğin takvime eklendi",
       "eventDeleted": "Etkinlik silindi",
@@ -107,27 +97,21 @@
       "shareToGroup": "Gruba paylaş"
     },
     "error": {
-      "_pending_review": {},
       "failedToCreate": "Etkinlik oluşturulamadı"
     },
     "allDay": "Tüm gün",
     "milestoneToday": "Dönüm Noktası",
     "focus": {
-      "_pending_review": {},
       "todaysFocus": "Bugünün odak noktası",
       "lightDay": "Sakin bir gün — etkinlikleri keşfet veya günlüğüne bak",
       "moreSteps": "adım daha"
     },
     "badge": {
-      "_pending_review": {
-        "wellness": true
-      },
       "guidedStep": "Rehberli adım",
       "milestone": "Dönüm noktası",
       "wellness": "Wellness"
     },
     "action": {
-      "_pending_review": {},
       "start": "Başla",
       "continue": "Devam Et",
       "join": "Katıl",
@@ -137,12 +121,10 @@
       "done": "Bitti"
     },
     "group": {
-      "_pending_review": {},
       "stepsRemaining": "adım kaldı",
       "min": "dk"
     },
     "journey": {
-      "_pending_review": {},
       "dayOf": "{total} günün {day}. günü",
       "yourJourney": "Yolculuğun",
       "nextMilestone": "Sıradaki dönüm noktası",
@@ -153,7 +135,6 @@
       "startPlan": "Planı başlat",
       "tasksCompleted": "{completed}/{total} tamamlandı",
       "waveNames": {
-        "_pending_review": {},
         "wave-1": "Başlarken",
         "wave-2": "Günlük Bağlantılar",
         "wave-3": "Bağları Derinleştirme",
@@ -162,6 +143,5 @@
         "wave-6": "Öneriler ve Keşif"
       }
     }
-  },
-  "_pending_review": {}
+  }
 }
