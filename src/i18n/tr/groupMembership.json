@@ -14,6 +14,5 @@
     "leftDesc": "You've left this group.",
     "errorJoin": "Could not join group. Please try again.",
     "errorLeave": "Could not leave group. Please try again."
-  },
-  "_pending_review": {}
+  }
 }

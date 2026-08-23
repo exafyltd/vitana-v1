@@ -84,6 +84,5 @@
     "confirmDeleteAll": "⚠️ WARNING: This will permanently delete your ENTIRE history. This action cannot be undone. Are you absolutely sure?",
     "beta": "Beta",
     "danger": "Danger"
-  },
-  "_pending_review": {}
+  }
 }

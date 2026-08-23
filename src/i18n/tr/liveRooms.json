@@ -189,8 +189,7 @@
           },
           "label": "Group/VIP",
           "desc": "Invited members only"
-        },
-        "_pending_review": {}
+        }
       },
       "scheduleLabel": "Schedule for Later",
       "goLiveNow": "Go Live Now",
@@ -295,6 +294,5 @@
     "duration90": "1.5 hours",
     "duration120": "2 hours",
     "durationHint": "The room closes automatically after this time if you don’t end it manually."
-  },
-  "_pending_review": {}
+  }
 }

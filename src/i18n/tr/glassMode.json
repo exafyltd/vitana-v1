@@ -32,6 +32,5 @@
     "typeMessage": "You can now enter your message.",
     "actionFailed": "Action Failed",
     "couldNotExecute": "Could not execute {action}"
-  },
-  "_pending_review": {}
+  }
 }
