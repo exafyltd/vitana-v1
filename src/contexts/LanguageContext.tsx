@@ -49,6 +49,15 @@ export const languageOptions: Array<{ label: string; value: string; status: 'ga'
   // to the selected language); ZH needs a CJK font stack + line-break audit.
   { label: "Arabic (AR)", value: "ar-XA", status: 'draft' },
   { label: "Chinese (ZH)", value: "zh-CN", status: 'draft' },
+  // VTID-03701 — 11th language, full parity build-out. 'draft' until the same
+  // six-surface gate the AR/ZH note above describes reports a real PASS:
+  // catalog coverage/parity vs DE, 0 _pending_review, 0 placeholder mismatches,
+  // 0 stale-vs-source drift, 0 siz-form register violations, and non-zero
+  // nav_catalog_i18n/journey_checklist_translations rows — plus native-speaker
+  // review. None of that exists yet; this entry only makes the locale
+  // selectable behind `?i18n-preview=1` so the pipeline below has somewhere
+  // to write to.
+  { label: "Turkish (TR)", value: "tr-TR", status: 'draft' },
 ];
 
 // User-facing list: only GA, unless ?i18n-preview=1 is set.

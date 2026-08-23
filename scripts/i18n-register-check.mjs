@@ -239,6 +239,34 @@ const RULES = {
     note: 'ty-form. Never Pan/Pani.',
     crossCheck: true,
   },
+  tr: {
+    name: 'Turkish',
+    // `siz` is BOTH the polite/formal singular address AND the ordinary
+    // plural "you (all)" — the identical trap as French `vous`/Russian
+    // `вы`/Polish capitalised `Pan`, so the German cross-check carries the
+    // real weight here rather than the pronoun match alone.
+    //
+    // Turkish has no case-based politeness split (unlike German Sie/sie or
+    // Serbian Vi/vi), so this uses LI() rather than L() — same reasoning as
+    // pt-BR: listing capitalised/lowercase forms twice would add alternatives
+    // that carry no information.
+    //
+    // Deliberately NOT matching verb-morphology alone (the -sınız/-siniz/
+    // -sunuz/-sünüz second-person-plural suffix, or the -in/-ın/-un/-ün
+    // formal imperative suffix). Turkish is agglutinative and those suffixes
+    // are common word-final sequences for other reasons too, so a bare
+    // suffix regex risks the exact over-matching this file's history warns
+    // against (see `es`'s dropped `su`, pt-BR's `\b` fix, French `vous`'s
+    // 39-of-41 false-positive rate). The pronoun forms below catch the
+    // common, low-risk case; a formal verb ending with no explicit
+    // siz-pronoun in the same string is a known, accepted gap.
+    formal: LI('siz|sizin|sizi|size|sizde|sizden|sizle|sizinle'),
+    exempt: [],
+    informal: LI('sen|seni|senin|sana|sende|senden|seninle'),
+    mixed: LI('siz|sizin|sizi|size|sizde|sizden|sizle|sizinle'),
+    note: 'sen-form. Never siz/sizin when addressing one reader.',
+    crossCheck: true,
+  },
   zh: {
     name: 'Chinese',
     // DELIBERATELY NOT L(). Every other rule wraps its pattern in L(), which

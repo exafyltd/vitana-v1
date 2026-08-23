@@ -57,6 +57,7 @@ const TARGET_LANG_NAME = (
     fr: 'French',
     pt: 'Portuguese',
     pl: 'Polish',
+    tr: 'Turkish',
   }[TARGET_LOCALE] || TARGET_LOCALE
 );
 
