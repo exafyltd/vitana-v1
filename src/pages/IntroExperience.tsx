@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useLayoutEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
@@ -91,6 +91,80 @@ export default function IntroExperience() {
   // destructured `t` doesn't shadow it.
   const { t } = useTranslation();
 
+  // --- Orb placement -------------------------------------------------------
+  // The orb is a globally-mounted fixed element (the gateway's orb-widget.js
+  // renders `.vtorb-fab` outside this tree), so it cannot simply be a child
+  // of the layout it needs to sit inside. It used to be parked at a hardcoded
+  // `top: 58%` of the viewport, which is a guess about where the text ends —
+  // and the text ends somewhere different in every language. In Serbian the
+  // headline wraps to three lines and 58% landed on top of the italic
+  // sub-tagline.
+  //
+  // Instead of tuning that percentage (which just moves the collision to a
+  // different language), reserve a real slot for the orb in the flow and tell
+  // the orb where that slot is. The slot is `orb + 2×gap` tall and the orb is
+  // centred in it, so equal spacing above and below is a property of the
+  // layout rather than something that has to be re-checked per translation.
+  const orbSlotRef = useRef<HTMLDivElement>(null);
+  const contentColRef = useRef<HTMLDivElement>(null);
+
+  // `t.intro` values are dependencies on purpose: switching language re-renders
+  // different copy, the column reflows, and the slot moves. useLayoutEffect
+  // measures after the DOM update but before paint, so the orb never shows at
+  // the old position for a frame.
+  const taglineMain = t.intro?.taglineMain;
+  const taglineSub = t.intro?.taglineSub;
+  const tapOrbHint = t.intro?.tapOrbHint;
+
+  useLayoutEffect(() => {
+    const slot = orbSlotRef.current;
+    if (!slot) return;
+
+    const apply = () => {
+      const rect = slot.getBoundingClientRect();
+      // A zero-height read means the element is not laid out yet (or the page
+      // is hidden). Publishing 0 would fling the orb to the top edge, so keep
+      // the last good value instead.
+      if (rect.height === 0) return;
+      document.documentElement.style.setProperty(
+        '--maxina-orb-top',
+        `${Math.round(rect.top + rect.height / 2)}px`,
+      );
+    };
+
+    apply();
+
+    // Height of the content column changes whenever the headline re-wraps —
+    // a narrower viewport, a longer translation, a larger accessibility font.
+    const ro = new ResizeObserver(apply);
+    ro.observe(slot);
+    if (contentColRef.current) ro.observe(contentColRef.current);
+
+    window.addEventListener('resize', apply);
+    window.addEventListener('orientationchange', apply);
+
+    // Webfonts land after first paint and reflow the headline; without this
+    // the orb is measured against fallback-font metrics and stays there.
+    let cancelled = false;
+    if (typeof document !== 'undefined' && 'fonts' in document) {
+      document.fonts.ready.then(() => { if (!cancelled) apply(); }).catch(() => {});
+    }
+
+    return () => {
+      cancelled = true;
+      ro.disconnect();
+      window.removeEventListener('resize', apply);
+      window.removeEventListener('orientationchange', apply);
+      document.documentElement.style.removeProperty('--maxina-orb-top');
+    };
+    // `videoSrc` is a dependency because this component returns a bare loader
+    // until the source resolves — on the very first pass the slot is not in the
+    // tree at all and `orbSlotRef.current` is null, so the effect bails. Without
+    // re-running when the real tree mounts, the custom property is never
+    // published and the orb silently keeps the 58% fallback forever: a
+    // mechanism that looks wired and can never fire.
+  }, [taglineMain, taglineSub, tapOrbHint, videoSrc]);
+
   // Keyboard shortcut - must be after function declarations
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -137,12 +211,16 @@ export default function IntroExperience() {
       {/* Subtle vignette effect */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.3)_100%)]" />
 
-      {/* Content - positioned higher with safe bottom spacing for Orb */}
-      <div 
-        className={`relative z-10 flex flex-col items-center justify-center min-h-screen px-6 pb-32 md:pb-6 transition-opacity duration-[1000ms] maxina-page-content ${
+      {/* Content. The orb now occupies a reserved slot inside this column
+          (see `.maxina-orb-slot` below), so the old `pb-32` — which existed
+          to keep copy clear of a bottom-docked orb that is not there on this
+          screen — is no longer needed and only pushed the composition
+          off-centre on short viewports. */}
+      <div
+        className={`relative z-10 flex flex-col items-center justify-center min-h-screen px-6 pb-10 md:pb-6 transition-opacity duration-[1000ms] maxina-page-content ${
           showContent ? 'opacity-100' : 'opacity-0'
         }`}
-        
+        ref={contentColRef}
         data-maxina-app="true"
       >
         {/* Eyebrow - Small, uppercase, tracking-wide */}
@@ -199,11 +277,21 @@ export default function IntroExperience() {
           {t.intro?.taglineMain || 'Start your Longevity Journey'}
         </p>
         <p
-          className="text-lg md:text-xl font-light text-white/70 text-center italic tracking-wide mb-10 animate-fade-in"
+          className="text-lg md:text-xl font-light text-white/70 text-center italic tracking-wide animate-fade-in"
           style={{ animationDelay: '2100ms', animationFillMode: 'both' }}
         >
           {t.intro?.taglineSub || 'together with us!'}
         </p>
+
+        {/* Reserved slot for the Orb.
+            The Orb itself is `position: fixed` and lives outside this tree,
+            so it cannot be a child here — this holds the space it occupies
+            and is what gets measured to place it. Height is exactly
+            `orb + 2×gap`, and the two neighbouring elements carry no margin
+            into it, so the gap above the orb and the gap below it are the
+            same number by construction, in every language. Purely
+            structural: no text, no paint, not focusable, not hit-testable. */}
+        <div ref={orbSlotRef} className="maxina-orb-slot w-full" aria-hidden="true" />
 
         {/* Static caption under the (separately, globally-positioned) Orb —
             replaces the old pulsing "tap here" hint pill on this screen only.
