@@ -31,6 +31,137 @@ export default function IntroExperience() {
   const [fadeOut, setFadeOut] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  // The Orb is an external widget (window.VitanaOrb) loaded via a deferred
+  // <script> from the gateway repo — it takes a beat to fetch/execute before
+  // its floating button even exists in the DOM, so the CSS that centers it
+  // has nothing to act on at first paint. With the Orb now the visual
+  // centerpiece of an otherwise-empty band (rather than a small bottom-docked
+  // FAB), that gap read as broken. Poll for the same FAB selector
+  // OrbDiscoveryHint uses elsewhere on this app, and show a soft placeholder
+  // glow in its place until it actually appears.
+  //
+  // A live screenshot round showed the placeholder itself being mistaken for
+  // "the redesigned Orb" — the detection interval never fired in that
+  // session, so the placeholder simply never went away. Two changes address
+  // that: a hard timeout so it can never linger indefinitely regardless of
+  // whether detection succeeds, and treating a `vtorb-hidden` FAB (the
+  // widget's own "not actually visible yet" state, same check
+  // OrbDiscoveryHint's sync() uses) as not ready either.
+  const [orbReady, setOrbReady] = useState(false);
+  useEffect(() => {
+    const FAB_SELECTOR =
+      '.vtorb-fab, [class^="vtorb-fab"], .vitana-orb, #vitana-orb-fab, [data-vitana-orb="true"]';
+    const READY_TIMEOUT_MS = 3000;
+    const checkReady = () => {
+      const fab = document.querySelector<HTMLElement>(FAB_SELECTOR);
+      if (!fab || fab.classList.contains('vtorb-hidden')) return false;
+      const rect = fab.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0;
+    };
+    if (checkReady()) {
+      setOrbReady(true);
+      return;
+    }
+    const interval = window.setInterval(() => {
+      if (checkReady()) {
+        setOrbReady(true);
+        window.clearInterval(interval);
+      }
+    }, 200);
+    const timeout = window.setTimeout(() => {
+      window.clearInterval(interval);
+      setOrbReady(true);
+    }, READY_TIMEOUT_MS);
+    return () => {
+      window.clearInterval(interval);
+      window.clearTimeout(timeout);
+    };
+  }, []);
+
+  // We need BOTH the catalog object `t` (for `t.intro?.X` dotted access below)
+  // AND the function-call form (`lookup('screens.foo.bar')`) for newer i18n
+  // keys. The function form is imported as `lookup` (not `t`) so the local
+  // destructured `t` doesn't shadow it.
+  const { t } = useTranslation();
+
+  // Hoisted above the Orb-placement effect below, which depends on these
+  // strings: a language switch re-wraps the headline and moves the reserved
+  // spacer, so the measurement has to be redone. Declaration order is the
+  // only reason this sits here rather than with the other hooks.
+  const taglineMain = t.intro?.taglineMain;
+  const taglineSub = t.intro?.taglineSub;
+  const tapOrbHint = t.intro?.tapOrbHint;
+
+  // The Orb is positioned via a fixed-position CSS override (it's an
+  // external widget with no JS positioning API — see index.css), which
+  // previously used a static `top: 50%` guess. That guess doesn't know
+  // where the surrounding text actually ends up (the two content blocks
+  // aren't the same height), so it has repeatedly landed the Orb either in
+  // dead empty space or on top of the language pill. Instead, reserve real
+  // layout space for the Orb with this spacer and measure ITS rendered
+  // center, then feed that back to the CSS as custom properties. The Orb's
+  // target position now always matches wherever this spacer actually is,
+  // for any content length, viewport size, or breakpoint — no more guessing.
+  //
+  // BOOTSTRAP-INTRO-ORB-SYMMETRY: this effect was correct in design and
+  // COULD NEVER RUN. Its dependency array was `[]`, and this component
+  // returns a bare loader until `videoSrc` resolves — so on the one pass it
+  // ever made, the spacer was not in the tree, `orbSpacerRef.current` was
+  // null, it bailed at the guard below, and nothing re-ran it. Neither
+  // custom property was ever set, so the CSS fell through to its
+  // `top: 50%` fallback: the exact static guess this effect exists to
+  // replace. Measured on staging, where the Orb sat at 50.4% of the
+  // viewport and landed on the Serbian sub-tagline.
+  //
+  // `videoSrc` in the deps is what makes it fire. The rest of the deps
+  // cover reflows the ResizeObserver cannot see: the observer fires on the
+  // spacer's own SIZE changing, but a longer translation moves the spacer
+  // without resizing it.
+  const orbSpacerRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const spacer = orbSpacerRef.current;
+    if (!spacer) return;
+
+    const syncOrbTarget = () => {
+      const rect = spacer.getBoundingClientRect();
+      // A zero-size read means "not laid out yet" (or the page is hidden).
+      // Publishing it would fling the Orb into the top-left corner, so keep
+      // the last good value instead.
+      if (rect.width === 0 && rect.height === 0) return;
+      document.body.style.setProperty(
+        '--maxina-orb-target-left',
+        `${rect.left + rect.width / 2}px`,
+      );
+      document.body.style.setProperty(
+        '--maxina-orb-target-top',
+        `${rect.top + rect.height / 2}px`,
+      );
+    };
+
+    syncOrbTarget();
+    const resizeObserver = new ResizeObserver(syncOrbTarget);
+    resizeObserver.observe(spacer);
+    window.addEventListener('resize', syncOrbTarget);
+    window.addEventListener('orientationchange', syncOrbTarget);
+
+    // Webfonts land after first paint and re-wrap the headline, which moves
+    // the spacer. Without this the Orb is placed against fallback-font
+    // metrics and stays there.
+    let cancelled = false;
+    if (typeof document !== 'undefined' && 'fonts' in document) {
+      document.fonts.ready.then(() => { if (!cancelled) syncOrbTarget(); }).catch(() => {});
+    }
+
+    return () => {
+      cancelled = true;
+      resizeObserver.disconnect();
+      window.removeEventListener('resize', syncOrbTarget);
+      window.removeEventListener('orientationchange', syncOrbTarget);
+      document.body.style.removeProperty('--maxina-orb-target-left');
+      document.body.style.removeProperty('--maxina-orb-target-top');
+    };
+  }, [videoSrc, taglineMain, taglineSub, tapOrbHint]);
+
   // Load video source
   useEffect(() => {
     if (tenantSlug) {
@@ -85,86 +216,6 @@ export default function IntroExperience() {
     continueToMaxina();
   }, [continueToMaxina]);
 
-  // We need BOTH the catalog object `t` (for `t.intro?.X` dotted access below)
-  // AND the function-call form (`lookup('screens.foo.bar')`) for newer i18n
-  // keys. The function form is imported as `lookup` (not `t`) so the local
-  // destructured `t` doesn't shadow it.
-  const { t } = useTranslation();
-
-  // --- Orb placement -------------------------------------------------------
-  // The orb is a globally-mounted fixed element (the gateway's orb-widget.js
-  // renders `.vtorb-fab` outside this tree), so it cannot simply be a child
-  // of the layout it needs to sit inside. It used to be parked at a hardcoded
-  // `top: 58%` of the viewport, which is a guess about where the text ends —
-  // and the text ends somewhere different in every language. In Serbian the
-  // headline wraps to three lines and 58% landed on top of the italic
-  // sub-tagline.
-  //
-  // Instead of tuning that percentage (which just moves the collision to a
-  // different language), reserve a real slot for the orb in the flow and tell
-  // the orb where that slot is. The slot is `orb + 2×gap` tall and the orb is
-  // centred in it, so equal spacing above and below is a property of the
-  // layout rather than something that has to be re-checked per translation.
-  const orbSlotRef = useRef<HTMLDivElement>(null);
-  const contentColRef = useRef<HTMLDivElement>(null);
-
-  // `t.intro` values are dependencies on purpose: switching language re-renders
-  // different copy, the column reflows, and the slot moves. useLayoutEffect
-  // measures after the DOM update but before paint, so the orb never shows at
-  // the old position for a frame.
-  const taglineMain = t.intro?.taglineMain;
-  const taglineSub = t.intro?.taglineSub;
-  const tapOrbHint = t.intro?.tapOrbHint;
-
-  useLayoutEffect(() => {
-    const slot = orbSlotRef.current;
-    if (!slot) return;
-
-    const apply = () => {
-      const rect = slot.getBoundingClientRect();
-      // A zero-height read means the element is not laid out yet (or the page
-      // is hidden). Publishing 0 would fling the orb to the top edge, so keep
-      // the last good value instead.
-      if (rect.height === 0) return;
-      document.documentElement.style.setProperty(
-        '--maxina-orb-top',
-        `${Math.round(rect.top + rect.height / 2)}px`,
-      );
-    };
-
-    apply();
-
-    // Height of the content column changes whenever the headline re-wraps —
-    // a narrower viewport, a longer translation, a larger accessibility font.
-    const ro = new ResizeObserver(apply);
-    ro.observe(slot);
-    if (contentColRef.current) ro.observe(contentColRef.current);
-
-    window.addEventListener('resize', apply);
-    window.addEventListener('orientationchange', apply);
-
-    // Webfonts land after first paint and reflow the headline; without this
-    // the orb is measured against fallback-font metrics and stays there.
-    let cancelled = false;
-    if (typeof document !== 'undefined' && 'fonts' in document) {
-      document.fonts.ready.then(() => { if (!cancelled) apply(); }).catch(() => {});
-    }
-
-    return () => {
-      cancelled = true;
-      ro.disconnect();
-      window.removeEventListener('resize', apply);
-      window.removeEventListener('orientationchange', apply);
-      document.documentElement.style.removeProperty('--maxina-orb-top');
-    };
-    // `videoSrc` is a dependency because this component returns a bare loader
-    // until the source resolves — on the very first pass the slot is not in the
-    // tree at all and `orbSlotRef.current` is null, so the effect bails. Without
-    // re-running when the real tree mounts, the custom property is never
-    // published and the orb silently keeps the 58% fallback forever: a
-    // mechanism that looks wired and can never fire.
-  }, [taglineMain, taglineSub, tapOrbHint, videoSrc]);
-
   // Keyboard shortcut - must be after function declarations
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -211,105 +262,114 @@ export default function IntroExperience() {
       {/* Subtle vignette effect */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.3)_100%)]" />
 
-      {/* Content. The orb now occupies a reserved slot inside this column
-          (see `.maxina-orb-slot` below), so the old `pb-32` — which existed
-          to keep copy clear of a bottom-docked orb that is not there on this
-          screen — is no longer needed and only pushed the composition
-          off-centre on short viewports. */}
+      {/* Content - a single centered column with a reserved spacer between
+          the two text blocks for the separately-positioned Orb (see the
+          orbSpacerRef effect above). Two earlier layouts both failed: a
+          plain justify-center clustered everything, including the language
+          selector, into the same band a fixed-position Orb also targeted,
+          so the Orb sat directly on top of the pill; a justify-between
+          split fixed the collision but flung both blocks to the viewport
+          edges, producing large, disconnected empty gaps on tall phones.
+          Centering the whole column with a modest, explicit gap keeps the
+          composition as one cohesive block, matching the reference. */}
       <div
-        className={`relative z-10 flex flex-col items-center justify-center min-h-screen px-6 pb-10 md:pb-6 transition-opacity duration-[1000ms] maxina-page-content ${
+        className={`relative z-10 flex flex-col items-center justify-center gap-6 md:gap-8 min-h-screen px-6 py-12 transition-opacity duration-[1000ms] maxina-page-content ${
           showContent ? 'opacity-100' : 'opacity-0'
         }`}
-        ref={contentColRef}
+
         data-maxina-app="true"
       >
-        {/* Eyebrow - Small, uppercase, tracking-wide */}
-        <p 
-          className="text-xs md:text-sm font-medium text-white/60 text-center mb-3 animate-fade-in uppercase tracking-[0.2em]"
-          style={{ animationDelay: '1200ms', animationFillMode: 'both' }}
-        >
-          {t.intro?.welcomeTo || 'WELCOME TO VITANALAND'}
-        </p>
-
-        {/* Brand block - MAXINA wordmark + Experience, with a soft golden flare accent */}
-        <div className="relative">
-          {/* Primary Title - MAXINA in ALL CAPS, champagne/ivory gradient for contrast + brand presence */}
-          <h1
-            className="relative text-3xl md:text-4xl font-bold text-center mb-1 animate-fade-in leading-tight tracking-tight uppercase bg-gradient-to-b from-[#FBF3DE] via-[#F3E2B0] to-[#D9B873] bg-clip-text text-transparent [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.45))_drop-shadow(0_0_16px_rgba(235,205,150,0.35))]"
-            style={{ animationDelay: '1600ms', animationFillMode: 'both' }}
-          >
-            MAXINA
-          </h1>
-
-          {/* Signature Subtitle */}
+        {/* Top block: eyebrow, brand wordmark, tagline */}
+        <div className="flex flex-col items-center">
+          {/* Eyebrow - Small, uppercase, tracking-wide */}
           <p
-            className="relative text-base md:text-lg font-light text-white/80 text-center mb-2 animate-fade-in italic tracking-wide"
-            style={{ animationDelay: '1800ms', animationFillMode: 'both' }}
+            className="text-xs md:text-sm font-medium text-white/60 text-center mb-3 animate-fade-in uppercase tracking-[0.2em]"
+            style={{ animationDelay: '1200ms', animationFillMode: 'both' }}
           >
-            {t.intro?.experience || 'Experience'}
+            {t.intro?.welcomeTo || 'WELCOME TO VITANALAND'}
           </p>
 
-          {/* Golden shine flare - refined glint: thin champagne streak + luminous center + soft cinematic bloom, sits right under Experience as part of the brand block */}
-          <div
-            className="relative w-28 md:w-36 h-3 mx-auto mb-7 animate-fade-in"
-            style={{ animationDelay: '1900ms', animationFillMode: 'both' }}
-          >
-            {/* Ambient warm bloom - soft, wide, distinct from the sharp center point */}
+          {/* Brand block - MAXINA wordmark + Experience, with a soft golden flare accent */}
+          <div className="relative">
+            {/* Primary Title - MAXINA in ALL CAPS, champagne/ivory gradient for contrast + brand presence */}
+            <h1
+              className="relative text-3xl md:text-4xl font-bold text-center mb-1 animate-fade-in leading-tight tracking-tight uppercase bg-gradient-to-b from-[#FBF3DE] via-[#F3E2B0] to-[#D9B873] bg-clip-text text-transparent [filter:drop-shadow(0_2px_8px_rgba(0,0,0,0.45))_drop-shadow(0_0_16px_rgba(235,205,150,0.35))]"
+              style={{ animationDelay: '1600ms', animationFillMode: 'both' }}
+            >
+              MAXINA
+            </h1>
+
+            {/* Signature Subtitle */}
+            <p
+              className="relative text-base md:text-lg font-light text-white/80 text-center mb-2 animate-fade-in italic tracking-wide"
+              style={{ animationDelay: '1800ms', animationFillMode: 'both' }}
+            >
+              {t.intro?.experience || 'Experience'}
+            </p>
+
+            {/* Golden shine flare - refined glint: thin champagne streak + luminous center + soft cinematic bloom, sits right under Experience as part of the brand block */}
             <div
-              className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full blur-lg opacity-70"
-              style={{
-                background:
-                  'radial-gradient(circle, rgba(250,230,180,0.6) 0%, rgba(224,170,82,0.28) 50%, transparent 75%)',
-              }}
-            />
-            {/* Thin champagne-gold streak, strongest at center fading to transparent at both ends */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#E0AA52] to-transparent" />
-            {/* Small bright luminous point */}
-            <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#FFFDF6] shadow-[0_0_6px_2px_rgba(250,235,190,0.9)]" />
+              className="relative w-28 md:w-36 h-3 mx-auto mb-7 animate-fade-in"
+              style={{ animationDelay: '1900ms', animationFillMode: 'both' }}
+            >
+              {/* Ambient warm bloom - soft, wide, distinct from the sharp center point */}
+              <div
+                className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full blur-lg opacity-70"
+                style={{
+                  background:
+                    'radial-gradient(circle, rgba(250,230,180,0.6) 0%, rgba(224,170,82,0.28) 50%, transparent 75%)',
+                }}
+              />
+              {/* Thin champagne-gold streak, strongest at center fading to transparent at both ends */}
+              <div className="pointer-events-none absolute inset-y-0 left-0 right-0 h-px m-auto bg-gradient-to-r from-transparent via-[#E0AA52] to-transparent" />
+              {/* Small bright luminous point */}
+              <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full bg-[#FFFDF6] shadow-[0_0_6px_2px_rgba(250,235,190,0.9)]" />
+            </div>
           </div>
+
+          {/* Purpose statement - dominant headline + smaller supporting line */}
+          <p
+            className="text-4xl md:text-5xl font-bold text-white text-center leading-tight tracking-tight text-balance max-w-xs md:max-w-sm mb-1 animate-fade-in"
+            style={{ animationDelay: '2000ms', animationFillMode: 'both' }}
+          >
+            {t.intro?.taglineMain || 'Start your Longevity Journey'}
+          </p>
+          <p
+            className="text-lg md:text-xl font-light text-white/70 text-center italic tracking-wide animate-fade-in"
+            style={{ animationDelay: '2100ms', animationFillMode: 'both' }}
+          >
+            {t.intro?.taglineSub || 'together with us!'}
+          </p>
         </div>
 
-        {/* Purpose statement - dominant headline + smaller supporting line */}
-        <p
-          className="text-4xl md:text-5xl font-bold text-white text-center leading-tight tracking-tight text-balance max-w-xs md:max-w-sm mb-1 animate-fade-in"
-          style={{ animationDelay: '2000ms', animationFillMode: 'both' }}
-        >
-          {t.intro?.taglineMain || 'Start your Longevity Journey'}
-        </p>
-        <p
-          className="text-lg md:text-xl font-light text-white/70 text-center italic tracking-wide animate-fade-in"
-          style={{ animationDelay: '2100ms', animationFillMode: 'both' }}
-        >
-          {t.intro?.taglineSub || 'together with us!'}
-        </p>
+        {/* Reserved space for the Orb — no visible content. Its rendered
+            center is measured (see orbSpacerRef above) and fed to the CSS
+            that positions the actual, separately-mounted Orb widget, so the
+            two blocks below never have to guess where it will land.
 
-        {/* Reserved slot for the Orb.
-            The Orb itself is `position: fixed` and lives outside this tree,
-            so it cannot be a child here — this holds the space it occupies
-            and is what gets measured to place it. Height is exactly
-            `orb + 2×gap`, and the two neighbouring elements carry no margin
-            into it, so the gap above the orb and the gap below it are the
-            same number by construction, in every language. Purely
-            structural: no text, no paint, not focusable, not hit-testable. */}
-        <div ref={orbSlotRef} className="maxina-orb-slot w-full" aria-hidden="true" />
+            Its height is DERIVED (`--maxina-orb-slot` = orb + 2 × gap), not
+            hand-tuned. It used to be `h-28 md:h-36` with a note saying to
+            tune the number if the spacing looked wrong — but a hand-set
+            height and a separately-set orb size drift apart the moment
+            either changes, and the drift shows up as asymmetric spacing.
+            Deriving it means the gap above the Orb and the gap below it are
+            the same number by construction, in every language. Change
+            `--maxina-orb-size`/`--maxina-orb-gap` in index.css, not this. */}
+        <div ref={orbSpacerRef} aria-hidden="true" className="maxina-orb-slot w-full" />
 
-        {/* Static caption under the (separately, globally-positioned) Orb —
-            replaces the old pulsing "tap here" hint pill on this screen only.
-            Tapping the Orb is the only way to hear Vitana speak the welcome;
-            no play/audio control lives in this stack any more. */}
-        <p
-          className="text-sm md:text-base font-medium text-white/70 text-center mb-6 animate-fade-in"
-          style={{ animationDelay: '2400ms', animationFillMode: 'both' }}
-        >
-          {t.intro?.tapOrbHint || 'Tap the Orb to meet Vitana'}
-        </p>
-
-        {/* CTA Stack: language selector (occupies the former Play Welcome slot)
-            + Go to Login. */}
+        {/* Bottom block: static Orb caption, language selector, Go to Login. */}
         <div
           className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
+          {/* Static caption under the (separately, globally-positioned) Orb —
+              replaces the old pulsing "tap here" hint pill on this screen
+              only. Tapping the Orb is the only way to hear Vitana speak the
+              welcome; no play/audio control lives in this stack any more. */}
+          <p className="text-sm md:text-base font-medium text-white/70 text-center">
+            {t.intro?.tapOrbHint || 'Tap the Orb to meet Vitana'}
+          </p>
+
           {/* Language selector - glass bar with a globe icon, the current
               language name, and a chevron; opens a full-screen picker. */}
           <LanguageToggleButton />
@@ -330,6 +390,28 @@ export default function IntroExperience() {
           {lookup('screens.introexperience.press')} <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">{lookup('screens.introexperience.esc')}</kbd>{lookup('screens.introexperience.skip')}
         </p>
       </div>
+
+      {/* Loading placeholder at the Orb's target spot (see the orbReady
+          effect above) — disappears once the real widget is detected, or
+          after a fixed timeout regardless, so the center of the screen
+          never reads as an empty void while the deferred external script
+          loads. Deliberately an outlined, spinning ring rather than a
+          filled disc: a solid shape at this exact spot risks being read as
+          "the Orb" itself rather than a loading state, which is what
+          happened with the earlier filled-gradient version. */}
+      {!orbReady && (
+        <div
+          className="fixed z-30 pointer-events-none"
+          style={{
+            left: 'var(--maxina-orb-target-left, 50%)',
+            top: 'var(--maxina-orb-target-top, 50%)',
+            transform: 'translate(-50%, -50%)',
+          }}
+          aria-hidden="true"
+        >
+          <div className="h-10 w-10 rounded-full border-2 border-white/30 border-t-white/80 animate-spin" />
+        </div>
+      )}
     </div>
   );
 }

@@ -3,25 +3,32 @@
  *
  * The Orb on `/_intro/:tenantSlug` is rendered by the gateway's orb-widget.js
  * OUTSIDE this app's React tree, so it cannot be a child of the layout it has
- * to sit inside. It used to be parked at a hardcoded `top: 58%` of the
- * viewport — a guess about where the copy ends. The copy ends somewhere
- * different in every language, and in Serbian the orb landed directly on top
- * of the italic sub-tagline.
+ * to sit inside. It is positioned by a global CSS override that reads
+ * `--maxina-orb-target-left/-top`, two custom properties IntroExperience.tsx
+ * publishes from the measured centre of a reserved in-flow spacer.
  *
- * The fix couples the orb to the layout instead of to a percentage:
- * `IntroExperience.tsx` reserves a real in-flow slot and publishes its measured
- * centre as `--maxina-orb-top`. These are source-level assertions on that
- * contract — the same pattern the ORB widget suites use, because the pieces
- * live in a global stylesheet and an external script and cannot be exercised
- * through a component render.
+ * That measured approach was introduced before this suite and COULD NOT RUN:
+ * the effect's dependency array was `[]` and it reads a ref that is null
+ * behind the component's `!videoSrc` loading early-return, so it bailed once
+ * and never re-ran. Neither property was ever set, the CSS fell through to
+ * its `top: 50%` fallback, and in Serbian — whose headline wraps to three
+ * lines — that landed the Orb on the italic sub-tagline. Measured on staging
+ * at 50.4% of the viewport.
  *
- * Two of these pin bugs that actually happened during this work:
- *  - the effect's dependency list omitted `videoSrc`, so it ran once while the
- *    component was still showing its loader, found a null ref, bailed, and
- *    never re-ran — the custom property was never published and the orb kept
- *    the fallback forever. Wired-looking and unable to fire.
- *  - a bare `top: 58%` as the live value is the original defect; it survives
- *    only as the `var()` fallback for the frame before first measurement.
+ * These are source-level assertions, matching the pattern the ORB widget
+ * suites use: the moving parts live in a global stylesheet and an external
+ * script, and cannot be exercised through a component render. The companion
+ * browser check that measures the real result is
+ * `scripts/verify-intro-orb-placement.mjs`.
+ *
+ * What each case defends:
+ *  - the effect can actually fire (the `[]`-deps bug above),
+ *  - it re-fires when the copy changes, since a longer translation moves the
+ *    spacer without resizing it, so the ResizeObserver alone never sees it,
+ *  - the reserved height stays DERIVED from the Orb size rather than
+ *    hand-tuned, so the two cannot drift into asymmetry,
+ *  - the Orb is never rendered smaller than the widget's own base size,
+ *  - a static percentage never comes back as the live value.
  */
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'fs';
@@ -52,7 +59,7 @@ describe('intro Orb placement', () => {
     // Without the slot there is nothing to measure and nothing holding the
     // space open, so the orb is back to overlapping whatever is at 58%.
     expect(TSX).toContain('maxina-orb-slot');
-    expect(TSX).toMatch(/ref=\{orbSlotRef\}/);
+    expect(TSX).toMatch(/ref=\{orbSpacerRef\}/);
     expect(CSS).toContain('.maxina-orb-slot');
   });
 
@@ -66,14 +73,15 @@ describe('intro Orb placement', () => {
   });
 
   it('positions the orb from the measured slot, not a viewport percentage', () => {
-    expect(CSS).toContain('var(--maxina-orb-top');
-    // 58% may survive ONLY as the var() fallback for the pre-measurement frame.
-    // A bare `top: 58%` anywhere is the original bug returning.
-    const bareFiftyEight = [...CSS.matchAll(/top:\s*58%/g)].filter((m) => {
-      const before = CSS.slice(Math.max(0, m.index! - 60), m.index!);
-      return !before.includes('var(--maxina-orb-top');
+    expect(CSS).toContain('var(--maxina-orb-target-top');
+    // A percentage may survive ONLY as the var() fallback for the frame
+    // before the first measurement. A bare `top: <n>%` on these selectors is
+    // the original bug returning.
+    const bare = [...CSS.matchAll(/top:\s*\d+%/g)].filter((m) => {
+      const before = CSS.slice(Math.max(0, m.index! - 70), m.index!);
+      return !before.includes('var(--maxina-orb-target-top');
     });
-    expect(bareFiftyEight).toHaveLength(0);
+    expect(bare).toHaveLength(0);
   });
 
   it('re-measures when the component actually mounts its tree', () => {
@@ -82,7 +90,7 @@ describe('intro Orb placement', () => {
     // `videoSrc` in the deps the effect never runs again and the property is
     // never published — measured, not assumed: this is the bug that shipped
     // during development and was caught by the browser check.
-    const deps = TSX.match(/\}, \[taglineMain[^\]]*\]\);/);
+    const deps = TSX.match(/\}, \[videoSrc[^\]]*\]\);/);
     expect(deps, 'orb-placement effect dependency array not found').not.toBeNull();
     expect(deps![0]).toContain('videoSrc');
   });
@@ -90,15 +98,15 @@ describe('intro Orb placement', () => {
   it('re-measures on language change', () => {
     // A language switch re-wraps the headline and moves the slot. These are
     // the strings whose change signals that.
-    const deps = TSX.match(/\}, \[taglineMain[^\]]*\]\);/)![0];
+    const deps = TSX.match(/\}, \[videoSrc[^\]]*\]\);/)![0];
     expect(deps).toContain('taglineMain');
     expect(deps).toContain('taglineSub');
     expect(deps).toContain('tapOrbHint');
   });
 
   it('re-measures on resize, orientation change and webfont load', () => {
-    expect(TSX).toContain("window.addEventListener('resize', apply)");
-    expect(TSX).toContain("window.addEventListener('orientationchange', apply)");
+    expect(TSX).toContain("window.addEventListener('resize', syncOrbTarget)");
+    expect(TSX).toContain("window.addEventListener('orientationchange', syncOrbTarget)");
     expect(TSX).toContain('document.fonts.ready');
     expect(TSX).toContain('ResizeObserver');
   });
@@ -106,7 +114,7 @@ describe('intro Orb placement', () => {
   it('never publishes a zero-height measurement', () => {
     // A zero rect means "not laid out yet"; publishing it would fling the orb
     // to the top edge of the screen.
-    expect(TSX).toMatch(/if \(rect\.height === 0\) return;/);
+    expect(TSX).toMatch(/if \(rect\.width === 0 && rect\.height === 0\) return;/);
   });
 
   it('never renders the orb smaller than the widget’s own base size', () => {

@@ -115,11 +115,23 @@ export function LanguageToggleButton({ className }: LanguageToggleButtonProps) {
         <ChevronDown className="w-4 h-4 text-white/70" aria-hidden="true" />
       </button>
 
+      {/* Dark glass styling, overridden locally rather than in the shared
+          drawer.tsx primitive (used elsewhere in ordinary light contexts).
+          DrawerContent's default bg-background resolves to plain white in
+          this app's light theme, and nothing forces dark mode on the intro
+          screen, so without this the picker slides up as a flat white sheet
+          over the screen's dark photo background — the "too basic" gap
+          against the reference mockup's dark glass panel. */}
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
-        <DrawerContent>
+        <DrawerContent
+          overlayClassName="bg-black/60"
+          className="bg-[#161311]/95 backdrop-blur-2xl border-white/10 text-white"
+        >
           <DrawerHeader>
-            <DrawerTitle>{t.intro?.chooseLanguageTitle || 'Choose your language'}</DrawerTitle>
-            <DrawerDescription>
+            <DrawerTitle className="text-white">
+              {t.intro?.chooseLanguageTitle || 'Choose your language'}
+            </DrawerTitle>
+            <DrawerDescription className="text-white/60">
               {t.intro?.chooseLanguageSubtitle ||
                 'Vitana will speak and respond in this language.'}
             </DrawerDescription>
@@ -141,9 +153,9 @@ export function LanguageToggleButton({ className }: LanguageToggleButtonProps) {
                   aria-selected={isCurrent}
                   onClick={() => setSelectedLanguage(opt.value)}
                   className={cn(
-                    'w-full flex items-center gap-3 px-4 py-3 rounded-lg text-start',
-                    'hover:bg-accent transition-colors',
-                    isCurrent && 'bg-accent font-semibold',
+                    'w-full flex items-center gap-3 px-4 py-3 rounded-lg text-start text-white',
+                    'hover:bg-white/10 transition-colors',
+                    isCurrent && 'bg-white/10 font-semibold',
                   )}
                 >
                   {pres ? (
@@ -161,7 +173,10 @@ export function LanguageToggleButton({ className }: LanguageToggleButtonProps) {
                   )}
                   <span className="flex-1">{pres?.endonym ?? opt.label}</span>
                   {isCurrent && (
-                    <Check className="w-4 h-4 text-primary flex-shrink-0" aria-hidden="true" />
+                    <Check
+                      className="w-4 h-4 text-[#E0AA52] flex-shrink-0"
+                      aria-hidden="true"
+                    />
                   )}
                 </button>
               );
@@ -169,7 +184,10 @@ export function LanguageToggleButton({ className }: LanguageToggleButtonProps) {
           </div>
 
           <DrawerFooter>
-            <Button className="w-full" onClick={() => setDrawerOpen(false)}>
+            <Button
+              className="w-full bg-[#E0AA52] text-black hover:bg-[#D9B873]"
+              onClick={() => setDrawerOpen(false)}
+            >
               {i18nT('screens.common.done')}
             </Button>
           </DrawerFooter>
