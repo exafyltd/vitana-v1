@@ -30,5 +30,6 @@
     "forbiddenDesc": "You don't have permission for this action.",
     "notFound": "Not found",
     "notFoundDesc": "The requested item was not found."
-  }
+  },
+  "_pending_review": {}
 }

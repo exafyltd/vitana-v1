@@ -28,5 +28,6 @@
     "icon": "Icon",
     "publicLabel": "Visible to everyone",
     "private": "Private"
-  }
+  },
+  "_pending_review": {}
 }

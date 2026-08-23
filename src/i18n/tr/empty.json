@@ -48,5 +48,6 @@
     "noActionsMatchedYet": "No actions matched yet — Autopilot is shaping suggestions.",
     "actionsPendingOne": "{count} action pending",
     "actionsPendingOther": "{count} actions pending"
-  }
+  },
+  "_pending_review": {}
 }

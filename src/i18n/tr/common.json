@@ -76,5 +76,6 @@
     "refresh": "Refresh",
     "retry": "Retry",
     "uploading": "Uploading..."
-  }
+  },
+  "_pending_review": {}
 }

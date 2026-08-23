@@ -68,7 +68,9 @@
         },
         "title": "Export Data",
         "description": "Download your memories and health data securely"
-      }
+      },
+      "_pending_review": {}
     }
-  }
+  },
+  "_pending_review": {}
 }

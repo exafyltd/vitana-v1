@@ -1,8 +1,5 @@
 {
   "archives": {
-    "_pending_review": {
-      "searchPlaceholder": true
-    },
-    "searchPlaceholder": "Search archives..."
+    "searchPlaceholder": "Arşivlerde ara..."
   }
 }

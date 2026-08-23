@@ -4,5 +4,6 @@
       "searchPlaceholder": true
     },
     "searchPlaceholder": "Search consent packages, organizations, permissions..."
-  }
+  },
+  "_pending_review": {}
 }

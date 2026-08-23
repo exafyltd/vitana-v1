@@ -2,6 +2,8 @@
   "audio": {
     "listening": "Dinliyorum...",
     "processing": "Bir saniye...",
-    "connectionError": "Bağlantı sorunu. Lütfen tekrar dene."
-  }
+    "connectionError": "Bağlantı sorunu. Lütfen tekrar dene.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

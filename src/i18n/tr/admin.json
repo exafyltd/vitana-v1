@@ -19,7 +19,10 @@
       "rejected": "Reddedildi",
       "flagged": "İşaretlendi",
       "podcastManagement": "Podcast Yönetimi",
-      "podcastManagementDesc": "Podcast yüklemelerini incele ve denetle"
-    }
-  }
+      "podcastManagementDesc": "Podcast yüklemelerini incele ve denetle",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

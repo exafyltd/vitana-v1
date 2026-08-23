@@ -56,5 +56,6 @@
     "ticketEmailNote": "Your ticket and confirmation will be sent to this email.",
     "left": "{count} left",
     "loadFailed": "Failed to load tickets"
-  }
+  },
+  "_pending_review": {}
 }

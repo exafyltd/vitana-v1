@@ -94,5 +94,6 @@
       "connectionSuccess": "Connection successful",
       "connectionPlaceholder": "{appName} connection coming soon"
     }
-  }
+  },
+  "_pending_review": {}
 }

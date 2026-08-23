@@ -26,5 +26,6 @@
     "notFoundDesc": "This group may have been removed or doesn't exist.",
     "browseGroups": "Browse Groups",
     "support": "Support"
-  }
+  },
+  "_pending_review": {}
 }

@@ -34,5 +34,6 @@
     "disconnectDesc": "You can reconnect later.",
     "proceed": "Do you want to continue?",
     "proceedDesc": "This action will be executed."
-  }
+  },
+  "_pending_review": {}
 }

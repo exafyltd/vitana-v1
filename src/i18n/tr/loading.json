@@ -16,5 +16,6 @@
     "uploadingProgress": "Uploading... {progress}%",
     "processing": "Processing...",
     "saving": "Saving..."
-  }
+  },
+  "_pending_review": {}
 }
