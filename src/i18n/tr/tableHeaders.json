@@ -1,29 +1,17 @@
 {
+ "_pending_review": {},
+ "tableHeaders": {
   "_pending_review": {},
-  "tableHeaders": {
-    "_pending_review": {
-      "groupName": true,
-      "category": true,
-      "members": true,
-      "privacy": true,
-      "status": true,
-      "actions": true,
-      "name": true,
-      "role": true,
-      "email": true,
-      "date": true,
-      "amount": true
-    },
-    "groupName": "Group Name",
-    "category": "Category",
-    "members": "Members",
-    "privacy": "Privacy",
-    "status": "Status",
-    "actions": "Actions",
-    "name": "Name",
-    "role": "Role",
-    "email": "Email",
-    "date": "Date",
-    "amount": "Amount"
-  }
+  "groupName": "Grup Adı",
+  "category": "Kategori",
+  "members": "Üyeler",
+  "privacy": "Gizlilik",
+  "status": "Durum",
+  "actions": "İşlemler",
+  "name": "Ad",
+  "role": "Rol",
+  "email": "E-posta",
+  "date": "Tarih",
+  "amount": "Tutar"
+ }
 }

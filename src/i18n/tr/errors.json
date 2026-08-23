@@ -1,34 +1,19 @@
 {
-  "errors": {
-    "_pending_review": {
-      "somethingWentWrong": true,
-      "tryAgain": true,
-      "pageNotFound": true,
-      "pageNotFoundDesc": true,
-      "serverError": true,
-      "serverErrorDesc": true,
-      "networkError": true,
-      "networkErrorDesc": true,
-      "unauthorized": true,
-      "unauthorizedDesc": true,
-      "forbidden": true,
-      "forbiddenDesc": true,
-      "notFound": true,
-      "notFoundDesc": true
-    },
-    "somethingWentWrong": "Something went wrong",
-    "tryAgain": "Please try again",
-    "pageNotFound": "Page not found",
-    "pageNotFoundDesc": "The requested page doesn't exist.",
-    "serverError": "Server error",
-    "serverErrorDesc": "An unexpected error occurred.",
-    "networkError": "Network error",
-    "networkErrorDesc": "Please check your internet connection.",
-    "unauthorized": "Unauthorized",
-    "unauthorizedDesc": "Please log in to continue.",
-    "forbidden": "Access denied",
-    "forbiddenDesc": "You don't have permission for this action.",
-    "notFound": "Not found",
-    "notFoundDesc": "The requested item was not found."
-  }
+ "errors": {
+  "_pending_review": {},
+  "somethingWentWrong": "Bir şeyler ters gitti",
+  "tryAgain": "Lütfen tekrar dene",
+  "pageNotFound": "Sayfa bulunamadı",
+  "pageNotFoundDesc": "İstenen sayfa mevcut değil.",
+  "serverError": "Sunucu hatası",
+  "serverErrorDesc": "Beklenmeyen bir hata oluştu.",
+  "networkError": "Ağ hatası",
+  "networkErrorDesc": "Lütfen internet bağlantını kontrol et.",
+  "unauthorized": "Yetkisiz",
+  "unauthorizedDesc": "Devam etmek için lütfen giriş yap.",
+  "forbidden": "Erişim reddedildi",
+  "forbiddenDesc": "Bu eylem için iznin yok.",
+  "notFound": "Bulunamadı",
+  "notFoundDesc": "İstenen öğe bulunamadı."
+ }
 }

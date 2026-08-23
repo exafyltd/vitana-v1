@@ -1,74 +1,48 @@
 {
-  "diaryActions": {
-    "_pending_review": {
-      "title": true
-    },
-    "title": "Diary Entry Actions",
-    "items": {
-      "recordVoiceEntry": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Record Voice Entry",
-        "description": "Capture thoughts and reflections with voice recording"
-      },
-      "addPhotoEntry": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Add Photo Entry",
-        "description": "Upload images to document your wellness journey"
-      },
-      "writeTextEntry": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Write Text Entry",
-        "description": "Create detailed written reflections and notes"
-      },
-      "quickNote": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Quick Note",
-        "description": "Jot down brief thoughts or observations"
-      },
-      "videoDiary": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Video Diary",
-        "description": "Record video reflections and progress updates"
-      },
-      "scheduleEntry": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Schedule Entry",
-        "description": "Plan future diary entries and reminders"
-      },
-      "tagMemories": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Tag Memories",
-        "description": "Organize existing entries with tags and categories"
-      },
-      "importFiles": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Import Files",
-        "description": "Upload documents, images, or other wellness files"
-      }
-    }
+ "diaryActions": {
+  "_pending_review": {},
+  "title": "Günlük Kayıt Eylemleri",
+  "items": {
+   "recordVoiceEntry": {
+    "_pending_review": {},
+    "title": "Sesli Kayıt Al",
+    "description": "Düşüncelerini ve yansımalarını sesli kayıtla yakala"
+   },
+   "addPhotoEntry": {
+    "_pending_review": {},
+    "title": "Fotoğraf Kaydı Ekle",
+    "description": "Wellness yolculuğunu belgelemek için görsel yükle"
+   },
+   "writeTextEntry": {
+    "_pending_review": {},
+    "title": "Metin Kaydı Yaz",
+    "description": "Ayrıntılı yazılı yansımalar ve notlar oluştur"
+   },
+   "quickNote": {
+    "_pending_review": {},
+    "title": "Hızlı Not",
+    "description": "Kısa düşünce veya gözlemlerini not al"
+   },
+   "videoDiary": {
+    "_pending_review": {},
+    "title": "Video Günlüğü",
+    "description": "Video yansımalar ve ilerleme güncellemeleri kaydet"
+   },
+   "scheduleEntry": {
+    "_pending_review": {},
+    "title": "Kayıt Planla",
+    "description": "Gelecekteki günlük kayıtlarını ve hatırlatmaları planla"
+   },
+   "tagMemories": {
+    "_pending_review": {},
+    "title": "Anıları Etiketle",
+    "description": "Mevcut kayıtları etiket ve kategorilerle düzenle"
+   },
+   "importFiles": {
+    "_pending_review": {},
+    "title": "Dosya İçe Aktar",
+    "description": "Belge, görsel veya diğer wellness dosyalarını yükle"
+   }
   }
+ }
 }

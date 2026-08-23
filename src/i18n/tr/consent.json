@@ -1,8 +1,6 @@
 {
-  "consent": {
-    "_pending_review": {
-      "searchPlaceholder": true
-    },
-    "searchPlaceholder": "Search consent packages, organizations, permissions..."
-  }
+ "consent": {
+  "_pending_review": {},
+  "searchPlaceholder": "Onam paketlerinde, kuruluşlarda, izinlerde ara..."
+ }
 }

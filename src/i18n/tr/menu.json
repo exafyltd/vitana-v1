@@ -1,21 +1,14 @@
 {
-  "menu": {
-    "_pending_review": {
-      "logout": true,
-      "help": true,
-      "about": true,
-      "contact": true,
-      "privacy": true,
-      "terms": true
-    },
-    "home": "Ana Sayfa",
-    "profile": "Profil",
-    "settings": "Ayarlar",
-    "logout": "Logout",
-    "help": "Help",
-    "about": "About",
-    "contact": "Contact",
-    "privacy": "Privacy",
-    "terms": "Terms of Service"
-  }
+ "menu": {
+  "_pending_review": {},
+  "home": "Ana Sayfa",
+  "profile": "Profil",
+  "settings": "Ayarlar",
+  "logout": "Çıkış Yap",
+  "help": "Yardım",
+  "about": "Hakkında",
+  "contact": "İletişim",
+  "privacy": "Gizlilik",
+  "terms": "Hizmet Şartları"
+ }
 }

@@ -1,24 +1,14 @@
 {
-  "diary": {
-    "_pending_review": {
-      "title": true,
-      "description": true,
-      "healthTab": true,
-      "bugTab": true,
-      "text": true,
-      "photo": true,
-      "textEntry": true,
-      "photoEntry": true,
-      "searchPlaceholder": true
-    },
-    "title": "Daily Diary",
-    "description": "Track your wellness journey and help us to get better",
-    "healthTab": "Health Diary",
-    "bugTab": "Bug Reports",
-    "text": "Text",
-    "photo": "Photo",
-    "textEntry": "✍️ Text Entry",
-    "photoEntry": "📸 Photo Entry",
-    "searchPlaceholder": "Search diary..."
-  }
+ "diary": {
+  "_pending_review": {},
+  "title": "Günlük Yazı",
+  "description": "Wellness yolculuğunu takip et, gelişmemize yardımcı ol",
+  "healthTab": "Sağlık Günlüğü",
+  "bugTab": "Hata Bildirimleri",
+  "text": "Metin",
+  "photo": "Fotoğraf",
+  "textEntry": "✍️ Metin Girişi",
+  "photoEntry": "📸 Fotoğraf Girişi",
+  "searchPlaceholder": "Günlükte ara..."
+ }
 }

@@ -1,28 +1,16 @@
 {
-  "groupFeed": {
-    "_pending_review": {
-      "placeholder": true,
-      "post": true,
-      "noMessages": true,
-      "beFirst": true,
-      "joinToPost": true,
-      "messageSent": true,
-      "deleteConfirm": true,
-      "messageDeleted": true,
-      "error": true,
-      "errorSend": true,
-      "errorDelete": true
-    },
-    "placeholder": "Share something with the group...",
-    "post": "Post",
-    "noMessages": "No messages yet",
-    "beFirst": "Be the first to post in this group!",
-    "joinToPost": "Join the group to start posting.",
-    "messageSent": "Message sent",
-    "deleteConfirm": "Delete this message?",
-    "messageDeleted": "Message deleted",
-    "error": "Error",
-    "errorSend": "Failed to send message",
-    "errorDelete": "Failed to delete message"
-  }
+ "groupFeed": {
+  "_pending_review": {},
+  "placeholder": "Grupla bir şey paylaş...",
+  "post": "Paylaş",
+  "noMessages": "Henüz mesaj yok",
+  "beFirst": "Bu grupta paylaşan ilk kişi ol!",
+  "joinToPost": "Paylaşmak için gruba katıl.",
+  "messageSent": "Mesaj gönderildi",
+  "deleteConfirm": "Bu mesaj silinsin mi?",
+  "messageDeleted": "Mesaj silindi",
+  "error": "Hata",
+  "errorSend": "Mesaj gönderilemedi",
+  "errorDelete": "Mesaj silinemedi"
+ }
 }

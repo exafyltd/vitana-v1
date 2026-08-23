@@ -1,292 +1,162 @@
 {
-  "calendar": {
-    "_pending_review": {
-      "smartCalendar": true,
-      "myCalendar": true,
-      "bookedActivities": true,
-      "addEvent": true,
-      "synced": true,
-      "syncing": true,
-      "today": true,
-      "week": true,
-      "month": true,
-      "agenda": true,
-      "nothingScheduled": true,
-      "tryQuickAdd": true,
-      "clickSlotHint": true,
-      "noEventsOnDate": true,
-      "lastSynced": true,
-      "justNow": true,
-      "now": true,
-      "untitledEvent": true,
-      "newEvent": true,
-      "close": true,
-      "noBookingsToday": true,
-      "noBookingsYet": true,
-      "nextUpcoming": true,
-      "exploreActivities": true,
-      "browseActivities": true,
-      "allDay": true,
-      "milestoneToday": true
-    },
-    "smartCalendar": "Smart Calendar",
-    "myCalendar": "My Calendar",
-    "bookedActivities": "Your booked activities in VITANA",
-    "addEvent": "Add Event",
-    "synced": "Synced",
-    "syncing": "Syncing",
-    "today": "Today",
-    "week": "Week",
-    "month": "Month",
-    "agenda": "Agenda",
-    "nothingScheduled": "Nothing scheduled",
-    "tryQuickAdd": "Try Quick Add or let Autopilot plan your day",
-    "clickSlotHint": "Click on a slot to create an event • Drag to move",
-    "noEventsOnDate": "No events on this date",
-    "lastSynced": "Last synced",
-    "justNow": "just now",
-    "now": "Now",
-    "untitledEvent": "Untitled Event",
-    "newEvent": "New Event",
-    "close": "Close",
-    "noBookingsToday": "No bookings today",
-    "noBookingsYet": "No bookings yet",
-    "nextUpcoming": "Next upcoming",
-    "exploreActivities": "Discover activities for your calendar",
-    "browseActivities": "Browse Activities",
-    "bookedEvents": {
-      "_pending_review": {
-        "title": true,
-        "todayLabel": true,
-        "nextUp": true,
-        "noEventsToday": true
-      },
-      "title": "Your booked events",
-      "todayLabel": "Today",
-      "nextUp": "Next up",
-      "noEventsToday": "No events today"
-    },
-    "filters": {
-      "_pending_review": {
-        "personal": true,
-        "community": true,
-        "work": true,
-        "health": true,
-        "workout": true
-      },
-      "personal": "Personal",
-      "community": "Community",
-      "work": "Work",
-      "health": "Health",
-      "workout": "Workout"
-    },
-    "categories": {
-      "_pending_review": {
-        "community": true,
-        "fitness": true,
-        "health": true,
-        "nutrition": true,
-        "professional": true,
-        "personal": true,
-        "training": true
-      },
-      "community": "Community",
-      "fitness": "Fitness",
-      "health": "Health",
-      "nutrition": "Nutrition",
-      "professional": "Work",
-      "personal": "Personal",
-      "training": "Training"
-    },
-    "bookingStatus": {
-      "_pending_review": {
-        "booked": true,
-        "rsvp": true,
-        "ticket": true,
-        "reserved": true
-      },
-      "booked": "Booked",
-      "rsvp": "RSVP",
-      "ticket": "Ticket",
-      "reserved": "Reserved"
-    },
-    "timeGroups": {
-      "_pending_review": {
-        "today": true,
-        "tomorrow": true,
-        "thisWeek": true,
-        "later": true
-      },
-      "today": "Today",
-      "tomorrow": "Tomorrow",
-      "thisWeek": "This Week",
-      "later": "Later"
-    },
-    "autopilot": {
-      "_pending_review": {
-        "suggestions": true,
-        "badge": true,
-        "accept": true,
-        "snooze": true,
-        "dismiss": true,
-        "undo": true,
-        "laterToday": true,
-        "tomorrow": true,
-        "conflictsWith": true,
-        "suggestionAccepted": true,
-        "calendarUpdated": true,
-        "suggestionUndone": true,
-        "changesReverted": true,
-        "suggestionSnoozed": true,
-        "reminderLaterToday": true,
-        "reminderTomorrow": true,
-        "recommendFocus": true,
-        "focusBlockDesc": true
-      },
-      "suggestions": "Autopilot Suggestions",
-      "badge": "Autopilot",
-      "accept": "Accept",
-      "snooze": "Remind later",
-      "dismiss": "Dismiss",
-      "undo": "Undo",
-      "laterToday": "Later today",
-      "tomorrow": "Tomorrow",
-      "conflictsWith": "Conflicts with:",
-      "suggestionAccepted": "Suggestion accepted",
-      "calendarUpdated": "Autopilot has updated your calendar",
-      "suggestionUndone": "Suggestion undone",
-      "changesReverted": "Changes have been reverted",
-      "suggestionSnoozed": "Suggestion postponed",
-      "reminderLaterToday": "Reminder set for later today",
-      "reminderTomorrow": "Reminder set for tomorrow",
-      "recommendFocus": "Recommend focus block",
-      "focusBlockDesc": "You have a 90-minute time slot available. Perfect for focused work."
-    },
-    "toasts": {
-      "_pending_review": {
-        "eventCreated": true,
-        "eventCreatedDesc": true,
-        "eventDeleted": true,
-        "eventDeletedDesc": true,
-        "syncingTitle": true,
-        "syncingDesc": true,
-        "syncedTitle": true,
-        "syncedDesc": true,
-        "joiningEvent": true,
-        "openingVideoCall": true,
-        "messageAttendees": true,
-        "featureComingSoon": true,
-        "inviteFollowers": true,
-        "rescheduleEvent": true,
-        "shareToGroup": true
-      },
-      "eventCreated": "Event created",
-      "eventCreatedDesc": "Your event was added to the calendar",
-      "eventDeleted": "Event deleted",
-      "eventDeletedDesc": "The event was removed from your calendar",
-      "syncingTitle": "Synchronizing...",
-      "syncingDesc": "Synchronizing with external calendars",
-      "syncedTitle": "Synced",
-      "syncedDesc": "Calendar is up to date",
-      "joiningEvent": "Joining event",
-      "openingVideoCall": "Opening video call...",
-      "messageAttendees": "Message attendees",
-      "featureComingSoon": "Feature coming soon",
-      "inviteFollowers": "Invite followers",
-      "rescheduleEvent": "Reschedule event",
-      "shareToGroup": "Share to group"
-    },
-    "error": {
-      "_pending_review": {
-        "failedToCreate": true
-      },
-      "failedToCreate": "Failed to create event"
-    },
-    "allDay": "All day",
-    "milestoneToday": "Milestone",
-    "focus": {
-      "_pending_review": {
-        "todaysFocus": true,
-        "lightDay": true,
-        "moreSteps": true
-      },
-      "todaysFocus": "Today's focus",
-      "lightDay": "Light day — explore activities or catch up on your diary",
-      "moreSteps": "more steps"
-    },
-    "badge": {
-      "_pending_review": {
-        "guidedStep": true,
-        "milestone": true,
-        "wellness": true
-      },
-      "guidedStep": "Guided step",
-      "milestone": "Milestone",
-      "wellness": "Wellness"
-    },
-    "action": {
-      "_pending_review": {
-        "start": true,
-        "continue": true,
-        "join": true,
-        "details": true,
-        "viewPlan": true,
-        "open": true,
-        "done": true
-      },
-      "start": "Start",
-      "continue": "Continue",
-      "join": "Join",
-      "details": "Details",
-      "viewPlan": "View plan",
-      "open": "Open",
-      "done": "Done"
-    },
-    "group": {
-      "_pending_review": {
-        "stepsRemaining": true,
-        "min": true
-      },
-      "stepsRemaining": "steps remaining",
-      "min": "min"
-    },
-    "journey": {
-      "_pending_review": {
-        "dayOf": true,
-        "yourJourney": true,
-        "nextMilestone": true,
-        "showFullAgenda": true,
-        "moreEvents": true,
-        "onboardingPlan": true,
-        "estimatedTime": true,
-        "startPlan": true,
-        "tasksCompleted": true
-      },
-      "dayOf": "Day {day} of {total}",
-      "yourJourney": "Your journey",
-      "nextMilestone": "Next milestone",
-      "showFullAgenda": "Show full agenda",
-      "moreEvents": "more events",
-      "onboardingPlan": "Today's onboarding plan",
-      "estimatedTime": "~{minutes} min",
-      "startPlan": "Start plan",
-      "tasksCompleted": "{completed}/{total} done",
-      "waveNames": {
-        "_pending_review": {
-          "wave-1": true,
-          "wave-2": true,
-          "wave-3": true,
-          "wave-4": true,
-          "wave-5": true,
-          "wave-6": true
-        },
-        "wave-1": "Getting Started",
-        "wave-2": "Daily Anchors",
-        "wave-3": "Deepening Connections",
-        "wave-4": "Health Intelligence",
-        "wave-5": "Insight Moments",
-        "wave-6": "Recommendations & Discovery"
-      }
-    }
+ "calendar": {
+  "_pending_review": {},
+  "smartCalendar": "Akıllı Takvim",
+  "myCalendar": "Takvimim",
+  "bookedActivities": "VITANA'daki rezervasyonlu etkinliklerin",
+  "addEvent": "Etkinlik Ekle",
+  "synced": "Senkronize",
+  "syncing": "Senkronize Ediliyor",
+  "today": "Bugün",
+  "week": "Hafta",
+  "month": "Ay",
+  "agenda": "Ajanda",
+  "nothingScheduled": "Planlanmış bir şey yok",
+  "tryQuickAdd": "Hızlı Ekle'yi dene veya Otomatik Pilot günü planlasın",
+  "clickSlotHint": "Etkinlik oluşturmak için bir zaman dilimine tıkla • Taşımak için sürükle",
+  "noEventsOnDate": "Bu tarihte etkinlik yok",
+  "lastSynced": "Son senkronizasyon",
+  "justNow": "az önce",
+  "now": "Şimdi",
+  "untitledEvent": "İsimsiz Etkinlik",
+  "newEvent": "Yeni Etkinlik",
+  "close": "Kapat",
+  "noBookingsToday": "Bugün rezervasyon yok",
+  "noBookingsYet": "Henüz rezervasyon yok",
+  "nextUpcoming": "Sıradaki",
+  "exploreActivities": "Takvimin için etkinlikler keşfet",
+  "browseActivities": "Etkinliklere Göz At",
+  "bookedEvents": {
+   "_pending_review": {},
+   "title": "Rezervasyonlu etkinliklerin",
+   "todayLabel": "Bugün",
+   "nextUp": "Sıradaki",
+   "noEventsToday": "Bugün etkinlik yok"
+  },
+  "filters": {
+   "_pending_review": {},
+   "personal": "Kişisel",
+   "community": "Topluluk",
+   "work": "İş",
+   "health": "Sağlık",
+   "workout": "Antrenman"
+  },
+  "categories": {
+   "_pending_review": {},
+   "community": "Topluluk",
+   "fitness": "Fitness",
+   "health": "Sağlık",
+   "nutrition": "Beslenme",
+   "professional": "İş",
+   "personal": "Kişisel",
+   "training": "Antrenman"
+  },
+  "bookingStatus": {
+   "_pending_review": {},
+   "booked": "Rezerve Edildi",
+   "rsvp": "Katılım Onayı",
+   "ticket": "Bilet",
+   "reserved": "Ayrıldı"
+  },
+  "timeGroups": {
+   "_pending_review": {},
+   "today": "Bugün",
+   "tomorrow": "Yarın",
+   "thisWeek": "Bu Hafta",
+   "later": "Daha Sonra"
+  },
+  "autopilot": {
+   "_pending_review": {},
+   "suggestions": "Otomatik Pilot Önerileri",
+   "badge": "Otomatik Pilot",
+   "accept": "Kabul Et",
+   "snooze": "Sonra hatırlat",
+   "dismiss": "Reddet",
+   "undo": "Geri Al",
+   "laterToday": "Bugün daha sonra",
+   "tomorrow": "Yarın",
+   "conflictsWith": "Şununla çakışıyor:",
+   "suggestionAccepted": "Öneri kabul edildi",
+   "calendarUpdated": "Otomatik Pilot takvimini güncelledi",
+   "suggestionUndone": "Öneri geri alındı",
+   "changesReverted": "Değişiklikler geri alındı",
+   "suggestionSnoozed": "Öneri ertelendi",
+   "reminderLaterToday": "Bugün için daha sonra hatırlatma ayarlandı",
+   "reminderTomorrow": "Yarın için hatırlatma ayarlandı",
+   "recommendFocus": "Odaklanma bloğu öner",
+   "focusBlockDesc": "90 dakikalık boş bir zaman dilimin var. Odaklanmış çalışma için mükemmel."
+  },
+  "toasts": {
+   "_pending_review": {},
+   "eventCreated": "Etkinlik oluşturuldu",
+   "eventCreatedDesc": "Etkinliğin takvime eklendi",
+   "eventDeleted": "Etkinlik silindi",
+   "eventDeletedDesc": "Etkinlik takviminden kaldırıldı",
+   "syncingTitle": "Senkronize ediliyor...",
+   "syncingDesc": "Harici takvimlerle senkronize ediliyor",
+   "syncedTitle": "Senkronize",
+   "syncedDesc": "Takvim güncel",
+   "joiningEvent": "Etkinliğe katılıyorsun",
+   "openingVideoCall": "Görüntülü arama açılıyor...",
+   "messageAttendees": "Katılımcılara mesaj gönder",
+   "featureComingSoon": "Özellik yakında geliyor",
+   "inviteFollowers": "Takipçilerini davet et",
+   "rescheduleEvent": "Etkinliği yeniden planla",
+   "shareToGroup": "Gruba paylaş"
+  },
+  "error": {
+   "_pending_review": {},
+   "failedToCreate": "Etkinlik oluşturulamadı"
+  },
+  "allDay": "Tüm gün",
+  "milestoneToday": "Dönüm Noktası",
+  "focus": {
+   "_pending_review": {},
+   "todaysFocus": "Bugünün odak noktası",
+   "lightDay": "Sakin bir gün — etkinlikleri keşfet veya günlüğüne bak",
+   "moreSteps": "adım daha"
+  },
+  "badge": {
+   "_pending_review": {},
+   "guidedStep": "Rehberli adım",
+   "milestone": "Dönüm noktası",
+   "wellness": "Wellness"
+  },
+  "action": {
+   "_pending_review": {},
+   "start": "Başla",
+   "continue": "Devam Et",
+   "join": "Katıl",
+   "details": "Ayrıntılar",
+   "viewPlan": "Planı görüntüle",
+   "open": "Aç",
+   "done": "Bitti"
+  },
+  "group": {
+   "_pending_review": {},
+   "stepsRemaining": "adım kaldı",
+   "min": "dk"
+  },
+  "journey": {
+   "_pending_review": {},
+   "dayOf": "{total} günün {day}. günü",
+   "yourJourney": "Yolculuğun",
+   "nextMilestone": "Sıradaki dönüm noktası",
+   "showFullAgenda": "Tam ajandayı göster",
+   "moreEvents": "etkinlik daha",
+   "onboardingPlan": "Bugünün başlangıç planı",
+   "estimatedTime": "~{minutes} dk",
+   "startPlan": "Planı başlat",
+   "tasksCompleted": "{completed}/{total} tamamlandı",
+   "waveNames": {
+    "_pending_review": {},
+    "wave-1": "Başlarken",
+    "wave-2": "Günlük Bağlantılar",
+    "wave-3": "Bağları Derinleştirme",
+    "wave-4": "Sağlık Zekası",
+    "wave-5": "İçgörü Anları",
+    "wave-6": "Öneriler ve Keşif"
+   }
   }
+ }
 }

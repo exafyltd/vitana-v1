@@ -1,102 +1,62 @@
 {
-  "lifeCompass": {
-    "_pending_review": {
-      "title": true,
-      "description": true,
-      "currentCompass": true,
-      "alignment": true,
-      "confidence": true,
-      "suggestedGoals": true,
-      "customGoal": true,
-      "customGoalPlaceholder": true,
-      "setCustomGoal": true,
-      "closeAria": true
-    },
-    "title": "Life Compass",
-    "description": "Your Life Compass guides all AI recommendations and decisions. Choose a primary goal that matters most to you right now. The AI will prioritize suggestions that align with this direction.",
-    "currentCompass": "Current Compass",
-    "alignment": "Alignment: {value}%",
-    "confidence": "Confidence: {value}%",
-    "suggestedGoals": "Suggested Goals",
-    "customGoal": "Custom Goal",
-    "customGoalPlaceholder": "Describe your primary goal in your own words...",
-    "setCustomGoal": "Set Custom Goal",
-    "closeAria": "Close",
-    "categoryLabels": {
-      "_pending_review": {
-        "wealth": true,
-        "relationship": true,
-        "health": true,
-        "career": true,
-        "learning": true,
-        "spiritual": true,
-        "longevity": true
-      },
-      "wealth": "wealth",
-      "relationship": "relationship",
-      "health": "health",
-      "career": "career",
-      "learning": "learning",
-      "spiritual": "spiritual",
-      "longevity": "longevity"
-    },
-    "goals": {
-      "wealth": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Build Financial Freedom",
-        "description": "Achieve financial independence and wealth"
-      },
-      "relationship": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Find Life Partner",
-        "description": "Build meaningful romantic relationships"
-      },
-      "health": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Improve Health",
-        "description": "Achieve optimal physical and mental wellness"
-      },
-      "career": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Advance Career",
-        "description": "Build a fulfilling and successful career"
-      },
-      "learning": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Master New Skills",
-        "description": "Learn and grow through knowledge"
-      },
-      "spiritual": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Spiritual Life",
-        "description": "Deepen purpose, presence, and inner peace"
-      },
-      "longevity": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Improve quality of life and extend lifespan",
-        "description": "Focus on healthspan, energy, and longevity — Vitanaland's mission"
-      }
-    }
+ "lifeCompass": {
+  "_pending_review": {},
+  "title": "Yaşam Pusulası",
+  "description": "Yaşam Pusulan tüm AI önerilerine ve kararlarına rehberlik eder. Şu anda senin için en önemli olan birincil hedefi seç. AI bu yönle uyumlu önerilere öncelik verecek.",
+  "currentCompass": "Mevcut Pusula",
+  "alignment": "Uyum: %{value}",
+  "confidence": "Güven: %{value}",
+  "suggestedGoals": "Önerilen Hedefler",
+  "customGoal": "Özel Hedef",
+  "customGoalPlaceholder": "Birincil hedefini kendi kelimelerinle anlat...",
+  "setCustomGoal": "Özel Hedef Belirle",
+  "closeAria": "Kapat",
+  "categoryLabels": {
+   "_pending_review": {},
+   "wealth": "zenginlik",
+   "relationship": "ilişki",
+   "health": "sağlık",
+   "career": "kariyer",
+   "learning": "öğrenme",
+   "spiritual": "manevi",
+   "longevity": "uzun ömür"
+  },
+  "goals": {
+   "wealth": {
+    "_pending_review": {},
+    "title": "Finansal Özgürlük Kur",
+    "description": "Finansal bağımsızlık ve zenginliğe ulaş"
+   },
+   "relationship": {
+    "_pending_review": {},
+    "title": "Hayat Arkadaşı Bul",
+    "description": "Anlamlı romantik ilişkiler kur"
+   },
+   "health": {
+    "_pending_review": {},
+    "title": "Sağlığı İyileştir",
+    "description": "En iyi fiziksel ve zihinsel wellness'a ulaş"
+   },
+   "career": {
+    "_pending_review": {},
+    "title": "Kariyeri İlerlet",
+    "description": "Tatmin edici ve başarılı bir kariyer kur"
+   },
+   "learning": {
+    "_pending_review": {},
+    "title": "Yeni Beceriler Öğren",
+    "description": "Bilgi yoluyla öğren ve gelişme"
+   },
+   "spiritual": {
+    "_pending_review": {},
+    "title": "Manevi Yaşam",
+    "description": "Amacı, bilinci ve iç huzuru derinleştir"
+   },
+   "longevity": {
+    "_pending_review": {},
+    "title": "Yaşam kalitesini iyileştir ve ömrü uzat",
+    "description": "Sağlıklı yaşam süresine, enerjiye ve uzun ömre odaklan — Vitanaland'in misyonu"
+   }
   }
+ }
 }

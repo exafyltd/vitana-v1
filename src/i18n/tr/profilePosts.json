@@ -1,36 +1,20 @@
 {
-  "profilePosts": {
-    "_pending_review": {
-      "createPost": true,
-      "placeholder": true,
-      "shareCta": true,
-      "post": true,
-      "posted": true,
-      "deleted": true,
-      "emptyTitle": true,
-      "emptyDescription": true,
-      "deleteConfirm": true,
-      "error": true,
-      "mentionPlaceholder": true,
-      "background": true,
-      "noBackground": true,
-      "searchingPeople": true,
-      "noPeopleFound": true
-    },
-    "createPost": "Create Post",
-    "placeholder": "What's on your mind right now?",
-    "shareCta": "Share something with the community",
-    "post": "Post",
-    "posted": "Posted!",
-    "deleted": "Post deleted",
-    "emptyTitle": "No posts yet",
-    "emptyDescription": "Share your first update with the community",
-    "deleteConfirm": "Delete this post?",
-    "error": "Something went wrong",
-    "mentionPlaceholder": "What's on your mind? Type @ to tag someone",
-    "background": "Background",
-    "noBackground": "No background",
-    "searchingPeople": "Searching people …",
-    "noPeopleFound": "No one found"
-  }
+ "profilePosts": {
+  "_pending_review": {},
+  "createPost": "Gönderi Oluştur",
+  "placeholder": "Şu an aklından ne geçiyor?",
+  "shareCta": "Toplulukla bir şey paylaş",
+  "post": "Paylaş",
+  "posted": "Paylaşıldı!",
+  "deleted": "Gönderi silindi",
+  "emptyTitle": "Henüz gönderi yok",
+  "emptyDescription": "Toplulukla ilk güncellemeni paylaş",
+  "deleteConfirm": "Bu gönderi silinsin mi?",
+  "error": "Bir şeyler ters gitti",
+  "mentionPlaceholder": "Aklından ne geçiyor? Birini etiketlemek için @ yaz",
+  "background": "Arka plan",
+  "noBackground": "Arka plan yok",
+  "searchingPeople": "Kişiler aranıyor …",
+  "noPeopleFound": "Kimse bulunamadı"
+ }
 }

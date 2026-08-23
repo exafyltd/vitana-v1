@@ -1,59 +1,34 @@
 {
+ "_pending_review": {},
+ "wallet": {
   "_pending_review": {},
-  "wallet": {
-    "_pending_review": {
-      "title": true,
-      "description": true,
-      "usdBalance": true,
-      "creditsBalance": true,
-      "creditsLabel": true,
-      "available": true,
-      "staked": true,
-      "searchWallet": true,
-      "noActivity": true,
-      "noActivityDesc": true,
-      "displayCurrency": true
-    },
-    "title": "Wallet",
-    "description": "Your Balance, Credits, and Rewards",
-    "usdBalance": "EUR / USD Balance",
-    "creditsBalance": "VTNA Credits Balance",
-    "creditsLabel": "VTNA Credits",
-    "available": "Available",
-    "staked": "Staked",
-    "searchWallet": "Search wallet...",
-    "tabs": {
-      "_pending_review": {
-        "balances": true,
-        "activity": true,
-        "actions": true
-      },
-      "balances": "Balances",
-      "activity": "Activity",
-      "actions": "Actions"
-    },
-    "filters": {
-      "_pending_review": {
-        "commissions": true,
-        "transfers": true,
-        "exchanges": true,
-        "rewards": true,
-        "purchases": true,
-        "pending": true,
-        "withdrawals": true,
-        "stakes": true
-      },
-      "commissions": "Sell & earn commissions",
-      "transfers": "Transfers",
-      "exchanges": "Exchanges",
-      "rewards": "Rewards",
-      "purchases": "Purchases",
-      "pending": "Pending Payouts",
-      "withdrawals": "Withdrawals",
-      "stakes": "Staking"
-    },
-    "noActivity": "No activity yet",
-    "noActivityDesc": "Your transactions will appear here.",
-    "displayCurrency": "Display currency"
-  }
+  "title": "Cüzdan",
+  "description": "Bakiyen, Kredilerin ve Ödüllerin",
+  "usdBalance": "EUR / USD Bakiyesi",
+  "creditsBalance": "VTNA Kredi Bakiyesi",
+  "creditsLabel": "VTNA Kredileri",
+  "available": "Kullanılabilir",
+  "staked": "Stake Edilmiş",
+  "searchWallet": "Cüzdanda ara...",
+  "tabs": {
+   "_pending_review": {},
+   "balances": "Bakiyeler",
+   "activity": "Aktivite",
+   "actions": "İşlemler"
+  },
+  "filters": {
+   "_pending_review": {},
+   "commissions": "Sat ve kazan komisyonları",
+   "transfers": "Transferler",
+   "exchanges": "Değişimler",
+   "rewards": "Ödüller",
+   "purchases": "Satın Alımlar",
+   "pending": "Bekleyen Ödemeler",
+   "withdrawals": "Para Çekimleri",
+   "stakes": "Staking"
+  },
+  "noActivity": "Henüz aktivite yok",
+  "noActivityDesc": "İşlemlerin burada görünecek.",
+  "displayCurrency": "Görüntüleme para birimi"
+ }
 }

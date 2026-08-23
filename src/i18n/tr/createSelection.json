@@ -1,18 +1,11 @@
 {
-  "createSelection": {
-    "_pending_review": {
-      "title": true,
-      "description": true,
-      "event": true,
-      "eventDescription": true,
-      "meetup": true,
-      "meetupDescription": true
-    },
-    "title": "Create New",
-    "description": "Choose the type of event you want to create",
-    "event": "Event",
-    "eventDescription": "Formal gatherings with scheduled times and structured programs",
-    "meetup": "MeetUp",
-    "meetupDescription": "Casual gatherings for networking and community building"
-  }
+ "createSelection": {
+  "_pending_review": {},
+  "title": "Yeni Oluştur",
+  "description": "Oluşturmak istediğin etkinlik türünü seç",
+  "event": "Etkinlik",
+  "eventDescription": "Planlı zamanlar ve yapılandırılmış programlarla resmi buluşmalar",
+  "meetup": "Buluşma",
+  "meetupDescription": "Ağ kurma ve topluluk oluşturma için gündelik buluşmalar"
+ }
 }

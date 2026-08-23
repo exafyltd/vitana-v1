@@ -1,152 +1,86 @@
 {
+ "_pending_review": {},
+ "universalCart": {
   "_pending_review": {},
-  "universalCart": {
-    "_pending_review": {},
-    "page": {
-      "_pending_review": {
-        "title": true,
-        "subtitle": true,
-        "emptyTitle": true,
-        "emptyBody": true,
-        "loading": true,
-        "roleBlockedTitle": true,
-        "roleBlockedBody": true,
-        "errorTitle": true,
-        "errorBody": true,
-        "removeAction": true,
-        "quantityLabel": true,
-        "completeAction": true,
-        "alreadyCompleted": true,
-        "linkToDiscover": true,
-        "close": true
-      },
-      "title": "Cart",
-      "subtitle": "Products, packages, and recommendations from Discover — all in one place.",
-      "emptyTitle": "Your cart is empty",
-      "emptyBody": "Tap “Add to cart” on any Discover item to add it here.",
-      "loading": "Loading your cart…",
-      "roleBlockedTitle": "The cart isn't available for this role",
-      "roleBlockedBody": "The cart is a community feature. Switch to your community role to use it.",
-      "errorTitle": "We couldn't load your cart",
-      "errorBody": "Please try again in a moment.",
-      "removeAction": "Remove",
-      "quantityLabel": "Quantity",
-      "completeAction": "Mark completed",
-      "alreadyCompleted": "Already completed",
-      "linkToDiscover": "Browse Discover",
-      "close": "Close"
-    },
-    "tabs": {
-      "_pending_review": {
-        "cart": true,
-        "saved": true
-      },
-      "cart": "Cart",
-      "saved": "Saved"
-    },
-    "saved": {
-      "_pending_review": {
-        "moveToCart": true,
-        "saveForLater": true,
-        "emptyTitle": true,
-        "emptyBody": true
-      },
-      "moveToCart": "Add to cart",
-      "saveForLater": "Save for later",
-      "emptyTitle": "Nothing saved yet",
-      "emptyBody": "Save products for later by tapping “Save for later” in your cart."
-    },
-    "item": {
-      "_pending_review": {
-        "viewProduct": true
-      },
-      "viewProduct": "View product"
-    },
-    "agent": {
-      "_pending_review": {
-        "promptLabel": true,
-        "promptPlaceholder": true,
-        "proposeCta": true,
-        "proposing": true,
-        "sectionTitle": true,
-        "sectionSubtitle": true,
-        "rationaleLabel": true,
-        "safetyTitle": true,
-        "confidenceLabel": true,
-        "keep": true,
-        "remove": true,
-        "unavailable": true,
-        "roleBlocked": true,
-        "empty": true,
-        "reviewNote": true,
-        "reorderCta": true,
-        "reorderLabel": true,
-        "reorderSectionTitle": true,
-        "reorderSectionSubtitle": true,
-        "reordering": true,
-        "overCapAdvisory": true,
-        "nearCapAdvisory": true,
-        "error": true
-      },
-      "promptLabel": "What are you shopping for?",
-      "promptPlaceholder": "Describe what you're shopping for — e.g. \"more energy in the morning\"",
-      "proposeCta": "Ask Vitana",
-      "proposing": "Vitana is finding matching products…",
-      "sectionTitle": "Vitana suggests",
-      "sectionSubtitle": "Suggestions sit in your cart. Review them, keep or remove — you only buy with \"Approve & Pay\".",
-      "rationaleLabel": "Why Vitana suggests this",
-      "safetyTitle": "Safety note — please read",
-      "confidenceLabel": "Confidence: {value}",
-      "keep": "Keep",
-      "remove": "Remove",
-      "unavailable": "Vitana is temporarily unavailable. Please try again in a moment.",
-      "roleBlocked": "Vitana suggestions are only available in your community role.",
-      "empty": "No suggestions yet. Tell Vitana above what you're shopping for.",
-      "reviewNote": "Please review the notes: some suggestions have safety notes. Check them before you continue.",
-      "reorderCta": "Buy again",
-      "reorderLabel": "Bought before",
-      "reorderSectionTitle": "Buy again",
-      "reorderSectionSubtitle": "Items you've bought before sit in your cart. Review them, keep or remove — you only buy with \"Approve & Pay\".",
-      "reordering": "Vitana is adding your items back…",
-      "overCapAdvisory": "These items push you over your monthly budget.",
-      "nearCapAdvisory": "These items bring you close to your monthly budget.",
-      "error": "Something went wrong. Please try again."
-    },
-    "budget": {
-      "_pending_review": {
-        "title": true,
-        "spentOfCap": true,
-        "statusUnder": true,
-        "statusNear": true,
-        "statusOver": true,
-        "noCapHint": true
-      },
-      "title": "Budget this month",
-      "spentOfCap": "{spent} of {cap} this month",
-      "statusUnder": "Within budget",
-      "statusNear": "Almost at budget",
-      "statusOver": "Over budget",
-      "noCapHint": "Set a monthly budget to keep an eye on your spending."
-    },
-    "addButton": {
-      "_pending_review": {
-        "label": true,
-        "added": true,
-        "addAria": true,
-        "addedAria": true,
-        "signRequired": true,
-        "roleBlocked": true,
-        "failed": true,
-        "success": true
-      },
-      "label": "Add to cart",
-      "added": "In cart",
-      "addAria": "Add to cart",
-      "addedAria": "Already in cart",
-      "signRequired": "Sign in to add to your cart.",
-      "roleBlocked": "The cart is only available in your community role.",
-      "failed": "Couldn't add to cart",
-      "success": "Added to cart"
-    }
+  "page": {
+   "_pending_review": {},
+   "title": "Sepet",
+   "subtitle": "Discover'dan ürünler, paketler ve öneriler — hepsi tek bir yerde.",
+   "emptyTitle": "Sepetin boş",
+   "emptyBody": "Buraya eklemek için herhangi bir Discover öğesinde \"Sepete ekle\"ye dokun.",
+   "loading": "Sepetin yükleniyor…",
+   "roleBlockedTitle": "Sepet bu rol için kullanılamıyor",
+   "roleBlockedBody": "Sepet bir topluluk özelliğidir. Kullanmak için topluluk rolüne geç.",
+   "errorTitle": "Sepetini yükleyemedik",
+   "errorBody": "Lütfen bir süre sonra tekrar dene.",
+   "removeAction": "Kaldır",
+   "quantityLabel": "Miktar",
+   "completeAction": "Tamamlandı olarak işaretle",
+   "alreadyCompleted": "Zaten tamamlandı",
+   "linkToDiscover": "Discover'a Göz At",
+   "close": "Kapat"
+  },
+  "tabs": {
+   "_pending_review": {},
+   "cart": "Sepet",
+   "saved": "Kaydedilenler"
+  },
+  "saved": {
+   "_pending_review": {},
+   "moveToCart": "Sepete ekle",
+   "saveForLater": "Sonra için kaydet",
+   "emptyTitle": "Henüz kaydedilen bir şey yok",
+   "emptyBody": "Sepetinde \"Sonra için kaydet\"e dokunarak ürünleri sonra için kaydet."
+  },
+  "item": {
+   "_pending_review": {},
+   "viewProduct": "Ürünü görüntüle"
+  },
+  "agent": {
+   "_pending_review": {},
+   "promptLabel": "Ne için alışveriş yapıyorsun?",
+   "promptPlaceholder": "Ne için alışveriş yaptığını anlat — örn. \"sabahları daha fazla enerji\"",
+   "proposeCta": "Vitana'ya Sor",
+   "proposing": "Vitana eşleşen ürünleri buluyor…",
+   "sectionTitle": "Vitana önerileri",
+   "sectionSubtitle": "Öneriler sepetinde durur. Gözden geçir, tut veya kaldır — sadece \"Onayla ve Öde\" ile satın alırsın.",
+   "rationaleLabel": "Vitana bunu neden öneriyor",
+   "safetyTitle": "Güvenlik notu — lütfen oku",
+   "confidenceLabel": "Güven: {value}",
+   "keep": "Tut",
+   "remove": "Kaldır",
+   "unavailable": "Vitana geçici olarak kullanılamıyor. Lütfen bir süre sonra tekrar dene.",
+   "roleBlocked": "Vitana önerileri yalnızca topluluk rolünde kullanılabilir.",
+   "empty": "Henüz öneri yok. Yukarıda Vitana'ya ne için alışveriş yaptığını söyle.",
+   "reviewNote": "Lütfen notları gözden geçir: bazı önerilerin güvenlik notları var. Devam etmeden önce kontrol et.",
+   "reorderCta": "Tekrar satın al",
+   "reorderLabel": "Daha önce satın alındı",
+   "reorderSectionTitle": "Tekrar satın al",
+   "reorderSectionSubtitle": "Daha önce satın aldığın ürünler sepetinde durur. Gözden geçir, tut veya kaldır — sadece \"Onayla ve Öde\" ile satın alırsın.",
+   "reordering": "Vitana ürünlerini geri ekliyor…",
+   "overCapAdvisory": "Bu ürünler seni aylık bütçenin üzerine çıkarıyor.",
+   "nearCapAdvisory": "Bu ürünler seni aylık bütçene yaklaştırıyor.",
+   "error": "Bir şeyler ters gitti. Lütfen tekrar dene."
+  },
+  "budget": {
+   "_pending_review": {},
+   "title": "Bu ayki bütçe",
+   "spentOfCap": "Bu ay {cap} içinden {spent}",
+   "statusUnder": "Bütçe dahilinde",
+   "statusNear": "Bütçeye yaklaşıldı",
+   "statusOver": "Bütçe aşıldı",
+   "noCapHint": "Harcamalarını takip etmek için aylık bir bütçe belirle."
+  },
+  "addButton": {
+   "_pending_review": {},
+   "label": "Sepete ekle",
+   "added": "Sepette",
+   "addAria": "Sepete ekle",
+   "addedAria": "Zaten sepette",
+   "signRequired": "Sepetine eklemek için giriş yap.",
+   "roleBlocked": "Sepet yalnızca topluluk rolünde kullanılabilir.",
+   "failed": "Sepete eklenemedi",
+   "success": "Sepete eklendi"
   }
+ }
 }

@@ -1,80 +1,47 @@
 {
-  "portals": {
-    "maxina": {
-      "_pending_review": {
-        "title": true,
-        "welcomeBack": true,
-        "continueJourney": true,
-        "joinMaxina": true,
-        "joinCommunity": true,
-        "createAccount": true,
-        "signingIn": true,
-        "creatingAccount": true,
-        "joiningAs": true,
-        "yourFullName": true,
-        "forgotPassword": true,
-        "partOfVitana": true,
-        "allPortals": true,
-        "emailConfirmed": true,
-        "checkEmail": true
-      },
-      "title": "Maxina Health Platform",
-      "welcomeBack": "Welcome back to Maxina.",
-      "continueJourney": "Log in to continue your journey.",
-      "joinMaxina": "Join Maxina",
-      "joinCommunity": "Join the Maxina community.",
-      "createAccount": "Create your account and start your journey.",
-      "signingIn": "Signing in…",
-      "creatingAccount": "Creating account…",
-      "joiningAs": "I am joining as:",
-      "yourFullName": "Your full name",
-      "forgotPassword": "Forgot password?",
-      "partOfVitana": "Maxina is part of the VITANA ecosystem.",
-      "allPortals": "All Portals",
-      "emailConfirmed": "Email confirmed! Welcome to Maxina.",
-      "checkEmail": "Please check your email to confirm your account.",
-      "roles": {
-        "_pending_review": {
-          "community": true,
-          "patient": true,
-          "professional": true,
-          "admin": true
-        },
-        "community": "Community",
-        "patient": "Patient",
-        "professional": "Pro",
-        "admin": "Admin"
-      }
-    },
-    "alkalma": {
-      "_pending_review": {
-        "joinAlkalma": true,
-        "welcomeBack": true,
-        "continueJourney": true
-      },
-      "joinAlkalma": "Join AlKalma",
-      "welcomeBack": "Welcome back to AlKalma.",
-      "continueJourney": "Log in to continue."
-    },
-    "earthlinks": {
-      "_pending_review": {
-        "joinEarthlinks": true,
-        "welcomeBack": true,
-        "continueJourney": true
-      },
-      "joinEarthlinks": "Join Earthlinks",
-      "welcomeBack": "Welcome back to Earthlinks.",
-      "continueJourney": "Log in to continue."
-    },
-    "community": {
-      "_pending_review": {
-        "joinCommunity": true,
-        "welcomeBack": true,
-        "continueJourney": true
-      },
-      "joinCommunity": "Join Community",
-      "welcomeBack": "Welcome back.",
-      "continueJourney": "Log in to continue."
-    }
+ "portals": {
+  "maxina": {
+   "_pending_review": {},
+   "title": "Maxina Sağlık Platformu",
+   "welcomeBack": "Maxina'ya tekrar hoş geldin.",
+   "continueJourney": "Yolculuğuna devam etmek için giriş yap.",
+   "joinMaxina": "Maxina'ya Katıl",
+   "joinCommunity": "Maxina topluluğuna katıl.",
+   "createAccount": "Hesabını oluştur ve yolculuğuna başla.",
+   "signingIn": "Giriş yapılıyor…",
+   "creatingAccount": "Hesap oluşturuluyor…",
+   "joiningAs": "Şu şekilde katılıyorum:",
+   "yourFullName": "Ad soyadın",
+   "forgotPassword": "Şifreni mi unuttun?",
+   "partOfVitana": "Maxina, VITANA ekosisteminin bir parçasıdır.",
+   "allPortals": "Tüm Portallar",
+   "emailConfirmed": "E-posta onaylandı! Maxina'ya hoş geldin.",
+   "checkEmail": "Hesabını onaylamak için lütfen e-postanı kontrol et.",
+   "roles": {
+    "_pending_review": {},
+    "community": "Topluluk",
+    "patient": "Hasta",
+    "professional": "Uzman",
+    "admin": "Yönetici"
+   }
+  },
+  "alkalma": {
+   "_pending_review": {},
+   "joinAlkalma": "AlKalma'ya Katıl",
+   "welcomeBack": "AlKalma'ya tekrar hoş geldin.",
+   "continueJourney": "Devam etmek için giriş yap."
+  },
+  "earthlinks": {
+   "_pending_review": {},
+   "joinEarthlinks": "Earthlinks'e Katıl",
+   "welcomeBack": "Earthlinks'e tekrar hoş geldin.",
+   "continueJourney": "Devam etmek için giriş yap."
+  },
+  "community": {
+   "_pending_review": {},
+   "joinCommunity": "Topluluğa Katıl",
+   "welcomeBack": "Tekrar hoş geldin.",
+   "continueJourney": "Devam etmek için giriş yap."
   }
+ }
 }

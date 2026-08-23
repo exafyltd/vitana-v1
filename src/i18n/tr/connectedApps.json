@@ -1,98 +1,56 @@
 {
-  "connectedApps": {
-    "_pending_review": {
-      "title": true,
-      "description": true,
-      "searchPlaceholder": true,
-      "addApp": true,
-      "connected": true,
-      "syncing": true,
-      "lastSync": true,
-      "dataSync": true,
-      "comingSoonMessage": true
-    },
-    "title": "Connected Apps",
-    "description": "Manage your connected devices and services",
-    "searchPlaceholder": "Search apps...",
-    "addApp": "Add App",
-    "connected": "connected",
-    "syncing": "Syncing",
-    "sections": {
-      "_pending_review": {
-        "social": true,
-        "fitness": true,
-        "health": true,
-        "other": true
-      },
-      "social": "Social & Sharing",
-      "fitness": "Fitness & Wearables",
-      "health": "Health & Labs",
-      "other": "Other"
-    },
-    "status": {
-      "_pending_review": {
-        "connected": true,
-        "notConnected": true,
-        "comingSoon": true,
-        "soon": true
-      },
-      "connected": "Connected",
-      "notConnected": "Not connected",
-      "comingSoon": "Coming Soon",
-      "soon": "Soon"
-    },
-    "actions": {
-      "_pending_review": {
-        "connect": true,
-        "disconnect": true,
-        "configure": true,
-        "manage": true
-      },
-      "connect": "Connect",
-      "disconnect": "Disconnect",
-      "configure": "Configure Sync",
-      "manage": "Manage"
-    },
-    "lastSync": "Last Sync",
-    "dataSync": "Data Syncing",
-    "comingSoonMessage": "{appName} integration coming soon",
-    "popup": {
-      "_pending_review": {
-        "title": true,
-        "searchPlaceholder": true,
-        "availableApps": true,
-        "verified": true,
-        "connected": true,
-        "settings": true,
-        "disconnect": true,
-        "connect": true,
-        "done": true,
-        "noResults": true,
-        "connectionSuccess": true,
-        "connectionPlaceholder": true
-      },
-      "title": "Connect Apps & Services",
-      "searchPlaceholder": "Search apps and services...",
-      "categories": {
-        "_pending_review": {
-          "all": true,
-          "health": true,
-          "social": true
-        },
-        "all": "All Apps",
-        "health": "Health & Fitness",
-        "social": "Social"
-      },
-      "availableApps": "Available Apps",
-      "verified": "Verified",
-      "connected": "Connected",
-      "settings": "Settings",
-      "disconnect": "Disconnect",
-      "connect": "Connect",
-      "done": "Done",
-      "noResults": "No apps found",
-      "connectionSuccess": "Connection successful",
-      "connectionPlaceholder": "{appName} connection coming soon"
-    }
+ "connectedApps": {
+  "_pending_review": {},
+  "title": "Bağlı Uygulamalar",
+  "description": "Bağlı cihazlarını ve hizmetlerini yönet",
+  "searchPlaceholder": "Uygulama ara...",
+  "addApp": "Uygulama Ekle",
+  "connected": "bağlı",
+  "syncing": "Senkronize Ediliyor",
+  "sections": {
+   "_pending_review": {},
+   "social": "Sosyal & Paylaşım",
+   "fitness": "Fitness & Giyilebilirler",
+   "health": "Sağlık & Laboratuvar",
+   "other": "Diğer"
+  },
+  "status": {
+   "_pending_review": {},
+   "connected": "Bağlı",
+   "notConnected": "Bağlı değil",
+   "comingSoon": "Yakında",
+   "soon": "Yakında"
+  },
+  "actions": {
+   "_pending_review": {},
+   "connect": "Bağlan",
+   "disconnect": "Bağlantıyı Kes",
+   "configure": "Senkronizasyonu Yapılandır",
+   "manage": "Yönet"
+  },
+  "lastSync": "Son Senkronizasyon",
+  "dataSync": "Veri Senkronizasyonu",
+  "comingSoonMessage": "{appName} entegrasyonu yakında geliyor",
+  "popup": {
+   "_pending_review": {},
+   "title": "Uygulama & Hizmet Bağla",
+   "searchPlaceholder": "Uygulama ve hizmet ara...",
+   "categories": {
+    "_pending_review": {},
+    "all": "Tüm Uygulamalar",
+    "health": "Sağlık & Fitness",
+    "social": "Sosyal"
+   },
+   "availableApps": "Kullanılabilir Uygulamalar",
+   "verified": "Doğrulandı",
+   "connected": "Bağlı",
+   "settings": "Ayarlar",
+   "disconnect": "Bağlantıyı Kes",
+   "connect": "Bağlan",
+   "done": "Bitti",
+   "noResults": "Uygulama bulunamadı",
+   "connectionSuccess": "Bağlantı başarılı",
+   "connectionPlaceholder": "{appName} bağlantısı yakında geliyor"
   }
+ }
 }

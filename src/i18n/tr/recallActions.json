@@ -1,74 +1,48 @@
 {
-  "recallActions": {
-    "_pending_review": {
-      "title": true
-    },
-    "title": "Reminder Search & Retrieval Actions",
-    "items": {
-      "askAiQuestion": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Ask AI Question",
-        "description": "Query your memories with natural language AI search"
-      },
-      "advancedSearch": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Advanced Search",
-        "description": "Use filters, tags, and date ranges to find memories"
-      },
-      "patternAnalysis": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Pattern Analysis",
-        "description": "Discover trends and patterns in your wellness data"
-      },
-      "memoryInsights": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Memory Insights",
-        "description": "Get AI-powered insights from your health journey"
-      },
-      "searchByDate": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Search by Date",
-        "description": "Browse memories from specific time periods"
-      },
-      "locationMemories": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Location Memories",
-        "description": "Find entries by places and locations visited"
-      },
-      "filterByCategory": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Filter by Category",
-        "description": "Browse memories by wellness pillars and categories"
-      },
-      "quickRecalls": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Quick Recalls",
-        "description": "Access frequently searched memories and queries"
-      }
-    }
+ "recallActions": {
+  "_pending_review": {},
+  "title": "Hatırlatıcı Arama ve Getirme İşlemleri",
+  "items": {
+   "askAiQuestion": {
+    "_pending_review": {},
+    "title": "AI'a Soru Sor",
+    "description": "Anılarını doğal dil AI aramasıyla sorgula"
+   },
+   "advancedSearch": {
+    "_pending_review": {},
+    "title": "Gelişmiş Arama",
+    "description": "Anıları bulmak için filtreler, etiketler ve tarih aralıkları kullan"
+   },
+   "patternAnalysis": {
+    "_pending_review": {},
+    "title": "Örüntü Analizi",
+    "description": "Wellness verilerindeki eğilimleri ve örüntüleri keşfet"
+   },
+   "memoryInsights": {
+    "_pending_review": {},
+    "title": "Hafıza İçgörüleri",
+    "description": "Sağlık yolculuğundan AI destekli içgörüler edin"
+   },
+   "searchByDate": {
+    "_pending_review": {},
+    "title": "Tarihe Göre Ara",
+    "description": "Belirli zaman dilimlerindeki anılara göz at"
+   },
+   "locationMemories": {
+    "_pending_review": {},
+    "title": "Konum Anıları",
+    "description": "Ziyaret edilen yerlere ve konumlara göre girişleri bul"
+   },
+   "filterByCategory": {
+    "_pending_review": {},
+    "title": "Kategoriye Göre Filtrele",
+    "description": "Anılara wellness sütunlarına ve kategorilere göre göz at"
+   },
+   "quickRecalls": {
+    "_pending_review": {},
+    "title": "Hızlı Hatırlatmalar",
+    "description": "Sık aranan anılara ve sorgulara eriş"
+   }
   }
+ }
 }

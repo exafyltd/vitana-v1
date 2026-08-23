@@ -1,16 +1,10 @@
 {
-  "profileStats": {
-    "_pending_review": {
-      "posts": true,
-      "media": true,
-      "groups": true,
-      "followers": true,
-      "following": true
-    },
-    "posts": "Posts",
-    "media": "Media",
-    "groups": "Groups",
-    "followers": "Followers",
-    "following": "Following"
-  }
+ "profileStats": {
+  "_pending_review": {},
+  "posts": "Gönderiler",
+  "media": "Medya",
+  "groups": "Gruplar",
+  "followers": "Takipçiler",
+  "following": "Takip Edilenler"
+ }
 }

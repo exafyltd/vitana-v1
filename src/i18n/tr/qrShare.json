@@ -1,34 +1,19 @@
 {
-  "qrShare": {
-    "_pending_review": {
-      "title": true,
-      "scanToView": true,
-      "scanToDownload": true,
-      "shareProfile": true,
-      "shareApp": true,
-      "copyLink": true,
-      "download": true,
-      "linkCopied": true,
-      "modeProfile": true,
-      "modeInvite": true,
-      "appName": true,
-      "appTagline": true,
-      "inviteShareTitle": true,
-      "inviteShareText": true
-    },
-    "title": "QR Code",
-    "scanToView": "Scan to view your profile.",
-    "scanToDownload": "Scan to download MAXINA",
-    "shareProfile": "Share Profile",
-    "shareApp": "Share MAXINA",
-    "copyLink": "Copy Link",
-    "download": "Download",
-    "linkCopied": "Link copied!",
-    "modeProfile": "My Profile",
-    "modeInvite": "Get MAXINA",
-    "appName": "MAXINA",
-    "appTagline": "Longevity Community",
-    "inviteShareTitle": "MAXINA – Longevity Community",
-    "inviteShareText": "Get MAXINA and start your longevity journey:"
-  }
+ "qrShare": {
+  "_pending_review": {},
+  "title": "QR Kod",
+  "scanToView": "Profilini görüntülemek için tara.",
+  "scanToDownload": "MAXINA'yı indirmek için tara",
+  "shareProfile": "Profili Paylaş",
+  "shareApp": "MAXINA'yı Paylaş",
+  "copyLink": "Bağlantıyı Kopyala",
+  "download": "İndir",
+  "linkCopied": "Bağlantı kopyalandı!",
+  "modeProfile": "Profilim",
+  "modeInvite": "MAXINA'yı Al",
+  "appName": "MAXINA",
+  "appTagline": "Uzun Yaşam Topluluğu",
+  "inviteShareTitle": "MAXINA – Uzun Yaşam Topluluğu",
+  "inviteShareText": "MAXINA'yı al ve uzun yaşam yolculuğuna başla:"
+ }
 }

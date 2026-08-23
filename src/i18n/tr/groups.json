@@ -1,8 +1,6 @@
 {
-  "groups": {
-    "_pending_review": {
-      "searchPlaceholder": true
-    },
-    "searchPlaceholder": "Search groups..."
-  }
+ "groups": {
+  "_pending_review": {},
+  "searchPlaceholder": "Grup ara..."
+ }
 }

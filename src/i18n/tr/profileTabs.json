@@ -1,24 +1,14 @@
 {
-  "profileTabs": {
-    "_pending_review": {
-      "posts": true,
-      "about": true,
-      "media": true,
-      "groups": true,
-      "events": true,
-      "health": true,
-      "services": true,
-      "insight": true,
-      "milestones": true
-    },
-    "posts": "Posts",
-    "about": "My Profile",
-    "media": "Media",
-    "groups": "Groups",
-    "events": "Events",
-    "health": "Health",
-    "services": "Services",
-    "insight": "Insight",
-    "milestones": "Milestones"
-  }
+ "profileTabs": {
+  "_pending_review": {},
+  "posts": "Gönderiler",
+  "about": "Profilim",
+  "media": "Medya",
+  "groups": "Gruplar",
+  "events": "Etkinlikler",
+  "health": "Sağlık",
+  "services": "Hizmetler",
+  "insight": "İçgörü",
+  "milestones": "Kilometre Taşları"
+ }
 }

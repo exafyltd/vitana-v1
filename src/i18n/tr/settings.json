@@ -1,81 +1,46 @@
 {
+ "_pending_review": {},
+ "settings": {
   "_pending_review": {},
-  "settings": {
-    "_pending_review": {
-      "title": true,
-      "description": true,
-      "searchPlaceholder": true,
-      "quickSetup": true,
-      "vitanaOpenedSection": true,
-      "vitanaUpdated": true
-    },
-    "title": "Settings",
-    "description": "Manage your account settings, your privacy, and your preferences",
-    "searchPlaceholder": "Search settings, privacy controls, integrations...",
-    "quickSetup": "Quick Setup",
-    "tabs": {
-      "_pending_review": {
-        "overview": true,
-        "notifications": true,
-        "quickActions": true
-      },
-      "overview": "Overview",
-      "notifications": "Notifications",
-      "quickActions": "Quick Actions"
-    },
-    "categories": {
-      "_pending_review": {
-        "privacy": true,
-        "privacyDesc": true,
-        "notifications": true,
-        "notificationsDesc": true,
-        "preferences": true,
-        "preferencesDesc": true,
-        "connectedApps": true,
-        "connectedAppsDesc": true,
-        "tenantRole": true,
-        "tenantRoleDesc": true,
-        "billing": true,
-        "billingDesc": true,
-        "support": true,
-        "supportDesc": true
-      },
-      "privacy": "Privacy",
-      "privacyDesc": "Control who sees your profile and your activities",
-      "notifications": "Notifications",
-      "notificationsDesc": "Manage your notification settings",
-      "preferences": "Preferences",
-      "preferencesDesc": "Language, theme, and display options",
-      "connectedApps": "Connected Apps",
-      "connectedAppsDesc": "Manage integrations and permissions",
-      "tenantRole": "Tenant & Role",
-      "tenantRoleDesc": "Switch between roles and tenants",
-      "billing": "Billing",
-      "billingDesc": "Subscription and payment information",
-      "support": "Support",
-      "supportDesc": "Help, FAQ, and contact options"
-    },
-    "status": {
-      "_pending_review": {
-        "privacyStatus": true,
-        "subscription": true,
-        "protected": true,
-        "premium": true,
-        "notificationsActive": true,
-        "connectedAppsCount": true,
-        "types": true,
-        "apps": true
-      },
-      "privacyStatus": "Privacy Status",
-      "subscription": "Subscription",
-      "protected": "Protected",
-      "premium": "Premium",
-      "notificationsActive": "Notifications Active",
-      "connectedAppsCount": "Connected Apps",
-      "types": "types",
-      "apps": "apps"
-    },
-    "vitanaOpenedSection": "Vitana opened {section}",
-    "vitanaUpdated": "Vitana updated your setting"
-  }
+  "title": "Ayarlar",
+  "description": "Hesap ayarlarını, gizliliğini ve tercihlerini yönet",
+  "searchPlaceholder": "Ayarlarda, gizlilik kontrollerinde, entegrasyonlarda ara...",
+  "quickSetup": "Hızlı Kurulum",
+  "tabs": {
+   "_pending_review": {},
+   "overview": "Genel Bakış",
+   "notifications": "Bildirimler",
+   "quickActions": "Hızlı İşlemler"
+  },
+  "categories": {
+   "_pending_review": {},
+   "privacy": "Gizlilik",
+   "privacyDesc": "Profilini ve aktivitelerini kimin görebileceğini kontrol et",
+   "notifications": "Bildirimler",
+   "notificationsDesc": "Bildirim ayarlarını yönet",
+   "preferences": "Tercihler",
+   "preferencesDesc": "Dil, tema ve görüntüleme seçenekleri",
+   "connectedApps": "Bağlı Uygulamalar",
+   "connectedAppsDesc": "Entegrasyonları ve izinleri yönet",
+   "tenantRole": "Kiracı ve Rol",
+   "tenantRoleDesc": "Roller ve kiracılar arasında geçiş yap",
+   "billing": "Faturalandırma",
+   "billingDesc": "Abonelik ve ödeme bilgileri",
+   "support": "Destek",
+   "supportDesc": "Yardım, SSS ve iletişim seçenekleri"
+  },
+  "status": {
+   "_pending_review": {},
+   "privacyStatus": "Gizlilik Durumu",
+   "subscription": "Abonelik",
+   "protected": "Korumalı",
+   "premium": "Premium",
+   "notificationsActive": "Bildirimler Aktif",
+   "connectedAppsCount": "Bağlı Uygulamalar",
+   "types": "tür",
+   "apps": "uygulama"
+  },
+  "vitanaOpenedSection": "Vitana {section} bölümünü açtı",
+  "vitanaUpdated": "Vitana ayarını güncelledi"
+ }
 }

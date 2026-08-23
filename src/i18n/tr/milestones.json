@@ -1,32 +1,18 @@
 {
-  "milestones": {
-    "_pending_review": {
-      "title": true,
-      "add": true,
-      "edit": true,
-      "empty": true,
-      "addFirst": true,
-      "date": true,
-      "description": true,
-      "titleLabel": true,
-      "titlePlaceholder": true,
-      "descPlaceholder": true,
-      "icon": true,
-      "publicLabel": true,
-      "private": true
-    },
-    "title": "Special Moments",
-    "add": "Add Milestone",
-    "edit": "Edit Milestone",
-    "empty": "No Moments Yet",
-    "addFirst": "Add Your First Moment",
-    "date": "Date",
-    "description": "What happened?",
-    "titleLabel": "Title",
-    "titlePlaceholder": "e.g., Graduated from University",
-    "descPlaceholder": "Describe this moment...",
-    "icon": "Icon",
-    "publicLabel": "Visible to everyone",
-    "private": "Private"
-  }
+ "milestones": {
+  "_pending_review": {},
+  "title": "Özel Anlar",
+  "add": "Dönüm Noktası Ekle",
+  "edit": "Dönüm Noktasını Düzenle",
+  "empty": "Henüz An Yok",
+  "addFirst": "İlk Anını Ekle",
+  "date": "Tarih",
+  "description": "Ne oldu?",
+  "titleLabel": "Başlık",
+  "titlePlaceholder": "ör. Üniversiteden Mezun Oldum",
+  "descPlaceholder": "Bu anı anlat...",
+  "icon": "Simge",
+  "publicLabel": "Herkese görünür",
+  "private": "Özel"
+ }
 }

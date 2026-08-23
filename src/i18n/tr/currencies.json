@@ -1,12 +1,8 @@
 {
-  "currencies": {
-    "_pending_review": {
-      "usd": true,
-      "vtna": true,
-      "credits": true
-    },
-    "usd": "US Dollars",
-    "vtna": "VTNA Tokens",
-    "credits": "Platform Credits"
-  }
+ "currencies": {
+  "_pending_review": {},
+  "usd": "ABD Doları",
+  "vtna": "VTNA Tokenları",
+  "credits": "Platform Kredileri"
+ }
 }

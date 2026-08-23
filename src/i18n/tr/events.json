@@ -1,54 +1,31 @@
 {
-  "events": {
-    "_pending_review": {
-      "title": true,
-      "description": true,
-      "searchPlaceholder": true,
-      "noEvents": true,
-      "checkBack": true
-    },
-    "title": "Events & Meet-Ups",
-    "description": "Discover local wellness gatherings",
-    "searchPlaceholder": "Search events and meetups...",
-    "tabs": {
-      "_pending_review": {
-        "today": true,
-        "upcoming": true,
-        "following": true,
-        "recommended": true
-      },
-      "today": "Today",
-      "upcoming": "Upcoming",
-      "following": "Following",
-      "recommended": "Recommended"
-    },
-    "noEvents": "No events scheduled",
-    "checkBack": "Check back soon for upcoming community events!",
-    "emptyStates": {
-      "_pending_review": {
-        "noEventsToday": true,
-        "noEventsTodayDesc": true,
-        "createEvent": true,
-        "viewUpcoming": true,
-        "followingTitle": true,
-        "followingDesc": true,
-        "findPeople": true,
-        "noPostsFromFollowing": true,
-        "noPostsFromFollowingDesc": true,
-        "youFollow": true,
-        "loadingFollowing": true
-      },
-      "noEventsToday": "No Events Today",
-      "noEventsTodayDesc": "No events are planned for today. Check out upcoming events or create your own!",
-      "createEvent": "Create Event",
-      "viewUpcoming": "View Upcoming Events",
-      "followingTitle": "Posts from people you follow",
-      "followingDesc": "Content from people and groups you follow appears here",
-      "findPeople": "Find People to Follow",
-      "noPostsFromFollowing": "No Posts Yet",
-      "noPostsFromFollowingDesc": "People you follow haven't created any events or meetups yet.",
-      "youFollow": "You follow",
-      "loadingFollowing": "Loading posts…"
-    }
+ "events": {
+  "_pending_review": {},
+  "title": "Etkinlikler & Buluşmalar",
+  "description": "Yerel wellness buluşmalarını keşfet",
+  "searchPlaceholder": "Etkinlik ve buluşma ara...",
+  "tabs": {
+   "_pending_review": {},
+   "today": "Bugün",
+   "upcoming": "Yaklaşan",
+   "following": "Takip Edilenler",
+   "recommended": "Önerilen"
+  },
+  "noEvents": "Planlanmış etkinlik yok",
+  "checkBack": "Yaklaşan topluluk etkinlikleri için yakında tekrar bak!",
+  "emptyStates": {
+   "_pending_review": {},
+   "noEventsToday": "Bugün Etkinlik Yok",
+   "noEventsTodayDesc": "Bugün için planlanmış etkinlik yok. Yaklaşan etkinliklere bak veya kendinkini oluştur!",
+   "createEvent": "Etkinlik Oluştur",
+   "viewUpcoming": "Yaklaşan Etkinlikleri Görüntüle",
+   "followingTitle": "Takip ettiğin kişilerin gönderileri",
+   "followingDesc": "Takip ettiğin kişilerin ve grupların içeriği burada görünür",
+   "findPeople": "Takip Edilecek Kişi Bul",
+   "noPostsFromFollowing": "Henüz Gönderi Yok",
+   "noPostsFromFollowingDesc": "Takip ettiğin kişiler henüz etkinlik veya buluşma oluşturmadı.",
+   "youFollow": "Takip ettiğin",
+   "loadingFollowing": "Gönderiler yükleniyor…"
   }
+ }
 }

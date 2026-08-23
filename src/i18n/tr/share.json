@@ -1,23 +1,14 @@
 {
+ "_pending_review": {},
+ "share": {
   "_pending_review": {},
-  "share": {
-    "_pending_review": {
-      "shareProfile": true,
-      "linkCopied": true,
-      "copyProfileLink": true,
-      "showQRCode": true,
-      "downloadQR": true,
-      "shareToSocial": true,
-      "alsoShareTo": true,
-      "viewPublicProfile": true
-    },
-    "shareProfile": "Share Profile",
-    "linkCopied": "Link Copied!",
-    "copyProfileLink": "Copy Profile Link",
-    "showQRCode": "Show QR Code",
-    "downloadQR": "Download QR Code",
-    "shareToSocial": "Share to social",
-    "alsoShareTo": "Also share to",
-    "viewPublicProfile": "View Public Profile"
-  }
+  "shareProfile": "Profili Paylaş",
+  "linkCopied": "Bağlantı Kopyalandı!",
+  "copyProfileLink": "Profil Bağlantısını Kopyala",
+  "showQRCode": "QR Kodu Göster",
+  "downloadQR": "QR Kodu İndir",
+  "shareToSocial": "Sosyal medyada paylaş",
+  "alsoShareTo": "Ayrıca şuraya paylaş",
+  "viewPublicProfile": "Herkese Açık Profili Görüntüle"
+ }
 }

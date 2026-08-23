@@ -1,74 +1,42 @@
 {
-  "newsCard": {
-    "menu": {
-      "_pending_review": {
-        "share": true,
-        "save": true,
-        "saved": true,
-        "summarize": true,
-        "copyLink": true,
-        "openInBrowser": true,
-        "hide": true,
-        "showLess": true,
-        "muteSource": true,
-        "linkCopied": true,
-        "savedToast": true,
-        "unsavedToast": true,
-        "summarizeToast": true,
-        "hiddenToast": true,
-        "showLessToast": true,
-        "mutedToast": true,
-        "undo": true,
-        "unmute": true
-      },
-      "share": "Share",
-      "save": "Save",
-      "saved": "Saved",
-      "summarize": "Summarize with Vitana",
-      "copyLink": "Copy link",
-      "openInBrowser": "Open in browser",
-      "hide": "Hide this article",
-      "showLess": "Show less like this",
-      "muteSource": "Mute this source",
-      "linkCopied": "Link copied",
-      "savedToast": "Saved for later",
-      "unsavedToast": "Removed from saved",
-      "summarizeToast": "Queued for Vitana",
-      "hiddenToast": "Article hidden",
-      "showLessToast": "We'll show fewer like this",
-      "mutedToast": "Source muted",
-      "undo": "Undo",
-      "unmute": "Unmute"
-    },
-    "detail": {
-      "_pending_review": {
-        "back": true,
-        "continueReading": true,
-        "openInBrowser": true,
-        "couldNotLoad": true,
-        "readOn": true
-      },
-      "back": "Back",
-      "continueReading": "Continue reading on",
-      "openInBrowser": "Open in browser",
-      "couldNotLoad": "This article can't be displayed inline",
-      "readOn": "Read more"
-    },
-    "pillars": {
-      "_pending_review": {
-        "all": true,
-        "nutrition": true,
-        "hydration": true,
-        "sleep": true,
-        "exercise": true,
-        "mental": true
-      },
-      "all": "All",
-      "nutrition": "Nutrition",
-      "hydration": "Hydration",
-      "sleep": "Sleep",
-      "exercise": "Exercise",
-      "mental": "Mental"
-    }
+ "newsCard": {
+  "menu": {
+   "_pending_review": {},
+   "share": "Paylaş",
+   "save": "Kaydet",
+   "saved": "Kaydedildi",
+   "summarize": "Vitana ile özetle",
+   "copyLink": "Bağlantıyı kopyala",
+   "openInBrowser": "Tarayıcıda aç",
+   "hide": "Bu makaleyi gizle",
+   "showLess": "Bunun gibi daha az göster",
+   "muteSource": "Bu kaynağı sustur",
+   "linkCopied": "Bağlantı kopyalandı",
+   "savedToast": "Daha sonrası için kaydedildi",
+   "unsavedToast": "Kayıtlılardan kaldırıldı",
+   "summarizeToast": "Vitana için sıraya alındı",
+   "hiddenToast": "Makale gizlendi",
+   "showLessToast": "Bunun gibi daha azını göstereceğiz",
+   "mutedToast": "Kaynak susturuldu",
+   "undo": "Geri Al",
+   "unmute": "Sesi Aç"
+  },
+  "detail": {
+   "_pending_review": {},
+   "back": "Geri",
+   "continueReading": "Şurada okumaya devam et",
+   "openInBrowser": "Tarayıcıda aç",
+   "couldNotLoad": "Bu makale uygulama içinde gösterilemiyor",
+   "readOn": "Devamını oku"
+  },
+  "pillars": {
+   "_pending_review": {},
+   "all": "Tümü",
+   "nutrition": "Beslenme",
+   "hydration": "Su Tüketimi",
+   "sleep": "Uyku",
+   "exercise": "Egzersiz",
+   "mental": "Zihinsel"
   }
+ }
 }

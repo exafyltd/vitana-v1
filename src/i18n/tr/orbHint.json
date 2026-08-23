@@ -1,8 +1,6 @@
 {
-  "orbHint": {
-    "_pending_review": {
-      "tapToTalk": true
-    },
-    "tapToTalk": "Tap here to talk to Vitana"
-  }
+ "orbHint": {
+  "_pending_review": {},
+  "tapToTalk": "Vitana ile konuşmak için buraya dokun"
+ }
 }

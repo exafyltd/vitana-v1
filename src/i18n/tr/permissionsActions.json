@@ -1,74 +1,48 @@
 {
-  "permissionsActions": {
-    "_pending_review": {
-      "title": true
-    },
-    "title": "Privacy & Permissions Actions",
-    "items": {
-      "privacySettings": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Privacy Settings",
-        "description": "Configure Privacy and Sharing Settings"
-      },
-      "manageAccess": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Manage Access",
-        "description": "Control who can view your health memories"
-      },
-      "securitySettings": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Security Settings",
-        "description": "Update Authentication and Security Settings"
-      },
-      "apiKeysAccess": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "API Keys & Access",
-        "description": "Manage third-party app integrations and API access"
-      },
-      "dataRights": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Data Rights",
-        "description": "Exercise your rights to data portability and deletion"
-      },
-      "auditLogs": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Audit Logs",
-        "description": "Review access history and security audit trail"
-      },
-      "permissionSettings": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Permissions Settings",
-        "description": "Fine-tune granular permissions for different features"
-      },
-      "exportData": {
-        "_pending_review": {
-          "title": true,
-          "description": true
-        },
-        "title": "Export Data",
-        "description": "Download your memories and health data securely"
-      }
-    }
+ "permissionsActions": {
+  "_pending_review": {},
+  "title": "Gizlilik & İzin Eylemleri",
+  "items": {
+   "privacySettings": {
+    "_pending_review": {},
+    "title": "Gizlilik Ayarları",
+    "description": "Gizlilik ve Paylaşım Ayarlarını Yapılandır"
+   },
+   "manageAccess": {
+    "_pending_review": {},
+    "title": "Erişimi Yönet",
+    "description": "Sağlık anılarını kimlerin görebileceğini kontrol et"
+   },
+   "securitySettings": {
+    "_pending_review": {},
+    "title": "Güvenlik Ayarları",
+    "description": "Kimlik Doğrulama ve Güvenlik Ayarlarını Güncelle"
+   },
+   "apiKeysAccess": {
+    "_pending_review": {},
+    "title": "API Anahtarları & Erişim",
+    "description": "Üçüncü taraf uygulama entegrasyonlarını ve API erişimini yönet"
+   },
+   "dataRights": {
+    "_pending_review": {},
+    "title": "Veri Hakları",
+    "description": "Veri taşınabilirliği ve silme haklarını kullan"
+   },
+   "auditLogs": {
+    "_pending_review": {},
+    "title": "Denetim Günlükleri",
+    "description": "Erişim geçmişini ve güvenlik denetim izini incele"
+   },
+   "permissionSettings": {
+    "_pending_review": {},
+    "title": "İzin Ayarları",
+    "description": "Farklı özellikler için ayrıntılı izinleri ince ayarla"
+   },
+   "exportData": {
+    "_pending_review": {},
+    "title": "Veriyi Dışa Aktar",
+    "description": "Anılarını ve sağlık verilerini güvenle indir"
+   }
   }
+ }
 }

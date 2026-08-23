@@ -1,22 +1,13 @@
 {
-  "publicProfile": {
-    "_pending_review": {
-      "viewFull": true,
-      "sendMessage": true,
-      "follow": true,
-      "milestones": true,
-      "posts": true,
-      "followers": true,
-      "following": true,
-      "groups": true
-    },
-    "viewFull": "View Full Profile",
-    "sendMessage": "Message",
-    "follow": "Follow",
-    "milestones": "Life milestones",
-    "posts": "Posts",
-    "followers": "Followers",
-    "following": "Following",
-    "groups": "Groups"
-  }
+ "publicProfile": {
+  "_pending_review": {},
+  "viewFull": "Tam Profili Görüntüle",
+  "sendMessage": "Mesaj",
+  "follow": "Takip Et",
+  "milestones": "Yaşam kilometre taşları",
+  "posts": "Gönderiler",
+  "followers": "Takipçiler",
+  "following": "Takip Edilenler",
+  "groups": "Gruplar"
+ }
 }

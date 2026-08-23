@@ -1,44 +1,27 @@
 {
-  "campaigns": {
-    "delete": {
-      "_pending_review": {
-        "title": true,
-        "description": true,
-        "dontAskAgain": true,
-        "deletePermanently": true
-      },
-      "title": "Delete Campaign?",
-      "description": "Deleting \"{name}\" permanently removes all associated drafts and analyses. This cannot be undone.",
-      "dontAskAgain": "Don't ask me again for draft campaigns",
-      "deletePermanently": "Delete Permanently"
-    },
-    "creation": {
-      "_pending_review": {
-        "title": true,
-        "stepOf": true,
-        "yourCampaigns": true,
-        "drafts": true,
-        "live": true,
-        "proTip": true
-      },
-      "title": "Create Campaign",
-      "stepOf": "Step {current} of {total}",
-      "yourCampaigns": "Your Campaigns",
-      "drafts": "drafts",
-      "live": "live",
-      "proTip": "Pro Tip",
-      "tips": {
-        "1": "Clear names help you find campaigns later",
-        "2": "Connect channels now for instant planning",
-        "3": "Launch template works for most announcements",
-        "4": "Smart planning uses your past engagement data",
-        "_pending_review": {
-          "1": true,
-          "2": true,
-          "3": true,
-          "4": true
-        }
-      }
-    }
+ "campaigns": {
+  "delete": {
+   "_pending_review": {},
+   "title": "Kampanya Silinsin mi?",
+   "description": "\"{name}\" öğesini silmek, ilgili tüm taslakları ve analizleri kalıcı olarak kaldırır. Bu işlem geri alınamaz.",
+   "dontAskAgain": "Taslak kampanyalar için bir daha sorma",
+   "deletePermanently": "Kalıcı Olarak Sil"
+  },
+  "creation": {
+   "_pending_review": {},
+   "title": "Kampanya Oluştur",
+   "stepOf": "Adım {current} / {total}",
+   "yourCampaigns": "Kampanyaların",
+   "drafts": "taslak",
+   "live": "canlı",
+   "proTip": "Uzman İpucu",
+   "tips": {
+    "1": "Net isimler kampanyaları sonra bulmana yardımcı olur",
+    "2": "Anında planlama için kanalları şimdi bağla",
+    "3": "Lansman şablonu çoğu duyuru için işe yarar",
+    "4": "Akıllı planlama geçmiş etkileşim verilerini kullanır",
+    "_pending_review": {}
+   }
   }
+ }
 }

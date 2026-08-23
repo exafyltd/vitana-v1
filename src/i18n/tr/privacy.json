@@ -1,10 +1,7 @@
 {
-  "privacy": {
-    "_pending_review": {
-      "public": true,
-      "private": true
-    },
-    "public": "Public",
-    "private": "Private"
-  }
+ "privacy": {
+  "_pending_review": {},
+  "public": "Herkese Açık",
+  "private": "Özel"
+ }
 }

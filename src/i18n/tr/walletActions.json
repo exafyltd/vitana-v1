@@ -1,21 +1,13 @@
 {
+ "_pending_review": {},
+ "walletActions": {
   "_pending_review": {},
-  "walletActions": {
-    "_pending_review": {
-      "title": true,
-      "addFunds": true,
-      "send": true,
-      "exchange": true,
-      "withdraw": true,
-      "buyCredits": true,
-      "stakeTokens": true
-    },
-    "title": "Quick Actions",
-    "addFunds": "Deposit",
-    "send": "Send",
-    "exchange": "Swap",
-    "withdraw": "Withdraw",
-    "buyCredits": "Buy VTNA Credits",
-    "stakeTokens": "Stake Tokens"
-  }
+  "title": "Hızlı İşlemler",
+  "addFunds": "Para Yatır",
+  "send": "Gönder",
+  "exchange": "Takas Et",
+  "withdraw": "Para Çek",
+  "buyCredits": "VTNA Kredi Satın Al",
+  "stakeTokens": "Token Stake Et"
+ }
 }
