@@ -1,0 +1,18 @@
+{
+  "groupMembership": {
+    "_pending_review": {
+      "joined": true,
+      "joinedDesc": true,
+      "left": true,
+      "leftDesc": true,
+      "errorJoin": true,
+      "errorLeave": true
+    },
+    "joined": "Joined! 🎉",
+    "joinedDesc": "You're now a member of this group.",
+    "left": "Left group",
+    "leftDesc": "You've left this group.",
+    "errorJoin": "Could not join group. Please try again.",
+    "errorLeave": "Could not leave group. Please try again."
+  }
+}

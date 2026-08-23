@@ -1,0 +1,16 @@
+{
+  "profileMedia": {
+    "_pending_review": {
+      "emptyTitle": true,
+      "emptyDescription": true,
+      "uploadCta": true,
+      "viewAllCta": true,
+      "thumbnailAlt": true
+    },
+    "emptyTitle": "No media yet",
+    "emptyDescription": "Share your wellness journey",
+    "uploadCta": "Upload Media",
+    "viewAllCta": "View all media",
+    "thumbnailAlt": "Media"
+  }
+}

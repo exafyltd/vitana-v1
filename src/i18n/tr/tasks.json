@@ -1,0 +1,37 @@
+{
+  "_pending_review": {},
+  "tasks": {
+    "_pending_review": {
+      "noOpenTasks": true,
+      "confirmCancelTask": true,
+      "postponeComingSoon": true,
+      "addNotePrompt": true,
+      "noteAdded": true,
+      "navigateTo": true,
+      "openVtid": true,
+      "description": true,
+      "activityLog": true,
+      "relatedLinks": true,
+      "complete": true,
+      "postpone": true,
+      "addNote": true,
+      "openContext": true,
+      "assignee": true
+    },
+    "noOpenTasks": "No open tasks",
+    "confirmCancelTask": "Are you sure you want to cancel this task?",
+    "postponeComingSoon": "Reschedule function coming soon",
+    "addNotePrompt": "Add a note to this task:",
+    "noteAdded": "Note added: {note}",
+    "navigateTo": "Go to: {url}",
+    "openVtid": "Open VTID: {vtid}",
+    "description": "Description",
+    "activityLog": "Activity Log",
+    "relatedLinks": "Related Links",
+    "complete": "Complete",
+    "postpone": "Postpone",
+    "addNote": "Add Note",
+    "openContext": "Open Context",
+    "assignee": "Assignee"
+  }
+}

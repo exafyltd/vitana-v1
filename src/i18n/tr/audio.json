@@ -1,0 +1,7 @@
+{
+  "audio": {
+    "listening": "Dinliyorum...",
+    "processing": "Bir saniye...",
+    "connectionError": "Bağlantı sorunu. Lütfen tekrar dene."
+  }
+}

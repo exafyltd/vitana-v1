@@ -1,0 +1,28 @@
+{
+  "featureAnnouncementCard": {
+    "brandNew": {
+      "_pending_review": {
+        "eyebrow": true,
+        "badge": true,
+        "intro": true,
+        "cta": true,
+        "closing": true
+      },
+      "eyebrow": "New Feature",
+      "badge": "New",
+      "intro": "From now on, you can:",
+      "cta": "Try it yourself",
+      "closing": "Happy testing 🥳"
+    },
+    "didYouKnow": {
+      "_pending_review": {
+        "eyebrow": true,
+        "intro": true,
+        "cta": true
+      },
+      "eyebrow": "Did you know?",
+      "intro": "You can:",
+      "cta": "Try it now"
+    }
+  }
+}

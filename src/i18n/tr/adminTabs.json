@@ -1,0 +1,17 @@
+{
+  "adminTabs": {
+    "groups": {
+      "all": "Tüm Gruplar",
+      "pending": "Beklemede",
+      "approved": "Onaylandı",
+      "flagged": "İşaretlendi",
+      "rejected": "Reddedildi"
+    },
+    "rooms": {
+      "active": "Aktif Odalar",
+      "scheduled": "Planlandı",
+      "analytics": "Analizler",
+      "moderation": "Denetim"
+    }
+  }
+}

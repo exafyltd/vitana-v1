@@ -1,0 +1,140 @@
+{
+  "autopilot": {
+    "title": "Otopilot",
+    "suggestions": {
+      "bannerTitle": "Otopilot profilini optimize etmene yardımcı olabilir",
+      "bannerDesc": "Profilini daha ilgi çekici ve eksiksiz hale getirmek için yapay zeka destekli öneriler al.",
+      "enable": "Etkinleştir",
+      "showcaseTitle": "Otopilot Önerileri",
+      "showcaseBadge": "Akıllı",
+      "showcaseDesc": "Etkinliğine göre, bu gönderiler öne çıkan içerik olarak iyi gidebilir:",
+      "suggestPopular": "Popüler Gönderiler Öner",
+      "recentHighlights": "Son Öne Çıkanlar",
+      "archetypeTitle": "Arketip İçgörüleri",
+      "archetypeBadge": "Yapay Zeka Analizi",
+      "archetypeDesc": "Sağlık aktivitelerin \"Bilinçli Hareket Eden\" olabileceğini gösteriyor - güncellemek ister misin?",
+      "updateArchetype": "Arketipi Güncelle",
+      "profileSectionTitle": "Otopilot profilini parlatabilir ✨",
+      "profileSectionDesc": "Biyografin, arketipin ve öne çıkanların için yapay zeka destekli öneriler al.",
+      "tryAutopilot": "Otopilot'u Dene"
+    },
+    "preview": "Otopilot Önizlemesi",
+    "viewAll": "Tümünü Gör",
+    "noSuggestions": "Hepsi optimize edildi! 🎯",
+    "execute": "Seçilenleri Çalıştır",
+    "dismiss": "Kapat",
+    "executing": "Yürütülüyor...",
+    "success": "Başarıyla tamamlandı",
+    "failed": "Başarısız oldu - daha sonra tekrar denenecek",
+    "popup": {
+      "_pending_review": {
+        "go": true,
+        "notNow": true,
+        "seeOptions": true,
+        "seeAllInAI": true,
+        "moreActions": true,
+        "toastExecutedTitle": true,
+        "toastExecutedDesc": true,
+        "toastFailedTitle": true,
+        "toastFailedDesc": true
+      },
+      "title": "Otopilot Eylemleri",
+      "selectedOf": "{selected} öğeden {total} seçildi",
+      "readyToExecute": "Yapay zeka asistanının hazırladığı {count} eylemi gerçekleştirmeye hazırsın.",
+      "executingTitle": "Eylemler Yürütülüyor...",
+      "executingDesc": "Yapay zeka isteklerini işlerken lütfen bekle",
+      "complete": "%{percent} tamamlandı",
+      "go": "GO ({count})",
+      "notNow": "Not Now",
+      "seeOptions": "See Options",
+      "seeAllInAI": "See All in AI Intelligence →",
+      "moreActions": "+{count} more actions",
+      "toastExecutedTitle": "Actions Executed",
+      "toastExecutedDesc": "{success}/{total} actions completed successfully",
+      "toastFailedTitle": "Execution Failed",
+      "toastFailedDesc": "Something went wrong. Please try again."
+    },
+    "priorities": {
+      "_pending_review": {
+        "high": true,
+        "medium": true,
+        "low": true
+      },
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "widget": {
+      "_pending_review": {
+        "title": true,
+        "active": true,
+        "paused": true,
+        "doNow": true,
+        "allOptimized": true,
+        "enableToSee": true,
+        "completeForRewards": true,
+        "enableForCredits": true
+      },
+      "title": "Autopilot ⚡",
+      "active": "Active",
+      "paused": "Paused",
+      "doNow": "Do Now",
+      "allOptimized": "All optimized! 🎯",
+      "enableToSee": "Activate Autopilot to see suggestions",
+      "completeForRewards": "Complete Autopilot suggestions to get rewards",
+      "enableForCredits": "Activate Autopilot for credits"
+    },
+    "insightBanner": {
+      "_pending_review": {
+        "title": true,
+        "description": true,
+        "synergyIndex": true
+      },
+      "title": "Autopilot Health Overview",
+      "description": "Your Vitana Autopilot has analyzed recent plans and consistency.",
+      "synergyIndex": "Synergy Index",
+      "statusBalanced": "Dengeli",
+      "statusNeedsAttention": "Dikkat Gerekiyor",
+      "statusImproving": "Gelişiyor"
+    },
+    "profilePopup": {
+      "title": "Otomatik Pilot profilini optimize etsin ✨",
+      "polishBio": "Biyografini Optimize Et",
+      "polishBioDesc": "Otomatik Pilot, Hakkında bölümünü daha ilham verici yapabilir.",
+      "refreshArchetype": "Arketipini Güncelle",
+      "refreshArchetypeDesc": "Aktiviteye göre Uzun Ömür Arketipi güncellemesi öner",
+      "highlightShowcase": "Profilini öne çıkar",
+      "highlightShowcaseDesc": "Öne çıkan içerik için en iyi gönderileri veya medyayı öner",
+      "styleProfile": "Profilimi şekillendir",
+      "styleProfileDesc": "Kapak fotoğrafına, rollere, profil resmine iyileştirmeler öner",
+      "cancel": "İptal et",
+      "runAutopilot": "Otomatik Pilotu Çalıştır",
+      "generating": "Öneriler oluşturuluyor...",
+      "suggestedBio": "Önerilen Biyo",
+      "suggestedArchetype": "Önerilen Arketip",
+      "currentValue": "Mevcut",
+      "accept": "Kabul et",
+      "reject": "Vazgeç",
+      "acceptAll": "Hepsini kabul et",
+      "applied": "Değişiklikler kaydedildi!",
+      "error": "Bir şeyler ters gitti",
+      "comingSoon": "Çok Yakında"
+    },
+    "actions": {
+      "action1Title": "Bu gece Uzun Ömür Dans Grubuna katıl?",
+      "action1Reason": "Hareket hedeflerinle + sosyal iyi oluş enerjilerinle mükemmel uyumlu",
+      "action2Title": "Yapay Zeka'dan Çığır Açan Yeni Bir İçgörü",
+      "action2Reason": "Dijital ikizin kalıplarında büyüleyici bir şey keşfetti",
+      "action3Title": "5 günlük Hidrasyon Serin — Efsane Durumu Seni Bekliyor",
+      "action3Reason": "Haftalık hidrasyon ustalığına bir yudum daha yakınsın",
+      "action4Title": "Ekibini Destansı Hafta Sonu Buluşmasına otomatik davet et",
+      "action4Reason": "Sarah, Luna ve Marcus mükemmel uzun ömür kabilesi eşleşmeleri",
+      "action5Title": "Biyobelirteç hikayen seni bekliyor",
+      "action5Reason": "Dr. Chen en son panelinden heyecan verici içgörüler açığa çıkardı",
+      "action6Title": "Farkındalıklı Sabah Büyüsü",
+      "action6Reason": "Ruhun bu stresi eriten teknikleri çağırıyor",
+      "newActionTitle": "Yeni Yapay Zeka önerisi",
+      "newActionReason": "Son aktivite desenlerine göre"
+    }
+  }
+}

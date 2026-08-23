@@ -1,0 +1,42 @@
+{
+  "packages": {
+    "_pending_review": {
+      "confirmDelete": true,
+      "item": true,
+      "items": true,
+      "total": true,
+      "validDays": true,
+      "save": true,
+      "unpublish": true,
+      "publish": true
+    },
+    "confirmDelete": "Are you sure you want to delete this package?",
+    "types": {
+      "_pending_review": {
+        "bundle": true,
+        "subscription": true,
+        "program": true
+      },
+      "bundle": "Bundle",
+      "subscription": "Subscription",
+      "program": "Program"
+    },
+    "status": {
+      "_pending_review": {
+        "draft": true,
+        "published": true,
+        "archived": true
+      },
+      "draft": "Draft",
+      "published": "Live",
+      "archived": "Archived"
+    },
+    "item": "item",
+    "items": "items",
+    "total": "total",
+    "validDays": "Valid {days} days",
+    "save": "Save {percent}%",
+    "unpublish": "Unpublish",
+    "publish": "Publish"
+  }
+}

@@ -1,0 +1,298 @@
+{
+  "liveRooms": {
+    "_pending_review": {
+      "title": true,
+      "description": true,
+      "goLive": true,
+      "joinRoom": true,
+      "noRooms": true,
+      "beFirst": true,
+      "demoRoom": true,
+      "demoRoomDesc": true
+    },
+    "title": "Live Rooms",
+    "description": "Join live audio and video discussions",
+    "tabs": {
+      "_pending_review": {
+        "live": true,
+        "scheduled": true,
+        "all": true,
+        "past": true
+      },
+      "live": "Live now",
+      "scheduled": "Scheduled",
+      "all": "All Rooms",
+      "past": "Past"
+    },
+    "goLive": "Go Live",
+    "joinRoom": "Join Room",
+    "noRooms": "No live rooms currently",
+    "beFirst": "Be the first to go live",
+    "demoRoom": "Demo Room",
+    "demoRoomDesc": "This is an example room. Create your own to go live!",
+    "search": {
+      "_pending_review": {
+        "placeholder": true,
+        "category": true,
+        "allCategories": true
+      },
+      "placeholder": "Search rooms, topics, or hosts...",
+      "category": "Category",
+      "allCategories": "All Categories"
+    },
+    "room": {
+      "_pending_review": {
+        "join": true,
+        "participants": true,
+        "duration": true,
+        "host": true,
+        "premium": true,
+        "live": true
+      },
+      "join": "Join Room",
+      "participants": "Participants",
+      "duration": "Duration",
+      "host": "Host",
+      "premium": "Premium",
+      "live": "LIVE"
+    },
+    "viewer": {
+      "_pending_review": {
+        "leave": true,
+        "mute": true,
+        "video": true,
+        "raiseHand": true,
+        "chat": true,
+        "reactions": true
+      },
+      "leave": "Leave",
+      "mute": "Mute",
+      "video": "Video",
+      "raiseHand": "Raise Hand",
+      "chat": "Chat",
+      "reactions": "Reactions"
+    },
+    "goLivePopup": {
+      "_pending_review": {
+        "titleCreate": true,
+        "titleEdit": true,
+        "streamTitleLabel": true,
+        "streamTitlePlaceholder": true,
+        "descriptionLabel": true,
+        "descriptionPlaceholder": true,
+        "charactersCount": true,
+        "streamTypeLabel": true,
+        "streamTypeAudio": true,
+        "streamTypeVideo": true,
+        "coverLabel": true,
+        "coverAlt": true,
+        "coverUploadCta": true,
+        "coverUploadHint": true,
+        "aiAutoGenerateLabel": true,
+        "aiAutoGenerateHint": true,
+        "generatingAiImage": true,
+        "tagsLabel": true,
+        "tagsSelected": true,
+        "advancedTitle": true,
+        "cohostLabel": true,
+        "cohostPlaceholder": true,
+        "accessLevelLabel": true,
+        "scheduleLabel": true,
+        "goLiveNow": true,
+        "selectTime": true,
+        "clearSchedule": true,
+        "scheduledAt": true,
+        "dateNeedsTime": true,
+        "time": true,
+        "engagementLabel": true,
+        "enableChatTitle": true,
+        "enableChatDesc": true,
+        "enablePollsTitle": true,
+        "enablePollsDesc": true,
+        "recordReplayTitle": true,
+        "recordReplayDesc": true,
+        "cancel": true,
+        "starting": true,
+        "updating": true,
+        "updateStream": true,
+        "scheduleSession": true,
+        "goLiveNowAction": true
+      },
+      "titleCreate": "Go Live",
+      "titleEdit": "Edit Live Stream",
+      "streamTitleLabel": "Stream Title",
+      "streamTitlePlaceholder": "Live with {name}",
+      "descriptionLabel": "Description / Bio (Optional)",
+      "descriptionPlaceholder": "Briefly describe what this stream is about…",
+      "charactersCount": "{count}/500 characters",
+      "streamTypeLabel": "Stream Type",
+      "streamTypeAudio": "Audio",
+      "streamTypeVideo": "Video",
+      "coverLabel": "Cover Image / Thumbnail",
+      "coverAlt": "Stream cover",
+      "coverUploadCta": "Click to upload custom image",
+      "coverUploadHint": "Any image – auto-adjusts",
+      "aiAutoGenerateLabel": "Auto-generate with AI",
+      "aiAutoGenerateHint": "Generate image if none uploaded",
+      "generatingAiImage": "Generating AI image…",
+      "tagsLabel": "Tags / Category (Select 1-3)",
+      "tagsSelected": "{count}/3 selected",
+      "tags": {
+        "_pending_review": {
+          "wellness": true,
+          "nutrition": true,
+          "fitness": true,
+          "mentalHealth": true,
+          "longevity": true,
+          "meditation": true,
+          "sleep": true,
+          "motivation": true,
+          "education": true,
+          "lifestyle": true
+        },
+        "wellness": "Wellness",
+        "nutrition": "Nutrition",
+        "fitness": "Fitness",
+        "mentalHealth": "Mental Health",
+        "longevity": "Longevity",
+        "meditation": "Meditation",
+        "sleep": "Sleep",
+        "motivation": "Motivation",
+        "education": "Education",
+        "lifestyle": "Lifestyle"
+      },
+      "advancedTitle": "Advanced Options",
+      "cohostLabel": "Co-Host / Guest Invite",
+      "cohostPlaceholder": "Search and add co-host",
+      "accessLevelLabel": "Access Level",
+      "access": {
+        "public": {
+          "_pending_review": {
+            "label": true,
+            "desc": true
+          },
+          "label": "Public",
+          "desc": "Anyone can join"
+        },
+        "followers": {
+          "_pending_review": {
+            "label": true,
+            "desc": true
+          },
+          "label": "Followers Only",
+          "desc": "Only your followers"
+        },
+        "group": {
+          "_pending_review": {
+            "label": true,
+            "desc": true
+          },
+          "label": "Group/VIP",
+          "desc": "Invited members only"
+        }
+      },
+      "scheduleLabel": "Schedule for Later",
+      "goLiveNow": "Go Live Now",
+      "selectTime": "Select time",
+      "clearSchedule": "Clear Schedule (Go Live Now)",
+      "scheduledAt": "{date} at {time}",
+      "dateNeedsTime": "{date} – select time",
+      "time": "Time",
+      "engagementLabel": "Chat & Engagement",
+      "enableChatTitle": "Enable Chat",
+      "enableChatDesc": "Allow viewers to chat",
+      "enablePollsTitle": "Enable Polls",
+      "enablePollsDesc": "Create live polls during stream",
+      "recordReplayTitle": "Record for Replay",
+      "recordReplayDesc": "Save stream for later viewing",
+      "cancel": "Cancel",
+      "starting": "Starting…",
+      "updating": "Updating…",
+      "updateStream": "Update Stream",
+      "scheduleSession": "Schedule Live Session",
+      "goLiveNowAction": "Go Live Now",
+      "errors": {
+        "_pending_review": {
+          "selectStreamTypeTitle": true,
+          "selectStreamTypeDesc": true,
+          "notLoggedInTitle": true,
+          "notLoggedInDesc": true,
+          "invalidFileTypeTitle": true,
+          "invalidFileTypeDesc": true,
+          "fileTooLargeTitle": true,
+          "fileTooLargeDesc": true,
+          "imageUploadFailedTitle": true,
+          "imageUploadFailedDesc": true,
+          "genericTitle": true,
+          "genericDesc": true,
+          "genericDescWithReason": true
+        },
+        "selectStreamTypeTitle": "Select Stream Type",
+        "selectStreamTypeDesc": "Please select Audio or Video",
+        "notLoggedInTitle": "Error",
+        "notLoggedInDesc": "You must be logged in to go live",
+        "invalidFileTypeTitle": "Invalid File Type",
+        "invalidFileTypeDesc": "Please select an image file (JPEG, PNG, WebP)",
+        "fileTooLargeTitle": "File Too Large",
+        "fileTooLargeDesc": "Image must be smaller than 2MB",
+        "imageUploadFailedTitle": "Image upload failed",
+        "imageUploadFailedDesc": "We'll keep the existing image.",
+        "genericTitle": "Error",
+        "genericDesc": "Failed to create stream. Please try again.",
+        "genericDescWithReason": "Failed to create stream: {reason}. Please try again."
+      },
+      "success": {
+        "_pending_review": {
+          "streamUpdatedTitle": true,
+          "streamUpdatedDesc": true,
+          "streamScheduledTitle": true,
+          "streamScheduledDesc": true,
+          "youAreLiveTitle": true,
+          "youAreLiveDesc": true,
+          "aiImageHintTitle": true,
+          "aiImageHintDesc": true
+        },
+        "streamUpdatedTitle": "Stream Updated! ✨",
+        "streamUpdatedDesc": "Your stream was successfully updated",
+        "streamScheduledTitle": "Stream Scheduled! 📅",
+        "streamScheduledDesc": "Your stream is scheduled for {date} at {time}",
+        "youAreLiveTitle": "You're live! 🎙️",
+        "youAreLiveDesc": "Joining your stream room…",
+        "aiImageHintTitle": "AI Image Generation",
+        "aiImageHintDesc": "Image will be generated when stream starts."
+      }
+    },
+    "editSession": {
+      "_pending_review": {
+        "title": true,
+        "saving": true,
+        "changeCover": true,
+        "noChanges": true
+      },
+      "title": "Edit Session",
+      "saving": "Saving …",
+      "changeCover": "Change cover image",
+      "noChanges": "No changes to save"
+    }
+  },
+  "goLivePopup": {
+    "_pending_review": {
+      "durationLabel": true,
+      "duration15": true,
+      "duration30": true,
+      "duration45": true,
+      "duration60": true,
+      "duration90": true,
+      "duration120": true,
+      "durationHint": true
+    },
+    "durationLabel": "Duration",
+    "duration15": "15 minutes",
+    "duration30": "30 minutes",
+    "duration45": "45 minutes",
+    "duration60": "1 hour",
+    "duration90": "1.5 hours",
+    "duration120": "2 hours",
+    "durationHint": "The room closes automatically after this time if you don’t end it manually."
+  }
+}

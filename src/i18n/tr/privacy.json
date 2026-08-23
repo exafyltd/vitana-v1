@@ -1,0 +1,10 @@
+{
+  "privacy": {
+    "_pending_review": {
+      "public": true,
+      "private": true
+    },
+    "public": "Public",
+    "private": "Private"
+  }
+}

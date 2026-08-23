@@ -1,0 +1,40 @@
+{
+  "calendarPopup": {
+    "_pending_review": {
+      "title": true,
+      "nextEvents": true,
+      "conflicts": true,
+      "upcomingSchedule": true,
+      "addNewEvent": true,
+      "noUpcomingEvents": true,
+      "createFirstEvent": true,
+      "aiSuggestions": true,
+      "findBetterSlot": true,
+      "prepareBrief": true,
+      "shareAvailability": true,
+      "syncExternal": true,
+      "addEvent": true,
+      "quickAdd": true,
+      "eventFormComingSoon": true,
+      "externalSync": true,
+      "connectingCalendars": true
+    },
+    "title": "Calendar",
+    "nextEvents": "Next {count} Events",
+    "conflicts": "{count} Conflicts",
+    "upcomingSchedule": "Your upcoming schedule and appointments",
+    "addNewEvent": "Add New Event",
+    "noUpcomingEvents": "No upcoming events",
+    "createFirstEvent": "Create your first appointment",
+    "aiSuggestions": "AI Suggestions",
+    "findBetterSlot": "Find better slot",
+    "prepareBrief": "Prepare brief",
+    "shareAvailability": "Share availability",
+    "syncExternal": "Sync External",
+    "addEvent": "Add Event",
+    "quickAdd": "Quick Add",
+    "eventFormComingSoon": "Event creation form coming soon",
+    "externalSync": "External Sync",
+    "connectingCalendars": "Connect with external calendars..."
+  }
+}

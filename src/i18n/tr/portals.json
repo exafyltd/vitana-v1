@@ -1,0 +1,80 @@
+{
+  "portals": {
+    "maxina": {
+      "_pending_review": {
+        "title": true,
+        "welcomeBack": true,
+        "continueJourney": true,
+        "joinMaxina": true,
+        "joinCommunity": true,
+        "createAccount": true,
+        "signingIn": true,
+        "creatingAccount": true,
+        "joiningAs": true,
+        "yourFullName": true,
+        "forgotPassword": true,
+        "partOfVitana": true,
+        "allPortals": true,
+        "emailConfirmed": true,
+        "checkEmail": true
+      },
+      "title": "Maxina Health Platform",
+      "welcomeBack": "Welcome back to Maxina.",
+      "continueJourney": "Log in to continue your journey.",
+      "joinMaxina": "Join Maxina",
+      "joinCommunity": "Join the Maxina community.",
+      "createAccount": "Create your account and start your journey.",
+      "signingIn": "Signing in…",
+      "creatingAccount": "Creating account…",
+      "joiningAs": "I am joining as:",
+      "yourFullName": "Your full name",
+      "forgotPassword": "Forgot password?",
+      "partOfVitana": "Maxina is part of the VITANA ecosystem.",
+      "allPortals": "All Portals",
+      "emailConfirmed": "Email confirmed! Welcome to Maxina.",
+      "checkEmail": "Please check your email to confirm your account.",
+      "roles": {
+        "_pending_review": {
+          "community": true,
+          "patient": true,
+          "professional": true,
+          "admin": true
+        },
+        "community": "Community",
+        "patient": "Patient",
+        "professional": "Pro",
+        "admin": "Admin"
+      }
+    },
+    "alkalma": {
+      "_pending_review": {
+        "joinAlkalma": true,
+        "welcomeBack": true,
+        "continueJourney": true
+      },
+      "joinAlkalma": "Join AlKalma",
+      "welcomeBack": "Welcome back to AlKalma.",
+      "continueJourney": "Log in to continue."
+    },
+    "earthlinks": {
+      "_pending_review": {
+        "joinEarthlinks": true,
+        "welcomeBack": true,
+        "continueJourney": true
+      },
+      "joinEarthlinks": "Join Earthlinks",
+      "welcomeBack": "Welcome back to Earthlinks.",
+      "continueJourney": "Log in to continue."
+    },
+    "community": {
+      "_pending_review": {
+        "joinCommunity": true,
+        "welcomeBack": true,
+        "continueJourney": true
+      },
+      "joinCommunity": "Join Community",
+      "welcomeBack": "Welcome back.",
+      "continueJourney": "Log in to continue."
+    }
+  }
+}

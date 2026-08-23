@@ -1,0 +1,54 @@
+{
+  "events": {
+    "_pending_review": {
+      "title": true,
+      "description": true,
+      "searchPlaceholder": true,
+      "noEvents": true,
+      "checkBack": true
+    },
+    "title": "Events & Meet-Ups",
+    "description": "Discover local wellness gatherings",
+    "searchPlaceholder": "Search events and meetups...",
+    "tabs": {
+      "_pending_review": {
+        "today": true,
+        "upcoming": true,
+        "following": true,
+        "recommended": true
+      },
+      "today": "Today",
+      "upcoming": "Upcoming",
+      "following": "Following",
+      "recommended": "Recommended"
+    },
+    "noEvents": "No events scheduled",
+    "checkBack": "Check back soon for upcoming community events!",
+    "emptyStates": {
+      "_pending_review": {
+        "noEventsToday": true,
+        "noEventsTodayDesc": true,
+        "createEvent": true,
+        "viewUpcoming": true,
+        "followingTitle": true,
+        "followingDesc": true,
+        "findPeople": true,
+        "noPostsFromFollowing": true,
+        "noPostsFromFollowingDesc": true,
+        "youFollow": true,
+        "loadingFollowing": true
+      },
+      "noEventsToday": "No Events Today",
+      "noEventsTodayDesc": "No events are planned for today. Check out upcoming events or create your own!",
+      "createEvent": "Create Event",
+      "viewUpcoming": "View Upcoming Events",
+      "followingTitle": "Posts from people you follow",
+      "followingDesc": "Content from people and groups you follow appears here",
+      "findPeople": "Find People to Follow",
+      "noPostsFromFollowing": "No Posts Yet",
+      "noPostsFromFollowingDesc": "People you follow haven't created any events or meetups yet.",
+      "youFollow": "You follow",
+      "loadingFollowing": "Loading posts…"
+    }
+  }
+}

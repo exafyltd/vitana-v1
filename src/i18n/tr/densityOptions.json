@@ -1,0 +1,12 @@
+{
+  "densityOptions": {
+    "_pending_review": {
+      "cozy": true,
+      "compact": true,
+      "gallery": true
+    },
+    "cozy": "Cozy",
+    "compact": "Compact",
+    "gallery": "Gallery"
+  }
+}

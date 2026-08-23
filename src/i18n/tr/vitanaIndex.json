@@ -1,0 +1,69 @@
+{
+  "_pending_review": {},
+  "vitanaIndex": {
+    "_pending_review": {
+      "title": true,
+      "subtitle": true,
+      "veryPoor": true,
+      "poor": true,
+      "fair": true,
+      "improving": true,
+      "good": true,
+      "excellent": true,
+      "sleep": true,
+      "exercise": true,
+      "nutrition": true,
+      "hydration": true,
+      "mental": true,
+      "viewFullReport": true,
+      "trackToday": true
+    },
+    "title": "Vitana Health Index",
+    "subtitle": "Overall Wellness Balance across all health pillars",
+    "veryPoor": "Very Poor",
+    "poor": "Poor",
+    "fair": "Fair",
+    "improving": "Improving",
+    "good": "Good",
+    "excellent": "Excellent",
+    "sleep": "Sleep",
+    "exercise": "Exercise",
+    "nutrition": "Nutrition",
+    "hydration": "Hydration",
+    "mental": "Mental",
+    "viewFullReport": "View Full Report",
+    "trackToday": "Track Today",
+    "tiers": {
+      "_pending_review": {
+        "starting": true,
+        "early": true,
+        "building": true,
+        "strong": true,
+        "reallyGood": true,
+        "elite": true
+      },
+      "starting": "Beginner",
+      "early": "Early",
+      "building": "Building up",
+      "strong": "Strong",
+      "reallyGood": "Really good",
+      "elite": "Elite"
+    },
+    "framings": {
+      "_pending_review": {
+        "starting": true,
+        "early": true,
+        "building": true,
+        "strong": true,
+        "reallyGood": true,
+        "elite": true
+      },
+      "starting": "Just starting",
+      "early": "Baseline established",
+      "building": "Habits forming",
+      "strong": "90-day milestone",
+      "reallyGood": "Thriving",
+      "elite": "Elite"
+    }
+  }
+}

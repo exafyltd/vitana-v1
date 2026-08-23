@@ -1,0 +1,160 @@
+{
+  "orders": {
+    "_pending_review": {
+      "myOrders": true,
+      "title": true,
+      "description": true,
+      "trackDescription": true,
+      "searchPlaceholder": true,
+      "previewNotice": true,
+      "sampleData": true,
+      "noOrders": true,
+      "noOrdersDesc": true,
+      "browseProducts": true,
+      "findEvents": true,
+      "startShopping": true,
+      "noFilter": true,
+      "noFilterDesc": true,
+      "orderDate": true,
+      "orderNumber": true,
+      "viewDetails": true,
+      "trackOrder": true,
+      "reorder": true
+    },
+    "myOrders": "My Orders",
+    "title": "Orders",
+    "description": "Your order history and active subscriptions",
+    "trackDescription": "Track your product orders and event tickets",
+    "searchPlaceholder": "Search orders...",
+    "tabs": {
+      "_pending_review": {
+        "active": true,
+        "history": true,
+        "all": true,
+        "completed": true,
+        "cancelled": true
+      },
+      "active": "Active",
+      "history": "History",
+      "all": "All",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "filters": {
+      "_pending_review": {
+        "all": true,
+        "events": true,
+        "products": true,
+        "vouchers": true,
+        "services": true,
+        "refunds": true
+      },
+      "all": "All",
+      "events": "Events",
+      "products": "Products",
+      "vouchers": "Vouchers",
+      "services": "Services",
+      "refunds": "Refunds"
+    },
+    "previewNotice": "These are preview orders. Your actual orders will appear here.",
+    "sampleData": "Sample Data",
+    "emptyActive": {
+      "_pending_review": {
+        "title": true,
+        "description": true
+      },
+      "title": "No Active Orders",
+      "description": "You don't have any active orders or upcoming events."
+    },
+    "emptyHistory": {
+      "_pending_review": {
+        "title": true,
+        "description": true
+      },
+      "title": "No Order History",
+      "description": "Your completed orders and past events will appear here."
+    },
+    "noOrders": "No orders yet",
+    "noOrdersDesc": "Your orders will appear here once you buy something.",
+    "browseProducts": "Browse Products",
+    "findEvents": "Find Events",
+    "startShopping": "Start Shopping",
+    "noFilter": "No {filter}",
+    "noFilterDesc": "No {filter} found in your history.",
+    "orderDate": "Order date",
+    "orderNumber": "Order number",
+    "viewDetails": "View Details",
+    "trackOrder": "Track Order",
+    "reorder": "Reorder",
+    "detailSheet": {
+      "_pending_review": {
+        "title": true,
+        "orderInfo": true,
+        "orderReference": true,
+        "purchaseDate": true,
+        "eventDate": true,
+        "location": true,
+        "quantity": true,
+        "tickets": true,
+        "yourTicket": true,
+        "giftVoucher": true,
+        "code": true,
+        "sendToRecipient": true,
+        "recipientEmail": true,
+        "recipientName": true,
+        "personalMessage": true,
+        "cancel": true,
+        "send": true,
+        "downloadPdf": true
+      },
+      "title": "Order Details",
+      "orderInfo": "Order Info",
+      "orderReference": "Order Reference",
+      "purchaseDate": "Purchase Date",
+      "eventDate": "Event Date",
+      "location": "Location",
+      "quantity": "Quantity",
+      "tickets": "tickets",
+      "yourTicket": "Your ticket",
+      "giftVoucher": "Gift Voucher",
+      "code": "Code",
+      "sendToRecipient": "Send to Recipient",
+      "recipientEmail": "Recipient Email *",
+      "recipientName": "Recipient Name",
+      "personalMessage": "Personal Message",
+      "cancel": "Cancel",
+      "send": "Send",
+      "downloadPdf": "Download PDF"
+    },
+    "status": {
+      "_pending_review": {
+        "upcoming": true,
+        "attended": true,
+        "expired": true,
+        "completed": true,
+        "delivered": true,
+        "cancelled": true,
+        "refunded": true,
+        "shipped": true,
+        "confirmed": true,
+        "pending": true,
+        "processing": true,
+        "paid": true,
+        "active": true
+      },
+      "upcoming": "Upcoming",
+      "attended": "Attended",
+      "expired": "Expired",
+      "completed": "Completed",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
+      "refunded": "Refunded",
+      "shipped": "In Transit",
+      "confirmed": "Confirmed",
+      "pending": "Pending",
+      "processing": "Processing",
+      "paid": "Active",
+      "active": "Active"
+    }
+  }
+}

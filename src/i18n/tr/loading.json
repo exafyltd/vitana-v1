@@ -1,0 +1,20 @@
+{
+  "loading": {
+    "_pending_review": {
+      "default": true,
+      "groups": true,
+      "messages": true,
+      "uploading": true,
+      "uploadingProgress": true,
+      "processing": true,
+      "saving": true
+    },
+    "default": "Loading...",
+    "groups": "Loading groups...",
+    "messages": "Loading messages...",
+    "uploading": "Uploading...",
+    "uploadingProgress": "Uploading... {progress}%",
+    "processing": "Processing...",
+    "saving": "Saving..."
+  }
+}

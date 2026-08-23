@@ -1,0 +1,40 @@
+{
+  "drawerNav": {
+    "_pending_review": {
+      "journey": true,
+      "news": true,
+      "events": true,
+      "findPartner": true,
+      "live": true,
+      "media": true,
+      "business": true,
+      "discover": true,
+      "orders": true,
+      "wallet": true,
+      "health": true,
+      "diary": true,
+      "connectors": true,
+      "inbox": true,
+      "support": true,
+      "settings": true,
+      "logout": true
+    },
+    "journey": "My Journey",
+    "news": "News",
+    "events": "Events & MeetUps",
+    "findPartner": "Find a Match",
+    "live": "Live Rooms",
+    "media": "Media HUB",
+    "business": "Business HUB",
+    "discover": "Discover",
+    "orders": "Orders",
+    "wallet": "Wallet",
+    "health": "Health",
+    "diary": "Daily Diary",
+    "connectors": "Connectors",
+    "inbox": "Inbox",
+    "support": "Support",
+    "settings": "Settings",
+    "logout": "Log Out"
+  }
+}

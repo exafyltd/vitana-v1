@@ -1,0 +1,40 @@
+{
+  "editProfile": {
+    "_pending_review": {
+      "unsavedChanges": true,
+      "notAuthenticated": true,
+      "notAuthenticatedDesc": true,
+      "profileUpdated": true,
+      "profileUpdatedDesc": true,
+      "error": true,
+      "refreshFailed": true,
+      "showcaseHint": true,
+      "showcaseTitle": true,
+      "manage": true,
+      "about": true,
+      "addBio": true,
+      "tapToEdit": true,
+      "title": true,
+      "titlePlaceholder": true,
+      "description": true,
+      "descriptionPlaceholder": true
+    },
+    "unsavedChanges": "You have unsaved changes. Are you sure you want to leave?",
+    "notAuthenticated": "Not authenticated",
+    "notAuthenticatedDesc": "Please sign in to save your profile.",
+    "profileUpdated": "Profile updated successfully!",
+    "profileUpdatedDesc": "Your changes are now live. Your VITANA profile looks great.",
+    "error": "Error",
+    "refreshFailed": "Failed to refresh profile data.",
+    "showcaseHint": "Select posts and content to be highlighted at the top of your profile.",
+    "showcaseTitle": "Highlights",
+    "manage": "Manage",
+    "about": "About",
+    "addBio": "Add a bio...",
+    "tapToEdit": "Tap to edit",
+    "title": "Title",
+    "titlePlaceholder": "Video title",
+    "description": "Description",
+    "descriptionPlaceholder": "Optional description..."
+  }
+}

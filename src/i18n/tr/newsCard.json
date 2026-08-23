@@ -1,0 +1,74 @@
+{
+  "newsCard": {
+    "menu": {
+      "_pending_review": {
+        "share": true,
+        "save": true,
+        "saved": true,
+        "summarize": true,
+        "copyLink": true,
+        "openInBrowser": true,
+        "hide": true,
+        "showLess": true,
+        "muteSource": true,
+        "linkCopied": true,
+        "savedToast": true,
+        "unsavedToast": true,
+        "summarizeToast": true,
+        "hiddenToast": true,
+        "showLessToast": true,
+        "mutedToast": true,
+        "undo": true,
+        "unmute": true
+      },
+      "share": "Share",
+      "save": "Save",
+      "saved": "Saved",
+      "summarize": "Summarize with Vitana",
+      "copyLink": "Copy link",
+      "openInBrowser": "Open in browser",
+      "hide": "Hide this article",
+      "showLess": "Show less like this",
+      "muteSource": "Mute this source",
+      "linkCopied": "Link copied",
+      "savedToast": "Saved for later",
+      "unsavedToast": "Removed from saved",
+      "summarizeToast": "Queued for Vitana",
+      "hiddenToast": "Article hidden",
+      "showLessToast": "We'll show fewer like this",
+      "mutedToast": "Source muted",
+      "undo": "Undo",
+      "unmute": "Unmute"
+    },
+    "detail": {
+      "_pending_review": {
+        "back": true,
+        "continueReading": true,
+        "openInBrowser": true,
+        "couldNotLoad": true,
+        "readOn": true
+      },
+      "back": "Back",
+      "continueReading": "Continue reading on",
+      "openInBrowser": "Open in browser",
+      "couldNotLoad": "This article can't be displayed inline",
+      "readOn": "Read more"
+    },
+    "pillars": {
+      "_pending_review": {
+        "all": true,
+        "nutrition": true,
+        "hydration": true,
+        "sleep": true,
+        "exercise": true,
+        "mental": true
+      },
+      "all": "All",
+      "nutrition": "Nutrition",
+      "hydration": "Hydration",
+      "sleep": "Sleep",
+      "exercise": "Exercise",
+      "mental": "Mental"
+    }
+  }
+}

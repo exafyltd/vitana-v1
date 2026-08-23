@@ -1,0 +1,44 @@
+{
+  "businessHub": {
+    "_pending_review": {
+      "title": true,
+      "description": true,
+      "recentActivity": true,
+      "clients": true,
+      "analytics": true,
+      "searchBusiness": true,
+      "noServices": true,
+      "noServicesDesc": true,
+      "createService": true,
+      "noClients": true,
+      "noClientsDesc": true,
+      "noSales": true,
+      "noSalesDesc": true
+    },
+    "title": "Business Hub",
+    "description": "Grow your wellness business",
+    "tabs": {
+      "_pending_review": {
+        "snapshot": true,
+        "services": true,
+        "sales": true,
+        "insights": true
+      },
+      "snapshot": "Snapshot",
+      "services": "Services",
+      "sales": "Sales",
+      "insights": "Insights"
+    },
+    "recentActivity": "Recent Activity",
+    "clients": "Clients",
+    "analytics": "Analytics",
+    "searchBusiness": "Search business...",
+    "noServices": "No services yet",
+    "noServicesDesc": "Create your first service to attract customers.",
+    "createService": "Create Service",
+    "noClients": "No clients yet",
+    "noClientsDesc": "Your customers will appear here.",
+    "noSales": "No sales yet",
+    "noSalesDesc": "Your sales history will appear here."
+  }
+}

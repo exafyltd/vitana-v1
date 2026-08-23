@@ -1,0 +1,59 @@
+{
+  "_pending_review": {},
+  "services": {
+    "_pending_review": {
+      "title": true,
+      "subtitle": true
+    },
+    "title": "Services HUB",
+    "subtitle": "Access comprehensive healthcare and wellness services",
+    "categories": {
+      "_pending_review": {
+        "preventive": true,
+        "labTests": true,
+        "coaching": true,
+        "groupPrograms": true
+      },
+      "preventive": "Preventive Screenings",
+      "labTests": "Lab Tests",
+      "coaching": "Coaching & Personal Training",
+      "groupPrograms": "Group Programs & Challenges"
+    },
+    "actions": {
+      "_pending_review": {
+        "book": true,
+        "addToPlan": true,
+        "askAI": true,
+        "joinRoom": true,
+        "setReminder": true
+      },
+      "book": "Book",
+      "addToPlan": "Add to Plan",
+      "askAI": "Ask AI",
+      "joinRoom": "Join Room",
+      "setReminder": "Set Reminder"
+    },
+    "details": {
+      "_pending_review": {
+        "duration": true,
+        "price": true,
+        "location": true,
+        "nextAvailable": true,
+        "whatsIncluded": true,
+        "healthBenefits": true,
+        "availableProviders": true,
+        "requirements": true,
+        "tags": true
+      },
+      "duration": "Duration",
+      "price": "Price",
+      "location": "Location",
+      "nextAvailable": "Next available",
+      "whatsIncluded": "What's Included",
+      "healthBenefits": "Health Benefits",
+      "availableProviders": "Available Providers",
+      "requirements": "Requirements & Preparation",
+      "tags": "Tags"
+    }
+  }
+}

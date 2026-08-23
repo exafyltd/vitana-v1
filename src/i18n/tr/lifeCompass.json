@@ -1,0 +1,102 @@
+{
+  "lifeCompass": {
+    "_pending_review": {
+      "title": true,
+      "description": true,
+      "currentCompass": true,
+      "alignment": true,
+      "confidence": true,
+      "suggestedGoals": true,
+      "customGoal": true,
+      "customGoalPlaceholder": true,
+      "setCustomGoal": true,
+      "closeAria": true
+    },
+    "title": "Life Compass",
+    "description": "Your Life Compass guides all AI recommendations and decisions. Choose a primary goal that matters most to you right now. The AI will prioritize suggestions that align with this direction.",
+    "currentCompass": "Current Compass",
+    "alignment": "Alignment: {value}%",
+    "confidence": "Confidence: {value}%",
+    "suggestedGoals": "Suggested Goals",
+    "customGoal": "Custom Goal",
+    "customGoalPlaceholder": "Describe your primary goal in your own words...",
+    "setCustomGoal": "Set Custom Goal",
+    "closeAria": "Close",
+    "categoryLabels": {
+      "_pending_review": {
+        "wealth": true,
+        "relationship": true,
+        "health": true,
+        "career": true,
+        "learning": true,
+        "spiritual": true,
+        "longevity": true
+      },
+      "wealth": "wealth",
+      "relationship": "relationship",
+      "health": "health",
+      "career": "career",
+      "learning": "learning",
+      "spiritual": "spiritual",
+      "longevity": "longevity"
+    },
+    "goals": {
+      "wealth": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Build Financial Freedom",
+        "description": "Achieve financial independence and wealth"
+      },
+      "relationship": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Find Life Partner",
+        "description": "Build meaningful romantic relationships"
+      },
+      "health": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Improve Health",
+        "description": "Achieve optimal physical and mental wellness"
+      },
+      "career": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Advance Career",
+        "description": "Build a fulfilling and successful career"
+      },
+      "learning": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Master New Skills",
+        "description": "Learn and grow through knowledge"
+      },
+      "spiritual": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Spiritual Life",
+        "description": "Deepen purpose, presence, and inner peace"
+      },
+      "longevity": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Improve quality of life and extend lifespan",
+        "description": "Focus on healthspan, energy, and longevity — Vitanaland's mission"
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "confirm": {
+    "_pending_review": {
+      "delete": true,
+      "deleteDesc": true,
+      "cancel": true,
+      "cancelDesc": true,
+      "unsavedChanges": true,
+      "unsavedChangesDesc": true,
+      "leave": true,
+      "leaveDesc": true,
+      "logout": true,
+      "logoutDesc": true,
+      "remove": true,
+      "removeDesc": true,
+      "disconnect": true,
+      "disconnectDesc": true,
+      "proceed": true,
+      "proceedDesc": true
+    },
+    "delete": "Are you sure you want to delete this?",
+    "deleteDesc": "This action cannot be undone.",
+    "cancel": "Are you sure you want to cancel?",
+    "cancelDesc": "Your changes will be lost.",
+    "unsavedChanges": "You have unsaved changes",
+    "unsavedChangesDesc": "Do you really want to leave? Your changes will be lost.",
+    "leave": "Do you really want to leave this page?",
+    "leaveDesc": "Unsaved changes will be lost.",
+    "logout": "Do you really want to log out?",
+    "logoutDesc": "You need to log in again.",
+    "remove": "Do you really want to remove this item?",
+    "removeDesc": "The item will be removed from the list.",
+    "disconnect": "Do you really want to disconnect this connection?",
+    "disconnectDesc": "You can reconnect later.",
+    "proceed": "Do you want to continue?",
+    "proceedDesc": "This action will be executed."
+  }
+}

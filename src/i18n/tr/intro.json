@@ -1,0 +1,24 @@
+{
+  "intro": {
+    "_pending_review": {
+      "welcomeTo": true,
+      "experience": true,
+      "taglineMain": true,
+      "taglineSub": true,
+      "playWelcome": true,
+      "preparing": true,
+      "playing": true,
+      "goToLogin": true,
+      "chooseLanguage": true
+    },
+    "welcomeTo": "WELCOME TO VITANALAND",
+    "experience": "Experience",
+    "taglineMain": "Start your Longevity Journey",
+    "taglineSub": "together with us!",
+    "playWelcome": "Play Welcome",
+    "preparing": "Preparing...",
+    "playing": "Playing",
+    "goToLogin": "Go to Login",
+    "chooseLanguage": "Choose language"
+  }
+}

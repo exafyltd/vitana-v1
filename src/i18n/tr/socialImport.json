@@ -1,0 +1,61 @@
+{
+  "_pending_review": {},
+  "socialImport": {
+    "_pending_review": {
+      "dialogTitle": true,
+      "dialogDescription": true,
+      "profileUrl": true,
+      "bioLabel": true,
+      "bioOptional": true,
+      "cancel": true,
+      "importProfile": true,
+      "importing": true,
+      "urlRequired": true,
+      "urlRequiredDesc": true,
+      "importSuccess": true,
+      "importSuccessDesc": true,
+      "importFailed": true,
+      "connect": true,
+      "socialPresence": true,
+      "verifiedConnections": true,
+      "tapToVisit": true,
+      "noAccountsConnected": true,
+      "connectAccounts": true
+    },
+    "dialogTitle": "{platform} Import Profile",
+    "dialogDescription": "Connect your {platform} profile to enrich your Vitana identity with AI-powered insights.",
+    "profileUrl": "{platform} Profile URL",
+    "bioLabel": "Bio / About Section",
+    "bioOptional": "(Optional)",
+    "cancel": "Cancel",
+    "importProfile": "Import Profile",
+    "importing": "Importing...",
+    "urlRequired": "URL Required",
+    "urlRequiredDesc": "Please enter your {platform} profile URL",
+    "importSuccess": "Import Successful",
+    "importSuccessDesc": "Your {platform} profile has been imported and enriched with AI insights.",
+    "importFailed": "Import Failed",
+    "connect": "Connect:",
+    "socialPresence": "Social Presence",
+    "verifiedConnections": "Verified connections in your digital life",
+    "tapToVisit": "Tap to visit profile",
+    "noAccountsConnected": "No social accounts connected",
+    "connectAccounts": "Connect Accounts",
+    "platformHelp": {
+      "_pending_review": {
+        "linkedin": true,
+        "instagram": true,
+        "tiktok": true,
+        "youtube": true,
+        "facebook": true,
+        "x": true
+      },
+      "linkedin": "We use AI to extract your headline, summary, and professional skills.",
+      "instagram": "We analyze your bio to understand your interests and lifestyle topics.",
+      "tiktok": "We extract your content themes and creative personality from your bio.",
+      "youtube": "We identify your content categories and areas of expertise from your description.",
+      "facebook": "We extract your interests and community involvement from your bio.",
+      "x": "We analyze your bio to understand your subject areas and communication style."
+    }
+  }
+}

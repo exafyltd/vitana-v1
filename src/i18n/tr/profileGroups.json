@@ -1,0 +1,16 @@
+{
+  "profileGroups": {
+    "_pending_review": {
+      "emptyTitle": true,
+      "emptyDescription": true,
+      "discoverCta": true,
+      "viewAllCta": true,
+      "membersLabel": true
+    },
+    "emptyTitle": "No groups yet",
+    "emptyDescription": "Join communities that match your interests",
+    "discoverCta": "Discover groups",
+    "viewAllCta": "View all groups",
+    "membersLabel": "members"
+  }
+}

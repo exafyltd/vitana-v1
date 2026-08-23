@@ -1,0 +1,58 @@
+{
+  "memoryActions": {
+    "_pending_review": {
+      "title": true
+    },
+    "title": "Memory Actions",
+    "items": {
+      "recordVoiceDiary": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Record Voice Diary",
+        "description": "Capture thoughts and reflections with voice"
+      },
+      "addMemoryNote": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Add Memory Note",
+        "description": "Write down important health moments"
+      },
+      "viewTimeline": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "View Timeline",
+        "description": "See your complete wellness journey"
+      },
+      "searchMemories": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Search Memories",
+        "description": "Find specific moments and insights"
+      },
+      "photoMemory": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Photo Memory",
+        "description": "Add visual memories to your journey"
+      },
+      "aiMemoryAnalysis": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "AI Memory Analysis",
+        "description": "Get insights from your memory patterns"
+      }
+    }
+  }
+}

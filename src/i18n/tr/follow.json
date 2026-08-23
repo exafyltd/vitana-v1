@@ -1,0 +1,10 @@
+{
+  "follow": {
+    "_pending_review": {
+      "noFollowers": true,
+      "noFollowing": true
+    },
+    "noFollowers": "No followers yet",
+    "noFollowing": "You are not following anyone yet"
+  }
+}

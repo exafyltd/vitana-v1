@@ -1,0 +1,74 @@
+{
+  "recallActions": {
+    "_pending_review": {
+      "title": true
+    },
+    "title": "Reminder Search & Retrieval Actions",
+    "items": {
+      "askAiQuestion": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Ask AI Question",
+        "description": "Query your memories with natural language AI search"
+      },
+      "advancedSearch": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Advanced Search",
+        "description": "Use filters, tags, and date ranges to find memories"
+      },
+      "patternAnalysis": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Pattern Analysis",
+        "description": "Discover trends and patterns in your wellness data"
+      },
+      "memoryInsights": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Memory Insights",
+        "description": "Get AI-powered insights from your health journey"
+      },
+      "searchByDate": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Search by Date",
+        "description": "Browse memories from specific time periods"
+      },
+      "locationMemories": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Location Memories",
+        "description": "Find entries by places and locations visited"
+      },
+      "filterByCategory": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Filter by Category",
+        "description": "Browse memories by wellness pillars and categories"
+      },
+      "quickRecalls": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Quick Recalls",
+        "description": "Access frequently searched memories and queries"
+      }
+    }
+  }
+}

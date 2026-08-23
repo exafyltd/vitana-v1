@@ -1,0 +1,160 @@
+{
+  "profile": {
+    "_pending_review": {
+      "defaultBio": true
+    },
+    "defaultBio": "Wellness enthusiast passionate about holistic health and community building. 🌱",
+    "autopilot": {
+      "_pending_review": {
+        "polishBio": true,
+        "editHighlights": true,
+        "saveHighlights": true,
+        "highlightsDesc": true,
+        "try": true
+      },
+      "polishBio": "Polish your Bio, Archetype & Highlights",
+      "editHighlights": "Edit Highlights",
+      "saveHighlights": "Save Highlights",
+      "highlightsDesc": "Choose your best posts and media to display at the top of your profile. Highlighted content appears in the Highlights section and attracts more followers.",
+      "try": "Try"
+    },
+    "identity": {
+      "_pending_review": {
+        "vitanaIndex": true,
+        "basedOnActivity": true,
+        "viewLongevityId": true,
+        "follow": true,
+        "followingState": true,
+        "understandIndex": true,
+        "brandFooter": true
+      },
+      "vitanaIndex": "Vitana Index",
+      "basedOnActivity": "Based on activity, health engagement & contribution",
+      "viewLongevityId": "View my Longevity ID",
+      "follow": "Follow",
+      "followingState": "Following",
+      "understandIndex": "Understand index",
+      "brandFooter": "MAXINA × VITANA"
+    },
+    "tabs": {
+      "_pending_review": {
+        "identity": true,
+        "social": true,
+        "account": true,
+        "business": true
+      },
+      "identity": "Identity",
+      "social": "Social",
+      "account": "Account",
+      "business": "Business"
+    },
+    "account": {
+      "_pending_review": {
+        "notSet": true,
+        "editField": true,
+        "visibilityToggle": true
+      },
+      "notSet": "Not set",
+      "editField": "Edit {field}",
+      "visibilityToggle": "Visibility: {label}. Tap to change.",
+      "visibility": {
+        "_pending_review": {
+          "private": true,
+          "connections": true,
+          "public": true
+        },
+        "private": "Private",
+        "connections": "Connections",
+        "public": "Public"
+      },
+      "sections": {
+        "_pending_review": {
+          "publicProfile": true,
+          "publicProfileSubtitle": true,
+          "basicInfo": true,
+          "basicInfoSubtitle": true,
+          "contactInfo": true,
+          "accountDetails": true
+        },
+        "publicProfile": "Public profile",
+        "publicProfileSubtitle": "Shown on Identity",
+        "basicInfo": "Basic Personal Information",
+        "basicInfoSubtitle": "Fixed identity data",
+        "contactInfo": "Contact Information",
+        "accountDetails": "Account Details"
+      },
+      "fields": {
+        "_pending_review": {
+          "avatar": true,
+          "handle": true,
+          "longevityArchetype": true,
+          "firstName": true,
+          "lastName": true,
+          "dateOfBirth": true,
+          "gender": true,
+          "maritalStatus": true,
+          "email": true,
+          "phone": true,
+          "address": true,
+          "country": true,
+          "city": true,
+          "memberSince": true,
+          "accountType": true,
+          "verificationStatus": true
+        },
+        "avatar": "Avatar",
+        "handle": "Handle",
+        "longevityArchetype": "Longevity archetype",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "dateOfBirth": "Date of birth",
+        "gender": "Gender",
+        "maritalStatus": "Marital status",
+        "email": "Email",
+        "phone": "Phone",
+        "address": "Address",
+        "country": "Country",
+        "city": "City",
+        "memberSince": "Member since",
+        "accountType": "Account type",
+        "verificationStatus": "Verification status"
+      },
+      "values": {
+        "_pending_review": {
+          "uploaded": true
+        },
+        "uploaded": "Uploaded"
+      }
+    },
+    "business": {
+      "_pending_review": {
+        "title": true,
+        "subtitle": true,
+        "empty": true,
+        "emptyDesc": true,
+        "clicks": true,
+        "conversions": true,
+        "totalEarned": true,
+        "statusActive": true,
+        "shareRow": true,
+        "publicTitle": true,
+        "publicSubtitle": true,
+        "publicEmpty": true,
+        "viewProduct": true
+      },
+      "title": "My Recommendations",
+      "subtitle": "Products you've recommended, and what you've earned from them",
+      "empty": "No recommendations yet",
+      "emptyDesc": "Recommend a product from Discover to see your clicks, purchases, and commissions here.",
+      "clicks": "{count} clicks",
+      "conversions": "{count} purchases",
+      "totalEarned": "Total earned",
+      "statusActive": "Active",
+      "shareRow": "Share recommendation link",
+      "publicTitle": "Recommendations",
+      "publicSubtitle": "Products recommended by this profile",
+      "publicEmpty": "No recommendations yet",
+      "viewProduct": "View"
+    }
+  }
+}

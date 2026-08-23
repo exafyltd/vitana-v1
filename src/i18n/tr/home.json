@@ -1,0 +1,22 @@
+{
+  "home": {
+    "_pending_review": {
+      "title": true,
+      "welcomeBack": true,
+      "todaysSchedule": true,
+      "mediaContent": true,
+      "eventsAndMeetups": true,
+      "communityNews": true,
+      "inspiration": true,
+      "dailyMatches": true
+    },
+    "title": "Home",
+    "welcomeBack": "Welcome back",
+    "todaysSchedule": "Today's Schedule",
+    "mediaContent": "Media for you",
+    "eventsAndMeetups": "Events & Meetups",
+    "communityNews": "Community News",
+    "inspiration": "Inspiration",
+    "dailyMatches": "Daily Matches"
+  }
+}

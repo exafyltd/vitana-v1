@@ -1,0 +1,18 @@
+{
+  "createSelection": {
+    "_pending_review": {
+      "title": true,
+      "description": true,
+      "event": true,
+      "eventDescription": true,
+      "meetup": true,
+      "meetupDescription": true
+    },
+    "title": "Create New",
+    "description": "Choose the type of event you want to create",
+    "event": "Event",
+    "eventDescription": "Formal gatherings with scheduled times and structured programs",
+    "meetup": "MeetUp",
+    "meetupDescription": "Casual gatherings for networking and community building"
+  }
+}

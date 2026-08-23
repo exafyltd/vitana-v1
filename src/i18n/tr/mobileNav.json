@@ -1,0 +1,20 @@
+{
+  "mobileNav": {
+    "_pending_review": {
+      "news": true,
+      "inbox": true,
+      "events": true,
+      "business": true,
+      "live": true,
+      "media": true,
+      "myJourney": true
+    },
+    "news": "News",
+    "inbox": "Inbox",
+    "events": "Events",
+    "business": "Business",
+    "live": "Live",
+    "media": "Media",
+    "myJourney": "Journey"
+  }
+}

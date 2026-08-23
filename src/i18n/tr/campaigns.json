@@ -1,0 +1,44 @@
+{
+  "campaigns": {
+    "delete": {
+      "_pending_review": {
+        "title": true,
+        "description": true,
+        "dontAskAgain": true,
+        "deletePermanently": true
+      },
+      "title": "Delete Campaign?",
+      "description": "Deleting \"{name}\" permanently removes all associated drafts and analyses. This cannot be undone.",
+      "dontAskAgain": "Don't ask me again for draft campaigns",
+      "deletePermanently": "Delete Permanently"
+    },
+    "creation": {
+      "_pending_review": {
+        "title": true,
+        "stepOf": true,
+        "yourCampaigns": true,
+        "drafts": true,
+        "live": true,
+        "proTip": true
+      },
+      "title": "Create Campaign",
+      "stepOf": "Step {current} of {total}",
+      "yourCampaigns": "Your Campaigns",
+      "drafts": "drafts",
+      "live": "live",
+      "proTip": "Pro Tip",
+      "tips": {
+        "1": "Clear names help you find campaigns later",
+        "2": "Connect channels now for instant planning",
+        "3": "Launch template works for most announcements",
+        "4": "Smart planning uses your past engagement data",
+        "_pending_review": {
+          "1": true,
+          "2": true,
+          "3": true,
+          "4": true
+        }
+      }
+    }
+  }
+}

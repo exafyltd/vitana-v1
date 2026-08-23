@@ -1,0 +1,24 @@
+{
+  "diary": {
+    "_pending_review": {
+      "title": true,
+      "description": true,
+      "healthTab": true,
+      "bugTab": true,
+      "text": true,
+      "photo": true,
+      "textEntry": true,
+      "photoEntry": true,
+      "searchPlaceholder": true
+    },
+    "title": "Daily Diary",
+    "description": "Track your wellness journey and help us to get better",
+    "healthTab": "Health Diary",
+    "bugTab": "Bug Reports",
+    "text": "Text",
+    "photo": "Photo",
+    "textEntry": "✍️ Text Entry",
+    "photoEntry": "📸 Photo Entry",
+    "searchPlaceholder": "Search diary..."
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "_pending_review": {},
+  "timelineActions": {
+    "_pending_review": {
+      "title": true
+    },
+    "title": "Timeline Actions",
+    "items": {
+      "_pending_review": {},
+      "logHealthEvent": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Log Health Event",
+        "description": "Record important health milestones"
+      },
+      "markAchievement": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Mark Achievement",
+        "description": "Celebrate wellness goals reached"
+      },
+      "recordLifeMoment": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Record Life Moment",
+        "description": "Capture meaningful experiences"
+      },
+      "addPhotoMemory": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Add Photo Memory",
+        "description": "Visual timeline with health photos"
+      },
+      "voiceTimelineEntry": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Voice Timeline Entry",
+        "description": "Quick audio health updates"
+      },
+      "trackProgress": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Track Progress",
+        "description": "Log wellness metrics and trends"
+      },
+      "activityCheckIn": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Activity Check-in",
+        "description": "Record workouts and activities"
+      },
+      "setTimelineGoal": {
+        "_pending_review": {
+          "title": true,
+          "description": true
+        },
+        "title": "Set Timeline Goal",
+        "description": "Create future health targets"
+      }
+    }
+  }
+}
