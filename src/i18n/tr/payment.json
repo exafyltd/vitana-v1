@@ -40,6 +40,5 @@
     "refreshFailed": "Refresh Failed",
     "refreshFailedDesc": "Balance could not be updated. Please try again.",
     "error": "Error"
-  },
-  "_pending_review": {}
+  }
 }

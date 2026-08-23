@@ -198,6 +198,5 @@
       "categoryRequired": "Please pick a category for this photo first.",
       "saveError": "Couldn't save — please try again."
     }
-  },
-  "_pending_review": {}
+  }
 }

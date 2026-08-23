@@ -117,8 +117,6 @@
       "WALLET_READ_FAILED": "We could not read your balance. Please try again.",
       "GATEWAY_MISCONFIGURED": "The payment service is currently unavailable. Please try again later.",
       "unknown": "Something went wrong at checkout. Please try again."
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    }
+  }
 }
