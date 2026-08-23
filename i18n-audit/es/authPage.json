@@ -1,11 +1,10 @@
 {
   "verdicts": {
     "authPage.welcomeTitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "English is gender-neutral, but Spanish translation uses masculine singular. For a friendly app, a gender-neutral welcome is more appropriate.",
-      "suggested": "¡Te damos la bienvenida a VITANA!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "authPage.subtitle": {
       "verdict": "OK",
@@ -78,5 +77,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:25.448Z"
+  "generatedAt": "2026-08-23T04:07:10.005Z"
 }
