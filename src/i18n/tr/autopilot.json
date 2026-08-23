@@ -16,7 +16,8 @@
       "updateArchetype": "Arketipi Güncelle",
       "profileSectionTitle": "Otopilot profilini parlatabilir ✨",
       "profileSectionDesc": "Biyografin, arketipin ve öne çıkanların için yapay zeka destekli öneriler al.",
-      "tryAutopilot": "Otopilot'u Dene"
+      "tryAutopilot": "Otopilot'u Dene",
+      "_pending_review": {}
     },
     "preview": "Otopilot Önizlemesi",
     "viewAll": "Tümünü Gör",
@@ -118,7 +119,8 @@
       "acceptAll": "Hepsini kabul et",
       "applied": "Değişiklikler kaydedildi!",
       "error": "Bir şeyler ters gitti",
-      "comingSoon": "Çok Yakında"
+      "comingSoon": "Çok Yakında",
+      "_pending_review": {}
     },
     "actions": {
       "action1Title": "Bu gece Uzun Ömür Dans Grubuna katıl?",
@@ -134,7 +136,10 @@
       "action6Title": "Farkındalıklı Sabah Büyüsü",
       "action6Reason": "Ruhun bu stresi eriten teknikleri çağırıyor",
       "newActionTitle": "Yeni Yapay Zeka önerisi",
-      "newActionReason": "Son aktivite desenlerine göre"
-    }
-  }
+      "newActionReason": "Son aktivite desenlerine göre",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

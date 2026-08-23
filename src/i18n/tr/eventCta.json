@@ -42,5 +42,6 @@
     "joining": "Joining...",
     "getTickets": "Get Tickets",
     "promoteEvent": "Promote event"
-  }
+  },
+  "_pending_review": {}
 }

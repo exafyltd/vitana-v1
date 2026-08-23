@@ -40,5 +40,6 @@
     "noClientsDesc": "Your customers will appear here.",
     "noSales": "No sales yet",
     "noSalesDesc": "Your sales history will appear here."
-  }
+  },
+  "_pending_review": {}
 }

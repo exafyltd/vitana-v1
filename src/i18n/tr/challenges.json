@@ -1,8 +1,5 @@
 {
   "challenges": {
-    "_pending_review": {
-      "searchPlaceholder": true
-    },
-    "searchPlaceholder": "Search challenges..."
+    "searchPlaceholder": "Mücadeleleri ara..."
   }
 }
