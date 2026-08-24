@@ -383,51 +383,54 @@ export default function IntroExperience() {
             above it — moved out to its own fixed-position element pinned
             directly under the Orb (see below).
 
-            Extra top margin (on top of the column's own gap-6/gap-8) nudges
-            this block further down the page, into the empty space below it
-            on typical viewports. Safe to add here rather than by re-tuning
-            the column's overall justify-content: the Orb's target position
-            is measured from orbSpacerRef's actual rendered rect (see that
-            effect above), so it automatically follows wherever this extra
-            space pushes the layout — no separate position fix needed. */}
+            No extra top margin here on purpose. An earlier version added
+            `mt-10 md:mt-14` on top of the column's own gap to nudge this
+            block further down the page — that margin is ADDITIVE, not a
+            replacement for the gap, and the outer page wrapper is `fixed
+            inset-0 ... overflow-hidden` with this column set to
+            `min-h-screen ... justify-center`: on any viewport shorter than
+            the column's full rendered height, the overflow is clipped
+            symmetrically off BOTH the top and bottom rather than becoming
+            scrollable. That margin pushed total content height past the
+            viewport on real laptop screens (confirmed live at 1366×768 —
+            the Login/Register row was clipped almost entirely off the
+            bottom). Do not re-add a fixed margin here for "push it down a
+            bit" — if the block needs to sit lower, that has to come out of
+            the shared, derived `--maxina-orb-content-gap` (index.css),
+            never a one-off value stacked on top of it. */}
         <div
-          className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs mt-10 md:mt-14"
+          className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
-          {/* Language selector - glass bar with a globe icon, the current
-              language name, and a chevron; opens a full-screen picker. */}
+          {/* Language selector - glass bar with the selected language's
+              flag, its name, and a chevron; opens a full-screen picker. */}
           <LanguageToggleButton />
 
           {/* Login / Register - primary next-step actions, side by side.
               Login is the brand-gold primary (default returning-user path);
               Register is the secondary glass action, matching the language
               pill above it. Both reuse continueToMaxina's fade+navigate,
-              only differing in which MaxinaPortal tab they land on. */}
+              only differing in which MaxinaPortal tab they land on.
+
+              Single-line labels (no subtitle) on purpose — the two-line
+              version made these, and by extension the language pill above
+              them (sized to roughly match), taller than the content
+              needed, leaving visible empty space in the block. */}
           <div className="grid grid-cols-2 gap-3 w-full">
             <button
               onClick={handleLogin}
-              className="flex items-center gap-2.5 rounded-2xl px-4 py-3 bg-gradient-to-b from-[#F3E2B0] to-[#D9B873] text-[#241c11] shadow-[0_8px_24px_rgba(224,170,82,0.35)] hover:brightness-105 transition-[filter] duration-200"
+              className="flex items-center justify-center gap-2.5 rounded-2xl px-4 py-3 bg-gradient-to-b from-[#F3E2B0] to-[#D9B873] text-[#241c11] shadow-[0_8px_24px_rgba(224,170,82,0.35)] hover:brightness-105 transition-[filter] duration-200"
             >
               <LogIn className="w-5 h-5 shrink-0" aria-hidden="true" />
-              <span className="flex flex-col items-start text-start leading-tight">
-                <span className="text-sm font-bold">{t.intro?.login || 'Login'}</span>
-                <span className="text-xs font-medium opacity-80">
-                  {t.intro?.loginSubtitle || 'Welcome back!'}
-                </span>
-              </span>
+              <span className="text-sm font-bold">{t.intro?.login || 'Login'}</span>
             </button>
 
             <button
               onClick={handleRegister}
-              className="flex items-center gap-2.5 rounded-2xl px-4 py-3 bg-white/10 backdrop-blur-xl border border-white/25 text-white shadow-[0_8px_24px_rgba(0,0,0,0.3)] hover:bg-white/20 transition-colors duration-200"
+              className="flex items-center justify-center gap-2.5 rounded-2xl px-4 py-3 bg-white/10 backdrop-blur-xl border border-white/25 text-white shadow-[0_8px_24px_rgba(0,0,0,0.3)] hover:bg-white/20 transition-colors duration-200"
             >
               <UserPlus className="w-5 h-5 shrink-0" aria-hidden="true" />
-              <span className="flex flex-col items-start text-start leading-tight">
-                <span className="text-sm font-bold">{t.intro?.register || 'Register'}</span>
-                <span className="text-xs font-medium text-white/70">
-                  {t.intro?.registerSubtitle || 'Create your account'}
-                </span>
-              </span>
+              <span className="text-sm font-bold">{t.intro?.register || 'Register'}</span>
             </button>
           </div>
         </div>

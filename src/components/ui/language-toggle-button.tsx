@@ -31,8 +31,8 @@ import cnFlag from '@/assets/flags/cn.png';
 import trFlag from '@/assets/flags/tr.png';
 
 /**
- * Language picker for the intro/landing screen: a glass pill (globe icon +
- * current language name + chevron) that opens a full-screen Drawer listing
+ * Language picker for the intro/landing screen: a glass pill (selected
+ * language's flag + its name + chevron) that opens a full-screen Drawer listing
  * every visible language with a flag, its endonym, and a checkmark on the
  * current selection.
  *
@@ -92,7 +92,7 @@ export function LanguageToggleButton({ className }: LanguageToggleButtonProps) {
   const triggerClasses = cn(
     'w-full flex items-center justify-center gap-4',
     'bg-white/10 backdrop-blur-xl border border-white/30 rounded-2xl',
-    'px-8 py-5 text-base font-semibold text-white',
+    'px-8 py-3 text-base font-semibold text-white',
     'shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]',
     'transition-all duration-300',
     isInteractive && 'hover:bg-white/20',
