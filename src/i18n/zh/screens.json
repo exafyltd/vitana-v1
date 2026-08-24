@@ -6018,10 +6018,7 @@
       "openSearch": "打开搜索",
       "openCalendar": "打开日历",
       "openAutopilot": "打开自动驾驶",
-      "closeSearch": "关闭搜索",
-      "_pending_review": {
-        "alerts": true
-      }
+      "closeSearch": "关闭搜索"
     },
     "notifications": {
       "markAllAsRead": "全部标记为已读",
