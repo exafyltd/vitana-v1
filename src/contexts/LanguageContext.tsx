@@ -45,8 +45,15 @@ export const languageOptions: Array<{ label: string; value: string; status: 'ga'
   { label: "Portuguese (BR)", value: "pt-BR", status: 'ga' },
   { label: "Russian (RU)", value: "ru-RU", status: 'ga' },
   { label: "Polish (PL)", value: "pl-PL", status: 'ga' },
-  // Deferred past 18 Aug. AR needs RTL layout work (RTLProvider is not wired
-  // to the selected language); ZH needs a CJK font stack + line-break audit.
+  // VTID-03701 — the two blockers noted here as of 18 Aug are both closed:
+  // RTLProvider now derives direction from selectedLanguage (was a dead
+  // local toggle nothing ever called), and the CJK font stack landed
+  // separately (VTID-03569, tailwind.config.ts). Bumped draft -> beta once
+  // i18n-parity-gate.mjs reported all 5 file-based surfaces PASS; the sixth
+  // (db-content — nav_catalog_i18n has 0 rows for both) is what still holds
+  // these at beta rather than ga. Flip to 'ga' once that seed lands AND
+  // this comment is updated to say so — do not flip on file-surfaces alone,
+  // that is the exact mistake the gate's own db-content warning describes.
   { label: "Arabic (AR)", value: "ar-XA", status: 'beta' },
   { label: "Chinese (ZH)", value: "zh-CN", status: 'beta' },
   // VTID-03701 — 11th language, full parity build-out. 'draft' until the same
