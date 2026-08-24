@@ -9,9 +9,12 @@
     "playing": "Играет",
     "goToLogin": "Перейти к логину",
     "chooseLanguage": "Выбрать язык",
-    "_pending_review": {},
     "tapOrbHint": "Нажми на Orb, чтобы познакомиться с Vitana",
     "chooseLanguageTitle": "Выбери свой язык",
-    "chooseLanguageSubtitle": "Vitana будет говорить и отвечать на этом языке."
+    "chooseLanguageSubtitle": "Vitana будет говорить и отвечать на этом языке.",
+    "login": "Вход",
+    "loginSubtitle": "С возвращением!",
+    "register": "Регистрация",
+    "registerSubtitle": "Создай свой аккаунт"
   }
 }

@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
+import { Loader2, LogIn, UserPlus } from 'lucide-react';
 import { getIntroVideoSrc, markIntroAsSeen } from '@/utils/introVideo';
 
 import { useSoundscape } from '@/context/SoundscapeContext';
@@ -197,7 +197,7 @@ export default function IntroExperience() {
     };
   }, [startFresh]);
 
-  const continueToMaxina = useCallback(() => {
+  const continueToMaxina = useCallback((tab?: 'signin' | 'signup') => {
     if (tenantSlug) {
       markIntroAsSeen(tenantSlug);
     }
@@ -207,14 +207,27 @@ export default function IntroExperience() {
       // Forward query params (e.g. ?redirectTo=/comm/media-hub?short=<id>)
       // so the portal's post-login flow can return the user to their original
       // deep-link target instead of dropping them on the default home page.
-      const qs = window.location.search;
-      navigate(`/${tenantSlug}${qs}`, { replace: true });
+      // MaxinaPortal defaults to the sign-in tab, so `tab` is only ever set
+      // to steer toward sign-up.
+      const params = new URLSearchParams(window.location.search);
+      if (tab === 'signup') {
+        params.set('tab', 'signup');
+      }
+      const qs = params.toString();
+      navigate(`/${tenantSlug}${qs ? `?${qs}` : ''}`, { replace: true });
     }, 800);
   }, [tenantSlug, navigate]);
 
-  const handleSkip = useCallback(() => {
+  const handleLogin = useCallback(() => {
     continueToMaxina();
   }, [continueToMaxina]);
+
+  const handleRegister = useCallback(() => {
+    continueToMaxina('signup');
+  }, [continueToMaxina]);
+
+  // Kept as an alias to the login path so the Escape-key shortcut below is unaffected.
+  const handleSkip = handleLogin;
 
   // Keyboard shortcut - must be after function declarations
   useEffect(() => {
@@ -357,7 +370,7 @@ export default function IntroExperience() {
             `--maxina-orb-size`/`--maxina-orb-gap` in index.css, not this. */}
         <div ref={orbSpacerRef} aria-hidden="true" className="maxina-orb-slot w-full" />
 
-        {/* Bottom block: static Orb caption, language selector, Go to Login. */}
+        {/* Bottom block: static Orb caption, language selector, Login/Register actions. */}
         <div
           className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
@@ -374,13 +387,38 @@ export default function IntroExperience() {
               language name, and a chevron; opens a full-screen picker. */}
           <LanguageToggleButton />
 
-          {/* Go to Login - independent secondary text action, unchanged */}
-          <button
-            onClick={handleSkip}
-            className="text-[#F5ECD8] hover:text-white text-sm font-semibold [text-shadow:0_1px_4px_rgba(0,0,0,0.55)] transition-colors duration-200 underline underline-offset-4"
-          >
-            {t.intro?.goToLogin || 'Go to Login'}
-          </button>
+          {/* Login / Register - primary next-step actions, side by side.
+              Login is the brand-gold primary (default returning-user path);
+              Register is the secondary glass action, matching the language
+              pill above it. Both reuse continueToMaxina's fade+navigate,
+              only differing in which MaxinaPortal tab they land on. */}
+          <div className="grid grid-cols-2 gap-3 w-full">
+            <button
+              onClick={handleLogin}
+              className="flex items-center gap-2.5 rounded-2xl px-4 py-3 bg-gradient-to-b from-[#F3E2B0] to-[#D9B873] text-[#241c11] shadow-[0_8px_24px_rgba(224,170,82,0.35)] hover:brightness-105 transition-[filter] duration-200"
+            >
+              <LogIn className="w-5 h-5 shrink-0" aria-hidden="true" />
+              <span className="flex flex-col items-start text-start leading-tight">
+                <span className="text-sm font-bold">{t.intro?.login || 'Login'}</span>
+                <span className="text-xs font-medium opacity-80">
+                  {t.intro?.loginSubtitle || 'Welcome back!'}
+                </span>
+              </span>
+            </button>
+
+            <button
+              onClick={handleRegister}
+              className="flex items-center gap-2.5 rounded-2xl px-4 py-3 bg-white/10 backdrop-blur-xl border border-white/25 text-white shadow-[0_8px_24px_rgba(0,0,0,0.3)] hover:bg-white/20 transition-colors duration-200"
+            >
+              <UserPlus className="w-5 h-5 shrink-0" aria-hidden="true" />
+              <span className="flex flex-col items-start text-start leading-tight">
+                <span className="text-sm font-bold">{t.intro?.register || 'Register'}</span>
+                <span className="text-xs font-medium text-white/70">
+                  {t.intro?.registerSubtitle || 'Create your account'}
+                </span>
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 
