@@ -21,11 +21,10 @@
       "phase": "llm"
     },
     "whyThisMatch.showSomeoneElse": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incomplete sentence; not an imperative. 'Jemand anderes' means 'Someone else', not 'Show me someone else'.",
-      "suggested": "Zeig mir jemand anderen",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "whyThisMatch.dismiss": {
       "verdict": "OK",
@@ -53,19 +52,17 @@
       "phase": "llm"
     },
     "whyThisMatch.tierLabel.3": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Beste Annäherung' (best approximation) is a bit technical and less common than 'Beste Übereinstimmung' (best match) for UI.",
-      "suggested": "Beste Übereinstimmung",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "whyThisMatch.tierLabel.4": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'Re-route' implies a redirection or change of path, which is not accurately conveyed by 'Filter' (a selection/exclusion mechanism).",
-      "suggested": "Fairness-Umleitung",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-05-20T08:43:54.743Z"
+  "generatedAt": "2026-08-24T04:22:43.157Z"
 }
