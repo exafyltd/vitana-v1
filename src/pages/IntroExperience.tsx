@@ -370,19 +370,15 @@ export default function IntroExperience() {
             `--maxina-orb-size`/`--maxina-orb-gap` in index.css, not this. */}
         <div ref={orbSpacerRef} aria-hidden="true" className="maxina-orb-slot w-full" />
 
-        {/* Bottom block: static Orb caption, language selector, Login/Register actions. */}
+        {/* Bottom block: language selector, Login/Register actions. The Orb
+            caption used to open this block, but it visually read as
+            belonging to the language pill below it rather than the Orb
+            above it — moved out to its own fixed-position element pinned
+            directly under the Orb (see below). */}
         <div
           className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
-          {/* Static caption under the (separately, globally-positioned) Orb —
-              replaces the old pulsing "tap here" hint pill on this screen
-              only. Tapping the Orb is the only way to hear Vitana speak the
-              welcome; no play/audio control lives in this stack any more. */}
-          <p className="text-sm md:text-base font-medium text-white/70 text-center">
-            {t.intro?.tapOrbHint || 'Tap the Orb to meet Vitana'}
-          </p>
-
           {/* Language selector - glass bar with a globe icon, the current
               language name, and a chevron; opens a full-screen picker. */}
           <LanguageToggleButton />
@@ -428,6 +424,30 @@ export default function IntroExperience() {
           {lookup('screens.introexperience.press')} <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">{lookup('screens.introexperience.esc')}</kbd>{lookup('screens.introexperience.skip')}
         </p>
       </div>
+
+      {/* Orb caption - pinned directly under the (separately,
+          fixed-position) Orb widget rather than flowed in the bottom block,
+          so it reads as the Orb's own caption instead of the language
+          pill's neighbour. Anchored off the same --maxina-orb-target-left/
+          -top custom properties the Orb itself uses (see the orbSpacerRef
+          effect above and the CSS in index.css), offset down by half the
+          Orb's current size + a small gap — both vars are breakpoint-aware,
+          so this tracks the Orb through every viewport/resize without a
+          separate measurement. Tapping the Orb is the only way to hear
+          Vitana speak the welcome; no play/audio control lives in this
+          stack any more. */}
+      <p
+        className="fixed z-20 pointer-events-none w-full max-w-xs px-6 text-sm md:text-base font-medium text-white/70 text-center animate-fade-in [text-shadow:0_1px_6px_rgba(0,0,0,0.5)]"
+        style={{
+          left: 'var(--maxina-orb-target-left, 50%)',
+          top: 'calc(var(--maxina-orb-target-top, 50%) + var(--maxina-orb-size, 96px) / 2 + 12px)',
+          transform: 'translateX(-50%)',
+          animationDelay: '2800ms',
+          animationFillMode: 'both',
+        }}
+      >
+        {t.intro?.tapOrbHint || 'Tap the Orb to meet Vitana'}
+      </p>
 
       {/* Loading placeholder at the Orb's target spot (see the orbReady
           effect above) — disappears once the real widget is detected, or
