@@ -394,40 +394,35 @@ export default function IntroExperience() {
           className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs mt-10 md:mt-14"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
-          {/* Language selector - glass bar with a globe icon, the current
-              language name, and a chevron; opens a full-screen picker. */}
+          {/* Language selector - glass bar with the selected language's
+              flag, its name, and a chevron; opens a full-screen picker. */}
           <LanguageToggleButton />
 
           {/* Login / Register - primary next-step actions, side by side.
               Login is the brand-gold primary (default returning-user path);
               Register is the secondary glass action, matching the language
               pill above it. Both reuse continueToMaxina's fade+navigate,
-              only differing in which MaxinaPortal tab they land on. */}
+              only differing in which MaxinaPortal tab they land on.
+
+              Single-line labels (no subtitle) on purpose — the two-line
+              version made these, and by extension the language pill above
+              them (sized to roughly match), taller than the content
+              needed, leaving visible empty space in the block. */}
           <div className="grid grid-cols-2 gap-3 w-full">
             <button
               onClick={handleLogin}
-              className="flex items-center gap-2.5 rounded-2xl px-4 py-3 bg-gradient-to-b from-[#F3E2B0] to-[#D9B873] text-[#241c11] shadow-[0_8px_24px_rgba(224,170,82,0.35)] hover:brightness-105 transition-[filter] duration-200"
+              className="flex items-center justify-center gap-2.5 rounded-2xl px-4 py-3 bg-gradient-to-b from-[#F3E2B0] to-[#D9B873] text-[#241c11] shadow-[0_8px_24px_rgba(224,170,82,0.35)] hover:brightness-105 transition-[filter] duration-200"
             >
               <LogIn className="w-5 h-5 shrink-0" aria-hidden="true" />
-              <span className="flex flex-col items-start text-start leading-tight">
-                <span className="text-sm font-bold">{t.intro?.login || 'Login'}</span>
-                <span className="text-xs font-medium opacity-80">
-                  {t.intro?.loginSubtitle || 'Welcome back!'}
-                </span>
-              </span>
+              <span className="text-sm font-bold">{t.intro?.login || 'Login'}</span>
             </button>
 
             <button
               onClick={handleRegister}
-              className="flex items-center gap-2.5 rounded-2xl px-4 py-3 bg-white/10 backdrop-blur-xl border border-white/25 text-white shadow-[0_8px_24px_rgba(0,0,0,0.3)] hover:bg-white/20 transition-colors duration-200"
+              className="flex items-center justify-center gap-2.5 rounded-2xl px-4 py-3 bg-white/10 backdrop-blur-xl border border-white/25 text-white shadow-[0_8px_24px_rgba(0,0,0,0.3)] hover:bg-white/20 transition-colors duration-200"
             >
               <UserPlus className="w-5 h-5 shrink-0" aria-hidden="true" />
-              <span className="flex flex-col items-start text-start leading-tight">
-                <span className="text-sm font-bold">{t.intro?.register || 'Register'}</span>
-                <span className="text-xs font-medium text-white/70">
-                  {t.intro?.registerSubtitle || 'Create your account'}
-                </span>
-              </span>
+              <span className="text-sm font-bold">{t.intro?.register || 'Register'}</span>
             </button>
           </div>
         </div>
