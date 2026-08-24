@@ -374,9 +374,17 @@ export default function IntroExperience() {
             caption used to open this block, but it visually read as
             belonging to the language pill below it rather than the Orb
             above it — moved out to its own fixed-position element pinned
-            directly under the Orb (see below). */}
+            directly under the Orb (see below).
+
+            Extra top margin (on top of the column's own gap-6/gap-8) nudges
+            this block further down the page, into the empty space below it
+            on typical viewports. Safe to add here rather than by re-tuning
+            the column's overall justify-content: the Orb's target position
+            is measured from orbSpacerRef's actual rendered rect (see that
+            effect above), so it automatically follows wherever this extra
+            space pushes the layout — no separate position fix needed. */}
         <div
-          className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
+          className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs mt-10 md:mt-14"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
           {/* Language selector - glass bar with a globe icon, the current
