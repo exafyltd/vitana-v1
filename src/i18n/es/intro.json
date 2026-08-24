@@ -8,10 +8,15 @@
     "preparing": "Preparando...",
     "playing": "Reproduciendo",
     "goToLogin": "Ir a iniciar sesión",
+    "login": "Iniciar sesión",
+    "loginSubtitle": "¡Bienvenido de nuevo!",
+    "register": "Regístrate",
+    "registerSubtitle": "Crea tu cuenta",
     "chooseLanguage": "Elegir idioma",
     "_pending_review": {},
     "tapOrbHint": "Toca el Orb para conocer a Vitana",
     "chooseLanguageTitle": "Elige tu idioma",
     "chooseLanguageSubtitle": "Vitana hablará y responderá en este idioma."
-  }
+  },
+  "_pending_review": {}
 }

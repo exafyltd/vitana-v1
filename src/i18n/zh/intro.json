@@ -9,9 +9,12 @@
     "playing": "播放中",
     "goToLogin": "前往登录",
     "chooseLanguage": "选择语言",
-    "_pending_review": {},
     "tapOrbHint": "点击 Orb，认识 Vitana",
     "chooseLanguageTitle": "选择你的语言",
-    "chooseLanguageSubtitle": "Vitana 将用这种语言与你交流。"
+    "chooseLanguageSubtitle": "Vitana 将用这种语言与你交流。",
+    "login": "登录",
+    "loginSubtitle": "欢迎回来！",
+    "register": "注册",
+    "registerSubtitle": "创建你的账户"
   }
 }
