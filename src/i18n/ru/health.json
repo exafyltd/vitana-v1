@@ -67,36 +67,6 @@
     "unknownProvider": "Неизвестный поставщик",
     "addSupplement": "Добавить добавку",
     "uploadFirstReport": "Загрузить первый отчет",
-    "missionAlignment": {
-      "title": "Соответствие миссии",
-      "subtitle": "Как твои рекомендации поддерживают пять столпов и экономику долголетия",
-      "loading": "Загрузка данных миссии…",
-      "error": "Не удалось загрузить данные миссии",
-      "noRecs": "Пока нет рекомендаций в твоей очереди.",
-      "summaryServed": "{pct}% твоих рекомендаций продвигают миссию",
-      "summaryServedCount": "{served} из {total} рекомендаций соответствуют",
-      "pillarHeading": "Охваченные столпы",
-      "economyHeading": "Экономика долголетия",
-      "noPillar": "Не соответствует столпам",
-      "noEconomy": "Не соответствует экономике",
-      "pillars": {
-        "nutrition": "Питание",
-        "hydration": "Гидратация",
-        "exercise": "Упражнения",
-        "sleep": "Сон",
-        "mental": "Ментальное здоровье",
-        "_pending_review": {}
-      },
-      "economyAxes": {
-        "find_match": "Найти пару",
-        "marketplace": "Маркетплейс",
-        "income_generation": "Генерация дохода",
-        "business_formation": "Создание бизнеса",
-        "_pending_review": {}
-      },
-      "contractLink": "Посмотреть контракт Конечной Цели",
-      "_pending_review": {}
-    },
     "_pending_review": {}
   },
   "_pending_review": {}

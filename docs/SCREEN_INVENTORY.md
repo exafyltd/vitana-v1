@@ -5,7 +5,7 @@
 
 ## Summary
 
-- **Pages scanned:** 295
+- **Pages scanned:** 296
 - **Distinct i18n keys consumed:** 4455
 - **Namespaces in use:** 43
 - **Hardcoded string suspects (regex heuristic):** 67
@@ -200,6 +200,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 - `screens` — used: 5, total in shard: 10090
 - `toasts` — used: 3, total in shard: 1259
+
+### src/pages/IntroExperience.orb-placement.test.ts
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/IntroExperience.tsx
 
