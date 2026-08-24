@@ -151,7 +151,16 @@ export function LanguageToggleButton({ className }: LanguageToggleButtonProps) {
                   type="button"
                   role="option"
                   aria-selected={isCurrent}
-                  onClick={() => setSelectedLanguage(opt.value)}
+                  // VTID-03705 — picking IS committing. The tap already applied
+                  // the language (it always did); what made it feel like a
+                  // two-step confirmation was that the drawer stayed open
+                  // afterwards behind a "Done" button, so the choice looked
+                  // pending until you pressed it. Closing here is the whole
+                  // fix, and it removes the reason for that footer button.
+                  onClick={() => {
+                    setSelectedLanguage(opt.value);
+                    setDrawerOpen(false);
+                  }}
                   className={cn(
                     'w-full flex items-center gap-3 px-4 py-3 rounded-lg text-start text-white',
                     'hover:bg-white/10 transition-colors',
@@ -183,12 +192,22 @@ export function LanguageToggleButton({ className }: LanguageToggleButtonProps) {
             })}
           </div>
 
+          {/* VTID-03705 — the primary "Done" button is gone on purpose.
+              Selecting a language now applies it and closes the drawer, so a
+              confirm step would confirm something already done, and a gold
+              primary button next to a completed action reads as "your choice
+              is not saved yet". What replaces it is a plain dismissal for the
+              person who opened the picker and decided to keep their current
+              language — that case still needs a way out, and relying only on
+              the swipe-down/overlay-tap gestures would leave keyboard and
+              screen-reader users without an obvious one. */}
           <DrawerFooter>
             <Button
-              className="w-full bg-[#E0AA52] text-black hover:bg-[#D9B873]"
+              variant="ghost"
+              className="w-full text-white/70 hover:text-white hover:bg-white/10"
               onClick={() => setDrawerOpen(false)}
             >
-              {i18nT('screens.common.done')}
+              {i18nT('screens.common.close')}
             </Button>
           </DrawerFooter>
         </DrawerContent>
