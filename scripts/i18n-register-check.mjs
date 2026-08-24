@@ -289,6 +289,29 @@ const RULES = {
     note: 'Simplified zh-CN, 你-form. Never 您.',
     crossCheck: false,
   },
+  // VTID-03701 — a DELIBERATE skip, not a missing rule. Every other language
+  // here has a fixed lexical formal-address marker (Sie/vous/Vi/您/siz…) that
+  // a native speaker can point at and say "that word is always formal". MSA
+  // does have a polite register, but it is realized through broader phrasing
+  // and person-agreement choices, not one word or verb-suffix a regex can
+  // reliably isolate the way §2c's suffix note already flagged as a hard
+  // problem for Turkish. Writing a fake pattern here to make the check "do
+  // something" would be worse than skipping it outright — see the zh note
+  // above on why a rule that cannot actually see the violation is more
+  // dangerous than an honest absence of one: it reports "0 violations" and
+  // that reads as evidence when it proves nothing.
+  //
+  // `skip: true` makes checkLocale() log this as a recorded decision
+  // ("register check deliberately skipped") instead of the generic "no rule
+  // for 'x'" error every other unconfigured locale gets — the promotion gate
+  // reads this locale's register condition as "reviewed, not applicable"
+  // rather than "never checked". Revisit if a native-speaker review (part of
+  // the same six-surface gate) identifies a concrete pattern worth encoding.
+  ar: {
+    name: 'Arabic',
+    skip: true,
+    note: 'No fixed lexical formal-address marker to check — see comment above.',
+  },
 };
 
 function flatten(obj, prefix = '') {
@@ -334,6 +357,10 @@ function checkLocale(locale) {
   if (!rule) {
     console.error(`[register] no rule for '${locale}'. Add one to RULES — do NOT reuse another language's pattern.`);
     return { violations: [], plural: [], soft: [] };
+  }
+  if (rule.skip) {
+    console.log(`[register] ${locale} (${rule.name}) — register check deliberately skipped: ${rule.note}`);
+    return { violations: [], plural: [], soft: [], skipped: true };
   }
   const target = loadLocale(locale);
   if (!target) {

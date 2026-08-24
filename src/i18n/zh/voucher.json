@@ -1,81 +1,98 @@
 {
-  "voucher": {
-    "modal": {
-      "title": "送一张 Maxina 礼券",
-      "subtitle": "送健康和社群连接",
-      "buyVoucher": "买礼券",
-      "openingCheckout": "正在打开安全结账...",
-      "_pending_review": {}
-    },
-    "tiers": {
-      "test": {
-        "name": "测试",
-        "_pending_review": {}
-      },
-      "experience": {
-        "name": "体验",
-        "_pending_review": {}
-      },
-      "exclusive": {
-        "name": "专属",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "success": {
-      "title": "礼券购买成功！",
-      "ready": "你的 {tier} 礼券已就绪",
-      "download": "下载礼券",
-      "sendEmail": "通过邮件发送给收件人",
-      "viewOrders": "在订单中查看",
-      "done": "完成",
-      "_pending_review": {}
-    },
-    "email": {
-      "title": "通过邮件发送礼券",
-      "subtitle": "我们会发送一封设计精美的邮件，附带礼券",
-      "recipientEmail": "收件人邮箱 *",
-      "recipientName": "收件人姓名 (可选)",
-      "personalMessage": "个人留言 (可选)",
-      "messagePlaceholder": "生日快乐！享受这份健康好礼吧...",
-      "back": "返回",
-      "send": "发送礼券",
-      "_pending_review": {}
-    },
-    "preview": {
-      "title": "你的礼券",
-      "giftVoucher": "赠送礼券",
-      "validUntil": "有效期至 {date}",
-      "voucherCode": "礼券码",
-      "whatsIncluded": "包含内容",
-      "downloadPdf": "下载 PDF",
-      "downloadDirect": "直接下载",
-      "openInBrowser": "在浏览器中打开",
-      "copyLink": "复制链接",
-      "share": "保存 / 分享",
-      "shareHint": "保存到文件、云盘，或发送给朋友",
-      "downloadHint": "如果下载页面空白，请点击“在浏览器中打开”",
-      "_pending_review": {}
-    },
-    "toast": {
-      "downloadStarted": "下载已开始！",
-      "downloadFailed": "下载失败",
-      "linkCopied": "链接已复制！",
-      "linkCopiedDesc": "粘贴到浏览器即可下载。",
-      "voucherSent": "优惠券已发送至 {email}！",
-      "voucherShared": "优惠券分享成功！",
-      "checkoutFailed": "无法开始结账。请再试一次。",
-      "generatingVoucher": "正在生成优惠券...",
-      "failedToLoadVoucher": "加载优惠券数据失败",
-      "downloadFailedCopyLink": "下载失败。请尝试复制链接。",
-      "useTicketView": "使用票据视图打印或保存。",
-      "pdfNotAvailable": "此订单类型不支持PDF下载",
-      "enterRecipientEmail": "请输入收件人的邮箱。",
-      "emailOnlyForVouchers": "仅优惠券支持邮件发送",
-      "sendingVoucherEmail": "正在发送优惠券邮件...",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
+ "voucher": {
+  "modal": {
+   "title": "送一张 Maxina 礼券",
+   "subtitle": "送健康和社群连接",
+   "buyVoucher": "买礼券",
+   "openingCheckout": "正在打开安全结账...",
+   "_pending_review": {}
+  },
+  "tiers": {
+   "test": {
+    "name": "测试",
+    "_pending_review": {},
+    "benefits": [
+     "仅用于支付流程测试",
+     "非真实礼券",
+     "用于开发测试"
+    ]
+   },
+   "experience": {
+    "name": "体验",
+    "_pending_review": {},
+    "benefits": [
+     "1次高级社区活动入场",
+     "个性化健康咨询",
+     "包含30天Vitana+试用",
+     "精美设计的电子礼券"
+    ]
+   },
+   "exclusive": {
+    "name": "专属",
+    "_pending_review": {},
+    "benefits": [
+     "3次高级社区活动",
+     "一对一专家指导",
+     "90天Vitana+订阅",
+     "优先预订+VIP礼遇"
+    ]
+   },
+   "_pending_review": {}
+  },
+  "success": {
+   "title": "礼券购买成功！",
+   "ready": "你的 {tier} 礼券已就绪",
+   "download": "下载礼券",
+   "sendEmail": "通过邮件发送给收件人",
+   "viewOrders": "在订单中查看",
+   "done": "完成",
+   "_pending_review": {}
+  },
+  "email": {
+   "title": "通过邮件发送礼券",
+   "subtitle": "我们会发送一封设计精美的邮件，附带礼券",
+   "recipientEmail": "收件人邮箱 *",
+   "recipientName": "收件人姓名 (可选)",
+   "personalMessage": "个人留言 (可选)",
+   "messagePlaceholder": "生日快乐！享受这份健康好礼吧...",
+   "back": "返回",
+   "send": "发送礼券",
+   "_pending_review": {}
+  },
+  "preview": {
+   "title": "你的礼券",
+   "giftVoucher": "赠送礼券",
+   "validUntil": "有效期至 {date}",
+   "voucherCode": "礼券码",
+   "whatsIncluded": "包含内容",
+   "downloadPdf": "下载 PDF",
+   "downloadDirect": "直接下载",
+   "openInBrowser": "在浏览器中打开",
+   "copyLink": "复制链接",
+   "share": "保存 / 分享",
+   "shareHint": "保存到文件、云盘，或发送给朋友",
+   "downloadHint": "如果下载页面空白，请点击“在浏览器中打开”",
+   "_pending_review": {}
+  },
+  "toast": {
+   "downloadStarted": "下载已开始！",
+   "downloadFailed": "下载失败",
+   "linkCopied": "链接已复制！",
+   "linkCopiedDesc": "粘贴到浏览器即可下载。",
+   "voucherSent": "优惠券已发送至 {email}！",
+   "voucherShared": "优惠券分享成功！",
+   "checkoutFailed": "无法开始结账。请再试一次。",
+   "generatingVoucher": "正在生成优惠券...",
+   "failedToLoadVoucher": "加载优惠券数据失败",
+   "downloadFailedCopyLink": "下载失败。请尝试复制链接。",
+   "useTicketView": "使用票据视图打印或保存。",
+   "pdfNotAvailable": "此订单类型不支持PDF下载",
+   "enterRecipientEmail": "请输入收件人的邮箱。",
+   "emailOnlyForVouchers": "仅优惠券支持邮件发送",
+   "sendingVoucherEmail": "正在发送优惠券邮件...",
+   "_pending_review": {}
   },
   "_pending_review": {}
+ },
+ "_pending_review": {}
 }

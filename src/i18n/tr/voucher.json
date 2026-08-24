@@ -1,70 +1,87 @@
 {
-  "voucher": {
-    "modal": {
-      "title": "Maxina Kuponu Hediye Et",
-      "subtitle": "Wellness ve Topluluk Bağlantısı Hediye Et",
-      "buyVoucher": "Kupon Satın Al",
-      "openingCheckout": "Güvenli ödeme açılıyor..."
-    },
-    "tiers": {
-      "test": {
-        "name": "Test"
-      },
-      "experience": {
-        "name": "Deneyim"
-      },
-      "exclusive": {
-        "name": "Özel"
-      }
-    },
-    "success": {
-      "title": "Kupon Satın Alındı!",
-      "ready": "{tier} kuponun hazır",
-      "download": "Kuponu İndir",
-      "sendEmail": "Alıcıya E-posta ile Gönder",
-      "viewOrders": "Siparişlerde Görüntüle",
-      "done": "Bitti"
-    },
-    "email": {
-      "title": "Kuponu E-posta ile Gönder",
-      "subtitle": "Kuponla birlikte güzel tasarlanmış bir e-posta göndereceğiz",
-      "recipientEmail": "Alıcı E-postası *",
-      "recipientName": "Alıcı Adı (isteğe bağlı)",
-      "personalMessage": "Kişisel Mesaj (isteğe bağlı)",
-      "messagePlaceholder": "İyi ki doğdun! Bu wellness ikramının tadını çıkar...",
-      "back": "Geri",
-      "send": "Kuponu Gönder"
-    },
-    "preview": {
-      "title": "Kuponun",
-      "giftVoucher": "Hediye Kuponu",
-      "validUntil": "{date} tarihine kadar geçerli",
-      "voucherCode": "Kupon Kodu",
-      "whatsIncluded": "Nelerin Dahil Olduğu",
-      "downloadPdf": "PDF İndir",
-      "downloadDirect": "Doğrudan İndir",
-      "openInBrowser": "Tarayıcıda Aç",
-      "copyLink": "Bağlantıyı Kopyala",
-      "share": "Kaydet / Paylaş",
-      "shareHint": "Dosyalara, Drive'a kaydet veya birine gönder",
-      "downloadHint": "İndirme boş açılırsa Tarayıcıda Aç'a dokun"
-    },
-    "toast": {
-      "downloadStarted": "İndirme başladı!",
-      "downloadFailed": "İndirme başarısız",
-      "linkCopied": "Bağlantı kopyalandı!",
-      "linkCopiedDesc": "İndirmek için tarayıcıya yapıştır.",
-      "voucherSent": "Kupon {email} adresine gönderildi!",
-      "voucherShared": "Kupon başarıyla paylaşıldı!",
-      "checkoutFailed": "Ödeme başlatılamadı. Lütfen tekrar dene.",
-      "generatingVoucher": "Kupon oluşturuluyor...",
-      "failedToLoadVoucher": "Kupon verileri yüklenemedi",
-      "downloadFailedCopyLink": "İndirme başarısız. Bağlantıyı kopyalamayı dene.",
-      "useTicketView": "Yazdırmak veya kaydetmek için bilet görünümünü kullan.",
-      "pdfNotAvailable": "Bu sipariş türü için PDF indirme kullanılamıyor",
-      "enterRecipientEmail": "Lütfen alıcının e-postasını gir.",
-      "emailOnlyForVouchers": "E-posta gönderimi yalnızca kuponlar için kullanılabilir",
-      "sendingVoucherEmail": "Kupon e-postası gönderiliyor..."
-    }
+ "voucher": {
+  "modal": {
+   "title": "Maxina Kuponu Hediye Et",
+   "subtitle": "Wellness ve Topluluk Bağlantısı Hediye Et",
+   "buyVoucher": "Kupon Satın Al",
+   "openingCheckout": "Güvenli ödeme açılıyor..."
+  },
+  "tiers": {
+   "test": {
+    "name": "Test",
+    "benefits": [
+     "Sadece ödeme akışı testi",
+     "Gerçek bir kupon değil",
+     "Geliştirme testi için"
+    ]
+   },
+   "experience": {
+    "name": "Deneyim",
+    "benefits": [
+     "1 premium topluluk etkinliği erişimi",
+     "Kişiselleştirilmiş wellness danışmanlığı",
+     "30 günlük Vitana+ deneme sürümü dahil",
+     "Güzelce tasarlanmış e-kupon"
+    ]
+   },
+   "exclusive": {
+    "name": "Özel",
+    "benefits": [
+     "3 premium topluluk etkinliği",
+     "Birebir uzman koçluk seansı",
+     "90 günlük Vitana+ aboneliği",
+     "Öncelikli rezervasyon + VIP ayrıcalıkları"
+    ]
+   }
+  },
+  "success": {
+   "title": "Kupon Satın Alındı!",
+   "ready": "{tier} kuponun hazır",
+   "download": "Kuponu İndir",
+   "sendEmail": "Alıcıya E-posta ile Gönder",
+   "viewOrders": "Siparişlerde Görüntüle",
+   "done": "Bitti"
+  },
+  "email": {
+   "title": "Kuponu E-posta ile Gönder",
+   "subtitle": "Kuponla birlikte güzel tasarlanmış bir e-posta göndereceğiz",
+   "recipientEmail": "Alıcı E-postası *",
+   "recipientName": "Alıcı Adı (isteğe bağlı)",
+   "personalMessage": "Kişisel Mesaj (isteğe bağlı)",
+   "messagePlaceholder": "İyi ki doğdun! Bu wellness ikramının tadını çıkar...",
+   "back": "Geri",
+   "send": "Kuponu Gönder"
+  },
+  "preview": {
+   "title": "Kuponun",
+   "giftVoucher": "Hediye Kuponu",
+   "validUntil": "{date} tarihine kadar geçerli",
+   "voucherCode": "Kupon Kodu",
+   "whatsIncluded": "Nelerin Dahil Olduğu",
+   "downloadPdf": "PDF İndir",
+   "downloadDirect": "Doğrudan İndir",
+   "openInBrowser": "Tarayıcıda Aç",
+   "copyLink": "Bağlantıyı Kopyala",
+   "share": "Kaydet / Paylaş",
+   "shareHint": "Dosyalara, Drive'a kaydet veya birine gönder",
+   "downloadHint": "İndirme boş açılırsa Tarayıcıda Aç'a dokun"
+  },
+  "toast": {
+   "downloadStarted": "İndirme başladı!",
+   "downloadFailed": "İndirme başarısız",
+   "linkCopied": "Bağlantı kopyalandı!",
+   "linkCopiedDesc": "İndirmek için tarayıcıya yapıştır.",
+   "voucherSent": "Kupon {email} adresine gönderildi!",
+   "voucherShared": "Kupon başarıyla paylaşıldı!",
+   "checkoutFailed": "Ödeme başlatılamadı. Lütfen tekrar dene.",
+   "generatingVoucher": "Kupon oluşturuluyor...",
+   "failedToLoadVoucher": "Kupon verileri yüklenemedi",
+   "downloadFailedCopyLink": "İndirme başarısız. Bağlantıyı kopyalamayı dene.",
+   "useTicketView": "Yazdırmak veya kaydetmek için bilet görünümünü kullan.",
+   "pdfNotAvailable": "Bu sipariş türü için PDF indirme kullanılamıyor",
+   "enterRecipientEmail": "Lütfen alıcının e-postasını gir.",
+   "emailOnlyForVouchers": "E-posta gönderimi yalnızca kuponlar için kullanılabilir",
+   "sendingVoucherEmail": "Kupon e-postası gönderiliyor..."
   }
+ }
 }

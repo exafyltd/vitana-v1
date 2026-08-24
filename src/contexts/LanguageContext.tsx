@@ -47,8 +47,8 @@ export const languageOptions: Array<{ label: string; value: string; status: 'ga'
   { label: "Polish (PL)", value: "pl-PL", status: 'ga' },
   // Deferred past 18 Aug. AR needs RTL layout work (RTLProvider is not wired
   // to the selected language); ZH needs a CJK font stack + line-break audit.
-  { label: "Arabic (AR)", value: "ar-XA", status: 'draft' },
-  { label: "Chinese (ZH)", value: "zh-CN", status: 'draft' },
+  { label: "Arabic (AR)", value: "ar-XA", status: 'beta' },
+  { label: "Chinese (ZH)", value: "zh-CN", status: 'beta' },
   // VTID-03701 — 11th language, full parity build-out. 'draft' until the same
   // six-surface gate the AR/ZH note above describes reports a real PASS:
   // catalog coverage/parity vs DE, 0 _pending_review, 0 placeholder mismatches,

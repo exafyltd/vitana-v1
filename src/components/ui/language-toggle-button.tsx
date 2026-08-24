@@ -13,6 +13,7 @@ import ruFlag from '@/assets/flags/ru.png';
 import plFlag from '@/assets/flags/pl.png';
 import saFlag from '@/assets/flags/sa.png';
 import cnFlag from '@/assets/flags/cn.png';
+import trFlag from '@/assets/flags/tr.png';
 
 /**
  * Language picker for the intro/landing screen.
@@ -63,6 +64,7 @@ const LOCALE_PRESENTATION: Record<string, { flag: string; endonym: string }> = {
   // renders properly rather than falling back to a bare English label.
   'ar-XA': { flag: saFlag, endonym: 'العربية' },
   'zh-CN': { flag: cnFlag, endonym: '简体中文' },
+  'tr-TR': { flag: trFlag, endonym: 'Türkçe' },
 };
 
 interface LanguageToggleButtonProps {
