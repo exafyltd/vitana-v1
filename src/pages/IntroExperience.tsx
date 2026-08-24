@@ -436,17 +436,28 @@ export default function IntroExperience() {
           separate measurement. Tapping the Orb is the only way to hear
           Vitana speak the welcome; no play/audio control lives in this
           stack any more. */}
+      {/* Positioning and the fade-in animation are deliberately split across
+          two elements: .animate-fade-in's keyframes animate `transform`
+          (translateY, for the fade-up motion), and a CSS animation's
+          transform REPLACES an inline transform on the same element rather
+          than composing with it — so translateX(-50%) here would get
+          silently clobbered by the animation's own translateY once it
+          completes. Keeping translateX on the outer (unanimated) element
+          and the animation on the inner span avoids the conflict. */}
       <p
-        className="fixed z-20 pointer-events-none w-full max-w-xs px-6 text-sm md:text-base font-medium text-white/70 text-center animate-fade-in [text-shadow:0_1px_6px_rgba(0,0,0,0.5)]"
+        className="fixed z-20 pointer-events-none w-full max-w-xs px-6 text-center"
         style={{
           left: 'var(--maxina-orb-target-left, 50%)',
           top: 'calc(var(--maxina-orb-target-top, 50%) + var(--maxina-orb-size, 96px) / 2 + 12px)',
           transform: 'translateX(-50%)',
-          animationDelay: '2800ms',
-          animationFillMode: 'both',
         }}
       >
-        {t.intro?.tapOrbHint || 'Tap the Orb to meet Vitana'}
+        <span
+          className="inline-block text-sm md:text-base font-medium text-white/70 animate-fade-in [text-shadow:0_1px_6px_rgba(0,0,0,0.5)]"
+          style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
+        >
+          {t.intro?.tapOrbHint || 'Tap the Orb to meet Vitana'}
+        </span>
       </p>
 
       {/* Loading placeholder at the Orb's target spot (see the orbReady
