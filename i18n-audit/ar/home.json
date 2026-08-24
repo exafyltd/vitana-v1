@@ -1,0 +1,47 @@
+{
+  "verdicts": {
+    "home.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.welcomeBack": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.todaysSchedule": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.mediaContent": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "home.eventsAndMeetups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.communityNews": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.inspiration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "home.dailyMatches": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "The translation 'تطابقات يومية' is awkward and not idiomatic; 'تطابقات' is a literal translation of 'matches' but in this context 'matches' refers to suggested matches, better translated as 'مقترحات يومية' or 'مطابقات يومية'.",
+      "suggested": "مقترحات يومية",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-24T08:40:00.196Z"
+}

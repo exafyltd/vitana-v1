@@ -1,0 +1,143 @@
+{
+  "verdicts": {
+    "vitanaIndex.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"Vitana\" missing from target",
+      "phase": "static"
+    },
+    "vitanaIndex.subtitle": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "vitanaIndex.veryPoor": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.poor": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.fair": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "vitanaIndex.improving": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "vitanaIndex.good": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.excellent": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.sleep": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.exercise": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.nutrition": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.hydration": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.mental": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Incomplete phrase; should be 'الصحة العقلية' or 'العقلية' as a noun.",
+      "suggested": "الصحة العقلية",
+      "phase": "llm"
+    },
+    "vitanaIndex.viewFullReport": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.trackToday": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.tiers.starting": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.tiers.early": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.tiers.building": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "vitanaIndex.tiers.strong": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.tiers.reallyGood": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.tiers.elite": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.starting": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.early": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.building": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.strong": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.reallyGood": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "vitanaIndex.framings.elite": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-24T09:07:35.915Z"
+}
