@@ -14,7 +14,7 @@
     "transactionFailed": "فشلت المعاملة",
     "paymentFailed": "فشل الدفع",
     "paymentFailedDesc": "تعذر معالجة الدفع. حاول مرة أخرى.",
-    "balanceRefreshed": "تحديث الرصيد",
+    "balanceRefreshed": "تم تحديث الرصيد",
     "balanceRefreshedDesc": "تم تحديث رصيد المحفظة",
     "refreshFailed": "فشل التحديث",
     "refreshFailedDesc": "تعذر تحديث الرصيد. حاول مرة أخرى.",

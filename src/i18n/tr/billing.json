@@ -62,7 +62,7 @@
       "liveRoomsUnit": "saat/ay",
       "matchPosts": "Eşleştirme gönderileri",
       "matchPostsUnit": "/ay",
-      "matchReveals": "Eşleştirme ifşaları",
+      "matchReveals": "Eşleştirme açıklamaları",
       "matchRevealsUnit": "/hafta",
       "labAnalyses": "Laboratuvar analizi",
       "labAnalysesUnit": "/ay",
@@ -75,7 +75,7 @@
       "aiDigestDaily": "Günlük",
       "aiDigestOnDemand": "Günlük + isteğe bağlı",
       "sellAndEarnCatalog": "Sat ve Kazan kataloğu",
-      "sellAndEarnCatalogUnit": "öğe",
+      "sellAndEarnCatalogUnit": "öğeler",
       "priorityPractitioner": "Öncelikli uygulayıcı erişimi",
       "yes": "Evet",
       "no": "–",
@@ -105,7 +105,7 @@
       "redeeming": "Kullanılıyor…",
       "successTitle": "Premium etkinleştirildi",
       "successBody": "Premium {date} tarihine kadar aktif. Keyfini çıkar.",
-      "founding": "🏆 Hoş geldin, Kurucu Üye — {position} kişiden #{max} sensin. Premium 90 gün ücretsiz.",
+      "founding": "🏆 Hoş geldin, Kurucu Üye — #{position} / {max} kişiden birisin. Premium 90 gün ücretsiz.",
       "error": {
         "invalid": "Kod bulunamadı",
         "expired": "Kodun süresi doldu",
@@ -127,13 +127,13 @@
     "founding": {
       "bannerTitle": "🏆 İlk {max} kişi arasında ol",
       "bannerBody": "3 ay Premium ücretsiz, {code} koduyla.",
-      "spotsRemaining": "{remaining} yerden {max} yer kaldı"
+      "spotsRemaining": "{remaining} / {max} yer kaldı"
     },
     "launchGrant": {
       "title": "🎁 Hoş geldin — Premium bizden",
       "body": "Başlangıçtan beri burada olduğun için Vitana Premium'un 12 ayını aldın. {endsAt} tarihine kadar aktif.",
       "noAction": "Herhangi bir işlem gerekmiyor. Keyfini çıkar.",
-      "dismissAria": "Afişi kapat"
+      "dismissAria": "Bildirimi kapat"
     },
     "mobileBilling": {
       "rootIntro": "Planını, ödeme yöntemini ve içerik üreticisi ödemelerini yönet.",
@@ -200,7 +200,7 @@
     "creditsUsed": "Kredi kullanıldı — keyfini çıkar",
     "voice_live_minutes": {
       "title": "Canlı ses süresi doldu",
-      "body": "Dahil olan canlı ses sürene doldu. ORB Standart modda devam edecek. İstediğin zaman süre ekleyebilir veya yükseltebilirsin.",
+      "body": "Dahil olan canlı ses süren doldu. ORB Standart modda devam edecek. İstediğin zaman süre ekleyebilir veya yükseltebilirsin.",
       "stayInStandard": "Standart modda devam et",
       "addMinutes": "Canlı süre ekle"
     },

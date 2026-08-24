@@ -16,7 +16,7 @@
     "emptyStates": {
       "_pending_review": {},
       "noEventsToday": "Bugün Etkinlik Yok",
-      "noEventsTodayDesc": "Bugün için planlanmış etkinlik yok. Yaklaşan etkinliklere bak veya kendinkini oluştur!",
+      "noEventsTodayDesc": "Bugün için planlanmış etkinlik yok. Yaklaşan etkinliklere bak veya kendi etkinliğini oluştur!",
       "createEvent": "Etkinlik Oluştur",
       "viewUpcoming": "Yaklaşan Etkinlikleri Görüntüle",
       "followingTitle": "Takip ettiğin kişilerin gönderileri",

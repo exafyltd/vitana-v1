@@ -374,6 +374,17 @@ function checkLocale(locale) {
 
   for (const [key, value] of Object.entries(target)) {
     let probe = String(value);
+    // Strip {placeholder} tokens BEFORE any pattern runs, locale-independent.
+    // Found live in tr: the interpolation variable `{size}` collides
+    // byte-for-byte with the Turkish dative pronoun "size" ("to you"), so
+    // `screens.diary.sizeSize: "Boyut: {size}"` flagged as a formal-register
+    // violation despite containing zero actual Turkish prose. This is the
+    // exact `rendez-vous` false-positive class documented above, just
+    // reachable through a variable name instead of a dictionary word —
+    // stripping tokens here closes it for every locale/placeholder pair at
+    // once instead of adding narrow per-name `exempt` entries as each one
+    // is found.
+    probe = probe.replace(/\{[^{}\s"']+\}/g, ' ');
     for (const ex of rule.exempt) probe = probe.replace(ex, '');
 
     if (rule.soft && rule.soft.test(probe)) soft.push({ key, value });

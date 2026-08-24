@@ -2,7 +2,7 @@
   "calendar": {
     "smartCalendar": "Akıllı Takvim",
     "myCalendar": "Takvimim",
-    "bookedActivities": "VITANA'daki rezervasyonlu etkinliklerin",
+    "bookedActivities": "VITANA'daki rezervasyonlu etkinlikleriniz",
     "addEvent": "Etkinlik Ekle",
     "synced": "Senkronize",
     "syncing": "Senkronize Ediliyor",
@@ -26,7 +26,7 @@
     "exploreActivities": "Takvimin için etkinlikler keşfet",
     "browseActivities": "Etkinliklere Göz At",
     "bookedEvents": {
-      "title": "Rezervasyonlu etkinliklerin",
+      "title": "Rezervasyonlu etkinlikleriniz",
       "todayLabel": "Bugün",
       "nextUp": "Sıradaki",
       "noEventsToday": "Bugün etkinlik yok"

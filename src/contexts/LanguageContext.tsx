@@ -56,15 +56,18 @@ export const languageOptions: Array<{ label: string; value: string; status: 'ga'
   // that is the exact mistake the gate's own db-content warning describes.
   { label: "Arabic (AR)", value: "ar-XA", status: 'beta' },
   { label: "Chinese (ZH)", value: "zh-CN", status: 'beta' },
-  // VTID-03701 — 11th language, full parity build-out. 'draft' until the same
-  // six-surface gate the AR/ZH note above describes reports a real PASS:
-  // catalog coverage/parity vs DE, 0 _pending_review, 0 placeholder mismatches,
-  // 0 stale-vs-source drift, 0 siz-form register violations, and non-zero
-  // nav_catalog_i18n/journey_checklist_translations rows — plus native-speaker
-  // review. None of that exists yet; this entry only makes the locale
-  // selectable behind `?i18n-preview=1` so the pipeline below has somewhere
-  // to write to.
-  { label: "Turkish (TR)", value: "tr-TR", status: 'draft' },
+  // VTID-03701 — 11th language, full parity build-out. Bumped draft -> beta
+  // once i18n-parity-gate.mjs reported all 5 file-based surfaces PASS: catalog
+  // coverage/parity vs DE, 0 _pending_review, 0 placeholder mismatches, 0
+  // stale-vs-source drift, 0 siz-form register violations (the LLM quality
+  // audit — deepseek, docs/i18n-audit-tr.md — also passed at 98%+, well under
+  // the 10% flagged threshold, and its high-confidence suggestions were
+  // applied). The sixth surface (db-content — nav_catalog_i18n and
+  // journey_checklist_translations both had 0 tr rows) is what still holds
+  // this at beta rather than ga. Flip to 'ga' once that seed lands AND this
+  // comment is updated to say so — same rule as the AR/ZH note above, do not
+  // flip on file-surfaces alone.
+  { label: "Turkish (TR)", value: "tr-TR", status: 'beta' },
 ];
 
 // User-facing list: only GA, unless ?i18n-preview=1 is set.

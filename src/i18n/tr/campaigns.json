@@ -2,7 +2,7 @@
   "campaigns": {
     "delete": {
       "_pending_review": {},
-      "title": "Kampanya Silinsin mi?",
+      "title": "Kampanya silinsin mi?",
       "description": "\"{name}\" öğesini silmek, ilgili tüm taslakları ve analizleri kalıcı olarak kaldırır. Bu işlem geri alınamaz.",
       "dontAskAgain": "Taslak kampanyalar için bir daha sorma",
       "deletePermanently": "Kalıcı Olarak Sil"
@@ -12,7 +12,7 @@
       "title": "Kampanya Oluştur",
       "stepOf": "Adım {current} / {total}",
       "yourCampaigns": "Kampanyaların",
-      "drafts": "taslak",
+      "drafts": "taslaklar",
       "live": "canlı",
       "proTip": "Uzman İpucu",
       "tips": {

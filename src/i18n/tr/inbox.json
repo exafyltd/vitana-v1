@@ -87,7 +87,7 @@
       "error": "Hata",
       "conversationStarted": "Sohbet başlatıldı!",
       "authRequired": "Kimlik doğrulama gerekli",
-      "noTenantContext": "Kiracı bağlamı mevcut değil",
+      "noTenantContext": "Kiracı bağlamı yok",
       "searchFailed": "Arama başarısız",
       "accessDenied": "Erişim reddedildi",
       "communityOnly": "Yalnızca topluluk kullanıcıları genel sohbet oluşturabilir",
@@ -125,7 +125,7 @@
       "backToInbox": "Gelen Kutusuna Dön",
       "back": "Geri",
       "memberOne": "üye",
-      "memberOther": "üye",
+      "memberOther": "üyeler",
       "officialBadge": "resmi grup",
       "empty": "Henüz mesaj yok.",
       "composerPlaceholder": "Mesaj…"

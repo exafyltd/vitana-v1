@@ -2,14 +2,14 @@
   "_pending_review": {},
   "services": {
     "_pending_review": {},
-    "title": "Hizmetler MERKEZİ",
+    "title": "Hizmetler Merkezi",
     "subtitle": "Kapsamlı sağlık ve wellness hizmetlerine eriş",
     "categories": {
       "_pending_review": {},
       "preventive": "Önleyici Taramalar",
       "labTests": "Laboratuvar Testleri",
       "coaching": "Koçluk ve Kişisel Antrenörlük",
-      "groupPrograms": "Grup Programları ve Meydan Okumalar"
+      "groupPrograms": "Grup Programları ve Mücadeleler"
     },
     "actions": {
       "_pending_review": {},
@@ -27,7 +27,7 @@
       "nextAvailable": "Sonraki müsait zaman",
       "whatsIncluded": "Nelerin Dahil Olduğu",
       "healthBenefits": "Sağlık Faydaları",
-      "availableProviders": "Müsait Sağlayıcılar",
+      "availableProviders": "Müsait Uzmanlar",
       "requirements": "Gereksinimler ve Hazırlık",
       "tags": "Etiketler"
     }

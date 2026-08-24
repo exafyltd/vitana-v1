@@ -74,7 +74,7 @@
       "codeCopied": "Bayi kodu kopyalandı!",
       "noSalesYet": "Henüz satış yok",
       "shareLinkToStart": "Kazanmak için bir bağlantı paylaş.",
-      "tickets": "bilet",
+      "tickets": "biletler",
       "shareResellerLink": "Bayi bağlantısını paylaş",
       "createPromotion": "Promosyon oluştur",
       "shareLinkOrPromotion": "Komisyon kazanmak için bayi bağlantılarını paylaş veya bir promosyon oluştur.",
@@ -117,7 +117,7 @@
     "missionOpportunities": {
       "_pending_review": {},
       "title": "Misyon Fırsatları",
-      "subtitle": "Uzun ömür ekonomisini ilerleten Otomatik Pilot önerili yollar",
+      "subtitle": "Uzun ömür ekonomisini ilerleten otomatik pilotun önerdiği yollar",
       "loading": "Fırsatlar yükleniyor…",
       "error": "Fırsatlar yüklenemedi",
       "empty": "Henüz ekonomiyle uyumlu öneri yok. Daha sonra tekrar kontrol et.",

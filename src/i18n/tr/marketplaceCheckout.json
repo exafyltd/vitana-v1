@@ -7,7 +7,7 @@
       "addMoney": "Para ekle"
     },
     "checkout": {
-      "button": "Ödemeye Geç",
+      "button": "Ödemeye geç",
       "processing": "İşleniyor …",
       "successTitle": "Sipariş verildi",
       "successBody": "Bakiyenden düşüldü ve siparişin oluşturuldu.",
@@ -23,7 +23,7 @@
       "description": "Stripe ile kart üzerinden bakiyeni yükle.",
       "amountLabel": "Tutar",
       "amountPlaceholder": "0,00",
-      "currencyLabel": "Para Birimi",
+      "currencyLabel": "Para birimi",
       "currencyEur": "EUR",
       "currencyUsd": "USD",
       "continue": "Ödemeye devam et",

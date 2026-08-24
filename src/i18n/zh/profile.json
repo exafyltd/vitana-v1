@@ -38,7 +38,7 @@
       },
       "sections": {
         "publicProfile": "公开个人资料",
-        "publicProfileSubtitle": "显示在身份",
+        "publicProfileSubtitle": "显示在身份上",
         "basicInfo": "基本个人信息",
         "basicInfoSubtitle": "固定身份数据",
         "contactInfo": "联系信息",
