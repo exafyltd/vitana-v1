@@ -1,0 +1,90 @@
+{
+  "verdicts": {
+    "diaryActions.title": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.recordVoiceEntry.title": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.recordVoiceEntry.description": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.addPhotoEntry.title": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.addPhotoEntry.description": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.writeTextEntry.title": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.writeTextEntry.description": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.quickNote.title": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.quickNote.description": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.videoDiary.title": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.videoDiary.description": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.scheduleEntry.title": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.scheduleEntry.description": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.tagMemories.title": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.tagMemories.description": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.importFiles.title": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "diaryActions.items.importFiles.description": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-24T08:38:39.663Z"
+}

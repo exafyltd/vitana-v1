@@ -239,6 +239,34 @@ const RULES = {
     note: 'ty-form. Never Pan/Pani.',
     crossCheck: true,
   },
+  tr: {
+    name: 'Turkish',
+    // `siz` is BOTH the polite/formal singular address AND the ordinary
+    // plural "you (all)" — the identical trap as French `vous`/Russian
+    // `вы`/Polish capitalised `Pan`, so the German cross-check carries the
+    // real weight here rather than the pronoun match alone.
+    //
+    // Turkish has no case-based politeness split (unlike German Sie/sie or
+    // Serbian Vi/vi), so this uses LI() rather than L() — same reasoning as
+    // pt-BR: listing capitalised/lowercase forms twice would add alternatives
+    // that carry no information.
+    //
+    // Deliberately NOT matching verb-morphology alone (the -sınız/-siniz/
+    // -sunuz/-sünüz second-person-plural suffix, or the -in/-ın/-un/-ün
+    // formal imperative suffix). Turkish is agglutinative and those suffixes
+    // are common word-final sequences for other reasons too, so a bare
+    // suffix regex risks the exact over-matching this file's history warns
+    // against (see `es`'s dropped `su`, pt-BR's `\b` fix, French `vous`'s
+    // 39-of-41 false-positive rate). The pronoun forms below catch the
+    // common, low-risk case; a formal verb ending with no explicit
+    // siz-pronoun in the same string is a known, accepted gap.
+    formal: LI('siz|sizin|sizi|size|sizde|sizden|sizle|sizinle'),
+    exempt: [],
+    informal: LI('sen|seni|senin|sana|sende|senden|seninle'),
+    mixed: LI('siz|sizin|sizi|size|sizde|sizden|sizle|sizinle'),
+    note: 'sen-form. Never siz/sizin when addressing one reader.',
+    crossCheck: true,
+  },
   zh: {
     name: 'Chinese',
     // DELIBERATELY NOT L(). Every other rule wraps its pattern in L(), which
@@ -260,6 +288,29 @@ const RULES = {
     informal: /你/u,
     note: 'Simplified zh-CN, 你-form. Never 您.',
     crossCheck: false,
+  },
+  // VTID-03701 — a DELIBERATE skip, not a missing rule. Every other language
+  // here has a fixed lexical formal-address marker (Sie/vous/Vi/您/siz…) that
+  // a native speaker can point at and say "that word is always formal". MSA
+  // does have a polite register, but it is realized through broader phrasing
+  // and person-agreement choices, not one word or verb-suffix a regex can
+  // reliably isolate the way §2c's suffix note already flagged as a hard
+  // problem for Turkish. Writing a fake pattern here to make the check "do
+  // something" would be worse than skipping it outright — see the zh note
+  // above on why a rule that cannot actually see the violation is more
+  // dangerous than an honest absence of one: it reports "0 violations" and
+  // that reads as evidence when it proves nothing.
+  //
+  // `skip: true` makes checkLocale() log this as a recorded decision
+  // ("register check deliberately skipped") instead of the generic "no rule
+  // for 'x'" error every other unconfigured locale gets — the promotion gate
+  // reads this locale's register condition as "reviewed, not applicable"
+  // rather than "never checked". Revisit if a native-speaker review (part of
+  // the same six-surface gate) identifies a concrete pattern worth encoding.
+  ar: {
+    name: 'Arabic',
+    skip: true,
+    note: 'No fixed lexical formal-address marker to check — see comment above.',
   },
 };
 
@@ -307,6 +358,10 @@ function checkLocale(locale) {
     console.error(`[register] no rule for '${locale}'. Add one to RULES — do NOT reuse another language's pattern.`);
     return { violations: [], plural: [], soft: [] };
   }
+  if (rule.skip) {
+    console.log(`[register] ${locale} (${rule.name}) — register check deliberately skipped: ${rule.note}`);
+    return { violations: [], plural: [], soft: [], skipped: true };
+  }
   const target = loadLocale(locale);
   if (!target) {
     console.error(`[register] no catalog: src/i18n/${locale}`);
@@ -319,6 +374,17 @@ function checkLocale(locale) {
 
   for (const [key, value] of Object.entries(target)) {
     let probe = String(value);
+    // Strip {placeholder} tokens BEFORE any pattern runs, locale-independent.
+    // Found live in tr: the interpolation variable `{size}` collides
+    // byte-for-byte with the Turkish dative pronoun "size" ("to you"), so
+    // `screens.diary.sizeSize: "Boyut: {size}"` flagged as a formal-register
+    // violation despite containing zero actual Turkish prose. This is the
+    // exact `rendez-vous` false-positive class documented above, just
+    // reachable through a variable name instead of a dictionary word —
+    // stripping tokens here closes it for every locale/placeholder pair at
+    // once instead of adding narrow per-name `exempt` entries as each one
+    // is found.
+    probe = probe.replace(/\{[^{}\s"']+\}/g, ' ');
     for (const ex of rule.exempt) probe = probe.replace(ex, '');
 
     if (rule.soft && rule.soft.test(probe)) soft.push({ key, value });

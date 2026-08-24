@@ -1,0 +1,44 @@
+{
+  "newsCard": {
+    "menu": {
+      "_pending_review": {},
+      "share": "Paylaş",
+      "save": "Kaydet",
+      "saved": "Kaydedildi",
+      "summarize": "Vitana ile özetle",
+      "copyLink": "Bağlantıyı kopyala",
+      "openInBrowser": "Tarayıcıda aç",
+      "hide": "Bu makaleyi gizle",
+      "showLess": "Bunun gibi daha az göster",
+      "muteSource": "Bu kaynağı sustur",
+      "linkCopied": "Bağlantı kopyalandı",
+      "savedToast": "Daha sonrası için kaydedildi",
+      "unsavedToast": "Kayıtlılardan kaldırıldı",
+      "summarizeToast": "Vitana için sıraya alındı",
+      "hiddenToast": "Makale gizlendi",
+      "showLessToast": "Bunun gibi daha azını göstereceğiz",
+      "mutedToast": "Kaynak susturuldu",
+      "undo": "Geri Al",
+      "unmute": "Sesi Aç"
+    },
+    "detail": {
+      "_pending_review": {},
+      "back": "Geri",
+      "continueReading": "Şurada okumaya devam et",
+      "openInBrowser": "Tarayıcıda aç",
+      "couldNotLoad": "Bu makale uygulama içinde gösterilemiyor",
+      "readOn": "Devamını oku"
+    },
+    "pillars": {
+      "_pending_review": {},
+      "all": "Tümü",
+      "nutrition": "Beslenme",
+      "hydration": "Su Tüketimi",
+      "sleep": "Uyku",
+      "exercise": "Egzersiz",
+      "mental": "Zihinsel"
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

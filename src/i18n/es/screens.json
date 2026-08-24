@@ -2734,8 +2734,8 @@
       "referrals": "Referidos",
       "creativityValue0": "Creatividad: {value0}",
       "languageSettingControlsWhatLanguageText": "La configuración de \"Idioma\" controla en qué idioma se genera el texto. La configuración de \"Voz\" controla qué voz de texto-a-voz lo lee en voz alta. Se sincronizan automáticamente para mayor simplicidad.",
-      "voiceProviderHint_googleSpeech": "Google Speech API proporciona síntesis de voz de alta calidad.",
-      "voiceProviderHint_geminiChirp": "Las voces Gemini Chirp 3 HD ofrecen un habla premium, de sonido natural y con resonancia emocional",
+      "voiceProviderHint_polly": "Amazon Polly ofrece una síntesis de voz de alta calidad y sonido natural",
+      "voiceProviderLabel_polly": "Amazon Polly (recomendado)",
       "voiceProviderHint_noVoicesAvailable": "No hay voces disponibles para {lang}. Instala una voz en la configuración de tu SO/navegador.",
       "voiceProviderHint_browserVoices": "Usando voces basadas en el navegador",
       "_pending_review": {}

@@ -67,36 +67,6 @@
     "unknownProvider": "Nieznany dostawca",
     "addSupplement": "Dodaj Suplement",
     "uploadFirstReport": "Prześlij Pierwszy Raport",
-    "missionAlignment": {
-      "title": "Zgodność z Misją",
-      "subtitle": "Jak Twoje rekomendacje wspierają pięć filarów i gospodarkę długowieczności",
-      "loading": "Ładowanie danych misji…",
-      "error": "Nie udało się załadować danych misji",
-      "noRecs": "Brak rekomendacji w Twojej kolejce.",
-      "summaryServed": "{pct}% Twoich rekomendacji wspiera misję",
-      "summaryServedCount": "{served} z {total} rekomendacji zgodnych",
-      "pillarHeading": "Wspierane filary",
-      "economyHeading": "Gospodarka długowieczności",
-      "noPillar": "Niezgodne z filarami",
-      "noEconomy": "Niezgodne z gospodarką",
-      "pillars": {
-        "nutrition": "Odżywianie",
-        "hydration": "Nawodnienie",
-        "exercise": "Ćwiczenia",
-        "sleep": "Sen",
-        "mental": "Zdrowie psychiczne",
-        "_pending_review": {}
-      },
-      "economyAxes": {
-        "find_match": "Znajdź dopasowanie",
-        "marketplace": "Rynek",
-        "income_generation": "Generowanie dochodu",
-        "business_formation": "Zakładanie firmy",
-        "_pending_review": {}
-      },
-      "contractLink": "Zobacz umowę Celu Ostatecznego",
-      "_pending_review": {}
-    },
     "_pending_review": {}
   },
   "_pending_review": {}

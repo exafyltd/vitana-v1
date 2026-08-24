@@ -318,7 +318,7 @@
       "videoDeleted": "视频已删除",
       "pleaseEnterValidEmailAddress2": "请输入有效的电子邮件地址。",
       "selectAtLeastOneRole": "请至少选择一个角色。",
-      "acceptLinkCopiedClipboard": "接受链接已复制到剪贴板。",
+      "acceptLinkCopiedClipboard": "接受链接已复制到剪贴板",
       "invitationRevoked": "邀请已撤销。",
       "cannotRevokeCommunityRoleItS": "无法撤销社区角色 — 这是最低要求。",
       "categoryUpdated": "类别已更新。",
@@ -961,7 +961,7 @@
       "imageUploaded": "图片已上传",
       "pleaseLogCreatePosts": "请登录以创建帖子。",
       "postSavedAsDraft": "帖子已保存为草稿",
-      "postScheduledSuccessfully": "帖子已成功安排",
+      "postScheduledSuccessfully": "帖子已成功计划",
       "pleaseUploadCsvFile": "请上传一个CSV文件",
       "noValidContactsFoundCsv": "CSV中未找到有效联系人",
       "importCleared": "导入已清除",
@@ -1088,7 +1088,7 @@
       "error": "错误。",
       "youMustLoggedActivateResellerMode": "你必须登录才能激活分销商模式。",
       "resellerModeActive": "分销商模式已激活。",
-      "yourResellerDashboardNowAvailableMy": "你的分销商仪表盘现在在我的业务中可用。",
+      "yourResellerDashboardNowAvailableMy": "你的分销商仪表盘现在可在“我的业务”中使用。",
       "welcomeReseller": "欢迎，分销商！🎉",
       "youCanNowPromoteEventsEarn": "你现在可以推广活动并赚取佣金。查看你的销售与赚取仪表盘。",
       "activationFailed": "激活失败。",
@@ -1369,7 +1369,7 @@
     },
     "intentmatchdetail": {
       "couldNotLoadMatchDetail": "无法加载匹配详情",
-      "intentClosed": "意图已完成",
+      "intentClosed": "操作已完成",
       "couldNotClose": "无法关闭",
       "_pending_review": {}
     },
@@ -1386,7 +1386,7 @@
       "_pending_review": {}
     },
     "myintents": {
-      "couldNotLoadIntents": "加载意图失败",
+      "couldNotLoadIntents": "加载操作失败",
       "_pending_review": {}
     },
     "packagepurchasesuccess": {
@@ -1405,7 +1405,7 @@
       "activityHasSavedYourKnowledgeBase": "活动已保存到你的知识库。",
       "actionExecuted": "操作已执行",
       "yourActionHasCompletedSuccessfully": "你的操作已成功完成。",
-      "actionDismissed": "操作已移除",
+      "actionDismissed": "操作已关闭",
       "thisActionHasRemovedFromYour": "此操作已从你的列表中移除。",
       "_pending_review": {}
     },

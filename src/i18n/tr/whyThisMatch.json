@@ -1,0 +1,21 @@
+{
+  "_pending_review": {},
+  "whyThisMatch": {
+    "_pending_review": {},
+    "title": "Neden bu üye?",
+    "interpretedAs": "Vitana şunu anladı:",
+    "consideredSignals": "Dikkate alınan sinyaller:",
+    "showSomeoneElse": "Bana başka birini göster",
+    "dismiss": "Kapat",
+    "ethicsNote": "Vitana üyeleri görünüş veya servete göre sıralamaz — ama işte yolculuğu şu anda parlayan biri.",
+    "loadingRecipe": "Arama ayrıntıları yükleniyor…",
+    "recipeUnavailable": "Bu arama ayrıntıları artık mevcut değil.",
+    "tierLabel": {
+      "1": "Tam eşleşme",
+      "2": "Vitana Endeksi",
+      "3": "En iyi eşleşme",
+      "4": "Adalet Yönlendirmesi",
+      "_pending_review": {}
+    }
+  }
+}

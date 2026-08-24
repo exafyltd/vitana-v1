@@ -1,0 +1,21 @@
+{
+  "_pending_review": {},
+  "tasks": {
+    "_pending_review": {},
+    "noOpenTasks": "Açık görev yok",
+    "confirmCancelTask": "Bu görevi iptal etmek istediğinden emin misin?",
+    "postponeComingSoon": "Yeniden planlama işlevi yakında geliyor",
+    "addNotePrompt": "Bu göreve bir not ekle:",
+    "noteAdded": "Not eklendi: {note}",
+    "navigateTo": "Git: {url}",
+    "openVtid": "VTID'yi Aç: {vtid}",
+    "description": "Açıklama",
+    "activityLog": "Aktivite Günlüğü",
+    "relatedLinks": "İlgili Bağlantılar",
+    "complete": "Tamamla",
+    "postpone": "Ertele",
+    "addNote": "Not Ekle",
+    "openContext": "Bağlamı Aç",
+    "assignee": "Atanan Kişi"
+  }
+}

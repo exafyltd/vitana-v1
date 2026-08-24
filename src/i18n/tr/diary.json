@@ -1,0 +1,15 @@
+{
+  "diary": {
+    "_pending_review": {},
+    "title": "Günlük Yazı",
+    "description": "Wellness yolculuğunu takip et, gelişmemize yardımcı ol",
+    "healthTab": "Sağlık Günlüğü",
+    "bugTab": "Hata Bildirimleri",
+    "text": "Metin",
+    "photo": "Fotoğraf",
+    "textEntry": "✍️ Metin Girişi",
+    "photoEntry": "📸 Fotoğraf Girişi",
+    "searchPlaceholder": "Günlükte ara..."
+  },
+  "_pending_review": {}
+}

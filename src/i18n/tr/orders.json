@@ -1,0 +1,89 @@
+{
+  "orders": {
+    "_pending_review": {},
+    "myOrders": "Siparişlerim",
+    "title": "Siparişler",
+    "description": "Sipariş geçmişin ve aktif aboneliklerin",
+    "trackDescription": "Ürün siparişlerini ve etkinlik biletlerini takip et",
+    "searchPlaceholder": "Sipariş ara...",
+    "tabs": {
+      "_pending_review": {},
+      "active": "Aktif",
+      "history": "Geçmiş",
+      "all": "Tümü",
+      "completed": "Tamamlanan",
+      "cancelled": "İptal Edilen"
+    },
+    "filters": {
+      "_pending_review": {},
+      "all": "Tümü",
+      "events": "Etkinlikler",
+      "products": "Ürünler",
+      "vouchers": "Kuponlar",
+      "services": "Hizmetler",
+      "refunds": "İadeler"
+    },
+    "previewNotice": "Bunlar önizleme siparişleridir. Gerçek siparişlerin burada görünecek.",
+    "sampleData": "Örnek Veri",
+    "emptyActive": {
+      "_pending_review": {},
+      "title": "Aktif Sipariş Yok",
+      "description": "Aktif siparişin veya yaklaşan etkinliğin yok."
+    },
+    "emptyHistory": {
+      "_pending_review": {},
+      "title": "Sipariş Geçmişi Yok",
+      "description": "Tamamlanan siparişlerin ve geçmiş etkinliklerin burada görünecek."
+    },
+    "noOrders": "Henüz sipariş yok",
+    "noOrdersDesc": "Bir şey satın aldığında siparişlerin burada görünecek.",
+    "browseProducts": "Ürünlere Göz At",
+    "findEvents": "Etkinlik Bul",
+    "startShopping": "Alışverişe Başla",
+    "noFilter": "{filter} yok",
+    "noFilterDesc": "Geçmişinde {filter} bulunamadı.",
+    "orderDate": "Sipariş tarihi",
+    "orderNumber": "Sipariş numarası",
+    "viewDetails": "Ayrıntıları Görüntüle",
+    "trackOrder": "Siparişi Takip Et",
+    "reorder": "Tekrar Sipariş Ver",
+    "detailSheet": {
+      "_pending_review": {},
+      "title": "Sipariş Ayrıntıları",
+      "orderInfo": "Sipariş Bilgisi",
+      "orderReference": "Sipariş Referansı",
+      "purchaseDate": "Satın Alma Tarihi",
+      "eventDate": "Etkinlik Tarihi",
+      "location": "Konum",
+      "quantity": "Adet",
+      "tickets": "biletler",
+      "yourTicket": "Biletin",
+      "giftVoucher": "Hediye Kuponu",
+      "code": "Kod",
+      "sendToRecipient": "Alıcıya Gönder",
+      "recipientEmail": "Alıcı E-postası *",
+      "recipientName": "Alıcı Adı",
+      "personalMessage": "Kişisel Mesaj",
+      "cancel": "İptal",
+      "send": "Gönder",
+      "downloadPdf": "PDF İndir"
+    },
+    "status": {
+      "_pending_review": {},
+      "upcoming": "Yaklaşan",
+      "attended": "Katılındı",
+      "expired": "Süresi Doldu",
+      "completed": "Tamamlandı",
+      "delivered": "Teslim Edildi",
+      "cancelled": "İptal Edildi",
+      "refunded": "İade Edildi",
+      "shipped": "Yolda",
+      "confirmed": "Onaylandı",
+      "pending": "Beklemede",
+      "processing": "İşleniyor",
+      "paid": "Aktif",
+      "active": "Aktif"
+    }
+  },
+  "_pending_review": {}
+}

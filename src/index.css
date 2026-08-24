@@ -651,11 +651,29 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
    deliberately LARGER, never smaller — here the Orb is the page's
    centrepiece and its primary call to action, not a docked FAB.
    `--maxina-orb-slot` is DERIVED so the reserved space and the rendered
-   Orb cannot drift apart. */
+   Orb cannot drift apart.
+
+   `--maxina-orb-content-gap` mirrors the content column's own flex `gap`
+   (IntroExperience.tsx's `gap-[var(--maxina-orb-content-gap,...)]`) — the
+   column reads it instead of a plain Tailwind gap-6/md:gap-8 so there is
+   only ONE number to keep in sync, not two. This governs the gap ABOVE
+   the Orb (tagline to Orb-top), via the flex layout.
+
+   `--maxina-orb-caption-gap` is a deliberately SMALL, separate value for
+   the fixed-position Orb caption below the Orb (see IntroExperience.tsx)
+   — a product decision that the caption reads as the Orb's own subtitle
+   (tight, like an image caption) rather than mirroring the larger gap
+   above it. scripts/verify-intro-orb-placement.mjs's placement check
+   asserts this explicitly: the gap below must be small AND smaller than
+   the gap above, not equal to it — see that script for the exact bounds.
+   Do not "fix" a future symmetry-looking diff here without re-reading
+   that script first. */
 body.maxina-intro-page {
   --maxina-orb-size: 112px;
   --maxina-orb-gap: 32px;
   --maxina-orb-slot: calc(var(--maxina-orb-size) + 2 * var(--maxina-orb-gap));
+  --maxina-orb-content-gap: 32px;
+  --maxina-orb-caption-gap: 12px;
 }
 
 /* The reserved in-flow slot. Renders nothing; it exists to hold open
@@ -845,6 +863,7 @@ body.maxina-intro-page [class^="vtorb-fab"] {
   body.maxina-intro-page {
     --maxina-orb-size: 96px;
     --maxina-orb-gap: 28px;
+    --maxina-orb-content-gap: 24px;
   }
 
   body.maxina-intro-page .vtorb-fab,

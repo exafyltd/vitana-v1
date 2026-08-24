@@ -284,9 +284,16 @@ export default function IntroExperience() {
           split fixed the collision but flung both blocks to the viewport
           edges, producing large, disconnected empty gaps on tall phones.
           Centering the whole column with a modest, explicit gap keeps the
-          composition as one cohesive block, matching the reference. */}
+          composition as one cohesive block, matching the reference.
+
+          The gap is `var(--maxina-orb-content-gap)` (index.css), not a
+          plain Tailwind gap-6/md:gap-8, so the fixed-position Orb caption
+          below (which is NOT a flex child and gets no gap automatically)
+          can read the exact same number to reproduce it — see that
+          element's own comment for why this matters for
+          scripts/verify-intro-orb-placement.mjs's symmetry check. */}
       <div
-        className={`relative z-10 flex flex-col items-center justify-center gap-6 md:gap-8 min-h-screen px-6 py-12 transition-opacity duration-[1000ms] maxina-page-content ${
+        className={`relative z-10 flex flex-col items-center justify-center gap-[var(--maxina-orb-content-gap,24px)] min-h-screen px-6 py-12 transition-opacity duration-[1000ms] maxina-page-content ${
           showContent ? 'opacity-100' : 'opacity-0'
         }`}
 
@@ -370,19 +377,23 @@ export default function IntroExperience() {
             `--maxina-orb-size`/`--maxina-orb-gap` in index.css, not this. */}
         <div ref={orbSpacerRef} aria-hidden="true" className="maxina-orb-slot w-full" />
 
-        {/* Bottom block: static Orb caption, language selector, Login/Register actions. */}
+        {/* Bottom block: language selector, Login/Register actions. The Orb
+            caption used to open this block, but it visually read as
+            belonging to the language pill below it rather than the Orb
+            above it — moved out to its own fixed-position element pinned
+            directly under the Orb (see below).
+
+            Extra top margin (on top of the column's own gap-6/gap-8) nudges
+            this block further down the page, into the empty space below it
+            on typical viewports. Safe to add here rather than by re-tuning
+            the column's overall justify-content: the Orb's target position
+            is measured from orbSpacerRef's actual rendered rect (see that
+            effect above), so it automatically follows wherever this extra
+            space pushes the layout — no separate position fix needed. */}
         <div
-          className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
+          className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs mt-10 md:mt-14"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
-          {/* Static caption under the (separately, globally-positioned) Orb —
-              replaces the old pulsing "tap here" hint pill on this screen
-              only. Tapping the Orb is the only way to hear Vitana speak the
-              welcome; no play/audio control lives in this stack any more. */}
-          <p className="text-sm md:text-base font-medium text-white/70 text-center">
-            {t.intro?.tapOrbHint || 'Tap the Orb to meet Vitana'}
-          </p>
-
           {/* Language selector - glass bar with a globe icon, the current
               language name, and a chevron; opens a full-screen picker. */}
           <LanguageToggleButton />
@@ -428,6 +439,55 @@ export default function IntroExperience() {
           {lookup('screens.introexperience.press')} <kbd className="px-2 py-1 bg-white/10 rounded text-white/60">{lookup('screens.introexperience.esc')}</kbd>{lookup('screens.introexperience.skip')}
         </p>
       </div>
+
+      {/* Orb caption - pinned directly under the (separately,
+          fixed-position) Orb widget rather than flowed in the bottom block,
+          so it reads as the Orb's own caption instead of the language
+          pill's neighbour. Anchored off the same --maxina-orb-target-left/
+          -top custom properties the Orb itself uses (see the orbSpacerRef
+          effect above and the CSS in index.css). Tapping the Orb is the
+          only way to hear Vitana speak the welcome; no play/audio control
+          lives in this stack any more.
+
+          The vertical offset is JUST `--maxina-orb-caption-gap` (index.css)
+          measured from the Orb's own bottom edge (target-top + size/2) —
+          a small, DELIBERATE value, NOT `--maxina-orb-gap`/
+          `--maxina-orb-content-gap`, which is what the tagline above the
+          Orb gets for free from being a normal flex sibling and is much
+          larger. Product decision: the caption is the Orb's own subtitle
+          (tight, like an image caption), not required to mirror the gap
+          above — confirmed explicitly after PR #1022's fully-symmetric
+          version shipped and visibly read as "just floating text below
+          the Orb," not "belongs to it." scripts/verify-intro-orb-placement.mjs
+          encodes this on purpose: it now asserts the gap below the Orb is
+          small AND smaller than the gap above, not equal to it — see that
+          script before changing this value or assuming a future diff is a
+          regression. All vars used are breakpoint-aware, so this tracks
+          correctly through every viewport/resize without a separate
+          measurement. */}
+      {/* Positioning and the fade-in animation are deliberately split across
+          two elements: .animate-fade-in's keyframes animate `transform`
+          (translateY, for the fade-up motion), and a CSS animation's
+          transform REPLACES an inline transform on the same element rather
+          than composing with it — so translateX(-50%) here would get
+          silently clobbered by the animation's own translateY once it
+          completes. Keeping translateX on the outer (unanimated) element
+          and the animation on the inner span avoids the conflict. */}
+      <p
+        className="fixed z-20 pointer-events-none w-full max-w-xs px-6 text-center"
+        style={{
+          left: 'var(--maxina-orb-target-left, 50%)',
+          top: 'calc(var(--maxina-orb-target-top, 50%) + var(--maxina-orb-size, 96px) / 2 + var(--maxina-orb-caption-gap, 12px))',
+          transform: 'translateX(-50%)',
+        }}
+      >
+        <span
+          className="inline-block text-sm md:text-base font-medium text-white/70 animate-fade-in [text-shadow:0_1px_6px_rgba(0,0,0,0.5)]"
+          style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
+        >
+          {t.intro?.tapOrbHint || 'Tap the Orb to meet Vitana'}
+        </span>
+      </p>
 
       {/* Loading placeholder at the Orb's target spot (see the orbReady
           effect above) — disappears once the real widget is detected, or

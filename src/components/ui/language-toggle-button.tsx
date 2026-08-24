@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Check, ChevronDown, Globe } from 'lucide-react';
+import { Check, ChevronDown } from 'lucide-react';
 import { useLanguage, getVisibleLanguageOptions } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/hooks/useTranslation';
 // `t` from i18n-toast is a plain function-call lookup and would shadow the
@@ -28,6 +28,7 @@ import ruFlag from '@/assets/flags/ru.png';
 import plFlag from '@/assets/flags/pl.png';
 import saFlag from '@/assets/flags/sa.png';
 import cnFlag from '@/assets/flags/cn.png';
+import trFlag from '@/assets/flags/tr.png';
 
 /**
  * Language picker for the intro/landing screen: a glass pill (globe icon +
@@ -68,6 +69,7 @@ const LOCALE_PRESENTATION: Record<string, { flag: string; endonym: string }> = {
   // renders properly rather than falling back to a bare English label.
   'ar-XA': { flag: saFlag, endonym: 'العربية' },
   'zh-CN': { flag: cnFlag, endonym: '简体中文' },
+  'tr-TR': { flag: trFlag, endonym: 'Türkçe' },
 };
 
 interface LanguageToggleButtonProps {
@@ -88,9 +90,9 @@ export function LanguageToggleButton({ className }: LanguageToggleButtonProps) {
   const isInteractive = options.length > 1;
 
   const triggerClasses = cn(
-    'w-full flex items-center justify-center gap-2.5',
+    'w-full flex items-center justify-center gap-3',
     'bg-white/10 backdrop-blur-xl border border-white/30 rounded-2xl',
-    'px-8 py-5 text-base font-medium text-white',
+    'px-8 py-5 text-base font-semibold text-white',
     'shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]',
     'transition-all duration-300',
     isInteractive && 'hover:bg-white/20',
@@ -110,9 +112,13 @@ export function LanguageToggleButton({ className }: LanguageToggleButtonProps) {
         aria-haspopup={isInteractive ? 'dialog' : undefined}
         disabled={!isInteractive}
       >
-        <Globe className="w-5 h-5 text-white/80" aria-hidden="true" />
-        <span>{current.endonym}</span>
-        <ChevronDown className="w-4 h-4 text-white/70" aria-hidden="true" />
+        <img
+          src={current.flag}
+          alt=""
+          className="w-9 h-6 rounded object-cover flex-shrink-0 shadow-[0_0_0_1px_rgba(255,255,255,0.25)]"
+        />
+        <span className="flex-1 text-start">{current.endonym}</span>
+        <ChevronDown className="w-5 h-5 text-white/70 flex-shrink-0" aria-hidden="true" />
       </button>
 
       {/* Dark glass styling, overridden locally rather than in the shared

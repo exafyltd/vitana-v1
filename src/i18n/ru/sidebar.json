@@ -46,7 +46,6 @@
     "logout": "Выйти",
     "connectors": "Коннекторы",
     "support": "Поддержка",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "myJourney": "Мой путь"
+  }
 }

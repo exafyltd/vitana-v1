@@ -1,0 +1,45 @@
+{
+  "verdicts": {
+    "publicProfile.viewFull": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "publicProfile.sendMessage": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "publicProfile.follow": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "publicProfile.milestones": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "publicProfile.posts": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "publicProfile.followers": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "publicProfile.following": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "publicProfile.groups": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-24T08:42:21.741Z"
+}

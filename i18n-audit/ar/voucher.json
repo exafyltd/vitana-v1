@@ -1,0 +1,246 @@
+{
+  "verdicts": {
+    "voucher.modal.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"Maxina\" missing from target",
+      "phase": "static"
+    },
+    "voucher.modal.subtitle": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "voucher.modal.buyVoucher": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.modal.openingCheckout": {
+      "verdict": "OK",
+      "confidence": 0.97,
+      "phase": "llm"
+    },
+    "voucher.tiers.test.name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "voucher.tiers.experience.name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "voucher.tiers.exclusive.name": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "voucher.success.title": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.success.ready": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "voucher.success.download": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.success.sendEmail": {
+      "verdict": "OK",
+      "confidence": 0.97,
+      "phase": "llm"
+    },
+    "voucher.success.viewOrders": {
+      "verdict": "OK",
+      "confidence": 0.96,
+      "phase": "llm"
+    },
+    "voucher.success.done": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "voucher.email.title": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.email.subtitle": {
+      "verdict": "OK",
+      "confidence": 0.96,
+      "phase": "llm"
+    },
+    "voucher.email.recipientEmail": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.email.recipientName": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.email.personalMessage": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.email.messagePlaceholder": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "voucher.email.back": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "voucher.email.send": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.preview.title": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.preview.giftVoucher": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.preview.validUntil": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.preview.voucherCode": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.preview.whatsIncluded": {
+      "verdict": "OK",
+      "confidence": 0.97,
+      "phase": "llm"
+    },
+    "voucher.preview.downloadPdf": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.preview.downloadDirect": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.preview.openInBrowser": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.preview.copyLink": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.preview.share": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.preview.shareHint": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "voucher.preview.downloadHint": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "voucher.toast.downloadStarted": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.toast.downloadFailed": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.toast.linkCopied": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.toast.linkCopiedDesc": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "voucher.toast.voucherSent": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "voucher.toast.voucherShared": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.toast.checkoutFailed": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "voucher.toast.generatingVoucher": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.toast.failedToLoadVoucher": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.toast.downloadFailedCopyLink": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.toast.useTicketView": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "voucher.toast.pdfNotAvailable": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.toast.enterRecipientEmail": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "voucher.toast.emailOnlyForVouchers": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    },
+    "voucher.toast.sendingVoucherEmail": {
+      "verdict": "OK",
+      "confidence": 0.98,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-24T09:07:41.854Z"
+}

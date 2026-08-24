@@ -1,0 +1,45 @@
+{
+  "_pending_review": {},
+  "videoShop": {
+    "_pending_review": {},
+    "feed": {
+      "_pending_review": {},
+      "loading": "Video Mağazası yükleniyor …",
+      "loadingMore": "Daha fazla video yükleniyor …",
+      "end": "Sona ulaştın.",
+      "emptyTitle": "Henüz video yok",
+      "emptyBody": "Şu anda mağaza videosu yok. Daha sonra tekrar kontrol et veya Discover'a göz at.",
+      "browseDiscover": "Discover'a Göz At",
+      "errorTitle": "Video Mağazasını yükleyemedik",
+      "errorBody": "Lütfen bir süre sonra tekrar dene.",
+      "retry": "Tekrar dene",
+      "roleBlockedTitle": "Video Mağazası burada senin için kullanılamıyor",
+      "roleBlockedBody": "Video Mağazası bir topluluk özelliğidir. Kullanmak için topluluk rolüne geç.",
+      "mute": "Sesi Kapat",
+      "unmute": "Sesi Aç",
+      "share": "Paylaş",
+      "linkCopied": "Bağlantı kopyalandı"
+    },
+    "drawer": {
+      "_pending_review": {},
+      "loading": "Ürün yükleniyor …",
+      "productFallback": "Ürün",
+      "addToCart": "Sepete ekle",
+      "adding": "Ekleniyor …",
+      "addedTitle": "Eklendi",
+      "addedBody": "Ürün artık sepetinde.",
+      "addFailed": "Sepete eklenemedi",
+      "goToCart": "Sepete git",
+      "moreDetails": "Daha fazla ayrıntı",
+      "notifyMe": "Bana haber ver",
+      "outOfStock": "Stokta yok",
+      "retry": "Tekrar dene",
+      "errorTitle": "Ürün yüklenemedi",
+      "errorBody": "Lütfen bir süre sonra tekrar dene.",
+      "unavailableTitle": "Artık mevcut değil",
+      "unavailableBody": "Bu ürün artık mevcut değil.",
+      "roleBlockedTitle": "Satın alma burada kullanılamıyor",
+      "roleBlockedBody": "Satın alma bir topluluk özelliğidir. Devam etmek için topluluk rolüne geç."
+    }
+  }
+}

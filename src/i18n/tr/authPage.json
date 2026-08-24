@@ -1,0 +1,21 @@
+{
+  "authPage": {
+    "welcomeTitle": "VITANA'ya Hoş Geldin",
+    "subtitle": "Kişiselleştirilmiş Sağlık Zekası Platformun",
+    "signIn": "Giriş Yap",
+    "signUp": "Kaydol",
+    "email": "E-posta",
+    "password": "Şifre",
+    "fullName": "Ad Soyad",
+    "enterEmail": "E-postanı Gir",
+    "enterPassword": "Şifreni Gir",
+    "enterFullName": "Tam adını gir",
+    "createPassword": "Şifre Oluştur",
+    "createAccount": "Hesap Oluştur",
+    "orContinueWith": "Veya şununla devam et",
+    "backToPortals": "Tüm portallara geri dön",
+    "keepLoggedIn": "Beni oturumda tut",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

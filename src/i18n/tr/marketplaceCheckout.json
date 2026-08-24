@@ -1,0 +1,70 @@
+{
+  "marketplaceCheckout": {
+    "balance": {
+      "title": "Bakiyen",
+      "loading": "Bakiye yükleniyor …",
+      "empty": "Henüz bakiye yok",
+      "addMoney": "Para ekle",
+      "_pending_review": {}
+    },
+    "checkout": {
+      "button": "Ödemeye geç",
+      "processing": "İşleniyor …",
+      "successTitle": "Sipariş verildi",
+      "successBody": "Bakiyenden düşüldü ve siparişin oluşturuldu.",
+      "duplicateTitle": "Sipariş zaten verildi",
+      "duplicateBody": "Bu sipariş zaten işlendi.",
+      "affiliateTitle": "Satın alımı satıcıda tamamla",
+      "affiliateBody": "Bazı ürünler doğrudan satıcıdan satın alınır. Satın alımı tamamlamak için aşağıdaki bağlantıları aç.",
+      "affiliateLink": "Satın alımı satıcıda tamamla",
+      "affiliateOpened": "Satıcı bağlantıları yeni sekmelerde açıldı.",
+      "_pending_review": {}
+    },
+    "addMoney": {
+      "title": "Para ekle",
+      "description": "Stripe ile kart üzerinden bakiyeni yükle.",
+      "amountLabel": "Tutar",
+      "amountPlaceholder": "0,00",
+      "currencyLabel": "Para birimi",
+      "currencyEur": "EUR",
+      "currencyUsd": "USD",
+      "continue": "Ödemeye devam et",
+      "processing": "Hazırlanıyor …",
+      "invalidAmount": "Lütfen geçerli bir tutar gir.",
+      "failed": "Bakiye yükleme başlatılamadı.",
+      "_pending_review": {}
+    },
+    "deposit": {
+      "checkingTitle": "Ödeme onaylanıyor",
+      "checkingBody": "Ödemenin onaylanmasını bekliyoruz. Bu biraz zaman alabilir.",
+      "succeededTitle": "Bakiye yüklendi",
+      "succeededBody": "Bakiyen başarıyla yüklendi.",
+      "failedTitle": "Bakiye yükleme başarısız",
+      "failedBody": "Bakiye yüklemen tamamlanamadı. Hiçbir ücret alınmadı.",
+      "amountLabel": "Tutar",
+      "backToCart": "Sepete dön",
+      "_pending_review": {}
+    },
+    "errors": {
+      "invalid_request": "İstek geçersizdi. Lütfen sepetini kontrol et.",
+      "CART_EMPTY": "Sepetin boş.",
+      "PRODUCT_UNAVAILABLE": "Sepetindeki bir ürün artık mevcut değil.",
+      "PRICE_UNAVAILABLE": "Bir ürün için fiyat şu anda mevcut değil.",
+      "MIXED_CURRENCY": "Sepetin farklı para birimlerinde ürünler içeriyor. Lütfen ayır.",
+      "UNSUPPORTED_WALLET_CURRENCY": "Bu para birimi bakiyen tarafından desteklenmiyor.",
+      "WALLET_ACCOUNT_MISSING": "Bu para birimi için henüz bakiye hesabı oluşturulmadı.",
+      "WALLET_ACCOUNT_INACTIVE": "Bakiye hesabın şu anda etkin değil.",
+      "INSUFFICIENT_BALANCE": "Bu satın alım için bakiyen yeterli değil. Lütfen para ekle.",
+      "TENANT_REQUIRED": "Bu işlem aktif bir çalışma alanı gerektirir.",
+      "WALLET_DEBIT_FAILED": "Bakiyenden düşüm yapılamadı. Lütfen tekrar dene.",
+      "CART_READ_FAILED": "Sepetini okuyamadık. Lütfen tekrar dene.",
+      "ORDER_WRITE_FAILED": "Siparişin kaydedilemedi. Lütfen tekrar dene.",
+      "WALLET_READ_FAILED": "Bakiyeni okuyamadık. Lütfen tekrar dene.",
+      "GATEWAY_MISCONFIGURED": "Ödeme hizmeti şu anda kullanılamıyor. Lütfen daha sonra tekrar dene.",
+      "unknown": "Ödeme sırasında bir sorun oluştu. Lütfen tekrar dene.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

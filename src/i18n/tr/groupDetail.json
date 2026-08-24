@@ -1,0 +1,18 @@
+{
+  "groupDetail": {
+    "_pending_review": {},
+    "members": "Üyeler",
+    "public": "Herkese Açık",
+    "private": "Özel",
+    "leaveGroup": "Gruptan Ayrıl",
+    "leaving": "Ayrılıyor...",
+    "joinGroup": "Gruba Katıl",
+    "joining": "Katılıyor...",
+    "back": "Geri",
+    "notFound": "Grup bulunamadı",
+    "notFoundDesc": "Bu grup kaldırılmış veya mevcut olmayabilir.",
+    "browseGroups": "Gruplara Göz At",
+    "support": "Destek"
+  },
+  "_pending_review": {}
+}

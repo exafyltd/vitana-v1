@@ -1,0 +1,21 @@
+{
+  "profilePosts": {
+    "_pending_review": {},
+    "createPost": "Gönderi Oluştur",
+    "placeholder": "Şu an aklından ne geçiyor?",
+    "shareCta": "Toplulukla bir şey paylaş",
+    "post": "Paylaş",
+    "posted": "Paylaşıldı!",
+    "deleted": "Gönderi silindi",
+    "emptyTitle": "Henüz gönderi yok",
+    "emptyDescription": "Toplulukla ilk güncellemeni paylaş",
+    "deleteConfirm": "Bu gönderi silinsin mi?",
+    "error": "Bir şeyler ters gitti",
+    "mentionPlaceholder": "Aklından ne geçiyor? Birini etiketlemek için @ yaz",
+    "background": "Arka plan",
+    "noBackground": "Arka plan yok",
+    "searchingPeople": "Kişiler aranıyor …",
+    "noPeopleFound": "Kimse bulunamadı"
+  },
+  "_pending_review": {}
+}

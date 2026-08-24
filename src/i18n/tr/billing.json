@@ -1,0 +1,283 @@
+{
+  "billing": {
+    "promises": {
+      "anchorHeading": "Tasarım gereği özel.",
+      "subheading": "Her planda dört söz — ücretsiz veya ücretli.",
+      "owned": {
+        "title": "Paylaştığın sana ait.",
+        "body": "Bellek, profil, öneriler — hepsi her zaman görünür, dışa aktarılabilir, silinebilir.",
+        "_pending_review": {}
+      },
+      "noSell": {
+        "title": "Verilerini asla satmayız.",
+        "body": "Reklam ağlarına, veri aracılarına, iş ortaklarına satmayız. Kodda uygulanır.",
+        "_pending_review": {}
+      },
+      "earn": {
+        "title": "Önerilerin sana kazandırabilir.",
+        "body": "Önerin Sat ve Kazan aracılığıyla bir satış yaptığında veya ücretli bir Canlı Oda barındırdığında, gelir senindir — şeffafça açıklanır.",
+        "_pending_review": {}
+      },
+      "control": {
+        "title": "Sat ve Kazan'ın senin için ne yapacağına sen karar verirsin.",
+        "body": "Connect ayarlarındaki üç anahtar sana tam kontrol sağlar.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "plans": {
+      "needMoreTitle": "Daha fazla canlı yayın süresi veya barındırma mı istiyorsun?",
+      "needMoreBody": "Premium çoğu üyeyi kapsar. Topluluk odaları barındırıyorsan veya her gün ses kullanıyorsan, daha büyük planlarımıza bak.",
+      "showAll": "Tüm planları göster",
+      "hideAll": "Daha büyük planları gizle",
+      "headlineSection": "Premium ile başla",
+      "expandedSection": "Barındıranlar ve topluluklar için",
+      "currentPlan": "Mevcut plan",
+      "selectPlan": "Seç",
+      "perMonth": "/ay",
+      "perYear": "/yıl",
+      "saveAnnual": "Yıllık ile tasarruf et",
+      "trial14": "14 gün ücretsiz dene. İstediğin zaman iptal et.",
+      "free": {
+        "name": "Ücretsiz",
+        "tagline": "Dene — risksiz, süresiz",
+        "price": "Ücretsiz",
+        "_pending_review": {}
+      },
+      "premium": {
+        "name": "Premium",
+        "tagline": "Günlük kullanım — daha fazla canlı yayın süresi, daha fazla barındırma, daha fazla depolama",
+        "_pending_review": {}
+      },
+      "premium_5x": {
+        "name": "Barındır",
+        "tagline": "Güçlü kullanıcılar · aileler · düzenli barındıranlar",
+        "ribbon": "5× Premium",
+        "_pending_review": {}
+      },
+      "premium_20x": {
+        "name": "Topluluk",
+        "tagline": "Koçlar · uygulayıcılar · topluluk liderleri",
+        "ribbon": "20× Premium",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "features": {
+      "voiceLive": "ORB ile canlı sohbetler",
+      "voiceLiveUnit": "dk/ay",
+      "voiceStandard": "Standart sesli sohbetler",
+      "voiceStandardUnit": "Adil kullanım",
+      "liveRooms": "Canlı Oda barındırma",
+      "liveRoomsUnit": "saat/ay",
+      "matchPosts": "Eşleştirme gönderileri",
+      "matchPostsUnit": "/ay",
+      "matchReveals": "Eşleştirme açıklamaları",
+      "matchRevealsUnit": "/hafta",
+      "labAnalyses": "Laboratuvar analizi",
+      "labAnalysesUnit": "/ay",
+      "photoUploads": "Fotoğraf yüklemeleri",
+      "photoUploadsUnit": "/ay",
+      "storage": "Güvenli depolama",
+      "storageUnit": "GB",
+      "aiDigest": "YZ özetleri",
+      "aiDigestWeekly": "Haftalık",
+      "aiDigestDaily": "Günlük",
+      "aiDigestOnDemand": "Günlük + isteğe bağlı",
+      "sellAndEarnCatalog": "Sat ve Kazan kataloğu",
+      "sellAndEarnCatalogUnit": "öğeler",
+      "priorityPractitioner": "Öncelikli uygulayıcı erişimi",
+      "yes": "Evet",
+      "no": "–",
+      "fairUse": "Adil kullanım",
+      "used": "{used} / {limit} {unit}",
+      "resetIn": "{duration} içinde sıfırlanır",
+      "comparisonTitle": "Her planda neler var",
+      "_pending_review": {}
+    },
+    "creditPacks": {
+      "title": "Ekstra dakika ekle",
+      "subtitle": "Bir kez yükle, istediğin zaman harca",
+      "starter": "10 saat standart ses VEYA 100 canlı dakika",
+      "boost": "En popüler — 7 saat canlı ses",
+      "power": "Yoğun kullanım — 40 saat canlı ses",
+      "credits": "{credits} kredi",
+      "creditsWithBonus": "{credits} kredi +{bonus} bonus",
+      "buy": "Satın al",
+      "yourBalance": "Bakiyen: {amount} kredi",
+      "starterShort": "Başlangıç",
+      "boostShort": "Takviye",
+      "powerShort": "Güç",
+      "_pending_review": {}
+    },
+    "redeemCard": {
+      "title": "Bir kodun mu var?",
+      "placeholder": "VITANA-XXXX-XXXX",
+      "button": "Kullan",
+      "redeeming": "Kullanılıyor…",
+      "successTitle": "Premium etkinleştirildi",
+      "successBody": "Premium {date} tarihine kadar aktif. Keyfini çıkar.",
+      "founding": "🏆 Hoş geldin, Kurucu Üye — #{position} / {max} kişiden birisin. Premium 90 gün ücretsiz.",
+      "error": {
+        "invalid": "Kod bulunamadı",
+        "expired": "Kodun süresi doldu",
+        "maxUsed": "Kod çok fazla kullanıldı",
+        "alreadyRedeemed": "Bu kodu zaten kullandın",
+        "stripeActive": "Zaten Premium'un var — bu kodu sonraya sakla",
+        "budgetExhausted": "Kampanya duraklatıldı — lütfen daha sonra tekrar dene",
+        "generic": "Kod kullanılamadı",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "earnings": {
+      "title": "Kazancın (bu yıl)",
+      "youPaid": "Vitana'ya ödeme yaptın",
+      "youEarned": "Vitana kazanmana yardımcı oldu (Sat ve Kazan)",
+      "net": "Net",
+      "withdraw": "Çek",
+      "empty": "Henüz kazancın yok",
+      "_pending_review": {}
+    },
+    "founding": {
+      "bannerTitle": "🏆 İlk {max} kişi arasında ol",
+      "bannerBody": "3 ay Premium ücretsiz, {code} koduyla.",
+      "spotsRemaining": "{remaining} / {max} yer kaldı",
+      "_pending_review": {}
+    },
+    "launchGrant": {
+      "title": "🎁 Hoş geldin — Premium bizden",
+      "body": "Başlangıçtan beri burada olduğun için Vitana Premium'un 12 ayını aldın. {endsAt} tarihine kadar aktif.",
+      "noAction": "Herhangi bir işlem gerekmiyor. Keyfini çıkar.",
+      "dismissAria": "Bildirimi kapat",
+      "_pending_review": {}
+    },
+    "mobileBilling": {
+      "rootIntro": "Planını, ödeme yöntemini ve içerik üreticisi ödemelerini yönet.",
+      "navPlan": "Mevcut Plan",
+      "navPayment": "Ödeme Yöntemi",
+      "navInvoices": "Faturalar ve Makbuzlar",
+      "navCreator": "İçerik Üreticisi Ödemeleri",
+      "changePlan": "Planı değiştir",
+      "openStripe": "Stripe portalını aç",
+      "paymentTitle": "Ödeme Yöntemi",
+      "paymentBody": "Kayıtlı kartın ve fatura bilgilerin Stripe tarafından yönetilir.",
+      "paymentNoneTitle": "Kayıtlı ödeme yöntemi yok",
+      "paymentNoneBody": "Premium plana başladığında bir kart ekle.",
+      "invoicesTitle": "Faturalar ve Makbuzlar",
+      "invoicesBody": "Tüm faturalar ve makbuzlar Stripe faturalandırma portalında mevcut.",
+      "summaryRenewsOn": "Planın {date} tarihinde yenilenir",
+      "_pending_review": {}
+    },
+    "state": {
+      "freeStatus": "Vitana Ücretsiz planındasın",
+      "freeBody": "Premium'u 14 gün ücretsiz dene.",
+      "premiumActive": "Vitana Premium",
+      "renewsAt": "{date} tarihinde yenilenir",
+      "autoGrantUntil": "Lansmanda otomatik verildi · {date} tarihine kadar.",
+      "cancelAtPeriodEnd": "Dönem sonunda iptal edilecek",
+      "pastDue": "Ödeme başarısız oldu",
+      "pastDueBody": "Premium'u sürdürmek için ödeme yöntemini güncelle.",
+      "manage": "Yönet",
+      "viewPlans": "Premium'u Gör",
+      "upgrade": "Yükselt",
+      "trialEndsAt": "Deneme {date} tarihinde sona eriyor",
+      "trialingBadge": "Deneme sürümünde",
+      "activeBadge": "Aktif",
+      "_pending_review": {}
+    },
+    "subscriptionsPage": {
+      "title": "Abonelikler",
+      "subtitle": "Vitana Premium ve kredilerini yönet",
+      "tabs": {
+        "yourPlan": "Planın",
+        "billing": "Faturalandırma",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "faq": {
+      "title": "Neden Premium?",
+      "q1": "Premium ile ne elde ederim?",
+      "a1": "ORB ile daha fazla canlı ses süresi, Canlı Odalar'da daha fazla barındırma, daha fazla depolama ve daha hızlı kişisel özetler.",
+      "q2": "Kredilere kıyasla fark ne?",
+      "a2": "Krediler ara sıra kullanım içindir. Premium sana her şeyden sürekli daha fazlasını verir — günlük kullanım için tasarlandı.",
+      "q3": "İstediğin zaman iptal edebilir misin?",
+      "a3": "Evet, sözleşme yok. Premium'u mevcut dönemin sonuna kadar kullanırsın.",
+      "q4": "Verilerimi satıyor musun?",
+      "a4": "Asla. Verilerini asla reklam ağlarına, veri aracılarına veya iş ortaklarına satmayız.",
+      "_pending_review": {}
+    },
+    "checkoutErrors": {
+      "stripeNotConfigured": "Ödemeler henüz tam olarak ayarlanmadı. Lütfen daha sonra tekrar dene.",
+      "alreadySubscribed": "Zaten aktif bir aboneliğin var. Faturalandırma portalından yönet.",
+      "noStripeCustomer": "Portalı kullanmadan önce abone ol.",
+      "checkoutFailed": "Ödeme başarısız oldu",
+      "portalFailed": "Faturalandırma portalı açılamadı",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "paywall": {
+    "title": "Premium'un Kilidini Aç",
+    "softExtension": "Bugün için ücretsiz süreni uzattım.",
+    "creditsUsed": "Kredi kullanıldı — keyfini çıkar",
+    "voice_live_minutes": {
+      "title": "Canlı ses süresi doldu",
+      "body": "Dahil olan canlı ses süren doldu. ORB Standart modda devam edecek. İstediğin zaman süre ekleyebilir veya yükseltebilirsin.",
+      "stayInStandard": "Standart modda devam et",
+      "addMinutes": "Canlı süre ekle",
+      "_pending_review": {}
+    },
+    "live_room_minutes": {
+      "title": "Yayıncılık süren azalıyor",
+      "body": "Bu odanın 5 dakika dahil yayıncılık süresi kaldı. Çalışmaya devam etmesi için süre ekle veya yükselt.",
+      "wrapUp": "Toparla",
+      "addTime": "Yayıncılık süresi ekle",
+      "_pending_review": {}
+    },
+    "match_posts": {
+      "title": "Tüm ücretsiz gönderiler kullanıldı",
+      "body": "Bu ay ücretsiz gönderilerini kullandın. Premium sana daha fazlasını sunar.",
+      "_pending_review": {}
+    },
+    "match_reveals": {
+      "title": "Eşleşmeyi göster",
+      "body": "Ücretsiz gösterme haklarını kullandın. {credits} kredi kullan veya Premium'a yükselt.",
+      "_pending_review": {}
+    },
+    "lab_analyses": {
+      "title": "Laboratuvar analizleri kullanıldı",
+      "body": "Bu ay laboratuvar analizlerini kullandın.",
+      "_pending_review": {}
+    },
+    "photo_uploads": {
+      "title": "Fotoğraf yüklemeleri kullanıldı",
+      "body": "Bu ay fotoğraf yüklemelerini kullandın.",
+      "_pending_review": {}
+    },
+    "memory_garden": {
+      "title": "Hafıza bahçesi dolu",
+      "body": "Premium sana daha fazla alan sunar.",
+      "_pending_review": {}
+    },
+    "autopilot": {
+      "title": "Daha fazla Otomatik Pilot önerisi",
+      "body": "Premium, aktif öneri sayını artırır.",
+      "_pending_review": {}
+    },
+    "default": {
+      "title": "Premium'un Kilidini Aç",
+      "body": "Bu dönem için ücretsiz kotanı kullandın.",
+      "_pending_review": {}
+    },
+    "ctaUpgrade": "Premium'un Kilidini Aç",
+    "ctaCredits": "{credits} kredi kullan",
+    "ctaLater": "Belki sonra",
+    "remainingCounter": "{remaining} / {limit}",
+    "resetsIn": "{date} tarihinde yenilenir",
+    "creditsInsufficient": "Yetersiz kredi. Önce bakiye yükle.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

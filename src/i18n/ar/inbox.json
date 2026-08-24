@@ -85,7 +85,7 @@
       "error": "خطأ",
       "conversationStarted": "بدأت المحادثة!",
       "authRequired": "المصادقة مطلوبة",
-      "noTenantContext": "لا يوجد سياق مستأجر متاح",
+      "noTenantContext": "لا يتوفر سياق المستأجر",
       "searchFailed": "فشل البحث",
       "accessDenied": "تم رفض الوصول",
       "communityOnly": "يمكن لمستخدمي المجتمع فقط إنشاء محادثات عالمية",

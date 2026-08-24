@@ -2656,8 +2656,8 @@
       "_pending_review": {}
     },
     "assistant": {
-      "voiceProviderHint_googleSpeech": "L'API Google Speech offre une synthèse vocale de haute qualité",
-      "voiceProviderHint_geminiChirp": "Les voix Gemini Chirp 3 HD offrent un discours premium, naturel et avec une résonance émotionnelle",
+      "voiceProviderHint_polly": "Amazon Polly offre une synthèse vocale de haute qualité et au son naturel",
+      "voiceProviderLabel_polly": "Amazon Polly (recommandé)",
       "voiceProviderHint_noVoicesAvailable": "Aucune voix disponible pour {lang}. Installe une voix dans les paramètres de ton OS/navigateur.",
       "voiceProviderHint_browserVoices": "Utilisation des voix du navigateur",
       "aiModelPreferences": "Préférences du modèle d'IA",

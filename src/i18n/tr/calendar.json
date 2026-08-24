@@ -1,0 +1,163 @@
+{
+  "calendar": {
+    "smartCalendar": "Akıllı Takvim",
+    "myCalendar": "Takvimim",
+    "bookedActivities": "VITANA'daki rezervasyonlu etkinlikleriniz",
+    "addEvent": "Etkinlik Ekle",
+    "synced": "Senkronize",
+    "syncing": "Senkronize Ediliyor",
+    "today": "Bugün",
+    "week": "Hafta",
+    "month": "Ay",
+    "agenda": "Ajanda",
+    "nothingScheduled": "Planlanmış bir şey yok",
+    "tryQuickAdd": "Hızlı Ekle'yi dene veya Otomatik Pilot günü planlasın",
+    "clickSlotHint": "Etkinlik oluşturmak için bir zaman dilimine tıkla • Taşımak için sürükle",
+    "noEventsOnDate": "Bu tarihte etkinlik yok",
+    "lastSynced": "Son senkronizasyon",
+    "justNow": "az önce",
+    "now": "Şimdi",
+    "untitledEvent": "İsimsiz Etkinlik",
+    "newEvent": "Yeni Etkinlik",
+    "close": "Kapat",
+    "noBookingsToday": "Bugün rezervasyon yok",
+    "noBookingsYet": "Henüz rezervasyon yok",
+    "nextUpcoming": "Sıradaki",
+    "exploreActivities": "Takvimin için etkinlikler keşfet",
+    "browseActivities": "Etkinliklere Göz At",
+    "bookedEvents": {
+      "title": "Rezervasyonlu etkinlikleriniz",
+      "todayLabel": "Bugün",
+      "nextUp": "Sıradaki",
+      "noEventsToday": "Bugün etkinlik yok",
+      "_pending_review": {}
+    },
+    "filters": {
+      "personal": "Kişisel",
+      "community": "Topluluk",
+      "work": "İş",
+      "health": "Sağlık",
+      "workout": "Antrenman",
+      "_pending_review": {}
+    },
+    "categories": {
+      "community": "Topluluk",
+      "fitness": "Fitness",
+      "health": "Sağlık",
+      "nutrition": "Beslenme",
+      "professional": "İş",
+      "personal": "Kişisel",
+      "training": "Antrenman",
+      "_pending_review": {}
+    },
+    "bookingStatus": {
+      "booked": "Rezerve Edildi",
+      "rsvp": "Katılım Onayı",
+      "ticket": "Bilet",
+      "reserved": "Ayrıldı",
+      "_pending_review": {}
+    },
+    "timeGroups": {
+      "today": "Bugün",
+      "tomorrow": "Yarın",
+      "thisWeek": "Bu Hafta",
+      "later": "Daha Sonra",
+      "_pending_review": {}
+    },
+    "autopilot": {
+      "suggestions": "Otomatik Pilot Önerileri",
+      "badge": "Otomatik Pilot",
+      "accept": "Kabul Et",
+      "snooze": "Sonra hatırlat",
+      "dismiss": "Reddet",
+      "undo": "Geri Al",
+      "laterToday": "Bugün daha sonra",
+      "tomorrow": "Yarın",
+      "conflictsWith": "Şununla çakışıyor:",
+      "suggestionAccepted": "Öneri kabul edildi",
+      "calendarUpdated": "Otomatik Pilot takvimini güncelledi",
+      "suggestionUndone": "Öneri geri alındı",
+      "changesReverted": "Değişiklikler geri alındı",
+      "suggestionSnoozed": "Öneri ertelendi",
+      "reminderLaterToday": "Bugün için daha sonra hatırlatma ayarlandı",
+      "reminderTomorrow": "Yarın için hatırlatma ayarlandı",
+      "recommendFocus": "Odaklanma bloğu öner",
+      "focusBlockDesc": "90 dakikalık boş bir zaman dilimin var. Odaklanmış çalışma için mükemmel.",
+      "_pending_review": {}
+    },
+    "toasts": {
+      "eventCreated": "Etkinlik oluşturuldu",
+      "eventCreatedDesc": "Etkinliğin takvime eklendi",
+      "eventDeleted": "Etkinlik silindi",
+      "eventDeletedDesc": "Etkinlik takviminden kaldırıldı",
+      "syncingTitle": "Senkronize ediliyor...",
+      "syncingDesc": "Harici takvimlerle senkronize ediliyor",
+      "syncedTitle": "Senkronize",
+      "syncedDesc": "Takvim güncel",
+      "joiningEvent": "Etkinliğe katılıyorsun",
+      "openingVideoCall": "Görüntülü arama açılıyor...",
+      "messageAttendees": "Katılımcılara mesaj gönder",
+      "featureComingSoon": "Özellik yakında geliyor",
+      "inviteFollowers": "Takipçilerini davet et",
+      "rescheduleEvent": "Etkinliği yeniden planla",
+      "shareToGroup": "Gruba paylaş",
+      "_pending_review": {}
+    },
+    "error": {
+      "failedToCreate": "Etkinlik oluşturulamadı",
+      "_pending_review": {}
+    },
+    "allDay": "Tüm gün",
+    "milestoneToday": "Dönüm Noktası",
+    "focus": {
+      "todaysFocus": "Bugünün odak noktası",
+      "lightDay": "Sakin bir gün — etkinlikleri keşfet veya günlüğüne bak",
+      "moreSteps": "adım daha",
+      "_pending_review": {}
+    },
+    "badge": {
+      "guidedStep": "Rehberli adım",
+      "milestone": "Dönüm noktası",
+      "wellness": "Wellness",
+      "_pending_review": {}
+    },
+    "action": {
+      "start": "Başla",
+      "continue": "Devam Et",
+      "join": "Katıl",
+      "details": "Ayrıntılar",
+      "viewPlan": "Planı görüntüle",
+      "open": "Aç",
+      "done": "Bitti",
+      "_pending_review": {}
+    },
+    "group": {
+      "stepsRemaining": "adım kaldı",
+      "min": "dk",
+      "_pending_review": {}
+    },
+    "journey": {
+      "dayOf": "{total} günün {day}. günü",
+      "yourJourney": "Yolculuğun",
+      "nextMilestone": "Sıradaki dönüm noktası",
+      "showFullAgenda": "Tam ajandayı göster",
+      "moreEvents": "etkinlik daha",
+      "onboardingPlan": "Bugünün başlangıç planı",
+      "estimatedTime": "~{minutes} dk",
+      "startPlan": "Planı başlat",
+      "tasksCompleted": "{completed}/{total} tamamlandı",
+      "waveNames": {
+        "wave-1": "Başlarken",
+        "wave-2": "Günlük Bağlantılar",
+        "wave-3": "Bağları Derinleştirme",
+        "wave-4": "Sağlık Zekası",
+        "wave-5": "İçgörü Anları",
+        "wave-6": "Öneriler ve Keşif",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

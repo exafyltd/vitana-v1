@@ -94,6 +94,11 @@ const GA_ENDONYMS = [
   'Português (BR)',
   'Русский',
   'Polski',
+  // VTID-03701 — ar/zh/tr promoted to ga once all six promotion-gate
+  // surfaces (including db-content) passed.
+  'العربية',
+  '简体中文',
+  'Türkçe',
 ];
 
 // "Português (BR)" contains regex metacharacters — unescaped, `(BR)` is a
@@ -116,15 +121,19 @@ describe('landing-page language picker', () => {
     currentLanguage = 'de-DE';
   });
 
-  it('trigger shows the current language name and a globe icon, not a flag', () => {
+  it('trigger shows the current language name and that language\'s own flag', () => {
     currentLanguage = 'en-US';
     render(<LanguageToggleButton />);
     const trigger = screen.getByRole('button', { name: 'Sprache wählen' });
     expect(trigger.textContent).toContain('English');
-    // Flags only appear inside the drawer's row list, not on the trigger —
-    // the trigger's own icon is a fixed globe glyph (an inline SVG from
-    // lucide-react), not a per-language <img>.
-    expect(trigger.querySelector('img')).toBeNull();
+    // The trigger's icon used to be a fixed globe glyph (lucide-react),
+    // regardless of the selected language — replaced with the actual
+    // per-language flag <img> (same LOCALE_PRESENTATION data the drawer's
+    // row list already used) so the trigger itself shows which language is
+    // selected, not just its name.
+    const flag = trigger.querySelector('img');
+    expect(flag).not.toBeNull();
+    expect(flag?.getAttribute('src')).toContain('gb');
   });
 
   it('opens a drawer with a title and subtitle explaining what it does', async () => {

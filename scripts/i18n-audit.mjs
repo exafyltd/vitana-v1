@@ -197,6 +197,36 @@ for (const locale of allLocales.sort()) {
     }
   }
   const missing = [...deAllKeys].filter((k) => !keys.has(k));
+  // VTID-03710 — the REVERSE direction: keys this locale has that DE does not.
+  //
+  // Coverage above only ever asks "does the locale have everything DE has",
+  // so a key that exists ONLY in translations is invisible to it — every
+  // locale still reports 100% and is correct to. That blind spot hid 126 keys
+  // (21 x 6 locales) sitting at `health.missionAlignment` in health.json while
+  // the component actually reads `screens.health.missionAlignment` from
+  // screens.json. Nothing rendered them, the two copies drifted apart in
+  // wording, and only the live copy carried `_pending_review` markers — so the
+  // dead one looked *more* finished than the real one.
+  //
+  // The same check already existed for `en` (see the DE/EN mirror block
+  // above) and caught nothing here, because it compares only those two.
+  // `error`, matching that block: an orphan is either a typo'd path that
+  // renders nothing, or a stale copy someone will eventually edit instead of
+  // the real one. Both are bugs, and neither is visible in the UI.
+  //
+  // `flatten` skips `_`-prefixed metadata, so `_pending_review` and friends
+  // never count as extra keys.
+  const extra = [...keys].filter((k) => !deAllKeys.has(k));
+  if (extra.length > 0) {
+    recordIssue(
+      'error',
+      locale,
+      `${extra.length} key(s) exist in ${locale}/ but not in de/ — DE is the ` +
+        `source of truth, so nothing reads these (e.g. ${extra.slice(0, 3).join(', ')}). ` +
+        `Either add them to de/ if they are real, or delete them.`,
+    );
+  }
+
   // Floor to one decimal, and never print 100.0% while a key is missing.
   // 14160/14163 rounds to "100.0%" — a locale reporting complete while three
   // keys fall back to German is precisely the misleading signal this check
