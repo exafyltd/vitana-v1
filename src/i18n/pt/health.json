@@ -67,33 +67,6 @@
     "unknownProvider": "Provedor desconhecido",
     "addSupplement": "Adicionar Suplemento",
     "uploadFirstReport": "Carregar Primeiro Relatório",
-    "missionAlignment": {
-      "title": "Alinhamento da Missão",
-      "subtitle": "Como as suas recomendações apoiam os cinco pilares e a economia da longevidade",
-      "loading": "A carregar dados da missão…",
-      "error": "Não foi possível carregar os dados da missão",
-      "noRecs": "Você ainda não tem recomendações na sua fila.",
-      "summaryServed": "{pct}% das suas recomendações avançam a missão",
-      "summaryServedCount": "{served} de {total} recomendações alinhadas",
-      "pillarHeading": "Pilares atendidos",
-      "economyHeading": "Economia da Longevidade",
-      "noPillar": "Não alinhado com os pilares",
-      "noEconomy": "Não alinhado com a economia",
-      "pillars": {
-        "nutrition": "Nutrição",
-        "hydration": "Hidratação",
-        "exercise": "Exercício",
-        "sleep": "Sono",
-        "mental": "Saúde Mental"
-      },
-      "economyAxes": {
-        "find_match": "Encontrar um Par",
-        "marketplace": "Mercado",
-        "income_generation": "Geração de renda",
-        "business_formation": "Formação de negócios"
-      },
-      "contractLink": "Ver o contrato do Objetivo Final"
-    },
     "_pending_review": {}
   },
   "_pending_review": {}

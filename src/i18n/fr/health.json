@@ -67,36 +67,6 @@
     "unknownProvider": "Fournisseur inconnu",
     "addSupplement": "Ajouter un supplément",
     "uploadFirstReport": "Télécharge ton premier rapport",
-    "missionAlignment": {
-      "title": "Alignement de la mission",
-      "subtitle": "Comment tes recommandations soutiennent les cinq piliers et l'économie de la longévité",
-      "loading": "Chargement des données de mission…",
-      "error": "Impossible de charger les données de mission",
-      "noRecs": "Pas encore de recommandations dans ta file d'attente.",
-      "summaryServed": "{pct}% de tes recommandations font avancer la mission",
-      "summaryServedCount": "{served} sur {total} recommandations alignées",
-      "pillarHeading": "Piliers servis",
-      "economyHeading": "Économie de la longévité",
-      "noPillar": "Non aligné avec les piliers",
-      "noEconomy": "Non aligné avec l'économie",
-      "pillars": {
-        "nutrition": "Nutrition",
-        "hydration": "Hydratation",
-        "exercise": "Exercice",
-        "sleep": "Sommeil",
-        "mental": "Santé Mentale",
-        "_pending_review": {}
-      },
-      "economyAxes": {
-        "find_match": "Trouver une correspondance",
-        "marketplace": "Marché",
-        "income_generation": "Génération de revenus",
-        "business_formation": "Création d'entreprise",
-        "_pending_review": {}
-      },
-      "contractLink": "Voir le contrat de l'Objectif Ultime",
-      "_pending_review": {}
-    },
     "_pending_review": {}
   },
   "_pending_review": {}

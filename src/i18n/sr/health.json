@@ -67,36 +67,6 @@
     "unknownProvider": "Nepoznat pružalac usluga",
     "addSupplement": "Dodaj suplement",
     "uploadFirstReport": "Otpremi prvi izveštaj",
-    "missionAlignment": {
-      "title": "Usaglašenost sa misijom",
-      "subtitle": "Kako tvoje preporuke podržavaju pet stubova i ekonomiju dugovečnosti",
-      "loading": "Učitavanje podataka misije...",
-      "error": "Nije moguće učitati podatke misije",
-      "noRecs": "Još uvek nema preporuka u tvom redu.",
-      "summaryServed": "{pct}% tvojih preporuka unapređuje misiju",
-      "summaryServedCount": "{served} od {total} preporuka usaglašeno",
-      "pillarHeading": "Podržani stubovi",
-      "economyHeading": "Ekonomija dugovečnosti",
-      "noPillar": "Nije usklađeno sa stubovima",
-      "noEconomy": "Nije usklađeno sa ekonomijom",
-      "pillars": {
-        "nutrition": "Ishrana",
-        "hydration": "Hidratacija",
-        "exercise": "Vežbanje",
-        "sleep": "Spavanje",
-        "mental": "Mentalno zdravlje",
-        "_pending_review": {}
-      },
-      "economyAxes": {
-        "find_match": "Pronađi partnera",
-        "marketplace": "Tržište",
-        "income_generation": "Generisanje prihoda",
-        "business_formation": "Osnivanje biznisa",
-        "_pending_review": {}
-      },
-      "contractLink": "Pogledaj ugovor o krajnjem cilju",
-      "_pending_review": {}
-    },
     "_pending_review": {}
   },
   "_pending_review": {}
