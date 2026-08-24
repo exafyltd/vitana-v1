@@ -160,7 +160,7 @@
     "duration60": "1小时",
     "duration90": "1.5小时",
     "duration120": "2小时",
-    "durationHint": "如果你不手动结束，房间会在此时后自动关闭。",
+    "durationHint": "如果你不手动结束，房间会在该时间后自动关闭。",
     "_pending_review": {}
   },
   "_pending_review": {}

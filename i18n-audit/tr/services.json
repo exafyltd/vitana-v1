@@ -1,0 +1,111 @@
+{
+  "verdicts": {
+    "services.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.9,
+      "issue": "Inconsistent capitalization: 'MERKEZİ' is all caps, while 'Hizmetler' is title case. Also, 'HUB' is left in English, which is acceptable, but the Turkish should be more natural.",
+      "suggested": "Hizmetler Merkezi",
+      "phase": "llm"
+    },
+    "services.subtitle": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "services.categories.preventive": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "services.categories.labTests": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "services.categories.coaching": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "services.categories.groupPrograms": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "'Meydan Okumalar' is a literal translation of 'Challenges' but may sound awkward; 'Mücadeleler' or 'Yarışmalar' might be more natural.",
+      "suggested": "Grup Programları ve Mücadeleler",
+      "phase": "llm"
+    },
+    "services.actions.book": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "services.actions.addToPlan": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "services.actions.askAI": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "services.actions.joinRoom": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "services.actions.setReminder": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "services.details.duration": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.price": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.location": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "services.details.nextAvailable": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "services.details.whatsIncluded": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "services.details.healthBenefits": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "services.details.availableProviders": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "'Sağlayıcılar' is a literal translation of 'Providers' but may be too technical; 'Uzmanlar' or 'Hizmet Verenler' might be more user-friendly.",
+      "suggested": "Müsait Uzmanlar",
+      "phase": "llm"
+    },
+    "services.details.requirements": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "services.details.tags": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-24T09:05:10.555Z"
+}

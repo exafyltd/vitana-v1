@@ -1,0 +1,12 @@
+{
+  "verdicts": {
+    "timeline.searchPlaceholder": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.95,
+      "issue": "Typo: 'Aktivitede' should be 'Aktivitede'? Actually 'Aktivitede' is not a word; likely meant 'Aktivitede'? The correct Turkish is 'Aktivitede ara...' but 'Aktivitede' is misspelled; should be 'Aktivitede'? Actually 'aktivite' means activity, so 'Aktivitede ara' means 'Search in activity'. But the English is 'Search activity...' which is a search placeholder. The Turkish should be 'Aktivite ara...' (Search activity) or 'Aktivitede ara...' (Search in activity). The given 'Aktivitede ara...' is acceptable but has a typo: 'Aktivitede' is correct? Actually 'aktivite' + 'de' (locative) = 'aktivitede' is correct. But the given is 'Aktivitede' with a 'd'? It says 'Aktivitede ara...' which is fine. However, the English is 'Search activity...' which is a command to search for an activity, so 'Aktivite ara...' is more direct. But 'Aktivitede ara...' means 'Search in activity' which is slightly off. Also, the ellipsis is present. I'll suggest 'Aktivite ara...'.",
+      "suggested": "Aktivite ara...",
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-24T09:05:45.727Z"
+}

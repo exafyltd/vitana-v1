@@ -2,7 +2,7 @@
   "eventDrawer": {
     "host": "مضيف",
     "follow": "تابِع",
-    "following": "تتابعه",
+    "following": "تتابع",
     "followingLoading": "جاري المتابعة...",
     "unfollowed": "تم إلغاء المتابعة",
     "followingToast": "تمت المتابعة!",

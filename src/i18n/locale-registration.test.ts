@@ -62,6 +62,7 @@ const TAG_TO_DIR: Record<string, string> = {
   'pl-PL': 'pl',
   'ar-XA': 'ar',
   'zh-CN': 'zh',
+  'tr-TR': 'tr',
 };
 
 describe('i18n locale registration', () => {

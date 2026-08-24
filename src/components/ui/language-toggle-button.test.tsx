@@ -94,6 +94,11 @@ const GA_ENDONYMS = [
   'Português (BR)',
   'Русский',
   'Polski',
+  // VTID-03701 — ar/zh/tr promoted to ga once all six promotion-gate
+  // surfaces (including db-content) passed.
+  'العربية',
+  '简体中文',
+  'Türkçe',
 ];
 
 // "Português (BR)" contains regex metacharacters — unescaped, `(BR)` is a

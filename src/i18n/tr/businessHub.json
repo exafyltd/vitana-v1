@@ -1,0 +1,26 @@
+{
+  "businessHub": {
+    "_pending_review": {},
+    "title": "İş Merkezi",
+    "description": "Wellness işini büyüt",
+    "tabs": {
+      "_pending_review": {},
+      "snapshot": "Özet",
+      "services": "Hizmetler",
+      "sales": "Satışlar",
+      "insights": "Öngörüler"
+    },
+    "recentActivity": "Son Etkinlik",
+    "clients": "Müşteriler",
+    "analytics": "Analitik",
+    "searchBusiness": "İş ara...",
+    "noServices": "Henüz hizmet yok",
+    "noServicesDesc": "Müşteri çekmek için ilk hizmetini oluştur.",
+    "createService": "Hizmet Oluştur",
+    "noClients": "Henüz müşteri yok",
+    "noClientsDesc": "Müşterilerin burada görünecek.",
+    "noSales": "Henüz satış yok",
+    "noSalesDesc": "Satış geçmişin burada görünecek."
+  },
+  "_pending_review": {}
+}

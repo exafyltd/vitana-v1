@@ -44,11 +44,11 @@
     "saveFailed": "保存失败",
     "saveFailedDesc": "保存个人资料失败。请再试一次。",
     "autopilot": {
-      "quickSuggestions": "自动驾驶快速建议",
+      "quickSuggestions": "Autopilot 快速建议",
       "makeShorter": "缩短",
       "moreProfessional": "更专业",
       "moreInspirational": "更励志",
-      "suggestion": "自动驾驶建议",
+      "suggestion": "Autopilot 建议",
       "_pending_review": {}
     },
     "identity": {

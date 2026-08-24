@@ -1,0 +1,25 @@
+{
+  "payment": {
+    "_pending_review": {},
+    "completed": "Ödeme Tamamlandı! ✅",
+    "sentSuccess": "{amount} başarıyla gönderildi",
+    "alreadyProcessed": "Zaten işlendi",
+    "requestIs": "Bu talep {status}.",
+    "alreadyAccepted": "Bu ödeme talebi zaten kabul edildi.",
+    "declined": "Ödeme Reddedildi",
+    "declinedDesc": "Ödeme talebi reddedildi",
+    "exchangeSuccess": "Değişim & Gönderme Başarılı! ✨",
+    "exchangeSuccessDesc": "{amount} dönüştürüldü ve gönderildi",
+    "insufficientBalance": "Yetersiz Bakiye",
+    "insufficientBalanceDesc": "Bu değişim için yeterli {currency} bakiyen yok",
+    "transactionFailed": "İşlem Başarısız",
+    "paymentFailed": "Ödeme Başarısız",
+    "paymentFailedDesc": "Ödeme işlenemedi. Lütfen tekrar dene.",
+    "balanceRefreshed": "Bakiye Yenilendi",
+    "balanceRefreshedDesc": "Cüzdan bakiyen güncellendi",
+    "refreshFailed": "Yenileme Başarısız",
+    "refreshFailedDesc": "Bakiye güncellenemedi. Lütfen tekrar dene.",
+    "error": "Hata"
+  },
+  "_pending_review": {}
+}

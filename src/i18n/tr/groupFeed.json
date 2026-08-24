@@ -1,0 +1,17 @@
+{
+  "groupFeed": {
+    "_pending_review": {},
+    "placeholder": "Grupla bir şey paylaş...",
+    "post": "Paylaş",
+    "noMessages": "Henüz mesaj yok",
+    "beFirst": "Bu grupta paylaşan ilk kişi ol!",
+    "joinToPost": "Paylaşmak için gruba katıl.",
+    "messageSent": "Mesaj gönderildi",
+    "deleteConfirm": "Bu mesaj silinsin mi?",
+    "messageDeleted": "Mesaj silindi",
+    "error": "Hata",
+    "errorSend": "Mesaj gönderilemedi",
+    "errorDelete": "Mesaj silinemedi"
+  },
+  "_pending_review": {}
+}

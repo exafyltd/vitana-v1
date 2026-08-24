@@ -1,0 +1,50 @@
+{
+  "diaryActions": {
+    "_pending_review": {},
+    "title": "Günlük Kayıt Eylemleri",
+    "items": {
+      "recordVoiceEntry": {
+        "_pending_review": {},
+        "title": "Sesli Kayıt Al",
+        "description": "Düşüncelerini ve yansımalarını sesli kayıtla yakala"
+      },
+      "addPhotoEntry": {
+        "_pending_review": {},
+        "title": "Fotoğraf Kaydı Ekle",
+        "description": "Wellness yolculuğunu belgelemek için görsel yükle"
+      },
+      "writeTextEntry": {
+        "_pending_review": {},
+        "title": "Metin Kaydı Yaz",
+        "description": "Ayrıntılı yazılı yansımalar ve notlar oluştur"
+      },
+      "quickNote": {
+        "_pending_review": {},
+        "title": "Hızlı Not",
+        "description": "Kısa düşünce veya gözlemlerini not al"
+      },
+      "videoDiary": {
+        "_pending_review": {},
+        "title": "Video Günlüğü",
+        "description": "Video yansımalar ve ilerleme güncellemeleri kaydet"
+      },
+      "scheduleEntry": {
+        "_pending_review": {},
+        "title": "Kayıt Planla",
+        "description": "Gelecekteki günlük kayıtlarını ve hatırlatmaları planla"
+      },
+      "tagMemories": {
+        "_pending_review": {},
+        "title": "Anıları Etiketle",
+        "description": "Mevcut kayıtları etiket ve kategorilerle düzenle"
+      },
+      "importFiles": {
+        "_pending_review": {},
+        "title": "Dosya İçe Aktar",
+        "description": "Belge, görsel veya diğer wellness dosyalarını yükle"
+      },
+      "_pending_review": {}
+    }
+  },
+  "_pending_review": {}
+}

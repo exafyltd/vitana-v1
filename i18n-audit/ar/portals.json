@@ -1,0 +1,161 @@
+{
+  "verdicts": {
+    "portals.maxina.title": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"Maxina\" missing from target",
+      "phase": "static"
+    },
+    "portals.maxina.welcomeBack": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"Maxina\" missing from target",
+      "phase": "static"
+    },
+    "portals.maxina.joinMaxina": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"Maxina\" missing from target",
+      "phase": "static"
+    },
+    "portals.maxina.joinCommunity": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"Maxina\" missing from target",
+      "phase": "static"
+    },
+    "portals.maxina.partOfVitana": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"VITANA\" missing from target",
+      "phase": "static"
+    },
+    "portals.maxina.emailConfirmed": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"Maxina\" missing from target",
+      "phase": "static"
+    },
+    "portals.maxina.continueJourney": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.maxina.createAccount": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.maxina.signingIn": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.maxina.creatingAccount": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.maxina.joiningAs": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.8,
+      "issue": "Gender mismatch: 'أنضم' is masculine, but app may address all users. Suggest neutral or feminine form.",
+      "suggested": "أنضم بصفتي:",
+      "phase": "llm"
+    },
+    "portals.maxina.yourFullName": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.maxina.forgotPassword": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.maxina.allPortals": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.maxina.checkEmail": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.maxina.roles.community": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.maxina.roles.patient": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.maxina.roles.professional": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.maxina.roles.admin": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.alkalma.joinAlkalma": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.7,
+      "issue": "Brand name 'AlKalma' should remain unchanged; translation 'الكلمة' changes it.",
+      "suggested": "انضم إلى AlKalma",
+      "phase": "llm"
+    },
+    "portals.alkalma.welcomeBack": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.7,
+      "issue": "Brand name 'AlKalma' should remain unchanged; translation 'الكلمة' changes it.",
+      "suggested": "مرحبًا بعودتك إلى AlKalma.",
+      "phase": "llm"
+    },
+    "portals.alkalma.continueJourney": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.earthlinks.joinEarthlinks": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.7,
+      "issue": "Brand name 'Earthlinks' should remain unchanged; translation 'إيرثلينكس' is a transliteration but may be acceptable, but better to keep English.",
+      "suggested": "انضم إلى Earthlinks",
+      "phase": "llm"
+    },
+    "portals.earthlinks.welcomeBack": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 0.7,
+      "issue": "Brand name 'Earthlinks' should remain unchanged; translation 'إيرثلينكس' is a transliteration but may be acceptable, but better to keep English.",
+      "suggested": "مرحبًا بعودتك إلى Earthlinks.",
+      "phase": "llm"
+    },
+    "portals.earthlinks.continueJourney": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.community.joinCommunity": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.community.welcomeBack": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    },
+    "portals.community.continueJourney": {
+      "verdict": "OK",
+      "confidence": 0.95,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-24T08:41:51.523Z"
+}

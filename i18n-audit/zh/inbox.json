@@ -1,0 +1,500 @@
+{
+  "verdicts": {
+    "inbox.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.subtitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.desktopTitle": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.desktopDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.tabs.all": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.tabs.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.tabs.direct": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.tabs.contacts": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.tabs.notifications": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.tabs.archived": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.contextTabs.community": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.contextTabs.network": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.actions.new": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.actions.newMessage": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.actions.createGroup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.actions.markAllRead": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.actions.menu": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.composer.placeholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.composer.send": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.composer.attachments": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.composer.recipients": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.composer.add": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.states.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.states.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.states.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.titleGroup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.groupName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.groupNamePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.members": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.recipient": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.addMore": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.searchPeople": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.searchMinChars": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.searchResults": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.noResults": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.add": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.added": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.cancel": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.startChat": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.createGroup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversation.creating": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.avatarSoon": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.groupName": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.addMembers": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.groupNameRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.groupNameRequiredDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.addMembersRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.addMembersRequiredDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.groupExists": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.groupExistsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.created": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.createdDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.failed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroup.failedDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.success": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.error": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.conversationStarted": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.authRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.noTenantContext": {
+      "verdict": "OK",
+      "confidence": 0.9,
+      "phase": "llm"
+    },
+    "inbox.toast.searchFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.accessDenied": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.communityOnly": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.pleaseLogin": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.groupRecipientsRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.singleRecipientRequired": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.groupCreated": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.groupFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.allMarkedRead": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.toast.markAllReadFailed": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createGroupAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.newConversationAction": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.noGroups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.noGroupsDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.createFirstGroup": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.searchConversations": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.searchPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.noMessages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.noMessagesDesc": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.startConversation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.emptyState.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.emptyState.globalDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.emptyState.tenantDescription": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.emptyState.startConversation": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.emptyState.discoverPeople": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.loading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.cantOpen": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.backToInbox": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.back": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.memberOne": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.memberOther": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.officialBadge": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.empty": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "inbox.group.composerPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-24T08:40:14.870Z"
+}

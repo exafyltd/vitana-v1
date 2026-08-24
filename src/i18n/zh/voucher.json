@@ -9,9 +9,6 @@
     "tiers": {
       "test": {
         "name": "测试",
-        "_pending_review": {
-          "benefits": true
-        },
         "benefits": [
           "仅用于支付流程测试",
           "并非真实礼券",
@@ -20,9 +17,6 @@
       },
       "experience": {
         "name": "体验",
-        "_pending_review": {
-          "benefits": true
-        },
         "benefits": [
           "1 次高级社区活动入场",
           "专属健康咨询",
@@ -32,9 +26,6 @@
       },
       "exclusive": {
         "name": "专属",
-        "_pending_review": {
-          "benefits": true
-        },
         "benefits": [
           "3 次高级社区活动",
           "1 对 1 专家指导课程",

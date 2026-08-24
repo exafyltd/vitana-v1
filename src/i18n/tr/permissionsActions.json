@@ -1,0 +1,50 @@
+{
+  "permissionsActions": {
+    "_pending_review": {},
+    "title": "Gizlilik & İzin Eylemleri",
+    "items": {
+      "privacySettings": {
+        "_pending_review": {},
+        "title": "Gizlilik Ayarları",
+        "description": "Gizlilik ve Paylaşım Ayarlarını Yapılandır"
+      },
+      "manageAccess": {
+        "_pending_review": {},
+        "title": "Erişimi Yönet",
+        "description": "Sağlık anılarını kimlerin görebileceğini kontrol et"
+      },
+      "securitySettings": {
+        "_pending_review": {},
+        "title": "Güvenlik Ayarları",
+        "description": "Kimlik Doğrulama ve Güvenlik Ayarlarını Güncelle"
+      },
+      "apiKeysAccess": {
+        "_pending_review": {},
+        "title": "API Anahtarları & Erişim",
+        "description": "Üçüncü taraf uygulama entegrasyonlarını ve API erişimini yönet"
+      },
+      "dataRights": {
+        "_pending_review": {},
+        "title": "Veri Hakları",
+        "description": "Veri taşınabilirliği ve silme haklarını kullan"
+      },
+      "auditLogs": {
+        "_pending_review": {},
+        "title": "Denetim Günlükleri",
+        "description": "Erişim geçmişini ve güvenlik denetim izini incele"
+      },
+      "permissionSettings": {
+        "_pending_review": {},
+        "title": "İzin Ayarları",
+        "description": "Farklı özellikler için ayrıntılı izinleri ince ayarla"
+      },
+      "exportData": {
+        "_pending_review": {},
+        "title": "Veriyi Dışa Aktar",
+        "description": "Anılarını ve sağlık verilerini güvenle indir"
+      },
+      "_pending_review": {}
+    }
+  },
+  "_pending_review": {}
+}

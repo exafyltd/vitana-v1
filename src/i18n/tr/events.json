@@ -1,0 +1,32 @@
+{
+  "events": {
+    "_pending_review": {},
+    "title": "Etkinlikler & Buluşmalar",
+    "description": "Yerel wellness buluşmalarını keşfet",
+    "searchPlaceholder": "Etkinlik ve buluşma ara...",
+    "tabs": {
+      "_pending_review": {},
+      "today": "Bugün",
+      "upcoming": "Yaklaşan",
+      "following": "Takip Edilenler",
+      "recommended": "Önerilen"
+    },
+    "noEvents": "Planlanmış etkinlik yok",
+    "checkBack": "Yaklaşan topluluk etkinlikleri için yakında tekrar bak!",
+    "emptyStates": {
+      "_pending_review": {},
+      "noEventsToday": "Bugün Etkinlik Yok",
+      "noEventsTodayDesc": "Bugün için planlanmış etkinlik yok. Yaklaşan etkinliklere bak veya kendi etkinliğini oluştur!",
+      "createEvent": "Etkinlik Oluştur",
+      "viewUpcoming": "Yaklaşan Etkinlikleri Görüntüle",
+      "followingTitle": "Takip ettiğin kişilerin gönderileri",
+      "followingDesc": "Takip ettiğin kişilerin ve grupların içeriği burada görünür",
+      "findPeople": "Takip Edilecek Kişi Bul",
+      "noPostsFromFollowing": "Henüz Gönderi Yok",
+      "noPostsFromFollowingDesc": "Takip ettiğin kişiler henüz etkinlik veya buluşma oluşturmadı.",
+      "youFollow": "Takip ettiğin",
+      "loadingFollowing": "Gönderiler yükleniyor…"
+    }
+  },
+  "_pending_review": {}
+}

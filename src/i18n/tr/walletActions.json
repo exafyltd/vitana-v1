@@ -1,0 +1,13 @@
+{
+  "_pending_review": {},
+  "walletActions": {
+    "_pending_review": {},
+    "title": "Hızlı İşlemler",
+    "addFunds": "Para Yatır",
+    "send": "Gönder",
+    "exchange": "Takas Et",
+    "withdraw": "Para Çek",
+    "buyCredits": "VTNA Kredi Satın Al",
+    "stakeTokens": "Token Stake Et"
+  }
+}

@@ -134,6 +134,20 @@ export const REGISTER_RULES = {
       'Do NOT return Traditional characters. ' +
       'Keep the tone direct and friendly, as between peers.',
   },
+  tr: {
+    name: 'Turkish',
+    // Turkish marks the T-V distinction through the PRONOUN and through VERB
+    // MORPHOLOGY together, unlike Chinese's single-character split — closer
+    // to German's du/Sie, where getting the whole word right matters, not
+    // just inserting one particle. (VTID-03701 — 11th language, full parity.)
+    instruction:
+      'Use the sen-form (informal singular) throughout: sen/seni/senin/sana, second-person-singular ' +
+      'verb endings (-sin/-sın/-sun/-sün, e.g. "yapabilirsin", "gidiyorsun"), and bare-stem imperatives ' +
+      '(e.g. "Devam et", not "Devam edin"). ' +
+      'Never the polite/plural siz-form when addressing one reader: no siz/sizi/sizin/size, ' +
+      'no second-person-plural verb endings (-sınız/-siniz/-sunuz/-sünüz, e.g. "yapabilirsiniz"), ' +
+      'and no formal imperative suffix (-in/-ın/-un/-ün, e.g. "Devam edin", "Girin").',
+  },
   ar: {
     name: 'Arabic',
     // BOOTSTRAP-AR-ZH-EXPANSION — Arabic had NO entry here at all, so it fell

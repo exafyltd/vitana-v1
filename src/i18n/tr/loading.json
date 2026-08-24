@@ -1,0 +1,13 @@
+{
+  "loading": {
+    "_pending_review": {},
+    "default": "Yükleniyor...",
+    "groups": "Gruplar yükleniyor...",
+    "messages": "Mesajlar yükleniyor...",
+    "uploading": "Yükleniyor...",
+    "uploadingProgress": "Yükleniyor... %{progress}",
+    "processing": "İşleniyor...",
+    "saving": "Kaydediliyor..."
+  },
+  "_pending_review": {}
+}

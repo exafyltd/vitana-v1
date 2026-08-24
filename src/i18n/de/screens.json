@@ -2650,8 +2650,8 @@
       "match_scoreMatch": "{match_score}% Übereinstimmung"
     },
     "assistant": {
-      "voiceProviderHint_googleSpeech": "Google Speech API liefert hochwertige Sprachsynthese",
-      "voiceProviderHint_geminiChirp": "Gemini Chirp 3 HD-Stimmen liefern hochwertige, natürlich klingende Sprache mit emotionaler Resonanz",
+      "voiceProviderHint_polly": "Amazon Polly liefert hochwertige, natürlich klingende Sprachsynthese",
+      "voiceProviderLabel_polly": "Amazon Polly (empfohlen)",
       "voiceProviderHint_noVoicesAvailable": "Keine Stimmen verfügbar für {lang}. Installiere eine Stimme in deinen Betriebssystem- oder Browser-Einstellungen.",
       "voiceProviderHint_browserVoices": "Browser-basierte Stimmen werden verwendet",
       "aiModelPreferences": "KI-Modell-Präferenzen",

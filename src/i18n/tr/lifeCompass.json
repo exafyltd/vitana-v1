@@ -1,0 +1,64 @@
+{
+  "lifeCompass": {
+    "_pending_review": {},
+    "title": "Yaşam Pusulası",
+    "description": "Yaşam Pusulan tüm AI önerilerine ve kararlarına rehberlik eder. Şu anda senin için en önemli olan birincil hedefi seç. AI bu yönle uyumlu önerilere öncelik verecek.",
+    "currentCompass": "Mevcut Pusula",
+    "alignment": "Uyum: %{value}",
+    "confidence": "Güven: %{value}",
+    "suggestedGoals": "Önerilen Hedefler",
+    "customGoal": "Özel Hedef",
+    "customGoalPlaceholder": "Birincil hedefini kendi kelimelerinle anlat...",
+    "setCustomGoal": "Özel Hedef Belirle",
+    "closeAria": "Kapat",
+    "categoryLabels": {
+      "_pending_review": {},
+      "wealth": "zenginlik",
+      "relationship": "ilişki",
+      "health": "sağlık",
+      "career": "kariyer",
+      "learning": "öğrenme",
+      "spiritual": "manevi",
+      "longevity": "uzun ömür"
+    },
+    "goals": {
+      "wealth": {
+        "_pending_review": {},
+        "title": "Finansal Özgürlük Kur",
+        "description": "Finansal bağımsızlık ve zenginliğe ulaş"
+      },
+      "relationship": {
+        "_pending_review": {},
+        "title": "Hayat Arkadaşı Bul",
+        "description": "Anlamlı romantik ilişkiler kur"
+      },
+      "health": {
+        "_pending_review": {},
+        "title": "Sağlığı İyileştir",
+        "description": "En iyi fiziksel ve zihinsel wellness'a ulaş"
+      },
+      "career": {
+        "_pending_review": {},
+        "title": "Kariyeri İlerlet",
+        "description": "Tatmin edici ve başarılı bir kariyer kur"
+      },
+      "learning": {
+        "_pending_review": {},
+        "title": "Yeni Beceriler Öğren",
+        "description": "Bilgi yoluyla öğren ve geliş"
+      },
+      "spiritual": {
+        "_pending_review": {},
+        "title": "Manevi Yaşam",
+        "description": "Amacı, bilinci ve iç huzuru derinleştir"
+      },
+      "longevity": {
+        "_pending_review": {},
+        "title": "Yaşam kalitesini iyileştir ve ömrü uzat",
+        "description": "Sağlıklı yaşam süresine, enerjiye ve uzun ömre odaklan — Vitanaland'in misyonu"
+      },
+      "_pending_review": {}
+    }
+  },
+  "_pending_review": {}
+}

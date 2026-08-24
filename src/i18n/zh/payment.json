@@ -3,7 +3,7 @@
     "completed": "支付完成！✅",
     "sentSuccess": "{amount} 已成功发送",
     "alreadyProcessed": "已处理",
-    "requestIs": "此请求是 {status}。",
+    "requestIs": "此请求的状态为 {status}。",
     "alreadyAccepted": "此支付请求已被接受。",
     "declined": "支付被拒绝",
     "declinedDesc": "支付请求已被拒绝",

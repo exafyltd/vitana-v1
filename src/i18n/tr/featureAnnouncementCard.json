@@ -1,0 +1,20 @@
+{
+  "featureAnnouncementCard": {
+    "brandNew": {
+      "_pending_review": {},
+      "eyebrow": "Yeni Özellik",
+      "badge": "Yeni",
+      "intro": "Artık şunu yapabilirsin:",
+      "cta": "Kendin dene",
+      "closing": "İyi testler 🥳"
+    },
+    "didYouKnow": {
+      "_pending_review": {},
+      "eyebrow": "Biliyor muydun?",
+      "intro": "Şunu yapabilirsin:",
+      "cta": "Şimdi dene"
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

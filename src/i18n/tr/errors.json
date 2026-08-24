@@ -1,0 +1,20 @@
+{
+  "errors": {
+    "_pending_review": {},
+    "somethingWentWrong": "Bir şeyler ters gitti",
+    "tryAgain": "Lütfen tekrar dene",
+    "pageNotFound": "Sayfa bulunamadı",
+    "pageNotFoundDesc": "İstenen sayfa mevcut değil.",
+    "serverError": "Sunucu hatası",
+    "serverErrorDesc": "Beklenmeyen bir hata oluştu.",
+    "networkError": "Ağ hatası",
+    "networkErrorDesc": "Lütfen internet bağlantını kontrol et.",
+    "unauthorized": "Yetkisiz",
+    "unauthorizedDesc": "Devam etmek için lütfen giriş yap.",
+    "forbidden": "Erişim reddedildi",
+    "forbiddenDesc": "Bu eylem için iznin yok.",
+    "notFound": "Bulunamadı",
+    "notFoundDesc": "İstenen öğe bulunamadı."
+  },
+  "_pending_review": {}
+}

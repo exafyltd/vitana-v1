@@ -1,0 +1,22 @@
+{
+  "intro": {
+    "_pending_review": {},
+    "welcomeTo": "VITANALAND'E HOŞ GELDİN",
+    "experience": "Deneyim",
+    "taglineMain": "Uzun Ömür Yolculuğuna Başla",
+    "taglineSub": "bizimle birlikte!",
+    "playWelcome": "Karşılamayı Oynat",
+    "preparing": "Hazırlanıyor...",
+    "playing": "Oynatılıyor",
+    "goToLogin": "Girişe Git",
+    "chooseLanguage": "Dil seç",
+    "login": "Giriş Yap",
+    "loginSubtitle": "Tekrar hoş geldin!",
+    "register": "Kayıt Ol",
+    "registerSubtitle": "Hesabını oluştur",
+    "tapOrbHint": "Vitana ile tanışmak için Orb'a dokun",
+    "chooseLanguageTitle": "Dilini seç",
+    "chooseLanguageSubtitle": "Vitana bu dilde seninle konuşacak ve yanıt verecek."
+  },
+  "_pending_review": {}
+}

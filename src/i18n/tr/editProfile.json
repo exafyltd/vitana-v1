@@ -1,0 +1,23 @@
+{
+  "editProfile": {
+    "_pending_review": {},
+    "unsavedChanges": "Kaydedilmemiş değişikliklerin var. Çıkmak istediğinden emin misin?",
+    "notAuthenticated": "Kimlik doğrulanmadı",
+    "notAuthenticatedDesc": "Profilini kaydetmek için lütfen giriş yap.",
+    "profileUpdated": "Profil başarıyla güncellendi!",
+    "profileUpdatedDesc": "Değişikliklerin artık yayında. VITANA profilin harika görünüyor.",
+    "error": "Hata",
+    "refreshFailed": "Profil verisi yenilenemedi.",
+    "showcaseHint": "Profilinin en üstünde öne çıkarılacak gönderileri ve içerikleri seç.",
+    "showcaseTitle": "Öne Çıkanlar",
+    "manage": "Yönet",
+    "about": "Hakkında",
+    "addBio": "Biyografi ekle...",
+    "tapToEdit": "Düzenlemek için dokun",
+    "title": "Başlık",
+    "titlePlaceholder": "Video başlığı",
+    "description": "Açıklama",
+    "descriptionPlaceholder": "İsteğe bağlı açıklama..."
+  },
+  "_pending_review": {}
+}

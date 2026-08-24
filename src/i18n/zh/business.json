@@ -51,7 +51,7 @@
       "thisMonth": "本月",
       "activeClients": "活跃客户",
       "totalActive": "活跃总数",
-      "upcomingSessions": "即将到来的会话",
+      "upcomingSessions": "即将开始的课程",
       "thisWeek": "本周",
       "topPerformer": "最佳表现者",
       "noDataYet": "暂无数据",
@@ -67,7 +67,7 @@
       "_pending_review": {}
     },
     "reseller": {
-      "upcomingEvents": "即将到来的活动",
+      "upcomingEvents": "即将开始的活动",
       "next": "下一步",
       "resellerCode": "经销商代码",
       "codeCopied": "分销码已复制！",

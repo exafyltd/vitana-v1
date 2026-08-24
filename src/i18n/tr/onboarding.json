@@ -1,0 +1,32 @@
+{
+  "onboarding": {
+    "_pending_review": {},
+    "welcome": "VITANA'ya Hoş Geldin",
+    "subtitle": "Kişiselleştirilmiş uzun ömür platformun",
+    "connectApps": "Uygulamalarını Bağla",
+    "connectAppsDesc": "Daha iyi öngörüler için sağlık ve wellness uygulamalarını bağla",
+    "setGoals": "Hedeflerini Belirle",
+    "setGoalsDesc": "Sağlık ve uzun ömür hedeflerini tanımla",
+    "joinCommunity": "Topluluğa Katıl",
+    "joinCommunityDesc": "Benzer yolculuklardaki insanlarla bağlantı kur",
+    "getStarted": "Başla",
+    "skip": "Şimdilik atla",
+    "skipIntro": "Girişi atla",
+    "nameForm": {
+      "_pending_review": {},
+      "title": "Seni tanıyalım",
+      "subtitle": "Diğerleri seni toplulukta böyle görecek",
+      "displayNameLabel": "Sana nasıl hitap edeyim?",
+      "displayNamePlaceholder": "Adın",
+      "handleLabel": "Vitanaland kullanıcı adını seç",
+      "handlePlaceholder": "kullanici_adin",
+      "handleTaken": "Bu kullanıcı adı zaten alınmış",
+      "handleInvalid": "Yalnızca harf, rakam ve alt çizgiye izin verilir",
+      "handleAvailable": "Kullanıcı adı müsait!",
+      "handleMinLength": "En az 3 karakter",
+      "saving": "Hazırlanıyor...",
+      "submit": "Hadi başlayalım!"
+    }
+  },
+  "_pending_review": {}
+}

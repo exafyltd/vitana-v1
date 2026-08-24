@@ -5,7 +5,7 @@
     "categories": {
       "preventive": "预防性筛查",
       "labTests": "实验室检测",
-      "coaching": "辅导和私人训练",
+      "coaching": "Coaching与私教",
       "groupPrograms": "团体课程和挑战",
       "_pending_review": {}
     },
@@ -24,7 +24,7 @@
       "nextAvailable": "下次可用",
       "whatsIncluded": "包含内容",
       "healthBenefits": "健康益处",
-      "availableProviders": "可用提供者",
+      "availableProviders": "服务提供方",
       "requirements": "要求和准备",
       "tags": "标签",
       "_pending_review": {}

@@ -1,0 +1,21 @@
+{
+  "glassMode": {
+    "_pending_review": {},
+    "shareWithAI": "Seçimi AI ile paylaş?",
+    "screenSharingComingSoon": "🖥️ Ekran Paylaşımı Yakında",
+    "screenSharingDesc": "Bağlamsal destek için ekranını VITANA ile paylaş.",
+    "screenSharingStopped": "Ekran Paylaşımı Durduruldu",
+    "glassModeDisabled": "Cam modu devre dışı",
+    "cameraModeComingSoon": "📹 Kamera Modu Yakında",
+    "cameraModeDesc": "Görsele dayalı AI etkileşimleri sonraki güncellemede kullanılabilir olacak.",
+    "diaryReady": "Günlük Hazır",
+    "openingDiary": "Günlük kaydı açılıyor",
+    "autopilotActivated": "Otomatik Pilot Etkinleştirildi",
+    "runningAutopilot": "Otomatik pilot modu çalışıyor",
+    "textInputReady": "Metin Girişi Hazır",
+    "typeMessage": "Artık mesajını girebilirsin.",
+    "actionFailed": "Eylem Başarısız",
+    "couldNotExecute": "{action} çalıştırılamadı"
+  },
+  "_pending_review": {}
+}

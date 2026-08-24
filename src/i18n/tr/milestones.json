@@ -1,0 +1,19 @@
+{
+  "milestones": {
+    "_pending_review": {},
+    "title": "Özel Anlar",
+    "add": "Dönüm Noktası Ekle",
+    "edit": "Dönüm Noktasını Düzenle",
+    "empty": "Henüz An Yok",
+    "addFirst": "İlk Anını Ekle",
+    "date": "Tarih",
+    "description": "Ne oldu?",
+    "titleLabel": "Başlık",
+    "titlePlaceholder": "ör. Üniversiteden Mezun Oldum",
+    "descPlaceholder": "Bu anı anlat...",
+    "icon": "Simge",
+    "publicLabel": "Herkese görünür",
+    "private": "Özel"
+  },
+  "_pending_review": {}
+}

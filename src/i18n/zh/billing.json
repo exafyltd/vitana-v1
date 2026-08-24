@@ -84,7 +84,7 @@
       "aiDigestWeekly": "每周",
       "aiDigestDaily": "每日",
       "aiDigestOnDemand": "每日 + 按需",
-      "sellAndEarnCatalog": "销售赚取目录",
+      "sellAndEarnCatalog": "销售与赚取目录",
       "sellAndEarnCatalogUnit": "项",
       "priorityPractitioner": "优先从业者访问",
       "yes": "是",
@@ -146,7 +146,7 @@
       "_pending_review": {}
     },
     "launchGrant": {
-      "title": "🎁 欢迎 — 高级版我们请客",
+      "title": "🎁 欢迎 — Premium 由我们买单",
       "body": "感谢你从一开始就支持我们，你已获得 12 个月 Vitana 高级版。有效期至 {endsAt}。",
       "noAction": "无需操作。尽情享用吧。",
       "dismissAria": "关闭横幅",
@@ -230,10 +230,10 @@
       "_pending_review": {}
     },
     "live_room_minutes": {
-      "title": "主持时长不足",
-      "body": "该房间还剩 5 分钟主持时长。添加主持时长或升级以保持运行。",
+      "title": "主持时间不足",
+      "body": "该房间还剩 5 分钟主持时间。添加主持时间或升级以继续使用。",
       "wrapUp": "结束",
-      "addTime": "添加主持时长",
+      "addTime": "添加主持时间",
       "_pending_review": {}
     },
     "match_posts": {
@@ -243,7 +243,7 @@
     },
     "match_reveals": {
       "title": "揭示匹配",
-      "body": "你的免费揭示已用完。使用 {credits} 积分或升级到高级版。",
+      "body": "你的免费查看次数已用完。使用 {credits} 积分或升级到高级版。",
       "_pending_review": {}
     },
     "lab_analyses": {
@@ -262,7 +262,7 @@
       "_pending_review": {}
     },
     "autopilot": {
-      "title": "更多自动驾驶推荐",
+      "title": "更多 Autopilot 推荐",
       "body": "高级版可提高你的活跃推荐数量。",
       "_pending_review": {}
     },

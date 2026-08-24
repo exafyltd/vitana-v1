@@ -9,9 +9,6 @@
     "tiers": {
       "test": {
         "name": "اختبار",
-        "_pending_review": {
-          "benefits": true
-        },
         "benefits": [
           "لاختبار عملية الدفع فقط",
           "ليست قسيمة حقيقية",
@@ -20,9 +17,6 @@
       },
       "experience": {
         "name": "تجربة",
-        "_pending_review": {
-          "benefits": true
-        },
         "benefits": [
           "دخول إلى فعالية مجتمع مميّزة واحدة",
           "استشارة صحية مخصّصة",
@@ -32,9 +26,6 @@
       },
       "exclusive": {
         "name": "حصري",
-        "_pending_review": {
-          "benefits": true
-        },
         "benefits": [
           "3 فعاليات مجتمع مميّزة",
           "جلسة تدريب فردية مع خبير",

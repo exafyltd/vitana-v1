@@ -1,0 +1,151 @@
+{
+  "liveRooms": {
+    "title": "Canlı Odalar",
+    "description": "Canlı sesli ve görüntülü tartışmalara katıl",
+    "tabs": {
+      "live": "Şimdi canlı",
+      "scheduled": "Planlanmış",
+      "all": "Tüm Odalar",
+      "past": "Geçmiş"
+    },
+    "goLive": "Canlı Yayına Geç",
+    "joinRoom": "Odaya Katıl",
+    "noRooms": "Şu anda canlı oda yok",
+    "beFirst": "Canlı yayına geçen ilk kişi ol",
+    "demoRoom": "Demo Oda",
+    "demoRoomDesc": "Bu bir örnek oda. Canlı yayına geçmek için kendini oluştur!",
+    "search": {
+      "placeholder": "Oda, konu veya sunucu ara...",
+      "category": "Kategori",
+      "allCategories": "Tüm Kategoriler"
+    },
+    "room": {
+      "join": "Odaya Katıl",
+      "participants": "Katılımcılar",
+      "duration": "Süre",
+      "host": "Sunucu",
+      "premium": "Premium",
+      "live": "CANLI"
+    },
+    "viewer": {
+      "leave": "Ayrıl",
+      "mute": "Sessize Al",
+      "video": "Video",
+      "raiseHand": "El Kaldır",
+      "chat": "Sohbet",
+      "reactions": "Tepkiler"
+    },
+    "goLivePopup": {
+      "titleCreate": "Canlı Yayına Geç",
+      "titleEdit": "Canlı Yayını Düzenle",
+      "streamTitleLabel": "Yayın Başlığı",
+      "streamTitlePlaceholder": "{name} ile canlı",
+      "descriptionLabel": "Açıklama / Biyografi (İsteğe Bağlı)",
+      "descriptionPlaceholder": "Bu yayının ne hakkında olduğunu kısaca anlat…",
+      "charactersCount": "{count}/500 karakter",
+      "streamTypeLabel": "Yayın Türü",
+      "streamTypeAudio": "Ses",
+      "streamTypeVideo": "Video",
+      "coverLabel": "Kapak Görseli / Küçük Resim",
+      "coverAlt": "Yayın kapağı",
+      "coverUploadCta": "Özel görsel yüklemek için tıkla",
+      "coverUploadHint": "Herhangi bir görsel – otomatik ayarlanır",
+      "aiAutoGenerateLabel": "AI ile otomatik oluştur",
+      "aiAutoGenerateHint": "Yüklenmezse görsel oluştur",
+      "generatingAiImage": "AI görseli oluşturuluyor…",
+      "tagsLabel": "Etiket / Kategori (1-3 Seç)",
+      "tagsSelected": "{count}/3 seçildi",
+      "tags": {
+        "wellness": "Wellness",
+        "nutrition": "Beslenme",
+        "fitness": "Fitness",
+        "mentalHealth": "Ruh Sağlığı",
+        "longevity": "Uzun Ömür",
+        "meditation": "Meditasyon",
+        "sleep": "Uyku",
+        "motivation": "Motivasyon",
+        "education": "Eğitim",
+        "lifestyle": "Yaşam Tarzı"
+      },
+      "advancedTitle": "Gelişmiş Seçenekler",
+      "cohostLabel": "Ortak Sunucu / Konuk Daveti",
+      "cohostPlaceholder": "Ortak sunucu ara ve ekle",
+      "accessLevelLabel": "Erişim Düzeyi",
+      "access": {
+        "public": {
+          "label": "Herkese Açık",
+          "desc": "Herkes katılabilir"
+        },
+        "followers": {
+          "label": "Yalnızca Takipçiler",
+          "desc": "Yalnızca takipçilerin"
+        },
+        "group": {
+          "label": "Grup/VIP",
+          "desc": "Yalnızca davetli üyeler"
+        }
+      },
+      "scheduleLabel": "Daha Sonrası İçin Planla",
+      "goLiveNow": "Şimdi Canlı Yayına Geç",
+      "selectTime": "Saat seç",
+      "clearSchedule": "Planı Temizle (Şimdi Canlı Yayına Geç)",
+      "scheduledAt": "{date} {time}",
+      "dateNeedsTime": "{date} – saat seç",
+      "time": "Saat",
+      "engagementLabel": "Sohbet & Etkileşim",
+      "enableChatTitle": "Sohbeti Etkinleştir",
+      "enableChatDesc": "İzleyicilerin sohbet etmesine izin ver",
+      "enablePollsTitle": "Anketleri Etkinleştir",
+      "enablePollsDesc": "Yayın sırasında canlı anketler oluştur",
+      "recordReplayTitle": "Tekrar İçin Kaydet",
+      "recordReplayDesc": "Yayını daha sonra izlemek için kaydet",
+      "cancel": "İptal",
+      "starting": "Başlatılıyor…",
+      "updating": "Güncelleniyor…",
+      "updateStream": "Yayını Güncelle",
+      "scheduleSession": "Canlı Seansı Planla",
+      "goLiveNowAction": "Şimdi Canlı Yayına Geç",
+      "errors": {
+        "selectStreamTypeTitle": "Yayın Türü Seç",
+        "selectStreamTypeDesc": "Lütfen Ses veya Video seç",
+        "notLoggedInTitle": "Hata",
+        "notLoggedInDesc": "Canlı yayına geçmek için giriş yapmış olmalısın",
+        "invalidFileTypeTitle": "Geçersiz Dosya Türü",
+        "invalidFileTypeDesc": "Lütfen bir görsel dosyası seç (JPEG, PNG, WebP)",
+        "fileTooLargeTitle": "Dosya Çok Büyük",
+        "fileTooLargeDesc": "Görsel 2MB'dan küçük olmalı",
+        "imageUploadFailedTitle": "Görsel yükleme başarısız",
+        "imageUploadFailedDesc": "Mevcut görseli koruyacağız.",
+        "genericTitle": "Hata",
+        "genericDesc": "Yayın oluşturulamadı. Lütfen tekrar dene.",
+        "genericDescWithReason": "Yayın oluşturulamadı: {reason}. Lütfen tekrar dene."
+      },
+      "success": {
+        "streamUpdatedTitle": "Yayın Güncellendi! ✨",
+        "streamUpdatedDesc": "Yayının başarıyla güncellendi",
+        "streamScheduledTitle": "Yayın Planlandı! 📅",
+        "streamScheduledDesc": "Yayının {date} {time} için planlandı",
+        "youAreLiveTitle": "Canlıdasın! 🎙️",
+        "youAreLiveDesc": "Yayın odana katılıyorsun…",
+        "aiImageHintTitle": "AI Görsel Oluşturma",
+        "aiImageHintDesc": "Görsel, yayın başladığında oluşturulacak."
+      }
+    },
+    "editSession": {
+      "title": "Seansı Düzenle",
+      "saving": "Kaydediliyor …",
+      "changeCover": "Kapak görselini değiştir",
+      "noChanges": "Kaydedilecek değişiklik yok"
+    }
+  },
+  "goLivePopup": {
+    "durationLabel": "Süre",
+    "duration15": "15 dakika",
+    "duration30": "30 dakika",
+    "duration45": "45 dakika",
+    "duration60": "1 saat",
+    "duration90": "1,5 saat",
+    "duration120": "2 saat",
+    "durationHint": "Manuel olarak sonlandırmazsan, oda bu süreden sonra otomatik olarak kapanır."
+  }
+}

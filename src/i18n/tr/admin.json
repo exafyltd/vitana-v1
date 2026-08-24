@@ -1,0 +1,28 @@
+{
+  "admin": {
+    "media": {
+      "updateSuccess": "Durum başarıyla güncellendi",
+      "updateFailed": "Durum güncellenemedi",
+      "deleteSuccess": "Başarıyla silindi",
+      "deleteFailed": "Silinemedi",
+      "podcastStatus": "Podcast {status}",
+      "podcastDeleted": "Podcast silindi",
+      "musicDeleted": "Müzik silindi",
+      "videoDeleted": "Video silindi",
+      "searchPodcasts": "Podcast ara...",
+      "searchMusic": "Müzik ara...",
+      "searchVideos": "Video ara...",
+      "filterByStatus": "Duruma göre filtrele",
+      "allStatus": "Tüm Durumlar",
+      "pending": "Beklemede",
+      "approved": "Onaylandı",
+      "rejected": "Reddedildi",
+      "flagged": "İşaretlendi",
+      "podcastManagement": "Podcast Yönetimi",
+      "podcastManagementDesc": "Podcast yüklemelerini incele ve denetle",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
+}

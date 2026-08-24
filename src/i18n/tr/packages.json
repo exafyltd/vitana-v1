@@ -1,0 +1,22 @@
+{
+  "packages": {
+    "confirmDelete": "Bu paketi silmek istediğine emin misin?",
+    "types": {
+      "bundle": "Paket",
+      "subscription": "Abonelik",
+      "program": "Program"
+    },
+    "status": {
+      "draft": "Taslak",
+      "published": "Yayında",
+      "archived": "Arşivlendi"
+    },
+    "item": "öğe",
+    "items": "öğeler",
+    "total": "toplam",
+    "validDays": "Geçerli {days} gün",
+    "save": "%{percent} tasarruf et",
+    "unpublish": "Yayından kaldır",
+    "publish": "Yayınla"
+  }
+}

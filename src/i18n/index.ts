@@ -46,6 +46,7 @@ const ruLoaders = import.meta.glob('./ru/*.json') as ShardLoaders;
 const plLoaders = import.meta.glob('./pl/*.json') as ShardLoaders;
 const arLoaders = import.meta.glob('./ar/*.json') as ShardLoaders;
 const zhLoaders = import.meta.glob('./zh/*.json') as ShardLoaders;
+const trLoaders = import.meta.glob('./tr/*.json') as ShardLoaders;
 
 // `_audit.json` files sit alongside the real shards (they are the LLM audit
 // reports from scripts/i18n-audit-llm.mjs). They are NOT translations and must
@@ -80,6 +81,7 @@ export const ru: Record<string, unknown> = {};
 export const pl: Record<string, unknown> = {};
 export const ar: Record<string, unknown> = {};
 export const zh: Record<string, unknown> = {};
+export const tr: Record<string, unknown> = {};
 
 export const catalogs: Record<string, Record<string, unknown>> = {
   'de-DE': de,
@@ -92,6 +94,7 @@ export const catalogs: Record<string, Record<string, unknown>> = {
   'pl-PL': pl,
   'ar-XA': ar,
   'zh-CN': zh,
+  'tr-TR': tr,
 };
 
 const lazyLoaders: Record<string, ShardLoaders> = {
@@ -104,6 +107,7 @@ const lazyLoaders: Record<string, ShardLoaders> = {
   'pl-PL': plLoaders,
   'ar-XA': arLoaders,
   'zh-CN': zhLoaders,
+  'tr-TR': trLoaders,
 };
 
 /** Locales with a registered catalog. Exported for the registration guard test. */

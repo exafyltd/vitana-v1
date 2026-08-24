@@ -93,8 +93,25 @@ jobs:
       #
       # Not continue-on-error: --flag mutates the catalogs and must either do
       # that correctly or stop before the translator spends money on the result.
+      #
+      # VTID-03701 — guarded on the target dir existing. This step ran
+      # unconditionally for years and never noticed, because every locale it
+      # had ever been dispatched for already had a src/i18n/<locale>/ tree:
+      # i18n-stamp-source.mjs hard `process.exit(2)`s when the dir is missing,
+      # and only translate-keys.mjs's `--init` (the NEXT step) actually
+      # creates one. Bootstrapping a genuinely new locale — the first time
+      # since this gate was added (Turkish, VTID-03701) — failed here before
+      # the translator ever ran, in the ~10s it takes to fail, with "Run
+      # translator" reporting `skipped` right below it in the job summary.
+      # Skipping this step for a not-yet-created locale is correct, not a
+      # workaround: there is no catalog to have drifted yet.
       - name: Flag drifted keys for re-translation
-        run: node scripts/i18n-stamp-source.mjs --locale=${{ inputs.locale }} --flag
+        run: |
+          if [ -d "src/i18n/${{ inputs.locale }}" ]; then
+            node scripts/i18n-stamp-source.mjs --locale=${{ inputs.locale }} --flag
+          else
+            echo "[translate] src/i18n/${{ inputs.locale }} does not exist yet — skipping drift-flagging for a brand-new locale. --init (next step) will create it."
+          fi
 
       # continue-on-error so a PARTIAL failure still reaches the commit step.
       # translate-keys.mjs exits 1 if ANY key failed, and the script persists

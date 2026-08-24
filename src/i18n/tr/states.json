@@ -1,0 +1,26 @@
+{
+  "_pending_review": {},
+  "states": {
+    "_pending_review": {},
+    "loading": "Yükleniyor...",
+    "saving": "Kaydediliyor...",
+    "sending": "Gönderiliyor...",
+    "uploading": "Yükleniyor...",
+    "downloading": "İndiriliyor...",
+    "processing": "İşleniyor...",
+    "signingIn": "Giriş yapılıyor...",
+    "signingOut": "Çıkış yapılıyor...",
+    "signingUp": "Kaydolunuyor...",
+    "importing": "İçe aktarılıyor...",
+    "exporting": "Dışa aktarılıyor...",
+    "syncing": "Senkronize ediliyor...",
+    "generating": "Oluşturuluyor...",
+    "connecting": "Bağlanıyor...",
+    "disconnecting": "Bağlantı kesiliyor...",
+    "refreshing": "Yenileniyor...",
+    "searching": "Aranıyor...",
+    "deleting": "Siliniyor...",
+    "creating": "Oluşturuluyor...",
+    "updating": "Güncelleniyor..."
+  }
+}

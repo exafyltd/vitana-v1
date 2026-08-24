@@ -1,0 +1,30 @@
+{
+  "wallet": {
+    "title": "Cüzdan",
+    "description": "Bakiyen, Kredilerin ve Ödüllerin",
+    "usdBalance": "EUR / USD Bakiyesi",
+    "creditsBalance": "VTNA Kredi Bakiyesi",
+    "creditsLabel": "VTNA Kredileri",
+    "available": "Kullanılabilir",
+    "staked": "Stake Edilmiş",
+    "searchWallet": "Cüzdanda ara...",
+    "tabs": {
+      "balances": "Bakiyeler",
+      "activity": "Aktivite",
+      "actions": "İşlemler"
+    },
+    "filters": {
+      "commissions": "Sat ve kazan komisyonları",
+      "transfers": "Transferler",
+      "exchanges": "Değişimler",
+      "rewards": "Ödüller",
+      "purchases": "Satın Alımlar",
+      "pending": "Bekleyen Ödemeler",
+      "withdrawals": "Para Çekimleri",
+      "stakes": "Staking"
+    },
+    "noActivity": "Henüz aktivite yok",
+    "noActivityDesc": "İşlemlerin burada görünecek.",
+    "displayCurrency": "Görüntüleme para birimi"
+  }
+}
