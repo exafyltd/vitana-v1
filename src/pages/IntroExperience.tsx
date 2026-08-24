@@ -284,9 +284,16 @@ export default function IntroExperience() {
           split fixed the collision but flung both blocks to the viewport
           edges, producing large, disconnected empty gaps on tall phones.
           Centering the whole column with a modest, explicit gap keeps the
-          composition as one cohesive block, matching the reference. */}
+          composition as one cohesive block, matching the reference.
+
+          The gap is `var(--maxina-orb-content-gap)` (index.css), not a
+          plain Tailwind gap-6/md:gap-8, so the fixed-position Orb caption
+          below (which is NOT a flex child and gets no gap automatically)
+          can read the exact same number to reproduce it — see that
+          element's own comment for why this matters for
+          scripts/verify-intro-orb-placement.mjs's symmetry check. */}
       <div
-        className={`relative z-10 flex flex-col items-center justify-center gap-6 md:gap-8 min-h-screen px-6 py-12 transition-opacity duration-[1000ms] maxina-page-content ${
+        className={`relative z-10 flex flex-col items-center justify-center gap-[var(--maxina-orb-content-gap,24px)] min-h-screen px-6 py-12 transition-opacity duration-[1000ms] maxina-page-content ${
           showContent ? 'opacity-100' : 'opacity-0'
         }`}
 
@@ -374,9 +381,17 @@ export default function IntroExperience() {
             caption used to open this block, but it visually read as
             belonging to the language pill below it rather than the Orb
             above it — moved out to its own fixed-position element pinned
-            directly under the Orb (see below). */}
+            directly under the Orb (see below).
+
+            Extra top margin (on top of the column's own gap-6/gap-8) nudges
+            this block further down the page, into the empty space below it
+            on typical viewports. Safe to add here rather than by re-tuning
+            the column's overall justify-content: the Orb's target position
+            is measured from orbSpacerRef's actual rendered rect (see that
+            effect above), so it automatically follows wherever this extra
+            space pushes the layout — no separate position fix needed. */}
         <div
-          className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
+          className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs mt-10 md:mt-14"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
           {/* Language selector - glass bar with a globe icon, the current
@@ -430,12 +445,25 @@ export default function IntroExperience() {
           so it reads as the Orb's own caption instead of the language
           pill's neighbour. Anchored off the same --maxina-orb-target-left/
           -top custom properties the Orb itself uses (see the orbSpacerRef
-          effect above and the CSS in index.css), offset down by half the
-          Orb's current size + a small gap — both vars are breakpoint-aware,
-          so this tracks the Orb through every viewport/resize without a
-          separate measurement. Tapping the Orb is the only way to hear
-          Vitana speak the welcome; no play/audio control lives in this
-          stack any more. */}
+          effect above and the CSS in index.css). Tapping the Orb is the
+          only way to hear Vitana speak the welcome; no play/audio control
+          lives in this stack any more.
+
+          The vertical offset is `--maxina-orb-gap` (half the reserved
+          slot's own top/bottom padding, i.e. spacer-top to Orb-top) PLUS
+          `--maxina-orb-content-gap` (the flex column's own gap between the
+          spacer and whatever follows it) — reproducing EXACTLY the gap the
+          tagline above the Orb gets for free from being a normal flex
+          sibling. This element isn't a flex child (it's `fixed`, pinned to
+          the Orb's own measured position), so it gets neither gap
+          automatically; both have to be named explicitly. A caught review
+          finding (PR #1022) is why this isn't a hand-picked pixel value:
+          scripts/verify-intro-orb-placement.mjs fails any run where the
+          gap above the Orb and the gap below it differ by more than 1px,
+          and an arbitrary offset here can never match `--maxina-orb-gap`
+          + flex-gap by coincidence at every breakpoint. All the vars used
+          are already breakpoint-aware, so this tracks correctly through
+          every viewport/resize without a separate measurement. */}
       {/* Positioning and the fade-in animation are deliberately split across
           two elements: .animate-fade-in's keyframes animate `transform`
           (translateY, for the fade-up motion), and a CSS animation's
@@ -448,7 +476,7 @@ export default function IntroExperience() {
         className="fixed z-20 pointer-events-none w-full max-w-xs px-6 text-center"
         style={{
           left: 'var(--maxina-orb-target-left, 50%)',
-          top: 'calc(var(--maxina-orb-target-top, 50%) + var(--maxina-orb-size, 96px) / 2 + 12px)',
+          top: 'calc(var(--maxina-orb-target-top, 50%) + var(--maxina-orb-size, 96px) / 2 + var(--maxina-orb-gap, 28px) + var(--maxina-orb-content-gap, 24px))',
           transform: 'translateX(-50%)',
         }}
       >
