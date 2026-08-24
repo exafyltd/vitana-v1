@@ -40,6 +40,8 @@
     "confirmClearOld": "90 günden eski geçmişi silmek istediğinden emin misin?",
     "confirmDeleteAll": "⚠️ UYARI: Bu, TÜM geçmişini kalıcı olarak silecek. Bu işlem geri alınamaz. Gerçekten emin misin?",
     "beta": "Beta",
-    "danger": "Tehlike"
-  }
+    "danger": "Tehlike",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

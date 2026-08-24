@@ -40,7 +40,8 @@
       "doneError": "Nije moguće sačuvati.",
       "statusDone": "Gotovo",
       "sessionProgress": "{done}/{total}",
-      "sessionComplete": "Sesija završena"
+      "sessionComplete": "Sesija završena",
+      "_pending_review": {}
     },
     "common": {
       "languageToggleAriaLabel": "Jezik",
@@ -851,7 +852,8 @@
       "mental": "Mentalno",
       "next3": "Sledeća 3 dana",
       "month": "30 dana",
-      "future": "Budućnost"
+      "future": "Budućnost",
+      "_pending_review": {}
     },
     "admin": {
       "usingDefaults": "Koriste se podrazumevane vrednosti",
@@ -2589,7 +2591,8 @@
       "navRole_staff": "Osoblje",
       "navRole_admin": "Administrator",
       "navRole_developer": "Programer",
-      "navRole_infra": "Infrastruktura"
+      "navRole_infra": "Infrastruktura",
+      "_pending_review": {}
     },
     "ai-feed": {
       "noEventsFound": "Nema pronađenih događaja",
@@ -2615,7 +2618,8 @@
       "confidenceConfident": "{confidence}% siguran/sigurna",
       "later": "Kasnije",
       "value0Trends": "{value0} trendovi",
-      "lengthEventsShown": "Prikazano {length} događaja"
+      "lengthEventsShown": "Prikazano {length} događaja",
+      "_pending_review": {}
     },
     "analysis": {
       "topMatchFactors": "Najbolji faktori podudaranja",
@@ -2643,7 +2647,8 @@
       "explore": "Istraži →",
       "viewSchedule": "Prikaži raspored →",
       "findCoaches": "Pronađi trenere →",
-      "match_scoreMatch": "{match_score}% podudaranje"
+      "match_scoreMatch": "{match_score}% podudaranje",
+      "_pending_review": {}
     },
     "assistant": {
       "aiModelPreferences": "AI podešavanja modela",
@@ -2732,19 +2737,21 @@
       "voiceProviderHint_polly": "Amazon Polly pruža visokokvalitetnu, prirodno zvučeću sintezu govora",
       "voiceProviderLabel_polly": "Amazon Polly (preporučeno)",
       "voiceProviderHint_noVoicesAvailable": "Nema dostupnih glasova za {lang}. Instaliraj glas u podešavanjima OS-a/pregledača.",
-      "voiceProviderHint_browserVoices": "Korišćenje glasova zasnovanih na pregledaču"
+      "voiceProviderHint_browserVoices": "Korišćenje glasova zasnovanih na pregledaču",
+      "_pending_review": {}
     },
     "audio": {
       "volume": "Jačina",
-      "soundscape": "Zvučni pejzaž",
+      "soundscape": "Zvučni ambijent",
       "mute": "Utišaj",
       "unmute": "Uključi zvuk",
       "send": "Pošalji",
       "exitAudioMode": "Izađi iz audio režima",
-      "soundscapeValue0": "Zvučni pejzaž {value0}",
+      "soundscapeValue0": "Zvučni ambijent {value0}",
       "vitanaAudioMode": "VITANA audio režim",
       "typeYourMessage": "Ukucaj svoju poruku...",
-      "returnVoice": "Povratak na glas"
+      "returnVoice": "Povratak na glas",
+      "_pending_review": {}
     },
     "auth": {
       "bundle": "PAKET:",
@@ -2789,7 +2796,8 @@
       "resendAvailableCooldownS": "Ponovo slanje dostupno za {cooldown}s",
       "ifYouArenTSentBack": "Ako nisi automatski preusmeren/a, dodirni ispod – ili jednostavno pređi na Vitana aplikaciju, ažuriraće se za nekoliko sekundi.",
       "updating": "Ažuriranje…",
-      "sendResetLink": "Pošalji link za resetovanje"
+      "sendResetLink": "Pošalji link za resetovanje",
+      "_pending_review": {}
     },
     "billing": {
       "from": "Od:",
@@ -2810,7 +2818,8 @@
       "invoiceId": "Faktura #{id}",
       "invoiceDateDate": "Datum fakture: {date}",
       "healthCityHc12345": "Grad Zdravlja, GZ 12345",
-      "paymentMethodPaymentmethod": "Način plaćanja: {paymentMethod}"
+      "paymentMethodPaymentmethod": "Način plaćanja: {paymentMethod}",
+      "_pending_review": {}
     },
     "business": {
       "performance": "📊 Performanse",
@@ -2967,7 +2976,8 @@
       "eGLongevitySleepSupplements": "npr. dugovečnost, san, suplementi",
       "autopilotHasLengthReferralDraftValue1": "Autopilot ima {length} nacrt preporuke {value1} za tebe",
       "scoreValue0": "ocena {value0}",
-      "viewSource": "Pogledaj izvor"
+      "viewSource": "Pogledaj izvor",
+      "_pending_review": {}
     },
     "calendar": {
       "noUpcomingEvents": "Nema predstojećih događaja",
@@ -3025,7 +3035,8 @@
       "suggestedValue0": "Predlog: {value0}",
       "todaySIndexPulseCompletingYour": "Današnji Index puls: završetak {totalCount} stub-označenog događaja\n                              {value1} će pomeriti tvoj Index.",
       "urgent": "hitno",
-      "highPriority": "visok prioritet"
+      "highPriority": "visok prioritet",
+      "_pending_review": {}
     },
     "cart": {
       "yourCart": "Tvoja korpa",
@@ -3049,7 +3060,8 @@
       "secureCheckoutPoweredByStripe": "Sigurno plaćanje putem Stripe-a",
       "startAddingItemsFromDiscoverMarketplace": "Počni dodavati stavke sa Discover marketplace-a",
       "value0Each": "${value0} po komadu",
-      "byProvider": "od {provider}"
+      "byProvider": "od {provider}",
+      "_pending_review": {}
     },
     "chat": {
       "googleCloudApiKey": "Google Cloud API ključ",
@@ -3063,7 +3075,8 @@
       "yourApiKeyStoredSecurelyOnly": "Tvoj API ključ se čuva bezbedno i koristi se samo za AI glasovne funkcije.",
       "cancel": "Otkaži",
       "go": "Idi na",
-      "saveApiKey": "Sačuvaj API ključ"
+      "saveApiKey": "Sačuvaj API ključ",
+      "_pending_review": {}
     },
     "coaches": {
       "topMatchFactors": "Glavni faktori podudaranja",
@@ -3078,7 +3091,8 @@
       "fromSessions_from": "od €{sessions_from}",
       "bookSession": "Zakaži sesiju",
       "member_countMembers": "{member_count} članova",
-      "participant_countAttending": "{participant_count} prisutnih"
+      "participant_countAttending": "{participant_count} prisutnih",
+      "_pending_review": {}
     },
     "community": {
       "generatingThumbnails": "Generišem minijature...",
@@ -3547,7 +3561,8 @@
       "videoRoomUnavailableHint": "Prenos trenutno nije dostupan. Molimo te, pokušaj ponovo.",
       "autopilotSuggestionsTitle": "Autopilot predlozi",
       "autopilotSuggestionsBody": "Još nisi objavio želju. U međuvremenu, Autopilot ti predlaže ljude iz zajednice koji bi ti mogli odgovarati. Objavi želju kako bi AI mogao da ti pronađe prave podudarnosti.",
-      "autopilotSuggestionBadge": "Autopilot"
+      "autopilotSuggestionBadge": "Autopilot",
+      "_pending_review": {}
     },
     "contacts": {
       "addContact": "Dodaj kontakt",
@@ -3613,7 +3628,8 @@
       "tipUseValue0IncludeYourPersonal": "Savet: Koristi {value0} da uključiš svoj lični link za poziv",
       "sendInvites": "Pošalji pozivnice",
       "weFoundTotalimportedContactsMatchedThem": "Pronašli smo {totalImported} kontakata i uparili ih sa VITANA",
-      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound} tvojih prijatelja je već na VITANA!"
+      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound} tvojih prijatelja je već na VITANA!",
+      "_pending_review": {}
     },
     "context": {
       "aiSpotlight": "AI Reflektor 🔮",
@@ -3629,7 +3645,8 @@
       "meditationSuggestion": "Predlog za meditaciju 🧘",
       "sleepReadiness": "Spremnost za spavanje 🌙",
       "social": "Društvo 👥",
-      "todaySPlan": "Današnji plan 🗓️"
+      "todaySPlan": "Današnji plan 🗓️",
+      "_pending_review": {}
     },
     "creator": {
       "paymentStatus": "Status plaćanja",
@@ -3652,7 +3669,8 @@
       "notEnabled": "Nije omogućeno",
       "completeYourPaymentSetupStartReceiving": "Završi podešavanje plaćanja da bi počeo da primaš zaradu od plaćenih Live soba.",
       "enablePaymentsCreatePaidLiveRooms": "Omogući plaćanja da bi kreirao plaćene Live sobe i primao 90% prihoda. Brzo podešavanje od 2 minuta putem Stripe Connect.",
-      "checkingStatus": "Provera statusa..."
+      "checkingStatus": "Provera statusa...",
+      "_pending_review": {}
     },
     "crossover": {
       "keyFactors": "Ključni faktori:",
@@ -3785,7 +3803,8 @@
       "matchReasonMutualConnectionsOne": "{count} zajednička veza",
       "matchReasonMutualConnectionsOther": "{count} zajedničkih veza",
       "matchReasonSameLocation": "Takođe u {location}",
-      "matchReasonActiveMember": "Aktivan član zajednice dugovečnosti"
+      "matchReasonActiveMember": "Aktivan član zajednice dugovečnosti",
+      "_pending_review": {}
     },
     "debug": {
       "presenceDebug": "Prisutnost Debug",
@@ -3795,7 +3814,8 @@
       "connected": "Povezan:",
       "latency": "Kašnjenje:",
       "realtimelatencyMs": "{realtimeLatency}ms",
-      "value0SAgo": "pre {value0}s"
+      "value0SAgo": "pre {value0}s",
+      "_pending_review": {}
     },
     "dev": {
       "currentStep": "Trenutni korak",
@@ -4178,7 +4198,8 @@
       "briefDescriptionDocument": "Kratak opis dokumenta",
       "whatSNewThisFrontpageVersion": "Šta je novo u ovoj verziji početne stranice?",
       "tryAdjustingYourFiltersWaitFor": "Pokušajte da prilagodite filtere ili sačekajte nove događaje.",
-      "statusLastcode": "Status: {lastCode}"
+      "statusLastcode": "Status: {lastCode}",
+      "_pending_review": {}
     },
     "diary": {
       "startRecordingYourWellnessJourney": "Započni beleženje svog wellness putovanja",
@@ -4231,7 +4252,8 @@
       "tagLabel_voice": "glas",
       "tagLabel_text": "tekst",
       "voiceTranscriptCaptured": "Glasovni transkript snimljen. Uredi i sačuvaj svoj unos.",
-      "writeYourThoughts": "Napiši svoje misli..."
+      "writeYourThoughts": "Napiši svoje misli...",
+      "_pending_review": {}
     },
     "discover": {
       "quickBookActions": "Brze akcije rezervacije",
@@ -4527,7 +4549,8 @@
       "providerAbout_luna": "Velnes centar sa kompletnom uslugom, nudi masaže, tretmane za oporavak i terapije za podmlađivanje.",
       "providerAbout_peak": "Najsavremeniji objekat specijalizovan za optimizaciju čoveka kroz napredne biohaking protokole.",
       "providerAbout_maya": "Integrativni pristup velnesu, kombinuje koučing, ishranu i prakse svesnosti.",
-      "providerAbout_michael": "Sertifikovani specijalista za spavanje, pomaže klijentima da optimizuju san za dugovečnost i performanse."
+      "providerAbout_michael": "Sertifikovani specijalista za spavanje, pomaže klijentima da optimizuju san za dugovečnost i performanse.",
+      "_pending_review": {}
     },
     "discovery": {
       "filters": "Filteri:",
@@ -4559,7 +4582,8 @@
       "value0NewTodayViewedcountTotalcount": "{value0}novo danas · pregledano {viewedCount}/{totalCount}",
       "clearFilters": "Obriši filtere",
       "checkBackTomorrowFor10New": "Proveri sutra za 10 novih podudaranja ✨",
-      "vitanaIndexVitana_index": "Vitana indeks: {vitana_index}"
+      "vitanaIndexVitana_index": "Vitana indeks: {vitana_index}",
+      "_pending_review": {}
     },
     "events": {
       "searchByNameEmail": "Pretraži po imenu ili e-pošti...",
@@ -4582,7 +4606,8 @@
       "youSureYouWantDeleteTitle": "Da li ste sigurni da želite da obrišete \"{title}\"? Ova radnja se ne može poništiti.\n              Svi učesnici, karte i povezani podaci će biti trajno uklonjeni.",
       "sent_countSentResponse_countResponded": "{sent_count}poslato • {response_count}odgovorilo",
       "attendeesTotal": "Prisutni ({total})",
-      "noInvitationsSentYetStartInviting": "Još uvek nema poslatih pozivnica. Počni da pozivaš ljude da bi ovde video odgovore."
+      "noInvitationsSentYetStartInviting": "Još uvek nema poslatih pozivnica. Počni da pozivaš ljude da bi ovde video odgovore.",
+      "_pending_review": {}
     },
     "feedback": {
       "reportSent": "Izveštaj poslat!",
@@ -4609,7 +4634,8 @@
       "interimTextAppearsGrayUntilFinalized": "Privremeni tekst se pojavljuje sivim dok se ne finalizuje...",
       "myReportsLength": "Moji izveštaji ({length})",
       "lengthAttachmentS": "📎 {length} prilog(a)",
-      "loadMoreValue0Remaining": "Učitaj još ({value0} preostalo)"
+      "loadMoreValue0Remaining": "Učitaj još ({value0} preostalo)",
+      "_pending_review": {}
     },
     "health": {
       "vitanaIndex": "Vitana indeks",
@@ -5168,16 +5194,20 @@
           "hydration": "Hidratacija",
           "exercise": "Vežbanje",
           "sleep": "Spavanje",
-          "mental": "Mentalno zdravlje"
+          "mental": "Mentalno zdravlje",
+          "_pending_review": {}
         },
         "economyAxes": {
           "find_match": "Pronađi podudarnost",
           "marketplace": "Tržište",
           "income_generation": "Stvaranje prihoda",
-          "business_formation": "Osnivanje posla"
+          "business_formation": "Osnivanje posla",
+          "_pending_review": {}
         },
-        "contractLink": "Pogledaj ugovor o krajnjem cilju"
-      }
+        "contractLink": "Pogledaj ugovor o krajnjem cilju",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "home": {
       "matchPercent": "{score} %",
@@ -5392,10 +5422,12 @@
       "replyToComment": "Odgovori",
       "replyingTo": "Odgovaraš {name}-u",
       "cancelReply": "Otkaži odgovor",
-      "likeComment": "Lajkuj komentar"
+      "likeComment": "Lajkuj komentar",
+      "_pending_review": {}
     },
     "icons": {
-      "xFormerlyTwitter": "X (bivši Twitter)"
+      "xFormerlyTwitter": "X (bivši Twitter)",
+      "_pending_review": {}
     },
     "intents": {
       "reportIssue": "Prijavi problem",
@@ -5475,7 +5507,8 @@
       "kindOptionActivitySeek": "Partner za aktivnosti",
       "kindOptionSocialSeek": "Kafe ćaskanje / mentorstvo",
       "kindOptionMutualAid": "Pozajmljujem / uzimam / dajem",
-      "kindOptionPartnerSeek": "Životni partner"
+      "kindOptionPartnerSeek": "Životni partner",
+      "_pending_review": {}
     },
     "layout": {
       "contentRequiresConsent": "Sadržaj zahteva saglasnost",
@@ -5483,7 +5516,8 @@
       "reviewSettings": "Pregledaj podešavanja",
       "tapReviewPrivacySettingsForThis": "Dodirni da pregledaš podešavanja privatnosti za ovaj tip sadržaja",
       "kindKind": "Vrsta: {kind}",
-      "idId": "ID: {id}"
+      "idId": "ID: {id}",
+      "_pending_review": {}
     },
     "liverooms": {
       "createLiveRoom": "Kreiraj Live Room",
@@ -5551,7 +5585,8 @@
         "emptyHint": "Završene sobe se pojavljuju ovde — sa rezimeom, istaknutim delovima i snimkom.",
         "loading": "Učitavanje prošlih soba…",
         "heldAt": "{date} · {time}",
-        "heldRange": "{date} · {start}–{end}"
+        "heldRange": "{date} · {start}–{end}",
+        "_pending_review": {}
       },
       "durationMin": "{value0} min",
       "durationHour": "{value0} h",
@@ -5578,13 +5613,15 @@
       "joinAria": "Pridruži se sobi uživo",
       "whenToday": "Danas u {time}",
       "whenTomorrow": "Sutra u {time}",
-      "whenDated": "{date} u {time}"
+      "whenDated": "{date} u {time}",
+      "_pending_review": {}
     },
     "meetups": {
       "detailsProgram": "Detalji i program",
       "undo": "Poništi",
       "closeEventDetails": "Zatvori detalje događaja",
-      "shareMeetup": "Podeli meetup"
+      "shareMeetup": "Podeli meetup",
+      "_pending_review": {}
     },
     "memory": {
       "updatedAgo": "Ažurirano {distance}",
@@ -5812,7 +5849,8 @@
       "memorySubnav_diary": "Dnevni dnevnik",
       "memorySubnav_recall": "Podseti se i pretraži",
       "memorySubnav_permissions": "Dozvole",
-      "wellnessDiaryMultimediaDescription": "Zabeleži i pregledaj svoje putovanje ka blagostanju kroz multimedijalne unose."
+      "wellnessDiaryMultimediaDescription": "Zabeleži i pregledaj svoje putovanje ka blagostanju kroz multimedijalne unose.",
+      "_pending_review": {}
     },
     "messages": {
       "sendCalendarInvite": "Pošalji poziv za sastanak",
@@ -5999,13 +6037,14 @@
       "loadingOlderMessages": "Učitavanje starijih poruka…",
       "conversationStart": "Početak razgovora",
       "anonymous": "Anoniman",
-      "vitanaOpenScreen": "Otvori ekran"
+      "vitanaOpenScreen": "Otvori ekran",
+      "_pending_review": {}
     },
     "mobile": {
       "searching": "Pretražujem…",
       "noMembersFound": "Nema pronađenih članova",
       "searchMembersGroups": "Pretraži članove, grupe ili...",
-      "tapResumeSoundscape": "Dodirni da nastaviš Soundscape",
+      "tapResumeSoundscape": "Dodirni da nastaviš zvučni ambijent",
       "openNavigationMenu": "Otvori navigacioni meni",
       "openLiveRooms": "Otvori uživo sobe",
       "search": "Pretraga",
@@ -6018,7 +6057,8 @@
       "openSearch": "Otvori pretragu",
       "openCalendar": "Otvori kalendar",
       "openAutopilot": "Otvori autopilot",
-      "closeSearch": "Zatvori pretragu"
+      "closeSearch": "Zatvori pretragu",
+      "_pending_review": {}
     },
     "notifications": {
       "markAllAsRead": "Označi sve kao pročitano",
@@ -6036,7 +6076,8 @@
       "deleteThisNotification": "Obriši ovo obaveštenje",
       "delete": "Obriši",
       "close": "Zatvori",
-      "closeNotifications": "Zatvori obaveštenja"
+      "closeNotifications": "Zatvori obaveštenja",
+      "_pending_review": {}
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Izaberi ime za svoj Vitana ID",
@@ -6052,11 +6093,13 @@
       "typeYourOwnName": "Ili upiši svoje ime",
       "eGAlex": "npr. alex",
       "welcomeMaxina": "Dobrodošao u Maxinu",
-      "yourLongevityJourneyBeginsNow": "Tvoje putovanje ka dugovečnosti počinje sada"
+      "yourLongevityJourneyBeginsNow": "Tvoje putovanje ka dugovečnosti počinje sada",
+      "_pending_review": {}
     },
     "orders": {
       "friendExampleCom": "prijatelj@primer.com",
-      "friendSName": "Ime prijatelja"
+      "friendSName": "Ime prijatelja",
+      "_pending_review": {}
     },
     "payment": {
       "selectDate": "Izaberi datum",
@@ -6157,7 +6200,8 @@
       "conversationspecificPaymentActionWith": "Radnja plaćanja specifična za razgovor sa",
       "alreadyActivePleaseCompleteCloseThat": "je već aktivna. \n                    Molimo dovrši ili zatvori tu radnju prvo.",
       "anotherWalletActionCurrentlyProgressPlease": "Druga radnja novčanika je trenutno u toku. \n                    Molimo dovrši ili zatvori tu radnju prvo.",
-      "paymenttypePaymentRequest": "{paymentType}Zahtev za uplatu"
+      "paymenttypePaymentRequest": "{paymentType}Zahtev za uplatu",
+      "_pending_review": {}
     },
     "proactive": {
       "proTip": "Profesionalni savet:",
@@ -6187,7 +6231,8 @@
       "personalInvitesGet3xMoreResponses": "Lične pozivnice dobijaju 3x više odgovora od generičkih poruka. \n            Naš AI kreira autentične pozivnice koje odražavaju tvoje wellness putovanje!",
       "dismissTip": "Odbaci savet",
       "seeNextValue0More": "Vidi sledeće ({value0} više)",
-      "membersWhoAutoshareTheirWellnessWins": "Članovi koji automatski dele svoje wellness uspehe inspirišu 5-10 prijatelja da se pridruže svakog meseca, \n                stvarajući snažan efekat talasa u svojoj mreži."
+      "membersWhoAutoshareTheirWellnessWins": "Članovi koji automatski dele svoje wellness uspehe inspirišu 5-10 prijatelja da se pridruže svakog meseca, \n                stvarajući snažan efekat talasa u svojoj mreži.",
+      "_pending_review": {}
     },
     "profile": {
       "adminAccess": "Administratorski pristup",
@@ -6585,7 +6630,8 @@
       "licensedVerifiedHealthcareProvider": "Licencirani i verifikovani pružalac zdravstvenih usluga",
       "media": "Mediji",
       "events": "Događaji",
-      "health": "Zdravlje"
+      "health": "Zdravlje",
+      "_pending_review": {}
     },
     "reminders": {
       "reminder": "Podsetnik",
@@ -6637,7 +6683,8 @@
       "noCompleted": "Još nema završenih podsetnika.",
       "noMissed": "Nema propuštenih podsetnika — sve si stigao/la.",
       "creating": "Kreiram…",
-      "createReminder": "Kreiraj podsetnik"
+      "createReminder": "Kreiraj podsetnik",
+      "_pending_review": {}
     },
     "reseller": {
       "noEventsYourInventory": "Nema događaja u tvom inventaru",
@@ -6701,7 +6748,8 @@
       "viewDetails": "Pogledaj detalje",
       "perTicketSoldViaYourReseller": "po prodatoj karti putem tvog reseller linka. \n              Provizija se obračunava na bruto cenu karte pre platformskih naknada.",
       "viewWallet2": "Pogledaj u novčaniku →",
-      "ticketquantityTicketValue1Value2": "{ticketQuantity} karta {value1}· {value2}"
+      "ticketquantityTicketValue1Value2": "{ticketQuantity} karta {value1}· {value2}",
+      "_pending_review": {}
     },
     "settings": {
       "googleConnectionLiveCheck": "Google veza — provera uživo",
@@ -7352,7 +7400,8 @@
       "settingsSubnav_support": "Podrška",
       "settingsSubnav_limitations": "Ograničenja",
       "settingsSubnav_socialAccounts": "Društveni nalozi",
-      "settingsSubnav_connectedAppsAndIntegrations": "Povezane aplikacije & Integracije"
+      "settingsSubnav_connectedAppsAndIntegrations": "Povezane aplikacije & Integracije",
+      "_pending_review": {}
     },
     "sharing": {
       "activateCampaign": "Aktiviraj kampanju",
@@ -8162,7 +8211,8 @@
       "imageSpecsHashtagStrategyPostingTimes": "Specifikacije slika, strategija hashtagova, vreme objavljivanja",
       "canvaFigmaDirectlyInapp": "Canva, Figma ili direktno u aplikaciji",
       "copypasteCustomizeForYourNeeds": "Kopiraj i zalepi ili prilagodi svojim potrebama",
-      "createCustomDataPackageBySelecting": "Kreiraj prilagođeni paket podataka odabirom specifičnih zdravstvenih metrika, vremenskih raspona i tipova podataka, prilagođenih zahtevima tvog pružaoca zdravstvenih usluga ili učešću u istraživačkim studijama."
+      "createCustomDataPackageBySelecting": "Kreiraj prilagođeni paket podataka odabirom specifičnih zdravstvenih metrika, vremenskih raspona i tipova podataka, prilagođenih zahtevima tvog pružaoca zdravstvenih usluga ili učešću u istraživačkim studijama.",
+      "_pending_review": {}
     },
     "supplements": {
       "supplementName": "Naziv suplementa*",
@@ -8179,7 +8229,8 @@
       "notes": "Beleške",
       "cancel": "Otkaži",
       "value0Supplement": "{value0}Suplement",
-      "inactive": "Neaktivno"
+      "inactive": "Neaktivno",
+      "_pending_review": {}
     },
     "templates": {
       "sendMessages": "Pošalji u Poruke",
@@ -8193,7 +8244,8 @@
       "noDataAvailable": "Nema dostupnih podataka",
       "withWith": "Sa {with}",
       "spotsSpots": "{spots}mesta",
-      "viewAllLengthRecommendations": "Pogledaj svih {length}preporuka"
+      "viewAllLengthRecommendations": "Pogledaj svih {length}preporuka",
+      "_pending_review": {}
     },
     "tickets": {
       "ticketsSold": "Prodate karte",
@@ -8238,7 +8290,8 @@
       "ticketValue0": "Karta {value0}",
       "eGGeneralAdmission": "npr. Generalni ulaz",
       "priceValue0": "Cena ({value0}) *",
-      "whatSIncludedWithThisTicket": "Šta je uključeno u ovu kartu?"
+      "whatSIncludedWithThisTicket": "Šta je uključeno u ovu kartu?",
+      "_pending_review": {}
     },
     "ui": {
       "reconnecting": "Ponovno povezivanje...",
@@ -8270,7 +8323,8 @@
       "learnMore": "Saznaj više",
       "noItemsDisplay": "Nema stavki za prikaz",
       "pointsCredits": "+{points} kredita",
-      "moreActions": "Više opcija"
+      "moreActions": "Više opcija",
+      "_pending_review": {}
     },
     "vertex": {
       "debugConsole": "Debug konzola",
@@ -8297,11 +8351,13 @@
       "recording": "Snimam...",
       "aiSpeaking": "AI govori...",
       "you": "Ti",
-      "transcriptWillAppearHere": "Transkript će se pojaviti ovde..."
+      "transcriptWillAppearHere": "Transkript će se pojaviti ovde...",
+      "_pending_review": {}
     },
     "vitanaland": {
       "enterVitanalandK": "Uđi u Vitanaland (⌘K)",
-      "enterVitanalandCmdK": "Uđi u VITANALAND (Cmd+K)"
+      "enterVitanalandCmdK": "Uđi u VITANALAND (Cmd+K)",
+      "_pending_review": {}
     },
     "voucher": {
       "friendExampleCom": "prijatelj@example.com",
@@ -8324,7 +8380,8 @@
       "giftFrom": "Poklon od",
       "claiming": "Preuzimanje...",
       "fromBuyer_name": "Od {buyer_name}",
-      "createAccount": "Napravi nalog"
+      "createAccount": "Napravi nalog",
+      "_pending_review": {}
     },
     "wallet": {
       "currentSubscriptionPerks": "Trenutne pogodnosti pretplate",
@@ -8847,7 +8904,8 @@
       "continueToSecureCheckout": "Nastavi na bezbednu naplatu",
       "cardPaymentViaStripe": "Plaćanje karticom, bezbedno obrađeno preko Stripe-a",
       "currentBalanceLabel": "Trenutni {currency} saldo",
-      "amountAddCurrency": "Iznos za dodavanje ({currency})"
+      "amountAddCurrency": "Iznos za dodavanje ({currency})",
+      "_pending_review": {}
     },
     "ai": {
       "rescheduledMeeting": "Ponovo zakazan sastanak",
@@ -9016,7 +9074,8 @@
       "unit_glasses": "čaša",
       "unit_minutes": "minuta",
       "unit_hours": "sati",
-      "unit_moments": "trenutaka"
+      "unit_moments": "trenutaka",
+      "_pending_review": {}
     },
     "authpages": {
       "fullName": "Ime i prezime",
@@ -9027,7 +9086,8 @@
       "login": "Prijavi se",
       "signUp": "Registruj se",
       "alreadyHaveAccountValue0": "Već imaš nalog? {value0}",
-      "donAposTHaveAccountValue0": "Nemaš nalog? {value0}"
+      "donAposTHaveAccountValue0": "Nemaš nalog? {value0}",
+      "_pending_review": {}
     },
     "autopilotdashboard": {
       "text999": "od 999",
@@ -9170,8 +9230,10 @@
         "advanceCareer": "Unapredi karijeru",
         "masterNewSkills": "Savladaj nove veštine",
         "spiritualLife": "Duhovni život",
-        "earnFromRecommendations": "Zaradi od preporuka"
-      }
+        "earnFromRecommendations": "Zaradi od preporuka",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "businesshub": {
       "noServicesYet": "Još Uvek Nema Usluga",
@@ -9191,7 +9253,8 @@
       "businessHub": "Poslovni Centar 💼",
       "growYourWellnessBusinessManageClients": "Razvijaj svoj wellness biznis i upravljaj klijentima bez napora",
       "business": "Posao",
-      "value0MoreActions": "+{value0} još akcija"
+      "value0MoreActions": "+{value0} još akcija",
+      "_pending_review": {}
     },
     "businesslistings": {
       "myListings": "Moji oglasi",
@@ -9201,7 +9264,8 @@
       "backBusinessHub": "Nazad na Poslovni Centar",
       "listingsAvailableForProAccounts": "Ponude su dostupne za Pro naloge.",
       "noListingsYetClick": "Još nema ponuda. Klikni",
-      "addOneOpenOrbJustSay": "da dodaš jednu – ili otvori ORB i samo reci"
+      "addOneOpenOrbJustSay": "da dodaš jednu – ili otvori ORB i samo reci",
+      "_pending_review": {}
     },
     "businessopportunities": {
       "myListings": "Moji oglasi",
@@ -9209,7 +9273,8 @@
       "opportunitiesAvailableForProAccountsUpgrade": "Prilike su dostupne za Pro naloge. Nadogradi da bi pristupio dolaznim potencijalnim klijentima.",
       "opportunities": "Prilike",
       "incomingLeadsMatchingYourOfferingsExpress": "Dolazni potencijalni klijenti koji odgovaraju tvojoj ponudi. Izrazi interesovanje da započneš razgovor.",
-      "noLeadsYetWeLlNotify": "Još nema potencijalnih klijenata. Obavestićemo te kada stigne odgovarajuća potražnja. Proveri da li imaš bar jednu commercial_sell ponudu pod"
+      "noLeadsYetWeLlNotify": "Još nema potencijalnih klijenata. Obavestićemo te kada stigne odgovarajuća potražnja. Proveri da li imaš bar jednu commercial_sell ponudu pod",
+      "_pending_review": {}
     },
     "checkoutsuccess": {
       "whatSNext": "Šta je sledeće?",
@@ -9225,7 +9290,8 @@
       "continueShopping": "Nastavi kupovinu",
       "ifYouHaveAnyQuestionsAbout": "Ako imaš bilo kakvih pitanja u vezi sa porudžbinom, naš tim za podršku je tu da pomogne.",
       "contactSupport": "Kontaktiraj podršku",
-      "viewMyOrders": "Pogledaj moje porudžbine"
+      "viewMyOrders": "Pogledaj moje porudžbine",
+      "_pending_review": {}
     },
     "creatoronboarded": {
       "checkingYourPaymentStatus": "Tvoj status plaćanja se pregleda...",
@@ -9248,10 +9314,12 @@
       "createYourFirstPaidRoom": "Kreirajte svoju prvu plaćenu sobu",
       "viewPaymentSettings": "Pogledaj podešavanja plaćanja",
       "value0PaymentSetupComplete": "Podešavanje plaćanja {value0} je završeno!",
-      "youReAllSetStartEarning": "Spremni ste da počnete da zarađujete od svojih Live soba"
+      "youReAllSetStartEarning": "Spremni ste da počnete da zarađujete od svojih Live soba",
+      "_pending_review": {}
     },
     "editprofilepage": {
-      "editProfileVitana": "Izmeni profil – VITANA"
+      "editProfileVitana": "Izmeni profil – VITANA",
+      "_pending_review": {}
     },
     "healthtracker": {
       "letSTrackYourProgressTogether": "Hajde da zajedno pratimo napredak! 📊",
@@ -9301,7 +9369,8 @@
       "weeklyActivity": "Nedeljna aktivnost",
       "mentalWellness": "Mentalno blagostanje",
       "mindfulness": "Svesnost",
-      "vitanaIndexOverview": "Vitana indeks pregled"
+      "vitanaIndexOverview": "Vitana indeks pregled",
+      "_pending_review": {}
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "Sveobuhvatna zdravstvena i wellness platforma",
@@ -9324,7 +9393,8 @@
       "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA je sveobuhvatna digitalna zdravstvena platforma koja nudi više specijalizovanih okruženja za različite wellness zajednice i profesionalno upravljanje zdravstvom.",
       "commercePortal": "Komercijalni portal",
       "merchantSelfServiceMarketplace": "Samouslužna pijaca za trgovce",
-      "connectYourBusinessToDiscoverYourself": "Poveži svoj posao sa Discover pijacom sam — bez projekta integracije, bez čekanja na inženjere."
+      "connectYourBusinessToDiscoverYourself": "Poveži svoj posao sa Discover pijacom sam — bez projekta integracije, bez čekanja na inženjere.",
+      "_pending_review": {}
     },
     "intentboard": {
       "communityBoard": "Zajednička tabla",
@@ -9334,14 +9404,16 @@
       "style": "Stil",
       "lookingForYourOwnIntents": "Tražiš svoje namere?",
       "whatOthersLookingFor": "Šta drugi traže.",
-      "surfacedForYour": "Prikazano za tvoj"
+      "surfacedForYour": "Prikazano za tvoj",
+      "_pending_review": {}
     },
     "intentmatchdetail": {
       "intentNotFound": "Namera nije pronađena.",
       "backMyIntents": "Nazad na moje namere",
       "closeIntent": "Zatvori nameru",
       "noMatchesYetWeLlKeep": "Još nema poklapanja. Nastavićemo da tražimo i obavestićemo te kada se neko poklopi.",
-      "matchesLength": "Poklapanja ({length})"
+      "matchesLength": "Poklapanja ({length})",
+      "_pending_review": {}
     },
     "invitefriends": {
       "phoneContacts": "Kontakti sa telefona",
@@ -9366,10 +9438,12 @@
       "noContactsMatchSearch": "Nema kontakata koji se poklapaju sa \"{search}\"",
       "importContacts": "Uvezi kontakte",
       "selectedcountSelected": "{selectedCount} izabrano",
-      "sendInvitesSelectedcount": "Pošalji pozivnice ({selectedCount})"
+      "sendInvitesSelectedcount": "Pošalji pozivnice ({selectedCount})",
+      "_pending_review": {}
     },
     "logout": {
-      "signingOut": "Odjavljivanje..."
+      "signingOut": "Odjavljivanje...",
+      "_pending_review": {}
     },
     "mobilesettings": {
       "pushNotifications": "Push obaveštenja",
@@ -9456,7 +9530,8 @@
       "modeBillingPlan": "Trenutni plan",
       "modeBillingPayment": "Način plaćanja",
       "modeBillingInvoices": "Fakture i računi",
-      "modeBillingCreator": "Isplate kreatorima"
+      "modeBillingCreator": "Isplate kreatorima",
+      "_pending_review": {}
     },
     "myintents": {
       "myIntents": "Moje namere",
@@ -9467,7 +9542,8 @@
       "browseWhatOthersLookingFor": "Pogledaj šta drugi traže:",
       "lengthOpenUpPer_kind_slot_capPerCategory": "{length}otvorenih · do {PER_KIND_SLOT_CAP}po kategoriji",
       "lengthPer_kind_slot_capSlotsUsed": "{length}od {PER_KIND_SLOT_CAP}iskorišćenih mesta",
-      "capReachedCloseOnePostNew": "— dostignut limit, zatvori jednu da objaviš novu"
+      "capReachedCloseOnePostNew": "— dostignut limit, zatvori jednu da objaviš novu",
+      "_pending_review": {}
     },
     "mytickets": {
       "myTickets": "Moje karte",
@@ -9479,7 +9555,8 @@
       "upcomingLength": "Predstojeći ({length})",
       "pastLength": "Prošli ({length})",
       "noUpcomingEvents": "Nema predstojećih događaja",
-      "noPastEvents": "Nema prošlih događaja"
+      "noPastEvents": "Nema prošlih događaja",
+      "_pending_review": {}
     },
     "notauthorized": {
       "accessDenied": "Pristup odbijen",
@@ -9487,11 +9564,13 @@
       "youDonTHavePermissionAccess": "Ova oblast je dostupna samo ovlašćenom osoblju.",
       "error403Forbidden": "Greška 403: Zabranjeno",
       "returnDashboard": "Vrati se na kontrolnu tablu",
-      "contactSupport": "Kontaktiraj podršku"
+      "contactSupport": "Kontaktiraj podršku",
+      "_pending_review": {}
     },
     "notfound": {
       "oopsPageNotFound": "Ups! Stranica nije pronađena",
-      "returnHome": "Vrati se na početnu"
+      "returnHome": "Vrati se na početnu",
+      "_pending_review": {}
     },
     "packagepurchasesuccess": {
       "missingPurchaseInformation": "Nedostaju informacije o kupovini",
@@ -9507,7 +9586,8 @@
       "viewMyOrders": "Pogledaj moje porudžbine",
       "redeemNow": "Iskoristi odmah",
       "viewOrders": "Pogledaj porudžbine",
-      "confirmationHasSent": "Potvrda je poslata na"
+      "confirmationHasSent": "Potvrda je poslata na",
+      "_pending_review": {}
     },
     "privacysettings": {
       "privacyVisibility": "Privatnost i vidljivost",
@@ -9515,7 +9595,8 @@
       "pleaseSignManageYourPrivacySettings": "Molimo te da se prijaviš da bi upravljao svojim podešavanjima privatnosti.",
       "serverEnforcesTheseTiersEveryCrossuser": "Server primenjuje ove nivoe pri svakom među-odeljenskom preuzimanju – tvoj prekidač je obavezujući, a ne savetodavni.",
       "back": "Nazad",
-      "tapAnyTierBadgeCyclePrivate": "Dodirni bilo koju oznaku nivoa da cikliraš Privatno → Veze → Javno.\n          Podrazumevano se čuva privatnost — ti odlučuješ šta deliš."
+      "tapAnyTierBadgeCyclePrivate": "Dodirni bilo koju oznaku nivoa da cikliraš Privatno → Veze → Javno.\n          Podrazumevano se čuva privatnost — ti odlučuješ šta deliš.",
+      "_pending_review": {}
     },
     "publiccampaignlanding": {
       "campaignNotFound": "Kampanja nije pronađena",
@@ -9531,7 +9612,8 @@
       "lengthChannelValue1": "{length}kanal{value1}",
       "youLlSignCreateAccountNext": "Prijavićeš se ili kreirati nalog u sledećem koraku.",
       "YourLongevityCommunity": "- Tvoja zajednica za dugovečnost",
-      "getTicketsForValue0": "Nabavi karte za {value0}"
+      "getTicketsForValue0": "Nabavi karte za {value0}",
+      "_pending_review": {}
     },
     "publiceventlanding": {
       "eventNotFound": "Događaj nije pronađen",
@@ -9548,12 +9630,14 @@
       "fromPricelabel": "Od {priceLabel}",
       "youLlSignCreateAccountNext": "Prijavićeš se ili napraviti nalog u sledećem koraku.",
       "YourLongevityCommunity": "- Tvoja zajednica za dugovečnost",
-      "getTicketsForTitle": "Nabavi karte za {title}"
+      "getTicketsForTitle": "Nabavi karte za {title}",
+      "_pending_review": {}
     },
     "publicprofilepage": {
       "loadingProfile": "Učitavanje profila...",
       "userNotFound": "Korisnik nije pronađen",
-      "returnHome": "Vrati se na početnu"
+      "returnHome": "Vrati se na početnu",
+      "_pending_review": {}
     },
     "redeemvoucher": {
       "invalidLink": "Nevažeći link",
@@ -9569,7 +9653,8 @@
       "thisVoucherHasExpiredCanNo": "Ovaj vaučer je istekao i više se ne može iskoristiti. Kontaktiraj podršku ako ti je potrebna pomoć.",
       "yourValue0VoucherHasAddedYour": "Tvoj {value0} vaučer je dodat na tvoj nalog. \n            Istraži događaje i iskustva da iskoristiš svoje pogodnosti.",
       "viewWallet": "Pregledaj novčanik",
-      "browseEvents": "Pretraži događaje"
+      "browseEvents": "Pretraži događaje",
+      "_pending_review": {}
     },
     "search": {
       "viewProfile": "Pregledaj profil",
@@ -9586,7 +9671,8 @@
       "content": "🎬 Sadržaj",
       "health": "❤️ Zdravlje",
       "value0Members": "{value0}članova",
-      "showingResultsFor": "Prikazujem rezultate za \""
+      "showingResultsFor": "Prikazujem rezultate za \"",
+      "_pending_review": {}
     },
     "ticketdemo": {
       "ticketPreview": "Pregled karte",
@@ -9603,7 +9689,8 @@
       "downloadAsPngShareOptions": "Preuzmi kao PNG ili opcije deljenja",
       "multitenantBoardingPassDesign": "Dizajn ukrcajne karte za više stanara",
       "thisDemoTicketPreview": "🎫 Ovo je demo pregled karte",
-      "actualTicketsWillDisplayYourReal": "Stvarne karte će prikazati tvoj stvarni događaj i detalje kupovine"
+      "actualTicketsWillDisplayYourReal": "Stvarne karte će prikazati tvoj stvarni događaj i detalje kupovine",
+      "_pending_review": {}
     },
     "ticketpurchasesuccess": {
       "invalidRequest": "Nevažeći zahtev",
@@ -9615,7 +9702,8 @@
       "paymentSuccessful": "Uplata uspešna!",
       "viewAllMyTickets": "Pogledaj sve moje karte",
       "discoverMoreEvents": "Otkrij još događaja",
-      "yourTicketHasConfirmedConfirmationEmail": "Tvoja karta je potvrđena. Potvrdni email je poslat na {value0}"
+      "yourTicketHasConfirmedConfirmationEmail": "Tvoja karta je potvrđena. Potvrdni email je poslat na {value0}",
+      "_pending_review": {}
     },
     "legal": {
       "deleteAccount": "Obriši nalog",
@@ -9823,7 +9911,8 @@
       "legalRetentionObligations": "zakonske obaveze čuvanja;",
       "securityFraudPreventionReasons": "razlozi bezbednosti, sprečavanja prevara i zaštite od zloupotrebe;",
       "legalClaimsDefense": "potreba za uspostavljanjem, ostvarivanjem ili odbranom pravnih zahteva.",
-      "retentionAnonymizeDelete": "Kada lični podaci više nisu potrebni, brišemo ih ili anonimizujemo, osim ako zakonske obaveze čuvanja ne zahtevaju drugačije."
+      "retentionAnonymizeDelete": "Kada lični podaci više nisu potrebni, brišemo ih ili anonimizujemo, osim ako zakonske obaveze čuvanja ne zahtevaju drugačije.",
+      "_pending_review": {}
     },
     "patient": {
       "myAppointments": "Moji pregledi",
@@ -9894,7 +9983,8 @@
       "activity": "Aktivnost",
       "progress": "Napredak",
       "trend": "Trend",
-      "text5FromLastMonth": "+5 u odnosu na prošli mesec"
+      "text5FromLastMonth": "+5 u odnosu na prošli mesec",
+      "_pending_review": {}
     },
     "portals": {
       "confirmationError": "Greška pri potvrdi",
@@ -9965,7 +10055,8 @@
       "useDifferentEmail": "← Koristi drugu e-poštu",
       "creatingAccount": "Kreiranje naloga...",
       "tryAppleSigninAgain": "Pokušaj ponovo sa Apple prijavom",
-      "backLogin": "Nazad na prijavu"
+      "backLogin": "Nazad na prijavu",
+      "_pending_review": {}
     },
     "professional": {
       "professionalDashboard": "Profesionalna kontrolna tabla",
@@ -10014,7 +10105,8 @@
       "hypertension": "Hipertenzija",
       "sj": "SJ",
       "mw": "MW",
-      "text12FromLastMonth": "+12% u odnosu na prošli mesec"
+      "text12FromLastMonth": "+12% u odnosu na prošli mesec",
+      "_pending_review": {}
     },
     "staff": {
       "staffDashboard": "Kontrolna tabla osoblja",
@@ -10074,31 +10166,37 @@
       "urgent2": "HITNO",
       "sj": "SJ",
       "waiting2": "ČEKANJE",
-      "mw": "MW"
+      "mw": "MW",
+      "_pending_review": {}
     },
     "actions": {
       "doNow": "Uradi sada",
       "edit": "Izmeni",
       "details": "Detalji",
-      "later": "Kasnije"
+      "later": "Kasnije",
+      "_pending_review": {}
     },
     "introexperience": {
       "space": "Razmak",
       "esc": "Esc",
       "press": "Pritisni",
       "play": "za reprodukciju •",
-      "skip": "da preskočiš"
+      "skip": "da preskočiš",
+      "_pending_review": {}
     },
     "groups": {
       "match_scoreMatch": "{match_score}% Poklapanje",
-      "join": "Pridruži se"
+      "join": "Pridruži se",
+      "_pending_review": {}
     },
     "rewards": {
-      "earnValue0Pts": "Zaradi {value0} poena"
+      "earnValue0Pts": "Zaradi {value0} poena",
+      "_pending_review": {}
     },
     "guidedMode": {
       "guidedLabel": "Vođeno putovanje",
-      "fullLabel": "Puna aplikacija"
+      "fullLabel": "Puna aplikacija",
+      "_pending_review": {}
     },
     "downloadFlyer": {
       "brandName": "MAXINA",
@@ -10124,7 +10222,8 @@
       "inviteCardBody": "Podeli flajer za preuzimanje i počnite zajedno.",
       "inviteCardCta": "Pozovi prijatelje",
       "inviteShareTitle": "MAXINA – Zajednica za dugovečnost",
-      "inviteShareText": "Pridruži mi se na MAXINA – zajednici za dugovečnost! Preuzmi aplikaciju ovde:"
+      "inviteShareText": "Pridruži mi se na MAXINA – zajednici za dugovečnost! Preuzmi aplikaciju ovde:",
+      "_pending_review": {}
     },
     "vitanaIdentity": {
       "vitana": "Vitana",
@@ -10136,7 +10235,8 @@
       "viewIndex": "Pogledaj indeks",
       "viewJourney": "Pogledaj moje putovanje",
       "viewMatch": "Pogledaj podudarnost",
-      "dismissCard": "Odbaci karticu"
+      "dismissCard": "Odbaci karticu",
+      "_pending_review": {}
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Preusmeravanje na App Store",
@@ -10149,7 +10249,8 @@
       "copyLink": "Kopiraj link",
       "linkCopied": "Link kopiran — nalepi ga u Safari",
       "copyFailed": "Nije bilo moguće kopirati link",
-      "iosOpenInBrowser": "Dodirni „…“ u gornjem desnom uglu, zatim „Otvori u pregledaču“ — App Store se odmah otvara tamo."
+      "iosOpenInBrowser": "Dodirni „…“ u gornjem desnom uglu, zatim „Otvori u pregledaču“ — App Store se odmah otvara tamo.",
+      "_pending_review": {}
     },
     "autopilotpopup": {
       "indexLoading": "Indeks se učitava…",
@@ -10160,12 +10261,14 @@
       "preparingNextSteps": "Pripremamo tvoje sledeće korake…",
       "allCaughtUpForToday": "Sve je završeno za danas",
       "nothingNewRightNow": "Trenutno nema ništa novo za tebe.",
-      "checkForNew": "Proveri novo"
+      "checkForNew": "Proveri novo",
+      "_pending_review": {}
     },
     "postDetail": {
       "title": "Objava",
       "notFound": "Objava nije pronađena",
-      "back": "Nazad"
+      "back": "Nazad",
+      "_pending_review": {}
     },
     "partnerportal": {
       "title": "Partnerski portal",
@@ -10219,8 +10322,10 @@
         "degraded": "Degradirano",
         "suspended": "Pauzirano",
         "revoked": "Opozvano",
-        "failed": "Neuspelo"
-      }
+        "failed": "Neuspelo",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "commerceportal": {
       "heroTitle": "Dovedi svoj posao u Vitanaland",
@@ -10262,14 +10367,16 @@
         "geminiTitle": "Poveži se sa Gemini",
         "geminiStep1": "Za Gemini CLI: dodaj URL MCP servera iznad u ~/.gemini/settings.json pod tvoje MCP servere.",
         "geminiStep2": "Za Gemini Enterprise (Business Edition): Podešavanja i pomoć → Tim → Upravljaj timom → Povezane aplikacije → „Dodaj MCP Server“.",
-        "geminiNote": "Gemini aplikacija za korisnike trenutno nema dokumentovan način za direktno dodavanje prilagođenog MCP servera — to je danas dostupno samo putem Gemini CLI i Gemini Enterprise."
+        "geminiNote": "Gemini aplikacija za korisnike trenutno nema dokumentovan način za direktno dodavanje prilagođenog MCP servera — to je danas dostupno samo putem Gemini CLI i Gemini Enterprise.",
+        "_pending_review": {}
       },
       "detectPlatform": {
         "urlPlaceholder": "URL prodavnice (opciono) — npr. https://your-shop.com",
         "hint": "Proverićemo URL i automatski popuniti ID konektora i provajdera ako prepoznamo platformu.",
         "detected": "{platform} detektovan — polja su popunjena.",
         "notDetected": "Platforma nije prepoznata. Molimo te da ručno popuniš ID konektora i provajdera.",
-        "failed": "Nismo mogli da proverimo tu adresu. Molimo te da ručno popuniš ID konektora i provajdera."
+        "failed": "Nismo mogli da proverimo tu adresu. Molimo te da ručno popuniš ID konektora i provajdera.",
+        "_pending_review": {}
       },
       "connectOauth": {
         "title": "Poveži",
@@ -10284,8 +10391,10 @@
         "fhirButton": "Poveži FHIR server",
         "connecting": "Povezivanje...",
         "notConfigured": "Ovaj tip veze još uvek nije omogućen. Pokušaj ponovo kasnije.",
-        "failed": "Nije uspelo uspostavljanje veze. Proveri svoje podatke."
-      }
+        "failed": "Nije uspelo uspostavljanje veze. Proveri svoje podatke.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "oauthconsent": {
       "title": "Dozvoli pristup?",
@@ -10309,8 +10418,12 @@
         "vitana:partners:read": "Pregled informacija o partnerima",
         "vitana:connections:write": "Upravljanje poslovnim konekcijama",
         "vitana:grants:write": "Predloži dodelu podataka (pristanak ostaje uz tebe)",
-        "vitana:settlement:write": "Pokreni pripremljena VTNA poravnanja"
-      }
-    }
-  }
+        "vitana:settlement:write": "Pokreni pripremljena VTNA poravnanja",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

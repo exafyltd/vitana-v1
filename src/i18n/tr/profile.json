@@ -6,7 +6,8 @@
       "editHighlights": "Öne Çıkanları Düzenle",
       "saveHighlights": "Öne Çıkanları Kaydet",
       "highlightsDesc": "Profilinin üstünde görüntülenecek en iyi gönderilerini ve medyanı seç. Öne çıkan içerik, Öne Çıkanlar bölümünde görünür ve daha fazla takipçi çeker.",
-      "try": "Dene"
+      "try": "Dene",
+      "_pending_review": {}
     },
     "identity": {
       "vitanaIndex": "Vitana Endeksi",
@@ -15,13 +16,15 @@
       "follow": "Takip Et",
       "followingState": "Takip Ediliyor",
       "understandIndex": "Endeksi anla",
-      "brandFooter": "MAXINA × VITANA"
+      "brandFooter": "MAXINA × VITANA",
+      "_pending_review": {}
     },
     "tabs": {
       "identity": "Kimlik",
       "social": "Sosyal",
       "account": "Hesap",
-      "business": "İş"
+      "business": "İş",
+      "_pending_review": {}
     },
     "account": {
       "notSet": "Ayarlanmadı",
@@ -30,7 +33,8 @@
       "visibility": {
         "private": "Özel",
         "connections": "Bağlantılar",
-        "public": "Herkese Açık"
+        "public": "Herkese Açık",
+        "_pending_review": {}
       },
       "sections": {
         "publicProfile": "Herkese açık profil",
@@ -38,7 +42,8 @@
         "basicInfo": "Temel Kişisel Bilgiler",
         "basicInfoSubtitle": "Sabit kimlik verisi",
         "contactInfo": "İletişim Bilgileri",
-        "accountDetails": "Hesap Ayrıntıları"
+        "accountDetails": "Hesap Ayrıntıları",
+        "_pending_review": {}
       },
       "fields": {
         "avatar": "Avatar",
@@ -56,11 +61,14 @@
         "city": "Şehir",
         "memberSince": "Üyelik başlangıcı",
         "accountType": "Hesap türü",
-        "verificationStatus": "Doğrulama durumu"
+        "verificationStatus": "Doğrulama durumu",
+        "_pending_review": {}
       },
       "values": {
-        "uploaded": "Yüklendi"
-      }
+        "uploaded": "Yüklendi",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "business": {
       "title": "Önerilerim",
@@ -75,7 +83,10 @@
       "publicTitle": "Öneriler",
       "publicSubtitle": "Bu profil tarafından önerilen ürünler",
       "publicEmpty": "Henüz öneri yok",
-      "viewProduct": "Görüntüle"
-    }
-  }
+      "viewProduct": "Görüntüle",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

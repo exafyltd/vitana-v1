@@ -15,6 +15,8 @@
     "login": "Вход",
     "loginSubtitle": "С возвращением!",
     "register": "Регистрация",
-    "registerSubtitle": "Создай свой аккаунт"
-  }
+    "registerSubtitle": "Создай свой аккаунт",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -7,7 +7,8 @@
     "tabs": {
       "overview": "Genel Bakış",
       "notifications": "Bildirimler",
-      "quickActions": "Hızlı İşlemler"
+      "quickActions": "Hızlı İşlemler",
+      "_pending_review": {}
     },
     "categories": {
       "privacy": "Gizlilik",
@@ -23,7 +24,8 @@
       "billing": "Faturalandırma",
       "billingDesc": "Abonelik ve ödeme bilgileri",
       "support": "Destek",
-      "supportDesc": "Yardım, SSS ve iletişim seçenekleri"
+      "supportDesc": "Yardım, SSS ve iletişim seçenekleri",
+      "_pending_review": {}
     },
     "status": {
       "privacyStatus": "Gizlilik Durumu",
@@ -33,9 +35,12 @@
       "notificationsActive": "Bildirimler Aktif",
       "connectedAppsCount": "Bağlı Uygulamalar",
       "types": "tür",
-      "apps": "uygulama"
+      "apps": "uygulama",
+      "_pending_review": {}
     },
     "vitanaOpenedSection": "Vitana {section} bölümünü açtı",
-    "vitanaUpdated": "Vitana ayarını güncelledi"
-  }
+    "vitanaUpdated": "Vitana ayarını güncelledi",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

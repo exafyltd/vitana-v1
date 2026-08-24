@@ -29,14 +29,16 @@
       "title": "Rezervasyonlu etkinlikleriniz",
       "todayLabel": "Bugün",
       "nextUp": "Sıradaki",
-      "noEventsToday": "Bugün etkinlik yok"
+      "noEventsToday": "Bugün etkinlik yok",
+      "_pending_review": {}
     },
     "filters": {
       "personal": "Kişisel",
       "community": "Topluluk",
       "work": "İş",
       "health": "Sağlık",
-      "workout": "Antrenman"
+      "workout": "Antrenman",
+      "_pending_review": {}
     },
     "categories": {
       "community": "Topluluk",
@@ -45,19 +47,22 @@
       "nutrition": "Beslenme",
       "professional": "İş",
       "personal": "Kişisel",
-      "training": "Antrenman"
+      "training": "Antrenman",
+      "_pending_review": {}
     },
     "bookingStatus": {
       "booked": "Rezerve Edildi",
       "rsvp": "Katılım Onayı",
       "ticket": "Bilet",
-      "reserved": "Ayrıldı"
+      "reserved": "Ayrıldı",
+      "_pending_review": {}
     },
     "timeGroups": {
       "today": "Bugün",
       "tomorrow": "Yarın",
       "thisWeek": "Bu Hafta",
-      "later": "Daha Sonra"
+      "later": "Daha Sonra",
+      "_pending_review": {}
     },
     "autopilot": {
       "suggestions": "Otomatik Pilot Önerileri",
@@ -77,7 +82,8 @@
       "reminderLaterToday": "Bugün için daha sonra hatırlatma ayarlandı",
       "reminderTomorrow": "Yarın için hatırlatma ayarlandı",
       "recommendFocus": "Odaklanma bloğu öner",
-      "focusBlockDesc": "90 dakikalık boş bir zaman dilimin var. Odaklanmış çalışma için mükemmel."
+      "focusBlockDesc": "90 dakikalık boş bir zaman dilimin var. Odaklanmış çalışma için mükemmel.",
+      "_pending_review": {}
     },
     "toasts": {
       "eventCreated": "Etkinlik oluşturuldu",
@@ -94,22 +100,26 @@
       "featureComingSoon": "Özellik yakında geliyor",
       "inviteFollowers": "Takipçilerini davet et",
       "rescheduleEvent": "Etkinliği yeniden planla",
-      "shareToGroup": "Gruba paylaş"
+      "shareToGroup": "Gruba paylaş",
+      "_pending_review": {}
     },
     "error": {
-      "failedToCreate": "Etkinlik oluşturulamadı"
+      "failedToCreate": "Etkinlik oluşturulamadı",
+      "_pending_review": {}
     },
     "allDay": "Tüm gün",
     "milestoneToday": "Dönüm Noktası",
     "focus": {
       "todaysFocus": "Bugünün odak noktası",
       "lightDay": "Sakin bir gün — etkinlikleri keşfet veya günlüğüne bak",
-      "moreSteps": "adım daha"
+      "moreSteps": "adım daha",
+      "_pending_review": {}
     },
     "badge": {
       "guidedStep": "Rehberli adım",
       "milestone": "Dönüm noktası",
-      "wellness": "Wellness"
+      "wellness": "Wellness",
+      "_pending_review": {}
     },
     "action": {
       "start": "Başla",
@@ -118,11 +128,13 @@
       "details": "Ayrıntılar",
       "viewPlan": "Planı görüntüle",
       "open": "Aç",
-      "done": "Bitti"
+      "done": "Bitti",
+      "_pending_review": {}
     },
     "group": {
       "stepsRemaining": "adım kaldı",
-      "min": "dk"
+      "min": "dk",
+      "_pending_review": {}
     },
     "journey": {
       "dayOf": "{total} günün {day}. günü",
@@ -140,8 +152,12 @@
         "wave-3": "Bağları Derinleştirme",
         "wave-4": "Sağlık Zekası",
         "wave-5": "İçgörü Anları",
-        "wave-6": "Öneriler ve Keşif"
-      }
-    }
-  }
+        "wave-6": "Öneriler ve Keşif",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

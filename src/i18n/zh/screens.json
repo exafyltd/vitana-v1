@@ -2623,7 +2623,8 @@
       "confidenceConfident": "{confidence}% 有信心",
       "later": "稍后",
       "value0Trends": "{value0}趋势",
-      "lengthEventsShown": "显示 {length} 个事件"
+      "lengthEventsShown": "显示 {length} 个事件",
+      "_pending_review": {}
     },
     "analysis": {
       "topMatchFactors": "最佳匹配因素",
@@ -5426,7 +5427,8 @@
       "replyToComment": "回复",
       "replyingTo": "回复 {name}",
       "cancelReply": "取消回复",
-      "likeComment": "赞评论"
+      "likeComment": "赞评论",
+      "_pending_review": {}
     },
     "icons": {
       "xFormerlyTwitter": "X (前身为 Twitter)",
@@ -8214,7 +8216,8 @@
       "imageSpecsHashtagStrategyPostingTimes": "图片规格、话题标签策略、发布时间",
       "canvaFigmaDirectlyInapp": "Canva、Figma，或直接在应用内",
       "copypasteCustomizeForYourNeeds": "复制粘贴或根据你的需求自定义",
-      "createCustomDataPackageBySelecting": "创建自定义数据包，通过选择特定的健康指标、日期范围和数据类型，以满足你的健康服务提供者或参与研究的要求。"
+      "createCustomDataPackageBySelecting": "创建自定义数据包，通过选择特定的健康指标、日期范围和数据类型，以满足你的健康服务提供者或参与研究的要求。",
+      "_pending_review": {}
     },
     "supplements": {
       "supplementName": "补充剂名称*",

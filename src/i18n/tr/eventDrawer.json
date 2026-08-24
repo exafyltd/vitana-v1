@@ -58,6 +58,8 @@
     "googleCal": "Google Takvim",
     "outlook": "Outlook",
     "appleCal": "Apple Takvim",
-    "downloadIcs": "ICS İndir"
-  }
+    "downloadIcs": "ICS İndir",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

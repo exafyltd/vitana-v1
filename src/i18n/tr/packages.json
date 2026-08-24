@@ -4,12 +4,14 @@
     "types": {
       "bundle": "Paket",
       "subscription": "Abonelik",
-      "program": "Program"
+      "program": "Program",
+      "_pending_review": {}
     },
     "status": {
       "draft": "Taslak",
       "published": "Yayında",
-      "archived": "Arşivlendi"
+      "archived": "Arşivlendi",
+      "_pending_review": {}
     },
     "item": "öğe",
     "items": "öğeler",
@@ -17,6 +19,8 @@
     "validDays": "Geçerli {days} gün",
     "save": "%{percent} tasarruf et",
     "unpublish": "Yayından kaldır",
-    "publish": "Yayınla"
-  }
+    "publish": "Yayınla",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

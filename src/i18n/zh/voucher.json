@@ -4,7 +4,8 @@
       "title": "送一张 Maxina 礼券",
       "subtitle": "送健康和社群连接",
       "buyVoucher": "买礼券",
-      "openingCheckout": "正在打开安全结账..."
+      "openingCheckout": "正在打开安全结账...",
+      "_pending_review": {}
     },
     "tiers": {
       "test": {
@@ -13,7 +14,8 @@
           "仅用于支付流程测试",
           "并非真实礼券",
           "用于开发测试"
-        ]
+        ],
+        "_pending_review": {}
       },
       "experience": {
         "name": "体验",
@@ -22,7 +24,8 @@
           "专属健康咨询",
           "包含 30 天 Vitana+ 试用",
           "精心设计的电子礼券"
-        ]
+        ],
+        "_pending_review": {}
       },
       "exclusive": {
         "name": "专属",
@@ -31,8 +34,10 @@
           "1 对 1 专家指导课程",
           "90 天 Vitana+ 订阅",
           "优先预订 + VIP 权益"
-        ]
-      }
+        ],
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "success": {
       "title": "礼券购买成功！",
@@ -40,7 +45,8 @@
       "download": "下载礼券",
       "sendEmail": "通过邮件发送给收件人",
       "viewOrders": "在订单中查看",
-      "done": "完成"
+      "done": "完成",
+      "_pending_review": {}
     },
     "email": {
       "title": "通过邮件发送礼券",
@@ -50,7 +56,8 @@
       "personalMessage": "个人留言 (可选)",
       "messagePlaceholder": "生日快乐！享受这份健康好礼吧...",
       "back": "返回",
-      "send": "发送礼券"
+      "send": "发送礼券",
+      "_pending_review": {}
     },
     "preview": {
       "title": "你的礼券",
@@ -64,7 +71,8 @@
       "copyLink": "复制链接",
       "share": "保存 / 分享",
       "shareHint": "保存到文件、云盘，或发送给朋友",
-      "downloadHint": "如果下载页面空白，请点击“在浏览器中打开”"
+      "downloadHint": "如果下载页面空白，请点击“在浏览器中打开”",
+      "_pending_review": {}
     },
     "toast": {
       "downloadStarted": "下载已开始！",
@@ -81,7 +89,10 @@
       "pdfNotAvailable": "此订单类型不支持PDF下载",
       "enterRecipientEmail": "请输入收件人的邮箱。",
       "emailOnlyForVouchers": "仅优惠券支持邮件发送",
-      "sendingVoucherEmail": "正在发送优惠券邮件..."
-    }
-  }
+      "sendingVoucherEmail": "正在发送优惠券邮件...",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
