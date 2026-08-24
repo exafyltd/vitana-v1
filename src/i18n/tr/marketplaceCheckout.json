@@ -4,7 +4,8 @@
       "title": "Bakiyen",
       "loading": "Bakiye yükleniyor …",
       "empty": "Henüz bakiye yok",
-      "addMoney": "Para ekle"
+      "addMoney": "Para ekle",
+      "_pending_review": {}
     },
     "checkout": {
       "button": "Ödemeye geç",
@@ -16,7 +17,8 @@
       "affiliateTitle": "Satın alımı satıcıda tamamla",
       "affiliateBody": "Bazı ürünler doğrudan satıcıdan satın alınır. Satın alımı tamamlamak için aşağıdaki bağlantıları aç.",
       "affiliateLink": "Satın alımı satıcıda tamamla",
-      "affiliateOpened": "Satıcı bağlantıları yeni sekmelerde açıldı."
+      "affiliateOpened": "Satıcı bağlantıları yeni sekmelerde açıldı.",
+      "_pending_review": {}
     },
     "addMoney": {
       "title": "Para ekle",
@@ -29,7 +31,8 @@
       "continue": "Ödemeye devam et",
       "processing": "Hazırlanıyor …",
       "invalidAmount": "Lütfen geçerli bir tutar gir.",
-      "failed": "Bakiye yükleme başlatılamadı."
+      "failed": "Bakiye yükleme başlatılamadı.",
+      "_pending_review": {}
     },
     "deposit": {
       "checkingTitle": "Ödeme onaylanıyor",
@@ -39,7 +42,8 @@
       "failedTitle": "Bakiye yükleme başarısız",
       "failedBody": "Bakiye yüklemen tamamlanamadı. Hiçbir ücret alınmadı.",
       "amountLabel": "Tutar",
-      "backToCart": "Sepete dön"
+      "backToCart": "Sepete dön",
+      "_pending_review": {}
     },
     "errors": {
       "invalid_request": "İstek geçersizdi. Lütfen sepetini kontrol et.",
@@ -57,7 +61,10 @@
       "ORDER_WRITE_FAILED": "Siparişin kaydedilemedi. Lütfen tekrar dene.",
       "WALLET_READ_FAILED": "Bakiyeni okuyamadık. Lütfen tekrar dene.",
       "GATEWAY_MISCONFIGURED": "Ödeme hizmeti şu anda kullanılamıyor. Lütfen daha sonra tekrar dene.",
-      "unknown": "Ödeme sırasında bir sorun oluştu. Lütfen tekrar dene."
-    }
-  }
+      "unknown": "Ödeme sırasında bir sorun oluştu. Lütfen tekrar dene.",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

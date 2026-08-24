@@ -74,6 +74,8 @@
     "errorNoAudio": "Hiçbir ses algılayamadık. Lütfen tekrar dene.",
     "errorTranscription": "Yazıya dökme başarısız. Lütfen tekrar dene.",
     "transcribing": "Kaydın yazıya dökülüyor…",
-    "backendRecordingHint": "Durdur'a dokunduktan sonra yazıya dökümün görünecek."
-  }
+    "backendRecordingHint": "Durdur'a dokunduktan sonra yazıya dökümün görünecek.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

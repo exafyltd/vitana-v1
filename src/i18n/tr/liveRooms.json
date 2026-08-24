@@ -6,7 +6,8 @@
       "live": "Şimdi canlı",
       "scheduled": "Planlanmış",
       "all": "Tüm Odalar",
-      "past": "Geçmiş"
+      "past": "Geçmiş",
+      "_pending_review": {}
     },
     "goLive": "Canlı Yayına Geç",
     "joinRoom": "Odaya Katıl",
@@ -17,7 +18,8 @@
     "search": {
       "placeholder": "Oda, konu veya sunucu ara...",
       "category": "Kategori",
-      "allCategories": "Tüm Kategoriler"
+      "allCategories": "Tüm Kategoriler",
+      "_pending_review": {}
     },
     "room": {
       "join": "Odaya Katıl",
@@ -25,7 +27,8 @@
       "duration": "Süre",
       "host": "Sunucu",
       "premium": "Premium",
-      "live": "CANLI"
+      "live": "CANLI",
+      "_pending_review": {}
     },
     "viewer": {
       "leave": "Ayrıl",
@@ -33,7 +36,8 @@
       "video": "Video",
       "raiseHand": "El Kaldır",
       "chat": "Sohbet",
-      "reactions": "Tepkiler"
+      "reactions": "Tepkiler",
+      "_pending_review": {}
     },
     "goLivePopup": {
       "titleCreate": "Canlı Yayına Geç",
@@ -65,7 +69,8 @@
         "sleep": "Uyku",
         "motivation": "Motivasyon",
         "education": "Eğitim",
-        "lifestyle": "Yaşam Tarzı"
+        "lifestyle": "Yaşam Tarzı",
+        "_pending_review": {}
       },
       "advancedTitle": "Gelişmiş Seçenekler",
       "cohostLabel": "Ortak Sunucu / Konuk Daveti",
@@ -74,16 +79,20 @@
       "access": {
         "public": {
           "label": "Herkese Açık",
-          "desc": "Herkes katılabilir"
+          "desc": "Herkes katılabilir",
+          "_pending_review": {}
         },
         "followers": {
           "label": "Yalnızca Takipçiler",
-          "desc": "Yalnızca takipçilerin"
+          "desc": "Yalnızca takipçilerin",
+          "_pending_review": {}
         },
         "group": {
           "label": "Grup/VIP",
-          "desc": "Yalnızca davetli üyeler"
-        }
+          "desc": "Yalnızca davetli üyeler",
+          "_pending_review": {}
+        },
+        "_pending_review": {}
       },
       "scheduleLabel": "Daha Sonrası İçin Planla",
       "goLiveNow": "Şimdi Canlı Yayına Geç",
@@ -118,7 +127,8 @@
         "imageUploadFailedDesc": "Mevcut görseli koruyacağız.",
         "genericTitle": "Hata",
         "genericDesc": "Yayın oluşturulamadı. Lütfen tekrar dene.",
-        "genericDescWithReason": "Yayın oluşturulamadı: {reason}. Lütfen tekrar dene."
+        "genericDescWithReason": "Yayın oluşturulamadı: {reason}. Lütfen tekrar dene.",
+        "_pending_review": {}
       },
       "success": {
         "streamUpdatedTitle": "Yayın Güncellendi! ✨",
@@ -128,15 +138,19 @@
         "youAreLiveTitle": "Canlıdasın! 🎙️",
         "youAreLiveDesc": "Yayın odana katılıyorsun…",
         "aiImageHintTitle": "AI Görsel Oluşturma",
-        "aiImageHintDesc": "Görsel, yayın başladığında oluşturulacak."
-      }
+        "aiImageHintDesc": "Görsel, yayın başladığında oluşturulacak.",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "editSession": {
       "title": "Seansı Düzenle",
       "saving": "Kaydediliyor …",
       "changeCover": "Kapak görselini değiştir",
-      "noChanges": "Kaydedilecek değişiklik yok"
-    }
+      "noChanges": "Kaydedilecek değişiklik yok",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
   },
   "goLivePopup": {
     "durationLabel": "Süre",
@@ -146,6 +160,8 @@
     "duration60": "1 saat",
     "duration90": "1,5 saat",
     "duration120": "2 saat",
-    "durationHint": "Manuel olarak sonlandırmazsan, oda bu süreden sonra otomatik olarak kapanır."
-  }
+    "durationHint": "Manuel olarak sonlandırmazsan, oda bu süreden sonra otomatik olarak kapanır.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,7 +1,5 @@
 {
-  "_pending_review": {},
   "sidebar": {
-    "_pending_review": {},
     "home": "Ana Sayfa",
     "news": "Haberler",
     "community": "Topluluk",
@@ -47,6 +45,7 @@
     "monitoring": "İzleme",
     "logout": "Çıkış Yap",
     "connectors": "Bağlayıcılar",
-    "support": "Destek"
+    "support": "Destek",
+    "myJourney": "Yolculuğum"
   }
 }

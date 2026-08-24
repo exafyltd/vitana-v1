@@ -11,7 +11,8 @@
     "tabs": {
       "balances": "Bakiyeler",
       "activity": "Aktivite",
-      "actions": "İşlemler"
+      "actions": "İşlemler",
+      "_pending_review": {}
     },
     "filters": {
       "commissions": "Sat ve kazan komisyonları",
@@ -21,10 +22,13 @@
       "purchases": "Satın Alımlar",
       "pending": "Bekleyen Ödemeler",
       "withdrawals": "Para Çekimleri",
-      "stakes": "Staking"
+      "stakes": "Staking",
+      "_pending_review": {}
     },
     "noActivity": "Henüz aktivite yok",
     "noActivityDesc": "İşlemlerin burada görünecek.",
-    "displayCurrency": "Görüntüleme para birimi"
-  }
+    "displayCurrency": "Görüntüleme para birimi",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

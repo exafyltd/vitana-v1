@@ -46,7 +46,6 @@
     "logout": "Wyloguj",
     "connectors": "Łączniki",
     "support": "Wsparcie",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "myJourney": "Moja podróż"
+  }
 }
