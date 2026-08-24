@@ -296,11 +296,10 @@
       "phase": "llm"
     },
     "toasts.error.uploadFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Ambiguous translation for 'uploaded'; inconsistent with previous 'Выгрузка'. 'Загрузить' can mean both upload and download. 'Выгрузить' is more specific for upload.",
-      "suggested": "Файл не удалось выгрузить.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.error.deleteFailed": {
       "verdict": "OK",
@@ -448,11 +447,10 @@
       "phase": "llm"
     },
     "toasts.warning.limitReachedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender-specific verb form ('достиг' is masculine). For a general user, it should be gender-neutral or adapt to user's gender. 'Максимум достигнут' is a common gender-neutral UI alternative.",
-      "suggested": "Максимум достигнут.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.warning.slowConnection": {
       "verdict": "OK",
@@ -725,11 +723,10 @@
       "phase": "llm"
     },
     "toasts.common.youVeMatchedWithSomeoneCheck": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The verb 'совпал' is masculine. If the user is female, it should be 'совпала'. A gender-neutral phrasing is preferred for UI strings when user gender is unknown or not handled dynamically.",
-      "suggested": "У тебя есть совпадение с кем-то! Проверь свои совпадения.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.common.noAnswer": {
       "verdict": "OK",
@@ -1537,11 +1534,10 @@
       "phase": "llm"
     },
     "toasts.admin.acceptLinkCopiedClipboard": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'Accept link'. 'Ссылка для принятия' is too literal and less idiomatic than 'link for agreement/confirmation'.",
-      "suggested": "Ссылка для согласия скопирована в буфер обмена",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.admin.invitationRevoked": {
       "verdict": "OK",
@@ -2629,11 +2625,10 @@
       "phase": "llm"
     },
     "toasts.health.sleepInsightsOpened": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation 'данные о сне' means 'sleep data', which is less nuanced than 'sleep insights'. 'Insights' implies useful information or analysis.",
-      "suggested": "Полезные сведения о сне открыты",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.health.sleepDataLogged": {
       "verdict": "OK",
@@ -2891,32 +2886,28 @@
       "phase": "llm"
     },
     "toasts.liverooms.followedTitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gender-specific. Should be gender-neutral for a general message.",
-      "suggested": "Подписка оформлена!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.liverooms.followedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gender-specific. Should be gender-neutral for a general message.",
-      "suggested": "Подписка на {name} оформлена!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.liverooms.unfollowedTitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gender-specific. Should be gender-neutral for a general message.",
-      "suggested": "Отписка оформлена.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.liverooms.unfollowedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gender-specific. Should be gender-neutral for a general message.",
-      "suggested": "Отписка от {name} оформлена.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.meetups.signRequired": {
       "verdict": "OK",
@@ -2934,11 +2925,10 @@
       "phase": "llm"
     },
     "toasts.meetups.youVeLeftThisMeetup": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Gender-specific and 'покинул' is a bit formal. Rephrased to be gender-neutral and more natural.",
-      "suggested": "Ты больше не участвуешь во встрече.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.meetups.failedAddEvent": {
       "verdict": "OK",
@@ -3091,11 +3081,10 @@
       "phase": "llm"
     },
     "toasts.memory.editFunctionalityComingSoon": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is too abrupt; 'скоро' alone for 'coming soon' is less natural than implying availability.",
-      "suggested": "Функция редактирования скоро будет доступна",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.memory.photoDeleted": {
       "verdict": "OK",
@@ -4293,11 +4282,10 @@
       "phase": "llm"
     },
     "toasts.sharing.noValidContactsFoundCsv": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing, not idiomatic Russian word order for 'No X found'.",
-      "suggested": "Действительных контактов не найдено в CSV",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.importCleared": {
       "verdict": "OK",
@@ -4380,11 +4368,10 @@
       "phase": "llm"
     },
     "toasts.sharing.sharedSuccessfully": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The verb 'поделились' (they shared) is not appropriate for a passive UI message indicating a successful action. A passive construction is needed.",
-      "suggested": "Успешно отправлено!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.linkSharedDownloadImageIncludeIt": {
       "verdict": "OK",
@@ -4467,11 +4454,10 @@
       "phase": "llm"
     },
     "toasts.sharing.openingMessenger": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The Russian translation 'Открываю Мессенджер...' uses the first-person singular ('I am opening'), which is too personal for an impersonal system message. It should be an impersonal noun phrase or passive construction.",
-      "suggested": "Открытие Мессенджера...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.shareViaVitanaMessenger": {
       "verdict": "OK",
@@ -4479,11 +4465,10 @@
       "phase": "llm"
     },
     "toasts.sharing.shareOpened": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The Russian translation 'Поделиться открыто' means 'To share openly' (verb + adverb), not 'Share (feature/dialog) opened'. It's grammatically incorrect for the intended meaning.",
-      "suggested": "Окно поделиться открыто",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.connectAccount": {
       "verdict": "OK",
@@ -4591,18 +4576,16 @@
       "phase": "llm"
     },
     "toasts.tickets.ticketDownloadedOpeningEmail": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Using 'загружен' instead of 'скачан' for 'downloaded' is less precise. 'Скачан' is more common and accurate for file downloads.",
-      "suggested": "Билет скачан! Открываю почту...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.tickets.ticketDownloadedOpeningMessages": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Using 'загружен' instead of 'скачан' for 'downloaded' is less precise. 'Скачан' is more common and accurate for file downloads.",
-      "suggested": "Билет скачан! Открываю сообщения...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.tickets.ticketSaved": {
       "verdict": "OK",
@@ -5400,18 +5383,16 @@
       "phase": "llm"
     },
     "toasts.hooks.youVeSuccessfullyLeftThisEvent": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender-specific verb ('покинул') used for a general 'You'. A gender-neutral phrasing is preferred for UI.",
-      "suggested": "Выход из события успешен.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.joinedEvent": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender-specific verb ('Присоединился') used for a general user. A gender-neutral phrasing is preferred for UI.",
-      "suggested": "Присоединение к событию! 🎉",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.pleaseSignGetPersonalizedRecommendations": {
       "verdict": "OK",
@@ -5454,11 +5435,10 @@
       "phase": "llm"
     },
     "toasts.hooks.youNowFollowingThisUser": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender-specific adjective ('подписан') used for a general 'You'. A gender-neutral phrasing is preferred for UI.",
-      "suggested": "Подписка на пользователя оформлена.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.failedUnfollowUser": {
       "verdict": "OK",
@@ -5631,11 +5611,10 @@
       "phase": "llm"
     },
     "toasts.hooks.joinedRoom": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Assumes male user; should be gender-neutral for a general app. The app uses 'ты' form, so a passive construction is appropriate here.",
-      "suggested": "Вход в комнату выполнен!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.failedJoinRoom": {
       "verdict": "OK",
@@ -5643,11 +5622,10 @@
       "phase": "llm"
     },
     "toasts.hooks.leftRoom": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Assumes male user; should be gender-neutral for a general app. The app uses 'ты' form, so a passive construction is appropriate here.",
-      "suggested": "Выход из комнаты выполнен!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.failedLeaveRoom": {
       "verdict": "OK",
@@ -5665,11 +5643,10 @@
       "phase": "llm"
     },
     "toasts.hooks.openingCheckout": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Phrasing is a bit clunky; a more natural continuous action verb is preferred.",
-      "suggested": "Открывается оформление заказа...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.uploadSuccessful": {
       "verdict": "OK",
@@ -6282,11 +6259,10 @@
       "phase": "llm"
     },
     "toasts.home.activityHasRemovedFromYourKnowledge": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: 'вашей' (formal/plural 'your') should be 'твоей' (informal singular 'your') to match du-form.",
-      "suggested": "Действие удалено из твоей базы знаний.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.home.savedMemory": {
       "verdict": "OK",
@@ -6294,11 +6270,10 @@
       "phase": "llm"
     },
     "toasts.home.activityHasSavedYourKnowledgeBase": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: 'вашей' (formal/plural 'your') should be 'твоей' (informal singular 'your') to match du-form.",
-      "suggested": "Действие сохранено в твоей базе знаний.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.home.actionExecuted": {
       "verdict": "OK",
@@ -6316,11 +6291,10 @@
       "phase": "llm"
     },
     "toasts.home.thisActionHasRemovedFromYour": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Inconsistent register: 'вашего' (formal/plural 'your') should be 'твоего' (informal singular 'your') to match du-form.",
-      "suggested": "Это действие удалено из твоего списка.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.index.vitanaDevGatewayUrlNotConfigured": {
       "verdict": "OK",
@@ -6336,7 +6310,19 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "toasts.business.noOrdersExport": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "toasts.business.ordersExported": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-08-07T02:19:46.952Z"
+  "generatedAt": "2026-08-24T04:16:13.548Z"
 }

@@ -316,11 +316,10 @@
       "phase": "llm"
     },
     "createEventPopup.categories.social": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Nuance of 'Networking' is lost; 'Социальные связи' is more passive than the active 'Networking'.",
-      "suggested": "🤝 Социальное общение",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.categories.volunteer": {
       "verdict": "OK",
@@ -383,11 +382,10 @@
       "phase": "llm"
     },
     "createEventPopup.durations.half-day": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Less idiomatic spelling; 'Полдня' (one word) is the standard and more natural form.",
-      "suggested": "Полдня",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.durations.full-day": {
       "verdict": "OK",
@@ -395,11 +393,10 @@
       "phase": "llm"
     },
     "createEventPopup.durations.custom": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Nuance of 'Custom' is lost; 'Другая длительность' is too generic, 'Custom' implies user-defined.",
-      "suggested": "Произвольная длительность...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.toasts.invalidFileType": {
       "verdict": "OK",
@@ -552,5 +549,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:31:16.488Z"
+  "generatedAt": "2026-08-24T04:12:40.162Z"
 }

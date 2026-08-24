@@ -246,11 +246,10 @@
       "phase": "llm"
     },
     "profileEditor.identity.handlePlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Concatenation of 'твой' and 'никнейм' into a single word is unnatural; they should be separate.",
-      "suggested": "твой никнейм",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "profileEditor.identity.handleDescription": {
       "verdict": "OK",
@@ -443,5 +442,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:44:02.891Z"
+  "generatedAt": "2026-08-24T04:14:37.864Z"
 }
