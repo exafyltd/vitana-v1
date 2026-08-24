@@ -2736,12 +2736,12 @@
     },
     "audio": {
       "volume": "Jačina",
-      "soundscape": "Zvučni pejzaž",
+      "soundscape": "Zvučni ambijent",
       "mute": "Utišaj",
       "unmute": "Uključi zvuk",
       "send": "Pošalji",
       "exitAudioMode": "Izađi iz audio režima",
-      "soundscapeValue0": "Zvučni pejzaž {value0}",
+      "soundscapeValue0": "Zvučni ambijent {value0}",
       "vitanaAudioMode": "VITANA audio režim",
       "typeYourMessage": "Ukucaj svoju poruku...",
       "returnVoice": "Povratak na glas"
@@ -6005,7 +6005,7 @@
       "searching": "Pretražujem…",
       "noMembersFound": "Nema pronađenih članova",
       "searchMembersGroups": "Pretraži članove, grupe ili...",
-      "tapResumeSoundscape": "Dodirni da nastaviš Soundscape",
+      "tapResumeSoundscape": "Dodirni da nastaviš zvučni ambijent",
       "openNavigationMenu": "Otvori navigacioni meni",
       "openLiveRooms": "Otvori uživo sobe",
       "search": "Pretraga",
