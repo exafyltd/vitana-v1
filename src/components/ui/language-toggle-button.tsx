@@ -115,7 +115,7 @@ export function LanguageToggleButton({ className }: LanguageToggleButtonProps) {
         <img
           src={current.flag}
           alt=""
-          className="w-7 h-7 rounded-full object-cover flex-shrink-0 shadow-[0_0_0_1px_rgba(255,255,255,0.25)]"
+          className="w-9 h-6 rounded object-cover flex-shrink-0 shadow-[0_0_0_1px_rgba(255,255,255,0.25)]"
         />
         <span className="flex-1 text-start">{current.endonym}</span>
         <ChevronDown className="w-5 h-5 text-white/70 flex-shrink-0" aria-hidden="true" />
