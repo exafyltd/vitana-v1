@@ -383,15 +383,23 @@ export default function IntroExperience() {
             above it — moved out to its own fixed-position element pinned
             directly under the Orb (see below).
 
-            Extra top margin (on top of the column's own gap-6/gap-8) nudges
-            this block further down the page, into the empty space below it
-            on typical viewports. Safe to add here rather than by re-tuning
-            the column's overall justify-content: the Orb's target position
-            is measured from orbSpacerRef's actual rendered rect (see that
-            effect above), so it automatically follows wherever this extra
-            space pushes the layout — no separate position fix needed. */}
+            No extra top margin here on purpose. An earlier version added
+            `mt-10 md:mt-14` on top of the column's own gap to nudge this
+            block further down the page — that margin is ADDITIVE, not a
+            replacement for the gap, and the outer page wrapper is `fixed
+            inset-0 ... overflow-hidden` with this column set to
+            `min-h-screen ... justify-center`: on any viewport shorter than
+            the column's full rendered height, the overflow is clipped
+            symmetrically off BOTH the top and bottom rather than becoming
+            scrollable. That margin pushed total content height past the
+            viewport on real laptop screens (confirmed live at 1366×768 —
+            the Login/Register row was clipped almost entirely off the
+            bottom). Do not re-add a fixed margin here for "push it down a
+            bit" — if the block needs to sit lower, that has to come out of
+            the shared, derived `--maxina-orb-content-gap` (index.css),
+            never a one-off value stacked on top of it. */}
         <div
-          className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs mt-10 md:mt-14"
+          className="flex flex-col items-center gap-4 animate-fade-in w-full max-w-xs"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
           {/* Language selector - glass bar with the selected language's
