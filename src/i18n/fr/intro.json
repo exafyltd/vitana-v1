@@ -9,7 +9,12 @@
     "playing": "Lecture",
     "goToLogin": "Aller à la connexion",
     "chooseLanguage": "Choisir la langue",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "tapOrbHint": "Touche l'Orbe pour rencontrer Vitana",
+    "chooseLanguageTitle": "Choisis ta langue",
+    "chooseLanguageSubtitle": "Vitana parlera et répondra dans cette langue.",
+    "login": "Connexion",
+    "loginSubtitle": "Content de te revoir !",
+    "register": "S'inscrire",
+    "registerSubtitle": "Crée ton compte"
+  }
 }

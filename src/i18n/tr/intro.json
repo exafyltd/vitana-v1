@@ -9,7 +9,14 @@
     "preparing": "Hazırlanıyor...",
     "playing": "Oynatılıyor",
     "goToLogin": "Girişe Git",
-    "chooseLanguage": "Dil seç"
+    "chooseLanguage": "Dil seç",
+    "login": "Giriş Yap",
+    "loginSubtitle": "Tekrar hoş geldin!",
+    "register": "Kayıt Ol",
+    "registerSubtitle": "Hesabını oluştur",
+    "tapOrbHint": "Vitana ile tanışmak için Orb'a dokun",
+    "chooseLanguageTitle": "Dilini seç",
+    "chooseLanguageSubtitle": "Vitana bu dilde seninle konuşacak ve yanıt verecek."
   },
   "_pending_review": {}
 }

@@ -8,8 +8,13 @@
     "preparing": "Preparing...",
     "playing": "Playing",
     "goToLogin": "Go to Login",
+    "login": "Login",
+    "loginSubtitle": "Welcome back!",
+    "register": "Register",
+    "registerSubtitle": "Create your account",
     "chooseLanguage": "Choose language",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "tapOrbHint": "Tap the Orb to meet Vitana",
+    "chooseLanguageTitle": "Choose your language",
+    "chooseLanguageSubtitle": "Vitana will speak and respond in this language."
+  }
 }

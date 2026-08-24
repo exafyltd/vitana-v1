@@ -8,7 +8,11 @@ import { Volume2, Loader2 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { t } from '@/lib/i18n-toast';
-import { supabase } from '@/integrations/supabase/client';
+// BOOTSTRAP-FRONTEND-TTS-POLLY: preview goes through the gateway's Polly-first
+// route, same path the real `speak()` uses, so a preview cannot claim a voice
+// the user will not actually hear.
+import { synthesizeViaGateway } from '@/lib/gateway-tts';
+import { useAIConsent } from '@/hooks/useAIConsent';
 
 interface VoiceSettingsPanelProps {
   preferences: any;
@@ -16,39 +20,11 @@ interface VoiceSettingsPanelProps {
   updatePreferences: (updates: any) => void;
 }
 
-// VTID-03651: GCP billing was disabled 2026-08-16. This panel used to offer
-// 3-4 named Google voices per language (Chirp 3 HD / Standard / Wavenet) and
-// preview them via two Supabase edge functions calling Google Cloud APIs
-// directly — both now permanently error. The gateway's Polly provider
-// (services/gateway/src/services/tts/polly.ts) is ONE voice per language,
-// not a multi-voice catalog, so the replacement is a single "cloud voice"
-// choice per language rather than a like-for-like swap. `sr` has no Polly
-// voice in any engine (documented gap, tracked in CLAUDE.md §2c) — Serbian
-// users see only browser voices here, same as any language with none.
-const POLLY_CLOUD_VOICE_ID = '__polly__';
-const POLLY_SUPPORTED_LANGS = new Set([
-  'en-US', 'de-DE', 'es-ES', 'ar-XA', 'ru-RU', 'zh-CN', 'fr-FR', 'pt-BR', 'pl-PL',
-]);
-
-const GATEWAY_URL = (
-  import.meta.env.VITE_GATEWAY_BASE ||
-  (import.meta.env.VITE_GATEWAY_URL || '').replace(/\/api\/v1\/?$/, '') ||
-  ''
-).replace(/\/+$/, '');
-
-async function authHeaders(): Promise<HeadersInit> {
-  const { data } = await supabase.auth.getSession();
-  const token = data.session?.access_token;
-  return {
-    'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
-}
-
 export default function VoiceSettingsPanel({ preferences, isUpdating, updatePreferences }: VoiceSettingsPanelProps) {
   const [isTesting, setIsTesting] = useState(false);
   const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
   const { setSelectedLanguage } = useLanguage();
+  const { hasConsent } = useAIConsent();
 
   const baseLang = useCallback((l: string) => (l || '').toLowerCase().replace('_', '-').split('-')[0], []);
 
@@ -108,13 +84,22 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
 
   useEffect(() => {
     if (!preferences || availableVoices.length === 0) return;
-
-    const currentVoice = preferences.tts_voice;
-    const isCloudVoice = currentVoice === POLLY_CLOUD_VOICE_ID;
-
-    // Don't auto-switch if user has selected the cloud (Polly) voice
-    if (isCloudVoice) return;
     
+    const currentVoice = preferences.tts_voice;
+
+    // BOOTSTRAP-FRONTEND-TTS-POLLY — the "don't auto-switch away from a cloud
+    // voice" guard that used to sit here is gone, and removing it is a fix
+    // rather than a simplification.
+    //
+    // It protected a selection that no longer exists: cloud voices are not
+    // selectable any more (see `cloudVoices` below), and any Chirp3-HD /
+    // -Standard- / -Wavenet- id still on a profile names a Google voice
+    // nothing can play. Keeping the guard meant such an id would block
+    // assignment of a real browser voice FOREVER — which matters precisely
+    // where it hurts most, because the browser is the only remaining path for
+    // Serbian, and it would have been left with no voice selected.
+    //
+    // A stale id now simply fails the `find` below and gets replaced.
     const currentBrowserVoice = availableVoices.find(v => v.name === currentVoice);
     const currentVoiceLangCode = currentBrowserVoice ? baseLang(currentBrowserVoice.lang) : undefined;
     const selectedLangCode = baseLang(preferences.stt_language);
@@ -142,13 +127,33 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
     }
   }, [availableVoices, baseLang, pickPreferredVoice, updatePreferences, preferences, setSelectedLanguage]);
 
+  // BOOTSTRAP-FRONTEND-TTS-POLLY — deliberately EMPTY, not deleted.
+  //
+  // This used to list ~30 selectable Google voices: Gemini Chirp 3 HD per
+  // language, plus 'sr-RS-Standard-B' for Serbian. Every one of them named a
+  // Google Cloud voice, and GCP was decommissioned 2026-08-16 — so the picker
+  // was offering the user choices that could not produce a single second of
+  // audio, and selecting one persisted a dead id onto their profile.
+  //
+  // Cloud speech is now the gateway's Polly-first route, which resolves the
+  // voice from the LANGUAGE and exposes no voice parameter (CLAUDE.md §2c pins
+  // one voice per language on purpose). So there is no per-voice choice to
+  // offer: the picker lists browser voices, and "no browser voice selected"
+  // means the user gets Polly.
+  //
+  // Kept as an empty map rather than ripped out because the render below
+  // already handles length===0 correctly, and because this is the seam where
+  // selectable cloud voices would return if the gateway ever exposes them.
+  // Populating it again requires the route to accept a voice id first.
+  const cloudVoices: Record<string, Array<{ name: string; label: string }>> = {};
+
   const filteredVoices = availableVoices.filter(voice => {
     const langCode = baseLang(preferences.stt_language);
     const voiceLang = baseLang(voice.lang);
     return voiceLang === langCode;
   });
 
-  const hasPollyVoice = POLLY_SUPPORTED_LANGS.has(preferences.stt_language);
+  const currentCloudVoices = cloudVoices[preferences.stt_language] || [];
 
   const getTestPhrase = (language: string): string => {
     const phrases: Record<string, string> = {
@@ -169,30 +174,68 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
   const handlePreviewVoice = async () => {
     const testPhrase = getTestPhrase(preferences.stt_language || 'en-US');
     const voiceName = preferences.tts_voice;
-    const isCloudVoice = voiceName === POLLY_CLOUD_VOICE_ID;
     setIsTesting(true);
 
+    // BOOTSTRAP-FRONTEND-TTS-POLLY — the branch condition changed meaning.
+    //
+    // It used to ask "does the stored voice id LOOK like a Google voice?"
+    // (Chirp3-HD / -Standard- / -Wavenet-) and, if so, call one of two Google
+    // edge functions. Those reach GCP, decommissioned 2026-08-16, so that
+    // branch has produced nothing but errors since — and VTID-03671 stopped
+    // writing Google ids anyway, so it is increasingly never taken either.
+    //
+    // A PREVIEW MUST MATCH REALITY, so this follows BOTH of the hook's rules:
+    // cloud speech requires AI consent, and it requires a language the gateway
+    // can actually serve. Fall back to browser speech otherwise.
+    //
+    // An earlier version of this comment claimed to follow the hook "exactly"
+    // while implementing only the language rule — see the consent check below.
+    //
+    // Gating this on "did the user pick a browser voice?" was tempting and
+    // wrong. The effect above AUTO-ASSIGNS a browser voice name to `tts_voice`
+    // whenever it does not match the chosen language, so most profiles carry
+    // one — and `useTextToSpeech` ignores `tts_voice` entirely and plays Polly.
+    // Previewing the browser voice would therefore have demonstrated a voice
+    // the user never actually hears.
+    //
+    // `tts_voice` still matters: it selects WHICH browser voice the fallback
+    // uses, in both this preview and the hook.
     try {
-      if (isCloudVoice) {
-        if (!GATEWAY_URL) throw new Error('Gateway not configured');
-        const resp = await fetch(`${GATEWAY_URL}/api/v1/orb/tts`, {
-          method: 'POST',
-          headers: await authHeaders(),
-          body: JSON.stringify({
-            text: testPhrase,
-            lang: baseLang(preferences.stt_language || 'en-US'),
-          }),
-        });
-        const data = await resp.json().catch(() => null);
-        if (!resp.ok || !data?.ok || !data?.audio_b64) {
-          throw new Error(data?.error || `gateway TTS failed (${resp.status})`);
-        }
-        const audio = new Audio(`data:${data.mime || 'audio/mp3'};base64,${data.audio_b64}`);
-        audio.volume = preferences.tts_volume / 100;
-        audio.onended = () => setIsTesting(false);
-        audio.onerror = () => setIsTesting(false);
-        await audio.play();
+      // AI consent gates cloud speech, exactly as it does in useTextToSpeech.
+      //
+      // This was missed when the preview was moved onto the gateway: the panel
+      // copied the hook's LANGUAGE rule but not its CONSENT rule, so a user who
+      // had withheld or revoked AI-data consent still had their test phrase
+      // sent to the cloud the moment they pressed Preview. The comment above
+      // claiming this "follows the hook's rule exactly" was therefore false.
+      //
+      // Skipping straight to browser speech here is also the honest preview:
+      // browser speech is precisely what such a user hears in real use.
+      if (!hasConsent) {
+        console.log('[VOICE-PREVIEW] no AI consent — previewing browser speech');
       } else {
+        const cloud = await synthesizeViaGateway(
+          testPhrase,
+          preferences.stt_language || 'en-US',
+        );
+        if (cloud) {
+          // MIME from the response, not hardcoded — same reasoning as the hook.
+          const audio = new Audio(`data:${cloud.mime};base64,${cloud.audioB64}`);
+          audio.volume = preferences.tts_volume / 100;
+          audio.onended = () => setIsTesting(false);
+          audio.onerror = () => setIsTesting(false);
+          await audio.play();
+          return;
+        }
+        // Fell through: the gateway cannot serve this language (Serbian has no
+        // Polly voice in any engine). Preview the browser voice instead, which
+        // is exactly what the user will get in real use.
+        console.log(
+          `[VOICE-PREVIEW] gateway cannot serve ${preferences.stt_language} — previewing browser speech`,
+        );
+      }
+
+      {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(testPhrase);
         utterance.rate = preferences.tts_speed;
@@ -277,14 +320,23 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
               <SelectValue placeholder={t('screens.assistant.selectVoice')} />
             </SelectTrigger>
             <SelectContent>
-              {hasPollyVoice && (
-                <SelectItem value={POLLY_CLOUD_VOICE_ID}>
-                  {t('screens.assistant.voiceProviderLabel_polly')}
-                </SelectItem>
+              {currentCloudVoices.length > 0 && (
+                <>
+                  <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+                    {preferences.stt_language === 'sr-RS' 
+                      ? 'Google Speech API (High Quality)' 
+                      : 'Google Gemini Chirp 3 HD (Premium)'}
+                  </div>
+                  {currentCloudVoices.map((voice) => (
+                    <SelectItem key={voice.name} value={voice.name}>
+                      {voice.label}
+                    </SelectItem>
+                  ))}
+                </>
               )}
               {filteredVoices.filter(v => !v.name.toLowerCase().includes('microsoft')).length > 0 && (
                 <>
-                  {hasPollyVoice && (
+                  {currentCloudVoices.length > 0 && (
                     <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground border-t mt-2 pt-2">
                       {t('screens.assistant.browserVoices')}
                     </div>
@@ -298,8 +350,8 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
                     ))}
                 </>
               )}
-              {filteredVoices.filter(v => !v.name.toLowerCase().includes('microsoft')).length === 0 &&
-               !hasPollyVoice && (
+              {filteredVoices.filter(v => !v.name.toLowerCase().includes('microsoft')).length === 0 && 
+               currentCloudVoices.length === 0 && (
                 <SelectItem value="" disabled>
                   {t('screens.assistant.noVoicesAvailable')}
                 </SelectItem>
@@ -307,8 +359,10 @@ export default function VoiceSettingsPanel({ preferences, isUpdating, updatePref
             </SelectContent>
           </Select>
           <p className="text-xs text-muted-foreground">
-            {preferences.tts_voice === POLLY_CLOUD_VOICE_ID
-              ? t('screens.assistant.voiceProviderHint_polly')
+            {currentCloudVoices.length > 0
+              ? preferences.stt_language === 'sr-RS'
+                ? t('screens.assistant.voiceProviderHint_googleSpeech')
+                : t('screens.assistant.voiceProviderHint_geminiChirp')
               : filteredVoices.length === 0
               ? t('screens.assistant.voiceProviderHint_noVoicesAvailable', { lang: baseLang(preferences.stt_language).toUpperCase() })
               : t('screens.assistant.voiceProviderHint_browserVoices')

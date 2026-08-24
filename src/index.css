@@ -624,6 +624,66 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
   bottom: 1rem !important;
 }
 
+/* ORB — intro screen, desktop widths: this route has no sidebar, so the
+   left:8rem sidebar-vestige position above puts the orb in the bottom-left
+   corner. Center it instead, matching the mobile treatment below. Placed
+   after the sidebar rules above so it wins on the shared selectors.
+
+   The target position comes from --maxina-orb-target-left/-top, two CSS
+   custom properties IntroExperience.tsx sets on <body> from the measured
+   center of an in-flow spacer element reserved for the Orb (see
+   orbSpacerRef in that file). A static 50%/50% guess repeatedly landed the
+   Orb either in empty space or on top of the language pill, because it has
+   no idea where the surrounding text actually ends up; this always matches
+   wherever the reserved space really is, for any content length or
+   viewport size. 50% is kept as the fallback for the brief window before
+   that effect runs on first paint.
+
+   BOOTSTRAP-INTRO-ORB-SYMMETRY — that effect could not run at all until
+   this change (its dependency array was `[]` and it read a ref that is
+   null behind the component's loading early-return), so what production
+   actually served was the 50%/50% fallback: the very static guess this
+   comment describes replacing. See the effect's own note in
+   IntroExperience.tsx. */
+
+/* Orb footprint on this screen, and the reserved slot derived from it.
+   The widget's own base size is 64px (56px under 600px wide); these are
+   deliberately LARGER, never smaller — here the Orb is the page's
+   centrepiece and its primary call to action, not a docked FAB.
+   `--maxina-orb-slot` is DERIVED so the reserved space and the rendered
+   Orb cannot drift apart. */
+body.maxina-intro-page {
+  --maxina-orb-size: 112px;
+  --maxina-orb-gap: 32px;
+  --maxina-orb-slot: calc(var(--maxina-orb-size) + 2 * var(--maxina-orb-gap));
+}
+
+/* The reserved in-flow slot. Renders nothing; it exists to hold open
+   symmetric space in the centred column and give the Orb something real to
+   be measured against. */
+body.maxina-intro-page .maxina-orb-slot {
+  height: var(--maxina-orb-slot);
+  flex: 0 0 auto;
+  pointer-events: none;
+}
+
+body.maxina-intro-page .vtorb-fab,
+body.maxina-intro-page .vitana-orb,
+body.maxina-intro-page [data-vitana-orb="true"],
+body.maxina-intro-page #vitana-orb,
+body.maxina-intro-page .OrbFloatingButton,
+body.maxina-intro-page #vitana-orb-fab,
+body.maxina-intro-page [id^="vitana-orb"],
+body.maxina-intro-page [class^="vtorb-fab"] {
+  left: var(--maxina-orb-target-left, 50%) !important;
+  top: var(--maxina-orb-target-top, 50%) !important;
+  bottom: auto !important;
+  right: auto !important;
+  width: var(--maxina-orb-size) !important;
+  height: var(--maxina-orb-size) !important;
+  transform: translate(-50%, -50%) !important;
+}
+
 /* MOBILE / TABLET — ORB fixed positioning above bottom nav */
 @media (max-width: 1023px) {
   .vtorb-fab,
@@ -762,6 +822,45 @@ body[data-desktop-sidebar-state="collapsed"] [class^="vtorb-fab"] {
   body.maxina-signin-page [id^="vitana-orb"],
   body.maxina-signin-page [class^="vtorb-fab"] {
     bottom: calc(env(safe-area-inset-bottom, 0px) + 16px) !important;
+  }
+
+  /* Intro screen only (NOT .maxina-signin-page, which MaxinaPortal.tsx's
+     sign-in/sign-up page also carries and must keep bottom-docked): float
+     the orb near the vertical middle of the screen instead of the bottom
+     edge, so it reads as the page's centerpiece rather than a docked FAB.
+     Declared after the .maxina-signin-page rule above so it wins on the
+     shared selectors for pages that carry both classes.
+
+     Same measured-target approach as the desktop rule above — see its
+     comment for why this isn't a static percentage. left is repeated here
+     (not just top) because the base mobile rule earlier in this block
+     already sets left:50% unconditionally, and this block needs to win on
+     both axes, not only override top. */
+
+  /* Mobile is the primary target for this screen, so the sizing is set here
+     explicitly rather than inherited: 96px against the widget's 56px mobile
+     base. Still larger, never smaller — just proportioned for a 390px-wide
+     viewport, where the 112px desktop value crowds the headline. The slot
+     recalculates from these automatically. */
+  body.maxina-intro-page {
+    --maxina-orb-size: 96px;
+    --maxina-orb-gap: 28px;
+  }
+
+  body.maxina-intro-page .vtorb-fab,
+  body.maxina-intro-page .vitana-orb,
+  body.maxina-intro-page [data-vitana-orb="true"],
+  body.maxina-intro-page #vitana-orb,
+  body.maxina-intro-page .OrbFloatingButton,
+  body.maxina-intro-page #vitana-orb-fab,
+  body.maxina-intro-page [id^="vitana-orb"],
+  body.maxina-intro-page [class^="vtorb-fab"] {
+    left: var(--maxina-orb-target-left, 50%) !important;
+    top: var(--maxina-orb-target-top, 50%) !important;
+    bottom: auto !important;
+    width: var(--maxina-orb-size) !important;
+    height: var(--maxina-orb-size) !important;
+    transform: translate(-50%, -50%) !important;
   }
 
   /* Hide irrelevant tenant links for Maxina app users */

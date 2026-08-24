@@ -5388,7 +5388,11 @@
       "modBanConfirm": "Banuj {name}? Njihove objave će biti skrivene i neće moći ponovo da objavljuju.",
       "modFailed": "Akcija neuspešna.",
       "createPost": "Objava",
-      "likesCount": "{count} Sviđanja"
+      "likesCount": "{count} Sviđanja",
+      "replyToComment": "Odgovori",
+      "replyingTo": "Odgovaraš {name}-u",
+      "cancelReply": "Otkaži odgovor",
+      "likeComment": "Lajkuj komentar"
     },
     "icons": {
       "xFormerlyTwitter": "X (bivši Twitter)"

@@ -289,9 +289,17 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     // future provider switch into a per-user data migration instead of a
     // config change (CLAUDE.md §2c), and this stops that pile growing.
     //
-    // Clearing rather than writing a Polly id on purpose: the frontend still
-    // calls the Google edge functions directly, so a Polly voice name here
-    // would name a voice nothing can currently play.
+    // Clearing rather than writing a Polly id on purpose — and as of
+    // BOOTSTRAP-FRONTEND-TTS-POLLY there is no Polly id to write even if we
+    // wanted to. That change moved frontend speech onto the gateway's
+    // Polly-first `/orb/tts` route, which resolves the voice from the LANGUAGE
+    // and takes no voice parameter at all. So `tts_voice` no longer names the
+    // cloud voice under any provider; it only selects which BROWSER voice the
+    // fallback uses when the gateway cannot serve the language (Serbian).
+    //
+    // (This paragraph previously read "the frontend still calls the Google edge
+    // functions directly, so a Polly voice name here would name a voice nothing
+    // can currently play." That is no longer true — those calls are gone.)
     const currentVoice = preferences?.tts_voice;
     const voiceMatchesLanguage = !!currentVoice && currentVoice.startsWith(language);
 

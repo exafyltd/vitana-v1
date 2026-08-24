@@ -8,6 +8,13 @@
     "preparing": "Vorbereitung...",
     "playing": "Wird abgespielt",
     "goToLogin": "Direkt zum Login",
-    "chooseLanguage": "Sprache wählen"
+    "login": "Login",
+    "loginSubtitle": "Willkommen zurück!",
+    "register": "Registrieren",
+    "registerSubtitle": "Konto erstellen",
+    "chooseLanguage": "Sprache wählen",
+    "tapOrbHint": "Tippe auf den Orb, um Vitana kennenzulernen",
+    "chooseLanguageTitle": "Wähle deine Sprache",
+    "chooseLanguageSubtitle": "Vitana wird in dieser Sprache mit dir sprechen und antworten."
   }
 }

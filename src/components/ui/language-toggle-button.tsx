@@ -1,7 +1,22 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import { Check, ChevronDown, Globe } from 'lucide-react';
 import { useLanguage, getVisibleLanguageOptions } from '@/contexts/LanguageContext';
 import { useTranslation } from '@/hooks/useTranslation';
+// `t` from i18n-toast is a plain function-call lookup and would shadow the
+// `useTranslation()` catalog-object `t` used elsewhere in this file, so it's
+// imported under an alias — same pattern IntroExperience.tsx uses (there
+// aliased `lookup`) for the identical reason.
+import { t as i18nT } from '@/lib/i18n-toast';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerFooter,
+} from '@/components/ui/drawer';
 
 import deFlag from '@/assets/flags/de.png';
 import gbFlag from '@/assets/flags/gb.png';
@@ -16,25 +31,15 @@ import cnFlag from '@/assets/flags/cn.png';
 import trFlag from '@/assets/flags/tr.png';
 
 /**
- * Language picker for the intro/landing screen.
+ * Language picker for the intro/landing screen: a glass pill (globe icon +
+ * current language name + chevron) that opens a full-screen Drawer listing
+ * every visible language with a flag, its endonym, and a checkmark on the
+ * current selection.
  *
- * VTID-03580 — this was a hardcoded DE <-> EN toggle. It imported exactly two
- * flags and computed `isGerman ? 'en-US' : 'de-DE'`, so it could reach 2 of the
- * 8 GA languages and no more. A visitor wanting Spanish or French had to sign
- * up (in German), then find Settings -> Preferences. Eight complete, verified
- * catalogs were effectively unreachable from the one screen every visitor sees.
- *
- * The list now comes from `getVisibleLanguageOptions()` — the same GA filter the
- * settings picker uses, including its `?i18n-preview=1` override for beta/draft
- * locales. It is deliberately NOT a second copy of the language list: promoting
- * a locale to `ga` must light it up here with no edit to this file, because the
- * failure this whole programme keeps hitting is two sources of truth drifting.
- *
- * DELIBERATE SEMANTIC CHANGE: the old button showed the flag you would switch
- * TO ("shows the OPPOSITE flag"). That idiom only works with exactly two
- * languages — with eight there is no single "other" — so the button now shows
- * the flag of the language you are CURRENTLY in, which is the conventional
- * reading and the only one that stays true as the list grows.
+ * The list comes from `getVisibleLanguageOptions()` — the same GA filter the
+ * settings picker uses, including its `?i18n-preview=1` override for beta/
+ * draft locales. It is deliberately NOT a second copy of the language list:
+ * promoting a locale to `ga` must light it up here with no edit to this file.
  */
 
 /**
@@ -69,121 +74,146 @@ const LOCALE_PRESENTATION: Record<string, { flag: string; endonym: string }> = {
 
 interface LanguageToggleButtonProps {
   className?: string;
-  size?: 'sm' | 'md';
 }
 
-export function LanguageToggleButton({ className, size = 'md' }: LanguageToggleButtonProps) {
+export function LanguageToggleButton({ className }: LanguageToggleButtonProps) {
   const { selectedLanguage, setSelectedLanguage } = useLanguage();
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const options = getVisibleLanguageOptions();
   const current = LOCALE_PRESENTATION[selectedLanguage] ?? LOCALE_PRESENTATION['de-DE'];
 
-  // Close on outside click and on Escape. Both, not just one: a picker that
-  // traps a visitor on the very first screen is worse than no picker.
-  useEffect(() => {
-    if (!open) return;
-    const onPointerDown = (e: MouseEvent | TouchEvent) => {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
-    };
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
-    };
-    document.addEventListener('mousedown', onPointerDown);
-    document.addEventListener('touchstart', onPointerDown);
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('mousedown', onPointerDown);
-      document.removeEventListener('touchstart', onPointerDown);
-      document.removeEventListener('keydown', onKeyDown);
-    };
-  }, [open]);
-
   // With a single language configured there is nothing to choose. Render the
-  // flag as a plain, non-interactive badge rather than a button that opens an
-  // empty menu.
+  // pill as a plain, non-interactive badge rather than a button that opens an
+  // empty drawer.
   const isInteractive = options.length > 1;
 
-  const sizeClasses = size === 'sm' ? 'w-9 h-9' : 'w-11 h-11';
-  const flagSizeClasses = size === 'sm' ? 'w-5 h-5' : 'w-6 h-6';
-
-  const glass = cn(
-    'flex-shrink-0 rounded-full flex items-center justify-center',
-    'bg-white/10 backdrop-blur-xl border border-white/30',
-    'shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_0_rgba(255,255,255,0.1)]',
+  const triggerClasses = cn(
+    'w-full flex items-center justify-center gap-2.5',
+    'bg-white/10 backdrop-blur-xl border border-white/30 rounded-2xl',
+    'px-8 py-5 text-base font-medium text-white',
+    'shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.1)]',
     'transition-all duration-300',
-    isInteractive && 'hover:bg-white/20 hover:border-white/40',
+    isInteractive && 'hover:bg-white/20',
     isInteractive &&
-      'hover:shadow-[0_6px_24px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.15)]',
+      'hover:shadow-[0_12px_40px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.15)]',
     'focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent',
-    sizeClasses,
     className,
   );
 
   return (
-    <div ref={rootRef} className="relative flex-shrink-0">
+    <>
       <button
         type="button"
-        onClick={() => isInteractive && setOpen((v) => !v)}
-        className={glass}
+        onClick={() => isInteractive && setDrawerOpen(true)}
+        className={triggerClasses}
         aria-label={t.intro?.chooseLanguage || 'Choose language'}
-        aria-haspopup={isInteractive ? 'listbox' : undefined}
-        aria-expanded={isInteractive ? open : undefined}
+        aria-haspopup={isInteractive ? 'dialog' : undefined}
         disabled={!isInteractive}
       >
-        <img src={current.flag} alt="" className={cn('rounded-full object-cover', flagSizeClasses)} />
+        <Globe className="w-5 h-5 text-white/80" aria-hidden="true" />
+        <span>{current.endonym}</span>
+        <ChevronDown className="w-4 h-4 text-white/70" aria-hidden="true" />
       </button>
 
-      {open && (
-        <div
-          role="listbox"
-          aria-label={t.intro?.chooseLanguage || 'Choose language'}
-          // Anchored to the button's right edge and opening UPWARD: this sits
-          // low on the intro screen next to "Play Welcome", so a downward menu
-          // would open off the bottom of a phone viewport.
-          className={cn(
-            'absolute bottom-full right-0 mb-2 z-50 min-w-[11rem] py-1.5',
-            'rounded-2xl bg-black/70 backdrop-blur-xl border border-white/20',
-            'shadow-[0_8px_32px_rgba(0,0,0,0.45)]',
-            'max-h-[60vh] overflow-y-auto',
-          )}
+      {/* Dark glass styling, overridden locally rather than in the shared
+          drawer.tsx primitive (used elsewhere in ordinary light contexts).
+          DrawerContent's default bg-background resolves to plain white in
+          this app's light theme, and nothing forces dark mode on the intro
+          screen, so without this the picker slides up as a flat white sheet
+          over the screen's dark photo background — the "too basic" gap
+          against the reference mockup's dark glass panel. */}
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <DrawerContent
+          overlayClassName="bg-black/60"
+          className="bg-[#161311]/95 backdrop-blur-2xl border-white/10 text-white"
         >
-          {options.map((opt) => {
-            const pres = LOCALE_PRESENTATION[opt.value];
-            const isCurrent = opt.value === selectedLanguage;
-            return (
-              <button
-                key={opt.value}
-                type="button"
-                role="option"
-                aria-selected={isCurrent}
-                onClick={() => {
-                  setSelectedLanguage(opt.value);
-                  setOpen(false);
-                }}
-                className={cn(
-                  'w-full flex items-center gap-3 px-3.5 py-2.5 text-start',
-                  'text-sm text-white/90 hover:bg-white/15 transition-colors duration-150',
-                  isCurrent && 'bg-white/10 font-semibold text-white',
-                )}
-              >
-                {pres ? (
-                  <img src={pres.flag} alt="" className="w-5 h-5 rounded-full object-cover flex-shrink-0" />
-                ) : (
-                  // A GA locale with no presentation entry still appears, using
-                  // its catalog label. Dropping it would hide a shipped language
-                  // behind a missing image — the silent failure this component
-                  // existed to cause.
-                  <span className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
-                )}
-                <span>{pres?.endonym ?? opt.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      )}
-    </div>
+          <DrawerHeader>
+            <DrawerTitle className="text-white">
+              {t.intro?.chooseLanguageTitle || 'Choose your language'}
+            </DrawerTitle>
+            <DrawerDescription className="text-white/60">
+              {t.intro?.chooseLanguageSubtitle ||
+                'Vitana will speak and respond in this language.'}
+            </DrawerDescription>
+          </DrawerHeader>
+
+          <div
+            role="listbox"
+            aria-label={t.intro?.chooseLanguageTitle || 'Choose your language'}
+            className="px-2 pb-2 max-h-[60vh] overflow-y-auto"
+          >
+            {options.map((opt) => {
+              const pres = LOCALE_PRESENTATION[opt.value];
+              const isCurrent = opt.value === selectedLanguage;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  role="option"
+                  aria-selected={isCurrent}
+                  // VTID-03705 — picking IS committing. The tap already applied
+                  // the language (it always did); what made it feel like a
+                  // two-step confirmation was that the drawer stayed open
+                  // afterwards behind a "Done" button, so the choice looked
+                  // pending until you pressed it. Closing here is the whole
+                  // fix, and it removes the reason for that footer button.
+                  onClick={() => {
+                    setSelectedLanguage(opt.value);
+                    setDrawerOpen(false);
+                  }}
+                  className={cn(
+                    'w-full flex items-center gap-3 px-4 py-3 rounded-lg text-start text-white',
+                    'hover:bg-white/10 transition-colors',
+                    isCurrent && 'bg-white/10 font-semibold',
+                  )}
+                >
+                  {pres ? (
+                    <img
+                      src={pres.flag}
+                      alt=""
+                      className="w-6 h-6 rounded-full object-cover flex-shrink-0"
+                    />
+                  ) : (
+                    // A GA locale with no presentation entry still appears, using
+                    // its catalog label. Dropping it would hide a shipped language
+                    // behind a missing image — the silent failure this component
+                    // existed to cause.
+                    <span className="w-6 h-6 flex-shrink-0" aria-hidden="true" />
+                  )}
+                  <span className="flex-1">{pres?.endonym ?? opt.label}</span>
+                  {isCurrent && (
+                    <Check
+                      className="w-4 h-4 text-[#E0AA52] flex-shrink-0"
+                      aria-hidden="true"
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* VTID-03705 — the primary "Done" button is gone on purpose.
+              Selecting a language now applies it and closes the drawer, so a
+              confirm step would confirm something already done, and a gold
+              primary button next to a completed action reads as "your choice
+              is not saved yet". What replaces it is a plain dismissal for the
+              person who opened the picker and decided to keep their current
+              language — that case still needs a way out, and relying only on
+              the swipe-down/overlay-tap gestures would leave keyboard and
+              screen-reader users without an obvious one. */}
+          <DrawerFooter>
+            <Button
+              variant="ghost"
+              className="w-full text-white/70 hover:text-white hover:bg-white/10"
+              onClick={() => setDrawerOpen(false)}
+            >
+              {i18nT('screens.common.close')}
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 }

@@ -1,98 +1,87 @@
 {
- "voucher": {
-  "modal": {
-   "title": "أهدِ قسيمة ماكسينا",
-   "subtitle": "أهدِ العافية والتواصل المجتمعي",
-   "buyVoucher": "اشترِ قسيمة",
-   "openingCheckout": "جارٍ فتح صفحة الدفع الآمنة...",
-   "_pending_review": {}
-  },
-  "tiers": {
-   "test": {
-    "name": "اختبار",
-    "_pending_review": {},
-    "benefits": [
-     "اختبار تدفق الدفع فقط",
-     "ليست قسيمة حقيقية",
-     "لأغراض اختبار التطوير"
-    ]
-   },
-   "experience": {
-    "name": "تجربة",
-    "_pending_review": {},
-    "benefits": [
-     "دخول فعالية مجتمعية مميزة واحدة",
-     "استشارة عافية شخصية",
-     "تجربة مجانية لمدة 30 يومًا لـ Vitana+ مضمّنة",
-     "قسيمة إلكترونية مصممة بعناية"
-    ]
-   },
-   "exclusive": {
-    "name": "حصري",
-    "_pending_review": {},
-    "benefits": [
-     "3 فعاليات مجتمعية مميزة",
-     "جلسة تدريب فردية مع خبير",
-     "اشتراك Vitana+ لمدة 90 يومًا",
-     "حجز ذو أولوية + مزايا VIP"
-    ]
-   },
-   "_pending_review": {}
-  },
-  "success": {
-   "title": "تم شراء القسيمة!",
-   "ready": "قسيمتك من فئة {tier} جاهزة",
-   "download": "نزّل القسيمة",
-   "sendEmail": "أرسِل إلى المستلم عبر البريد الإلكتروني",
-   "viewOrders": "اعرض في الطلبات",
-   "done": "تم",
-   "_pending_review": {}
-  },
-  "email": {
-   "title": "أرسِل القسيمة عبر البريد الإلكتروني",
-   "subtitle": "سنرسل بريدًا إلكترونيًا مصممًا بشكل جميل مع القسيمة",
-   "recipientEmail": "بريد المستلم الإلكتروني *",
-   "recipientName": "اسم المستلم (اختياري)",
-   "personalMessage": "رسالة شخصية (اختياري)",
-   "messagePlaceholder": "عيد ميلاد سعيد! استمتع بهذه الهدية الصحية...",
-   "back": "رجوع",
-   "send": "أرسِل القسيمة",
-   "_pending_review": {}
-  },
-  "preview": {
-   "title": "قسيمتك",
-   "giftVoucher": "قسيمة هدية",
-   "validUntil": "صالحة حتى {date}",
-   "voucherCode": "رمز القسيمة",
-   "whatsIncluded": "ما يتضمنه",
-   "downloadPdf": "نزّل PDF",
-   "downloadDirect": "نزّل مباشرةً",
-   "openInBrowser": "افتح في المتصفح",
-   "copyLink": "انسخ الرابط",
-   "share": "حفظ / مشاركة",
-   "shareHint": "احفظ في الملفات، درايف، أو أرسل لشخص ما",
-   "downloadHint": "إذا فتح التنزيل فارغًا، اضغط على \"افتح في المتصفح\"",
-   "_pending_review": {}
-  },
-  "toast": {
-   "downloadStarted": "بدأ التنزيل!",
-   "downloadFailed": "فشل التنزيل",
-   "linkCopied": "نُسخ الرابط!",
-   "linkCopiedDesc": "الصق في المتصفح للتنزيل.",
-   "voucherSent": "أُرسلت القسيمة إلى {email}!",
-   "voucherShared": "تمت مشاركة القسيمة بنجاح!",
-   "checkoutFailed": "لم نتمكن من بدء عملية الدفع. حاول مرة أخرى.",
-   "generatingVoucher": "جاري إنشاء القسيمة...",
-   "failedToLoadVoucher": "فشل تحميل بيانات القسيمة",
-   "downloadFailedCopyLink": "فشل التنزيل. حاول نسخ الرابط.",
-   "useTicketView": "استخدم عرض التذكرة للطباعة أو الحفظ.",
-   "pdfNotAvailable": "تنزيل PDF غير متاح لنوع الطلب هذا",
-   "enterRecipientEmail": "أدخل بريد المستلم الإلكتروني.",
-   "emailOnlyForVouchers": "إرسال البريد الإلكتروني متاح فقط للقسائم",
-   "sendingVoucherEmail": "جاري إرسال بريد القسيمة الإلكتروني...",
-   "_pending_review": {}
-  },
-  "_pending_review": {}
- },
- "_pending_review": {}
+  "voucher": {
+    "modal": {
+      "title": "أهدِ قسيمة ماكسينا",
+      "subtitle": "أهدِ العافية والتواصل المجتمعي",
+      "buyVoucher": "اشترِ قسيمة",
+      "openingCheckout": "جارٍ فتح صفحة الدفع الآمنة..."
+    },
+    "tiers": {
+      "test": {
+        "name": "اختبار",
+        "benefits": [
+          "لاختبار عملية الدفع فقط",
+          "ليست قسيمة حقيقية",
+          "لأغراض اختبار التطوير"
+        ]
+      },
+      "experience": {
+        "name": "تجربة",
+        "benefits": [
+          "دخول إلى فعالية مجتمع مميّزة واحدة",
+          "استشارة صحية مخصّصة",
+          "تجربة ‎Vitana+‎ لمدة 30 يومًا مشمولة",
+          "قسيمة إلكترونية بتصميم أنيق"
+        ]
+      },
+      "exclusive": {
+        "name": "حصري",
+        "benefits": [
+          "3 فعاليات مجتمع مميّزة",
+          "جلسة تدريب فردية مع خبير",
+          "اشتراك ‎Vitana+‎ لمدة 90 يومًا",
+          "أولوية في الحجز + مزايا VIP"
+        ]
+      }
+    },
+    "success": {
+      "title": "تم شراء القسيمة!",
+      "ready": "قسيمتك من فئة {tier} جاهزة",
+      "download": "نزّل القسيمة",
+      "sendEmail": "أرسِل إلى المستلم عبر البريد الإلكتروني",
+      "viewOrders": "اعرض في الطلبات",
+      "done": "تم"
+    },
+    "email": {
+      "title": "أرسِل القسيمة عبر البريد الإلكتروني",
+      "subtitle": "سنرسل بريدًا إلكترونيًا مصممًا بشكل جميل مع القسيمة",
+      "recipientEmail": "بريد المستلم الإلكتروني *",
+      "recipientName": "اسم المستلم (اختياري)",
+      "personalMessage": "رسالة شخصية (اختياري)",
+      "messagePlaceholder": "عيد ميلاد سعيد! استمتع بهذه الهدية الصحية...",
+      "back": "رجوع",
+      "send": "أرسِل القسيمة"
+    },
+    "preview": {
+      "title": "قسيمتك",
+      "giftVoucher": "قسيمة هدية",
+      "validUntil": "صالحة حتى {date}",
+      "voucherCode": "رمز القسيمة",
+      "whatsIncluded": "ما يتضمنه",
+      "downloadPdf": "نزّل PDF",
+      "downloadDirect": "نزّل مباشرةً",
+      "openInBrowser": "افتح في المتصفح",
+      "copyLink": "انسخ الرابط",
+      "share": "حفظ / مشاركة",
+      "shareHint": "احفظ في الملفات، درايف، أو أرسل لشخص ما",
+      "downloadHint": "إذا فتح التنزيل فارغًا، اضغط على \"افتح في المتصفح\""
+    },
+    "toast": {
+      "downloadStarted": "بدأ التنزيل!",
+      "downloadFailed": "فشل التنزيل",
+      "linkCopied": "نُسخ الرابط!",
+      "linkCopiedDesc": "الصق في المتصفح للتنزيل.",
+      "voucherSent": "أُرسلت القسيمة إلى {email}!",
+      "voucherShared": "تمت مشاركة القسيمة بنجاح!",
+      "checkoutFailed": "لم نتمكن من بدء عملية الدفع. حاول مرة أخرى.",
+      "generatingVoucher": "جاري إنشاء القسيمة...",
+      "failedToLoadVoucher": "فشل تحميل بيانات القسيمة",
+      "downloadFailedCopyLink": "فشل التنزيل. حاول نسخ الرابط.",
+      "useTicketView": "استخدم عرض التذكرة للطباعة أو الحفظ.",
+      "pdfNotAvailable": "تنزيل PDF غير متاح لنوع الطلب هذا",
+      "enterRecipientEmail": "أدخل بريد المستلم الإلكتروني.",
+      "emailOnlyForVouchers": "إرسال البريد الإلكتروني متاح فقط للقسائم",
+      "sendingVoucherEmail": "جاري إرسال بريد القسيمة الإلكتروني..."
+    }
+  }
 }
