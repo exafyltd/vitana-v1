@@ -449,21 +449,22 @@ export default function IntroExperience() {
           only way to hear Vitana speak the welcome; no play/audio control
           lives in this stack any more.
 
-          The vertical offset is `--maxina-orb-gap` (half the reserved
-          slot's own top/bottom padding, i.e. spacer-top to Orb-top) PLUS
-          `--maxina-orb-content-gap` (the flex column's own gap between the
-          spacer and whatever follows it) — reproducing EXACTLY the gap the
-          tagline above the Orb gets for free from being a normal flex
-          sibling. This element isn't a flex child (it's `fixed`, pinned to
-          the Orb's own measured position), so it gets neither gap
-          automatically; both have to be named explicitly. A caught review
-          finding (PR #1022) is why this isn't a hand-picked pixel value:
-          scripts/verify-intro-orb-placement.mjs fails any run where the
-          gap above the Orb and the gap below it differ by more than 1px,
-          and an arbitrary offset here can never match `--maxina-orb-gap`
-          + flex-gap by coincidence at every breakpoint. All the vars used
-          are already breakpoint-aware, so this tracks correctly through
-          every viewport/resize without a separate measurement. */}
+          The vertical offset is JUST `--maxina-orb-caption-gap` (index.css)
+          measured from the Orb's own bottom edge (target-top + size/2) —
+          a small, DELIBERATE value, NOT `--maxina-orb-gap`/
+          `--maxina-orb-content-gap`, which is what the tagline above the
+          Orb gets for free from being a normal flex sibling and is much
+          larger. Product decision: the caption is the Orb's own subtitle
+          (tight, like an image caption), not required to mirror the gap
+          above — confirmed explicitly after PR #1022's fully-symmetric
+          version shipped and visibly read as "just floating text below
+          the Orb," not "belongs to it." scripts/verify-intro-orb-placement.mjs
+          encodes this on purpose: it now asserts the gap below the Orb is
+          small AND smaller than the gap above, not equal to it — see that
+          script before changing this value or assuming a future diff is a
+          regression. All vars used are breakpoint-aware, so this tracks
+          correctly through every viewport/resize without a separate
+          measurement. */}
       {/* Positioning and the fade-in animation are deliberately split across
           two elements: .animate-fade-in's keyframes animate `transform`
           (translateY, for the fade-up motion), and a CSS animation's
@@ -476,7 +477,7 @@ export default function IntroExperience() {
         className="fixed z-20 pointer-events-none w-full max-w-xs px-6 text-center"
         style={{
           left: 'var(--maxina-orb-target-left, 50%)',
-          top: 'calc(var(--maxina-orb-target-top, 50%) + var(--maxina-orb-size, 96px) / 2 + var(--maxina-orb-gap, 28px) + var(--maxina-orb-content-gap, 24px))',
+          top: 'calc(var(--maxina-orb-target-top, 50%) + var(--maxina-orb-size, 96px) / 2 + var(--maxina-orb-caption-gap, 12px))',
           transform: 'translateX(-50%)',
         }}
       >

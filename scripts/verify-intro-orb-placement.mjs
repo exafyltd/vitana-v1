@@ -21,8 +21,19 @@
  * Asserts, for every shipped language, that the Orb:
  *   1. does not overlap ANY text on the screen,
  *   2. is horizontally centred on the viewport,
- *   3. has the SAME vertical gap to the text above it as to the text below it,
+ *   3. has a SMALL, deliberate gap to the caption directly below it (a
+ *      subtitle relationship — the caption belongs to the Orb, so this gap
+ *      must be visibly TIGHTER than the gap above the Orb, not equal to
+ *      it; see MAX_CAPTION_GAP below for the exact bound),
  *   4. is never smaller than the widget's own base size.
+ *
+ * Note on (3): earlier versions of this check required the gap above and
+ * below the Orb to match within 1px. That was correct while the caption
+ * was a normal flex sibling of the Orb's reserved slot, but became wrong
+ * once the caption was intentionally pinned tight under the Orb as its own
+ * subtitle (index.css's --maxina-orb-caption-gap) — a product decision,
+ * not a regression. Don't revert this to an equality check without
+ * re-reading IntroExperience.tsx's Orb-caption comment first.
  *
  * Mobile (390x844) is the primary target; desktop is checked as a regression net.
  */
@@ -56,6 +67,12 @@ const VIEWPORTS = [
 // The widget's own base size: 64px, or 56px under 600px wide. The Orb on this
 // screen must never be smaller than that.
 const baseOrbSize = (w) => (w <= 600 ? 56 : 64);
+
+// The Orb caption is intentionally tight (index.css's --maxina-orb-caption-gap
+// is 12px, flat across breakpoints) — this is a generous upper bound, not the
+// target value, to tolerate font-metric/subpixel variance without masking a
+// real regression (e.g. the caption falling back into the flex flow again).
+const MAX_CAPTION_GAP = 24;
 
 const ORB_SEL = '.vtorb-fab, [class^="vtorb-fab"], .vitana-orb, #vitana-orb-fab, [data-vitana-orb="true"]';
 
@@ -181,15 +198,24 @@ try {
       }
 
       const minSize = baseOrbSize(w);
-      const symmetryDelta = (m.gapAbove !== null && m.gapBelow !== null)
-        ? Math.abs(m.gapAbove - m.gapBelow) : null;
       const centerDelta = Math.abs(m.orbCenterX - m.viewportCenterX);
 
       const problems = [];
       if (m.overlaps.length) problems.push(`OVERLAPS TEXT: ${m.overlaps.join(' | ')}`);
       if (centerDelta > 1) problems.push(`not horizontally centred (off by ${centerDelta.toFixed(1)}px)`);
-      if (symmetryDelta === null) problems.push('could not find text both above and below the orb');
-      else if (symmetryDelta > 1) problems.push(`asymmetric: above=${m.gapAbove.toFixed(1)} below=${m.gapBelow.toFixed(1)} (delta ${symmetryDelta.toFixed(1)}px)`);
+      if (m.gapAbove === null || m.gapBelow === null) {
+        problems.push('could not find text both above and below the orb');
+      } else {
+        // Deliberately asymmetric: the caption is the Orb's own subtitle,
+        // so it must sit CLOSE below the Orb — tighter than the gap above,
+        // not equal to it. See the CSS var comment (index.css) for why.
+        if (m.gapBelow > MAX_CAPTION_GAP) {
+          problems.push(`caption not tight to the orb: ${m.gapBelow.toFixed(1)}px > ${MAX_CAPTION_GAP}px max`);
+        }
+        if (m.gapBelow >= m.gapAbove) {
+          problems.push(`caption gap (${m.gapBelow.toFixed(1)}px) is not tighter than the gap above the orb (${m.gapAbove.toFixed(1)}px)`);
+        }
+      }
       if (m.orb.w < minSize) problems.push(`orb SMALLER than base: ${m.orb.w}px < ${minSize}px`);
 
       if (problems.length) failures++;
@@ -198,7 +224,6 @@ try {
         size: `${Math.round(m.orb.w)}x${Math.round(m.orb.h)}`,
         gapAbove: m.gapAbove === null ? null : +m.gapAbove.toFixed(1),
         gapBelow: m.gapBelow === null ? null : +m.gapBelow.toFixed(1),
-        delta: symmetryDelta === null ? null : +symmetryDelta.toFixed(1),
         centerDelta: +centerDelta.toFixed(1),
         above: m.textAbove, below: m.textBelow, headline: m.headline,
         cssVar: m.cssVar,
@@ -213,12 +238,12 @@ try {
 }
 
 const pad = (s, n) => String(s ?? '—').padEnd(n);
-console.log('\n' + pad('VIEWPORT', 10) + pad('LANG', 16) + pad('SIZE', 10) + pad('ABOVE', 8) + pad('BELOW', 8) + pad('Δ', 7) + pad('CTR-Δ', 7) + 'STATUS');
+console.log('\n' + pad('VIEWPORT', 10) + pad('LANG', 16) + pad('SIZE', 10) + pad('ABOVE', 8) + pad('BELOW', 8) + pad('CTR-Δ', 7) + 'STATUS');
 console.log('-'.repeat(110));
 for (const r of results) {
   if (r.error) { console.log(pad(r.vpName, 10) + pad(r.label, 16) + 'ERROR: ' + r.error); continue; }
   const status = r.problems.length ? 'FAIL — ' + r.problems.join('; ') : 'ok';
-  console.log(pad(r.vpName, 10) + pad(r.label, 16) + pad(r.size, 10) + pad(r.gapAbove, 8) + pad(r.gapBelow, 8) + pad(r.delta, 7) + pad(r.centerDelta, 7) + status);
+  console.log(pad(r.vpName, 10) + pad(r.label, 16) + pad(r.size, 10) + pad(r.gapAbove, 8) + pad(r.gapBelow, 8) + pad(r.centerDelta, 7) + status);
 }
 console.log('-'.repeat(110));
 
@@ -236,6 +261,6 @@ if (distinctHeadlines.size < Math.min(8, mobileRows.length)) {
   failures++;
 }
 
-console.log(failures === 0 ? `PASS — ${results.length} checks, no collisions, symmetric everywhere` : `FAIL — ${failures} of ${results.length} checks`);
+console.log(failures === 0 ? `PASS — ${results.length} checks, no collisions, caption tight to the orb everywhere` : `FAIL — ${failures} of ${results.length} checks`);
 console.log(`screenshots: ${OUT}`);
 process.exit(failures === 0 ? 0 : 1);
