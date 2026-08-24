@@ -1,0 +1,40 @@
+{
+  "verdicts": {
+    "loading.default": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "loading.groups": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "loading.messages": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "loading.uploading": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "loading.uploadingProgress": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "loading.processing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "loading.saving": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    }
+  },
+  "generatedAt": "2026-08-24T08:40:38.825Z"
+}
