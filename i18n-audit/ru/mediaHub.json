@@ -26,11 +26,10 @@
       "phase": "llm"
     },
     "mediaHub.tabs.shorts": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Using 'шорты' for short videos is ambiguous (can mean clothing) and inconsistent with other translations like entry 1, 18, 21.",
-      "suggested": "Короткие видео",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "mediaHub.tabs.videos": {
       "verdict": "OK",
@@ -38,11 +37,10 @@
       "phase": "llm"
     },
     "mediaHub.sections.trendingShorts": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Using 'шорты' for short videos is ambiguous and inconsistent.",
-      "suggested": "Популярные короткие видео",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "mediaHub.sections.trendingMusic": {
       "verdict": "OK",
@@ -70,18 +68,16 @@
       "phase": "llm"
     },
     "mediaHub.actions.watchShorts": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Using 'шорты' for short videos is ambiguous and inconsistent.",
-      "suggested": "Смотреть короткие видео",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "mediaHub.actions.viewAllShorts": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Using 'шорты' for short videos is ambiguous and inconsistent. Also, 'шорты' is plural and doesn't handle number agreement for singular '{count}' well. 'Коротких видео' is more flexible.",
-      "suggested": "Посмотреть все {count} коротких видео",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "mediaHub.actions.playPlaylist": {
       "verdict": "OK",
@@ -164,11 +160,10 @@
       "phase": "llm"
     },
     "mediaHub.subscribed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Impersonal/awkward phrasing for user status. 'Подписано' means 'it was signed/subscribed' rather than 'you are subscribed'.",
-      "suggested": "Вы подписаны",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "mediaHub.subscribe": {
       "verdict": "OK",
@@ -251,11 +246,10 @@
       "phase": "llm"
     },
     "mediaHub.toast.videoUpdated": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Wrong part of speech; 'Успешно' is an adverb ('successfully'), not a noun ('success').",
-      "suggested": "Успех!",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "mediaHub.toast.videoUpdatedDesc": {
       "verdict": "OK",
@@ -343,11 +337,10 @@
       "phase": "llm"
     },
     "mediaHub.comments.like": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for an action; sounds like a statement rather than an imperative/infinitive for a button.",
-      "suggested": "Лайкнуть комментарий",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "mediaHub.deletePodcast.title": {
       "verdict": "OK",
@@ -660,5 +653,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:39:58.587Z"
+  "generatedAt": "2026-08-25T04:08:08.015Z"
 }

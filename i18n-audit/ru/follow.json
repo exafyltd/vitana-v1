@@ -6,12 +6,11 @@
       "phase": "llm"
     },
     "follow.noFollowing": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender mismatch: English 'You' is gender-neutral, but Russian 'подписан' is masculine. The translation should be gender-neutral or adapt to user's gender.",
-      "suggested": "У тебя пока нет подписок на других пользователей.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-08-07T00:34:26.712Z"
+  "generatedAt": "2026-08-25T04:07:20.893Z"
 }
