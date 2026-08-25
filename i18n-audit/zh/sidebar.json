@@ -229,7 +229,12 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "sidebar.myJourney": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
     }
   },
-  "generatedAt": "2026-08-24T09:03:57.814Z"
+  "generatedAt": "2026-08-25T04:07:42.242Z"
 }

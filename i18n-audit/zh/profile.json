@@ -121,11 +121,10 @@
       "phase": "llm"
     },
     "profile.account.sections.publicProfileSubtitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Incomplete phrase; likely missing '上' or '中'.",
-      "suggested": "显示在身份上",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "profile.account.sections.basicInfo": {
       "verdict": "OK",
@@ -153,11 +152,10 @@
       "phase": "llm"
     },
     "profile.account.fields.handle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "'Handle' typically means username, not nickname.",
-      "suggested": "用户名",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "profile.account.fields.longevityArchetype": {
       "verdict": "OK",
@@ -300,5 +298,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:42:02.146Z"
+  "generatedAt": "2026-08-25T04:07:09.847Z"
 }
