@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart, Music2, Volume2, VolumeX } from 'lucide-react';
+import { X, Search, Loader2, Calendar, Bell, Plane, ShoppingCart, ChevronRight } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { NotificationBadge } from '@/components/ui/notification-badge';
@@ -11,6 +11,9 @@ import { EnhancedCalendarPopup } from '@/components/calendar/EnhancedCalendarPop
 import { AutopilotPopup } from '@/components/AutopilotPopup';
 // Phase 0: CartSidebar retired from the buy path — cart action navigates to /universal-cart.
 import { NotificationsPanel } from '@/components/notifications/NotificationsPanel';
+import { ResponsivePopover, ResponsivePopoverContent } from '@/components/ui/responsive-popover';
+import { LanguageOptionsList } from '@/components/language/LanguageOptionsList';
+import { LOCALE_PRESENTATION } from '@/components/language/locale-presentation';
 import { drawerNavItems, drawerNavIconTones } from '@/config/drawer-nav.config';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTenant } from '@/hooks/useTenant';
@@ -23,7 +26,7 @@ import { useUniversalCart } from '@/hooks/useUniversalCart';
 import { avatarPositionStyle } from '@/lib/avatarPosition';
 import { supabase } from '@/integrations/supabase/client';
 import { isIAPRestricted } from '@/lib/appilix';
-import { useSoundscape } from '@/context/SoundscapeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { t } from '@/lib/i18n-toast';
 import { prefetchForPath, ROUTE_CHUNK_IMPORTERS } from '@/lib/prefetch-registry';
 
@@ -56,14 +59,17 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
   // Phase 0: counts from the one canonical cart (0 when roleBlocked).
   const { cartCount } = useUniversalCart();
 
-  // Soundscape mute — relocated here from the mobile App Bar (mirrors the
-  // desktop sidebar's SoundscapeControl). SoundscapeProvider wraps the whole
-  // app (App.tsx), so the context is always available here.
-  const soundscape = useSoundscape();
+  // Language row — flag + current language + chevron, replaces the old
+  // Soundscape footer here. Soundscape mute moved to the always-visible
+  // mobile TopAppBar instead, since this drawer (and this row) is only
+  // on-screen while the user has it open.
+  const { selectedLanguage } = useLanguage();
+  const currentLocale = LOCALE_PRESENTATION[selectedLanguage] ?? LOCALE_PRESENTATION['de-DE'];
 
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [autopilotOpen, setAutopilotOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [languagePickerOpen, setLanguagePickerOpen] = useState(false);
 
   // Flag the body while the side drawer is open so the ORB FAB (injected into
   // <body> by the external widget at z-index 60) can be layered *below* the
@@ -429,7 +435,10 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
               })}
             </div>
 
-            {/* Soundscape footer — play/pause + mute, mirrors the desktop sidebar.
+            {/* Language footer — flag + current language + chevron, opens the
+                language picker. Soundscape mute used to live here; it's now in
+                the always-visible mobile TopAppBar (this row only exists while
+                the drawer itself is open).
                 The safe-area inset is CAPPED: the Appilix Android WebView reports
                 a large `env(safe-area-inset-bottom)` (~120px) even though the
                 system nav renders as a separate bar outside the drawer, which
@@ -439,27 +448,16 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
               className="border-t border-border/50 px-3 pt-1.5"
               style={{ paddingBottom: 'calc(0.75rem + min(env(safe-area-inset-bottom, 0px), 16px))' }}
             >
-              <div className="flex items-center gap-2 rounded-xl bg-muted/40 px-3 py-2">
-                <button
-                  onClick={() => soundscape.toggle()}
-                  aria-label={t('screens.audio.soundscape')}
-                  className="flex items-center justify-center h-8 w-8 rounded-full shrink-0 hover:bg-muted transition-colors"
-                >
-                  <Music2 className={`h-4 w-4 ${soundscape.isPlaying ? 'text-primary' : 'text-muted-foreground'}`} />
-                </button>
-                <span className="flex-1 text-sm text-foreground">{t('screens.audio.soundscape')}</span>
-                <button
-                  onClick={() => soundscape.toggleMute()}
-                  aria-label={soundscape.isMuted ? t('screens.audio.unmute') : t('screens.audio.mute')}
-                  className="flex items-center justify-center h-8 w-8 rounded-lg hover:bg-muted transition-colors"
-                >
-                  {soundscape.isMuted ? (
-                    <VolumeX className="h-[18px] w-[18px] text-muted-foreground" />
-                  ) : (
-                    <Volume2 className="h-[18px] w-[18px] text-foreground" />
-                  )}
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => { setLanguagePickerOpen(true); onClose(); }}
+                aria-label={t('screens.settings.language')}
+                className="w-full flex items-center gap-2 rounded-xl bg-muted/40 px-3 py-2 hover:bg-muted/60 transition-colors"
+              >
+                <img src={currentLocale.flag} alt="" className="h-4 w-6 rounded-sm object-cover shrink-0" />
+                <span className="flex-1 text-sm text-foreground text-start">{currentLocale.endonym}</span>
+                <ChevronRight className="h-[18px] w-[18px] text-muted-foreground shrink-0" />
+              </button>
             </div>
           </motion.nav>
         </>
@@ -470,6 +468,12 @@ export function SideDrawerNav({ open, onClose }: SideDrawerNavProps) {
     <EnhancedCalendarPopup open={calendarOpen} onOpenChange={setCalendarOpen} />
     <AutopilotPopup open={autopilotOpen} onOpenChange={setAutopilotOpen} />
     {/* Phase 0: CartSidebar retired — the cart action navigates to /universal-cart. */}
+
+    <ResponsivePopover open={languagePickerOpen} onOpenChange={setLanguagePickerOpen}>
+      <ResponsivePopoverContent title={t('screens.settings.language')}>
+        <LanguageOptionsList onSelected={() => setLanguagePickerOpen(false)} />
+      </ResponsivePopoverContent>
+    </ResponsivePopover>
 
     <Dialog open={notificationsOpen} onOpenChange={setNotificationsOpen}>
       <DialogContent className="w-[calc(100vw-2rem)] max-w-md p-0 gap-0 rounded-2xl overflow-hidden top-[calc(env(safe-area-inset-top,0px)+1.5rem)] translate-y-0">
