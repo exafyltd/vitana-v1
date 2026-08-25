@@ -77,11 +77,19 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
 
         {/* Right side: mute toggle (always shown — the only always-visible
             chrome, so this is where "turn off background music at any time"
-            has to live) plus, when applicable, the Live badge. */}
-        <div className="relative z-10 min-w-0 justify-self-end flex items-center gap-1.5">
+            has to live) plus, when applicable, the Live badge.
+            Deliberately NO `min-w-0` here: this column must never shrink
+            below what its content needs — Mute has to stay fully visible and
+            tappable, not just present in the DOM. All the give under space
+            pressure belongs to the title (`min-w-0` + `truncate` above).
+            Leaving this column free-sizing keeps its automatic grid minimum
+            at its full content width, so it can't be squeezed narrower than
+            that — which is also what stops its content from visually
+            spilling past its own track into the title's. */}
+        <div className="relative z-10 justify-self-end flex items-center gap-1.5">
           <button
             onClick={() => soundscape.toggleMute()}
-            className="flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-white/10"
+            className="flex items-center justify-center w-8 h-8 rounded-lg shrink-0 transition-colors hover:bg-white/10"
             aria-label={soundscape.isMuted ? t('screens.audio.unmute') : t('screens.audio.mute')}
           >
             {soundscape.isMuted ? (
