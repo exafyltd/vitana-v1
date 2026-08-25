@@ -26,12 +26,25 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Run ORB preview conversation-flow test
         env:
-          PREVIEW_URL: https://preview.vitanaland.com
+          PREVIEW_URL: https://preview-aws.vitanaland.com
+          ORB_GATEWAY: https://preview-aws-gateway.vitanaland.com
         run: node tests/e2e/orb-preview.mjs
+      - name: Run ORB new-day-greeting repeat-guard test (BOOTSTRAP-ORB-NEWDAY-STAMP-DIAGNOSTIC)
+        if: always()
+        env:
+          PREVIEW_URL: https://preview-aws.vitanaland.com
+        run: node tests/e2e/orb-newday-repeat-test.mjs
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: orb-preview-screenshots
           path: tests/e2e/screenshots/
+          if-no-files-found: warn
+      - name: Upload new-day repeat-guard screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: orb-newday-repeat-screenshots
+          path: tests/e2e/screenshots-newday-repeat/
           if-no-files-found: warn

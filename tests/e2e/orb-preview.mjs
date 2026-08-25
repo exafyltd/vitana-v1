@@ -23,7 +23,7 @@ const ANON = process.env.SUPA_ANON ||
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlubWtodndkY3V5aG54a2dmdnNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4NjY2MzcsImV4cCI6MjA3MTQ0MjYzN30._-QX8ZFgDsKgLM7eDlyc64vi73F-Hwc4ttnDPHjZgVw';
 const EMAIL = process.env.E2E_EMAIL || 'e2e-test@vitana.dev';
 const PASSWORD = process.env.E2E_PASSWORD || 'VitanaE2eTest2026!';
-const BASE = (process.env.PREVIEW_URL || 'https://preview.vitanaland.com').replace(/\/+$/, '');
+const BASE = (process.env.PREVIEW_URL || 'https://preview-aws.vitanaland.com').replace(/\/+$/, '');
 const SCREEN_DIR = 'tests/e2e/screenshots';
 
 const PROFILES = [
@@ -53,12 +53,12 @@ console.log(`[auth] OK — user ${session.user?.id} (${EMAIL}) against ${SUPA}`)
 // Direct CORS-preflight probe (node fetch ignores CORS, so it returns the raw
 // response headers the browser would judge). Pinpoints why the in-browser
 // session/start fetch fails with "Failed to fetch".
-const GW = process.env.ORB_GATEWAY || 'https://preview-gateway.vitanaland.com';
+const GW = process.env.ORB_GATEWAY || 'https://preview-aws-gateway.vitanaland.com';
 try {
   const pf = await fetch(`${GW}/api/v1/orb/live/session/start`, {
     method: 'OPTIONS',
     headers: {
-      Origin: 'https://preview.vitanaland.com',
+      Origin: BASE,
       'Access-Control-Request-Method': 'POST',
       'Access-Control-Request-Headers': 'authorization,content-type',
     },
@@ -79,7 +79,7 @@ for (const label of ['cold', 'warm']) {
     const t0 = Date.now();
     const r = await fetch(`${GW}/api/v1/orb/live/session/start`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Origin: 'https://preview.vitanaland.com', Authorization: `Bearer ${session.access_token}` },
+      headers: { 'Content-Type': 'application/json', Origin: BASE, Authorization: `Bearer ${session.access_token}` },
       body: JSON.stringify({ lang: 'de' }),
     });
     const ms = Date.now() - t0;
