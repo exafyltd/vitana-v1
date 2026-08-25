@@ -488,7 +488,7 @@ export default function IntroExperience() {
           className="inline-block text-sm md:text-base font-medium text-white/70 animate-fade-in [text-shadow:0_1px_6px_rgba(0,0,0,0.5)]"
           style={{ animationDelay: '2800ms', animationFillMode: 'both' }}
         >
-          {t.intro?.tapOrbHint || 'Tap the Orb to meet Vitana'}
+          {t.intro?.tapOrbHint || 'Click the Orb - talk to Vitana'}
         </span>
       </p>
 

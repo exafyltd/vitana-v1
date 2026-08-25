@@ -9,12 +9,10 @@
     "playing": "Reproduzindo",
     "goToLogin": "Ir para Entrar",
     "chooseLanguage": "Escolher idioma",
-    "tapOrbHint": "Toque no Orb para conhecer a Vitana",
+    "tapOrbHint": "Toque no Orb - fale com a Vitana",
     "chooseLanguageTitle": "Escolha seu idioma",
     "chooseLanguageSubtitle": "A Vitana vai falar e responder neste idioma.",
     "login": "Login",
-    "register": "Cadastrar",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "register": "Cadastrar"
+  }
 }
