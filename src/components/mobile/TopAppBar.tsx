@@ -44,15 +44,23 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
           is now unconditional, not just Live) and its width varies further by
           locale ("LIVE" vs "En direct"). Absolute-centering the tenant name
           against the full header width doesn't know about that and can drive
-          it into an overlap on narrow viewports; a grid's middle 1fr column
-          can only ever get the space the two auto-sized side columns leave,
-          so overlap is structurally impossible instead of just unlikely. */}
-      <div className="relative h-8 grid grid-cols-[auto_1fr_auto] items-center gap-2 px-3">
+          it into an overlap on narrow viewports.
+          The two flanking columns are BOTH `1fr` (not `auto`) on purpose: two
+          equal-fr tracks split the remaining space evenly regardless of how
+          much either side's content actually needs, so the auto-sized title
+          column sits visually centered in the normal case — unlike auto/1fr/
+          auto, where the wider right side would drag the middle column (and
+          thus the title) off-center. Grid tracks still never overlap, so this
+          keeps the non-overlap guarantee; only in extreme cases (very narrow
+          viewport + a long tenant/live label) does a flanking column need to
+          grow past its fair share, which is when the title's own truncation
+          below takes over instead. */}
+      <div className="relative h-8 grid grid-cols-[1fr_auto_1fr] items-center gap-2 px-3">
         {/* Kebab menu – left. Always shown (incl. Guided Mode) so the side
             navigation drawer is reachable from the App Bar in every mode. */}
         <button
           onClick={onMenuClick}
-          className="relative z-10 flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-white/10"
+          className="relative z-10 justify-self-start flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-white/10"
           aria-label={t('screens.mobile.openNavigationMenu')}
         >
           <MoreVertical className="h-5 w-5" />
@@ -69,11 +77,19 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
 
         {/* Right side: mute toggle (always shown — the only always-visible
             chrome, so this is where "turn off background music at any time"
-            has to live) plus, when applicable, the Live badge. */}
+            has to live) plus, when applicable, the Live badge.
+            Deliberately NO `min-w-0` here: this column must never shrink
+            below what its content needs — Mute has to stay fully visible and
+            tappable, not just present in the DOM. All the give under space
+            pressure belongs to the title (`min-w-0` + `truncate` above).
+            Leaving this column free-sizing keeps its automatic grid minimum
+            at its full content width, so it can't be squeezed narrower than
+            that — which is also what stops its content from visually
+            spilling past its own track into the title's. */}
         <div className="relative z-10 justify-self-end flex items-center gap-1.5">
           <button
             onClick={() => soundscape.toggleMute()}
-            className="flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-white/10"
+            className="flex items-center justify-center w-8 h-8 rounded-lg shrink-0 transition-colors hover:bg-white/10"
             aria-label={soundscape.isMuted ? t('screens.audio.unmute') : t('screens.audio.mute')}
           >
             {soundscape.isMuted ? (
