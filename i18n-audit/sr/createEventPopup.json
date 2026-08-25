@@ -461,11 +461,10 @@
       "phase": "llm"
     },
     "createEventPopup.toasts.generatingImageDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect subject/voice. 'Kreiram' means 'I am creating', but this is a system message indicating an ongoing process. Should be impersonal or passive.",
-      "suggested": "Kreiranje prilagođene slike za vaš događaj.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createEventPopup.toasts.imageGenerated": {
       "verdict": "OK",
@@ -548,5 +547,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:22.864Z"
+  "generatedAt": "2026-08-25T04:07:18.983Z"
 }
