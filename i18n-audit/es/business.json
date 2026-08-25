@@ -161,11 +161,10 @@
       "phase": "llm"
     },
     "business.history.allTime": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Meaning incorrect for UI context. 'Todo el tiempo' means 'always' or 'continuously,' not 'cumulative' or 'historical.'",
-      "suggested": "Histórico",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "business.history.details": {
       "verdict": "OK",
@@ -233,11 +232,10 @@
       "phase": "llm"
     },
     "business.kpi.topPerformer": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Mejor rendimiento' means 'best performance,' not 'top performer' (the person/entity).",
-      "suggested": "El mejor",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "business.kpi.noDataYet": {
       "verdict": "OK",
@@ -535,5 +533,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:42.192Z"
+  "generatedAt": "2026-08-25T04:06:39.396Z"
 }
