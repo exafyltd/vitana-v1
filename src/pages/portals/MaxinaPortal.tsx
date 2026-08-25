@@ -853,10 +853,6 @@ const MaxinaPortal = () => {
                 {t('screens.portals.terms')}
               </Link>
               <span className="text-white/30">·</span>
-              <Link to="/delete-account" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
-                {t('screens.portals.deleteAccount')}
-              </Link>
-              <span className="text-white/30">·</span>
               <a href="mailto:support@exafy.io" className="text-white/70 hover:text-white font-medium transition-colors tracking-wide">
                 {t('screens.portals.help')}
               </a>
