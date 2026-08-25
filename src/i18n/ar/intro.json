@@ -11,10 +11,8 @@
     "login": "تسجيل الدخول",
     "register": "التسجيل",
     "chooseLanguage": "اختر اللغة",
-    "tapOrbHint": "انقر على الكرة - تحدث مع Vitana",
+    "tapOrbHint": "اضغط على الكرة - تحدث إلى Vitana",
     "chooseLanguageTitle": "اختر لغتك",
-    "chooseLanguageSubtitle": "Vitana ستتحدث وتستجيب بهذه اللغة.",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "chooseLanguageSubtitle": "Vitana ستتحدث وتستجيب بهذه اللغة."
+  }
 }

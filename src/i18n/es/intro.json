@@ -11,10 +11,8 @@
     "login": "Iniciar sesión",
     "register": "Regístrate",
     "chooseLanguage": "Elegir idioma",
-    "_pending_review": {},
-    "tapOrbHint": "Toca el Orb - habla con Vitana",
+    "tapOrbHint": "Haz clic en el Orbe - habla con Vitana",
     "chooseLanguageTitle": "Elige tu idioma",
     "chooseLanguageSubtitle": "Vitana hablará y responderá en este idioma."
-  },
-  "_pending_review": {}
+  }
 }

@@ -1,6 +1,8 @@
 {
   "intro": {
-    "_pending_review": {},
+    "_pending_review": {
+      "tapOrbHint": true
+    },
     "welcomeTo": "VITANALAND'E HOŞ GELDİN",
     "experience": "Experience",
     "taglineMain": "Uzun Ömür Yolculuğuna Başla",
@@ -15,6 +17,5 @@
     "tapOrbHint": "Orb'a dokun - Vitana ile konuş",
     "chooseLanguageTitle": "Dilini seç",
     "chooseLanguageSubtitle": "Vitana bu dilde seninle konuşacak ve yanıt verecek."
-  },
-  "_pending_review": {}
+  }
 }
