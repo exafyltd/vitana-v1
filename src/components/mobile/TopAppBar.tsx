@@ -1,7 +1,8 @@
-import { MoreVertical } from 'lucide-react';
+import { MoreVertical, Volume2, VolumeX } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTenant } from '@/hooks/useTenant';
 import { getInstantTenantName } from '@/lib/tenant-display';
+import { useSoundscape } from '@/context/SoundscapeContext';
 import { t } from '@/lib/i18n-toast';
 
 interface TopAppBarProps {
@@ -12,6 +13,9 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
   const { tenant } = useTenant();
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  // SoundscapeProvider wraps the whole app (App.tsx), so this context read is
+  // always safe here.
+  const soundscape = useSoundscape();
 
   // Deterministic branding: prefer instant slug from URL/localStorage over async tenant context
   // This prevents "Earthlinks" flash during Maxina OAuth hydration
@@ -21,9 +25,8 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
   const isMaxina = resolvedSlug === 'maxina';
   const isInLiveRoom = pathname.startsWith('/comm/live-rooms/') || pathname.startsWith('/community/live-rooms/');
 
-  // Live entry point lives in the App Bar (replaces the old mute toggle, which
-  // moved into the side drawer). Hidden while already inside a live room so the
-  // centered title stays balanced.
+  // Live entry point lives in the App Bar. Hidden while already inside a live
+  // room so the centered title stays balanced.
   const showLive = !isInLiveRoom;
 
   return (
@@ -37,7 +40,14 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
         <div className="absolute inset-0 bg-background border-b border-border" />
       )}
 
-      <div className="relative h-8 flex items-center px-3">
+      {/* 3-column grid, not absolute-centering: the right-hand group grew (Mute
+          is now unconditional, not just Live) and its width varies further by
+          locale ("LIVE" vs "En direct"). Absolute-centering the tenant name
+          against the full header width doesn't know about that and can drive
+          it into an overlap on narrow viewports; a grid's middle 1fr column
+          can only ever get the space the two auto-sized side columns leave,
+          so overlap is structurally impossible instead of just unlikely. */}
+      <div className="relative h-8 grid grid-cols-[auto_1fr_auto] items-center gap-2 px-3">
         {/* Kebab menu – left. Always shown (incl. Guided Mode) so the side
             navigation drawer is reachable from the App Bar in every mode. */}
         <button
@@ -48,31 +58,47 @@ export function TopAppBar({ onMenuClick }: TopAppBarProps) {
           <MoreVertical className="h-5 w-5" />
         </button>
 
-        {/* Tenant name – centered */}
+        {/* Tenant name – centered within the remaining space, truncating
+            rather than overlapping the side controls if it's ever too long. */}
         <span
-          className={`absolute left-1/2 -translate-x-1/2 z-10 leading-none select-none ${isMaxina ? 'font-medium tracking-[0.18em] text-[21px] text-white/[0.92]' : 'font-semibold tracking-[0.08em] text-[20px]'}`}
+          className={`relative z-10 min-w-0 justify-self-center truncate leading-none select-none ${isMaxina ? 'font-medium tracking-[0.18em] text-[21px] text-white/[0.92]' : 'font-semibold tracking-[0.08em] text-[20px]'}`}
           style={!isMaxina ? { color: 'var(--foreground, inherit)' } : undefined}
         >
           {tenantName.toUpperCase()}
         </span>
 
-        {/* Live – right. Styled as a recognizable "LIVE" badge (red live dot +
-            label) so its purpose reads instantly, à la TikTok. */}
-        {showLive ? (
+        {/* Right side: mute toggle (always shown — the only always-visible
+            chrome, so this is where "turn off background music at any time"
+            has to live) plus, when applicable, the Live badge. */}
+        <div className="relative z-10 justify-self-end flex items-center gap-1.5">
           <button
-            onClick={() => navigate('/comm/live-rooms')}
-            className={`relative z-10 ml-auto flex items-center gap-1.5 rounded-full border px-2.5 h-6 transition-colors ${isMaxina ? 'border-white/45 text-white hover:bg-white/10' : 'border-foreground/25 hover:bg-foreground/5'}`}
-            style={!isMaxina ? { color: 'hsl(var(--foreground))' } : undefined}
-            aria-label={t('screens.mobile.openLiveRooms')}
+            onClick={() => soundscape.toggleMute()}
+            className="flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-white/10"
+            aria-label={soundscape.isMuted ? t('screens.audio.unmute') : t('screens.audio.mute')}
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
-            <span className="text-[11px] font-bold uppercase leading-none tracking-wide">
-              {t('mobileNav.live')}
-            </span>
+            {soundscape.isMuted ? (
+              <VolumeX className="h-[18px] w-[18px]" />
+            ) : (
+              <Volume2 className="h-[18px] w-[18px]" />
+            )}
           </button>
-        ) : (
-          <div className="w-8 ml-auto" />
-        )}
+
+          {/* Live – styled as a recognizable "LIVE" badge (red live dot +
+              label) so its purpose reads instantly, à la TikTok. */}
+          {showLive && (
+            <button
+              onClick={() => navigate('/comm/live-rooms')}
+              className={`flex items-center gap-1.5 rounded-full border px-2.5 h-6 transition-colors shrink-0 ${isMaxina ? 'border-white/45 text-white hover:bg-white/10' : 'border-foreground/25 hover:bg-foreground/5'}`}
+              style={!isMaxina ? { color: 'hsl(var(--foreground))' } : undefined}
+              aria-label={t('screens.mobile.openLiveRooms')}
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse shrink-0" />
+              <span className="text-[11px] font-bold uppercase leading-none tracking-wide whitespace-nowrap">
+                {t('mobileNav.live')}
+              </span>
+            </button>
+          )}
+        </div>
       </div>
     </header>
   );

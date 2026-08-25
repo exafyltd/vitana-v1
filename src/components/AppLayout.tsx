@@ -38,6 +38,7 @@ import { useIntelligentGreeting } from "@/hooks/useIntelligentGreeting";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { playSound } from "@/lib/playSound";
 import { SoundscapeControl } from "@/components/audio/SoundscapeControl";
+import { LanguageSidebarControl } from "@/components/language/LanguageSidebarControl";
 import { useBackgroundPrefetch } from "@/hooks/useBackgroundPrefetch";
 import { useBackgroundRefresh } from "@/hooks/useBackgroundRefresh";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -404,6 +405,9 @@ function AppSidebar({
           
           {/* Soundscape Control */}
           <SoundscapeControl />
+
+          {/* Language Control */}
+          <LanguageSidebarControl />
 
           {!isMobile && <div aria-hidden="true" className={open ? "h-28" : "h-16"} />}
           
