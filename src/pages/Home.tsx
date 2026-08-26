@@ -114,6 +114,24 @@ export default function Home() {
     setCreatePostOpen(true);
     navigate("/home", { replace: true });
   }, [location.pathname, navigate]);
+
+  // Path-based deep link for the "Reply & Like Comments" announcement
+  // card's "Try it yourself" CTA — opens the comments sheet on the first
+  // real post in the feed and scrolls it into view (VTID-03744 follow-up:
+  // the CTA previously pointed at plain /home, which is a no-op when
+  // already on that route). One-shot: consumed shortly after the feed has
+  // had a chance to mount the target card with the flag set.
+  const [commentsDeepLinkActive, setCommentsDeepLinkActive] = useState(false);
+  useEffect(() => {
+    if (location.pathname !== "/home/comments") return;
+    setCommentsDeepLinkActive(true);
+    navigate("/home", { replace: true });
+  }, [location.pathname, navigate]);
+  useEffect(() => {
+    if (!commentsDeepLinkActive) return;
+    const id = setTimeout(() => setCommentsDeepLinkActive(false), 500);
+    return () => clearTimeout(id);
+  }, [commentsDeepLinkActive]);
   const isMobile = useIsMobile();
   const { shareInvite } = useInviteFriendShare();
 
@@ -288,6 +306,12 @@ export default function Home() {
     const matchItem = matchIndex >= 0 ? feedItems[matchIndex] : null;
     const streamItems = matchIndex >= 0 ? feedItems.filter((_, i) => i !== matchIndex) : feedItems;
 
+    // Only "post"-kind items render via CommunityPostCard (the one with a
+    // comments sheet) — article/feature_announcement/match/performer don't.
+    const firstCommentableId = commentsDeepLinkActive
+      ? streamItems.find((item) => item.kind === "post")?.id
+      : undefined;
+
     const cardSlots: { key: string; node: JSX.Element }[] = [
       { key: "card-vitana-index", node: <VitanaIndexCard /> },
       { key: "card-guided-journey", node: <LongevityJourneyCard /> },
@@ -314,6 +338,7 @@ export default function Home() {
           item={item}
           onArticleClick={handleFeedArticleClick}
           onOpen={handleFeedItemOpen}
+          autoOpenComments={item.id === firstCommentableId}
         />,
       );
       const slot = cardSlots[index];

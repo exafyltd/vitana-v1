@@ -14,7 +14,7 @@
  * Every interactive control stops propagation so it never triggers the card's
  * navigation.
  */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Send, Trash2, X } from "lucide-react";
@@ -47,11 +47,19 @@ const cardShell =
 export function CommunityPostCard({
   item,
   onOpen,
+  autoOpenComments,
 }: {
   item: PostFeedItem;
   onOpen?: (item: FeedItem) => void;
+  /** Open the comments sheet (and scroll it into view) as soon as this card
+   * mounts — the "Try it yourself" CTA on the Reply & Like Comments
+   * announcement card lands here via /home/comments (see Home.tsx). Read
+   * once, on mount, so a later re-render with a stale/changed value can't
+   * re-force the sheet back open after the viewer has closed it themselves. */
+  autoOpenComments?: boolean;
 }) {
   const navigate = useNavigate();
+  const cardRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   const {
     isLiked,
@@ -97,6 +105,14 @@ export function CommunityPostCard({
     onOpen?.(item);
     navigate(`/u/${item.user_id}`);
   };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally
+  // mount-only: see the autoOpenComments prop doc above.
+  useEffect(() => {
+    if (!autoOpenComments) return;
+    setShowComments(true);
+    cardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, []);
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -220,6 +236,7 @@ export function CommunityPostCard({
 
   return (
     <Card
+      ref={cardRef}
       className={cn(cardShell, "cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2")}
       role="button"
       tabIndex={0}
