@@ -36,11 +36,10 @@
       "phase": "llm"
     },
     "health.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihr' instead of informal 'Dein').",
-      "suggested": "Dein persönliches Gesundheits-Dashboard",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.overview": {
       "verdict": "OK",
@@ -48,11 +47,10 @@
       "phase": "llm"
     },
     "health.overviewDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihr') and missing part of the English meaning ('and wellness overview').",
-      "suggested": "Dein umfassendes Gesundheits-Dashboard und Wellness-Übersicht",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.servicesHub": {
       "verdict": "OK",
@@ -70,11 +68,10 @@
       "phase": "llm"
     },
     "health.biomarkersDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre') and missing verb ('view').",
-      "suggested": "Deine neuesten Testergebnisse und Biomarker ansehen",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.healthTracker": {
       "verdict": "OK",
@@ -92,25 +89,22 @@
       "phase": "llm"
     },
     "health.educationDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incomplete translation; missing 'access' and 'wellness' for resources.",
-      "suggested": "Gesundheitsthemen lernen und auf Wellness-Ressourcen zugreifen",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.priorityFocus": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Meaning slightly off; 'Priorität heute' means 'priority today', not 'priority focus area'.",
-      "suggested": "Dein Fokusbereich",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.priorityFocusExplanation": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre') and 'Gesundheit' is less precise than 'Gesundheitsspanne' for 'healthspan'.",
-      "suggested": "Dieser Bereich hat derzeit den größten Einfluss auf deine langfristige Gesundheitsspanne.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.autopilotGuidance": {
       "verdict": "OK",
@@ -123,11 +117,10 @@
       "phase": "llm"
     },
     "health.takeAction": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Aktion ausführen' is a bit formal/literal; 'Handeln' is more natural for a UI button.",
-      "suggested": "Handeln",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.uploadBloodTest": {
       "verdict": "OK",
@@ -150,18 +143,16 @@
       "phase": "llm"
     },
     "health.trend.improving": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Verbessernd' is a participle; as a status, 'Verbessert sich' is more appropriate.",
-      "suggested": "Verbessert sich",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.trend.declining": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Abnehmend' is a participle; as a status, 'Verschlechtert sich' is more appropriate.",
-      "suggested": "Verschlechtert sich",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.trend.stable": {
       "verdict": "OK",
@@ -199,11 +190,10 @@
       "phase": "llm"
     },
     "health.emptyStates.noSleepPlanDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Generiere deinen personalisierten Schlafplan mit KI-optimierten Zielen, abgestimmt auf deinen Biorhythmus, Erholungsbedürfnisse und tägliche Leistung.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.emptyStates.noExercisePlan": {
       "verdict": "OK",
@@ -211,11 +201,10 @@
       "phase": "llm"
     },
     "health.emptyStates.noExercisePlanDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Generiere deinen personalisierten Trainingsplan mit KI-optimierten Übungen, abgestimmt auf dein Fitnesslevel, Ziele und Erholungsbedürfnisse.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.emptyStates.noNutritionPlan": {
       "verdict": "OK",
@@ -223,11 +212,10 @@
       "phase": "llm"
     },
     "health.emptyStates.noNutritionPlanDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Generiere deinen personalisierten Ernährungsplan mit leckeren, ausgewogenen Rezepten, abgestimmt auf deine Ziele und Ernährungsvorlieben.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.emptyStates.noHydrationPlan": {
       "verdict": "OK",
@@ -235,11 +223,10 @@
       "phase": "llm"
     },
     "health.emptyStates.noHydrationPlanDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Generiere deinen personalisierten Hydratationsplan mit KI-optimierten Tageszielen, abgestimmt auf dein Aktivitätslevel, Umgebung und Erholungsbedürfnisse.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.emptyStates.noMentalPlan": {
       "verdict": "OK",
@@ -247,11 +234,10 @@
       "phase": "llm"
     },
     "health.emptyStates.noMentalPlanDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Generiere deinen personalisierten Mental-Wellness-Plan, um Stress, Fokus und emotionales Gleichgewicht mit KI-Unterstützung zu verfolgen.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.emptyStates.generatePlan": {
       "verdict": "OK",
@@ -269,11 +255,10 @@
       "phase": "llm"
     },
     "health.noSupplementsDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du' and misses 'to get started' nuance.",
-      "suggested": "Verfolge deine täglichen Vitamine, Mineralien und Nahrungsergänzungsmittel. Füge dein erstes Supplement hinzu, um zu starten.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.noReports": {
       "verdict": "OK",
@@ -281,11 +266,10 @@
       "phase": "llm"
     },
     "health.noReportsDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Lade deine Bluttests, Laborergebnisse und medizinischen Berichte hoch, um personalisierte Gesundheitseinblicke zu erhalten.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.medical": {
       "verdict": "OK",
@@ -419,5 +403,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:12:50.017Z"
+  "generatedAt": "2026-08-26T04:11:48.992Z"
 }
