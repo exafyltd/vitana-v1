@@ -191,11 +191,10 @@
       "phase": "llm"
     },
     "profileEditor.autopilot.quickSuggestions": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Autopilot is a feature name; '自动驾驶' is literal and may confuse. Suggest keeping 'Autopilot' or using '自动导航'.",
-      "suggested": "Autopilot 快速建议",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "profileEditor.autopilot.makeShorter": {
       "verdict": "OK",
@@ -213,11 +212,10 @@
       "phase": "llm"
     },
     "profileEditor.autopilot.suggestion": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Same as entry 7: '自动驾驶' is literal and may confuse. Suggest keeping 'Autopilot'.",
-      "suggested": "Autopilot 建议",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "profileEditor.identity.editIdentity": {
       "verdict": "OK",
@@ -445,5 +443,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:42:13.245Z"
+  "generatedAt": "2026-08-26T04:09:47.547Z"
 }
