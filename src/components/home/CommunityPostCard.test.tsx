@@ -276,3 +276,37 @@ describe('CommunityPostCard likers list (VTID-03554)', () => {
     expect(screen.queryByText('screens.home.likesCount')).not.toBeInTheDocument();
   });
 });
+
+describe('CommunityPostCard autoOpenComments (VTID-03744)', () => {
+  beforeEach(() => {
+    mockComments = [];
+    Element.prototype.scrollIntoView = vi.fn();
+  });
+
+  it('opens the comments sheet on mount when autoOpenComments is true', () => {
+    render(<CommunityPostCard item={item()} autoOpenComments />);
+
+    expect(screen.getByPlaceholderText('screens.home.writeComment')).toBeInTheDocument();
+    expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
+  });
+
+  it('does not open the comments sheet on mount by default', () => {
+    render(<CommunityPostCard item={item()} />);
+
+    expect(screen.queryByPlaceholderText('screens.home.writeComment')).not.toBeInTheDocument();
+    expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled();
+  });
+
+  it('does not re-force the sheet open after the viewer closes it (mount-only effect)', () => {
+    const { rerender } = render(<CommunityPostCard item={item()} autoOpenComments />);
+    expect(screen.getByPlaceholderText('screens.home.writeComment')).toBeInTheDocument();
+
+    fireEvent.click(commentButton());
+    expect(screen.queryByPlaceholderText('screens.home.writeComment')).not.toBeInTheDocument();
+
+    // A re-render with the exact same autoOpenComments=true prop must not
+    // reopen it — the effect only runs once, at mount.
+    rerender(<CommunityPostCard item={item()} autoOpenComments />);
+    expect(screen.queryByPlaceholderText('screens.home.writeComment')).not.toBeInTheDocument();
+  });
+});
