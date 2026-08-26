@@ -316,10 +316,8 @@
       "phase": "llm"
     },
     "inbox.toast.noTenantContext": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Literal translation of 'tenant context' is awkward and unclear in Arabic.",
-      "suggested": "لا يتوفر سياق المستأجر",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "inbox.toast.searchFailed": {
@@ -498,5 +496,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:40:13.561Z"
+  "generatedAt": "2026-08-26T04:09:19.042Z"
 }
