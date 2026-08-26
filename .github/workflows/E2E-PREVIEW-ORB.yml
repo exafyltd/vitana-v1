@@ -34,6 +34,12 @@ jobs:
         env:
           PREVIEW_URL: https://preview-aws.vitanaland.com
         run: node tests/e2e/orb-newday-repeat-test.mjs
+      - name: Run ORB day-close ("goodnight") live test (VTID-03743)
+        if: always()
+        env:
+          PREVIEW_URL: https://preview-aws.vitanaland.com
+          DAYCLOSE_TZ: America/New_York
+        run: node tests/e2e/orb-dayclose-live-test.mjs
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4
@@ -47,4 +53,11 @@ jobs:
         with:
           name: orb-newday-repeat-screenshots
           path: tests/e2e/screenshots-newday-repeat/
+          if-no-files-found: warn
+      - name: Upload day-close screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: orb-dayclose-screenshots
+          path: tests/e2e/screenshots-dayclose/
           if-no-files-found: warn
