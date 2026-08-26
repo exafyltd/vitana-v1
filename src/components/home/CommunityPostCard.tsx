@@ -51,11 +51,13 @@ export function CommunityPostCard({
 }: {
   item: PostFeedItem;
   onOpen?: (item: FeedItem) => void;
-  /** Open the comments sheet (and scroll it into view) as soon as this card
-   * mounts — the "Try it yourself" CTA on the Reply & Like Comments
-   * announcement card lands here via /home/comments (see Home.tsx). Read
-   * once, on mount, so a later re-render with a stale/changed value can't
-   * re-force the sheet back open after the viewer has closed it themselves. */
+  /** Open the comments sheet (and scroll it into view) when this flips from
+   * false to true — the "Try it yourself" CTA on the Reply & Like Comments
+   * announcement card lands here via /home/comments (see Home.tsx). Reacts
+   * to the transition, not just mount, since this card is typically already
+   * mounted before the CTA is tapped. Only acts on a false->true edge, so a
+   * re-render where the value stays true can't re-force a manually-closed
+   * sheet back open. */
   autoOpenComments?: boolean;
 }) {
   const navigate = useNavigate();
@@ -106,13 +108,22 @@ export function CommunityPostCard({
     navigate(`/u/${item.user_id}`);
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally
-  // mount-only: see the autoOpenComments prop doc above.
+  // React to the FALSE -> TRUE transition, not just mount: /home/comments
+  // navigates onto the SAME Home component instance (React Router reuses it
+  // since the rendered tree shape is identical to /home), so this card was
+  // already mounted long before the CTA was tapped. A mount-only effect
+  // ([] deps) never re-ran once the prop later flipped true, which is why
+  // the button visibly did nothing (VTID-03744 follow-up, reported live).
+  // prevAutoOpenRef guards against re-firing on an unrelated re-render where
+  // the prop stays true, so a manually-closed sheet still isn't reopened.
+  const prevAutoOpenRef = useRef(false);
   useEffect(() => {
-    if (!autoOpenComments) return;
-    setShowComments(true);
-    cardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, []);
+    if (autoOpenComments && !prevAutoOpenRef.current) {
+      setShowComments(true);
+      cardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    prevAutoOpenRef.current = !!autoOpenComments;
+  }, [autoOpenComments]);
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();

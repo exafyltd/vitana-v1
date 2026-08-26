@@ -297,16 +297,30 @@ describe('CommunityPostCard autoOpenComments (VTID-03744)', () => {
     expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled();
   });
 
-  it('does not re-force the sheet open after the viewer closes it (mount-only effect)', () => {
+  it('does not re-force the sheet open after the viewer closes it, when the prop stays true', () => {
     const { rerender } = render(<CommunityPostCard item={item()} autoOpenComments />);
     expect(screen.getByPlaceholderText('screens.home.writeComment')).toBeInTheDocument();
 
     fireEvent.click(commentButton());
     expect(screen.queryByPlaceholderText('screens.home.writeComment')).not.toBeInTheDocument();
 
-    // A re-render with the exact same autoOpenComments=true prop must not
-    // reopen it — the effect only runs once, at mount.
+    // A re-render with the exact same autoOpenComments=true prop (no
+    // false->true edge) must not reopen it.
     rerender(<CommunityPostCard item={item()} autoOpenComments />);
     expect(screen.queryByPlaceholderText('screens.home.writeComment')).not.toBeInTheDocument();
+  });
+
+  it('opens the sheet when the prop flips true on an ALREADY-MOUNTED card (the real bug)', () => {
+    // This is the actual shape of the live failure: /home/comments navigates
+    // onto the same Home instance rather than remounting it, so every card
+    // is already mounted with autoOpenComments=false before the CTA is
+    // tapped, and only THEN does the prop flip to true.
+    const { rerender } = render(<CommunityPostCard item={item()} autoOpenComments={false} />);
+    expect(screen.queryByPlaceholderText('screens.home.writeComment')).not.toBeInTheDocument();
+
+    rerender(<CommunityPostCard item={item()} autoOpenComments={true} />);
+
+    expect(screen.getByPlaceholderText('screens.home.writeComment')).toBeInTheDocument();
+    expect(Element.prototype.scrollIntoView).toHaveBeenCalled();
   });
 });
