@@ -111,6 +111,22 @@ job): frontend changes auto-deploy to **staging** (ECS
 2. a deliberate manual `workflow_dispatch` of `DEPLOY.yml` (requires a `reason`)
    — the documented exception.
 
+**If a production deploy is approved WITHIN a Claude Code session** (the
+user approves shipping to prod in conversation, carried out via path 2
+above rather than PUBLISH) → that approval scopes to this session's own
+change only, never to whatever else is currently sitting on `main`/staging.
+PUBLISH is a deliberate, human-operated decision to promote the *entire*
+tested staging build; an in-session approval is not that — it's consent
+for the specific fix this session produced. `DEPLOY.yml`'s manual dispatch
+takes a `commit_sha` input that defaults to `github.sha` (i.e. whatever
+`main` HEAD is at dispatch time) — **always pass this session's own merge
+commit SHA explicitly** rather than accepting that default, so the deploy
+can't silently carry along other work that landed on `main` ahead of it
+and that this conversation never reviewed or approved. If this session's
+commit can't be cleanly isolated (something else merged in between and the
+workflow builds from a ref rather than a pinned diff), stop and tell the
+user what else would ship alongside theirs before proceeding.
+
 `supabase-functions-deploy.yml` is gated the same way (no staging-functions
 auto-deploy yet, so it is freeze-only on the auto path post-cutover; ship via
 manual dispatch). `STAGE-DEPLOY-FRONTEND.yml` is **not** gated — staging deploys
