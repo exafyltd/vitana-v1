@@ -176,11 +176,10 @@
       "phase": "llm"
     },
     "subNav.timeline": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Zeitachse\" is technically correct but sounds formal/technical for a friendly wellness app UI. \"Verlauf\" or \"Timeline\" (as a loanword) would be more common and friendly.",
-      "suggested": "Verlauf",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "subNav.diary": {
       "verdict": "OK",
@@ -198,11 +197,10 @@
       "phase": "llm"
     },
     "subNav.preferences": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "\"Präferenzen\" is understood but sounds formal/academic. \"Einstellungen\" is the standard and more common term for app settings in German UI, fitting a friendly register better.",
-      "suggested": "Einstellungen",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "subNav.privacy": {
       "verdict": "OK",
@@ -210,12 +208,11 @@
       "phase": "llm"
     },
     "subNav.connectedApps": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The translation is incomplete; \" & Integrations\" is missing.",
-      "suggested": "Verbundene Apps & Integrationen",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-05-20T08:32:28.209Z"
+  "generatedAt": "2026-08-27T14:32:58.558Z"
 }
