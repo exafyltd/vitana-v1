@@ -13,6 +13,8 @@
     "chooseLanguageTitle": "Выбери свой язык",
     "chooseLanguageSubtitle": "Vitana будет говорить и отвечать на этом языке.",
     "login": "Вход",
-    "register": "Регистрация"
-  }
+    "register": "Регистрация",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
