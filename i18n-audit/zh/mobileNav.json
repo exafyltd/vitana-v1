@@ -16,11 +16,10 @@
       "phase": "llm"
     },
     "mobileNav.business": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "In a wellness app, 'Business' likely refers to business-related features, but '业务' is too generic and may not convey the intended meaning. Consider '商务' for business context.",
-      "suggested": "商务",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "mobileNav.live": {
       "verdict": "OK",
@@ -38,5 +37,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:41:10.906Z"
+  "generatedAt": "2026-08-27T14:23:55.067Z"
 }

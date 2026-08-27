@@ -26,10 +26,8 @@
       "phase": "llm"
     },
     "packages.status.published": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "In the context of a wellness app, 'Live' likely means 'live session' or 'live content', not 'go live' as in publishing. '上线' is more like 'go online' or 'launch'. Suggest '直播' for live streaming or '实时' for real-time.",
-      "suggested": "直播",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "packages.status.archived": {
@@ -39,16 +37,16 @@
     },
     "packages.item": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "The English 'item' is generic, but in a wellness app context it might refer to a specific item like a product or exercise. '项目' can mean 'project' or 'program', which may be too broad. Suggest '条目' or '物品' depending on context.",
-      "suggested": "条目",
+      "confidence": 0.9,
+      "issue": "Translation '条目' is too formal for a friendly, informal app register. '项目' is more common and appropriate for general 'item' in an app context.",
+      "suggested": "项目",
       "phase": "llm"
     },
     "packages.items": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "Same as 'item', 'items' is plural. '项目' is ambiguous. Suggest '条目' or '物品'.",
-      "suggested": "条目",
+      "confidence": 0.9,
+      "issue": "Translation '条目' is too formal for a friendly, informal app register. '项目' is more common and appropriate for general 'items' in an app context.",
+      "suggested": "项目",
       "phase": "llm"
     },
     "packages.total": {
@@ -77,5 +75,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:41:44.598Z"
+  "generatedAt": "2026-08-27T14:24:16.671Z"
 }
