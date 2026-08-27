@@ -1,18 +1,16 @@
 {
   "verdicts": {
     "authPage.welcomeTitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The verb 'Dobrodošli' is plural/formal. For informal 'du-form' addressing a single user, a gendered singular form is required.",
-      "suggested": "Dobrodošao/la u VITANA",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "authPage.subtitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Vaša' is the formal/plural possessive pronoun. For informal 'du-form', 'Tvoja' (feminine, matching 'platforma') should be used.",
-      "suggested": "Tvoja personalizovana platforma za zdravstvenu inteligenciju",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "authPage.signIn": {
       "verdict": "OK",
@@ -40,32 +38,28 @@
       "phase": "llm"
     },
     "authPage.enterEmail": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The imperative verb 'Unesite' is plural/formal. For informal 'du-form', 'Unesi' (singular informal) should be used.",
-      "suggested": "Unesi svoju e-poštu",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "authPage.enterPassword": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The imperative verb 'Unesite' is plural/formal. For informal 'du-form', 'Unesi' (singular informal) should be used.",
-      "suggested": "Unesi svoju lozinku",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "authPage.enterFullName": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The imperative verb 'Unesite' is plural/formal. For informal 'du-form', 'Unesi' (singular informal) should be used.",
-      "suggested": "Unesi svoje ime i prezime",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "authPage.createPassword": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The imperative verb 'Kreirajte' is plural/formal. For informal 'du-form', 'Kreiraj' (singular informal) should be used.",
-      "suggested": "Kreiraj lozinku",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "authPage.createAccount": {
       "verdict": "OK",
@@ -73,11 +67,10 @@
       "phase": "llm"
     },
     "authPage.orContinueWith": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The imperative verb 'nastavite' is plural/formal. For informal 'du-form', 'nastavi' (singular informal) should be used.",
-      "suggested": "Ili nastavi sa",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "authPage.backToPortals": {
       "verdict": "OK",
@@ -90,5 +83,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:04.217Z"
+  "generatedAt": "2026-08-27T14:23:23.904Z"
 }

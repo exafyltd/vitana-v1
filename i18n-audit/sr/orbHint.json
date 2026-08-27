@@ -1,0 +1,11 @@
+{
+  "verdicts": {
+    "orbHint.tapToTalk": {
+      "verdict": "EDIT_SUGGESTED",
+      "confidence": 1,
+      "issue": "brand token \"Vitana\" missing from target",
+      "phase": "static"
+    }
+  },
+  "generatedAt": "2026-08-27T14:28:11.838Z"
+}
