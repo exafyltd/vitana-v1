@@ -588,14 +588,17 @@ export function useAllNewsFeed(options?: { enabled?: boolean }) {
     // from feature_announcements (RLS-scoped to the caller's tenant, and
     // further to specific recipients when the admin targeted a test send —
     // see BOOTSTRAP-FEATURE-ANNOUNCEMENTS). Picks the viewer's language,
-    // falling back to English if a translation is missing.
+    // falling back to English then German if a translation is missing —
+    // mirrors the gateway's own pickLocale() in
+    // admin-feature-announcements.ts (`text[locale] ?? text.en ?? text.de`)
+    // so a partially localized row degrades the same way on both ends.
     const featureAnnouncements: FeatureAnnouncementFeedItem[] = (candidates?.featureAnnouncements || []).map(
       (row) => ({
         id: `feature-announcement-${row.id}`,
         kind: "feature_announcement",
         variant: row.variant,
-        feature_title: row.feature_title[language] ?? row.feature_title.en,
-        description: row.description[language] ?? row.description.en,
+        feature_title: row.feature_title[language] ?? row.feature_title.en ?? row.feature_title.de,
+        description: row.description[language] ?? row.description.en ?? row.description.de,
         deep_link: row.deep_link,
         published_at: row.created_at,
       }),
