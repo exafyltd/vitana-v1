@@ -27,11 +27,10 @@
       "phase": "llm"
     },
     "discover.searchPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "Missing 'عن' for 'about' and informal register could be improved.",
-      "suggested": "عن ماذا تبحث؟ (مثلاً: فصول اليوغا، طبيب طول العمر، لقاءات)",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "discover.doctorsCoaches": {
       "verdict": "OK",
@@ -459,11 +458,10 @@
       "phase": "llm"
     },
     "discover.aiPicks.recommendationsFound": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'توصيات' is feminine plural, but 'تم العثور' is masculine. Should be 'تم العثور على' with feminine verb or restructure.",
-      "suggested": "تم العثور على {count} توصية",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "discover.aiPicks.noRecommendations": {
       "verdict": "OK",
@@ -550,5 +548,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:39:05.192Z"
+  "generatedAt": "2026-08-27T14:24:04.128Z"
 }

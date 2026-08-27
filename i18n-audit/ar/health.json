@@ -166,10 +166,8 @@
       "phase": "llm"
     },
     "health.emptyStates.noSleepPlan": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'خطة' is feminine, so 'لا توجد' should be used instead of 'لا يوجد'.",
-      "suggested": "لا توجد خطة نوم بعد",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "health.emptyStates.noSleepPlanDesc": {
@@ -178,10 +176,8 @@
       "phase": "llm"
     },
     "health.emptyStates.noExercisePlan": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'خطة' is feminine, so 'لا توجد' should be used instead of 'لا يوجد'.",
-      "suggested": "لا توجد خطة تمرين بعد",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "health.emptyStates.noExercisePlanDesc": {
@@ -190,10 +186,8 @@
       "phase": "llm"
     },
     "health.emptyStates.noNutritionPlan": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'خطة' is feminine, so 'لا توجد' should be used instead of 'لا يوجد'.",
-      "suggested": "لا توجد خطة تغذية بعد",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "health.emptyStates.noNutritionPlanDesc": {
@@ -202,10 +196,8 @@
       "phase": "llm"
     },
     "health.emptyStates.noHydrationPlan": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'خطة' is feminine, so 'لا توجد' should be used instead of 'لا يوجد'.",
-      "suggested": "لا توجد خطة ترطيب بعد",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "health.emptyStates.noHydrationPlanDesc": {
@@ -214,10 +206,8 @@
       "phase": "llm"
     },
     "health.emptyStates.noMentalPlan": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'خطة' is feminine, so 'لا توجد' should be used instead of 'لا يوجد'.",
-      "suggested": "لا توجد خطة نفسية بعد",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "health.emptyStates.noMentalPlanDesc": {
@@ -286,5 +276,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:39:52.191Z"
+  "generatedAt": "2026-08-27T14:24:14.500Z"
 }

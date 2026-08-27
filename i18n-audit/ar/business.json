@@ -261,11 +261,10 @@
       "phase": "llm"
     },
     "business.kpi.totalGrossSales": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Redundant phrasing: 'إجمالي المبيعات الإجمالية' repeats 'total' twice. Suggest 'إجمالي المبيعات'.",
-      "suggested": "إجمالي المبيعات",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "business.kpi.resellerCommissions": {
       "verdict": "OK",
@@ -533,5 +532,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:37:33.751Z"
+  "generatedAt": "2026-08-27T14:23:54.672Z"
 }
