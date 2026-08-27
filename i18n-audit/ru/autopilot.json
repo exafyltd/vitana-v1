@@ -48,8 +48,8 @@
     "autopilot.suggestions.archetypeTitle": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "The translation 'Идеи' (ideas) is too weak for 'Insights', which implies deeper understanding or revelations.",
-      "suggested": "Озарения архетипа",
+      "issue": "The translation 'Идеи' (ideas) does not accurately convey the meaning of 'Insights' (deeper understanding, revelations). The phrasing 'архетипа' (of an archetype) is also less natural than 'об архетипах' (about archetypes).",
+      "suggested": "Прозрения об архетипах",
       "phase": "llm"
     },
     "autopilot.suggestions.archetypeBadge": {
@@ -175,8 +175,8 @@
     "autopilot.popup.moreActions": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Awkward phrasing for 'more actions'. 'Больше действий' is less natural than 'ещё действий' in this context.",
-      "suggested": "ещё {count} действий",
+      "issue": "The phrasing '+{count} больше действий' is a literal but somewhat unnatural translation for 'more actions'. 'еще {count} действий' is more idiomatic.",
+      "suggested": "еще {count} действий",
       "phase": "llm"
     },
     "autopilot.popup.toastExecutedTitle": {
@@ -221,9 +221,9 @@
     },
     "autopilot.widget.active": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical form mismatch. 'Активно' is an adverb or neuter short adjective. For 'Autopilot' (masculine), the masculine short adjective 'Активен' is appropriate for a status.",
-      "suggested": "Активен",
+      "confidence": 0.8,
+      "issue": "'Активно' is an adverb ('actively') or a short-form neuter adjective. As a standalone UI label for 'Active' (adjective), the full masculine singular adjective 'Активный' is generally more appropriate and common, unless referring to a specific neuter noun like 'состояние' (state).",
+      "suggested": "Активный",
       "phase": "llm"
     },
     "autopilot.widget.paused": {
@@ -462,5 +462,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:25:10.893Z"
+  "generatedAt": "2026-08-27T14:25:06.502Z"
 }
