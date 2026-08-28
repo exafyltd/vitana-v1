@@ -21,11 +21,10 @@
       "phase": "llm"
     },
     "groupDetail.leaving": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The verb 'Покидаем' (we are leaving) is plural. For a single user's action in a du-form app, an impersonal noun or 'Покидаю' (I am leaving) would be more appropriate for a status message.",
-      "suggested": "Выход...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "groupDetail.joinGroup": {
       "verdict": "OK",
@@ -33,11 +32,10 @@
       "phase": "llm"
     },
     "groupDetail.joining": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The verb 'Присоединяемся' (we are joining) is plural. For a single user's action in a du-form app, an impersonal noun or 'Присоединяюсь' (I am joining) would be more appropriate for a status message.",
-      "suggested": "Вход...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "groupDetail.back": {
       "verdict": "OK",
@@ -65,5 +63,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:34:49.120Z"
+  "generatedAt": "2026-08-28T15:34:34.726Z"
 }
