@@ -45,9 +45,7 @@
     "clinicalOps": "Clinical Operations",
     "monitoring": "Monitoring",
     "logout": "Logout",
-    "connectors": "Connectors",
-    "support": "Support",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "connectors": "Connected Apps",
+    "support": "Support"
+  }
 }
