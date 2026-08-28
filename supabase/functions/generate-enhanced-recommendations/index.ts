@@ -60,16 +60,31 @@ serve(async (req) => {
       );
     }
 
-    // Call Gemini API for intelligent matching
+    // Aurora migration B7 (VTID-03764 chain): AI_BRIDGE_PROVIDER lets this
+    // function move off the direct Gemini Developer API call onto the
+    // gateway's Bedrock bridge (see supabase/functions/_shared/
+    // bedrock-bridge-client.ts) without a code change at the actual call
+    // site below — both clients export the identical generateContent/
+    // extractFunctionCall signatures. Defaults to 'gemini' so behavior is
+    // byte-for-byte unchanged until someone deliberately sets the edge
+    // function secret to 'bedrock' — this ships the seam, it does not flip it.
+    const aiBridgeProvider = Deno.env.get('AI_BRIDGE_PROVIDER') || 'gemini';
     const GEMINI_API_KEY = Deno.env.get('GOOGLE_GEMINI_API_KEY');
-    if (!GEMINI_API_KEY) throw new Error('GOOGLE_GEMINI_API_KEY not configured');
+    if (aiBridgeProvider === 'gemini' && !GEMINI_API_KEY) {
+      throw new Error('GOOGLE_GEMINI_API_KEY not configured');
+    }
 
-    const { generateContent, extractFunctionCall } = await import("../_shared/gemini-client.ts");
+    const { generateContent, extractFunctionCall } = await import(
+      aiBridgeProvider === 'bedrock' ? '../_shared/bedrock-bridge-client.ts' : '../_shared/gemini-client.ts'
+    );
     // Inject user-language directive so any free-text reasons are in
     // the user's preferred language (German by default).
-    const userLocale = await getUserLocale(supabase, user.id);
+    // (Fixed while touching this line: previously read the undefined
+    // identifier `supabase` instead of `supabaseClient`, so every call threw
+    // a ReferenceError here before ever reaching the AI provider.)
+    const userLocale = await getUserLocale(supabaseClient, user.id);
     const aiResponse = await generateContent(
-      GEMINI_API_KEY,
+      GEMINI_API_KEY ?? '',
       [
         {
           role: 'system',
