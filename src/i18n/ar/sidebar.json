@@ -11,7 +11,7 @@
     "memory": "الذاكرة",
     "settings": "الإعدادات",
     "admin": "المدير",
-    "connectors": "الموصلات",
+    "connectors": "التطبيقات المتصلة",
     "support": "الدعم",
     "businessHub": "مركز الأعمال",
     "aiAssistant": "مساعد الذكاء الاصطناعي",
@@ -46,8 +46,6 @@
     "clinicalOps": "العمليات السريرية",
     "monitoring": "مراقبة",
     "logout": "تسجيل الخروج",
-    "myJourney": "رحلتي",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "myJourney": "رحلتي"
+  }
 }

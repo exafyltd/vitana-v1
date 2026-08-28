@@ -47,7 +47,8 @@
     "logout": "Odjavi se",
     "connectors": "Konektori",
     "support": "Podrška",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "connectors": true
+    }
+  }
 }

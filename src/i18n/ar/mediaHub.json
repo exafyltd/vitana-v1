@@ -7,24 +7,21 @@
       "music": "موسيقى",
       "podcasts": "بودكاست",
       "shorts": "شورتس",
-      "videos": "فيديوهات",
-      "_pending_review": {}
+      "videos": "فيديوهات"
     },
     "sections": {
       "trendingShorts": "شورتس رائجة",
       "trendingMusic": "موسيقى رائجة",
       "musicPlaylists": "قوائم تشغيل الموسيقى",
       "latestEpisodes": "أحدث الحلقات",
-      "popularShows": "برامج رائجة",
-      "_pending_review": {}
+      "popularShows": "برامج رائجة"
     },
     "actions": {
       "upload": "تحميل",
       "watchShorts": "شاهد الشورتس",
       "viewAllShorts": "عرض كل {count} شورتس",
       "playPlaylist": "تشغيل قائمة التشغيل",
-      "clearFilters": "مسح الفلاتر",
-      "_pending_review": {}
+      "clearFilters": "مسح الفلاتر"
     },
     "searchPlaceholder": "ابحث في الوسائط...",
     "shortsAvailable": "{count} مقاطع قصيرة متوفرة",
@@ -49,8 +46,7 @@
       "singleUpload": "تحميل فردي",
       "bulkUpload": "تحميل جماعي",
       "addToPlaylist": "إضافة إلى قائمة التشغيل",
-      "viewArtist": "عرض الفنان",
-      "_pending_review": {}
+      "viewArtist": "عرض الفنان"
     },
     "toast": {
       "linkCopied": "تم نسخ الرابط",
@@ -68,8 +64,7 @@
       "deleteError": "خطأ",
       "deleteErrorDesc": "فشل الحذف. الرجاء المحاولة مرة أخرى.",
       "commentError": "خطأ",
-      "commentErrorDesc": "فشل نشر التعليق. الرجاء المحاولة مرة أخرى.",
-      "_pending_review": {}
+      "commentErrorDesc": "فشل نشر التعليق. الرجاء المحاولة مرة أخرى."
     },
     "comments": {
       "title": "التعليقات",
@@ -82,22 +77,19 @@
       "reply": "رد",
       "replyingTo": "الرد على {name}",
       "cancelReply": "إلغاء الرد",
-      "like": "أعجبني التعليق",
-      "_pending_review": {}
+      "like": "أعجبني التعليق"
     },
     "deletePodcast": {
       "title": "حذف بودكاست",
       "description": "هل أنت متأكد أنك تريد حذف هذا البودكاست؟ لا يمكن التراجع عن هذا الإجراء.",
       "cancel": "إلغاء",
-      "confirm": "حذف",
-      "_pending_review": {}
+      "confirm": "حذف"
     },
     "deleteVideo": {
       "title": "حذف الفيديو",
       "description": "هل أنت متأكد أنك تريد حذف هذا الفيديو؟ لا يمكن التراجع عن هذا الإجراء وسيؤدي إلى إزالة الفيديو من التخزين.",
       "cancel": "إلغاء",
-      "confirm": "حذف",
-      "_pending_review": {}
+      "confirm": "حذف"
     },
     "noMusic": "لم يتم رفع أي موسيقى بعد",
     "noMusicDesc": "كن أول من يشارك الموسيقى مع المجتمع!",
@@ -154,12 +146,8 @@
         "mentalHealth": "صحة نفسية",
         "wellness": "عافية",
         "education": "تعليم",
-        "lifestyle": "نمط حياة",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "lifestyle": "نمط حياة"
+      }
+    }
+  }
 }

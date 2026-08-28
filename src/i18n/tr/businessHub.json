@@ -1,10 +1,8 @@
 {
   "businessHub": {
-    "_pending_review": {},
-    "title": "İş MERKEZİ",
+    "title": "İş Merkezi",
     "description": "Wellness işini büyüt",
     "tabs": {
-      "_pending_review": {},
       "snapshot": "Özet",
       "services": "Hizmetler",
       "sales": "Satışlar",
@@ -21,6 +19,5 @@
     "noClientsDesc": "Müşterilerin burada görünecek.",
     "noSales": "Henüz satış yok",
     "noSalesDesc": "Satış geçmişin burada görünecek."
-  },
-  "_pending_review": {}
+  }
 }

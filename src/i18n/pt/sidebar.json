@@ -47,7 +47,8 @@
     "connectors": "Conectores",
     "support": "Suporte",
     "myJourney": "Minha Jornada",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "connectors": true
+    }
+  }
 }

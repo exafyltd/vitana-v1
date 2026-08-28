@@ -1,13 +1,12 @@
 {
   "businessHub": {
-    "title": "Biznes HUB",
+    "title": "Centrum Biznesowe",
     "description": "Rozwijaj swój biznes wellness",
     "tabs": {
       "snapshot": "Podsumowanie",
       "services": "Usługi",
       "sales": "Sprzedaż",
-      "insights": "Wnioski",
-      "_pending_review": {}
+      "insights": "Wnioski"
     },
     "recentActivity": "Ostatnia aktywność",
     "clients": "Klienci",
@@ -19,8 +18,6 @@
     "noClients": "Brak klientów",
     "noClientsDesc": "Twoi klienci pojawią się tutaj.",
     "noSales": "Brak sprzedaży",
-    "noSalesDesc": "Twoja historia sprzedaży pojawi się tutaj.",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "noSalesDesc": "Twoja historia sprzedaży pojawi się tutaj."
+  }
 }

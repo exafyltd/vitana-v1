@@ -14,10 +14,11 @@
     "wallet": "المحفظة",
     "health": "الصحة",
     "diary": "مفكرة يومية",
-    "connectors": "جهات الاتصال",
+    "connectors": "تطبيقات متصلة",
     "inbox": "صندوق الوارد",
     "logout": "تسجيل الخروج",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "media": true
+    }
+  }
 }

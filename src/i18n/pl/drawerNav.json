@@ -17,7 +17,9 @@
     "support": "Wsparcie",
     "settings": "Ustawienia",
     "logout": "Wyloguj się",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "media": true,
+      "connectors": true
+    }
+  }
 }

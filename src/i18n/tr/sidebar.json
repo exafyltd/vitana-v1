@@ -47,7 +47,8 @@
     "connectors": "Bağlayıcılar",
     "support": "Destek",
     "myJourney": "Yolculuğum",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "connectors": true
+    }
+  }
 }

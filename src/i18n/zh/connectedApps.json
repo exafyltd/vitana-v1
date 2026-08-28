@@ -10,22 +10,19 @@
       "social": "社交与分享",
       "fitness": "健身与可穿戴设备",
       "health": "健康与实验室",
-      "other": "其他",
-      "_pending_review": {}
+      "other": "其他"
     },
     "status": {
       "connected": "已连接",
       "notConnected": "未连接",
       "comingSoon": "即将推出",
-      "soon": "即将",
-      "_pending_review": {}
+      "soon": "即将"
     },
     "actions": {
       "connect": "连接",
       "disconnect": "断开连接",
       "configure": "配置同步",
-      "manage": "管理",
-      "_pending_review": {}
+      "manage": "管理"
     },
     "lastSync": "上次同步",
     "dataSync": "数据同步中",
@@ -36,8 +33,7 @@
       "categories": {
         "all": "所有应用",
         "health": "健康与健身",
-        "social": "社交",
-        "_pending_review": {}
+        "social": "社交"
       },
       "availableApps": "可用应用",
       "verified": "已验证",
@@ -48,10 +44,10 @@
       "done": "完成",
       "noResults": "没有找到应用",
       "connectionSuccess": "连接成功",
-      "connectionPlaceholder": "{appName} 连接即将推出",
-      "_pending_review": {}
+      "connectionPlaceholder": "{appName} 连接即将推出"
     },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "title": true
+    }
+  }
 }
