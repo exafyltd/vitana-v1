@@ -21,11 +21,10 @@
       "phase": "llm"
     },
     "services.categories.coaching": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Coaching is often left as 'Coaching' in Chinese wellness apps; '辅导' is more academic. Also 'Personal Training' is commonly '私教'.",
-      "suggested": "Coaching与私教",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "services.categories.groupPrograms": {
       "verdict": "OK",
@@ -88,11 +87,10 @@
       "phase": "llm"
     },
     "services.details.availableProviders": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'提供者' is too literal; '服务提供方' or '医生/教练' depending on context. Suggest '服务提供方'.",
-      "suggested": "服务提供方",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "services.details.requirements": {
       "verdict": "OK",
@@ -105,5 +103,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T09:03:45.851Z"
+  "generatedAt": "2026-08-28T15:34:32.146Z"
 }
