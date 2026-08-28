@@ -16,10 +16,6 @@
     "inbox": "Boîte de réception",
     "support": "Aide",
     "settings": "Paramètres",
-    "logout": "Se déconnecter",
-    "_pending_review": {
-      "media": true,
-      "connectors": true
-    }
+    "logout": "Se déconnecter"
   }
 }

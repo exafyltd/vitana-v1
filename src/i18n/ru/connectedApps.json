@@ -1,6 +1,6 @@
 {
   "connectedApps": {
-    "title": "Коннекторы",
+    "title": "Подключенные Приложения",
     "description": "Управляй своими подключенными устройствами и сервисами",
     "searchPlaceholder": "Искать приложения...",
     "addApp": "Добавить приложение",
@@ -45,9 +45,6 @@
       "noResults": "Приложения не найдены",
       "connectionSuccess": "Подключение успешно",
       "connectionPlaceholder": "Подключение {appName} скоро"
-    },
-    "_pending_review": {
-      "title": true
     }
   }
 }

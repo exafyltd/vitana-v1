@@ -16,10 +16,6 @@
     "inbox": "Caixa de Entrada",
     "support": "Suporte",
     "settings": "Configurações",
-    "logout": "Sair",
-    "_pending_review": {
-      "media": true,
-      "connectors": true
-    }
+    "logout": "Sair"
   }
 }

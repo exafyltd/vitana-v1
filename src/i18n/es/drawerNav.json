@@ -16,10 +16,6 @@
     "inbox": "Bandeja de Entrada",
     "support": "Soporte",
     "settings": "Configuración",
-    "logout": "Cerrar Sesión",
-    "_pending_review": {
-      "media": true,
-      "connectors": true
-    }
+    "logout": "Cerrar Sesión"
   }
 }

@@ -16,9 +16,6 @@
     "diary": "مفكرة يومية",
     "connectors": "تطبيقات متصلة",
     "inbox": "صندوق الوارد",
-    "logout": "تسجيل الخروج",
-    "_pending_review": {
-      "media": true
-    }
+    "logout": "تسجيل الخروج"
   }
 }

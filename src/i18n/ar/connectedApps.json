@@ -1,6 +1,6 @@
 {
   "connectedApps": {
-    "title": "جهات الاتصال",
+    "title": "تطبيقات متصلة",
     "description": "إدارة أجهزتك وخدماتك المتصلة",
     "searchPlaceholder": "ابحث عن تطبيقات...",
     "addApp": "أضف تطبيقًا",
@@ -45,9 +45,6 @@
       "noResults": "لا توجد تطبيقات",
       "connectionSuccess": "تم الاتصال بنجاح",
       "connectionPlaceholder": "اتصال {appName} قريباً"
-    },
-    "_pending_review": {
-      "title": true
     }
   }
 }

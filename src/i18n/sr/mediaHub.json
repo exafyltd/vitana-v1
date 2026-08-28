@@ -148,9 +148,6 @@
       "replyingTo": "Odgovaraš na {name}",
       "cancelReply": "Otkaži odgovor",
       "like": "Lajkuj komentar"
-    },
-    "_pending_review": {
-      "title": true
     }
   }
 }

@@ -1,8 +1,5 @@
 {
   "connectedApps": {
-    "_pending_review": {
-      "title": true
-    },
     "title": "Bağlayıcılar",
     "description": "Bağlı cihazlarını ve hizmetlerini yönet",
     "searchPlaceholder": "Uygulama ara...",

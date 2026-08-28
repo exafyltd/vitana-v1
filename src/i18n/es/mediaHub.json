@@ -148,9 +148,6 @@
       "replyingTo": "Respondiendo a {name}",
       "cancelReply": "Cancelar respuesta",
       "like": "Me gusta el comentario"
-    },
-    "_pending_review": {
-      "title": true
     }
   }
 }

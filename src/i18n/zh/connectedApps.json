@@ -45,9 +45,6 @@
       "noResults": "没有找到应用",
       "connectionSuccess": "连接成功",
       "connectionPlaceholder": "{appName} 连接即将推出"
-    },
-    "_pending_review": {
-      "title": true
     }
   }
 }

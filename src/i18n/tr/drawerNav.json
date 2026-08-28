@@ -1,9 +1,5 @@
 {
   "drawerNav": {
-    "_pending_review": {
-      "media": true,
-      "connectors": true
-    },
     "journey": "Yolculuğum",
     "news": "Haberler",
     "events": "Etkinlikler & Buluşmalar",

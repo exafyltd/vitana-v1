@@ -45,9 +45,6 @@
       "noResults": "No se encontraron apps",
       "connectionSuccess": "Conexión exitosa",
       "connectionPlaceholder": "Conexión de {appName} próximamente"
-    },
-    "_pending_review": {
-      "title": true
     }
   }
 }

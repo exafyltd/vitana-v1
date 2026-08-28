@@ -46,9 +46,6 @@
     "monitoring": "Praćenje",
     "logout": "Odjavi se",
     "connectors": "Konektori",
-    "support": "Podrška",
-    "_pending_review": {
-      "connectors": true
-    }
+    "support": "Podrška"
   }
 }

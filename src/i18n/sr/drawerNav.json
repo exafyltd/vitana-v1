@@ -16,10 +16,6 @@
     "inbox": "Poruke",
     "support": "Podrška",
     "settings": "Podešavanja",
-    "logout": "Odjavi se",
-    "_pending_review": {
-      "media": true,
-      "connectors": true
-    }
+    "logout": "Odjavi se"
   }
 }
