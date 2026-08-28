@@ -16,11 +16,10 @@
       "phase": "llm"
     },
     "createSelection.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal Sie instead of informal du).",
-      "suggested": "Wähle die Art der Veranstaltung, die du erstellen möchtest",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "createSelection.eventDescription": {
       "verdict": "OK",
@@ -33,5 +32,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:08:34.424Z"
+  "generatedAt": "2026-08-28T15:34:07.463Z"
 }
