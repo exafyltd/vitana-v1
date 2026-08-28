@@ -46,8 +46,6 @@
     "logout": "Déconnexion",
     "connectors": "Connecteurs",
     "support": "Assistance",
-    "myJourney": "Mon Parcours",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "myJourney": "Mon Parcours"
+  }
 }

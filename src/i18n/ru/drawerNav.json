@@ -12,12 +12,10 @@
     "wallet": "Кошелек",
     "health": "Здоровье",
     "diary": "Ежедневник",
-    "connectors": "Коннекторы",
+    "connectors": "Подключенные Приложения",
     "inbox": "Входящие",
     "support": "Поддержка",
     "settings": "Настройки",
-    "logout": "Выйти",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "logout": "Выйти"
+  }
 }

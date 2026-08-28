@@ -1,6 +1,6 @@
 {
   "connectedApps": {
-    "title": "Подключенные приложения",
+    "title": "Подключенные Приложения",
     "description": "Управляй своими подключенными устройствами и сервисами",
     "searchPlaceholder": "Искать приложения...",
     "addApp": "Добавить приложение",
@@ -10,22 +10,19 @@
       "social": "Социальные сети и обмен",
       "fitness": "Фитнес и носимые устройства",
       "health": "Здоровье и лаборатории",
-      "other": "Другое",
-      "_pending_review": {}
+      "other": "Другое"
     },
     "status": {
       "connected": "Подключено",
       "notConnected": "Не подключено",
       "comingSoon": "Скоро",
-      "soon": "Скоро",
-      "_pending_review": {}
+      "soon": "Скоро"
     },
     "actions": {
       "connect": "Подключить",
       "disconnect": "Отключить",
       "configure": "Настроить синхронизацию",
-      "manage": "Управлять",
-      "_pending_review": {}
+      "manage": "Управлять"
     },
     "lastSync": "Последняя синхронизация",
     "dataSync": "Синхронизация данных",
@@ -36,8 +33,7 @@
       "categories": {
         "all": "Все приложения",
         "health": "Здоровье и фитнес",
-        "social": "Социальные сети",
-        "_pending_review": {}
+        "social": "Социальные сети"
       },
       "availableApps": "Доступные приложения",
       "verified": "Проверено",
@@ -48,10 +44,7 @@
       "done": "Готово",
       "noResults": "Приложения не найдены",
       "connectionSuccess": "Подключение успешно",
-      "connectionPlaceholder": "Подключение {appName} скоро",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "connectionPlaceholder": "Подключение {appName} скоро"
+    }
+  }
 }

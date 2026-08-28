@@ -7,24 +7,21 @@
       "music": "Musique",
       "podcasts": "Podcasts",
       "shorts": "Shorts",
-      "videos": "Vidéos",
-      "_pending_review": {}
+      "videos": "Vidéos"
     },
     "sections": {
       "trendingShorts": "Shorts Tendances",
       "trendingMusic": "Musique Tendances",
       "musicPlaylists": "Playlists Musicales",
       "latestEpisodes": "Derniers Épisodes",
-      "popularShows": "Émissions Populaires",
-      "_pending_review": {}
+      "popularShows": "Émissions Populaires"
     },
     "actions": {
       "upload": "Importer",
       "watchShorts": "Regarder les Shorts",
       "viewAllShorts": "Voir tous les {count} shorts",
       "playPlaylist": "Lire la Playlist",
-      "clearFilters": "Effacer les filtres",
-      "_pending_review": {}
+      "clearFilters": "Effacer les filtres"
     },
     "searchPlaceholder": "Rechercher des médias...",
     "shortsAvailable": "{count} shorts disponibles",
@@ -49,8 +46,7 @@
       "singleUpload": "Importation Unique",
       "bulkUpload": "Importation en Masse",
       "addToPlaylist": "Ajouter à la Playlist",
-      "viewArtist": "Voir l'Artiste",
-      "_pending_review": {}
+      "viewArtist": "Voir l'Artiste"
     },
     "toast": {
       "linkCopied": "Lien copié",
@@ -68,8 +64,7 @@
       "deleteError": "Erreur",
       "deleteErrorDesc": "Échec de la suppression. Réessaie.",
       "commentError": "Erreur",
-      "commentErrorDesc": "Échec de la publication du commentaire. Réessaye.",
-      "_pending_review": {}
+      "commentErrorDesc": "Échec de la publication du commentaire. Réessaye."
     },
     "comments": {
       "title": "Commentaires",
@@ -82,22 +77,19 @@
       "reply": "Répondre",
       "replyingTo": "En réponse à {name}",
       "cancelReply": "Annuler la réponse",
-      "like": "Aimer le commentaire",
-      "_pending_review": {}
+      "like": "Aimer le commentaire"
     },
     "deletePodcast": {
       "title": "Supprimer le podcast",
       "description": "Es-tu sûr(e) de vouloir supprimer ce podcast ? Cette action est irréversible.",
       "cancel": "Annuler",
-      "confirm": "Supprimer",
-      "_pending_review": {}
+      "confirm": "Supprimer"
     },
     "deleteVideo": {
       "title": "Supprimer la vidéo",
       "description": "Es-tu sûr(e) de vouloir supprimer cette vidéo ? Cette action est irréversible et retirera la vidéo du stockage.",
       "cancel": "Annuler",
-      "confirm": "Supprimer",
-      "_pending_review": {}
+      "confirm": "Supprimer"
     },
     "noMusic": "Aucune musique téléchargée pour l'instant",
     "noMusicDesc": "Sois le premier à partager de la musique avec la communauté !",
@@ -154,12 +146,8 @@
         "mentalHealth": "Santé mentale",
         "wellness": "Bien-être",
         "education": "Éducation",
-        "lifestyle": "Style de vie",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "lifestyle": "Style de vie"
+      }
+    }
+  }
 }

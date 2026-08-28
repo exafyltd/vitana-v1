@@ -1,6 +1,6 @@
 {
   "connectedApps": {
-    "title": "Apps conectadas",
+    "title": "Conectores",
     "description": "Gestiona tus dispositivos y servicios conectados",
     "searchPlaceholder": "Buscar apps...",
     "addApp": "Agregar app",
@@ -10,22 +10,19 @@
       "social": "Social y compartir",
       "fitness": "Fitness y wearables",
       "health": "Salud y laboratorios",
-      "other": "Otro",
-      "_pending_review": {}
+      "other": "Otro"
     },
     "status": {
       "connected": "Conectado",
       "notConnected": "No conectado",
       "comingSoon": "Próximamente",
-      "soon": "Pronto",
-      "_pending_review": {}
+      "soon": "Pronto"
     },
     "actions": {
       "connect": "Conectar",
       "disconnect": "Desconectar",
       "configure": "Configurar sincronización",
-      "manage": "Gestionar",
-      "_pending_review": {}
+      "manage": "Gestionar"
     },
     "lastSync": "Última sincronización",
     "dataSync": "Sincronizando datos",
@@ -36,8 +33,7 @@
       "categories": {
         "all": "Todas las apps",
         "health": "Salud y fitness",
-        "social": "Social",
-        "_pending_review": {}
+        "social": "Social"
       },
       "availableApps": "Apps disponibles",
       "verified": "Verificado",
@@ -48,10 +44,7 @@
       "done": "Listo",
       "noResults": "No se encontraron apps",
       "connectionSuccess": "Conexión exitosa",
-      "connectionPlaceholder": "Conexión de {appName} próximamente",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "connectionPlaceholder": "Conexión de {appName} próximamente"
+    }
+  }
 }

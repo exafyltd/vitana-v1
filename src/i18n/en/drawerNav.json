@@ -5,19 +5,17 @@
     "events": "Events & MeetUps",
     "findPartner": "Find a Match",
     "live": "Live Rooms",
-    "media": "Media HUB",
+    "media": "Media Hub",
     "business": "Business HUB",
     "discover": "Discover",
     "orders": "Orders",
     "wallet": "Wallet",
     "health": "Health",
     "diary": "Daily Diary",
-    "connectors": "Connectors",
+    "connectors": "Connected Apps",
     "inbox": "Inbox",
     "support": "Support",
     "settings": "Settings",
-    "logout": "Log Out",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "logout": "Log Out"
+  }
 }

@@ -1,6 +1,5 @@
 {
   "drawerNav": {
-    "_pending_review": {},
     "journey": "Yolculuğum",
     "news": "Haberler",
     "events": "Etkinlikler & Buluşmalar",
@@ -18,6 +17,5 @@
     "support": "Destek",
     "settings": "Ayarlar",
     "logout": "Çıkış Yap"
-  },
-  "_pending_review": {}
+  }
 }
