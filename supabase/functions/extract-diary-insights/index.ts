@@ -34,8 +34,12 @@ serve(async (req) => {
 
     console.log(`[diary-insights] Extracting insights from diary entry: ${diaryEntryId}`);
 
+    // Aurora migration B7 (VTID-03764 chain): see generate-enhanced-
+    // recommendations/index.ts for the full rationale. Defaults to
+    // 'gemini' — unchanged behavior until a deployment opts into 'bedrock'.
+    const aiBridgeProvider = Deno.env.get('AI_BRIDGE_PROVIDER') || 'gemini';
     const geminiApiKey = Deno.env.get('GOOGLE_GEMINI_API_KEY');
-    if (!geminiApiKey) {
+    if (aiBridgeProvider === 'gemini' && !geminiApiKey) {
       console.warn('[diary-insights] GOOGLE_GEMINI_API_KEY not configured');
       return new Response(JSON.stringify({ success: false, error: 'API key not configured' }), {
         status: 500,
@@ -43,13 +47,15 @@ serve(async (req) => {
       });
     }
 
-    // Use Gemini API to extract structured insights
-    const { generateContent, extractFunctionCall } = await import("../_shared/gemini-client.ts");
+    // Use Gemini (or Bedrock, via the bridge) to extract structured insights
+    const { generateContent, extractFunctionCall } = await import(
+      aiBridgeProvider === 'bedrock' ? '../_shared/bedrock-bridge-client.ts' : '../_shared/gemini-client.ts'
+    );
     // Insights are surfaced back to the user — write them in the user's
     // preferred language (German by default).
     const userLocale = await getUserLocale(supabase, user.id);
     const extractionResponse = await generateContent(
-      geminiApiKey,
+      geminiApiKey ?? '',
       [
         {
           role: 'system',
