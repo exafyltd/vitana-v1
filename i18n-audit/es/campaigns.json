@@ -16,11 +16,10 @@
       "phase": "llm"
     },
     "campaigns.delete.dontAskAgain": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect imperative form, missing pronoun, and 'para' is less idiomatic than 'por' in this context.",
-      "suggested": "No me preguntes de nuevo por campañas en borrador",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "campaigns.delete.deletePermanently": {
       "verdict": "OK",
@@ -73,5 +72,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:07.592Z"
+  "generatedAt": "2026-08-29T10:18:34.523Z"
 }
