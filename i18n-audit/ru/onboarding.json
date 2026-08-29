@@ -21,11 +21,10 @@
       "phase": "llm"
     },
     "onboarding.connectAppsDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Literal translation of 'better insights'; 'понимания' is too general. 'Insights' implies more valuable data or deeper analysis.",
-      "suggested": "Подключи свои приложения для здоровья и благополучия для получения более ценных данных",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "onboarding.setGoals": {
       "verdict": "OK",
@@ -118,5 +117,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:41:44.040Z"
+  "generatedAt": "2026-08-29T10:18:48.910Z"
 }
