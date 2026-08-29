@@ -98,8 +98,8 @@
     "newsCard.detail.continueReading": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Ellipsis '...' is informal and may be ambiguous; suggest full phrase.",
-      "suggested": "在以下位置继续阅读",
+      "issue": "Overly literal and slightly formal for 'on'; not idiomatic for a friendly app. '在以下位置' implies a list or specific formal reference, which is unlikely for a simple 'continue reading' prompt.",
+      "suggested": "继续阅读",
       "phase": "llm"
     },
     "newsCard.detail.openInBrowser": {
@@ -148,5 +148,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:41:27.810Z"
+  "generatedAt": "2026-08-29T10:17:29.207Z"
 }

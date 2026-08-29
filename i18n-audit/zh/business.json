@@ -222,10 +222,8 @@
       "phase": "llm"
     },
     "business.kpi.upcomingSessions": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Literal translation '即将到来的会话' is awkward; '会话' is more like 'conversation' in Chinese. Better to use '即将开始的课程' or '即将到来的预约'.",
-      "suggested": "即将开始的课程",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "business.kpi.thisWeek": {
@@ -280,9 +278,9 @@
     },
     "business.kpi.totalEarned": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "'总赚取' is not idiomatic; '赚取' is a verb. Better to use '总收益' or '累计赚取'.",
-      "suggested": "总收益",
+      "confidence": 0.9,
+      "issue": "The phrase '总赚取' is grammatically awkward as a noun phrase for 'Total earned'. It sounds like 'total to earn' rather than 'total earnings' or 'total amount earned'.",
+      "suggested": "累计收益",
       "phase": "llm"
     },
     "business.kpi.earningsBySource": {
@@ -291,10 +289,8 @@
       "phase": "llm"
     },
     "business.reseller.upcomingEvents": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Same as 13, '即将到来的活动' is literal but acceptable; however, '活动' is fine. Could be improved to '即将开始的活动'.",
-      "suggested": "即将开始的活动",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "business.reseller.next": {
@@ -538,5 +534,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:37:38.871Z"
+  "generatedAt": "2026-08-29T10:16:47.265Z"
 }
