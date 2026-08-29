@@ -74,9 +74,19 @@ export function useRealMatches(limit = 6, options?: { enabled?: boolean }) {
       // Resolve each match to its real profile (RPC respects profile RLS).
       const profiles = await Promise.all(
         matches.map(async (m) => {
-          const { data } = await supabase.rpc("get_user_profile_by_identifier", {
+          const { data, error } = await supabase.rpc("get_user_profile_by_identifier", {
             identifier: m.matched_user_id,
           });
+          if (error) {
+            // The comment below documents dropping a match whose profile
+            // isn't resolvable as an intentional privacy-visibility case —
+            // but that reasoning only covers "profile not visible," not
+            // "the RPC itself is broken." A genuine RPC failure was
+            // previously indistinguishable from that, so matches could
+            // silently vanish with nothing logged to tell anyone the RPC
+            // is actually failing.
+            console.warn("[useRealMatches] get_user_profile_by_identifier failed:", error.message);
+          }
           return data?.[0];
         }),
       );

@@ -486,13 +486,23 @@ export function useCalendarEvents() {
           // Check if event already exists for idempotency (only if we have valid message ID)
           let existingEvent = null;
           if (validMessageId) {
-            const { data } = await supabase
+            const { data, error: existingErr } = await supabase
               .from('calendar_events')
               .select('*')
               .eq('user_id', user.id)
               .eq('source_message_id', validMessageId)
               .limit(1)
               .maybeSingle();
+            if (existingErr) {
+              // This check exists specifically to prevent duplicate
+              // calendar events for the same source message. A query
+              // failure previously left `existingEvent` null, indistinguishable
+              // from "no existing event", so the code below fell through
+              // to creating a brand-new event even though one already
+              // existed — a real user would see a duplicated calendar
+              // entry with nothing logged to explain why.
+              console.error('❌ Idempotency check for calendar event failed:', existingErr);
+            }
             existingEvent = data;
           }
 
