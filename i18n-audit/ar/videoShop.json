@@ -161,12 +161,11 @@
       "phase": "llm"
     },
     "videoShop.drawer.roleBlockedBody": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "The phrase 'دور المجتمع' is a literal translation of 'community role' and may be unclear in Arabic. A more natural phrasing would be 'وضع المجتمع' (community mode) or 'دورك كعضو في المجتمع' (your role as a community member).",
-      "suggested": "الشراء ميزة مجتمعية. انتقل إلى وضع المجتمع للمتابعة.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-08-24T09:07:32.374Z"
+  "generatedAt": "2026-08-29T10:18:38.830Z"
 }
