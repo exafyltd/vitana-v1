@@ -141,3 +141,51 @@ export function extractFunctionCall(response: any): { name: string; args: any } 
 
   return { name: functionCall.name, args: functionCall.args };
 }
+
+export interface GenerateImageOptions {
+  width?: number;
+  height?: number;
+  negativePrompt?: string;
+}
+
+/**
+ * Image-generation leg of the same bridge (Aurora migration B7,
+ * AURORA-B7-EDGE-FUNCTIONS-INVENTORY.md's 2026-08-29 addendum), for
+ * functions calling Vertex Imagen directly (e.g. `generate-event-image`) —
+ * there is no Anthropic/Claude equivalent, so this hits the gateway's
+ * `/api/v1/ai-bridge/generate-image` route (Titan Image on the other end)
+ * rather than reusing `generateContent()` above. Returns raw base64 PNG
+ * bytes — the caller decodes/uploads them the same way it already handles
+ * Imagen's `predictions[0].bytesBase64Encoded` payload.
+ */
+export async function generateImage(
+  prompt: string,
+  options: GenerateImageOptions = {},
+): Promise<{ imageBase64: string; model: string }> {
+  const serviceToken = denoEnv('GATEWAY_SERVICE_TOKEN');
+  if (!serviceToken) {
+    throw new Error('GATEWAY_SERVICE_TOKEN not configured — cannot reach the AI bridge');
+  }
+
+  const resp = await fetch(`${gatewayBaseUrl()}/ai-bridge/generate-image`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${serviceToken}`,
+    },
+    body: JSON.stringify({
+      prompt,
+      width: options.width,
+      height: options.height,
+      negativePrompt: options.negativePrompt,
+    }),
+  });
+
+  if (!resp.ok) {
+    const body = await resp.text().catch(() => '');
+    throw new Error(`AI bridge image request failed: ${resp.status} ${body}`);
+  }
+
+  const data = await resp.json();
+  return { imageBase64: data.imageBase64, model: data.model };
+}

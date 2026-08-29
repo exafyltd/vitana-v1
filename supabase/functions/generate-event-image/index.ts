@@ -156,148 +156,174 @@ Visual requirements:
 Style: Natural documentary photography meets wellness editorial, authentic moments over perfection, Mediterranean warmth throughout, emphasis on genuine human connection and wellbeing.
     `.trim();
 
-    console.log('Generating contextual image with Google Imagen');
-    console.log('Prompt preview:', contextualPrompt.substring(0, 200) + '...');
+    // Aurora migration B7 (VTID-03764 chain / AURORA-B7-EDGE-FUNCTIONS-
+    // INVENTORY.md's 2026-08-29 addendum): AI_BRIDGE_PROVIDER lets this
+    // function move off calling Vertex Imagen directly onto the gateway's
+    // Bedrock/Titan bridge (see _shared/bedrock-bridge-client.ts's
+    // generateImage()), without touching anything below this block — both
+    // paths converge on the same `base64ImageData` variable. Defaults to
+    // 'vertex' so behavior is byte-for-byte unchanged until someone
+    // deliberately sets the edge function secret to 'bedrock' — this ships
+    // the seam, it does not flip it.
+    const aiBridgeProvider = Deno.env.get('AI_BRIDGE_PROVIDER') || 'vertex';
+    let base64ImageData: string | undefined;
 
-    // Get Google Cloud configuration
-    const rawProjectId = Deno.env.get('GOOGLE_CLOUD_PROJECT_ID') || '';
-    const projectId = rawProjectId.trim();
-    const rawRegion = Deno.env.get('GOOGLE_CLOUD_REGION') || 'us-central1';
-    const region = rawRegion.trim();
-    const serviceAccountJson = Deno.env.get('GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
+    if (aiBridgeProvider === 'bedrock') {
+      console.log('Generating contextual image with the Bedrock/Titan bridge');
+      console.log('Prompt preview:', contextualPrompt.substring(0, 200) + '...');
 
-    if (!projectId || !serviceAccountJson) {
-      throw new Error('Google Cloud credentials not configured');
-    }
+      const { generateImage } = await import('../_shared/bedrock-bridge-client.ts');
+      const bridgeResult = await generateImage(contextualPrompt, { width: 1280, height: 720 });
+      base64ImageData = bridgeResult.imageBase64;
 
-    console.log('🔐 Obtaining Vertex AI access token...');
-    
-    // Parse service account
-    const serviceAccount = JSON.parse(serviceAccountJson);
-    
-    // Create JWT for Google OAuth2
-    const header = {
-      alg: "RS256",
-      typ: "JWT",
-    };
-
-    const now = Math.floor(Date.now() / 1000);
-    const claim = {
-      iss: serviceAccount.client_email,
-      scope: "https://www.googleapis.com/auth/cloud-platform",
-      aud: "https://oauth2.googleapis.com/token",
-      exp: now + 3600,
-      iat: now,
-    };
-
-    // Encode header and claim
-    const encoder = new TextEncoder();
-    const headerB64 = btoa(JSON.stringify(header))
-      .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-    const claimB64 = btoa(JSON.stringify(claim))
-      .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-    
-    const signatureInput = `${headerB64}.${claimB64}`;
-    
-    // Import private key for signing
-    const privateKey = serviceAccount.private_key;
-    const pemHeader = "-----BEGIN PRIVATE KEY-----";
-    const pemFooter = "-----END PRIVATE KEY-----";
-    
-    // Extract base64 content between PEM markers and remove all whitespace
-    const pemContents = privateKey
-      .replace(pemHeader, '')
-      .replace(pemFooter, '')
-      .replace(/[\r\n\s]/g, '');
-    
-    const binaryDer = Uint8Array.from(atob(pemContents), c => c.charCodeAt(0));
-    
-    const key = await crypto.subtle.importKey(
-      "pkcs8",
-      binaryDer,
-      { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
-      false,
-      ["sign"]
-    );
-
-    const signature = await crypto.subtle.sign(
-      "RSASSA-PKCS1-v1_5",
-      key,
-      encoder.encode(signatureInput)
-    );
-
-    const signatureB64 = btoa(String.fromCharCode(...new Uint8Array(signature)))
-      .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
-    
-    const jwt = `${signatureInput}.${signatureB64}`;
-
-    // Exchange JWT for access token
-    const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-        assertion: jwt,
-      }),
-    });
-
-    if (!tokenResponse.ok) {
-      const error = await tokenResponse.text();
-      console.error("❌ Token exchange failed:", error);
-      throw new Error('Failed to authenticate with Google Cloud');
-    }
-
-    const tokenData = await tokenResponse.json();
-    const accessToken = tokenData.access_token;
-
-    console.log('✅ Access token obtained, calling Imagen API...');
-
-    // Call Google Imagen API
-    const imagenEndpoint = `https://${region}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${region}/publishers/google/models/imagen-3.0-fast-generate-001:predict`;
-    
-    const imagenResponse = await fetch(imagenEndpoint, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        instances: [{
-          prompt: contextualPrompt
-        }],
-        parameters: {
-          sampleCount: 1,
-          aspectRatio: "16:9",
-          addWatermark: false,
-          enhancePrompt: true,
-          language: "en",
-          personGeneration: "allow_adult",
-          safetySetting: "block_medium_and_above"
-        }
-      })
-    });
-
-    if (!imagenResponse.ok) {
-      const errorText = await imagenResponse.text();
-      console.error('❌ Imagen API error:', imagenResponse.status, errorText);
-      
-      if (imagenResponse.status === 429) {
-        throw new Error('RATE_LIMIT');
-      } else if (imagenResponse.status === 403) {
-        throw new Error('Google Cloud quota exceeded or API not enabled');
+      if (!base64ImageData) {
+        console.error('No image in bridge response:', JSON.stringify(bridgeResult));
+        throw new Error('No image generated by the AI bridge');
       }
-      throw new Error('Image generation failed');
-    }
-    
-    const imagenData = await imagenResponse.json();
-    console.log('✅ Imagen response received');
+    } else {
+      console.log('Generating contextual image with Google Imagen');
+      console.log('Prompt preview:', contextualPrompt.substring(0, 200) + '...');
 
-    // Extract base64 image from response
-    const base64ImageData = imagenData.predictions?.[0]?.bytesBase64Encoded;
+      // Get Google Cloud configuration
+      const rawProjectId = Deno.env.get('GOOGLE_CLOUD_PROJECT_ID') || '';
+      const projectId = rawProjectId.trim();
+      const rawRegion = Deno.env.get('GOOGLE_CLOUD_REGION') || 'us-central1';
+      const region = rawRegion.trim();
+      const serviceAccountJson = Deno.env.get('GOOGLE_CLOUD_SERVICE_ACCOUNT_JSON');
 
-    if (!base64ImageData) {
-      console.error('No image in response:', JSON.stringify(imagenData));
-      throw new Error('No image generated by Imagen');
+      if (!projectId || !serviceAccountJson) {
+        throw new Error('Google Cloud credentials not configured');
+      }
+
+      console.log('🔐 Obtaining Vertex AI access token...');
+
+      // Parse service account
+      const serviceAccount = JSON.parse(serviceAccountJson);
+
+      // Create JWT for Google OAuth2
+      const header = {
+        alg: "RS256",
+        typ: "JWT",
+      };
+
+      const now = Math.floor(Date.now() / 1000);
+      const claim = {
+        iss: serviceAccount.client_email,
+        scope: "https://www.googleapis.com/auth/cloud-platform",
+        aud: "https://oauth2.googleapis.com/token",
+        exp: now + 3600,
+        iat: now,
+      };
+
+      // Encode header and claim
+      const encoder = new TextEncoder();
+      const headerB64 = btoa(JSON.stringify(header))
+        .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+      const claimB64 = btoa(JSON.stringify(claim))
+        .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+
+      const signatureInput = `${headerB64}.${claimB64}`;
+
+      // Import private key for signing
+      const privateKey = serviceAccount.private_key;
+      const pemHeader = "-----BEGIN PRIVATE KEY-----";
+      const pemFooter = "-----END PRIVATE KEY-----";
+
+      // Extract base64 content between PEM markers and remove all whitespace
+      const pemContents = privateKey
+        .replace(pemHeader, '')
+        .replace(pemFooter, '')
+        .replace(/[\r\n\s]/g, '');
+
+      const binaryDer = Uint8Array.from(atob(pemContents), c => c.charCodeAt(0));
+
+      const key = await crypto.subtle.importKey(
+        "pkcs8",
+        binaryDer,
+        { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+        false,
+        ["sign"]
+      );
+
+      const signature = await crypto.subtle.sign(
+        "RSASSA-PKCS1-v1_5",
+        key,
+        encoder.encode(signatureInput)
+      );
+
+      const signatureB64 = btoa(String.fromCharCode(...new Uint8Array(signature)))
+        .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+
+      const jwt = `${signatureInput}.${signatureB64}`;
+
+      // Exchange JWT for access token
+      const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+          assertion: jwt,
+        }),
+      });
+
+      if (!tokenResponse.ok) {
+        const error = await tokenResponse.text();
+        console.error("❌ Token exchange failed:", error);
+        throw new Error('Failed to authenticate with Google Cloud');
+      }
+
+      const tokenData = await tokenResponse.json();
+      const accessToken = tokenData.access_token;
+
+      console.log('✅ Access token obtained, calling Imagen API...');
+
+      // Call Google Imagen API
+      const imagenEndpoint = `https://${region}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${region}/publishers/google/models/imagen-3.0-fast-generate-001:predict`;
+
+      const imagenResponse = await fetch(imagenEndpoint, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          instances: [{
+            prompt: contextualPrompt
+          }],
+          parameters: {
+            sampleCount: 1,
+            aspectRatio: "16:9",
+            addWatermark: false,
+            enhancePrompt: true,
+            language: "en",
+            personGeneration: "allow_adult",
+            safetySetting: "block_medium_and_above"
+          }
+        })
+      });
+
+      if (!imagenResponse.ok) {
+        const errorText = await imagenResponse.text();
+        console.error('❌ Imagen API error:', imagenResponse.status, errorText);
+
+        if (imagenResponse.status === 429) {
+          throw new Error('RATE_LIMIT');
+        } else if (imagenResponse.status === 403) {
+          throw new Error('Google Cloud quota exceeded or API not enabled');
+        }
+        throw new Error('Image generation failed');
+      }
+
+      const imagenData = await imagenResponse.json();
+      console.log('✅ Imagen response received');
+
+      // Extract base64 image from response
+      base64ImageData = imagenData.predictions?.[0]?.bytesBase64Encoded;
+
+      if (!base64ImageData) {
+        console.error('No image in response:', JSON.stringify(imagenData));
+        throw new Error('No image generated by Imagen');
+      }
     }
 
     // Convert base64 to data URL format for consistency
