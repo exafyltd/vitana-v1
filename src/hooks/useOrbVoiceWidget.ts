@@ -312,6 +312,16 @@ export function useOrbVoiceWidget() {
           // removal for the full incident writeup. The overlay now stays
           // open and behaves like any other ORB conversation; the user
           // closes it themselves once Vitana is done teaching.
+          // VTID-03763: the widget signals teaching-end (model tool call OR
+          // the 5-minute backstop) via this callback — relay it as a
+          // CustomEvent rather than importing journey completion logic
+          // directly into this hook. GuidedJourneyCatalog.tsx listens and
+          // marks the topic Done, mirroring markPracticeDone's own pattern.
+          onGuidedTopicTeachingEnd: (topicId: string | null, reason: string | null) => {
+            window.dispatchEvent(
+              new CustomEvent("vitana:guided-topic-teaching-complete", { detail: { topicId, reason } }),
+            );
+          },
           initialContext: {
             // BOOTSTRAP-ORB-SCREEN-TRACKING: read the LIVE route via the ref, not
             // the closure-captured `location.pathname` (stale by the time the
@@ -398,6 +408,12 @@ export function useOrbVoiceWidget() {
       onNavigationRequest: handleNavigationRequest,
       onSessionStart: () => setOrbWidgetSessionActive(true),
       onSessionEnd: () => setOrbWidgetSessionActive(false),
+      // VTID-03763: see the matching callback in the main init effect above.
+      onGuidedTopicTeachingEnd: (topicId: string | null, reason: string | null) => {
+        window.dispatchEvent(
+          new CustomEvent("vitana:guided-topic-teaching-complete", { detail: { topicId, reason } }),
+        );
+      },
       initialContext: {
         // BOOTSTRAP-ORB-SCREEN-TRACKING: live route via ref (the auth-change
         // effect is keyed on user?.id, so its closure-captured location.pathname

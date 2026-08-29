@@ -1,13 +1,12 @@
 {
   "businessHub": {
-    "title": "Poslovni centar",
+    "title": "Poslovni HUB",
     "description": "Razvijaj svoj wellness biznis",
     "tabs": {
       "snapshot": "Pregled",
       "services": "Usluge",
       "sales": "Prodaja",
-      "insights": "Uvidi",
-      "_pending_review": {}
+      "insights": "Uvidi"
     },
     "recentActivity": "Nedavna aktivnost",
     "clients": "Klijenti",
@@ -19,8 +18,6 @@
     "noClients": "Još uvek nema klijenata",
     "noClientsDesc": "Tvoji klijenti će se pojaviti ovde.",
     "noSales": "Još uvek nema prodaja",
-    "noSalesDesc": "Tvoja istorija prodaja će se pojaviti ovde.",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "noSalesDesc": "Tvoja istorija prodaja će se pojaviti ovde."
+  }
 }

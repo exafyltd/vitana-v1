@@ -1,13 +1,12 @@
 {
   "businessHub": {
-    "title": "业务中心",
+    "title": "商业中心",
     "description": "拓展你的健康业务",
     "tabs": {
       "snapshot": "概览",
       "services": "服务",
       "sales": "销售",
-      "insights": "洞察",
-      "_pending_review": {}
+      "insights": "洞察"
     },
     "recentActivity": "最近动态",
     "clients": "客户",
@@ -19,8 +18,6 @@
     "noClients": "暂无客户",
     "noClientsDesc": "你的客户会在这里显示。",
     "noSales": "暂无销售",
-    "noSalesDesc": "你的销售记录会在这里显示。",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "noSalesDesc": "你的销售记录会在这里显示。"
+  }
 }

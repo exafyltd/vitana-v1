@@ -1,6 +1,6 @@
 {
   "connectedApps": {
-    "title": "Povezane aplikacije",
+    "title": "Konektori",
     "description": "Upravljaj svojim povezanim uređajima i uslugama",
     "searchPlaceholder": "Pretraži aplikacije...",
     "addApp": "Dodaj aplikaciju",
@@ -10,22 +10,19 @@
       "social": "Društvene mreže i deljenje",
       "fitness": "Fitnes i nosivi uređaji",
       "health": "Zdravlje i laboratorije",
-      "other": "Ostalo",
-      "_pending_review": {}
+      "other": "Ostalo"
     },
     "status": {
       "connected": "Povezano",
       "notConnected": "Nije povezano",
       "comingSoon": "Uskoro",
-      "soon": "Uskoro",
-      "_pending_review": {}
+      "soon": "Uskoro"
     },
     "actions": {
       "connect": "Poveži",
       "disconnect": "Prekini vezu",
       "configure": "Podesi sinhronizaciju",
-      "manage": "Upravljaj",
-      "_pending_review": {}
+      "manage": "Upravljaj"
     },
     "lastSync": "Poslednja sinhronizacija",
     "dataSync": "Sinhronizacija podataka",
@@ -36,8 +33,7 @@
       "categories": {
         "all": "Sve aplikacije",
         "health": "Zdravlje i fitnes",
-        "social": "Društvene mreže",
-        "_pending_review": {}
+        "social": "Društvene mreže"
       },
       "availableApps": "Dostupne aplikacije",
       "verified": "Potvrđeno",
@@ -48,10 +44,7 @@
       "done": "Gotovo",
       "noResults": "Nema pronađenih aplikacija",
       "connectionSuccess": "Veza uspešno uspostavljena",
-      "connectionPlaceholder": "Veza sa {appName} uskoro stiže",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "connectionPlaceholder": "Veza sa {appName} uskoro stiže"
+    }
+  }
 }

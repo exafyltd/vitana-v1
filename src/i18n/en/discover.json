@@ -51,8 +51,7 @@
       "movement": "Movement",
       "mind": "Mind",
       "supplements": "Supplements",
-      "experts": "Experts",
-      "_pending_review": {}
+      "experts": "Experts"
     },
     "subcategories": {
       "longevity": "Longevity",
@@ -79,8 +78,7 @@
       "sexualHealth": "Sexual Health",
       "prevention": "Prevention & Early Detection",
       "generalHealth": "General Health",
-      "dnaAnalysis": "DNA Analysis",
-      "_pending_review": {}
+      "dnaAnalysis": "DNA Analysis"
     },
     "quickActions": {
       "title": "Quick Actions",
@@ -91,8 +89,7 @@
       "reorderPrevious": "Reorder Previous",
       "managePayment": "Manage Payment",
       "findServicesNearMe": "Find Services Near Me",
-      "viewSavedItems": "View Saved Items",
-      "_pending_review": {}
+      "viewSavedItems": "View Saved Items"
     },
     "aiPicks": {
       "title": "AI recommendations for you",
@@ -104,30 +101,24 @@
       "recommendationsFound": "{count} recommendations found",
       "noRecommendations": "No recommendations found",
       "noRecommendationsDesc": "Choose a different filter to see more recommendations",
-      "viewAllPicks": "View All Picks",
-      "_pending_review": {}
+      "viewAllPicks": "View All Picks"
     },
     "filters": {
       "all": "All",
       "services": "Services",
       "supplements": "Supplements",
       "experts": "Experts",
-      "deals": "Deals",
-      "_pending_review": {}
+      "deals": "Deals"
     },
     "toast": {
       "actionSelected": "Action Selected",
-      "comingSoon": "{action} feature coming soon!",
-      "_pending_review": {}
+      "comingSoon": "{action} feature coming soon!"
     },
     "guest": {
       "bannerTitle": "Sign in to earn Vitana rewards on every purchase",
       "bannerSubtitle": "Browse freely — sign in (it's free) to buy and start earning rewards.",
       "bannerCta": "Sign in",
-      "signIn": "Sign in",
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+      "signIn": "Sign in"
+    }
+  }
 }

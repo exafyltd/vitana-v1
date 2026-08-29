@@ -40,7 +40,18 @@ const CSS_RAW = readFileSync(join(ROOT, 'src/index.css'), 'utf8');
 /** Comments explain the OLD behaviour by quoting it; only declarations count. */
 const CSS = CSS_RAW.replace(/\/\*[\s\S]*?\*\//g, '');
 
-/** The widget's own base sizes (orb-widget.js): 64px, 56px under 600px wide. */
+/**
+ * The widget's own base sizes (orb-widget.js): 64px, 56px under 600px wide.
+ *
+ * BOOTSTRAP-ORB-WIDGET-CONSISTENCY-AUDIT: these two numbers are duplicated
+ * from exafyltd/vitana-platform's `services/gateway/src/frontend/command-hub/
+ * orb-widget.js` (`.vtorb-fab` width/height, and its `@media (max-width:
+ * 600px)` override). No CI run spans both repos, so nothing here would catch
+ * that file's values drifting — that repo carries the mirror-image guard
+ * (`services/gateway/test/orb/orb-widget-fab-size-cross-repo-parity.test.ts`)
+ * pinning the SAME numbers from its side, with a comment pointing back here.
+ * If you change either side, update both.
+ */
 const WIDGET_BASE_DESKTOP = 64;
 const WIDGET_BASE_MOBILE = 56;
 

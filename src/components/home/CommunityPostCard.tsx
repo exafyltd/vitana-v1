@@ -14,7 +14,7 @@
  * Every interactive control stops propagation so it never triggers the card's
  * navigation.
  */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Send, Trash2, X } from "lucide-react";
@@ -47,11 +47,21 @@ const cardShell =
 export function CommunityPostCard({
   item,
   onOpen,
+  autoOpenComments,
 }: {
   item: PostFeedItem;
   onOpen?: (item: FeedItem) => void;
+  /** Open the comments sheet (and scroll it into view) when this flips from
+   * false to true — the "Try it yourself" CTA on the Reply & Like Comments
+   * announcement card lands here via /home/comments (see Home.tsx). Reacts
+   * to the transition, not just mount, since this card is typically already
+   * mounted before the CTA is tapped. Only acts on a false->true edge, so a
+   * re-render where the value stays true can't re-force a manually-closed
+   * sheet back open. */
+  autoOpenComments?: boolean;
 }) {
   const navigate = useNavigate();
+  const cardRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   const {
     isLiked,
@@ -97,6 +107,23 @@ export function CommunityPostCard({
     onOpen?.(item);
     navigate(`/u/${item.user_id}`);
   };
+
+  // React to the FALSE -> TRUE transition, not just mount: /home/comments
+  // navigates onto the SAME Home component instance (React Router reuses it
+  // since the rendered tree shape is identical to /home), so this card was
+  // already mounted long before the CTA was tapped. A mount-only effect
+  // ([] deps) never re-ran once the prop later flipped true, which is why
+  // the button visibly did nothing (VTID-03744 follow-up, reported live).
+  // prevAutoOpenRef guards against re-firing on an unrelated re-render where
+  // the prop stays true, so a manually-closed sheet still isn't reopened.
+  const prevAutoOpenRef = useRef(false);
+  useEffect(() => {
+    if (autoOpenComments && !prevAutoOpenRef.current) {
+      setShowComments(true);
+      cardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    prevAutoOpenRef.current = !!autoOpenComments;
+  }, [autoOpenComments]);
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -220,6 +247,7 @@ export function CommunityPostCard({
 
   return (
     <Card
+      ref={cardRef}
       className={cn(cardShell, "cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2")}
       role="button"
       tabIndex={0}

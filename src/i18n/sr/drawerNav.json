@@ -1,23 +1,21 @@
 {
   "drawerNav": {
     "journey": "Moj put",
-    "news": "Vesti",
-    "events": "Događaji i sastanci",
+    "news": "Novosti",
+    "events": "Events & MeetUps",
     "findPartner": "Pronađi partnera",
-    "live": "Uživo sobe",
+    "live": "Live Rooms",
     "media": "Medija HUB",
     "business": "Poslovni HUB",
-    "discover": "Otkrij",
+    "discover": "Istraži",
     "orders": "Porudžbine",
     "wallet": "Novčanik",
     "health": "Zdravlje",
     "diary": "Dnevnik",
-    "connectors": "Povezivači",
-    "inbox": "Primljene poruke",
+    "connectors": "Konektori",
+    "inbox": "Poruke",
     "support": "Podrška",
     "settings": "Podešavanja",
-    "logout": "Odjavi se",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "logout": "Odjavi se"
+  }
 }

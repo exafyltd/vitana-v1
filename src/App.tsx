@@ -885,6 +885,17 @@ const App = () => {
               </ProtectedRoute>
             </AuthGuard>
           } />
+          {/* "Try it yourself" target for the Reply & Like Comments announcement
+              card — opens the comments sheet on the first real post and scrolls
+              it into view (see Home.tsx's commentsDeepLinkActive), then
+              normalizes back to /home. */}
+          <Route path="/home/comments" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <Home />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
           {/* Feature-announcement push notification tap target — same feed as
               /home, but deliberately NOT in useOrbFrontDoor's MAXINA_LANDING_ROUTES
               set. Appilix notification taps are full page loads (fresh React

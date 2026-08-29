@@ -1,30 +1,27 @@
 {
   "mediaHub": {
-    "title": "Centrum Mediów",
+    "title": "Hub Mediów",
     "description": "Muzyka, podcasty, krótkie filmy i więcej",
     "discoverContent": "Odkrywaj i udostępniaj inspirujące treści wellness swojej społeczności.",
     "tabs": {
       "music": "Muzyka",
       "podcasts": "Podcasty",
       "shorts": "Shortsy",
-      "videos": "Filmy",
-      "_pending_review": {}
+      "videos": "Filmy"
     },
     "sections": {
       "trendingShorts": "Popularne Shortsy",
       "trendingMusic": "Popularna Muzyka",
       "musicPlaylists": "Playlisty Muzyczne",
       "latestEpisodes": "Najnowsze Odcinki",
-      "popularShows": "Popularne Programy",
-      "_pending_review": {}
+      "popularShows": "Popularne Programy"
     },
     "actions": {
       "upload": "Prześlij",
       "watchShorts": "Oglądaj Shortsy",
       "viewAllShorts": "Zobacz wszystkie {count} shortsy",
       "playPlaylist": "Odtwórz Playlistę",
-      "clearFilters": "Wyczyść filtry",
-      "_pending_review": {}
+      "clearFilters": "Wyczyść filtry"
     },
     "searchPlaceholder": "Szukaj mediów...",
     "shortsAvailable": "{count} krótkich filmów dostępnych",
@@ -49,8 +46,7 @@
       "singleUpload": "Pojedyncze Przesyłanie",
       "bulkUpload": "Masowe Przesyłanie",
       "addToPlaylist": "Dodaj do Playlisty",
-      "viewArtist": "Zobacz Artystę",
-      "_pending_review": {}
+      "viewArtist": "Zobacz Artystę"
     },
     "toast": {
       "linkCopied": "Link skopiowany",
@@ -68,8 +64,7 @@
       "deleteError": "Błąd",
       "deleteErrorDesc": "Usunięcie nie powiodło się. Spróbuj ponownie.",
       "commentError": "Błąd",
-      "commentErrorDesc": "Nie udało się opublikować komentarza. Spróbuj ponownie.",
-      "_pending_review": {}
+      "commentErrorDesc": "Nie udało się opublikować komentarza. Spróbuj ponownie."
     },
     "comments": {
       "title": "Komentarze",
@@ -82,22 +77,19 @@
       "reply": "Odpowiedz",
       "replyingTo": "Odpowiadasz na {name}",
       "cancelReply": "Anuluj odpowiedź",
-      "like": "Polub komentarz",
-      "_pending_review": {}
+      "like": "Polub komentarz"
     },
     "deletePodcast": {
       "title": "Usuń Podcast",
       "description": "Czy na pewno chcesz usunąć ten podcast? Tej czynności nie można cofnąć.",
       "cancel": "Anuluj",
-      "confirm": "Usuń",
-      "_pending_review": {}
+      "confirm": "Usuń"
     },
     "deleteVideo": {
       "title": "Usuń Wideo",
       "description": "Czy na pewno chcesz usunąć to wideo? Tej czynności nie można cofnąć i usunie to wideo z pamięci.",
       "cancel": "Anuluj",
-      "confirm": "Usuń",
-      "_pending_review": {}
+      "confirm": "Usuń"
     },
     "noMusic": "Jeszcze nie przesłano muzyki",
     "noMusicDesc": "Bądź pierwszym, który udostępni muzykę społeczności!",
@@ -154,12 +146,8 @@
         "mentalHealth": "Zdrowie psychiczne",
         "wellness": "Wellness",
         "education": "Edukacja",
-        "lifestyle": "Styl życia",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "lifestyle": "Styl życia"
+      }
+    }
+  }
 }

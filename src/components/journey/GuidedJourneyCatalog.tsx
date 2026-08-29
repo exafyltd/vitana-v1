@@ -15,7 +15,7 @@
  * Reuses existing ui primitives (Card, Button, Drawer) — no new design system.
  */
 
-import { useState, type ComponentType } from 'react';
+import { useState, useEffect, type ComponentType } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import {
@@ -174,6 +174,29 @@ export function GuidedJourneyCatalog({
     notify(ok ? 'screens.guidedCatalog.doneToast' : 'screens.guidedCatalog.doneError');
     closeDrawer();
   };
+
+  // VTID-03763: the ORB widget signals guided-topic teaching-end (the model
+  // calling end_guided_topic_teaching, OR the 5-minute client backstop when
+  // it never does — see orb-widget.js) as a window CustomEvent rather than a
+  // prop, since the ORB lives outside this component's tree. Auto-marks the
+  // taught topic Done, mirroring markPracticeDone's own invalidate + toast —
+  // both completion reasons are treated identically: either way, teaching
+  // for this topic has actually ended.
+  useEffect(() => {
+    const handleTeachingComplete = (event: Event) => {
+      const detail = (event as CustomEvent<{ topicId: string | null; reason: string | null }>).detail;
+      const topicId = detail?.topicId;
+      if (!topicId) return;
+      void completePractice(topicId).then((ok) => {
+        if (ok) {
+          queryClient.invalidateQueries({ queryKey: JOURNEY_STATE_QUERY_KEY });
+          notify('screens.guidedCatalog.doneToast');
+        }
+      });
+    };
+    window.addEventListener('vitana:guided-topic-teaching-complete', handleTeachingComplete);
+    return () => window.removeEventListener('vitana:guided-topic-teaching-complete', handleTeachingComplete);
+  }, [queryClient]);
 
   if (loading) {
     return (

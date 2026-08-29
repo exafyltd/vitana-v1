@@ -1,28 +1,24 @@
 {
   "connectedApps": {
-    "_pending_review": {},
-    "title": "Bağlı Uygulamalar",
+    "title": "Bağlayıcılar",
     "description": "Bağlı cihazlarını ve hizmetlerini yönet",
     "searchPlaceholder": "Uygulama ara...",
     "addApp": "Uygulama Ekle",
     "connected": "bağlı",
     "syncing": "Senkronize Ediliyor",
     "sections": {
-      "_pending_review": {},
       "social": "Sosyal & Paylaşım",
       "fitness": "Fitness & Giyilebilirler",
       "health": "Sağlık & Laboratuvar",
       "other": "Diğer"
     },
     "status": {
-      "_pending_review": {},
       "connected": "Bağlı",
       "notConnected": "Bağlı değil",
       "comingSoon": "Yakında",
       "soon": "Yakında"
     },
     "actions": {
-      "_pending_review": {},
       "connect": "Bağlan",
       "disconnect": "Bağlantıyı Kes",
       "configure": "Senkronizasyonu Yapılandır",
@@ -32,11 +28,9 @@
     "dataSync": "Veri Senkronizasyonu",
     "comingSoonMessage": "{appName} entegrasyonu yakında geliyor",
     "popup": {
-      "_pending_review": {},
       "title": "Uygulama & Hizmet Bağla",
       "searchPlaceholder": "Uygulama ve hizmet ara...",
       "categories": {
-        "_pending_review": {},
         "all": "Tüm Uygulamalar",
         "health": "Sağlık & Fitness",
         "social": "Sosyal"
@@ -52,6 +46,5 @@
       "connectionSuccess": "Bağlantı başarılı",
       "connectionPlaceholder": "{appName} bağlantısı yakında geliyor"
     }
-  },
-  "_pending_review": {}
+  }
 }
