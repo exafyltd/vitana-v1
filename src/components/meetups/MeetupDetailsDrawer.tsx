@@ -286,14 +286,21 @@ export function MeetupDetailsDrawer({
         return;
       }
       
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("event_ticket_purchases")
         .select("id")
         .eq("event_id", event.id)
         .eq("buyer_id", user.id)
         .eq("status", "completed")
         .limit(1);
-      
+
+      if (error) {
+        // A query failure previously left `data` null, indistinguishable
+        // from "no completed ticket" — a user who already paid was shown
+        // the "get ticket" CTA again with no trace of why.
+        console.error('[MeetupDrawer] Error checking ticket ownership:', error);
+      }
+
       setUserHasTicket(!!data && data.length > 0);
     };
     
