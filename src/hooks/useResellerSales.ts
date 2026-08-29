@@ -79,7 +79,7 @@ export function useResellerSales() {
         .order("created_at", { ascending: false });
       
       // Fetch payouts for this reseller
-      const { data: payouts } = await supabase
+      const { data: payouts, error: payoutsError } = await supabase
         .from("reseller_payouts")
         .select("*")
         .eq("reseller_profile_id", resellerProfile.id)
@@ -88,6 +88,11 @@ export function useResellerSales() {
       if (attrError) {
         console.error("Error fetching reseller attributions:", attrError);
         throw attrError;
+      }
+
+      if (payoutsError) {
+        console.error("Error fetching reseller payouts:", payoutsError);
+        throw payoutsError;
       }
 
       if (!attributions || attributions.length === 0) {
