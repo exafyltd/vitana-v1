@@ -68,8 +68,11 @@ export default function ReportedContentNew() {
       const postMap = new Map<string, { user_id: string; content: string | null }>();
       const authorIds = new Set<string>();
       if (postIds.length) {
-        const { data: posts } = await supabase
+        const { data: posts, error: postsError } = await supabase
           .from("profile_posts" as never).select("id, user_id, content").in("id", postIds);
+        if (postsError) {
+          console.error("[ReportedContentNew] Failed to load reported post content:", postsError);
+        }
         for (const p of (posts as unknown as { id: string; user_id: string; content: string | null }[]) || []) {
           postMap.set(p.id, { user_id: p.user_id, content: p.content });
           authorIds.add(p.user_id);
@@ -77,8 +80,11 @@ export default function ReportedContentNew() {
       }
       const nameMap = new Map<string, string>();
       if (authorIds.size) {
-        const { data: profs } = await supabase
+        const { data: profs, error: profsError } = await supabase
           .from("global_community_profiles").select("user_id, display_name").in("user_id", [...authorIds]);
+        if (profsError) {
+          console.error("[ReportedContentNew] Failed to load reported-post author names:", profsError);
+        }
         for (const pr of profs || []) nameMap.set(pr.user_id, pr.display_name || "");
       }
       setReports((reps || []).map((r) => {
@@ -99,7 +105,10 @@ export default function ReportedContentNew() {
       const banIds = [...new Set((b || []).map((x) => x.user_id))];
       const banNames = new Map<string, string>();
       if (banIds.length) {
-        const { data: bp } = await supabase.from("global_community_profiles").select("user_id, display_name").in("user_id", banIds);
+        const { data: bp, error: bpError } = await supabase.from("global_community_profiles").select("user_id, display_name").in("user_id", banIds);
+        if (bpError) {
+          console.error("[ReportedContentNew] Failed to load banned-user display names:", bpError);
+        }
         for (const x of bp || []) banNames.set(x.user_id, x.display_name || "");
       }
       setBans((b || []).map((x) => ({ ...x, name: banNames.get(x.user_id) || x.user_id })) as BanRow[]);
