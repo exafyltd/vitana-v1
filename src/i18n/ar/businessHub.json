@@ -6,7 +6,8 @@
       "snapshot": "ملخص",
       "services": "الخدمات",
       "sales": "المبيعات",
-      "insights": "الرؤى"
+      "insights": "الرؤى",
+      "_pending_review": {}
     },
     "recentActivity": "النشاط الأخير",
     "clients": "العملاء",
@@ -18,6 +19,8 @@
     "noClients": "لا يوجد عملاء بعد",
     "noClientsDesc": "سيظهر عملاؤك هنا.",
     "noSales": "لا توجد مبيعات بعد",
-    "noSalesDesc": "سيظهر سجل مبيعاتك هنا."
-  }
+    "noSalesDesc": "سيظهر سجل مبيعاتك هنا.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

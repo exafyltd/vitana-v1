@@ -26,21 +26,18 @@
     "trend": {
       "improving": "يتحسن",
       "declining": "يتدهور",
-      "stable": "مستقر",
-      "_pending_review": {}
+      "stable": "مستقر"
     },
     "suggestions": {
       "uploadBloodTestResults": "حمّل نتائج فحص الدم",
-      "startFitnessChallenge": "ابدأ تحدي اللياقة البدنية لمدة 30 يومًا",
-      "_pending_review": {}
+      "startFitnessChallenge": "ابدأ تحدي اللياقة البدنية لمدة 30 يومًا"
     },
     "pillars": {
       "sleep": "النوم",
       "exercise": "التمرين",
       "nutrition": "التغذية",
       "hydration": "الترطيب",
-      "mental": "نفسي",
-      "_pending_review": {}
+      "mental": "نفسي"
     },
     "emptyStates": {
       "noSleepPlan": "لا توجد خطة نوم بعد",
@@ -54,8 +51,7 @@
       "noMentalPlan": "لا توجد خطة نفسية بعد",
       "noMentalPlanDesc": "أنشئ خطة عافيتك النفسية المخصصة، لتتبع التوتر والتركيز والتوازن العاطفي بدعم الذكاء الاصطناعي.",
       "generatePlan": "أنشئ خطة",
-      "generating": "جاري الإنشاء...",
-      "_pending_review": {}
+      "generating": "جاري الإنشاء..."
     },
     "noSupplements": "لا توجد مكملات بعد",
     "noSupplementsDesc": "تتبع فيتاميناتك ومعادنك ومكملاتك اليومية. أضف أول مكمل لك للبدء.",
@@ -67,7 +63,8 @@
     "unknownProvider": "مزود غير معروف",
     "addSupplement": "أضف مكمل",
     "uploadFirstReport": "حمّل أول تقرير",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "reportsLoadFailed": "تعذر تحميل تقاريرك",
+    "reportsLoadFailedDesc": "حدثت مشكلة أثناء تحميل تقاريرك الصحية. الرجاء المحاولة مرة أخرى.",
+    "reportsLoadFailedRetry": "المحاولة مرة أخرى"
+  }
 }

@@ -6,7 +6,8 @@
       "snapshot": "Resumen",
       "services": "Servicios",
       "sales": "Ventas",
-      "insights": "Perspectivas"
+      "insights": "Perspectivas",
+      "_pending_review": {}
     },
     "recentActivity": "Actividad Reciente",
     "clients": "Clientes",
@@ -18,6 +19,8 @@
     "noClients": "Aún no hay clientes",
     "noClientsDesc": "Tus clientes aparecerán aquí.",
     "noSales": "Aún no hay ventas",
-    "noSalesDesc": "Tu historial de ventas aparecerá aquí."
-  }
+    "noSalesDesc": "Tu historial de ventas aparecerá aquí.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

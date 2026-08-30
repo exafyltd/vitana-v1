@@ -16,6 +16,8 @@
     "inbox": "Входящие",
     "support": "Поддержка",
     "settings": "Настройки",
-    "logout": "Выйти"
-  }
+    "logout": "Выйти",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

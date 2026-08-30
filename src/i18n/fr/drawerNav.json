@@ -16,6 +16,8 @@
     "inbox": "Boîte de réception",
     "support": "Aide",
     "settings": "Paramètres",
-    "logout": "Se déconnecter"
-  }
+    "logout": "Se déconnecter",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
