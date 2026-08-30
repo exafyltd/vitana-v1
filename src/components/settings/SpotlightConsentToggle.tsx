@@ -18,15 +18,19 @@ export function SpotlightConsentToggle() {
   const queryClient = useQueryClient();
   const queryKey = ["spotlight-consent", userId];
 
-  const { data: consent = false } = useQuery({
+  const { data: consent = false, isError } = useQuery({
     queryKey,
     enabled: !!userId,
     queryFn: async () => {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("profiles")
         .select("index_spotlight_consent")
         .eq("user_id", userId as string)
         .maybeSingle();
+      // A privacy-sensitive read must not silently default to "off" on a
+      // real DB error — that misrepresents the user's actual saved choice
+      // instead of showing an error/loading state.
+      if (error) throw error;
       return Boolean((data as { index_spotlight_consent?: boolean } | null)?.index_spotlight_consent);
     },
   });
@@ -52,7 +56,7 @@ export function SpotlightConsentToggle() {
       </div>
       <Switch
         checked={consent}
-        disabled={!userId || mutation.isPending}
+        disabled={!userId || mutation.isPending || isError}
         onCheckedChange={(v) => mutation.mutate(v)}
       />
     </div>
