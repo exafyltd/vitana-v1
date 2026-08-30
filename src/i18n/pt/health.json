@@ -26,21 +26,18 @@
     "trend": {
       "improving": "Melhorando",
       "declining": "Piorando",
-      "stable": "Estável",
-      "_pending_review": {}
+      "stable": "Estável"
     },
     "suggestions": {
       "uploadBloodTestResults": "Carregar resultados de exames de sangue",
-      "startFitnessChallenge": "Começar Desafio Fitness de 30 Dias",
-      "_pending_review": {}
+      "startFitnessChallenge": "Começar Desafio Fitness de 30 Dias"
     },
     "pillars": {
       "sleep": "Sono",
       "exercise": "Exercício",
       "nutrition": "Nutrição",
       "hydration": "Hidratação",
-      "mental": "Mental",
-      "_pending_review": {}
+      "mental": "Mental"
     },
     "emptyStates": {
       "noSleepPlan": "Nenhum Plano de Sono Ainda",
@@ -54,8 +51,7 @@
       "noMentalPlan": "Nenhum Plano Mental Ainda",
       "noMentalPlanDesc": "Gere seu plano de bem-estar mental personalizado, para acompanhar o estresse, foco e equilíbrio emocional com suporte de IA.",
       "generatePlan": "Gerar Plano",
-      "generating": "A Gerar...",
-      "_pending_review": {}
+      "generating": "A Gerar..."
     },
     "noSupplements": "Ainda sem suplementos",
     "noSupplementsDesc": "Acompanhe suas vitaminas, minerais e suplementos diários. Adicione seu primeiro suplemento para começar.",
@@ -67,7 +63,8 @@
     "unknownProvider": "Provedor desconhecido",
     "addSupplement": "Adicionar Suplemento",
     "uploadFirstReport": "Carregar Primeiro Relatório",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "reportsLoadFailed": "Não foi possível carregar seus relatórios",
+    "reportsLoadFailedDesc": "Houve um problema ao carregar seus relatórios de saúde. Por favor, tente novamente.",
+    "reportsLoadFailedRetry": "Tente novamente"
+  }
 }

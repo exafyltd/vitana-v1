@@ -7,21 +7,24 @@
       "music": "Müzik",
       "podcasts": "Podcastler",
       "shorts": "Kısa Videolar",
-      "videos": "Videolar"
+      "videos": "Videolar",
+      "_pending_review": {}
     },
     "sections": {
       "trendingShorts": "Trend Kısa Videolar",
       "trendingMusic": "Trend Müzik",
       "musicPlaylists": "Müzik Çalma Listeleri",
       "latestEpisodes": "Son Bölümler",
-      "popularShows": "Popüler Programlar"
+      "popularShows": "Popüler Programlar",
+      "_pending_review": {}
     },
     "actions": {
       "upload": "Yükle",
       "watchShorts": "Kısa Videoları İzle",
       "viewAllShorts": "{count} kısa videonun tümünü gör",
       "playPlaylist": "Çalma Listesini Oynat",
-      "clearFilters": "Filtreleri temizle"
+      "clearFilters": "Filtreleri temizle",
+      "_pending_review": {}
     },
     "searchPlaceholder": "Medyada ara...",
     "shortsAvailable": "{count} kısa video mevcut",
@@ -46,7 +49,8 @@
       "singleUpload": "Tekli Yükleme",
       "bulkUpload": "Toplu Yükleme",
       "addToPlaylist": "Çalma Listesine Ekle",
-      "viewArtist": "Sanatçıyı Görüntüle"
+      "viewArtist": "Sanatçıyı Görüntüle",
+      "_pending_review": {}
     },
     "toast": {
       "linkCopied": "Bağlantı kopyalandı",
@@ -64,7 +68,8 @@
       "deleteError": "Hata",
       "deleteErrorDesc": "Silme başarısız. Lütfen tekrar dene.",
       "commentError": "Hata",
-      "commentErrorDesc": "Yorum gönderilemedi. Lütfen tekrar dene."
+      "commentErrorDesc": "Yorum gönderilemedi. Lütfen tekrar dene.",
+      "_pending_review": {}
     },
     "comments": {
       "title": "Yorumlar",
@@ -77,19 +82,22 @@
       "reply": "Yanıtla",
       "replyingTo": "{name} kişisine yanıt veriliyor",
       "cancelReply": "Yanıtı iptal et",
-      "like": "Yorumu beğen"
+      "like": "Yorumu beğen",
+      "_pending_review": {}
     },
     "deletePodcast": {
       "title": "Podcast'i Sil",
       "description": "Bu podcasti silmek istediğinden emin misin? Bu işlem geri alınamaz.",
       "cancel": "İptal",
-      "confirm": "Sil"
+      "confirm": "Sil",
+      "_pending_review": {}
     },
     "deleteVideo": {
       "title": "Video Sil",
       "description": "Bu videoyu silmek istediğinden emin misin? Bu işlem geri alınamaz ve video depolamadan kaldırılır.",
       "cancel": "İptal",
-      "confirm": "Sil"
+      "confirm": "Sil",
+      "_pending_review": {}
     },
     "noMusic": "Henüz müzik yüklenmedi",
     "noMusicDesc": "Toplulukla müzik paylaşan ilk kişi ol!",
@@ -146,8 +154,12 @@
         "mentalHealth": "Ruh Sağlığı",
         "wellness": "Wellness",
         "education": "Eğitim",
-        "lifestyle": "Yaşam Tarzı"
-      }
-    }
-  }
+        "lifestyle": "Yaşam Tarzı",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

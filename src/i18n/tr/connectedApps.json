@@ -10,19 +10,22 @@
       "social": "Sosyal & Paylaşım",
       "fitness": "Fitness & Giyilebilirler",
       "health": "Sağlık & Laboratuvar",
-      "other": "Diğer"
+      "other": "Diğer",
+      "_pending_review": {}
     },
     "status": {
       "connected": "Bağlı",
       "notConnected": "Bağlı değil",
       "comingSoon": "Yakında",
-      "soon": "Yakında"
+      "soon": "Yakında",
+      "_pending_review": {}
     },
     "actions": {
       "connect": "Bağlan",
       "disconnect": "Bağlantıyı Kes",
       "configure": "Senkronizasyonu Yapılandır",
-      "manage": "Yönet"
+      "manage": "Yönet",
+      "_pending_review": {}
     },
     "lastSync": "Son Senkronizasyon",
     "dataSync": "Veri Senkronizasyonu",
@@ -33,7 +36,8 @@
       "categories": {
         "all": "Tüm Uygulamalar",
         "health": "Sağlık & Fitness",
-        "social": "Sosyal"
+        "social": "Sosyal",
+        "_pending_review": {}
       },
       "availableApps": "Kullanılabilir Uygulamalar",
       "verified": "Doğrulandı",
@@ -44,7 +48,10 @@
       "done": "Bitti",
       "noResults": "Uygulama bulunamadı",
       "connectionSuccess": "Bağlantı başarılı",
-      "connectionPlaceholder": "{appName} bağlantısı yakında geliyor"
-    }
-  }
+      "connectionPlaceholder": "{appName} bağlantısı yakında geliyor",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -5180,7 +5180,15 @@
           "business_formation": "Formación de empresas"
         },
         "contractLink": "Ver el contrato del Objetivo Final"
-      }
+      },
+      "_pending_review": {
+        "reportsLoadFailed": true,
+        "reportsLoadFailedDesc": true,
+        "reportsLoadFailedRetry": true
+      },
+      "reportsLoadFailed": "Couldn't load your reports",
+      "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
+      "reportsLoadFailedRetry": "Try again"
     },
     "home": {
       "matchPercent": "{score} %",

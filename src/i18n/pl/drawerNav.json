@@ -16,6 +16,8 @@
     "inbox": "Skrzynka",
     "support": "Wsparcie",
     "settings": "Ustawienia",
-    "logout": "Wyloguj się"
-  }
+    "logout": "Wyloguj się",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
