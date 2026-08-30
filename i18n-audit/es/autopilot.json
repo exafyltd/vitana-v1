@@ -56,11 +56,10 @@
       "phase": "llm"
     },
     "autopilot.suggestions.archetypeDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation \"Movedor\" for \"Mover\" is awkward and doesn't accurately convey the sense of an active person in this context. Additionally, \"El Movedor\" assumes a male gender for a profile name that should ideally be gender-neutral.",
-      "suggested": "Tus actividades de bienestar sugieren que podrías ser \"El/La Consciente en Movimiento\" - ¿quieres actualizar?",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.suggestions.updateArchetype": {
       "verdict": "OK",
@@ -199,9 +198,9 @@
     },
     "autopilot.priorities.high": {
       "verdict": "LOW_CONFIDENCE",
-      "confidence": 0.5,
-      "issue": "The translation \"Alta\" is feminine. Without context, it's impossible to determine the correct gender (Alto/Alta) for the adjective \"High\" as it depends on the noun it modifies.",
-      "phase": "llm"
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.priorities.medium": {
       "verdict": "OK",
@@ -459,5 +458,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:36.134Z"
+  "generatedAt": "2026-08-30T09:22:28.834Z"
 }
