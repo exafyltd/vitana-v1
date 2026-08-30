@@ -260,11 +260,13 @@ export const useToggleLike = () => {
 
   return useMutation({
     mutationFn: async ({ videoId, action }: { videoId: string; action: 'like' | 'unlike' }) => {
-      const { data: video } = await supabase
+      const { data: video, error: readError } = await supabase
         .from('media_videos')
         .select('likes_count')
         .eq('id', videoId)
         .single();
+
+      if (readError) throw readError;
 
       if (video) {
         const newCount = action === 'like'
