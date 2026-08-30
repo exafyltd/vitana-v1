@@ -57,11 +57,10 @@
       "phase": "llm"
     },
     "portals.maxina.joiningAs": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender mismatch: 'أنضم' is masculine, but app may address all users. Suggest neutral or feminine form.",
-      "suggested": "أنضم بصفتي:",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "portals.maxina.yourFullName": {
       "verdict": "OK",
@@ -104,18 +103,16 @@
       "phase": "llm"
     },
     "portals.alkalma.joinAlkalma": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Brand name 'AlKalma' should remain unchanged; translation 'الكلمة' changes it.",
-      "suggested": "انضم إلى AlKalma",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "portals.alkalma.welcomeBack": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Brand name 'AlKalma' should remain unchanged; translation 'الكلمة' changes it.",
-      "suggested": "مرحبًا بعودتك إلى AlKalma.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "portals.alkalma.continueJourney": {
       "verdict": "OK",
@@ -123,18 +120,16 @@
       "phase": "llm"
     },
     "portals.earthlinks.joinEarthlinks": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Brand name 'Earthlinks' should remain unchanged; translation 'إيرثلينكس' is a transliteration but may be acceptable, but better to keep English.",
-      "suggested": "انضم إلى Earthlinks",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "portals.earthlinks.welcomeBack": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Brand name 'Earthlinks' should remain unchanged; translation 'إيرثلينكس' is a transliteration but may be acceptable, but better to keep English.",
-      "suggested": "مرحبًا بعودتك إلى Earthlinks.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "portals.earthlinks.continueJourney": {
       "verdict": "OK",
@@ -157,5 +152,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:41:51.523Z"
+  "generatedAt": "2026-08-30T09:23:41.559Z"
 }

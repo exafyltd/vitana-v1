@@ -321,10 +321,8 @@
       "phase": "llm"
     },
     "liveRooms.goLivePopup.access.group.label": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "VIP is a tech loanword, but 'شخصيات مهمة' is a literal translation that may not convey the intended meaning of 'VIP' as a special group. Suggest keeping 'VIP' in English.",
-      "suggested": "مجموعة/كبار الشخصيات",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "liveRooms.goLivePopup.access.group.desc": {
@@ -598,5 +596,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:40:36.265Z"
+  "generatedAt": "2026-08-30T09:23:17.873Z"
 }
