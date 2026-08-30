@@ -1521,11 +1521,15 @@ export function MeetupDetailsDrawer({
                     
                     // Remove matching calendar event
                     try {
-                      const { data: calendarEvents } = await supabase
+                      const { data: calendarEvents, error: calendarEventsError } = await supabase
                         .from('calendar_events')
                         .select('id, metadata')
                         .eq('user_id', user.id);
-                      
+
+                      if (calendarEventsError) {
+                        console.error('Error fetching calendar events to remove on leave:', calendarEventsError);
+                      }
+
                       if (calendarEvents) {
                         const matchingEvent = calendarEvents.find((ce: any) => {
                           const meta = ce.metadata;

@@ -158,14 +158,25 @@ export function useCalendarEvents() {
         }
 
         // Quick database check only if not in local state
-        const { data: existing } = await supabase
+        const { data: existing, error: existingErr } = await supabase
           .from('calendar_events')
           .select('*')
           .eq('user_id', authUser.id)
           .eq('source_message_id', eventData.source_message_id)
           .limit(1)
           .maybeSingle();
-          
+
+        if (existingErr) {
+          // This check exists to prevent a duplicate calendar event for the
+          // same source message. A query failure previously left `existing`
+          // undefined — indistinguishable from "no existing event" — and
+          // fell straight through to the insert below, risking a duplicate.
+          // Abort instead of silently proceeding as if the check passed;
+          // the outer catch already logs+toasts+rethrows for real errors.
+          console.error('❌ Idempotency check for calendar event failed:', existingErr);
+          throw existingErr;
+        }
+
         if (existing) {
           console.log('📅 Event exists in database, adding to local state:', eventData.source_message_id);
           setEvents(prev => [existing as CalendarEvent, ...prev.filter(e => e.id !== existing.id)]);
@@ -413,13 +424,26 @@ export function useCalendarEvents() {
 
       // If declined: remove any event created from this invite for current user
       if (normalized === 'declined') {
+        let declineCleanupError: unknown = undefined;
         try {
           if (validMessageId) {
-            const { data: existing } = await supabase
+            const { data: existing, error: existingErr } = await supabase
               .from('calendar_events')
               .select('id')
               .eq('user_id', user.id)
               .eq('source_message_id', validMessageId);
+
+            if (existingErr) {
+              // This lookup gates the delete below — a query failure
+              // resolves `existing` to null/undefined, which reads as
+              // "nothing to delete" and skips the delete entirely,
+              // leaving a stale calendar entry with no trace of why.
+              // Surface it via the return's `error` field (this
+              // function's own established pattern, see the eventError
+              // branch below) instead of silently reporting success.
+              console.error('⚠️ Idempotency lookup for declined-invite cleanup failed:', existingErr);
+              declineCleanupError = existingErr;
+            }
 
             if ((existing || []).length > 0) {
               const { error: delError } = await supabase
@@ -445,9 +469,10 @@ export function useCalendarEvents() {
           window.dispatchEvent(new Event(CALENDAR_REFRESH_EVENT));
         } catch (cleanupErr) {
           console.error('⚠️ Cleanup after decline failed:', cleanupErr);
+          declineCleanupError = declineCleanupError ?? cleanupErr;
         }
 
-        return { eventId: undefined, response: normalized };
+        return { eventId: undefined, response: normalized, error: declineCleanupError };
       }
 
       // If accepting or maybe responding to the invite, upsert the calendar event

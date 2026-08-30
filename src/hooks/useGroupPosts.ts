@@ -64,10 +64,13 @@ export function useGroupPosts(groupId?: string) {
       const userIds = [...new Set((data || []).map(m => m.sender_id))];
       if (userIds.length === 0) return [];
       
-      const { data: profiles } = await supabase
+      const { data: profiles, error: profilesError } = await supabase
         .from('global_community_profiles')
         .select('user_id, display_name, avatar_url')
         .in('user_id', userIds);
+      if (profilesError) {
+        console.error('[useGroupPosts] Failed to load author profiles:', profilesError);
+      }
 
       const profileMap = new Map((profiles || []).map(p => [p.user_id, p]));
 

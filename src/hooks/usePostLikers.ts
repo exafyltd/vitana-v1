@@ -43,10 +43,13 @@ export function usePostLikers(source: FeedPostSource, id: string, enabled: boole
       if (rows.length === 0) return [];
 
       const userIds = [...new Set(rows.map((r) => r.user_id))];
-      const { data: profiles } = await supabase
+      const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
         .select('user_id, display_name, full_name, avatar_url')
         .in('user_id', userIds);
+      if (profilesError) {
+        console.error('[usePostLikers] Failed to load liker profiles:', profilesError);
+      }
       const profileMap = new Map((profiles || []).map((p) => [p.user_id, p]));
 
       return rows.map((r) => {
