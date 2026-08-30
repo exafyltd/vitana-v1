@@ -3,8 +3,8 @@
     "liveRooms.title": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 1,
-      "issue": "The translation 'Прямые комнаты' is not idiomatic for 'Live Rooms'. 'Live' in this context refers to real-time broadcasting, not 'direct' or 'straight'.",
-      "suggested": "Прямые эфиры",
+      "issue": "Not idiomatic; 'прямые' (direct) doesn't convey 'live streaming/interactive' well in this context for a modern app feature.",
+      "suggested": "Лайв-комнаты",
       "phase": "llm"
     },
     "liveRooms.description": {
@@ -598,5 +598,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:38:28.580Z"
+  "generatedAt": "2026-08-30T09:24:23.073Z"
 }
