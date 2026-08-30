@@ -286,11 +286,10 @@
       "phase": "llm"
     },
     "billing.features.sellAndEarnCatalog": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Literal translation '销售赚取目录' is awkward; 'Sell and Earn' is a feature name, better as '销售与赚取目录' or keep English.",
-      "suggested": "销售与赚取目录",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "billing.features.sellAndEarnCatalogUnit": {
       "verdict": "OK",
@@ -298,11 +297,10 @@
       "phase": "llm"
     },
     "billing.features.priorityPractitioner": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Ambiguous: 'priority access' could mean '优先访问' or '优先预约' depending on context. Suggest '优先预约从业者' if it means booking.",
-      "suggested": "优先预约从业者",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "billing.features.yes": {
       "verdict": "OK",
@@ -495,11 +493,10 @@
       "phase": "llm"
     },
     "billing.launchGrant.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Phrasing '我们请客' is colloquial and may not match the app's friendly but polished tone.",
-      "suggested": "🎁 欢迎 — Premium 由我们买单",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "billing.launchGrant.body": {
       "verdict": "OK",
@@ -782,18 +779,16 @@
       "phase": "llm"
     },
     "paywall.live_room_minutes.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is too literal and awkward; '主持时长' is not idiomatic for hosting time.",
-      "suggested": "主持时间不足",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "paywall.live_room_minutes.body": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Literal translation of 'hosting time' as '主持时长' is awkward; also '保持运行' is not natural.",
-      "suggested": "该房间还剩 5 分钟主持时间。添加主持时间或升级以继续使用。",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "paywall.live_room_minutes.wrapUp": {
       "verdict": "OK",
@@ -802,11 +797,10 @@
       "phase": "llm"
     },
     "paywall.live_room_minutes.addTime": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Same as above, '主持时长' is awkward.",
-      "suggested": "添加主持时间",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "paywall.match_posts.title": {
       "verdict": "OK",
@@ -821,18 +815,16 @@
       "phase": "llm"
     },
     "paywall.match_reveals.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "'揭示匹配' is literal and may not be clear; consider '查看匹配' or '解锁匹配'.",
-      "suggested": "查看匹配",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "paywall.match_reveals.body": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'揭示' is not idiomatic; also '积分' for credits is okay but '揭示' should be changed.",
-      "suggested": "你的免费查看次数已用完。使用 {credits} 积分或升级到高级版。",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "paywall.lab_analyses.title": {
       "verdict": "OK",
@@ -871,11 +863,10 @@
       "phase": "llm"
     },
     "paywall.autopilot.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'自动驾驶' is wrong for 'Autopilot' in this context; should be '自动推荐' or keep 'Autopilot'.",
-      "suggested": "更多 Autopilot 推荐",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "paywall.autopilot.body": {
       "verdict": "OK",
@@ -926,5 +917,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:37:23.599Z"
+  "generatedAt": "2026-08-30T09:22:24.436Z"
 }
