@@ -27,7 +27,9 @@
     "ticketEmailNote": "سيتم إرسال تذكرتك وتأكيدها إلى هذا البريد الإلكتروني.",
     "left": "{count} متبقٍ",
     "loadFailed": "فشل تحميل التذاكر",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "checkFailed": true
+    },
+    "checkFailed": "Couldn't verify the code — try again"
+  }
 }

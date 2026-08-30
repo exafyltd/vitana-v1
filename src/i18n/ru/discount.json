@@ -27,7 +27,9 @@
     "ticketEmailNote": "Твой билет и подтверждение будут отправлены на этот email.",
     "left": "Осталось {count}",
     "loadFailed": "Не удалось загрузить билеты",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "checkFailed": true
+    },
+    "checkFailed": "Couldn't verify the code — try again"
+  }
 }
