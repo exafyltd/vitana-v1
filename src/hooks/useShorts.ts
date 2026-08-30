@@ -125,12 +125,16 @@ export const useTrackMediaEvent = () => {
 
       // Update counts in media_videos table
       if (eventType === 'like') {
-        const { data: video } = await supabase
+        const { data: video, error: likesReadError } = await supabase
           .from('media_videos')
           .select('likes_count')
           .eq('id', mediaId)
           .single();
-        
+
+        if (likesReadError) {
+          console.error('[useTrackMediaEvent] Error reading likes_count for increment:', likesReadError);
+        }
+
         if (video) {
           await supabase
             .from('media_videos')
@@ -138,12 +142,16 @@ export const useTrackMediaEvent = () => {
             .eq('id', mediaId);
         }
       } else if (eventType === 'share') {
-        const { data: video } = await supabase
+        const { data: video, error: sharesReadError } = await supabase
           .from('media_videos')
           .select('shares_count')
           .eq('id', mediaId)
           .single();
-        
+
+        if (sharesReadError) {
+          console.error('[useTrackMediaEvent] Error reading shares_count for increment:', sharesReadError);
+        }
+
         if (video) {
           await supabase
             .from('media_videos')
@@ -151,12 +159,16 @@ export const useTrackMediaEvent = () => {
             .eq('id', mediaId);
         }
       } else if (eventType === 'play_start') {
-        const { data: video } = await supabase
+        const { data: video, error: viewsReadError } = await supabase
           .from('media_videos')
           .select('views_count')
           .eq('id', mediaId)
           .single();
-        
+
+        if (viewsReadError) {
+          console.error('[useTrackMediaEvent] Error reading views_count for increment:', viewsReadError);
+        }
+
         if (video) {
           await supabase
             .from('media_videos')
@@ -173,11 +185,15 @@ export const useIncrementViews = () => {
 
   return useMutation({
     mutationFn: async (videoId: string) => {
-      const { data: video } = await supabase
+      const { data: video, error: viewsReadError } = await supabase
         .from('media_videos')
         .select('views_count')
         .eq('id', videoId)
         .single();
+
+      if (viewsReadError) {
+        console.error('[useIncrementViews] Error reading views_count for increment:', viewsReadError);
+      }
 
       if (video) {
         const { error } = await supabase

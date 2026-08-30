@@ -67,6 +67,9 @@
     "unknownProvider": "Unknown provider",
     "addSupplement": "Add Supplement",
     "uploadFirstReport": "Upload First Report",
+    "reportsLoadFailed": "Couldn't load your reports",
+    "reportsLoadFailedDesc": "There was a problem loading your health reports. Please try again.",
+    "reportsLoadFailedRetry": "Try again",
     "_pending_review": {}
   },
   "_pending_review": {}
