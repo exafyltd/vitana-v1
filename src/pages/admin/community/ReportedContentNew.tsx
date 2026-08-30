@@ -87,7 +87,11 @@ export default function ReportedContentNew() {
         } as ReportRow;
       }));
 
-      const { data: b } = await supabase.from("user_suspensions").select("*").order("created_at", { ascending: false });
+      const { data: b, error: bansError } = await supabase.from("user_suspensions").select("*").order("created_at", { ascending: false });
+      if (bansError) {
+        console.error("[ReportedContentNew] Failed to load bans:", bansError);
+        notifyError("screens.admin.modActionFailed");
+      }
       const banIds = [...new Set((b || []).map((x) => x.user_id))];
       const banNames = new Map<string, string>();
       if (banIds.length) {

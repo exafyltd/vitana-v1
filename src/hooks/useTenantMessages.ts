@@ -484,12 +484,14 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
         await fetchThreads();
         
         // Return the thread object
-        const { data: thread } = await supabase
+        const { data: thread, error: fetchThreadError } = await supabase
           .from('message_threads')
           .select('*')
           .eq('id', threadId)
           .maybeSingle();
-        
+
+        if (fetchThreadError) throw fetchThreadError;
+
         return thread;
       }
 
