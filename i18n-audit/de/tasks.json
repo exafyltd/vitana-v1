@@ -6,25 +6,22 @@
       "phase": "llm"
     },
     "tasks.confirmCancelTask": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du')",
-      "suggested": "Bist du sicher, dass du diese Aufgabe abbrechen möchtest?",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "tasks.postponeComingSoon": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Slightly awkward compound noun, 'Verschiebefunktion' is more idiomatic.",
-      "suggested": "Verschiebefunktion demnächst verfügbar",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "tasks.addNotePrompt": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du')",
-      "suggested": "Füge dieser Aufgabe eine Notiz hinzu:",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "tasks.noteAdded": {
       "verdict": "OK",
@@ -32,18 +29,16 @@
       "phase": "llm"
     },
     "tasks.navigateTo": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Infinitive used as imperative; should be 'du-form' imperative for consistency.",
-      "suggested": "Navigiere zu: {url}",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "tasks.openVtid": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Infinitive used as imperative; should be 'du-form' imperative for consistency.",
-      "suggested": "Öffne VTID: {vtid}",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "tasks.description": {
       "verdict": "OK",
@@ -86,5 +81,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T08:33:06.043Z"
+  "generatedAt": "2026-08-30T09:33:58.996Z"
 }
