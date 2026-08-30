@@ -57,8 +57,12 @@ export default function ReportedContentNew() {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const { data: reps } = await supabase
+      const { data: reps, error: repsError } = await supabase
         .from("content_reports").select("*").order("created_at", { ascending: false });
+      if (repsError) {
+        console.error("[ReportedContentNew] Failed to load reports:", repsError);
+        notifyError("screens.admin.modActionFailed");
+      }
 
       const postIds = [...new Set((reps || []).filter((r) => r.content_type === "profile_post").map((r) => r.content_id))];
       const postMap = new Map<string, { user_id: string; content: string | null }>();
@@ -100,8 +104,12 @@ export default function ReportedContentNew() {
       }
       setBans((b || []).map((x) => ({ ...x, name: banNames.get(x.user_id) || x.user_id })) as BanRow[]);
 
-      const { data: a } = await supabase
+      const { data: a, error: auditError } = await supabase
         .from("moderation_actions").select("*").order("created_at", { ascending: false }).limit(100);
+      if (auditError) {
+        console.error("[ReportedContentNew] Failed to load audit log:", auditError);
+        notifyError("screens.admin.modActionFailed");
+      }
       setAudit((a || []) as AuditRow[]);
     } catch {
       notifyError("screens.admin.modActionFailed");

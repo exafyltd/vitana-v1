@@ -48,11 +48,15 @@ export function useOrganizerEvents() {
         const eventsWithSales = await Promise.all(
           userEvents.map(async (event) => {
             // Get total capacity from ticket types
-            const { data: ticketTypes } = await supabase
+            const { data: ticketTypes, error: ticketTypesError } = await supabase
               .from("event_ticket_types")
               .select("quantity_available")
               .eq("event_id", event.id)
               .eq("is_active", true);
+
+            if (ticketTypesError) {
+              console.error("Error fetching ticket types for event", event.id, ticketTypesError);
+            }
 
             const totalCapacity = ticketTypes?.reduce(
               (sum, tt) => sum + (tt.quantity_available || 0),
@@ -60,11 +64,15 @@ export function useOrganizerEvents() {
             ) || 0;
 
             // Get sales data from purchases
-            const { data: purchases } = await supabase
+            const { data: purchases, error: purchasesError } = await supabase
               .from("event_ticket_purchases")
               .select("quantity, total_amount, buyer_id, checked_in_at")
               .eq("event_id", event.id)
               .eq("status", "completed");
+
+            if (purchasesError) {
+              console.error("Error fetching ticket purchases for event", event.id, purchasesError);
+            }
 
             const ticketsSold = purchases?.reduce(
               (sum, p) => sum + (p.quantity || 0),

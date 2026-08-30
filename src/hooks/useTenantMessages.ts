@@ -97,12 +97,12 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
       if (threadError) throw threadError;
 
       // Get all participants for these threads
-      const { data: allParticipants } = await supabase
+      const { data: allParticipants, error: allParticipantsError } = await supabase
         .from('thread_participants')
         .select(`
-          thread_id, 
-          user_id, 
-          role, 
+          thread_id,
+          user_id,
+          role,
           last_read_at,
           profile:profiles(
             user_id,
@@ -113,6 +113,10 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
         `)
         .in('thread_id', threadIds)
         .eq('is_active', true);
+
+      if (allParticipantsError) {
+        console.error('Error fetching thread participants:', allParticipantsError);
+      }
 
       // Deduplicate participants by user_id within each thread
       const deduplicatedParticipants = (allParticipants || []).reduce((acc: any[], participant: any) => {
@@ -128,7 +132,7 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
       const threadsWithDetails = await Promise.all(
         (threadRows || []).map(async (thread) => {
           // Get last message
-          const { data: lastMessage } = await supabase
+          const { data: lastMessage, error: lastMessageError } = await supabase
             .from('messages')
             .select('*')
             .eq('thread_id', thread.id)
@@ -136,6 +140,11 @@ export function useTenantMessages(activeThreadId?: string | null, forceActive?: 
             .order('created_at', { ascending: false })
             .limit(1)
             .single();
+
+          // PGRST116 = no rows (thread genuinely has zero messages yet); not an error worth logging.
+          if (lastMessageError && lastMessageError.code !== 'PGRST116') {
+            console.error('Error fetching last message for thread:', thread.id, lastMessageError);
+          }
 
           // Get participants for this thread
           const participants = deduplicatedParticipants
