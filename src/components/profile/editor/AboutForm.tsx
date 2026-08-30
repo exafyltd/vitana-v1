@@ -27,15 +27,24 @@ interface AboutFormProps {
     links: Array<{ label: string; url: string }>;
     languages: string[];
   }) => void;
+  // Fired once loadProfile() settles: true only if the profile row was
+  // actually read successfully (no Supabase error). The parent drawer uses
+  // this to refuse a save that would otherwise overwrite real profile data
+  // with blank state from a failed load.
+  onLoadStatusChange?: (loadedSuccessfully: boolean) => void;
 }
 
-export function AboutForm({ onDataChange }: AboutFormProps) {
+export function AboutForm({ onDataChange, onLoadStatusChange }: AboutFormProps) {
   const [bio, setBio] = useState("");
   const [bioVisibility, setBioVisibility] = useState<Visibility>("public");
   const [location, setLocation] = useState("");
   const [locationVisibility, setLocationVisibility] = useState<Visibility>("public");
   const [links, setLinks] = useState<LinkItem[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
+  // Mirrors IdentityForm's `loaded` gate: onDataChange must not fire before
+  // the initial load has actually settled, or a slow/failed load blanks the
+  // form data the parent drawer is tracking.
+  const [loaded, setLoaded] = useState(false);
   const { toast } = useToast();
   const { translate } = useTranslation();
 
@@ -58,9 +67,11 @@ export function AboutForm({ onDataChange }: AboutFormProps) {
     loadProfile();
   }, []);
 
-  // Notify parent of data changes
+  // Notify parent of data changes only after the initial load has settled
+  // (loaded gate) — otherwise a slow/failed load reports blank data before
+  // the real values ever arrive, matching IdentityForm's existing pattern.
   useEffect(() => {
-    if (onDataChange) {
+    if (loaded && onDataChange) {
       onDataChange({
         bio,
         location,
@@ -68,18 +79,25 @@ export function AboutForm({ onDataChange }: AboutFormProps) {
         languages
       });
     }
-  }, [bio, location, links, languages, onDataChange]);
+  }, [bio, location, links, languages, onDataChange, loaded]);
 
   const loadProfile = async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data: profile } = await supabase
+      const { data: profile, error } = await supabase
         .from('profiles' as any)
         .select('bio, location, links, languages')
         .eq('user_id', user.id)
         .maybeSingle();
+
+      if (error) {
+        console.error('[AboutForm] Error loading profile:', error);
+        setLoaded(true);
+        onLoadStatusChange?.(false);
+        return;
+      }
 
       if (profile) {
         const p: any = profile;
@@ -95,8 +113,12 @@ export function AboutForm({ onDataChange }: AboutFormProps) {
         }
         setLanguages(p.languages || []);
       }
+      setLoaded(true);
+      onLoadStatusChange?.(true);
     } catch (error) {
       console.error('Error loading profile:', error);
+      setLoaded(true);
+      onLoadStatusChange?.(false);
     }
   };
 

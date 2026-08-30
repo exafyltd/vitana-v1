@@ -146,16 +146,20 @@ export function CoverLibraryDrawer({ open, onOpenChange }: CoverLibraryDrawerPro
               col: string,
               val: string,
             ) => {
-              maybeSingle: () => Promise<{ data: unknown }>;
+              maybeSingle: () => Promise<{ data: unknown; error: unknown }>;
               order: (
                 col: string,
                 opts: { ascending: boolean },
-              ) => Promise<{ data: unknown }>;
+              ) => Promise<{ data: unknown; error: unknown }>;
             };
           };
         };
       };
-      const [{ data: profile }, { data: rows }, cats] = await Promise.all([
+      const [
+        { data: profile, error: profileError },
+        { data: rows, error: rowsError },
+        cats,
+      ] = await Promise.all([
         sb
           .from("profiles")
           .select("universal_intent_cover_url")
@@ -169,6 +173,15 @@ export function CoverLibraryDrawer({ open, onOpenChange }: CoverLibraryDrawerPro
         getIntentCategories().catch(() => [] as IntentCategory[]),
       ]);
       if (cancelled) return;
+      // Still a soft-fail (drawer opens with empty state either way — see
+      // the .catch() below) but a real DB error is now at least logged
+      // instead of being indistinguishable from "genuinely nothing saved".
+      if (profileError) {
+        console.error('[CoverLibraryDrawer] Failed to load universal_intent_cover_url:', profileError);
+      }
+      if (rowsError) {
+        console.error('[CoverLibraryDrawer] Failed to load cover library rows:', rowsError);
+      }
       setUniversalUrl(
         (profile as { universal_intent_cover_url?: string | null } | null)
           ?.universal_intent_cover_url ?? null,
