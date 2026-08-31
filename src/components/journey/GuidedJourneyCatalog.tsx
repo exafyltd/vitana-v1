@@ -15,7 +15,7 @@
  * Reuses existing ui primitives (Card, Button, Drawer) — no new design system.
  */
 
-import { useState, useEffect, type ComponentType } from 'react';
+import { useState, useEffect, useRef, type ComponentType } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import {
@@ -182,6 +182,15 @@ export function GuidedJourneyCatalog({
   // taught topic Done, mirroring markPracticeDone's own invalidate + toast —
   // both completion reasons are treated identically: either way, teaching
   // for this topic has actually ended.
+  // VTID-03799: keep the latest checklist in a ref rather than adding
+  // `sessions` to the effect's deps. Re-subscribing the window listener every
+  // time the query refetches would tear it down and rebuild it, and a signal
+  // landing in that gap is lost — the exact signal this whole path exists for.
+  const sessionsRef = useRef(sessions);
+  useEffect(() => {
+    sessionsRef.current = sessions;
+  }, [sessions]);
+
   useEffect(() => {
     const handleTeachingComplete = (event: Event) => {
       const detail = (event as CustomEvent<{ topicId: string | null; reason: string | null }>).detail;
@@ -193,6 +202,24 @@ export function GuidedJourneyCatalog({
           notify('screens.guidedCatalog.doneToast');
         }
       });
+      // VTID-03799: OPEN THE WELL DONE DRAWER. Until now this handler marked
+      // the topic Done and fired a toast and nothing else — so even a
+      // correctly-delivered teaching-end signal produced a toast, never the
+      // congratulation screen. "The drawer opens when the lesson finishes"
+      // was never actually implemented on this path; the drawer only ever
+      // appeared because handleTopicClick had opened it at TAP time and
+      // closing the ORB overlay revealed what was already underneath.
+      //
+      // practiceMode is forced false so this always lands on the congrats
+      // view (openTopic && !practiceMode), never the practice view — a lesson
+      // that just ended must not reopen mid-practice.
+      const taught = sessionsRef.current
+        .flatMap((s) => s.topics)
+        .find((t) => t.topicId === topicId);
+      if (taught) {
+        setPracticeMode(false);
+        setOpenTopic(taught);
+      }
     };
     window.addEventListener('vitana:guided-topic-teaching-complete', handleTeachingComplete);
     return () => window.removeEventListener('vitana:guided-topic-teaching-complete', handleTeachingComplete);
