@@ -11,11 +11,10 @@
       "phase": "llm"
     },
     "voucher.modal.subtitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register mismatch: formal imperative 'Poklonite' used instead of informal 'Pokloni'.",
-      "suggested": "Pokloni dobrobit i povezanost sa zajednicom",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "voucher.modal.buyVoucher": {
       "verdict": "OK",
@@ -43,11 +42,10 @@
       "phase": "llm"
     },
     "voucher.success.ready": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register mismatch: formal possessive 'Vaš' used instead of informal 'Tvoj'.",
-      "suggested": "Tvoj {tier} vaučer je spreman",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "voucher.success.download": {
       "verdict": "OK",
@@ -110,11 +108,10 @@
       "phase": "llm"
     },
     "voucher.preview.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Register mismatch: formal possessive 'Vaš' used instead of informal 'Tvoj'.",
-      "suggested": "Tvoj vaučer",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "voucher.preview.giftVoucher": {
       "verdict": "OK",
@@ -247,5 +244,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:33:48.474Z"
+  "generatedAt": "2026-08-31T10:07:21.646Z"
 }
