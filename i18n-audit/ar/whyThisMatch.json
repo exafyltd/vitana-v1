@@ -59,12 +59,11 @@
       "phase": "llm"
     },
     "whyThisMatch.tierLabel.4": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Translation is literal and awkward; 'Fairness Reroute' is a feature name, better to keep English or use a more natural Arabic phrase.",
-      "suggested": "إعادة توجيه العدالة (أو إبقاء الاسم الإنجليزي)",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-08-24T09:07:49.500Z"
+  "generatedAt": "2026-08-31T09:59:32.790Z"
 }
