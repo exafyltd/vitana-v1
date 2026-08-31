@@ -37,11 +37,10 @@
       "phase": "llm"
     },
     "onboarding.joinCommunityDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Missing nuance of 'on similar journeys'",
-      "suggested": "与志同道合、经历相似的人建立联系",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "onboarding.getStarted": {
       "verdict": "OK",
@@ -119,5 +118,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:41:31.047Z"
+  "generatedAt": "2026-08-31T09:58:24.702Z"
 }
