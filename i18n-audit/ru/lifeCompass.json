@@ -146,19 +146,17 @@
       "phase": "llm"
     },
     "lifeCompass.goals.longevity.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'продли долголетие' (extend longevity) is slightly redundant. 'Продли жизнь' (extend life) is more natural.",
-      "suggested": "Улучши качество жизни и продли жизнь",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+      "phase": "llm-error"
     },
     "lifeCompass.goals.longevity.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Redundancy in 'долголетии' and less precise distinction between 'healthspan' and 'longevity'. 'Здоровое долголетие' already implies 'longevity'.",
-      "suggested": "Сосредоточься на продолжительности здоровой жизни, энергии и долголетии — миссия Vitanaland",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 503: {\n  \"error\": {\n    \"code\": 503,\n    \"message\": \"This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.\",\n    \"status\": \"UNAVAILABLE\"\n  }\n}\n",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-08-07T00:37:36.491Z"
+  "generatedAt": "2026-08-31T09:59:15.218Z"
 }
