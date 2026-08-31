@@ -130,3 +130,41 @@ describe('GuidedJourneyCatalog — auto-completes practice on guided-topic teach
     removeSpy.mockRestore();
   });
 });
+
+// VTID-03799 — the teaching-end signal must OPEN THE WELL DONE DRAWER.
+//
+// Live-measured on staging (topic T004, 2026-08-31 12:23): the guided session
+// ran clean — one narration, four turns, no replay — and the user still saw no
+// congratulation screen. Reason: this handler marked the topic Done and fired
+// a toast and nothing else. The drawer only ever appeared because
+// handleTopicClick opened it at TAP time and closing the ORB revealed what was
+// already underneath; on the teaching-end path it was never opened at all.
+describe('GuidedJourneyCatalog — teaching end opens the Well Done drawer (VTID-03799)', () => {
+  beforeEach(() => {
+    completePractice.mockClear();
+    invalidateQueries.mockClear();
+  });
+
+  it('renders the congratulation screen for the topic that was just taught', async () => {
+    render(<GuidedJourneyCatalog />);
+    expect(screen.queryByText('screens.guidedCatalog.congratsTitle')).toBeNull(); // not open before the signal (t() is mocked to echo the key)
+    dispatchTeachingComplete({ topicId: 'T019', reason: 'model_tool_call' });
+    await vi.waitFor(() => expect(screen.getByText('screens.guidedCatalog.congratsTitle')).toBeTruthy());
+  });
+
+  it('opens it identically when the ORB was closed after delivery, not only on a tool call', async () => {
+    // The reason this fires in practice: the model usually never calls the
+    // tool (zero calls in the measured T004 session), so the close path is
+    // the signal that actually arrives.
+    render(<GuidedJourneyCatalog />);
+    dispatchTeachingComplete({ topicId: 'T019', reason: 'overlay_closed_after_delivery' });
+    await vi.waitFor(() => expect(screen.getByText('screens.guidedCatalog.congratsTitle')).toBeTruthy());
+  });
+
+  it('does not open the drawer for an unknown topic id', async () => {
+    render(<GuidedJourneyCatalog />);
+    dispatchTeachingComplete({ topicId: 'T999-not-in-catalog', reason: 'model_tool_call' });
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(screen.queryByText('screens.guidedCatalog.congratsTitle')).toBeNull();
+  });
+});
