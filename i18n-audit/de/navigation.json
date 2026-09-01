@@ -16,11 +16,10 @@
       "phase": "identical"
     },
     "navigation.navigatingTo": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Imperative form 'Navigiere zu' doesn't match the gerund 'Navigating to' if it's a general label or status. It implies a command rather than a concept or process.",
-      "suggested": "Navigation zu",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "navigation.hydrationTracker": {
       "verdict": "OK",
@@ -98,5 +97,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:16:33.889Z"
+  "generatedAt": "2026-09-01T08:52:59.539Z"
 }
