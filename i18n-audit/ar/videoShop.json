@@ -161,12 +161,10 @@
       "phase": "llm"
     },
     "videoShop.drawer.roleBlockedBody": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "The phrase 'دور المجتمع' is a literal translation of 'community role' and may be unclear in Arabic. A more natural phrasing would be 'وضع المجتمع' (community mode) or 'دورك كعضو في المجتمع' (your role as a community member).",
-      "suggested": "الشراء ميزة مجتمعية. انتقل إلى وضع المجتمع للمتابعة.",
+      "verdict": "OK",
+      "confidence": 0.9,
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T09:07:32.374Z"
+  "generatedAt": "2026-09-01T08:50:23.818Z"
 }

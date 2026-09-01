@@ -506,10 +506,8 @@
       "phase": "llm"
     },
     "billing.launchGrant.dismissAria": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The word 'اللافتة' is long and could be split, but more importantly, 'Dismiss banner' is a UI action; 'إغلاق اللافتة' is acceptable but 'إغلاق الإشعار' might be more common. However, the compound rule flags 'اللافتة' as 7 characters, so no issue. Actually, the translation is fine.",
-      "suggested": "إغلاق اللافتة",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "billing.mobileBilling.rootIntro": {
@@ -893,5 +891,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:37:18.984Z"
+  "generatedAt": "2026-09-01T08:48:30.198Z"
 }

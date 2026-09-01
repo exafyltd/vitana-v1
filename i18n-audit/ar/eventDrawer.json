@@ -21,11 +21,10 @@
       "phase": "llm"
     },
     "eventDrawer.following": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender mismatch: 'تتابعه' is masculine, but the subject could be feminine. Also, it's ambiguous whether it means 'you are following' or 'he/she is following'.",
-      "suggested": "تتابع",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "eventDrawer.followingLoading": {
       "verdict": "OK",
@@ -108,11 +107,10 @@
       "phase": "llm"
     },
     "eventDrawer.attending": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender mismatch: 'يحضرون' is masculine plural, but attendees can be mixed gender. Also, the phrase is awkward.",
-      "suggested": "{current} / {capacity} يحضرون",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "eventDrawer.spotsLeft": {
       "verdict": "OK",
@@ -300,5 +298,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:39:26.962Z"
+  "generatedAt": "2026-09-01T08:48:48.999Z"
 }
