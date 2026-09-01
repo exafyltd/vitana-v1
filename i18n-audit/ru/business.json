@@ -501,11 +501,10 @@
       "phase": "llm"
     },
     "business.missionOpportunities.empty": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Phrasing 'соответствующих экономике' is grammatically correct but sounds a bit formal/clunky for a friendly app. 'Связанных с экономикой' is more natural.",
-      "suggested": "Пока нет рекомендаций, связанных с экономикой. Загляни позже.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "business.missionOpportunities.viewAll": {
       "verdict": "OK",
@@ -533,5 +532,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:27:41.417Z"
+  "generatedAt": "2026-09-01T08:48:40.348Z"
 }
