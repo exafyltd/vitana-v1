@@ -96,11 +96,10 @@
       "phase": "llm"
     },
     "newsCard.detail.continueReading": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Ellipsis '...' is informal and may be ambiguous; suggest full phrase.",
-      "suggested": "在以下位置继续阅读",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "newsCard.detail.openInBrowser": {
       "verdict": "OK",
@@ -148,5 +147,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:41:27.810Z"
+  "generatedAt": "2026-09-01T08:49:08.657Z"
 }

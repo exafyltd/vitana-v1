@@ -222,11 +222,10 @@
       "phase": "llm"
     },
     "business.kpi.upcomingSessions": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Literal translation '即将到来的会话' is awkward; '会话' is more like 'conversation' in Chinese. Better to use '即将开始的课程' or '即将到来的预约'.",
-      "suggested": "即将开始的课程",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "business.kpi.thisWeek": {
       "verdict": "OK",
@@ -279,11 +278,10 @@
       "phase": "llm"
     },
     "business.kpi.totalEarned": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "'总赚取' is not idiomatic; '赚取' is a verb. Better to use '总收益' or '累计赚取'.",
-      "suggested": "总收益",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "business.kpi.earningsBySource": {
       "verdict": "OK",
@@ -291,11 +289,10 @@
       "phase": "llm"
     },
     "business.reseller.upcomingEvents": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Same as 13, '即将到来的活动' is literal but acceptable; however, '活动' is fine. Could be improved to '即将开始的活动'.",
-      "suggested": "即将开始的活动",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "business.reseller.next": {
       "verdict": "OK",
@@ -538,5 +535,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:37:38.871Z"
+  "generatedAt": "2026-09-01T08:48:30.945Z"
 }

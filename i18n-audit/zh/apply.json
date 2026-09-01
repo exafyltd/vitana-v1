@@ -76,10 +76,8 @@
       "phase": "llm"
     },
     "apply.subheadline": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward word order; 'before its official launch' should come before the main clause.",
-      "suggested": "我们邀请你成为 MAXINA 应用的测试用户，在 2026 年 6 月 18 日正式发布前，帮助我们改进应用性能。",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "apply.subheadlineTicket": {
@@ -383,5 +381,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:36:39.641Z"
+  "generatedAt": "2026-09-01T08:48:21.516Z"
 }
