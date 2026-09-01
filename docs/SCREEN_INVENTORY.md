@@ -6,7 +6,7 @@
 ## Summary
 
 - **Pages scanned:** 296
-- **Distinct i18n keys consumed:** 4455
+- **Distinct i18n keys consumed:** 4454
 - **Namespaces in use:** 43
 - **Hardcoded string suspects (regex heuristic):** 67
 
@@ -2421,13 +2421,13 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/portals/MaxinaPortal.tsx
 
-**Status:** ✅ clean — keys consumed: 34, namespaces: 3
+**Status:** ✅ clean — keys consumed: 33, namespaces: 3
 
 **i18n namespaces:**
 
 - `authPage` — used: 7, total in shard: 15
 - `portals` — used: 11, total in shard: 28
-- `screens` — used: 16, total in shard: 10090
+- `screens` — used: 15, total in shard: 10090
 
 ## professional/
 
