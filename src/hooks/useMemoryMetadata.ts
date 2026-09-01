@@ -99,15 +99,25 @@ export function useMemoryMetadata() {
       if (!user) throw new Error("Not authenticated");
 
       // Fetch all memories
-      const { data: aiMemories } = await supabase
+      const { data: aiMemories, error: aiMemoriesError } = await supabase
         .from("ai_memory")
         .select("memory_type, confidence_score, created_at")
         .eq("user_id", user.id);
 
-      const { data: diaryEntries } = await supabase
+      if (aiMemoriesError) {
+        console.error("[useMemoryMetadata] Error fetching ai_memory:", aiMemoriesError);
+        throw aiMemoriesError;
+      }
+
+      const { data: diaryEntries, error: diaryEntriesError } = await supabase
         .from("diary_entries")
         .select("tags, created_at")
         .eq("user_id", user.id);
+
+      if (diaryEntriesError) {
+        console.error("[useMemoryMetadata] Error fetching diary_entries:", diaryEntriesError);
+        throw diaryEntriesError;
+      }
 
       // Calculate category progress
       const categoryProgress: Record<string, CategoryProgress> = {};
@@ -173,6 +183,9 @@ export function useMemoryMetadata() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["memory-metadata"] });
+    },
+    onError: (error) => {
+      console.error("[useMemoryMetadata] refreshMetadata failed, aborted before writing metadata:", error);
     },
   });
 

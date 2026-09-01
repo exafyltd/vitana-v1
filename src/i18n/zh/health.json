@@ -26,21 +26,18 @@
     "trend": {
       "improving": "改善中",
       "declining": "恶化中",
-      "stable": "稳定",
-      "_pending_review": {}
+      "stable": "稳定"
     },
     "suggestions": {
       "uploadBloodTestResults": "上传血检结果",
-      "startFitnessChallenge": "开始30天健身挑战",
-      "_pending_review": {}
+      "startFitnessChallenge": "开始30天健身挑战"
     },
     "pillars": {
       "sleep": "睡眠",
       "exercise": "运动",
       "nutrition": "营养",
       "hydration": "补水",
-      "mental": "心理",
-      "_pending_review": {}
+      "mental": "心理"
     },
     "emptyStates": {
       "noSleepPlan": "暂无睡眠计划",
@@ -54,8 +51,7 @@
       "noMentalPlan": "暂无心理计划",
       "noMentalPlanDesc": "在AI支持下，生成一份为你量身定制的个性化心理健康计划，以追踪压力、专注力和情绪平衡。",
       "generatePlan": "生成计划",
-      "generating": "正在生成...",
-      "_pending_review": {}
+      "generating": "正在生成..."
     },
     "noSupplements": "暂无补充剂",
     "noSupplementsDesc": "追踪你的日常维生素、矿物质和补充剂。添加你的第一个补充剂以开始。",
@@ -67,7 +63,13 @@
     "unknownProvider": "未知提供者",
     "addSupplement": "添加补充剂",
     "uploadFirstReport": "上传首份报告",
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+    "_pending_review": {
+      "reportsLoadFailed": true,
+      "reportsLoadFailedDesc": true,
+      "reportsLoadFailedRetry": true
+    },
+    "reportsLoadFailed": "Couldn't load your reports",
+    "reportsLoadFailedDesc": "There was a problem loading your health reports. Please try again.",
+    "reportsLoadFailedRetry": "Try again"
+  }
 }

@@ -6,7 +6,8 @@
       "snapshot": "Обзор",
       "services": "Услуги",
       "sales": "Продажи",
-      "insights": "Статистика"
+      "insights": "Статистика",
+      "_pending_review": {}
     },
     "recentActivity": "Последняя активность",
     "clients": "Клиенты",
@@ -18,6 +19,8 @@
     "noClients": "Пока нет клиентов",
     "noClientsDesc": "Твои клиенты появятся здесь.",
     "noSales": "Пока нет продаж",
-    "noSalesDesc": "Твоя история продаж появится здесь."
-  }
+    "noSalesDesc": "Твоя история продаж появится здесь.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -20,11 +20,16 @@ export function useIsEventOrganizer(eventId: string) {
         return;
       }
 
-      const { data: event } = await supabase
+      const { data: event, error } = await supabase
         .from("global_community_events")
         .select("created_by")
         .eq("id", eventId)
         .single();
+
+      // PGRST116 = no rows (event genuinely doesn't exist); not an error worth logging.
+      if (error && error.code !== "PGRST116") {
+        console.error("Error checking event organizer:", error);
+      }
 
       setIsOrganizer(event?.created_by === user.id);
       setLoading(false);
@@ -48,11 +53,15 @@ export function useEventHasTickets(eventId: string) {
         return;
       }
 
-      const { count } = await supabase
+      const { count, error } = await supabase
         .from("event_ticket_types")
         .select("*", { count: "exact", head: true })
         .eq("event_id", eventId)
         .eq("is_active", true);
+
+      if (error) {
+        console.error("Error checking event tickets:", error);
+      }
 
       setHasTickets((count || 0) > 0);
       setLoading(false);

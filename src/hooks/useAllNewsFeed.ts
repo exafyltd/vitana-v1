@@ -89,10 +89,13 @@ async function fetchAuthors(userIds: string[]): Promise<Map<string, AuthorProfil
   const map = new Map<string, AuthorProfile>();
   const unique = [...new Set(userIds)].filter(Boolean);
   if (!unique.length) return map;
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("global_community_profiles")
     .select("user_id, display_name, avatar_url")
     .in("user_id", unique);
+  if (error) {
+    console.error("[useAllNewsFeed] Error fetching global_community_profiles (author names/avatars omitted):", error);
+  }
   for (const row of data || []) {
     map.set(row.user_id, { display_name: row.display_name, avatar_url: row.avatar_url });
   }
@@ -195,14 +198,36 @@ export async function fetchNewsFeedCandidates(
   const suppressedAuthorIds = new Set<string>();
   if (viewerRes) {
     const [followsRes, hiddenRes, mutedRes, blockedRes] = viewerRes;
-    if (followsRes.status === "fulfilled")
+    if (followsRes.status === "fulfilled") {
+      if (followsRes.value.error) console.error("[useAllNewsFeed] Error fetching user_follows:", followsRes.value.error);
       for (const f of (followsRes.value.data as { following_id: string }[]) || []) followingIds.add(f.following_id);
-    if (hiddenRes.status === "fulfilled")
+    }
+    if (hiddenRes.status === "fulfilled") {
+      if (hiddenRes.value.error) console.error("[useAllNewsFeed] Error fetching user_hidden_posts:", hiddenRes.value.error);
       for (const r of (hiddenRes.value.data as { post_id: string }[]) || []) hiddenPostIds.add(r.post_id);
-    if (mutedRes.status === "fulfilled")
+    }
+    if (mutedRes.status === "fulfilled") {
+      // A failure here is a fail-OPEN on the mute filter (a muted author's
+      // posts can reappear) — surfaced loudly rather than silently, since
+      // hiding the whole feed on a transient error would be a worse outage.
+      if (mutedRes.value.error) console.error("[useAllNewsFeed] Error fetching user_muted_authors (mute filter may fail open this load):", mutedRes.value.error);
       for (const r of (mutedRes.value.data as { author_id: string }[]) || []) suppressedAuthorIds.add(r.author_id);
-    if (blockedRes.status === "fulfilled")
+    }
+    if (blockedRes.status === "fulfilled") {
+      // Same fail-open risk as above, for blocked authors specifically.
+      if (blockedRes.value.error) console.error("[useAllNewsFeed] Error fetching user_blocked_authors (block filter may fail open this load):", blockedRes.value.error);
       for (const r of (blockedRes.value.data as { author_id: string }[]) || []) suppressedAuthorIds.add(r.author_id);
+    }
+  }
+
+  if (postsRes.status === "fulfilled" && postsRes.value.error) {
+    console.error("[useAllNewsFeed] Error fetching profile_posts:", postsRes.value.error);
+  }
+  if (mediaRes.status === "fulfilled" && mediaRes.value.error) {
+    console.error("[useAllNewsFeed] Error fetching media_uploads:", mediaRes.value.error);
+  }
+  if (featureAnnouncementsRes.status === "fulfilled" && featureAnnouncementsRes.value.error) {
+    console.error("[useAllNewsFeed] Error fetching feature_announcements:", featureAnnouncementsRes.value.error);
   }
 
   const postRows: RawPostRow[] =

@@ -45,8 +45,8 @@ export function useRealMatches(limit = 6, options?: { enabled?: boolean }) {
       } = await supabase.auth.getUser();
       if (!user) return [];
 
-      const fetchMatches = async (): Promise<DailyMatchRow[]> => {
-        const { data } = await supabase
+      const fetchMatches = async (): Promise<{ rows: DailyMatchRow[]; hadError: boolean }> => {
+        const { data, error } = await supabase
           .from("daily_matches")
           .select("matched_user_id, match_score, match_reasons")
           .eq("user_id", user.id)
@@ -54,19 +54,26 @@ export function useRealMatches(limit = 6, options?: { enabled?: boolean }) {
           .is("action", null)
           .order("match_score", { ascending: false })
           .limit(limit);
-        return (data as DailyMatchRow[] | null) ?? [];
+        if (error) {
+          console.error("[useRealMatches] daily_matches query failed:", error);
+        }
+        return { rows: (data as DailyMatchRow[] | null) ?? [], hadError: !!error };
       };
 
-      let matches = await fetchMatches();
+      let { rows: matches, hadError } = await fetchMatches();
 
       // No live matches — ask the backend to generate a fresh batch, then re-read.
-      if (matches.length === 0) {
+      // Only do this for a genuine empty result: if the read itself failed,
+      // `matches.length === 0` doesn't mean "no matches", and invoking the
+      // (slow) generator in response to a broken read wouldn't fix the read —
+      // it would just waste an edge-function call every time the DB hiccups.
+      if (matches.length === 0 && !hadError) {
         try {
           await supabase.functions.invoke("generate-daily-matches");
         } catch {
           // ignore — we simply return no matches below
         }
-        matches = await fetchMatches();
+        ({ rows: matches } = await fetchMatches());
       }
 
       if (matches.length === 0) return [];
@@ -74,9 +81,19 @@ export function useRealMatches(limit = 6, options?: { enabled?: boolean }) {
       // Resolve each match to its real profile (RPC respects profile RLS).
       const profiles = await Promise.all(
         matches.map(async (m) => {
-          const { data } = await supabase.rpc("get_user_profile_by_identifier", {
+          const { data, error } = await supabase.rpc("get_user_profile_by_identifier", {
             identifier: m.matched_user_id,
           });
+          if (error) {
+            // The comment below documents dropping a match whose profile
+            // isn't resolvable as an intentional privacy-visibility case —
+            // but that reasoning only covers "profile not visible," not
+            // "the RPC itself is broken." A genuine RPC failure was
+            // previously indistinguishable from that, so matches could
+            // silently vanish with nothing logged to tell anyone the RPC
+            // is actually failing.
+            console.warn("[useRealMatches] get_user_profile_by_identifier failed:", error.message);
+          }
           return data?.[0];
         }),
       );

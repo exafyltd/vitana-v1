@@ -6,7 +6,8 @@
       "snapshot": "Özet",
       "services": "Hizmetler",
       "sales": "Satışlar",
-      "insights": "Öngörüler"
+      "insights": "Öngörüler",
+      "_pending_review": {}
     },
     "recentActivity": "Son Etkinlik",
     "clients": "Müşteriler",
@@ -18,6 +19,8 @@
     "noClients": "Henüz müşteri yok",
     "noClientsDesc": "Müşterilerin burada görünecek.",
     "noSales": "Henüz satış yok",
-    "noSalesDesc": "Satış geçmişin burada görünecek."
-  }
+    "noSalesDesc": "Satış geçmişin burada görünecek.",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

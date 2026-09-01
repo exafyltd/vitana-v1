@@ -16,6 +16,8 @@
     "inbox": "Gelen Kutusu",
     "support": "Destek",
     "settings": "Ayarlar",
-    "logout": "Çıkış Yap"
-  }
+    "logout": "Çıkış Yap",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

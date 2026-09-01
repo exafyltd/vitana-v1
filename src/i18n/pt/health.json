@@ -67,6 +67,9 @@
     "unknownProvider": "Provedor desconhecido",
     "addSupplement": "Adicionar Suplemento",
     "uploadFirstReport": "Carregar Primeiro Relatório",
+    "reportsLoadFailed": "Não foi possível carregar seus relatórios",
+    "reportsLoadFailedDesc": "Houve um problema ao carregar seus relatórios de saúde. Por favor, tente novamente.",
+    "reportsLoadFailedRetry": "Tente novamente",
     "_pending_review": {}
   },
   "_pending_review": {}

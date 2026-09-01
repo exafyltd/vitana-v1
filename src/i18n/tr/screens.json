@@ -2,8 +2,7 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "Rehberli Yolculuk",
-      "fullLabel": "Tüm Uygulama",
-      "_pending_review": {}
+      "fullLabel": "Tüm Uygulama"
     },
     "guidedCatalog": {
       "allChapters": "Tümü",
@@ -45,8 +44,7 @@
       "markDone": "Tamamlandı olarak işaretle",
       "skip": "Şimdilik atla",
       "doneToast": "Pratik tamamlandı!",
-      "doneError": "Kaydedilemedi.",
-      "_pending_review": {}
+      "doneError": "Kaydedilemedi."
     },
     "common": {
       "languageToggleAriaLabel": "Dil",
@@ -857,8 +855,7 @@
       "mental": "Zihinsel",
       "next3": "Sonraki 3 gün",
       "month": "30 gün",
-      "future": "Gelecek",
-      "_pending_review": {}
+      "future": "Gelecek"
     },
     "admin": {
       "usingDefaults": "Varsayılanları kullan",
@@ -2597,7 +2594,9 @@
       "paFeedbackTotal": "Toplam geri bildirim",
       "paFeatureOpens": "Özellik açılışları",
       "paEngagementDesc": "Üye etkinliği ve katılım metrikleri",
-      "_pending_review": {}
+      "failedLoadCreatorsValue0": "Yaratıcılar yüklenemedi: {value0}",
+      "failedLoadGroupsValue0": "Gruplar yüklenemedi: {value0}",
+      "failedLoadLiveRoomsValue0": "Canlı odalar yüklenemedi: {value0}"
     },
     "ai-feed": {
       "noEventsFound": "Etkinlik bulunamadı",
@@ -2623,8 +2622,7 @@
       "confidenceConfident": "%{confidence} emin",
       "later": "Sonra",
       "value0Trends": "{value0}trendler",
-      "lengthEventsShown": "{length}olay gösteriliyor",
-      "_pending_review": {}
+      "lengthEventsShown": "{length}olay gösteriliyor"
     },
     "analysis": {
       "topMatchFactors": "En İyi Eşleşme Faktörleri",
@@ -2652,8 +2650,7 @@
       "explore": "Keşfet →",
       "viewSchedule": "Programı Gör →",
       "findCoaches": "Koçları Bul →",
-      "match_scoreMatch": "%{match_score} eşleşme",
-      "_pending_review": {}
+      "match_scoreMatch": "%{match_score} eşleşme"
     },
     "assistant": {
       "voiceProviderHint_polly": "Amazon Polly yüksek kaliteli, doğal sesli konuşma sentezi sunar",
@@ -2742,8 +2739,7 @@
       "proactive": "Proaktif",
       "referrals": "Yönlendirmeler",
       "creativityValue0": "Yaratıcılık: {value0}",
-      "languageSettingControlsWhatLanguageText": "\"Dil\" ayarı, metnin hangi dilde üretileceğini kontrol eder. \"Ses\" ayarı, metni hangi metin-konuşma sesinin okuyacağını kontrol eder. Basitlik için otomatik olarak senkronize edilirler.",
-      "_pending_review": {}
+      "languageSettingControlsWhatLanguageText": "\"Dil\" ayarı, metnin hangi dilde üretileceğini kontrol eder. \"Ses\" ayarı, metni hangi metin-konuşma sesinin okuyacağını kontrol eder. Basitlik için otomatik olarak senkronize edilirler."
     },
     "audio": {
       "volume": "Ses Düzeyi",
@@ -2755,8 +2751,7 @@
       "soundscapeValue0": "Ses Manzarası {value0}",
       "vitanaAudioMode": "VITANA Ses Modu",
       "typeYourMessage": "Mesajını yaz...",
-      "returnVoice": "Sese dön",
-      "_pending_review": {}
+      "returnVoice": "Sese dön"
     },
     "auth": {
       "bundle": "PAKET:",
@@ -2801,8 +2796,7 @@
       "sendResetLink": "Sıfırlama bağlantısı gönder",
       "resendAvailableCooldownS": "Yeniden gönderme {cooldown}s içinde",
       "ifYouArenTSentBack": "Otomatik yönlendirilmezsen, aşağıya dokun – ya da Vitana uygulamasına geç, saniyeler içinde güncellenecek.",
-      "updating": "Güncelleniyor…",
-      "_pending_review": {}
+      "updating": "Güncelleniyor…"
     },
     "billing": {
       "from": "Gönderen:",
@@ -2823,8 +2817,7 @@
       "invoiceId": "Fatura #{id}",
       "invoiceDateDate": "Fatura tarihi: {date}",
       "healthCityHc12345": "Health City, HC 12345",
-      "paymentMethodPaymentmethod": "Ödeme Yöntemi: {paymentMethod}",
-      "_pending_review": {}
+      "paymentMethodPaymentmethod": "Ödeme Yöntemi: {paymentMethod}"
     },
     "business": {
       "performance": "📊 Performans",
@@ -2981,8 +2974,7 @@
       "eGLongevitySleepSupplements": "örn. uzun ömür, uyku, takviyeler",
       "autopilotHasLengthReferralDraftValue1": "Otomatik Pilot'un senin için {length}referans taslağı{value1} var",
       "scoreValue0": "skor {value0}",
-      "viewSource": "Kaynağı gör",
-      "_pending_review": {}
+      "viewSource": "Kaynağı gör"
     },
     "calendar": {
       "noUpcomingEvents": "Yaklaşan etkinlik yok",
@@ -3040,8 +3032,7 @@
       "suggestedValue0": "Önerilen: {value0}",
       "todaySIndexPulseCompletingYour": "Bugünün Index nabzı: {totalCount} sütun etiketli etkinliğini tamamlamak {value1} Index'ini hareket ettirecek.",
       "urgent": "acil",
-      "highPriority": "yüksek öncelik",
-      "_pending_review": {}
+      "highPriority": "yüksek öncelik"
     },
     "cart": {
       "yourCart": "Sepetin",
@@ -3065,8 +3056,7 @@
       "secureCheckoutPoweredByStripe": "Stripe ile güvenli ödeme",
       "startAddingItemsFromDiscoverMarketplace": "Discover pazarından ürün eklemeye başla",
       "value0Each": "${value0}adet",
-      "byProvider": "{provider} tarafından",
-      "_pending_review": {}
+      "byProvider": "{provider} tarafından"
     },
     "chat": {
       "googleCloudApiKey": "Google Cloud API Anahtarı",
@@ -3080,8 +3070,7 @@
       "yourApiKeyStoredSecurelyOnly": "API anahtarın güvenle saklanır ve yalnızca yapay zeka ses özellikleri için kullanılır.",
       "cancel": "İptal",
       "go": "Git",
-      "saveApiKey": "API Anahtarını Kaydet",
-      "_pending_review": {}
+      "saveApiKey": "API Anahtarını Kaydet"
     },
     "coaches": {
       "topMatchFactors": "En iyi eşleşme faktörleri",
@@ -3096,8 +3085,7 @@
       "fromSessions_from": "€{sessions_from}'dan itibaren",
       "bookSession": "Seansı Ayarla",
       "member_countMembers": "{member_count} üye",
-      "participant_countAttending": "{participant_count} katılıyor",
-      "_pending_review": {}
+      "participant_countAttending": "{participant_count} katılıyor"
     },
     "community": {
       "openAsksKind_commercialBuy": "Satın Alma",
@@ -3566,8 +3554,7 @@
       "goalActivity": "Aktivite arkadaşı",
       "goalWeightLoss": "Kilo kaybı",
       "goalMentalWellness": "Zihinsel sağlık",
-      "goalValues": "Değerler uyumlu",
-      "_pending_review": {}
+      "goalValues": "Değerler uyumlu"
     },
     "contacts": {
       "addContact": "Kişi Ekle",
@@ -3633,8 +3620,7 @@
       "tipUseValue0IncludeYourPersonal": "İpucu: Kişisel davet bağlantını eklemek için {value0} kullan",
       "sendInvites": "Davetleri Gönder",
       "weFoundTotalimportedContactsMatchedThem": "{totalImported} kişi bulduk ve VITANA ile eşleştirdik",
-      "matchesfoundYourFriendsAlreadyVitana": "🎉 Arkadaşlarının {matchesFound} tanesi zaten VITANA'da!",
-      "_pending_review": {}
+      "matchesfoundYourFriendsAlreadyVitana": "🎉 Arkadaşlarının {matchesFound} tanesi zaten VITANA'da!"
     },
     "context": {
       "aiSpotlight": "AI Spot 🔮",
@@ -3650,8 +3636,7 @@
       "meditationSuggestion": "Meditasyon Önerisi 🧘",
       "sleepReadiness": "Uyku Hazırlığı 🌙",
       "social": "Sosyal 👥",
-      "todaySPlan": "Bugünün Planı 🗓️",
-      "_pending_review": {}
+      "todaySPlan": "Bugünün Planı 🗓️"
     },
     "creator": {
       "paymentStatus": "Ödeme Durumu",
@@ -3674,8 +3659,7 @@
       "notEnabled": "Etkin Değil",
       "completeYourPaymentSetupStartReceiving": "Ücretli Canlı Odalardan kazanç almaya başlamak için ödeme kurulumunu tamamla.",
       "enablePaymentsCreatePaidLiveRooms": "Ücretli Canlı Odalar oluşturmak ve gelirin %90'ını almak için ödemeleri etkinleştir. Stripe Connect ile 2 dakikalık hızlı kurulum.",
-      "checkingStatus": "Durum kontrol ediliyor...",
-      "_pending_review": {}
+      "checkingStatus": "Durum kontrol ediliyor..."
     },
     "crossover": {
       "keyFactors": "Ana Faktörler:",
@@ -3808,8 +3792,7 @@
       "matchCatFitness": "Fitness",
       "matchCatLongevity": "Uzun ömür aşaması",
       "matchCatCommunity": "Topluluk",
-      "matchCatWellness": "Ortak sağlık",
-      "_pending_review": {}
+      "matchCatWellness": "Ortak sağlık"
     },
     "debug": {
       "presenceDebug": "Varlık Hata Ayıklama",
@@ -3819,8 +3802,7 @@
       "connected": "Bağlı:",
       "latency": "Gecikme:",
       "realtimelatencyMs": "{realtimeLatency}ms",
-      "value0SAgo": "{value0}s önce",
-      "_pending_review": {}
+      "value0SAgo": "{value0}s önce"
     },
     "dev": {
       "currentStep": "Mevcut Adım",
@@ -4203,8 +4185,7 @@
       "briefDescriptionDocument": "Belgenin kısa açıklaması",
       "whatSNewThisFrontpageVersion": "Bu ön sayfa sürümünde yeni olan ne?",
       "tryAdjustingYourFiltersWaitFor": "Filtrelerini ayarlamayı dene veya yeni etkinliklerin gelmesini bekle.",
-      "statusLastcode": "Durum: {lastCode}",
-      "_pending_review": {}
+      "statusLastcode": "Durum: {lastCode}"
     },
     "diary": {
       "startRecordingYourWellnessJourney": "Sağlıklı yaşam yolculuğunu kaydetmeye başla",
@@ -4257,8 +4238,7 @@
       "tagLabel_voice": "ses",
       "tagLabel_text": "metin",
       "voiceTranscriptCaptured": "Ses transkripti alındı. Kaydını düzenle ve kaydet.",
-      "writeYourThoughts": "Düşüncelerini yaz...",
-      "_pending_review": {}
+      "writeYourThoughts": "Düşüncelerini yaz..."
     },
     "discover": {
       "marketplaceView_open": "Pazar yerini aç",
@@ -4554,8 +4534,7 @@
       "bookmarkedValue0": "🔖 {value0} Yer İmleri",
       "exploreName": "{name} keşfet",
       "exploreItem_name": "{item_name} keşfet",
-      "value0Services": "{value0} Hizmetler",
-      "_pending_review": {}
+      "value0Services": "{value0} Hizmetler"
     },
     "discovery": {
       "filters": "Filtreler:",
@@ -4587,8 +4566,7 @@
       "value0NewTodayViewedcountTotalcount": "{value0} yeni bugün · {viewedCount}/{totalCount} görüntülendi",
       "clearFilters": "Filtreleri Temizle",
       "checkBackTomorrowFor10New": "Yarın 10 yeni eşleşme için tekrar gel ✨",
-      "vitanaIndexVitana_index": "Vitana Endeksi: {vitana_index}",
-      "_pending_review": {}
+      "vitanaIndexVitana_index": "Vitana Endeksi: {vitana_index}"
     },
     "events": {
       "searchByNameEmail": "İsim veya e-posta ile ara...",
@@ -4611,8 +4589,7 @@
       "youSureYouWantDeleteTitle": "\"{title}\" silmek istediğinden emin misin? Bu işlem geri alınamaz. Tüm katılımcılar, biletler ve ilişkili veriler kalıcı olarak silinecek.",
       "sent_countSentResponse_countResponded": "{sent_count} gönderildi • {response_count} yanıtlandı",
       "attendeesTotal": "Katılımcılar ({total})",
-      "noInvitationsSentYetStartInviting": "Henüz davet gönderilmedi. Yanıtları burada görmek için insanları davet etmeye başla.",
-      "_pending_review": {}
+      "noInvitationsSentYetStartInviting": "Henüz davet gönderilmedi. Yanıtları burada görmek için insanları davet etmeye başla."
     },
     "feedback": {
       "reportSent": "Rapor Gönderildi!",
@@ -4639,8 +4616,7 @@
       "interimTextAppearsGrayUntilFinalized": "Ara metin, kesinleşene kadar gri görünür...",
       "myReportsLength": "Raporlarım ({length})",
       "lengthAttachmentS": "📎 {length} ek(ler)",
-      "loadMoreValue0Remaining": "Daha fazla yükle ({value0} kalan)",
-      "_pending_review": {}
+      "loadMoreValue0Remaining": "Daha fazla yükle ({value0} kalan)"
     },
     "health": {
       "pillar_hydration_title": "Hidrasyon",
@@ -5199,20 +5175,24 @@
           "hydration": "Hidrasyon",
           "exercise": "Egzersiz",
           "sleep": "Uyku",
-          "mental": "Zihinsel Sağlık",
-          "_pending_review": {}
+          "mental": "Zihinsel Sağlık"
         },
         "economyAxes": {
           "find_match": "Eşleşme Bul",
           "marketplace": "Pazar Yeri",
           "income_generation": "Gelir üretimi",
-          "business_formation": "İş kurma",
-          "_pending_review": {}
+          "business_formation": "İş kurma"
         },
-        "contractLink": "Nihai Hedef sözleşmesini görüntüle",
-        "_pending_review": {}
+        "contractLink": "Nihai Hedef sözleşmesini görüntüle"
       },
-      "_pending_review": {}
+      "_pending_review": {
+        "reportsLoadFailed": true,
+        "reportsLoadFailedDesc": true,
+        "reportsLoadFailedRetry": true
+      },
+      "reportsLoadFailed": "Couldn't load your reports",
+      "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
+      "reportsLoadFailedRetry": "Try again"
     },
     "home": {
       "priorityOfTheDay": "Günün Önceliği:",
@@ -5427,12 +5407,10 @@
       "noRoutinesYetCreateYourFirst": "Henüz rutin yok. Başlamak için ilk rutinini oluştur!",
       "text4NewIdeas": "4 yeni fikir",
       "executeAllValue0": "Tümünü Çalıştır {value0}",
-      "noValue0ActionsAvailable": "{value0} eylem yok",
-      "_pending_review": {}
+      "noValue0ActionsAvailable": "{value0} eylem yok"
     },
     "icons": {
-      "xFormerlyTwitter": "X (eski adıyla Twitter)",
-      "_pending_review": {}
+      "xFormerlyTwitter": "X (eski adıyla Twitter)"
     },
     "intents": {
       "kindFilter_all": "Tümü (pusula duyarlı)",
@@ -5512,8 +5490,7 @@
       "kindOptionActivitySeek": "Aktivite arkadaşı",
       "kindOptionSocialSeek": "Kahve sohbeti / mentorluk",
       "kindOptionMutualAid": "Ödünç ver / al / bağışla",
-      "kindOptionPartnerSeek": "Hayat arkadaşı",
-      "_pending_review": {}
+      "kindOptionPartnerSeek": "Hayat arkadaşı"
     },
     "layout": {
       "contentRequiresConsent": "İçerik Onay Gerektirir",
@@ -5521,8 +5498,7 @@
       "reviewSettings": "Ayarları İncele",
       "tapReviewPrivacySettingsForThis": "Bu içerik türü için gizlilik ayarlarını incelemek için dokun",
       "kindKind": "Tür: {kind}",
-      "idId": "Kimlik: {id}",
-      "_pending_review": {}
+      "idId": "Kimlik: {id}"
     },
     "liverooms": {
       "createLiveRoom": "Canlı Oda Oluştur",
@@ -5613,20 +5589,17 @@
         "emptyHint": "Bitmiş odalar burada görünür — özet, öne çıkanlar ve kayıtla.",
         "loading": "Geçmiş odalar yükleniyor…",
         "heldAt": "{date} · {time}",
-        "heldRange": "{date} · {start}–{end}",
-        "_pending_review": {}
+        "heldRange": "{date} · {start}–{end}"
       },
       "durationMin": "{value0} dk",
       "durationHour": "{value0} sa",
-      "durationHourMin": "{value0} sa {value1} dk",
-      "_pending_review": {}
+      "durationHourMin": "{value0} sa {value1} dk"
     },
     "meetups": {
       "detailsProgram": "Detaylar ve Program",
       "undo": "Geri al",
       "closeEventDetails": "Etkinlik detaylarını kapat",
-      "shareMeetup": "Buluşmayı paylaş",
-      "_pending_review": {}
+      "shareMeetup": "Buluşmayı paylaş"
     },
     "memory": {
       "updatedAgo": "Güncellendi {distance}",
@@ -5854,8 +5827,7 @@
       "memorySubnav_diary": "Günlük Defteri",
       "memorySubnav_recall": "Hatırlama ve Arama",
       "memorySubnav_permissions": "İzinler",
-      "wellnessDiaryMultimediaDescription": "Multimedya girişleriyle sağlıklı yaşam yolculuğunu kaydet ve gözden geçir.",
-      "_pending_review": {}
+      "wellnessDiaryMultimediaDescription": "Multimedya girişleriyle sağlıklı yaşam yolculuğunu kaydet ve gözden geçir."
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Sabah Motivasyonu",
@@ -6042,8 +6014,7 @@
       "value0Participants": "{value0} katılımcı",
       "value0Members": "{value0} üye",
       "chooseConversationFromLeftStartMessaging": "Mesaj göndermek için soldan bir konuşma seç.",
-      "vitanaOpenScreen": "Ekranı aç",
-      "_pending_review": {}
+      "vitanaOpenScreen": "Ekranı aç"
     },
     "mobile": {
       "searching": "Aranıyor...",
@@ -6062,8 +6033,7 @@
       "openSearch": "Aramayı aç",
       "openCalendar": "Takvimi aç",
       "openAutopilot": "Otomatik pilotu aç",
-      "closeSearch": "Aramayı kapat",
-      "_pending_review": {}
+      "closeSearch": "Aramayı kapat"
     },
     "notifications": {
       "markAllAsRead": "Tümünü okundu işaretle",
@@ -6081,8 +6051,7 @@
       "deleteThisNotification": "Bu bildirimi sil",
       "delete": "Sil",
       "close": "Kapat",
-      "closeNotifications": "Bildirimleri kapat",
-      "_pending_review": {}
+      "closeNotifications": "Bildirimleri kapat"
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Vitana ID'nin ad kısmını seç",
@@ -6098,13 +6067,11 @@
       "typeYourOwnName": "Veya kendi adını yaz",
       "eGAlex": "örn. alex",
       "welcomeMaxina": "Maxina'ya hoş geldin",
-      "yourLongevityJourneyBeginsNow": "Uzun yaşam yolculuğun şimdi başlıyor",
-      "_pending_review": {}
+      "yourLongevityJourneyBeginsNow": "Uzun yaşam yolculuğun şimdi başlıyor"
     },
     "orders": {
       "friendExampleCom": "arkadas@ornek.com",
-      "friendSName": "Arkadaşın adı",
-      "_pending_review": {}
+      "friendSName": "Arkadaşın adı"
     },
     "payment": {
       "selectDate": "Tarih Seç",
@@ -6205,8 +6172,7 @@
       "conversationspecificPaymentActionWith": "Konuşmaya özel bir ödeme işlemi",
       "alreadyActivePleaseCompleteCloseThat": "zaten aktif. \\n                    Lütfen önce bu işlemi tamamla veya kapat.",
       "anotherWalletActionCurrentlyProgressPlease": "Başka bir cüzdan işlemi şu anda devam ediyor. \\n                    Lütfen önce bu işlemi tamamla veya kapat.",
-      "paymenttypePaymentRequest": "{paymentType} Ödeme Talebi",
-      "_pending_review": {}
+      "paymenttypePaymentRequest": "{paymentType} Ödeme Talebi"
     },
     "proactive": {
       "proTip": "Profesyonel İpucu:",
@@ -6236,8 +6202,7 @@
       "personalInvitesGet3xMoreResponses": "Kişisel davetler, genel mesajlardan 3 kat daha fazla yanıt alır. \n            Yapay zekamız, sağlıklı yaşam yolculuğunu yansıtan otantik davetiyeler oluşturur!",
       "dismissTip": "İpucunu kapat",
       "seeNextValue0More": "Sonrakini Gör ({value0}daha)",
-      "membersWhoAutoshareTheirWellnessWins": "Sağlıklı yaşam başarılarını otomatik paylaşan üyeler, her ay 5-10 arkadaşına ilham verir, \n                ağlarında güçlü bir dalga etkisi yaratır.",
-      "_pending_review": {}
+      "membersWhoAutoshareTheirWellnessWins": "Sağlıklı yaşam başarılarını otomatik paylaşan üyeler, her ay 5-10 arkadaşına ilham verir, \n                ağlarında güçlü bir dalga etkisi yaratır."
     },
     "profile": {
       "adminAccess": "Yönetici Erişimi",
@@ -6635,8 +6600,7 @@
       "licensedVerifiedHealthcareProvider": "Lisanslı ve doğrulanmış sağlık hizmeti sağlayıcısı",
       "media": "Medya",
       "events": "Etkinlikler",
-      "health": "Sağlık",
-      "_pending_review": {}
+      "health": "Sağlık"
     },
     "reminders": {
       "subtitleDefault": "Vitana'nın senin için planladıkları. Doğal olarak eklemek için ORB ile konuş.",
@@ -6688,8 +6652,7 @@
       "noCompleted": "Henüz tamamlanan hatırlatıcı yok.",
       "noMissed": "Kaçırılan hatırlatıcı yok — hepsi tamam.",
       "creating": "Oluşturuluyor…",
-      "createReminder": "Hatırlatıcı oluştur",
-      "_pending_review": {}
+      "createReminder": "Hatırlatıcı oluştur"
     },
     "reseller": {
       "noEventsYourInventory": "Envanterinde etkinlik yok",
@@ -6753,8 +6716,7 @@
       "viewDetails": "Detayları gör",
       "perTicketSoldViaYourReseller": "yeniden satıcı bağlantın üzerinden satılan bilet başına. \n              Komisyon, platform ücretlerinden önce brüt bilet fiyatı üzerinden hesaplanır.",
       "viewWallet2": "Cüzdanda Gör →",
-      "ticketquantityTicketValue1Value2": "{ticketQuantity} bilet{value1}· {value2}",
-      "_pending_review": {}
+      "ticketquantityTicketValue1Value2": "{ticketQuantity} bilet{value1}· {value2}"
     },
     "settings": {
       "googleConnectionLiveCheck": "Google bağlantısı — canlı kontrol",
@@ -7405,8 +7367,7 @@
       "youExafySuperAdministratorYouCan": "Sen bir Exafy süper yöneticisisin. Kuruluşlar arasında geçiş yapabilir ve tüm kiracıları yönetebilirsin.",
       "roleValue0": "Rol: {value0}",
       "refreshBrowserVoices": "Tarayıcı Seslerini Yenile",
-      "creativityValue0": "Yaratıcılık: {value0}",
-      "_pending_review": {}
+      "creativityValue0": "Yaratıcılık: {value0}"
     },
     "sharing": {
       "activateCampaign": "Kampanyayı Etkinleştir",
@@ -8216,8 +8177,7 @@
       "imageSpecsHashtagStrategyPostingTimes": "Görsel özellikleri, hashtag stratejisi, paylaşım zamanları",
       "canvaFigmaDirectlyInapp": "Canva, Figma veya doğrudan uygulama içinde",
       "copypasteCustomizeForYourNeeds": "Kopyala ve yapıştır veya ihtiyacına göre özelleştir",
-      "createCustomDataPackageBySelecting": "Sağlık hizmeti sağlayıcının veya araştırma çalışmalarına katılımının gereksinimlerine göre belirli sağlık metriklerini, tarih aralıklarını ve veri türlerini seçerek özel bir veri paketi oluştur.",
-      "_pending_review": {}
+      "createCustomDataPackageBySelecting": "Sağlık hizmeti sağlayıcının veya araştırma çalışmalarına katılımının gereksinimlerine göre belirli sağlık metriklerini, tarih aralıklarını ve veri türlerini seçerek özel bir veri paketi oluştur."
     },
     "supplements": {
       "supplementName": "Takviye Adı*",
@@ -8234,8 +8194,7 @@
       "notes": "Notlar",
       "cancel": "İptal",
       "value0Supplement": "{value0}Takviye",
-      "inactive": "Pasif",
-      "_pending_review": {}
+      "inactive": "Pasif"
     },
     "templates": {
       "sendMessages": "Mesajlara Gönder",
@@ -8249,8 +8208,7 @@
       "noDataAvailable": "Veri yok",
       "withWith": "{with} ile",
       "spotsSpots": "{spots}yer",
-      "viewAllLengthRecommendations": "Tüm {length}önerileri gör",
-      "_pending_review": {}
+      "viewAllLengthRecommendations": "Tüm {length}önerileri gör"
     },
     "tickets": {
       "ticketsSold": "Satılan Biletler",
@@ -8295,8 +8253,7 @@
       "ticketValue0": "Bilet {value0}",
       "eGGeneralAdmission": "örn., Genel Giriş",
       "priceValue0": "Fiyat ({value0}) *",
-      "whatSIncludedWithThisTicket": "Bu biletle neler dahil?",
-      "_pending_review": {}
+      "whatSIncludedWithThisTicket": "Bu biletle neler dahil?"
     },
     "ui": {
       "reconnecting": "Yeniden bağlanıyor...",
@@ -8328,8 +8285,7 @@
       "learnMore": "Daha fazla bilgi",
       "noItemsDisplay": "Gösterilecek öğe yok",
       "pointsCredits": "+{points} kredi",
-      "moreActions": "Daha fazla işlem",
-      "_pending_review": {}
+      "moreActions": "Daha fazla işlem"
     },
     "vertex": {
       "debugConsole": "Hata Ayıklama Konsolu",
@@ -8356,13 +8312,11 @@
       "recording": "Kaydediliyor...",
       "aiSpeaking": "AI Konuşuyor...",
       "you": "Sen",
-      "transcriptWillAppearHere": "Transkript burada görünecek...",
-      "_pending_review": {}
+      "transcriptWillAppearHere": "Transkript burada görünecek..."
     },
     "vitanaland": {
       "enterVitanalandK": "Vitanaland'a Gir (⌘K)",
-      "enterVitanalandCmdK": "VITANALAND'A GİR (Cmd+K)",
-      "_pending_review": {}
+      "enterVitanalandCmdK": "VITANALAND'A GİR (Cmd+K)"
     },
     "downloadFlyer": {
       "brandName": "MAXINA",
@@ -8388,8 +8342,7 @@
       "inviteCardBody": "İndirme broşürünü paylaş ve birlikte başla.",
       "inviteCardCta": "Arkadaşları davet et",
       "inviteShareTitle": "MAXINA – Uzun Yaşam Topluluğu",
-      "inviteShareText": "MAXINA'ya katıl – uzun ömür topluluğu! Uygulamayı buradan al:",
-      "_pending_review": {}
+      "inviteShareText": "MAXINA'ya katıl – uzun ömür topluluğu! Uygulamayı buradan al:"
     },
     "vitanaIdentity": {
       "vitana": "Vitana",
@@ -8401,8 +8354,7 @@
       "viewIndex": "Endeksi Gör",
       "viewJourney": "Yolculuğumu Gör",
       "viewMatch": "Eşleşmeyi Gör",
-      "dismissCard": "Kartı kapat",
-      "_pending_review": {}
+      "dismissCard": "Kartı kapat"
     },
     "voucher": {
       "friendExampleCom": "friend@example.com",
@@ -8425,8 +8377,7 @@
       "giftFrom": "Hediye:",
       "claiming": "Kullanılıyor...",
       "fromBuyer_name": "{buyer_name} adlı kişiden",
-      "createAccount": "Hesap Oluştur",
-      "_pending_review": {}
+      "createAccount": "Hesap Oluştur"
     },
     "wallet": {
       "currentSubscriptionPerks": "Mevcut abonelik ayrıcalıkları",
@@ -8949,8 +8900,7 @@
       "continueToSecureCheckout": "Güvenli ödemeye devam et",
       "cardPaymentViaStripe": "Kart ödemesi, Stripe tarafından güvenle işlenir",
       "currentBalanceLabel": "Güncel {currency} Bakiyen",
-      "amountAddCurrency": "Eklenecek Tutar ({currency})",
-      "_pending_review": {}
+      "amountAddCurrency": "Eklenecek Tutar ({currency})"
     },
     "ai": {
       "subtitle_priorityActions": "Maksimum sağlık etkisi için AI seçimli görevler",
@@ -9119,8 +9069,7 @@
       "impactImpact": "Etki: {impact}",
       "defineHowYourAiAgentShould": "AI ajanının nasıl davranacağını, neye odaklanacağını ve seninle nasıl iletişim kuracağını tanımla...",
       "thisReadonlyPlaceholderForAgentPrompt": "Bu, Ajan Komut Merkezi için salt okunur bir yer tutucudur. \n              Gelecek aşamalar tam AI ajan özelleştirmesi ve gerçek zamanlı test sağlayacak.",
-      "thisReadonlyPlaceholderForPersonalAi": "Bu, Kişisel AI Zaman Çizelgesi için salt okunur bir yer tutucudur. \n                Gelecek aşamalar gerçek AI etkinlik verilerine bağlanacak ve etkileşimli içgörüler sağlayacak.",
-      "_pending_review": {}
+      "thisReadonlyPlaceholderForPersonalAi": "Bu, Kişisel AI Zaman Çizelgesi için salt okunur bir yer tutucudur. \n                Gelecek aşamalar gerçek AI etkinlik verilerine bağlanacak ve etkileşimli içgörüler sağlayacak."
     },
     "authpages": {
       "fullName": "Ad Soyad",
@@ -9131,8 +9080,7 @@
       "login": "Giriş Yap",
       "signUp": "Kayıt Ol",
       "alreadyHaveAccountValue0": "Zaten hesabın var mı? {value0}",
-      "donAposTHaveAccountValue0": "Hesabın yok mu? {value0}",
-      "_pending_review": {}
+      "donAposTHaveAccountValue0": "Hesabın yok mu? {value0}"
     },
     "autopilotdashboard": {
       "text999": "999'dan",
@@ -9275,10 +9223,8 @@
         "advanceCareer": "Kariyerinde İlerle",
         "masterNewSkills": "Yeni Beceriler Öğren",
         "spiritualLife": "Ruhsal Yaşam",
-        "earnFromRecommendations": "Tavsiyelerden kazan",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "earnFromRecommendations": "Tavsiyelerden kazan"
+      }
     },
     "businesshub": {
       "noServicesYet": "Henüz Hizmet Yok",
@@ -9298,8 +9244,7 @@
       "businessHub": "İş Merkezi 💼",
       "growYourWellnessBusinessManageClients": "Wellness işini büyüt ve müşterileri zahmetsizce yönet",
       "business": "İş",
-      "value0MoreActions": "+{value0} daha fazla işlem",
-      "_pending_review": {}
+      "value0MoreActions": "+{value0} daha fazla işlem"
     },
     "businesslistings": {
       "myListings": "Listelerim",
@@ -9309,8 +9254,7 @@
       "backBusinessHub": "İş Merkezi'ne Geri Dön",
       "listingsAvailableForProAccounts": "Teklifler Pro hesaplar için geçerlidir.",
       "noListingsYetClick": "Henüz teklif yok. Tıkla",
-      "addOneOpenOrbJustSay": "bir tane eklemek için – veya ORB'u aç ve sadece söyle",
-      "_pending_review": {}
+      "addOneOpenOrbJustSay": "bir tane eklemek için – veya ORB'u aç ve sadece söyle"
     },
     "businessopportunities": {
       "myListings": "Listelerim",
@@ -9318,8 +9262,7 @@
       "opportunitiesAvailableForProAccountsUpgrade": "Fırsatlar Pro hesaplar için geçerlidir. Gelen potansiyel müşterilere erişmek için yükselt.",
       "opportunities": "Fırsatlar",
       "incomingLeadsMatchingYourOfferingsExpress": "Tekliflerinle eşleşen gelen potansiyel müşteriler. Bir sohbet başlatmak için ilgini belirt.",
-      "noLeadsYetWeLlNotify": "Henüz müşteri adayı yok. Eşleşen talep geldiğinde seni bilgilendireceğiz. En az bir commercial_sell teklifin olduğundan emin ol.",
-      "_pending_review": {}
+      "noLeadsYetWeLlNotify": "Henüz müşteri adayı yok. Eşleşen talep geldiğinde seni bilgilendireceğiz. En az bir commercial_sell teklifin olduğundan emin ol."
     },
     "checkoutsuccess": {
       "whatSNext": "Sırada Ne Var?",
@@ -9335,8 +9278,7 @@
       "continueShopping": "Alışverişe Devam Et",
       "ifYouHaveAnyQuestionsAbout": "Siparişinle ilgili soruların varsa destek ekibimiz yardıma hazır.",
       "contactSupport": "Destekle İletişime Geç",
-      "viewMyOrders": "Siparişlerimi Gör",
-      "_pending_review": {}
+      "viewMyOrders": "Siparişlerimi Gör"
     },
     "creatoronboarded": {
       "checkingYourPaymentStatus": "Ödeme durumun inceleniyor...",
@@ -9359,12 +9301,10 @@
       "createYourFirstPaidRoom": "İlk Ücretli Odanı Oluştur",
       "viewPaymentSettings": "Ödeme Ayarlarını Görüntüle",
       "value0PaymentSetupComplete": "{value0} ödeme kurulumu tamamlandı!",
-      "youReAllSetStartEarning": "Canlı Odalarından para kazanmaya başlamak için her şey hazır",
-      "_pending_review": {}
+      "youReAllSetStartEarning": "Canlı Odalarından para kazanmaya başlamak için her şey hazır"
     },
     "editprofilepage": {
-      "editProfileVitana": "Profili Düzenle – VITANA",
-      "_pending_review": {}
+      "editProfileVitana": "Profili Düzenle – VITANA"
     },
     "healthtracker": {
       "letSTrackYourProgressTogether": "İlerlemeni birlikte takip edelim! 📊",
@@ -9414,8 +9354,7 @@
       "weeklyActivity": "Haftalık Aktivite",
       "mentalWellness": "Zihinsel Sağlık",
       "mindfulness": "Farkındalık",
-      "vitanaIndexOverview": "Vitana Endeksi Genel Bakış",
-      "_pending_review": {}
+      "vitanaIndexOverview": "Vitana Endeksi Genel Bakış"
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "Kapsamlı sağlık ve sağlıklı yaşam platformu",
@@ -9438,8 +9377,7 @@
       "merchantSelfServiceMarketplace": "Satıcı Self-Servis Pazar Yeri",
       "connectYourBusinessToDiscoverYourself": "İşletmenizi Discover pazar yerine kendiniz bağlayın — entegrasyon projesi yok, mühendis bekleme yok.",
       "vitanaDev": "Vitana DEV",
-      "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA, farklı wellness toplulukları ve profesyonel sağlık yönetimi için çeşitli özel ortamlar sunan kapsamlı bir dijital sağlık platformudur.",
-      "_pending_review": {}
+      "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA, farklı wellness toplulukları ve profesyonel sağlık yönetimi için çeşitli özel ortamlar sunan kapsamlı bir dijital sağlık platformudur."
     },
     "intentboard": {
       "communityBoard": "Topluluk panosu",
@@ -9449,16 +9387,14 @@
       "style": "Stil",
       "lookingForYourOwnIntents": "Kendi niyetlerini mi arıyorsun?",
       "whatOthersLookingFor": "Başkalarının aradıkları.",
-      "surfacedForYour": "Senin için öne çıkarıldı",
-      "_pending_review": {}
+      "surfacedForYour": "Senin için öne çıkarıldı"
     },
     "intentmatchdetail": {
       "intentNotFound": "Niyet bulunamadı.",
       "backMyIntents": "Niyetlerime Geri Dön",
       "closeIntent": "Niyeti kapat",
       "noMatchesYetWeLlKeep": "Henüz eşleşme yok. Aramaya devam edeceğiz ve biri eşleştiğinde sana haber vereceğiz.",
-      "matchesLength": "Eşleşmeler ({length})",
-      "_pending_review": {}
+      "matchesLength": "Eşleşmeler ({length})"
     },
     "invitefriends": {
       "phoneContacts": "Telefon Kişileri",
@@ -9483,12 +9419,10 @@
       "noContactsMatchSearch": "\"{search}\" ile eşleşen kişi yok",
       "importContacts": "Kişileri İçe Aktar",
       "selectedcountSelected": "{selectedCount} seçildi",
-      "sendInvitesSelectedcount": "Davet Gönder ({selectedCount})",
-      "_pending_review": {}
+      "sendInvitesSelectedcount": "Davet Gönder ({selectedCount})"
     },
     "logout": {
-      "signingOut": "Oturum kapatılıyor...",
-      "_pending_review": {}
+      "signingOut": "Oturum kapatılıyor..."
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – App Store'a yönlendiriliyorsun",
@@ -9501,8 +9435,7 @@
       "copyLink": "Bağlantıyı kopyala",
       "linkCopied": "Bağlantı kopyalandı — Safari'ye yapıştır",
       "copyFailed": "Bağlantı kopyalanamadı",
-      "iosOpenInBrowser": "Sağ üstteki “…” öğesine dokun, ardından “Tarayıcıda aç” — App Store hemen orada açılır.",
-      "_pending_review": {}
+      "iosOpenInBrowser": "Sağ üstteki “…” öğesine dokun, ardından “Tarayıcıda aç” — App Store hemen orada açılır."
     },
     "mobilesettings": {
       "pushNotifications": "Anlık Bildirimler",
@@ -9589,8 +9522,7 @@
       "modeBillingPlan": "Mevcut Plan",
       "modeBillingPayment": "Ödeme Yöntemi",
       "modeBillingInvoices": "Faturalar ve Makbuzlar",
-      "modeBillingCreator": "İçerik Üretici Ödemeleri",
-      "_pending_review": {}
+      "modeBillingCreator": "İçerik Üretici Ödemeleri"
     },
     "myintents": {
       "myIntents": "Niyetlerim",
@@ -9601,8 +9533,7 @@
       "browseWhatOthersLookingFor": "Başkalarının ne aradığına göz at:",
       "lengthOpenUpPer_kind_slot_capPerCategory": "{length} açık · kategori başına en fazla {PER_KIND_SLOT_CAP}",
       "lengthPer_kind_slot_capSlotsUsed": "{length} / {PER_KIND_SLOT_CAP} slot kullanıldı",
-      "capReachedCloseOnePostNew": "— kapasite dolu, yeni paylaşım için birini kapat",
-      "_pending_review": {}
+      "capReachedCloseOnePostNew": "— kapasite dolu, yeni paylaşım için birini kapat"
     },
     "mytickets": {
       "myTickets": "Biletlerim",
@@ -9614,8 +9545,7 @@
       "upcomingLength": "Yaklaşan ({length})",
       "pastLength": "Geçmiş ({length})",
       "noUpcomingEvents": "Yaklaşan etkinlik yok",
-      "noPastEvents": "Geçmiş etkinlik yok",
-      "_pending_review": {}
+      "noPastEvents": "Geçmiş etkinlik yok"
     },
     "notauthorized": {
       "accessDenied": "Erişim Engellendi",
@@ -9623,13 +9553,11 @@
       "youDonTHavePermissionAccess": "Bu alana yalnızca yetkili personel erişebilir.",
       "error403Forbidden": "Hata 403: Yasak",
       "returnDashboard": "Panele Dön",
-      "contactSupport": "Destekle İletişime Geç",
-      "_pending_review": {}
+      "contactSupport": "Destekle İletişime Geç"
     },
     "notfound": {
       "oopsPageNotFound": "Hata! Sayfa bulunamadı",
-      "returnHome": "Ana Sayfaya Dön",
-      "_pending_review": {}
+      "returnHome": "Ana Sayfaya Dön"
     },
     "packagepurchasesuccess": {
       "missingPurchaseInformation": "Satın Alma Bilgisi Eksik",
@@ -9645,8 +9573,7 @@
       "viewMyOrders": "Siparişlerimi Gör",
       "redeemNow": "Şimdi Kullan",
       "viewOrders": "Siparişleri Gör",
-      "confirmationHasSent": "Onay gönderildi:",
-      "_pending_review": {}
+      "confirmationHasSent": "Onay gönderildi:"
     },
     "privacysettings": {
       "privacyVisibility": "Gizlilik ve Görünürlük",
@@ -9654,8 +9581,7 @@
       "pleaseSignManageYourPrivacySettings": "Gizlilik ayarlarını yönetmek için lütfen giriş yap.",
       "serverEnforcesTheseTiersEveryCrossuser": "Sunucu bu seviyeleri her departmanlar arası erişimde uygular – senin seçimin bağlayıcıdır, tavsiye değil.",
       "back": "Geri",
-      "tapAnyTierBadgeCyclePrivate": "Herhangi bir katman rozetine dokunarak Özel → Bağlantılar → Genel arasında geçiş yap.\n          Varsayılanlar gizlilikten yana – ne paylaşacağına sen karar verirsin.",
-      "_pending_review": {}
+      "tapAnyTierBadgeCyclePrivate": "Herhangi bir katman rozetine dokunarak Özel → Bağlantılar → Genel arasında geçiş yap.\n          Varsayılanlar gizlilikten yana – ne paylaşacağına sen karar verirsin."
     },
     "publiccampaignlanding": {
       "campaignNotFound": "Kampanya Bulunamadı",
@@ -9671,8 +9597,7 @@
       "lengthChannelValue1": "{length}kanal{value1}",
       "youLlSignCreateAccountNext": "Sonraki adımda giriş yapacaksın veya hesap oluşturacaksın.",
       "YourLongevityCommunity": "- Uzun ömür topluluğun",
-      "getTicketsForValue0": "{value0} için Bilet Al",
-      "_pending_review": {}
+      "getTicketsForValue0": "{value0} için Bilet Al"
     },
     "publiceventlanding": {
       "eventNotFound": "Etkinlik bulunamadı",
@@ -9689,14 +9614,12 @@
       "fromPricelabel": "{priceLabel}'den itibaren",
       "youLlSignCreateAccountNext": "Sonraki adımda giriş yapacaksın veya hesap oluşturacaksın.",
       "YourLongevityCommunity": "- Uzun yaşam topluluğun",
-      "getTicketsForTitle": "{title} için Bilet Al",
-      "_pending_review": {}
+      "getTicketsForTitle": "{title} için Bilet Al"
     },
     "publicprofilepage": {
       "loadingProfile": "Profil yükleniyor...",
       "userNotFound": "Kullanıcı Bulunamadı",
-      "returnHome": "Ana Sayfaya Dön",
-      "_pending_review": {}
+      "returnHome": "Ana Sayfaya Dön"
     },
     "redeemvoucher": {
       "invalidLink": "Geçersiz Bağlantı",
@@ -9712,8 +9635,7 @@
       "thisVoucherHasExpiredCanNo": "Bu çekin süresi doldu ve artık kullanılamaz. Yardıma ihtiyacın olursa destek ile iletişime geç.",
       "yourValue0VoucherHasAddedYour": "{value0}çekin hesabına eklendi. \n            Avantajlarını kullanmak için etkinlikleri ve deneyimleri keşfet.",
       "viewWallet": "Cüzdanı Gör",
-      "browseEvents": "Etkinliklere Göz At",
-      "_pending_review": {}
+      "browseEvents": "Etkinliklere Göz At"
     },
     "search": {
       "viewProfile": "Profili Gör",
@@ -9730,8 +9652,7 @@
       "content": "🎬 İçerik",
       "health": "❤️ Sağlık",
       "value0Members": "{value0} üye",
-      "showingResultsFor": "\" için sonuçlar gösteriliyor",
-      "_pending_review": {}
+      "showingResultsFor": "\" için sonuçlar gösteriliyor"
     },
     "ticketdemo": {
       "ticketPreview": "Bilet Önizleme",
@@ -9748,8 +9669,7 @@
       "downloadAsPngShareOptions": "PNG olarak indir veya Paylaş seçenekleri",
       "multitenantBoardingPassDesign": "Çok kiracılı biniş kartı tasarımı",
       "thisDemoTicketPreview": "🎫 Bu bir demo bilet önizlemesidir",
-      "actualTicketsWillDisplayYourReal": "Gerçek biletler, gerçek etkinliğinizi ve satın alma ayrıntılarınızı gösterir",
-      "_pending_review": {}
+      "actualTicketsWillDisplayYourReal": "Gerçek biletler, gerçek etkinliğinizi ve satın alma ayrıntılarınızı gösterir"
     },
     "ticketpurchasesuccess": {
       "invalidRequest": "Geçersiz İstek",
@@ -9761,8 +9681,7 @@
       "paymentSuccessful": "Ödeme Başarılı!",
       "viewAllMyTickets": "Tüm Biletlerimi Gör",
       "discoverMoreEvents": "Daha Fazla Etkinlik Keşfet",
-      "yourTicketHasConfirmedConfirmationEmail": "Biletin onaylandı. Onay e-postası {value0} adresine gönderildi",
-      "_pending_review": {}
+      "yourTicketHasConfirmedConfirmationEmail": "Biletin onaylandı. Onay e-postası {value0} adresine gönderildi"
     },
     "legal": {
       "deleteAccount": "Hesabı Sil",
@@ -9970,8 +9889,7 @@
       "legalRetentionObligations": "yasal saklama yükümlülükleri;",
       "securityFraudPreventionReasons": "güvenlik, dolandırıcılık önleme ve kötüye kullanım koruma nedenleri;",
       "legalClaimsDefense": "yasal taleplerin oluşturulması, uygulanması veya savunulması ihtiyacı.",
-      "retentionAnonymizeDelete": "Kişisel verilere artık ihtiyaç duyulmadığında, yasal saklama yükümlülükleri aksini gerektirmedikçe bunları siler veya anonim hale getiririz.",
-      "_pending_review": {}
+      "retentionAnonymizeDelete": "Kişisel verilere artık ihtiyaç duyulmadığında, yasal saklama yükümlülükleri aksini gerektirmedikçe bunları siler veya anonim hale getiririz."
     },
     "patient": {
       "myAppointments": "Randevularım",
@@ -10042,8 +9960,7 @@
       "activity": "Aktivite",
       "progress": "İlerleme",
       "trend": "Eğilim",
-      "text5FromLastMonth": "Geçen aya göre +5",
-      "_pending_review": {}
+      "text5FromLastMonth": "Geçen aya göre +5"
     },
     "portals": {
       "confirmationError": "Onay Hatası",
@@ -10114,8 +10031,7 @@
       "useDifferentEmail": "← Farklı bir e-posta kullan",
       "creatingAccount": "Hesap Oluşturuluyor...",
       "tryAppleSigninAgain": "Apple ile Giriş'i Tekrar Dene",
-      "backLogin": "Girişe geri dön",
-      "_pending_review": {}
+      "backLogin": "Girişe geri dön"
     },
     "professional": {
       "professionalDashboard": "Profesyonel Kontrol Paneli",
@@ -10164,8 +10080,7 @@
       "hypertension": "Hipertansiyon",
       "sj": "SJ",
       "mw": "MW",
-      "text12FromLastMonth": "Geçen aya göre +%12",
-      "_pending_review": {}
+      "text12FromLastMonth": "Geçen aya göre +%12"
     },
     "staff": {
       "staffDashboard": "Personel Panosu",
@@ -10225,32 +10140,27 @@
       "urgent2": "ACİL",
       "sj": "SJ",
       "waiting2": "BEKLİYOR",
-      "mw": "MW",
-      "_pending_review": {}
+      "mw": "MW"
     },
     "actions": {
       "doNow": "Şimdi Yap",
       "edit": "Düzenle",
       "details": "Detaylar",
-      "later": "Sonra",
-      "_pending_review": {}
+      "later": "Sonra"
     },
     "introexperience": {
       "space": "Boşluk",
       "esc": "Esc",
       "press": "Bas",
       "play": "oynatmak için •",
-      "skip": "atlamak için",
-      "_pending_review": {}
+      "skip": "atlamak için"
     },
     "groups": {
       "match_scoreMatch": "%{match_score} Eşleşme",
-      "join": "Katıl",
-      "_pending_review": {}
+      "join": "Katıl"
     },
     "rewards": {
-      "earnValue0Pts": "{value0} puan kazan",
-      "_pending_review": {}
+      "earnValue0Pts": "{value0} puan kazan"
     },
     "autopilotpopup": {
       "indexLoading": "Dizin yükleniyor…",
@@ -10261,14 +10171,12 @@
       "preparingNextSteps": "Sonraki adımların hazırlanıyor…",
       "allCaughtUpForToday": "Bugün için her şey tamam",
       "nothingNewRightNow": "Şu an senin için yeni bir şey yok.",
-      "checkForNew": "Yenileri kontrol et",
-      "_pending_review": {}
+      "checkForNew": "Yenileri kontrol et"
     },
     "postDetail": {
       "title": "Gönder",
       "notFound": "Gönderi bulunamadı",
-      "back": "Geri",
-      "_pending_review": {}
+      "back": "Geri"
     },
     "partnerportal": {
       "title": "Partner Portalı",
@@ -10322,10 +10230,8 @@
         "degraded": "Bozuk",
         "suspended": "Duraklatıldı",
         "revoked": "Geri alındı",
-        "failed": "Başarısız",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "failed": "Başarısız"
+      }
     },
     "commerceportal": {
       "heroTitle": "İşini Vitanaland'a getir",
@@ -10367,16 +10273,14 @@
         "geminiTitle": "Gemini ile bağlan",
         "geminiStep1": "Gemini CLI için: yukarıdaki MCP sunucu URL'sini ~/.gemini/settings.json dosyasına MCP sunucularının altına ekle.",
         "geminiStep2": "Gemini Enterprise (Business Edition) için: Ayarlar ve yardım → Ekip → Ekibi yönet → Bağlı uygulamalar → \"MCP Sunucusu Ekle\".",
-        "geminiNote": "Tüketici Gemini uygulamasında şu anda özel bir MCP sunucusu eklemenin belgelenmiş bir yolu yok - bu yalnızca Gemini CLI ve Gemini Enterprise ile kullanılabilir.",
-        "_pending_review": {}
+        "geminiNote": "Tüketici Gemini uygulamasında şu anda özel bir MCP sunucusu eklemenin belgelenmiş bir yolu yok - bu yalnızca Gemini CLI ve Gemini Enterprise ile kullanılabilir."
       },
       "detectPlatform": {
         "urlPlaceholder": "Mağaza URL'si (isteğe bağlı) - örn. https://your-shop.com",
         "hint": "URL'yi kontrol edeceğiz ve platformu tanırsak bağlayıcıyı ve sağlayıcı kimliğini otomatik olarak dolduracağız.",
         "detected": "{platform} algılandı - alanlar dolduruldu.",
         "notDetected": "Platform tanınmadı. Lütfen bağlayıcıyı ve sağlayıcı kimliğini elle doldur.",
-        "failed": "Bu adres kontrol edilemedi. Lütfen bağlayıcıyı ve sağlayıcı kimliğini elle doldur.",
-        "_pending_review": {}
+        "failed": "Bu adres kontrol edilemedi. Lütfen bağlayıcıyı ve sağlayıcı kimliğini elle doldur."
       },
       "connectOauth": {
         "title": "Bağlan",
@@ -10391,10 +10295,8 @@
         "fhirButton": "FHIR sunucusunu bağla",
         "connecting": "Bağlanıyor...",
         "notConfigured": "Bu bağlantı türü henüz etkin değil. Lütfen daha sonra tekrar dene.",
-        "failed": "Bağlantı başlatılamadı. Lütfen bilgilerini kontrol et.",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "failed": "Bağlantı başlatılamadı. Lütfen bilgilerini kontrol et."
+      }
     },
     "oauthconsent": {
       "title": "Erişime izin ver?",
@@ -10418,12 +10320,8 @@
         "vitana:partners:read": "İş ortağı bilgilerini gör",
         "vitana:connections:write": "İş bağlantılarını yönet",
         "vitana:grants:write": "Veri hibeleri öner (onay sende kalır)",
-        "vitana:settlement:write": "Hazırlanan VTNA mutabakatlarını tetikle",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "vitana:settlement:write": "Hazırlanan VTNA mutabakatlarını tetikle"
+      }
+    }
+  }
 }

@@ -20,9 +20,14 @@ interface IdentityFormProps {
     avatarOffsetY: number;
     longevityArchetype: string;
   }) => void;
+  // Fired once loadProfile() settles: true only if the profile row was
+  // actually read successfully (no Supabase error). The parent drawer uses
+  // this to refuse a save that would otherwise overwrite real profile data
+  // with blank state from a failed load.
+  onLoadStatusChange?: (loadedSuccessfully: boolean) => void;
 }
 
-export function IdentityForm({ onDataChange }: IdentityFormProps) {
+export function IdentityForm({ onDataChange, onLoadStatusChange }: IdentityFormProps) {
   const [displayName, setDisplayName] = useState("");
   const [handle, setHandle] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
@@ -52,11 +57,24 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
-      const { data: profile } = await supabase
+      const { data: profile, error } = await supabase
         .from('profiles')
         .select('*')
         .eq('user_id', user.id)
         .single();
+
+      // A user's profile row is created on signup and should always exist
+      // here, so we deliberately do NOT exclude PGRST116 (no rows) the way
+      // some other .single() call sites in this repo do for a legitimate
+      // empty case — any error here, including a missing row, means we did
+      // not actually get real profile data back, and the parent drawer must
+      // not be allowed to save over it.
+      if (error) {
+        console.error('[IdentityForm] Error loading profile:', error);
+        setLoaded(true);
+        onLoadStatusChange?.(false);
+        return;
+      }
 
       if (profile) {
         setDisplayName(profile.display_name || "");
@@ -67,9 +85,11 @@ export function IdentityForm({ onDataChange }: IdentityFormProps) {
         setLongevityArchetype(profile.longevity_archetype || "");
       }
       setLoaded(true);
+      onLoadStatusChange?.(true);
     } catch (error) {
       console.error('Error loading profile:', error);
       setLoaded(true);
+      onLoadStatusChange?.(false);
     }
   };
 

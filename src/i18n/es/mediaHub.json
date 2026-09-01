@@ -7,21 +7,24 @@
       "music": "Música",
       "podcasts": "Pódcasts",
       "shorts": "Cortos",
-      "videos": "Videos"
+      "videos": "Videos",
+      "_pending_review": {}
     },
     "sections": {
       "trendingShorts": "Shorts populares",
       "trendingMusic": "Música popular",
       "musicPlaylists": "Listas de reproducción de música",
       "latestEpisodes": "Últimos episodios",
-      "popularShows": "Programas populares"
+      "popularShows": "Programas populares",
+      "_pending_review": {}
     },
     "actions": {
       "upload": "Subir",
       "watchShorts": "Ver Cortos",
       "viewAllShorts": "Ver todos los {count} cortos",
       "playPlaylist": "Reproducir lista",
-      "clearFilters": "Limpiar filtros"
+      "clearFilters": "Limpiar filtros",
+      "_pending_review": {}
     },
     "searchPlaceholder": "Buscar medios...",
     "shortsAvailable": "{count} shorts disponibles",
@@ -46,7 +49,8 @@
       "singleUpload": "Subir uno",
       "bulkUpload": "Subir varios",
       "addToPlaylist": "Agregar a lista",
-      "viewArtist": "Ver artista"
+      "viewArtist": "Ver artista",
+      "_pending_review": {}
     },
     "toast": {
       "linkCopied": "Enlace copiado",
@@ -64,19 +68,22 @@
       "deleteError": "Error",
       "deleteErrorDesc": "Error al eliminar. Inténtalo de nuevo.",
       "commentError": "Error",
-      "commentErrorDesc": "No se pudo publicar el comentario. Inténtalo de nuevo."
+      "commentErrorDesc": "No se pudo publicar el comentario. Inténtalo de nuevo.",
+      "_pending_review": {}
     },
     "deletePodcast": {
       "title": "Eliminar podcast",
       "description": "¿Seguro que quieres eliminar este podcast? Esta acción no se puede deshacer.",
       "cancel": "Cancelar",
-      "confirm": "Eliminar"
+      "confirm": "Eliminar",
+      "_pending_review": {}
     },
     "deleteVideo": {
       "title": "Eliminar video",
       "description": "¿Seguro que quieres eliminar este video? Esta acción no se puede deshacer y eliminará el video del almacenamiento.",
       "cancel": "Cancelar",
-      "confirm": "Eliminar"
+      "confirm": "Eliminar",
+      "_pending_review": {}
     },
     "noMusic": "Aún no se ha subido música",
     "noMusicDesc": "¡Sé el primero en compartir música con la comunidad!",
@@ -133,8 +140,10 @@
         "mentalHealth": "Salud mental",
         "wellness": "Bienestar",
         "education": "Educación",
-        "lifestyle": "Estilo de vida"
-      }
+        "lifestyle": "Estilo de vida",
+        "_pending_review": {}
+      },
+      "_pending_review": {}
     },
     "comments": {
       "title": "Comentarios",
@@ -147,7 +156,10 @@
       "reply": "Responder",
       "replyingTo": "Respondiendo a {name}",
       "cancelReply": "Cancelar respuesta",
-      "like": "Me gusta el comentario"
-    }
-  }
+      "like": "Me gusta el comentario",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

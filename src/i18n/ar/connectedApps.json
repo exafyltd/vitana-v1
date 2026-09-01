@@ -10,19 +10,22 @@
       "social": "اجتماعي ومشاركة",
       "fitness": "اللياقة والأجهزة القابلة للارتداء",
       "health": "صحة ومختبرات",
-      "other": "أخرى"
+      "other": "أخرى",
+      "_pending_review": {}
     },
     "status": {
       "connected": "متصل",
       "notConnected": "غير متصل",
       "comingSoon": "قريبًا",
-      "soon": "قريبًا"
+      "soon": "قريبًا",
+      "_pending_review": {}
     },
     "actions": {
       "connect": "اتصل",
       "disconnect": "افصل",
       "configure": "تهيئة المزامنة",
-      "manage": "إدارة"
+      "manage": "إدارة",
+      "_pending_review": {}
     },
     "lastSync": "آخر مزامنة",
     "dataSync": "مزامنة البيانات",
@@ -33,7 +36,8 @@
       "categories": {
         "all": "كل التطبيقات",
         "health": "الصحة واللياقة البدنية",
-        "social": "التواصل الاجتماعي"
+        "social": "التواصل الاجتماعي",
+        "_pending_review": {}
       },
       "availableApps": "تطبيقات متاحة",
       "verified": "موثق",
@@ -44,7 +48,10 @@
       "done": "تم",
       "noResults": "لا توجد تطبيقات",
       "connectionSuccess": "تم الاتصال بنجاح",
-      "connectionPlaceholder": "اتصال {appName} قريباً"
-    }
-  }
+      "connectionPlaceholder": "اتصال {appName} قريباً",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
