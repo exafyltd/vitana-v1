@@ -1,11 +1,10 @@
 {
   "verdicts": {
     "permissionsActions.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'Radnje privatnosti' is not idiomatic for a UI label; 'Postavke privatnosti' or 'Upravljanje privatnošću' would be more natural.",
-      "suggested": "Postavke privatnosti i dozvola",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "permissionsActions.items.privacySettings.title": {
       "verdict": "OK",
@@ -13,11 +12,10 @@
       "phase": "llm"
     },
     "permissionsActions.items.privacySettings.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The verb 'Konfigurišite' is in the formal 'Vi' form; it should be in the informal 'ti' form for consistency with the app's register.",
-      "suggested": "Konfiguriši privatnost podataka i podešavanja deljenja",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "permissionsActions.items.manageAccess.title": {
       "verdict": "OK",
@@ -90,5 +88,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:05:50.169Z"
+  "generatedAt": "2026-09-01T08:52:17.834Z"
 }
