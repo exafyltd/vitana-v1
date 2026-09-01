@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthProvider";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const GATEWAY_URL = import.meta.env.VITE_GATEWAY_BASE || "";
 
@@ -26,16 +27,27 @@ export interface CategoryPreferencesGrouped {
 
 export function useNotificationCategoryPreferences() {
   const { user } = useAuth();
+  // VTID-03801 — pass the LIVE UI language explicitly rather than relying on
+  // the gateway's server-side locale lookup. That lookup caches per-user for
+  // 5 minutes and is never invalidated by this app's language switch (which
+  // writes stt_language directly via Supabase, bypassing the gateway
+  // entirely), so a user switching to Chinese kept seeing German category
+  // labels/descriptions here until the cache happened to expire. Included in
+  // the query key too, so switching language actually refetches instead of
+  // serving the previous language's cached React Query result.
+  const { selectedLanguage } = useLanguage();
+  const localeBase = selectedLanguage.split("-")[0];
 
   const query = useQuery({
-    queryKey: ["user-category-preferences", user?.id],
+    queryKey: ["user-category-preferences", user?.id, localeBase],
     queryFn: async (): Promise<CategoryPreferencesGrouped> => {
       const jwt = await getJwt();
       if (!jwt) throw new Error("Not authenticated");
 
-      const res = await fetch(`${GATEWAY_URL}/api/v1/notifications/category-preferences`, {
-        headers: { Authorization: `Bearer ${jwt}` },
-      });
+      const res = await fetch(
+        `${GATEWAY_URL}/api/v1/notifications/category-preferences?locale=${localeBase}`,
+        { headers: { Authorization: `Bearer ${jwt}` } }
+      );
       if (!res.ok) {
         const err = await res.json().catch(() => ({ error: res.statusText }));
         throw new Error(err.error || "Failed to fetch category preferences");
@@ -71,9 +83,12 @@ export function useNotificationCategoryPreferences() {
       return res.json();
     },
     onMutate: async ({ categoryId, enabled }) => {
-      // Optimistic update
+      // Optimistic update. Query key now includes localeBase (see queryKey
+      // above), so the exact key must match here too — a stale 2-element key
+      // would silently miss the cached entry and skip the optimistic update.
+      const queryKey = ["user-category-preferences", user?.id, localeBase];
       await qc.cancelQueries({ queryKey: ["user-category-preferences"] });
-      const previous = qc.getQueryData<CategoryPreferencesGrouped>(["user-category-preferences", user?.id]);
+      const previous = qc.getQueryData<CategoryPreferencesGrouped>(queryKey);
 
       if (previous) {
         const updated = { ...previous };
@@ -82,14 +97,14 @@ export function useNotificationCategoryPreferences() {
             cat.id === categoryId ? { ...cat, enabled } : cat
           );
         }
-        qc.setQueryData(["user-category-preferences", user?.id], updated);
+        qc.setQueryData(queryKey, updated);
       }
 
-      return { previous };
+      return { previous, queryKey };
     },
     onError: (_err, _vars, context) => {
       if (context?.previous) {
-        qc.setQueryData(["user-category-preferences", user?.id], context.previous);
+        qc.setQueryData(context.queryKey, context.previous);
       }
     },
     onSettled: () => {
