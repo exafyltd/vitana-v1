@@ -5,9 +5,9 @@
 
 ## Summary
 
-- **Pages scanned:** 296
-- **Distinct i18n keys consumed:** 4455
-- **Namespaces in use:** 43
+- **Pages scanned:** 299
+- **Distinct i18n keys consumed:** 4456
+- **Namespaces in use:** 44
 - **Hardcoded string suspects (regex heuristic):** 67
 
 Pages with hardcoded suspects need migration into the catalog. The authoritative PR-time check is the ESLint rule `i18n/no-raw-jsx-text`.
@@ -156,6 +156,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `profile` — used: 1, total in shard: 59
 - `profileEditor` — used: 2, total in shard: 88
 - `screens` — used: 1, total in shard: 10090
+
+### src/pages/EventGamePublicLanding.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/Health.tsx
 
@@ -775,6 +779,14 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 **i18n namespaces:**
 
 - `screens` — used: 3, total in shard: 10090
+
+### src/pages/admin/community/EventGameAdmin.tsx
+
+**Status:** ✅ clean — keys consumed: 2, namespaces: 1
+
+**i18n namespaces:**
+
+- `eventGame` — used: 2, total in shard: 108
 
 ### src/pages/admin/community/Events.tsx
 
@@ -1514,6 +1526,10 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 - `screens` — used: 21, total in shard: 10090
 
 ## community/
+
+### src/pages/community/EventGamePage.tsx
+
+**Status:** ✅ clean — keys consumed: 0, namespaces: _(none)_
 
 ### src/pages/community/EventsAndMeetups.tsx
 
@@ -2421,13 +2437,13 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 
 ### src/pages/portals/MaxinaPortal.tsx
 
-**Status:** ✅ clean — keys consumed: 34, namespaces: 3
+**Status:** ✅ clean — keys consumed: 33, namespaces: 3
 
 **i18n namespaces:**
 
 - `authPage` — used: 7, total in shard: 15
 - `portals` — used: 11, total in shard: 28
-- `screens` — used: 16, total in shard: 10090
+- `screens` — used: 15, total in shard: 10090
 
 ## professional/
 
@@ -2619,6 +2635,7 @@ Pages with hardcoded suspects need migration into the catalog. The authoritative
 | `marketplaceCheckout` | 1 |
 | `wallet` | 1 |
 | `common` | 1 |
+| `eventGame` | 1 |
 | `adminTabs` | 1 |
 | `loading` | 1 |
 | `empty` | 1 |

@@ -109,6 +109,7 @@ export const adminCommunityNavigation = [
   { id: "meetups", name: "Meetups", path: "/admin/community/meetups" },
   { id: "invitations", name: "Invitations", path: "/admin/community/invitations" },
   { id: "moderation", name: "Moderation", path: "/admin/community/moderation" },
+  { id: "event-game", name: "Event Game", path: "/admin/community/event-game" },
 ];
 
 // Live Rooms

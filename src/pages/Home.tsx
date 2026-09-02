@@ -31,6 +31,7 @@ import {
 import { NewsArticleCard } from "@/components/crossover/NewsArticleCard";
 import { CreateContentPopup } from "@/components/CreateContentPopup";
 import { MobileCreatePostSheet } from "@/components/profile/mobile/MobileCreatePostSheet";
+import { EventGameFeedBadge } from "@/components/event-game/EventGameFeedBadge";
 import { AutopilotPopup } from "@/components/AutopilotPopup";
 import { useAutopilot } from "@/hooks/use-autopilot";
 import { VitanaIndexCard } from "@/components/home/VitanaIndexCard";
@@ -526,6 +527,11 @@ export default function Home() {
               </Button>
             </div>
           </UtilityActionButton>
+          {/* Maxina Longevity Game — renders nothing unless the feature is
+              enabled AND the viewer is an explicit participant in a
+              pre-event/live game (see EventGameFeedBadge.tsx); identical to
+              today for everyone else. */}
+          <EventGameFeedBadge />
           <div className="mt-3">
             <DidYouKnowCard />
           </div>

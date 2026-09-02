@@ -147,6 +147,11 @@ const SettingsTenants = lazy(() => import("./pages/dev/settings/Tenants"));
 
 // Main feature pages
 const Home = lazy(() => import("./pages/Home"));
+// Maxina Longevity Game — event-specific, isolated (see plan doc). Public QR
+// landing (/e/game/:slug, no auth wall) is separate from the in-app entry
+// (/community/event-game, authenticated) — see EventGamePublicLanding.tsx.
+const EventGamePublicLanding = lazy(() => import("./pages/EventGamePublicLanding"));
+const EventGamePage = lazy(() => import("./pages/community/EventGamePage"));
 const Discover = lazy(() => import("./pages/Discover"));
 const Reminders = lazy(() => import("./pages/Reminders"));
 const Health = lazy(() => import("./pages/Health"));
@@ -333,6 +338,7 @@ const AuditPolicies = lazy(() => import("./pages/admin/audit/Policies"));
 const AuditDataRights = lazy(() => import("./pages/admin/audit/DataRights"));
 // Wave 2: Community section
 const CommunityReported = lazy(() => import("./pages/admin/community/ReportedContentNew"));
+const CommunityEventGameAdmin = lazy(() => import("./pages/admin/community/EventGameAdmin"));
 const CommunityMeetups = lazy(() => import("./pages/admin/community/Meetups"));
 const CommunityLiveRooms = lazy(() => import("./pages/admin/community/LiveRooms"));
 const CommunityGroups = lazy(() => import("./pages/admin/community/GroupsNew"));
@@ -780,6 +786,13 @@ const App = () => {
           <Route path="/logout" element={<Logout />} />
           <Route path="/e/:slug" element={<PublicEventLanding />} />
           <Route path="/pub/events/:id" element={<PublicEventLanding />} />
+          {/* Maxina Longevity Game QR-code destination — deliberately a sibling
+              route, not an overload of /e/:slug (see plan §4): that route
+              resolves a different table via a dedicated edge function, and
+              two independent tables sharing one slug param risks collisions. */}
+          <Route path="/e/game/:slug" element={
+            <AuthGuard allowGuest><EventGamePublicLanding /></AuthGuard>
+          } />
           <Route path="/pub/campaigns/:id" element={<PublicCampaignLanding />} />
           {/* Download flyer — shared via "Invite a friend"; recipients are logged out */}
           <Route path="/download" element={<DownloadFlyer />} />
@@ -866,6 +879,13 @@ const App = () => {
             <AuthGuard>
               <ProtectedRoute requiredRole="community">
                 <Home />
+              </ProtectedRoute>
+            </AuthGuard>
+          } />
+          <Route path="/community/event-game" element={
+            <AuthGuard>
+              <ProtectedRoute requiredRole="community">
+                <EventGamePage />
               </ProtectedRoute>
             </AuthGuard>
           } />
@@ -1961,6 +1981,9 @@ const App = () => {
           } />
           <Route path="/admin/community/moderation" element={
             <AuthGuard><ProtectedRoute requiredRole="admin"><ReportedContent /></ProtectedRoute></AuthGuard>
+          } />
+          <Route path="/admin/community/event-game" element={
+            <AuthGuard><ProtectedRoute requiredRole="admin"><CommunityEventGameAdmin /></ProtectedRoute></AuthGuard>
           } />
 
           {/* 5. Live Rooms Section */}

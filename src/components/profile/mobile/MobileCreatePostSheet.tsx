@@ -12,9 +12,23 @@ import { PostBackgroundPicker } from '@/components/feed/PostBackgroundPicker';
 import { getPostBackground } from '@/lib/post-backgrounds';
 import type { PostMention } from '@/lib/news-feed-ranker';
 
+/** Maxina Longevity Game (event-specific, optional) — when present, the
+ * sheet shows the Event/Longevity category switch and tags the resulting
+ * post so the server-side scoring triggers pick it up. Point amounts are
+ * passed in (not hardcoded) so the label always reflects the event's own
+ * configured scoring. Omitted, this component is unchanged in every respect
+ * for every other caller. */
+interface EventGamePostContext {
+  eventGameId: string;
+  eventPostPoints: number;
+  longevityPostPoints: number;
+  onPosted?: (info: { isLongevityBonus: boolean }) => void;
+}
+
 interface MobileCreatePostSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  eventGameContext?: EventGamePostContext;
 }
 
 const MAX_CHARS = 500;
@@ -28,10 +42,11 @@ const MAX_COMPRESSIBLE_VIDEO_BYTES = 300 * 1024 * 1024; // 300 MB
 
 type MediaKind = 'image' | 'video';
 
-export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSheetProps) {
+export function MobileCreatePostSheet({ open, onOpenChange, eventGameContext }: MobileCreatePostSheetProps) {
   const [content, setContent] = useState('');
   const [backgroundStyle, setBackgroundStyle] = useState<string | null>(null);
   const [mentions, setMentions] = useState<PostMention[]>([]);
+  const [isLongevityBonus, setIsLongevityBonus] = useState(false);
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [mediaPreview, setMediaPreview] = useState<string | null>(null);
   const [mediaKind, setMediaKind] = useState<MediaKind | null>(null);
@@ -202,8 +217,11 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
         // Backgrounds only apply to text-only posts.
         backgroundStyle: mediaFile ? null : backgroundStyle,
         mentions,
+        eventGameId: eventGameContext?.eventGameId,
+        isLongevityBonus: eventGameContext ? isLongevityBonus : undefined,
       });
       toast({ title: translate('profilePosts.posted', 'Posted!') });
+      eventGameContext?.onPosted?.({ isLongevityBonus });
       cleanup();
       onOpenChange(false);
     } catch (err: unknown) {
@@ -220,6 +238,7 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
     setContent('');
     setBackgroundStyle(null);
     setMentions([]);
+    setIsLongevityBonus(false);
     removeMedia();
     setIsCompressing(false);
     setCompressProgress(0);
@@ -268,6 +287,28 @@ export function MobileCreatePostSheet({ open, onOpenChange }: MobileCreatePostSh
 
         {/* Content */}
         <div className="flex-1 p-4 overflow-y-auto">
+          {eventGameContext && (
+            <div className="flex gap-2 mb-3">
+              <Button
+                type="button"
+                variant={isLongevityBonus ? 'outline' : 'default'}
+                size="sm"
+                className="flex-1 rounded-full"
+                onClick={() => setIsLongevityBonus(false)}
+              >
+                {t('eventGame.post.categoryEvent')} {t('eventGame.post.categoryPoints', { points: eventGameContext.eventPostPoints })}
+              </Button>
+              <Button
+                type="button"
+                variant={isLongevityBonus ? 'default' : 'outline'}
+                size="sm"
+                className="flex-1 rounded-full"
+                onClick={() => setIsLongevityBonus(true)}
+              >
+                {t('eventGame.post.categoryLongevity')} {t('eventGame.post.categoryPoints', { points: eventGameContext.longevityPostPoints })}
+              </Button>
+            </div>
+          )}
           <MentionTextarea
             value={content}
             onChange={setContent}
