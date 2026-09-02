@@ -26,11 +26,10 @@
       "phase": "llm"
     },
     "subNav.insights": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The translation 'Идеи' (ideas) is too generic and does not fully capture the meaning of 'Insights' (deeper understanding, revelations) in a wellness context.",
-      "suggested": "Озарения",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "subNav.recommendations": {
       "verdict": "OK",
@@ -118,11 +117,10 @@
       "phase": "llm"
     },
     "subNav.archived": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Архивные' is an adjective (plural) and feels incomplete as a standalone UI label for a section. The noun form is more appropriate.",
-      "suggested": "Архив",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "subNav.servicesHub": {
       "verdict": "OK",
@@ -215,5 +213,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T02:07:40.498Z"
+  "generatedAt": "2026-09-02T08:08:16.649Z"
 }
