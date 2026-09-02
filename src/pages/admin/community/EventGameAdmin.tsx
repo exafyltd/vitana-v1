@@ -26,6 +26,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
 import { notifySuccess, notifyError, t } from '@/lib/i18n-toast';
 import { fmtDateTime } from '@/lib/locale-format';
+import { useTenant } from '@/hooks/useTenant';
 import type { EventGame } from '@/hooks/useEventGame';
 
 interface LedgerRow {
@@ -56,6 +57,7 @@ const EMPTY: Partial<EventGame> = {
 };
 
 export default function EventGameAdmin() {
+  const { activeTenantId } = useTenant();
   const [game, setGame] = useState<Partial<EventGame>>(EMPTY);
   const [saving, setSaving] = useState(false);
   const [leaderboard, setLeaderboard] = useState<{ user_id: string; display_name: string | null; score: number; rank: number }[]>([]);
@@ -65,9 +67,11 @@ export default function EventGameAdmin() {
   const [adjustReason, setAdjustReason] = useState('');
 
   const load = async () => {
+    if (!activeTenantId) return;
     const { data: games } = await supabase
       .from('event_games' as never)
       .select('*')
+      .eq('tenant_id', activeTenantId as never)
       .order('created_at', { ascending: false })
       .limit(1);
     const existing = (games as unknown as EventGame[] | null)?.[0];
@@ -93,9 +97,10 @@ export default function EventGameAdmin() {
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [activeTenantId]);
 
   const handleSave = async () => {
+    if (!activeTenantId) return;
     setSaving(true);
     try {
       const payload = { ...game };
@@ -108,7 +113,7 @@ export default function EventGameAdmin() {
         } = await supabase.auth.getUser();
         const { error, data } = await supabase
           .from('event_games' as never)
-          .insert({ ...payload, created_by: user?.id } as never)
+          .insert({ ...payload, tenant_id: activeTenantId, created_by: user?.id } as never)
           .select('*')
           .single();
         if (error) throw error;
