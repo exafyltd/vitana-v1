@@ -46,6 +46,8 @@
     "logout": "Cerrar sesión",
     "connectors": "Aplicaciones conectadas",
     "support": "Soporte",
-    "myJourney": "Mi Viaje"
-  }
+    "myJourney": "Mi Viaje",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

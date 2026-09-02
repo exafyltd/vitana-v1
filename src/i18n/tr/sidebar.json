@@ -46,6 +46,8 @@
     "logout": "Çıkış Yap",
     "connectors": "Bağlayıcılar",
     "support": "Destek",
-    "myJourney": "Yolculuğum"
-  }
+    "myJourney": "Yolculuğum",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
