@@ -166,11 +166,10 @@
       "phase": "llm"
     },
     "health.emptyStates.noSleepPlan": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'خطة' is feminine, so 'لا توجد' should be used instead of 'لا يوجد'.",
-      "suggested": "لا توجد خطة نوم بعد",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.emptyStates.noSleepPlanDesc": {
       "verdict": "OK",
@@ -178,11 +177,10 @@
       "phase": "llm"
     },
     "health.emptyStates.noExercisePlan": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'خطة' is feminine, so 'لا توجد' should be used instead of 'لا يوجد'.",
-      "suggested": "لا توجد خطة تمرين بعد",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.emptyStates.noExercisePlanDesc": {
       "verdict": "OK",
@@ -190,11 +188,10 @@
       "phase": "llm"
     },
     "health.emptyStates.noNutritionPlan": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'خطة' is feminine, so 'لا توجد' should be used instead of 'لا يوجد'.",
-      "suggested": "لا توجد خطة تغذية بعد",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.emptyStates.noNutritionPlanDesc": {
       "verdict": "OK",
@@ -202,11 +199,10 @@
       "phase": "llm"
     },
     "health.emptyStates.noHydrationPlan": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'خطة' is feminine, so 'لا توجد' should be used instead of 'لا يوجد'.",
-      "suggested": "لا توجد خطة ترطيب بعد",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.emptyStates.noHydrationPlanDesc": {
       "verdict": "OK",
@@ -214,11 +210,10 @@
       "phase": "llm"
     },
     "health.emptyStates.noMentalPlan": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'خطة' is feminine, so 'لا توجد' should be used instead of 'لا يوجد'.",
-      "suggested": "لا توجد خطة نفسية بعد",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "health.emptyStates.noMentalPlanDesc": {
       "verdict": "OK",
@@ -286,5 +281,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:39:52.191Z"
+  "generatedAt": "2026-09-02T08:03:05.758Z"
 }

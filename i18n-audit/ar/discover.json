@@ -27,10 +27,8 @@
       "phase": "llm"
     },
     "discover.searchPlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "Missing 'عن' for 'about' and informal register could be improved.",
-      "suggested": "عن ماذا تبحث؟ (مثلاً: فصول اليوغا، طبيب طول العمر، لقاءات)",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "discover.doctorsCoaches": {
@@ -460,9 +458,9 @@
     },
     "discover.aiPicks.recommendationsFound": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'توصيات' is feminine plural, but 'تم العثور' is masculine. Should be 'تم العثور على' with feminine verb or restructure.",
-      "suggested": "تم العثور على {count} توصية",
+      "confidence": 1,
+      "issue": "Grammatical error in number-noun agreement. The singular 'توصية' (recommendation) is only correct for numbers 11-99. For other counts (1, 2, 3-10), it is incorrect.",
+      "suggested": "تم العثور على {count} من التوصيات",
       "phase": "llm"
     },
     "discover.aiPicks.noRecommendations": {
@@ -550,5 +548,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:39:05.192Z"
+  "generatedAt": "2026-09-02T08:02:56.483Z"
 }

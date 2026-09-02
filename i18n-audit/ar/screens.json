@@ -1696,11 +1696,10 @@
       "phase": "llm"
     },
     "screens.common.johnDoe": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Placeholder name changed to a different Arabic name; should keep original or use transliteration.",
-      "suggested": "جون دو",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.common.allServices": {
       "verdict": "OK",
@@ -1713,11 +1712,10 @@
       "phase": "llm"
     },
     "screens.common.connectIntegration": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Translation is literal but may be ambiguous; 'Connect Integration' could be a proper noun or action. Suggest clearer phrasing.",
-      "suggested": "ربط التكامل",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.common.browseAllAvailableIntegrationsServices": {
       "verdict": "OK",
@@ -2465,11 +2463,10 @@
       "phase": "llm"
     },
     "screens.common.anonymizedResearch": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Typo: 'مجهّل' should be 'مجهول'",
-      "suggested": "بحث مجهول",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.common.personalUse": {
       "verdict": "OK",
@@ -3462,11 +3459,10 @@
       "phase": "llm"
     },
     "screens.common.muteBiomarkers3Days": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Compound word 'المؤشرات-الحيوية' is hyphenated but could be split; also 'مؤشرات حيوية' is more natural.",
-      "suggested": "كتم المؤشرات الحيوية (3 أيام)",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.common.snoozeCommunity2Hours": {
       "verdict": "OK",
@@ -4944,11 +4940,10 @@
       "phase": "llm"
     },
     "screens.common.hhMm": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The Arabic abbreviation 'سس:دد' is not standard for HH:MM; it's a literal transliteration that may confuse users.",
-      "suggested": "ساعة:دقيقة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.common.eGMorningRunnersHealthyCooking": {
       "verdict": "OK",
@@ -5281,11 +5276,10 @@
       "phase": "llm"
     },
     "screens.common.mental": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is grammatically incorrect; should be 'الصحة العقلية' or 'العقل' depending on context.",
-      "suggested": "الصحة العقلية",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.common.next3": {
       "verdict": "OK",
@@ -5333,11 +5327,10 @@
       "phase": "llm"
     },
     "screens.admin.geminiLiveApiConfiguration": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Word order is awkward; 'Gemini Live' should come after 'إعدادات'.",
-      "suggested": "إعدادات واجهة برمجة التطبيقات Gemini Live",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.getYourApiKey": {
       "verdict": "OK",
@@ -5390,11 +5383,10 @@
       "phase": "llm"
     },
     "screens.admin.justNow": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Redundant; 'الآن' already means 'now', 'للتو' adds emphasis but is awkward.",
-      "suggested": "للتو",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.dndBypass": {
       "verdict": "OK",
@@ -6507,11 +6499,10 @@
       "phase": "llm"
     },
     "screens.admin.totalUploaded": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward phrasing; 'المرفوع' is not idiomatic for 'uploaded'.",
-      "suggested": "إجمالي ما تم رفعه",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.storageUsed": {
       "verdict": "OK",
@@ -6939,11 +6930,10 @@
       "phase": "llm"
     },
     "screens.admin.voiceActivityDetection": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Translation is awkward and may not convey the meaning clearly.",
-      "suggested": "التعرف على تنشيط الصوت",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.automaticallyDetectWhenUserStopsSpeaking": {
       "verdict": "OK",
@@ -7546,11 +7536,10 @@
       "phase": "llm"
     },
     "screens.admin.oneclickMultimodalValidation": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward phrasing; 'multimodal' should be placed before 'validation' for natural Arabic.",
-      "suggested": "التحقق متعدد الوسائط بنقرة واحدة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.allTestsPassed": {
       "verdict": "OK",
@@ -7578,11 +7567,10 @@
       "phase": "llm"
     },
     "screens.admin.testsAllMultimodalInputs45s": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward phrasing; 'multimodal' should be placed before 'inputs' for natural Arabic.",
-      "suggested": "يختبر جميع المدخلات متعددة الوسائط (~45 ثانية)",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.customMode": {
       "verdict": "OK",
@@ -7690,11 +7678,10 @@
       "phase": "llm"
     },
     "screens.admin.situationAnalyses": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Translation is not idiomatic; 'Situation Analyses' likely means 'تحليل المواقف' (analysis of situations) rather than 'تحليلات المواقف'.",
-      "suggested": "تحليل المواقف",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.avgAnalysisTime": {
       "verdict": "OK",
@@ -7767,11 +7754,10 @@
       "phase": "llm"
     },
     "screens.admin.usingGlobal": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Ambiguous: 'Using global' might mean 'Using global settings' or 'Using global model'. The Arabic 'باستخدام العام' is not clear. Suggest 'باستخدام الإعدادات العامة' if referring to settings.",
-      "suggested": "باستخدام الإعدادات العامة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.assistantPersonality": {
       "verdict": "OK",
@@ -8359,11 +8345,10 @@
       "phase": "llm"
     },
     "screens.admin.modNoBans": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Typo: 'حظور' should be 'حظر'",
-      "suggested": "لا توجد حظر نشطة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.modNoBansDesc": {
       "verdict": "OK",
@@ -8616,11 +8601,10 @@
       "phase": "llm"
     },
     "screens.admin.intakeAdditions": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Translation of 'Intake additions' is ambiguous; 'المدخلات' may mean 'inputs' but not clear in context.",
-      "suggested": "إضافات الإدخال",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.notesPrivate": {
       "verdict": "OK",
@@ -8743,11 +8727,10 @@
       "phase": "llm"
     },
     "screens.admin.stayinlineOverrides": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Translation of 'Stay-inline overrides' is awkward; 'البقاء مضمنًا' is not idiomatic.",
-      "suggested": "تجاوزات البقاء في السطر",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.noneEveryForwardTriggerFires": {
       "verdict": "OK",
@@ -9240,11 +9223,10 @@
       "phase": "llm"
     },
     "screens.admin.rolesGrant": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward phrasing; 'للمنح' is not idiomatic.",
-      "suggested": "الأدوار التي سيتم منحها",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.loadingInvitations": {
       "verdict": "OK",
@@ -10597,11 +10579,10 @@
       "phase": "llm"
     },
     "screens.admin.addAdminEmails": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Plural mismatch: 'Admin Emails' is plural, but 'بريد إلكتروني' is singular.",
-      "suggested": "أضف رسائل البريد الإلكتروني للمسؤولين",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.addEmailAddressesElevateSuperAdministrator": {
       "verdict": "OK",
@@ -10999,11 +10980,10 @@
       "phase": "llm"
     },
     "screens.admin.discovered": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender mismatch: 'Discovered' is an adjective describing patterns, but the Arabic translation uses the feminine singular form 'اكتشفت' which is a verb, not an adjective. It should be 'مكتشفة' (feminine singular adjective) to agree with 'أنماط' (patterns, feminine plural).",
-      "suggested": "مكتشفة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.reviewed": {
       "verdict": "OK",
@@ -11401,11 +11381,10 @@
       "phase": "llm"
     },
     "screens.admin.activateBlockedReviseSpecRegenerate": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Hyphenated word 'أعد-الإنشاء' is awkward; better as 'أعد الإنشاء' without hyphen.",
-      "suggested": "تم حظر التفعيل. راجع المواصفات وأعد الإنشاء.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.recommendation": {
       "verdict": "OK",
@@ -11458,11 +11437,10 @@
       "phase": "llm"
     },
     "screens.admin.appliesAllNonoptedoutTenants": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'undisputed tenants' is ambiguous and the translation is awkward. In a wellness app context, it likely refers to 'all tenants without dispute' but the Arabic is literal and unclear.",
-      "suggested": "ينطبق على جميع المستأجرين غير المتنازع عليهم.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.reindex": {
       "verdict": "OK",
@@ -12375,11 +12353,10 @@
       "phase": "llm"
     },
     "screens.admin.activeStreamsLength": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The word 'البثوث' is a plural of 'بث' but is not commonly used; 'البث المباشر' is more idiomatic.",
-      "suggested": "البث المباشر النشط ({length})",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.hostHostDuration": {
       "verdict": "OK",
@@ -12517,11 +12494,10 @@
       "phase": "llm"
     },
     "screens.admin.lastAnalysisDiscoveredLengthPatterns": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'أنماط' is feminine plural, but 'اكتشف' is masculine. Should be 'اكتشفت'.",
-      "suggested": "اكتشفت التحليل الأخير {length} أنماط",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.value0PatternsDiscovered": {
       "verdict": "OK",
@@ -12534,11 +12510,10 @@
       "phase": "llm"
     },
     "screens.admin.enterYourTenantspecificSystemPrompt": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'tenant-specific' translated as 'الخاص بالمستأجر' is awkward; better 'الخاص بالمستأجر' could be 'الخاص بمستأجرك' or 'الخاص بالعميل' depending on context. Also 'system prompt' as 'موجه النظام' is acceptable but could be clearer.",
-      "suggested": "أدخل موجه النظام الخاص بمستأجرك...",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.sendMessageStartTesting": {
       "verdict": "OK",
@@ -12571,11 +12546,10 @@
       "phase": "llm"
     },
     "screens.admin.updatedValue0": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "Arabic word order: 'تم التحديث {value0}' is awkward; better to say 'تم التحديث في {value0}' or 'آخر تحديث: {value0}'.",
-      "suggested": "آخر تحديث: {value0}",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.byUpdated_by": {
       "verdict": "OK",
@@ -12678,11 +12652,10 @@
       "phase": "llm"
     },
     "screens.admin.thisPageShowsPlaceholderServiceStatuses": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation of 'proxying' as 'وكالة' is inaccurate; it should be 'بروكسي' or 'وساطة'. Also, the phrase 'للاستدعاء' is awkward; better to use 'للاتصال بـ'.",
-      "suggested": "تعرض هذه الصفحة حالات خدمة وهمية. تتطلب فحوصات السلامة في الوقت الفعلي وساطة من جانب الخادم عبر البوابة للاتصال بـ {value0} لكل خدمة.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.endpointAllServicesRunCloudRun": {
       "verdict": "OK",
@@ -12760,11 +12733,10 @@
       "phase": "llm"
     },
     "screens.admin.whenOffYourMembersNeverHear": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The phrase 'لا يسمع أعضاؤك أبدًا من {display_name}' is awkward; it should be 'لن يسمع أعضاؤك من {display_name} أبدًا'.",
-      "suggested": "عند إيقاف التشغيل، لن يسمع أعضاؤك من {display_name} أبدًا في تسليمات الصوت ولا يكون لكلمات التوجيه الرئيسية أدناه أي تأثير.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.platformDefaultValue0": {
       "verdict": "OK",
@@ -12977,11 +12949,10 @@
       "phase": "llm"
     },
     "screens.admin.thisDocumentPartVitanaSystemKnowledge": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Translation is awkward and incomplete; 'Saving immediately applies your changes' is rendered as 'يحفظ التغييرات ويطبقها فورًا' which is missing the subject and is not idiomatic.",
-      "suggested": "هذه الوثيقة جزء من قاعدة بيانات معرفة نظام Vitana (أولوية موجه الاسترجاع 100). الحفظ يطبق تغييراتك فورًا على أساس المساعد لـ",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.includingBookVitanaIndexIfThis": {
       "verdict": "OK",
@@ -12999,11 +12970,10 @@
       "phase": "llm"
     },
     "screens.admin.savingAppliesYourChangesImmediatelyEvery": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Translation is awkward and incomplete; 'Saving applies your changes immediately' is rendered as 'يحفظ التغييرات ويطبقها فورًا' which is missing the subject and is not idiomatic.",
-      "suggested": ". الحفظ يطبق تغييراتك فورًا على كل مستأجر لم ينسحب — سيظهر مساعدهم المحتوى الجديد عند الاسترجاع التالي. هل تريد المتابعة؟",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.documentTitle": {
       "verdict": "OK",
@@ -13126,11 +13096,10 @@
       "phase": "llm"
     },
     "screens.admin.runRealNavigatorPipelineAgainstTest": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Compound word 'المشغل' is fine, but 'تعديل المشغل الخاص بك' is awkward; also 'الخاص بك' is formal. Suggest more natural phrasing.",
-      "suggested": "شغّل مسار Navigator الحقيقي مقابل عبارة اختبار. يعرض أفضل 3 اختيارات مع النتائج حتى تعرف إذا كان تعديل مشغّلك قد نجح.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.eGHowDoITrack": {
       "verdict": "OK",
@@ -13175,11 +13144,10 @@
       "phase": "llm"
     },
     "screens.admin.value0NotificationTypeSMapped": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Plural handling: 'نوع (أنواع)' is awkward; also 'مُعيّن' should agree with 'أنواع' (feminine plural). Suggest clearer phrasing.",
-      "suggested": "{value0} نوع (أنواع) إشعارات معيّنة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.sendTestNotification": {
       "verdict": "OK",
@@ -13254,32 +13222,28 @@
       "phase": "llm"
     },
     "screens.admin.value0UserSHavePushNotifications": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'مستخدم' is singular masculine, but 'قام {value0} مستخدم' is fine if value0 is a number; however, 'مستخدم' should be plural if value0 > 1. Suggest using 'مستخدمًا' or 'مستخدمين' depending on number.",
-      "suggested": "قام {value0} مستخدم بتعطيل إشعارات الدفع عالميًا.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.pending_invitationsPendingInvitationValue1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Plural handling: 'دعوة معلقة' is singular; should be plural if pending_invitations > 1. Suggest using 'دعوات معلقة'.",
-      "suggested": "{pending_invitations} دعوات معلقة{value1}",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.lengthAlertValue124h": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Plural handling: 'تنبيه' is singular; should be plural if length > 1. Suggest using 'تنبيهات'.",
-      "suggested": "{length} تنبيهات{value1} (24 ساعة)",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.lengthMemberValue1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Plural handling: 'عضو' is singular; should be plural if length > 1. Suggest using 'أعضاء'.",
-      "suggested": "{length} أعضاء{value1}",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.lastCheckedValue0Value1": {
       "verdict": "OK",
@@ -13802,11 +13766,10 @@
       "phase": "llm"
     },
     "screens.admin.paFeedbackSplit": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward phrasing; 'انطباع الملاحظات' is not idiomatic for 'feedback sentiment'.",
-      "suggested": "مشاعر الملاحظات",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.admin.paPositive": {
       "verdict": "OK",
@@ -15594,11 +15557,10 @@
       "phase": "llm"
     },
     "screens.business.autopilotHasLengthReferralDraftValue1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Placeholder order and gender mismatch; 'referral draft' is not idiomatic.",
-      "suggested": "الطيار الآلي لديه {length}مسودة إحالة{value1} لك",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.business.scoreValue0": {
       "verdict": "OK",
@@ -15726,11 +15688,10 @@
       "phase": "llm"
     },
     "screens.calendar.text10Credits": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Plural form 'أرصدة' is less common for credits; 'ائتمانات' is more standard.",
-      "suggested": "+10 ائتمانات",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.calendar.join": {
       "verdict": "OK",
@@ -15878,11 +15839,10 @@
       "phase": "llm"
     },
     "screens.calendar.todaySIndexPulseCompletingYour": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The Arabic translation is awkward and may not convey the intended meaning clearly. The phrase 'إكمال حدثك الموسوم بـ {totalCount} ركيزة {value1} سيحرك مؤشرك' is confusing; it should be restructured for clarity.",
-      "suggested": "نبض مؤشر اليوم: إكمال حدثك المرتبط بـ {totalCount} ركائز سيحرك مؤشرك بمقدار {value1}.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.calendar.urgent": {
       "verdict": "OK",
@@ -19975,11 +19935,10 @@
       "phase": "llm"
     },
     "screens.dev.aiCreated": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "Translation is ambiguous; 'AI Created' likely means 'created by AI', but Arabic says 'إنشاء الذكاء الاصطناعي' which is a verbal noun phrase, not a past participle. Suggest clearer phrasing.",
-      "suggested": "تم إنشاؤه بواسطة الذكاء الاصطناعي",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.dev.selectTaskViewDetails": {
       "verdict": "OK",
@@ -20822,11 +20781,10 @@
       "phase": "llm"
     },
     "screens.dev.runSmoke": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Meaning unclear; 'Smoke' likely refers to smoke test, not smoke (دخان). Suggest clearer translation.",
-      "suggested": "تشغيل اختبار الدخان",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.dev.info": {
       "verdict": "OK",
@@ -20859,11 +20817,10 @@
       "phase": "llm"
     },
     "screens.dev.complete": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "In context of marking a task complete, 'إكمال' is a noun; better to use verb form.",
-      "suggested": "إتمام",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.dev.postpone": {
       "verdict": "OK",
@@ -20906,11 +20863,10 @@
       "phase": "llm"
     },
     "screens.dev.activeServersentEventsConnections": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Long compound phrase; could be split for readability.",
-      "suggested": "اتصالات أحداث الخادم المرسلة النشطة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.dev.highLoad": {
       "verdict": "OK",
@@ -21643,18 +21599,16 @@
       "phase": "llm"
     },
     "screens.diary.noValue0EntriesYet": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Placeholder {value0} is concatenated with the following word without a space, which is awkward in Arabic.",
-      "suggested": "لا توجد {value0} مدخلات بعد",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.diary.loadMoreValue0Remaining": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Placeholder {value0} is concatenated with the following word without a space, which is awkward in Arabic.",
-      "suggested": "تحميل المزيد ({value0} متبقية)",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.diary.whatSYourMindToday": {
       "verdict": "OK",
@@ -21682,11 +21636,10 @@
       "phase": "llm"
     },
     "screens.diary.lengthCharacters": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Placeholder {length} is concatenated with the following word without a space, which is awkward in Arabic.",
-      "suggested": "{length} أحرف",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.diary.tagLabel_diary": {
       "verdict": "OK",
@@ -22339,11 +22292,10 @@
       "phase": "llm"
     },
     "screens.discover.aimatchedProviders": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'مطابقون' is masculine plural, but 'مقدمو خدمات' is masculine plural, so it's correct. However, the phrase is a bit awkward; consider a more natural phrasing.",
-      "suggested": "مقدمو خدمات متوافقون مع الذكاء الاصطناعي",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.discover.providersMatchedYourHealthNeedsPreferences": {
       "verdict": "OK",
@@ -22516,11 +22468,10 @@
       "phase": "llm"
     },
     "screens.discover.nextAvailable": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward phrasing; 'التالي المتاح' is literal but not idiomatic.",
-      "suggested": "الأقرب المتاح",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.discover.specialty2": {
       "verdict": "OK",
@@ -23043,11 +22994,10 @@
       "phase": "llm"
     },
     "screens.discover.thisProductCardInformationalAlwaysConsult": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender inconsistency: 'حاملًا' is masculine, but 'مرضعة' and 'تتناولين' are feminine. Should be consistent.",
-      "suggested": "بطاقة المنتج هذه لأغراض معلوماتية فقط. استشر دائمًا طبيبًا مؤهلاً قبل تناول أي مكمل جديد، خاصة إذا كنتِ حاملًا أو مرضعة أو تتناولين أدوية.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.discover.value0Notes": {
       "verdict": "OK",
@@ -23090,11 +23040,10 @@
       "phase": "llm"
     },
     "screens.discover.claimedTotalClaimed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'مُطالب بها' is feminine, but the subject is likely masculine or mixed. Suggest neutral or masculine form.",
-      "suggested": "{claimed}/{total} مُطالب به",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.discover.saveValue0": {
       "verdict": "OK",
@@ -23302,11 +23251,10 @@
       "phase": "llm"
     },
     "screens.discovery.value0NewTodayViewedcountTotalcount": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender agreement issue: 'تمت مشاهدته' is masculine but 'count' is feminine in Arabic.",
-      "suggested": "{value0}جديد اليوم · {viewedCount}/{totalCount}تمت مشاهدتها",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.discovery.clearFilters": {
       "verdict": "OK",
@@ -23414,11 +23362,10 @@
       "phase": "llm"
     },
     "screens.events.sent_countSentResponse_countResponded": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender agreement: 'استجاب' is masculine but 'استجابة' (response) is feminine; should be 'استجابت'.",
-      "suggested": "{sent_count}مرسل • {response_count}استجابت",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.events.attendeesTotal": {
       "verdict": "OK",
@@ -23576,11 +23523,10 @@
       "phase": "llm"
     },
     "screens.health.pillar_exercise_title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "Gender mismatch: 'تمرين' is masculine, but 'حركة' is feminine; should be 'تمارين وحركة' or 'التمرين والحركة'.",
-      "suggested": "التمرين والحركة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.health.pillar_exercise_desc": {
       "verdict": "OK",
@@ -23878,11 +23824,10 @@
       "phase": "llm"
     },
     "screens.health.planSummary_nutrition_insight1": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward phrasing; 'optimized' should modify 'breakfast protein' clearly.",
-      "suggested": "🧩 الطيار الآلي حسّن بروتين الإفطار لاستعادة العضلات",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.health.planSummary_nutrition_insight2": {
       "verdict": "OK",
@@ -24445,11 +24390,10 @@
       "phase": "llm"
     },
     "screens.health.noRecipesMatchYourFilters": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Possessive suffix 'your' is translated as 'فلاترك' which is correct but could be more natural as 'فلاترك' is fine; however, the phrase 'تطابق فلاترك' is slightly awkward. Suggest 'لا توجد وصفات تطابق عوامل التصفية الخاصة بك' for clarity.",
-      "suggested": "لا توجد وصفات تطابق عوامل التصفية الخاصة بك",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.health.dietType": {
       "verdict": "OK",
@@ -25507,11 +25451,10 @@
       "phase": "llm"
     },
     "screens.health.uploadBloodPanel": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation 'لوحة الدم' is literal and not idiomatic; 'Blood Panel' refers to a set of blood test results, not a physical panel.",
-      "suggested": "رفع نتائج فحص الدم",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.health.omicsBiomarkers": {
       "verdict": "OK",
@@ -25614,11 +25557,10 @@
       "phase": "llm"
     },
     "screens.health.eachFivePillarsMax200Each": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The translation is incomplete and awkward; 'a small' is left untranslated and the sentence is cut off.",
-      "suggested": "كل من الركائز الخمس (بحد أقصى 200 لكل منها) هو مجموع أربع درجات فرعية: صغيرة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.health.book": {
       "verdict": "OK",
@@ -25651,11 +25593,10 @@
       "phase": "llm"
     },
     "screens.health.nextAvailableNextavailable": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The word order is unnatural; 'متاح التالي' is not idiomatic. Better to say 'التالي المتاح' or 'الموعد التالي'.",
-      "suggested": "التالي المتاح: {nextAvailable}",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.health.todayTotal": {
       "verdict": "OK",
@@ -25998,11 +25939,10 @@
       "phase": "llm"
     },
     "screens.health.value0LDailyTarget": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Word order is awkward; 'daily target' should come before the value.",
-      "suggested": "الهدف اليومي: {value0} لتر",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.health.lastUpdatedLastupdated": {
       "verdict": "OK",
@@ -26140,11 +26080,10 @@
       "phase": "llm"
     },
     "screens.health.lengthTestValue1Available": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Plural form 'اختبارات' may not match singular/plural context; '{length}' could be 1.",
-      "suggested": "{length} اختبار/اختبارات متاحة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.health.hide": {
       "verdict": "OK",
@@ -26577,11 +26516,10 @@
       "phase": "llm"
     },
     "screens.home.youReAllCaughtUp": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Literal translation is awkward; idiomatic Arabic would be 'لقد تابعت كل شيء' or 'أنت مطلع على كل شيء'.",
-      "suggested": "أنت مطلع على كل شيء",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.home.searchShort": {
       "verdict": "OK",
@@ -26789,18 +26727,16 @@
       "phase": "llm"
     },
     "screens.home.spotlightConsentTitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward phrasing; 'تسليط الضوء المجتمعي' is literal and not idiomatic.",
-      "suggested": "الظهور في الضوء المجتمعي",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.home.spotlightConsentDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Awkward phrasing; 'بأن يأخذك في الاعتبار' is literal and unnatural.",
-      "suggested": "اسمح لمؤشر Vitana الخاص بك بأن يضعك في الاعتبار لتسليط الضوء على 'الأكثر تحسنًا' في موجز الأخبار. لا تتم مشاركة النتائج الدقيقة أبدًا.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.home.reportSexual": {
       "verdict": "OK",
@@ -27193,11 +27129,10 @@
       "phase": "llm"
     },
     "screens.home.findYourPeople": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Phrasing is awkward and informal; 'جد ناسك' is too literal and not idiomatic.",
-      "suggested": "اعثر على أشخاصك",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.home.searchPeopleGroupsCoachesEvents": {
       "verdict": "OK",
@@ -28505,18 +28440,16 @@
       "phase": "llm"
     },
     "screens.memory.noKnowledgeBaseEntriesYet": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical agreement: 'إدخالات' is plural and should be 'إدخال' after 'لا يوجد' (which is for singular).",
-      "suggested": "لا يوجد إدخال لقاعدة المعرفة بعد",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.memory.startAddingMemoriesSeeThemHere": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Typo: 'لترىها' should be 'لتراها' (correct verb form).",
-      "suggested": "ابدأ بإضافة ذكريات لتراها هنا",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.memory.activityTracking": {
       "verdict": "OK",
@@ -29449,11 +29382,10 @@
       "phase": "llm"
     },
     "screens.messages.inspirationTpl_morning3": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender mismatch: 'ابدأ' is masculine imperative, but the app uses du-form which is gender-neutral in Arabic; however, the English is generic. Suggest using a more inclusive form or keep as is? Actually, Arabic du-form is gender-neutral in the sense that the verb form depends on the gender of the addressee. Since the app likely addresses all users, a masculine form is common as default. But the English 'Starting the day' is a gerund, not an imperative. The Arabic translates as 'Start your day' which is an imperative, changing the meaning. Suggest: 'بدء اليوم بالامتنان والطاقة الإيجابية' or 'ابدأ يومك بالامتنان والطاقة الإيجابية'? Actually the original is a statement, not a command. So better: 'بدء اليوم بالامتنان والطاقة الإيجابية'.",
-      "suggested": "بدء اليوم بالامتنان والطاقة الإيجابية! ✨",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.messages.inspirationTpl_goal1": {
       "verdict": "OK",
@@ -29461,11 +29393,10 @@
       "phase": "llm"
     },
     "screens.messages.inspirationTpl_goal2": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender mismatch: 'آمن' and 'احتفل' are masculine imperatives, but the English is a gerund phrase 'Believing in your journey and celebrating your progress!' which is a statement, not a command. Suggest using a nominal form: 'الإيمان برحلتك والاحتفال بتقدمك!'",
-      "suggested": "الإيمان برحلتك والاحتفال بتقدمك! 🌈",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.messages.inspirationTpl_goal3": {
       "verdict": "OK",
@@ -29478,11 +29409,10 @@
       "phase": "llm"
     },
     "screens.messages.inspirationTpl_checkin2": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender mismatch: 'أنت رائع' is masculine, but the app likely addresses all users. In Arabic, masculine is default, but the English 'you're doing amazing' is gender-neutral. However, the app's du-form is informal, and Arabic often uses masculine as default. But the phrase 'أنت رائع' is specifically masculine; a feminine user would see a mismatch. Suggest using a gender-neutral form like 'أنت تقوم بعمل رائع' or 'أداؤك رائع'.",
-      "suggested": "متابعة رحلتك الصحية - أداؤك رائع! 🌸",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.messages.inspirationTpl_checkin3": {
       "verdict": "OK",
@@ -30186,11 +30116,10 @@
       "phase": "llm"
     },
     "screens.messages.myFavoriteTemplates": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incorrect plural form: 'قوالبي' is not standard; should be 'قوالب المفضلة'.",
-      "suggested": "قوالب المفضلة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.messages.recentlyUsedTemplates": {
       "verdict": "OK",
@@ -30288,11 +30217,10 @@
       "phase": "llm"
     },
     "screens.messages.totalresponsesResponseValue1Received": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Number agreement: 'ردود' is plural but should be singular after a number in Arabic.",
-      "suggested": "تم استلام {totalResponses} ردًا",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.messages.downloadFile": {
       "verdict": "OK",
@@ -30495,11 +30423,10 @@
       "phase": "llm"
     },
     "screens.notifications.deleteThisNotification": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender mismatch: 'هذا الإشعار' is masculine, but 'إشعار' is feminine in Arabic.",
-      "suggested": "حذف هذا الإشعار",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.notifications.delete": {
       "verdict": "OK",
@@ -32587,11 +32514,10 @@
       "phase": "llm"
     },
     "screens.profile.selectPostsContentFeature": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The verb 'لتمييزها' means 'to distinguish it' rather than 'to feature'. Suggest using 'لإبرازها'.",
-      "suggested": "اختر المنشورات والمحتوى لإبرازها",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.profile.about": {
       "verdict": "OK",
@@ -32609,11 +32535,10 @@
       "phase": "llm"
     },
     "screens.profile.selectPostsContentFeatureAtTop": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Same issue as entry 0: 'لتمييزها' should be 'لإبرازها'.",
-      "suggested": "اختر المنشورات والمحتوى لإبرازها في أعلى ملفك الشخصي",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.profile.openYourDeviceSShareSheet": {
       "verdict": "OK",
@@ -32641,11 +32566,10 @@
       "phase": "llm"
     },
     "screens.profile.connectCollaborateGrowTogetherWithLikeminded": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "The phrase 'المتشابهين في التفكير' is awkward; better to use 'ذوي التفكير المماثل' or 'المتوافقين في التفكير'.",
-      "suggested": "تواصل، تعاون، وتنمو معًا مع عشاق العافية ذوي التفكير المماثل",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.profile.controlWhoCanSeeYourHealth": {
       "verdict": "OK",
@@ -32673,11 +32597,9 @@
       "phase": "llm"
     },
     "screens.profile.pro": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "'احترافي' means 'professional', but 'Pro' is a brand/plan name; should remain 'Pro'.",
-      "suggested": "Pro",
-      "phase": "llm"
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "identical"
     },
     "screens.profile.posts": {
       "verdict": "OK",
@@ -32755,11 +32677,10 @@
       "phase": "llm"
     },
     "screens.profile.comingSoonBadgesFeaturedPhotosvideosSpotlight": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward phrasing; 'تسلط الضوء عليها' is literal and not idiomatic.",
-      "suggested": "قريباً: شارات، صور/فيديوهات مميزة، وقصص مميزة يختارها المستخدم.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.profile.connections": {
       "verdict": "OK",
@@ -32807,11 +32728,10 @@
       "phase": "llm"
     },
     "screens.profile.lengthUnlocked": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Missing space between {length} and 'unlocked' in English; Arabic 'مفتوح' may be ambiguous.",
-      "suggested": "من {length} مفتوح",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.profile.value0ViewAsValue1": {
       "verdict": "OK",
@@ -32874,11 +32794,10 @@
       "phase": "llm"
     },
     "screens.profile.eGMindfulMover": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Translation 'المحرك الواعي' is literal and not idiomatic for a username example.",
-      "suggested": "مثال: المتحرك الواعي",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.profile.ageRangeValue0Value1": {
       "verdict": "OK",
@@ -32911,11 +32830,10 @@
       "phase": "llm"
     },
     "screens.profile.featuredcountFeatured": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'مميز' is masculine but 'عناصر' is feminine.",
-      "suggested": "{featuredCount} مميزة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.profile.youVeReachedMaximumNumberFeatured": {
       "verdict": "OK",
@@ -32948,11 +32866,10 @@
       "phase": "llm"
     },
     "screens.profile.compatibilityscoreCompatible": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'متوافق' is masculine but 'نسبة' is feminine.",
-      "suggested": "{compatibilityScore}% متوافقة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.profile.likesLikes": {
       "verdict": "OK",
@@ -33170,11 +33087,10 @@
       "phase": "llm"
     },
     "screens.reminders.subtitleDefault": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing: 'لإضافة بشكل طبيعي' is unnatural; should be 'لإضافتها بشكل طبيعي'.",
-      "suggested": "ما يجدوله لك Vitana. تحدث إلى ORB لإضافتها بشكل طبيعي.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.reminders.showingFilteredView": {
       "verdict": "OK",
@@ -33232,11 +33148,10 @@
       "phase": "llm"
     },
     "screens.reminders.markDone": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Translation 'تم' means 'done' but not specifically 'mark as done'; it's a general confirmation.",
-      "suggested": "تحديد كمكتمل",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.reminders.deleteReminder": {
       "verdict": "OK",
@@ -33409,11 +33324,10 @@
       "phase": "llm"
     },
     "screens.reminders.noMissed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'you're all caught up' is idiomatically translated as 'على اطلاع دائم' which means 'always informed' and misses the meaning of being up-to-date with no missed items.",
-      "suggested": "لا توجد تذكيرات فائتة — أنت على اطلاع كامل.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.reminders.creating": {
       "verdict": "OK",
@@ -33666,11 +33580,10 @@
       "phase": "llm"
     },
     "screens.reseller.potentialPotentialformatted": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The Arabic translation 'محتمل' means 'possible' or 'potential' as an adjective, but here it should be a noun meaning 'potential' as in 'potential earnings'. Also, the register is formal and not du-form.",
-      "suggested": "إمكانية الكسب: {potentialFormatted}",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.reseller.onceYouAddEventsYourInventory": {
       "verdict": "OK",
@@ -33683,11 +33596,10 @@
       "phase": "llm"
     },
     "screens.reseller.transferWallet": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "The translation 'اطلب سحب' is awkward and not idiomatic. It should be 'اطلب السحب' or 'اطلب صرف الأرباح'.",
-      "suggested": "اطلب السحب",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.reseller.ticketssoldTicketsValue1SalesCommissionrateCommiss": {
       "verdict": "OK",
@@ -33695,11 +33607,10 @@
       "phase": "llm"
     },
     "screens.reseller.value0Earned": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The translation '{value0} كسبت' is grammatically incorrect. It should be 'كسبت {value0}' or 'ربحت {value0}'.",
-      "suggested": "كسبت {value0}",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.reseller.lastSaleValue0Ago": {
       "verdict": "OK",
@@ -36337,11 +36248,10 @@
       "phase": "llm"
     },
     "screens.settings.saveDietary": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Incomplete phrase; 'الغذائية' is an adjective without a noun, likely a truncation of 'القيود الغذائية'.",
-      "suggested": "احفظ القيود الغذائية",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.settings.saveMedications": {
       "verdict": "OK",
@@ -36729,11 +36639,10 @@
       "phase": "llm"
     },
     "screens.settings.passedLengthServicesReachable": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Missing space before 'خدمة' and awkward phrasing",
-      "suggested": "{passed}/ {length} خدمة يمكن الوصول إليها.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.settings.gatewaySearchesYoutubeWithYourToken": {
       "verdict": "OK",
@@ -36816,11 +36725,10 @@
       "phase": "llm"
     },
     "screens.settings.value0ActiveProducts": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Missing space before 'منتجات'",
-      "suggested": "من {value0} منتجات نشطة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.settings.weWillNeverRecommendProductsContaining": {
       "verdict": "OK",
@@ -36868,11 +36776,10 @@
       "phase": "llm"
     },
     "screens.settings.youExafySuperAdministratorYouCan": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The term 'المستأجرين' (tenants) is a literal translation and may not be idiomatic in this context; 'العملاء' or 'المستأجرين' could be ambiguous. Suggest using 'العملاء' for clarity.",
-      "suggested": "أنت مسؤول Exafy فائق. يمكنك التبديل بين المؤسسات وإدارة جميع العملاء.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.settings.roleValue0": {
       "verdict": "OK",
@@ -38075,11 +37982,10 @@
       "phase": "llm"
     },
     "screens.sharing.t14DaysSaveDateAnnouncement": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Literal translation of 'Save the date announcement' is awkward; better to use common Arabic phrase.",
-      "suggested": "قبل 14 يومًا: إعلان احجزوا التاريخ",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.sharing.t7DaysSpeakeragendaReveal": {
       "verdict": "OK",
@@ -39552,11 +39458,10 @@
       "phase": "llm"
     },
     "screens.sharing.blastCenter": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Literal translation may not convey the intended meaning of a central hub for broadcasting.",
-      "suggested": "مركز البث",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.sharing.shareYourContentAcrossMultipleChannels": {
       "verdict": "OK",
@@ -39619,11 +39524,10 @@
       "phase": "llm"
     },
     "screens.sharing.smartreschedule": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Hyphenation is unnatural in Arabic; use a space or rephrase.",
-      "suggested": "إعادة الجدولة الذكية",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.sharing.exportCsv": {
       "verdict": "OK",
@@ -41656,11 +41560,10 @@
       "phase": "llm"
     },
     "screens.voucher.claimYourGift": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Verb form is imperative masculine singular, but app uses informal du-form; also 'طالب' is not idiomatic for 'claim'.",
-      "suggested": "استلم هديتك",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.voucher.youReAboutAddThisVoucher": {
       "verdict": "OK",
@@ -42128,11 +42031,10 @@
       "phase": "llm"
     },
     "screens.wallet.claim25VtnaPendingRewards": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Word order unnatural; 'مكافآت معلقة' should follow the amount.",
-      "suggested": "احصل على 25 VTNA من المكافآت المعلقة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.wallet.features": {
       "verdict": "OK",
@@ -42670,11 +42572,10 @@
       "phase": "llm"
     },
     "screens.wallet.quickSelect": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Incorrect verb form: 'اختار' is imperative for 'he chose', should be 'اختر' for 'choose'.",
-      "suggested": "اختر سريع",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.wallet.withdrawalAmount": {
       "verdict": "OK",
@@ -42697,11 +42598,10 @@
       "phase": "llm"
     },
     "screens.wallet.selectWithdrawalMethod": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Verb 'اختار' is imperative masculine singular, but app uses du-form; should be 'اختر' (more common) or 'اختاري' if addressing female. Also, 'طريقة' is correct.",
-      "suggested": "اختر طريقة السحب",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.wallet.send": {
       "verdict": "OK",
@@ -42749,11 +42649,10 @@
       "phase": "llm"
     },
     "screens.wallet.whatSThisFor": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "Translation 'لماذا هذا؟' is literal and may sound blunt; better to ask 'ما الغرض من هذا؟' or 'لأي غرض؟' to match friendly tone.",
-      "suggested": "ما الغرض من هذا؟",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.wallet.youLlReceive": {
       "verdict": "OK",
@@ -42846,25 +42745,22 @@
       "phase": "llm"
     },
     "screens.wallet.noCreditTransactionsYet": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'معاملات' is feminine plural, so 'لا توجد' is correct.",
-      "suggested": "لا توجد معاملات رصيد بعد",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.wallet.noVtnaTransactionsYet": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'معاملات' is feminine plural, so 'لا توجد' is correct.",
-      "suggested": "لا توجد معاملات VTNA بعد",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.wallet.noUsdTransactionsYet": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender agreement: 'معاملات' is feminine plural, so 'لا توجد' is correct.",
-      "suggested": "لا توجد معاملات USD بعد",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.wallet.topUpCredits": {
       "verdict": "OK",
@@ -43177,11 +43073,10 @@
       "phase": "llm"
     },
     "screens.wallet.referred": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender mismatch: 'المحالون' is masculine plural, but 'Referred' refers to people of mixed genders. Suggest neutral form.",
-      "suggested": "المُحالون",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.wallet.shareLink": {
       "verdict": "OK",
@@ -43784,11 +43679,10 @@
       "phase": "llm"
     },
     "screens.wallet.claim": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incorrect meaning: 'طالب' means 'student' or 'demander', not 'claim' as a verb. Should be 'استرد' or 'اطلب'.",
-      "suggested": "استرد",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.wallet.copy": {
       "verdict": "OK",
@@ -44021,11 +43915,10 @@
       "phase": "llm"
     },
     "screens.wallet.dayRecord": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Arabic translation 'سجل -يوم' is awkward and incomplete; it should include the placeholder and proper phrasing.",
-      "suggested": "سجل {days} يوم",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.wallet.totalsavingsVtnaSavingsAvailable": {
       "verdict": "OK",
@@ -44153,11 +44046,10 @@
       "phase": "llm"
     },
     "screens.wallet.value0NetValue": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing space between placeholder and Arabic word",
-      "suggested": "${value0} القيمة الصافية",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.wallet.costmonthUsageUsage": {
       "verdict": "OK",
@@ -44170,11 +44062,10 @@
       "phase": "llm"
     },
     "screens.wallet.valueValue": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing space between placeholder and Arabic word",
-      "suggested": "${value} قيمة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.wallet.potentialincreaseApyAvailable": {
       "verdict": "OK",
@@ -44192,11 +44083,10 @@
       "phase": "llm"
     },
     "screens.wallet.value0Credits": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing space between placeholder and Arabic word",
-      "suggested": "{value0} رصيد",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.wallet.costValue0": {
       "verdict": "OK",
@@ -45669,18 +45559,16 @@
       "phase": "llm"
     },
     "screens.autopilotdashboard.daysLeftCount": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Plural agreement: 'أيام' is plural but 'تبقى' is singular feminine; should be 'تبقى' with singular or use 'متبقي'.",
-      "suggested": "تبقى {days} يومًا لهدفك",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.autopilotdashboard.daysToGoalShort": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Plural agreement: 'أيام' is plural but the number is not specified; better to use singular 'يومًا' for count.",
-      "suggested": "{count} يومًا لهدفك",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.autopilotdashboard.dreamTagline": {
       "verdict": "OK",
@@ -46033,11 +45921,10 @@
       "phase": "llm"
     },
     "screens.businessopportunities.noLeadsYetWeLlNotify": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender agreement issue: 'لا توجد عملاء محتملون' uses masculine plural for 'leads' but 'عملاء' is masculine, but 'محتملون' is correct. However, 'عرض بيع تجاري' is awkward; better 'عرضًا تجاريًا للبيع'.",
-      "suggested": "لا يوجد عملاء محتملون بعد. سنخطرك عندما يصل الطلب المطابق. تأكد من أن لديك عرضًا تجاريًا للبيع واحدًا على الأقل ضمن",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.checkoutsuccess.whatSNext": {
       "verdict": "OK",
@@ -46505,11 +46392,10 @@
       "phase": "llm"
     },
     "screens.index.completeHealthcareSolutionsWithPatientprofessional": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The word 'روابط' (links) is a bit literal; 'تواصل' (communication) might be more natural in this context.",
-      "suggested": "حلول رعاية صحية كاملة مع تواصل بين المرضى والمحترفين وتتبع العافية.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.index.healthWellnessServicesDesignedWithCultural": {
       "verdict": "OK",
@@ -47087,11 +46973,10 @@
       "phase": "llm"
     },
     "screens.mobilesettings.theme": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is same as 'Appearance' (المظهر) but 'Theme' should be distinct, e.g., 'السمة'.",
-      "suggested": "السمة",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.mobilesettings.light": {
       "verdict": "OK",
@@ -48204,39 +48089,33 @@
       "phase": "llm"
     },
     "screens.legal.rightWithdrawConsent": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The Arabic text is missing the heading 'Right to withdraw consent:' and the translation is incomplete.",
-      "suggested": "حق سحب الموافقة: إذا كنا نعتمد على موافقتك في معالجة بياناتك، يمكنك سحبها في أي وقت بأثر مستقبلي.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.legal.ifWeRelyConsentProcessYour": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The Arabic text is 'Exafy LTD' which is not a translation of the German sentence.",
-      "suggested": "إذا كنا نعتمد على موافقتك في معالجة بياناتك، يمكنك سحبها في أي وقت بأثر مستقبلي.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.legal.supportExafyIo": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "The Arabic text is 'آخر تحديث:' which means 'Last updated:' but the English is an email address.",
-      "suggested": "support@exafy.io",
-      "phase": "llm"
+      "phase": "identical"
     },
     "screens.legal.lastUpdated": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The Arabic text is 'سياسة الخصوصية | Maxina Mobile App' which means 'Privacy Policy | Maxina Mobile App' but the English is 'Last updated:'.",
-      "suggested": "آخر تحديث:",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.legal.termsUse": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The Arabic text is '1.1 من نحن.' which means '1.1 Who we are.' but the English is 'Terms of Use'.",
-      "suggested": "شروط الاستخدام",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.legal.text11WhoWe": {
       "verdict": "OK",
@@ -48254,46 +48133,40 @@
       "phase": "llm"
     },
     "screens.legal.createSingleTruthfulAccountKeepCredentials": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The Arabic translation uses a hyphen in 'بيانات-الاعتماد' which is not standard; also the phrase is a bit awkward.",
-      "suggested": "أنشئ حسابًا واحدًا وصادقًا؛ حافظ على سرية بيانات الاعتماد.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.legal.weMaySuspendTerminateAccountsFor": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The Arabic translation uses a hyphen in 'إرشادات-المجتمع' which is not standard; also the German sentence is not translated but the Arabic is provided.",
-      "suggested": "يمكننا تعليق أو إنهاء الحسابات في حال وجود انتهاكات أو احتيال أو عدم احترام لإرشادات المجتمع.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.legal.eventsOrganisedByIndependentThirdpartyPartners": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The Arabic translation uses hyphens in 'إصدار-التذاكر' and 'ميسّر' is fine but the hyphen is not standard.",
-      "suggested": "يتم تنظيم الفعاليات من قبل شركاء مستقلين من أطراف ثالثة؛ تحكم شروطهم الخاصة إصدار التذاكر والسلامة والسلوك. تعمل Exafy فقط كميسر للحجز.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.legal.cancellationAmpRefunds100RefundIf": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The Arabic translation uses hyphens in 'استرداد-الأموال' and 'قابلة-للاسترداد' which are not standard.",
-      "suggested": "الإلغاء واسترداد الأموال: استرداد 100% إذا ألغيت قبل 48 ساعة على الأقل من بدء الفعالية؛ بعد ذلك، التذاكر غير قابلة للاسترداد.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.legal.participantRequirementsMinimumAge16Under18s": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The Arabic translation uses a hyphen in 'شروط-المشاركة' which is not standard.",
-      "suggested": "شروط المشاركة: الحد الأدنى للعمر 16 عامًا (أقل من 18 عامًا برفقة شخص بالغ)؛ لا يُسمح للمشاركين تحت تأثير الكحول أو المخدرات.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.legal.liabilityWaiverByAttendingYouAcknowledge": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Compound words with hyphens are unnatural in Arabic; also 'Exafy' should remain unchanged but is fine. Suggest removing hyphens and using natural Arabic phrasing.",
-      "suggested": "إخلاء المسؤولية: بمشاركتك، تقر بالمخاطر الكامنة وتُعفي المنظمين وExafy من المسؤولية عن الإصابات الشخصية أو الأضرار المادية أو أي مطالبات أخرى إلى أقصى حد يسمح به القانون (انظر \"اتفاقية المشارك وإخلاء المسؤولية\" الكاملة أثناء الحجز).",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.legal.weListThirdpartyPhysicalDigitalProductsservices": {
       "verdict": "OK",
@@ -48302,18 +48175,16 @@
       "phase": "llm"
     },
     "screens.legal.shippingAmpReturnsForPhysicalGoods": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Hyphenated compounds unnatural; also 'رسوم-الشحن' and 'قابلة-للاسترداد' should be split.",
-      "suggested": "الشحن والمرتجعات: بالنسبة للسلع المادية، يمكنك إلغاء أو إرجاع العناصر غير المستخدمة في غضون 14 يومًا من التسليم (يجب على المستهلك دفع رسوم الشحن للإرجاع ما لم تكن السلع معيبة). السلع الرقمية غير قابلة للاسترداد بمجرد بدء التنزيل أو البث، ما لم تكن معيبة.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.legal.titleRiskForGoodsPassYou": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Hyphenated compound 'ضمانات-الشركة' unnatural; split.",
-      "suggested": "تنتقل ملكية ومخاطر السلع إليك عند التسليم؛ تسري ضمانات الشركة المصنعة حيثما تُقدم.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.legal.text61Rules": {
       "verdict": "OK",
@@ -48477,11 +48348,10 @@
       "phase": "llm"
     },
     "screens.legal.type": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is ambiguous; 'Type' as a noun is likely intended, but 'اكتب' is the imperative verb 'write'. Suggest using 'النوع'.",
-      "suggested": "النوع",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.legal.text1Introduction": {
       "verdict": "OK",
@@ -48579,11 +48449,10 @@
       "phase": "llm"
     },
     "screens.legal.text5DiscoverShop": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Translation 'متجر الاكتشاف' is awkward; 'Discover Shop' likely means a shop for discovery, but 'اكتشف المتجر' is more natural.",
-      "suggested": "اكتشف المتجر",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.legal.text6CommunityAmpUsergeneratedContentUgc": {
       "verdict": "OK",
@@ -49086,11 +48955,10 @@
       "phase": "llm"
     },
     "screens.patient.medicationTaken": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.85,
-      "issue": "Passive voice is awkward; use active form.",
-      "suggested": "تناولت الدواء",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.patient.text2DaysAgoDailyVitamins": {
       "verdict": "OK",
@@ -49103,11 +48971,10 @@
       "phase": "llm"
     },
     "screens.patient.scheduleNew": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Awkward phrasing; should be 'جدولة موعد جديد'.",
-      "suggested": "جدولة موعد جديد",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.patient.drSarahMillerAnnualCheckup": {
       "verdict": "OK",
@@ -49245,11 +49112,10 @@
       "phase": "llm"
     },
     "screens.portals.joinAlkalma": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Brand name 'AlKalma' should remain unchanged; translation 'الكلمة' is not the brand name.",
-      "suggested": "انضم إلى AlKalma",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.portals.welcomeBack": {
       "verdict": "OK",
@@ -49257,11 +49123,10 @@
       "phase": "llm"
     },
     "screens.portals.signYourAlkalmaAccount": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Brand name 'AlKalma' should remain unchanged; translation 'الكلمة' is not the brand name.",
-      "suggested": "سجّل الدخول إلى حسابك في AlKalma",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.portals.continueWith": {
       "verdict": "OK",
@@ -49289,11 +49154,10 @@
       "phase": "llm"
     },
     "screens.portals.alkalmaHealthPlatformVitana": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Brand name 'AlKalma' should remain unchanged; translation 'الكلمة' is not the brand name.",
-      "suggested": "منصة AlKalma الصحية - VITANA",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.portals.yourFullName": {
       "verdict": "OK",
@@ -49361,11 +49225,10 @@
       "phase": "llm"
     },
     "screens.portals.backAlkalmaPortal": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Brand name 'AlKalma' should remain unchanged; translation 'الكلمة' is not the brand name.",
-      "suggested": "العودة إلى بوابة AlKalma",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.portals.culturallyawareHealthWellnessSolutions": {
       "verdict": "OK",
@@ -49988,11 +49851,10 @@
       "phase": "llm"
     },
     "screens.staff.seen": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is passive and impersonal, not matching the app's friendly du-form register.",
-      "suggested": "أن تُرى",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.staff.priorityCases": {
       "verdict": "OK",
@@ -50085,11 +49947,10 @@
       "phase": "llm"
     },
     "screens.autopilotpopup.yourAutopilotRecommendations": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Literal translation of 'autopilot' may be unclear; consider a more natural phrase.",
-      "suggested": "توصياتك التلقائية",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.autopilotpopup.selectedSuggestionsCount": {
       "verdict": "OK",
@@ -50107,11 +49968,10 @@
       "phase": "llm"
     },
     "screens.autopilotpopup.allCaughtUpForToday": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Idiomatic expression may not translate well; consider a more natural Arabic phrase.",
-      "suggested": "أنت على اطلاع كامل لليوم",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.autopilotpopup.nothingNewRightNow": {
       "verdict": "OK",
@@ -50764,11 +50624,10 @@
       "phase": "llm"
     },
     "screens.oauthconsent.scopes.vitana:connections:write": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The translation 'إدارة روابط العمل' is ambiguous; it could mean 'manage work links' rather than 'business connections'. Suggest a clearer term.",
-      "suggested": "إدارة اتصالات الأعمال",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "screens.oauthconsent.scopes.vitana:grants:write": {
       "verdict": "OK",
@@ -50779,7 +50638,31 @@
       "verdict": "OK",
       "confidence": 0.9,
       "phase": "llm"
+    },
+    "screens.home.replyToComment": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "screens.home.replyingTo": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "screens.home.cancelReply": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
+    },
+    "screens.home.likeComment": {
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-08-24T09:04:00.880Z"
+  "generatedAt": "2026-09-02T08:04:35.582Z"
 }
