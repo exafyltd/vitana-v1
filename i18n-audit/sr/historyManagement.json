@@ -31,11 +31,10 @@
       "phase": "llm"
     },
     "historyManagement.exportHistoryDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The nuance of 'data' is lost; 'aktivnosti' means 'activities', not 'activity data'.",
-      "suggested": "Preuzmi podatke o svojim aktivnostima (CSV/JSON)",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "historyManagement.viewStatistics": {
       "verdict": "OK",
@@ -53,11 +52,10 @@
       "phase": "llm"
     },
     "historyManagement.advancedSearchDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'date range' is translated as 'date' ('datumu'), losing the 'range' aspect.",
-      "suggested": "Filtriraj po rasponu datuma, kategoriji, ključnim rečima",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "historyManagement.bulkActions": {
       "verdict": "OK",
@@ -115,11 +113,10 @@
       "phase": "llm"
     },
     "historyManagement.deleteAllHistoryDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The nuance of 'data' is lost; 'aktivnosti' means 'activities', not 'activity data'.",
-      "suggested": "Trajno ukloni sve sačuvane podatke o aktivnostima",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "historyManagement.exporting": {
       "verdict": "OK",
@@ -212,5 +209,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:04:03.934Z"
+  "generatedAt": "2026-09-02T08:03:50.535Z"
 }
