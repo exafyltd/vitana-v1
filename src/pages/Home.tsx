@@ -58,13 +58,6 @@ import { t } from '@/lib/i18n-toast';
 import { formatDistanceToNow } from '@/lib/locale-format';
 type FilterTab = "all" | "longevity" | "community";
 
-const FILTER_MODES = [
-  { value: "all", label: "All News", icon: "📰" },
-  { value: "longevity", label: "Longevity", icon: "🧬" },
-  { value: "community", label: "Community", icon: "👥" },
-];
-
-
 /** Last scroll offset per feed tab, kept across unmounts of this route. */
 const feedScrollMemory = new Map<FilterTab, number>();
 
@@ -78,6 +71,19 @@ export default function Home() {
     setActiveTabState(tab);
     setSearchParams(tab === "all" ? {} : { tab }, { replace: true });
   };
+  // VTID-03802 — reuses the same catalog keys as the desktop SplitBar tabs
+  // below (t('screens.home.all') etc.). This was previously a module-level
+  // constant with raw English labels ("All News", "Longevity", "Community"),
+  // evaluated once at import time and never routed through t() at all — so
+  // the mobile utility-bar pill showed English in every language, including
+  // German. Defined inside the component so it re-evaluates on every render
+  // (t() itself isn't reactive; LanguageProvider re-rendering this component
+  // on a language change is what makes this pick up the new locale).
+  const FILTER_MODES = [
+    { value: "all", label: t('screens.home.all'), icon: "📰" },
+    { value: "longevity", label: t('screens.home.longevity'), icon: "🧬" },
+    { value: "community", label: t('screens.home.community'), icon: "👥" },
+  ];
   // Keep the active News tab in sync with the URL so the Orb (and deep links)
   // can switch the filter by voice even when already on /home — the initial
   // useState reads ?tab only once at mount. The URL is the source of truth; an
