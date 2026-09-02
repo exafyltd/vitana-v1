@@ -37,10 +37,8 @@
       "phase": "llm"
     },
     "onboarding.joinCommunityDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Missing nuance of 'on similar journeys'",
-      "suggested": "与志同道合、经历相似的人建立联系",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "onboarding.getStarted": {
@@ -119,5 +117,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:41:31.047Z"
+  "generatedAt": "2026-09-02T08:02:36.172Z"
 }
