@@ -12,6 +12,9 @@ interface EventGameCelebrationProps {
    * skipped for lighter moments (e.g. "moved up one rank") per the plan's
    * "use celebratory popups selectively" instruction. */
   confetti?: boolean;
+  /** Auto-close after this many ms so the celebration never blocks the next
+   * action (e.g. tapping Post) indefinitely. Set to 0 to disable. */
+  autoDismissMs?: number;
   children?: React.ReactNode;
 }
 
@@ -29,6 +32,7 @@ export function EventGameCelebration({
   subtitle,
   points,
   confetti = true,
+  autoDismissMs = 3000,
   children,
 }: EventGameCelebrationProps) {
   useEffect(() => {
@@ -37,6 +41,13 @@ export function EventGameCelebration({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
+
+  useEffect(() => {
+    if (!open || !autoDismissMs) return;
+    const timer = setTimeout(() => onOpenChange(false), autoDismissMs);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, autoDismissMs]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
