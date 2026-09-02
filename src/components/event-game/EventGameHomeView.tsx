@@ -25,8 +25,8 @@ export function EventGameHomeView({ game, onViewLeaderboard }: EventGameHomeView
   const postsUsed = standing.data?.post_count ?? 0;
 
   return (
-    <div className="bg-gradient-to-b from-[#FFF5F8] via-[#FFF0F6] to-white pb-10">
-      <div className="flex flex-col items-center px-6 py-10 gap-6 max-w-md mx-auto">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#FFF5F8] via-[#FFF0F6] to-white">
+      <div className="flex flex-col items-center px-6 py-10 gap-6 max-w-md w-full mx-auto">
         <div className="text-sm font-bold tracking-wide text-[#FF4FA0] uppercase">{game.name}</div>
 
         <EventGameCountdown endsAt={game.ends_at} className="text-center" />
