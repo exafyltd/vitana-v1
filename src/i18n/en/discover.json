@@ -51,7 +51,8 @@
       "movement": "Movement",
       "mind": "Mind",
       "supplements": "Supplements",
-      "experts": "Experts"
+      "experts": "Experts",
+      "_pending_review": {}
     },
     "subcategories": {
       "longevity": "Longevity",
@@ -78,7 +79,8 @@
       "sexualHealth": "Sexual Health",
       "prevention": "Prevention & Early Detection",
       "generalHealth": "General Health",
-      "dnaAnalysis": "DNA Analysis"
+      "dnaAnalysis": "DNA Analysis",
+      "_pending_review": {}
     },
     "quickActions": {
       "title": "Quick Actions",
@@ -89,7 +91,8 @@
       "reorderPrevious": "Reorder Previous",
       "managePayment": "Manage Payment",
       "findServicesNearMe": "Find Services Near Me",
-      "viewSavedItems": "View Saved Items"
+      "viewSavedItems": "View Saved Items",
+      "_pending_review": {}
     },
     "aiPicks": {
       "title": "AI recommendations for you",
@@ -101,24 +104,30 @@
       "recommendationsFound": "{count} recommendations found",
       "noRecommendations": "No recommendations found",
       "noRecommendationsDesc": "Choose a different filter to see more recommendations",
-      "viewAllPicks": "View All Picks"
+      "viewAllPicks": "View All Picks",
+      "_pending_review": {}
     },
     "filters": {
       "all": "All",
       "services": "Services",
       "supplements": "Supplements",
       "experts": "Experts",
-      "deals": "Deals"
+      "deals": "Deals",
+      "_pending_review": {}
     },
     "toast": {
       "actionSelected": "Action Selected",
-      "comingSoon": "{action} feature coming soon!"
+      "comingSoon": "{action} feature coming soon!",
+      "_pending_review": {}
     },
     "guest": {
       "bannerTitle": "Sign in to earn Vitana rewards on every purchase",
       "bannerSubtitle": "Browse freely — sign in (it's free) to buy and start earning rewards.",
       "bannerCta": "Sign in",
-      "signIn": "Sign in"
-    }
-  }
+      "signIn": "Sign in",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }
