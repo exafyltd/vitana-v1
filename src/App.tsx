@@ -705,7 +705,7 @@ const App = () => {
                     <Toaster />
                     <SonnerToaster position="top-center" richColors />
                     <PresenceDebugPanel />
-                    <BrowserRouter>
+                    <BrowserRouter basename={import.meta.env.BASE_URL}>
                     {/* AppHooksInitializer must live INSIDE <BrowserRouter> so
                         useOrbVoiceWidget (and any other hook that uses
                         useNavigate / useLocation) has a valid Router context.
