@@ -1,0 +1,132 @@
+{
+  "eventGame": {
+    "landing": {
+      "kicker": "🧬 MAXINA LONGEVITY GAME",
+      "title": "CAN YOU MAKE THE TOP 10?",
+      "bulletPost": "📸 Post your event moment",
+      "bulletLikes": "❤️ Collect likes",
+      "bulletClimb": "🏆 Climb the leaderboard",
+      "bulletWin": "🎁 Win the final prize",
+      "playing": "{count} people are already playing",
+      "ctaJoin": "I'M PLAYING",
+      "ctaLeaderboard": "SEE THE LEADERBOARD",
+      "notLivePreTitle": "Not started yet",
+      "notLivePreBody": "This game hasn't started yet — check back soon.",
+      "notLiveEndedTitle": "Game over",
+      "notLiveEndedBody": "This game has ended — see the final results.",
+      "disabled": "This game isn't available right now."
+    },
+    "join": {
+      "celebrateTitle": "🎉 YOU'RE IN!",
+      "celebratePoints": "+{points} POINT",
+      "celebrateScore": "Your score: {score}",
+      "celebrateRank": "Your current rank: #{rank}",
+      "nextTitle": "📸 MAKE YOUR MOVE",
+      "nextBody": "Post a photo or video from tonight.",
+      "nextCta": "POST NOW"
+    },
+    "home": {
+      "score": "YOUR SCORE",
+      "rank": "YOUR RANK",
+      "pointsToNext": "🔥 {points} POINTS TO #{rank}",
+      "firstPlace": "YOU'RE #1! 🏆",
+      "postCtaTitle": "YOUR NEXT MOVE",
+      "postCtaBody": "Post a photo from tonight",
+      "postsUsed": "{used} of {max} event posts used",
+      "postCta": "POST NOW",
+      "capReached": "You've used all your posts for this game",
+      "viewLeaderboard": "VIEW LEADERBOARD",
+      "rulesLink": "How to play",
+      "countdownLeft": "LEFT",
+      "gameOver": "🛑 GAME OVER"
+    },
+    "post": {
+      "categoryEvent": "📸 Event Moment",
+      "categoryLongevity": "🧬 Longevity Moment",
+      "categoryPoints": "+{points}",
+      "mustJoinFirst": "Join the game to post your moment",
+      "joinAndPost": "JOIN & POST",
+      "successTitle": "🔥 NICE ONE!",
+      "successPoints": "+{points} POINTS",
+      "successScore": "Your score: {score}",
+      "successRank": "Current rank: #{rank}",
+      "getLikes": "❤️ NOW GET SOME LIKES",
+      "share": "SHARE MY MOMENT"
+    },
+    "leaderboard": {
+      "title": "🏆 WHO'S ON FIRE?",
+      "subtitle": "MAXINA LONGEVITY GAME",
+      "top3": "TOP 3",
+      "you": "✨ YOU",
+      "pointsToNext": "🔥 {points} POINTS TO #{rank}",
+      "empty": "No one has scored yet — be the first!",
+      "movingUpTitle": "🚀 YOU'RE MOVING UP!",
+      "movingUpChange": "#{from} → #{to}",
+      "overtakenTitle": "👀 OH NO!",
+      "overtakenChange": "You've moved to #{rank}"
+    },
+    "countdown": {
+      "tenMinutes": "🚨 FINAL 10 MINUTES!",
+      "fiveMinutes": "🔥 FIVE MINUTES!",
+      "oneMinute": "🚨 FINAL MINUTE!",
+      "over": "🛑 GAME OVER"
+    },
+    "rules": {
+      "title": "🎯 HOW TO PLAY",
+      "join": "🎉 Join — +{points}",
+      "event": "📸 Event moment — +{points}",
+      "longevity": "🧬 Longevity moment — +{points}",
+      "likes": "❤️ Get likes — +{points} each",
+      "win": "🏆 Finish #1 — WIN THE PRIZE",
+      "close": "Got it"
+    },
+    "results": {
+      "winnerTitle": "🏆 WE HAVE A WINNER!",
+      "winnerCrown": "👑 {name}",
+      "winnerPoints": "{points} POINTS",
+      "reward": "🎁 {reward}",
+      "yourResultTitle": "✨ YOUR RESULT",
+      "yourRank": "#{rank}",
+      "yourPoints": "{points} POINTS",
+      "postCount": "📸 Event posts: {count}",
+      "likesCount": "❤️ Likes received: {count}",
+      "longevityCount": "🧬 Longevity moments: {count}",
+      "gap": "You were only {points} points from the Top {n}!",
+      "share": "SHARE MY RESULT",
+      "notEnded": "Results will be shown once the game ends."
+    },
+    "feedBadge": {
+      "rankPoints": "🏆 #{rank} · {points} pts",
+      "pointsToNext": "🔥 YOU'RE #{rank} · {points} PTS TO #{nextRank}"
+    },
+    "admin": {
+      "title": "Event Game",
+      "configSection": "Configuration",
+      "nameLabel": "Name",
+      "slugLabel": "Slug (URL)",
+      "descriptionLabel": "Description",
+      "rulesLabel": "Rules text",
+      "statusLabel": "Status",
+      "startsAtLabel": "Starts",
+      "endsAtLabel": "Ends",
+      "pointsSection": "Scoring",
+      "pointsRegistration": "Join",
+      "pointsEventPost": "Event moment",
+      "pointsLongevityPost": "Longevity moment",
+      "pointsLikeReceived": "Per like",
+      "pointsLikeCap": "Like-points cap per post",
+      "maxPosts": "Max posts per person",
+      "rewardTextLabel": "Reward (short)",
+      "rewardDescLabel": "Reward (description)",
+      "save": "Save",
+      "saved": "Saved",
+      "saveFailed": "Save failed",
+      "leaderboardSection": "Leaderboard & corrections",
+      "ledgerSection": "Points ledger",
+      "adjustPoints": "Adjust points",
+      "adjustReason": "Reason",
+      "adjustApply": "Apply",
+      "notModerator": "You don't have permission to manage this game."
+    }
+  }
+}

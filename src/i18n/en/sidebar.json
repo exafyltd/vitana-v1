@@ -46,6 +46,8 @@
     "monitoring": "Monitoring",
     "logout": "Logout",
     "connectors": "Connected Apps",
-    "support": "Support"
-  }
+    "support": "Support",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

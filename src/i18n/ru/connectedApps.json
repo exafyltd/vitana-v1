@@ -10,19 +10,22 @@
       "social": "Социальные сети и обмен",
       "fitness": "Фитнес и носимые устройства",
       "health": "Здоровье и лаборатории",
-      "other": "Другое"
+      "other": "Другое",
+      "_pending_review": {}
     },
     "status": {
       "connected": "Подключено",
       "notConnected": "Не подключено",
       "comingSoon": "Скоро",
-      "soon": "Скоро"
+      "soon": "Скоро",
+      "_pending_review": {}
     },
     "actions": {
       "connect": "Подключить",
       "disconnect": "Отключить",
       "configure": "Настроить синхронизацию",
-      "manage": "Управлять"
+      "manage": "Управлять",
+      "_pending_review": {}
     },
     "lastSync": "Последняя синхронизация",
     "dataSync": "Синхронизация данных",
@@ -33,7 +36,8 @@
       "categories": {
         "all": "Все приложения",
         "health": "Здоровье и фитнес",
-        "social": "Социальные сети"
+        "social": "Социальные сети",
+        "_pending_review": {}
       },
       "availableApps": "Доступные приложения",
       "verified": "Проверено",
@@ -44,7 +48,10 @@
       "done": "Готово",
       "noResults": "Приложения не найдены",
       "connectionSuccess": "Подключение успешно",
-      "connectionPlaceholder": "Подключение {appName} скоро"
-    }
-  }
+      "connectionPlaceholder": "Подключение {appName} скоро",
+      "_pending_review": {}
+    },
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

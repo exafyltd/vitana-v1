@@ -46,6 +46,8 @@
     "logout": "退出",
     "connectors": "连接器",
     "support": "支持",
-    "myJourney": "我的旅程"
-  }
+    "myJourney": "我的旅程",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

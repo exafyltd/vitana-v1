@@ -16,6 +16,8 @@
     "inbox": "收件箱",
     "support": "支持",
     "settings": "设置",
-    "logout": "退出登录"
-  }
+    "logout": "退出登录",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -46,6 +46,8 @@
     "clinicalOps": "العمليات السريرية",
     "monitoring": "مراقبة",
     "logout": "تسجيل الخروج",
-    "myJourney": "رحلتي"
-  }
+    "myJourney": "رحلتي",
+    "_pending_review": {}
+  },
+  "_pending_review": {}
 }

@@ -1,0 +1,132 @@
+{
+  "eventGame": {
+    "landing": {
+      "kicker": "🧬 MAXINA LONGEVITY GAME",
+      "title": "SCHAFFST DU ES IN DIE TOP 10?",
+      "bulletPost": "📸 Poste deinen Event-Moment",
+      "bulletLikes": "❤️ Sammle Likes",
+      "bulletClimb": "🏆 Kletter die Rangliste hoch",
+      "bulletWin": "🎁 Gewinn den Hauptpreis",
+      "playing": "{count} Leute spielen schon mit",
+      "ctaJoin": "ICH SPIELE MIT",
+      "ctaLeaderboard": "RANGLISTE ANSEHEN",
+      "notLivePreTitle": "Noch nicht gestartet",
+      "notLivePreBody": "Dieses Spiel hat noch nicht begonnen — schau bald wieder vorbei.",
+      "notLiveEndedTitle": "Spiel beendet",
+      "notLiveEndedBody": "Dieses Spiel ist vorbei — sieh dir das Endergebnis an.",
+      "disabled": "Dieses Spiel ist gerade nicht verfügbar."
+    },
+    "join": {
+      "celebrateTitle": "🎉 DU BIST DABEI!",
+      "celebratePoints": "+{points} PUNKT",
+      "celebrateScore": "Dein Punktestand: {score}",
+      "celebrateRank": "Deine aktuelle Platzierung: #{rank}",
+      "nextTitle": "📸 JETZT LEGST DU LOS",
+      "nextBody": "Poste ein Foto oder Video von heute Abend.",
+      "nextCta": "JETZT POSTEN"
+    },
+    "home": {
+      "score": "DEIN PUNKTESTAND",
+      "rank": "DEIN RANG",
+      "pointsToNext": "🔥 NOCH {points} PUNKTE BIS #{rank}",
+      "firstPlace": "DU BIST #1! 🏆",
+      "postCtaTitle": "DEIN NÄCHSTER ZUG",
+      "postCtaBody": "Poste ein Foto von heute Abend",
+      "postsUsed": "{used} von {max} Event-Posts genutzt",
+      "postCta": "JETZT POSTEN",
+      "capReached": "Du hast alle deine Posts für dieses Spiel genutzt",
+      "viewLeaderboard": "RANGLISTE ANSEHEN",
+      "rulesLink": "Spielregeln",
+      "countdownLeft": "VERBLEIBEND",
+      "gameOver": "🛑 SPIEL VORBEI"
+    },
+    "post": {
+      "categoryEvent": "📸 Event-Moment",
+      "categoryLongevity": "🧬 Longevity-Moment",
+      "categoryPoints": "+{points}",
+      "mustJoinFirst": "Tritt dem Spiel bei, um deinen Moment zu posten",
+      "joinAndPost": "BEITRETEN & POSTEN",
+      "successTitle": "🔥 STARK GEMACHT!",
+      "successPoints": "+{points} PUNKTE",
+      "successScore": "Dein Punktestand: {score}",
+      "successRank": "Aktueller Rang: #{rank}",
+      "getLikes": "❤️ JETZT LIKES SAMMELN",
+      "share": "MEINEN MOMENT TEILEN"
+    },
+    "leaderboard": {
+      "title": "🏆 WER BRENNT GERADE?",
+      "subtitle": "MAXINA LONGEVITY GAME",
+      "top3": "TOP 3",
+      "you": "✨ DU",
+      "pointsToNext": "🔥 NOCH {points} PUNKTE BIS #{rank}",
+      "empty": "Noch hat niemand gepunktet — sei die/der Erste!",
+      "movingUpTitle": "🚀 DU KLETTERST NACH OBEN!",
+      "movingUpChange": "#{from} → #{to}",
+      "overtakenTitle": "👀 OH NEIN!",
+      "overtakenChange": "Du bist jetzt auf #{rank}"
+    },
+    "countdown": {
+      "tenMinutes": "🚨 LETZTE 10 MINUTEN!",
+      "fiveMinutes": "🔥 NOCH FÜNF MINUTEN!",
+      "oneMinute": "🚨 LETZTE MINUTE!",
+      "over": "🛑 SPIEL VORBEI"
+    },
+    "rules": {
+      "title": "🎯 SO WIRD GESPIELT",
+      "join": "🎉 Beitreten — +{points}",
+      "event": "📸 Event-Moment — +{points}",
+      "longevity": "🧬 Longevity-Moment — +{points}",
+      "likes": "❤️ Likes sammeln — je +{points}",
+      "win": "🏆 Platz 1 — GEWINN DEN PREIS",
+      "close": "Verstanden"
+    },
+    "results": {
+      "winnerTitle": "🏆 WIR HABEN EINE GEWINNERIN!",
+      "winnerCrown": "👑 {name}",
+      "winnerPoints": "{points} PUNKTE",
+      "reward": "🎁 {reward}",
+      "yourResultTitle": "✨ DEIN ERGEBNIS",
+      "yourRank": "#{rank}",
+      "yourPoints": "{points} PUNKTE",
+      "postCount": "📸 Event-Beiträge: {count}",
+      "likesCount": "❤️ Likes erhalten: {count}",
+      "longevityCount": "🧬 Longevity-Momente: {count}",
+      "gap": "Du warst nur {points} Punkte von den Top {n} entfernt!",
+      "share": "MEIN ERGEBNIS TEILEN",
+      "notEnded": "Das Ergebnis wird gezeigt, sobald das Spiel vorbei ist."
+    },
+    "feedBadge": {
+      "rankPoints": "🏆 #{rank} · {points} Pkt",
+      "pointsToNext": "🔥 DU BIST #{rank} · NOCH {points} PKT BIS #{nextRank}"
+    },
+    "admin": {
+      "title": "Event Game",
+      "configSection": "Konfiguration",
+      "nameLabel": "Name",
+      "slugLabel": "Slug (URL)",
+      "descriptionLabel": "Beschreibung",
+      "rulesLabel": "Regeltext",
+      "statusLabel": "Status",
+      "startsAtLabel": "Start",
+      "endsAtLabel": "Ende",
+      "pointsSection": "Punktevergabe",
+      "pointsRegistration": "Beitritt",
+      "pointsEventPost": "Event-Moment",
+      "pointsLongevityPost": "Longevity-Moment",
+      "pointsLikeReceived": "Pro Like",
+      "pointsLikeCap": "Like-Punkte-Limit pro Post",
+      "maxPosts": "Max. Posts pro Person",
+      "rewardTextLabel": "Preis (kurz)",
+      "rewardDescLabel": "Preis (Beschreibung)",
+      "save": "Speichern",
+      "saved": "Gespeichert",
+      "saveFailed": "Speichern fehlgeschlagen",
+      "leaderboardSection": "Rangliste & Korrekturen",
+      "ledgerSection": "Punkte-Protokoll",
+      "adjustPoints": "Punkte anpassen",
+      "adjustReason": "Grund",
+      "adjustApply": "Anwenden",
+      "notModerator": "Du hast keine Berechtigung, dieses Spiel zu verwalten."
+    }
+  }
+}

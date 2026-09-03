@@ -42,7 +42,7 @@ export function useProfilePosts(userId?: string) {
   });
 
   const createPost = useMutation({
-    mutationFn: async ({ content, imageUrl, videoUrl, isPublic, backgroundStyle, mentions }: { content: string; imageUrl?: string; videoUrl?: string; isPublic?: boolean; backgroundStyle?: string | null; mentions?: PostMention[] }) => {
+    mutationFn: async ({ content, imageUrl, videoUrl, isPublic, backgroundStyle, mentions, eventGameId, isLongevityBonus }: { content: string; imageUrl?: string; videoUrl?: string; isPublic?: boolean; backgroundStyle?: string | null; mentions?: PostMention[]; eventGameId?: string; isLongevityBonus?: boolean }) => {
       if (!user?.id) throw new Error('Not authenticated');
       // Bare insert (no `.select().single()` read-back) with a client-generated
       // id doubling as an idempotency key. Even a minimal-response insert is
@@ -68,6 +68,12 @@ export function useProfilePosts(userId?: string) {
           // Defaults to public to preserve prior behaviour; the composer maps its
           // visibility control (public/friends/groups) onto this flag.
           ...(isPublic === undefined ? {} : { is_public: isPublic }),
+          // Maxina Longevity Game (event-specific, optional) — event_game_id
+          // is what the DB scoring triggers key off; is_longevity_bonus picks
+          // which of the two mutually-exclusive point amounts a tagged post
+          // earns. Both are null/false for every existing caller.
+          ...(eventGameId === undefined ? {} : { event_game_id: eventGameId }),
+          ...(isLongevityBonus === undefined ? {} : { is_longevity_bonus: isLongevityBonus }),
         } as never);
       if (error) {
         const { data: existing } = await supabase
@@ -78,6 +84,7 @@ export function useProfilePosts(userId?: string) {
         if (!existing) throw error;
         // Row landed despite the transport error — treat as success.
       }
+      return { id };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['profile-posts', targetUserId] });

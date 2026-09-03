@@ -17,6 +17,7 @@ const KNOWN_FLAGS = [
   { key: "enable_knowledge_base", label: "Knowledge Base", description: "Enable the knowledge base for members" },
   { key: "enable_navigator", label: "Navigator", description: "Enable the guided journey navigator" },
   { key: "enable_notifications", label: "Notifications", description: "Enable push and in-app notifications" },
+  { key: "enable_event_game", label: "Maxina Longevity Game", description: "Enable the temporary event-game layer (join/post/leaderboard) and its two scheduled notifications" },
 ] as const;
 
 export default function SettingsFeatureFlags() {
