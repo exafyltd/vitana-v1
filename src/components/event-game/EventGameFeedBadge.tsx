@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { Trophy } from 'lucide-react';
 import { t } from '@/lib/i18n-toast';
 import {
   useEventGame,
@@ -34,8 +35,9 @@ export function EventGameFeedBadge() {
     <button
       type="button"
       onClick={() => navigate('/community/event-game')}
-      className="w-full flex items-center justify-center gap-2 rounded-full bg-primary/10 text-primary text-sm font-semibold px-4 py-2 mb-3"
+      className="w-full flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#E3F5FD] to-[#B8E4FA] text-[#1B8FC7] text-sm font-semibold px-4 py-2 mb-3"
     >
+      {rank > 0 && <Trophy className="w-4 h-4" />}
       {rank > 0
         ? t('eventGame.feedBadge.rankPoints', { rank, points: score })
         : t('eventGame.join.celebrateScore', { score })}

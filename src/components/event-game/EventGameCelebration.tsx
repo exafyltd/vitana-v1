@@ -2,16 +2,7 @@ import { useEffect } from 'react';
 import { Trophy } from 'lucide-react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { confettiManager } from '@/lib/confetti';
-
-/** Faint decorative wave along the card's foot — purely cosmetic, mirrors
- * the same accent used on EventGameHomeView. */
-function DecorativeWave({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0 30 Q 50 10 100 25 T 200 20 V40 H0 Z" fill="currentColor" />
-    </svg>
-  );
-}
+import { DecorativeWave } from '@/components/event-game/DecorativeWave';
 
 interface EventGameCelebrationProps {
   open: boolean;

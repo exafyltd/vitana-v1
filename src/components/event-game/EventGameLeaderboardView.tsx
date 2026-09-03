@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Trophy } from 'lucide-react';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 import { t } from '@/lib/i18n-toast';
 import { useAuth } from '@/context/AuthProvider';
@@ -14,10 +15,24 @@ interface EventGameLeaderboardViewProps {
 
 function Row({ row, highlight }: { row: EventGameLeaderboardRow; highlight?: boolean }) {
   return (
-    <div className={`flex items-center gap-3 py-2 px-3 rounded-xl ${highlight ? 'bg-primary/10 font-semibold' : ''}`}>
-      <span className="w-8 text-center text-muted-foreground">#{row.rank}</span>
+    <div className={`flex items-center gap-3 py-2 px-3 rounded-xl ${highlight ? 'bg-[#E3F5FD] font-semibold' : ''}`}>
+      {row.rank === 1 ? (
+        <span className="w-8 h-8 shrink-0 rounded-full bg-[#1B8FC7] flex items-center justify-center">
+          <Trophy className="w-4 h-4 text-white" />
+        </span>
+      ) : row.rank <= 3 ? (
+        <span className="w-8 h-8 shrink-0 rounded-full bg-[#E3F5FD] text-[#1B8FC7] font-bold flex items-center justify-center text-sm">
+          #{row.rank}
+        </span>
+      ) : (
+        <span className="w-8 text-center text-muted-foreground">#{row.rank}</span>
+      )}
       {row.avatar_url ? (
-        <img src={row.avatar_url} alt="" className="w-8 h-8 rounded-full object-cover" />
+        <img
+          src={row.avatar_url}
+          alt=""
+          className={`w-8 h-8 rounded-full object-cover ${row.rank <= 3 ? 'ring-2 ring-white shadow-sm' : ''}`}
+        />
       ) : (
         <div className="w-8 h-8 rounded-full bg-muted" />
       )}
@@ -58,9 +73,12 @@ export function EventGameLeaderboardView({ eventGameId, live, open, onOpenChange
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent className="max-h-[85dvh]">
-        <DrawerHeader className="text-center">
-          <DrawerTitle className="text-2xl">{t('eventGame.leaderboard.title')}</DrawerTitle>
-          <div className="text-xs uppercase tracking-wide text-muted-foreground">{t('eventGame.leaderboard.subtitle')}</div>
+        <DrawerHeader
+          className="text-center"
+          style={{ background: 'linear-gradient(to bottom, #FFFFFF 0%, #E3F5FD 100%)' }}
+        >
+          <DrawerTitle className="text-2xl text-[#1B8FC7]">{t('eventGame.leaderboard.title')}</DrawerTitle>
+          <div className="text-xs uppercase tracking-wide text-[#4A7688]">{t('eventGame.leaderboard.subtitle')}</div>
         </DrawerHeader>
 
         <div className="overflow-y-auto px-4 pb-6">
@@ -77,11 +95,11 @@ export function EventGameLeaderboardView({ eventGameId, live, open, onOpenChange
 
               {myRow && myIndex >= 3 && (
                 <>
-                  <div className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mt-4 mb-1">
+                  <div className="text-xs font-semibold uppercase tracking-wide text-[#1B8FC7] mt-4 mb-1">
                     {t('eventGame.leaderboard.you')}
                   </div>
                   {pointsToNext !== null && pointsToNext > 0 && (
-                    <div className="text-sm text-center text-primary font-medium mb-1">
+                    <div className="text-sm text-center text-[#1B8FC7] font-medium mb-1">
                       {t('eventGame.leaderboard.pointsToNext', { points: pointsToNext, rank: aboveRow!.rank })}
                     </div>
                   )}

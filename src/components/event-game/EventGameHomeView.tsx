@@ -7,16 +7,7 @@ import type { EventGame } from '@/hooks/useEventGame';
 import { EventGameCountdown } from '@/components/event-game/EventGameCountdown';
 import { EventGamePostCTA } from '@/components/event-game/EventGamePostCTA';
 import { EventGameRulesSheet } from '@/components/event-game/EventGameRulesSheet';
-
-/** Faint decorative wave, reused at the bottom of each stat card and at the
- * foot of the page — purely cosmetic, no semantics. */
-function DecorativeWave({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0 30 Q 50 10 100 25 T 200 20 V40 H0 Z" fill="currentColor" />
-    </svg>
-  );
-}
+import { DecorativeWave } from '@/components/event-game/DecorativeWave';
 
 interface EventGameHomeViewProps {
   game: EventGame;
