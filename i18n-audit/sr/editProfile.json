@@ -1,24 +1,18 @@
 {
   "verdicts": {
     "editProfile.unsavedChanges": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'ti').",
-      "suggested": "Imaš nesačuvane izmene. Da li si siguran da želiš da odeš?",
       "phase": "llm"
     },
     "editProfile.notAuthenticated": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'ti').",
-      "suggested": "Nisi autentifikovan",
       "phase": "llm"
     },
     "editProfile.notAuthenticatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'ti').",
-      "suggested": "Molimo prijavi se da bi sačuvao svoj profil.",
       "phase": "llm"
     },
     "editProfile.profileUpdated": {
@@ -27,10 +21,8 @@
       "phase": "llm"
     },
     "editProfile.profileUpdatedDesc": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' possessive instead of informal 'ti').",
-      "suggested": "Tvoje izmene su sada aktivne. Tvoj VITANA profil izgleda sjajno.",
       "phase": "llm"
     },
     "editProfile.error": {
@@ -44,10 +36,8 @@
       "phase": "llm"
     },
     "editProfile.showcaseHint": {
-      "verdict": "EDIT_SUGGESTED",
+      "verdict": "OK",
       "confidence": 1,
-      "issue": "Register inconsistent (uses formal 'vi' instead of informal 'ti').",
-      "suggested": "Izaberi objave i sadržaj koji će biti istaknuti na vrhu tvog profila.",
       "phase": "llm"
     },
     "editProfile.showcaseTitle": {
@@ -74,7 +64,27 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "editProfile.title": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.titlePlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.description": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "editProfile.descriptionPlaceholder": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:03:09.253Z"
+  "generatedAt": "2026-09-03T08:13:18.472Z"
 }
