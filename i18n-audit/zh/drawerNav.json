@@ -16,11 +16,10 @@
       "phase": "llm"
     },
     "drawerNav.findPartner": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Literal translation '找匹配' is awkward; more natural to say '寻找匹配' or '找到匹配'.",
-      "suggested": "寻找匹配",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "drawerNav.live": {
       "verdict": "OK",
@@ -63,11 +62,10 @@
       "phase": "llm"
     },
     "drawerNav.connectors": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "'Connectors' likely refers to connections or contacts; '联系' is too generic and may be ambiguous.",
-      "suggested": "连接",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "drawerNav.inbox": {
       "verdict": "OK",
@@ -90,5 +88,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:39:13.360Z"
+  "generatedAt": "2026-09-03T08:11:46.333Z"
 }
