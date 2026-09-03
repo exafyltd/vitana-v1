@@ -22,9 +22,9 @@
     },
     "eventDrawer.following": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender mismatch: 'تتابعه' is masculine, but the subject could be feminine. Also, it's ambiguous whether it means 'you are following' or 'he/she is following'.",
-      "suggested": "تتابع",
+      "confidence": 1,
+      "issue": "Incorrect part of speech for UI label; 'Following' as a UI string usually implies a noun or gerund, not a verb.",
+      "suggested": "متابعة",
       "phase": "llm"
     },
     "eventDrawer.followingLoading": {
@@ -108,10 +108,8 @@
       "phase": "llm"
     },
     "eventDrawer.attending": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Gender mismatch: 'يحضرون' is masculine plural, but attendees can be mixed gender. Also, the phrase is awkward.",
-      "suggested": "{current} / {capacity} يحضرون",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "eventDrawer.spotsLeft": {
@@ -300,5 +298,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:39:26.962Z"
+  "generatedAt": "2026-09-03T08:12:18.578Z"
 }

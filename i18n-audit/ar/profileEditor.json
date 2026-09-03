@@ -6,10 +6,8 @@
       "phase": "identical"
     },
     "profileEditor.editAbout": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The Arabic translation 'تعديل عني' is awkward and not idiomatic. 'عني' means 'about me' but the phrase 'تعديل عني' is not natural. Better to say 'تعديل معلوماتي' or 'تعديل نبذة عني'.",
-      "suggested": "تعديل نبذة عني",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "profileEditor.aboutTitle": {
@@ -472,5 +470,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:42:11.980Z"
+  "generatedAt": "2026-09-03T08:13:24.471Z"
 }
