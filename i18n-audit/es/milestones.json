@@ -41,11 +41,10 @@
       "phase": "llm"
     },
     "milestones.titlePlaceholder": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The example is gender-specific ('Graduado' is masculine) and slightly formal for a friendly app. Using the infinitive is more neutral and common for general examples.",
-      "suggested": "p. ej., Graduarse de la universidad",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "milestones.descPlaceholder": {
       "verdict": "OK",
@@ -68,5 +67,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:02:33.845Z"
+  "generatedAt": "2026-09-03T08:14:01.969Z"
 }
