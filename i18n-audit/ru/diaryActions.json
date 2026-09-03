@@ -6,11 +6,10 @@
       "phase": "llm"
     },
     "diaryActions.items.recordVoiceEntry.title": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Inconsistent with 'фотозапись' and 'текстовая запись'. 'Записать голосовую запись' is grammatically correct but sounds clunky due to repetition of the root. 'Создать голосовую запись' is more idiomatic.",
-      "suggested": "Создать голосовую запись",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "diaryActions.items.recordVoiceEntry.description": {
       "verdict": "OK",
@@ -88,5 +87,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:31:50.716Z"
+  "generatedAt": "2026-09-03T08:12:00.904Z"
 }
