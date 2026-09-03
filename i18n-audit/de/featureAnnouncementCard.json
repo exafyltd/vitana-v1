@@ -1,153 +1,53 @@
 {
   "verdicts": {
-    "portals.maxina.roles.community": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "portals.maxina.roles.patient": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "portals.maxina.roles.professional": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "portals.maxina.roles.admin": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "identical"
-    },
-    "portals.maxina.title": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.maxina.welcomeBack": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.maxina.continueJourney": {
+    "featureAnnouncementCard.brandNew.eyebrow": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "portals.maxina.joinMaxina": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.maxina.joinCommunity": {
+    "featureAnnouncementCard.brandNew.badge": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "portals.maxina.createAccount": {
+    "featureAnnouncementCard.brandNew.intro": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "portals.maxina.signingIn": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.maxina.creatingAccount": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.maxina.joiningAs": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.maxina.yourFullName": {
+    "featureAnnouncementCard.brandNew.cta": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "portals.maxina.forgotPassword": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.maxina.partOfVitana": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.maxina.allPortals": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.maxina.emailConfirmed": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.maxina.checkEmail": {
+    "featureAnnouncementCard.brandNew.closing": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "portals.alkalma.joinAlkalma": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.alkalma.welcomeBack": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.alkalma.continueJourney": {
+    "featureAnnouncementCard.didYouKnow.eyebrow": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "portals.earthlinks.joinEarthlinks": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.earthlinks.welcomeBack": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.earthlinks.continueJourney": {
+    "featureAnnouncementCard.didYouKnow.intro": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     },
-    "portals.community.joinCommunity": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.community.welcomeBack": {
-      "verdict": "OK",
-      "confidence": 1,
-      "phase": "llm"
-    },
-    "portals.community.continueJourney": {
+    "featureAnnouncementCard.didYouKnow.cta": {
       "verdict": "LOW_CONFIDENCE",
       "confidence": 0,
       "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
       "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-09-03T08:16:29.085Z"
+  "generatedAt": "2026-09-03T08:14:18.794Z"
 }

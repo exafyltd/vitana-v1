@@ -6,11 +6,10 @@
       "phase": "identical"
     },
     "businessHub.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Baue dein Wellness-Geschäft aus",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "businessHub.tabs.snapshot": {
       "verdict": "OK",
@@ -43,11 +42,10 @@
       "phase": "llm"
     },
     "businessHub.analytics": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "'Analytik' refers more to the field of study; 'Analysen' is more common for data/reports in a UI context.",
-      "suggested": "Analysen",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "businessHub.searchBusiness": {
       "verdict": "OK",
@@ -60,11 +58,10 @@
       "phase": "llm"
     },
     "businessHub.noServicesDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Sie' instead of informal 'du').",
-      "suggested": "Erstelle deinen ersten Dienst, um Kunden zu gewinnen.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "businessHub.createService": {
       "verdict": "OK",
@@ -77,11 +74,10 @@
       "phase": "llm"
     },
     "businessHub.noClientsDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'deine').",
-      "suggested": "Deine Kunden werden hier erscheinen.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "businessHub.noSales": {
       "verdict": "OK",
@@ -89,12 +85,11 @@
       "phase": "llm"
     },
     "businessHub.noSalesDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Incorrect register (formal 'Ihre' instead of informal 'deine').",
-      "suggested": "Deine Verkaufshistorie wird hier erscheinen.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-05-20T07:04:30.811Z"
+  "generatedAt": "2026-09-03T08:12:33.642Z"
 }
