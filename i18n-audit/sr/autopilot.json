@@ -136,11 +136,10 @@
       "phase": "llm"
     },
     "autopilot.popup.readyToExecute": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The verb 'Spremni' is plural, but the du-form (informal singular) context requires a singular form. 'Spreman si' (masculine) or 'Spremna si' (feminine) would be appropriate.",
-      "suggested": "Spreman si da izvršiš {count} akcija koje je pripremio tvoj AI asistent.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.popup.executingTitle": {
       "verdict": "OK",
@@ -188,11 +187,10 @@
       "phase": "llm"
     },
     "autopilot.popup.toastExecutedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The past participle 'završeno' is neuter singular, but it should agree with 'akcija' (feminine plural).",
-      "suggested": "{success}/{total} akcija uspešno završene",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.popup.toastFailedTitle": {
       "verdict": "OK",
@@ -395,11 +393,10 @@
       "phase": "llm"
     },
     "autopilot.actions.action1Reason": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Adjective 'društveni' (masculine singular) does not agree with 'vibracije' (feminine plural). A more idiomatic phrasing for 'social wellness vibes' would be 'vibracije društvenog wellnessa'.",
-      "suggested": "Savršen spoj za tvoje ciljeve kretanja + vibracije društvenog wellnessa",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.actions.action2Title": {
       "verdict": "OK",
@@ -462,5 +459,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:01:19.915Z"
+  "generatedAt": "2026-09-04T08:07:07.546Z"
 }
