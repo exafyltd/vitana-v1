@@ -116,11 +116,10 @@
       "phase": "llm"
     },
     "buttons.filter": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is a noun, should be a verb for consistency with other UI actions.",
-      "suggested": "Фильтровать",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "buttons.sort": {
       "verdict": "OK",
@@ -128,11 +127,10 @@
       "phase": "llm"
     },
     "buttons.search": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is a noun, should be a verb for consistency with other UI actions.",
-      "suggested": "Искать",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "buttons.add": {
       "verdict": "OK",
@@ -280,5 +278,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:28:15.010Z"
+  "generatedAt": "2026-09-04T08:09:31.726Z"
 }
