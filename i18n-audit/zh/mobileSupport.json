@@ -11,11 +11,10 @@
       "phase": "llm"
     },
     "mobilesupport.description": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing possessive pronoun '你' before '需要' for clarity and naturalness.",
-      "suggested": "告诉我们你需要什么帮助",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "mobilesupport.tabContact": {
       "verdict": "OK",
@@ -378,5 +377,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:41:21.324Z"
+  "generatedAt": "2026-09-04T08:07:15.991Z"
 }
