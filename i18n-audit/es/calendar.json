@@ -86,11 +86,10 @@
       "phase": "llm"
     },
     "calendar.tryQuickAdd": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'Agregado Rápido' is a literal but awkward translation for a feature name; 'Añadir Rápido' is more natural and idiomatic for 'Quick Add'.",
-      "suggested": "Prueba Añadir Rápido o deja que Autopilot planifique tu día",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "calendar.clickSlotHint": {
       "verdict": "OK",
@@ -543,11 +542,10 @@
       "phase": "llm"
     },
     "calendar.journey.tasksCompleted": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'listo' is singular and means 'ready' or 'finished' (singular). 'Done' implies 'completed' and needs to match the number of completed items (plural if {completed} > 1). 'Completados' is more accurate and grammatically correct for a count.",
-      "suggested": "{completed}/{total} completados",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "calendar.journey.waveNames.wave-1": {
       "verdict": "OK",
@@ -580,5 +578,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:00:54.808Z"
+  "generatedAt": "2026-09-05T07:47:28.957Z"
 }
