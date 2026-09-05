@@ -209,7 +209,17 @@
       "verdict": "OK",
       "confidence": 1,
       "phase": "llm"
+    },
+    "capture.transcribing": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
+    },
+    "capture.backendRecordingHint": {
+      "verdict": "OK",
+      "confidence": 1,
+      "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:29:41.888Z"
+  "generatedAt": "2026-09-05T07:47:41.352Z"
 }

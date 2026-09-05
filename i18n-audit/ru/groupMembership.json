@@ -2,8 +2,8 @@
   "verdicts": {
     "groupMembership.joined": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Grammatically incorrect; 'Присоединение' is a noun (the act of joining), not a completed action.",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; the Russian is a noun ('joining') while the English is a past participle used as an exclamation ('you joined').",
       "suggested": "Присоединились! 🎉",
       "phase": "llm"
     },
@@ -14,9 +14,9 @@
     },
     "groupMembership.left": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Grammatically incorrect; 'Выход из группы' is a noun phrase (exit from group), not a completed action/status.",
-      "suggested": "Покинул группу",
+      "confidence": 0.9,
+      "issue": "Awkward phrasing; the Russian is a noun phrase ('exit from group') while the English is a past tense verb phrase ('you left group').",
+      "suggested": "Покинули группу.",
       "phase": "llm"
     },
     "groupMembership.leftDesc": {
@@ -35,5 +35,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:35:07.749Z"
+  "generatedAt": "2026-09-05T07:48:46.374Z"
 }
