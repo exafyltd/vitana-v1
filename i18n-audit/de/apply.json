@@ -96,11 +96,10 @@
       "phase": "llm"
     },
     "apply.subheadlineTicket": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical agreement and clunky gender-neutral phrasing. 'verifizierte' does not agree with masculine 'Test User' in the 'Jede:r' construction. A more natural and inclusive phrasing is preferred for an app.",
-      "suggested": "🎟️ Alle verifizierten Test User erhalten 1 Freiticket im Wert von 99 EUR für eines unserer 12 Sommer-Events — voller Rhythmus, Bewegung, Verbindung und Freude.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "apply.subheadlineCommunity": {
       "verdict": "OK",
@@ -318,11 +317,10 @@
       "phase": "llm"
     },
     "apply.aboutEyebrow": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'betrittst' (entering a place) is not idiomatic for 'joining' a community or program.",
-      "suggested": "Worum es geht",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "apply.aboutTitle": {
       "verdict": "OK",
@@ -380,12 +378,11 @@
       "phase": "llm"
     },
     "apply.benefitSeat": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Missing nuance of 'at the table' (active participation/influence); 'Gründersitz' is too literal and passive.",
-      "suggested": "Als Gründungsmitglied die Entwicklung von Vitanaland mitgestalten",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     }
   },
-  "generatedAt": "2026-05-20T07:02:05.477Z"
+  "generatedAt": "2026-09-05T07:46:40.822Z"
 }
