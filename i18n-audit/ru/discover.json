@@ -156,10 +156,8 @@
       "phase": "llm"
     },
     "discover.reasonForCategory": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The phrase 'в категории' (in category) is a bit clunky for a goal. 'В области' (in the area of) or a simpler construction would be more natural.",
-      "suggested": "Для твоей цели в области {category}",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "discover.reasonGeneric": {
@@ -194,8 +192,8 @@
     },
     "discover.recommendProduct": {
       "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "For consistency with the du-form (informal 'ты') used throughout the app and in the next entry ('Рекомендуй и Зарабатывай'), the imperative form 'Рекомендуй' is more appropriate than the infinitive 'Рекомендовать' for a button or action label.",
+      "confidence": 0.8,
+      "issue": "Infinitive form is less direct than imperative for an action in informal register.",
       "suggested": "Рекомендуй",
       "phase": "llm"
     },
@@ -535,5 +533,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:32:45.784Z"
+  "generatedAt": "2026-09-06T08:01:52.044Z"
 }

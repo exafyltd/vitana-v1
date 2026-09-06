@@ -46,11 +46,10 @@
       "phase": "llm"
     },
     "autopilot.suggestions.archetypeTitle": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "The translation 'Идеи' (ideas) is too weak for 'Insights', which implies deeper understanding or revelations.",
-      "suggested": "Озарения архетипа",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.suggestions.archetypeBadge": {
       "verdict": "OK",
@@ -173,11 +172,10 @@
       "phase": "llm"
     },
     "autopilot.popup.moreActions": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Awkward phrasing for 'more actions'. 'Больше действий' is less natural than 'ещё действий' in this context.",
-      "suggested": "ещё {count} действий",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.popup.toastExecutedTitle": {
       "verdict": "OK",
@@ -220,11 +218,10 @@
       "phase": "llm"
     },
     "autopilot.widget.active": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical form mismatch. 'Активно' is an adverb or neuter short adjective. For 'Autopilot' (masculine), the masculine short adjective 'Активен' is appropriate for a status.",
-      "suggested": "Активен",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "autopilot.widget.paused": {
       "verdict": "OK",
@@ -462,5 +459,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-07T00:25:10.893Z"
+  "generatedAt": "2026-09-06T08:01:06.919Z"
 }
