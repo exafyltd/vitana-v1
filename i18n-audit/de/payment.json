@@ -51,11 +51,10 @@
       "phase": "llm"
     },
     "payment.insufficientBalanceDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "Uses formal 'Sie' instead of informal 'du'.",
-      "suggested": "Du hast nicht genug {currency} für diesen Umtausch",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "payment.transactionFailed": {
       "verdict": "OK",
@@ -68,11 +67,10 @@
       "phase": "llm"
     },
     "payment.paymentFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The 'Bitte erneut versuchen' is a bit formal for a friendly app. 'Bitte versuche es erneut' is more appropriate for 'du' form.",
-      "suggested": "Zahlung konnte nicht verarbeitet werden. Bitte versuche es erneut.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "payment.balanceRefreshed": {
       "verdict": "OK",
@@ -90,11 +88,10 @@
       "phase": "llm"
     },
     "payment.refreshFailedDesc": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 1,
-      "issue": "The 'Bitte erneut versuchen' is a bit formal for a friendly app. 'Bitte versuche es erneut' is more appropriate for 'du' form.",
-      "suggested": "Guthaben konnte nicht aktualisiert werden. Bitte versuche es erneut.",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "payment.error": {
       "verdict": "OK",
@@ -102,5 +99,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-05-20T07:17:47.210Z"
+  "generatedAt": "2026-09-06T08:06:39.460Z"
 }
