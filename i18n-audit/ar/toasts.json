@@ -1368,8 +1368,8 @@
     "toasts.admin.failedResolveReport": {
       "verdict": "EDIT_SUGGESTED",
       "confidence": 0.9,
-      "issue": "Literal translation of 'resolve' as 'حل' is awkward; in context it means 'retrieve/load'.",
-      "suggested": "فشل استرداد التقرير",
+      "issue": "The English 'resolve' (to deal with/fix) is misinterpreted as 'retrieve' (استرداد).",
+      "suggested": "فشل معالجة التقرير",
       "phase": "llm"
     },
     "toasts.admin.approveAllFailed": {
@@ -2118,10 +2118,8 @@
       "phase": "llm"
     },
     "toasts.dev.smokeTestSent": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Literal translation of 'smoke test' is not idiomatic in Arabic; better to use 'اختبار تجريبي' or keep 'اختبار الدخان' but it's not common.",
-      "suggested": "تم إرسال الاختبار التجريبي ✓",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.dev.waitingForEvent": {
@@ -2130,10 +2128,8 @@
       "phase": "llm"
     },
     "toasts.dev.failedSendSmokeTest": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Same as entry 1, 'smoke test' literal translation is awkward.",
-      "suggested": "فشل إرسال الاختبار التجريبي",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.dev.failedSendMessage": {
@@ -3172,10 +3168,8 @@
       "phase": "llm"
     },
     "toasts.memory.reviewEditYourTranscriptionBeforeSaving": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "The word 'تسجيلك' is ambiguous; it could mean 'your recording' or 'your registration'. Better to use 'نصك' or 'النسخة' to refer to transcription.",
-      "suggested": "راجع وعدّل نسختك قبل الحفظ.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.memory.transcriptionFailed": {
@@ -4249,10 +4243,8 @@
       "phase": "llm"
     },
     "toasts.sharing.failedUploadImagePleaseEnsurePackageimages": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Compound word 'صور-الحزمة' is awkward and could be split or rephrased.",
-      "suggested": "فشل تحميل الصورة. الرجاء التأكد من وجود حاوية تخزين صور الحزمة.",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.sharing.imageUploaded": {
@@ -4386,10 +4378,8 @@
       "phase": "llm"
     },
     "toasts.sharing.imageDownloadedReadyShareInstagram": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Gender mismatch: 'جاهز' is masculine but 'الصورة' is feminine.",
-      "suggested": "تم تنزيل الصورة! جاهزة للمشاركة على إنستغرام",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.sharing.linkCopiedForLinkSticker": {
@@ -5303,10 +5293,8 @@
       "phase": "llm"
     },
     "toasts.hooks.contactJoinedVitana": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Grammatical agreement: 'انضم' is masculine but 'جهة الاتصال' is feminine.",
-      "suggested": "انضمت جهة الاتصال إلى VITANA! 🎉",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "toasts.hooks.onboardingFailed": {
@@ -5355,10 +5343,8 @@
       "phase": "llm"
     },
     "toasts.hooks.blastingNow": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.7,
-      "issue": "Literal translation 'نطلق الآن' may be ambiguous; consider more idiomatic phrasing.",
-      "suggested": "جارٍ الإطلاق الآن!",
+      "verdict": "OK",
+      "confidence": 0.85,
       "phase": "llm"
     },
     "toasts.hooks.invitesSent": {
@@ -6312,5 +6298,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T09:07:17.189Z"
+  "generatedAt": "2026-09-06T08:02:56.434Z"
 }

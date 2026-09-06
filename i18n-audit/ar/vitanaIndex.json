@@ -62,10 +62,8 @@
       "phase": "llm"
     },
     "vitanaIndex.mental": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Incomplete phrase; should be 'الصحة العقلية' or 'العقلية' as a noun.",
-      "suggested": "الصحة العقلية",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "vitanaIndex.viewFullReport": {
@@ -139,5 +137,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T09:07:35.915Z"
+  "generatedAt": "2026-09-06T08:03:09.590Z"
 }
