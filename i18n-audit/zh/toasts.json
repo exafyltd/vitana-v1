@@ -1531,11 +1531,10 @@
       "phase": "llm"
     },
     "toasts.admin.acceptLinkCopiedClipboard": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Ambiguous English: 'Accept link copied to clipboard' could mean 'Accept link' is copied, but likely means 'Accept link copied to clipboard' as a confirmation. Chinese reads as 'Accept link has been copied to clipboard', which is awkward.",
-      "suggested": "接受链接已复制到剪贴板",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.admin.invitationRevoked": {
       "verdict": "OK",
@@ -4273,11 +4272,10 @@
       "phase": "llm"
     },
     "toasts.sharing.postScheduledSuccessfully": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Scheduled is translated as '安排' which is more like 'arrange', better to use '计划' or '预定'.",
-      "suggested": "帖子已成功计划",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.sharing.pleaseUploadCsvFile": {
       "verdict": "OK",
@@ -4855,11 +4853,10 @@
       "phase": "llm"
     },
     "toasts.hooks.yourResellerDashboardNowAvailableMy": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.8,
-      "issue": "Literal translation of 'My Business' as '我的业务' is awkward; better to keep English or use '我的商家'.",
-      "suggested": "你的分销商仪表盘现在可在“我的业务”中使用。",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.hooks.welcomeReseller": {
       "verdict": "OK",
@@ -6187,11 +6184,10 @@
       "phase": "llm"
     },
     "toasts.intentmatchdetail.intentClosed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Translation is literal and awkward; 'intent' in app context likely refers to a user action or goal, not a linguistic intent.",
-      "suggested": "操作已完成",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.intentmatchdetail.couldNotClose": {
       "verdict": "OK",
@@ -6229,11 +6225,10 @@
       "phase": "llm"
     },
     "toasts.myintents.couldNotLoadIntents": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Same as entry 2: 'intents' is awkward; likely refers to user actions or goals.",
-      "suggested": "加载操作失败",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.packagepurchasesuccess.paymentConfirmed": {
       "verdict": "OK",
@@ -6281,11 +6276,10 @@
       "phase": "llm"
     },
     "toasts.home.actionDismissed": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "'移除' means 'removed', but 'dismissed' implies closing or dismissing, not necessarily removing.",
-      "suggested": "操作已关闭",
-      "phase": "llm"
+      "verdict": "LOW_CONFIDENCE",
+      "confidence": 0,
+      "issue": "audit failed: Gemini HTTP 429: {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \\n* Quota ex",
+      "phase": "llm-error"
     },
     "toasts.home.thisActionHasRemovedFromYour": {
       "verdict": "OK",
@@ -6308,5 +6302,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T09:06:56.567Z"
+  "generatedAt": "2026-09-06T08:02:47.836Z"
 }
