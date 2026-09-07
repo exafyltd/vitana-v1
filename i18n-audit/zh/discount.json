@@ -16,10 +16,8 @@
       "phase": "llm"
     },
     "discount.applyCode": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Literal translation of 'apply' as '应用' is awkward; in Chinese UI, '使用' is more natural.",
-      "suggested": "使用折扣码",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "discount.applied": {
@@ -43,10 +41,8 @@
       "phase": "llm"
     },
     "discount.tapToApply": {
-      "verdict": "EDIT_SUGGESTED",
-      "confidence": 0.9,
-      "issue": "Same as entry 3, '应用' is awkward; '使用' is more natural.",
-      "suggested": "使用",
+      "verdict": "OK",
+      "confidence": 1,
       "phase": "llm"
     },
     "discount.discountAppliedAmount": {
@@ -140,5 +136,5 @@
       "phase": "llm"
     }
   },
-  "generatedAt": "2026-08-24T08:38:56.404Z"
+  "generatedAt": "2026-09-07T08:31:58.561Z"
 }
