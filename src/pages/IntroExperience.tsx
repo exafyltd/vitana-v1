@@ -286,6 +286,23 @@ export default function IntroExperience() {
           Centering the whole column with a modest, explicit gap keeps the
           composition as one cohesive block, matching the reference.
 
+          `min-h-dvh`, not `min-h-screen` (100vh): reported on a Samsung S25
+          with French selected (BOOTSTRAP-MAXINA-INTRO-FRENCH-LAYOUT) — the
+          Login/Register row was clipped off the bottom, but only on that
+          device, not an S22 on the same build. `100vh` resolves to the
+          "large" viewport (chrome hidden) on newer mobile browser engines,
+          which can be taller than the actually-visible area when on-screen
+          browser/nav chrome is present — so this column, sized with
+          `min-h-screen` while its `fixed inset-0` PARENT (below) already
+          tracks the real visible viewport via `position: fixed`, could end
+          up taller than that parent's box and get clipped symmetrically by
+          its `overflow-hidden`. `min-h-dvh` tracks the real visible
+          viewport the same way the parent already does, closing the gap
+          between the two. French's longer `taglineMain` (wraps to 3 lines
+          here vs. 2 for English) made this column tall enough to cross that
+          threshold on the S25's chrome; it wasn't a French-only bug, just
+          the first content length that exposed it.
+
           The gap is `var(--maxina-orb-content-gap)` (index.css), not a
           plain Tailwind gap-6/md:gap-8, so the fixed-position Orb caption
           below (which is NOT a flex child and gets no gap automatically)
@@ -293,7 +310,7 @@ export default function IntroExperience() {
           element's own comment for why this matters for
           scripts/verify-intro-orb-placement.mjs's symmetry check. */}
       <div
-        className={`relative z-10 flex flex-col items-center justify-center gap-[var(--maxina-orb-content-gap,24px)] min-h-screen px-6 py-12 transition-opacity duration-[1000ms] maxina-page-content ${
+        className={`relative z-10 flex flex-col items-center justify-center gap-[var(--maxina-orb-content-gap,24px)] min-h-dvh px-6 py-12 transition-opacity duration-[1000ms] maxina-page-content ${
           showContent ? 'opacity-100' : 'opacity-0'
         }`}
 
@@ -388,7 +405,7 @@ export default function IntroExperience() {
             block further down the page — that margin is ADDITIVE, not a
             replacement for the gap, and the outer page wrapper is `fixed
             inset-0 ... overflow-hidden` with this column set to
-            `min-h-screen ... justify-center`: on any viewport shorter than
+            `min-h-dvh ... justify-center`: on any viewport shorter than
             the column's full rendered height, the overflow is clipped
             symmetrically off BOTH the top and bottom rather than becoming
             scrollable. That margin pushed total content height past the
