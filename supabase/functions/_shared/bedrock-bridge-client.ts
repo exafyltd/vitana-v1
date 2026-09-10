@@ -189,3 +189,43 @@ export async function generateImage(
   const data = await resp.json();
   return { imageBase64: data.imageBase64, model: data.model };
 }
+
+/**
+ * Speech-to-text leg of the same bridge (Aurora migration B7,
+ * AURORA-B7-EDGE-FUNCTIONS-INVENTORY.md's "Remaining: transcribe-audio"
+ * item). `transcribe-audio/index.ts` sends a whole recorded audio clip to
+ * Gemini's multimodal endpoint today, with Google Cloud Speech-to-Text as a
+ * fallback — this hits the gateway's `/api/v1/ai-bridge/transcribe` route
+ * (Amazon Transcribe on the other end) instead. Not a `gemini-client.ts`
+ * signature mirror like `generateContent`/`generateImage` above — Gemini's
+ * transcription call in that function is bespoke (raw `inlineData` audio +
+ * a "transcribe verbatim" prompt), not a shared surface with a name to keep
+ * parity with.
+ */
+export async function transcribeAudio(
+  audioBase64: string,
+  language: string,
+  mimeType?: string,
+): Promise<{ transcript: string; language: string }> {
+  const serviceToken = denoEnv('GATEWAY_SERVICE_TOKEN');
+  if (!serviceToken) {
+    throw new Error('GATEWAY_SERVICE_TOKEN not configured — cannot reach the AI bridge');
+  }
+
+  const resp = await fetch(`${gatewayBaseUrl()}/ai-bridge/transcribe`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${serviceToken}`,
+    },
+    body: JSON.stringify({ audioBase64, language, mimeType }),
+  });
+
+  if (!resp.ok) {
+    const body = await resp.text().catch(() => '');
+    throw new Error(`AI bridge transcribe request failed: ${resp.status} ${body}`);
+  }
+
+  const data = await resp.json();
+  return { transcript: data.transcript, language: data.language };
+}

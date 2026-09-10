@@ -23,6 +23,7 @@ import {
   extractTextFromResponse,
   extractFunctionCall,
   generateImage,
+  transcribeAudio,
 } from '../../supabase/functions/_shared/bedrock-bridge-client.ts';
 
 const ORIGINAL_ENV: Record<string, string | undefined> = {};
@@ -191,6 +192,59 @@ describe('bedrock-bridge-client', () => {
       }) as any;
 
       await expect(generateImage('a sunset')).rejects.toThrow(/422/);
+    });
+  });
+
+  describe('transcribeAudio', () => {
+    it('throws when GATEWAY_SERVICE_TOKEN is not configured, without calling fetch', async () => {
+      stubDenoEnv({});
+      const fetchSpy = vi.fn();
+      global.fetch = fetchSpy as any;
+
+      await expect(transcribeAudio('ZmFrZQ==', 'en')).rejects.toThrow(/GATEWAY_SERVICE_TOKEN/);
+      expect(fetchSpy).not.toHaveBeenCalled();
+    });
+
+    it('posts to the default gateway URL with a Bearer service token', async () => {
+      stubDenoEnv({ GATEWAY_SERVICE_TOKEN: 'shhh' });
+      const fetchSpy = vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ transcript: 'hello world', language: 'en-US' }),
+      });
+      global.fetch = fetchSpy as any;
+
+      const result = await transcribeAudio('ZmFrZQ==', 'en', 'audio/webm');
+
+      expect(fetchSpy).toHaveBeenCalledTimes(1);
+      const [url, init] = fetchSpy.mock.calls[0];
+      expect(url).toBe('https://gateway.vitanaland.com/api/v1/ai-bridge/transcribe');
+      expect(init.method).toBe('POST');
+      expect(init.headers.Authorization).toBe('Bearer shhh');
+      const body = JSON.parse(init.body);
+      expect(body).toEqual({ audioBase64: 'ZmFrZQ==', language: 'en', mimeType: 'audio/webm' });
+      expect(result).toEqual({ transcript: 'hello world', language: 'en-US' });
+    });
+
+    it('honors a GATEWAY_URL override', async () => {
+      stubDenoEnv({ GATEWAY_SERVICE_TOKEN: 'shhh', GATEWAY_URL: 'https://preview-aws-gateway.vitanaland.com/api/v1' });
+      const fetchSpy = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ transcript: 'x', language: 'de-DE' }) });
+      global.fetch = fetchSpy as any;
+
+      await transcribeAudio('ZmFrZQ==', 'de');
+
+      const [url] = fetchSpy.mock.calls[0];
+      expect(url).toBe('https://preview-aws-gateway.vitanaland.com/api/v1/ai-bridge/transcribe');
+    });
+
+    it('throws with the status and body when the gateway responds non-OK', async () => {
+      stubDenoEnv({ GATEWAY_SERVICE_TOKEN: 'shhh' });
+      global.fetch = vi.fn().mockResolvedValue({
+        ok: false,
+        status: 422,
+        text: async () => '{"ok":false,"error":"unsupported_language"}',
+      }) as any;
+
+      await expect(transcribeAudio('ZmFrZQ==', 'xx')).rejects.toThrow(/422/);
     });
   });
 });
