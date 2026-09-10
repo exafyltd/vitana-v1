@@ -132,6 +132,10 @@ export function FeedMedia({
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  // Starts false so a freshly-mounted clip near the viewport (the common
+  // case) renders immediately, before the observer below has had a chance to
+  // report in.
+  const [farFromViewport, setFarFromViewport] = useState(false);
   const instanceId = useId();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -153,6 +157,7 @@ export function FeedMedia({
 
     const el = containerRef.current;
     let observer: IntersectionObserver | undefined;
+    let farObserver: IntersectionObserver | undefined;
     if (el && typeof IntersectionObserver !== "undefined") {
       observer = new IntersectionObserver(
         (entries) => {
@@ -163,11 +168,31 @@ export function FeedMedia({
         { threshold: [0, 0.25, 0.5, 0.75, 1] },
       );
       observer.observe(el);
+
+      // A long scroll session can leave many autoplaying muted <video>
+      // elements mounted at once (no virtualization in the feed), each still
+      // decoding frames off-screen — real memory/CPU pressure that
+      // contributes to the app becoming unresponsive on long News Feed
+      // sessions. This is a second, much looser observer: once a clip is
+      // well outside the viewport, drop its `src` so the browser fully
+      // releases the decoder; restore it once it's back in range. The
+      // generous rootMargin means this only kicks in for clips genuinely far
+      // away, not the next one about to scroll into view.
+      farObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            setFarFromViewport(!entry.isIntersecting);
+          }
+        },
+        { rootMargin: "800px 0px" },
+      );
+      farObserver.observe(el);
     }
 
     sync();
     return () => {
       observer?.disconnect();
+      farObserver?.disconnect();
       unsubscribe();
       feedAudio.unregister(instanceId);
     };
@@ -233,13 +258,18 @@ export function FeedMedia({
       {videoUrl ? (
         <video
           ref={videoRef}
-          src={videoUrl}
+          // Dropping `src` (rather than just pausing) when far off-screen is
+          // what actually releases the decoder — a paused-but-sourced video
+          // still holds a decoded frame buffer. The poster keeps the frame
+          // showing in its place so nothing visibly flashes when scrolled
+          // back into range.
+          src={farFromViewport ? undefined : videoUrl}
           poster={imageUrl || undefined}
           muted={!isActive}
           loop
           playsInline
-          autoPlay
-          preload="metadata"
+          autoPlay={!farFromViewport}
+          preload={farFromViewport ? "none" : "metadata"}
           onLoadedMetadata={(e) =>
             setRatio(clampRatio(e.currentTarget.videoWidth, e.currentTarget.videoHeight))
           }

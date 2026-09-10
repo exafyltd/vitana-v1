@@ -14,39 +14,43 @@ export interface FollowingFeed {
   profiles: FollowedProfile[];
 }
 
+/** Shared fetcher — also used by prefetch-registry.ts so a warmed cache and the
+ * hook's own live fetch can never drift out of sync. */
+export async function fetchFollowingFeedQueryFn(validViewer: string | undefined): Promise<FollowingFeed> {
+  if (!validViewer) return { followingIds: [], profiles: [] };
+
+  const { data: rows, error } = await supabase
+    .from("user_follows")
+    .select("following_id")
+    .eq("follower_id", validViewer);
+
+  if (error) throw error;
+
+  const followingIds = (rows || []).map((r) => r.following_id);
+  if (followingIds.length === 0) {
+    return { followingIds: [], profiles: [] };
+  }
+
+  const { data: profiles, error: pErr } = await supabase
+    .from("global_community_profiles")
+    .select("user_id, display_name, avatar_url")
+    .in("user_id", followingIds);
+
+  if (pErr) throw pErr;
+
+  return {
+    followingIds,
+    profiles: (profiles || []) as FollowedProfile[],
+  };
+}
+
 export function useFollowingFeed() {
   const { user } = useAuth();
   const validViewer = isValidUUID(user?.id) ? user!.id : undefined;
 
   const query = useQuery<FollowingFeed>({
     queryKey: ["following-feed", validViewer],
-    queryFn: async () => {
-      if (!validViewer) return { followingIds: [], profiles: [] };
-
-      const { data: rows, error } = await supabase
-        .from("user_follows")
-        .select("following_id")
-        .eq("follower_id", validViewer);
-
-      if (error) throw error;
-
-      const followingIds = (rows || []).map((r) => r.following_id);
-      if (followingIds.length === 0) {
-        return { followingIds: [], profiles: [] };
-      }
-
-      const { data: profiles, error: pErr } = await supabase
-        .from("global_community_profiles")
-        .select("user_id, display_name, avatar_url")
-        .in("user_id", followingIds);
-
-      if (pErr) throw pErr;
-
-      return {
-        followingIds,
-        profiles: (profiles || []) as FollowedProfile[],
-      };
-    },
+    queryFn: () => fetchFollowingFeedQueryFn(validViewer),
     enabled: !!validViewer,
     // Align with the global 2min default so a cached Following tab paints
     // instantly on re-navigation instead of refetching every 30s.

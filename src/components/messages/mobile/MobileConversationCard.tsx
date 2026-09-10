@@ -68,6 +68,7 @@ export function MobileConversationCard({
           fallback={name?.[0]?.toUpperCase() || '?'}
           alt={name}
           className="w-12 h-12"
+          loading="lazy"
         />
         {!isGroup && participantUserId && (
           <div className="absolute -bottom-0.5 -right-0.5">

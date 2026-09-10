@@ -312,6 +312,19 @@ const renderEventGrid = (
   return <div className="px-6">{rows}</div>;
 };
 
+/**
+ * Last window scroll offset per tab, kept across unmounts of this route.
+ * Mirrors Home.tsx's feedScrollMemory: the underlying query data now survives
+ * navigation (see useEventsKeepAlive), but the route component itself is
+ * still unmounted and remounted by React Router, so without this the desktop
+ * grid view was thrown back to the top every time the user came back from
+ * News/Inbox — which reads as "it reloaded" even when nothing was refetched.
+ * Applies to the desktop grid (window-scroll); the mobile view is a
+ * card carousel whose position is already restored via the `?event=` URL
+ * param (see useEventSelection/handleCardClick below), not a vertical scroll.
+ */
+const eventsScrollMemory = new Map<string, number>();
+
 const EventsAndMeetups = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { selectedEventId, selectEvent, clearSelection } = useEventSelection();
@@ -500,6 +513,33 @@ const EventsAndMeetups = () => {
       }, { replace: true });
     }
   }, [activeTab, setSearchParams]);
+
+  // Restore the desktop grid's scroll position on return (see eventsScrollMemory
+  // above). Mobile's carousel position is already restored via the ?event= URL
+  // param, so this is a no-op there.
+  useEffect(() => {
+    if (isMobile) return;
+    const saved = eventsScrollMemory.get(activeTab);
+    if (saved == null) return;
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => window.scrollTo(0, saved));
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+    };
+  }, [activeTab, isMobile]);
+
+  useEffect(() => {
+    if (isMobile) return;
+    const remember = () => eventsScrollMemory.set(activeTab, window.scrollY);
+    window.addEventListener("scroll", remember, { passive: true });
+    return () => {
+      remember();
+      window.removeEventListener("scroll", remember);
+    };
+  }, [activeTab, isMobile]);
 
   // Handle event deep linking when dbEvents loads
   useEffect(() => {

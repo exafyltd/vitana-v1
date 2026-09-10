@@ -13,6 +13,10 @@ interface ClickableAvatarProps {
   onClick?: (e: React.MouseEvent) => void;
   onPreview?: (userId: string, e: React.MouseEvent) => void;
   disabled?: boolean;
+  /** Pass "lazy" in a long list (e.g. a conversation list) so avatars below
+   * the fold don't all fetch at once. Defaults to the browser's eager
+   * behavior, matching every existing call site (profile headers, etc). */
+  loading?: "lazy" | "eager";
 }
 
 export function ClickableAvatar({
@@ -24,7 +28,8 @@ export function ClickableAvatar({
   className,
   onClick,
   onPreview,
-  disabled = false
+  disabled = false,
+  loading
 }: ClickableAvatarProps) {
   const navigate = useNavigate();
   
@@ -75,6 +80,7 @@ export function ClickableAvatar({
       <AvatarImage
         src={src && src.length > 0 ? src : getAutoAvatarUrl(handle ?? userId ?? fallback)}
         alt={alt}
+        loading={loading}
       />
       <AvatarFallback>{fallback}</AvatarFallback>
     </Avatar>
