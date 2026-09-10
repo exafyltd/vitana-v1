@@ -101,7 +101,7 @@ export default function MyBiology() {
   } = useHealthLogger();
 
   // Fetch lab_reports (real data from DB)
-  const { data: labReports = [], isLoading: reportsLoading, refetch: refetchReports } = useQuery({
+  const { data: labReports = [], isLoading: reportsLoading, isError: reportsError, refetch: refetchReports } = useQuery({
     queryKey: ['lab-reports'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -114,7 +114,7 @@ export default function MyBiology() {
 
       if (error) {
         console.error('Error fetching lab reports:', error);
-        return [];
+        throw error;
       }
       return data || [];
     },
@@ -286,23 +286,34 @@ export default function MyBiology() {
                       </Button>
                     </div>
 
-                    <HorizontalCardList
-                      items={transformedMedicalCards}
-                      variant="standard"
-                      screenId="my-biology-medical"
-                      groupBy="none"
-                      gap="md"
-                      emptyState={
-                        <div className="text-center py-12 text-muted-foreground">
-                          <Droplets className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                          <p className="font-medium mb-1">{t('screens.health.noMedicalReportsYet')}</p>
-                          <p className="text-sm">{t('screens.health.uploadYourFirstBloodPanelStart')}</p>
-                          <Button variant="outline" size="sm" className="mt-4" onClick={() => openUploadSheet('blood_panel')}>
-                            <Upload className="w-4 h-4 mr-2" /> {t('screens.health.uploadBloodPanel')}
-                          </Button>
-                        </div>
-                      }
-                    />
+                    {reportsError ? (
+                      <div className="text-center py-12 text-muted-foreground">
+                        <AlertTriangle className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                        <p className="font-medium mb-1">{t('screens.health.reportsLoadFailed')}</p>
+                        <p className="text-sm">{t('screens.health.reportsLoadFailedDesc')}</p>
+                        <Button variant="outline" size="sm" className="mt-4" onClick={() => refetchReports()}>
+                          {t('screens.health.reportsLoadFailedRetry')}
+                        </Button>
+                      </div>
+                    ) : (
+                      <HorizontalCardList
+                        items={transformedMedicalCards}
+                        variant="standard"
+                        screenId="my-biology-medical"
+                        groupBy="none"
+                        gap="md"
+                        emptyState={
+                          <div className="text-center py-12 text-muted-foreground">
+                            <Droplets className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                            <p className="font-medium mb-1">{t('screens.health.noMedicalReportsYet')}</p>
+                            <p className="text-sm">{t('screens.health.uploadYourFirstBloodPanelStart')}</p>
+                            <Button variant="outline" size="sm" className="mt-4" onClick={() => openUploadSheet('blood_panel')}>
+                              <Upload className="w-4 h-4 mr-2" /> {t('screens.health.uploadBloodPanel')}
+                            </Button>
+                          </div>
+                        }
+                      />
+                    )}
                   </CardContent>
                 </Card>
               </div>
@@ -341,23 +352,34 @@ export default function MyBiology() {
                       </Button>
                     </div>
 
-                    <HorizontalCardList
-                      items={transformedOmicsCards}
-                      variant="standard"
-                      screenId="my-biology-omics"
-                      groupBy="none"
-                      gap="md"
-                      emptyState={
-                        <div className="text-center py-12 text-muted-foreground">
-                          <Dna className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                          <p className="font-medium mb-1">{t('screens.health.noOmicsDataYet')}</p>
-                          <p className="text-sm">{t('screens.health.uploadYourGenomicsMetabolomicsResultsUnlock')}</p>
-                          <Button variant="outline" size="sm" className="mt-4" onClick={() => openUploadSheet('genomics')}>
-                            <Upload className="w-4 h-4 mr-2" /> {t('screens.health.uploadOmicsReport')}
-                          </Button>
-                        </div>
-                      }
-                    />
+                    {reportsError ? (
+                      <div className="text-center py-12 text-muted-foreground">
+                        <AlertTriangle className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                        <p className="font-medium mb-1">{t('screens.health.reportsLoadFailed')}</p>
+                        <p className="text-sm">{t('screens.health.reportsLoadFailedDesc')}</p>
+                        <Button variant="outline" size="sm" className="mt-4" onClick={() => refetchReports()}>
+                          {t('screens.health.reportsLoadFailedRetry')}
+                        </Button>
+                      </div>
+                    ) : (
+                      <HorizontalCardList
+                        items={transformedOmicsCards}
+                        variant="standard"
+                        screenId="my-biology-omics"
+                        groupBy="none"
+                        gap="md"
+                        emptyState={
+                          <div className="text-center py-12 text-muted-foreground">
+                            <Dna className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                            <p className="font-medium mb-1">{t('screens.health.noOmicsDataYet')}</p>
+                            <p className="text-sm">{t('screens.health.uploadYourGenomicsMetabolomicsResultsUnlock')}</p>
+                            <Button variant="outline" size="sm" className="mt-4" onClick={() => openUploadSheet('genomics')}>
+                              <Upload className="w-4 h-4 mr-2" /> {t('screens.health.uploadOmicsReport')}
+                            </Button>
+                          </div>
+                        }
+                      />
+                    )}
                   </CardContent>
                 </Card>
               </div>

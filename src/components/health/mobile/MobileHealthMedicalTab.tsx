@@ -31,7 +31,7 @@ const STATUS_VARIANTS: Record<string, "default" | "secondary" | "destructive" | 
 export function MobileHealthMedicalTab({ onUpload }: MobileHealthMedicalTabProps) {
   const { translate } = useTranslation();
 
-  const { data: labReports = [], isLoading } = useQuery({
+  const { data: labReports = [], isLoading, isError, refetch } = useQuery({
     queryKey: ['lab-reports'],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -44,7 +44,7 @@ export function MobileHealthMedicalTab({ onUpload }: MobileHealthMedicalTabProps
 
       if (error) {
         console.error('Error fetching lab reports:', error);
-        return [];
+        throw error;
       }
       return data || [];
     },
@@ -64,6 +64,24 @@ export function MobileHealthMedicalTab({ onUpload }: MobileHealthMedicalTabProps
     return (
       <div className="flex items-center justify-center py-12">
         <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="px-4">
+        <div className="rounded-2xl bg-destructive/5 border border-destructive/20 p-6 text-center">
+          <h3 className="text-lg font-semibold text-foreground mb-2">
+            {translate('health.reportsLoadFailed')}
+          </h3>
+          <p className="text-sm text-muted-foreground max-w-xs mx-auto mb-5">
+            {translate('health.reportsLoadFailedDesc')}
+          </p>
+          <Button size="sm" variant="outline" className="rounded-full" onClick={() => refetch()}>
+            {translate('health.reportsLoadFailedRetry')}
+          </Button>
+        </div>
       </div>
     );
   }

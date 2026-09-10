@@ -17,14 +17,26 @@ export default function MediaManagement() {
   const { data: stats } = useQuery({
     queryKey: ['media-stats'],
     queryFn: async () => {
-      const { data: allMedia } = await supabase
+      const { data: allMedia, error: allMediaError } = await supabase
         .from('media_uploads')
         .select('media_type, status, file_size', { count: 'exact' });
 
-      const { data: recentUploads } = await supabase
+      if (allMediaError) {
+        // A DB failure here previously fell through to the `|| 0`
+        // fallbacks below, rendering as "0 flagged, 0 pending" — a
+        // false-confidence dashboard indistinguishable from a genuinely
+        // clean moderation queue.
+        console.error('[MediaManagement] Failed to load media stats:', allMediaError);
+      }
+
+      const { data: recentUploads, error: recentUploadsError } = await supabase
         .from('media_uploads')
         .select('id', { count: 'exact' })
         .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString());
+
+      if (recentUploadsError) {
+        console.error('[MediaManagement] Failed to load recent uploads count:', recentUploadsError);
+      }
 
       const totalByType = {
         video: allMedia?.filter(m => m.media_type === 'video').length || 0,

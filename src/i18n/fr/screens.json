@@ -2,8 +2,7 @@
   "screens": {
     "guidedMode": {
       "guidedLabel": "Parcours guidé",
-      "fullLabel": "Appli complète",
-      "_pending_review": {}
+      "fullLabel": "Appli complète"
     },
     "guidedCatalog": {
       "allChapters": "Tout",
@@ -45,8 +44,7 @@
       "markDone": "Marquer comme terminé",
       "skip": "Passer pour l'instant",
       "doneToast": "Entraînement terminé !",
-      "doneError": "Impossible d'enregistrer.",
-      "_pending_review": {}
+      "doneError": "Impossible d'enregistrer."
     },
     "common": {
       "languageToggleAriaLabel": "Langue",
@@ -857,8 +855,7 @@
       "mental": "Mental",
       "next3": "Prochains 3 jours",
       "month": "30 jours",
-      "future": "Futur",
-      "_pending_review": {}
+      "future": "Futur"
     },
     "admin": {
       "usingDefaults": "Par défaut",
@@ -2597,7 +2594,9 @@
       "navRole_admin": "Admin",
       "navRole_developer": "Développeur",
       "navRole_infra": "Infra",
-      "_pending_review": {}
+      "failedLoadCreatorsValue0": "Impossible de charger les créateurs : {value0}",
+      "failedLoadGroupsValue0": "Impossible de charger les groupes : {value0}",
+      "failedLoadLiveRoomsValue0": "Impossible de charger les salons en direct : {value0}"
     },
     "ai-feed": {
       "noEventsFound": "Aucun événement trouvé",
@@ -2623,8 +2622,7 @@
       "confidenceConfident": "{confidence}% confiant",
       "later": "Plus tard",
       "value0Trends": "{value0}tendances",
-      "lengthEventsShown": "{length} événements affichés",
-      "_pending_review": {}
+      "lengthEventsShown": "{length} événements affichés"
     },
     "analysis": {
       "topMatchFactors": "Principaux facteurs de correspondance",
@@ -2652,8 +2650,7 @@
       "explore": "Explorer →",
       "viewSchedule": "Voir le programme →",
       "findCoaches": "Trouver des coachs →",
-      "match_scoreMatch": "{match_score} % de match",
-      "_pending_review": {}
+      "match_scoreMatch": "{match_score} % de match"
     },
     "assistant": {
       "voiceProviderHint_polly": "Amazon Polly offre une synthèse vocale de haute qualité et au son naturel",
@@ -2742,8 +2739,7 @@
       "proactive": "Proactif",
       "referrals": "Recommandations",
       "creativityValue0": "Créativité : {value0}",
-      "languageSettingControlsWhatLanguageText": "Le paramètre \"Langue\" contrôle la langue dans laquelle le texte est généré. Le paramètre \"Voix\" contrôle la voix de synthèse vocale qui le lit à haute voix. Ils sont automatiquement synchronisés pour plus de simplicité.",
-      "_pending_review": {}
+      "languageSettingControlsWhatLanguageText": "Le paramètre \"Langue\" contrôle la langue dans laquelle le texte est généré. Le paramètre \"Voix\" contrôle la voix de synthèse vocale qui le lit à haute voix. Ils sont automatiquement synchronisés pour plus de simplicité."
     },
     "audio": {
       "volume": "Volume",
@@ -2755,8 +2751,7 @@
       "soundscapeValue0": "Ambiance sonore {value0}",
       "vitanaAudioMode": "Mode audio VITANA",
       "typeYourMessage": "Tape ton message...",
-      "returnVoice": "Retourner à la voix",
-      "_pending_review": {}
+      "returnVoice": "Retourner à la voix"
     },
     "auth": {
       "bundle": "BUNDLE :",
@@ -2801,8 +2796,7 @@
       "sendResetLink": "Envoyer le lien de réinitialisation",
       "resendAvailableCooldownS": "Renvoyer disponible dans {cooldown}s",
       "ifYouArenTSentBack": "Si tu n'es pas automatiquement redirigé(e), touche ci-dessous – ou passe simplement à l'app Vitana, elle se mettra à jour en quelques secondes.",
-      "updating": "Mise à jour…",
-      "_pending_review": {}
+      "updating": "Mise à jour…"
     },
     "billing": {
       "from": "De :",
@@ -2823,8 +2817,7 @@
       "invoiceId": "Facture n°{id}",
       "invoiceDateDate": "Date de la facture : {date}",
       "healthCityHc12345": "Ville Santé, HC 12345",
-      "paymentMethodPaymentmethod": "Méthode de paiement : {paymentMethod}",
-      "_pending_review": {}
+      "paymentMethodPaymentmethod": "Méthode de paiement : {paymentMethod}"
     },
     "business": {
       "performance": "📊 Performance",
@@ -2981,8 +2974,7 @@
       "eGLongevitySleepSupplements": "ex. longévité, sommeil, compléments",
       "autopilotHasLengthReferralDraftValue1": "Autopilot a {length}brouillon de recommandation{value1}pour toi",
       "scoreValue0": "score {value0}",
-      "viewSource": "Voir la source",
-      "_pending_review": {}
+      "viewSource": "Voir la source"
     },
     "calendar": {
       "noUpcomingEvents": "Aucun événement à venir",
@@ -3040,8 +3032,7 @@
       "suggestedValue0": "Suggéré : {value0}",
       "todaySIndexPulseCompletingYour": "Le pouls de l'Index d'aujourd'hui : terminer ton événement étiqueté {totalCount}pilier {value1} fera bouger ton Index.",
       "urgent": "urgent",
-      "highPriority": "haute priorité",
-      "_pending_review": {}
+      "highPriority": "haute priorité"
     },
     "cart": {
       "yourCart": "Ton Panier",
@@ -3065,8 +3056,7 @@
       "secureCheckoutPoweredByStripe": "Paiement sécurisé propulsé par Stripe",
       "startAddingItemsFromDiscoverMarketplace": "Commence à ajouter des articles du marché Découverte",
       "value0Each": "${value0} chacun",
-      "byProvider": "par {provider}",
-      "_pending_review": {}
+      "byProvider": "par {provider}"
     },
     "chat": {
       "googleCloudApiKey": "Clé API Google Cloud",
@@ -3080,8 +3070,7 @@
       "yourApiKeyStoredSecurelyOnly": "Ta clé API est stockée en toute sécurité et utilisée uniquement pour les fonctionnalités vocales IA.",
       "cancel": "Annuler",
       "go": "Aller à",
-      "saveApiKey": "Enregistrer la clé API",
-      "_pending_review": {}
+      "saveApiKey": "Enregistrer la clé API"
     },
     "coaches": {
       "topMatchFactors": "Meilleurs facteurs de correspondance",
@@ -3096,8 +3085,7 @@
       "fromSessions_from": "à partir de {sessions_from} €",
       "bookSession": "Réserver une session",
       "member_countMembers": "{member_count} membres",
-      "participant_countAttending": "{participant_count} participants",
-      "_pending_review": {}
+      "participant_countAttending": "{participant_count} participants"
     },
     "community": {
       "openAsksKind_commercialBuy": "Acheter",
@@ -3566,8 +3554,7 @@
       "videoRoomUnavailableHint": "Le flux n'est pas accessible pour le moment. Merci de réessayer.",
       "autopilotSuggestionsTitle": "Suggestions Autopilot",
       "autopilotSuggestionsBody": "Tu n'as pas encore publié de souhait. En attendant, Autopilot te suggère des personnes de la communauté qui pourraient te correspondre. Publie un souhait pour que l'IA puisse te trouver de vraies correspondances.",
-      "autopilotSuggestionBadge": "Autopilot",
-      "_pending_review": {}
+      "autopilotSuggestionBadge": "Autopilot"
     },
     "contacts": {
       "addContact": "Ajouter un contact",
@@ -3633,8 +3620,7 @@
       "tipUseValue0IncludeYourPersonal": "Astuce : Utilise {value0} pour inclure ton lien d'invitation personnel",
       "sendInvites": "Envoyer des invitations",
       "weFoundTotalimportedContactsMatchedThem": "Nous avons trouvé {totalImported} contacts et les avons associés à VITANA",
-      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound} de tes amis sont déjà sur VITANA !",
-      "_pending_review": {}
+      "matchesfoundYourFriendsAlreadyVitana": "🎉 {matchesFound} de tes amis sont déjà sur VITANA !"
     },
     "context": {
       "aiSpotlight": "Coup de projecteur IA 🔮",
@@ -3650,8 +3636,7 @@
       "meditationSuggestion": "Suggestion de méditation 🧘",
       "sleepReadiness": "Préparation au sommeil 🌙",
       "social": "Social 👥",
-      "todaySPlan": "Ton programme du jour 🗓️",
-      "_pending_review": {}
+      "todaySPlan": "Ton programme du jour 🗓️"
     },
     "creator": {
       "paymentStatus": "Statut du paiement",
@@ -3674,8 +3659,7 @@
       "notEnabled": "Non activé",
       "completeYourPaymentSetupStartReceiving": "Complète ta configuration de paiement pour commencer à recevoir des gains des Salons Live payants.",
       "enablePaymentsCreatePaidLiveRooms": "Active les paiements pour créer des Salons Live payants et recevoir 90 % des revenus. Configuration rapide en 2 minutes avec Stripe Connect.",
-      "checkingStatus": "Vérification du statut...",
-      "_pending_review": {}
+      "checkingStatus": "Vérification du statut..."
     },
     "crossover": {
       "keyFactors": "Facteurs Clés :",
@@ -3808,8 +3792,7 @@
       "matchCatFitness": "Fitness",
       "matchCatLongevity": "Étape de longévité",
       "matchCatCommunity": "Communauté",
-      "matchCatWellness": "Bien-être partagé",
-      "_pending_review": {}
+      "matchCatWellness": "Bien-être partagé"
     },
     "debug": {
       "presenceDebug": "Débogage de présence",
@@ -3819,8 +3802,7 @@
       "connected": "Connecté :",
       "latency": "Latence :",
       "realtimelatencyMs": "{realtimeLatency}ms",
-      "value0SAgo": "Il y a {value0}s",
-      "_pending_review": {}
+      "value0SAgo": "Il y a {value0}s"
     },
     "dev": {
       "currentStep": "Étape actuelle",
@@ -4203,8 +4185,7 @@
       "briefDescriptionDocument": "Brève description du document",
       "whatSNewThisFrontpageVersion": "Quoi de neuf dans cette version de la page d'accueil ?",
       "tryAdjustingYourFiltersWaitFor": "Essaie d'ajuster tes filtres ou attends l'arrivée de nouveaux événements.",
-      "statusLastcode": "Statut : {lastCode}",
-      "_pending_review": {}
+      "statusLastcode": "Statut : {lastCode}"
     },
     "diary": {
       "startRecordingYourWellnessJourney": "Commence à enregistrer ton parcours bien-être",
@@ -4257,8 +4238,7 @@
       "tagLabel_voice": "voix",
       "tagLabel_text": "texte",
       "voiceTranscriptCaptured": "Transcription vocale capturée. Modifie et enregistre ton entrée.",
-      "writeYourThoughts": "Écris tes pensées...",
-      "_pending_review": {}
+      "writeYourThoughts": "Écris tes pensées..."
     },
     "discover": {
       "marketplaceView_open": "Ouvrir le marché",
@@ -4554,8 +4534,7 @@
       "bookmarkedValue0": "🔖 {value0} Favoris",
       "exploreName": "Explore {name}",
       "exploreItem_name": "Explore {item_name}",
-      "value0Services": "{value0} Services",
-      "_pending_review": {}
+      "value0Services": "{value0} Services"
     },
     "discovery": {
       "filters": "Filtres :",
@@ -4587,8 +4566,7 @@
       "value0NewTodayViewedcountTotalcount": "{value0} nouveaux aujourd'hui · {viewedCount}/{totalCount} vus",
       "clearFilters": "Effacer les filtres",
       "checkBackTomorrowFor10New": "Reviens demain pour 10 nouvelles correspondances ✨",
-      "vitanaIndexVitana_index": "Index Vitana : {vitana_index}",
-      "_pending_review": {}
+      "vitanaIndexVitana_index": "Index Vitana : {vitana_index}"
     },
     "events": {
       "searchByNameEmail": "Rechercher par nom ou e-mail...",
@@ -4611,8 +4589,7 @@
       "youSureYouWantDeleteTitle": "Es-tu sûr(e) de vouloir supprimer \"{title}\" ? Cette action est irréversible.\nTous les participants, billets et données associées seront définitivement supprimés.",
       "sent_countSentResponse_countResponded": "{sent_count} envoyé(s) • {response_count} répondu",
       "attendeesTotal": "Participants ({total})",
-      "noInvitationsSentYetStartInviting": "Aucune invitation n'a encore été envoyée. Commence à inviter des personnes pour voir les réponses ici.",
-      "_pending_review": {}
+      "noInvitationsSentYetStartInviting": "Aucune invitation n'a encore été envoyée. Commence à inviter des personnes pour voir les réponses ici."
     },
     "feedback": {
       "reportSent": "Signalement envoyé !",
@@ -4639,8 +4616,7 @@
       "interimTextAppearsGrayUntilFinalized": "Le texte provisoire apparaît en gris jusqu'à finalisation...",
       "myReportsLength": "Mes rapports ({length})",
       "lengthAttachmentS": "📎 {length} pièce(s) jointe(s)",
-      "loadMoreValue0Remaining": "Charger plus ({value0} restant(s))",
-      "_pending_review": {}
+      "loadMoreValue0Remaining": "Charger plus ({value0} restant(s))"
     },
     "health": {
       "pillar_hydration_title": "Hydratation",
@@ -5199,20 +5175,24 @@
           "hydration": "Hydratation",
           "exercise": "Exercice",
           "sleep": "Sommeil",
-          "mental": "Santé mentale",
-          "_pending_review": {}
+          "mental": "Santé mentale"
         },
         "economyAxes": {
           "find_match": "Trouve une correspondance",
           "marketplace": "Marché",
           "income_generation": "Génération de revenus",
-          "business_formation": "Création d'entreprise",
-          "_pending_review": {}
+          "business_formation": "Création d'entreprise"
         },
-        "contractLink": "Consulte le contrat de l'Objectif Ultime",
-        "_pending_review": {}
+        "contractLink": "Consulte le contrat de l'Objectif Ultime"
       },
-      "_pending_review": {}
+      "_pending_review": {
+        "reportsLoadFailed": true,
+        "reportsLoadFailedDesc": true,
+        "reportsLoadFailedRetry": true
+      },
+      "reportsLoadFailed": "Couldn't load your reports",
+      "reportsLoadFailedDesc": "There was a problem loading your lab reports. Please try again.",
+      "reportsLoadFailedRetry": "Try again"
     },
     "home": {
       "priorityOfTheDay": "Priorité du jour :",
@@ -5427,12 +5407,10 @@
       "replyToComment": "Répondre",
       "replyingTo": "Répondre à {name}",
       "cancelReply": "Annuler la réponse",
-      "likeComment": "Aimer le commentaire",
-      "_pending_review": {}
+      "likeComment": "Aimer le commentaire"
     },
     "icons": {
-      "xFormerlyTwitter": "X (anciennement Twitter)",
-      "_pending_review": {}
+      "xFormerlyTwitter": "X (anciennement Twitter)"
     },
     "intents": {
       "kindFilter_all": "Tout (sensible à la boussole)",
@@ -5512,8 +5490,7 @@
       "kindOptionActivitySeek": "Partenaire d'activité",
       "kindOptionSocialSeek": "Discussion café / mentorat",
       "kindOptionMutualAid": "Prêter / emprunter / donner",
-      "kindOptionPartnerSeek": "Partenaire de vie",
-      "_pending_review": {}
+      "kindOptionPartnerSeek": "Partenaire de vie"
     },
     "layout": {
       "contentRequiresConsent": "Contenu nécessite consentement",
@@ -5521,8 +5498,7 @@
       "reviewSettings": "Revoir les paramètres",
       "tapReviewPrivacySettingsForThis": "Appuie pour revoir les paramètres de confidentialité pour ce type de contenu",
       "kindKind": "Type : {kind}",
-      "idId": "ID : {id}",
-      "_pending_review": {}
+      "idId": "ID : {id}"
     },
     "liverooms": {
       "createLiveRoom": "Créer un salon en direct",
@@ -5613,20 +5589,17 @@
         "emptyHint": "Les salles terminées apparaissent ici — avec un récapitulatif, des moments forts et un enregistrement.",
         "loading": "Chargement des salles passées…",
         "heldAt": "{date} · {time}",
-        "heldRange": "{date} · {start}–{end}",
-        "_pending_review": {}
+        "heldRange": "{date} · {start}–{end}"
       },
       "durationMin": "{value0} min",
       "durationHour": "{value0} h",
-      "durationHourMin": "{value0} h {value1} min",
-      "_pending_review": {}
+      "durationHourMin": "{value0} h {value1} min"
     },
     "meetups": {
       "detailsProgram": "Détails & Programme",
       "undo": "Annuler",
       "closeEventDetails": "Fermer les détails de l'événement",
-      "shareMeetup": "Partager le meetup",
-      "_pending_review": {}
+      "shareMeetup": "Partager le meetup"
     },
     "memory": {
       "updatedAgo": "Mis à jour {distance}",
@@ -5854,8 +5827,7 @@
       "memorySubnav_diary": "Journal quotidien",
       "memorySubnav_recall": "Rappel et recherche",
       "memorySubnav_permissions": "Autorisations",
-      "wellnessDiaryMultimediaDescription": "Enregistre et revois ton parcours bien-être avec des entrées multimédias.",
-      "_pending_review": {}
+      "wellnessDiaryMultimediaDescription": "Enregistre et revois ton parcours bien-être avec des entrées multimédias."
     },
     "messages": {
       "inspirationCategory_morningMotivation": "Motivation matinale",
@@ -6042,8 +6014,7 @@
       "chooseConversationFromLeftStartMessaging": "Sélectionne une conversation à gauche pour envoyer des messages.",
       "anonymous": "Anonyme",
       "vitanaOpenScreen": "Ouvrir l'écran",
-      "viewFullscreen": "Afficher en plein écran",
-      "_pending_review": {}
+      "viewFullscreen": "Afficher en plein écran"
     },
     "mobile": {
       "searching": "Recherche…",
@@ -6062,8 +6033,7 @@
       "openSearch": "Ouvrir la recherche",
       "openCalendar": "Ouvrir le calendrier",
       "openAutopilot": "Ouvrir le pilote automatique",
-      "closeSearch": "Fermer la recherche",
-      "_pending_review": {}
+      "closeSearch": "Fermer la recherche"
     },
     "notifications": {
       "markAllAsRead": "Marquer tout comme lu",
@@ -6081,8 +6051,7 @@
       "deleteThisNotification": "Supprimer cette notification",
       "delete": "Supprimer",
       "close": "Fermer",
-      "closeNotifications": "Fermer les notifications",
-      "_pending_review": {}
+      "closeNotifications": "Fermer les notifications"
     },
     "onboarding": {
       "pickNamePartYourVitanaId": "Choisis la partie nom de ton ID Vitana",
@@ -6098,13 +6067,11 @@
       "typeYourOwnName": "Ou saisis ton propre nom",
       "eGAlex": "ex. alex",
       "welcomeMaxina": "Bienvenue chez Maxina",
-      "yourLongevityJourneyBeginsNow": "Ton voyage vers la longévité commence maintenant",
-      "_pending_review": {}
+      "yourLongevityJourneyBeginsNow": "Ton voyage vers la longévité commence maintenant"
     },
     "orders": {
       "friendExampleCom": "ami@exemple.com",
-      "friendSName": "Nom de l'ami",
-      "_pending_review": {}
+      "friendSName": "Nom de l'ami"
     },
     "payment": {
       "selectDate": "Sélectionner la date",
@@ -6205,8 +6172,7 @@
       "conversationspecificPaymentActionWith": "Une action de paiement spécifique à la conversation avec",
       "alreadyActivePleaseCompleteCloseThat": "est déjà active. \n                    Termine ou ferme d'abord cette action.",
       "anotherWalletActionCurrentlyProgressPlease": "Une autre action de portefeuille est actuellement en cours. \n                    Termine ou ferme d'abord cette action.",
-      "paymenttypePaymentRequest": "{paymentType}Demande de paiement",
-      "_pending_review": {}
+      "paymenttypePaymentRequest": "{paymentType}Demande de paiement"
     },
     "proactive": {
       "proTip": "Astuce de pro :",
@@ -6236,8 +6202,7 @@
       "personalInvitesGet3xMoreResponses": "Les invitations personnelles obtiennent 3 fois plus de réponses que les messages génériques. \n            Notre IA crée des invitations authentiques qui reflètent ton parcours bien-être !",
       "dismissTip": "Ignorer l'astuce",
       "seeNextValue0More": "Voir suivant ({value0} de plus)",
-      "membersWhoAutoshareTheirWellnessWins": "Les membres qui partagent auto-matiquement leurs succès bien-être inspirent 5 à 10 amis à les rejoindre chaque mois, \n                créant un puissant effet d'entraînement dans leur réseau.",
-      "_pending_review": {}
+      "membersWhoAutoshareTheirWellnessWins": "Les membres qui partagent auto-matiquement leurs succès bien-être inspirent 5 à 10 amis à les rejoindre chaque mois, \n                créant un puissant effet d'entraînement dans leur réseau."
     },
     "profile": {
       "adminAccess": "Accès Admin",
@@ -6635,8 +6600,7 @@
       "licensedVerifiedHealthcareProvider": "Fournisseur de services de santé agréé et vérifié",
       "media": "Médias",
       "events": "Événements",
-      "health": "Santé",
-      "_pending_review": {}
+      "health": "Santé"
     },
     "reminders": {
       "subtitleDefault": "Ce que Vitana planifie pour toi. Parle à l'ORB pour ajouter naturellement.",
@@ -6688,8 +6652,7 @@
       "noCompleted": "Aucun rappel terminé pour l'instant.",
       "noMissed": "Aucun rappel manqué — tu es à jour.",
       "creating": "Création en cours…",
-      "createReminder": "Créer un rappel",
-      "_pending_review": {}
+      "createReminder": "Créer un rappel"
     },
     "reseller": {
       "noEventsYourInventory": "Aucun événement dans ton inventaire",
@@ -6753,8 +6716,7 @@
       "viewDetails": "Voir les détails",
       "perTicketSoldViaYourReseller": "par billet vendu via ton lien de revendeur. \n              La commission est calculée sur le prix brut du billet avant les frais de plateforme.",
       "viewWallet2": "Voir dans le portefeuille →",
-      "ticketquantityTicketValue1Value2": "{ticketQuantity} billet{value1} · {value2}",
-      "_pending_review": {}
+      "ticketquantityTicketValue1Value2": "{ticketQuantity} billet{value1} · {value2}"
     },
     "settings": {
       "googleConnectionLiveCheck": "Connexion Google — vérification en direct",
@@ -7405,8 +7367,7 @@
       "youExafySuperAdministratorYouCan": "Tu es un super-administrateur Exafy. Tu peux basculer entre les organisations et gérer tous les locataires.",
       "roleValue0": "Rôle : {value0}",
       "refreshBrowserVoices": "Actualiser les voix du navigateur",
-      "creativityValue0": "Créativité : {value0}",
-      "_pending_review": {}
+      "creativityValue0": "Créativité : {value0}"
     },
     "sharing": {
       "activateCampaign": "Activer la campagne",
@@ -8216,8 +8177,7 @@
       "imageSpecsHashtagStrategyPostingTimes": "Spécifications d'image, stratégie de hashtags, heures de publication",
       "canvaFigmaDirectlyInapp": "Canva, Figma, ou directement dans l'app",
       "copypasteCustomizeForYourNeeds": "Copie-colle ou personnalise selon tes besoins",
-      "createCustomDataPackageBySelecting": "Crée un paquet de données personnalisé en sélectionnant des métriques de santé spécifiques, des plages de dates et des types de données adaptés aux exigences de ton fournisseur de services de santé ou à ta participation à des études de recherche.",
-      "_pending_review": {}
+      "createCustomDataPackageBySelecting": "Crée un paquet de données personnalisé en sélectionnant des métriques de santé spécifiques, des plages de dates et des types de données adaptés aux exigences de ton fournisseur de services de santé ou à ta participation à des études de recherche."
     },
     "supplements": {
       "supplementName": "Nom du supplément*",
@@ -8234,8 +8194,7 @@
       "notes": "Notes",
       "cancel": "Annuler",
       "value0Supplement": "{value0}Supplément",
-      "inactive": "Inactif",
-      "_pending_review": {}
+      "inactive": "Inactif"
     },
     "templates": {
       "sendMessages": "Envoyer aux messages",
@@ -8249,8 +8208,7 @@
       "noDataAvailable": "Aucune donnée disponible",
       "withWith": "Avec {with}",
       "spotsSpots": "{spots} places",
-      "viewAllLengthRecommendations": "Voir toutes les {length} recommandations",
-      "_pending_review": {}
+      "viewAllLengthRecommendations": "Voir toutes les {length} recommandations"
     },
     "tickets": {
       "ticketsSold": "Billets vendus",
@@ -8295,8 +8253,7 @@
       "ticketValue0": "Billet {value0}",
       "eGGeneralAdmission": "ex: Admission générale",
       "priceValue0": "Prix ({value0}) *",
-      "whatSIncludedWithThisTicket": "Qu'est-ce qui est inclus avec ce billet ?",
-      "_pending_review": {}
+      "whatSIncludedWithThisTicket": "Qu'est-ce qui est inclus avec ce billet ?"
     },
     "ui": {
       "reconnecting": "Reconnexion...",
@@ -8328,8 +8285,7 @@
       "learnMore": "En savoir plus",
       "noItemsDisplay": "Aucun élément à afficher",
       "pointsCredits": "+{points} crédits",
-      "moreActions": "Plus d'actions",
-      "_pending_review": {}
+      "moreActions": "Plus d'actions"
     },
     "vertex": {
       "debugConsole": "Console de débogage",
@@ -8356,13 +8312,11 @@
       "recording": "Enregistrement...",
       "aiSpeaking": "L'IA parle...",
       "you": "Toi",
-      "transcriptWillAppearHere": "La transcription apparaîtra ici...",
-      "_pending_review": {}
+      "transcriptWillAppearHere": "La transcription apparaîtra ici..."
     },
     "vitanaland": {
       "enterVitanalandK": "Entre dans Vitanaland (⌘K)",
-      "enterVitanalandCmdK": "Entre dans VITANALAND (Cmd+K)",
-      "_pending_review": {}
+      "enterVitanalandCmdK": "Entre dans VITANALAND (Cmd+K)"
     },
     "downloadFlyer": {
       "brandName": "MAXINA",
@@ -8388,8 +8342,7 @@
       "inviteCardBody": "Partage le flyer de téléchargement et commence ensemble.",
       "inviteCardCta": "Inviter des amis",
       "inviteShareTitle": "MAXINA – Communauté de longévité",
-      "inviteShareText": "Rejoins-moi sur MAXINA – la communauté de longévité ! Obtiens l'appli ici :",
-      "_pending_review": {}
+      "inviteShareText": "Rejoins-moi sur MAXINA – la communauté de longévité ! Obtiens l'appli ici :"
     },
     "vitanaIdentity": {
       "vitana": "Vitana",
@@ -8401,8 +8354,7 @@
       "viewIndex": "Voir l'Index",
       "viewJourney": "Voir mon parcours",
       "viewMatch": "Voir la correspondance",
-      "dismissCard": "Ignorer la carte",
-      "_pending_review": {}
+      "dismissCard": "Ignorer la carte"
     },
     "voucher": {
       "friendExampleCom": "ami@exemple.com",
@@ -8425,8 +8377,7 @@
       "giftFrom": "Cadeau de",
       "claiming": "Réclamation en cours...",
       "fromBuyer_name": "De {buyer_name}",
-      "createAccount": "Créer un compte",
-      "_pending_review": {}
+      "createAccount": "Créer un compte"
     },
     "wallet": {
       "currentSubscriptionPerks": "Avantages de l'abonnement actuel",
@@ -8949,8 +8900,7 @@
       "continueToSecureCheckout": "Continuer vers le paiement sécurisé",
       "cardPaymentViaStripe": "Paiement par carte, traité en toute sécurité par Stripe",
       "currentBalanceLabel": "Solde {currency} actuel",
-      "amountAddCurrency": "Montant à ajouter ({currency})",
-      "_pending_review": {}
+      "amountAddCurrency": "Montant à ajouter ({currency})"
     },
     "ai": {
       "subtitle_priorityActions": "Tâches sélectionnées par l'IA pour un impact maximal sur ton bien-être",
@@ -9119,8 +9069,7 @@
       "impactImpact": "Impact : {impact}",
       "defineHowYourAiAgentShould": "Définis comment ton agent IA doit se comporter, sur quoi il doit se concentrer, et comment il doit communiquer avec toi...",
       "thisReadonlyPlaceholderForAgentPrompt": "Ceci est un espace réservé en lecture seule pour le Centre d'invites d'agents. \n              Les phases futures permettront une personnalisation complète des agents IA et des tests en temps réel.",
-      "thisReadonlyPlaceholderForPersonalAi": "Ceci est un espace réservé en lecture seule pour la Chronologie IA Personnelle. \n                Les phases futures se connecteront aux données d'activité IA réelles et fourniront des insights interactifs.",
-      "_pending_review": {}
+      "thisReadonlyPlaceholderForPersonalAi": "Ceci est un espace réservé en lecture seule pour la Chronologie IA Personnelle. \n                Les phases futures se connecteront aux données d'activité IA réelles et fourniront des insights interactifs."
     },
     "authpages": {
       "fullName": "Nom complet",
@@ -9131,8 +9080,7 @@
       "login": "Se connecter",
       "signUp": "S'inscrire",
       "alreadyHaveAccountValue0": "Tu as déjà un compte ? {value0}",
-      "donAposTHaveAccountValue0": "Tu n'as pas de compte ? {value0}",
-      "_pending_review": {}
+      "donAposTHaveAccountValue0": "Tu n'as pas de compte ? {value0}"
     },
     "autopilotdashboard": {
       "text999": "sur 999",
@@ -9275,10 +9223,8 @@
         "advanceCareer": "Fais avancer ta carrière",
         "masterNewSkills": "Maîtrise de nouvelles compétences",
         "spiritualLife": "Vie spirituelle",
-        "earnFromRecommendations": "Gagne grâce aux recommandations",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "earnFromRecommendations": "Gagne grâce aux recommandations"
+      }
     },
     "businesshub": {
       "noServicesYet": "Aucun service pour l'instant",
@@ -9298,8 +9244,7 @@
       "businessHub": "Centre d'affaires 💼",
       "growYourWellnessBusinessManageClients": "Développe ton entreprise de bien-être et gère tes clients sans effort",
       "business": "Entreprise",
-      "value0MoreActions": "+{value0} actions supplémentaires",
-      "_pending_review": {}
+      "value0MoreActions": "+{value0} actions supplémentaires"
     },
     "businesslistings": {
       "myListings": "Mes annonces",
@@ -9309,8 +9254,7 @@
       "backBusinessHub": "Retour au Centre d'affaires",
       "listingsAvailableForProAccounts": "Les offres sont disponibles pour les comptes Pro.",
       "noListingsYetClick": "Aucune offre pour l'instant. Clique",
-      "addOneOpenOrbJustSay": "pour en ajouter une – ou ouvre ORB et dis simplement",
-      "_pending_review": {}
+      "addOneOpenOrbJustSay": "pour en ajouter une – ou ouvre ORB et dis simplement"
     },
     "businessopportunities": {
       "myListings": "Mes annonces",
@@ -9318,8 +9262,7 @@
       "opportunitiesAvailableForProAccountsUpgrade": "Les opportunités sont disponibles pour les comptes Pro. Passe à la version supérieure pour accéder aux prospects entrants.",
       "opportunities": "Opportunités",
       "incomingLeadsMatchingYourOfferingsExpress": "Prospects entrants correspondant à tes offres. Exprime ton intérêt pour démarrer une conversation.",
-      "noLeadsYetWeLlNotify": "Aucun prospect pour l'instant. Nous te notifierons dès qu'une demande correspondante arrivera. Assure-toi d'avoir au moins une offre commercial_sell sous",
-      "_pending_review": {}
+      "noLeadsYetWeLlNotify": "Aucun prospect pour l'instant. Nous te notifierons dès qu'une demande correspondante arrivera. Assure-toi d'avoir au moins une offre commercial_sell sous"
     },
     "checkoutsuccess": {
       "whatSNext": "Quelle est la suite ?",
@@ -9335,8 +9278,7 @@
       "continueShopping": "Continuer mes achats",
       "ifYouHaveAnyQuestionsAbout": "Si tu as des questions concernant ta commande, notre équipe de support est là pour t'aider.",
       "contactSupport": "Contacter le support",
-      "viewMyOrders": "Voir mes commandes",
-      "_pending_review": {}
+      "viewMyOrders": "Voir mes commandes"
     },
     "creatoronboarded": {
       "checkingYourPaymentStatus": "Ton statut de paiement est en cours de révision...",
@@ -9359,12 +9301,10 @@
       "createYourFirstPaidRoom": "Crée ta première salle payante",
       "viewPaymentSettings": "Voir les paramètres de paiement",
       "value0PaymentSetupComplete": "Configuration du paiement {value0} terminée !",
-      "youReAllSetStartEarning": "Tu es prêt(e) à commencer à gagner de l'argent avec tes Live Rooms",
-      "_pending_review": {}
+      "youReAllSetStartEarning": "Tu es prêt(e) à commencer à gagner de l'argent avec tes Live Rooms"
     },
     "editprofilepage": {
-      "editProfileVitana": "Modifier le profil – VITANA",
-      "_pending_review": {}
+      "editProfileVitana": "Modifier le profil – VITANA"
     },
     "healthtracker": {
       "letSTrackYourProgressTogether": "Suivons tes progrès ensemble ! 📊",
@@ -9414,8 +9354,7 @@
       "weeklyActivity": "Activité Hebdomadaire",
       "mentalWellness": "Bien-être Mental",
       "mindfulness": "Pleine Conscience",
-      "vitanaIndexOverview": "Aperçu de l'Index Vitana",
-      "_pending_review": {}
+      "vitanaIndexOverview": "Aperçu de l'Index Vitana"
     },
     "index": {
       "comprehensiveHealthWellnessPlatform": "Plateforme complète de santé et de bien-être",
@@ -9438,8 +9377,7 @@
       "vitanaComprehensiveDigitalHealthPlatformOffering": "VITANA est une plateforme de santé numérique complète offrant plusieurs environnements spécialisés pour différentes communautés de bien-être et la gestion professionnelle des soins de santé.",
       "commercePortal": "Portail Commerce",
       "merchantSelfServiceMarketplace": "Place de marché en libre-service pour marchands",
-      "connectYourBusinessToDiscoverYourself": "Connecte ton entreprise à la place de marché Discover toi-même — pas de projet d'intégration, pas d'attente pour les ingénieurs.",
-      "_pending_review": {}
+      "connectYourBusinessToDiscoverYourself": "Connecte ton entreprise à la place de marché Discover toi-même — pas de projet d'intégration, pas d'attente pour les ingénieurs."
     },
     "intentboard": {
       "communityBoard": "Forum communautaire",
@@ -9449,16 +9387,14 @@
       "style": "Style",
       "lookingForYourOwnIntents": "Tu cherches tes propres intentions ?",
       "whatOthersLookingFor": "Ce que les autres cherchent.",
-      "surfacedForYour": "Affiché pour ton",
-      "_pending_review": {}
+      "surfacedForYour": "Affiché pour ton"
     },
     "intentmatchdetail": {
       "intentNotFound": "Intention introuvable.",
       "backMyIntents": "Retour à mes intentions",
       "closeIntent": "Fermer l'intention",
       "noMatchesYetWeLlKeep": "Pas encore de correspondances. Nous continuerons à chercher et te notifierons quand quelqu'un correspondra.",
-      "matchesLength": "Correspondances ({length})",
-      "_pending_review": {}
+      "matchesLength": "Correspondances ({length})"
     },
     "invitefriends": {
       "phoneContacts": "Contacts téléphoniques",
@@ -9483,12 +9419,10 @@
       "noContactsMatchSearch": "Aucun contact ne correspond à \"{search}\"",
       "importContacts": "Importer les contacts",
       "selectedcountSelected": "{selectedCount} sélectionnés",
-      "sendInvitesSelectedcount": "Envoyer des invitations ({selectedCount})",
-      "_pending_review": {}
+      "sendInvitesSelectedcount": "Envoyer des invitations ({selectedCount})"
     },
     "logout": {
-      "signingOut": "Déconnexion en cours...",
-      "_pending_review": {}
+      "signingOut": "Déconnexion en cours..."
     },
     "maxinaAppRedirect": {
       "seoTitle": "MAXINA – Redirection vers l'App Store",
@@ -9501,8 +9435,7 @@
       "copyLink": "Copier le lien",
       "linkCopied": "Lien copié — colle-le dans Safari",
       "copyFailed": "Impossible de copier le lien",
-      "iosOpenInBrowser": "Appuie sur « … » en haut à droite, puis « Ouvrir dans le navigateur » — l'App Store s'ouvre tout de suite.",
-      "_pending_review": {}
+      "iosOpenInBrowser": "Appuie sur « … » en haut à droite, puis « Ouvrir dans le navigateur » — l'App Store s'ouvre tout de suite."
     },
     "mobilesettings": {
       "pushNotifications": "Notifications push",
@@ -9589,8 +9522,7 @@
       "modeBillingPlan": "Forfait actuel",
       "modeBillingPayment": "Mode de paiement",
       "modeBillingInvoices": "Factures et reçus",
-      "modeBillingCreator": "Paiements aux créateurs",
-      "_pending_review": {}
+      "modeBillingCreator": "Paiements aux créateurs"
     },
     "myintents": {
       "myIntents": "Mes intentions",
@@ -9601,8 +9533,7 @@
       "browseWhatOthersLookingFor": "Découvre ce que les autres recherchent :",
       "lengthOpenUpPer_kind_slot_capPerCategory": "{length}ouverts · jusqu'à {PER_KIND_SLOT_CAP}par catégorie",
       "lengthPer_kind_slot_capSlotsUsed": "{length} sur {PER_KIND_SLOT_CAP} places utilisées",
-      "capReachedCloseOnePostNew": "— limite atteinte, ferme-en un pour en publier un nouveau",
-      "_pending_review": {}
+      "capReachedCloseOnePostNew": "— limite atteinte, ferme-en un pour en publier un nouveau"
     },
     "mytickets": {
       "myTickets": "Mes billets",
@@ -9614,8 +9545,7 @@
       "upcomingLength": "À venir ({length})",
       "pastLength": "Passés ({length})",
       "noUpcomingEvents": "Pas d'événements à venir",
-      "noPastEvents": "Pas d'événements passés",
-      "_pending_review": {}
+      "noPastEvents": "Pas d'événements passés"
     },
     "notauthorized": {
       "accessDenied": "Accès refusé",
@@ -9623,13 +9553,11 @@
       "youDonTHavePermissionAccess": "Cette zone n'est accessible qu'au personnel autorisé.",
       "error403Forbidden": "Erreur 403 : Interdit",
       "returnDashboard": "Retour au tableau de bord",
-      "contactSupport": "Contacter l'assistance",
-      "_pending_review": {}
+      "contactSupport": "Contacter l'assistance"
     },
     "notfound": {
       "oopsPageNotFound": "Oups ! Page introuvable",
-      "returnHome": "Retour à l'accueil",
-      "_pending_review": {}
+      "returnHome": "Retour à l'accueil"
     },
     "packagepurchasesuccess": {
       "missingPurchaseInformation": "Informations d'achat manquantes",
@@ -9645,8 +9573,7 @@
       "viewMyOrders": "Voir mes commandes",
       "redeemNow": "Utiliser maintenant",
       "viewOrders": "Voir les commandes",
-      "confirmationHasSent": "Une confirmation a été envoyée à",
-      "_pending_review": {}
+      "confirmationHasSent": "Une confirmation a été envoyée à"
     },
     "privacysettings": {
       "privacyVisibility": "Confidentialité et visibilité",
@@ -9654,8 +9581,7 @@
       "pleaseSignManageYourPrivacySettings": "Connecte-toi pour gérer tes paramètres de confidentialité.",
       "serverEnforcesTheseTiersEveryCrossuser": "Le serveur applique ces niveaux à chaque récupération inter-départementale – ton interrupteur est contraignant, pas consultatif.",
       "back": "Retour",
-      "tapAnyTierBadgeCyclePrivate": "Touche n'importe quel badge de niveau pour passer de Privé → Connexions → Public. Les paramètres par défaut privilégient la confidentialité — c'est toi qui décides ce que tu partages.",
-      "_pending_review": {}
+      "tapAnyTierBadgeCyclePrivate": "Touche n'importe quel badge de niveau pour passer de Privé → Connexions → Public. Les paramètres par défaut privilégient la confidentialité — c'est toi qui décides ce que tu partages."
     },
     "publiccampaignlanding": {
       "campaignNotFound": "Campagne introuvable",
@@ -9671,8 +9597,7 @@
       "lengthChannelValue1": "{length} chaîne{value1}",
       "youLlSignCreateAccountNext": "Tu te connecteras ou créeras un compte à l'étape suivante.",
       "YourLongevityCommunity": "- Ta communauté de longévité",
-      "getTicketsForValue0": "Obtiens des billets pour {value0}",
-      "_pending_review": {}
+      "getTicketsForValue0": "Obtiens des billets pour {value0}"
     },
     "publiceventlanding": {
       "eventNotFound": "Événement introuvable",
@@ -9689,14 +9614,12 @@
       "fromPricelabel": "À partir de {priceLabel}",
       "youLlSignCreateAccountNext": "Tu te connecteras ou créeras un compte à l'étape suivante.",
       "YourLongevityCommunity": "- Ta communauté de longévité",
-      "getTicketsForTitle": "Obtiens des billets pour {title}",
-      "_pending_review": {}
+      "getTicketsForTitle": "Obtiens des billets pour {title}"
     },
     "publicprofilepage": {
       "loadingProfile": "Chargement du profil...",
       "userNotFound": "Utilisateur introuvable",
-      "returnHome": "Retour à l'accueil",
-      "_pending_review": {}
+      "returnHome": "Retour à l'accueil"
     },
     "redeemvoucher": {
       "invalidLink": "Lien invalide",
@@ -9712,8 +9635,7 @@
       "thisVoucherHasExpiredCanNo": "Ce bon a expiré et ne peut plus être utilisé. Contacte le support si tu as besoin d'aide.",
       "yourValue0VoucherHasAddedYour": "Ton {value0}bon a été ajouté à ton compte. \n            Explore les événements et expériences pour utiliser tes avantages.",
       "viewWallet": "Voir le portefeuille",
-      "browseEvents": "Parcourir les événements",
-      "_pending_review": {}
+      "browseEvents": "Parcourir les événements"
     },
     "search": {
       "viewProfile": "Voir le profil",
@@ -9730,8 +9652,7 @@
       "content": "🎬 Contenu",
       "health": "❤️ Santé",
       "value0Members": "{value0} membres",
-      "showingResultsFor": "Affichage des résultats pour \"",
-      "_pending_review": {}
+      "showingResultsFor": "Affichage des résultats pour \""
     },
     "ticketdemo": {
       "ticketPreview": "Aperçu du billet",
@@ -9748,8 +9669,7 @@
       "downloadAsPngShareOptions": "Télécharger en PNG ou options de partage",
       "multitenantBoardingPassDesign": "Design de carte d'embarquement multi-locataire",
       "thisDemoTicketPreview": "🎫 Ceci est un aperçu de billet de démonstration",
-      "actualTicketsWillDisplayYourReal": "Les billets réels afficheront les détails de ton événement et de ton achat",
-      "_pending_review": {}
+      "actualTicketsWillDisplayYourReal": "Les billets réels afficheront les détails de ton événement et de ton achat"
     },
     "ticketpurchasesuccess": {
       "invalidRequest": "Requête invalide",
@@ -9761,8 +9681,7 @@
       "paymentSuccessful": "Paiement réussi !",
       "viewAllMyTickets": "Voir tous mes billets",
       "discoverMoreEvents": "Découvre plus d'événements",
-      "yourTicketHasConfirmedConfirmationEmail": "Ton billet a été confirmé. Un e-mail de confirmation a été envoyé à {value0}",
-      "_pending_review": {}
+      "yourTicketHasConfirmedConfirmationEmail": "Ton billet a été confirmé. Un e-mail de confirmation a été envoyé à {value0}"
     },
     "legal": {
       "deleteAccount": "Supprimer le compte",
@@ -9970,8 +9889,7 @@
       "legalRetentionObligations": "obligations légales de conservation ;",
       "securityFraudPreventionReasons": "raisons de sécurité, de prévention de la fraude et de protection contre les abus ;",
       "legalClaimsDefense": "la nécessité d'établir, d'exercer ou de défendre des revendications légales.",
-      "retentionAnonymizeDelete": "Lorsque les données personnelles ne sont plus nécessaires, nous les supprimons ou les anonymisons, sauf si les obligations légales de conservation l'exigent autrement.",
-      "_pending_review": {}
+      "retentionAnonymizeDelete": "Lorsque les données personnelles ne sont plus nécessaires, nous les supprimons ou les anonymisons, sauf si les obligations légales de conservation l'exigent autrement."
     },
     "patient": {
       "myAppointments": "Mes rendez-vous",
@@ -10042,8 +9960,7 @@
       "activity": "Activité",
       "progress": "Progrès",
       "trend": "Tendance",
-      "text5FromLastMonth": "+5 par rapport au mois dernier",
-      "_pending_review": {}
+      "text5FromLastMonth": "+5 par rapport au mois dernier"
     },
     "portals": {
       "confirmationError": "Erreur de confirmation",
@@ -10114,8 +10031,7 @@
       "useDifferentEmail": "← Utilise un autre e-mail",
       "creatingAccount": "Création du compte...",
       "tryAppleSigninAgain": "Réessaie la connexion Apple",
-      "backLogin": "Retour à la connexion",
-      "_pending_review": {}
+      "backLogin": "Retour à la connexion"
     },
     "professional": {
       "professionalDashboard": "Tableau de bord professionnel",
@@ -10164,8 +10080,7 @@
       "hypertension": "Hypertension",
       "sj": "SJ",
       "mw": "MW",
-      "text12FromLastMonth": "+12% par rapport au mois dernier",
-      "_pending_review": {}
+      "text12FromLastMonth": "+12% par rapport au mois dernier"
     },
     "staff": {
       "staffDashboard": "Tableau de bord du personnel",
@@ -10225,32 +10140,27 @@
       "urgent2": "URGENT",
       "sj": "SJ",
       "waiting2": "EN ATTENTE",
-      "mw": "MW",
-      "_pending_review": {}
+      "mw": "MW"
     },
     "actions": {
       "doNow": "Faire maintenant",
       "edit": "Modifier",
       "details": "Détails",
-      "later": "Plus tard",
-      "_pending_review": {}
+      "later": "Plus tard"
     },
     "introexperience": {
       "space": "Espace",
       "esc": "Échap",
       "press": "Appuie",
       "play": "pour jouer •",
-      "skip": "pour passer",
-      "_pending_review": {}
+      "skip": "pour passer"
     },
     "groups": {
       "match_scoreMatch": "{match_score}% de correspondance",
-      "join": "Rejoins",
-      "_pending_review": {}
+      "join": "Rejoins"
     },
     "rewards": {
-      "earnValue0Pts": "Gagne {value0} pts",
-      "_pending_review": {}
+      "earnValue0Pts": "Gagne {value0} pts"
     },
     "autopilotpopup": {
       "indexLoading": "Chargement de l'index…",
@@ -10261,14 +10171,12 @@
       "preparingNextSteps": "Préparation de tes prochaines étapes…",
       "allCaughtUpForToday": "Tu es à jour pour aujourd'hui",
       "nothingNewRightNow": "Rien de nouveau pour toi pour l'instant.",
-      "checkForNew": "Vérifier les nouveautés",
-      "_pending_review": {}
+      "checkForNew": "Vérifier les nouveautés"
     },
     "postDetail": {
       "title": "Publier",
       "notFound": "Publication introuvable",
-      "back": "Retour",
-      "_pending_review": {}
+      "back": "Retour"
     },
     "partnerportal": {
       "title": "Portail Partenaire",
@@ -10322,10 +10230,8 @@
         "degraded": "Dégradé",
         "suspended": "En pause",
         "revoked": "Révoqué",
-        "failed": "Échoué",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "failed": "Échoué"
+      }
     },
     "commerceportal": {
       "heroTitle": "Amène ton entreprise à Vitanaland",
@@ -10367,16 +10273,14 @@
         "geminiTitle": "Connecte-toi avec Gemini",
         "geminiStep1": "Pour Gemini CLI : ajoute l'URL du serveur MCP ci-dessus à ~/.gemini/settings.json sous tes serveurs MCP.",
         "geminiStep2": "Pour Gemini Enterprise (Édition Business) : Paramètres et aide → Équipe → Gère l'équipe → Applications connectées → « Ajoute un serveur MCP ».",
-        "geminiNote": "L'application grand public Gemini n'a actuellement aucun moyen documenté d'ajouter directement un serveur MCP personnalisé — c'est uniquement disponible aujourd'hui via Gemini CLI et Gemini Enterprise.",
-        "_pending_review": {}
+        "geminiNote": "L'application grand public Gemini n'a actuellement aucun moyen documenté d'ajouter directement un serveur MCP personnalisé — c'est uniquement disponible aujourd'hui via Gemini CLI et Gemini Enterprise."
       },
       "detectPlatform": {
         "urlPlaceholder": "URL du magasin (facultatif) — ex. https://ton-magasin.com",
         "hint": "Nous vérifierons l'URL et remplirons automatiquement l'ID du connecteur et du fournisseur si nous reconnaissons la plateforme.",
         "detected": "{platform} détectée — champs remplis.",
         "notDetected": "Plateforme non reconnue. Merci de remplir manuellement l'ID du connecteur et du fournisseur.",
-        "failed": "Impossible de vérifier cette adresse. Merci de remplir manuellement l'ID du connecteur et du fournisseur.",
-        "_pending_review": {}
+        "failed": "Impossible de vérifier cette adresse. Merci de remplir manuellement l'ID du connecteur et du fournisseur."
       },
       "connectOauth": {
         "title": "Connecte-toi",
@@ -10391,10 +10295,8 @@
         "fhirButton": "Connecter le serveur FHIR",
         "connecting": "Connexion en cours...",
         "notConfigured": "Ce type de connexion n'est pas encore activé. Réessaie plus tard.",
-        "failed": "Impossible de démarrer la connexion. Vérifie tes informations.",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
+        "failed": "Impossible de démarrer la connexion. Vérifie tes informations."
+      }
     },
     "oauthconsent": {
       "title": "Autoriser l'accès ?",
@@ -10418,12 +10320,8 @@
         "vitana:partners:read": "Voir les informations du partenaire",
         "vitana:connections:write": "Gérer les connexions commerciales",
         "vitana:grants:write": "Propose des octrois de données (le consentement reste avec toi)",
-        "vitana:settlement:write": "Déclenche les règlements VTNA préparés",
-        "_pending_review": {}
-      },
-      "_pending_review": {}
-    },
-    "_pending_review": {}
-  },
-  "_pending_review": {}
+        "vitana:settlement:write": "Déclenche les règlements VTNA préparés"
+      }
+    }
+  }
 }

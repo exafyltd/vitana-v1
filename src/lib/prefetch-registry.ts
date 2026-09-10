@@ -190,7 +190,11 @@ export async function prefetchForPath(
       queryKey: ['business-packages', userId, tenantId],
       queryFn: async () => {
         if (!tenantId) return [];
-        const { data } = await supabase.from('business_packages').select('*').eq('creator_id', userId).eq('tenant_id', tenantId).limit(20);
+        const { data, error } = await supabase.from('business_packages').select('*').eq('creator_id', userId).eq('tenant_id', tenantId).limit(20);
+        if (error) {
+          console.error('[prefetch-registry] Failed to prefetch business packages:', error);
+          throw error;
+        }
         return data || [];
       },
       staleTime,
@@ -201,7 +205,11 @@ export async function prefetchForPath(
     await queryClient.prefetchQuery({
       queryKey: ['health-plans'],
       queryFn: async () => {
-        const { data } = await supabase.from('user_health_plans').select('*').eq('active', true).limit(10);
+        const { data, error } = await supabase.from('user_health_plans').select('*').eq('active', true).limit(10);
+        if (error) {
+          console.error('[prefetch-registry] Failed to prefetch health plans:', error);
+          throw error;
+        }
         return data || [];
       },
       staleTime,
@@ -221,7 +229,11 @@ export async function prefetchForPath(
     await queryClient.prefetchQuery({
       queryKey: ['shorts', EMPTY_SHORTS_PARAMS],
       queryFn: async () => {
-        const { data } = await supabase.from('media_videos').select('*').eq('status', 'published').order('created_at', { ascending: false }).limit(20);
+        const { data, error } = await supabase.from('media_videos').select('*').eq('status', 'published').order('created_at', { ascending: false }).limit(20);
+        if (error) {
+          console.error('[prefetch-registry] Failed to prefetch shorts:', error);
+          throw error;
+        }
         return data || [];
       },
       staleTime,
@@ -231,7 +243,7 @@ export async function prefetchForPath(
     await queryClient.prefetchQuery({
       queryKey: ['community-music'],
       queryFn: async () => {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('media_uploads')
           .select(`
             id, title, description, tags, file_url, duration, plays_count, created_at,
@@ -242,6 +254,10 @@ export async function prefetchForPath(
           .eq('is_public', true)
           .order('created_at', { ascending: false })
           .limit(10);
+        if (error) {
+          console.error('[prefetch-registry] Failed to prefetch community music:', error);
+          throw error;
+        }
         return data || [];
       },
       staleTime,
@@ -251,7 +267,7 @@ export async function prefetchForPath(
     await queryClient.prefetchQuery({
       queryKey: ['community-podcasts'],
       queryFn: async () => {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('media_uploads')
           .select('*, podcast_metadata(*)')
           .eq('media_type', 'podcast')
@@ -259,6 +275,10 @@ export async function prefetchForPath(
           .eq('is_public', true)
           .order('created_at', { ascending: false })
           .limit(10);
+        if (error) {
+          console.error('[prefetch-registry] Failed to prefetch community podcasts:', error);
+          throw error;
+        }
         return data || [];
       },
       staleTime,

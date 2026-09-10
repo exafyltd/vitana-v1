@@ -34,12 +34,13 @@ export const useAppointmentNotifications = () => {
 
           // Send confirmation email via Edge Function
           try {
-            await supabase.functions.invoke("send-appointment-email", {
+            const { error } = await supabase.functions.invoke("send-appointment-email", {
               body: {
                 appointmentId: appointment.id,
                 emailType: "confirmation",
               },
             });
+            if (error) console.error("Failed to send confirmation email:", error);
           } catch (error) {
             console.error("Failed to send confirmation email:", error);
           }
@@ -73,7 +74,7 @@ export const useAppointmentNotifications = () => {
 
             // Send cancellation email
             try {
-              await supabase.functions.invoke("send-appointment-email", {
+              const { error } = await supabase.functions.invoke("send-appointment-email", {
                 body: {
                   appointmentId: newAppointment.id,
                   emailType: "cancellation",
@@ -82,6 +83,7 @@ export const useAppointmentNotifications = () => {
                   },
                 },
               });
+              if (error) console.error("Failed to send cancellation email:", error);
             } catch (error) {
               console.error("Failed to send cancellation email:", error);
             }
@@ -93,7 +95,7 @@ export const useAppointmentNotifications = () => {
 
             // Send reschedule email
             try {
-              await supabase.functions.invoke("send-appointment-email", {
+              const { error } = await supabase.functions.invoke("send-appointment-email", {
                 body: {
                   appointmentId: newAppointment.id,
                   emailType: "reschedule",
@@ -102,6 +104,7 @@ export const useAppointmentNotifications = () => {
                   },
                 },
               });
+              if (error) console.error("Failed to send reschedule email:", error);
             } catch (error) {
               console.error("Failed to send reschedule email:", error);
             }

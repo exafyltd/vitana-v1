@@ -60,14 +60,18 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
     setLoading(true);
 
     // Fetch ticket types
-    const { data: types } = await supabase
+    const { data: types, error: typesError } = await supabase
       .from("event_ticket_types")
       .select("id, name, price, quantity_available, quantity_sold")
       .eq("event_id", eventId)
       .order("sort_order");
 
+    if (typesError) {
+      console.error("Error fetching ticket types for event", eventId, typesError);
+    }
+
     // Fetch purchases
-    const { data: purchases } = await supabase
+    const { data: purchases, error: purchasesError } = await supabase
       .from("event_ticket_purchases")
       .select(`
         id,
@@ -83,6 +87,10 @@ export function EventSalesDashboard({ eventId, eventTitle }: EventSalesDashboard
       `)
       .eq("event_id", eventId)
       .order("created_at", { ascending: false });
+
+    if (purchasesError) {
+      console.error("Error fetching ticket purchases for event", eventId, purchasesError);
+    }
 
     setTicketTypes(types || []);
     setSales((purchases as TicketSale[]) || []);

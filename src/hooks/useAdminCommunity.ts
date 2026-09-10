@@ -31,16 +31,23 @@ export function useModerationReports() {
   });
 }
 
+// NOTE: the gateway's community-admin routes (`/meetups`, `/groups`,
+// `/live-rooms`, `/creators`) all report a Supabase query failure the same
+// way: HTTP 200, `{ ok: true, <key>: [], error: "<message>" }` — the empty
+// array keeps old clients from crashing, but it is indistinguishable from a
+// genuinely empty table unless `error` is checked. `adminFetch` only throws
+// on a non-2xx response or a network failure, so it never surfaces this.
+// Throwing here on a present `error` field routes it into React Query's own
+// `isError`/`error`, which the pages already know how to render.
 export function useCommunityMeetups() {
   const { activeTenantId } = useTenant();
   return useQuery({
     queryKey: ["admin-community-meetups", activeTenantId],
     queryFn: async () => {
       if (!activeTenantId) return [];
-      try {
-        const json = await adminFetch(`/api/v1/admin/tenants/${activeTenantId}/community/meetups`);
-        return json.meetups || [];
-      } catch { return []; }
+      const json = await adminFetch(`/api/v1/admin/tenants/${activeTenantId}/community/meetups`);
+      if (json.error) throw new Error(json.error);
+      return json.meetups || [];
     },
     enabled: !!activeTenantId,
   });
@@ -52,10 +59,9 @@ export function useCommunityGroups() {
     queryKey: ["admin-community-groups", activeTenantId],
     queryFn: async () => {
       if (!activeTenantId) return [];
-      try {
-        const json = await adminFetch(`/api/v1/admin/tenants/${activeTenantId}/community/groups`);
-        return json.groups || [];
-      } catch { return []; }
+      const json = await adminFetch(`/api/v1/admin/tenants/${activeTenantId}/community/groups`);
+      if (json.error) throw new Error(json.error);
+      return json.groups || [];
     },
     enabled: !!activeTenantId,
   });
@@ -67,10 +73,9 @@ export function useCommunityLiveRooms() {
     queryKey: ["admin-community-live-rooms", activeTenantId],
     queryFn: async () => {
       if (!activeTenantId) return [];
-      try {
-        const json = await adminFetch(`/api/v1/admin/tenants/${activeTenantId}/community/live-rooms`);
-        return json.rooms || [];
-      } catch { return []; }
+      const json = await adminFetch(`/api/v1/admin/tenants/${activeTenantId}/community/live-rooms`);
+      if (json.error) throw new Error(json.error);
+      return json.rooms || [];
     },
     enabled: !!activeTenantId,
   });
@@ -82,10 +87,9 @@ export function useCommunityCreators() {
     queryKey: ["admin-community-creators", activeTenantId],
     queryFn: async () => {
       if (!activeTenantId) return [];
-      try {
-        const json = await adminFetch(`/api/v1/admin/tenants/${activeTenantId}/community/creators`);
-        return json.creators || [];
-      } catch { return []; }
+      const json = await adminFetch(`/api/v1/admin/tenants/${activeTenantId}/community/creators`);
+      if (json.error) throw new Error(json.error);
+      return json.creators || [];
     },
     enabled: !!activeTenantId,
   });

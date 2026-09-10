@@ -20,11 +20,26 @@ export function AboutDrawer({ open, onOpenChange }: AboutDrawerProps) {
     languages: [] as string[]
   });
   const [saving, setSaving] = useState(false);
+  // Tracks whether AboutForm's initial profile load actually succeeded. A
+  // failed/never-settled load must not be allowed to save — the form data
+  // it's tracking would be blank, and saving it would silently wipe the
+  // user's real bio/location/links/languages.
+  const [loadSucceeded, setLoadSucceeded] = useState(false);
   const { toast } = useToast();
   const { refreshProfile } = useProfile();
   const { translate } = useTranslation();
 
   const handleSave = async () => {
+    if (!loadSucceeded) {
+      console.error('[AboutDrawer] Refusing to save: initial profile load never succeeded');
+      toast({
+        title: translate('toasts.error.loadFailed'),
+        description: translate('toasts.error.loadFailedDesc'),
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       setSaving(true);
       
@@ -83,7 +98,7 @@ export function AboutDrawer({ open, onOpenChange }: AboutDrawerProps) {
         </DialogHeader>
         
         <div className="space-y-6">
-          <AboutForm onDataChange={setFormData} />
+          <AboutForm onDataChange={setFormData} onLoadStatusChange={setLoadSucceeded} />
           
           <div className="flex gap-3 pt-4">
             <Button 

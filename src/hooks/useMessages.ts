@@ -154,13 +154,20 @@ export const useMessages = (threadId?: string, enableAutoFetch: boolean = false)
       const enrichedThreads = await Promise.all(
         (threadsData || []).map(async (thread) => {
           // Get last message
-          const { data: lastMessage } = await supabase
+          const { data: lastMessage, error: lastMessageError } = await supabase
             .from('messages')
             .select('*')
             .eq('thread_id', thread.id)
             .order('created_at', { ascending: false })
             .limit(1)
             .maybeSingle();
+
+          // maybeSingle() resolves zero rows as {data: null, error: null}
+          // (unlike .single()'s PGRST116) — no "no rows" case to exclude,
+          // every non-null error here is a genuine failure.
+          if (lastMessageError) {
+            console.error('Error fetching last message for thread:', thread.id, lastMessageError);
+          }
 
           // Get unread count (messages after user's last_read_at)
           const userParticipant = thread.participants?.find(

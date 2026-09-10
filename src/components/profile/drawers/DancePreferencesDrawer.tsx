@@ -90,6 +90,11 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
   const [venuePrefs, setVenuePrefs] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  // Tracks whether the initial dance_preferences load actually succeeded.
+  // A failed/never-settled load must not be allowed to save — handleSave
+  // would otherwise persist the all-empty defaults these state hooks start
+  // with, silently wiping the user's real preferences.
+  const [loadSucceeded, setLoadSucceeded] = useState(false);
 
   // Load existing prefs when opening.
   useEffect(() => {
@@ -97,12 +102,18 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
     let cancelled = false;
     (async () => {
       setLoading(true);
-      const { data } = await supabase
+      setLoadSucceeded(false);
+      const { data, error } = await supabase
         .from("profiles")
         .select("dance_preferences")
         .eq("user_id", user.id)
         .maybeSingle();
       if (cancelled) return;
+      if (error) {
+        console.error('[DancePreferencesDrawer] Error loading dance preferences:', error);
+        setLoading(false);
+        return;
+      }
       const prefs: DancePreferences = ((data as any)?.dance_preferences as DancePreferences) || {};
       setVarieties(new Set(prefs.varieties || []));
       setLevels(prefs.levels || {});
@@ -111,6 +122,7 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
       setRadiusKm(typeof prefs.radius_km === "number" ? prefs.radius_km : 25);
       setVenuePrefs(new Set(prefs.venue_prefs || []));
       setLoading(false);
+      setLoadSucceeded(true);
     })();
     return () => {
       cancelled = true;
@@ -141,6 +153,11 @@ export function DancePreferencesDrawer({ open, onOpenChange }: Props) {
 
   const handleSave = async () => {
     if (!user?.id) return;
+    if (!loadSucceeded) {
+      console.error('[DancePreferencesDrawer] Refusing to save: initial preferences load never succeeded');
+      notifyError('toasts.profile.couldNotSavePreferences');
+      return;
+    }
     setSaving(true);
     const payload: DancePreferences = {
       varieties: Array.from(varieties),

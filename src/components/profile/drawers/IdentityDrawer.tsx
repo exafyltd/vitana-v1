@@ -23,11 +23,27 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
     longevityArchetype: ""
   });
   const [saving, setSaving] = useState(false);
+  // Tracks whether IdentityForm's initial profile load actually succeeded.
+  // A failed/never-settled load must not be allowed to save — the handle,
+  // avatarUrl, offsets, and longevityArchetype fields have no per-field
+  // guard the way displayName does below, so a blank load-then-save would
+  // silently wipe them.
+  const [loadSucceeded, setLoadSucceeded] = useState(false);
   const { toast } = useToast();
   const { refreshProfile } = useProfile();
   const { translate } = useTranslation();
 
   const handleSave = async () => {
+    if (!loadSucceeded) {
+      console.error('[IdentityDrawer] Refusing to save: initial profile load never succeeded');
+      toast({
+        title: translate('toasts.error.loadFailed'),
+        description: translate('toasts.error.loadFailedDesc'),
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!formData.displayName.trim()) {
       toast({
         title: translate('profileEditor.identity.displayName'),
@@ -98,7 +114,7 @@ export function IdentityDrawer({ open, onOpenChange }: IdentityDrawerProps) {
         </DialogHeader>
         
         <div className="space-y-6">
-          <IdentityForm onDataChange={setFormData} />
+          <IdentityForm onDataChange={setFormData} onLoadStatusChange={setLoadSucceeded} />
           
           <div className="flex gap-3 pt-4">
             <Button 

@@ -57,15 +57,22 @@ export default function ReportedContentNew() {
   const load = useCallback(async () => {
     setLoading(true);
     try {
-      const { data: reps } = await supabase
+      const { data: reps, error: repsError } = await supabase
         .from("content_reports").select("*").order("created_at", { ascending: false });
+      if (repsError) {
+        console.error("[ReportedContentNew] Failed to load reports:", repsError);
+        notifyError("screens.admin.modActionFailed");
+      }
 
       const postIds = [...new Set((reps || []).filter((r) => r.content_type === "profile_post").map((r) => r.content_id))];
       const postMap = new Map<string, { user_id: string; content: string | null }>();
       const authorIds = new Set<string>();
       if (postIds.length) {
-        const { data: posts } = await supabase
+        const { data: posts, error: postsError } = await supabase
           .from("profile_posts" as never).select("id, user_id, content").in("id", postIds);
+        if (postsError) {
+          console.error("[ReportedContentNew] Failed to load reported post content:", postsError);
+        }
         for (const p of (posts as unknown as { id: string; user_id: string; content: string | null }[]) || []) {
           postMap.set(p.id, { user_id: p.user_id, content: p.content });
           authorIds.add(p.user_id);
@@ -73,8 +80,11 @@ export default function ReportedContentNew() {
       }
       const nameMap = new Map<string, string>();
       if (authorIds.size) {
-        const { data: profs } = await supabase
+        const { data: profs, error: profsError } = await supabase
           .from("global_community_profiles").select("user_id, display_name").in("user_id", [...authorIds]);
+        if (profsError) {
+          console.error("[ReportedContentNew] Failed to load reported-post author names:", profsError);
+        }
         for (const pr of profs || []) nameMap.set(pr.user_id, pr.display_name || "");
       }
       setReports((reps || []).map((r) => {
@@ -87,17 +97,28 @@ export default function ReportedContentNew() {
         } as ReportRow;
       }));
 
-      const { data: b } = await supabase.from("user_suspensions").select("*").order("created_at", { ascending: false });
+      const { data: b, error: bansError } = await supabase.from("user_suspensions").select("*").order("created_at", { ascending: false });
+      if (bansError) {
+        console.error("[ReportedContentNew] Failed to load bans:", bansError);
+        notifyError("screens.admin.modActionFailed");
+      }
       const banIds = [...new Set((b || []).map((x) => x.user_id))];
       const banNames = new Map<string, string>();
       if (banIds.length) {
-        const { data: bp } = await supabase.from("global_community_profiles").select("user_id, display_name").in("user_id", banIds);
+        const { data: bp, error: bpError } = await supabase.from("global_community_profiles").select("user_id, display_name").in("user_id", banIds);
+        if (bpError) {
+          console.error("[ReportedContentNew] Failed to load banned-user display names:", bpError);
+        }
         for (const x of bp || []) banNames.set(x.user_id, x.display_name || "");
       }
       setBans((b || []).map((x) => ({ ...x, name: banNames.get(x.user_id) || x.user_id })) as BanRow[]);
 
-      const { data: a } = await supabase
+      const { data: a, error: auditError } = await supabase
         .from("moderation_actions").select("*").order("created_at", { ascending: false }).limit(100);
+      if (auditError) {
+        console.error("[ReportedContentNew] Failed to load audit log:", auditError);
+        notifyError("screens.admin.modActionFailed");
+      }
       setAudit((a || []) as AuditRow[]);
     } catch {
       notifyError("screens.admin.modActionFailed");

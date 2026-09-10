@@ -141,12 +141,20 @@ export function EditMeetupPopup({ isOpen, onClose, event, onUpdated }: EditMeetu
 
       // Fetch existing ticket types for this event
       const fetchTicketTypes = async () => {
-        const { data: existingTickets } = await supabase
+        const { data: existingTickets, error: existingTicketsError } = await supabase
           .from("event_ticket_types")
           .select("*")
           .eq("event_id", event.id)
           .eq("is_active", true)
           .order("sort_order", { ascending: true });
+
+        if (existingTicketsError) {
+          // Don't block the edit form on a read failure, but make it loud —
+          // silently falling into the "no tickets" branch below could wipe a
+          // real paid event's ticket configuration on save.
+          console.error("Failed to load existing ticket types:", existingTicketsError);
+          notifyError('toasts.common.loadFailed', 'toasts.common.loadFailedDesc');
+        }
 
         if (existingTickets && existingTickets.length > 0) {
           setEnableTicketSales(true);

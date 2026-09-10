@@ -1,6 +1,8 @@
 {
   "discount": {
-    "_pending_review": {},
+    "_pending_review": {
+      "checkFailed": true
+    },
     "welcomeTitle": "Hoş geldin hediyen",
     "welcomeMessage": "İlk etkinliğinde %10 indirim için bu kodu kullan",
     "validFor": "90 gün geçerli",
@@ -27,7 +29,7 @@
     "email": "E-posta",
     "ticketEmailNote": "Biletin ve onayın bu e-postaya gönderilecek.",
     "left": "{count} kaldı",
-    "loadFailed": "Biletler yüklenemedi"
-  },
-  "_pending_review": {}
+    "loadFailed": "Biletler yüklenemedi",
+    "checkFailed": "Couldn't verify the code — try again"
+  }
 }

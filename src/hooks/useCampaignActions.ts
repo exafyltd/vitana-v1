@@ -34,19 +34,30 @@ export function useCampaignActions() {
       if (updateError) throw updateError;
 
       // Call distribute-post edge function for each post
-      const distributionPromises = posts.map((post) =>
-        supabase.functions.invoke("distribute-post", {
-          body: { postId: post.id },
-        })
+      const distributionResults = await Promise.all(
+        posts.map((post) =>
+          supabase.functions.invoke("distribute-post", {
+            body: { postId: post.id },
+          })
+        )
       );
 
-      await Promise.all(distributionPromises);
+      const failures = distributionResults.filter((r) => r.error);
+      if (failures.length > 0) {
+        for (const f of failures) {
+          console.error("Failed to distribute post:", f.error);
+        }
+      }
 
-      return { postsActivated: posts.length };
+      return { postsActivated: posts.length, postsDistributed: posts.length - failures.length, postsFailed: failures.length };
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["distribution_posts"] });
-      toast.success(`Campaign activated! ${data.postsActivated} posts distributed.`);
+      if (data.postsFailed > 0) {
+        toast.error(`Campaign activated, but ${data.postsFailed} of ${data.postsActivated} posts failed to distribute. Check logs.`);
+      } else {
+        toast.success(`Campaign activated! ${data.postsActivated} posts distributed.`);
+      }
     },
     onError: (error: Error) => {
       toast.error(`Failed to activate campaign: ${error.message}`);

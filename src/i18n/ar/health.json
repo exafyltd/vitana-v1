@@ -67,6 +67,9 @@
     "unknownProvider": "مزود غير معروف",
     "addSupplement": "أضف مكمل",
     "uploadFirstReport": "حمّل أول تقرير",
+    "reportsLoadFailed": "تعذر تحميل تقاريرك",
+    "reportsLoadFailedDesc": "حدثت مشكلة أثناء تحميل تقاريرك الصحية. الرجاء المحاولة مرة أخرى.",
+    "reportsLoadFailedRetry": "المحاولة مرة أخرى",
     "_pending_review": {}
   },
   "_pending_review": {}

@@ -36,7 +36,15 @@ export default function Podcasts() {
         query = query.eq('status', statusFilter);
       }
 
-      const { data } = await query;
+      const { data, error } = await query;
+
+      if (error) {
+        // A DB failure here previously rendered as "no podcasts to review" —
+        // indistinguishable from a genuinely empty moderation queue —
+        // hiding real pending episodes with nothing in the console.
+        console.error('[AdminPodcasts] Failed to load moderation queue:', error);
+      }
+
       return data || [];
     }
   });

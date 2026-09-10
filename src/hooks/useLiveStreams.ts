@@ -158,11 +158,19 @@ export async function fetchEndedStreams(): Promise<EndedStream[]> {
 
   // Hydrate recordings in one query (ready recordings only).
   const ids = streams.map((s) => s.id);
-  const { data: recordings } = await supabase
+  const { data: recordings, error: recordingsError } = await supabase
     .from('stream_recordings')
     .select('id, stream_id, recording_url, thumbnail_url, duration_seconds, file_size_bytes, status, created_at')
     .in('stream_id', ids)
     .eq('status', 'ready');
+
+  if (recordingsError) {
+    // Read/display path only — a failure here makes every ended stream's
+    // recording invisible in the Past tab (indistinguishable from "never
+    // recorded"), but the stream list itself already succeeded above, so we
+    // log loudly and degrade rather than failing the whole query.
+    console.error('[fetchEndedStreams] Failed to hydrate stream recordings:', recordingsError);
+  }
 
   const recByStream = new Map<string, StreamRecording>();
   for (const r of (recordings || []) as StreamRecording[]) {

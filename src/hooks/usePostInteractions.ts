@@ -88,10 +88,13 @@ export function usePostInteractions(postId: string) {
 
       // Fetch profiles for comment authors
       const userIds = [...new Set(rawComments.map(c => c.user_id))];
-      const { data: profiles } = await supabase
+      const { data: profiles, error: profilesError } = await supabase
         .from('profiles')
         .select('user_id, display_name, avatar_url')
         .in('user_id', userIds);
+      if (profilesError) {
+        console.error('[usePostInteractions] Failed to load comment-author profiles:', profilesError);
+      }
 
       const profileMap = new Map((profiles || []).map(p => [p.user_id, p]));
       return rawComments.map(c => ({

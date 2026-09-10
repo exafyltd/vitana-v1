@@ -88,10 +88,14 @@ export default function PublicCampaignLanding() {
         // Fetch linked event ticket info if campaign has event_id
         const linkedEventId = campaignData.metadata?.event_id || campaignData.metadata?.eventId;
         if (linkedEventId) {
-          const { data: eventData } = await supabase.rpc("get_public_event_details", {
+          const { data: eventData, error: eventError } = await supabase.rpc("get_public_event_details", {
             event_id: linkedEventId,
           });
-          
+
+          if (eventError) {
+            console.error("Error fetching linked event ticket info:", eventError);
+          }
+
           if (eventData && eventData.length > 0) {
             const event = eventData[0];
             setLinkedEventTickets({

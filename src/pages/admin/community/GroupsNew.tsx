@@ -8,7 +8,7 @@ import { useCommunityGroups } from "@/hooks/useAdminCommunity";
 import { t } from '@/lib/i18n-toast';
 
 export default function GroupsNew() {
-  const { data: groups = [], isLoading } = useCommunityGroups();
+  const { data: groups = [], isLoading, isError, error } = useCommunityGroups();
   const columns = groups.length > 0 ? Object.keys(groups[0]).filter((k) => k !== "id") : [];
 
   return (
@@ -23,6 +23,8 @@ export default function GroupsNew() {
 
         {isLoading ? (
           <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingGroups')}</p>
+        ) : isError ? (
+          <p className="text-sm text-destructive text-center py-8">{t('screens.admin.failedLoadGroupsValue0', { value0: (error as Error)?.message || "Unknown error" })}</p>
         ) : groups.length === 0 ? (
           <AdminEmptyState title={t('screens.admin.noGroupsFound')} description="There are no community groups yet." />
         ) : (

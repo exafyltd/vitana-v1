@@ -8,7 +8,7 @@ import { useCommunityCreators } from "@/hooks/useAdminCommunity";
 import { t } from '@/lib/i18n-toast';
 
 export default function Creators() {
-  const { data: creators = [], isLoading } = useCommunityCreators();
+  const { data: creators = [], isLoading, isError, error } = useCommunityCreators();
   const columns = creators.length > 0 ? Object.keys(creators[0]).filter((k) => k !== "id") : [];
 
   return (
@@ -23,6 +23,8 @@ export default function Creators() {
 
         {isLoading ? (
           <p className="text-sm text-muted-foreground text-center py-8">{t('screens.admin.loadingCreators')}</p>
+        ) : isError ? (
+          <p className="text-sm text-destructive text-center py-8">{t('screens.admin.failedLoadCreatorsValue0', { value0: (error as Error)?.message || "Unknown error" })}</p>
         ) : creators.length === 0 ? (
           <AdminEmptyState title={t('screens.admin.noCreatorsFound')} description="There are no community creators yet." />
         ) : (
