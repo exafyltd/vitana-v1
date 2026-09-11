@@ -113,6 +113,103 @@ const feedAudio = (() => {
   };
 })();
 
+// --- Captured-frame cache ---------------------------------------------------
+// A video post with no separate `image_url` thumbnail has nothing to show as
+// a poster, so the <video> element is solid black until its own bytes decode.
+// React Router fully unmounts/remounts the News route (and every <video> DOM
+// node in it) on every navigation, so without this, a clip the member already
+// watched a minute ago goes black again on every return visit — reads as "it
+// reloaded" even though the underlying post data was served from cache.
+//
+// The first time a given clip is seen this session, grab a frame from it into
+// a small canvas and keep it, keyed by the (stable, per-post) video URL. A
+// later mount of the same clip uses that captured frame as its poster —
+// instant, no black flash — while the real bytes still load behind it.
+// Capped so a long session doesn't grow this unbounded; a fixed pixel size
+// (rather than device-pixel-accurate) keeps the cached JPEGs small.
+const CAPTURED_FRAME_CACHE_LIMIT = 50;
+const CAPTURED_FRAME_MAX_DIM = 320;
+const capturedFrames = new Map<string, string>();
+const captureAttempted = new Set<string>();
+
+function rememberCapturedFrame(url: string, dataUrl: string) {
+  capturedFrames.set(url, dataUrl);
+  if (capturedFrames.size > CAPTURED_FRAME_CACHE_LIMIT) {
+    const oldest = capturedFrames.keys().next().value;
+    if (oldest) capturedFrames.delete(oldest);
+  }
+}
+
+/**
+ * Best-effort, fully decoupled from the real (visible, playing) <video>
+ * element — this loads the SAME url a second time into a throwaway, hidden,
+ * never-attached video purely to grab a frame off it. Deliberately not done
+ * by reading the live element directly: that would require setting
+ * `crossOrigin="anonymous"` on the element the member actually watches, and
+ * this codebase has no way to verify from here whether the media host (a
+ * different origin — Supabase Storage) answers CORS-mode range requests
+ * cleanly. Isolating the attempt to a disposable element means a bad answer
+ * (or none) only fails this capture silently; it can never affect real
+ * playback. Runs once per unique URL per session (`captureAttempted` guards
+ * both a spammed retry and a wasted repeat of an already-cached frame).
+ */
+function ensureFrameCaptured(url: string) {
+  if (captureAttempted.has(url) || capturedFrames.has(url)) return;
+  captureAttempted.add(url);
+  try {
+    const probe = document.createElement("video");
+    probe.crossOrigin = "anonymous";
+    probe.muted = true;
+    probe.playsInline = true;
+    // "metadata" + an explicit seek (below) asks the server for a small byte
+    // range around that timestamp instead of "auto", which would pull the
+    // whole clip just to render one still frame — this capture already adds
+    // a second fetch of every unique clip on top of the real feed video's
+    // own, and this feed already has a memory/CPU budget problem on long
+    // scroll sessions (see the far-viewport video release above); doubling
+    // full downloads on top of that would fight the very problem this file
+    // exists to fix.
+    probe.preload = "metadata";
+    const cleanup = () => {
+      probe.removeAttribute("src");
+      probe.load();
+    };
+    const grabFrame = () => {
+      try {
+        const width = Math.min(probe.videoWidth || CAPTURED_FRAME_MAX_DIM, CAPTURED_FRAME_MAX_DIM);
+        const scale = width / (probe.videoWidth || width);
+        const height = Math.round((probe.videoHeight || width) * scale) || width;
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.drawImage(probe, 0, 0, width, height);
+          rememberCapturedFrame(url, canvas.toDataURL("image/jpeg", 0.6));
+        }
+      } catch {
+        // Tainted canvas (no/failed CORS), decode error, etc.
+      }
+      cleanup();
+    };
+    probe.addEventListener(
+      "loadedmetadata",
+      () => {
+        // A tiny offset, not 0 — the very first frame of an encoded clip is
+        // sometimes black/blank (encoder priming), same reason thumbnail
+        // generators generally avoid t=0.
+        probe.currentTime = Math.min(0.1, (probe.duration || 0) / 2);
+      },
+      { once: true },
+    );
+    probe.addEventListener("seeked", grabFrame, { once: true });
+    probe.addEventListener("error", cleanup, { once: true });
+    probe.src = url;
+  } catch {
+    // Video element unsupported in this environment (SSR, older WebView) — skip.
+  }
+}
+
 export function FeedMedia({
   imageUrl,
   videoUrl,
@@ -217,6 +314,20 @@ export function FeedMedia({
     };
   }, [videoUrl, instanceId]);
 
+  // Kick off the background frame capture for this clip (see
+  // ensureFrameCaptured above) — a no-op if it's already cached or already
+  // being attempted. This only warms the cache for a LATER mount of the same
+  // clip; it deliberately does not affect this render. Gated on the same
+  // "near enough to load" signal as the real video's own src/autoPlay above
+  // — without this, every video post in the feed (there's no virtualization;
+  // they're all mounted at once) would fire a background fetch on first
+  // paint regardless of scroll position, which is exactly the "many videos
+  // competing for bandwidth on a long feed" problem the far-viewport release
+  // above exists to prevent.
+  useEffect(() => {
+    if (videoUrl && !farFromViewport) ensureFrameCaptured(videoUrl);
+  }, [videoUrl, farFromViewport]);
+
   const closeExpanded = useCallback(() => setExpanded(false), []);
 
   // While the in-app overlay is open: close on Android back button (via a pushed
@@ -283,7 +394,11 @@ export function FeedMedia({
           // showing in its place so nothing visibly flashes when scrolled
           // back into range.
           src={farFromViewport ? undefined : videoUrl}
-          poster={imageUrl || undefined}
+          // Prefer a frame captured earlier THIS session (see
+          // ensureFrameCaptured above) over the post's own thumbnail — a clip
+          // already watched once shows its last frame instantly on remount
+          // instead of going black again while its bytes re-load.
+          poster={(videoUrl && capturedFrames.get(videoUrl)) || imageUrl || undefined}
           muted={!isActive}
           loop
           playsInline
