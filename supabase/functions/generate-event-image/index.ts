@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.56.0';
+import { storageBridgeProvider, uploadFile, getPublicUrl } from '../_shared/storage-bridge-client.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -339,24 +340,33 @@ Style: Natural documentary photography meets wellness editorial, authentic momen
 
     // Upload to storage with unique filename to prevent cache issues
     const fileName = `${user.id}/${eventId}-${Date.now()}.png`;
-    const { error: uploadError } = await supabase.storage
-      .from('covers')
-      .upload(fileName, imageBuffer, {
-        contentType: 'image/png',
-        upsert: true
-      });
+    // VTID-03815 (B6): STORAGE_BRIDGE_PROVIDER=bridge routes this through the
+    // gateway's storage-bridge route instead of calling Supabase Storage
+    // directly — default (unset/'supabase') is byte-for-byte unchanged.
+    let publicUrl: string;
+    if (storageBridgeProvider() === 'bridge') {
+      await uploadFile('covers', fileName, imageBuffer, { contentType: 'image/png', upsert: true });
+      publicUrl = await getPublicUrl('covers', fileName);
+    } else {
+      const { error: uploadError } = await supabase.storage
+        .from('covers')
+        .upload(fileName, imageBuffer, {
+          contentType: 'image/png',
+          upsert: true
+        });
 
-    if (uploadError) {
-      console.error('Upload error:', uploadError);
-      throw new Error('Failed to upload image');
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw new Error('Failed to upload image');
+      }
+
+      // Get public URL
+      const { data: urlData } = supabase.storage
+        .from('covers')
+        .getPublicUrl(fileName);
+
+      publicUrl = urlData.publicUrl;
     }
-
-    // Get public URL
-    const { data: urlData } = supabase.storage
-      .from('covers')
-      .getPublicUrl(fileName);
-
-    const publicUrl = urlData.publicUrl;
 
     // Update event with new image URL
     const { error: updateError } = await supabase

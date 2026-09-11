@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.3";
+import { storageBridgeProvider, uploadFile, getPublicUrl } from '../_shared/storage-bridge-client.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -184,21 +185,28 @@ serve(async (req) => {
           const binaryData = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
           
           const fileName = `maxina-summer-2026/event-${i + 1}-${Date.now()}.jpg`;
-          const { data: uploadData, error: uploadError } = await supabase.storage
-            .from('event-images')
-            .upload(fileName, binaryData, {
-              contentType: 'image/jpeg',
-              upsert: false
-            });
+          // VTID-03815 (B6): STORAGE_BRIDGE_PROVIDER=bridge routes this
+          // through the gateway's storage-bridge route instead of calling
+          // Supabase Storage directly — default is byte-for-byte unchanged.
+          let publicUrl: string;
+          if (storageBridgeProvider() === 'bridge') {
+            await uploadFile('event-images', fileName, binaryData, { contentType: 'image/jpeg', upsert: false });
+            publicUrl = await getPublicUrl('event-images', fileName);
+          } else {
+            const { error: uploadError } = await supabase.storage
+              .from('event-images')
+              .upload(fileName, binaryData, {
+                contentType: 'image/jpeg',
+                upsert: false
+              });
 
-          if (uploadError) {
-            throw new Error(`Storage upload failed: ${uploadError.message}`);
+            if (uploadError) {
+              throw new Error(`Storage upload failed: ${uploadError.message}`);
+            }
+
+            // Get public URL
+            publicUrl = supabase.storage.from('event-images').getPublicUrl(fileName).data.publicUrl;
           }
-
-          // Get public URL
-          const { data: { publicUrl } } = supabase.storage
-            .from('event-images')
-            .getPublicUrl(fileName);
 
           // Construct event object
           const startTime = new Date(`${event.date}T${event.time}:00+02:00`);
