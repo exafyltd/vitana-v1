@@ -42,7 +42,13 @@ export function preloadHotChunks(): void {
     // Mobile primary screens. Order matters: most-likely-next first so the
     // idle window prioritizes them. Each import is fire-and-forget — failures
     // are swallowed; React Router will retry on actual navigation.
+    //
+    // Home and Events were missing here even though they're two of the most
+    // used screens in the app — their chunk was only ever fetched on first
+    // tap, unlike Messages/FindPartner/GroupChat below.
+    void import('../pages/Home').catch(() => {});
     void import('../pages/Messages').catch(() => {});
+    void import('../pages/community/EventsAndMeetups').catch(() => {});
     void import('../pages/community/FindPartner').catch(() => {});
     void import('../pages/messages/GroupChat').catch(() => {});
   });

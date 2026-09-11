@@ -48,6 +48,7 @@ import {
 import { isFeedV2Enabled } from "@/lib/feature-flags";
 import { useAllNewsFeed } from "@/hooks/useAllNewsFeed";
 import { NewsFeedItemCard } from "@/components/home/NewsFeedItemCard";
+import { FeedItemErrorBoundary } from "@/components/feed/FeedItemErrorBoundary";
 import { track } from "@/lib/product-analytics/client";
 import type { FeedItem, ArticleFeedItem } from "@/lib/news-feed-ranker";
 import { getNewsImage, getArticlePillar } from "@/lib/news-images";
@@ -308,6 +309,14 @@ export default function Home() {
   // rest of the ranked feed (with its existing article interleave) continues
   // unchanged. A slot with no content (e.g. no live match candidate) is just
   // skipped, so the pattern never leaves a visible gap.
+  // Fallback shown in place of a single feed item that threw while rendering
+  // (bad API field, unexpected shape, etc.) — see FeedItemErrorBoundary.
+  const feedItemErrorFallback = (
+    <div className="rounded-xl border border-border bg-muted/30 px-4 py-6 text-center text-sm text-muted-foreground">
+      {t('screens.home.feedItemError')}
+    </div>
+  );
+
   const renderInterleavedFeedItems = (): JSX.Element[] => {
     const matchIndex = feedItems.findIndex((item) => item.kind === "match" || item.kind === "performer");
     const matchItem = matchIndex >= 0 ? feedItems[matchIndex] : null;
@@ -328,11 +337,13 @@ export default function Home() {
       cardSlots.push({
         key: `card-find-a-match-${matchItem.id}`,
         node: (
-          <NewsFeedItemCard
-            item={matchItem}
-            onArticleClick={handleFeedArticleClick}
-            onOpen={handleFeedItemOpen}
-          />
+          <FeedItemErrorBoundary fallback={feedItemErrorFallback}>
+            <NewsFeedItemCard
+              item={matchItem}
+              onArticleClick={handleFeedArticleClick}
+              onOpen={handleFeedItemOpen}
+            />
+          </FeedItemErrorBoundary>
         ),
       });
     }
@@ -340,13 +351,14 @@ export default function Home() {
     const nodes: JSX.Element[] = [];
     streamItems.forEach((item, index) => {
       nodes.push(
-        <NewsFeedItemCard
-          key={item.id}
-          item={item}
-          onArticleClick={handleFeedArticleClick}
-          onOpen={handleFeedItemOpen}
-          autoOpenComments={item.id === firstCommentableId}
-        />,
+        <FeedItemErrorBoundary key={item.id} fallback={feedItemErrorFallback}>
+          <NewsFeedItemCard
+            item={item}
+            onArticleClick={handleFeedArticleClick}
+            onOpen={handleFeedItemOpen}
+            autoOpenComments={item.id === firstCommentableId}
+          />
+        </FeedItemErrorBoundary>,
       );
       const slot = cardSlots[index];
       if (slot) nodes.push(<div key={slot.key}>{slot.node}</div>);

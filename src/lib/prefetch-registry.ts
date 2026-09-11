@@ -31,6 +31,8 @@ import {
 } from '@/hooks/useAllNewsFeed';
 import { isFeedV2Enabled } from '@/lib/feature-flags';
 import { journeyChecklistQueryKey, fetchJourneyChecklist } from '@/hooks/useJourneyChecklist';
+import { fetchFollowingFeedQueryFn } from '@/hooks/useFollowingFeed';
+import { isValidUUID } from '@/lib/resolveProfileUserId';
 import { JOURNEY_STATE_QUERY_KEY, fetchJourneyState } from '@/hooks/useGuidedJourneyProgress';
 import { fetchMarketplaceFeed } from '@/hooks/useMarketplace';
 
@@ -214,6 +216,18 @@ export async function prefetchForPath(
     await queryClient.prefetchQuery({
       queryKey: eventsKey,
       queryFn: fetchCommunityEventsQueryFn,
+      staleTime,
+    });
+
+    // Events "Following" tab — previously had no prefetch coverage at all
+    // (only the events list itself, above, was warmed), so switching to that
+    // tab was always a cold fetch even when the rest of Events was warm.
+    // Key/validation must match useFollowingFeed.ts's own `validViewer` exactly
+    // or the hook won't read this prefetched result.
+    const followingViewer = isValidUUID(userId) ? userId : undefined;
+    await queryClient.prefetchQuery({
+      queryKey: ['following-feed', followingViewer],
+      queryFn: () => fetchFollowingFeedQueryFn(followingViewer),
       staleTime,
     });
 
