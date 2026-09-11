@@ -137,7 +137,10 @@ async function callDeepSeek(prompt) {
     method: 'POST',
     headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
     body: JSON.stringify({
-      model: 'deepseek-chat',
+      // BOOTSTRAP-DEEPSEEK-V4.1-FLASH (2026-09-11): deepseek-chat is a
+      // retired alias — DeepSeek requests are now served by DeepSeek-V4.1-Flash
+      // (API model id: deepseek-flash).
+      model: 'deepseek-flash',
       temperature: 0.1,
       max_tokens: 8192,
       response_format: { type: 'json_object' },

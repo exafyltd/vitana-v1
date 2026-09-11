@@ -9,7 +9,7 @@
 //
 // Providers (env vars):
 //   --provider=gemini   GOOGLE_GEMINI_API_KEY  (gemini-2.5-flash, ~free tier)
-//   --provider=deepseek DEEPSEEK_API_KEY       (deepseek-chat)
+//   --provider=deepseek DEEPSEEK_API_KEY       (deepseek-flash / DeepSeek-V4.1-Flash)
 //   --provider=anthropic ANTHROPIC_API_KEY     (claude-haiku-4-5; needs API credit)
 //
 // Usage:
@@ -191,7 +191,11 @@ async function callDeepSeek(prompt) {
       authorization: `Bearer ${key}`,
     },
     body: JSON.stringify({
-      model: 'deepseek-chat',
+      // BOOTSTRAP-DEEPSEEK-V4.1-FLASH (2026-09-11): deepseek-chat is a
+      // retired alias — DeepSeek requests are now served by DeepSeek-V4.1-Flash
+      // (API model id: deepseek-flash). See vitana-platform's
+      // services/gateway/src/constants/llm-defaults.ts for the full rationale.
+      model: 'deepseek-flash',
       temperature: 0.2,
       max_tokens: 4096,
       response_format: { type: 'json_object' },
